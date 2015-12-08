@@ -65,6 +65,17 @@ public class FrontController extends BaseController{
 	@RequestMapping
 	public String index(Model model) {
 		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		List<Article> articleList = CmsUtils.getArticleList(site.getId(), "2", 8, "");
+		for(Article article:articleList) {
+			article.setTitle(StringUtils.abbr(article.getTitle(),28));
+		}
+		Article article = CmsUtils.getArticle("2");
+		article.setTitle(StringUtils.abbr(article.getTitle(), 28));
+//		article.getArticleData().setContent(StringUtils.abbr(article.getArticleData().getContent(),28));
+		String urlSuffix = Global.getUrlSuffix();
+		model.addAttribute("article",article);
+		model.addAttribute("articleList",articleList);
+		model.addAttribute("urlSuffix",urlSuffix);
 		model.addAttribute("site", site);
 		model.addAttribute("isIndex", true);
 		return "modules/cms/front/themes/"+site.getTheme()+"/frontIndex";

@@ -67,11 +67,28 @@
 	</bean>
 	
 	<!-- 定义视图文件解析 -->
-	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	<!--<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="${web.view.prefix}"/>
 		<property name="suffix" value="${web.view.suffix}"/>
+		<property name="order" value="0"/>
+	</bean>-->
+
+	<bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
+		<property name="templateEngine" ref="templateEngine" />
+		<property name="order" value="1"/>
+		<property name="characterEncoding" value="UTF-8"/>
 	</bean>
-	
+	<bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">
+		<property name="templateResolver" ref="templateResolver" />
+	</bean>
+	<bean id="templateResolver"
+		  class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">
+		<property name="prefix" value="${web.view.prefix}" />
+		<property name="suffix" value=".html" />
+		<property name="templateMode" value="HTML5" />
+		<property name="cacheable" value="false"/>
+	</bean>
+
 	<!-- 对静态资源文件的访问， 将无法mapping到Controller的path交给default servlet handler处理 -->
 	<mvc:default-servlet-handler />
 	

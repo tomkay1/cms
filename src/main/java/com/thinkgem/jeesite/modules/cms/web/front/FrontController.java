@@ -330,6 +330,7 @@ public class FrontController extends BaseController{
 		return "modules/cms/front/themes/"+site.getTheme()+"/frontMap";
 	}
 
+
     private String getTpl(Article article){
         if(StringUtils.isBlank(article.getCustomContentView())){
             String view = null;
@@ -350,5 +351,5 @@ public class FrontController extends BaseController{
             return article.getCustomContentView();
         }
     }
-	
+
 }

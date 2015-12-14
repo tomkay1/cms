@@ -1,0 +1,187 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>公司简介</title>
+    <link rel="stylesheet" type="text/css" href="/css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/index.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/indexnew.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/index-yun.css"/>
+    <script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.SuperSlide.2.1.1.js"></script>
+    <script type="text/javascript" src="/js/indexuser.js"></script>
+    <script src="/js/confirm.js"></script>
+</head>
+<!--@thymesVar id="#authentication" type="org.springframework.security.core.Authentication"-->
+<body>
+<div  style="background-color:#fff;" class="headeri">
+    <img src="images/logo.png" class="logoimgi"/>
+    <ul class="navi">
+        <li><a href="yun-index.html" th:href="@{/pc/index}">首页</a></li>
+        <li class="active"><a href="javascript:void(0)" th:href="@{/pc/loadCompanyIntroduction}">公司简介</a></li>
+        <li><a href="yun-baomin.html" th:href="@{/pc/loadMemberRegister}">考证报名</a></li>
+        <li><a href="javascript:void(0)" th:href="@{/pc/loadTutors}">师资力量</a></li>
+        <li><a href="yun-jxspnewone.html" th:href="@{/pc/loadVideo}">教学视频</a></li>
+        <li>
+            <a href="javascript:void(0)" th:href="@{/pc/loadPeixun}">培训内容</a>
+        </li>
+        <li><a href="#">招|应聘</a></li>
+        <li id="loginLi" style="padding:0px 0px 0px 20px;"
+            >
+            <a href="javascript:void(0)" id="showLoginForm">登录</a>
+        </li>
+        <li id="userLi" style="padding:0px;display:none" >
+            <a id="memberLi" href="#" th:href="@{/pc/loadPersonalCenter}"><img class="lodingimg" src="images/toux.png" width="100%"/></a><!--会员头像-->
+            <p style="display: none" class="zhizheni"><img src="images/lodingj.png" width="18px" height="7px"/></p>
+            <p style="display: none" class="lbpo">
+                <a href="javascript:void(0)" >ABC</a>
+                <a href="#" th:href="@{/pc/loadPersonalCenter}">个人中心</a>
+                <a href="#" th:href="@{/logout}">退出</a>
+            </p>
+        </li>
+    </ul>
+</div>
+
+
+<div style="background-image: url(images/BANNERss.jpg); background-position:center; height:655px; margin:0 auto; text-align:center; overflow:hidden; min-width:1000px; background-repeat:no-repeat"></div>
+
+<div class="tm_tit">
+    <h3>HISTORY</h3>
+</div>
+
+<div style="background-image: url(images/BANNERLC.jpg); background-position:center; height:330px; margin:0 auto; text-align:center; overflow:hidden; min-width:1000px;background-repeat:no-repeat"></div>
+
+<div class="tm_tit">
+    <h3>PRODUCT</h3>
+</div>
+<div class="xxd">
+
+    <P>
+        <span><a href="http://www.huobanplus.com" target="_blank" >伙伴+(www.huobanplus.com)——移动电商梦工厂</a></span><br/>
+        由伙伴商城、伙伴DMC（数据决策系统）、伙伴MAD（移动广告系统）、云商学院四个核心部分构成。助企业快速、低成本地拥有移动电商能力。
+    </P>
+    <P>
+        <span><a href="http://www.huobanmall.com" target="_blank" >伙伴商城(www.huobanmall.com)——最好用的移动商城系统</a></span><br/>
+        为企业建立专属移动商城，以便商家展示品牌形象，提供统一的商品、价格、营销活动和物流保障。
+    </P>
+    <P>
+        <span><a href="http://www.fanmore.cn" target="_blank" >粉猫(www.fanmore.cn)——躺着也能赚钱的O2O电商平台</a></span><br/>
+        能把你所有的碎片化时间变成最真实的价值，无论躺着、坐着、吃着、走着……赚钱，就在数秒之间。
+    </P> </div>
+<div class="tm_tit">
+    <h3>CONTACT</h3>
+</div>
+
+<div class="container">
+    <p class="h40 clear"></p>
+    <p class="font16 fontyahei">
+        <b><font style="color: #000">地址：</font></b>杭州市滨江区西兴街道阡陌路482号智慧e谷B幢4楼
+        <br/>
+        <b><font style="color: #000">邮编：</font></b>310000<br/>
+
+        <b><font style="color: #000">联系人：</font></b>蔡经理:18767150584&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;吴经理:15700067601&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;魏经理:13646826275&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;胡经理:13634123599&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+
+
+        <b><font style="color: #000">全国招商电话：</font></b>13575749204<br/>
+        <b><font style="color: #000">客服电话：</font></b>0571-56532880
+        <br/>
+        <b><font style="color: #000">在线客服QQ：</font>
+
+            <img style="CURSOR: pointer; vertical-align: middle" onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&amp;uin=2061242894&amp;site=qq&amp;menu=yes');" border="0" src="images/zx_qq1.gif"/>
+            <img style="CURSOR: pointer; vertical-align: middle" onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&amp;uin=2402554148&amp;site=qq&amp;menu=yes');" border="0" src="images/zx_qq2.gif"/>
+            <img style="CURSOR: pointer; vertical-align: middle" onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&amp;uin=2979594190&amp;site=qq&amp;menu=yes');" border="0" src="images/zx_qq3.gif"/>
+        </b>
+
+    </p>
+
+    <p class="h40 clear"></p>
+
+</div>
+
+<div class="tm_tit">
+    <h3>关注伙伴君</h3>
+</div>
+<div style="text-align: center; margin:0 auto; padding:0px">
+
+    <img src="images/xwm.jpg"/>
+
+    <p class="h60 clear"></p>
+</div>
+
+<p style="clear:both"></p>
+<!--登录弹窗-->
+<div  id="asaimsg" class="AsaiDivShow" style="display: none" th:style="${errInfo}==null?'display: none':'display: block'">
+    <P align="right" style="margin:0px; padding:0px;"><a href="javascript:void(0)"
+                                                         onclick="document.getElementById('asaimsg').style.display='none';document.getElementById('asaimsgbg').style.display='none'">
+        <FONT style="color:#111; font-size:20px;">×</FONT></a></P>
+
+    <div class="sign-in">
+        <div class="user-form">
+            <form accept-charset="UTF-8" action="yun-geren.html" th:action="@{/pc/index}"
+                  class="sign-in__form user-form__form" method="post">
+
+                <div class="user-form__fieldset">
+                    <label class="user-form__label" for="username" style="color:#111">手机号：</label>
+                    <input autocapitalize="off" autocorrect="off" class="sign-in__field user-form__field"
+                           id="username" name="username" placeholder="请输入您的手机号" maxlength="20" type="text"/>
+                </div>
+                <div class="user-form__fieldset">
+                    <label class="user-form__label" for="password" style="color:#111">密码：</label>
+                    <input class="sign-in__field user-form__field" id="password" name="password"
+                           placeholder="password" type="password"/>
+
+                </div>
+                <div class="user-form__href" align="right"><a id="goToRegister" href="javascript:void(0)">免费注册</a></div>
+                <button id="btn_login" class="sign-in__button user-form__button" name="btn_login" type="submit">
+                    登录
+                </button>
+            </form>
+            <span style="color:red" id="loginFailedInfo" th:text="${errInfo}"></span>
+        </div>
+    </div>
+</div>
+<!--登录弹窗end-->
+<!--注册弹窗-->
+<div  id="regDiv" class="AsaiDivShow" style="display:none">
+    <P align="right" style="margin:0px; padding:0px;"><a href="javascript:void(0)"
+                                                         onclick="javascript:hideRegisterForm()">
+        <FONT style="color:#111; font-size:20px;">×</FONT></a></P>
+
+    <div class="sign-in">
+        <div class="user-form">
+            <form action="yun-baomin.html">
+                <p>
+                    <input class="ysw500 sign-in__field ys-form__field" id="regPhoneNo" name="regPhoneNo"
+                           placeholder="真实手机号" maxlength="20" type="text"/>
+                    <span style="color:red" id="phoneErr"/>
+                    <span style="color:green" id="phoneRig"/>
+                </p>
+                <p style="height:10px;"></p>
+                <p style="margin: 0 auto;">
+                    <input class="ys-form__field" id="regMessage" name="regMessage" placeholder="短信验证码" maxlength="6" type="text" style="float: left; margin-top: 10px; margin-left:40px; width:430px;"/>
+                    <input id="verify_btn" value="获取验证码" class="user-form__yanzheng" type="button" onclick="settime(this)" />
+                </p>
+                <p style="text-align:center;">
+                    <button class="sign-in__button user-form__button" id="registerBtn" type="button">
+                        提交
+                    </button>
+                </p>
+                <div style="text-align: center">
+                    <i style="color:#FFBE00">*</i>注册成功后初始密码为手机号后四位，您可以登录后在个人中心修改<br/>
+                </div>
+            </form>
+            <span style="color:red" id="regErrInfo"></span>
+            <span style="color:blue" id="regMsgInfo"></span>
+        </div>
+    </div>
+</div>
+<!--注册弹窗end-->
+<div id="asaimsgbg" class="AsaiDivBG"></div>
+<div style=" background-color:#0074C7; color:#fff;"  class="footer">
+    <p>Copyright&copy;2013-2015. 杭州火图科技有限公司,浙ICP备13027761号-4</p>
+    <p>客服电话：0571-86870107 &nbsp;地址：杭州市滨江区西兴街道阡陌路482号智慧e谷B幢4楼</p>
+</div>
+</body>
+</html>
+ 

@@ -2,6 +2,73 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c555bc60-ece2-4780-9daa-ee9d86907ee7" name="Default" comment="...">
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\META-INF\MANIFEST.MF" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\classes\com\huotu\hotcms\admin\config\DispatcherServletInitializer.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\classes\com\huotu\hotcms\admin\config\MVCConfig.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\classes\com\huotu\hotcms\admin\controller\IndexController.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\aopalliance-1.0.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\aspectjrt-1.8.7.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\attoparser-2.0.0.BETA04.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\commons-dbcp-1.4.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\commons-fileupload-1.3.1.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\commons-io-2.2.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\commons-logging-1.2.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\commons-net-3.1.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\commons-pool-1.5.4.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\commons-vfs2-2.0.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\fastjson-1.2.7.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\jackson-annotations-2.6.0.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\jackson-core-2.6.0.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\jackson-databind-2.6.0.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\jackson-dataformat-xml-2.6.0.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\jackson-module-jaxb-annotations-2.6.0.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\javassist-3.11.0.GA.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\javax.json-1.0.4.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\javax.persistence-2.1.0.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\javax.servlet-api-3.1.0.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\jcl-over-slf4j-1.7.13.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\jsch-0.1.51.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\lombok-1.16.6.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\maven-scm-api-1.4.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\maven-scm-provider-svn-commons-1.4.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\maven-scm-provider-svnexe-1.4.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\ognl-3.1.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\org.eclipse.persistence.antlr-2.6.1.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\org.eclipse.persistence.asm-2.6.1.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\org.eclipse.persistence.core-2.6.1.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\org.eclipse.persistence.jpa-2.6.1.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\org.eclipse.persistence.jpa.jpql-2.6.1.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\plexus-utils-1.5.6.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\regexp-1.3.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\service-1.0-SNAPSHOT.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\slf4j-api-1.6.6.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\spring-aop-4.2.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\spring-beans-4.2.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\spring-context-4.2.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\spring-core-4.2.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\spring-data-commons-1.11.1.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\spring-data-jpa-1.9.1.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\spring-expression-4.2.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\spring-jdbc-4.2.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\spring-orm-4.2.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\spring-security-core-4.0.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\spring-security-web-4.0.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\spring-tx-4.2.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\spring-web-4.2.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\spring-webmvc-4.2.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\stax2-api-3.1.4.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\thymeleaf-3.0.0.BETA01.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\thymeleaf-spring4-3.0.0.BETA01.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\WEB-INF\lib\unbescape-1.1.1.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\admin-1.0-SNAPSHOT\index.html" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\classes\com\huotu\hotcms\admin\config\DispatcherServletInitializer.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\classes\com\huotu\hotcms\admin\config\MVCConfig.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\admin\target\classes\com\huotu\hotcms\admin\controller\IndexController.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\service\target\classes\com\huotu\hotcms\config\JpaConfig.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\service\target\classes\com\huotu\hotcms\config\ServiceConfig.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\service\target\classes\com\huotu\hotcms\entity\Site.class" afterPath="" />
+      <change type="DELETED" beforePath="D:\project\hotcms\service\target\classes\spring.xml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/service/src/main/java/com/huotu/hotcms/config/JpaConfig.java" afterPath="$PROJECT_DIR$/service/src/main/java/com/huotu/hotcms/config/JpaConfig.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="hotcms.iws" />
@@ -42,7 +109,7 @@
         <entry file="file://$PROJECT_DIR$/service/src/main/java/com/huotu/hotcms/config/JpaConfig.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+              <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -50,14 +117,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MVCConfig.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MVCConfig.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/admin/src/main/java/com/huotu/hotcms/admin/config/MVCConfig.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4858657">
-              <caret line="34" column="41" selection-start-line="34" selection-start-column="41" selection-end-line="34" selection-end-column="41" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="30" column="14" selection-start-line="30" selection-start-column="14" selection-end-line="30" selection-end-column="14" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.232342">
+              <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -152,7 +229,6 @@
         <option value="$PROJECT_DIR$/admin/src/main/java/com/huotu/hotcms/admin/config/LocalRuntimeConfig.java" />
         <option value="$PROJECT_DIR$/service/src/main/resources/persistence.xml" />
         <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/service/src/main/java/com/huotu/hotcms/config/JpaConfig.java" />
         <option value="$PROJECT_DIR$/service/src/main/java/com/huotu/hotcms/config/ServiceConfig.java" />
         <option value="$PROJECT_DIR$/admin/pom.xml" />
         <option value="$PROJECT_DIR$/service/src/main/resources/spring.xml" />
@@ -161,6 +237,7 @@
         <option value="$PROJECT_DIR$/admin/src/main/java/com/huotu/hotcms/admin/controller/IndexController.java" />
         <option value="$PROJECT_DIR$/admin/src/main/web/index.html" />
         <option value="$PROJECT_DIR$/admin/src/main/java/com/huotu/hotcms/admin/config/MVCConfig.java" />
+        <option value="$PROJECT_DIR$/service/src/main/java/com/huotu/hotcms/config/JpaConfig.java" />
       </list>
     </option>
   </component>
@@ -269,6 +346,20 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="hotcms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hotcms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hotcms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="service" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -821,7 +912,7 @@
       <workItem from="1450161884212" duration="1078000" />
       <workItem from="1450163082115" duration="4052000" />
       <workItem from="1450230186673" duration="12005000" />
-      <workItem from="1450254345491" duration="1253000" />
+      <workItem from="1450254345491" duration="1633000" />
     </task>
     <task id="LOCAL-00001" summary="...">
       <created>1450254351839</created>
@@ -833,11 +924,11 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="18388000" />
+    <option name="totallyTimeSpent" value="18768000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="0" width="1924" height="1047" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -848,7 +939,7 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23423423" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16148068" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32995495" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32995495" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32995495" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20010729" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -1135,16 +1226,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/service/src/main/java/com/huotu/hotcms/config/JpaConfig.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/service/src/main/java/com/huotu/hotcms/entity/Site.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1188,11 +1269,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/admin/src/main/java/com/huotu/hotcms/admin/config/MVCConfig.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4858657">
-          <caret line="34" column="41" selection-start-line="34" selection-start-column="41" selection-end-line="34" selection-end-column="41" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="30" column="14" selection-start-line="30" selection-start-column="14" selection-end-line="30" selection-end-column="14" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/service/src/main/java/com/huotu/hotcms/config/JpaConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.232342">
+          <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>

@@ -13,4 +13,5 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories("com.huotu.hotcms.repository")
 @ImportResource({"classpath:spring.xml"})
 public class JpaConfig {
+
 }

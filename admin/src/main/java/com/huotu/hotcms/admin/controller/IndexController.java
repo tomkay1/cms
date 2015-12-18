@@ -29,13 +29,13 @@ public class IndexController {
     }
 
     @RequestMapping(value = "common.js", method = RequestMethod.GET)
-    public String common(Model model, HttpServletResponse response) {
+    public String common(Model model) {
         model.addAttribute("code", "Thymeleaf rules!".hashCode());
         return "common.js";
     }
 
     @RequestMapping(value = "main.css", method = RequestMethod.GET)
-    public String main(Model model, HttpServletResponse response) {
+    public String main(Model model) {
         model.addAttribute("backgroundColor", "lightblue");
         return "main.css";
     }

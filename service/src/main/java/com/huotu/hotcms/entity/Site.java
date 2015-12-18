@@ -6,6 +6,7 @@ import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 /**
  * Created by Administrator on 2015/12/16.
@@ -27,5 +28,6 @@ public class Site {
     private String copyright;// 版权信息
     private String customIndexView;// 自定义首页视图文件
     private String domain;
+    private LocalDateTime createTime;
 
 }

@@ -1,5 +1,7 @@
 package com.huotu.hotcms.admin.config;
 
+import com.huotu.hotcms.admin.dialect.HotDialect;
+import com.huotu.hotcms.admin.util.ArrayUtil;
 import com.huotu.hotcms.config.JpaConfig;
 import com.huotu.hotcms.config.ServiceConfig;
 import org.springframework.beans.BeansException;
@@ -14,7 +16,9 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
+import org.thymeleaf.ITemplateEngine;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
@@ -33,10 +37,13 @@ import java.util.List;
 @EnableTransactionManagement
 @ComponentScan({
         "com.huotu.hotcms.admin.serivce",
-        "com.huotu.hotcms.admin.controller"
+        "com.huotu.hotcms.admin.controller",
+        "com.huotu.hotcms.admin.interceptor"
 })
 @Import({JpaConfig.class, ServiceConfig.class})
 public class MVCConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware{
+
+    private static final String UTF8 = "UTF-8";
 
     private ApplicationContext applicationContext;
 
@@ -51,7 +58,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements ApplicationCon
     @Bean
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver resolver = new CommonsMultipartResolver();
-        resolver.setDefaultEncoding("UTF-8");
+        resolver.setDefaultEncoding(UTF8);
         return resolver;
     }
 
@@ -66,27 +73,66 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements ApplicationCon
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
         super.configureViewResolvers(registry);
-        registry.viewResolver(viewResolver());
+        registry.viewResolver(htmlViewResolver());
+        registry.viewResolver(javascriptViewResolver());
+        registry.viewResolver(cssViewResolver());
     }
 
-    public ThymeleafViewResolver viewResolver() {
+    public ThymeleafViewResolver htmlViewResolver() {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
-        resolver.setCharacterEncoding("UTF-8");
-        resolver.setTemplateEngine(templateEngine());
+        resolver.setTemplateEngine(templateEngine(htmlTemplateResolver()));
+        resolver.setContentType("text/html");
+        resolver.setCharacterEncoding(UTF8);
+        resolver.setViewNames(ArrayUtil.array("*.html"));
         return resolver;
     }
 
-    private TemplateEngine templateEngine() {
+    private ViewResolver javascriptViewResolver() {
+        ThymeleafViewResolver resolver = new ThymeleafViewResolver();
+        resolver.setTemplateEngine(templateEngine(javascriptTemplateResolver()));
+        resolver.setContentType("application/javascript");
+        resolver.setCharacterEncoding(UTF8);
+        resolver.setViewNames(ArrayUtil.array("*.js"));
+        return resolver;
+    }
+
+    private ViewResolver cssViewResolver() {
+        ThymeleafViewResolver resolver = new ThymeleafViewResolver();
+        resolver.setTemplateEngine(templateEngine(cssTemplateResolver()));
+        resolver.setContentType("text/css");
+        resolver.setCharacterEncoding(UTF8);
+        resolver.setViewNames(ArrayUtil.array("*.css"));
+        return resolver;
+    }
+
+    private TemplateEngine templateEngine(ITemplateResolver templateResolver) {
         SpringTemplateEngine engine = new SpringTemplateEngine();
-        engine.setTemplateResolver(templateResolver());
+        engine.setTemplateResolver(templateResolver);
+        engine.addDialect(new HotDialect());
         return engine;
     }
 
-    private ITemplateResolver templateResolver() {
+    private ITemplateResolver htmlTemplateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
         resolver.setCacheable(false);
         resolver.setApplicationContext(applicationContext);
         resolver.setTemplateMode(TemplateMode.HTML);
+        return resolver;
+    }
+
+    private ITemplateResolver javascriptTemplateResolver() {
+        SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
+        resolver.setApplicationContext(applicationContext);
+        resolver.setPrefix("/js/");
+        resolver.setTemplateMode(TemplateMode.JAVASCRIPT);
+        return resolver;
+    }
+
+    private ITemplateResolver cssTemplateResolver() {
+        SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
+        resolver.setApplicationContext(applicationContext);
+        resolver.setPrefix("/css/");
+        resolver.setTemplateMode(TemplateMode.CSS);
         return resolver;
     }
 }

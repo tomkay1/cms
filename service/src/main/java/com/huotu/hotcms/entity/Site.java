@@ -9,7 +9,8 @@ import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 /**
- * Created by Administrator on 2015/12/16.
+ * 站点
+ * Created by cwb on 2015/12/21.
  */
 @Entity
 @Table(name = "cms_site")
@@ -19,15 +20,17 @@ public class Site {
 
     @Id
     private Long siteId;
-    private String name;	// 站点名称
+    private Integer customerId;	// 商户ID
+    private String name;//站点名称
     private String title;	// 站点标题
-    private String logo;	// 站点logo
     private String description;// 描述，填写有助于搜索引擎优化
     private String keywords;// 关键字，填写有助于搜索引擎优化
-    private String theme;	// 主题
+    private String logoUri;	// 站点logo
     private String copyright;// 版权信息
-    private String customIndexView;// 自定义首页视图文件
-    private String domain;
-    private LocalDateTime createTime;
+    private boolean custom = false;//是否自定义视图
+    private String customViewUrl;//自定义视图根路径
+    private String hosts;//可以配置多域名，用逗号（","）隔开
+    private LocalDateTime createTime;//站点创建时间
+    private LocalDateTime updateTime;//站点更新时间
 
 }

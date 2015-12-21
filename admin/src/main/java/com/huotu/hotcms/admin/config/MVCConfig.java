@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
@@ -51,9 +52,26 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 
     private ApplicationContext applicationContext;
 
+    @Autowired
+    private SiteResolver siteResolver;
+
+    /**
+     * 允许访问静态资源
+     * @param configurer
+     */
+    @Override
+    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+        configurer.enable();
+    }
+
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        super.addInterceptors(registry);
     }
 
     /**
@@ -66,26 +84,17 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements ApplicationCon
         return resolver;
     }
 
+
     @Bean
     public SiteResolver siteResolver() {
         SiteResolver siteResolver = new SiteResolver();
         return siteResolver;
     }
-    @Autowired
-    private SiteResolver siteResolver;
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(siteResolver);
     }
-
-    /*@Bean
-    public ResourceBundleMessageSource messageSource() {
-        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setDefaultEncoding(UTF8);
-        messageSource.setBasename("messages");
-        return messageSource;
-    }*/
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
@@ -97,7 +106,6 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
-        super.configureViewResolvers(registry);
         registry.viewResolver(htmlViewResolver());
         registry.viewResolver(javascriptViewResolver());
         registry.viewResolver(cssViewResolver());
@@ -154,6 +162,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements ApplicationCon
     private ITemplateResolver htmlTemplateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
         resolver.setCacheable(false);
+        resolver.setCharacterEncoding(UTF8);
         resolver.setApplicationContext(applicationContext);
         resolver.setTemplateMode(TemplateMode.HTML);
         return resolver;
@@ -162,6 +171,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements ApplicationCon
     private ITemplateResolver javascriptTemplateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
         resolver.setApplicationContext(applicationContext);
+        resolver.setCharacterEncoding(UTF8);
         resolver.setPrefix("/assets/js/");
         resolver.setTemplateMode(TemplateMode.JAVASCRIPT);
         return resolver;
@@ -170,6 +180,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements ApplicationCon
     private ITemplateResolver cssTemplateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
         resolver.setApplicationContext(applicationContext);
+        resolver.setCharacterEncoding(UTF8);
         resolver.setPrefix("/assets/css/");
         resolver.setTemplateMode(TemplateMode.CSS);
         return resolver;

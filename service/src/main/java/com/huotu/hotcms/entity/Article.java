@@ -16,7 +16,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
- * Created by Administrator on 2015/12/21.
+ * Created by cwb on 2015/12/21.
  */
 @Entity
 @Table(name = "cms_article")

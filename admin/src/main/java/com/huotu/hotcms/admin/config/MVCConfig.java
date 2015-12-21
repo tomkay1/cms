@@ -1,26 +1,30 @@
 package com.huotu.hotcms.admin.config;
 
 import com.huotu.hotcms.admin.dialect.HotDialect;
+import com.huotu.hotcms.admin.interceptor.SiteResolver;
 import com.huotu.hotcms.admin.util.ArrayUtil;
 import com.huotu.hotcms.config.JpaConfig;
 import com.huotu.hotcms.config.ServiceConfig;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.MessageSource;
+import org.springframework.context.annotation.*;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.thymeleaf.ITemplateEngine;
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.messageresolver.IMessageResolver;
 import org.thymeleaf.spring4.SpringTemplateEngine;
+import org.thymeleaf.spring4.messageresolver.SpringMessageResolver;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -62,6 +66,26 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements ApplicationCon
         return resolver;
     }
 
+    @Bean
+    public SiteResolver siteResolver() {
+        SiteResolver siteResolver = new SiteResolver();
+        return siteResolver;
+    }
+    @Autowired
+    private SiteResolver siteResolver;
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+        argumentResolvers.add(siteResolver);
+    }
+
+    /*@Bean
+    public ResourceBundleMessageSource messageSource() {
+        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        messageSource.setDefaultEncoding(UTF8);
+        messageSource.setBasename("messages");
+        return messageSource;
+    }*/
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
@@ -69,6 +93,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements ApplicationCon
         converter.setSupportedMediaTypes(Arrays.asList(MediaType.APPLICATION_JSON));
         converters.add(converter);
     }
+
 
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
@@ -78,7 +103,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements ApplicationCon
         registry.viewResolver(cssViewResolver());
     }
 
-    public ThymeleafViewResolver htmlViewResolver() {
+    public ViewResolver htmlViewResolver() {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
         resolver.setTemplateEngine(templateEngine(htmlTemplateResolver()));
         resolver.setContentType("text/html");
@@ -105,11 +130,25 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements ApplicationCon
         return resolver;
     }
 
-    private TemplateEngine templateEngine(ITemplateResolver templateResolver) {
+    private ITemplateEngine templateEngine(ITemplateResolver templateResolver) {
         SpringTemplateEngine engine = new SpringTemplateEngine();
         engine.setTemplateResolver(templateResolver);
+        engine.addMessageResolver(messageResolver());
         engine.addDialect(new HotDialect());
         return engine;
+    }
+
+    /**
+     * 国际化
+     * @return
+     */
+    public IMessageResolver messageResolver() {
+        SpringMessageResolver springMessageResolver = new SpringMessageResolver();
+        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        messageSource.setBasename("messages");
+        messageSource.setDefaultEncoding(UTF8);
+        springMessageResolver.setMessageSource(messageSource);
+        return springMessageResolver;
     }
 
     private ITemplateResolver htmlTemplateResolver() {
@@ -123,7 +162,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements ApplicationCon
     private ITemplateResolver javascriptTemplateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
         resolver.setApplicationContext(applicationContext);
-        resolver.setPrefix("/js/");
+        resolver.setPrefix("/assets/js/");
         resolver.setTemplateMode(TemplateMode.JAVASCRIPT);
         return resolver;
     }
@@ -131,7 +170,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements ApplicationCon
     private ITemplateResolver cssTemplateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
         resolver.setApplicationContext(applicationContext);
-        resolver.setPrefix("/css/");
+        resolver.setPrefix("/assets/css/");
         resolver.setTemplateMode(TemplateMode.CSS);
         return resolver;
     }

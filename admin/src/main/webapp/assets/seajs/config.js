@@ -4,6 +4,8 @@ seajs.config({
 		"bootstrap": "js/bootstrap.min.js",
 		"validate": "libs/validate/jquery.validate.min.js",
 		"message": "libs/validate/jquery.validate.addMethod.js",
-	},	
+		"common":"js/page/common.js",
+		"main":"js/page/main.js"
+	},
 	preload: ['jquery']
 });

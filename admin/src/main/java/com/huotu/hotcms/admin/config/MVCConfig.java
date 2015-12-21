@@ -100,7 +100,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements ApplicationCon
         super.configureViewResolvers(registry);
         registry.viewResolver(htmlViewResolver());
         registry.viewResolver(javascriptViewResolver());
-        registry.viewResolver(cssViewResolver());
+//        registry.viewResolver(cssViewResolver());
     }
 
     public ViewResolver htmlViewResolver() {
@@ -121,14 +121,14 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements ApplicationCon
         return resolver;
     }
 
-    private ViewResolver cssViewResolver() {
-        ThymeleafViewResolver resolver = new ThymeleafViewResolver();
-        resolver.setTemplateEngine(templateEngine(cssTemplateResolver()));
-        resolver.setContentType("text/css");
-        resolver.setCharacterEncoding(UTF8);
-        resolver.setViewNames(ArrayUtil.array("*.css"));
-        return resolver;
-    }
+//    private ViewResolver cssViewResolver() {
+//        ThymeleafViewResolver resolver = new ThymeleafViewResolver();
+//        resolver.setTemplateEngine(templateEngine(cssTemplateResolver()));
+//        resolver.setContentType("text/css");
+//        resolver.setCharacterEncoding(UTF8);
+//        resolver.setViewNames(ArrayUtil.array("*.css"));
+//        return resolver;
+//    }
 
     private ITemplateEngine templateEngine(ITemplateResolver templateResolver) {
         SpringTemplateEngine engine = new SpringTemplateEngine();
@@ -154,24 +154,38 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements ApplicationCon
     private ITemplateResolver htmlTemplateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
         resolver.setCacheable(false);
+        resolver.setCharacterEncoding(UTF8);
         resolver.setApplicationContext(applicationContext);
         resolver.setTemplateMode(TemplateMode.HTML);
         return resolver;
     }
 
+
+
+
+    @Override
+    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+        configurer.enable();
+    }
+
     private ITemplateResolver javascriptTemplateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
+        resolver.setCharacterEncoding(UTF8);
         resolver.setApplicationContext(applicationContext);
         resolver.setPrefix("/assets/js/");
         resolver.setTemplateMode(TemplateMode.JAVASCRIPT);
         return resolver;
     }
 
-    private ITemplateResolver cssTemplateResolver() {
-        SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
-        resolver.setApplicationContext(applicationContext);
-        resolver.setPrefix("/assets/css/");
-        resolver.setTemplateMode(TemplateMode.CSS);
-        return resolver;
-    }
+//    private ITemplateResolver cssTemplateResolver() {
+//        SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
+//        resolver.setCharacterEncoding(UTF8);
+//        resolver.setApplicationContext(applicationContext);
+//        resolver.setPrefix("/assets/css/");
+//        resolver.setTemplateMode(TemplateMode.CSS);
+//        return resolver;
+//    }
+
+
+
 }

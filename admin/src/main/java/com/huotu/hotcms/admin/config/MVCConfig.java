@@ -105,8 +105,6 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(LoginInterceptor);
-//        LoginInterceptor logininterceptor=new LoginInterceptor();
         Integer objectHashCode=loginInterceptor.hashCode();
         System.out.print(objectHashCode);
         registry.addInterceptor(loginInterceptor);

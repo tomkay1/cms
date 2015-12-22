@@ -1,21 +1,15 @@
 package com.huotu.hotcms.admin.controller;
 
-import com.huotu.hotcms.common.ArticleSource;
-import com.huotu.hotcms.common.ModelType;
 import com.huotu.hotcms.entity.Article;
 import com.huotu.hotcms.entity.Site;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.time.LocalDateTime;
 import java.util.Locale;
 
 /**
@@ -28,29 +22,8 @@ public class IndexController {
     public ModelAndView index(HttpServletRequest request) throws Exception{
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/View/main.html");
-//        String contextPath = request.getContextPath();
-//        String serveletPath = request.getServletPath();
-//        Site site = new Site();
-//        site.setTitle("测试title");
-//        site.setCreateTime(LocalDateTime.now());
-//        modelAndView.addObject("site",site);
-//        File file = new File(".");
-//        String path = file.getAbsolutePath();
         return modelAndView;
     }
-
-
-
-//    @RequestMapping
-//    public ModelAndView index() throws Exception{
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("..html");
-////        Site site = new Site();
-////        site.setTitle("测试title");
-////        site.setCreateTime(LocalDateTime.now());
-////        modelAndView.addObject("site",site);
-//        return modelAndView;
-//    }
 
 
 
@@ -74,11 +47,6 @@ public class IndexController {
         return "common.js";
     }
 
-//    @RequestMapping("{cssPath}")
-//    public String main(@PathVariable String cssPath, Model model) {
-//        model.addAttribute("backgroundColor", "lightblue");
-//        return cssPath;
-//    }
 
     @RequestMapping("confirm.js")
     public ModelAndView js() {

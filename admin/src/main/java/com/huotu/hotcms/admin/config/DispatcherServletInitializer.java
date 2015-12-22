@@ -1,11 +1,7 @@
 package com.huotu.hotcms.admin.config;
 
-import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterRegistration;
-import javax.servlet.ServletContext;
 
 /**
  * Created by Administrator on 2015/12/16.

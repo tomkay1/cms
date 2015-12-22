@@ -8,7 +8,6 @@
 
 package com.huotu.hotcms.entity;
 
-import com.huotu.hotcms.common.ModelType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,7 +27,4 @@ public class Notice extends DataEntity {
     private String title;//公告标题
     private String content;//公告内容
 
-    public Notice() {
-        this.modelType = ModelType.NOTICE;
-    }
 }

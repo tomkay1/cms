@@ -8,7 +8,6 @@
 
 package com.huotu.hotcms.entity;
 
-import com.huotu.hotcms.common.ModelType;
 import javax.persistence.*;
 
 /**

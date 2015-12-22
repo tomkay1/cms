@@ -12,24 +12,23 @@ import com.huotu.hotcms.common.ModelType;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
+ * 公告模型
  * Created by cwb on 2015/12/22.
  */
 @Entity
-@Table(name = "cms_dataModel")
-@Getter
+@Table(name = "cms_notice")
 @Setter
-public class DataModel {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;//主键
-    private String name;
-    private String description;
-    private int orderWeight;//排序权重
-    private ModelType type;
-    private LocalDateTime createTime;//创建时间
-    private LocalDateTime updateTime;//更新时间
+@Getter
+public class Notice extends DataEntity {
+
+    private String title;//公告标题
+    private String content;//公告内容
+
+    public Notice() {
+        this.modelType = ModelType.NOTICE;
+    }
 }

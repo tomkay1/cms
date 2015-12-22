@@ -13,5 +13,5 @@ package com.huotu.hotcms.common;
  */
 public interface CommonEnum {
     int getCode();
-    String getValue();
+    Object getValue();
 }

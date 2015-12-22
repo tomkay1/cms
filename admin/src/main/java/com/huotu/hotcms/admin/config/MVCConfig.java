@@ -85,6 +85,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements ApplicationCon
         return siteResolver;
     }
 
+
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(siteResolver);

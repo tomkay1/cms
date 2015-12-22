@@ -8,16 +8,15 @@
 
 package com.huotu.hotcms.entity;
 
+import com.huotu.hotcms.common.ModelType;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
- * 栏目
+ * 栏目节点
  * Created by cwb on 2015/12/21.
  */
 @Entity
@@ -27,15 +26,16 @@ import java.time.LocalDateTime;
 public class Category {
 
     @Id
-    private Long categoryId;
-    private Integer customerId;
+    private Long categoryId;//主键
+    private Integer customerId;//商户编号
     private String name;//栏目名称
+    @ManyToOne
     private Category parent;//父级栏目
     private String parentIds; // 所有父级编号，用逗号分隔
     private int orderWeight;//排序权重
     private boolean deleted = false;//是否已删除
-    private DataModel dataModel;//数据类型
-    private LocalDateTime createTime;
-    private LocalDateTime updateTime;
+    private ModelType modelType;//数据类型
+    private LocalDateTime createTime;//创建时间
+    private LocalDateTime updateTime;//更新时间
 
 }

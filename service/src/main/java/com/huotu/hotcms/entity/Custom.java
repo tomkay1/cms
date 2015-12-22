@@ -12,24 +12,26 @@ import com.huotu.hotcms.common.ModelType;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import java.util.List;
 
 /**
+ * 自定义模型
  * Created by cwb on 2015/12/22.
  */
 @Entity
-@Table(name = "cms_dataModel")
+@Table(name = "cms_custom")
 @Getter
 @Setter
-public class DataModel {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;//主键
-    private String name;
-    private String description;
-    private int orderWeight;//排序权重
-    private ModelType type;
-    private LocalDateTime createTime;//创建时间
-    private LocalDateTime updateTime;//更新时间
+public class Custom extends BaseModel {
+
+    private String name;//自定义模型名称
+    private String description;//描述信息
+
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "custom")
+    private List<CustomParam> params;
+
 }

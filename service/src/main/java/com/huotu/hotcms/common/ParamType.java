@@ -9,19 +9,20 @@
 package com.huotu.hotcms.common;
 
 /**
- * Created by Administrator on 2015/12/21.
+ * Created by cwb on 2015/12/22.
  */
-public enum ArticleSource implements CommonEnum {
-    REPRINT(0,"转载"),
-    ORIGINAL(1,"原创");
+public enum ParamType implements CommonEnum {
+    TEXT(0,"选择框"),
+    TIME(1, "时间"),
+    PICTURE(2, "图片"),
+    BLOB(3, "富文本");
+    private int code;
+    private String value;
 
-    ArticleSource(int code, String value) {
+    ParamType(int code, String value) {
         this.code = code;
         this.value = value;
     }
-
-    private int code;
-    private String value;
 
     @Override
     public int getCode() {

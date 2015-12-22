@@ -8,28 +8,27 @@
 
 package com.huotu.hotcms.entity;
 
-import com.huotu.hotcms.common.ModelType;
+import com.huotu.hotcms.common.ParamType;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 /**
+ * 模型参数
  * Created by cwb on 2015/12/22.
  */
 @Entity
-@Table(name = "cms_dataModel")
+@Table(name = "cms_customParam")
 @Getter
 @Setter
-public class DataModel {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;//主键
-    private String name;
-    private String description;
-    private int orderWeight;//排序权重
-    private ModelType type;
-    private LocalDateTime createTime;//创建时间
-    private LocalDateTime updateTime;//更新时间
+public class CustomParam extends BaseModel {
+
+    @ManyToOne
+    @JoinColumn(name = "customId")
+    private Custom custom;
+    private String name;//参数名称
+    private ParamType type;//参数类型
+    @OneToOne
+    private CustomValue customValue;
 }

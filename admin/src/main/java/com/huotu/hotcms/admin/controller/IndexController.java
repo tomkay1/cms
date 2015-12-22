@@ -1,5 +1,8 @@
 package com.huotu.hotcms.admin.controller;
 
+import com.huotu.hotcms.common.ArticleSource;
+import com.huotu.hotcms.common.ModelType;
+import com.huotu.hotcms.entity.Article;
 import com.huotu.hotcms.entity.Site;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
@@ -54,7 +57,7 @@ public class IndexController {
     @RequestMapping("test")
     public String testIndex(Site site,Locale locale){
         // 业务层代码 无需关心当前站点以及当前语言的获取！
-
+        Article article = new Article();
         return "";
     }
 

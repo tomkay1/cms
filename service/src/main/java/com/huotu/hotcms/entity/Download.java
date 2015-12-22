@@ -12,24 +12,22 @@ import com.huotu.hotcms.common.ModelType;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
+ * 下载模型
  * Created by cwb on 2015/12/22.
  */
 @Entity
-@Table(name = "cms_dataModel")
+@Table(name = "cms_download")
 @Getter
 @Setter
-public class DataModel {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;//主键
-    private String name;
-    private String description;
-    private int orderWeight;//排序权重
-    private ModelType type;
-    private LocalDateTime createTime;//创建时间
-    private LocalDateTime updateTime;//更新时间
+public class Download extends DataEntity {
+
+    private String fileName;//文件名称
+    private String description;//描述信息
+    private String downloadUrl;//下载地址
+    private int downloads;//下载次数
+
 }

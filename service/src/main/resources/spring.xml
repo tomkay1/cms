@@ -19,6 +19,7 @@
             <array>
                 <value>com.huotu.hotcms.entity</value>
                 <value>com.huotu.hotcms.config</value>
+                <value>org.springframework.data.jpa.convert.threeten</value>
             </array>
         </property>
         <property name="persistenceProvider">

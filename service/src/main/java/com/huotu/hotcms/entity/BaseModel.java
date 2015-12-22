@@ -16,20 +16,21 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
+ *
  * Created by cwb on 2015/12/22.
  */
 @Entity
-@Table(name = "cms_dataModel")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Getter
 @Setter
-public class DataModel {
+public abstract class BaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;//主键
-    private String name;
-    private String description;
+    private Integer customerId;//商户ID
     private int orderWeight;//排序权重
-    private ModelType type;
+    private boolean deleted;//是否已删除
     private LocalDateTime createTime;//创建时间
     private LocalDateTime updateTime;//更新时间
+
 }

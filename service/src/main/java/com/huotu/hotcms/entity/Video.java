@@ -12,24 +12,24 @@ import com.huotu.hotcms.common.ModelType;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
+ * 视频模型
  * Created by cwb on 2015/12/22.
  */
 @Entity
-@Table(name = "cms_dataModel")
+@Table(name = "cms_video")
 @Getter
 @Setter
-public class DataModel {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;//主键
-    private String name;
-    private String description;
-    private int orderWeight;//排序权重
-    private ModelType type;
-    private LocalDateTime createTime;//创建时间
-    private LocalDateTime updateTime;//更新时间
+public class Video extends DataEntity {
+
+    private String name;//视频名称
+    private String thumbUri;//缩略图uri
+    private String description;//描述信息
+    private String videoUrl;//内部储存地址
+    private String outLinkUrl;//外部链接地址
+    private int palyTimes;//播放次数
+
 }

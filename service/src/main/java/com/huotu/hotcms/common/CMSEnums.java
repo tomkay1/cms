@@ -1,4 +1,4 @@
-package com.huotu.hotcms.entity;
+package com.huotu.hotcms.common;
 
 /**
  * Created by Administrator on 2015/12/21.

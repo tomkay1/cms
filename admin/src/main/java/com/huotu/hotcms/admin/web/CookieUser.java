@@ -8,7 +8,7 @@
  */
 
 package com.huotu.hotcms.admin.web;
-import com.huotu.hotcms.entity.CMSEnums;
+import com.huotu.hotcms.common.CMSEnums;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

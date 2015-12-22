@@ -1,6 +1,7 @@
 package com.huotu.hotcms.admin.config;
 
 import com.huotu.hotcms.admin.dialect.HotDialect;
+import com.huotu.hotcms.admin.interceptor.LoginInterceptor;
 import com.huotu.hotcms.admin.interceptor.SiteResolver;
 import com.huotu.hotcms.admin.util.ArrayUtil;
 import com.huotu.hotcms.config.JpaConfig;
@@ -42,7 +43,8 @@ import java.util.List;
 @ComponentScan({
         "com.huotu.hotcms.admin.serivce",
         "com.huotu.hotcms.admin.controller",
-        "com.huotu.hotcms.admin.interceptor"
+        "com.huotu.hotcms.admin.interceptor",
+        "com.huotu.hotcms.admin.web"
 })
 @Import({JpaConfig.class, ServiceConfig.class})
 public class MVCConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware{
@@ -53,6 +55,9 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 
     @Autowired
     private SiteResolver siteResolver;
+
+    @Autowired
+    private  LoginInterceptor loginInterceptor;
 
     /**
      * 允许访问静态资源
@@ -98,6 +103,15 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements ApplicationCon
         converters.add(converter);
     }
 
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+//        registry.addInterceptor(LoginInterceptor);
+//        LoginInterceptor logininterceptor=new LoginInterceptor();
+        Integer objectHashCode=loginInterceptor.hashCode();
+        System.out.print(objectHashCode);
+        registry.addInterceptor(loginInterceptor);
+        super.addInterceptors(registry);
+    }
 
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {

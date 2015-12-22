@@ -24,10 +24,10 @@ import java.util.Locale;
 @Controller
 public class IndexController {
 
-    @RequestMapping("/index")
+    @RequestMapping({"/index","/"})
     public ModelAndView index(HttpServletRequest request) throws Exception{
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("main.html");
+        modelAndView.setViewName("/View/main.html");
 //        String contextPath = request.getContextPath();
 //        String serveletPath = request.getServletPath();
 //        Site site = new Site();

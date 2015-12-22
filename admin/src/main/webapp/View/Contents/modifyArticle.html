@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link  href="/assets/css/main.css"  type="text/css" rel="stylesheet"/>
+    <script src="/assets/seajs/sea.js"></script>
+    <script src="/assets/seajs/config.js"></script>
+    <title>修改文章</title>
+</head>
+<body>
+<div id="tab0" style="padding: 0px;" class="om-panel-body om-widget-content om-panel-noheader om-state-nobd">
+    <div class="division">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+            <tbody>
+            <!--<tr>-->
+                <!--<th>所属分类：</th>-->
+                <!--<td>-->
+                    <!--<select name="ddlCateId" id="ddlCateId">-->
+                        <!--<option value="0">请选择</option>-->
+                        <!--<option value="596">&nbsp;&nbsp;└ 文章</option>-->
+                        <!--<option value="982">&nbsp;&nbsp;&nbsp;&nbsp;└ 新闻</option>-->
+                        <!--<option value="1834">&nbsp;&nbsp;&nbsp;&nbsp;└ 新测试1</option>-->
+                        <!--<option value="598">&nbsp;&nbsp;└ 快报</option>-->
+                        <!--<option value="1835">&nbsp;&nbsp;&nbsp;&nbsp;└ 测试1</option>-->
+                    <!--</select>-->
+                <!--</td>-->
+            <!--</tr>-->
+            <tr>
+                <th>所属节点：</th>
+                <td>
+                    <select name="ddlCateId" id="ddlCateId">
+                        <option value="0">请选择</option>
+                        </select>
+                </td>
+            </tr>
+            <tr>
+                <th>文章标题：</th>
+                <td>
+                    <input name="At_title" type="text" id="At_title" class="input-normal" placeholder="">
+                </td>
+            </tr>
+            <tr>
+                <th>文章缩略图：</th>
+                <td class="txt40 c">
+                    <img src="#" width="80" height="80" id="At_thumb" name="At_thumb">
+                </td>
+            </tr>
+            <tr>
+                <th>文章描述简介：</th>
+                <td>
+                    <input name="At_description" type="text" id="At_description" class="input-normal" placeholder="" style="width:350px;">
+                </td>
+            </tr>
+            <tr>
+                <th>文章作者：</th>
+                <td>
+                    <input name="At_author" type="text" id="At_author" class="input-normal" placeholder="">
+                </td>
+            </tr>
+            <tr>
+                <th>文章来源：</th>
+                <td>
+                    <input name="At_source" type="text" id="At_source" class="input-normal" placeholder="">
+                </td>
+            </tr>
+            <tr>
+                <th>排序权重：</th>
+                <td><input name="At_orderWeight" type="text" id="At_orderWeight" class="input-normal" placeholder=""></td>
+            </tr>
+            <tr>
+                <th>是否做删除：</th>
+                        <td><input id="At_deleted" type="radio" name="At_deleted" value="1" checked="checked">是
+                            <input id="At_deleted_no" type="radio" name="At_deleted" value="0">否</td>
+            </tr>
+
+            <tr>
+                <th>文章内容：</th>
+                <td><textarea maxlength="255" title="" name="At_content" class="common-textarea" id="At_content" style="width:44%;height: 100px;"></textarea></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

@@ -46,7 +46,8 @@ import java.util.List;
         "com.huotu.hotcms.admin.serivce",
         "com.huotu.hotcms.admin.controller",
         "com.huotu.hotcms.admin.interceptor",
-        "com.huotu.hotcms.admin.web"
+        "com.huotu.hotcms.admin.web",
+        "com.huotu.hotcms.common"
 })
 @Import({JpaConfig.class, ServiceConfig.class})
 public class MVCConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware{
@@ -112,11 +113,12 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        Integer objectHashCode=loginInterceptor.hashCode();
-        System.out.print(objectHashCode);
+//        Integer objectHashCode=loginInterceptor.hashCode();
+//        System.out.print(objectHashCode);
         registry.addInterceptor(loginInterceptor);
         super.addInterceptors(registry);
     }
+
 
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {

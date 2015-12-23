@@ -22,11 +22,11 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Component
 public class CookieUser {
-    @Autowired
-    private HttpServletRequest request;
-
-    @Autowired
-    private HttpServletResponse response;
+//    @Autowired
+//    private HttpServletRequest request;
+//
+//    @Autowired
+//    private HttpServletResponse response;
 
     public CookieUser(){
 

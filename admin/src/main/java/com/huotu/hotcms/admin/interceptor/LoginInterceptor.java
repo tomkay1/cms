@@ -28,7 +28,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Integer customerId= QueryHelper.getQueryValInteger(request,"customerid");
-        if(!cookieUser.checkLogin(request,customerId))
+        if(!cookieUser.checkLogin(request,customerId))//判断用户登录授权
         {
             String loginUrl=configInfo.getOutLoginUrl();
             response.sendRedirect(loginUrl);

@@ -18,10 +18,6 @@ import java.util.Locale;
 @Controller
 public class IndexController {
 
-
-
-
-
     @RequestMapping("test")
     public String testIndex(Site site,Locale locale,HttpServletRequest request){
         // 业务层代码 无需关心当前站点以及当前语言的获取！

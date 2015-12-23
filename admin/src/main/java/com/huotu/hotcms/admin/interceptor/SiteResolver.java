@@ -2,6 +2,7 @@ package com.huotu.hotcms.admin.interceptor;
 
 import com.huotu.hotcms.entity.Site;
 import org.springframework.core.MethodParameter;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Created by Administrator on 2015/12/21.
  */
+@Component
 public class SiteResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter parameter) {

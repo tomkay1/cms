@@ -8,11 +8,13 @@ import com.huotu.hotcms.config.JpaConfig;
 import com.huotu.hotcms.config.ServiceConfig;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -83,13 +85,18 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements ApplicationCon
         return resolver;
     }
 
-
+    /**
+     *  读取properties文件
+     * @return
+     */
     @Bean
-    public SiteResolver siteResolver() {
-        SiteResolver siteResolver = new SiteResolver();
-        return siteResolver;
+    public PropertyPlaceholderConfigurer propertiesResolver() {
+        PropertyPlaceholderConfigurer configurer = new PropertyPlaceholderConfigurer();
+        configurer.setFileEncoding(UTF8);
+        ClassPathResource classPathResource = new ClassPathResource("config.properties");
+        configurer.setLocations(classPathResource);
+        return configurer;
     }
-
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {

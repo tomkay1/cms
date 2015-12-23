@@ -27,7 +27,12 @@ public class IndexController {
         return modelAndView;
     }
 
-
+    @RequestMapping({"/main"})
+    public  ModelAndView home(HttpServletRequest request) throws Exception{
+        ModelAndView modelAndView=new ModelAndView();
+        modelAndView.setViewName("/View/home.html");
+        return  modelAndView;
+    }
 
     @RequestMapping("test")
     public String testIndex(Site site,Locale locale,HttpServletRequest request){

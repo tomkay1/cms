@@ -1,10 +1,12 @@
 package com.huotu.hotcms.entity;
 
+import com.huotu.hotcms.common.Language;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Locale;
 
 /**
  * 站点
@@ -31,5 +33,6 @@ public class Site {
     private String hosts;//可以配置多域名，用逗号（","）隔开
     private LocalDateTime createTime;//站点创建时间
     private LocalDateTime updateTime;//站点更新时间
+    private Language language;//语言版本
 
 }

@@ -13,13 +13,13 @@ package com.huotu.hotcms.common;
  * Created by cwb on 2015/12/23.
  */
 public enum Language implements CommonEnum {
-    CHINESE("cn","zh-CN"),
-    ENGLISH("en","en");
+    SIMPLIFIED_CHINESE(0,"zh-CN"),
+    ENGLISH(1,"en");
 
-    private String code;
+    private int code;
     private String value;
 
-    Language(String code, String value) {
+    Language(int code, String value) {
         this.code = code;
         this.value = value;
     }

@@ -31,5 +31,7 @@ public class Category extends BaseEntity {
     private String parentIds; // 所有父级编号，用逗号分隔
     private boolean custom;//是否自定义模型
     private ModelType modelType;//数据类型
+    @ManyToOne
+    private Site site;//所属站点
 
 }

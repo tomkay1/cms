@@ -9,13 +9,11 @@
 package com.huotu.hotcms.entity;
 
 import com.huotu.hotcms.common.ArticleSource;
-import com.huotu.hotcms.common.ModelType;
+import com.huotu.hotcms.common.Language;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Lob;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * 文章模型
@@ -25,17 +23,21 @@ import javax.persistence.Table;
 @Table(name = "cms_article")
 @Getter
 @Setter
-public class Article extends DataEntity {
+public class Article extends BaseEntity {
 
     private String title;//标题
     private String thumbUri;//缩略图
     private String description;//描述
     private String author;//作者
+    @Enumerated(EnumType.STRING)
     private ArticleSource articleSource;//文章来源
     @Lob
     private String content;//文章内容（富文本）
     private int scans;//浏览量
     private int lauds;//点赞数量
     private int unlauds;//被踩数量
+    private Language language;
+    @ManyToOne
+    private Category category;//所属栏目
 
 }

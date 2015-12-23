@@ -22,13 +22,13 @@ import javax.persistence.*;
 @Table(name = "cms_customParam")
 @Getter
 @Setter
-public class CustomParam extends BaseModel {
+public class CustomParam extends BaseEntity {
 
     @ManyToOne
-    @JoinColumn(name = "customId")
-    private Custom custom;
+    @JoinColumn(name = "customModelId")
+    private CustomModel customModel;
     private String name;//参数名称
     private ParamType type;//参数类型
     @OneToOne
-    private CustomValue customValue;
+    private Custom custom;
 }

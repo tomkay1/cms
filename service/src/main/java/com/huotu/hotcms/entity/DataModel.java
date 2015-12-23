@@ -16,6 +16,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
+ * 数据模型
  * Created by cwb on 2015/12/22.
  */
 @Entity
@@ -26,10 +27,10 @@ public class DataModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;//主键
-    private String name;
-    private String description;
+    private String name;//名称
+    private String description;//描述
     private int orderWeight;//排序权重
-    private ModelType type;
+    private ModelType type;//数据模型类型
     private LocalDateTime createTime;//创建时间
     private LocalDateTime updateTime;//更新时间
 }

@@ -24,7 +24,7 @@ public enum ArticleSource implements CommonEnum {
     private String value;
 
     @Override
-    public int getCode() {
+    public Object getCode() {
         return code;
     }
 

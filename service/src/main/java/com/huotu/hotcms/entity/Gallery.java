@@ -8,12 +8,12 @@
 
 package com.huotu.hotcms.entity;
 
-import com.huotu.hotcms.common.ModelType;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -24,12 +24,14 @@ import javax.persistence.Table;
 @Table(name = "cms_gallery")
 @Getter
 @Setter
-public class Gallery extends DataEntity {
+public class Gallery extends BaseEntity {
 
-    private String title;
-    private String description;
+    private String title;//标题
+    private String description;//描述
     @Lob
-    private String content;
+    private String content;//内容
     private String thumbUri;//缩略图Uri
     private String linkUrl;//链接地址
+    @ManyToOne
+    private Category category;//所属栏目
 }

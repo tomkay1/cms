@@ -8,11 +8,11 @@
 
 package com.huotu.hotcms.entity;
 
-import com.huotu.hotcms.common.ModelType;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -23,13 +23,15 @@ import javax.persistence.Table;
 @Table(name = "cms_video")
 @Getter
 @Setter
-public class Video extends DataEntity {
+public class Video extends BaseEntity {
 
-    private String name;//视频名称
+    private String title;//视频名称
     private String thumbUri;//缩略图uri
     private String description;//描述信息
     private String videoUrl;//内部储存地址
     private String outLinkUrl;//外部链接地址
     private int palyTimes;//播放次数
+    @ManyToOne
+    private Category category;//所属栏目
 
 }

@@ -12,6 +12,6 @@ package com.huotu.hotcms.common;
  * Created by cwb on 2015/12/21.
  */
 public interface CommonEnum {
-    int getCode();
+    Object getCode();
     Object getValue();
 }

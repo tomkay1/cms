@@ -17,8 +17,7 @@ public enum ModelType implements CommonEnum {
     VIDEO(2,"视频"),
     GALLERY(3,"图库"),
     DOWNLOAD(4,"下载"),
-    LINK(5,"链接"),
-    CUSTOM(6,"自定义");
+    LINK(5,"链接");
 
     ModelType(int code, String value) {
         this.code = code;
@@ -30,7 +29,7 @@ public enum ModelType implements CommonEnum {
 
 
     @Override
-    public int getCode() {
+    public Object getCode() {
         return code;
     }
 

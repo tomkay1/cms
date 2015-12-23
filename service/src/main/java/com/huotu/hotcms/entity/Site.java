@@ -3,9 +3,7 @@ package com.huotu.hotcms.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
@@ -19,7 +17,8 @@ import java.time.LocalDateTime;
 public class Site {
 
     @Id
-    private Long siteId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long siteId;//主键
     private Integer customerId;	// 商户ID
     private String name;//站点名称
     private String title;	// 站点标题

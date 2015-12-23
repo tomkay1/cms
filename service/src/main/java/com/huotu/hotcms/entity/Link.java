@@ -8,26 +8,28 @@
 
 package com.huotu.hotcms.entity;
 
-import com.huotu.hotcms.common.ModelType;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
- * 下载模型
+ * 链接模型
  * Created by cwb on 2015/12/22.
  */
 @Entity
 @Table(name = "cms_link")
 @Getter
 @Setter
-public class Link extends DataEntity {
+public class Link extends BaseEntity {
 
-    private String title;
-    private String description;
+    private String title;//标题
+    private String description;//描述
     private String thumbUri;//缩略图uri
     private String linkUrl;//链接地址
+    @ManyToOne
+    private Category category;//所属栏目
 
 }

@@ -8,27 +8,29 @@
 
 package com.huotu.hotcms.entity;
 
-import com.huotu.hotcms.common.ModelType;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
 
 /**
- * 自定义模型参数值
+ * 自定义模型
  * Created by cwb on 2015/12/22.
  */
 @Entity
-@Table(name = "cms_customValue")
+@Table(name = "cms_customModel")
 @Getter
 @Setter
-public class CustomValue extends DataEntity {
+public class CustomModel extends BaseEntity {
 
-    private String value;//参数值
+    private String name;//自定义模型名称
+    private String description;//描述信息
 
-    @OneToOne
-    private CustomParam customParam;
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "custom")
+    private List<CustomParam> params;
 
 }

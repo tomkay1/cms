@@ -13,7 +13,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 /**
  * 栏目节点
@@ -23,19 +22,14 @@ import java.time.LocalDateTime;
 @Table(name = "cms_category")
 @Setter
 @Getter
-public class Category {
+public class Category extends BaseEntity {
 
-    @Id
-    private Long categoryId;//主键
-    private Integer customerId;//商户编号
+
     private String name;//栏目名称
     @ManyToOne
     private Category parent;//父级栏目
     private String parentIds; // 所有父级编号，用逗号分隔
-    private int orderWeight;//排序权重
-    private boolean deleted = false;//是否已删除
+    private boolean custom;//是否自定义模型
     private ModelType modelType;//数据类型
-    private LocalDateTime createTime;//创建时间
-    private LocalDateTime updateTime;//更新时间
 
 }

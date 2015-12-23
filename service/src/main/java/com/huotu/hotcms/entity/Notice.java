@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -22,9 +23,11 @@ import javax.persistence.Table;
 @Table(name = "cms_notice")
 @Setter
 @Getter
-public class Notice extends DataEntity {
+public class Notice extends BaseEntity {
 
     private String title;//公告标题
     private String content;//公告内容
+    @ManyToOne
+    private Category category;//所属栏目
 
 }

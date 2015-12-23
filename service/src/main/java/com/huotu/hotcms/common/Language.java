@@ -9,17 +9,17 @@
 package com.huotu.hotcms.common;
 
 /**
- * Created by cwb on 2015/12/22.
+ * 语言
+ * Created by cwb on 2015/12/23.
  */
-public enum ParamType implements CommonEnum {
-    TEXT(0,"选择框"),
-    TIME(1, "时间"),
-    PICTURE(2, "图片"),
-    BLOB(3, "富文本");
-    private int code;
+public enum Language implements CommonEnum {
+    CHINESE("cn","zh-CN"),
+    ENGLISH("en","en");
+
+    private String code;
     private String value;
 
-    ParamType(int code, String value) {
+    Language(String code, String value) {
         this.code = code;
         this.value = value;
     }

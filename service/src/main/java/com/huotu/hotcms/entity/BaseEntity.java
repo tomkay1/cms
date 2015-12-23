@@ -8,7 +8,6 @@
 
 package com.huotu.hotcms.entity;
 
-import com.huotu.hotcms.common.ModelType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,13 +22,13 @@ import java.time.LocalDateTime;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Getter
 @Setter
-public abstract class BaseModel {
+public abstract class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;//主键
     private Integer customerId;//商户ID
     private int orderWeight;//排序权重
-    private boolean deleted;//是否已删除
+    private boolean deleted = false;//是否已删除
     private LocalDateTime createTime;//创建时间
     private LocalDateTime updateTime;//更新时间
 

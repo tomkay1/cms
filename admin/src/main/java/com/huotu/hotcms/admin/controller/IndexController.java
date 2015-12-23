@@ -5,11 +5,13 @@ import com.huotu.hotcms.entity.Site;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.Locale;
 
 /**
@@ -28,8 +30,9 @@ public class IndexController {
 
 
     @RequestMapping("test")
-    public String testIndex(Site site,Locale locale){
+    public String testIndex(Site site,Locale locale,HttpServletRequest request){
         // 业务层代码 无需关心当前站点以及当前语言的获取！
+        Locale locale1 = request.getLocale();
         Article article = new Article();
         return "";
     }

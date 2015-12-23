@@ -4,11 +4,14 @@
 define(function (require, exports, module) {
     var commonUtil = require("common");
     commonUtil.calcuHeight("mainpanel");
+    commonUtil.calcuHeightToTop("con_right",74);
+    commonUtil.calcuWidth("content",$(".leftpanel").width());
+    commonUtil.calcuWidth("con_right",$(".leftpanel").width());
 
     //TODO:左边栏目效果
     var menusObj=$(".js-cms-menus");
     $.each(menusObj,function(item,dom){
-        $(dom).click(function(){
+        $(dom).find(".aparent").click(function(){
             if($(dom).find("ul").hasClass('hidden'))
             {
                 $(dom).removeClass("nav-active")

@@ -5,7 +5,13 @@ seajs.config({
 		"validate": "libs/validate/jquery.validate.min.js",
 		"message": "libs/validate/jquery.validate.addMethod.js",
 		"common":"js/page/common.js",
-		"main":"js/page/main.js"
+		"main":"js/page/main.js",
+		"home":"js/page/home.js",
+		"JGrid":"libs/JGrid/jquery.JGrid.js",
+		"AddModel":"js/page/system/addModel.js",
+		"modelList":"js/page/system/modelList.js",
+		"siteList":"js/page/web/siteList.js",
+		"addSite":"js/page/web/addSite.js"
 	},
 	preload: ['jquery']
 });

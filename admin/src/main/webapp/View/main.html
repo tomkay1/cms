@@ -39,46 +39,62 @@
         <div class="leftpanelinner" id="menuContainer" style="height: 778px; overflow-y: auto;">
             <ul class="nav nav-pills nav-stacked nav-bracket" id="menuList">
                 <li class="nav-parent nav-active active js-cms-menus" style="cursor: pointer;">
-                    <a class="aparent"><i class="fa fa-chevron-circle-right"></i><span>商品管理</span></a>
+                    <a class="aparent"><i class="fa fa-chevron-circle-right"></i><span>栏目管理</span></a>
                     <ul class="children">
-                        <li class="childMenus active" style="cursor: pointer;">
+                        <li class="childMenus" style="cursor: pointer;">
                             <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
-                            <a href="javascript:void(0)"><i class="fa fa-caret-right"></i>商品列表<span class="fa pull-right badge badge-success" id="warning010101" style="display: none;background-color:red;">!
+                            <a><i class="fa fa-caret-right"></i>新增栏目<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
                                 </span>
                             </a>
                         </li>
                         <li class="childMenus" style="cursor: pointer;">
                             <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
-                            <a href="javascript:void(0)"><i class="fa fa-caret-right"></i>商品列表<span class="fa pull-right badge badge-success" id="Span25" style="display: none;background-color:red;">!
-                                </span>
-                            </a>
-                        </li>
-                        <li class="childMenus" style="cursor: pointer;">
-                            <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
-                            <a href="javascript:void(0)"><i class="fa fa-caret-right"></i>商品列表<span class="fa pull-right badge badge-success" id="Span26" style="display: none;background-color:red;">!
+                            <a th:href="@{/main/list?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>栏目列表<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
                                 </span>
                             </a>
                         </li>
                     </ul>
                 </li>
                 <li class="nav-parent nav-active active js-cms-menus" style="cursor: pointer;">
-                    <a class="aparent"><i class="fa fa-chevron-circle-right"></i><span>商品管理</span></a>
+                    <a class="aparent"><i class="fa fa-chevron-circle-right"></i><span>内容管理</span></a>
                     <ul class="children">
                         <li class="childMenus" style="cursor: pointer;">
                             <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
-                            <a href="javascript:void(0)"><i class="fa fa-caret-right"></i>商品列表<span class="fa pull-right badge badge-success" id="Span1" style="display: none;background-color:red;">!
+                            <a href="javascript:void(0)"><i class="fa fa-caret-right"></i>新增内容<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
                                 </span>
                             </a>
                         </li>
                         <li class="childMenus" style="cursor: pointer;">
                             <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
-                            <a href="javascript:void(0)"><i class="fa fa-caret-right"></i>商品列表<span class="fa pull-right badge badge-success" id="Span2" style="display: none;background-color:red;">!
+                            <a href="javascript:void(0)"><i class="fa fa-caret-right"></i>内容列表<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-parent nav-active active js-cms-menus" style="cursor: pointer;">
+                    <a class="aparent"><i class="fa fa-chevron-circle-right"></i><span>站点配置</span></a>
+                    <ul class="children">
+                        <li class="childMenus" style="cursor: pointer;">
+                            <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
+                            <a th:href="@{/main/home?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>站点管理<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-parent nav-active active js-cms-menus" style="cursor: pointer;">
+                    <a class="aparent"><i class="fa fa-chevron-circle-right"></i><span>系统设置</span></a>
+                    <ul class="children">
+                        <li class="childMenus" style="cursor: pointer;">
+                            <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
+                            <a th:href="@{/main/modellist?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>模型管理<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
                                 </span>
                             </a>
                         </li>
                         <li class="childMenus" style="cursor: pointer;">
                             <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
-                            <a href="javascript:void(0)"><i class="fa fa-caret-right"></i>商品列表<span class="fa pull-right badge badge-success" id="Span3" style="display: none;background-color:red;">!
+                            <a href="javascript:void(0)"><i class="fa fa-caret-right"></i>模版工具<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
                                 </span>
                             </a>
                         </li>
@@ -101,21 +117,25 @@
 
                     <li class="active" id="menu01">
                         <a style="cursor: pointer;" onclick="clickMenu('01')"><i class="fa fa-folder-o"></i>
-                            <span>商品管理</span><span class="fa pull-right badge badge-success" id="warning01" style="display: none; background-color: red;">!</span></a>
+                            <span>商品管理</span><span class="fa pull-right badge badge-success"  style="display: none; background-color: red;">!</span></a>
                     </li>
 
                     <li class="" id="menu02">
                         <a style="cursor: pointer;" onclick="clickMenu('02')"><i class="fa fa-folder-o"></i>
-                            <span>订单管理</span><span class="fa pull-right badge badge-success" id="warning02" style="display: none; background-color: red;">!</span></a>
+                            <span>订单管理</span><span class="fa pull-right badge badge-success" style="display: none; background-color: red;">!</span></a>
                     </li>
 
                     <li class="" id="menu03">
                         <a style="cursor: pointer;" onclick="clickMenu('03')"><i class="fa fa-folder-o"></i>
-                            <span>营销推广</span><span class="fa pull-right badge badge-success" id="warning03" style="display: none; background-color: red;">!</span></a>
+                            <span>营销推广</span><span class="fa pull-right badge badge-success" style="display: none; background-color: red;">!</span></a>
                     </li>
                 </ul>
             </div>
         </div>
+    </div>
+    <div class="con_right" id="con_right">
+        <iframe id="content" name="content" width="1152" height="100%" class="hide" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" src="/main/home" style="display: inline;">
+        </iframe>
     </div>
 </div>
 <script>seajs.use(["main"]);</script>

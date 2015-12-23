@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+    <link  href="/assets/css/admin.content.css"  type="text/css" rel="stylesheet"/>
+    <link  href="/assets/css/admin.global.css"  type="text/css" rel="stylesheet"/>
+    <script src="/assets/seajs/sea.js"></script>
+    <script src="/assets/seajs/config.js"></script>
+</head>
+<body>
+<div class="block">
+    <div class="h">
+        <span class="icon-sprite icon-list"></span>
+        <h3>商品分类添加</h3>
+        <div class="bar">
+            <a class="btn-lit" href='javascript:Index.Open("MallManage/Goods/GoodsCatList.aspx?customerid=5");'>
+                <span>返回商品分类列表</span></a>
+            <img src="../../images/bangzhu.png" style="vertical-align:middle;margin-left:20px;" onclick="window.open('http://bbs.huobanmall.com/showtopic-39.aspx')">
+        </div>
+    </div>
+    <div class="cnt-wp">
+        <div class="cnt form">
+
+            <div class="division">
+                <input type="hidden" name="hidOldParentId" id="hidOldParentId">
+
+                <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                    <tbody>
+                    <tr>
+                        <th>分类名称：</th>
+                        <td>
+                            <input name="txtCatName" type="text" id="txtCatName" class="input-normal" placeholder="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>上级分类：</th>
+                        <td>
+                            <select name="ddlParentId" id="ddlParentId">
+                                <option value="0^|">根目录</option>
+                                <option value="187^|187|">&nbsp;&nbsp;└ 鞋子</option>
+                                <option value="1521^|1521|">&nbsp;&nbsp;└ 裤子</option>
+                                <option value="1905^|1521|1905|">&nbsp;&nbsp;&nbsp;&nbsp;└ 直筒裤</option>
+                                <option value="1522^|1522|">&nbsp;&nbsp;└ 袜子</option>
+                                <option value="1906^|1906|">&nbsp;&nbsp;└ 零食</option>
+
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>商品类型：</th>
+                        <td>
+                            <select name="ddlTypeId" id="ddlTypeId">
+                                <option value="0">请选择</option>
+                                <option value="4">服装</option>
+                                <option value="130">鞋子</option>
+                                <option value="2458">合伙人金币测试</option>
+
+                            </select>
+                        </td>
+                    </tr>
+                    <tr style="display:none">
+                        <th>排序：</th>
+                        <td>
+                            <input name="txtOrder" type="text" value="0" id="txtOrder" class="input-small OnlyNum" placeholder="">
+                            <span style="color:#ccc;">数字越大排越下面</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>图片：</th>
+                        <td>
+                            <div id="uploadpicCover" style="width: 80px; height: 80px; border: 1px solid #ccc; float: left; background: #efefef; line-height: 80px; text-align: center; color: #ccc;"><img src="/resource/images/wechat/mall_cat_def.png" style="width:80px;height:80px;"></div>
+
+                            <div style="margin-left: 10px; float: left; line-height: 80px;">
+                                <a id="uploadpic" class="btn-lit jUploader-button" href="#" style="cursor: pointer; position: relative; overflow: hidden; direction: ltr;"><span style="color: #c1b3a9">上传</span><input type="file" onchange="this.blur();" id="jUploader-file1" name="jUploaderFile" style="position: absolute; right: 0px; top: 0px; margin: 0px; opacity: 0; padding: 0px; font-family: Arial; font-size: 118px; vertical-align: baseline; cursor: pointer;"></a>
+                                <span style="color: #f00">*</span>必填
+                                <span style="color: #ccc;">建议大小：300*300</span>
+                            </div>
+                            <input name="txtReplyUrl1" type="hidden" id="txtReplyUrl1" value="/resource/images/wechat/mall_cat_def.png">
+
+                        </td>
+                    </tr>
+                    <tr style="display: none;">
+                        <th>URL重写名：</th>
+                        <td>
+                            <input name="txtRewriteName" type="text" id="txtRewriteName" class="input-small" placeholder="">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="text-align: center;">
+                <div style="display: none;">
+                    <input type="submit" name="btnSave" value="" id="btnSave">
+                </div>
+                <a class="btn-lit" href="javascript:submitForm();"><span>保存</span></a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>seajs.use(["addSite"]);</script>
+</body>
+</html>

@@ -2,12 +2,10 @@ package com.huotu.hotcms.admin.controller;
 
 import com.huotu.hotcms.entity.Article;
 import com.huotu.hotcms.entity.Site;
+import com.huotu.hotcms.entity.others.UserInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,19 +18,9 @@ import java.util.Locale;
 @Controller
 public class IndexController {
 
-    @RequestMapping({"/index","/"})
-    public ModelAndView index(HttpServletRequest request) throws Exception{
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("/View/main.html");
-        return modelAndView;
-    }
 
-    @RequestMapping({"/main"})
-    public  ModelAndView home(HttpServletRequest request) throws Exception{
-        ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/View/home.html");
-        return  modelAndView;
-    }
+
+
 
     @RequestMapping("test")
     public String testIndex(Site site,Locale locale,HttpServletRequest request){

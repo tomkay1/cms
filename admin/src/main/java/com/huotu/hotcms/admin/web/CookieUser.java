@@ -70,7 +70,7 @@ public class CookieUser {
     {
         boolean loginIndex=false;
         String userIdStr=CookieHelper.getCookieVal(request,CMSEnums.CookieKeyValue.UserID.toString());
-        if(null!=userIdStr&&userIdStr.equals(""))
+        if(null!=userIdStr&&!userIdStr.equals(""))
         {
             int userId=getUserId(request);
             if(getRoleId(request)==-1)//超级管理员

@@ -6,7 +6,6 @@ import com.huotu.hotcms.admin.interceptor.SiteResolver;
 import com.huotu.hotcms.admin.util.ArrayUtil;
 import com.huotu.hotcms.config.JpaConfig;
 import com.huotu.hotcms.config.ServiceConfig;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.ApplicationContext;
@@ -41,7 +40,6 @@ import java.util.List;
  */
 @Configuration
 @EnableWebMvc
-@EnableTransactionManagement
 @ComponentScan({
         "com.huotu.hotcms.admin.serivce",
         "com.huotu.hotcms.admin.controller",
@@ -50,11 +48,10 @@ import java.util.List;
         "com.huotu.hotcms.common"
 })
 @Import({JpaConfig.class, ServiceConfig.class})
-public class MVCConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware{
+public class MVCConfig extends WebMvcConfigurerAdapter {
 
     private static final String UTF8 = "UTF-8";
 
-    private ApplicationContext applicationContext;
 
     @Autowired
     private SiteResolver siteResolver;
@@ -71,10 +68,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements ApplicationCon
         configurer.enable();
     }
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
-    }
+
 
     /**
      * for upload
@@ -86,18 +80,6 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements ApplicationCon
         return resolver;
     }
 
-    /**
-     *  读取properties文件
-     * @return
-     */
-    @Bean
-    public PropertyPlaceholderConfigurer propertiesResolver() {
-        PropertyPlaceholderConfigurer configurer = new PropertyPlaceholderConfigurer();
-        configurer.setFileEncoding(UTF8);
-        ClassPathResource classPathResource = new ClassPathResource("config.properties");
-        configurer.setLocations(classPathResource);
-        return configurer;
-    }
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
@@ -113,8 +95,6 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-//        Integer objectHashCode=loginInterceptor.hashCode();
-//        System.out.print(objectHashCode);
         registry.addInterceptor(loginInterceptor);
         super.addInterceptors(registry);
     }
@@ -174,7 +154,8 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements ApplicationCon
         springMessageResolver.setMessageSource(messageSource);
         return springMessageResolver;
     }
-
+    @Autowired
+    private ApplicationContext applicationContext;
     private ITemplateResolver htmlTemplateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
         resolver.setCacheable(false);
@@ -186,8 +167,9 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 
     private ITemplateResolver javascriptTemplateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
-        resolver.setApplicationContext(applicationContext);
+        resolver.setCacheable(false);
         resolver.setCharacterEncoding(UTF8);
+        resolver.setApplicationContext(applicationContext);
         resolver.setPrefix("/assets/js/");
         resolver.setTemplateMode(TemplateMode.JAVASCRIPT);
         return resolver;
@@ -195,6 +177,8 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 
     private ITemplateResolver cssTemplateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
+        resolver.setCacheable(false);
+        resolver.setCharacterEncoding(UTF8);
         resolver.setApplicationContext(applicationContext);
         resolver.setPrefix("/assets/css/");
         resolver.setTemplateMode(TemplateMode.CSS);

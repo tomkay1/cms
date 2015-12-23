@@ -26,14 +26,12 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-//        Integer customerId= QueryHelper.getQueryValInteger(request,"customerid");
-//        if(!cookieUser.checkLogin(request,customerId))
-//        {
-//            String loginUrl=configInfo.getOutLoginUrl();
-//            response.sendRedirect(configInfo.getOutLoginUrl());
-////            response.sendRedirect("http://login.pdmall.com");//后面换成都配置文件方式来读取跳转登录页面
-//        }
-//        return  true;
+        Integer customerId= QueryHelper.getQueryValInteger(request,"customerid");
+        if(!cookieUser.checkLogin(request,customerId))
+        {
+            String loginUrl=configInfo.getOutLoginUrl();
+            response.sendRedirect(loginUrl);
+        }
         return  true;
     }
 

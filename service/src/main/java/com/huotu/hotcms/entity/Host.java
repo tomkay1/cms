@@ -38,4 +38,9 @@ public class Host {
     @ManyToOne
     @JoinColumn(name = "siteId")
     private Site site;
+
+    /**
+     * 备注
+     */
+    private String remarks;
 }

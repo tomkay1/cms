@@ -8,4 +8,5 @@ import com.huotu.hotcms.entity.Site;
 public interface SiteService {
 
     void modifySite(Site site);
+
 }

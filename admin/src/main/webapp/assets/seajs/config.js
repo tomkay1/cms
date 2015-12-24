@@ -12,6 +12,7 @@ seajs.config({
 		"AddModel":"js/page/system/addModel.js",
 		"modelList":"js/page/system/modelList.js",
 		"articleList":"js/page/web/articleList.js",
+		"announList":"js/page/web/announList.js",
 		"siteList":"js/page/web/siteList.js",
 		"addSite":"js/page/web/addSite.js"
 	},

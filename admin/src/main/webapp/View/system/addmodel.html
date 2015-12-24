@@ -12,11 +12,11 @@
 <div class="block">
     <div class="h">
         <span class="icon-sprite icon-list"></span>
-        <h3>商品分类添加</h3>
+        <h3>模型添加</h3>
         <div class="bar">
-            <a class="btn-lit" href='javascript:Index.Open("MallManage/Goods/GoodsCatList.aspx?customerid=5");'>
-                <span>返回商品分类列表</span></a>
-            <img src="../../images/bangzhu.png" style="vertical-align:middle;margin-left:20px;" onclick="window.open('http://bbs.huobanmall.com/showtopic-39.aspx')">
+            <a class="btn-lit" th:href="@{/main/modellist?customerid={customerid}(customerid=${user.customerId})}">
+                <span>返回模型列表</span></a>
+            <!--<img src="../../images/bangzhu.png" style="vertical-align:middle;margin-left:20px;" onclick="window.open('http://bbs.huobanmall.com/showtopic-39.aspx')">-->
         </div>
     </div>
     <div class="cnt-wp">
@@ -28,38 +28,33 @@
                 <table width="100%" border="0" cellpadding="0" cellspacing="0">
                     <tbody>
                     <tr>
-                        <th>分类名称：</th>
+                        <th>模型名称：</th>
                         <td>
                             <input name="txtCatName" type="text" id="txtCatName" class="input-normal" placeholder="">
                         </td>
                     </tr>
                     <tr>
-                        <th>上级分类：</th>
+                        <th>模型描述：</th>
+                        <td>
+                            <input name="txtCatName" type="text" id="txtCatName" class="input-normal" placeholder="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>模型类型：</th>
                         <td>
                             <select name="ddlParentId" id="ddlParentId">
-                                <option value="0^|">根目录</option>
-                                <option value="187^|187|">&nbsp;&nbsp;└ 鞋子</option>
-                                <option value="1521^|1521|">&nbsp;&nbsp;└ 裤子</option>
-                                <option value="1905^|1521|1905|">&nbsp;&nbsp;&nbsp;&nbsp;└ 直筒裤</option>
-                                <option value="1522^|1522|">&nbsp;&nbsp;└ 袜子</option>
-                                <option value="1906^|1906|">&nbsp;&nbsp;└ 零食</option>
+                                <option value="0^|">请选择</option>
+                                <option value="1520^|1520|">&nbsp;&nbsp;└ 文章模型</option>
+                                <option value="1521^|1521|">&nbsp;&nbsp;└ 公告模型</option>
+                                <option value="1522^|1522|">&nbsp;&nbsp;└ 视频模型,</option>
+                                <option value="1523^|1523|">&nbsp;&nbsp;└ 图库模型</option>
+                                <option value="1524^|1524|">&nbsp;&nbsp;└ 下载模型</option>
+                                <option value="1525^|1525|">&nbsp;&nbsp;└ 链接模型</option>
 
                             </select>
                         </td>
                     </tr>
                     <tr>
-                        <th>商品类型：</th>
-                        <td>
-                            <select name="ddlTypeId" id="ddlTypeId">
-                                <option value="0">请选择</option>
-                                <option value="4">服装</option>
-                                <option value="130">鞋子</option>
-                                <option value="2458">合伙人金币测试</option>
-
-                            </select>
-                        </td>
-                    </tr>
-                    <tr style="display:none">
                         <th>排序：</th>
                         <td>
                             <input name="txtOrder" type="text" value="0" id="txtOrder" class="input-small OnlyNum" placeholder="">
@@ -73,17 +68,11 @@
 
                             <div style="margin-left: 10px; float: left; line-height: 80px;">
                                 <a id="uploadpic" class="btn-lit jUploader-button" href="#" style="cursor: pointer; position: relative; overflow: hidden; direction: ltr;"><span style="color: #c1b3a9">上传</span><input type="file" onchange="this.blur();" id="jUploader-file1" name="jUploaderFile" style="position: absolute; right: 0px; top: 0px; margin: 0px; opacity: 0; padding: 0px; font-family: Arial; font-size: 118px; vertical-align: baseline; cursor: pointer;"></a>
-                                <span style="color: #f00">*</span>必填
+                                <span style="color: #f00">*</span>      必填
                                 <span style="color: #ccc;">建议大小：300*300</span>
                             </div>
                             <input name="txtReplyUrl1" type="hidden" id="txtReplyUrl1" value="/resource/images/wechat/mall_cat_def.png">
 
-                        </td>
-                    </tr>
-                    <tr style="display: none;">
-                        <th>URL重写名：</th>
-                        <td>
-                            <input name="txtRewriteName" type="text" id="txtRewriteName" class="input-small" placeholder="">
                         </td>
                     </tr>
                     </tbody>
@@ -99,6 +88,6 @@
         </div>
     </div>
 </div>
-<script>seajs.use(["AddModel"]);</script>
+<script>seajs.use(["addSite"]);</script>
 </body>
 </html>

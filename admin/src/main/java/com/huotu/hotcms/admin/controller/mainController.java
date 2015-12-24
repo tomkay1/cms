@@ -41,11 +41,18 @@ public class mainController {
         return  modelAndView;
     }
 
-    @RequestMapping("/home")
-    public ModelAndView home(HttpServletRequest request) throws Exception
+    @RequestMapping("/announlist")
+    public ModelAndView announlist(HttpServletRequest request) throws Exception{
+        ModelAndView modelAndView=new ModelAndView();
+        modelAndView.setViewName("/View/Contents/announlist.html");
+        return  modelAndView;
+    }
+
+    @RequestMapping("/sitelist")
+    public ModelAndView sitelist(HttpServletRequest request) throws Exception
     {
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/View/web/home.html");
+        modelAndView.setViewName("/View/web/sitelist.html");
         return  modelAndView;
     }
 

@@ -12,10 +12,10 @@
 <div class="block">
     <div class="h">
         <span class="icon-sprite icon-list"></span>
-        <h3>商品分类添加</h3>
+        <h3>网站添加</h3>
         <div class="bar">
-            <a class="btn-lit" href='javascript:Index.Open("MallManage/Goods/GoodsCatList.aspx?customerid=5");'>
-                <span>返回商品分类列表</span></a>
+            <a class="btn-lit" th:href="@{/main/siteList?customerid={customerid}(customerid=${user.customerId})}">
+                <span>返回网站列表</span></a>
             <img src="../../images/bangzhu.png" style="vertical-align:middle;margin-left:20px;" onclick="window.open('http://bbs.huobanmall.com/showtopic-39.aspx')">
         </div>
     </div>
@@ -73,7 +73,7 @@
 
                             <div style="margin-left: 10px; float: left; line-height: 80px;">
                                 <a id="uploadpic" class="btn-lit jUploader-button" href="#" style="cursor: pointer; position: relative; overflow: hidden; direction: ltr;"><span style="color: #c1b3a9">上传</span><input type="file" onchange="this.blur();" id="jUploader-file1" name="jUploaderFile" style="position: absolute; right: 0px; top: 0px; margin: 0px; opacity: 0; padding: 0px; font-family: Arial; font-size: 118px; vertical-align: baseline; cursor: pointer;"></a>
-                                <span style="color: #f00">*</span>必填
+                                <span style="color: #f00">*</span>      必填
                                 <span style="color: #ccc;">建议大小：300*300</span>
                             </div>
                             <input name="txtReplyUrl1" type="hidden" id="txtReplyUrl1" value="/resource/images/wechat/mall_cat_def.png">

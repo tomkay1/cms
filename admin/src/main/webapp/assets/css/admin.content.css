@@ -104,7 +104,7 @@
 
 .division th { font-weight: normal; }
 
-.division { border-top: 1px solid #ccc; border-left: 1px solid #ccc; border-right: 2px solid #bec6ce; border-bottom: 2px solid #bec6ce; background: #fff; margin: 10px; padding: 5px; line-height: 150%; white-space: normal; }
+.division { border-top: 1px solid #ccc; border-left: 1px solid #ccc; border-right: 1px solid #bec6ce; border-bottom: 1px solid #bec6ce; background: #fff; margin: 10px; padding: 5px; line-height: 150%; white-space: normal; }
 
 .division .shopping_setting th { width: 190px; }
 

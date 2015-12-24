@@ -1,9 +1,11 @@
-package com.huotu.hotcms.admin.web;
+package com.huotu.hotcms.admin.util.web;
 
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Created by Administrator on 2015/12/22.
+ * 获得参数相关帮助类
+ * @since 1.0.0
+ * @author xhl
  */
 public class QueryHelper {
 

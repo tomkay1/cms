@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
- * Created by Administrator on 2015/12/23.
+ * Created by xhl on 2015/12/23.
  */
 @Component
 public class ConfigInfo {

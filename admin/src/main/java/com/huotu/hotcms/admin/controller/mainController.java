@@ -8,7 +8,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Created by Administrator on 2015/12/23.
+ * 视图控制器
+ * @since  1.0.0
+ * @author xhl
  */
 @Controller
 @RequestMapping("/main")

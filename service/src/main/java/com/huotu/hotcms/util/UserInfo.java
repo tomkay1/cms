@@ -1,4 +1,4 @@
-package com.huotu.hotcms.entity.others;
+package com.huotu.hotcms.util;
 
 import java.util.regex.Pattern;
 

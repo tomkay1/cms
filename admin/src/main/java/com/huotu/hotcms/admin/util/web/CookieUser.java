@@ -7,9 +7,8 @@
  * 2013-2015. All rights reserved.
  */
 
-package com.huotu.hotcms.admin.web;
+package com.huotu.hotcms.admin.util.web;
 import com.huotu.hotcms.common.CMSEnums;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -88,32 +87,5 @@ public class CookieUser {
         else
             loginIndex=false;
         return  loginIndex;
-
-//        bool loginIndex = false;
-//        try
-//        {
-//            string userIDStr = CookieHelper.GetCookieVal(System.Enum.GetName(typeof(CookieKeyValue), CookieKeyValue.UserID));
-//            if (!string.IsNullOrEmpty(userIDStr))
-//            {
-//                int userID = Convert.ToInt32(CookieHelper.GetCookieVal(System.Enum.GetName(typeof(CookieKeyValue), CookieKeyValue.UserID)));
-//                if (CookieUser.instance.GetRoleID() == -1)//超级管理员
-//                {
-//                    loginIndex = true;
-//                }
-//                else { //非超级管理员
-//                    if (userID == customerid||customerid==0)
-//                        loginIndex = true;
-//                    else
-//                        loginIndex = false;
-//                }
-//            }
-//            else
-//                loginIndex = false;
-//        }
-//        catch
-//        {
-//            return false;
-//        }
-//        return loginIndex;
     }
 }

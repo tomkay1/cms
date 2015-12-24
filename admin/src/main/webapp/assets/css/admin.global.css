@@ -26,12 +26,19 @@ a.btn-lit{text-decoration: none; }
 .btn-active{background-position:0px -60px;}
 .btn-active span{background-position:right -60px;}
 
-.btn-lit{display:inline-block; height:23px; line-height:23px; text-align:center; border:none; background-image:url(/assets/img/button-green-lit.png); background-repeat:no-repeat; background-position:0px 0px; padding:0px 0px 0px 12px; text-decoration:none; font-weight:bold; color:#FFFFFF; /*text-shadow:-1px -1px 0 #99B119;*/}
-.btn-lit span{display:block; padding:0px 12px 0px 0px; background-image:url(/assets/img/button-green-lit.png); background-repeat:no-repeat; background-position:right 0px; font-size:12px;}
+.btn-lit{
+ display:inline-block; height:23px; line-height:23px; text-align:center; border:none;
+background: #f00000;
+ background-repeat:no-repeat; background-position:0px 0px;
+ padding:0px 12px 0px 12px; text-decoration:none;
+ font-weight:bold;
+ color:#FFFFFF; /*text-shadow:-1px -1px 0 #99B119;*/}
 .btn-lit-hover{background-position:0px -25px;}
 .btn-lit-hover span{background-position:right -25px;}
 .btn-lit-active{background-position:0px -50px;}
 .btn-lit-active span{background-position:right -50px;}
+.btn-lit:hover{background:#ff4d4d; }
+
 
 
 /* 通用字体 */
@@ -51,11 +58,18 @@ a.btn-lit{text-decoration: none; }
 /* 通用文本 */
 select{height:24px; line-height:24px;}
 input,textarea{border:1px solid #A4A4A4; color:#4a4a4a; font-size:12px; font-family:Tahoma,"Times New Roman", Times, "宋体";}
-.input-code,.input-small,.input-normal,.input-big,.input-xbig,.input-xxbig{height:18px; line-height:18px;}
+.input-code,.input-small,.input-normal,.input-big,.input-xbig,.input-xxbig{
+ height:25px;
+ border:1px #ccc solid;
+ line-height:25px;
+ padding: 0px 4px;
+ border: 1px #ccc solid;
+ padding: 0px 4px;
+}
 
 .input-code{width:35px;}
 .input-small{width:100px;}
-.input-normal{width:180px;}
+.input-normal{width:250px;}
 .input-big{width:250px;}
 .input-xbig{width:350px;}
 .input-xxbig{width:450px;}

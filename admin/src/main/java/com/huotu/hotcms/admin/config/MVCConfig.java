@@ -7,23 +7,17 @@ import com.huotu.hotcms.admin.util.ArrayUtil;
 import com.huotu.hotcms.config.JpaConfig;
 import com.huotu.hotcms.config.ServiceConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.thymeleaf.ITemplateEngine;
-import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.messageresolver.IMessageResolver;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.messageresolver.SpringMessageResolver;
@@ -44,7 +38,7 @@ import java.util.List;
         "com.huotu.hotcms.admin.serivce",
         "com.huotu.hotcms.admin.controller",
         "com.huotu.hotcms.admin.interceptor",
-        "com.huotu.hotcms.admin.web",
+        "com.huotu.hotcms.admin.util.web",
         "com.huotu.hotcms.common"
 })
 @Import({JpaConfig.class, ServiceConfig.class})

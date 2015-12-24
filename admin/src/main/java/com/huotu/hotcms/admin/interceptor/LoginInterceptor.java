@@ -1,9 +1,9 @@
 package com.huotu.hotcms.admin.interceptor;
 
-import com.huotu.hotcms.admin.web.CookieUser;
-import com.huotu.hotcms.admin.web.QueryHelper;
+import com.huotu.hotcms.admin.util.web.CookieUser;
+import com.huotu.hotcms.admin.util.web.QueryHelper;
 import com.huotu.hotcms.common.ConfigInfo;
-import com.huotu.hotcms.entity.others.UserInfo;
+import com.huotu.hotcms.util.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * 登陆拦截器.
+ * @since 1.0.0
+ * @author xhl
  */
 @Component
 public class LoginInterceptor extends HandlerInterceptorAdapter {

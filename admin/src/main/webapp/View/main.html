@@ -66,7 +66,7 @@
                         </li>
                         <li class="childMenus" style="cursor: pointer;">
                             <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
-                            <a href="javascript:void(0)"><i class="fa fa-caret-right"></i>内容列表<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
+                            <a th:href="@{/main/announlist?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>内容列表<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
                                 </span>
                             </a>
                         </li>
@@ -77,7 +77,7 @@
                     <ul class="children">
                         <li class="childMenus" style="cursor: pointer;">
                             <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
-                            <a th:href="@{/main/home?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>站点管理<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
+                            <a th:href="@{/main/sitelist?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>站点管理<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
                                 </span>
                             </a>
                         </li>
@@ -139,5 +139,6 @@
     </div>
 </div>
 <script>seajs.use(["main"]);</script>
+<script>seajs.use(["layer"]);</script>
 </body>
 </html>

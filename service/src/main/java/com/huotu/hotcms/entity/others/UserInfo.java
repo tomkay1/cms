@@ -1,5 +1,7 @@
 package com.huotu.hotcms.entity.others;
 
+import java.util.regex.Pattern;
+
 /**
  * 当前登录的用户相关信息
  * Created by xhl on 2015/12/23.

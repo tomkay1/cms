@@ -1,8 +1,5 @@
 package com.huotu.hotcms.admin.controller;
 
-import com.huotu.hotcms.entity.others.UserInfo;
-import com.sun.javafx.sg.prism.NGShape;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,6 +31,13 @@ public class mainController {
     public ModelAndView modelList(HttpServletRequest request) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("/View/system/modellist.html");
+        return  modelAndView;
+    }
+
+    @RequestMapping("/articlelist")
+    public ModelAndView articlelist(HttpServletRequest request) throws Exception{
+        ModelAndView modelAndView=new ModelAndView();
+        modelAndView.setViewName("/View/Contents/articlelist.html");
         return  modelAndView;
     }
 

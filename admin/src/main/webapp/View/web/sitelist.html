@@ -31,12 +31,13 @@
         <span class="icon-sprite icon-list"></span>
         <h3 style="float: left; width: 144px;">网站列表</h3>
         <div class="bar">
-            <a class="btn-lit"  th:href="@{/main/addSite?customerid={customerid}(customerid=${user.customerId})}" target="content">
+            <a class="btn-lit"  th:href="@{/site/addSite?customerid={customerid}(customerid=${user.customerId})}" target="content">
                 <span>新增</span></a>
         </div>
     </div>
     <div class="cnt-wp" id="js-SiteList"></div>
 </div>
 <script>seajs.use(["JGrid","siteList"]);</script>
+
 </body>
 </html>

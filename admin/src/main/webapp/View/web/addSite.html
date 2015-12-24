@@ -14,9 +14,9 @@
         <span class="icon-sprite icon-list"></span>
         <h3>网站添加</h3>
         <div class="bar">
-            <a class="btn-lit" th:href="@{/main/siteList?customerid={customerid}(customerid=${user.customerId})}">
+            <a class="btn-lit" th:href="@{/site/sitelist?customerid={customerid}(customerid=${user.customerId})}">
                 <span>返回网站列表</span></a>
-            <img src="../../images/bangzhu.png" style="vertical-align:middle;margin-left:20px;" onclick="window.open('http://bbs.huobanmall.com/showtopic-39.aspx')">
+            <!--<img src="../../images/bangzhu.png" style="vertical-align:middle;margin-left:20px;" onclick="window.open('http://bbs.huobanmall.com/showtopic-39.aspx')">-->
         </div>
     </div>
     <div class="cnt-wp">
@@ -28,46 +28,31 @@
                 <table width="100%" border="0" cellpadding="0" cellspacing="0">
                     <tbody>
                     <tr>
-                        <th>分类名称：</th>
+                        <th>站点名称：</th>
                         <td>
                             <input name="txtCatName" type="text" id="txtCatName" class="input-normal" placeholder="">
                         </td>
                     </tr>
                     <tr>
-                        <th>上级分类：</th>
+                        <th>站点标题：</th>
                         <td>
-                            <select name="ddlParentId" id="ddlParentId">
-                                <option value="0^|">根目录</option>
-                                <option value="187^|187|">&nbsp;&nbsp;└ 鞋子</option>
-                                <option value="1521^|1521|">&nbsp;&nbsp;└ 裤子</option>
-                                <option value="1905^|1521|1905|">&nbsp;&nbsp;&nbsp;&nbsp;└ 直筒裤</option>
-                                <option value="1522^|1522|">&nbsp;&nbsp;└ 袜子</option>
-                                <option value="1906^|1906|">&nbsp;&nbsp;└ 零食</option>
-
-                            </select>
+                            <input name="txtCatName" type="text" id="txtCatName" class="input-normal" placeholder="">
                         </td>
                     </tr>
                     <tr>
-                        <th>商品类型：</th>
+                        <th>站点描述：</th>
                         <td>
-                            <select name="ddlTypeId" id="ddlTypeId">
-                                <option value="0">请选择</option>
-                                <option value="4">服装</option>
-                                <option value="130">鞋子</option>
-                                <option value="2458">合伙人金币测试</option>
-
-                            </select>
-                        </td>
-                    </tr>
-                    <tr style="display:none">
-                        <th>排序：</th>
-                        <td>
-                            <input name="txtOrder" type="text" value="0" id="txtOrder" class="input-small OnlyNum" placeholder="">
-                            <span style="color:#ccc;">数字越大排越下面</span>
+                            <input name="txtCatName" type="text" id="txtCatName" class="input-normal" placeholder="">
                         </td>
                     </tr>
                     <tr>
-                        <th>图片：</th>
+                        <th>站点seo关键字：</th>
+                        <td>
+                            <input name="txtCatName" type="text" id="txtCatName" class="input-normal" placeholder="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>站点logo：</th>
                         <td>
                             <div id="uploadpicCover" style="width: 80px; height: 80px; border: 1px solid #ccc; float: left; background: #efefef; line-height: 80px; text-align: center; color: #ccc;"><img src="/resource/images/wechat/mall_cat_def.png" style="width:80px;height:80px;"></div>
 
@@ -80,10 +65,28 @@
 
                         </td>
                     </tr>
-                    <tr style="display: none;">
-                        <th>URL重写名：</th>
+                    <tr>
+                        <th>是否自定义视图：</th>
                         <td>
-                            <input name="txtRewriteName" type="text" id="txtRewriteName" class="input-small" placeholder="">
+                            <table id="raMarketable">
+                                <tbody>
+                                <tr>
+                                    <td><input id="raMarketable_0" type="radio" name="raMarketable" value="1" checked="checked"><label for="raMarketable_0">是</label></td>
+                                    <td><input id="raMarketable_1" type="radio" name="raMarketable" value="0"><label for="raMarketable_1">否</label></td>
+                                </tr>
+                                </tbody></table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>网站模板根地址：</th>
+                        <td>
+                            <input name="txtCatName" type="text" id="txtCatName" class="input-normal" placeholder="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>商户网络地址：</th>
+                        <td>
+                            <input name="txtCatName" type="text" id="txtCatName" class="input-normal" placeholder="">
                         </td>
                     </tr>
                     </tbody>

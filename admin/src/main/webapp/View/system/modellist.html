@@ -10,28 +10,12 @@
     <script src="/assets/seajs/config.js"></script>
 </head>
 <body>
-<div class="search block">
-    <div class="h">
-        <span class="icon-sprite icon-magnifier"></span>
-        <h3>快速搜索</h3>
-    </div>
-    <div class="cnt-wp">
-        <div class="cnt">
-            <div class="search-bar">
-                <label class="first ">模型名称：</label>
-                <input name="username" type="text" id="username" class="input-small" style="width: 200px;" placeholder=" 模型名称">
-                <label><a class="btn-lit btn-middle" href="javascript:void();" style="margin-bottom: 3px;"><span>搜索</span></a></label>
-                <label><a class="btn-lit btn-middle" href="javascript:void();" style="margin-bottom: 3px;"><span>显示所有</span></a></label>
-            </div>
-        </div>
-    </div>
-</div>
 <div class="block">
     <div class="h">
         <span class="icon-sprite icon-list"></span>
         <h3 style="float: left; width: 144px;">模型列表</h3>
         <div class="bar">
-            <a class="btn-lit" th:href="@{/main/addModel?customerid={customerid}(customerid=${user.customerId})}"  target="content">
+            <a class="btn-lit" th:href="@{/model/addModel?customerid={customerid}(customerid=${user.customerId})}"  target="content">
                 <span>新增</span></a>
         </div>
     </div>

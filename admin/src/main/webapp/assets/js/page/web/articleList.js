@@ -29,7 +29,12 @@ define(function (require, exports, module) {
                     return value.toString().toString().substr(0, 16).replace('T', ' ');
                 }
             },
-            { width: '10%', field: 'title', title: '操作', align: 'center' }
+            { width: '10%', field: 'title', title: '操作', align: 'center',
+                formatter: function (value, rowData) {
+                    return "<a href='#' style='margin-right:10px;'>删除</a>" +
+                        "<a href='#' style='margin-right:10px;'>修改</a>"
+                }
+            }
         ]
     });
 });

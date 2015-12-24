@@ -27,12 +27,7 @@ public class mainController {
         return  modelAndView;
     }
 
-    @RequestMapping("/modellist")
-    public ModelAndView modelList(HttpServletRequest request) throws Exception{
-        ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/View/system/modellist.html");
-        return  modelAndView;
-    }
+
 
     @RequestMapping("/articlelist")
     public ModelAndView articlelist(HttpServletRequest request) throws Exception{
@@ -48,25 +43,5 @@ public class mainController {
         return  modelAndView;
     }
 
-    @RequestMapping("/sitelist")
-    public ModelAndView sitelist(HttpServletRequest request) throws Exception
-    {
-        ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/View/web/sitelist.html");
-        return  modelAndView;
-    }
 
-    @RequestMapping("/addModel")
-    public ModelAndView addModel(HttpServletRequest request) throws Exception{
-        ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/View/system/addModel.html");
-        return modelAndView;
-    }
-
-    @RequestMapping("/addSite")
-    public ModelAndView addSite(HttpServletRequest request) throws Exception{
-        ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/View/web/addSite.html");
-        return  modelAndView;
-    }
 }

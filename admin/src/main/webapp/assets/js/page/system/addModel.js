@@ -2,6 +2,7 @@
  * Created by Administrator on 2015/12/23.
  */
 define(function (require, exports, module) {
+    alert('f');
     $("#jq-cms-Save").validate({
         rules: {
             txtModelName:{

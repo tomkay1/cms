@@ -13,9 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/model")
 public class modelController {
 
-
-
-
     @RequestMapping("/modellist")
     public ModelAndView modelList(HttpServletRequest request) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
@@ -26,7 +23,7 @@ public class modelController {
     @RequestMapping("/addModel")
     public ModelAndView addModel(HttpServletRequest request) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/View/system/addmodel.html");
+        modelAndView.setViewName("/View/system/addModel.html");
         return modelAndView;
     }
 }

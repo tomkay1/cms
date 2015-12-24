@@ -29,8 +29,6 @@ public class mainController {
         return  modelAndView;
     }
 
-
-
     @RequestMapping("/articlelist")
     public ModelAndView articlelist(HttpServletRequest request) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
@@ -44,6 +42,5 @@ public class mainController {
         modelAndView.setViewName("/View/Contents/announlist.html");
         return  modelAndView;
     }
-
 
 }

@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
         "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
     <link  href="/assets/css/admin.content.css"  type="text/css" rel="stylesheet"/>
@@ -12,11 +12,10 @@
 <div class="block">
     <div class="h">
         <span class="icon-sprite icon-list"></span>
-        <h3>模型添加</h3>
+        <h3>添加模型</h3>
         <div class="bar">
-            <a class="btn-lit" th:href="@{/model/modellist?customerid={customerid}(customerid=${user.customerId})}">
-                <span>返回模型列表</span></a>
-            <!--<img src="../../images/bangzhu.png" style="vertical-align:middle;margin-left:20px;" onclick="window.open('http://bbs.huobanmall.com/showtopic-39.aspx')">-->
+            <a class="btn-lit" th:href="@{/main/modellist?customerid={customerid}(customerid=${user.customerId})}" target="content">
+                <span>返回模型管理列表</span></a>
         </div>
     </div>
     <div class="cnt-wp">
@@ -24,55 +23,40 @@
 
             <div class="division">
                 <input type="hidden" name="hidOldParentId" id="hidOldParentId">
-
                 <table width="100%" border="0" cellpadding="0" cellspacing="0">
                     <tbody>
                     <tr>
                         <th>模型名称：</th>
                         <td>
-                            <input name="txtCatName" type="text" id="txtCatName" class="input-normal" placeholder="">
+                            <input name="txtModelName" type="text" id="txtModelName" maxlength="50" class="input-normal" placeholder="请输入模型名称">
                         </td>
                     </tr>
                     <tr>
                         <th>模型描述：</th>
                         <td>
-                            <input name="txtCatName" type="text" id="txtCatName" class="input-normal" placeholder="">
+                            <textarea rows="" cols="" style="width: 250px; height: 60px;" class="input-normal" id="txtModelDescription" name="txtModelDescription">
+                            </textarea>
                         </td>
                     </tr>
                     <tr>
                         <th>模型类型：</th>
                         <td>
-                            <select name="ddlParentId" id="ddlParentId">
-                                <option value="0^|">请选择</option>
-                                <option value="1520^|1520|">&nbsp;&nbsp;└ 文章模型</option>
-                                <option value="1521^|1521|">&nbsp;&nbsp;└ 公告模型</option>
-                                <option value="1522^|1522|">&nbsp;&nbsp;└ 视频模型,</option>
-                                <option value="1523^|1523|">&nbsp;&nbsp;└ 图库模型</option>
-                                <option value="1524^|1524|">&nbsp;&nbsp;└ 下载模型</option>
-                                <option value="1525^|1525|">&nbsp;&nbsp;└ 链接模型</option>
-
+                            <select name="txtModelType" class="input-normal" id="txtModelType">
+                                <option value="-1">==请选择模型类型==</option>
+                                <option value="0">文章模型</option>
+                                <option value="1">公告模型</option>
+                                <option value="2">视频模型</option>
+                                <option value="3">图库模型</option>
+                                <option value="4">下载模型</option>
+                                <option value="5">链接模型</option>
                             </select>
                         </td>
                     </tr>
                     <tr>
-                        <th>排序：</th>
+                        <th>排序权重：</th>
                         <td>
-                            <input name="txtOrder" type="text" value="0" id="txtOrder" class="input-small OnlyNum" placeholder="">
-                            <span style="color:#ccc;">数字越大排越下面</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>图片：</th>
-                        <td>
-                            <div id="uploadpicCover" style="width: 80px; height: 80px; border: 1px solid #ccc; float: left; background: #efefef; line-height: 80px; text-align: center; color: #ccc;"><img src="/resource/images/wechat/mall_cat_def.png" style="width:80px;height:80px;"></div>
-
-                            <div style="margin-left: 10px; float: left; line-height: 80px;">
-                                <a id="uploadpic" class="btn-lit jUploader-button" href="#" style="cursor: pointer; position: relative; overflow: hidden; direction: ltr;"><span style="color: #c1b3a9">上传</span><input type="file" onchange="this.blur();" id="jUploader-file1" name="jUploaderFile" style="position: absolute; right: 0px; top: 0px; margin: 0px; opacity: 0; padding: 0px; font-family: Arial; font-size: 118px; vertical-align: baseline; cursor: pointer;"></a>
-                                <span style="color: #f00">*</span>      必填
-                                <span style="color: #ccc;">建议大小：300*300</span>
-                            </div>
-                            <input name="txtReplyUrl1" type="hidden" id="txtReplyUrl1" value="/resource/images/wechat/mall_cat_def.png">
-
+                            <input name="txtOrderWeight" type="text" id="txtOrderWeight" class="input-normal" placeholder="请输入排序权重">
+                            <span style="color:#ccc;">数字越大排越前面</span>
                         </td>
                     </tr>
                     </tbody>
@@ -80,14 +64,11 @@
             </div>
 
             <div style="text-align: center;">
-                <div style="display: none;">
-                    <input type="submit" name="btnSave" value="" id="btnSave">
-                </div>
-                <a class="btn-lit" href="javascript:submitForm();"><span>保存</span></a>
+                <input type="submit" class="btn-lit" name="btnSave" value="保存" id="jq-cms-Save">
             </div>
         </div>
     </div>
 </div>
-<script>seajs.use(["addSite"]);</script>
+<script>seajs.use(["validate","message","AddModel"]);</script>
 </body>
 </html>

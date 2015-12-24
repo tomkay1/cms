@@ -30,13 +30,15 @@ public class Region {
     /**
      * 地区编号（cn,en,etc.）
      */
-    private String region;
+    @Column(name = "regionCode")
+    private String regionCode;
 
     /**
      * 通行语言
      */
     @ManyToOne
-    private Language language;
+    @JoinColumn(name = "langId")
+    private Language langId;
 
     /**
      * 备注

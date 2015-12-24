@@ -1,7 +1,10 @@
 package com.huotu.hotcms.admin.interceptor;
 
 import com.huotu.hotcms.common.LanguageType;
+import com.huotu.hotcms.entity.Region;
 import com.huotu.hotcms.entity.Site;
+import com.huotu.hotcms.service.RegionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -17,6 +20,10 @@ import java.util.Locale;
  */
 @Component
 public class SiteResolver implements HandlerMethodArgumentResolver {
+
+    @Autowired
+    private RegionService regionService;
+
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         return parameter.getParameterType() == Site.class;
@@ -26,19 +33,10 @@ public class SiteResolver implements HandlerMethodArgumentResolver {
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         Site site = new Site();
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
-        Locale locale = request.getLocale();
-        String lang = request.getHeader("Accept-Language");
-        String submittedSiteId = request.getParameter("siteId");
-        if(locale!=null) {
-
-        }
-        if (submittedSiteId!=null){
-            return null;// select by HttpServletRequest
-        }
-        //
-
-//        String host = request.getServerName();
-
+        String area = request.getLocale().getCountry();
+        String serverName = request.getServerName();
+        Region region = regionService.getRegion(area);
+        site.setRegion(region);
         site.setTitle("test");
         return site; // select by SiteDomain
     }

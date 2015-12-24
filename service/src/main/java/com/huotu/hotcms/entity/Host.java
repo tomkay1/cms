@@ -27,6 +27,12 @@ public class Host {
     private Long id;
 
     /**
+     * 域名
+     */
+    @Column(name = "domain")
+    private String domain;
+
+    /**
      * 所属站点
      */
     @ManyToOne

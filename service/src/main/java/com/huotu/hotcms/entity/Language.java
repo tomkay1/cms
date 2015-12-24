@@ -30,8 +30,8 @@ public class Language {
     /**
      * 语言（zh、en等）
      */
-    @Column(name = "lang")
-    private String lang;
+    @Column(name = "langCode")
+    private String langCode;
 
     /**
      * 备注

@@ -10,36 +10,33 @@ package com.huotu.hotcms.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.eclipse.persistence.annotations.CascadeOnDelete;
 
 import javax.persistence.*;
 
 /**
- * 自定义模型值记录表
- * Created by cwb on 2015/12/22.
+ * 语言
+ * Created by cwb on 2015/12/24.
  */
 @Entity
-@Table(name = "cms_custom")
+@Table(name = "cms_language")
 @Getter
 @Setter
-public class Custom extends BaseEntity {
+public class Language {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     /**
-     * 参数值
+     * 语言（zh、en等）
      */
-    @Column(name = "value")
-    private String value;
-
-
-    @OneToOne
-    @JoinColumn(name = "customParam")
-    private CustomParam customParam;
+    @Column(name = "lang")
+    private String lang;
 
     /**
-     * 所属栏目
+     * 备注
      */
-    @ManyToOne
-    @JoinColumn(name = "categoryId")
-    private Category category;
+    @Column(name = "remarks")
+    private String remarks;
 
 }

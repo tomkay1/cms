@@ -11,9 +11,7 @@ package com.huotu.hotcms.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * 链接模型
@@ -25,11 +23,35 @@ import javax.persistence.Table;
 @Setter
 public class Link extends BaseEntity {
 
-    private String title;//标题
-    private String description;//描述
-    private String thumbUri;//缩略图uri
-    private String linkUrl;//链接地址
+    /**
+     * 标题
+     */
+    @Column(name = "title")
+    private String title;
+
+    /**
+     * 描述
+     */
+    @Column(name = "description")
+    private String description;
+
+    /**
+     * 缩略图uri
+     */
+    @Column(name = "thumbUri")
+    private String thumbUri;
+
+    /**
+     * 链接地址
+     */
+    @Column(name = "linkUrl")
+    private String linkUrl;
+
+    /**
+     * 所属栏目
+     */
     @ManyToOne
-    private Category category;//所属栏目
+    @JoinColumn(name = "categoryId")
+    private Category category;
 
 }

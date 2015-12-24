@@ -11,9 +11,7 @@ package com.huotu.hotcms.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * 下载模型
@@ -25,11 +23,35 @@ import javax.persistence.Table;
 @Setter
 public class Download extends BaseEntity {
 
-    private String fileName;//文件名称
-    private String description;//描述信息
-    private String downloadUrl;//下载地址
-    private int downloads;//下载次数
+    /**
+     * 文件名称
+     */
+    @Column(name = "fileName")
+    private String fileName;
+
+    /**
+     * 描述信息
+     */
+    @Column(name = "description")
+    private String description;
+
+    /**
+     * 下载地址
+     */
+    @Column(name = "downloadUrl")
+    private String downloadUrl;
+
+    /**
+     * 下载次数
+     */
+    @Column(name = "downloads")
+    private int downloads;
+
+    /**
+     * 所属栏目
+     */
     @ManyToOne
-    private Category category;//所属栏目
+    @JoinColumn(name = "categoryId")
+    private Category category;
 
 }

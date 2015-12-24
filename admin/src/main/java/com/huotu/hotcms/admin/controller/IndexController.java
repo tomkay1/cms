@@ -19,11 +19,14 @@ import java.util.Locale;
 public class IndexController {
 
     @RequestMapping("test")
-    public String testIndex(Site site,Locale locale,HttpServletRequest request){
+    public String testIndex(Site site){
         // 业务层代码 无需关心当前站点以及当前语言的获取！
-        Locale locale1 = request.getLocale();
-        Article article = new Article();
-        return "";
+        return "View/index.html";
+    }
+
+    @RequestMapping("test/{region}")
+    public String testIndex2(Site site,@PathVariable String region) {
+        return "View/index.html";
     }
 
     @RequestMapping("content.html")

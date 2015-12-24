@@ -12,14 +12,14 @@ package com.huotu.hotcms.common;
  * 语言
  * Created by cwb on 2015/12/23.
  */
-public enum Language implements CommonEnum {
+public enum LanguageType implements CommonEnum {
     SIMPLIFIED_CHINESE(0,"zh-CN"),
     ENGLISH(1,"en");
 
     private int code;
     private String value;
 
-    Language(int code, String value) {
+    LanguageType(int code, String value) {
         this.code = code;
         this.value = value;
     }

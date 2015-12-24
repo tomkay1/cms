@@ -25,11 +25,36 @@ import java.time.LocalDateTime;
 public abstract class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;//主键
-    private Integer customerId;//商户ID
-    private int orderWeight;//排序权重
-    private boolean deleted = false;//是否已删除
-    private LocalDateTime createTime;//创建时间
-    private LocalDateTime updateTime;//更新时间
+    private Long id;
+
+    /**
+     * 商户ID
+     */
+    @Column(name = "customerId")
+    private Integer customerId;
+
+    /**
+     * 排序权重
+     */
+    @Column(name = "orderWeight")
+    private int orderWeight;
+
+    /**
+     * 是否已删除
+     */
+    @Column(name = "deleted")
+    private boolean deleted = false;
+
+    /**
+     * 创建时间
+     */
+    @Column(name = "createTime")
+    private LocalDateTime createTime;
+
+    /**
+     * 更新时间
+     */
+    @Column(name = "updateTime")
+    private LocalDateTime updateTime;
 
 }

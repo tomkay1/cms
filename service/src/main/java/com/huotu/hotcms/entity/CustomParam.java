@@ -24,11 +24,23 @@ import javax.persistence.*;
 @Setter
 public class CustomParam extends BaseEntity {
 
+    /**
+     * 所属模型
+     */
     @ManyToOne
     @JoinColumn(name = "customModelId")
     private CustomModel customModel;
-    private String name;//参数名称
-    private ParamType type;//参数类型
-    @OneToOne
-    private Custom custom;
+
+    /**
+     * 参数名称
+     */
+    @Column(name = "name")
+    private String name;
+
+    /**
+     * 参数类型
+     */
+    @Column(name = "type")
+    private ParamType type;
+
 }

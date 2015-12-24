@@ -11,34 +11,25 @@ package com.huotu.hotcms.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
- * 公告模型
- * Created by cwb on 2015/12/22.
+ * 域名
+ * Created by cwb on 2015/12/24.
  */
 @Entity
-@Table(name = "cms_notice")
-@Setter
+@Table(name = "cms_host")
 @Getter
-public class Notice extends BaseEntity {
+@Setter
+public class Host {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     /**
-     * 公告标题
-     */
-    private String title;
-
-    /**
-     * 公告内容
-     */
-    private String content;
-
-    /**
-     * 所属栏目
+     * 所属站点
      */
     @ManyToOne
-    private Category category;
-
+    @JoinColumn(name = "siteId")
+    private Site site;
 }

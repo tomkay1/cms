@@ -24,13 +24,44 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class DataModel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;//主键
-    private String name;//名称
-    private String description;//描述
-    private int orderWeight;//排序权重
-    private ModelType type;//数据模型类型
-    private LocalDateTime createTime;//创建时间
-    private LocalDateTime updateTime;//更新时间
+    private Long id;
+
+    /**
+     * 名称
+     */
+    @Column(name = "name")
+    private String name;
+
+    /**
+     * 描述
+     */
+    @Column(name = "description")
+    private String description;
+
+    /**
+     * 排序权重
+     */
+    @Column(name = "orderWeight")
+    private int orderWeight;
+
+    /**
+     * 数据模型类型
+     */
+    @Column(name = "type")
+    private ModelType type;
+
+    /**
+     * 创建时间
+     */
+    @Column(name = "createTime")
+    private LocalDateTime createTime;
+
+    /**
+     * 更新时间
+     */
+    @Column(name = "updateTime")
+    private LocalDateTime updateTime;
 }

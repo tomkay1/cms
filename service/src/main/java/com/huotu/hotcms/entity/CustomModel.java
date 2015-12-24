@@ -11,10 +11,7 @@ package com.huotu.hotcms.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -27,10 +24,26 @@ import java.util.List;
 @Setter
 public class CustomModel extends BaseEntity {
 
-    private String name;//自定义模型名称
-    private String description;//描述信息
+    /**
+     * 自定义模型名称
+     */
+    @Column(name = "name")
+    private String name;
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "custom")
+    /**
+     * 描述信息
+     */
+    @Column(name = "description")
+    private String description;
+
+    /**
+     * 拥有的参数
+     */
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "customModel")
     private List<CustomParam> params;
 
+    public void addParam(CustomParam param) {
+        param.setCustomModel(this);
+        this.params.add(param);
+    }
 }

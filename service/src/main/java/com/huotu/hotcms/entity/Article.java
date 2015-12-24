@@ -9,7 +9,7 @@
 package com.huotu.hotcms.entity;
 
 import com.huotu.hotcms.common.ArticleSource;
-import com.huotu.hotcms.common.Language;
+import com.huotu.hotcms.common.LanguageType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,19 +25,66 @@ import javax.persistence.*;
 @Setter
 public class Article extends BaseEntity {
 
-    private String title;//标题
-    private String thumbUri;//缩略图
-    private String description;//描述
-    private String author;//作者
-    @Enumerated(EnumType.STRING)
-    private ArticleSource articleSource;//文章来源
+    /**
+     * 标题
+     */
+    @Column(name = "title")
+    private String title;
+
+    /**
+     * 缩略图
+     */
+    @Column(name = "thumbUri")
+    private String thumbUri;
+
+    /**
+     * 描述
+     */
+    @Column(name = "description")
+    private String description;
+
+    /**
+     * 作者
+     */
+    @Column(name = "author")
+    private String author;
+
+    /**
+     * 文章来源
+     */
+    @Column(name = "articleSource")
+    private ArticleSource articleSource;
+
+    /**
+     * 文章内容（富文本）
+     */
     @Lob
-    private String content;//文章内容（富文本）
-    private int scans;//浏览量
-    private int lauds;//点赞数量
-    private int unlauds;//被踩数量
-    private Language language;
+    @Column(name = "content")
+    private String content;
+
+    /**
+     * /浏览量
+     */
+    @Column(name = "scans")
+    private int scans;
+
+    /**
+     * 点赞数量
+     */
+    @Column(name = "lauds")
+    private int lauds;
+
+    /**
+     * 被踩数量
+     */
+    @Column(name = "unlauds")
+    private int unlauds;
+
+    /**
+     * 所属栏目
+     */
     @ManyToOne
-    private Category category;//所属栏目
+    @JoinColumn(name = "categoryId")
+    private Category category;
 
 }

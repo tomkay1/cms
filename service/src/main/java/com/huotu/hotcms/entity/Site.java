@@ -1,12 +1,12 @@
 package com.huotu.hotcms.entity;
 
-import com.huotu.hotcms.common.Language;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Locale;
+import java.util.List;
 
 /**
  * 站点
@@ -16,23 +16,96 @@ import java.util.Locale;
 @Table(name = "cms_site")
 @Setter
 @Getter
+@Data
 public class Site {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long siteId;//主键
-    private Integer customerId;	// 商户ID
-    private String name;//站点名称
-    private String title;	// 站点标题
-    private String description;// 描述，填写有助于搜索引擎优化
-    private String keywords;// 关键字，填写有助于搜索引擎优化
-    private String logoUri;	// 站点logo
-    private String copyright;// 版权信息
-    private boolean custom = false;//是否自定义视图
-    private String customViewUrl;//自定义视图根路径
-    private String hosts;//可以配置多域名，用逗号（","）隔开
-    private LocalDateTime createTime;//站点创建时间
-    private LocalDateTime updateTime;//站点更新时间
-    private Language language;//语言版本
+    private Long id;
+
+    /**
+     * 商户ID
+     */
+    @Column(name = "customerId")
+    private Integer customerId;
+
+    /**
+     * 站点名称
+     */
+    @Column(name = "name")
+    private String name;
+
+    /**
+     * 标题，填写有助于搜索引擎优化
+     */
+    @Column(name = "title")
+    private String title;
+
+    /**
+     * 关键字，填写有助于搜索引擎优化
+     */
+    @Column(name = "keywords")
+    private String keywords;
+
+    /**
+     * 描述，填写有助于搜索引擎优化
+     */
+    @Column(name = "description")
+    private String description;
+
+    /**
+     * 站点logo
+     */
+    @Column(name = "logoUri")
+    private String logoUri;
+
+    /**
+     * 版权信息
+     */
+    @Column(name = "copyright")
+    @Lob
+    private String copyright;
+
+    /**
+     * 是否自定义模板
+     */
+    @Column(name = "custom")
+    private boolean custom = false;
+
+    /**
+     * 自定义模板根路径
+     */
+    @Column(name = "customViewUrl")
+    private String customTemplateUrl;
+
+    /**
+     * 对应域名
+     */
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "site")
+    private List<Host> hosts;
+
+    /**
+     * 站点创建时间
+     */
+    @Column(name = "createTime")
+    private LocalDateTime createTime;
+
+    /**
+     * 站点更新时间
+     */
+    @Column(name = "updateTime")
+    private LocalDateTime updateTime;
+
+    /**
+     * 所属地区
+     */
+    @OneToOne
+    @JoinColumn(name = "regionId")
+    private Region region;
+
+    public void addHost(Host host) {
+        host.setSite(this);
+        this.hosts.add(host);
+    }
 
 }

@@ -11,9 +11,7 @@ package com.huotu.hotcms.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * 视频模型
@@ -25,13 +23,47 @@ import javax.persistence.Table;
 @Setter
 public class Video extends BaseEntity {
 
-    private String title;//视频名称
-    private String thumbUri;//缩略图uri
-    private String description;//描述信息
-    private String videoUrl;//内部储存地址
-    private String outLinkUrl;//外部链接地址
-    private int palyTimes;//播放次数
+    /**
+     * 视频名称
+     */
+    @Column(name = "title")
+    private String title;
+
+    /**
+     * 缩略图uri
+     */
+    @Column(name = "thumbUri")
+    private String thumbUri;
+
+    /**
+     * 描述信息
+     */
+    @Column(name = "description")
+    private String description;
+
+    /**
+     * 内部储存地址
+     */
+    @Column(name = "videoUrl")
+    private String videoUrl;
+
+    /**
+     * 外部链接地址
+     */
+    @Column(name = "outLinkUrl")
+    private String outLinkUrl;
+
+    /**
+     * 播放次数
+     */
+    @Column(name = "palyTimes")
+    private int palyTimes;
+
+    /**
+     * 所属栏目
+     */
     @ManyToOne
-    private Category category;//所属栏目
+    @JoinColumn(name = "categoryId")
+    private Category category;
 
 }

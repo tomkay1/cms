@@ -24,14 +24,42 @@ import javax.persistence.*;
 @Getter
 public class Category extends BaseEntity {
 
+    /**
+     * 栏目名称
+     */
+    @Column(name = "name")
+    private String name;
 
-    private String name;//栏目名称
+    /**
+     * 父级栏目
+     */
     @ManyToOne
-    private Category parent;//父级栏目
-    private String parentIds; // 所有父级编号，用逗号分隔
-    private boolean custom;//是否自定义模型
-    private ModelType modelType;//数据类型
+    @JoinColumn(name = "parentId")
+    private Category parent;
+
+    /**
+     * 所有父级编号，用逗号分隔
+     */
+    @Column(name = "parentIds")
+    private String parentIds;
+
+    /**
+     * 是否自定义模型
+     */
+    @Column(name = "custom")
+    private boolean custom;
+
+    /**
+     * 系统数据类型
+     */
+    @Column(name = "modelType")
+    private ModelType modelType;
+
+    /**
+     * 所属站点
+     */
     @ManyToOne
-    private Site site;//所属站点
+    @JoinColumn(name = "siteId")
+    private Site site;
 
 }

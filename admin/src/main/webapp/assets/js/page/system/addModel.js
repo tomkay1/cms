@@ -46,6 +46,7 @@ define(function (require, exports, module) {
                 type: "POST",
                 dataType: 'json',
                 success: function (data) {
+                    var layer=require("layer");
                     if(data!=null)
                     {
                         var index=parseInt(data.code);

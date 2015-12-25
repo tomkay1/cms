@@ -2,7 +2,6 @@
  * Created by Administrator on 2015/12/23.
  */
 define(function (require, exports, module) {
-    var layer=require("layer");
     $("#addModelForm").validate({
         rules: {
             txtModelName:{
@@ -52,7 +51,8 @@ define(function (require, exports, module) {
                         var index=parseInt(data.code);
                         if(index==200)
                         {
-                            layer.msg("操作成功",{time: 2000})
+                            var layer=require("layer");
+                            layer.msg("操作成功",{time: 2000});
                             $("#txtModelName").val("");
                             $("#txtModelDescription").val("");
                         }
@@ -71,4 +71,4 @@ define(function (require, exports, module) {
             return true;
         }
     });
-})
+});

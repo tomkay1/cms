@@ -37,6 +37,9 @@ public class SiteServiceImpl implements SiteService {
             site.setCustom(false);
         }
         site.setCustomTemplateUrl(request.getParameter("customTemplateUrl"));
+        String hosts =request.getParameter("hosts");
+        String[] a =hosts.split(";");
+//        Host host =
 //        site.setHosts(request.getParameter("hosts"));
 //        site.setRegion(request.getParameter("region"));
         site.setCreateTime(localDateTime);

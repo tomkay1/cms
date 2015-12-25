@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Controller
 @RequestMapping("/site")
-public class siteController {
+public class SiteController {
 
     @Autowired
     private SiteService siteService;

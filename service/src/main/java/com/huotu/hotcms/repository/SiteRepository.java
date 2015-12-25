@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * Created by chendeyu on 2015/12/24.
  */
 public interface SiteRepository  extends JpaRepository<Site,Long> {
+    Site findByCustomerIdAndName(Integer customId,String name);
 }

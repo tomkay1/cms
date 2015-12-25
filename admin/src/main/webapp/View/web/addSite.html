@@ -1,10 +1,11 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
         "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title></title>
     <link  href="/assets/css/admin.content.css"  type="text/css" rel="stylesheet"/>
     <link  href="/assets/css/admin.global.css"  type="text/css" rel="stylesheet"/>
+    <link  href="/assets/libs/layer/skin/layer.css"  type="text/css" rel="stylesheet"/>
     <script src="/assets/seajs/sea.js"></script>
     <script src="/assets/seajs/config.js"></script>
 </head>
@@ -19,36 +20,35 @@
             <!--<img src="../../images/bangzhu.png" style="vertical-align:middle;margin-left:20px;" onclick="window.open('http://bbs.huobanmall.com/showtopic-39.aspx')">-->
         </div>
     </div>
+    <form method="post" th:action="@{saveSite?customerid={customerid}(customerid=${user.customerId})}" id="form1" th:object="${site}" enctype="multipart/form-data">
     <div class="cnt-wp">
         <div class="cnt form">
-
             <div class="division">
                 <input type="hidden" name="hidOldParentId" id="hidOldParentId">
-
                 <table width="100%" border="0" cellpadding="0" cellspacing="0">
                     <tbody>
                     <tr>
                         <th>站点名称：</th>
                         <td>
-                            <input name="txtCatName" type="text" id="txtCatName" class="input-normal" placeholder="">
+                            <input name="name"  id="name" type="text" class="input-normal" placeholder="">
                         </td>
                     </tr>
                     <tr>
                         <th>站点标题：</th>
                         <td>
-                            <input name="txtCatName" type="text" id="txtCatName" class="input-normal" placeholder="">
+                            <input name="title"  id="title" type="text" class="input-normal" placeholder="">
                         </td>
                     </tr>
                     <tr>
                         <th>站点描述：</th>
                         <td>
-                            <input name="txtCatName" type="text" id="txtCatName" class="input-normal" placeholder="">
+                            <input name="description"  id="description" type="text" class="input-normal" placeholder="">
                         </td>
                     </tr>
                     <tr>
-                        <th>站点seo关键字：</th>
+                        <th>站点关键字：</th>
                         <td>
-                            <input name="txtCatName" type="text" id="txtCatName" class="input-normal" placeholder="">
+                            <input name="keywords"  id="keywords" type="text" class="input-normal" placeholder="">
                         </td>
                     </tr>
                     <tr>
@@ -64,29 +64,63 @@
                             <input name="txtReplyUrl1" type="hidden" id="txtReplyUrl1" value="/resource/images/wechat/mall_cat_def.png">
 
                         </td>
+                        <!--<th>站点logo：</th>-->
+                        <!--<td>-->
+                            <!--<img id="uploadLogo"-->
+                                 <!--style="width: 80px; height: 80px; border: 1px solid #ccc; float: left; background: #efefef; line-height: 80px; text-align: center; color: #ccc;"/>-->
+                            <!--<input style="margin-left: 10px;cursor: pointer;" type="button"-->
+                                   <!--value="上传"-->
+                                   <!--onclick="javascript:$('#btnLogoFile').click();"/>-->
+                            <!--<input onchange="uploadImg('btnLogoFile','uploadLogo','LogoFile')"-->
+                                   <!--id="btnLogoFile" name="btnFile"-->
+                                   <!--style="display:none;" type="file"/>-->
+                            <!--<input type="hidden" id="generalCertificateFile"-->
+                                   <!--th:value="${taxConfig}==null?'':*{logoUri}"/>-->
+                            <!--<input type="hidden" id="logo_uri"-->
+                                   <!--th:value="${logo_uri}==null  ?'':${logo_uri}"/>-->
+                        <!--</td>-->
                     </tr>
                     <tr>
-                        <th>是否自定义视图：</th>
+                        <th>版权信息：</th>
                         <td>
-                            <table id="raMarketable">
+                            <input name="copyright"  id="copyright" type="text" class="input-normal" placeholder="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>是否自定义模板：</th>
+                        <td>
+                            <table id="custom">
                                 <tbody>
                                 <tr>
-                                    <td><input id="raMarketable_0" type="radio" name="raMarketable" value="1" checked="checked"><label for="raMarketable_0">是</label></td>
-                                    <td><input id="raMarketable_1" type="radio" name="raMarketable" value="0"><label for="raMarketable_1">否</label></td>
+                                    <td><input id="custom_0" type="radio" name="custom" value="1" checked="checked"><label for="custom_0">是</label></td>
+                                    <td><input id="custom_1" type="radio" name="custom" value="0"><label for="custom_1">否</label></td>
                                 </tr>
                                 </tbody></table>
                         </td>
                     </tr>
                     <tr>
-                        <th>网站模板根地址：</th>
+                        <th>自定义模板根路径：</th>
                         <td>
-                            <input name="txtCatName" type="text" id="txtCatName" class="input-normal" placeholder="">
+                            <input name="customTemplateUrl"  id="customTemplateUrl" type="text" class="input-normal" placeholder="">
                         </td>
                     </tr>
                     <tr>
-                        <th>商户网络地址：</th>
+                        <th>域名：</th>
                         <td>
-                            <input name="txtCatName" type="text" id="txtCatName" class="input-normal" placeholder="">
+                            <input name="hosts"  id="hosts" type="text" class="input-normal" placeholder="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>所属地区：</th>
+                        <td>
+                            <select name="region" class="input-normal" id="region">
+                                <option value="-1">==请选择地区==</option>
+                                <option value="0">中国</option>
+                                <option value="1">美国</option>
+                                <option value="2">德国</option>
+                                <option value="3">韩国</option>
+                                <option value="4">日本</option>
+                            </select>
                         </td>
                     </tr>
                     </tbody>
@@ -97,11 +131,47 @@
                 <div style="display: none;">
                     <input type="submit" name="btnSave" value="" id="btnSave">
                 </div>
-                <a class="btn-lit" href="javascript:submitForm();"><span>保存</span></a>
+                <!--<a class="btn-lit" th:attr="customerid=${user.customerId}" onclick="submitForm(this)"><span>保存</span></a>-->
+                <a class="btn-lit"  onclick="submitForm1(this)"><span>保存</span></a>
             </div>
         </div>
     </div>
+    </form>
 </div>
-<script>seajs.use(["addSite"]);</script>
+
+<script>seajs.use(["addSite","layer"]);</script>
+<script>
+    function submitForm1(obj){
+//        $("#form1").submit();
+        var index =layer.load(1, {
+            shade: [0.1,'#fff'] //0.1透明度的白色背景
+        });
+        layer.alert("!");
+    }
+    function uploadImg(btnFile, showImgId, pathId) {
+
+            $.jBox.tip("正在上传...", "loading");
+            $.ajaxFileUpload({
+                url: uploadUrl,
+                secureuri: false,//安全协议
+                fileElementId: btnFile,//id
+                dataType: 'json',
+                type: "post",
+                data: null,
+                error: function (data, status, e) {
+
+                },
+                success: function (json) {
+                    if (json.result == 1) {
+                        $("#" + showImgId).attr("src", json.fileUrl);
+                        $("#" + pathId).val(json.fileUri);
+                        $.jBox.tip("上传成功", "success");
+                    } else {
+                        $.jBox.tip("上传失败", "error");
+                    }
+                }
+            });
+    }
+</script>
 </body>
 </html>

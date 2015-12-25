@@ -16,7 +16,7 @@ define(function (require, exports, module) {
         },
         url: '/Smart/getSmartPage',//数据来源Url|通过mobel自定义属性配置
         rows: [
-            {width: '30%', field: 'title', title: '站点名称', align: 'center'},
+            {width: '30%', field: 'name', title: '站点名称', align: 'center'},
             {width: '30%', field: 'title', title: '站点标题', align: 'center'},
             {width: '30%', field: 'title', title: '站点域名', align: 'center'},
             {

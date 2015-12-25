@@ -5,6 +5,7 @@ import com.huotu.hotcms.service.SiteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,13 +25,14 @@ public class siteController {
     {
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("/View/web/sitelist.html");
+
         return  modelAndView;
     }
 
 
 
-    @RequestMapping("/addSite")
-    public ModelAndView addSite(HttpServletRequest request) throws Exception{
+    @RequestMapping(value = "/addSite")
+    public ModelAndView addSite(HttpServletRequest request,Site site) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("/View/web/addSite.html");
 //        Site site = new Site();
@@ -39,5 +41,13 @@ public class siteController {
 //        site.setId(Long.valueOf(1));
 //        siteService.modifySite(site);
         return  modelAndView;
+    }
+
+    @RequestMapping(value = "/saveSite",method = RequestMethod.POST)
+    public ModelAndView saveSite(HttpServletRequest request) throws Exception{
+        ModelAndView modelAndView=new ModelAndView();
+        modelAndView.setViewName("/View/web/sitelist.html");
+        siteService.addSite(request);
+        return modelAndView;
     }
 }

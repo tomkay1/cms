@@ -14,22 +14,26 @@ define(function (require, exports, module) {
         dataParam: {
             enabled: true
         },
-        url: '/Smart/getSmartPage',//数据来源Url|通过mobel自定义属性配置
+        url: '/model/getModelList',//数据来源Url|通过mobel自定义属性配置
         rows: [
             {
-                width: '30%', field: 'title', title: '模型名称', align: 'center'
+                width: '30%', field: 'name', title: '模型名称', align: 'center'
             },
-            { width: '40%', field: 'title', title: '描述', align: 'center' },
+            { width: '40%', field: 'description', title: '描述', align: 'center' },
             {
-                width: '20%', field: 'createdTime', title: '创建时间', align: 'center',
+                width: '20%', field: 'createTime', title: '创建时间', align: 'center',
                 formatter: function (value, rowData) {
-                    return value.toString().toString().substr(0, 16).replace('T', ' ');
+                    if(value!=null)
+                    {
+                        return value.toString();
+                    }
+                    return "";
                 }
             },
             { width: '10%', field: 'title', title: '操作', align: 'center',
                 formatter: function (value, rowData) {
-                    return "<a href='#' style='margin-right:10px;'>删除</a>" +
-                        "<a href='#' style='margin-right:10px;'>修改</a>"
+                    return "<a href='#' style='margin-right:10px; color:blue;'>删除</a>" +
+                        "<a href='#' style='margin-right:10px; color: blue'>修改</a>"
                 }
             },
 

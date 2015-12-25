@@ -37,4 +37,24 @@ public enum ModelType implements CommonEnum {
     public Object getValue() {
         return value;
     }
+
+    public static ModelType valueOf(int value)
+    {
+        switch (value){
+            case 0:
+                return ARTICLE;
+            case 1:
+                return NOTICE;
+            case 2:
+                return  VIDEO;
+            case 3:
+                return GALLERY;
+            case 4:
+                return  DOWNLOAD;
+            case 5:
+                return LINK;
+            default:
+                return null;
+        }
+    }
 }

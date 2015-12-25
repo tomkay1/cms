@@ -20,13 +20,13 @@ define(["js/jquery-1.9.1.min"],function () {
         setDisabled: function (id) {
             var disabledText = $("#" + id).attr("data-submiting-text");
             $("#" + id).addClass("disabled");
-            $("#" + id).html(disabledText);
+            $("#" + id).val(disabledText);
         },
         cancelDisabled: function (id) {
             //setTimeout(function () {
             var abledText = $("#" + id).attr("data-text");
             $("#" + id).removeClass("disabled");
-            $("#" + id).html(abledText);
+            $("#" + id).val(abledText);
             //}, 2000);
         }
     }

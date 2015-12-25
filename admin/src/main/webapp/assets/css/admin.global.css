@@ -39,6 +39,8 @@ background: #f00000;
 .btn-lit-active span{background-position:right -50px;}
 .btn-lit:hover{background:#ff4d4d; }
 
+.btn-lit.disabled{background:#ED7771 }
+
 
 
 /* 通用字体 */

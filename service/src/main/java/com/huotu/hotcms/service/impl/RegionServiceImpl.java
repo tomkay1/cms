@@ -1,4 +1,5 @@
-/*
+
+/*版权所有
  * 版权所有:杭州火图科技有限公司
  * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
  *
@@ -8,11 +9,12 @@
 
 package com.huotu.hotcms.service.impl;
 
-import com.huotu.hotcms.entity.Region;
-import com.huotu.hotcms.repository.RegionRepository;
-import com.huotu.hotcms.service.RegionService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+        import com.huotu.hotcms.entity.Region;
+        import com.huotu.hotcms.repository.RegionRepository;
+        import com.huotu.hotcms.service.RegionService;
+        import org.springframework.beans.factory.annotation.Autowired;
+        import org.springframework.stereotype.Service;
+        import com.huotu.hotcms.service.RegionService;
 
 /**
  * Created by cwb on 2015/12/24.

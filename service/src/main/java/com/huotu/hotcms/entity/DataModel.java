@@ -8,6 +8,7 @@
 
 package com.huotu.hotcms.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.huotu.hotcms.common.ModelType;
 import lombok.Getter;
 import lombok.Setter;

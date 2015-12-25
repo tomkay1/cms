@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Controller
 @RequestMapping("/main")
-public class mainController {
+public class MainController {
     @RequestMapping({"/index","/"})
     public ModelAndView index(HttpServletRequest request, @RequestParam("customerid") Integer customerid) throws Exception{
         ModelAndView modelAndView = new ModelAndView();

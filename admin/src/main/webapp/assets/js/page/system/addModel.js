@@ -2,8 +2,8 @@
  * Created by Administrator on 2015/12/23.
  */
 define(function (require, exports, module) {
-    alert('f');
-    $("#jq-cms-Save").validate({
+    var layer=require("layer");
+    $("#addModelForm").validate({
         rules: {
             txtModelName:{
                 required: true,
@@ -13,6 +13,9 @@ define(function (require, exports, module) {
             },
             txtModelType: {
                 selrequired: "-1"
+            },
+            txtOrderWeight:{
+                digits:true,
             }
         },
         messages: {
@@ -24,56 +27,44 @@ define(function (require, exports, module) {
             },
             txtModelType: {
                 selrequired: "请选择模型类型"
+            },
+            txtOrderWeight:{
+                digits:"请输入数字",
             }
         },
         submitHandler: function (form, ev) {
-            //editor.sync();
-            //var commonUtil = require("Common");
-            //commonUtil.setDisabled("save-btn");
-            //$.ajax({
-            //    url: "/ublog/addblog",
-            //    data: {
-            //        name: $("#ublog_title").val(),
-            //        source: $("#ublog_resource").val(),
-            //        typeid: $("#ublog_type").val(),
-            //        tags: $("#ublog_tags").val(),
-            //        description: $("#ublog_description").val(),
-            //        content: $("#content").val()
-            //    },
-            //    type: "POST",
-            //    dataType: 'json',
-            //    success: function (data) {
-            //        if (data != null) {
-            //            switch (data.code) {
-            //                case 200:
-            //                    $("#alert-success").html("新增博客成功");
-            //                    $("#alert-success").show();
-            //                    break;
-            //                case 500://保存失败
-            //                    $("#alert-success").html("新增博客失败");
-            //                    $("#alert-success").show();
-            //                    break;
-            //                case 402://没有登录
-            //                    window.location.href = data.data.toString();
-            //                    break;
-            //                case 503://服务器错误
-            //                    $("#alert-success").html("服务器繁忙,请稍后再试");
-            //                    $("#alert-success").show();
-            //                    break;
-            //            }
-            //        }
-            //        else {
-            //            $("#alert-success").html("服务器繁忙,请稍后再试");
-            //            $("#alert-success").show();
-            //        }
-            //        commonUtil.cancelDisabled("save-btn");
-            //    },
-            //    error: function () {
-            //        $("#alert-success").html("服务器繁忙,请稍后再试");
-            //        $("#alert-success").show();
-            //        commonUtil.cancelDisabled("save-btn");
-            //    }
-            //});
+            var commonUtil = require("common");
+            commonUtil.setDisabled("jq-cms-Save");
+            $.ajax({
+                url: "/model/updateModel",
+                data: {
+                    id:$("#hidModelID").val(),
+                    name: $("#txtModelName").val(),
+                    description: $("#txtModelDescription").val(),
+                    type: $("#txtModelType").val(),
+                    orderWeight: $("#txtOrderWeight").val()
+                },
+                type: "POST",
+                dataType: 'json',
+                success: function (data) {
+                    if(data!=null)
+                    {
+                        var index=parseInt(data.code);
+                        if(index==200)
+                        {
+                            layer.msg("操作成功",{time: 2000})
+                            $("#txtModelName").val("");
+                            $("#txtModelDescription").val("");
+                        }
+                        if(index==500)
+                            layer.msg("操作失败",{time: 2000})
+                    }
+                    commonUtil.cancelDisabled("jq-cms-Save");
+                },
+                error: function () {
+                    commonUtil.cancelDisabled("jq-cms-Save");
+                }
+            });
             return false;
         },
         invalidHandler: function () {

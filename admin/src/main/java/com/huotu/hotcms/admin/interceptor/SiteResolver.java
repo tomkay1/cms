@@ -36,7 +36,7 @@ public class SiteResolver implements HandlerMethodArgumentResolver {
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
         String customerId = request.getParameter("customerId");
         Site site = new Site();
-        if(customerId==null) {
+        /*if(customerId==null) {
             String domain = request.getServerName();
             site = hostService.getSite(domain).getSite();
             String path = request.getContextPath();
@@ -46,7 +46,7 @@ public class SiteResolver implements HandlerMethodArgumentResolver {
             site.setRegion(region);
         }else {
 
-        }
+        }*/
 //        request.getContextPath()
 
         return site; // select by SiteDomain

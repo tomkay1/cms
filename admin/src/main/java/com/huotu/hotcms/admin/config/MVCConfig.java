@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
@@ -78,6 +79,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         argumentResolvers.add(siteResolver);
     }
 
+
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
@@ -97,6 +99,15 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         registry.viewResolver(htmlViewResolver());
         registry.viewResolver(javascriptViewResolver());
         registry.viewResolver(cssViewResolver());
+        registry.viewResolver(redirectViewResolver());
+        registry.viewResolver(remoteHtmlViewResolver());
+    }
+
+
+    public ViewResolver redirectViewResolver() {
+        ThymeleafViewResolver resolver = new ThymeleafViewResolver();
+        resolver.setViewNames(ArrayUtil.array("redirect:/*"));
+        return resolver;
     }
 
     public ViewResolver htmlViewResolver() {
@@ -104,7 +115,16 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         resolver.setTemplateEngine(templateEngine(htmlTemplateResolver()));
         resolver.setContentType("text/html");
         resolver.setCharacterEncoding(UTF8);
-        resolver.setViewNames(ArrayUtil.array("*.html"));
+        resolver.setViewNames(ArrayUtil.array("view/**"));
+        return resolver;
+    }
+
+    public ViewResolver remoteHtmlViewResolver() {
+        ThymeleafViewResolver resolver = new ThymeleafViewResolver();
+        resolver.setTemplateEngine(templateEngine(remoteHtmlTemplateResolver()));
+        resolver.setContentType("text/html");
+        resolver.setCharacterEncoding(UTF8);
+        resolver.setViewNames(ArrayUtil.array("pc/**"));
         return resolver;
     }
 
@@ -146,13 +166,25 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         springMessageResolver.setMessageSource(messageSource);
         return springMessageResolver;
     }
+
     @Autowired
     private ApplicationContext applicationContext;
+
     private ITemplateResolver htmlTemplateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
         resolver.setCacheable(false);
         resolver.setCharacterEncoding(UTF8);
         resolver.setApplicationContext(applicationContext);
+        resolver.setTemplateMode(TemplateMode.HTML);
+        return resolver;
+    }
+
+    private ITemplateResolver remoteHtmlTemplateResolver() {
+        SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
+        resolver.setCacheable(false);
+        resolver.setCharacterEncoding(UTF8);
+        resolver.setApplicationContext(applicationContext);
+        resolver.setPrefix("http://www.huobanj.com/");
         resolver.setTemplateMode(TemplateMode.HTML);
         return resolver;
     }

@@ -1,5 +1,6 @@
 package com.huotu.hotcms.admin.controller;
 
+import com.huotu.hotcms.admin.model.Seo;
 import com.huotu.hotcms.entity.Site;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,15 +16,26 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class IndexController {
 
-    @RequestMapping("test")
+    @RequestMapping("/")
     public String testIndex(Site site){
         // 业务层代码 无需关心当前站点以及当前语言的获取！
-        return "View/index.html";
+        return "redirect:/f";
     }
 
-    @RequestMapping("test/{region}")
+    @RequestMapping("/remote")
+    public String testRemote(Model model) {
+        model.addAttribute("seo",new Seo("Access remote template success!"));
+        return "pc/yun-index.html";
+    }
+
+    @RequestMapping("/f")
+    public String index(Site site) {
+        return "view/index.html";
+    }
+
+    @RequestMapping("/f/{region}")
     public String testIndex2(Site site,@PathVariable String region) {
-        return "View/index.html";
+        return "view/index.html";
     }
 
     @RequestMapping("content.html")

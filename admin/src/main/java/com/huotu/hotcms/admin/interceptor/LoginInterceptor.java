@@ -11,6 +11,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 
 /**
  * 登陆拦截器.
@@ -19,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Component
 public class LoginInterceptor extends HandlerInterceptorAdapter {
-//    private static final String[] IGNORE_URI = {"/login.jsp", "/Login/","backui/","frontui/"};
+    private static final String[] IGNORE_URI = {"/", "/f/**","/f"};
 
     @Autowired
     private  CookieUser cookieUser;
@@ -29,6 +30,9 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        if(Arrays.asList(IGNORE_URI).contains(request.getServletPath())) {
+            return true;
+        }
         Integer customerId= QueryHelper.getQueryValInteger(request,"customerid");
         if(!cookieUser.checkLogin(request,customerId))//判断用户登录授权
         {

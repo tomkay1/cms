@@ -18,28 +18,28 @@ public class MainController {
     @RequestMapping({"/index","/"})
     public ModelAndView index(HttpServletRequest request, @RequestParam("customerid") Integer customerid) throws Exception{
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("/View/main.html");
+        modelAndView.setViewName("/view/main.html");
         return modelAndView;
     }
 
     @RequestMapping("/list")
     public  ModelAndView list(HttpServletRequest request) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/View/section/list.html");
+        modelAndView.setViewName("/view/section/list.html");
         return  modelAndView;
     }
 
     @RequestMapping("/articlelist")
     public ModelAndView articlelist(HttpServletRequest request) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/View/Contents/articlelist.html");
+        modelAndView.setViewName("/view/Contents/articlelist.html");
         return  modelAndView;
     }
 
     @RequestMapping("/announlist")
     public ModelAndView announlist(HttpServletRequest request) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/View/Contents/announlist.html");
+        modelAndView.setViewName("/view/Contents/announlist.html");
         return  modelAndView;
     }
 

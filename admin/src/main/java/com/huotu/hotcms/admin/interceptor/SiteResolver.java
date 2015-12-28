@@ -1,5 +1,6 @@
 package com.huotu.hotcms.admin.interceptor;
 
+import com.huotu.hotcms.entity.Host;
 import com.huotu.hotcms.entity.Site;
 import com.huotu.hotcms.service.HostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * Created by Administrator on 2015/12/21.
@@ -30,21 +32,35 @@ public class SiteResolver implements HandlerMethodArgumentResolver {
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
-        String customerId = request.getParameter("customerId");
+        String regionCode = getRegionCode(request);
+        String domain = request.getServerName();
+        Site site = getSite(domain,regionCode);
+        return site;
+    }
+
+    public String getRegionCode(HttpServletRequest request) {
+        String path = request.getServletPath();
+        String regionCode = "";
+        if("/".equals(path)) {
+            regionCode = request.getLocale().getCountry();
+        }else if(path.lastIndexOf("/")==0) {
+            regionCode = path.substring(1);
+        }
+        return regionCode;
+    }
+
+    public Site getSite(String domain,String regionCode) {
         Site site = new Site();
-        /*if(customerId==null) {
-            String domain = request.getServerName();
-            site = hostService.getSite(domain).getSite();
-            String path = request.getContextPath();
-            String path2 = request.getServletPath();
-            String area = request.getLocale().getCountry();
-            Region region = RegionService.getRegion(area);
-            site.setRegion(region);
-        }else {
-
-        }*/
-//        request.getContextPath()
-
-        return site; // select by SiteDomain
+        Host host = hostService.getHost(domain);
+        if(host!=null) {
+            List<Site> siteList = host.getSites();
+            for (Site s : siteList) {
+                if (s.getRegion().getRegionCode().equals(regionCode)) {
+                    site = s;
+                    break;
+                }
+            }
+        }
+        return site;
     }
 }

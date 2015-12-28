@@ -19,7 +19,7 @@ public class IndexController {
     @RequestMapping("/")
     public String testIndex(Site site){
         // 业务层代码 无需关心当前站点以及当前语言的获取！
-        return "redirect:f";
+        return "/view/index.html";
     }
 
 
@@ -29,12 +29,8 @@ public class IndexController {
         return "pc/yun-index.html";
     }
 
-    @RequestMapping("/f")
-    public String index(Site site) {
-        return "/view/index.html";
-    }
 
-    @RequestMapping("/f/{region}")
+    @RequestMapping("/{region}")
     public String testIndex2(Site site,@PathVariable String region) {
         return "/view/index.html";
     }

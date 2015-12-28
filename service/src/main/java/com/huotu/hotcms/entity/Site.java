@@ -87,7 +87,7 @@ public class Site {
             joinColumns = {@JoinColumn(name = "siteId",referencedColumnName = "siteId")},
             inverseJoinColumns = {@JoinColumn(name = "hostId",referencedColumnName = "hostId")}
     )
-    private List<Host> hosts;
+    private List<Host> hosts = new ArrayList<>();
 
     /**
      * 站点创建时间
@@ -112,10 +112,6 @@ public class Site {
         if(!this.hosts.contains(host)){
             this.hosts.add(host);
         }
-    }
-
-    public Site() {
-        this.hosts = new ArrayList<>();
     }
 
     public void removeHost(Host host) {

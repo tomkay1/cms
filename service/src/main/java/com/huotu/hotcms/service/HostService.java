@@ -8,5 +8,5 @@ import com.huotu.hotcms.entity.Site;
  */
 public interface HostService {
 
-    Host getSite(String domain);
+    Host getHost(String domain);
 }

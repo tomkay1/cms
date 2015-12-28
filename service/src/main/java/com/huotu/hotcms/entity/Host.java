@@ -39,14 +39,10 @@ public class Host {
      */
     private String remarks;
 
-
     /**
      * 对应站点
      */
     @ManyToMany(mappedBy = "hosts")
-    private List<Site> sites;
+    private List<Site> sites = new ArrayList<>();
 
-    public Host() {
-        this.sites = new ArrayList<>();
-    }
 }

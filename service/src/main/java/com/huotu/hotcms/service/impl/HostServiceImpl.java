@@ -17,7 +17,7 @@ public class HostServiceImpl implements HostService {
     private HostRepository hostRepository;
 
     @Override
-    public Host getSite(String domain) {
+    public Host getHost(String domain) {
         return hostRepository.findByDomain(domain);
     }
 }

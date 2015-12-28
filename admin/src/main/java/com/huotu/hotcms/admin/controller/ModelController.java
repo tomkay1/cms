@@ -34,14 +34,14 @@ public class ModelController {
     @RequestMapping("/modellist")
     public ModelAndView modelList(HttpServletRequest request) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/View/system/modellist.html");
+        modelAndView.setViewName("/view/system/modellist.html");
         return  modelAndView;
     }
 
     @RequestMapping("/addModel")
     public ModelAndView addModel(HttpServletRequest request) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/View/system/addModel.html");
+        modelAndView.setViewName("/view/system/addmodel.html");
         return modelAndView;
     }
 

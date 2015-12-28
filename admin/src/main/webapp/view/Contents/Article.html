@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link  href="/assets/css/main.css"  type="text/css" rel="stylesheet"/>
+    <link  href="/assets/libs/layer/skin/layer.css"  type="text/css" rel="stylesheet"/>
+    <script src="/assets/seajs/sea.js"></script>
+    <script src="/assets/seajs/config.js"></script>
+    <title>文章列表</title>
+</head>
+<body>
+<div class="result-wrap">
+    <form name="myform" id="myform" method="post">
+        <div class="result-title">
+            <div class="result-list">
+                <a href="#"><i class="icon-font">+</i>新建</a>
+            </div>
+        </div>
+        <div class="result-content">
+            <table class="result-tab" width="100%">
+                <tbody><tr>
+                    <th style="width:80px">序号</th>
+                    <th style="width:80px;">文章标题</th>
+                    <th style="width:100px">创建时间</th>
+                    <th style="width:80px">浏览数量</th>
+                    <th style="width:80px">点赞数量</th>
+                    <th style="width:80px">被踩数量</th>
+                    <th style="width:80px">操作</th>
+                </tr>
+                <!--@thymesVar id="g" type="com.huotu.hotedu.entity.MessageContent"-->
+                <tr>
+                    <td>29</td>
+                    <td title="">sdfwere</td>
+                    <td>20</td>
+                    <td>10</td>
+                    <td>10</td>
+                    <td>1</td>
+
+                    <td><a class="link-update" href="#">修改</a><br>
+                        <a class="link-update" href="#" onclick="save(this)"> 删除</a>
+                    </td>
+
+                </tr>
+
+            <!--<div class="list-page">-->
+                <!--<span>5</span> 条 <span>1</span>/<span>1</span> 页-->
+            <!--</div>-->
+                </tbody>
+            </table>
+        </div>
+    </form>
+</div>
+</body>
+
+<script>
+    function save(obj) {
+        alert("!1");
+        layer.alert('内容', {
+            icon: 3,
+            skin: 'layer-ext-moon' //该皮肤由layer.seaning.com友情扩展。关于皮肤的扩展规则，去这里查阅
+        })
+    }
+</script>
+<script>seajs.use(["main"]);</script>
+<script>seajs.use(["layer"]);</script>
+</html>

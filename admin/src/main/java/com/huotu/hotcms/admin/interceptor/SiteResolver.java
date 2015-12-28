@@ -1,9 +1,7 @@
 package com.huotu.hotcms.admin.interceptor;
 
-import com.huotu.hotcms.entity.Region;
 import com.huotu.hotcms.entity.Site;
 import com.huotu.hotcms.service.HostService;
-import com.huotu.hotcms.service.RegionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -21,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 public class SiteResolver implements HandlerMethodArgumentResolver {
 
     @Autowired
-    private RegionService RegionService;
+    private com.huotu.hotcms.service.RegionService RegionService;
 
     @Autowired
     private HostService hostService;

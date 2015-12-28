@@ -14,7 +14,6 @@ package com.huotu.hotcms.service.impl;
         import com.huotu.hotcms.service.RegionService;
         import org.springframework.beans.factory.annotation.Autowired;
         import org.springframework.stereotype.Service;
-        import com.huotu.hotcms.service.RegionService;
 
 /**
  * Created by cwb on 2015/12/24.

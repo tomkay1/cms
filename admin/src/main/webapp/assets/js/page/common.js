@@ -28,6 +28,11 @@ define(["js/jquery-1.9.1.min"],function () {
             $("#" + id).removeClass("disabled");
             $("#" + id).val(abledText);
             //}, 2000);
+        },
+        redirectUrl:function(url){
+            parent.frames["content"].src=url;
+            //alert("fff");
+            //parent.frames["content"].window.href=url;
         }
     }
 });

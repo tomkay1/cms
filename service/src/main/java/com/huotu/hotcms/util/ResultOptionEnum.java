@@ -8,6 +8,8 @@ import com.huotu.hotcms.common.CommonEnum;
 public enum ResultOptionEnum implements CommonEnum {
     OK(200,"成功"),
     NOLOGIN(201,"没有登录"),
+    NO_LIMITS(202,"没有权限"),
+
     NOFIND(404,"没有信息"),
     FAILE(500,"失败"),
     PARAMERROR(501,"参数错误"),

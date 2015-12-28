@@ -63,6 +63,14 @@ public class CookieUser {
     }
 
     /*
+    * 判断是否是超级管理员
+    * */
+    public boolean isSupper(HttpServletRequest request)
+    {
+        return getRoleId(request)==-1;
+    }
+
+    /*
     * 检查登录
     * */
     public  boolean checkLogin(HttpServletRequest request,int customerId)

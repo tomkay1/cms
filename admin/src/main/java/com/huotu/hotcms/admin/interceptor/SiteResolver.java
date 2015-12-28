@@ -6,6 +6,7 @@ import com.huotu.hotcms.repository.SiteRepository;
 import com.huotu.hotcms.service.HostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -13,7 +14,6 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -22,9 +22,6 @@ import java.util.Set;
 @Component
 public class SiteResolver implements HandlerMethodArgumentResolver {
 
-
-    @Autowired
-    private SiteRepository siteRepository;
 
     @Autowired
     private HostService hostService;
@@ -54,8 +51,8 @@ public class SiteResolver implements HandlerMethodArgumentResolver {
         return regionCode;
     }
 
-    public Site getSite(String domain,String regionCode) {
-        Site site = new Site();
+    public Site getSite(String domain,String regionCode) throws Exception {
+        Site site = null;
         Host host = hostService.getHost(domain);
         if(host!=null) {
             Set<Site> siteList = host.getSites();
@@ -65,6 +62,9 @@ public class SiteResolver implements HandlerMethodArgumentResolver {
                     break;
                 }
             }
+        }
+        if(site == null) {
+            throw new Exception("页面不存在");
         }
         return site;
     }

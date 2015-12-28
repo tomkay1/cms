@@ -46,17 +46,24 @@ public class InitService {
             Region region = new Region();
             region.setLangCode("zh");
             region.setLangName("中文");
-            region.setRegionCode("cn");
-            region.setRegionName("大陆");
-            region.setLangTag("zh-cn");
+            region.setRegionCode("CN");
+            region.setRegionName("中国大陆");
+            region.setLangTag("zh-CN");
             regionRepository.save(region);
             Region region1 = new Region();
             region1.setLangCode("en");
             region1.setLangName("英文");
-            region1.setRegionCode("us");
+            region1.setRegionCode("US");
             region1.setRegionName("美国");
-            region1.setLangTag("en-us");
+            region1.setLangTag("en-US");
             regionRepository.save(region1);
+            Region region2 = new Region();
+            region2.setLangCode("ko");
+            region2.setLangName("韩文");
+            region2.setRegionCode("KR");
+            region2.setRegionName("韩国");
+            region2.setLangTag("ko-KR");
+            regionRepository.save(region2);
         }
         if(siteRepository.count() == 0) {
             Host host = new Host();
@@ -70,24 +77,6 @@ public class InitService {
             site.addHost(host);
             site.addHost(host1);
             siteRepository.save(site);
-            /*Host host = new Host();
-            host.setDomain("cms.51flashmall.com");
-            Host host1 = new Host();
-            host1.setDomain("localhost");
-            host = hostRepository.save(host);
-            host1 = hostRepository.save(host1);
-            Site site = new Site();
-            site.setCustomerId(3447);
-            site.setRegion(regionRepository.findByRegionCodeIgnoreCase("cn"));
-            site.setCreateTime(LocalDateTime.now());
-            site = siteRepository.save(site);
-            site.addHost(host);
-            site.addHost(host1);
-            site = siteRepository.save(site);
-            host.addSite(site);
-            host1.addSite(site);
-            hostRepository.save(host);
-            hostRepository.save(host1);*/
         }
     }
 }

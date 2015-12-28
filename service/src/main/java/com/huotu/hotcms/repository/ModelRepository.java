@@ -8,7 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 /**
- * Created by Administrator on 2015/12/25.
+ * @since 1.0.0
+ * @author xhl
+ * @time 2015/15/25
  */
 public interface ModelRepository extends JpaRepository<DataModel, Long>,JpaSpecificationExecutor {
 //    Page<DataModel> findByName(Pageable pageRequest,Specification<DataModel> specification);

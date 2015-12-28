@@ -3,7 +3,9 @@ package com.huotu.hotcms.util;
 import com.huotu.hotcms.common.CommonEnum;
 
 /**
- * Created by Administrator on 2015/12/25.
+ * @since 1.0.0
+ * @author xhl
+ * @time 2015/15/25
  */
 public enum ResultOptionEnum implements CommonEnum {
     OK(200,"成功"),

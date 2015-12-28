@@ -25,7 +25,9 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 
 /**
- * Created by chendeyu on 2015/12/24.
+ * @since 1.0.0
+ * @author xhl
+ * @time 2015/15/25
  */
 @Controller
 @RequestMapping("/model")

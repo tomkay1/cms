@@ -3,7 +3,9 @@ package com.huotu.hotcms.util;
 import com.huotu.hotcms.common.CMSEnums;
 
 /**
- * Created by xhl on 2015/12/25.
+ * @since 1.0.0
+ * @author xhl
+ * @time 2015/15/25
  */
 public class ResultView {
     private final   int code;

@@ -25,7 +25,7 @@ public class ModelServiceImpl implements ModelService {
 
     @Override
     public PageData<DataModel> getPage(String name,int page,int pageSize) {
-        PageData<DataModel> data = null;
+        PageData<DataModel> data = new PageData<DataModel>();
         Specification<DataModel> specification = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (!StringUtils.isEmpty(name)) {
@@ -34,14 +34,15 @@ public class ModelServiceImpl implements ModelService {
             return cb.and(predicates.toArray(new Predicate[predicates.size()]));
         };
         Page<DataModel> pageData = modelRepository.findAll(specification,new PageRequest(page - 1, pageSize));
-        if (pageData != null) {
-            data = new PageData<DataModel>();
-            data.setPageCount(pageData.getTotalPages());
-            data.setPageIndex(pageData.getNumber());
-            data.setPageSize(pageData.getSize());
-            data.setTotal(pageData.getTotalElements());
-            data.setRows((DataModel[])pageData.getContent().toArray(new DataModel[pageData.getContent().size()]));
-        }
+        data=data.ConvertPageData(pageData,new DataModel[pageData.getContent().size()]);
+//        if (pageData != null) {
+//            data = new PageData<DataModel>();
+//            data.setPageCount(pageData.getTotalPages());
+//            data.setPageIndex(pageData.getNumber());
+//            data.setPageSize(pageData.getSize());
+//            data.setTotal(pageData.getTotalElements());
+//            data.setRows((DataModel[])pageData.getContent().toArray(new DataModel[pageData.getContent().size()]));
+//        }
         return  data;
     }
 

@@ -1,5 +1,8 @@
 package com.huotu.hotcms.service;
 
+import com.huotu.hotcms.entity.Site;
+import com.huotu.hotcms.util.PageData;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -7,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface SiteService {
 
-    void addSite(HttpServletRequest request);
+    boolean addSite(HttpServletRequest request,String... hosts);
 //    Page<Site> getPage( InvoiceSearcher invoiceSearcher);
+    PageData<Site> getPage(String name,int page,int pageSize);
 }

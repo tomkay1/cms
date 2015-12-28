@@ -9,7 +9,7 @@ seajs.config({
 		"home":"js/page/home.js",
 		"JGrid":"libs/JGrid/jquery.JGrid.js",
 		"layer":"libs/layer/layer.js",
-		"AddModel":"js/page/system/addModel.js?t=2014544",
+		"AddModel":"js/page/system/addModel.js?t=2014544424",
 		"updateModel":"js/page/system/updateModel.js?t=2000",
 		"modelList":"js/page/system/modelList.js",
 		"articleList":"js/page/web/articleList.js",

@@ -1,9 +1,13 @@
 package com.huotu.hotcms.util;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.data.domain.Page;
 
 /**
- * Created by Administrator on 2015/12/25.
+ * @brief api json 返回模型
+ * @since 1.0.0
+ * @author xhl
+ * @time 2015/15/25
  */
 public class PageData<T> {
 
@@ -60,5 +64,21 @@ public class PageData<T> {
 
     public void setRows(T[] rows) {
         Rows = rows;
+    }
+
+    /*
+    * Page<T> 转换成PageData<T>对象
+    * */
+    public  PageData<T> ConvertPageData(Page<T> pageData, T[] newList) {
+        PageData<T> data=null;
+        if (pageData != null) {
+            data = new PageData<T>();
+            data.setPageCount(pageData.getTotalPages());
+            data.setPageIndex(pageData.getNumber());
+            data.setPageSize(pageData.getSize());
+            data.setTotal(pageData.getTotalElements());
+            data.setRows((T[])pageData.getContent().toArray(newList));
+        }
+        return  data;
     }
 }

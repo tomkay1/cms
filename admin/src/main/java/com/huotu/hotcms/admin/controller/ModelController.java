@@ -40,6 +40,9 @@ public class ModelController {
     @Autowired
     private ModelServiceImpl modelService;
 
+    /*
+    * 系统模型列表视图
+    * */
     @RequestMapping("/modellist")
     public ModelAndView modelList(HttpServletRequest request) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
@@ -47,6 +50,9 @@ public class ModelController {
         return  modelAndView;
     }
 
+    /*
+    * 增加模型视图
+    * */
     @RequestMapping("/addModel")
     public ModelAndView addModel(@RequestParam(value = "id", defaultValue = "0") Long id) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
@@ -54,6 +60,9 @@ public class ModelController {
         return modelAndView;
     }
 
+    /*
+    * 修改模型视图
+    * */
     @RequestMapping("/updateModel")
     public ModelAndView updateModel(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
@@ -67,6 +76,9 @@ public class ModelController {
         return modelAndView;
     }
 
+    /*
+   * 更新系统模型
+   * */
     @RequestMapping(value = "/saveModel",method = RequestMethod.POST)
     @ResponseBody
     public ResultView updateModel(@RequestParam(name ="id",required = false,defaultValue = "0") Long id,
@@ -106,6 +118,9 @@ public class ModelController {
         return  result;
     }
 
+    /*
+    * 获得模型列表
+    * */
     @RequestMapping(value = "/getModelList",method = RequestMethod.POST)
     @ResponseBody
     public PageData<DataModel> getModelList(@RequestParam(name="name",required = false) String name,
@@ -115,6 +130,9 @@ public class ModelController {
        return pageModel;
     }
 
+    /*
+    * 删除模型
+    * */
     @RequestMapping(value = "/deleteModel",method = RequestMethod.POST)
     @ResponseBody
     public ResultView deleteModel(@RequestParam(name = "id",required = true,defaultValue = "0") Long id,HttpServletRequest request) {

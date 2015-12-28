@@ -128,6 +128,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         return resolver;
     }
 
+
     private ViewResolver javascriptViewResolver() {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
         resolver.setTemplateEngine(templateEngine(javascriptTemplateResolver()));

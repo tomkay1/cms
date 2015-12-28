@@ -24,7 +24,7 @@ public class SiteController {
     public ModelAndView sitelist(HttpServletRequest request,Site site) throws Exception
     {
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/View/web/sitelist.html");
+        modelAndView.setViewName("/view/web/sitelist.html");
 
         return  modelAndView;
     }
@@ -32,14 +32,14 @@ public class SiteController {
     @RequestMapping(value = "/addSite")
     public ModelAndView addSite(HttpServletRequest request,Site site) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/View/web/addSite.html");
+        modelAndView.setViewName("/view/web/addSite.html");
         return  modelAndView;
     }
 
     @RequestMapping(value = "/saveSite",method = RequestMethod.POST)
     public ModelAndView saveSite(HttpServletRequest request) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/View/web/sitelist.html");
+        modelAndView.setViewName("/view/web/sitelist.html");
         siteService.addSite(request);
         return modelAndView;
     }

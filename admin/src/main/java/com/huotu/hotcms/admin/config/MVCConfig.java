@@ -106,7 +106,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 
     public ViewResolver redirectViewResolver() {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
-        resolver.setViewNames(ArrayUtil.array("redirect:/*"));
+        resolver.setViewNames(ArrayUtil.array("redirect:*"));
         return resolver;
     }
 
@@ -115,7 +115,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         resolver.setTemplateEngine(templateEngine(htmlTemplateResolver()));
         resolver.setContentType("text/html");
         resolver.setCharacterEncoding(UTF8);
-        resolver.setViewNames(ArrayUtil.array("view/**"));
+        resolver.setViewNames(ArrayUtil.array("/view/**"));
         return resolver;
     }
 

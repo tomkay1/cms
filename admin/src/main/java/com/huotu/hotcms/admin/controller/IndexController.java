@@ -19,7 +19,7 @@ public class IndexController {
     @RequestMapping("/")
     public String testIndex(Site site){
         // 业务层代码 无需关心当前站点以及当前语言的获取！
-        return "redirect:/f";
+        return "redirect:f";
     }
 
 
@@ -31,19 +31,19 @@ public class IndexController {
 
     @RequestMapping("/f")
     public String index(Site site) {
-        return "view/index.html";
+        return "/view/index.html";
     }
 
     @RequestMapping("/f/{region}")
     public String testIndex2(Site site,@PathVariable String region) {
-        return "view/index.html";
+        return "/view/index.html";
     }
 
     @RequestMapping("content.html")
     public String content(Model model) {
         model.addAttribute("value1","变量1");
         model.addAttribute("value2","变量2");
-        return "content.html";
+        return "/content.html";
     }
 
     @RequestMapping(value = "common.js", method = RequestMethod.GET)

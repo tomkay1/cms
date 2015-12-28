@@ -42,14 +42,14 @@
                         <tr>
                             <th>模型类型：</th>
                             <td>
-                                <select name="txtModelType" class="input-normal" id="txtModelType">
+                                <select name="txtModelType" class="input-normal" id="txtModelType" >
                                     <option value="-1">==请选择模型类型==</option>
-                                    <option value="0">文章模型</option>
-                                    <option value="1">公告模型</option>
-                                    <option value="2">视频模型</option>
-                                    <option value="3">图库模型</option>
-                                    <option value="4">下载模型</option>
-                                    <option value="5">链接模型</option>
+                                    <option value="0"  th:selected="${model.type.getCode()}=='0'?true:false">文章模型</option>
+                                    <option value="1" th:selected="${model.type.getCode()}=='1'?true:false">公告模型</option>
+                                    <option value="2" th:selected="${model.type.getCode()}=='2'?true:false">视频模型</option>
+                                    <option value="3" th:selected="${model.type.getCode()}=='3'?true:false">图库模型</option>
+                                    <option value="4" th:selected="${model.type.getCode()}=='4'?true:false">下载模型</option>
+                                    <option value="5" th:selected="${model.type.getCode()}=='5'?true:false">链接模型</option>
                                 </select>
                             </td>
                         </tr>

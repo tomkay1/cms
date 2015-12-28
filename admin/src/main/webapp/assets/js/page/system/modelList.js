@@ -27,7 +27,7 @@ define(function (require, exports, module) {
                 formatter: function (value, rowData) {
                     if(value!=null)
                     {
-                        return value.toString();
+                        return value.year+"-"+value.monthValue+"-"+value.dayOfMonth+" "+value.hour+":"+value.minute;
                     }
                     return "";
                 }

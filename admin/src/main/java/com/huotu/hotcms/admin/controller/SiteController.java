@@ -29,7 +29,6 @@ public class SiteController {
         return  modelAndView;
     }
 
-
     @RequestMapping(value = "/addSite")
     public ModelAndView addSite(HttpServletRequest request,Site site) throws Exception{
         ModelAndView modelAndView=new ModelAndView();

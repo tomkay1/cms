@@ -22,6 +22,7 @@ public class IndexController {
         return "redirect:/f";
     }
 
+
     @RequestMapping("/remote")
     public String testRemote(Model model) {
         model.addAttribute("seo",new Seo("Access remote template success!"));

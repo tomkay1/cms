@@ -12,10 +12,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 主机访问信息
+ * 域名
  * Created by cwb on 2015/12/24.
  */
 @Entity
@@ -33,14 +34,19 @@ public class Host {
     @Column(name = "domain")
     private String domain;
 
-
-    private Region region;
-
     /**
      * 备注
      */
     private String remarks;
 
+
+    /**
+     * 对应站点
+     */
     @ManyToMany(mappedBy = "hosts")
     private List<Site> sites;
+
+    public Host() {
+        this.sites = new ArrayList<>();
+    }
 }

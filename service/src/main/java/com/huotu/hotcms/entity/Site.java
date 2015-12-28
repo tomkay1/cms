@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,7 +17,6 @@ import java.util.List;
 @Table(name = "cms_site")
 @Setter
 @Getter
-@Data
 public class Site {
 
     @Id
@@ -83,7 +83,7 @@ public class Site {
      * 对应域名
      */
     @ManyToMany
-    @JoinTable(name = "site_host",
+    @JoinTable(name = "cms_site_host",
             joinColumns = {@JoinColumn(name = "siteId",referencedColumnName = "siteId")},
             inverseJoinColumns = {@JoinColumn(name = "hostId",referencedColumnName = "hostId")}
     )
@@ -112,6 +112,10 @@ public class Site {
         if(!this.hosts.contains(host)){
             this.hosts.add(host);
         }
+    }
+
+    public Site() {
+        this.hosts = new ArrayList<>();
     }
 
     public void removeHost(Host host) {

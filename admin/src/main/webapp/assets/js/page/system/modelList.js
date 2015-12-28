@@ -2,6 +2,7 @@
  * Created by Administrator xhl 2015/12/21.
  */
 define(function (require, exports, module) {
+
     //TODO:初始化加载模型列表
    var ModelGrid= $("#js-ModelList").Grid({
         method: 'POST',//提交方式GET|POST

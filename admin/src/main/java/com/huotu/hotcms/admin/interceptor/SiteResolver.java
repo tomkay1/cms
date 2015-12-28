@@ -18,8 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class SiteResolver implements HandlerMethodArgumentResolver {
 
-    @Autowired
-    private com.huotu.hotcms.service.RegionService RegionService;
 
     @Autowired
     private HostService hostService;

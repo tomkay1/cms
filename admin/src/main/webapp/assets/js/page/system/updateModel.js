@@ -1,8 +1,11 @@
 /**
- * Created by Administrator on 2015/12/23.
+ * @brief 修改模型功能js
+ * @since 1.0.0
+ * @author xhl
+ * @time 15/12/28
  */
 define(function (require, exports, module) {
-    $("#addModelForm").validate({
+    $("#UpdateModelForm").validate({
         rules: {
             txtModelName:{
                 required: true,
@@ -53,12 +56,15 @@ define(function (require, exports, module) {
                         if(index==200)
                         {
                             var layer=require("layer");
-                            layer.msg("操作成功",{time: 2000});
-                            $("#txtModelName").val("");
-                            $("#txtModelDescription").val("");
+                            layer.msg("修改成功,2秒后将自定返回列表页面",{time: 2000})
+                            commonUtil.cancelDisabled("jq-cms-Save");
+                            window.location.href="http://"+window.location.host+"/"+"model/modellist";
+                            //commonUtil.redirectUrl("/model/modelList");
+                            //$("#txtModelName").val("");
+                            //$("#txtModelDescription").val("");
                         }
                         if(index==500)
-                            layer.msg("操作失败",{time: 2000})
+                            layer.msg("修改失败",{time: 2000})
                     }
                     commonUtil.cancelDisabled("jq-cms-Save");
                 },

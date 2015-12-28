@@ -26,12 +26,12 @@ public class IndexController {
     @RequestMapping("/remote")
     public String testRemote(Model model) {
         model.addAttribute("seo",new Seo("Access remote template success!"));
-        return "pc/yun-index.html";
+        return "/pc/yun-index.html";
     }
 
 
-    @RequestMapping("/{region}")
-    public String testIndex2(Site site,@PathVariable String region) {
+    @RequestMapping("/*")
+    public String testIndex2(Site site) {
         return "/view/index.html";
     }
 
@@ -42,24 +42,4 @@ public class IndexController {
         return "/content.html";
     }
 
-    @RequestMapping(value = "common.js", method = RequestMethod.GET)
-    public String common(Model model) {
-        model.addAttribute("code", "Thymeleaf rules!".hashCode());
-        return "common.js";
-    }
-
-
-    @RequestMapping("confirm.js")
-    public ModelAndView js() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("confirm.js");
-        return modelAndView;
-    }
-
-    @ModelAttribute("site2")
-    public Site se() {
-        Site site = new Site();
-        site.setTitle("测试title……");
-        return site;
-    }
 }

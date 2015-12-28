@@ -12,8 +12,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * 域名
@@ -26,6 +25,7 @@ import java.util.List;
 public class Host {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "hostId")
     private Long hostId;
 
     /**
@@ -37,12 +37,21 @@ public class Host {
     /**
      * 备注
      */
+    @Column(name = "remarks")
     private String remarks;
 
     /**
      * 对应站点
      */
     @ManyToMany(mappedBy = "hosts")
-    private List<Site> sites = new ArrayList<>();
+    private Set<Site> sites = new HashSet<>();
+
+    public void addSite(Site site) {
+            this.sites.add(site);
+    }
+
+    public void removeSite(Site site) {
+        this.sites.remove(site);
+    }
 
 }

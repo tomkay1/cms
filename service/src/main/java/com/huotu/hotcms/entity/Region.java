@@ -28,12 +28,6 @@ public class Region {
     private Long id;
 
     /**
-     * 商户编号
-     */
-    @Column(name = "customerId")
-    private int customerId;
-
-    /**
      * 地区编号（cn,us,etc.）
      */
     @Column(name = "regionCode")
@@ -60,6 +54,7 @@ public class Region {
     /**
      * 语言-地区代码(zh-cn,zh-tw,en-us,etc.)
      */
+    @Column(name = "langTag")
     private String langTag;
 
 

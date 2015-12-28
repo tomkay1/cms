@@ -8,11 +8,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.annotation.PostConstruct;
+
 
 @Configuration
 @ComponentScan({"com.huotu.hotcms.service"})
 @EnableTransactionManagement
 public class ServiceConfig {
+
 
     /**
      * 可以替换为其他Password
@@ -21,4 +24,5 @@ public class ServiceConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }

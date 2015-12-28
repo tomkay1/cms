@@ -36,7 +36,7 @@ import java.util.List;
 @Configuration
 @EnableWebMvc
 @ComponentScan({
-        "com.huotu.hotcms.admin.serivce",
+        "com.huotu.hotcms.admin.service",
         "com.huotu.hotcms.admin.controller",
         "com.huotu.hotcms.admin.interceptor",
         "com.huotu.hotcms.admin.util.web",
@@ -124,7 +124,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         resolver.setTemplateEngine(templateEngine(remoteHtmlTemplateResolver()));
         resolver.setContentType("text/html");
         resolver.setCharacterEncoding(UTF8);
-        resolver.setViewNames(ArrayUtil.array("pc/**"));
+        resolver.setViewNames(ArrayUtil.array("/pc/**"));
         return resolver;
     }
 
@@ -185,7 +185,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         resolver.setCacheable(false);
         resolver.setCharacterEncoding(UTF8);
         resolver.setApplicationContext(applicationContext);
-        resolver.setPrefix("http://www.huobanj.com/");
+        resolver.setPrefix("http://www.huobanj.com");
         resolver.setTemplateMode(TemplateMode.HTML);
         return resolver;
     }

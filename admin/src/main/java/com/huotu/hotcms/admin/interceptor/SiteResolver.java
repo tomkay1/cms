@@ -2,6 +2,7 @@ package com.huotu.hotcms.admin.interceptor;
 
 import com.huotu.hotcms.entity.Host;
 import com.huotu.hotcms.entity.Site;
+import com.huotu.hotcms.repository.SiteRepository;
 import com.huotu.hotcms.service.HostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
@@ -13,6 +14,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Administrator on 2015/12/21.
@@ -20,6 +22,9 @@ import java.util.List;
 @Component
 public class SiteResolver implements HandlerMethodArgumentResolver {
 
+
+    @Autowired
+    private SiteRepository siteRepository;
 
     @Autowired
     private HostService hostService;
@@ -53,9 +58,9 @@ public class SiteResolver implements HandlerMethodArgumentResolver {
         Site site = new Site();
         Host host = hostService.getHost(domain);
         if(host!=null) {
-            List<Site> siteList = host.getSites();
+            Set<Site> siteList = host.getSites();
             for (Site s : siteList) {
-                if (s.getRegion().getRegionCode().equals(regionCode)) {
+                if (s.getRegion().getRegionCode().toUpperCase().equals(regionCode.toUpperCase())) {
                     site = s;
                     break;
                 }

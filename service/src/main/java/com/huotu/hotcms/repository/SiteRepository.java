@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface SiteRepository  extends JpaRepository<Site,Long> {
     Site findByCustomerIdAndName(Integer customId,String name);
+
+    Site findByCustomerId(int customerId);
 }

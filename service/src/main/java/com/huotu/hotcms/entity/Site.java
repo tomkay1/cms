@@ -1,13 +1,12 @@
 package com.huotu.hotcms.entity;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 站点
@@ -21,6 +20,7 @@ public class Site {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "siteId")
     private Long siteId;
 
     /**
@@ -82,12 +82,12 @@ public class Site {
     /**
      * 对应域名
      */
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "cms_site_host",
             joinColumns = {@JoinColumn(name = "siteId",referencedColumnName = "siteId")},
             inverseJoinColumns = {@JoinColumn(name = "hostId",referencedColumnName = "hostId")}
     )
-    private List<Host> hosts = new ArrayList<>();
+    private Set<Host> hosts = new HashSet<>();
 
     /**
      * 站点创建时间
@@ -109,9 +109,8 @@ public class Site {
     private Region region;
 
     public void addHost(Host host) {
-        if(!this.hosts.contains(host)){
+            host.addSite(this);
             this.hosts.add(host);
-        }
     }
 
     public void removeHost(Host host) {

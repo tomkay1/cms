@@ -21,7 +21,7 @@ public class Site {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long siteId;
 
     /**
      * 商户ID
@@ -78,10 +78,15 @@ public class Site {
     @Column(name = "customViewUrl")
     private String customTemplateUrl;
 
+
     /**
      * 对应域名
      */
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "site")
+    @ManyToMany
+    @JoinTable(name = "site_host",
+            joinColumns = {@JoinColumn(name = "siteId",referencedColumnName = "siteId")},
+            inverseJoinColumns = {@JoinColumn(name = "hostId",referencedColumnName = "hostId")}
+    )
     private List<Host> hosts;
 
     /**
@@ -104,8 +109,13 @@ public class Site {
     private Region region;
 
     public void addHost(Host host) {
-        host.setSite(this);
-        this.hosts.add(host);
+        if(!this.hosts.contains(host)){
+            this.hosts.add(host);
+        }
+    }
+
+    public void removeHost(Host host) {
+        this.hosts.remove(host);
     }
 
 }

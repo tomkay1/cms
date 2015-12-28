@@ -12,9 +12,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
- * 域名
+ * 主机访问信息
  * Created by cwb on 2015/12/24.
  */
 @Entity
@@ -24,7 +25,7 @@ import javax.persistence.*;
 public class Host {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long hostId;
 
     /**
      * 域名
@@ -32,15 +33,14 @@ public class Host {
     @Column(name = "domain")
     private String domain;
 
-    /**
-     * 所属站点
-     */
-    @ManyToOne
-    @JoinColumn(name = "siteId")
-    private Site site;
+
+    private Region region;
 
     /**
      * 备注
      */
     private String remarks;
+
+    @ManyToMany(mappedBy = "hosts")
+    private List<Site> sites;
 }

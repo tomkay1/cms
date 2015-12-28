@@ -28,19 +28,39 @@ public class Region {
     private Long id;
 
     /**
+     * 商户编号
+     */
+    @Column(name = "customerId")
+    private int customerId;
+
+    /**
      * 地区编号（cn,us,etc.）
      */
     @Column(name = "regionCode")
     private String regionCode;
 
     /**
-     * 通行语言（zh,en,etc.）
+     * 地区名称
      */
-    private String language;
+    @Column(name = "regionName")
+    private String regionName;
 
     /**
-     * 备注
+     * 语言编号（zh,en,etc.）
      */
-    private String remarks;
+    @Column(name = "langCode")
+    private String langCode;
+
+    /**
+     * 语言名称
+     */
+    @Column(name = "langName")
+    private String langName;
+
+    /**
+     * 语言-地区代码(zh-cn,zh-tw,en-us,etc.)
+     */
+    private String langTag;
+
 
 }

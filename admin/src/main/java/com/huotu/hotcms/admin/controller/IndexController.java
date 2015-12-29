@@ -20,7 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 public class IndexController {
 
     @RequestMapping("/")
-    public String testIndex(Site site){
+    public String testIndex(Site site,Model model){
+        model.addAttribute("seo",new Seo("wre34"));
         String viewName = "/view/index.html";
         if(site.isCustom()) {
             viewName = site.getCustomTemplateUrl();
@@ -29,7 +30,8 @@ public class IndexController {
     }
 
     @RequestMapping("/*")
-    public String testIndex2(Site site) throws Exception {
+    public String testIndex2(Site site,Model model) throws Exception {
+        model.addAttribute("seo",new Seo("erewgfd"));
         return "/view/index.html";
     }
 

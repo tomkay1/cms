@@ -95,5 +95,10 @@ public class SiteServiceImpl implements SiteService {
         return  data;
     }
 
+    @Override
+    public Site getSite(long siteId) {
+        return siteRepository.findOne(siteId);
+    }
+
 
 }

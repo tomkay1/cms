@@ -4,6 +4,7 @@ import com.huotu.hotcms.entity.Host;
 import com.huotu.hotcms.entity.Site;
 import com.huotu.hotcms.service.HostService;
 import com.huotu.hotcms.service.RegionService;
+import com.huotu.hotcms.service.SiteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 /**
@@ -28,6 +30,9 @@ public class SiteResolver implements HandlerMethodArgumentResolver {
 
     @Autowired
     private RegionService regionService;
+
+    @Autowired
+    private SiteService siteService;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -82,7 +87,10 @@ public class SiteResolver implements HandlerMethodArgumentResolver {
         Site site = new Site();
         boolean initSuccess = false;
         if(!StringUtils.isEmpty(request.getParameter("siteId"))) {
-            site.setSiteId(Long.parseLong(request.getParameter("siteId")));
+            site = siteService.getSite(Long.parseLong(request.getParameter("siteId")));
+            if(site == null) {
+                throw new Exception("站点不存在");
+            }
             initSuccess = true;
         }
         if(!StringUtils.isEmpty(request.getParameter("customerId"))) {

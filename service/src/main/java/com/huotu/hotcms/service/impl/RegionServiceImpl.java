@@ -25,7 +25,8 @@ public class RegionServiceImpl implements RegionService {
     private RegionRepository regionRepository;
 
     @Override
-    public Region getRegion(String area) {
-        return regionRepository.findByRegionCodeIgnoreCase(area);
+    public Region getRegion(String regionCode) {
+        return regionRepository.findByRegionCodeIgnoreCase(regionCode);
     }
+
 }

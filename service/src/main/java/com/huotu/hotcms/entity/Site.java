@@ -83,13 +83,13 @@ public class Site {
      * 对应域名
      */
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "cms_site_host",
-            joinColumns = {@JoinColumn(name = "siteId",referencedColumnName = "siteId")},
-            inverseJoinColumns = {@JoinColumn(name = "hostId",referencedColumnName = "hostId")}
-    )
-    private Set<Host> hosts = new HashSet<>();
+     @JoinTable(name = "cms_site_host",
+     joinColumns = {@JoinColumn(name = "siteId",referencedColumnName = "siteId")},
+     inverseJoinColumns = {@JoinColumn(name = "hostId",referencedColumnName = "hostId")}
+     )
+     private Set<Host> hosts = new HashSet<>();
 
-    /**
+     /**
      * 站点创建时间
      */
     @Column(name = "createTime")

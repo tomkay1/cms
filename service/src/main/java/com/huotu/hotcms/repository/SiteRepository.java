@@ -11,4 +11,6 @@ public interface SiteRepository  extends JpaRepository<Site, Long>,JpaSpecificat
     Site findByCustomerIdAndName(Integer customId,String name);
 
     Site findByCustomerId(int customerId);
+
+    Site findBySiteIdAndCustomerId(Long siteId,int customerId);
 }

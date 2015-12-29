@@ -1,8 +1,10 @@
 /**
- * Created by Administrator on 2015/12/21.
+ * Created by chendeyu on 2015/12/29.
  */
 define(function (require, exports, module) {
-    var SiteGrid=$("#js-SiteList").Grid({
+
+    //TODO:初始化加载模型列表
+    var RegionGrid= $("#js-RegionList").Grid({
         method: 'POST',//提交方式GET|POST
         form: 'form1',//表单ID
         pageSize: 10,
@@ -11,39 +13,38 @@ define(function (require, exports, module) {
         pageSize: 20,
         pagerCount: 10,
         pageDetail: true,
-        url: '/site/getSiteList',//数据来源Url|通过mobel自定义属性配置
+        dataParam: {
+            enabled: true
+        },
+        url: '/region/getRegionList',//数据来源Url|通过region自定义属性配置
         rows: [
-            {width: '30%', field: 'name', title: '站点名称', align: 'center'},
-            {width: '30%', field: 'title', title: '站点标题', align: 'center'},
-            {width: '30%', field: 'description', title: '站点描述', align: 'center'},
             {
-                width: '20%', field: 'createTime', title: '创建时间', align: 'center',
+                width: '20%', field: 'regionCode', title: '地区编号', align: 'center'
+            },
+            { width: '20%', field: 'regionName', title: '地区名称', align: 'center' },
+            { width: '20%', field: 'langCode', title: '语言编号', align: 'center' },
+            { width: '15%', field: 'langName', title: '语言名称', align: 'center' },
+            { width: '15%', field: 'langTag', title: '地区代码', align: 'center' },
+            { width: '10%', field: 'title', title: '操作', align: 'center',
                 formatter: function (value, rowData) {
-                    if(value!=null)
-                    {
-                        return value.year+"-"+value.monthValue+"-"+value.dayOfMonth+" "+value.hour+":"+value.minute;
-                    }
-                    return "";
+                    return "<a href='javascript:' class='js-hot-regionDelete' data-id='"+rowData.id+"' style='margin-right:10px; color:blue;'>删除</a>" +
+                        "<a href='/region/updateRegion?id="+rowData.id+"' target='content' style='margin-right:10px; color: blue'>修改</a>"
                 }
             },
-            {width: '10%', field: 'title', title: '操作', align: 'center',
-                formatter: function (value, rowData) {
-                    return "<a href='javascript:' class='js-hot-siteDelete' data-id='"+rowData.siteId+"' style='margin-right:10px; color:blue;'>删除</a>" +
-                        "<a href='/site/updateSite?id="+rowData.siteId+"' target='content' style='margin-right:10px; color: blue'>修改</a>"
-                }
-            }
+
         ]
     },function(){
-        deleteModel();
+        deleteRegion();
     });
-//TODO:搜索
+
+    //TODO:搜索
     $("#jq-cms-search").click(function(){
         var option={
             dataParam:{
-                name:$("#siteName").val()
+                name:$("#regionName").val()
             }
         };
-        SiteGrid.Refresh(option);
+        RegionGrid.Refresh(option);
     })
 
     //TODO:显示所有
@@ -53,27 +54,23 @@ define(function (require, exports, module) {
                 name:""
             }
         };
-        SiteGrid.Refresh(option);
+        RegionGrid.Refresh(option);
     })
 
     //TODO:删除
-    function deleteModel(){
-        var obj=$(".js-hot-siteDelete");
-
+    function deleteRegion(){
+        var obj=$(".js-hot-regionDelete");
         $.each(obj,function(item,dom){
             $(dom).click(function(){//绑定删除事件
                 var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;
-                var commonUtil = require("common");
-                var customerid = commonUtil.getQuery("customerid");
                 var layer=require("layer");
-                layer.confirm('您确定要删除该站点吗？', {
+                layer.confirm('您确定要删除该地区吗？', {
                     btn: ['确定','取消'] //按钮
                 }, function() {
                     $.ajax({
-                        url: "/site/deleteSite",
+                        url: "/region/deleteRegion",
                         data: {
-                            id:id,
-                            customerid:customerid
+                            id:id
                         },
                         type: "POST",
                         dataType: 'json',
@@ -85,7 +82,7 @@ define(function (require, exports, module) {
                                 {
                                     case 200:
                                         layer.msg("删除成功",{time: 2000});
-                                        ModelGrid.reLoad();
+                                        RegionGrid.reLoad();
                                         break;
                                     case 202:
                                         layer.msg("对不起,您没有删除权限",{time: 2000});

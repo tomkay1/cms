@@ -1,7 +1,6 @@
 package com.huotu.hotcms.service.impl;
 
 import com.huotu.hotcms.entity.Host;
-import com.huotu.hotcms.entity.Site;
 import com.huotu.hotcms.repository.HostRepository;
 import com.huotu.hotcms.service.HostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,4 +19,11 @@ public class HostServiceImpl implements HostService {
     public Host getHost(String domain) {
         return hostRepository.findByDomain(domain);
     }
+
+    @Override
+    public Boolean save(Host host) {
+        hostRepository.save(host);
+        return true;
+    }
+
 }

@@ -56,7 +56,7 @@ define(function (require, exports, module) {
                         if(index==200)
                         {
                             var layer=require("layer");
-                            layer.msg("修改成功,2秒后将自定返回列表页面",{time: 2000})
+                            layer.msg("修改成功,2秒后将自动返回列表页面",{time: 2000})
                             commonUtil.cancelDisabled("jq-cms-Save");
                             window.location.href="http://"+window.location.host+"/"+"model/modellist";
                             //commonUtil.redirectUrl("/model/modelList");

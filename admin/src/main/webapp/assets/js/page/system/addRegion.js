@@ -1,8 +1,8 @@
 /**
- * Created by chendeyu on 2015/12/23.
+ * Created by chendeyu on 2015/12/29.
  */
 define(function (require, exports, module) {
-    $("#addSiteForm").validate({
+    $("#addRegionForm").validate({
         //rules: {
         //    txtModelName:{
         //        required: true,
@@ -34,21 +34,15 @@ define(function (require, exports, module) {
         submitHandler: function (form, ev) {
             var commonUtil = require("common");
             commonUtil.setDisabled("jq-cms-Save");
-            var customerId =commonUtil.getQuery("customerId");
             $.ajax({
-                url: "/site/saveSite",
+                url: "/region/saveRegion",
                 data: {
-                    siteId:$("#hidSiteID").val(),
-                    customerId:customerId,
-                    name: $("#name").val(),
-                    title: $("#title").val(),
-                    keywords: $("#keywords").val(),
-                    copyright: $("#copyright").val(),
-                    custom: $("#custom_0").val(),
-                    customTemplateUrl: $("#customTemplateUrl").val(),
-                    domains: $("#domains").val(),
-                    regionId: $("#regionId").val(),
-                    description: $("#description").val()
+                    id:$("#hidRegionID").val(),
+                    regionCode: $("#regionCode").val(),
+                    regionName: $("#regionName").val(),
+                    langCode: $("#langCode").val(),
+                    langTag: $("#langTag").val(),
+                    langName: $("#langName").val()
                 },
                 type: "POST",
                 dataType: 'json',
@@ -61,14 +55,14 @@ define(function (require, exports, module) {
                         {
                             var layer=require("layer");
                             layer.msg("操作成功",{time: 2000});
-                            $("#txtModelName").val("");
-                            $("#txtModelDescription").val("");
+                            $("#regionCode").val("");
+                            $("#regionName").val("");
+                            $("#langCode").val("");
+                            $("#langTag").val("");
+                            $("#langName").val("");
                         }
-                        if(index==500){layer.msg("操作失败",{time: 2000})}
-
-                        if(index==999){
-                            layer.msg("域名已被占用",{time: 2000})
-                        }
+                        if(index==500)
+                            layer.msg("操作失败",{time: 2000})
                     }
                     commonUtil.cancelDisabled("jq-cms-Save");
                 },

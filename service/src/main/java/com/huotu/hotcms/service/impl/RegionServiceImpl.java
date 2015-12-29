@@ -9,11 +9,20 @@
 
 package com.huotu.hotcms.service.impl;
 
-        import com.huotu.hotcms.entity.Region;
-        import com.huotu.hotcms.repository.RegionRepository;
-        import com.huotu.hotcms.service.RegionService;
-        import org.springframework.beans.factory.annotation.Autowired;
-        import org.springframework.stereotype.Service;
+import com.huotu.hotcms.entity.Region;
+import com.huotu.hotcms.repository.RegionRepository;
+import com.huotu.hotcms.service.RegionService;
+import com.huotu.hotcms.util.PageData;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import javax.persistence.criteria.Predicate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by cwb on 2015/12/24.
@@ -25,8 +34,30 @@ public class RegionServiceImpl implements RegionService {
     private RegionRepository regionRepository;
 
     @Override
-    public Region getRegion(String regionCode) {
-        return regionRepository.findByRegionCodeIgnoreCase(regionCode);
+    public Region getRegion(String area) {
+        return regionRepository.findByRegionCodeIgnoreCase(area);
     }
 
+    @Override
+    public PageData<Region> getPage(String name,int page,int pageSize) {
+        PageData<Region> data = new PageData<Region>();
+        Specification<Region> specification = (root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            if (!StringUtils.isEmpty(name)) {
+                predicates.add(cb.like(root.get("regionName").as(String.class), "%" + name + "%"));
+            }
+            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
+        Page<Region> pageData = regionRepository.findAll(specification,new PageRequest(page - 1, pageSize));
+        data=data.ConvertPageData(pageData,new Region[pageData.getContent().size()]);
+//        if (pageData != null) {
+//            data = new PageData<DataModel>();
+//            data.setPageCount(pageData.getTotalPages());
+//            data.setPageIndex(pageData.getNumber());
+//            data.setPageSize(pageData.getSize());
+//            data.setTotal(pageData.getTotalElements());
+//            data.setRows((DataModel[])pageData.getContent().toArray(new DataModel[pageData.getContent().size()]));
+//        }
+        return  data;
+    }
 }

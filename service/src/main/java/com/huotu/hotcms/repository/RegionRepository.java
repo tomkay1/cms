@@ -10,11 +10,12 @@ package com.huotu.hotcms.repository;
 
 import com.huotu.hotcms.entity.Region;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 /**
  * Created by cwb on 2015/12/24.
  */
-public interface RegionRepository extends JpaRepository<Region,Long> {
+public interface RegionRepository extends JpaRepository<Region,Long>,JpaSpecificationExecutor {
 
     Region findByRegionCodeIgnoreCase(String regionCdoe);
 

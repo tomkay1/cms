@@ -9,11 +9,12 @@
 package com.huotu.hotcms.service;
 
 import com.huotu.hotcms.entity.Region;
+import com.huotu.hotcms.util.PageData;
 
 /**
  * Created by cwb on 2015/12/24.
  */
 public interface RegionService {
-    Region getRegion(String regionCode);
-
+    Region getRegion(String area);
+    PageData<Region> getPage(String name,int page,int pageSize);
 }

@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+    <link  href="/assets/css/admin.content.css"  type="text/css" rel="stylesheet"/>
+    <link  href="/assets/css/admin.global.css"  type="text/css" rel="stylesheet"/>
+    <link  href="/assets/libs/layer/skin/layer.css"  type="text/css" rel="stylesheet"/>
+    <script src="/assets/seajs/sea.js"></script>
+    <script src="/assets/seajs/config.js"></script>
+</head>
+<body>
+<div class="block">
+    <div class="h">
+        <span class="icon-sprite icon-list"></span>
+        <h3>网站修改</h3>
+        <div class="bar">
+            <a class="btn-lit" th:href="@{/site/sitelist?customerid={customerid}(customerid=${user.customerId})}">
+                <span>返回网站列表</span></a>
+            <!--<img src="../../images/bangzhu.png" style="vertical-align:middle;margin-left:20px;" onclick="window.open('http://bbs.huobanmall.com/showtopic-39.aspx')">-->
+        </div>
+    </div>
+    <form method="post" id="addSite" enctype="multipart/form-data">
+        <div class="cnt-wp">
+            <div class="cnt form">
+                <div class="division">
+                    <input type="hidden" name="siteId" id="siteId" th:value="${site.siteId}">
+                    <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                        <tbody>
+                        <tr>
+                            <th>站点名称：</th>
+                            <td>
+                                <input name="name"  id="name" type="text" th:value="${site.name}" class="input-normal" placeholder="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>站点标题：</th>
+                            <td>
+                                <input name="title"  id="title" type="text" th:value="${site.title}" class="input-normal" placeholder="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>站点描述：</th>
+                            <td>
+                                <input name="description"  id="description" type="text" class="input-normal" th:value="${site.siteId}" placeholder="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>站点关键字：</th>
+                            <td>
+                                <input name="keywords"  id="keywords" type="text" th:value="${site.siteId}" class="input-normal" placeholder="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>站点logo：</th>
+                            <td>
+                                <div id="uploadpicCover" style="width: 80px; height: 80px; border: 1px solid #ccc; float: left; background: #efefef; line-height: 80px; text-align: center; color: #ccc;"><img src="/resource/images/wechat/mall_cat_def.png" style="width:80px;height:80px;"></div>
+
+                                <div style="margin-left: 10px; float: left; line-height: 80px;">
+                                    <a id="uploadpic" class="btn-lit jUploader-button" href="#" style="cursor: pointer; position: relative; overflow: hidden; direction: ltr;"><span style="color: #c1b3a9">上传</span><input type="file" onchange="this.blur();" id="jUploader-file1" name="jUploaderFile" style="position: absolute; right: 0px; top: 0px; margin: 0px; opacity: 0; padding: 0px; font-family: Arial; font-size: 118px; vertical-align: baseline; cursor: pointer;"></a>
+                                    <span style="color: #f00">*</span>      必填
+                                    <span style="color: #ccc;">建议大小：300*300</span>
+                                </div>
+                                <input name="txtReplyUrl1" type="hidden" id="txtReplyUrl1" value="/resource/images/wechat/mall_cat_def.png">
+                                <img id="img_photo" th:src="${site.logoUri}" src="images/logo.png" style="width: 100px; height: auto;"/><input name="logoUri" id="logoUri" type="file"/>
+
+                            </td>
+                            <!--<th>站点logo：</th>-->
+                            <!--<td>-->
+                            <!--<img id="uploadLogo"-->
+                            <!--style="width: 80px; height: 80px; border: 1px solid #ccc; float: left; background: #efefef; line-height: 80px; text-align: center; color: #ccc;"/>-->
+                            <!--<input style="margin-left: 10px;cursor: pointer;" type="button"-->
+                            <!--value="上传"-->
+                            <!--onclick="javascript:$('#btnLogoFile').click();"/>-->
+                            <!--<input onchange="uploadImg('btnLogoFile','uploadLogo','LogoFile')"-->
+                            <!--id="btnLogoFile" name="btnFile"-->
+                            <!--style="display:none;" type="file"/>-->
+                            <!--<input type="hidden" id="generalCertificateFile"-->
+                            <!--th:value="${taxConfig}==null?'':*{logoUri}"/>-->
+                            <!--<input type="hidden" id="logo_uri"-->
+                            <!--th:value="${logo_uri}==null  ?'':${logo_uri}"/>-->
+                            <!--</td>-->
+                        </tr>
+                        <tr>
+                            <th>版权信息：</th>
+                            <td>
+                                <input name="copyright"  id="copyright" type="text" th:value="${site.siteId}" class="input-normal" placeholder="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>是否自定义模板：</th>
+                            <td>
+                                <table id="custom">
+                                    <tbody>
+                                    <tr>
+                                        <td><input id="custom_0" type="radio" name="custom" value="1" checked="checked"><label for="custom_0">是</label></td>
+                                        <td><input id="custom_1" type="radio" name="custom" value="0"><label for="custom_1">否</label></td>
+                                    </tr>
+                                    </tbody></table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>自定义模板根路径：</th>
+                            <td>
+                                <input name="customTemplateUrl"  id="customTemplateUrl" type="text" th:value="${site.siteId}" class="input-normal" placeholder="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>域名：</th>
+                            <td>
+                                <input name="hosts"  id="hosts" type="text" th:value="${site.siteId}" class="input-normal" placeholder="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>所属地区：</th>
+                            <td>
+                                <select name="region" class="input-normal" id="region">
+                                    <option value="-1">==请选择地区==</option>
+                                    <option value="0">中国</option>
+                                    <option value="1">美国</option>
+                                    <option value="2">德国</option>
+                                    <option value="3">韩国</option>
+                                    <option value="4">日本</option>
+                                </select>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style="text-align: center;">
+                    <div style="display: none;">
+                        <input type="submit" name="btnSave" value="" id="btnSave">
+                    </div>
+                    <!--<a class="btn-lit" th:attr="customerid=${user.customerId}" onclick="submitForm(this)"><span>保存</span></a>-->
+                    <a class="btn-lit"  onclick="submitForm1(this)"><span>保存</span></a>
+                    <!--<input type="submit" class="btn-lit" name="btnSave"  value="保存" data-submiting-text="提交中..." data-text="保存" id="jq-cms-Save">-->
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>seajs.use(["updateSite","layer"]);</script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
         "http://www.w3.org/TR/html4/loose.dtd">
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html>
 <head>
     <title></title>
     <link  href="/assets/css/admin.content.css"  type="text/css" rel="stylesheet"/>
@@ -19,8 +19,8 @@
     <div class="cnt-wp">
         <div class="cnt">
             <div class="search-bar">
-                <label class="first ">网站名称：</label>
-                <input name="siteName" type="text" id="siteName" class="input-small" style="width: 200px;" placeholder=" 网站名称">
+                <label class="first ">地区名称：</label>
+                <input name="regionName" type="text" id="regionName" class="input-small" style="width: 200px;" placeholder=" 地区名称">
                 <label><a class="btn-lit btn-middle " id="jq-cms-search" href="javascript:" style="margin-bottom: 3px;"><span>搜索</span></a></label>
                 <label><a class="btn-lit btn-middle " id="jq-cms-searchAll" href="javascript:" style="margin-bottom: 3px;"><span>显示所有</span></a></label>
             </div>
@@ -30,14 +30,14 @@
 <div class="block">
     <div class="h">
         <span class="icon-sprite icon-list"></span>
-        <h3 style="float: left; width: 144px;">网站列表</h3>
+        <h3 style="float: left; width: 144px;">地区列表</h3>
         <div class="bar">
-            <a class="btn-lit"  th:href="@{/site/addSite?customerid={customerid}(customerid=${user.customerId})}" target="content">
+            <a class="btn-lit" th:href="@{/region/addRegion?customerid={customerid}(customerid=${user.customerId})}"  target="content">
                 <span>新增</span></a>
         </div>
     </div>
-    <div class="cnt-wp" id="js-SiteList"></div>
+    <div class="cnt-wp" id="js-RegionList"></div>
 </div>
-<script>seajs.use(["JGrid","siteList"]);</script>
+<script>seajs.use(["JGrid","regionList"]);</script>
 </body>
 </html>

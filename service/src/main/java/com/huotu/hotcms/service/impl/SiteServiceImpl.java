@@ -85,6 +85,10 @@ public class SiteServiceImpl implements SiteService {
         };
         Page<Site> pageData = siteRepository.findAll(specification,new PageRequest(page - 1, pageSize));
         if (pageData != null) {
+            List<Site> site =pageData.getContent();
+            for(Site site1 : site){
+                site1.setHosts(null);
+            }
             data = new PageData<Site>();
             data.setPageCount(pageData.getTotalPages());
             data.setPageIndex(pageData.getNumber());
@@ -96,8 +100,27 @@ public class SiteServiceImpl implements SiteService {
     }
 
     @Override
+    public Site findBySiteIdAndCustomerId(Long siteId,int customerId) {
+        Site site =siteRepository.findBySiteIdAndCustomerId(siteId,customerId);
+        return  site;
+    }
+
+
+    @Override
+    public boolean deleteSite(Long id) {
+        siteRepository.delete(id);
+        return true;
+    }
+
+    @Override
     public Site getSite(long siteId) {
         return siteRepository.findOne(siteId);
+    }
+
+    @Override
+    public Boolean save(Site site) {
+        siteRepository.save(site);
+        return true;
     }
 
 

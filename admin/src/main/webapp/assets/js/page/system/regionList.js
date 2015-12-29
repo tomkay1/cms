@@ -1,10 +1,10 @@
 /**
- * Created by Administrator xhl 2015/12/21.
+ * Created by chendeyu on 2015/12/29.
  */
 define(function (require, exports, module) {
 
     //TODO:初始化加载模型列表
-   var ModelGrid= $("#js-ModelList").Grid({
+    var RegionGrid= $("#js-RegionList").Grid({
         method: 'POST',//提交方式GET|POST
         form: 'form1',//表单ID
         pageSize: 10,
@@ -16,43 +16,35 @@ define(function (require, exports, module) {
         dataParam: {
             enabled: true
         },
-        url: '/model/getModelList',//数据来源Url|通过mobel自定义属性配置
+        url: '/region/getRegionList',//数据来源Url|通过region自定义属性配置
         rows: [
             {
-                width: '20%', field: 'name', title: '模型名称', align: 'center'
+                width: '20%', field: 'regionCode', title: '地区编号', align: 'center'
             },
-            { width: '40%', field: 'description', title: '描述', align: 'center' },
-            { width: '15%', field: 'orderWeight', title: '排序权重', align: 'center' },
-            {
-                width: '15%', field: 'createTime', title: '创建时间', align: 'center',
-                formatter: function (value, rowData) {
-                    if(value!=null)
-                    {
-                        return value.year+"-"+value.monthValue+"-"+value.dayOfMonth+" "+value.hour+":"+value.minute;
-                    }
-                    return "";
-                }
-            },
+            { width: '20%', field: 'regionName', title: '地区名称', align: 'center' },
+            { width: '20%', field: 'langCode', title: '语言编号', align: 'center' },
+            { width: '15%', field: 'langName', title: '语言名称', align: 'center' },
+            { width: '15%', field: 'langTag', title: '地区代码', align: 'center' },
             { width: '10%', field: 'title', title: '操作', align: 'center',
                 formatter: function (value, rowData) {
-                    return "<a href='javascript:' class='js-hot-modelDelete' data-id='"+rowData.id+"' style='margin-right:10px; color:blue;'>删除</a>" +
-                        "<a href='/model/updateModel?id="+rowData.id+"' target='content' style='margin-right:10px; color: blue'>修改</a>"
+                    return "<a href='javascript:' class='js-hot-regionDelete' data-id='"+rowData.id+"' style='margin-right:10px; color:blue;'>删除</a>" +
+                        "<a href='/region/updateRegion?id="+rowData.id+"' target='content' style='margin-right:10px; color: blue'>修改</a>"
                 }
             },
 
         ]
     },function(){
-       deleteModel();
-   });
+        deleteRegion();
+    });
 
     //TODO:搜索
     $("#jq-cms-search").click(function(){
         var option={
             dataParam:{
-                name:$("#modelName").val()
+                name:$("#regionName").val()
             }
         };
-        ModelGrid.Refresh(option);
+        RegionGrid.Refresh(option);
     })
 
     //TODO:显示所有
@@ -62,21 +54,21 @@ define(function (require, exports, module) {
                 name:""
             }
         };
-        ModelGrid.Refresh(option);
+        RegionGrid.Refresh(option);
     })
 
     //TODO:删除
-    function deleteModel(){
-        var obj=$(".js-hot-modelDelete");
+    function deleteRegion(){
+        var obj=$(".js-hot-regionDelete");
         $.each(obj,function(item,dom){
             $(dom).click(function(){//绑定删除事件
                 var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;
                 var layer=require("layer");
-                layer.confirm('您确定要删除该条模型记录吗？', {
+                layer.confirm('您确定要删除该地区吗？', {
                     btn: ['确定','取消'] //按钮
                 }, function() {
                     $.ajax({
-                        url: "/model/deleteModel",
+                        url: "/region/deleteRegion",
                         data: {
                             id:id
                         },
@@ -90,7 +82,7 @@ define(function (require, exports, module) {
                                 {
                                     case 200:
                                         layer.msg("删除成功",{time: 2000});
-                                        ModelGrid.reLoad();
+                                        RegionGrid.reLoad();
                                         break;
                                     case 202:
                                         layer.msg("对不起,您没有删除权限",{time: 2000});

@@ -15,16 +15,16 @@
         <span class="icon-sprite icon-list"></span>
         <h3>网站添加</h3>
         <div class="bar">
-            <a class="btn-lit" th:href="@{/site/sitelist?customerid={customerid}(customerid=${user.customerId})}">
+            <a class="btn-lit" th:href="@{/site/siteList?customerid={customerid}(customerid=${user.customerId})}">
                 <span>返回网站列表</span></a>
             <!--<img src="../../images/bangzhu.png" style="vertical-align:middle;margin-left:20px;" onclick="window.open('http://bbs.huobanmall.com/showtopic-39.aspx')">-->
         </div>
     </div>
-    <form method="post" th:action="@{saveSite?customerid={customerid}(customerid=${user.customerId})}" id="addSite" enctype="multipart/form-data">
+    <form method="post"  id="addSiteForm" enctype="multipart/form-data">
     <div class="cnt-wp">
         <div class="cnt form">
             <div class="division">
-                <input type="hidden" name="hidOldParentId" id="hidOldParentId">
+                <input type="hidden" name="hidSiteID" id="hidSiteID" >
                 <table width="100%" border="0" cellpadding="0" cellspacing="0">
                     <tbody>
                     <tr>
@@ -65,21 +65,6 @@
                             <img id="img_photo" th:src="${logoUri}" src="images/logo.png" style="width: 100px; height: auto;"/><input name="logoUri" id="logoUri" type="file"/>
 
                         </td>
-                        <!--<th>站点logo：</th>-->
-                        <!--<td>-->
-                            <!--<img id="uploadLogo"-->
-                                 <!--style="width: 80px; height: 80px; border: 1px solid #ccc; float: left; background: #efefef; line-height: 80px; text-align: center; color: #ccc;"/>-->
-                            <!--<input style="margin-left: 10px;cursor: pointer;" type="button"-->
-                                   <!--value="上传"-->
-                                   <!--onclick="javascript:$('#btnLogoFile').click();"/>-->
-                            <!--<input onchange="uploadImg('btnLogoFile','uploadLogo','LogoFile')"-->
-                                   <!--id="btnLogoFile" name="btnFile"-->
-                                   <!--style="display:none;" type="file"/>-->
-                            <!--<input type="hidden" id="generalCertificateFile"-->
-                                   <!--th:value="${taxConfig}==null?'':*{logoUri}"/>-->
-                            <!--<input type="hidden" id="logo_uri"-->
-                                   <!--th:value="${logo_uri}==null  ?'':${logo_uri}"/>-->
-                        <!--</td>-->
                     </tr>
                     <tr>
                         <th>版权信息：</th>
@@ -93,13 +78,13 @@
                             <table id="custom">
                                 <tbody>
                                 <tr>
-                                    <td><input id="custom_0" type="radio" name="custom" value="1" checked="checked"><label for="custom_0">是</label></td>
-                                    <td><input id="custom_1" type="radio" name="custom" value="0"><label for="custom_1">否</label></td>
+                                    <td><input id="custom_0" type="radio" name="custom" value="1" checked="checked" onclick="javascript:changeradio(1)"><label for="custom_0">是</label></td>
+                                    <td><input id="custom_1" type="radio" name="custom" value="0" onclick="javascript:changeradio(2)"><label for="custom_1">否</label></td>
                                 </tr>
                                 </tbody></table>
                         </td>
                     </tr>
-                    <tr>
+                    <tr id ="cUrl">
                         <th>自定义模板根路径：</th>
                         <td>
                             <input name="customTemplateUrl"  id="customTemplateUrl" type="text" class="input-normal" placeholder="">
@@ -108,19 +93,15 @@
                     <tr>
                         <th>域名：</th>
                         <td>
-                            <input name="hosts"  id="hosts" type="text" class="input-normal" placeholder="">
+                            <input name="domains"  id="domains" type="text" class="input-normal" placeholder="">
                         </td>
                     </tr>
                     <tr>
                         <th>所属地区：</th>
                         <td>
-                            <select name="region" class="input-normal" id="region">
+                            <select name="regionId" class="input-normal" id="regionId">
                                 <option value="-1">==请选择地区==</option>
-                                <option value="0">中国</option>
-                                <option value="1">美国</option>
-                                <option value="2">德国</option>
-                                <option value="3">韩国</option>
-                                <option value="4">日本</option>
+                                <option th:each="region:${regions}" th:value="${region.id}" th:text="${region.regionName}"></option>
                             </select>
                         </td>
                     </tr>
@@ -129,51 +110,26 @@
             </div>
 
             <div style="text-align: center;">
-                <div style="display: none;">
-                    <input type="submit" name="btnSave" value="" id="btnSave">
-                </div>
-                <!--<a class="btn-lit" th:attr="customerid=${user.customerId}" onclick="submitForm(this)"><span>保存</span></a>-->
-                <a class="btn-lit"  onclick="submitForm1(this)"><span>保存</span></a>
-                <!--<input type="submit" class="btn-lit" name="btnSave"  value="保存" data-submiting-text="提交中..." data-text="保存" id="jq-cms-Save">-->
+                <input type="submit" class="btn-lit" name="btnSave"  value="保存" data-submiting-text="提交中..." data-text="保存" id="jq-cms-Save">
             </div>
         </div>
     </div>
     </form>
 </div>
 
-<script>seajs.use(["addSite","layer"]);</script>
+<script>seajs.use(["addSite","layer","validate","message"]);</script>
 <script>
-    function submitForm1(obj){
-        $("#addSite").submit();
-//        var index =layer.load(1, {
-//            shade: [0.1,'#fff'] //0.1透明度的白色背景
-//        });
-//        layer.alert("!");
+    function changeradio(t){
+        if(t==1){
+            $("#customTemplateUrl").val("");
+            $("#custom_0").val("1");
+            document.getElementById("cUrl").style.visibility="visible";
+        }
+        else{
+            document.getElementById("cUrl").style.visibility="hidden";
+        }
+
     }
-//    function uploadImg(btnFile, showImgId, pathId) {
-//
-//            $.jBox.tip("正在上传...", "loading");
-//            $.ajaxFileUpload({
-//                url: uploadUrl,
-//                secureuri: false,//安全协议
-//                fileElementId: btnFile,//id
-//                dataType: 'json',
-//                type: "post",
-//                data: null,
-//                error: function (data, status, e) {
-//
-//                },
-//                success: function (json) {
-//                    if (json.result == 1) {
-//                        $("#" + showImgId).attr("src", json.fileUrl);
-//                        $("#" + pathId).val(json.fileUri);
-//                        $.jBox.tip("上传成功", "success");
-//                    } else {
-//                        $.jBox.tip("上传失败", "error");
-//                    }
-//                }
-//            });
-//    }
 </script>
 </body>
 </html>

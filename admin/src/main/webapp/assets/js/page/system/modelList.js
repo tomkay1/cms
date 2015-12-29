@@ -6,16 +6,13 @@ define(function (require, exports, module) {
     //TODO:初始化加载模型列表
    var ModelGrid= $("#js-ModelList").Grid({
         method: 'POST',//提交方式GET|POST
-        form: 'form1',//表单ID
         pageSize: 10,
         height:'auto',
         showNumber: false,
         pageSize: 20,
         pagerCount: 10,
+       doubleLine:true,
         pageDetail: true,
-        dataParam: {
-            enabled: true
-        },
         url: '/model/getModelList',//数据来源Url|通过mobel自定义属性配置
         rows: [
             {
@@ -72,7 +69,7 @@ define(function (require, exports, module) {
             $(dom).click(function(){//绑定删除事件
                 var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;
                 var layer=require("layer");
-                layer.confirm('您确定要删除改条模型记录吗？', {
+                layer.confirm('您确定要删除该条模型记录吗？', {
                     btn: ['确定','取消'] //按钮
                 }, function() {
                     $.ajax({

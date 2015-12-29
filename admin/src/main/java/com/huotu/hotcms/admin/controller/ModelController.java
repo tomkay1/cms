@@ -43,7 +43,7 @@ public class ModelController {
     /*
     * 系统模型列表视图
     * */
-    @RequestMapping("/modellist")
+    @RequestMapping("/modelList")
     public ModelAndView modelList(HttpServletRequest request) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("/view/system/modelList.html");

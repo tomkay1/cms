@@ -85,7 +85,7 @@ public class SiteController {
                         host.setDomain(domain);
                         hostService.save(host);
                     } else {
-                        result = new ResultView(999, "域名已被占用", null);
+                        result =new ResultView(ResultOptionEnum.DOMIN_EXIST.getCode(),"域名已被占用", null);
                     }
                 }
                 Long siteId = site.getSiteId();

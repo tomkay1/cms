@@ -79,10 +79,10 @@ public class Site {
     private String customTemplateUrl;
 
 
-    /**
-     * 对应域名
-     */
-    @ManyToMany(cascade = CascadeType.ALL)
+     /**
+      * 对应域名
+      */
+     @ManyToMany(cascade = CascadeType.MERGE)
      @JoinTable(name = "cms_site_host",
      joinColumns = {@JoinColumn(name = "siteId",referencedColumnName = "siteId")},
      inverseJoinColumns = {@JoinColumn(name = "hostId",referencedColumnName = "hostId")}

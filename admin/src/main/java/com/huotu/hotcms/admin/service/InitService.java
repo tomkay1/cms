@@ -68,15 +68,33 @@ public class InitService {
         if(siteRepository.count() == 0) {
             Host host = new Host();
             host.setDomain("cms.51flashmall.com");
+            host.setCustomerId(3447);
+            host = hostRepository.save(host);
             Host host1 = new Host();
             host1.setDomain("localhost");
+            host1.setCustomerId(3447);
+            host1 = hostRepository.save(host1);
             Site site = new Site();
             site.setCustomerId(3447);
+            site.setTitle("火图科技");
+            site.setDescription("杭州火图科技有限公司是一家专业的微信商城服务提供商，" +
+                    "专业/质优/高端微商城定制开发，为客户建立专属微信三级分销系统，并提供代运营、微商人才培训等服务");
             site.setRegion(regionRepository.findByRegionCodeIgnoreCase("cn"));
             site.setCreateTime(LocalDateTime.now());
+            site = siteRepository.save(site);
             site.addHost(host);
             site.addHost(host1);
             siteRepository.save(site);
+            Site s = new Site();
+            s.setCustomerId(3447);
+            s.setTitle("huobanplus");
+            s.setDescription("Hangzhou fire science and Technology Co., Ltd. is a professional mall of micro channel service providers, " +
+                    "professional / quality / high-end micro mall custom development……");
+            s.setRegion(regionRepository.findByRegionCodeIgnoreCase("us"));
+            s.setCreateTime(LocalDateTime.now());
+            s = siteRepository.save(s);
+            s.addHost(host);
+            siteRepository.save(s);
         }
     }
 }

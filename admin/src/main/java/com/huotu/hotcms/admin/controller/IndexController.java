@@ -21,7 +21,7 @@ public class IndexController {
 
     @RequestMapping("/")
     public String testIndex(Site site,Model model){
-        model.addAttribute("seo",new Seo("wre34"));
+        model.addAttribute("site",site);
         String viewName = "/view/index.html";
         if(site.isCustom()) {
             viewName = site.getCustomTemplateUrl();
@@ -31,8 +31,12 @@ public class IndexController {
 
     @RequestMapping("/*")
     public String testIndex2(Site site,Model model) throws Exception {
-        model.addAttribute("seo",new Seo("erewgfd"));
-        return "/view/index.html";
+        model.addAttribute("site",site);
+        String viewName = "/view/index.html";
+        if(site.isCustom()) {
+            viewName = site.getCustomTemplateUrl();
+        }
+        return viewName;
     }
 
 

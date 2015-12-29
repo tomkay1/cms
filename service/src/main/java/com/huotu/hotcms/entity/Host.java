@@ -29,6 +29,12 @@ public class Host {
     private Long hostId;
 
     /**
+     * 商户ID
+     */
+    @Column(name = "customerId")
+    private Integer customerId;
+
+    /**
      * 域名
      */
     @Column(name = "domain")

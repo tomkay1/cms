@@ -29,6 +29,7 @@ public class IndexController {
         return viewName;
     }
 
+
     @RequestMapping("/*")
     public String testIndex2(Site site,Model model) throws Exception {
         model.addAttribute("site",site);

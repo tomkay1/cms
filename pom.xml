@@ -18,6 +18,7 @@
     <modules>
         <module>admin</module>
         <module>service</module>
+        <module>web</module>
     </modules>
 
     <dependencyManagement>

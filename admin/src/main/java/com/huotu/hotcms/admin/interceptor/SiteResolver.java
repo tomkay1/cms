@@ -1,12 +1,12 @@
 package com.huotu.hotcms.admin.interceptor;
 
-import com.huotu.hotcms.entity.Host;
-import com.huotu.hotcms.entity.Region;
-import com.huotu.hotcms.entity.Site;
-import com.huotu.hotcms.repository.SiteRepository;
-import com.huotu.hotcms.service.HostService;
-import com.huotu.hotcms.service.RegionService;
-import com.huotu.hotcms.service.SiteService;
+import com.huotu.hotcms.service.entity.Host;
+import com.huotu.hotcms.service.entity.Region;
+import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.repository.SiteRepository;
+import com.huotu.hotcms.service.service.HostService;
+import com.huotu.hotcms.service.service.RegionService;
+import com.huotu.hotcms.service.service.SiteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,6 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -67,77 +66,7 @@ public class SiteResolver implements HandlerMethodArgumentResolver {
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
-        String path = request.getServletPath();
-        if(isRootPath(path)) {
-            return getHomeSite(request);
-        }else if(isSubSitePath(path)) {
-            return getSubSite(request);
-        }else {
-            return initSiteParameter(request);
-        }
-    }
-
-    private Site getSubSite(HttpServletRequest request) throws Exception{
-        Site site = null;
-        String regionCode = request.getServletPath().substring(1);
-        Region region = regionService.getRegion(regionCode);
-        if(region == null) {
-            throw new Exception("请求错误");
-        }
-        String language = region.getLangCode();
-        String domain = request.getServerName();
-        Set<Site> sites = getSitesThroughDomain(domain);
-        for(Site s : sites) {
-            if(s.getRegion().getLangCode().equalsIgnoreCase(language)) {
-                site = s;
-                break;
-            }
-        }
-        if(site == null) {
-            throw new Exception("页面不存在");
-        }
-        return site;
-    }
-
-    private Site getHomeSite(HttpServletRequest request) throws Exception{
-        Site site = null;
-        Site chSite = null;
-        String domain = request.getServerName();
-        Set<Site> sites = getSitesThroughDomain(domain);
-        String language = request.getLocale().getLanguage();
-        if(StringUtils.isEmpty(language)) {
-            language = "zh";
-        }
-        for(Site s : sites) {
-            String lang = s.getRegion().getLangCode();
-            if(language.equalsIgnoreCase(lang)) {
-                site = s;
-            }else if("zh".equalsIgnoreCase(lang)) {
-                chSite = s;
-            }
-        }
-        if(site == null) {
-            return chSite;
-        }
-        return site;
-    }
-
-    private Set<Site> getSitesThroughDomain(String domain) throws Exception{
-        Host host = hostService.getHost(domain);
-        Set<Site> sites = siteRepository.findByCustomerId(3447);
-        if(host == null) {
-            throw new Exception("域名错误");
-        }
-        return host.getSites();
-    }
-
-
-    private boolean isRootPath(String path) {
-        return "/".equals(path);
-    }
-
-    private boolean isSubSitePath(String path) {
-        return path.lastIndexOf("/") == 0;
+        return initSiteParameter(request);
     }
 
     private Site initSiteParameter(HttpServletRequest request) throws Exception {

@@ -1,17 +1,10 @@
 package com.huotu.hotcms.admin.controller;
 
 import com.huotu.hotcms.admin.model.Seo;
-import com.huotu.hotcms.entity.Site;
-import org.springframework.data.crossstore.ChangeSetPersister;
+import com.huotu.hotcms.service.entity.Site;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by cwb on 2015/12/16.

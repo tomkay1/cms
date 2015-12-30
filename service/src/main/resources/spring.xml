@@ -17,8 +17,8 @@
         <property name="persistenceUnitName" value="basePu"/>
         <property name="packagesToScan">
             <array>
-                <value>com.huotu.hotcms.entity</value>
-                <value>com.huotu.hotcms.config</value>
+                <value>com.huotu.hotcms.service.entity</value>
+                <value>com.huotu.hotcms.service.config</value>
             </array>
         </property>
         <property name="persistenceProvider">

@@ -2,8 +2,8 @@ package com.huotu.hotcms.admin.interceptor;
 
 import com.huotu.hotcms.admin.util.web.CookieUser;
 import com.huotu.hotcms.admin.util.web.QueryHelper;
-import com.huotu.hotcms.common.ConfigInfo;
-import com.huotu.hotcms.util.UserInfo;
+import com.huotu.hotcms.service.common.ConfigInfo;
+import com.huotu.hotcms.service.util.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,7 +23,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     private static final String[] IGNORE_URI = {"/", "/f/**","/f"};
 
     @Autowired
-    private  CookieUser cookieUser;
+    private CookieUser cookieUser;
 
     @Autowired
     private ConfigInfo configInfo;
@@ -33,7 +33,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         if(Arrays.asList(IGNORE_URI).contains(request.getServletPath())) {
             return true;
         }
-        Integer customerId= QueryHelper.getQueryValInteger(request,"customerid");
+        Integer customerId= QueryHelper.getQueryValInteger(request, "customerid");
         if(!cookieUser.checkLogin(request,customerId))//判断用户登录授权
         {
             String loginUrl=configInfo.getOutLoginUrl();

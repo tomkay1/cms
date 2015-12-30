@@ -1,11 +1,11 @@
 package com.huotu.hotcms.admin.config;
 
+import com.huotu.hotcms.admin.interceptor.SiteResolver;
 import com.huotu.hotcms.admin.dialect.HotDialect;
 import com.huotu.hotcms.admin.interceptor.LoginInterceptor;
-import com.huotu.hotcms.admin.interceptor.SiteResolver;
 import com.huotu.hotcms.admin.util.ArrayUtil;
-import com.huotu.hotcms.config.JpaConfig;
-import com.huotu.hotcms.config.ServiceConfig;
+import com.huotu.hotcms.service.config.JpaConfig;
+import com.huotu.hotcms.service.config.ServiceConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.*;
@@ -14,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
-import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
@@ -40,17 +39,17 @@ import java.util.List;
         "com.huotu.hotcms.admin.controller",
         "com.huotu.hotcms.admin.interceptor",
         "com.huotu.hotcms.admin.util.web",
-        "com.huotu.hotcms.common"
+        "com.huotu.hotcms.service.common"
 })
 @Import({JpaConfig.class, ServiceConfig.class})
 public class MVCConfig extends WebMvcConfigurerAdapter {
 
     private static final String UTF8 = "UTF-8";
 
-
+    @Autowired
+    private ApplicationContext applicationContext;
     @Autowired
     private SiteResolver siteResolver;
-
     @Autowired
     private  LoginInterceptor loginInterceptor;
 
@@ -174,9 +173,6 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         springMessageResolver.setMessageSource(messageSource);
         return springMessageResolver;
     }
-
-    @Autowired
-    private ApplicationContext applicationContext;
 
     private ITemplateResolver htmlTemplateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();

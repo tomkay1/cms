@@ -8,22 +8,18 @@
 
 package com.huotu.hotcms.admin.service;
 
-import com.huotu.hotcms.entity.Host;
-import com.huotu.hotcms.entity.Region;
-import com.huotu.hotcms.entity.Site;
-import com.huotu.hotcms.repository.HostRepository;
-import com.huotu.hotcms.repository.RegionRepository;
-import com.huotu.hotcms.repository.SiteRepository;
+import com.huotu.hotcms.service.entity.Host;
+import com.huotu.hotcms.service.entity.Region;
+import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.repository.HostRepository;
+import com.huotu.hotcms.service.repository.RegionRepository;
+import com.huotu.hotcms.service.repository.SiteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Created by cwb on 2015/12/28.

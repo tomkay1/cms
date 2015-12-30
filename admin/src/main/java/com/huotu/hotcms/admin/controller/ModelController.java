@@ -1,17 +1,14 @@
 package com.huotu.hotcms.admin.controller;
 
-import com.huotu.hotcms.admin.util.web.CookieHelper;
 import com.huotu.hotcms.admin.util.web.CookieUser;
-import com.huotu.hotcms.common.ModelType;
-import com.huotu.hotcms.entity.DataModel;
-import com.huotu.hotcms.repository.ModelRepository;
-import com.huotu.hotcms.service.impl.ModelServiceImpl;
-import com.huotu.hotcms.util.PageData;
-import com.huotu.hotcms.util.ResultOptionEnum;
-import com.huotu.hotcms.util.ResultView;
-import org.eclipse.persistence.jpa.jpql.parser.DateTime;
+import com.huotu.hotcms.service.common.ModelType;
+import com.huotu.hotcms.service.entity.DataModel;
+import com.huotu.hotcms.service.repository.ModelRepository;
+import com.huotu.hotcms.service.service.impl.ModelServiceImpl;
+import com.huotu.hotcms.service.util.ResultOptionEnum;
+import com.huotu.hotcms.service.util.ResultView;
+import com.huotu.hotcms.service.util.PageData;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,8 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 
 /**
@@ -33,7 +28,7 @@ import java.time.LocalDateTime;
 @RequestMapping("/model")
 public class ModelController {
     @Autowired
-    private  CookieUser cookieUser;
+    private CookieUser cookieUser;
 
     @Autowired
     private ModelRepository modelRepository;

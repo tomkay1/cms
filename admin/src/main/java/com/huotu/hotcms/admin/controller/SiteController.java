@@ -1,15 +1,15 @@
 package com.huotu.hotcms.admin.controller;
 
 import com.huotu.hotcms.admin.util.web.CookieUser;
-import com.huotu.hotcms.entity.Host;
-import com.huotu.hotcms.entity.Region;
-import com.huotu.hotcms.entity.Site;
-import com.huotu.hotcms.repository.RegionRepository;
-import com.huotu.hotcms.service.HostService;
-import com.huotu.hotcms.service.SiteService;
-import com.huotu.hotcms.util.PageData;
-import com.huotu.hotcms.util.ResultOptionEnum;
-import com.huotu.hotcms.util.ResultView;
+import com.huotu.hotcms.service.entity.Host;
+import com.huotu.hotcms.service.entity.Region;
+import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.repository.RegionRepository;
+import com.huotu.hotcms.service.service.HostService;
+import com.huotu.hotcms.service.service.SiteService;
+import com.huotu.hotcms.service.util.ResultOptionEnum;
+import com.huotu.hotcms.service.util.ResultView;
+import com.huotu.hotcms.service.util.PageData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;

@@ -8,7 +8,7 @@
  */
 
 package com.huotu.hotcms.admin.util.web;
-import com.huotu.hotcms.common.CMSEnums;
+import com.huotu.hotcms.service.common.CMSEnums;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,7 +35,7 @@ public class CookieUser {
     * Cookie中读取customerID
     * */
     public  int getCustomerId(HttpServletRequest request, int customerId){
-        return  CookieHelper.getCookieValInteger(request,CMSEnums.CookieKeyValue.CustomerID.toString());
+        return  CookieHelper.getCookieValInteger(request, CMSEnums.CookieKeyValue.CustomerID.toString());
     }
 
     /*

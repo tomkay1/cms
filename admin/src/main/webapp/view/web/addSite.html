@@ -42,7 +42,7 @@
                     <tr>
                         <th>站点描述：</th>
                         <td>
-                            <input name="description"  id="description" type="text" class="input-normal" placeholder="">
+                            <textarea rows="" cols="" style="width: 250px; height: 60px;" class="input-normal" id="description" name="txtModelDescription" ></textarea>
                         </td>
                     </tr>
                     <tr>
@@ -54,15 +54,16 @@
                     <tr>
                         <th>站点logo：</th>
                         <td>
-                            <div id="uploadpicCover" style="width: 80px; height: 80px; border: 1px solid #ccc; float: left; background: #efefef; line-height: 80px; text-align: center; color: #ccc;"><img src="/resource/images/wechat/mall_cat_def.png" style="width:80px;height:80px;"></div>
+                            <div id="uploadpicCover" style="width: 80px; height: 80px; border: 1px solid #ccc; float: left; background: #efefef; line-height: 80px; text-align: center; color: #ccc;"><img src="#" style="width:80px;height:80px;"></div>
 
                             <div style="margin-left: 10px; float: left; line-height: 80px;">
-                                <a id="uploadpic" class="btn-lit jUploader-button" href="#" style="cursor: pointer; position: relative; overflow: hidden; direction: ltr;"><span style="color: #c1b3a9">上传</span><input type="file" onchange="this.blur();" id="jUploader-file1" name="jUploaderFile" style="position: absolute; right: 0px; top: 0px; margin: 0px; opacity: 0; padding: 0px; font-family: Arial; font-size: 118px; vertical-align: baseline; cursor: pointer;"></a>
+                                <a id="uploadpic" class="btn-lit jUploader-button" href="#" style="cursor: pointer; position: relative; overflow: hidden; direction: ltr;"><span style="color: #c1b3a9">上传</span>
+                                    <input type="file" onchange="this.blur();" id="jUploader-file1" name="jUploaderFile" style="position: absolute; right: 0px; top: 0px; margin: 0px; opacity: 0; padding: 0px; font-family: Arial; font-size: 118px; vertical-align: baseline; cursor: pointer;"></a>
                                 <span style="color: #f00">*</span>      必填
                                 <span style="color: #ccc;">建议大小：300*300</span>
                             </div>
-                            <input name="txtReplyUrl1" type="hidden" id="txtReplyUrl1" value="/resource/images/wechat/mall_cat_def.png">
-                            <img id="img_photo" th:src="${logoUri}" src="images/logo.png" style="width: 100px; height: auto;"/><input name="logoUri" id="logoUri" type="file"/>
+                            <!--<input name="txtReplyUrl1" type="hidden" id="txtReplyUrl1" value="/resource/images/wechat/mall_cat_def.png">-->
+                            <!--<img id="img_photo" th:src="${logoUri}" src="images/logo.png" style="width: 100px; height: auto;"/><input name="logoUri" id="logoUri" type="file"/>-->
 
                         </td>
                     </tr>
@@ -123,10 +124,10 @@
         if(t==1){
             $("#customTemplateUrl").val("");
             $("#custom_0").val("1");
-            document.getElementById("cUrl").style.visibility="visible";
+            document.getElementById("cUrl").style.display="";
         }
         else{
-            document.getElementById("cUrl").style.visibility="hidden";
+            document.getElementById("cUrl").style.display="none";
         }
 
     }

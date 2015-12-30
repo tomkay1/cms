@@ -1,4 +1,4 @@
-package com.huotu.hotcms.admin.dialect;
+package com.huotu.hotcms.web.dialect;
 
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.dialect.IProcessorDialect;
@@ -14,11 +14,10 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.util.StringUtils;
 
 /**
- * @brief 自定义循环thymeleaf 语法标签解析
+ * @brief 鑷畾涔夊惊鐜痶hymeleaf 璇硶鏍囩瑙ｆ瀽
  * @since 1.0.0
  * @author xhl
  * @time 2015/12/30
- * Created by Administrator xhl 2015/12/30.
  */
 public class ForeachProcessor extends AbstractAttributeTagProcessor {
     public static final int PRECEDENCE = 1200;
@@ -40,6 +39,7 @@ public class ForeachProcessor extends AbstractAttributeTagProcessor {
                              IElementTagStructureHandler structureHandler) {
 
         final Each each = EachUtils.parseEach(context, attributeValue);
+
 
         final IStandardExpression iterVarExpr = each.getIterVar();
         final Object iterVarValue = iterVarExpr.execute(context);

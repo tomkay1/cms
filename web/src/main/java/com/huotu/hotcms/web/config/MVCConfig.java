@@ -129,7 +129,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
     private ITemplateEngine templateEngine(ITemplateResolver templateResolver) {
         SpringTemplateEngine engine = new SpringTemplateEngine();
         engine.setTemplateResolver(templateResolver);
-        engine.addDialect(new HotDialect());
+//        engine.addDialect(new HotDialect());
         return engine;
     }
 

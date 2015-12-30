@@ -7,10 +7,10 @@
 <body>
     <table>
         <tbody>
-            <tr data-th-each="site:${#siteService.siteList()}">
-                <td>标题</td>
-                <td data-th-text="${site.title}"></td>
-            </tr>
+            <!--<tr data-th-each="site:${#siteService.siteList()}">-->
+                <!--<td>标题</td>-->
+                <!--<td data-th-text="${site.title}"></td>-->
+            <!--</tr>-->
         </tbody>
     </table>
     <span data-th-text="${#dates.format(#dates.createNow(),'yyyy-dd-MM HH:mm:ss')}">温热微软二位</span>

@@ -16,11 +16,11 @@ import org.thymeleaf.util.StringUtils;
 /**
  * Created by Administrator on 2015/12/30.
  */
-public class ForeachProcessor extends AbstractAttributeTagProcessor {
+public class foreachProcessor extends AbstractAttributeTagProcessor {
     public static final int PRECEDENCE = 1200;
     public static final String ATTR_NAME = "foreach";
 
-    public ForeachProcessor(final IProcessorDialect dialect, final TemplateMode templateMode, final String dialectPrefix) {
+    public foreachProcessor(final IProcessorDialect dialect, final TemplateMode templateMode, final String dialectPrefix) {
         super(dialect, templateMode, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
     }
 

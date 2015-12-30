@@ -82,7 +82,7 @@ public class Site {
      /**
       * 对应域名
       */
-     @ManyToMany(cascade = CascadeType.ALL)
+     @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.REMOVE,CascadeType.REFRESH})
      @JoinTable(name = "cms_site_host",
      joinColumns = {@JoinColumn(name = "siteId",referencedColumnName = "siteId")},
      inverseJoinColumns = {@JoinColumn(name = "hostId",referencedColumnName = "hostId")}
@@ -100,6 +100,12 @@ public class Site {
      */
     @Column(name = "updateTime")
     private LocalDateTime updateTime;
+
+    /**
+     * 是否已删除
+     */
+    @Column(name = "deleted")
+    private boolean deleted = false;
 
     /**
      * 所属地区

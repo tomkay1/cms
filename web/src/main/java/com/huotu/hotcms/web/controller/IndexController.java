@@ -8,11 +8,10 @@
 
 package com.huotu.hotcms.web.controller;
 
+
 import com.huotu.hotcms.web.model.Seo;
-import com.huotu.hotcms.service.entity.Site;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * Created by cwb on 2015/12/16.
@@ -45,6 +44,23 @@ public class IndexController {
     public String testRemote(Model model) {
         model.addAttribute("seo",new Seo("Access remote template success!"));
         return "/pc/yun-index.html";
+    }
+
+    @RequestMapping("/test")
+    public  String test(Model model){
+        Seo[] seo=new Seo[]{
+            new Seo("ceshi 1"),
+            new Seo("ceshi 2"),
+            new Seo("ceshi 3"),
+            new Seo("ceshi 4")
+        };
+        model.addAttribute("links",seo);
+        return "/view/test.html";
+    }
+
+    @ModelAttribute("categoryList")
+    public List<Category> getSite() {
+        return new ArrayList<>();
     }
 
 }

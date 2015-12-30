@@ -61,8 +61,18 @@ define(function (require, exports, module) {
                         {
                             var layer=require("layer");
                             layer.msg("操作成功",{time: 2000});
-                            $("#txtModelName").val("");
-                            $("#txtModelDescription").val("");
+                            $("#name").val("");
+                            $("#title").val("");
+                            $("#keywords").val("");
+                            $("#copyright").val("");
+                            $("#custom_0").val("");
+                            document.getElementById('custom_0').checked = true;
+                            document.getElementById("cUrl").style.visibility="visible";
+                            $("#customTemplateUrl").val("");
+                            $("#domains").val("");
+                            $("#regionId").val("-1");
+                            $("#description").val("");
+
                         }
                         if(index==500){layer.msg("操作失败",{time: 2000})}
 
@@ -80,6 +90,9 @@ define(function (require, exports, module) {
         },
         invalidHandler: function () {
             return true;
+        },
+        haha : function(){
+            alert("!");
         }
     });
 });

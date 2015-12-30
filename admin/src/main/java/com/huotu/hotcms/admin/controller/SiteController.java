@@ -60,13 +60,6 @@ public class SiteController {
         return  modelAndView;
     }
 
-//    @RequestMapping(value = "/saveSite",method = RequestMethod.POST)
-//    public ModelAndView saveSite(HttpServletRequest request,String... hosts) throws Exception{
-//        ModelAndView modelAndView=new ModelAndView();
-//        modelAndView.setViewName("/view/web/siteList.html");
-//        siteService.addSite(request,hosts);
-//        return modelAndView;
-//    }
 
     /*
       * 更新地区
@@ -77,15 +70,17 @@ public class SiteController {
     public ResultView updateSite(Site site,Long regionId,String...domains){
         ResultView result=null;
         try {
-            if (domains != null) {
+            if (domains.length != 0) {
                 for (String domain : domains) {
                     Host flag = hostService.getHost(domain);
                     if (flag == null) {
                         Host host = new Host();
+                        host.setCustomerId(site.getCustomerId());
                         host.setDomain(domain);
                         hostService.save(host);
                     } else {
-                        result =new ResultView(ResultOptionEnum.DOMIN_EXIST.getCode(),"域名已被占用", null);
+                        result =new ResultView(999,"其中有域名已被占用,请修改", null);
+                        return result;
                     }
                 }
                 Long siteId = site.getSiteId();
@@ -111,15 +106,19 @@ public class SiteController {
 
 
     @RequestMapping("/updateSite")
-    public ModelAndView updateSite(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception{
+    public ModelAndView updateSite(@RequestParam(value = "id",defaultValue = "0") Long id,int customerId) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
-//        if(id!=0) {
-//            Site site = siteService.findBySiteIdAndCustomerId(id);
-//            if (site != null) {
-//                modelAndView.addObject("site", site);
-//            }
-//        }
         modelAndView.setViewName("/view/web/updateSite.html");
+
+        if(id!=0) {
+            Site site = siteService.findBySiteIdAndCustomerId(id,customerId);
+            if (site != null) {
+                modelAndView.addObject("site", site);
+//                HostService
+                List<Region> regions =regionRepository.findAll();
+                modelAndView.addObject("regions",regions);
+            }
+        }
         return modelAndView;
     }
 

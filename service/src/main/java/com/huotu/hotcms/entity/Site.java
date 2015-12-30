@@ -82,7 +82,7 @@ public class Site {
      /**
       * 对应域名
       */
-     @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.REMOVE,CascadeType.REFRESH})
+     @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
      @JoinTable(name = "cms_site_host",
      joinColumns = {@JoinColumn(name = "siteId",referencedColumnName = "siteId")},
      inverseJoinColumns = {@JoinColumn(name = "hostId",referencedColumnName = "hostId")}

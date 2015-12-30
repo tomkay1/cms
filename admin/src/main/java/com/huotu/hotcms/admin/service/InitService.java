@@ -69,11 +69,9 @@ public class InitService {
             Host host = new Host();
             host.setDomain("cms.51flashmall.com");
             host.setCustomerId(3447);
-            host = hostRepository.save(host);
             Host host1 = new Host();
             host1.setDomain("localhost");
             host1.setCustomerId(3447);
-            host1 = hostRepository.save(host1);
             Site site = new Site();
             site.setCustomerId(3447);
             site.setTitle("火图科技");
@@ -81,7 +79,6 @@ public class InitService {
                     "专业/质优/高端微商城定制开发，为客户建立专属微信三级分销系统，并提供代运营、微商人才培训等服务");
             site.setRegion(regionRepository.findByRegionCodeIgnoreCase("cn"));
             site.setCreateTime(LocalDateTime.now());
-            site = siteRepository.save(site);
             site.addHost(host);
             site.addHost(host1);
             siteRepository.save(site);
@@ -93,7 +90,7 @@ public class InitService {
             s.setRegion(regionRepository.findByRegionCodeIgnoreCase("us"));
             s.setCreateTime(LocalDateTime.now());
             s = siteRepository.save(s);
-            s.addHost(host);
+            s.addHost(hostRepository.findByDomain("cms.51flashmall.com"));
             siteRepository.save(s);
         }
     }

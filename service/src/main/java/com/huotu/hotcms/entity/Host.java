@@ -19,7 +19,7 @@ import java.util.*;
  * Created by cwb on 2015/12/24.
  */
 @Entity
-@Table(name = "cms_host")
+@Table(name = "cms_host",uniqueConstraints = @UniqueConstraint(columnNames = {"domain"}))
 @Getter
 @Setter
 public class Host {
@@ -49,15 +49,14 @@ public class Host {
     /**
      * 对应站点
      */
-    @ManyToMany(mappedBy = "hosts")
-    private Set<Site> sites = new HashSet<>();
+    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.REMOVE,CascadeType.REFRESH},mappedBy = "hosts")
+    private Set<Site> sites;
 
     public void addSite(Site site) {
-            this.sites.add(site);
+        site.addHost(this);
     }
 
     public void removeSite(Site site) {
-        this.sites.remove(site);
+        site.removeHost(this);
     }
-
 }

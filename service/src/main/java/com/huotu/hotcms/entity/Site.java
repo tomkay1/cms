@@ -82,12 +82,12 @@ public class Site {
      /**
       * 对应域名
       */
-     @ManyToMany(cascade = CascadeType.MERGE)
+     @ManyToMany(cascade = CascadeType.ALL)
      @JoinTable(name = "cms_site_host",
      joinColumns = {@JoinColumn(name = "siteId",referencedColumnName = "siteId")},
      inverseJoinColumns = {@JoinColumn(name = "hostId",referencedColumnName = "hostId")}
      )
-     private Set<Host> hosts = new HashSet<>();
+     private Set<Host> hosts;
 
      /**
      * 站点创建时间
@@ -104,16 +104,23 @@ public class Site {
     /**
      * 所属地区
      */
-    @OneToOne
+    @OneToOne(optional = false)
     @JoinColumn(name = "regionId")
     private Region region;
 
     public void addHost(Host host) {
-            host.addSite(this);
-            this.hosts.add(host);
+        if(this.hosts == null) {
+            this.hosts = new HashSet<>();
+        }
+        if(host.getSites() == null) {
+            host.setSites(new HashSet<>());
+        }
+        host.getSites().add(this);
+        this.hosts.add(host);
     }
 
     public void removeHost(Host host) {
+        host.getSites().remove(this);
         this.hosts.remove(host);
     }
 

@@ -32,46 +32,6 @@ public class SiteServiceImpl implements SiteService {
     @Autowired
     HostRepository hostRepository;
 
-    @Transactional(value = "transactionManager")
-    @Override
-    public boolean addSite(HttpServletRequest request,String... hosts) {
-        Site site = new Site();
-        site.setCustomerId(Integer.parseInt(request.getParameter("customerid")));
-        site.setName(request.getParameter("name"));
-        site.setTitle(request.getParameter("title"));
-        site.setKeywords(request.getParameter("keywords"));
-        site.setDescription(request.getParameter("description"));
-        site.setCopyright(request.getParameter("copyright"));
-        LocalDateTime localDateTime =LocalDateTime.now();
-        site.setUpdateTime(localDateTime);
-        String flag =request.getParameter("custom");
-        if(flag.equals("1")){
-            site.setCustom(true);
-        }
-        else {
-            site.setCustom(false);
-        }
-        site.setCustomTemplateUrl(request.getParameter("customTemplateUrl"));
-
-        for(String host:hosts) {
-            Host host1 = hostRepository.findByDomain(host);
-            if(host1==null){
-                Host host2 = new Host();
-                host2.setDomain(host);
-                hostRepository.save(host2);
-                site.addHost(host2);
-            }
-            else{
-                return false;
-            }
-        }
-
-//        site.setRegion(request.getParameter("region"));
-        site.setCreateTime(localDateTime);
-        siteRepository.save(site);
-
-        return true;
-    }
 
     @Override
     public PageData<Site> getPage(String name, int page, int pageSize) {

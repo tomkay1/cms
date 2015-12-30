@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface SiteService {
 
-    boolean addSite(HttpServletRequest request,String... hosts);
-//    Page<Site> getPage( InvoiceSearcher invoiceSearcher);
     PageData<Site> getPage(String name,int page,int pageSize);
 
     Site getSite(long siteId);

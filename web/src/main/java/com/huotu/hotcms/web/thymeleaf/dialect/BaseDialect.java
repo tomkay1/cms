@@ -1,7 +1,6 @@
 package com.huotu.hotcms.web.thymeleaf.dialect;
 
 import com.huotu.hotcms.web.service.BaseDialectService;
-import com.huotu.hotcms.web.thymeleaf.processor.BaseProcessor;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.processor.IProcessor;

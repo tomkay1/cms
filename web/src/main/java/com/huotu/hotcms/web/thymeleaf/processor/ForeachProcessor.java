@@ -18,7 +18,7 @@ import org.thymeleaf.util.StringUtils;
 
 /**
  * <P>
- *     自定义循环thymeleaf 语法标签解析
+ *    自定义循环thymeleaf 语法标签基类
  * </P>
  *
  * @author xhl
@@ -61,7 +61,7 @@ public class ForeachProcessor extends AbstractAttributeTagProcessor {
 
         final IStandardExpression iterableExpr = each.getIterable();
 
-        //����Tag����������
+        //根据Tag来解析数据
         final Object iteratedValue=baseDialectService.resolveDataByAttr(tag,attributeName);
 
         final String iterVarName = (iterVarValue == null? null : iterVarValue.toString());

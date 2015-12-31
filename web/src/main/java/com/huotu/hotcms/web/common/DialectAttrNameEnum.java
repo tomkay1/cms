@@ -9,7 +9,8 @@ package com.huotu.hotcms.web.common;
  * @author xhl
  */
 public enum DialectAttrNameEnum implements ICommonEnum {
-    FOREACH(0,"foreach");
+    FOREACH(0,"foreach"),
+    TEXT(0,"text");
 
     DialectAttrNameEnum(int code, String value) {
         this.code = code;

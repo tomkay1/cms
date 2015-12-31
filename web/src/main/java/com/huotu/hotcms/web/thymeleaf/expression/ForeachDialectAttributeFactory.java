@@ -14,7 +14,6 @@ import org.thymeleaf.model.IProcessableElementTag;
  *
  * @author xhl
  */
-@Component
 public class ForeachDialectAttributeFactory implements IDialectAttributeFactory {
     private static ForeachDialectAttributeFactory instance=new ForeachDialectAttributeFactory();
 

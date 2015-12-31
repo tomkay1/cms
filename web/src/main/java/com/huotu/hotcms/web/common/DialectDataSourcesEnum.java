@@ -1,10 +1,12 @@
 package com.huotu.hotcms.web.common;
 
 /**
- * @brief Thymeleaf Html5 数据源枚举
+ * <p>
+ *     Thymeleaf Html5 数据源枚举
+ * </p>
  * @since 1.0.0
+ *
  * @author xhl
- * @time 2015/12/30
  */
 public enum DialectDataSourcesEnum implements ICommonEnum{
     DATA_SOURCES_ARTICLE(0,"article"),

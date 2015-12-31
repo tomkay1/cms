@@ -1,10 +1,12 @@
 package com.huotu.hotcms.web.common;
 
 /**
- * @brief Thymeleaf Html5 Attribute enum
+ * <p>
+ *     Thymeleaf Html5 Attribute enum
+ * </p>
  * @since 1.0.0
+ *
  * @author xhl
- * @time 2015/12/30
  */
 public enum DialectHtml5AttrEnum implements ICommonEnum {
     DATA_HOT_ID(0,"data-hot-id"),

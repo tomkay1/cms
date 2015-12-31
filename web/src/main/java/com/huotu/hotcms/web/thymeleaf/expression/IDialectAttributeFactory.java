@@ -4,10 +4,12 @@ import org.thymeleaf.engine.AttributeName;
 import org.thymeleaf.model.IProcessableElementTag;
 
 /**
- * @brief Thymeleaf Html5 Attribute interface
+ * <p>
+ *     Thymeleaf Html5 Attribute interface
+ * </p>
  * @since 1.0.0
+ *
  * @author xhl
- * @time 2015/12/30
  */
 public interface IDialectAttributeFactory {
     String getHtml5Attr(IProcessableElementTag elementTag,String name);

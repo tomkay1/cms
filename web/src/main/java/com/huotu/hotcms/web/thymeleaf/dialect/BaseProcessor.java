@@ -16,7 +16,7 @@ import org.thymeleaf.util.StringUtils;
 
 /**
  * <P>
- *     ×Ô¶¨ÒåÑ­»·thymeleaf Óï·¨±êÇ©½âÎö»ùÀà
+ *     è‡ªå®šä¹‰å¾ªç¯thymeleaf è¯­æ³•æ ‡ç­¾è§£æåŸºç±»
  * </P>
  *
  * @author xhl
@@ -62,7 +62,7 @@ public class BaseProcessor extends AbstractAttributeTagProcessor {
 
         final IStandardExpression iterableExpr = each.getIterable();
 
-        //æ ¹æ®Tagæ¥è§£ææ•°æ?
+        //æ ¹æ®Tagæ¥è§£ææ•°æ®
         final Object iteratedValue=baseDialectService.resolveDataByAttr(tag);
 
         final String iterVarName = (iterVarValue == null? null : iterVarValue.toString());

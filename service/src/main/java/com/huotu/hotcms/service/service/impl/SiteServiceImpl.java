@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by chendeyu on 2015/12/24.
@@ -59,6 +60,11 @@ public class SiteServiceImpl implements SiteService {
     public Site findBySiteIdAndCustomerId(Long siteId,int customerId) {
         Site site =siteRepository.findBySiteIdAndCustomerId(siteId,customerId);
         return  site;
+    }
+
+    @Override
+    public Set<Site> getSite(int customerId) {
+        return siteRepository.findByCustomerId(customerId);
     }
 
 

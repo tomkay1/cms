@@ -59,10 +59,15 @@ public class ForeachProcessor extends AbstractAttributeTagProcessor {
             statusVarValue = null; // Will provoke the default behaviour: iterVarValue + 'Stat'
         }
 
+<<<<<<< Updated upstream:web/src/main/java/com/huotu/hotcms/web/thymeleaf/processor/ForeachProcessor.java
         final IStandardExpression iterableExpr = each.getIterable();
 
         //¸ù¾ÝTagÀ´½âÎöÊý¾Ý
         final Object iteratedValue=baseDialectService.resolveDataByAttr(tag,attributeName);
+=======
+        //æ ¹æ®Tagæ¥è§£æžæ•°æ®
+        final Object iteratedValue=baseDialectService.resolveDataByAttr(tag);
+>>>>>>> Stashed changes:web/src/main/java/com/huotu/hotcms/web/thymeleaf/dialect/BaseProcessor.java
 
         final String iterVarName = (iterVarValue == null? null : iterVarValue.toString());
         if (StringUtils.isEmptyOrWhitespace(iterVarName)) {

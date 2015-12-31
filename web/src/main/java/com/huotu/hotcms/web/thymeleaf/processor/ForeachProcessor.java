@@ -23,6 +23,7 @@ public class ForeachProcessor extends AbstractAttributeTagProcessor {
     public static final int PRECEDENCE = 1200;
     public static final String ATTR_NAME = "foreach";
 
+
     public ForeachProcessor(final IProcessorDialect dialect, final TemplateMode templateMode, final String dialectPrefix) {
         super(dialect, templateMode, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
     }

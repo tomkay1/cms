@@ -1,4 +1,4 @@
-package com.huotu.hotcms.web.service;
+package com.huotu.hotcms.web.thymeleaf.expression;
 
 import org.thymeleaf.engine.AttributeName;
 
@@ -8,9 +8,8 @@ import org.thymeleaf.engine.AttributeName;
  * @author xhl
  * @time 2015/12/30
  */
-public interface IDialectAttributeService {
+public interface IDialectAttributeFactory {
     String getHtml5Attr(AttributeName attributeName,String name);
 
     Object getHtml5Attr(AttributeName attributeName);
-
 }

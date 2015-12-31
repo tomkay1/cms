@@ -6,7 +6,15 @@
 </head>
 <body>
 <div>
-
+<h1>测试一</h1>
+<div hot:foreach="article:articles" data-hot-id="2" data-hot-size="20" data-hot-type="article">
+    <div th:text="${article.title}"></div>
+</div>
+    <hr>
+    <h1>测试二</h1>
+    <div hot:foreach="link:links" data-hot-id="2" data-hot-size="20" data-hot-type="link">
+        <div th:text="${link.title}"></div>
+    </div>
 </div>
 </body>
 </html>

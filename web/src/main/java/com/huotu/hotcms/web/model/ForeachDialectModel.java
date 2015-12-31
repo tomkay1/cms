@@ -16,8 +16,19 @@ import javax.persistence.Entity;
 @Setter
 public class ForeachDialectModel extends BaseDialectModel {
 
+    /*
+    * 过滤ID,多个用逗号隔开
+    * */
     private String ignoreId;
 
+    /*
+    * 显示数量,0或者null为全部
+    * */
     private Integer size;
+
+    /*
+    * 数据源类型
+    * */
+    private String dataSources;
 
 }

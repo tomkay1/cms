@@ -56,13 +56,13 @@ public class IndexController {
 
     @RequestMapping("/test")
     public  String test(Model model){
-        Seo[] seo=new Seo[]{
-            new Seo("ceshi 1"),
-            new Seo("ceshi 2"),
-            new Seo("ceshi 3"),
-            new Seo("ceshi 4")
-        };
-        model.addAttribute("links",seo);
+//        Seo[] seo=new Seo[]{
+//            new Seo("ceshi 1"),
+//            new Seo("ceshi 2"),
+//            new Seo("ceshi 3"),
+//            new Seo("ceshi 4")
+//        };
+//        model.addAttribute("links",seo);
         return "/view/test.html";
     }
 

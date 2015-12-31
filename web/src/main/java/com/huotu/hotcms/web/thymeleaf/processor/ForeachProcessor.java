@@ -1,5 +1,7 @@
 package com.huotu.hotcms.web.thymeleaf.processor;
 
+import com.huotu.hotcms.web.service.ForeachDialectService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.engine.AttributeName;
@@ -14,18 +16,25 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.util.StringUtils;
 
 /**
- * @brief 自定义循环thymeleaf 语法标签解析
- * @since 1.0.0
+ * <P>
+ *     自定义循环thymeleaf 语法标签解析
+ * </P>
+ *
  * @author xhl
- * @time 2015/12/30
+ *
+ * @since 1.0.0
+ *
  */
 public class ForeachProcessor extends AbstractAttributeTagProcessor {
     public static final int PRECEDENCE = 1200;
     public static final String ATTR_NAME = "foreach";
 
+    private ForeachDialectService foreachDialectService;
+
 
     public ForeachProcessor(final IProcessorDialect dialect, final TemplateMode templateMode, final String dialectPrefix) {
         super(dialect, templateMode, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
+        foreachDialectService=new ForeachDialectService();
     }
 
 
@@ -42,6 +51,7 @@ public class ForeachProcessor extends AbstractAttributeTagProcessor {
         final Each each = EachUtils.parseEach(context, attributeValue);
 
 
+
         final IStandardExpression iterVarExpr = each.getIterVar();
         final Object iterVarValue = iterVarExpr.execute(context);
 
@@ -54,7 +64,8 @@ public class ForeachProcessor extends AbstractAttributeTagProcessor {
         }
 
         final IStandardExpression iterableExpr = each.getIterable();
-        final Object iteratedValue = iterableExpr.execute(context);
+//        final Object iteratedValue = iterableExpr.execute(context);
+        final Object iteratedValue=foreachDialectService.resolveDataByAttr(tag);//根据Tag来解析数据
 
         final String iterVarName = (iterVarValue == null? null : iterVarValue.toString());
         if (StringUtils.isEmptyOrWhitespace(iterVarName)) {

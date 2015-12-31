@@ -47,6 +47,7 @@ public class TestProcessor extends AbstractAttributeTagProcessor {
 //        };
 //       ctx.setVariable("links",seo);
 
+       String s= tag.getAttributes().getValue("data-hot-id");
        Object obj2= context.getVariable("links");
 
        List<TemplateData> listData= context.getTemplateStack();

@@ -1,5 +1,6 @@
 package com.huotu.hotcms.admin.config;
 
+import com.huotu.hotcms.admin.dialect.TestDialect;
 import com.huotu.hotcms.admin.interceptor.SiteResolver;
 import com.huotu.hotcms.admin.dialect.HotDialect;
 import com.huotu.hotcms.admin.interceptor.LoginInterceptor;
@@ -158,6 +159,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         engine.setTemplateResolver(templateResolver);
         engine.addMessageResolver(messageResolver());
         engine.addDialect(new HotDialect());
+        engine.addDialect(new TestDialect());
         return engine;
     }
 

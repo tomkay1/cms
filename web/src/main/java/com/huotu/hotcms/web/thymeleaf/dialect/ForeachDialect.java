@@ -10,6 +10,9 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
+ * <p>
+ *     自定义循环thymeleaf 语法标签 {@link #PROCESSOR_PRECEDENCE}
+ * </p>
  * @brief 自定义循环thymeleaf 语法标签
  * @since 1.0.0
  * @author xhl

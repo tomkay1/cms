@@ -11,6 +11,7 @@ package com.huotu.hotcms.web.config;
 import com.huotu.hotcms.service.config.JpaConfig;
 import com.huotu.hotcms.service.config.ServiceConfig;
 import com.huotu.hotcms.web.interceptor.SiteResolver;
+import com.huotu.hotcms.web.thymeleaf.dialect.ForeachDialect;
 import com.huotu.hotcms.web.thymeleaf.dialect.HotDialect;
 import com.huotu.hotcms.web.util.ArrayUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,8 @@ import java.util.List;
 @ComponentScan({
         "com.huotu.hotcms.web.service",
         "com.huotu.hotcms.web.controller",
-        "com.huotu.hotcms.web.interceptor"
+        "com.huotu.hotcms.web.interceptor",
+        "com.huotu.hotcms.web.thymeleaf.expression"
 })
 @Import({JpaConfig.class, ServiceConfig.class})
 public class MVCConfig extends WebMvcConfigurerAdapter {
@@ -129,7 +131,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
     private ITemplateEngine templateEngine(ITemplateResolver templateResolver) {
         SpringTemplateEngine engine = new SpringTemplateEngine();
         engine.setTemplateResolver(templateResolver);
-//        engine.addDialect(new HotDialect());
+        engine.addDialect(new ForeachDialect());
         return engine;
     }
 

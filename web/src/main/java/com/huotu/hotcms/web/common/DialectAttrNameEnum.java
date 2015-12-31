@@ -21,11 +21,11 @@ public enum DialectAttrNameEnum implements ICommonEnum {
 
     @Override
     public Object getCode() {
-        return null;
+        return code;
     }
 
     @Override
     public Object getValue() {
-        return null;
+        return value;
     }
 }

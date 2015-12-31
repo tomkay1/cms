@@ -26,7 +26,6 @@ import org.thymeleaf.util.StringUtils;
  */
 public class BaseProcessor extends AbstractAttributeTagProcessor {
     public static final int PRECEDENCE = 1200;
-//    public static final String ATTR_NAME = "foreach";
 
     private BaseDialectService baseDialectService;
 

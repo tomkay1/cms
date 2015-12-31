@@ -24,10 +24,6 @@ public class BaseDialect  extends AbstractProcessorDialect {
     public static  String ATTR_NAME = "foreach";//属性
     private static BaseDialectService baseDialectService;
 
-//    public BaseDialect(BaseDialectService baseDialectService) {
-//        super(NAME, PREFIX, PROCESSOR_PRECEDENCE);
-//        this.baseDialectService=baseDialectService;
-//    }
 
     public BaseDialect(String name,String prefix,String attrName,BaseDialectService dialectService){
         super(name,prefix,PROCESSOR_PRECEDENCE);

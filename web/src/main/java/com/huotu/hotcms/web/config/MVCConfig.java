@@ -135,15 +135,8 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
     private ITemplateEngine templateEngine(ITemplateResolver templateResolver) {
         SpringTemplateEngine engine = new SpringTemplateEngine();
         engine.setTemplateResolver(templateResolver);
-        CMSDialect cmsDialect=new CMSDialect();
-        cmsDialect.initDialect();
-        ArrayList<BaseDialect> list= cmsDialect.dialectList;
-        for (Integer i=0;i<list.size();i++)
-        {
-            engine.addDialect(list.get(i));
-        }
-//        engine.addDialect(list.toArray());
-//        engine.addDialect(new BaseDialect(new ForeachDialectService()));
+        List<BaseDialect> list= CMSDialect.getDialectList();
+        list.forEach(engine::addDialect);
         return engine;
     }
 

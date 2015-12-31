@@ -22,21 +22,20 @@ public class CMSDialect {
 
     public static final String NAME = "huotu";
     public static final String PREFIX = "hot";//前缀
-//    public static final int PROCESSOR_PRECEDENCE = 800;
-//    public static final String ATTR_NAME = "foreach";//属性
+
+    private static List<BaseDialect> dialectList = new ArrayList<>();
 
 
-    public ArrayList<BaseDialect> dialectList=null;
-
-    public CMSDialect(){
-        dialectList=new ArrayList<>();
+    public static List<BaseDialect> getDialectList() {
+        initDialect();
+        return dialectList;
     }
 
     /*
     * 初始化thymeleaf 扩展的标签
     *
     * */
-    public void initDialect(){
+    public static void initDialect(){
         dialectList.add(new BaseDialect(NAME,PREFIX, DialectAttrNameEnum.FOREACH.getValue().toString(),new ForeachDialectService()));//foreach标签
     }
 }

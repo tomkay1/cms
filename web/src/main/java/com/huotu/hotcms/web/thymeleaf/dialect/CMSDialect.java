@@ -1,5 +1,6 @@
 package com.huotu.hotcms.web.thymeleaf.dialect;
 
+import com.huotu.hotcms.web.common.DialectAttrNameEnum;
 import com.huotu.hotcms.web.service.BaseDialectService;
 import com.huotu.hotcms.web.service.ForeachDialectService;
 import org.thymeleaf.dialect.IDialect;
@@ -21,7 +22,7 @@ public class CMSDialect {
 
     public static final String NAME = "huotu";
     public static final String PREFIX = "hot";//前缀
-    public static final int PROCESSOR_PRECEDENCE = 800;
+//    public static final int PROCESSOR_PRECEDENCE = 800;
 //    public static final String ATTR_NAME = "foreach";//属性
 
 
@@ -33,13 +34,9 @@ public class CMSDialect {
 
     /*
     * 初始化thymeleaf 扩展的标签
+    *
     * */
     public void initDialect(){
-        dialectList.add(new BaseDialect(NAME,PREFIX,"foreach",new ForeachDialectService()));//foreach标签
+        dialectList.add(new BaseDialect(NAME,PREFIX, DialectAttrNameEnum.FOREACH.getValue().toString(),new ForeachDialectService()));//foreach标签
     }
-
-
-//    private void addDialect(String name,String prefix,String attrName,BaseDialectService dialectService){
-//
-//    }
 }

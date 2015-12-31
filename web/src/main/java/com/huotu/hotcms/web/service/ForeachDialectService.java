@@ -27,7 +27,7 @@ public class ForeachDialectService extends BaseDialectService {
     }
 
     /*
-    * 根据ForeachDialect对象解析数据对象
+    * 根据ForeachDialect对象解析数据
     * */
     @Override
     public Object resolveDataByAttr(IProcessableElementTag elementTag){

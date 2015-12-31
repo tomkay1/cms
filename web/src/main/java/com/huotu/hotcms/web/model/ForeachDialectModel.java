@@ -26,9 +26,9 @@ public class ForeachDialectModel extends BaseDialectModel {
     * */
     private Integer size;
 
-    /*
-    * 数据源类型
-    * */
-    private String dataSources;
+//    /*
+//    * 数据源类型
+//    * */
+//    private String dataSources;
 
 }

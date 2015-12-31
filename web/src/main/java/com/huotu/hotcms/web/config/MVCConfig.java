@@ -8,12 +8,9 @@
 
 package com.huotu.hotcms.web.config;
 
-import com.fasterxml.jackson.databind.deser.Deserializers;
 import com.huotu.hotcms.service.config.JpaConfig;
 import com.huotu.hotcms.service.config.ServiceConfig;
 import com.huotu.hotcms.web.interceptor.SiteResolver;
-import com.huotu.hotcms.web.service.ForeachDialectService;
-import com.huotu.hotcms.web.thymeleaf.dialect.BaseDialect;
 import com.huotu.hotcms.web.thymeleaf.dialect.CMSDialect;
 import com.huotu.hotcms.web.util.ArrayUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +25,13 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.ITemplateEngine;
+import org.thymeleaf.dialect.AbstractProcessorDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -135,7 +132,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
     private ITemplateEngine templateEngine(ITemplateResolver templateResolver) {
         SpringTemplateEngine engine = new SpringTemplateEngine();
         engine.setTemplateResolver(templateResolver);
-        List<BaseDialect> list= CMSDialect.getDialectList();
+        List<AbstractProcessorDialect> list= CMSDialect.getDialectList();
         list.forEach(engine::addDialect);
         return engine;
     }

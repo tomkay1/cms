@@ -1,6 +1,8 @@
-package com.huotu.hotcms.web.thymeleaf.dialect;
+package com.huotu.hotcms.web.thymeleaf.processor;
 
 import com.huotu.hotcms.web.service.BaseDialectService;
+import com.huotu.hotcms.web.service.ForeachDialectService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.engine.AttributeName;
@@ -16,7 +18,7 @@ import org.thymeleaf.util.StringUtils;
 
 /**
  * <P>
- *     自定义循环thymeleaf 语法标签解析基类
+ *     自定义循环thymeleaf 语法标签解析
  * </P>
  *
  * @author xhl
@@ -24,17 +26,15 @@ import org.thymeleaf.util.StringUtils;
  * @since 1.0.0
  *
  */
-public class BaseProcessor extends AbstractAttributeTagProcessor {
+public class ForeachProcessor extends AbstractAttributeTagProcessor {
     public static final int PRECEDENCE = 1200;
 
     private BaseDialectService baseDialectService;
 
-
-    public BaseProcessor(final IProcessorDialect dialect, final TemplateMode templateMode, final String dialectPrefix,final String attrName, BaseDialectService dialectService) {
+    public ForeachProcessor(final IProcessorDialect dialect, final TemplateMode templateMode, final String dialectPrefix,final String attrName, BaseDialectService dialectService) {
         super(dialect, templateMode, dialectPrefix, null, false, attrName, true, PRECEDENCE, true);
         baseDialectService=dialectService;
     }
-
 
     @Override
     protected void doProcess(ITemplateContext context,
@@ -61,8 +61,8 @@ public class BaseProcessor extends AbstractAttributeTagProcessor {
 
         final IStandardExpression iterableExpr = each.getIterable();
 
-        //根据Tag来解析数据
-        final Object iteratedValue=baseDialectService.resolveDataByAttr(tag);
+        //����Tag����������
+        final Object iteratedValue=baseDialectService.resolveDataByAttr(tag,attributeName);
 
         final String iterVarName = (iterVarValue == null? null : iterVarValue.toString());
         if (StringUtils.isEmptyOrWhitespace(iterVarName)) {

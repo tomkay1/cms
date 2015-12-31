@@ -8,6 +8,7 @@ import com.huotu.hotcms.web.model.Seo;
 import com.huotu.hotcms.web.thymeleaf.expression.ForeachDialectAttributeFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.engine.AttributeName;
 import org.thymeleaf.model.IProcessableElementTag;
 
 /**
@@ -30,11 +31,12 @@ public class ForeachDialectService extends BaseDialectService {
     * 根据ForeachDialect对象解析数据
     * */
     @Override
-    public Object resolveDataByAttr(IProcessableElementTag elementTag){
+    public Object resolveDataByAttr(IProcessableElementTag elementTag,AttributeName attributeName){
         ForeachDialectModel model=ForeachDialectAttributeFactory.getInstance().getHtml5Attr(elementTag);//
+        String dialectType=attributeName.getPrefix();
         if(model!=null)//
         {
-            if(model.getDataSources().equals(DialectDataSourcesEnum.DATA_SOURCES_ARTICLE.getValue().toString()))
+            if(dialectType.equals(DialectDataSourcesEnum.DATA_SOURCES_ARTICLE.getValue().toString()))
             {
                 //TODO:测试数据服务
                 Seo[] site=new Seo[]{
@@ -46,7 +48,7 @@ public class ForeachDialectService extends BaseDialectService {
                 };
                 return site;
             }
-            if(model.getDataSources().equals(DialectDataSourcesEnum.DATA_SOURCES_LINK.getValue().toString()))
+            if(dialectType.equals(DialectDataSourcesEnum.DATA_SOURCES_LINK.getValue().toString()))
             {
                 //TODO:测试数据服务
                 Seo[] site=new Seo[]{

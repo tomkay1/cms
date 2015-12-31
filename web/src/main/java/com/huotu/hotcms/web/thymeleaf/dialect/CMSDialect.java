@@ -1,8 +1,10 @@
 package com.huotu.hotcms.web.thymeleaf.dialect;
 
 import com.huotu.hotcms.web.common.DialectAttrNameEnum;
+import com.huotu.hotcms.web.common.DialectTypeEnum;
 import com.huotu.hotcms.web.service.BaseDialectService;
 import com.huotu.hotcms.web.service.ForeachDialectService;
+import org.thymeleaf.dialect.AbstractProcessorDialect;
 import org.thymeleaf.dialect.IDialect;
 
 import javax.lang.model.element.Name;
@@ -21,21 +23,22 @@ import java.util.Map;
 public class CMSDialect {
 
     public static final String NAME = "huotu";
-    public static final String PREFIX = "hot";//前缀
+//    public static final String PREFIX = "hot";//前缀
 
-    private static List<BaseDialect> dialectList = new ArrayList<>();
+    private static List<AbstractProcessorDialect> dialectList = new ArrayList<>();
 
 
-    public static List<BaseDialect> getDialectList() {
+    public static List<AbstractProcessorDialect> getDialectList() {
         initDialect();
         return dialectList;
     }
 
     /*
     * 初始化thymeleaf 扩展的标签
-    *
     * */
     public static void initDialect(){
-        dialectList.add(new BaseDialect(NAME,PREFIX, DialectAttrNameEnum.FOREACH.getValue().toString(),new ForeachDialectService()));//foreach标签
+        dialectList.add(new ForeachDialect(NAME, DialectTypeEnum.ARTICLE.getValue().toString(), DialectAttrNameEnum.FOREACH.getValue().toString(),new ForeachDialectService()));//foreach标签
+        dialectList.add(new ForeachDialect(NAME, DialectTypeEnum.LINK.getValue().toString(), DialectAttrNameEnum.FOREACH.getValue().toString(),new ForeachDialectService()));//foreach标签
+//        dialectList.add(new BaseDialect(NAME, DialectTypeEnum.LINK.getValue().toString(), DialectAttrNameEnum.FOREACH.getValue().toString(),new ForeachDialectService()));//foreach标签
     }
 }

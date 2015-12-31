@@ -1,5 +1,6 @@
 package com.huotu.hotcms.web.service;
 
+import org.thymeleaf.engine.AttributeName;
 import org.thymeleaf.model.IProcessableElementTag;
 
 /**
@@ -12,7 +13,7 @@ import org.thymeleaf.model.IProcessableElementTag;
  *
  */
 public abstract class BaseDialectService {
-   public Object  resolveDataByAttr(IProcessableElementTag elementTag) {
+   public Object  resolveDataByAttr(IProcessableElementTag elementTag,AttributeName attributeName) {
         return null;
     }
 }

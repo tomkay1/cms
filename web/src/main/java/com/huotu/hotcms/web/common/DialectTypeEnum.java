@@ -16,7 +16,8 @@ public enum DialectTypeEnum  implements ICommonEnum {
     GALLERY(2,"gallery"),
     LINK(3,"link"),
     NOTICE(4,"notice"),
-    CATEGORY(5,"category");
+    CATEGORY(5,"category"),
+    SITE(6,"site");
 
     DialectTypeEnum(int code, String value) {
         this.code = code;

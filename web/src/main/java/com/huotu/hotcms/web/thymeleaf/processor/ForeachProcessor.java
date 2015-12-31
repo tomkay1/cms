@@ -46,41 +46,7 @@ public class ForeachProcessor extends AbstractAttributeTagProcessor {
                              int attributeCol,
                              IElementTagStructureHandler structureHandler) {
 
-        final Each each = EachUtils.parseEach(context, attributeValue);
-
-        final IStandardExpression iterVarExpr = each.getIterVar();
-        final Object iterVarValue = iterVarExpr.execute(context);
-
-        final IStandardExpression statusVarExpr = each.getStatusVar();
-        final Object statusVarValue;
-        if (statusVarExpr != null) {
-            statusVarValue = statusVarExpr.execute(context);
-        } else {
-            statusVarValue = null; // Will provoke the default behaviour: iterVarValue + 'Stat'
-        }
-
-<<<<<<< Updated upstream:web/src/main/java/com/huotu/hotcms/web/thymeleaf/processor/ForeachProcessor.java
-        final IStandardExpression iterableExpr = each.getIterable();
-
-        //¸ù¾ÝTagÀ´½âÎöÊý¾Ý
         final Object iteratedValue=baseDialectService.resolveDataByAttr(tag,attributeName);
-=======
-        //æ ¹æ®Tagæ¥è§£æžæ•°æ®
-        final Object iteratedValue=baseDialectService.resolveDataByAttr(tag);
->>>>>>> Stashed changes:web/src/main/java/com/huotu/hotcms/web/thymeleaf/dialect/BaseProcessor.java
-
-        final String iterVarName = (iterVarValue == null? null : iterVarValue.toString());
-        if (StringUtils.isEmptyOrWhitespace(iterVarName)) {
-            throw new TemplateProcessingException(
-                    "Iteration variable name expression evaluated as null: \"" + iterVarExpr + "\"");
-        }
-
-        final String statusVarName = (statusVarValue == null? null : statusVarValue.toString());
-        if (statusVarExpr != null && StringUtils.isEmptyOrWhitespace(statusVarName)) {
-            throw new TemplateProcessingException(
-                    "Status variable name expression evaluated as null or empty: \"" + statusVarExpr + "\"");
-        }
-
-        structureHandler.iterateElement(iterVarName, statusVarName, iteratedValue);
+        structureHandler.iterateElement(attributeValue, null, iteratedValue);
     }
 }

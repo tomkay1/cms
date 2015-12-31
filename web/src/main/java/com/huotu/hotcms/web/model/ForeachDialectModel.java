@@ -14,7 +14,7 @@ import javax.persistence.Entity;
 @Entity
 @Getter
 @Setter
-public class ForeachDialectModel {
+public class ForeachDialectModel extends BaseDialectModel {
 
     private String ignoreId;
 

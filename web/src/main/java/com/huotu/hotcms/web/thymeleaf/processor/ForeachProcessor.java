@@ -1,4 +1,4 @@
-package com.huotu.hotcms.web.thymeleaf.dialect;
+package com.huotu.hotcms.web.thymeleaf.processor;
 
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.dialect.IProcessorDialect;

@@ -16,4 +16,6 @@ import javax.persistence.Entity;
 @Setter
 public abstract class BaseDialectModel {
     private Long Id;
+
+    private Long siteId;
 }

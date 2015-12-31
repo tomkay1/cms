@@ -8,11 +8,13 @@
 
 package com.huotu.hotcms.web.config;
 
+import com.fasterxml.jackson.databind.deser.Deserializers;
 import com.huotu.hotcms.service.config.JpaConfig;
 import com.huotu.hotcms.service.config.ServiceConfig;
 import com.huotu.hotcms.web.interceptor.SiteResolver;
 import com.huotu.hotcms.web.service.ForeachDialectService;
 import com.huotu.hotcms.web.thymeleaf.dialect.BaseDialect;
+import com.huotu.hotcms.web.thymeleaf.dialect.CMSDialect;
 import com.huotu.hotcms.web.util.ArrayUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -32,6 +34,7 @@ import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,6 +57,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
     private ApplicationContext applicationContext;
     @Autowired
     private SiteResolver siteResolver;
+
 
     /**
      * 允许访问静态资源
@@ -131,7 +135,15 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
     private ITemplateEngine templateEngine(ITemplateResolver templateResolver) {
         SpringTemplateEngine engine = new SpringTemplateEngine();
         engine.setTemplateResolver(templateResolver);
-        engine.addDialect(new BaseDialect(new ForeachDialectService()));
+        CMSDialect cmsDialect=new CMSDialect();
+        cmsDialect.initDialect();
+        ArrayList<BaseDialect> list= cmsDialect.dialectList;
+        for (Integer i=0;i<list.size();i++)
+        {
+            engine.addDialect(list.get(i));
+        }
+//        engine.addDialect(list.toArray());
+//        engine.addDialect(new BaseDialect(new ForeachDialectService()));
         return engine;
     }
 

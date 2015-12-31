@@ -19,14 +19,22 @@ import java.util.Set;
  */
 public class BaseDialect  extends AbstractProcessorDialect {
     public static final String NAME = "huotu";
-    public static final String PREFIX = "hot";
+    public static final String PREFIX = "hot";//前缀
     public static final int PROCESSOR_PRECEDENCE = 800;
+    public static  String ATTR_NAME = "foreach";//属性
     private static BaseDialectService baseDialectService;
 
-    public BaseDialect(BaseDialectService baseDialectService) {
-        super(NAME, PREFIX, PROCESSOR_PRECEDENCE);
-        this.baseDialectService=baseDialectService;
+//    public BaseDialect(BaseDialectService baseDialectService) {
+//        super(NAME, PREFIX, PROCESSOR_PRECEDENCE);
+//        this.baseDialectService=baseDialectService;
+//    }
+
+    public BaseDialect(String name,String prefix,String attrName,BaseDialectService dialectService){
+        super(name,prefix,PROCESSOR_PRECEDENCE);
+        this.baseDialectService=dialectService;
+        this.ATTR_NAME=attrName;
     }
+
 
     @Override
     public Set<IProcessor> getProcessors(String dialectPrefix) {
@@ -35,7 +43,7 @@ public class BaseDialect  extends AbstractProcessorDialect {
 
     public static Set<IProcessor> createHotProcessorsSet(final IProcessorDialect dialect, final String dialectPrefix) {
         Set<IProcessor> processors = new LinkedHashSet<>();
-        processors.add(new BaseProcessor(dialect, TemplateMode.HTML, dialectPrefix,baseDialectService));
+        processors.add(new BaseProcessor(dialect, TemplateMode.HTML, dialectPrefix,ATTR_NAME,baseDialectService));
         return processors;
     }
 }

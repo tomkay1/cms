@@ -26,13 +26,13 @@ import org.thymeleaf.util.StringUtils;
  */
 public class BaseProcessor extends AbstractAttributeTagProcessor {
     public static final int PRECEDENCE = 1200;
-    public static final String ATTR_NAME = "foreach";
+//    public static final String ATTR_NAME = "foreach";
 
     private BaseDialectService baseDialectService;
 
 
-    public BaseProcessor(final IProcessorDialect dialect, final TemplateMode templateMode, final String dialectPrefix, BaseDialectService dialectService) {
-        super(dialect, templateMode, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
+    public BaseProcessor(final IProcessorDialect dialect, final TemplateMode templateMode, final String dialectPrefix,final String attrName, BaseDialectService dialectService) {
+        super(dialect, templateMode, dialectPrefix, null, false, attrName, true, PRECEDENCE, true);
         baseDialectService=dialectService;
     }
 

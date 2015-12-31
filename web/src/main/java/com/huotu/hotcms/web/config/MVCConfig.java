@@ -11,8 +11,8 @@ package com.huotu.hotcms.web.config;
 import com.huotu.hotcms.service.config.JpaConfig;
 import com.huotu.hotcms.service.config.ServiceConfig;
 import com.huotu.hotcms.web.interceptor.SiteResolver;
-import com.huotu.hotcms.web.thymeleaf.dialect.ForeachDialect;
-import com.huotu.hotcms.web.thymeleaf.dialect.HotDialect;
+import com.huotu.hotcms.web.service.ForeachDialectService;
+import com.huotu.hotcms.web.thymeleaf.dialect.BaseDialect;
 import com.huotu.hotcms.web.util.ArrayUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -131,7 +131,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
     private ITemplateEngine templateEngine(ITemplateResolver templateResolver) {
         SpringTemplateEngine engine = new SpringTemplateEngine();
         engine.setTemplateResolver(templateResolver);
-        engine.addDialect(new ForeachDialect());
+        engine.addDialect(new BaseDialect(new ForeachDialectService()));
         return engine;
     }
 

@@ -20,8 +20,7 @@ import org.thymeleaf.model.IProcessableElementTag;
  *
  */
 @Service
-public class ForeachDialectService {
-
+public class ForeachDialectService extends BaseDialectService {
 
     public ForeachDialectService() {
         super();
@@ -30,15 +29,11 @@ public class ForeachDialectService {
     /*
     * 根据ForeachDialect对象解析数据对象
     * */
+    @Override
     public Object resolveDataByAttr(IProcessableElementTag elementTag){
         ForeachDialectModel model=ForeachDialectAttributeFactory.getInstance().getHtml5Attr(elementTag);//
         if(model!=null)//
         {
-//            switch (model.getDataSources().toString())
-//            {
-//                case DialectDataSourcesEnum.DATA_SOURCES_ARTICLE.getValue().toString():
-//                    break;;
-//            }
             if(model.getDataSources().equals(DialectDataSourcesEnum.DATA_SOURCES_ARTICLE.getValue().toString()))
             {
                 //TODO:测试数据服务

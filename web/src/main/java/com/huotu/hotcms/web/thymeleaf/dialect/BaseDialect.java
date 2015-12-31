@@ -1,6 +1,7 @@
 package com.huotu.hotcms.web.thymeleaf.dialect;
 
-import com.huotu.hotcms.web.thymeleaf.processor.ForeachProcessor;
+import com.huotu.hotcms.web.service.BaseDialectService;
+import com.huotu.hotcms.web.thymeleaf.processor.BaseProcessor;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.processor.IProcessor;
@@ -11,20 +12,21 @@ import java.util.Set;
 
 /**
  * <p>
- *     自定义循环thymeleaf 语法标签 {@link #PROCESSOR_PRECEDENCE}
+ *     自定义循环thymeleaf 语法标签基类
  * </p>
- * @brief 自定义循环thymeleaf 语法标签
  * @since 1.0.0
+ *
  * @author xhl
- * @time 2015/12/30
  */
-public class ForeachDialect extends AbstractProcessorDialect {
+public class BaseDialect  extends AbstractProcessorDialect {
     public static final String NAME = "huotu";
     public static final String PREFIX = "hot";
     public static final int PROCESSOR_PRECEDENCE = 800;
+    private static BaseDialectService baseDialectService;
 
-    public ForeachDialect() {
+    public BaseDialect(BaseDialectService baseDialectService) {
         super(NAME, PREFIX, PROCESSOR_PRECEDENCE);
+        this.baseDialectService=baseDialectService;
     }
 
     @Override
@@ -34,7 +36,7 @@ public class ForeachDialect extends AbstractProcessorDialect {
 
     public static Set<IProcessor> createHotProcessorsSet(final IProcessorDialect dialect, final String dialectPrefix) {
         Set<IProcessor> processors = new LinkedHashSet<>();
-        processors.add(new ForeachProcessor(dialect, TemplateMode.HTML, dialectPrefix));
+        processors.add(new BaseProcessor(dialect, TemplateMode.HTML, dialectPrefix,baseDialectService));
         return processors;
     }
 }

@@ -35,6 +35,7 @@ public class ForeachDialectAttributeFactory implements IDialectAttributeFactory 
         return null;
     }
 
+
     @Override
     public ForeachDialectModel getHtml5Attr(IProcessableElementTag elementTag) {
         ForeachDialectModel model=null;
@@ -43,10 +44,10 @@ public class ForeachDialectAttributeFactory implements IDialectAttributeFactory 
             model=new ForeachDialectModel();
             IElementAttributes attributes=elementTag.getAttributes();
             if(attributes!=null) {
-                String id=attributes.getValue(DialectHtml5AttrEnum.DATA_HOT_ID.getValue().toString());
-                String ignoreID=attributes.getValue(DialectHtml5AttrEnum.DATA_HOT_IgnoreID.getValue().toString());
-                String size=attributes.getValue(DialectHtml5AttrEnum.DATA_HOT_SIZE.getValue().toString());
-                String siteId=attributes.getValue(DialectHtml5AttrEnum.DATA_HOT_SITEID.getValue().toString());
+                String id=attributes.getValue(DialectHtml5AttrEnum.DATA_PARAM_ID.getValue().toString());
+                String ignoreID=attributes.getValue(DialectHtml5AttrEnum.DATA_PARAM_EXCLUDEID.getValue().toString());
+                String size=attributes.getValue(DialectHtml5AttrEnum.DATA_PARAM_SIZE.getValue().toString());
+                String siteId=attributes.getValue(DialectHtml5AttrEnum.DATA_PARAM_SITEID.getValue().toString());
 //                String dataSources=attributes.getValue(DialectHtml5AttrEnum.DATA_HOT_DATATYPE.getValue().toString());
                 model.setIgnoreId(ignoreID);
                 if(size!=null&&size!="") {

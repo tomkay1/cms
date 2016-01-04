@@ -4,8 +4,6 @@ import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.expression.IExpressionObjects;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * <p>

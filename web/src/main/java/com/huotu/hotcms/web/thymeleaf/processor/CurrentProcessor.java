@@ -1,6 +1,7 @@
 package com.huotu.hotcms.web.thymeleaf.processor;
 
-import com.huotu.hotcms.web.service.TextProcessorService;
+
+import com.huotu.hotcms.web.service.ArticleCurrentProcessorService;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.engine.AttributeName;
@@ -8,7 +9,6 @@ import org.thymeleaf.model.IProcessableElementTag;
 import org.thymeleaf.processor.element.IElementTagStructureHandler;
 import org.thymeleaf.standard.processor.AbstractStandardExpressionAttributeTagProcessor;
 import org.thymeleaf.templatemode.TemplateMode;
-
 
 /**
  * <p>
@@ -18,16 +18,16 @@ import org.thymeleaf.templatemode.TemplateMode;
  * @author xhl
  * @since 1.0.0
  */
-public class TextProcessor extends AbstractStandardExpressionAttributeTagProcessor {
+public class CurrentProcessor extends AbstractStandardExpressionAttributeTagProcessor {
     public static final int PRECEDENCE = 1300;
 
-    public static final String ATTR_NAME = "text";
-    private TextProcessorService textProcessorService;
+    public static final String ATTR_NAME = "current";
+    private ArticleCurrentProcessorService articleCurrentProcessorService;
 
-    public TextProcessor(final IProcessorDialect dialect, final String dialectPrefix) {
+    public CurrentProcessor(final IProcessorDialect dialect, final String dialectPrefix) {
         super(dialect, TemplateMode.HTML, dialectPrefix, ATTR_NAME, PRECEDENCE, true);
-        this.textProcessorService = new TextProcessorService();
-        this.textProcessorService.setDialectPrefix(dialectPrefix);
+        this.articleCurrentProcessorService = new ArticleCurrentProcessorService();
+        this.articleCurrentProcessorService.setDialectPrefix(dialectPrefix);
     }
 
     @Override
@@ -40,8 +40,7 @@ public class TextProcessor extends AbstractStandardExpressionAttributeTagProcess
                              int attributeCol,
                              Object expressionResult,
                              IElementTagStructureHandler structureHandler) {
-
-        final String text = (String) textProcessorService.resolveDataByAttr(attributeValue, context);
+        final String text = (String) articleCurrentProcessorService.resolveDataByAttr(attributeValue, context);
         structureHandler.setBody(text, false);
     }
 }

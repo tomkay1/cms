@@ -74,8 +74,9 @@ public class IndexController {
     }
 
 
-    @RequestMapping("/test2")
+    @RequestMapping("/content/2.html")
     public String test2(Model model){
+
         return "/view/test2.html";
     }
 

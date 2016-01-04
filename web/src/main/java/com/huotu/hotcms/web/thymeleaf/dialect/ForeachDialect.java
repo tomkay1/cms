@@ -19,8 +19,6 @@ import java.util.Set;
  * @author xhl
  */
 public class ForeachDialect extends AbstractProcessorDialect {
-    public static final String NAME = "huotu";
-    public static final String PREFIX = "hot";//前缀
     public static final int PROCESSOR_PRECEDENCE = 800;
     public static  String ATTR_NAME = "foreach";//属性
     private static BaseDialectService baseDialectService;

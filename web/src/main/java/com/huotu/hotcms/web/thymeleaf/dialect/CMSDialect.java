@@ -23,7 +23,6 @@ import java.util.Map;
 public class CMSDialect {
 
     public static final String NAME = "huotu";
-//    public static final String PREFIX = "hot";//前缀
 
     private static List<AbstractProcessorDialect> dialectList = new ArrayList<>();
 
@@ -39,7 +38,5 @@ public class CMSDialect {
     public static void initDialect(){
         dialectList.add(new ForeachDialect(NAME, DialectTypeEnum.ARTICLE.getValue().toString(), DialectAttrNameEnum.FOREACH.getValue().toString(),new ForeachDialectService()));//foreach标签
         dialectList.add(new ForeachDialect(NAME, DialectTypeEnum.LINK.getValue().toString(), DialectAttrNameEnum.FOREACH.getValue().toString(),new ForeachDialectService()));//foreach标签
-//        dialectList.add(new ForeachDialect(NAME, DialectTypeEnum.LINK.getValue().toString(), DialectAttrNameEnum.TEXT.getValue().toString(),new ForeachDialectService()));
-//        dialectList.add(new BaseDialect(NAME, DialectTypeEnum.LINK.getValue().toString(), DialectAttrNameEnum.FOREACH.getValue().toString(),new ForeachDialectService()));//foreach标签
     }
 }

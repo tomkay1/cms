@@ -29,7 +29,7 @@ public class BaseProcessorService {
         return null;
     }
 
-    public String resolveDataByAttr(HttpServletRequest request,IProcessableElementTag elementTag,AttributeName attributeName,String attributeValue)
+    public String resolveDataByAttr(ITemplateContext context,IProcessableElementTag elementTag,AttributeName attributeName,String attributeValue)
     {
         return  null;
     }

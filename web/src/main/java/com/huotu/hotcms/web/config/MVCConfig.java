@@ -11,7 +11,7 @@ package com.huotu.hotcms.web.config;
 import com.huotu.hotcms.service.config.JpaConfig;
 import com.huotu.hotcms.service.config.ServiceConfig;
 import com.huotu.hotcms.web.interceptor.SiteResolver;
-import com.huotu.hotcms.web.thymeleaf.dialect.CMSDialect;
+import com.huotu.hotcms.web.util.CMSDialect;
 import com.huotu.hotcms.web.util.ArrayUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -32,7 +32,6 @@ import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**

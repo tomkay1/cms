@@ -1,7 +1,7 @@
-package com.huotu.hotcms.web.thymeleaf.dialect;
+package com.huotu.hotcms.web.util;
 
-import com.huotu.hotcms.web.common.DialectAttrNameEnum;
-import com.huotu.hotcms.web.common.DialectTypeEnum;
+import com.huotu.hotcms.web.thymeleaf.dialect.ArticleDialect;
+import com.huotu.hotcms.web.thymeleaf.dialect.LinkDialect;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
 
 import java.util.ArrayList;

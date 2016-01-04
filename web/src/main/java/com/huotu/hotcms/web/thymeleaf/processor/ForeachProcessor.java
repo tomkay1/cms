@@ -27,15 +27,15 @@ public class ForeachProcessor extends AbstractAttributeTagProcessor {
     private ForeachProcessorService foreachProcessorService;
     public static final int PRECEDENCE = 1300;
 
-    public ForeachProcessor(final IProcessorDialect dialect,final String dialectPrefix) {
+    public ForeachProcessor(final IProcessorDialect dialect, final String dialectPrefix) {
         super(dialect, TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
         this.foreachProcessorService = new ForeachProcessorService();
         this.foreachProcessorService.setDialectPrefix(dialectPrefix);
     }
 
     @Override
-    protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName, String attributeValue, String attributeTemplateName, int attributeLine, int attributeCol, IElementTagStructureHandler structureHandler){
-        final Object iteratedValue=foreachProcessorService.resolveDataByAttr(tag,context);
+    protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName, String attributeValue, String attributeTemplateName, int attributeLine, int attributeCol, IElementTagStructureHandler structureHandler) {
+        final Object iteratedValue = foreachProcessorService.resolveDataByAttr(tag, context);
         structureHandler.iterateElement(attributeValue, null, iteratedValue);
     }
 }

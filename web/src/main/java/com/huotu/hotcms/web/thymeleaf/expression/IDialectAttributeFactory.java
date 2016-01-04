@@ -1,6 +1,5 @@
 package com.huotu.hotcms.web.thymeleaf.expression;
 
-import org.thymeleaf.engine.AttributeName;
 import org.thymeleaf.model.IProcessableElementTag;
 
 /**

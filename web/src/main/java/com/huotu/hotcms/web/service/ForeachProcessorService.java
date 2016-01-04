@@ -11,7 +11,6 @@ package com.huotu.hotcms.web.service;
 import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.service.HostService;
-import com.huotu.hotcms.service.service.impl.HostServiceImpl;
 import com.huotu.hotcms.web.common.DialectTypeEnum;
 import com.huotu.hotcms.web.model.ForeachDialectModel;
 import com.huotu.hotcms.web.model.Seo;

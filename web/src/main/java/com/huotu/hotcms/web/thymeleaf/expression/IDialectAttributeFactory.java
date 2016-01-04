@@ -2,6 +2,8 @@ package com.huotu.hotcms.web.thymeleaf.expression;
 
 import org.thymeleaf.model.IProcessableElementTag;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * <p>
  *     Thymeleaf Html5 Attribute interface
@@ -11,7 +13,7 @@ import org.thymeleaf.model.IProcessableElementTag;
  * @author xhl
  */
 public interface IDialectAttributeFactory {
-    String getHtml5Attr(IProcessableElementTag elementTag,String name);
+    String getHtml5Attr(HttpServletRequest request, IProcessableElementTag elementTag,String name);
 
-    Object getHtml5Attr(IProcessableElementTag elementTag);
+    Object getHtml5Attr(HttpServletRequest request,IProcessableElementTag elementTag);
 }

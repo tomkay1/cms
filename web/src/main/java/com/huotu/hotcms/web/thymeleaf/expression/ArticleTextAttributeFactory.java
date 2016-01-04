@@ -2,6 +2,8 @@ package com.huotu.hotcms.web.thymeleaf.expression;
 
 import org.thymeleaf.model.IProcessableElementTag;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * <P>
  *     Thymeleaf 自定义方言,文章模型输出参数解析
@@ -24,12 +26,12 @@ public class ArticleTextAttributeFactory implements IDialectAttributeFactory{
 
 
     @Override
-    public String getHtml5Attr(IProcessableElementTag elementTag, String name) {
+    public String getHtml5Attr(HttpServletRequest request,IProcessableElementTag elementTag, String name) {
         return null;
     }
 
     @Override
-    public Object getHtml5Attr(IProcessableElementTag elementTag) {
+    public Object getHtml5Attr(HttpServletRequest request,IProcessableElementTag elementTag) {
         return null;
     }
 }

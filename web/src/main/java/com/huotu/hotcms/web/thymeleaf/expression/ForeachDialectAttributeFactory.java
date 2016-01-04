@@ -5,6 +5,8 @@ import com.huotu.hotcms.web.model.ForeachDialectModel;
 import org.thymeleaf.model.IElementAttributes;
 import org.thymeleaf.model.IProcessableElementTag;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * <P>
  *     Thymeleaf 自定义方言循环html5参数解析
@@ -26,7 +28,7 @@ public class ForeachDialectAttributeFactory implements IDialectAttributeFactory 
     }
 
     @Override
-    public String getHtml5Attr(IProcessableElementTag elementTag, String name) {
+    public String getHtml5Attr(HttpServletRequest request,IProcessableElementTag elementTag, String name) {
         if(elementTag!=null)
         {
             return elementTag.getAttributes().getValue(name);
@@ -36,7 +38,7 @@ public class ForeachDialectAttributeFactory implements IDialectAttributeFactory 
 
 
     @Override
-    public ForeachDialectModel getHtml5Attr(IProcessableElementTag elementTag) {
+    public ForeachDialectModel getHtml5Attr(HttpServletRequest request,IProcessableElementTag elementTag) {
         ForeachDialectModel model=null;
         if(elementTag!=null)
         {

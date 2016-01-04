@@ -8,13 +8,20 @@
 
 package com.huotu.hotcms.web.service;
 
+import com.huotu.hotcms.service.entity.Host;
+import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.service.HostService;
+import com.huotu.hotcms.service.service.impl.HostServiceImpl;
 import com.huotu.hotcms.web.common.DialectTypeEnum;
 import com.huotu.hotcms.web.model.ForeachDialectModel;
 import com.huotu.hotcms.web.model.Seo;
 import com.huotu.hotcms.web.thymeleaf.expression.ForeachDialectAttributeFactory;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
 import org.thymeleaf.model.IProcessableElementTag;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Set;
 
 
 /**
@@ -32,15 +39,19 @@ public class ForeachProcessorService extends BaseProcessorService {
         ForeachDialectModel model= ForeachDialectAttributeFactory.getInstance().getHtml5Attr(elementTag);//
         if(model!=null){
             if(dialectPrefix.equals(DialectTypeEnum.ARTICLE.getValue())){
-                //TODO:测试数据服务
-                Seo[] site=new Seo[]{
-                        new Seo("文章一"),
-                        new Seo("文章二"),
-                        new Seo("文章三"),
-                        new Seo("文章四"),
-                        new Seo("文章五"),
-                };
-                return site;
+                WebApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
+                HostService hostService = (HostService)context.getBean("hostServiceImpl");
+                Host host = hostService.getHost(request.getServerName());
+                Set<Site> sites = host.getSites();
+//                //TODO:测试数据服务
+//                Seo[] site=new Seo[]{
+//                        new Seo("文章一"),
+//                        new Seo("文章二"),
+//                        new Seo("文章三"),
+//                        new Seo("文章四"),
+//                        new Seo("文章五"),
+//                };
+                return sites;
             }
             if(dialectPrefix.equals(DialectTypeEnum.LINK.getValue()))
             {

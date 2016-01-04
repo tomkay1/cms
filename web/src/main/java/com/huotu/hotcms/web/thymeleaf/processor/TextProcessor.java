@@ -25,10 +25,11 @@ import javax.servlet.http.HttpServletRequest;
 public class TextProcessor extends AbstractStandardExpressionAttributeTagProcessor {
     public static final int PRECEDENCE = 1300;
 
+    public static final String ATTR_NAME = "text";
     private BaseProcessorService baseProcessorService;
 
-    public TextProcessor(final IProcessorDialect dialect, final TemplateMode templateMode, final String dialectPrefix, final String attrName, BaseProcessorService dialectService) {
-        super(dialect,templateMode,dialectPrefix,attrName,PRECEDENCE,true);
+    public TextProcessor(final IProcessorDialect dialect, final TemplateMode templateMode, final String dialectPrefix, BaseProcessorService dialectService) {
+        super(dialect,templateMode,dialectPrefix,ATTR_NAME,PRECEDENCE,true);
         baseProcessorService=dialectService;
     }
 

@@ -8,6 +8,7 @@ import org.thymeleaf.dialect.AbstractProcessorDialect;
 import org.thymeleaf.dialect.IDialect;
 
 import javax.lang.model.element.Name;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,7 @@ public class CMSDialect {
     public static void initDialect(){
         dialectList.add(new ForeachDialect(NAME, DialectTypeEnum.ARTICLE.getValue().toString(), DialectAttrNameEnum.FOREACH.getValue().toString(),new ForeachDialectService()));//foreach标签
         dialectList.add(new ForeachDialect(NAME, DialectTypeEnum.LINK.getValue().toString(), DialectAttrNameEnum.FOREACH.getValue().toString(),new ForeachDialectService()));//foreach标签
+        dialectList.add(new TextDialect(NAME, DialectTypeEnum.ARTICLE.getValue().toString(), DialectAttrNameEnum.TEXT.getValue().toString(),new ForeachDialectService()));//text标签
 //        dialectList.add(new ForeachDialect(NAME, DialectTypeEnum.LINK.getValue().toString(), DialectAttrNameEnum.TEXT.getValue().toString(),new ForeachDialectService()));
 //        dialectList.add(new BaseDialect(NAME, DialectTypeEnum.LINK.getValue().toString(), DialectAttrNameEnum.FOREACH.getValue().toString(),new ForeachDialectService()));//foreach标签
     }

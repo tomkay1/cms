@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<h1>测试一</h1>
+
+<div data-article-foreach="wew" data-param-id="2" data-param-size="20">
+    <div data-th-text="${wew.title}"></div>
+</div>
+<hr>
+<h1>测试二</h1>
+
+<div data-link-foreach="link" data-param-id="2" data-param-size="20">
+    <div data-th-text="${linkStat}"></div>
+    <div data-th-text="${linkStat.count}">22</div>
+    <div data-th-text="${link.title}">33</div>
+</div>
+
+<h1>测试三(输出)</h1>
+<div data-article-text="${title}"></div>
+</body>
+</html>

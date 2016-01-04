@@ -7,6 +7,7 @@ import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.processor.IProcessor;
 import org.thymeleaf.templatemode.TemplateMode;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -20,9 +21,9 @@ import java.util.Set;
  */
 public class TextDialect extends AbstractProcessorDialect {
     public static final String NAME = "huotu";
-    public static final String PREFIX = "hot";//前缀
+//    public static final String PREFIX = "hot";//前缀
     public static final int PROCESSOR_PRECEDENCE = 800;
-    public static  String ATTR_NAME = "foreach";//属性
+    public static  String ATTR_NAME = "text";//属性
     private static BaseDialectService baseDialectService;
 
 

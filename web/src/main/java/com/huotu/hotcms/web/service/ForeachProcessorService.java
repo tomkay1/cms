@@ -32,9 +32,9 @@ public class ForeachProcessorService extends BaseProcessorService {
 
 
     public Object resolveDataByAttr(IProcessableElementTag elementTag,ITemplateContext context){
-        ForeachDialectModel model= ForeachDialectAttributeFactory.getInstance().getHtml5Attr(elementTag);
         IExpressionObjects expressContent= context.getExpressionObjects();
         HttpServletRequest request=(HttpServletRequest)expressContent.getObject("request");
+        ForeachDialectModel model= ForeachDialectAttributeFactory.getInstance().getHtml5Attr(request,elementTag);
         if(model!=null){
             if(dialectPrefix.equals(DialectTypeEnum.ARTICLE.getValue())){
                 WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();

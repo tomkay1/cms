@@ -46,6 +46,7 @@ public class TextProcessor extends AbstractStandardExpressionAttributeTagProcess
                              Object expressionResult,
                              IElementTagStructureHandler structureHandler) {
 
+
         final String text = StandardEscapedOutputUtils.produceEscapedOutput(getTemplateMode(), expressionResult);
 
         structureHandler.setBody(text, false);

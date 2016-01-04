@@ -72,4 +72,11 @@ public class IndexController {
         return new ArrayList<>();
     }
 
+
+    @RequestMapping("/test2")
+    public String test2(Model model){
+        return "/view/test2.html";
+    }
+
+
 }

@@ -7,6 +7,7 @@ import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.engine.AttributeName;
 import org.thymeleaf.exceptions.TemplateProcessingException;
+import org.thymeleaf.expression.IExpressionObjects;
 import org.thymeleaf.model.IProcessableElementTag;
 import org.thymeleaf.processor.element.AbstractAttributeTagProcessor;
 import org.thymeleaf.processor.element.IElementTagStructureHandler;
@@ -15,6 +16,8 @@ import org.thymeleaf.standard.expression.EachUtils;
 import org.thymeleaf.standard.expression.IStandardExpression;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.util.StringUtils;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <P>
@@ -46,7 +49,9 @@ public class ForeachProcessor extends AbstractAttributeTagProcessor {
                              int attributeCol,
                              IElementTagStructureHandler structureHandler) {
 
-        final Object iteratedValue=baseDialectService.resolveDataByAttr(tag,attributeName);
+        IExpressionObjects expressContent= context.getExpressionObjects();
+        HttpServletRequest request=(HttpServletRequest)expressContent.getObject("request");
+        final Object iteratedValue=baseDialectService.resolveDataByAttr(request,tag,attributeName);
         structureHandler.iterateElement(attributeValue, null, iteratedValue);
     }
 }

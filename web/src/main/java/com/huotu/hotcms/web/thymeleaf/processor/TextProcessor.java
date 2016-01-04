@@ -2,13 +2,17 @@ package com.huotu.hotcms.web.thymeleaf.processor;
 
 import com.huotu.hotcms.web.service.BaseDialectService;
 import org.thymeleaf.context.ITemplateContext;
+import org.thymeleaf.context.WebContext;
+import org.thymeleaf.context.WebExpressionContext;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.engine.AttributeName;
+import org.thymeleaf.expression.IExpressionObjects;
 import org.thymeleaf.model.IProcessableElementTag;
 import org.thymeleaf.processor.element.IElementTagStructureHandler;
 import org.thymeleaf.standard.processor.AbstractStandardExpressionAttributeTagProcessor;
-import org.thymeleaf.standard.util.StandardEscapedOutputUtils;
 import org.thymeleaf.templatemode.TemplateMode;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <P>
@@ -46,9 +50,12 @@ public class TextProcessor extends AbstractStandardExpressionAttributeTagProcess
                              Object expressionResult,
                              IElementTagStructureHandler structureHandler) {
 
-
         final String text = StandardEscapedOutputUtils.produceEscapedOutput(getTemplateMode(), expressionResult);
 
+        IExpressionObjects expressContent= context.getExpressionObjects();
+        HttpServletRequest request=(HttpServletRequest)expressContent.getObject("request");
+
+        final String text=baseDialectService.resolveDataByAttr(request,tag, attributeName, attributeValue);
         structureHandler.setBody(text, false);
     }
 }

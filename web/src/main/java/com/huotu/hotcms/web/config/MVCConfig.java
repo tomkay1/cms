@@ -32,6 +32,7 @@ import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**

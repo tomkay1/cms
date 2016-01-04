@@ -8,7 +8,6 @@
 
 package com.huotu.hotcms.web.thymeleaf.processor;
 
-import com.huotu.hotcms.web.service.BaseDialectService;
 import com.huotu.hotcms.web.service.BaseProcessorService;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.dialect.IProcessorDialect;
@@ -36,10 +35,10 @@ public class EachProcessor extends AbstractAttributeTagProcessor {
     }
 
     @Override
-    protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName, String attributeValue, String attributeTemplateName, int attributeLine, int attributeCol, IElementTagStructureHandler structureHandler) {
+    protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName, String attributeValue, String attributeTemplateName, int attributeLine, int attributeCol, IElementTagStructureHandler structureHandler){
         IExpressionObjects expressContent= context.getExpressionObjects();
         HttpServletRequest request=(HttpServletRequest)expressContent.getObject("request");
-        final Object iteratedValue=baseDialectService.resolveDataByAttr(tag,attributeName);
+        final Object iteratedValue=baseDialectService.resolveDataByAttr(tag,request);
         structureHandler.iterateElement(attributeValue, null, iteratedValue);
     }
 }

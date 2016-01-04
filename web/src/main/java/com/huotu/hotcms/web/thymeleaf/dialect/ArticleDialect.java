@@ -8,7 +8,6 @@
 
 package com.huotu.hotcms.web.thymeleaf.dialect;
 
-import com.huotu.hotcms.web.service.ForeachDialectService;
 import com.huotu.hotcms.web.service.ForeachProcessorService;
 import com.huotu.hotcms.web.thymeleaf.processor.EachProcessor;
 import org.thymeleaf.dialect.AbstractProcessorDialect;

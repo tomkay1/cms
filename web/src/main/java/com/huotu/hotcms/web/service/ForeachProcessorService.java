@@ -12,8 +12,9 @@ import com.huotu.hotcms.web.common.DialectTypeEnum;
 import com.huotu.hotcms.web.model.ForeachDialectModel;
 import com.huotu.hotcms.web.model.Seo;
 import com.huotu.hotcms.web.thymeleaf.expression.ForeachDialectAttributeFactory;
-import org.thymeleaf.engine.AttributeName;
 import org.thymeleaf.model.IProcessableElementTag;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -27,12 +28,10 @@ public class ForeachProcessorService extends BaseProcessorService {
         this.dialectPrefix = dialectPrefix;
     }
 
-    public Object resolveDataByAttr(IProcessableElementTag elementTag,AttributeName attributeName){
+    public Object resolveDataByAttr(IProcessableElementTag elementTag,HttpServletRequest request){
         ForeachDialectModel model= ForeachDialectAttributeFactory.getInstance().getHtml5Attr(elementTag);//
-        if(model!=null)//
-        {
-            if(dialectPrefix.equals(DialectTypeEnum.ARTICLE.getValue()))
-            {
+        if(model!=null){
+            if(dialectPrefix.equals(DialectTypeEnum.ARTICLE.getValue())){
                 //TODO:测试数据服务
                 Seo[] site=new Seo[]{
                         new Seo("文章一"),
@@ -59,4 +58,6 @@ public class ForeachProcessorService extends BaseProcessorService {
         }
         return  null;
     }
+
+
 }

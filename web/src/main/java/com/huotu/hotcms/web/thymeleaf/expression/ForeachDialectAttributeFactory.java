@@ -48,7 +48,6 @@ public class ForeachDialectAttributeFactory implements IDialectAttributeFactory 
                 String ignoreID=attributes.getValue(DialectHtml5AttrEnum.DATA_PARAM_EXCLUDEID.getValue().toString());
                 String size=attributes.getValue(DialectHtml5AttrEnum.DATA_PARAM_SIZE.getValue().toString());
                 String siteId=attributes.getValue(DialectHtml5AttrEnum.DATA_PARAM_SITEID.getValue().toString());
-//                String dataSources=attributes.getValue(DialectHtml5AttrEnum.DATA_HOT_DATATYPE.getValue().toString());
                 model.setIgnoreId(ignoreID);
                 if(size!=null&&size!="") {
                     model.setSize(Integer.parseInt(size));
@@ -59,7 +58,6 @@ public class ForeachDialectAttributeFactory implements IDialectAttributeFactory 
                 if(siteId!=null&&siteId!="") {
                     model.setSiteId(Long.parseLong(siteId));
                 }
-//                model.setDataSources(dataSources);
             }
         }
         return model;

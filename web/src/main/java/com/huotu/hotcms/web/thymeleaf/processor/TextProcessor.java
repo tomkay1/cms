@@ -1,6 +1,6 @@
 package com.huotu.hotcms.web.thymeleaf.processor;
 
-import com.huotu.hotcms.web.service.BaseDialectService;
+import com.huotu.hotcms.web.service.BaseProcessorService;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.engine.AttributeName;
@@ -8,7 +8,6 @@ import org.thymeleaf.expression.IExpressionObjects;
 import org.thymeleaf.model.IProcessableElementTag;
 import org.thymeleaf.processor.element.IElementTagStructureHandler;
 import org.thymeleaf.standard.processor.AbstractStandardExpressionAttributeTagProcessor;
-import org.thymeleaf.standard.util.StandardEscapedOutputUtils;
 import org.thymeleaf.templatemode.TemplateMode;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,11 +25,11 @@ import javax.servlet.http.HttpServletRequest;
 public class TextProcessor extends AbstractStandardExpressionAttributeTagProcessor {
     public static final int PRECEDENCE = 1300;
 
-    private BaseDialectService baseDialectService;
+    private BaseProcessorService baseProcessorService;
 
-    public TextProcessor(final IProcessorDialect dialect, final TemplateMode templateMode, final String dialectPrefix, final String attrName, BaseDialectService dialectService) {
+    public TextProcessor(final IProcessorDialect dialect, final TemplateMode templateMode, final String dialectPrefix, final String attrName, BaseProcessorService dialectService) {
         super(dialect,templateMode,dialectPrefix,attrName,PRECEDENCE,true);
-        baseDialectService=dialectService;
+        baseProcessorService=dialectService;
     }
 
     @Override
@@ -47,7 +46,7 @@ public class TextProcessor extends AbstractStandardExpressionAttributeTagProcess
         IExpressionObjects expressContent= context.getExpressionObjects();
         HttpServletRequest request=(HttpServletRequest)expressContent.getObject("request");
 
-        final String text=baseDialectService.resolveDataByAttr(request,tag, attributeName, attributeValue);
+        final String text=baseProcessorService.resolveDataByAttr(request,tag, attributeName, attributeValue);
         structureHandler.setBody(text, false);
     }
 }

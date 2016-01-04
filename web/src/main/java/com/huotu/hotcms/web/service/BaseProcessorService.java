@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
  * Created by cwb on 2016/1/4.
  */
 public class BaseProcessorService {
-    public Object  resolveDataByAttr(IProcessableElementTag elementTag,AttributeName attributeName) {
+    public Object  resolveDataByAttr(IProcessableElementTag elementTag,HttpServletRequest request){
         return null;
     }
 

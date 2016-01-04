@@ -1,6 +1,7 @@
 package com.huotu.hotcms.web.thymeleaf.processor;
 
 import com.huotu.hotcms.web.service.BaseProcessorService;
+import com.huotu.hotcms.web.service.TextProcessorService;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.engine.AttributeName;
@@ -26,11 +27,12 @@ public class TextProcessor extends AbstractStandardExpressionAttributeTagProcess
     public static final int PRECEDENCE = 1300;
 
     public static final String ATTR_NAME = "text";
-    private BaseProcessorService baseProcessorService;
+    private TextProcessorService textProcessorService;
 
-    public TextProcessor(final IProcessorDialect dialect, final TemplateMode templateMode, final String dialectPrefix, BaseProcessorService dialectService) {
-        super(dialect,templateMode,dialectPrefix,ATTR_NAME,PRECEDENCE,true);
-        baseProcessorService=dialectService;
+    public TextProcessor(final IProcessorDialect dialect, final String dialectPrefix) {
+        super(dialect,TemplateMode.HTML,dialectPrefix,ATTR_NAME,PRECEDENCE,true);
+        this.textProcessorService = new TextProcessorService();
+        this.textProcessorService.setDialectPrefix(dialectPrefix);
     }
 
     @Override
@@ -44,11 +46,7 @@ public class TextProcessor extends AbstractStandardExpressionAttributeTagProcess
                              Object expressionResult,
                              IElementTagStructureHandler structureHandler) {
 
-        IExpressionObjects expressContent= context.getExpressionObjects();
-        HttpServletRequest request=(HttpServletRequest)expressContent.getObject("request");
-
-        
-        final String text=baseProcessorService.resolveDataByAttr(request,tag, attributeName, attributeValue);
+        final String text=(String)textProcessorService.resolveDataByAttr(attributeValue,context);
         structureHandler.setBody(text, false);
     }
 }

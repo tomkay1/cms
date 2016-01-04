@@ -8,17 +8,15 @@
 
 package com.huotu.hotcms.web.thymeleaf.processor;
 
-import com.huotu.hotcms.web.service.BaseProcessorService;
+import com.huotu.hotcms.web.service.ForeachProcessorService;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.engine.AttributeName;
-import org.thymeleaf.expression.IExpressionObjects;
 import org.thymeleaf.model.IProcessableElementTag;
 import org.thymeleaf.processor.element.AbstractAttributeTagProcessor;
 import org.thymeleaf.processor.element.IElementTagStructureHandler;
 import org.thymeleaf.templatemode.TemplateMode;
 
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by cwb on 2016/1/4.
@@ -26,19 +24,18 @@ import javax.servlet.http.HttpServletRequest;
 public class ForeachProcessor extends AbstractAttributeTagProcessor {
 
     public static final String ATTR_NAME = "foreach";
-    private BaseProcessorService baseDialectService;
-    public static final int PRECEDENCE = 200;
+    private ForeachProcessorService foreachProcessorService;
+    public static final int PRECEDENCE = 1300;
 
-    public ForeachProcessor(final IProcessorDialect dialect, final TemplateMode templateMode, final String dialectPrefix, BaseProcessorService baseDialectService) {
-        super(dialect, templateMode, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
-        this.baseDialectService = baseDialectService;
+    public ForeachProcessor(final IProcessorDialect dialect,final String dialectPrefix) {
+        super(dialect, TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
+        this.foreachProcessorService = new ForeachProcessorService();
+        this.foreachProcessorService.setDialectPrefix(dialectPrefix);
     }
 
     @Override
     protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName, String attributeValue, String attributeTemplateName, int attributeLine, int attributeCol, IElementTagStructureHandler structureHandler){
-        IExpressionObjects expressContent= context.getExpressionObjects();
-        HttpServletRequest request=(HttpServletRequest)expressContent.getObject("request");
-        final Object iteratedValue=baseDialectService.resolveDataByAttr(tag,request);
+        final Object iteratedValue=foreachProcessorService.resolveDataByAttr(tag,context);
         structureHandler.iterateElement(attributeValue, null, iteratedValue);
     }
 }

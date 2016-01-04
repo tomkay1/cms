@@ -18,6 +18,8 @@ import com.huotu.hotcms.web.model.Seo;
 import com.huotu.hotcms.web.thymeleaf.expression.ForeachDialectAttributeFactory;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
+import org.thymeleaf.context.ITemplateContext;
+import org.thymeleaf.expression.IExpressionObjects;
 import org.thymeleaf.model.IProcessableElementTag;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,28 +31,17 @@ import java.util.Set;
  */
 public class ForeachProcessorService extends BaseProcessorService {
 
-    private String dialectPrefix;
 
-    public ForeachProcessorService(String dialectPrefix) {
-        this.dialectPrefix = dialectPrefix;
-    }
-
-    public Object resolveDataByAttr(IProcessableElementTag elementTag,HttpServletRequest request){
-        ForeachDialectModel model= ForeachDialectAttributeFactory.getInstance().getHtml5Attr(elementTag);//
+    public Object resolveDataByAttr(IProcessableElementTag elementTag,ITemplateContext context){
+        ForeachDialectModel model= ForeachDialectAttributeFactory.getInstance().getHtml5Attr(elementTag);
+        IExpressionObjects expressContent= context.getExpressionObjects();
+        HttpServletRequest request=(HttpServletRequest)expressContent.getObject("request");
         if(model!=null){
             if(dialectPrefix.equals(DialectTypeEnum.ARTICLE.getValue())){
-                WebApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
-                HostService hostService = (HostService)context.getBean("hostServiceImpl");
+                WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
+                HostService hostService = (HostService)applicationContext.getBean("hostServiceImpl");
                 Host host = hostService.getHost(request.getServerName());
                 Set<Site> sites = host.getSites();
-//                //TODO:测试数据服务
-//                Seo[] site=new Seo[]{
-//                        new Seo("文章一"),
-//                        new Seo("文章二"),
-//                        new Seo("文章三"),
-//                        new Seo("文章四"),
-//                        new Seo("文章五"),
-//                };
                 return sites;
             }
             if(dialectPrefix.equals(DialectTypeEnum.LINK.getValue()))

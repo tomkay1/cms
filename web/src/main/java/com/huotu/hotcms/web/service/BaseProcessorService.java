@@ -8,6 +8,7 @@
 
 package com.huotu.hotcms.web.service;
 
+import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.engine.AttributeName;
 import org.thymeleaf.model.IProcessableElementTag;
 
@@ -16,13 +17,28 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Created by cwb on 2016/1/4.
  */
+
 public class BaseProcessorService {
-    public Object  resolveDataByAttr(IProcessableElementTag elementTag,HttpServletRequest request){
+
+    protected String dialectPrefix;
+
+    public Object  resolveDataByAttr(IProcessableElementTag elementTag,ITemplateContext context){
+        return null;
+    }
+    public Object resolveDataByAttr(String attributeValue,ITemplateContext context) {
         return null;
     }
 
     public String resolveDataByAttr(HttpServletRequest request,IProcessableElementTag elementTag,AttributeName attributeName,String attributeValue)
     {
         return  null;
+    }
+
+    public String getDialectPrefix() {
+        return dialectPrefix;
+    }
+
+    public void setDialectPrefix(String dialectPrefix) {
+        this.dialectPrefix = dialectPrefix;
     }
 }

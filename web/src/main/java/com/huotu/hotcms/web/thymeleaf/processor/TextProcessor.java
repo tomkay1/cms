@@ -46,6 +46,7 @@ public class TextProcessor extends AbstractStandardExpressionAttributeTagProcess
         IExpressionObjects expressContent= context.getExpressionObjects();
         HttpServletRequest request=(HttpServletRequest)expressContent.getObject("request");
 
+        
         final String text=baseProcessorService.resolveDataByAttr(request,tag, attributeName, attributeValue);
         structureHandler.setBody(text, false);
     }

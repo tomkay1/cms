@@ -1,41 +1,37 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ *  (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ *  Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District 2013-2015. All rights reserved.
+ */
+
 package com.huotu.hotcms.web.service;
 
-import com.huotu.hotcms.web.common.DialectDataSourcesEnum;
+import com.huotu.hotcms.web.common.DialectTypeEnum;
 import com.huotu.hotcms.web.model.ForeachDialectModel;
 import com.huotu.hotcms.web.model.Seo;
 import com.huotu.hotcms.web.thymeleaf.expression.ForeachDialectAttributeFactory;
-import org.springframework.stereotype.Service;
 import org.thymeleaf.engine.AttributeName;
 import org.thymeleaf.model.IProcessableElementTag;
 
-import javax.servlet.http.HttpServletRequest;
 
 /**
- * <P>
- *    Thymeleaf 自定义方言循环数据解析服务
- * </P>
- * @since 1.0.0
- *
- * @author xhl
- *
+ * Created by cwb on 2016/1/4.
  */
-@Service
-public class ForeachDialectService extends BaseDialectService {
+public class ForeachProcessorService extends BaseProcessorService {
 
-    public ForeachDialectService() {
-        super();
+    private String dialectPrefix;
+
+    public ForeachProcessorService(String dialectPrefix) {
+        this.dialectPrefix = dialectPrefix;
     }
 
-    /*
-    * 根据ForeachDialect对象解析数据
-    * */
-    @Override
-    public Object resolveDataByAttr(HttpServletRequest request,IProcessableElementTag elementTag,AttributeName attributeName){
-        ForeachDialectModel model=ForeachDialectAttributeFactory.getInstance().getHtml5Attr(elementTag);//
-        String dialectType=attributeName.getPrefix();
+    public Object resolveDataByAttr(IProcessableElementTag elementTag,AttributeName attributeName){
+        ForeachDialectModel model= ForeachDialectAttributeFactory.getInstance().getHtml5Attr(elementTag);//
         if(model!=null)//
         {
-            if(dialectType.equals(DialectDataSourcesEnum.DATA_SOURCES_ARTICLE.getValue().toString()))
+            if(dialectPrefix.equals(DialectTypeEnum.ARTICLE.getValue()))
             {
                 //TODO:测试数据服务
                 Seo[] site=new Seo[]{
@@ -47,7 +43,7 @@ public class ForeachDialectService extends BaseDialectService {
                 };
                 return site;
             }
-            if(dialectType.equals(DialectDataSourcesEnum.DATA_SOURCES_LINK.getValue().toString()))
+            if(dialectPrefix.equals(DialectTypeEnum.LINK.getValue()))
             {
                 //TODO:测试数据服务
                 Seo[] site=new Seo[]{

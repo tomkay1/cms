@@ -1,6 +1,5 @@
 package com.huotu.hotcms.admin.config;
 
-import com.huotu.hotcms.admin.dialect.TestDialect;
 import com.huotu.hotcms.admin.interceptor.SiteResolver;
 import com.huotu.hotcms.admin.dialect.HotDialect;
 import com.huotu.hotcms.admin.interceptor.LoginInterceptor;

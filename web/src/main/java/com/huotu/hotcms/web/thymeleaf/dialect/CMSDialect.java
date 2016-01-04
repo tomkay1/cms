@@ -22,8 +22,6 @@ import java.util.Map;
  */
 public class CMSDialect {
 
-    public static final String NAME = "huotu";
-
     private static List<AbstractProcessorDialect> dialectList = new ArrayList<>();
 
 
@@ -36,8 +34,8 @@ public class CMSDialect {
     * 初始化thymeleaf 扩展的标签
     * */
     public static void initDialect(){
-        dialectList.add(new ForeachDialect(NAME, DialectTypeEnum.ARTICLE.getValue().toString(), DialectAttrNameEnum.FOREACH.getValue().toString(),new ForeachDialectService()));//foreach标签
-        dialectList.add(new ForeachDialect(NAME, DialectTypeEnum.LINK.getValue().toString(), DialectAttrNameEnum.FOREACH.getValue().toString(),new ForeachDialectService()));//foreach标签
-        dialectList.add(new TextDialect(NAME, DialectTypeEnum.ARTICLE.getValue().toString(), DialectAttrNameEnum.TEXT.getValue().toString(),new ForeachDialectService()));//text标签
+        dialectList.add(new ArticleDialect());
+        dialectList.add(new LinkDialect());
+        dialectList.add(new TextDialect(DialectTypeEnum.ARTICLE.getValue().toString(), DialectTypeEnum.ARTICLE.getValue().toString(), DialectAttrNameEnum.TEXT.getValue().toString(),new ForeachDialectService()));//text标签
     }
 }

@@ -2,14 +2,13 @@ package com.huotu.hotcms.web.thymeleaf.processor;
 
 import com.huotu.hotcms.web.service.BaseDialectService;
 import org.thymeleaf.context.ITemplateContext;
-import org.thymeleaf.context.WebContext;
-import org.thymeleaf.context.WebExpressionContext;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.engine.AttributeName;
 import org.thymeleaf.expression.IExpressionObjects;
 import org.thymeleaf.model.IProcessableElementTag;
 import org.thymeleaf.processor.element.IElementTagStructureHandler;
 import org.thymeleaf.standard.processor.AbstractStandardExpressionAttributeTagProcessor;
+import org.thymeleaf.standard.util.StandardEscapedOutputUtils;
 import org.thymeleaf.templatemode.TemplateMode;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class TextProcessor extends AbstractStandardExpressionAttributeTagProcessor {
     public static final int PRECEDENCE = 1300;
-//    public static final String ATTR_NAME = "text";
 
     private BaseDialectService baseDialectService;
 
@@ -34,10 +32,6 @@ public class TextProcessor extends AbstractStandardExpressionAttributeTagProcess
         super(dialect,templateMode,dialectPrefix,attrName,PRECEDENCE,true);
         baseDialectService=dialectService;
     }
-
-//    public StandardTextTagProcessor(final IProcessorDialect dialect, final TemplateMode templateMode, final String dialectPrefix) {
-//        super(dialect, templateMode, dialectPrefix, ATTR_NAME, PRECEDENCE, true);
-//    }
 
     @Override
     protected void doProcess(ITemplateContext context,
@@ -49,8 +43,6 @@ public class TextProcessor extends AbstractStandardExpressionAttributeTagProcess
                              int attributeCol,
                              Object expressionResult,
                              IElementTagStructureHandler structureHandler) {
-
-        final String text = StandardEscapedOutputUtils.produceEscapedOutput(getTemplateMode(), expressionResult);
 
         IExpressionObjects expressContent= context.getExpressionObjects();
         HttpServletRequest request=(HttpServletRequest)expressContent.getObject("request");

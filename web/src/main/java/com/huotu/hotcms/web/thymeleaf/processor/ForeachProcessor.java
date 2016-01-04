@@ -23,13 +23,13 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Created by cwb on 2016/1/4.
  */
-public class EachProcessor extends AbstractAttributeTagProcessor {
+public class ForeachProcessor extends AbstractAttributeTagProcessor {
 
     public static final String ATTR_NAME = "foreach";
     private BaseProcessorService baseDialectService;
     public static final int PRECEDENCE = 200;
 
-    public EachProcessor(final IProcessorDialect dialect, final TemplateMode templateMode, final String dialectPrefix, BaseProcessorService baseDialectService) {
+    public ForeachProcessor(final IProcessorDialect dialect, final TemplateMode templateMode, final String dialectPrefix, BaseProcessorService baseDialectService) {
         super(dialect, templateMode, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
         this.baseDialectService = baseDialectService;
     }

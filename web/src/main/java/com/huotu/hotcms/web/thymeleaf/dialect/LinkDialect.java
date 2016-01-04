@@ -9,7 +9,7 @@
 package com.huotu.hotcms.web.thymeleaf.dialect;
 
 import com.huotu.hotcms.web.service.ForeachProcessorService;
-import com.huotu.hotcms.web.thymeleaf.processor.EachProcessor;
+import com.huotu.hotcms.web.thymeleaf.processor.ForeachProcessor;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.processor.IProcessor;
@@ -38,7 +38,7 @@ public class LinkDialect extends AbstractProcessorDialect {
 
     private Set<IProcessor> createArticleProcessorsSet(final IProcessorDialect dialect, final String dialectPrefix) {
         final Set<IProcessor> processors = new LinkedHashSet<IProcessor>();
-        processors.add(new EachProcessor(dialect, TemplateMode.HTML, dialectPrefix,new ForeachProcessorService(dialectPrefix)));
+        processors.add(new ForeachProcessor(dialect, TemplateMode.HTML, dialectPrefix,new ForeachProcessorService(dialectPrefix)));
         return processors;
     }
 }

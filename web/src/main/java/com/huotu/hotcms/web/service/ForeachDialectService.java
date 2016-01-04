@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.engine.AttributeName;
 import org.thymeleaf.model.IProcessableElementTag;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * <P>
  *    Thymeleaf 自定义方言循环数据解析服务
@@ -31,7 +33,7 @@ public class ForeachDialectService extends BaseDialectService {
     * 根据ForeachDialect对象解析数据
     * */
     @Override
-    public Object resolveDataByAttr(IProcessableElementTag elementTag,AttributeName attributeName){
+    public Object resolveDataByAttr(HttpServletRequest request,IProcessableElementTag elementTag,AttributeName attributeName){
         ForeachDialectModel model=ForeachDialectAttributeFactory.getInstance().getHtml5Attr(elementTag);//
         String dialectType=attributeName.getPrefix();
         if(model!=null)//

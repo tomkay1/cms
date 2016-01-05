@@ -28,9 +28,9 @@ public class ArticleCurrentProcessorService extends BaseProcessorService{
         IExpressionObjects expressContent= context.getExpressionObjects();
         HttpServletRequest request=(HttpServletRequest)expressContent.getObject("request");
         WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
-        SiteResolveServcice siteResolveServcice = (SiteResolveServcice)applicationContext.getBean("siteResolveServcice");
+        SiteResolveService siteResolveService = (SiteResolveService)applicationContext.getBean("siteResolveService");
         try {
-            Site site = siteResolveServcice.getHomeSite(request);
+            Site site = siteResolveService.getHomeSite(request);
             String attributeName=PatternMatchUtil.getMatchVal(attributeValue,regexp);
             attributeName= StringUtil.toUpperCase(attributeName);
             Object object = site.getClass().getDeclaredMethod("get"+attributeName).invoke(site);

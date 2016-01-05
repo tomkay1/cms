@@ -20,7 +20,7 @@ import java.util.Set;
  * @since 1.0.0
  */
 @Component
-public class SiteResolveServcice {
+public class SiteResolveService {
 
     @Autowired
     private HostService hostService;

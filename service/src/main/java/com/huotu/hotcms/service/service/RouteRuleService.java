@@ -1,6 +1,6 @@
 package com.huotu.hotcms.service.service;
 
-import com.huotu.hotcms.service.entity.RoutRuled;
+import com.huotu.hotcms.service.entity.RouteRule;
 import com.huotu.hotcms.service.entity.Site;
 
 import java.util.Set;
@@ -13,7 +13,7 @@ import java.util.Set;
  *
  * @since 1.0.0
  */
-public interface RoutRuleService {
-    Set<RoutRuled> getRoutRule(Site site);
+public interface RouteRuleService {
+    Set<RouteRule> getRoutRule(Site site);
 
 }

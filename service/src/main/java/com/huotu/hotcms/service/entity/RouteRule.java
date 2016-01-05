@@ -10,10 +10,10 @@ import javax.persistence.*;
  * Created by xhl on 2015/12/21.
  */
 @Entity
-@Table(name = "cms_routRuled")
+@Table(name = "cms_routeRule")
 @Setter
 @Getter
-public class RoutRuled  extends BaseEntity {
+public class RouteRule extends BaseEntity {
 
 
     /**
@@ -22,9 +22,9 @@ public class RoutRuled  extends BaseEntity {
     @Column(name = "rule")
     private String rule;
 
-    /*
-    * 目标模版地址（相对）
-    * */
+    /**
+     * 目标模版地址（相对）
+     */
     @Column(name = "template")
     private String template;
 

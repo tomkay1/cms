@@ -1,15 +1,11 @@
 package com.huotu.hotcms.web.service;
-import com.huotu.hotcms.service.entity.RoutRuled;
+import com.huotu.hotcms.service.entity.RouteRule;
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.service.HostService;
-import com.huotu.hotcms.service.service.RegionService;
-import com.huotu.hotcms.service.service.RoutRuleService;
-import com.huotu.hotcms.service.service.impl.RoutRuleServiceImpl;
+import com.huotu.hotcms.service.service.RouteRuleService;
 import com.huotu.hotcms.web.util.PatternMatchUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Set;
 
 /**
@@ -24,7 +20,7 @@ import java.util.Set;
 public class RoutResolverService {
 
     @Autowired
-    private RoutRuleService routRuleService;
+    private RouteRuleService routRuleService;
 
     /**
      * 根据url和站点信息获得路由规则
@@ -33,10 +29,10 @@ public class RoutResolverService {
      * @param url
      * @return
      * */
-    public RoutRuled getRout(Site site,String url) {
-        RoutRuled routRuled=null;
-        Set<RoutRuled> ruleds =routRuleService.getRoutRule(site);
-        for(RoutRuled s : ruleds) {
+    public RouteRule getRout(Site site,String url) {
+        RouteRule routRuled=null;
+        Set<RouteRule> ruleds =routRuleService.getRoutRule(site);
+        for(RouteRule s : ruleds) {
             if(PatternMatchUtil.match(url,s.getRule().toString()))
             {
                 routRuled=s;

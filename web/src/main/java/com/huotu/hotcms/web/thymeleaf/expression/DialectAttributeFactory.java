@@ -33,17 +33,18 @@ public class DialectAttributeFactory {
     }
 
     public ArticleForeachParam getArticleForeachParam(IProcessableElementTag elementTag) throws Exception{
-        Class<?> articleForeachParam = new ArticleForeachParam().getClass();
+        ArticleForeachParam articleForeachParam = null;
+        Class<?> articleParam = new ArticleForeachParam().getClass();
         String[] params = ParamEnum.ARTICLE.getForeachParams();
         for(String param : params) {
             String paramValue = elementTag.getAttributes().getValue(ParamEnum.PARAM_PREFIX,param);
             if(!StringUtils.isEmpty(paramValue)) {
-                Field field = articleForeachParam.getDeclaredField(param);
+                Field field = articleParam.getDeclaredField(param);
                 field.setAccessible(true);
                 field.set(articleForeachParam,paramValue);
             }
         }
-        return null;
+        return articleForeachParam;
     }
 
 

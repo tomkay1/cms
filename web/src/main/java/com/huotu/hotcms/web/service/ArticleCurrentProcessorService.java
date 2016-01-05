@@ -1,5 +1,12 @@
 package com.huotu.hotcms.web.service;
 
+import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.service.HostService;
+import com.huotu.hotcms.web.util.PatternMatchUtil;
+import com.huotu.hotcms.web.util.StringUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.expression.IExpressionObjects;
 
@@ -14,21 +21,25 @@ import javax.servlet.http.HttpServletRequest;
  * @since 1.0.0
  */
 public class ArticleCurrentProcessorService extends BaseProcessorService{
+    private static final String regexp="\\$\\{([^\\}]+)}";//匹配${key}模式的正则表达式
 
     @Override
-    public Object resolveDataByAttr(String attributeValue, ITemplateContext context) {
+    public Object resolveDataByAttr(String attributeValue, ITemplateContext context){
         IExpressionObjects expressContent= context.getExpressionObjects();
         HttpServletRequest request=(HttpServletRequest)expressContent.getObject("request");
-//        String path=request.getContextPath();
-////        /content/(\d*).html
-//        String regexp="/content/(\\d*).html";
-//        Pattern pattern = Pattern.compile(regexp);
-//        Matcher match = pattern.matcher(request.getRequestURI());
-//        if(match.matches())
-//        {
-//            return match.group(0);
-//        }
-        return "测试";
-//        return super.resolveDataByAttr(attributeValue, context);
+        WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
+        SiteResolveServcice siteResolveServcice = (SiteResolveServcice)applicationContext.getBean("siteResolveServcice");
+        try {
+            Site site = siteResolveServcice.getHomeSite(request);
+            String attributeName=PatternMatchUtil.getMatchVal(attributeValue,regexp);
+            attributeName= StringUtil.toUpperCase(attributeName);
+            Object object = site.getClass().getDeclaredMethod("get"+attributeName).invoke(site);
+            return object;
+        }
+        catch (Exception ex)
+        {
+            //写错误日志操作
+        }
+      return null;
     }
 }

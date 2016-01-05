@@ -25,7 +25,7 @@ public class BaseProcessorService {
     public Object  resolveDataByAttr(IProcessableElementTag elementTag,ITemplateContext context){
         return null;
     }
-    public Object resolveDataByAttr(String attributeValue,ITemplateContext context) {
+    public Object resolveDataByAttr(String attributeValue,ITemplateContext context) throws Exception {
         return null;
     }
 

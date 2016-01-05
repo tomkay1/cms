@@ -8,6 +8,7 @@ import com.huotu.hotcms.service.entity.Host;
 public interface HostService {
 
     Host getHost(String domain);
+
     Boolean save(Host host);
 
 }

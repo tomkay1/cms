@@ -158,7 +158,6 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         engine.setTemplateResolver(templateResolver);
         engine.addMessageResolver(messageResolver());
         engine.addDialect(new HotDialect());
-        engine.addDialect(new TestDialect());
         return engine;
     }
 

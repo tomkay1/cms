@@ -1,6 +1,7 @@
 package com.huotu.hotcms.web.thymeleaf.expression;
 
 import com.huotu.hotcms.web.common.DialectHtml5AttrEnum;
+import com.huotu.hotcms.web.common.ParamEnum;
 import com.huotu.hotcms.web.model.ForeachDialectModel;
 import org.thymeleaf.model.IElementAttributes;
 import org.thymeleaf.model.IProcessableElementTag;
@@ -45,6 +46,9 @@ public class ForeachDialectAttributeFactory implements IDialectAttributeFactory 
             model=new ForeachDialectModel();
             IElementAttributes attributes=elementTag.getAttributes();
             if(attributes!=null) {
+                for(String s: ParamEnum.ARTICLE.getParam()) {
+                    attributes.getValue("param",s);
+                }
                 String id=attributes.getValue(DialectHtml5AttrEnum.DATA_PARAM_ID.getValue().toString());
                 String ignoreID=attributes.getValue(DialectHtml5AttrEnum.DATA_PARAM_EXCLUDEID.getValue().toString());
                 String size=attributes.getValue(DialectHtml5AttrEnum.DATA_PARAM_SIZE.getValue().toString());

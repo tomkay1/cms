@@ -11,7 +11,6 @@ import javax.persistence.Entity;
  * @author xhl
  * @time 2015/12/30
  */
-@Entity
 @Getter
 @Setter
 public class ForeachDialectModel extends BaseDialectModel {

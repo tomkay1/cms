@@ -8,26 +8,23 @@
 
 package com.huotu.hotcms.web.common;
 
-import com.huotu.hotcms.web.model.ArticleParam;
-import com.huotu.hotcms.web.model.LinkParam;
 import com.huotu.hotcms.web.util.ArrayUtil;
 
-import java.util.Arrays;
 
 /**
  * Created by cwb on 2016/1/5.
  */
 public enum  ParamEnum {
     ARTICLE {
-        public String[] getParam(){
-            return ArrayUtil.array("id", "excludeId");
+        public String[] getForeachParams(){
+            return ArrayUtil.array("categoryId", "excludeId","pageSize");
         }
     },
     LINK {
-        public String[] getParam(){
+        public String[] getForeachParams(){
             return ArrayUtil.array("id", "excludeId");
         }
     };
-
-    public abstract String[] getParam();
+    public static final String PARAM_PREFIX = "param";
+    public abstract String[] getForeachParams();
 }

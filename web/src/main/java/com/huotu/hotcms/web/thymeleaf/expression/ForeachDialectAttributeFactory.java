@@ -7,6 +7,8 @@ import org.thymeleaf.model.IElementAttributes;
 import org.thymeleaf.model.IProcessableElementTag;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <P>
@@ -46,8 +48,11 @@ public class ForeachDialectAttributeFactory implements IDialectAttributeFactory 
             model=new ForeachDialectModel();
             IElementAttributes attributes=elementTag.getAttributes();
             if(attributes!=null) {
-                for(String s: ParamEnum.ARTICLE.getParam()) {
-                    attributes.getValue("param",s);
+                Map<String,String> params = new HashMap<>();
+                for(String s: ParamEnum.ARTICLE.getForeachParams()) {
+                    String key = s;
+                    s = attributes.getValue(ParamEnum.PARAM_PREFIX,s);
+                    params.put(key,s);
                 }
                 String id=attributes.getValue(DialectHtml5AttrEnum.DATA_PARAM_ID.getValue().toString());
                 String ignoreID=attributes.getValue(DialectHtml5AttrEnum.DATA_PARAM_EXCLUDEID.getValue().toString());

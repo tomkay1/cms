@@ -23,12 +23,6 @@ public class MainController {
         return modelAndView;
     }
 
-    @RequestMapping("/columnList")
-    public  ModelAndView columnList(HttpServletRequest request) throws Exception{
-        ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/view/Section/columnList.html");
-        return  modelAndView;
-    }
 
     @RequestMapping("/articlelist")
     public ModelAndView articlelist(HttpServletRequest request) throws Exception{

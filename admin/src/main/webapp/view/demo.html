@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Jquery-treegrid basic example</title>
+    <link rel="stylesheet" href="/assets/libs/treegrid/css/jquery.treegrid.css">
+    <script src="/assets/js/jquery-1.9.1.min.js"></script>
+    <script src="/assets/libs/treegrid/js/jquery.treegrid.js"></script>
+    <script src="/assets/seajs/sea.js" type="application/javascript"></script>
+    <script src="/assets/seajs/config.js" type="application/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.tree').treegrid(
+//                    {
+//                'initialState': 'collapsed',
+//                'saveState': true,
+//            }
+            );
+        });
+    </script>
+
+</head>
+<body>
+
+<div class="cnt">
+    <table class="data-table even1" width="100%" border="0" cellspacing="0" cellpadding="0">
+        <thead>
+        <tr class="even">
+            <th scope="col">所属站点</th>
+            <th scope="col">栏目名称</th>
+            <th scope="col">系统数据类型</th>
+            <th scope="col">操作</th>
+        </tr>
+        </thead>
+    </table>
+    <table class="tree">
+        <tbody><tr class="treegrid-1 treegrid-expanded">
+            <td><span class="treegrid-expander treegrid-expander-expanded"></span>1</td>
+            <td scope="col">火图</td>
+            <td scope="col">无</td>
+            <td scope="col">无</td>
+            <td scope="col">无</td>
+            <td>增加</td><td>删除</td><td>修改</td>
+        </tr>
+        <tr class="treegrid-1category treegrid-parent-1">
+            <td><span class="treegrid-indent"></span><span class="treegrid-expander"></span>1</td>
+            <td scope="col">火图</td>
+            <td scope="col">哈哈</td>
+            <td scope="col">公告</td>
+            <td scope="col">1</td>
+            <td>增加</td><td>删除</td><td>修改</td>
+        </tr>
+        <tr class="treegrid-4category treegrid-parent-1">
+            <td><span class="treegrid-indent"></span><span class="treegrid-expander"></span>1</td>
+            <td scope="col">火图</td>
+            <td scope="col">测试</td>
+            <td scope="col">链接</td>
+            <td scope="col">4</td>
+            <td>增加</td><td>删除</td><td>修改</td>
+        </tr>
+        <tr class="treegrid-6category treegrid-parent-1">
+            <td><span class="treegrid-indent"></span><span class="treegrid-expander"></span>1</td>
+            <td scope="col">火图</td>
+            <td scope="col">测试呀</td>
+            <td scope="col">文章</td>
+            <td scope="col">6</td>
+            <td>增加</td><td>删除</td><td>修改</td>
+        </tr>
+        <tr class="treegrid-2">
+            <td><span class="treegrid-expander"></span>2</td>
+            <td scope="col">阿萨德</td>
+            <td scope="col">无</td>
+            <td scope="col">无</td>
+            <td scope="col">无</td>
+            <td>增加</td><td>删除</td><td>修改</td>
+        </tr>
+        <tr class="treegrid-5category treegrid-parent-1">
+            <td><span class="treegrid-indent"></span><span class="treegrid-expander"></span>2</td>
+            <td scope="col">阿萨德</td>
+            <td scope="col">测试哈哈</td>
+            <td scope="col">文章</td>
+            <td scope="col">5</td>
+            <td>增加</td><td>删除</td><td>修改</td>
+        </tr>
+        <tr class="treegrid-24">
+            <td><span class="treegrid-expander"></span>24</td>
+            <td scope="col">qwe</td>
+            <td scope="col">无</td>
+            <td scope="col">无</td>
+            <td scope="col">无</td>
+            <td>增加</td><td>删除</td><td>修改</td>
+        </tr>
+        </tbody></table>
+</div>
+
+
+</body>
+<script>seajs.use(["treegrid"]);</script>
+</html>

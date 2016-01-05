@@ -10,7 +10,7 @@ import java.util.Set;
  */
 public interface SiteService {
 
-    PageData<Site> getPage(String name,int page,int pageSize);
+    PageData<Site> getPage(Integer customerId,String name,int page,int pageSize);
 
     Site getSite(long siteId);
     Boolean save(Site site);

@@ -2,10 +2,17 @@
  * Created by Administrator on 2015/12/21.
  */
 define(function (require, exports, module) {
+    var commonUtil = require("common");
+    commonUtil.setDisabled("jq-cms-Save");
+    var customerId =commonUtil.getQuery("customerId");
+    window.console.log(customerId)
     var SiteGrid=$("#js-SiteList").Grid({
         method: 'POST',//提交方式GET|POST
         form: 'form1',//表单ID
         pageSize: 10,
+        dataParam:{
+            customerId:customerId
+        },
         height:'auto',
         showNumber: false,
         pageSize: 20,

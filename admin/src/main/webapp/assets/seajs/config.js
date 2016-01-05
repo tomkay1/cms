@@ -17,8 +17,13 @@ seajs.config({
 		"regionList":"js/page/system/regionList.js",
 		"articleList":"js/page/web/articleList.js",
 		"announList":"js/page/web/announList.js",
-		"siteList":"js/page/web/siteList.js",
-		"addSite":"js/page/web/addSite.js?t=2000"
+		"siteList":"js/page/web/siteList.js?t=222212",
+		"treegrid": "libs/treegrid/js/jquery.treegrid.js",
+		"addSite":"js/page/web/addSite.js?t=2000",
+		"updateSite":"js/page/web/updateSite.js?t=2000",
+		"addCategory":"js/page/section/addCategory.js?t=2000",
+		"categoryList":"js/page/section/categoryList.js?t=2000",
+		"updateCategory":"js/page/section/updateCategory.js?t=2000",
 	},
 	preload: ['jquery']
 });

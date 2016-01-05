@@ -30,11 +30,16 @@ import java.util.List;
 public class ForeachProcessorService extends BaseProcessorService {
 
 
-    public Object resolveDataByAttr(IProcessableElementTag elementTag,ITemplateContext context) throws Exception{
+    public Object resolveDataByAttr(IProcessableElementTag elementTag,ITemplateContext context){
         IExpressionObjects expressContent= context.getExpressionObjects();
         HttpServletRequest request=(HttpServletRequest)expressContent.getObject("request");
         if(dialectPrefix.equals(DialectTypeEnum.ARTICLE.getDialectPrefix())){
-            ArticleForeachParam articleForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag,ArticleForeachParam.class);
+            ArticleForeachParam articleForeachParam = null;
+            try {
+                articleForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag,ArticleForeachParam.class);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
             List<Article> articles = new ArrayList<>();
 //            HostService hostService = (HostService)applicationContext.getBean("hostServiceImpl");

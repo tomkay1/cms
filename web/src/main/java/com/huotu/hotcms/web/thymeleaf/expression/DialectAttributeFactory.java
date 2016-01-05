@@ -41,9 +41,13 @@ public class DialectAttributeFactory {
         List<AttributeName> attributeNames = elementAttributes.getAllAttributeNames();
         for(AttributeName attr : attributeNames) {
             String paramValue = elementAttributes.getValue(attr);
-            Field field = t.getDeclaredField(attr.getAttributeName());
-            field.setAccessible(true);
-            field.set(obj,paramValue);
+            try {
+                Field field = t.getDeclaredField(attr.getAttributeName());
+                field.setAccessible(true);
+                field.set(obj,paramValue);
+            }catch (NoSuchFieldException e) {
+                continue;
+            }
         }
         return (T)obj;
     }

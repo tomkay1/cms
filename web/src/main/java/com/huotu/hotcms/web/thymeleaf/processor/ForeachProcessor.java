@@ -34,8 +34,13 @@ public class ForeachProcessor extends AbstractAttributeTagProcessor {
     }
 
     @Override
-    protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName, String attributeValue, String attributeTemplateName, int attributeLine, int attributeCol, IElementTagStructureHandler structureHandler) {
-        final Object iteratedValue = foreachProcessorService.resolveDataByAttr(tag, context);
-        structureHandler.iterateElement(attributeValue, null, iteratedValue);
+    protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName, String attributeValue, String attributeTemplateName, int attributeLine, int attributeCol, IElementTagStructureHandler structureHandler){
+        final Object iteratedValue;
+        try {
+            iteratedValue = foreachProcessorService.resolveDataByAttr(tag, context);
+            structureHandler.iterateElement(attributeValue, null, iteratedValue);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

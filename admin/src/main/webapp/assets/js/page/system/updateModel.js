@@ -58,7 +58,7 @@ define(function (require, exports, module) {
                             var layer=require("layer");
                             layer.msg("修改成功,2秒后将自动返回列表页面",{time: 2000})
                             commonUtil.cancelDisabled("jq-cms-Save");
-                            window.location.href="http://"+window.location.host+"/"+"model/modellist";
+                            window.location.href="http://"+window.location.host+"/"+"model/modelList";
                             //commonUtil.redirectUrl("/model/modelList");
                             //$("#txtModelName").val("");
                             //$("#txtModelDescription").val("");

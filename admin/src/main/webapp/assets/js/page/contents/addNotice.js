@@ -1,8 +1,8 @@
 /**
- * Created by chendeyu on 2015/12/29.
+ * Created by Administrator on 2015/12/23.
  */
 define(function (require, exports, module) {
-    $("#addColumnForm").validate({
+    $("#addNoticeForm").validate({
         //rules: {
         //    txtModelName:{
         //        required: true,
@@ -34,14 +34,15 @@ define(function (require, exports, module) {
         submitHandler: function (form, ev) {
             var commonUtil = require("common");
             commonUtil.setDisabled("jq-cms-Save");
+            var customerId =commonUtil.getQuery("customerId");
             $.ajax({
-                url: "/category/saveCategory",
+                url: "/notice/saveNotice",
                 data: {
-                    id:$("#hidRegionID").val(),
-                    siteId:$("#siteId").val(),
-                    parentId: $("#parentId").val(),
-                    name: $("#name").val(),
-                    model: $("#modelType").val(),
+                    id:$("#hidNoticeID").val(),
+                    title:$("#title").val(),
+                    customerId:$("#customerId").val(),
+                    content: $("#content").val(),
+                    categoryId: $("#categoryId").val(),
                     orderWeight: $("#orderWeight").val()
                 },
                 type: "POST",
@@ -55,8 +56,9 @@ define(function (require, exports, module) {
                         {
                             var layer=require("layer");
                             layer.msg("操作成功",{time: 2000});
-                            $("#name").val("");
-                            $("#modelType").val("");
+                            $("#title").val("");
+                            $("#langCode").val("");
+                            $("#categoryId").val("-1");
                             $("#orderWeight").val("50");
                         }
                         if(index==500)

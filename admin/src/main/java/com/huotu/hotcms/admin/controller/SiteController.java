@@ -85,7 +85,7 @@ public class SiteController {
                             siteService.save(site);
                             site.addHost(flag);
 
-                        } else {
+                        } else {//域名被占用
                             result = new ResultView(ResultOptionEnum.DOMAIN_EXIST.getCode(), ResultOptionEnum.DOMAIN_EXIST.getValue(), null);
                             return result;
                         }

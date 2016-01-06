@@ -2,7 +2,7 @@
  * Created by chendeyu on 2015/12/29.
  */
 define(function (require, exports, module) {
-    $("#addColumnForm").validate({
+    $("#updateNoticeForm").validate({
         //rules: {
         //    txtModelName:{
         //        required: true,
@@ -35,13 +35,12 @@ define(function (require, exports, module) {
             var commonUtil = require("common");
             commonUtil.setDisabled("jq-cms-Save");
             $.ajax({
-                url: "/category/saveCategory",
+                url: "/notice/saveNotice",
                 data: {
-                    id:$("#hidRegionID").val(),
-                    siteId:$("#siteId").val(),
-                    parentId: $("#parentId").val(),
-                    name: $("#name").val(),
-                    model: $("#modelType").val(),
+                    id:$("#hidNoticeID").val(),
+                    title:$("#title").val(),
+                    content: $("#content").val(),
+                    categoryId: $("#categoryId").val(),
                     orderWeight: $("#orderWeight").val()
                 },
                 type: "POST",
@@ -55,9 +54,9 @@ define(function (require, exports, module) {
                         {
                             var layer=require("layer");
                             layer.msg("操作成功",{time: 2000});
-                            $("#name").val("");
-                            $("#modelType").val("");
-                            $("#orderWeight").val("50");
+                            layer.msg("修改成功,2秒后将自动返回列表页面",{time: 2000})
+                            commonUtil.cancelDisabled("jq-cms-Save");
+                            window.location.href="http://"+window.location.host+"/"+"notice/noticeList?customerid=3447";
                         }
                         if(index==500)
                             layer.msg("操作失败",{time: 2000})

@@ -12,4 +12,5 @@ import java.util.Set;
  */
 public interface CategoryRepository extends JpaRepository<Category, Long>,JpaSpecificationExecutor {
    Set<Category> findBySiteAndDeleted(Site site,Boolean deleted);
+   Set<Category> findByCustomerId(Integer customerId);
 }

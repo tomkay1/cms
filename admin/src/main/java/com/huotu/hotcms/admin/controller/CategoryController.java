@@ -41,7 +41,7 @@ public class CategoryController {
     @RequestMapping("/categoryList")
     public ModelAndView columnList(HttpServletRequest request,Integer customerid) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/view/Section/categoryList.html");
+        modelAndView.setViewName("/view/section/categoryList.html");
         Set<Site> sites=siteRepository.findByCustomerIdAndDeleted(customerid, false);
         List<CategorySite> categoriesList = new ArrayList<>();
         for(Site site:sites){
@@ -88,7 +88,7 @@ public class CategoryController {
     @RequestMapping("/addCategory")
     public ModelAndView addModel(@RequestParam(value = "id", defaultValue = "0") Long id) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/view/Section/addCategory.html");
+        modelAndView.setViewName("/view/section/addCategory.html");
         Category category =categoryService.getCategoryById(id);
         Site site=category.getSite();
         modelAndView.addObject("category",category);
@@ -102,7 +102,7 @@ public class CategoryController {
     @RequestMapping("/updateCategory")
     public ModelAndView updateCategory(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/view/Section/updateCategory.html");
+        modelAndView.setViewName("/view/section/updateCategory.html");
         Category category =categoryService.getCategoryById(id);
         Category categoryParent =category.getParent();
         Site site=category.getSite();

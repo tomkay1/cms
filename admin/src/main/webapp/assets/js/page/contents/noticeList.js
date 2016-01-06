@@ -1,11 +1,11 @@
 /**
- * Created by Administrator on 2015/12/21.
+ * Created by chendeyu on 2015/12/24.
  */
 define(function (require, exports, module) {
     var commonUtil = require("common");
     commonUtil.setDisabled("jq-cms-Save");
     var customerId =commonUtil.getQuery("customerId");
-    var SiteGrid=$("#js-SiteList").Grid({
+    var NoticeGrid=$("#js-NoticeList").Grid({
         method: 'POST',//提交方式GET|POST
         form: 'form1',//表单ID
         pageSize: 10,
@@ -17,13 +17,13 @@ define(function (require, exports, module) {
         pageSize: 20,
         pagerCount: 10,
         pageDetail: true,
-        url: '/site/getSiteList',//数据来源Url|通过mobel自定义属性配置
+        url: '/notice/getNoticeList',//数据来源Url|
         rows: [
-            {width: '30%', field: 'name', title: '站点名称', align: 'center'},
-            {width: '30%', field: 'title', title: '站点标题', align: 'center'},
-            {width: '30%', field: 'description', title: '站点描述', align: 'center'},
+            {width: '20%', field: 'categoryName', title: '所属栏目', align: 'center'},
+            {width: '20%', field: 'title', title: '公告标题', align: 'center'},
+            {width: '25%', field: 'content', title: '公告内容', align: 'center'},
             {
-                width: '20%', field: 'createTime', title: '创建时间', align: 'center',
+                width: '15%', field: 'createTime', title: '创建时间', align: 'center',
                 formatter: function (value, rowData) {
                     if(value!=null)
                     {
@@ -31,17 +31,18 @@ define(function (require, exports, module) {
                     }
                     return "";
                 }
-            },
+            }
+            ,
             {width: '10%', field: 'title', title: '操作', align: 'center',
                 formatter: function (value, rowData) {
-                    return "<a href='javascript:' class='js-hot-siteDelete' data-id='"+rowData.siteId+"' style='margin-right:10px; color:blue;'>删除</a>" +
-                        "<a href='javascript:' class='js-hot-siteUpdate' data-id='"+rowData.siteId+"' style='margin-right:10px; color: blue'>修改</a>"
+                    return "<a href='javascript:' class='js-hot-noticeDelete' data-id='"+rowData.id+"' style='margin-right:10px; color:blue;'>删除</a>" +
+                        "<a href='javascript:' class='js-hot-noticeUpdate' data-id='"+rowData.id+"' style='margin-right:10px; color: blue'>修改</a>"
                 }
             }
         ]
     },function(){
-        updateSite();
-        deleteSite();
+        //updateNotice();
+        //deleteNotice();
     });
 //TODO:搜索
     $("#jq-cms-search").click(function(){
@@ -50,11 +51,11 @@ define(function (require, exports, module) {
         var customerId =commonUtil.getQuery("customerId");
         var option={
             dataParam:{
-                name:$("#siteName").val(),
+                title:$("#noticeName").val(),
                 customerId:customerId
             }
         };
-        SiteGrid.Refresh(option);
+        NoticeGrid.Refresh(option);
     })
 
     //TODO:显示所有
@@ -68,38 +69,38 @@ define(function (require, exports, module) {
                 customerId:customerId
             }
         };
-        SiteGrid.Refresh(option);
+        NoticeGrid.Refresh(option);
     })
 
     //TODO:修改
-    function updateSite(){
-        var obj=$(".js-hot-siteUpdate");
+    function updateNotice(){
+        var obj=$(".js-hot-noticeUpdate");
         $.each(obj,function(item,dom){
             $(dom).click(function(){//绑定修改事件
                 var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;
                 var commonUtil = require("common");
-                var customerId = commonUtil.getQuery("customerid");
-                window.location.href="http://"+window.location.host+"/"+"site/updateSite?id="+id+"&customerId="+customerId;
+                var customerId = commonUtil.getQuery("customerId");
+                window.location.href="http://"+window.location.host+"/"+"notice/updateNotice?id="+id+"&customerId="+customerId;
             })
         })
     }
 
 
     //TODO:删除
-    function deleteSite(){
-        var obj=$(".js-hot-siteDelete");
+    function deleteNotice(){
+        var obj=$(".js-hot-noticeDelete");
 
         $.each(obj,function(item,dom){
             $(dom).click(function(){//绑定删除事件
                 var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;
                 var commonUtil = require("common");
-                var customerId = commonUtil.getQuery("customerid");
+                var customerId = commonUtil.getQuery("customerId");
                 var layer=require("layer");
                 layer.confirm('您确定要删除该站点吗？', {
                     btn: ['确定','取消'] //按钮
                 }, function() {
                     $.ajax({
-                        url: "/site/deleteSite",
+                        url: "/notice/deleteNotice",
                         data: {
                             id:id,
                             customerId:customerId
@@ -114,7 +115,7 @@ define(function (require, exports, module) {
                                 {
                                     case 200:
                                         layer.msg("删除成功",{time: 2000});
-                                        SiteGrid.reLoad();
+                                        NoticeGrid.reLoad();
                                         break;
                                     case 202:
                                         layer.msg("对不起,您没有删除权限",{time: 2000});

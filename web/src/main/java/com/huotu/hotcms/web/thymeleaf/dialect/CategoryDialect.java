@@ -8,7 +8,6 @@
 
 package com.huotu.hotcms.web.thymeleaf.dialect;
 
-import com.huotu.hotcms.web.thymeleaf.processor.CurrentProcessor;
 import com.huotu.hotcms.web.thymeleaf.processor.ForeachProcessor;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
 import org.thymeleaf.dialect.IProcessorDialect;
@@ -18,28 +17,26 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * Created by cwb on 2016/1/4.
+ * Created by cwb on 2016/1/6.
  */
-public class ArticleDialect extends AbstractProcessorDialect {
+public class CategoryDialect extends AbstractProcessorDialect{
 
-    public static  String NAME = "Article";
-    public static  String PREFIX = "article";
+    public static  String NAME = "Category";
+    public static  String PREFIX = "category";
     public static  int PROCESSOR_PRECEDENCE = 800;
 
-    public ArticleDialect() {
-        super(NAME, PREFIX, PROCESSOR_PRECEDENCE);
+    public CategoryDialect() {
+        super(NAME,PREFIX,PROCESSOR_PRECEDENCE);
     }
 
     @Override
     public Set<IProcessor> getProcessors(String dialectPrefix) {
-        return createArticleProcessorsSet(this,dialectPrefix);
+        return createCategoryProcessorSet(this,dialectPrefix);
     }
 
-    private Set<IProcessor> createArticleProcessorsSet(final IProcessorDialect dialect, final String dialectPrefix) {
-        final Set<IProcessor> processors = new LinkedHashSet<IProcessor>();
+    private Set<IProcessor> createCategoryProcessorSet(final IProcessorDialect dialect, final String dialectPrefix) {
+        final Set<IProcessor> processors = new LinkedHashSet<>();
         processors.add(new ForeachProcessor(dialect,dialectPrefix));
-        processors.add(new CurrentProcessor(dialect, dialectPrefix));
         return processors;
     }
-
 }

@@ -37,17 +37,17 @@ public class RoutInterceptor extends HandlerInterceptorAdapter {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         String servletPath=request.getServletPath();
-        Site site=siteResolveService.getHomeSite(request);
+        Site site=siteResolveService.getCurrentSite(request);
         RouteRule ruled=null;
-        if(site!=null)
-        {
+        if(site!=null){
             ruled=routResolverService.getRout(site,servletPath);
-            if(modelAndView==null)
-            {
+            if(modelAndView==null){
                 modelAndView=new ModelAndView();
             }
-            if(ruled!=null)
-                modelAndView.setViewName(site.getCustomTemplateUrl()+ruled.getTemplate());
+            if(ruled!=null){
+                modelAndView.setViewName(site.getCustomTemplateUrl() + ruled.getTemplate());
+                modelAndView.addObject("site",site);
+            }
         }
     }
 }

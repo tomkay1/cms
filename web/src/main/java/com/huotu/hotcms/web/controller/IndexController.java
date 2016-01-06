@@ -9,22 +9,12 @@
 package com.huotu.hotcms.web.controller;
 
 
-import com.huotu.hotcms.service.entity.Category;
-import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.service.SiteService;
-import com.huotu.hotcms.web.model.Seo;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Created by cwb on 2015/12/16.

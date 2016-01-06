@@ -8,9 +8,6 @@
 
 package com.huotu.hotcms.web.thymeleaf.expression;
 
-import com.huotu.hotcms.web.common.ParamEnum;
-import com.huotu.hotcms.web.thymeleaf.model.ArticleForeachParam;
-import org.springframework.util.StringUtils;
 import org.thymeleaf.engine.AttributeName;
 import org.thymeleaf.model.IElementAttributes;
 import org.thymeleaf.model.IProcessableElementTag;

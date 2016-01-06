@@ -28,25 +28,32 @@ public enum DialectTypeEnum {
         return dialectPrefix;
     }
 
+    public static ParamEnum getDialectParam(String dialectPrefix) {
+        switch (dialectPrefix) {
+            case "article":
+                return ParamEnum.ARTICLE;
+            case "link":
+                return ParamEnum.LINK;
+            case "site":
+                return ParamEnum.SITE;
+            case "category":
+                return ParamEnum.CATEGORY;
+            case "download":
+                return ParamEnum.DOWNLOAD;
+            case "gallery":
+                return ParamEnum.GALLERY;
+            case "notice":
+                return ParamEnum.NOTICE;
+        }
+        return null;
+    }
+
     public void setDialectPrefix(String dialectPrefix) {
         this.dialectPrefix = dialectPrefix;
     }
 
     public Object getParams() {
         return params;
-    }
-
-    public Object getParams(String dialectPrefix) {
-        Object object = null;
-        switch (dialectPrefix) {
-            case "article":
-                object = ParamEnum.ARTICLE;
-            break;
-            case "link":
-                object = ParamEnum.LINK;
-            break;
-        }
-        return object;
     }
 
     public void setParams(Object params) {

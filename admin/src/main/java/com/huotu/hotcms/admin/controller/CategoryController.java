@@ -45,7 +45,7 @@ public class CategoryController {
         Set<Site> sites=siteRepository.findByCustomerIdAndDeleted(customerid, false);
         List<CategorySite> categoriesList = new ArrayList<>();
         for(Site site:sites){
-            Set<Category> categories = categoryService.getCategoryBySiteAndDeleted(site,false);
+            List<Category> categories = categoryService.getCategoryBySiteAndDeleted(site,false);
                 CategorySite categorySite =new CategorySite();
                 categorySite.setSiteId(site.getSiteId());
                 categorySite.setSiteName(site.getName());

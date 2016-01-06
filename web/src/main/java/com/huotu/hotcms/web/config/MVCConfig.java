@@ -73,11 +73,11 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
-        registry.viewResolver(htmlViewResolver());
-        registry.viewResolver(javascriptViewResolver());
-        registry.viewResolver(cssViewResolver());
-        registry.viewResolver(redirectViewResolver());
-        registry.viewResolver(forwardViewResolver());
+//        registry.viewResolver(htmlViewResolver());
+//        registry.viewResolver(javascriptViewResolver());
+//        registry.viewResolver(cssViewResolver());
+//        registry.viewResolver(redirectViewResolver());
+//        registry.viewResolver(forwardViewResolver());
         registry.viewResolver(remoteHtmlViewResolver());
     }
 

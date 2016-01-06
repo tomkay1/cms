@@ -10,15 +10,15 @@ import org.thymeleaf.context.ITemplateContext;
  */
 public class CurrentProcessorService extends BaseProcessorService {
     @Override
-    public Object resolveDataByAttr(String attributeValue, ITemplateContext context){
-        if(dialectPrefix.equals(DialectTypeEnum.ARTICLE.getDialectPrefix())) {
-            return new ArticleCurrentProcessorFactory().resolveDataByAttr(attributeValue,context);
+    public Object resolveDataByAttr(String attributeValue, ITemplateContext context) {
+        if (dialectPrefix.equals(DialectTypeEnum.ARTICLE.getDialectPrefix())) {
+            return new ArticleCurrentProcessorFactory().resolveDataByAttr(attributeValue, context);
         }
-        if(dialectPrefix.equals(DialectTypeEnum.SITE.getDialectPrefix())) {
-            return new SiteCurrentProcessorFactory().resolveDataByAttr(attributeValue,context);
+        if (dialectPrefix.equals(DialectTypeEnum.SITE.getDialectPrefix())) {
+            return new SiteCurrentProcessorFactory().resolveDataByAttr(attributeValue, context);
         }
-        if(dialectPrefix.equals(DialectTypeEnum.CATEGORY.getDialectPrefix())) {
-            return new SiteCurrentProcessorFactory().resolveDataByAttr(attributeValue,context);
+        if (dialectPrefix.equals(DialectTypeEnum.CATEGORY.getDialectPrefix())) {
+            return new SiteCurrentProcessorFactory().resolveDataByAttr(attributeValue, context);
         }
         return null;
     }

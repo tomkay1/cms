@@ -8,20 +8,13 @@
 
 package com.huotu.hotcms.web.service;
 
-import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.web.common.DialectTypeEnum;
-import com.huotu.hotcms.web.model.Seo;
-import com.huotu.hotcms.web.thymeleaf.expression.DialectAttributeFactory;
-import com.huotu.hotcms.web.thymeleaf.model.ArticleForeachParam;
-import org.springframework.web.context.ContextLoader;
-import org.springframework.web.context.WebApplicationContext;
+import com.huotu.hotcms.web.service.factory.ArticleForeachProcessorFactory;
+import com.huotu.hotcms.web.service.factory.CategoryForeachProcessorFactory;
+import com.huotu.hotcms.web.service.factory.LinkForeachProcessorFactory;
 import org.thymeleaf.context.ITemplateContext;
-import org.thymeleaf.expression.IExpressionObjects;
 import org.thymeleaf.model.IProcessableElementTag;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -30,37 +23,17 @@ import java.util.List;
 public class ForeachProcessorService extends BaseProcessorService {
 
 
-    public Object resolveDataByAttr(IProcessableElementTag elementTag,ITemplateContext context){
-        IExpressionObjects expressContent= context.getExpressionObjects();
-        HttpServletRequest request=(HttpServletRequest)expressContent.getObject("request");
-        if(dialectPrefix.equals(DialectTypeEnum.ARTICLE.getDialectPrefix())){
-            ArticleForeachParam articleForeachParam = null;
-            try {
-                articleForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag,ArticleForeachParam.class);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
-            List<Article> articles = new ArrayList<>();
-//            HostService hostService = (HostService)applicationContext.getBean("hostServiceImpl");
-//            Host host = hostService.getHost(request.getServerName());
-//            Set<Site> sites = host.getSites();
-            return articles;
+    public Object resolveDataByAttr(IProcessableElementTag elementTag, ITemplateContext context) {
+        if(dialectPrefix.equals(DialectTypeEnum.ARTICLE.getDialectPrefix())) {
+            return ArticleForeachProcessorFactory.getInstance().process(elementTag, context);
         }
-        if(dialectPrefix.equals(DialectTypeEnum.LINK.getDialectPrefix()))
-        {
-            //TODO:测试数据服务
-            Seo[] site=new Seo[]{
-                    new Seo("链接一"),
-                    new Seo("链接二"),
-                    new Seo("链接三"),
-                    new Seo("链接四"),
-                    new Seo("链接五"),
-            };
-            return site;
+        if(dialectPrefix.equals(DialectTypeEnum.LINK.getDialectPrefix())) {
+            return LinkForeachProcessorFactory.getInstance().process(elementTag, context);
         }
-        //解析数据服务
-        return  null;
+        if(dialectPrefix.equals(DialectTypeEnum.CATEGORY.getDialectPrefix())) {
+            return CategoryForeachProcessorFactory.getInstance().process(elementTag,context);
+        }
+        return null;
     }
 
 

@@ -49,11 +49,11 @@ public class ForeachDialectAttributeFactory implements IDialectAttributeFactory 
             IElementAttributes attributes=elementTag.getAttributes();
             if(attributes!=null) {
                 Map<String,String> params = new HashMap<>();
-                for(String s: ParamEnum.ARTICLE.getForeachParams()) {
-                    String key = s;
-                    s = attributes.getValue(ParamEnum.PARAM_PREFIX,s);
-                    params.put(key,s);
-                }
+//                for(String s: ParamEnum.ARTICLE.getForeachParams()) {
+//                    String key = s;
+//                    s = attributes.getValue(ParamEnum.PARAM_PREFIX,s);
+//                    params.put(key,s);
+//                }
                 String id=attributes.getValue(DialectHtml5AttrEnum.DATA_PARAM_ID.getValue().toString());
                 String ignoreID=attributes.getValue(DialectHtml5AttrEnum.DATA_PARAM_EXCLUDEID.getValue().toString());
                 String size=attributes.getValue(DialectHtml5AttrEnum.DATA_PARAM_SIZE.getValue().toString());

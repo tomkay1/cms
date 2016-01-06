@@ -1,9 +1,11 @@
 package com.huotu.hotcms.web.service;
 
 import com.huotu.hotcms.service.entity.Host;
+import com.huotu.hotcms.service.entity.Region;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.service.HostService;
 import com.huotu.hotcms.service.service.RegionService;
+import com.huotu.hotcms.web.util.PatternMatchUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -28,25 +30,36 @@ public class SiteResolveService {
     @Autowired
     private RegionService regionService;
 
-    public Site getHomeSite(HttpServletRequest request) throws Exception{
-        Site site = null;
-        Site chSite = null;
+    public Site getCurrentSite(HttpServletRequest request) throws Exception{
+        Site site = new Site();
+        String path = request.getServletPath();
         String domain = request.getServerName();
         Set<Site> sites = getSitesThroughDomain(domain);
-        String language = request.getLocale().getLanguage();
-        if(StringUtils.isEmpty(language)) {
-            language = "zh";
+        String language = "";
+        if(isHomeSitePath(path)) {
+            language = request.getLocale().getLanguage();
+            if(StringUtils.isEmpty(language)) {
+                language = "zh";
+            }
+        }else {
+            String regionCode = "";
+            if(path.substring(1).contains("/")) {
+                regionCode = path.substring(0, path.indexOf("/", 0));
+            }else {
+                regionCode = path.substring(1);
+            }
+            Region region = regionService.getRegion(regionCode);
+            if(region == null) {
+                throw new Exception("请求错误");
+            }
+            language = region.getLangCode();
         }
         for(Site s : sites) {
             String lang = s.getRegion().getLangCode();
             if(language.equalsIgnoreCase(lang)) {
                 site = s;
-            }else if("zh".equalsIgnoreCase(lang)) {
-                chSite = s;
+                break;
             }
-        }
-        if(site == null) {
-            return chSite;
         }
         return site;
     }
@@ -58,4 +71,24 @@ public class SiteResolveService {
         }
         return host.getSites();
     }
+
+    public boolean isHomeSitePath(String path) {
+        path = path.substring(1);
+        if("".equals(path)) {
+            return true;
+        }
+        if(path.contains("/")) {
+            path = path.substring(0,path.indexOf("/",0));
+            return isRegionCode(path);
+        }
+        return isRegionCode(path);
+    }
+
+    public boolean isRegionCode(String str) {
+        if(!str.matches("\\D[2]")) {
+            return true;
+        }
+        return false;
+    }
+
 }

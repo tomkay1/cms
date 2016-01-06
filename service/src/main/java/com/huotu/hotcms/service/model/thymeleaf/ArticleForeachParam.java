@@ -6,13 +6,13 @@
  *  Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District 2013-2015. All rights reserved.
  */
 
-package com.huotu.hotcms.web.thymeleaf.model;
+package com.huotu.hotcms.service.model.thymeleaf;
 
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Created by cwb on 2016/1/5.
+ * Created by cwb on 2016/1/6.
  */
 @Getter
 @Setter
@@ -26,7 +26,12 @@ public class ArticleForeachParam {
     /**
      * 获取列表时排除的主键Id
      */
-    private String exculdeId;
+    private String excludeId;
+
+    /**
+     * 页码
+     */
+    private String pageNo;
 
     /**
      * 列表大小

@@ -17,6 +17,9 @@ public class CurrentProcessorService extends BaseProcessorService {
         if(dialectPrefix.equals(DialectTypeEnum.SITE.getDialectPrefix())) {
             return new SiteCurrentProcessorFactory().resolveDataByAttr(attributeValue,context);
         }
+        if(dialectPrefix.equals(DialectTypeEnum.CATEGORY.getDialectPrefix())) {
+            return new SiteCurrentProcessorFactory().resolveDataByAttr(attributeValue,context);
+        }
         return null;
     }
 }

@@ -27,6 +27,18 @@ public enum  ParamEnum {
     },
     SITE{
         public String[] getForeachParams(){return ArrayUtil.array("id");}
+    },
+    DOWNLOAD{
+        public String[] getForeachParams(){return ArrayUtil.array("id");}
+    },
+    GALLERY{
+        public String[] getForeachParams(){return ArrayUtil.array("id");}
+    },
+    NOTICE{
+        public String[] getForeachParams(){return ArrayUtil.array("id");}
+    },
+    CATEGORY{
+        public String[] getForeachParams(){return ArrayUtil.array("id");}
     };
     public static final String PARAM_PREFIX = "param";
     public abstract String[] getForeachParams();

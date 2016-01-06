@@ -11,13 +11,11 @@ package com.huotu.hotcms.web.common;
 public enum DialectTypeEnum {
     ARTICLE("article", ParamEnum.ARTICLE),
     LINK("link",ParamEnum.LINK),
-    SITE("site",ParamEnum.SITE);
-//    DOWNLOAD(1,"download"),
-//    GALLERY(2,"gallery"),
-//    LINK(3,"link"),
-//    NOTICE(4,"notice"),
-//    CATEGORY(5,"category"),
-//    SITE(6,"site");
+    SITE("site",ParamEnum.SITE),
+    DOWNLOAD("download",ParamEnum.DOWNLOAD),
+    GALLERY("gallery",ParamEnum.GALLERY),
+    NOTICE("notice",ParamEnum.NOTICE),
+    CATEGORY("category",ParamEnum.CATEGORY);
     private String dialectPrefix;
     private Object  params;
 

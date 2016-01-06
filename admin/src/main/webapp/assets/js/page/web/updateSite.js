@@ -1,8 +1,8 @@
 /**
- * Created by chendeyu on 2015/12/23.
+ * Created by Administrator on 2015/12/21.
  */
 define(function (require, exports, module) {
-    $("#addSiteForm").validate({
+    $("#updateSiteForm").validate({
         //rules: {
         //    txtModelName:{
         //        required: true,
@@ -60,24 +60,15 @@ define(function (require, exports, module) {
                         if(index==200)
                         {
                             var layer=require("layer");
-                            layer.msg("操作成功",{time: 2000});
-                            $("#name").val("");
-                            $("#title").val("");
-                            $("#keywords").val("");
-                            $("#copyright").val("");
-                            $("#custom_0").val("1");
-                            document.getElementById('custom_0').checked = true;
-                            document.getElementById("cUrl").style.display="";
-                            $("#customTemplateUrl").val("");
-                            $("#domains").val("");
-                            $("#regionId").val("-1");
-                            $("#description").val("");
+                            layer.msg("修改成功,2秒后将自动返回列表页面",{time: 2000})
+                            commonUtil.cancelDisabled("jq-cms-Save");
+                            window.location.href="http://"+window.location.host+"/"+"site/siteList?customerId="+customerId;
+                            //commonUtil.redirectUrl("/model/modelList");
+                            //$("#txtModelName").val("");
+                            //$("#txtModelDescription").val("");
                         }
-                        if(index==500){layer.msg("操作失败",{time: 2000})}
-
-                        if(index==999){
-                            layer.msg("域名已被占用",{time: 2000})
-                        }
+                        if(index==500)
+                            layer.msg("修改失败",{time: 2000})
                     }
                     commonUtil.cancelDisabled("jq-cms-Save");
                 },
@@ -90,6 +81,7 @@ define(function (require, exports, module) {
         invalidHandler: function () {
             return true;
         },
+
     });
 });
 function changeradio(t){

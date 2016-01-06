@@ -1,8 +1,8 @@
 /**
- * Created by chendeyu on 2015/12/23.
+ * Created by Administrator on 2015/12/23.
  */
 define(function (require, exports, module) {
-    $("#addSiteForm").validate({
+    $("#addNoticeForm").validate({
         //rules: {
         //    txtModelName:{
         //        required: true,
@@ -36,19 +36,14 @@ define(function (require, exports, module) {
             commonUtil.setDisabled("jq-cms-Save");
             var customerId =commonUtil.getQuery("customerId");
             $.ajax({
-                url: "/site/saveSite",
+                url: "/notice/saveNotice",
                 data: {
-                    siteId:$("#hidSiteID").val(),
-                    customerId:customerId,
-                    name: $("#name").val(),
-                    title: $("#title").val(),
-                    keywords: $("#keywords").val(),
-                    copyright: $("#copyright").val(),
-                    custom: $("#custom_0").val(),
-                    customTemplateUrl: $("#customTemplateUrl").val(),
-                    domains: $("#domains").val(),
-                    regionId: $("#regionId").val(),
-                    description: $("#description").val()
+                    id:$("#hidNoticeID").val(),
+                    title:$("#title").val(),
+                    customerId:$("#customerId").val(),
+                    content: $("#content").val(),
+                    categoryId: $("#categoryId").val(),
+                    orderWeight: $("#orderWeight").val()
                 },
                 type: "POST",
                 dataType: 'json',
@@ -61,23 +56,13 @@ define(function (require, exports, module) {
                         {
                             var layer=require("layer");
                             layer.msg("操作成功",{time: 2000});
-                            $("#name").val("");
                             $("#title").val("");
-                            $("#keywords").val("");
-                            $("#copyright").val("");
-                            $("#custom_0").val("1");
-                            document.getElementById('custom_0').checked = true;
-                            document.getElementById("cUrl").style.display="";
-                            $("#customTemplateUrl").val("");
-                            $("#domains").val("");
-                            $("#regionId").val("-1");
-                            $("#description").val("");
+                            $("#langCode").val("");
+                            $("#categoryId").val("-1");
+                            $("#orderWeight").val("50");
                         }
-                        if(index==500){layer.msg("操作失败",{time: 2000})}
-
-                        if(index==999){
-                            layer.msg("域名已被占用",{time: 2000})
-                        }
+                        if(index==500)
+                            layer.msg("操作失败",{time: 2000})
                     }
                     commonUtil.cancelDisabled("jq-cms-Save");
                 },
@@ -89,18 +74,6 @@ define(function (require, exports, module) {
         },
         invalidHandler: function () {
             return true;
-        },
+        }
     });
 });
-function changeradio(t){
-    if(t==1){//选择是
-        $("#customTemplateUrl").val("");
-        $("#custom_0").val("1");
-        document.getElementById("cUrl").style.display="";
-    }
-    else{//选择否
-        $("#custom_0").val("0");
-        document.getElementById("cUrl").style.display="none";
-    }
-
-}

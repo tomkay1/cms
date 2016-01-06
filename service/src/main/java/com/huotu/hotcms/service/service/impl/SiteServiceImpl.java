@@ -31,13 +31,15 @@ public class SiteServiceImpl implements SiteService {
 
 
     @Override
-    public PageData<Site> getPage(String name, int page, int pageSize) {
+    public PageData<Site> getPage(Integer customerId,String name, int page, int pageSize) {
         PageData<Site> data = null;
         Specification<Site> specification = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (!StringUtils.isEmpty(name)) {
                 predicates.add(cb.like(root.get("name").as(String.class), "%" + name + "%"));
             }
+            predicates.add(cb.equal(root.get("deleted").as(String.class), false));
+            predicates.add(cb.equal(root.get("customerId").as(Integer.class), customerId));
             return cb.and(predicates.toArray(new Predicate[predicates.size()]));
         };
         Page<Site> pageData = siteRepository.findAll(specification,new PageRequest(page - 1, pageSize));
@@ -65,13 +67,6 @@ public class SiteServiceImpl implements SiteService {
     @Override
     public Set<Site> getSite(int customerId) {
         return siteRepository.findByCustomerId(customerId);
-    }
-
-
-    @Override
-    public boolean deleteSite(Long id) {
-        siteRepository.delete(id);
-        return true;
     }
 
     @Override

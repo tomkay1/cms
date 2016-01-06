@@ -41,7 +41,7 @@
                         <tr>
                             <th>站点描述：</th>
                             <td>
-                                <textarea rows="" cols="" style="width: 250px; height: 60px;" class="input-normal" id="description" name="description" th:text="${site.description}"></textarea>
+                                <textarea rows="" cols="" style="width: 500px; height: 60px;" class="input-normal" id="description" name="description" th:text="${site.description}"></textarea>
                             </td>
                         </tr>
                         <tr>
@@ -78,13 +78,13 @@
                                 <table id="custom">
                                     <tbody>
                                     <tr>
-                                        <td><input id="custom_0" type="radio" name="custom" value="1" th:checked="${site.custom==1?true:false}" onclick="javascript:changeradio(1)"><label for="custom_0">是</label></td>
-                                        <td><input id="custom_1" type="radio" name="custom" value="0" th:checked="${site.custom==0?true:false}" onclick="javascript:changeradio(2)"><label for="custom_1">否</label></td>
+                                        <td><input id="custom_0" type="radio" name="custom" value="1" th:checked="${site.custom==true?true:false}" onclick="javascript:changeradio(1)"><label for="custom_0">是</label></td>
+                                        <td><input id="custom_1" type="radio" name="custom" value="0" th:checked="${site.custom==false?true:false}" onclick="javascript:changeradio(2)"><label for="custom_1">否</label></td>
                                     </tr>
                                     </tbody></table>
                             </td>
                         </tr>
-                        <tr id ="cUrl" th:if="${site.custom==1} ">
+                        <tr id ="cUrl" th:style="${site.custom}?'display:':'display:none'">
                             <th>自定义模板根路径：</th>
                             <td>
                                 <input name="customTemplateUrl"  id="customTemplateUrl" th:value="${site.customTemplateUrl}" type="text" class="input-normal" placeholder="">
@@ -93,15 +93,15 @@
                         <tr>
                             <th>域名：</th>
                             <td>
-                                <input name="domains"  id="domains" type="text" class="input-normal" th:value="${site.domains}" placeholder="">
+                                <input name="domains"  id="domains" type="text" class="input-normal" th:value="${domains}" placeholder="">
                             </td>
                         </tr>
                         <tr>
                             <th>所属地区：</th>
                             <td>
                                 <select name="regionId" class="input-normal"  id="regionId">
-                                    <option value="-1">==请选择地区==</option>
-                                    <option th:each="region:${regions}" th:selected="${site.regionId}" th:value="${region.id}" th:text="${region.regionName}"></option>
+                                    <!--<option value="-1">==请选择地区==</option>-->
+                                    <option  th:value="${region.id}"  th:text="${region.regionName}"></option>
                                 </select>
                             </td>
                         </tr>
@@ -117,19 +117,6 @@
     </form>
 </div>
 
-<script>seajs.use(["addSite","layer","validate","message"]);</script>
-<script>
-    function changeradio(t){
-        if(t==1){
-            $("#customTemplateUrl").val("");
-            $("#custom_0").val("1");
-            document.getElementById("cUrl").style.display="";
-        }
-        else{
-            document.getElementById("cUrl").style.display="none";
-        }
-
-    }
-</script>
+<script>seajs.use(["updateSite","layer","validate","message"]);</script>
 </body>
 </html>

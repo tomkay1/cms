@@ -55,7 +55,7 @@ define(function (require, exports, module) {
                             var layer=require("layer");
                             layer.msg("操作成功",{time: 2000});
                             $("#txtModelName").val("");
-                            $("#txtModelDescription").val("");
+                            $("#txtModelDescription").val("50");
                         }
                         if(index==500)
                             layer.msg("操作失败",{time: 2000})

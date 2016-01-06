@@ -51,6 +51,8 @@ public class NoticeController {
 
 
 
+
+
     @RequestMapping(value = "/addNotice")
     public ModelAndView addNotice(HttpServletRequest request,Integer customerid) throws Exception{
         ModelAndView modelAndView=new ModelAndView();

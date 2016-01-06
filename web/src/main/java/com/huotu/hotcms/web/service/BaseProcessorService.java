@@ -22,10 +22,10 @@ public class BaseProcessorService  {
 
     protected String dialectPrefix;
 
-    public Object  resolveDataByAttr(IProcessableElementTag elementTag,ITemplateContext context) throws Exception{
+    public Object  resolveDataByAttr(IProcessableElementTag elementTag,ITemplateContext context){
         return null;
     }
-    public Object resolveDataByAttr(String attributeValue,ITemplateContext context) throws Exception {
+    public Object resolveDataByAttr(String attributeValue,ITemplateContext context){
         return null;
     }
 

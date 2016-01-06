@@ -11,7 +11,7 @@ import org.thymeleaf.expression.IExpressionObjects;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Created by Administrator on 2016/1/6.
+ * Created by Administrator xhl 2016/1/6.
  */
 public class SiteCurrentProcessorService extends BaseProcessorService{
     private static final String regexp="\\$\\{([^\\}]+)}";//匹配${key}模式的正则表达式

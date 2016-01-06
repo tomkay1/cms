@@ -24,6 +24,9 @@ public enum  ParamEnum {
         public String[] getForeachParams(){
             return ArrayUtil.array("id", "excludeId");
         }
+    },
+    SITE{
+        public String[] getForeachParams(){return ArrayUtil.array("id");}
     };
     public static final String PARAM_PREFIX = "param";
     public abstract String[] getForeachParams();

@@ -1,10 +1,10 @@
-package com.huotu.hotcms.web.service;
+package com.huotu.hotcms.web.service.factory;
 
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.service.HostService;
+import com.huotu.hotcms.web.service.BaseProcessorService;
+import com.huotu.hotcms.web.service.SiteResolveService;
 import com.huotu.hotcms.web.util.PatternMatchUtil;
 import com.huotu.hotcms.web.util.StringUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 import org.thymeleaf.context.ITemplateContext;
@@ -13,14 +13,9 @@ import org.thymeleaf.expression.IExpressionObjects;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * <p>
- * 自定义thymeleaf 语法标签解析
- * </P>
- *
- * @author xhl
- * @since 1.0.0
+ * Created by Administrator xhl 2016/1/6.
  */
-public class ArticleCurrentProcessorService extends BaseProcessorService{
+public class SiteCurrentProcessorFactory  extends BaseProcessorService {
     private static final String regexp="\\$\\{([^\\}]+)}";//匹配${key}模式的正则表达式
 
     @Override
@@ -31,7 +26,7 @@ public class ArticleCurrentProcessorService extends BaseProcessorService{
         SiteResolveService siteResolveService = (SiteResolveService)applicationContext.getBean("siteResolveService");
         try {
             Site site = siteResolveService.getHomeSite(request);
-            String attributeName=PatternMatchUtil.getMatchVal(attributeValue,regexp);
+            String attributeName= PatternMatchUtil.getMatchVal(attributeValue, regexp);
             attributeName= StringUtil.toUpperCase(attributeName);
             Object object = site.getClass().getDeclaredMethod("get"+attributeName).invoke(site);
             return object;
@@ -40,6 +35,6 @@ public class ArticleCurrentProcessorService extends BaseProcessorService{
         {
             //写错误日志操作
         }
-      return null;
+        return null;
     }
 }

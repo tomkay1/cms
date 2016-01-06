@@ -1,6 +1,8 @@
-package com.huotu.hotcms.web.service;
+package com.huotu.hotcms.web.service.factory;
 
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.web.service.BaseProcessorService;
+import com.huotu.hotcms.web.service.SiteResolveService;
 import com.huotu.hotcms.web.util.PatternMatchUtil;
 import com.huotu.hotcms.web.util.StringUtil;
 import org.springframework.web.context.ContextLoader;
@@ -11,9 +13,14 @@ import org.thymeleaf.expression.IExpressionObjects;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Created by Administrator xhl 2016/1/6.
+ * <p>
+ * 自定义thymeleaf 语法标签解析
+ * </P>
+ *
+ * @author xhl
+ * @since 1.0.0
  */
-public class SiteCurrentProcessorService extends BaseProcessorService{
+public class ArticleCurrentProcessorFactory extends BaseProcessorService {
     private static final String regexp="\\$\\{([^\\}]+)}";//匹配${key}模式的正则表达式
 
     @Override

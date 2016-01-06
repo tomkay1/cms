@@ -1,6 +1,6 @@
 package com.huotu.hotcms.web.thymeleaf.processor;
 
-import com.huotu.hotcms.web.service.BaseProcessorService;
+import com.huotu.hotcms.web.service.CurrentProcessorService;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.engine.AttributeName;
@@ -21,12 +21,12 @@ public class CurrentProcessor extends AbstractStandardExpressionAttributeTagProc
     public static final int PRECEDENCE = 1300;
 
     public static final String ATTR_NAME = "current";
-    private BaseProcessorService baseProcessorService;
+    private CurrentProcessorService currentProcessorService;
 
-    public CurrentProcessor(final IProcessorDialect dialect, final String dialectPrefix,BaseProcessorService baseProcessorService) {
+    public CurrentProcessor(final IProcessorDialect dialect, final String dialectPrefix) {
         super(dialect, TemplateMode.HTML, dialectPrefix, ATTR_NAME, PRECEDENCE, true);
-        this.baseProcessorService = baseProcessorService;
-        this.baseProcessorService.setDialectPrefix(dialectPrefix);
+        this.currentProcessorService = new CurrentProcessorService();
+        this.currentProcessorService.setDialectPrefix(dialectPrefix);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class CurrentProcessor extends AbstractStandardExpressionAttributeTagProc
                              int attributeCol,
                              Object expressionResult,
                              IElementTagStructureHandler structureHandler) {
-        final String text = (String) this.baseProcessorService.resolveDataByAttr(attributeValue, context);
+        final String text = (String) this.currentProcessorService.resolveDataByAttr(attributeValue, context);
         structureHandler.setBody(text, false);
     }
 }

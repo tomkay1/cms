@@ -10,7 +10,8 @@ package com.huotu.hotcms.web.common;
  */
 public enum DialectTypeEnum {
     ARTICLE("article", ParamEnum.ARTICLE),
-    LINK("link",ParamEnum.LINK);
+    LINK("link",ParamEnum.LINK),
+    SITE("site",ParamEnum.SITE);
 //    DOWNLOAD(1,"download"),
 //    GALLERY(2,"gallery"),
 //    LINK(3,"link"),

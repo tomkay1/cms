@@ -57,7 +57,7 @@ public class PatternMatchUtil {
         Matcher match = pattern.matcher(url);
         if(match.matches())
         {
-            if(match.groupCount()>1)
+            if(match.groupCount()>=1)
             {
                 return Integer.parseInt(match.group(1));
             }

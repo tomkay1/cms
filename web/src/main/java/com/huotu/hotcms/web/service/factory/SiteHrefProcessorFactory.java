@@ -1,7 +1,11 @@
 package com.huotu.hotcms.web.service.factory;
 
+import com.huotu.hotcms.service.entity.Article;
+import com.huotu.hotcms.service.entity.RouteRule;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.service.impl.ArticleServiceImpl;
 import com.huotu.hotcms.web.service.BaseProcessorService;
+import com.huotu.hotcms.web.service.RoutResolverService;
 import com.huotu.hotcms.web.service.SiteResolveService;
 import com.huotu.hotcms.web.util.PatternMatchUtil;
 import com.huotu.hotcms.web.util.StringUtil;
@@ -15,8 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Created by Administrator xhl 2016/1/6.
  */
-public class SiteCurrentProcessorFactory  extends BaseProcessorService {
-    private static final String regexp="\\$\\{([^\\}]+)}";//匹配${key}模式的正则表达式
+public class SiteHrefProcessorFactory extends BaseProcessorService {
+
 
     @Override
     public Object resolveDataByAttr(String attributeValue, ITemplateContext context){
@@ -26,10 +30,10 @@ public class SiteCurrentProcessorFactory  extends BaseProcessorService {
         SiteResolveService siteResolveService = (SiteResolveService)applicationContext.getBean("siteResolveService");
         try {
             Site site = siteResolveService.getCurrentSite(request);
-            String attributeName= PatternMatchUtil.getMatchVal(attributeValue, regexp);
-            attributeName= StringUtil.toUpperCase(attributeName);
-            Object object = site.getClass().getDeclaredMethod("get"+attributeName).invoke(site);
-            return object;
+//            String attributeName= PatternMatchUtil.getMatchVal(attributeValue, regexp);
+//            attributeName= StringUtil.toUpperCase(attributeName);
+//            Object object = site.getClass().getDeclaredMethod("get"+attributeName).invoke(site);
+            return null;
         }
         catch (Exception ex)
         {

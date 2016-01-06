@@ -29,6 +29,7 @@ public class IndexController {
     public ModelAndView index()
     {
         ModelAndView modelAndView=new ModelAndView();
+        modelAndView.addObject("customTemplateUrl","http://www.cms.com");
         return modelAndView;
     }
 

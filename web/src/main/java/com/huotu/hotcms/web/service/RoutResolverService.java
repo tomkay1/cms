@@ -40,6 +40,4 @@ public class RoutResolverService {
         }
         return routRuled;
     }
-
-
 }

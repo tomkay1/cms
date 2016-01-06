@@ -15,10 +15,15 @@ import com.huotu.hotcms.service.model.thymeleaf.ArticleForeachParam;
 import java.util.List;
 
 /**
- * Created by cwb on 2016/1/6.
+ * <p>
+ *     文章服务
+ * </p>
+ * @author xhl
+ *
+ * @since 1.0.0
  */
 public interface ArticleService {
+    Article findById(Long id);
 
     List<Article> getArticleList(ArticleForeachParam articleForeachParam);
-
 }

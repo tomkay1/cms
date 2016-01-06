@@ -1,7 +1,11 @@
 package com.huotu.hotcms.web.service.factory;
 
+import com.huotu.hotcms.service.entity.Article;
+import com.huotu.hotcms.service.entity.RouteRule;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.service.impl.ArticleServiceImpl;
 import com.huotu.hotcms.web.service.BaseProcessorService;
+import com.huotu.hotcms.web.service.RoutResolverService;
 import com.huotu.hotcms.web.service.SiteResolveService;
 import com.huotu.hotcms.web.util.PatternMatchUtil;
 import com.huotu.hotcms.web.util.StringUtil;
@@ -30,11 +34,22 @@ public class ArticleCurrentProcessorFactory extends BaseProcessorService {
         WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
         SiteResolveService siteResolveService = (SiteResolveService)applicationContext.getBean("siteResolveService");
         try {
-            Site site = siteResolveService.getHomeSite(request);
-            String attributeName= PatternMatchUtil.getMatchVal(attributeValue, regexp);
-            attributeName= StringUtil.toUpperCase(attributeName);
-            Object object = site.getClass().getDeclaredMethod("get"+attributeName).invoke(site);
-            return object;
+            Site site = siteResolveService.getCurrentSite(request);
+            RoutResolverService routResolverService=(RoutResolverService)applicationContext.getBean("routResolverService");
+            RouteRule routeRule=routResolverService.getRout(site,PatternMatchUtil.getUrl(request));
+            if(routeRule!=null)
+            {
+                Integer articleId=PatternMatchUtil.getUrlId(PatternMatchUtil.getUrl(request),routeRule.getRule());
+                if(articleId!=null) {
+                    ArticleServiceImpl articleService = (ArticleServiceImpl) applicationContext.getBean("articleServiceImpl");
+                    Article article = articleService.findById(Long.valueOf(articleId));
+
+                    String attributeName = PatternMatchUtil.getMatchVal(attributeValue, regexp);
+                    attributeName = StringUtil.toUpperCase(attributeName);
+                    Object object = article.getClass().getDeclaredMethod("get" + attributeName).invoke(article);
+                    return object;
+                }
+            }
         }
         catch (Exception ex)
         {

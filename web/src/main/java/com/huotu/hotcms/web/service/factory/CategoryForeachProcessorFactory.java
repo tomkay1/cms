@@ -55,12 +55,7 @@ public class CategoryForeachProcessorFactory {
             CategoryForeachParam categoryForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag, CategoryForeachParam.class);
             if(StringUtils.isEmpty(categoryForeachParam.getSiteId())) {
                 SiteResolveService siteResolveService = (SiteResolveService)applicationContext.getBean("siteResolveService");
-                Site site = null;
-                if(siteResolveService.isRootPath(request)) {
-                    site = siteResolveService.getHomeSite(request);
-                }else if(siteResolveService.isSubSitePath(request)) {
-                    site = siteResolveService.getSubSite(request);
-                }
+                Site site = siteResolveService.getCurrentSite(request);
                 categoryForeachParam.setSiteId(site.getSiteId().toString());
             }
             CategoryService categoryService = (CategoryService)applicationContext.getBean("categoryServiceImpl");

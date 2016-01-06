@@ -40,6 +40,6 @@ public class CurrentProcessor extends AbstractStandardExpressionAttributeTagProc
                              Object expressionResult,
                              IElementTagStructureHandler structureHandler) {
         final String text = (String) this.currentProcessorService.resolveDataByAttr(attributeValue, context);
-        structureHandler.setBody(text, false);
+        structureHandler.setBody(text, true);
     }
 }

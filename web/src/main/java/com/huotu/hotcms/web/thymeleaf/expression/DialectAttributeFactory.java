@@ -11,9 +11,12 @@ package com.huotu.hotcms.web.thymeleaf.expression;
 import com.huotu.hotcms.web.common.ParamEnum;
 import com.huotu.hotcms.web.thymeleaf.model.ArticleForeachParam;
 import org.springframework.util.StringUtils;
+import org.thymeleaf.engine.AttributeName;
+import org.thymeleaf.model.IElementAttributes;
 import org.thymeleaf.model.IProcessableElementTag;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 /**
  * Created by cwb on 2016/1/5.
@@ -32,19 +35,21 @@ public class DialectAttributeFactory {
         return instance;
     }
 
-    public ArticleForeachParam getArticleForeachParam(IProcessableElementTag elementTag) throws Exception{
-        ArticleForeachParam articleForeachParam = null;
-        Class<?> articleParam = new ArticleForeachParam().getClass();
-        String[] params = ParamEnum.ARTICLE.getForeachParams();
-        for(String param : params) {
-            String paramValue = elementTag.getAttributes().getValue(ParamEnum.PARAM_PREFIX,param);
-            if(!StringUtils.isEmpty(paramValue)) {
-                Field field = articleParam.getDeclaredField(param);
+    public <T>T getForeachParam(IProcessableElementTag elementTag, Class<T> t) throws Exception{
+        Object obj = t.newInstance();
+        IElementAttributes elementAttributes = elementTag.getAttributes();
+        List<AttributeName> attributeNames = elementAttributes.getAllAttributeNames();
+        for(AttributeName attr : attributeNames) {
+            String paramValue = elementAttributes.getValue(attr);
+            try {
+                Field field = t.getDeclaredField(attr.getAttributeName());
                 field.setAccessible(true);
-                field.set(articleForeachParam,paramValue);
+                field.set(obj,paramValue);
+            }catch (NoSuchFieldException e) {
+                continue;
             }
         }
-        return articleForeachParam;
+        return (T)obj;
     }
 
 

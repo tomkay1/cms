@@ -1,6 +1,6 @@
 package com.huotu.hotcms.web.interceptor;
 
-import com.huotu.hotcms.service.entity.RoutRuled;
+import com.huotu.hotcms.service.entity.RouteRule;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.web.service.RoutResolverService;
 import com.huotu.hotcms.web.service.SiteResolveService;
@@ -38,7 +38,7 @@ public class RoutInterceptor extends HandlerInterceptorAdapter {
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         String servletPath=request.getServletPath();
         Site site=siteResolveService.getHomeSite(request);
-        RoutRuled ruled=null;
+        RouteRule ruled=null;
         if(site!=null)
         {
             ruled=routResolverService.getRout(site,servletPath);

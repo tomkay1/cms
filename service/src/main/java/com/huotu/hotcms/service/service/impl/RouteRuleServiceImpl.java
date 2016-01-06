@@ -1,9 +1,9 @@
 package com.huotu.hotcms.service.service.impl;
 
-import com.huotu.hotcms.service.entity.RoutRuled;
+import com.huotu.hotcms.service.entity.RouteRule;
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.repository.RoutRuleRepository;
-import com.huotu.hotcms.service.service.RoutRuleService;
+import com.huotu.hotcms.service.repository.RouteRuleRepository;
+import com.huotu.hotcms.service.service.RouteRuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,13 +18,13 @@ import java.util.Set;
  * @since 1.0.0
  */
 @Service
-public class RoutRuleServiceImpl implements RoutRuleService{
+public class RouteRuleServiceImpl implements RouteRuleService {
 
     @Autowired
-    private RoutRuleRepository routRuleRepository;
+    private RouteRuleRepository routRuleRepository;
 
     @Override
-    public Set<RoutRuled> getRoutRule(Site site) {
+    public Set<RouteRule> getRoutRule(Site site) {
         return routRuleRepository.findBySite(site);
     }
 }

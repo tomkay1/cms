@@ -1,7 +1,5 @@
 package com.huotu.hotcms.web.thymeleaf.processor;
 
-
-import com.huotu.hotcms.web.service.ArticleCurrentProcessorService;
 import com.huotu.hotcms.web.service.BaseProcessorService;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.dialect.IProcessorDialect;

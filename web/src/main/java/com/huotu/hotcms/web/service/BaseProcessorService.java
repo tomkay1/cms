@@ -11,8 +11,10 @@ package com.huotu.hotcms.web.service;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.engine.AttributeName;
 import org.thymeleaf.model.IProcessableElementTag;
+import org.thymeleaf.standard.expression.Assignation;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * Created by cwb on 2016/1/4.
@@ -34,6 +36,7 @@ public class BaseProcessorService  {
         return  null;
     }
 
+    public String resolveLinkData(List<Assignation> assignations,String LinkExpression, ITemplateContext context){return null;}
 
     public String getDialectPrefix() {
         return dialectPrefix;

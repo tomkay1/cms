@@ -18,14 +18,14 @@ import javax.servlet.http.HttpServletRequest;
  * Created by cwb on 2016/1/4.
  */
 
-public class BaseProcessorService {
+public class BaseProcessorService  {
 
     protected String dialectPrefix;
 
     public Object  resolveDataByAttr(IProcessableElementTag elementTag,ITemplateContext context){
         return null;
     }
-    public Object resolveDataByAttr(String attributeValue,ITemplateContext context) {
+    public Object resolveDataByAttr(String attributeValue,ITemplateContext context){
         return null;
     }
 

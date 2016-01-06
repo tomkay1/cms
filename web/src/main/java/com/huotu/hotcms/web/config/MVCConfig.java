@@ -10,6 +10,7 @@ package com.huotu.hotcms.web.config;
 
 import com.huotu.hotcms.service.config.JpaConfig;
 import com.huotu.hotcms.service.config.ServiceConfig;
+import com.huotu.hotcms.web.interceptor.RoutInterceptor;
 import com.huotu.hotcms.web.interceptor.SiteResolver;
 import com.huotu.hotcms.web.util.CMSDialect;
 import com.huotu.hotcms.web.util.ArrayUtil;
@@ -20,10 +21,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.*;
 import org.thymeleaf.ITemplateEngine;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
@@ -55,6 +53,9 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private SiteResolver siteResolver;
 
+    @Autowired
+    private RoutInterceptor routInterceptor;
+
 
     /**
      * 允许访问静态资源
@@ -78,6 +79,12 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         registry.viewResolver(redirectViewResolver());
         registry.viewResolver(forwardViewResolver());
         registry.viewResolver(remoteHtmlViewResolver());
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(routInterceptor);
+        super.addInterceptors(registry);
     }
 
     public ViewResolver redirectViewResolver() {
@@ -107,7 +114,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         resolver.setTemplateEngine(templateEngine(remoteHtmlTemplateResolver()));
         resolver.setContentType("text/html");
         resolver.setCharacterEncoding(UTF8);
-        resolver.setViewNames(ArrayUtil.array("/pc/**"));
+        resolver.setViewNames(ArrayUtil.array("**"));//设置通配目录结构
         return resolver;
     }
 
@@ -152,7 +159,6 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         resolver.setCacheable(false);
         resolver.setCharacterEncoding(UTF8);
         resolver.setApplicationContext(applicationContext);
-        resolver.setPrefix("http://www.huobanj.com");
         resolver.setTemplateMode(TemplateMode.HTML);
         return resolver;
     }

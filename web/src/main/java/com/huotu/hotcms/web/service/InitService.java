@@ -10,10 +10,7 @@ package com.huotu.hotcms.web.service;
 
 import com.huotu.hotcms.service.common.ModelType;
 import com.huotu.hotcms.service.entity.*;
-import com.huotu.hotcms.service.repository.CategoryRepository;
-import com.huotu.hotcms.service.repository.HostRepository;
-import com.huotu.hotcms.service.repository.RegionRepository;
-import com.huotu.hotcms.service.repository.SiteRepository;
+import com.huotu.hotcms.service.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +28,9 @@ public class InitService {
     private RegionRepository regionRepository;
     @Autowired
     private HostRepository hostRepository;
+
+    @Autowired
+    private RouteRepository routeRepository;
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -93,19 +93,14 @@ public class InitService {
             siteRepository.save(s);
         }
         if(categoryRepository.count() == 0) {
+            Site site = siteRepository.findByTitle("火图科技");
             Category category = new Category();
             category.setCreateTime(LocalDateTime.now());
             category.setName("首页");
             category.setCustomerId(3447);
             category.setOrderWeight(100);
-            Site site = siteRepository.findByTitle("火图科技");
             category.setSite(site);
-            RouteRule routeRule = new RouteRule();
-            routeRule.setCreateTime(LocalDateTime.now());
-            routeRule.setSite(site);
-            routeRule.setRule("/");
-            routeRule.setTemplate("/index.html");
-            category.setRouteRule(routeRule);
+            categoryRepository.save(category);
 
             Category category1 = new Category();
             category1.setCreateTime(LocalDateTime.now());
@@ -113,10 +108,16 @@ public class InitService {
             category1.setCustomerId(3447);
             category1.setOrderWeight(90);
             category1.setSite(site);
-            RouteRule routeRule1 = new RouteRule();
-            routeRule1.setCreateTime(LocalDateTime.now());
-            routeRule1.setSite(site);
-            routeRule1.setRule("/news");
+            categoryRepository.save(category1);
+        }
+        if(routeRepository.count()==0) {
+            Route route = new Route();
+            route.setCreateTime(LocalDateTime.now());
+            route.setRule("/");
+            route.setTemplate("/index.html");
+            Route route1 = new Route();
+            route1.setCreateTime(LocalDateTime.now());
+            route1.setRule("/news");
         }
     }
 }

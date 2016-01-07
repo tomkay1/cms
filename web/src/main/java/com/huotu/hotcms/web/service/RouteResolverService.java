@@ -31,7 +31,7 @@ public class RouteResolverService {
      * */
     public Route getRoute(Site site,String url) {
         Route routRuled=null;
-        Set<Route> ruleds =routeService.getRout(site);
+        Set<Route> ruleds =routeService.getRoute(site);
         for(Route s : ruleds) {
             if(PatternMatchUtil.match(url, s.getRule().toString()))
             {

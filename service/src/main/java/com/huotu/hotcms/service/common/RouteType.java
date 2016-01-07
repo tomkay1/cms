@@ -18,7 +18,7 @@ public enum RouteType implements CommonEnum{
 
 
     @Override
-    public Object getCode() {
+    public Integer getCode() {
         return code;
     }
 
@@ -27,4 +27,17 @@ public enum RouteType implements CommonEnum{
         return value;
     }
 
+    public static RouteType valueOf(int value)
+    {
+        switch (value){
+            case 2:
+                return ARTICLEDETILE;
+            case 404:
+                return NOT_FOUND;
+            case 500:
+                return SERVER_ERROR;
+            default:
+                return null;
+        }
+    }
 }

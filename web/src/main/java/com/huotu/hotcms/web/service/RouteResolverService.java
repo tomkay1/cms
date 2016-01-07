@@ -33,11 +33,19 @@ public class RouteResolverService {
         Route routRuled=null;
         Set<Route> ruleds =routeService.getRoute(site);
         for(Route s : ruleds) {
-            if(PatternMatchUtil.match(url, s.getRule().toString()))
-            {
-                routRuled=s;
+            if(s.getRule()!=null) {
+                if (PatternMatchUtil.match(url, s.getRule().toString())) {
+                    routRuled = s;
+                    return routRuled;
+                }
             }
         }
         return routRuled;
+    }
+
+
+    public String getRouteTemplate(Route route){
+
+        return null;
     }
 }

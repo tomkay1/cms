@@ -24,9 +24,6 @@ public class SiteCurrentProcessorFactory  extends BaseProcessorService {
 
     @Override
     public Object resolveDataByAttr(String attributeValue, ITemplateContext context){
-        IExpressionObjects expressContent= context.getExpressionObjects();
-        HttpServletRequest request=(HttpServletRequest)expressContent.getObject("request");
-        WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
         Site site = (Site) VariableExpression.getVariable(context, "site");
         try {
             String attributeName= PatternMatchUtil.getMatchVal(attributeValue, regexp);

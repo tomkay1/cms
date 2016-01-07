@@ -1,7 +1,7 @@
 package com.huotu.hotcms.web.service;
-import com.huotu.hotcms.service.entity.RouteRule;
+import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.service.RouteRuleService;
+import com.huotu.hotcms.service.service.RouteService;
 import com.huotu.hotcms.web.util.PatternMatchUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,7 +20,7 @@ import java.util.Set;
 public class RoutResolverService {
 
     @Autowired
-    private RouteRuleService routRuleService;
+    private RouteService routeService;
 
     /**
      * 根据url和站点信息获得路由规则
@@ -29,10 +29,10 @@ public class RoutResolverService {
      * @param url
      * @return
      * */
-    public RouteRule getRout(Site site,String url) {
-        RouteRule routRuled=null;
-        Set<RouteRule> ruleds =routRuleService.getRoutRule(site);
-        for(RouteRule s : ruleds) {
+    public Route getRout(Site site,String url) {
+        Route routRuled=null;
+        Set<Route> ruleds =routeService.getRout(site);
+        for(Route s : ruleds) {
             if(PatternMatchUtil.match(url,s.getRule().toString()))
             {
                 routRuled=s;

@@ -26,5 +26,6 @@ public class ArticleServiceImpl implements ArticleService {
     public List<Article> getArticleList(ArticleForeachParam articleForeachParam) {
         return null;
     }
-    
+
+
 }

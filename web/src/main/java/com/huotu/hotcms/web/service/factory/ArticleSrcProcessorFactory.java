@@ -19,14 +19,9 @@ import org.thymeleaf.expression.IExpressionObjects;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * <p>
- * 自定义thymeleaf 语法标签解析
- * </P>
- *
- * @author xhl
- * @since 1.0.0
+ * Created by Administrator xhl 2016/1/7.
  */
-public class ArticleCurrentProcessorFactory extends BaseProcessorService {
+public class ArticleSrcProcessorFactory extends BaseProcessorService {
     private static final String regexp="\\$\\{([^\\}]+)}";//匹配${key}模式的正则表达式
 
     private static final Log log = LogFactory.getLog(CategoryForeachProcessorFactory.class);
@@ -39,7 +34,7 @@ public class ArticleCurrentProcessorFactory extends BaseProcessorService {
         try {
             Site site = (Site) VariableExpression.getVariable(context, "site");
             RoutResolverService routResolverService=(RoutResolverService)applicationContext.getBean("routResolverService");
-            Route routeRule=routResolverService.getRout(site,PatternMatchUtil.getUrl(request));
+            Route routeRule=routResolverService.getRout(site, PatternMatchUtil.getUrl(request));
             if(routeRule!=null){
                 Integer articleId=PatternMatchUtil.getUrlId(PatternMatchUtil.getUrl(request),routeRule.getRule());
                 if(articleId!=null) {

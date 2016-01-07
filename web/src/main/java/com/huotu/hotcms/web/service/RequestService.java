@@ -13,6 +13,7 @@ public class RequestService {
     public RequestModel ConvertRequestModel(HttpServletRequest request){
         RequestModel model=new RequestModel();
         model.setUrl(request.getRequestURI());
+        model.setRequest(request);
         return model;
     }
 }

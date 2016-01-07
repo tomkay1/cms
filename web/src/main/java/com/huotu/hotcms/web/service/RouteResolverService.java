@@ -1,4 +1,5 @@
 package com.huotu.hotcms.web.service;
+
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.service.RouteService;
@@ -17,8 +18,7 @@ import java.util.Set;
  * @since 1.0.0
  */
 @Component
-public class RoutResolverService {
-
+public class RouteResolverService {
     @Autowired
     private RouteService routeService;
 
@@ -29,11 +29,11 @@ public class RoutResolverService {
      * @param url
      * @return
      * */
-    public Route getRout(Site site,String url) {
+    public Route getRoute(Site site,String url) {
         Route routRuled=null;
         Set<Route> ruleds =routeService.getRout(site);
         for(Route s : ruleds) {
-            if(PatternMatchUtil.match(url,s.getRule().toString()))
+            if(PatternMatchUtil.match(url, s.getRule().toString()))
             {
                 routRuled=s;
             }

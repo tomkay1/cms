@@ -5,7 +5,7 @@ import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.service.impl.ArticleServiceImpl;
 import com.huotu.hotcms.web.service.BaseProcessorService;
-import com.huotu.hotcms.web.service.RoutResolverService;
+import com.huotu.hotcms.web.service.RouteResolverService;
 import com.huotu.hotcms.web.thymeleaf.expression.VariableExpression;
 import com.huotu.hotcms.web.util.PatternMatchUtil;
 import com.huotu.hotcms.web.util.StringUtil;
@@ -38,8 +38,8 @@ public class ArticleCurrentProcessorFactory extends BaseProcessorService {
         WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
         try {
             Site site = (Site) VariableExpression.getVariable(context, "site");
-            RoutResolverService routResolverService=(RoutResolverService)applicationContext.getBean("routResolverService");
-            Route routeRule=routResolverService.getRout(site,PatternMatchUtil.getUrl(request));
+            RouteResolverService routeResolverService=(RouteResolverService)applicationContext.getBean("routResolverService");
+            Route routeRule=routeResolverService.getRoute(site, PatternMatchUtil.getUrl(request));
             if(routeRule!=null){
                 Integer articleId=PatternMatchUtil.getUrlId(PatternMatchUtil.getUrl(request),routeRule.getRule());
                 if(articleId!=null) {

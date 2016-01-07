@@ -1,6 +1,8 @@
 package com.huotu.hotcms.web.thymeleaf.processor;
 
 import com.huotu.hotcms.web.service.HrefProcessorService;
+import com.huotu.hotcms.web.util.StringUtil;
+import hidden.org.codehaus.plexus.interpolation.util.StringUtils;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.engine.AttributeName;
@@ -59,6 +61,7 @@ public class HrefProcessor  extends AbstractStandardExpressionAttributeTagProces
             AssignationSequence assignations=((LinkExpression) expression).getParameters();
             List<Assignation> list= assignations.getAssignations();
             String linkExpression=((LinkExpression) expression).getBase().toString();//获得链接Template
+            linkExpression= StringUtil.Trim(linkExpression,"'");
             newAttributeValue=this.hrefProcessorService.resolveLinkData(list,linkExpression,context);
         }
         newAttributeValue=HtmlEscape.escapeHtml4Xml(newAttributeValue == null ? "" : newAttributeValue.toString());;

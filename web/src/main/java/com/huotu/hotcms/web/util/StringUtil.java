@@ -2,6 +2,8 @@ package com.huotu.hotcms.web.util;
 
 import org.codehaus.plexus.util.StringUtils;
 
+import java.util.Stack;
+
 /**
  * <p>
  * 字符串处理类
@@ -29,5 +31,22 @@ public class StringUtil {
             }
         }
         return null;
+    }
+
+    /**
+     * 字符串移除开始和结束制定的字符串
+     *
+     * @param str
+     * @param removeStr 要移除的前后字符串
+     * @return
+     * */
+    public static  String Trim(String str,String removeStr){
+        if(!StringUtils.isEmpty(str)){
+           str=str.substring(0,str.lastIndexOf(removeStr));
+            if(str.startsWith(removeStr)){
+                str=str.substring(removeStr.length());
+            }
+        }
+        return str;
     }
 }

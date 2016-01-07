@@ -2,6 +2,7 @@ package com.huotu.hotcms.web.interceptor;
 
 import com.huotu.hotcms.service.entity.RouteRule;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.web.service.RequestService;
 import com.huotu.hotcms.web.service.RoutResolverService;
 import com.huotu.hotcms.web.service.SiteResolveService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ public class RoutInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private RoutResolverService routResolverService;
 
+    @Autowired
+    private RequestService requestService;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         return super.preHandle(request, response, handler);
@@ -47,6 +51,7 @@ public class RoutInterceptor extends HandlerInterceptorAdapter {
             if(ruled!=null){
                 modelAndView.setViewName(site.getCustomTemplateUrl() + ruled.getTemplate());
                 modelAndView.addObject("site",site);
+                modelAndView.addObject("request",requestService.ConvertRequestModel(request));
             }
         }
     }

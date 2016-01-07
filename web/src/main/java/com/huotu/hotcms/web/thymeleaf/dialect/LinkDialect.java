@@ -39,8 +39,6 @@ public class LinkDialect extends AbstractProcessorDialect {
     private Set<IProcessor> createArticleProcessorsSet(final IProcessorDialect dialect, final String dialectPrefix) {
         final Set<IProcessor> processors = new LinkedHashSet<IProcessor>();
         processors.add(new ForeachProcessor(dialect, dialectPrefix));
-        processors.add(new CurrentProcessor(dialect, dialectPrefix));
-        processors.add(new HrefProcessor(dialect, dialectPrefix));
         return processors;
     }
 }

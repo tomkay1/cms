@@ -4,6 +4,7 @@ import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.service.impl.ArticleServiceImpl;
+import com.huotu.hotcms.web.service.ArticleResolveService;
 import com.huotu.hotcms.web.service.BaseProcessorService;
 import com.huotu.hotcms.web.service.RouteResolverService;
 import com.huotu.hotcms.web.thymeleaf.expression.VariableExpression;
@@ -33,27 +34,18 @@ public class ArticleHrefProcessorFactory extends BaseProcessorService {
     public String resolveLinkData(List<Assignation> assignations, String LinkExpression, ITemplateContext context) {
         try {
             if(!StringUtils.isEmpty(LinkExpression)) {
-                IExpressionObjects expressContent = context.getExpressionObjects();
-                HttpServletRequest request = (HttpServletRequest) expressContent.getObject("request");
                 WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
-                Site site = (Site) VariableExpression.getVariable(context, "site");
-                RouteResolverService routResolverService = (RouteResolverService) applicationContext.getBean("routResolverService");
-                Route routeRule = routResolverService.getRoute(site, PatternMatchUtil.getUrl(request));//获得路由规则
-                if (routeRule != null) {
-                    Integer articleId = PatternMatchUtil.getUrlId(PatternMatchUtil.getUrl(request), routeRule.getRule());//获得文章Id对象
-                    if (articleId != null) {
-                        ArticleServiceImpl articleService = (ArticleServiceImpl) applicationContext.getBean("articleServiceImpl");
-                        Article article = articleService.findById(Long.valueOf(articleId));
-                        for (Assignation assignation : assignations) {
-                            String left = "{"+assignation.getLeft().toString()+"}";
-                            String right = assignation.getRight().toString();
+                ArticleResolveService articleResolveService=(ArticleResolveService)applicationContext.getBean("articleResolveService");
+                Article article=articleResolveService.getArticleByContent(context);
+                if(article!=null){
+                    for (Assignation assignation : assignations) {
+                        String left = "{"+assignation.getLeft().toString()+"}";
+                        String right = assignation.getRight().toString();
 
-                            String attributeName = PatternMatchUtil.getMatchVal(right, regexp);
-                            attributeName = StringUtil.toUpperCase(attributeName);
-                            Object object = article.getClass().getMethod("get" + attributeName).invoke(article);
-
-                            LinkExpression=LinkExpression.replace(left,object.toString());
-                        }
+                        String attributeName = PatternMatchUtil.getMatchVal(right, regexp);
+                        attributeName = StringUtil.toUpperCase(attributeName);
+                        Object object = article.getClass().getMethod("get" + attributeName).invoke(article);
+                        LinkExpression=LinkExpression.replace(left,object.toString());
                     }
                 }
             }

@@ -2,7 +2,7 @@
  * Created by Administrator on 2015/12/23.
  */
 define(function (require, exports, module) {
-    $("#addNoticeForm").validate({
+    $("#addLinkForm").validate({
         //rules: {
         //    txtModelName:{
         //        required: true,
@@ -36,12 +36,14 @@ define(function (require, exports, module) {
             commonUtil.setDisabled("jq-cms-Save");
             var customerId =commonUtil.getQuery("customerId");
             $.ajax({
-                url: "/notice/saveNotice",
+                url: "/link/saveLink",
                 data: {
-                    id:$("#hidNoticeID").val(),
+                    id:$("#hidLinkID").val(),
                     title:$("#title").val(),
                     customerId:customerId,
-                    content: $("#content").val(),
+                    linkUrl: $("#linkUrl").val(),
+                    thumbUri: $("#thumbUri").val(),
+                    description: $("#description").val(),
                     categoryId: $("#categoryId").val(),
                     orderWeight: $("#orderWeight").val()
                 },
@@ -57,7 +59,10 @@ define(function (require, exports, module) {
                             var layer=require("layer");
                             layer.msg("操作成功",{time: 2000});
                             $("#title").val("");
-                            $("#content").val("");
+                            $("#linkUrl").val("");
+                            $("#thumbUri").val("");
+                            $("#uploadThumbUri").attr("src","");
+                            $("#description").val("");
                             $("#categoryId").val("-1");
                             $("#orderWeight").val("50");
                         }
@@ -76,4 +81,33 @@ define(function (require, exports, module) {
             return true;
         }
     });
+
+
+
 });
+
+function uploadImg (btnFile, showImgId, pathId)
+{
+    layer.msg("正在上传", {time: 2000});
+    $.ajaxFileUpload({
+        url: "/cms/contentsUpload",
+        secureuri: false,//安全协议
+        fileElementId: btnFile,//id
+        dataType: 'json',
+        type: "post",
+        data: null,
+        error: function (data, status, e) {
+
+        },
+        success: function (json) {
+            if (json.result == 1) {
+                $("#" + showImgId).attr("src", json.fileUrl);
+                $("#" + pathId).val(json.fileUri);
+                layer.msg("操作成功", {time: 2000});
+            } else {
+                layer.msg("操作失败", {time: 2000});
+            }
+        }
+    });
+}
+

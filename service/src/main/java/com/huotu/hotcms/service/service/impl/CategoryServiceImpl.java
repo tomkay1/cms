@@ -6,10 +6,15 @@ import com.huotu.hotcms.service.model.thymeleaf.CategoryForeachParam;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
-import java.util.Iterator;
+import javax.persistence.criteria.Predicate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by chendeyu on 2015/12/31.
@@ -40,14 +45,18 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> getCategoryList(CategoryForeachParam foreachParam) {
-        List<Category> categories = categoryRepository.findBySite_SiteIdAndDeletedOrderByOrderWeightDesc(Long.parseLong(foreachParam.getSiteid()), false);
-        for(Iterator<Category> it = categories.iterator();it.hasNext();) {
-            Category category = it.next();
-            if(category.getId().toString().equals(foreachParam.getExcludeid())) {
-                it.remove();
-            }
+        if(!StringUtils.isEmpty(foreachParam.getSpecifyids())) {
+            List<String> ids = Arrays.asList(foreachParam.getSpecifyids().split(","));
+            List<Long> categoryIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
+            Specification<Category> specification = (root, query, cb) -> {
+                List<Predicate> predicates = categoryIds.stream().map(id -> cb.equal(root.get("id").as(Long.class), id)).collect(Collectors.toList());
+                return cb.or(predicates.toArray(new Predicate[predicates.size()]));
+            };
+            return categoryRepository.findAll(specification);
         }
-        return categories;
+        return categoryRepository.findBySite_SiteIdAndDeletedAndIdNotOrderByOrderWeightDesc(Long.parseLong(foreachParam.getSiteid()), false,Long.parseLong(foreachParam.getExcludeid()));
     }
+
+
 
 }

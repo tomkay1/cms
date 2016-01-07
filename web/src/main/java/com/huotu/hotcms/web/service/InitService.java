@@ -102,13 +102,17 @@ public class InitService {
             route.setSite(site);
             routeRepository.save(route);
             Route route1 = new Route();
+            route1.setDescription("新闻");
             route1.setCreateTime(LocalDateTime.now());
             route1.setRule("/news");
+            route1.setTemplate("/newsList.html");
             route1.setSite(site);
             routeRepository.save(route1);
             Route route2 = new Route();
+            route2.setDescription("公告");
             route2.setCreateTime(LocalDateTime.now());
             route2.setRule("/notices");
+            route2.setTemplate("/noticeList.html");
             route2.setSite(site);
             routeRepository.save(route2);
         }

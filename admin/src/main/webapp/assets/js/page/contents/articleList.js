@@ -5,7 +5,7 @@ define(function (require, exports, module) {
     var commonUtil = require("common");
     commonUtil.setDisabled("jq-cms-Save");
     var customerId =commonUtil.getQuery("customerId");
-    var NoticeGrid=$("#js-NoticeList").Grid({
+    var ArticleGrid=$("#js-ArticleList").Grid({
         method: 'POST',//提交方式GET|POST
         form: 'form1',//表单ID
         pageSize: 10,
@@ -17,12 +17,12 @@ define(function (require, exports, module) {
         pageSize: 20,
         pagerCount: 10,
         pageDetail: true,
-        url: '/notice/getNoticeList',//数据来源Url|
+        url: '/article/getArticleList',//数据来源Url|
         rows: [
             {width: '20%', field: 'siteName', title: '所属站点', align: 'center'},
             {width: '20%', field: 'categoryName', title: '所属栏目', align: 'center'},
-            {width: '20%', field: 'title', title: '公告标题', align: 'center'},
-            {width: '20%', field: 'content', title: '公告内容', align: 'center'},
+            {width: '20%', field: 'title', title: '标题', align: 'center'},
+            {width: '20%', field: 'description', title: '描述', align: 'center'},
             {
                 width: '10%', field: 'createTime', title: '创建时间', align: 'center',
                 formatter: function (value, rowData) {
@@ -36,14 +36,14 @@ define(function (require, exports, module) {
             ,
             {width: '10%', field: 'title', title: '操作', align: 'center',
                 formatter: function (value, rowData) {
-                    return "<a href='javascript:' class='js-hot-noticeDelete' data-id='"+rowData.id+"' style='margin-right:10px; color:blue;'>删除</a>" +
-                        "<a href='javascript:' class='js-hot-noticeUpdate' data-id='"+rowData.id+"' style='margin-right:10px; color: blue'>修改</a>"
+                    return "<a href='javascript:' class='js-hot-articleDelete' data-id='"+rowData.id+"' style='margin-right:10px; color:blue;'>删除</a>" +
+                        "<a href='javascript:' class='js-hot-articleUpdate' data-id='"+rowData.id+"' style='margin-right:10px; color: blue'>修改</a>"
                 }
             }
         ]
     },function(){
-        updateNotice();
-        deleteNotice();
+        updateArticle();
+        deleteArticle();
     });
 //TODO:搜索
     $("#jq-cms-search").click(function(){
@@ -52,11 +52,11 @@ define(function (require, exports, module) {
         var customerId =commonUtil.getQuery("customerId");
         var option={
             dataParam:{
-                title:$("#noticeName").val(),
+                title:$("#articleName").val(),
                 customerId:customerId
             }
         };
-        NoticeGrid.Refresh(option);
+        ArticleGrid.Refresh(option);
     })
 
     //TODO:显示所有
@@ -70,26 +70,26 @@ define(function (require, exports, module) {
                 customerId:customerId
             }
         };
-        NoticeGrid.Refresh(option);
+        ArticleGrid.Refresh(option);
     })
 
     //TODO:修改
-    function updateNotice(){
-        var obj=$(".js-hot-noticeUpdate");
+    function updateArticle(){
+        var obj=$(".js-hot-articleUpdate");
         $.each(obj,function(item,dom){
             $(dom).click(function(){//绑定修改事件
                 var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;
                 var commonUtil = require("common");
                 var customerId = commonUtil.getQuery("customerId");
-                window.location.href="http://"+window.location.host+"/"+"notice/updateNotice?id="+id+"&customerId="+customerId;
+                window.location.href="http://"+window.location.host+"/"+"article/updateArticle?id="+id+"&customerId="+customerId;
             })
         })
     }
 
 
     //TODO:删除
-    function deleteNotice(){
-        var obj=$(".js-hot-noticeDelete");
+    function deleteArticle(){
+        var obj=$(".js-hot-articleDelete");
 
         $.each(obj,function(item,dom){
             $(dom).click(function(){//绑定删除事件
@@ -101,7 +101,7 @@ define(function (require, exports, module) {
                     btn: ['确定','取消'] //按钮
                 }, function() {
                     $.ajax({
-                        url: "/notice/deleteNotice",
+                        url: "/article/deleteArticle",
                         data: {
                             id:id,
                             customerId:customerId
@@ -116,7 +116,7 @@ define(function (require, exports, module) {
                                 {
                                     case 200:
                                         layer.msg("删除成功",{time: 2000});
-                                        NoticeGrid.reLoad();
+                                        ArticleGrid.reLoad();
                                         break;
                                     case 202:
                                         layer.msg("对不起,您没有删除权限",{time: 2000});

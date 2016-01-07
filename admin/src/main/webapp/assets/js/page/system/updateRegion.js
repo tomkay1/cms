@@ -3,34 +3,49 @@
  */
 define(function (require, exports, module) {
     $("#updateRegionForm").validate({
-        //rules: {
-        //    txtModelName:{
-        //        required: true,
-        //    },
-        //    txtModelDescription:{
-        //        maxlength:200
-        //    },
-        //    txtModelType: {
-        //        selrequired: "-1"
-        //    },
-        //    txtOrderWeight:{
-        //        digits:true,
-        //    }
-        //},
-        //messages: {
-        //    txtModelName:{
-        //        required:"模型名称为必输项"
-        //    },
-        //    txtModelDescription:{
-        //        maxlength:"模型描述不能超过200个字符"
-        //    },
-        //    txtModelType: {
-        //        selrequired: "请选择模型类型"
-        //    },
-        //    txtOrderWeight:{
-        //        digits:"请输入数字",
-        //    }
-        //},
+        rules: {
+            regionCode:{
+                required: true,
+            },
+            regionName:{
+                required: true,
+            },
+            langName:{
+                required: true,
+            },
+            langCode:{
+                required: true,
+            },
+            txtModelType: {
+                selrequired: "-1"
+            },
+            txtOrderWeight:{
+                digits:true,
+            }
+        },
+        messages: {
+            regionCode:{
+                required:"地区编号必填项"
+            },
+            regionName:{
+                required:"地区名必填项"
+            },
+            langName:{
+                required:"语言名必填项"
+            },
+            langCode:{
+                required:"语言编号必填项"
+            },
+            txtModelDescription:{
+                maxlength:"模型描述不能超过200个字符"
+            },
+            txtModelType: {
+                selrequired: "请选择模型类型"
+            },
+            txtOrderWeight:{
+                digits:"请输入数字",
+            }
+        },
         submitHandler: function (form, ev) {
             var commonUtil = require("common");
             commonUtil.setDisabled("jq-cms-Save");

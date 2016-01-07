@@ -34,11 +34,13 @@ define(function (require, exports, module) {
         submitHandler: function (form, ev) {
             var commonUtil = require("common");
             commonUtil.setDisabled("jq-cms-Save");
+            var customerId =commonUtil.getQuery("customerId");
             $.ajax({
                 url: "/notice/saveNotice",
                 data: {
                     id:$("#hidNoticeID").val(),
                     title:$("#title").val(),
+                    customerId:customerId,
                     content: $("#content").val(),
                     categoryId: $("#categoryId").val(),
                     orderWeight: $("#orderWeight").val()

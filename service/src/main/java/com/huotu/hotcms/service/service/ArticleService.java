@@ -9,11 +9,10 @@
 package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.entity.Article;
-import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.model.ArticleSearcher;
+import com.huotu.hotcms.service.model.ArticleCategory;
 import com.huotu.hotcms.service.model.thymeleaf.ArticleForeachParam;
+import com.huotu.hotcms.service.util.PageData;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -25,6 +24,8 @@ import java.util.List;
  * @since 1.0.0
  */
 public interface ArticleService {
+    PageData<ArticleCategory> getPage(Integer customerId, String title, int page, int pageSize);
+    Boolean saveArticle(Article article);
     Article findById(Long id);
 
     List<Article> getArticleList(ArticleForeachParam articleForeachParam);

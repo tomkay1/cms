@@ -2,7 +2,7 @@
  * Created by Administrator on 2015/12/23.
  */
 define(function (require, exports, module) {
-    $("#addNoticeForm").validate({
+    $("#addArticleForm").validate({
         //rules: {
         //    txtModelName:{
         //        required: true,
@@ -36,12 +36,15 @@ define(function (require, exports, module) {
             commonUtil.setDisabled("jq-cms-Save");
             var customerId =commonUtil.getQuery("customerId");
             $.ajax({
-                url: "/notice/saveNotice",
+                url: "/article/saveArticle",
                 data: {
-                    id:$("#hidNoticeID").val(),
+                    id:$("#hidArticleID").val(),
                     title:$("#title").val(),
                     customerId:customerId,
                     content: $("#content").val(),
+                    description: $("#description").val(),
+                    author: $("#author").val(),
+                    articleSourceId: $("#articleSource").val(),
                     categoryId: $("#categoryId").val(),
                     orderWeight: $("#orderWeight").val()
                 },
@@ -58,6 +61,9 @@ define(function (require, exports, module) {
                             layer.msg("操作成功",{time: 2000});
                             $("#title").val("");
                             $("#content").val("");
+                            $("#description").val("");
+                            $("#author").val("");
+                            $("#articleSource").val("-1");
                             $("#categoryId").val("-1");
                             $("#orderWeight").val("50");
                         }

@@ -3,38 +3,74 @@
  */
 define(function (require, exports, module) {
     $("#updateSiteForm").validate({
-        //rules: {
-        //    txtModelName:{
-        //        required: true,
-        //    },
-        //    txtModelDescription:{
-        //        maxlength:200
-        //    },
-        //    txtModelType: {
-        //        selrequired: "-1"
-        //    },
-        //    txtOrderWeight:{
-        //        digits:true,
-        //    }
-        //},
-        //messages: {
-        //    txtModelName:{
-        //        required:"模型名称为必输项"
-        //    },
-        //    txtModelDescription:{
-        //        maxlength:"模型描述不能超过200个字符"
-        //    },
-        //    txtModelType: {
-        //        selrequired: "请选择模型类型"
-        //    },
-        //    txtOrderWeight:{
-        //        digits:"请输入数字",
-        //    }
-        //},
+        rules: {
+            name:{
+                required: true,
+            },
+            title:{
+                required: true,
+            },
+            description:{
+                maxlength:200
+            },
+            domains:{
+                required: true,
+            },
+            copyright:{
+                required: true,
+            },
+            txtModelDescription:{
+                maxlength:200
+            },
+            regionId: {
+                selrequired: "-1"
+            },
+            txtOrderWeight:{
+                digits:true,
+            }
+        },
+        messages: {
+            name:{
+                required:"名称为必输项"
+            },
+            copyright:{
+                required:"版权信息为必输项"
+            },
+            title:{
+                required:"标题为必输项"
+            },
+            domains:{
+                required:"域名为必输项"
+            },
+            txtModelDescription:{
+                maxlength:"站点描述不能超过200个字符"
+            },
+            regionId: {
+                selrequired: "地区"
+            },
+            txtOrderWeight:{
+                digits:"请输入数字",
+            }
+        },
         submitHandler: function (form, ev) {
             var commonUtil = require("common");
             commonUtil.setDisabled("jq-cms-Save");
             var customerId =commonUtil.getQuery("customerId");
+            var custom= $("#custom_0").val();
+            var customTemplateUrl= $("#customTemplateUrl").val();
+            var f=$("#logoUri").val();
+            if(f==""){
+                layer.msg("请上传图片",{time: 2000});commonUtil.cancelDisabled("jq-cms-Save");
+            }
+            else if(!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(f)) {
+                layer.msg("请上传正确图片",{time: 2000});commonUtil.cancelDisabled("jq-cms-Save");
+            }
+            else{
+            if(custom==1&&(customTemplateUrl==""||customTemplateUrl==null)){
+                layer.msg("请填上根路径",{time: 2000})
+                commonUtil.cancelDisabled("jq-cms-Save");
+            }
+            else{
             $.ajax({
                 url: "/site/saveSite",
                 data: {
@@ -45,6 +81,7 @@ define(function (require, exports, module) {
                     keywords: $("#keywords").val(),
                     copyright: $("#copyright").val(),
                     custom: $("#custom_0").val(),
+                    logoUri: $("#logoUri").val(),
                     customTemplateUrl: $("#customTemplateUrl").val(),
                     domains: $("#domains").val(),
                     regionId: $("#regionId").val(),
@@ -75,7 +112,7 @@ define(function (require, exports, module) {
                 error: function () {
                     commonUtil.cancelDisabled("jq-cms-Save");
                 }
-            });
+            })}};
             return false;
         },
         invalidHandler: function () {
@@ -95,4 +132,28 @@ function changeradio(t){
         document.getElementById("cUrl").style.display="none";
     }
 
+}
+
+function uploadImg (btnFile, showImgId, pathId) {
+    layer.msg("正在上传", {time: 2000});
+    $.ajaxFileUpload({
+        url: "/cms/SiteUpload",
+        secureuri: false,//安全协议
+        fileElementId: btnFile,//id
+        dataType: 'json',
+        type: "post",
+        data: null,
+        error: function (data, status, e) {
+
+        },
+        success: function (json) {
+            if (json.result == 1) {
+                $("#" + showImgId).attr("src", json.fileUrl);
+                $("#" + pathId).val(json.fileUri);
+                layer.msg("操作成功", {time: 2000});
+            } else {
+                layer.msg("操作失败", {time: 2000});
+            }
+        }
+    });
 }

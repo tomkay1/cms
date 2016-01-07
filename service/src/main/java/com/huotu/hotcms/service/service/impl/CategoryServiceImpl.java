@@ -1,9 +1,10 @@
-package com.huotu.hotcms.service.service;
+package com.huotu.hotcms.service.service.impl;
 
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.thymeleaf.CategoryForeachParam;
 import com.huotu.hotcms.service.repository.CategoryRepository;
+import com.huotu.hotcms.service.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,8 +1,8 @@
 /**
- * Created by Administrator on 2015/12/23.
+ * Created by chendeyu on 2015/12/29.
  */
 define(function (require, exports, module) {
-    $("#addNoticeForm").validate({
+    $("#updateArticleForm").validate({
         //rules: {
         //    txtModelName:{
         //        required: true,
@@ -36,12 +36,15 @@ define(function (require, exports, module) {
             commonUtil.setDisabled("jq-cms-Save");
             var customerId =commonUtil.getQuery("customerId");
             $.ajax({
-                url: "/notice/saveNotice",
+                url: "/article/saveArticle",
                 data: {
-                    id:$("#hidNoticeID").val(),
+                    id:$("#hidArticleID").val(),
                     title:$("#title").val(),
                     customerId:customerId,
                     content: $("#content").val(),
+                    description: $("#description").val(),
+                    author: $("#author").val(),
+                    articleSourceId: $("#articleSource").val(),
                     categoryId: $("#categoryId").val(),
                     orderWeight: $("#orderWeight").val()
                 },
@@ -56,10 +59,9 @@ define(function (require, exports, module) {
                         {
                             var layer=require("layer");
                             layer.msg("操作成功",{time: 2000});
-                            $("#title").val("");
-                            $("#content").val("");
-                            $("#categoryId").val("-1");
-                            $("#orderWeight").val("50");
+                            layer.msg("修改成功,2秒后将自动返回列表页面",{time: 2000})
+                            commonUtil.cancelDisabled("jq-cms-Save");
+                            window.location.href="http://"+window.location.host+"/"+"article/articleList?customerid=3447";
                         }
                         if(index==500)
                             layer.msg("操作失败",{time: 2000})

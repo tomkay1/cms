@@ -5,7 +5,8 @@
     <title></title>
     <link  href="/assets/css/admin.content.css"  type="text/css" rel="stylesheet"/>
     <link  href="/assets/css/admin.global.css"  type="text/css" rel="stylesheet"/>
-    <link  href="/assets/libs/layer/skin/layer.css"  type="text/css" rel="stylesheet"/>
+    <link  href="/assets/css/global.css"  type="text/css" rel="stylesheet"/>
+    <link href="/assets/libs/layer/skin/layer.css" rel="stylesheet"/>
     <script src="/assets/seajs/sea.js"></script>
     <script src="/assets/seajs/config.js"></script>
 </head>
@@ -15,7 +16,7 @@
         <span class="icon-sprite icon-list"></span>
         <h3>网站修改</h3>
         <div class="bar">
-            <a class="btn-lit" th:href="@{/site/siteList?customerid={customerid}(customerid=${user.customerId})}">
+            <a class="btn-lit" th:href="@{/site/siteList?customerid={customerid}(customerid=${site.customerId})}">
                 <span>返回网站列表</span></a>
         </div>
     </div>
@@ -53,17 +54,12 @@
                         <tr>
                             <th>站点logo：</th>
                             <td>
-                                <div id="uploadpicCover" style="width: 80px; height: 80px; border: 1px solid #ccc; float: left; background: #efefef; line-height: 80px; text-align: center; color: #ccc;"><img src="#" style="width:80px;height:80px;"></div>
-
-                                <div style="margin-left: 10px; float: left; line-height: 80px;">
-                                    <a id="uploadpic" class="btn-lit jUploader-button" href="#" style="cursor: pointer; position: relative; overflow: hidden; direction: ltr;"><span style="color: #c1b3a9">上传</span>
-                                        <input type="file" onchange="this.blur();" id="jUploader-file1" name="jUploaderFile" style="position: absolute; right: 0px; top: 0px; margin: 0px; opacity: 0; padding: 0px; font-family: Arial; font-size: 118px; vertical-align: baseline; cursor: pointer;"></a>
-                                    <span style="color: #f00">*</span>      必填
-                                    <span style="color: #ccc;">建议大小：300*300</span>
-                                </div>
-                                <!--<input name="txtReplyUrl1" type="hidden" id="txtReplyUrl1" value="/resource/images/wechat/mall_cat_def.png">-->
-                                <!--<img id="img_photo" th:src="${logoUri}" src="images/logo.png" style="width: 100px; height: auto;"/><input name="logoUri" id="logoUri" type="file"/>-->
-
+                                <img id="uploadLogoUri" style="width: 80px; height: 80px; border: 1px solid #ccc; float: left; background: #efefef; line-height: 80px; text-align: center; color: #ccc;" th:src="${logo_uri}"/>
+                                <a id="uploadpic" class="btn-lit jUploader-button"  style="cursor: pointer; position: relative; overflow: hidden; direction: ltr;"><span style="color: #c1b3a9" onclick="javascript:$('#btnFile').click();">上传</span></a>
+                                <input onchange="uploadImg('btnFile','uploadLogoUri','logoUri')"
+                                       id="btnFile" name="btnFile"
+                                       style="display:none;" type="file"/>
+                            <td><input type="hidden" id="logoUri" name="logoUri" th:value="${site.logoUri}"/></td>
                             </td>
                         </tr>
                         <tr>
@@ -78,7 +74,7 @@
                                 <table id="custom">
                                     <tbody>
                                     <tr>
-                                        <td><input id="custom_0" type="radio" name="custom" value="1" th:checked="${site.custom==true?true:false}" onclick="javascript:changeradio(1)"><label for="custom_0">是</label></td>
+                                        <td><input id="custom_0" type="radio" name="custom" th:value="${site.custom==true?1:0}" th:checked="${site.custom==true?true:false}" onclick="javascript:changeradio(1)"><label for="custom_0">是</label></td>
                                         <td><input id="custom_1" type="radio" name="custom" value="0" th:checked="${site.custom==false?true:false}" onclick="javascript:changeradio(2)"><label for="custom_1">否</label></td>
                                     </tr>
                                     </tbody></table>
@@ -117,6 +113,6 @@
     </form>
 </div>
 
-<script>seajs.use(["updateSite","layer","validate","message"]);</script>
+<script>seajs.use(["updateSite","layer","validate","message","ajaxfileupload"]);</script>
 </body>
 </html>

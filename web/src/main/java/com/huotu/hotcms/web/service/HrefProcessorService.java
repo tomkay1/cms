@@ -2,6 +2,7 @@ package com.huotu.hotcms.web.service;
 
 import com.huotu.hotcms.web.common.DialectTypeEnum;
 import com.huotu.hotcms.web.service.factory.ArticleCurrentProcessorFactory;
+import com.huotu.hotcms.web.service.factory.ArticleHrefProcessorFactory;
 import com.huotu.hotcms.web.service.factory.SiteCurrentProcessorFactory;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.standard.expression.Assignation;
@@ -14,7 +15,7 @@ import java.util.List;
 public class HrefProcessorService extends BaseProcessorService{
     public String resolveLinkData(List<Assignation> assignation,String LinkExpression, ITemplateContext context){
         if(dialectPrefix.equals(DialectTypeEnum.ARTICLE.getDialectPrefix())) {
-            return null;
+            return new ArticleHrefProcessorFactory().resolveLinkData(assignation,LinkExpression,context);
         }
         if(dialectPrefix.equals(DialectTypeEnum.SITE.getDialectPrefix())) {
             return null;

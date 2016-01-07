@@ -60,9 +60,9 @@ public class HrefProcessor  extends AbstractStandardExpressionAttributeTagProces
             List<Assignation> list= assignations.getAssignations();
             String linkExpression=((LinkExpression) expression).getBase().toString();//获得链接Template
             newAttributeValue=this.hrefProcessorService.resolveLinkData(list,linkExpression,context);
-        } else {
-            expressionResult = null;
         }
+        newAttributeValue=HtmlEscape.escapeHtml4Xml(newAttributeValue == null ? "" : newAttributeValue.toString());;
+
 
         // Let RequestDataValueProcessor modify the attribute value if needed
         newAttributeValue = RequestDataValueProcessorUtils.processUrl(context, newAttributeValue);

@@ -10,9 +10,11 @@ package com.huotu.hotcms.web.service.factory;
 
 import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.model.thymeleaf.ArticleForeachParam;
+import com.huotu.hotcms.service.service.ArticleService;
 import com.huotu.hotcms.web.thymeleaf.expression.DialectAttributeFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.util.StringUtils;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 import org.thymeleaf.context.ITemplateContext;
@@ -47,7 +49,11 @@ public class ArticleForeachProcessorFactory {
         try {
             WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
             ArticleForeachParam articleForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag, ArticleForeachParam.class);
+            if(StringUtils.isEmpty(articleForeachParam.getCategoryid())) {
 
+            }
+            ArticleService articleService = (ArticleService)applicationContext.getBean("articleServiceImpl");
+            articles = articleService.getArticleList(articleForeachParam);
         }catch (Exception e) {
             log.error(e.getMessage());
         }

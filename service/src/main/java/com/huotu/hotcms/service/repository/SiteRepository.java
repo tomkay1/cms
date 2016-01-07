@@ -17,4 +17,6 @@ public interface SiteRepository  extends JpaRepository<Site, Long>,JpaSpecificat
     Set<Site> findByCustomerIdAndDeleted(int customerId,Boolean deleted);
 
     Site findBySiteIdAndCustomerId(Long siteId,int customerId);
+
+    Site findByTitle(String title);
 }

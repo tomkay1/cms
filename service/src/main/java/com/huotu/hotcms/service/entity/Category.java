@@ -67,7 +67,7 @@ public class Category extends BaseEntity {
      * 对应的requestUrl
      */
     @OneToOne
-    @JoinColumn(name = "routeRuleId")
+    @JoinColumn(name = "routeId")
     private RouteRule routeRule;
 
 }

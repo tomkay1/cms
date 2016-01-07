@@ -8,9 +8,9 @@
 
 package com.huotu.hotcms.web.service;
 
-import com.huotu.hotcms.service.entity.Host;
-import com.huotu.hotcms.service.entity.Region;
-import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.common.ModelType;
+import com.huotu.hotcms.service.entity.*;
+import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.HostRepository;
 import com.huotu.hotcms.service.repository.RegionRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
@@ -32,6 +32,8 @@ public class InitService {
     @Autowired
     private HostRepository hostRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
     @Autowired
     private SiteRepository siteRepository;
 
@@ -77,6 +79,7 @@ public class InitService {
             site.setCreateTime(LocalDateTime.now());
             site.addHost(host);
             site.addHost(host1);
+            site.setCustomTemplateUrl("http://www.test.com");
             siteRepository.save(site);
             Site s = new Site();
             s.setCustomerId(3447);
@@ -88,6 +91,32 @@ public class InitService {
             s = siteRepository.save(s);
             s.addHost(hostRepository.findByDomain("cms.51flashmall.com"));
             siteRepository.save(s);
+        }
+        if(categoryRepository.count() == 0) {
+            Category category = new Category();
+            category.setCreateTime(LocalDateTime.now());
+            category.setName("首页");
+            category.setCustomerId(3447);
+            category.setOrderWeight(100);
+            Site site = siteRepository.findByTitle("火图科技");
+            category.setSite(site);
+            RouteRule routeRule = new RouteRule();
+            routeRule.setCreateTime(LocalDateTime.now());
+            routeRule.setSite(site);
+            routeRule.setRule("/");
+            routeRule.setTemplate("/index.html");
+            category.setRouteRule(routeRule);
+
+            Category category1 = new Category();
+            category1.setCreateTime(LocalDateTime.now());
+            category1.setName("新闻");
+            category1.setCustomerId(3447);
+            category1.setOrderWeight(90);
+            category1.setSite(site);
+            RouteRule routeRule1 = new RouteRule();
+            routeRule1.setCreateTime(LocalDateTime.now());
+            routeRule1.setSite(site);
+            routeRule1.setRule("/news");
         }
     }
 }

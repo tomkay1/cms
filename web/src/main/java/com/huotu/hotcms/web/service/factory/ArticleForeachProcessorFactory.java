@@ -11,6 +11,8 @@ package com.huotu.hotcms.web.service.factory;
 import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.model.thymeleaf.ArticleForeachParam;
 import com.huotu.hotcms.web.thymeleaf.expression.DialectAttributeFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 import org.thymeleaf.context.ITemplateContext;
@@ -26,6 +28,8 @@ import java.util.List;
  */
 public class ArticleForeachProcessorFactory {
 
+    private static Log log = LogFactory.getLog(ArticleForeachProcessorFactory.class);
+
     private static ArticleForeachProcessorFactory instance;
 
     private ArticleForeachProcessorFactory() {
@@ -39,20 +43,14 @@ public class ArticleForeachProcessorFactory {
     }
 
     public Object process(IProcessableElementTag elementTag,ITemplateContext context) {
-        IExpressionObjects expressContent= context.getExpressionObjects();
-        HttpServletRequest request=(HttpServletRequest)expressContent.getObject("request");
-        ArticleForeachParam articleForeachParam = null;
-        try {
-            articleForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag,ArticleForeachParam.class);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
         List<Article> articles = new ArrayList<>();
-//            HostService hostService = (HostService)applicationContext.getBean("hostServiceImpl");
-//            Host host = hostService.getHost(request.getServerName());
-//            Set<Site> sites = host.getSites();
+        try {
+            WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
+            ArticleForeachParam articleForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag, ArticleForeachParam.class);
+
+        }catch (Exception e) {
+            log.error(e.getMessage());
+        }
         return articles;
     }
 }

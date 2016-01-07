@@ -30,6 +30,7 @@ public class Category extends BaseEntity {
     @Column(name = "name")
     private String name;
 
+
     /**
      * 父级栏目
      */
@@ -61,5 +62,12 @@ public class Category extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "siteId")
     private Site site;
+
+    /**
+     * 对应的requestUrl
+     */
+    @OneToOne
+    @JoinColumn(name = "routeRuleId")
+    private RouteRule routeRule;
 
 }

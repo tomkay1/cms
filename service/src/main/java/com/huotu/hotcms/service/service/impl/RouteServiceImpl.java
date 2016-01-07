@@ -23,7 +23,7 @@ public class RouteServiceImpl  implements RouteService {
     private RouteRepository routeRepository;
 
     @Override
-    public Set<Route> getRout(Site site) {
+    public Set<Route> getRoute(Site site) {
         return routeRepository.findBySite(site);
     }
 }

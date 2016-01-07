@@ -14,5 +14,5 @@ import java.util.Set;
  * @since 1.0.0
  */
 public interface RouteService {
-    Set<Route> getRout(Site site);
+    Set<Route> getRoute(Site site);
 }

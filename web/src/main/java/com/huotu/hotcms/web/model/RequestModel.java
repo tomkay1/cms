@@ -19,7 +19,7 @@ public class RequestModel{
 
     public String get(String param) {
         if (request != null) {
-            return request.getParameter(param.toString());
+            return request.getParameter(param);
         }
         return null;
     }

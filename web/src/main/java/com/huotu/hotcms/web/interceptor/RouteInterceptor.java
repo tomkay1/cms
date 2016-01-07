@@ -62,13 +62,13 @@ public class RouteInterceptor  extends HandlerInterceptorAdapter {
 
     private ModelAndView getModelAndView(ModelAndView modelAndView,Site site,Route route,HttpServletRequest request){
         if(route.getRouteType()!=null) {
-            if (route.getRouteType().getCode() == RouteType.ARTICLEDETILE.getCode()) {
+            if (route.getRouteType().getCode().equals(RouteType.ARTICLEDETILE.getCode())) {
                 Article article = articleResolveService.getArticleBySiteAndRequest(site, request);
                 if (article != null) {
                     modelAndView.addObject("article", article);
                     modelAndView.setViewName(site.getCustomTemplateUrl() + route.getTemplate());
                 } else {
-                    modelAndView.setViewName(site.getCustomTemplateUrl() + route.getTemplate());//设置404页面模版
+                    modelAndView.setViewName(routeResolverService.getRouteTemplate(site,RouteType.NOT_FOUND));
                 }
             } else {
                 modelAndView.setViewName(site.getCustomTemplateUrl() + route.getTemplate());

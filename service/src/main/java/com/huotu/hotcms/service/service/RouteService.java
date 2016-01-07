@@ -1,5 +1,6 @@
 package com.huotu.hotcms.service.service;
 
+import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 
@@ -15,4 +16,6 @@ import java.util.Set;
  */
 public interface RouteService {
     Set<Route> getRoute(Site site);
+
+    Route getRouteByRouteType(Site site,RouteType routeType);
 }

@@ -1,5 +1,6 @@
 package com.huotu.hotcms.service.service.impl;
 
+import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.repository.RouteRepository;
@@ -25,5 +26,10 @@ public class RouteServiceImpl  implements RouteService {
     @Override
     public Set<Route> getRoute(Site site) {
         return routeRepository.findBySite(site);
+    }
+
+    @Override
+    public Route getRouteByRouteType(Site site, RouteType routeType){
+        return routeRepository.findBySiteAndRouteType(site,routeType);
     }
 }

@@ -92,8 +92,27 @@ public class InitService {
             s.addHost(hostRepository.findByDomain("cms.51flashmall.com"));
             siteRepository.save(s);
         }
+        Site site = siteRepository.findByTitle("火图科技");
+        if(routeRepository.count()==0) {
+            Route route = new Route();
+            route.setDescription("首页");
+            route.setCreateTime(LocalDateTime.now());
+            route.setRule("/");
+            route.setTemplate("/index.html");
+            route.setSite(site);
+            routeRepository.save(route);
+            Route route1 = new Route();
+            route1.setCreateTime(LocalDateTime.now());
+            route1.setRule("/news");
+            route1.setSite(site);
+            routeRepository.save(route1);
+            Route route2 = new Route();
+            route2.setCreateTime(LocalDateTime.now());
+            route2.setRule("/notices");
+            route2.setSite(site);
+            routeRepository.save(route2);
+        }
         if(categoryRepository.count() == 0) {
-            Site site = siteRepository.findByTitle("火图科技");
             Category category = new Category();
             category.setCreateTime(LocalDateTime.now());
             category.setName("首页");
@@ -109,15 +128,14 @@ public class InitService {
             category1.setOrderWeight(90);
             category1.setSite(site);
             categoryRepository.save(category1);
-        }
-        if(routeRepository.count()==0) {
-            Route route = new Route();
-            route.setCreateTime(LocalDateTime.now());
-            route.setRule("/");
-            route.setTemplate("/index.html");
-            Route route1 = new Route();
-            route1.setCreateTime(LocalDateTime.now());
-            route1.setRule("/news");
+
+            Category category2 = new Category();
+            category2.setCreateTime(LocalDateTime.now());
+            category2.setName("公告");
+            category2.setCustomerId(3447);
+            category2.setOrderWeight(90);
+            category2.setSite(site);
+            categoryRepository.save(category2);
         }
     }
 }

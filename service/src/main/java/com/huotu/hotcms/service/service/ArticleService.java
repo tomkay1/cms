@@ -9,9 +9,11 @@
 package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.entity.Article;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.ArticleSearcher;
 import com.huotu.hotcms.service.model.thymeleaf.ArticleForeachParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -26,4 +28,5 @@ public interface ArticleService {
     Article findById(Long id);
 
     List<Article> getArticleList(ArticleForeachParam articleForeachParam);
+
 }

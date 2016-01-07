@@ -5,6 +5,8 @@ import com.huotu.hotcms.web.service.BaseProcessorService;
 import com.huotu.hotcms.web.thymeleaf.expression.VariableExpression;
 import com.huotu.hotcms.web.util.PatternMatchUtil;
 import com.huotu.hotcms.web.util.StringUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 import org.thymeleaf.context.ITemplateContext;
@@ -18,6 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 public class SiteCurrentProcessorFactory  extends BaseProcessorService {
     private static final String regexp="\\$\\{([^\\}]+)}";//匹配${key}模式的正则表达式
 
+    private static final Log log = LogFactory.getLog(CategoryForeachProcessorFactory.class);
+
     @Override
     public Object resolveDataByAttr(String attributeValue, ITemplateContext context){
         IExpressionObjects expressContent= context.getExpressionObjects();
@@ -30,9 +34,8 @@ public class SiteCurrentProcessorFactory  extends BaseProcessorService {
             Object object = site.getClass().getMethod("get"+attributeName).invoke(site);
             return object;
         }
-        catch (Exception ex)
-        {
-            //写错误日志操作
+        catch (Exception ex){
+            log.error(ex.getMessage());
         }
         return null;
     }

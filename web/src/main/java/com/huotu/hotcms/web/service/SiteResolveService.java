@@ -5,7 +5,6 @@ import com.huotu.hotcms.service.entity.Region;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.service.HostService;
 import com.huotu.hotcms.service.service.RegionService;
-import com.huotu.hotcms.web.util.PatternMatchUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;

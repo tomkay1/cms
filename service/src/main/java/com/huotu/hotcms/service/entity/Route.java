@@ -1,5 +1,6 @@
 package com.huotu.hotcms.service.entity;
 
+import com.huotu.hotcms.service.common.RouteType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,12 +11,10 @@ import javax.persistence.*;
  * Created by xhl on 2015/12/21.
  */
 @Entity
-@Table(name = "cms_routeRule")
+@Table(name = "cms_route")
 @Setter
 @Getter
-public class RouteRule extends BaseEntity {
-
-
+public class Route extends BaseEntity {
     /**
      * 路由规则,标准正则表达式
      */
@@ -34,4 +33,13 @@ public class RouteRule extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "siteId")
     private Site site;
+
+    /**
+     * 路由描述信息
+     * */
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "routeType")
+    private RouteType routeType;
 }

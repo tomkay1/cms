@@ -14,6 +14,7 @@ import com.huotu.hotcms.service.model.thymeleaf.CategoryForeachParam;
 import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.web.service.SiteResolveService;
 import com.huotu.hotcms.web.thymeleaf.expression.DialectAttributeFactory;
+import com.huotu.hotcms.web.thymeleaf.expression.VariableExpression;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.util.StringUtils;
@@ -22,6 +23,8 @@ import org.springframework.web.context.WebApplicationContext;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.expression.IExpressionObjects;
 import org.thymeleaf.model.IProcessableElementTag;
+import org.thymeleaf.spring4.expression.SPELVariableExpressionEvaluator;
+import org.thymeleaf.standard.expression.StandardExpressionExecutionContext;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -49,13 +52,10 @@ public class CategoryForeachProcessorFactory {
     public Object process(IProcessableElementTag elementTag, ITemplateContext context) {
         List<Category> categoryList = new ArrayList<>();
         try {
-            IExpressionObjects expressContent= context.getExpressionObjects();
-            HttpServletRequest request = (HttpServletRequest)expressContent.getObject("request");
             WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
             CategoryForeachParam categoryForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag, CategoryForeachParam.class);
             if(StringUtils.isEmpty(categoryForeachParam.getSiteId())) {
-                SiteResolveService siteResolveService = (SiteResolveService)applicationContext.getBean("siteResolveService");
-                Site site = siteResolveService.getCurrentSite(request);
+                Site site = (Site) VariableExpression.getVariable(context,"site");
                 categoryForeachParam.setSiteId(site.getSiteId().toString());
             }
             CategoryService categoryService = (CategoryService)applicationContext.getBean("categoryServiceImpl");

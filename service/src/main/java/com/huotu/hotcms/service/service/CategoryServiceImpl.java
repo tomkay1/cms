@@ -5,11 +5,13 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.thymeleaf.CategoryForeachParam;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.criteria.Predicate;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,10 +45,13 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> getCategoryList(CategoryForeachParam foreachParam) {
         if(!StringUtils.isEmpty(foreachParam.getSpecifyids())) {
-            String[] specifyIds = StringUtils.split(foreachParam.getSpecifyids(), ",");
-            List<String> ids = Arrays.asList(specifyIds);
-            Collection<Long> categoryIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
-            return categoryRepository.findByIdInAndDeletedOrderByOrderWeightDesc(categoryIds, false);
+            List<String> ids = Arrays.asList(foreachParam.getSpecifyids().split(","));
+            List<Long> categoryIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
+            Specification<Category> specification = (root, query, cb) -> {
+                List<Predicate> predicates = categoryIds.stream().map(id -> cb.equal(root.get("id").as(Long.class), id)).collect(Collectors.toList());
+                return cb.or(predicates.toArray(new Predicate[predicates.size()]));
+            };
+            return categoryRepository.findAll(specification);
         }
         return categoryRepository.findBySite_SiteIdAndDeletedAndIdNotOrderByOrderWeightDesc(Long.parseLong(foreachParam.getSiteid()), false,Long.parseLong(foreachParam.getExcludeid()));
     }

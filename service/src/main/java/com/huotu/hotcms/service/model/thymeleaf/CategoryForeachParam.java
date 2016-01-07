@@ -29,7 +29,7 @@ public class CategoryForeachParam {
     private String excludeid;
 
     /**
-     * 指定获取的栏目ids
+     * 指定获取的栏目ID(逗号分隔)
      */
     private String specifyids;
 

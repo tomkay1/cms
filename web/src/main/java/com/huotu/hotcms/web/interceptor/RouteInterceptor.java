@@ -48,15 +48,16 @@ public class RouteInterceptor  extends HandlerInterceptorAdapter {
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         String servletPath=request.getServletPath();
         Site site=siteResolveService.getCurrentSite(request);
-        Route route=null;
         if(site!=null){
-            route=routeResolverService.getRoute(site,servletPath);
+            Route route = routeResolverService.getRoute(site,servletPath);
             if(modelAndView==null){
                 modelAndView=new ModelAndView();
             }
             if(route!=null){
                modelAndView=getModelAndView(modelAndView,site,route,request);
             }
+        }else {
+            throw new Exception("域名解析失败");
         }
     }
 
@@ -66,15 +67,15 @@ public class RouteInterceptor  extends HandlerInterceptorAdapter {
                 Article article = articleResolveService.getArticleBySiteAndRequest(site, request);
                 if (article != null) {
                     modelAndView.addObject("article", article);
-                    modelAndView.setViewName(site.getCustomTemplateUrl() + route.getTemplate());
+                    modelAndView.setViewName(site.isCustom()?site.getCustomTemplateUrl():"" + route.getTemplate());
                 } else {
                     modelAndView.setViewName(routeResolverService.getRouteTemplate(site,RouteType.NOT_FOUND));
                 }
             } else {
-                modelAndView.setViewName(site.getCustomTemplateUrl() + route.getTemplate());
+                modelAndView.setViewName(site.isCustom()?site.getCustomTemplateUrl():"" + route.getTemplate());
             }
         }else{
-            modelAndView.setViewName(site.getCustomTemplateUrl() + route.getTemplate());
+            modelAndView.setViewName(site.isCustom()?site.getCustomTemplateUrl():"" + route.getTemplate());
         }
         modelAndView.addObject("site",site);
         modelAndView.addObject("request", requestService.ConvertRequestModel(request));

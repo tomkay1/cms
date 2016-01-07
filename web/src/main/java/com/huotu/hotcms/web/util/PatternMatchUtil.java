@@ -32,16 +32,15 @@ public class PatternMatchUtil {
     /**
      * 获得请求的Url
      *
-     * @param webrequest
      * @return
      * */
-    public static String getUrl(HttpServletRequest request)
-    {
-        if(request.getQueryString()!=null)
-        {
-            return request.getRequestURI()+"?"+request.getQueryString();
+    public static String getUrl(HttpServletRequest request) {
+        String queryString = request.getQueryString();
+        String servletPath = request.getServletPath();
+        if(queryString!=null) {
+            return servletPath+"?"+queryString;
         }
-        return request.getRequestURI();
+        return servletPath;
     }
 
     /**
@@ -55,10 +54,8 @@ public class PatternMatchUtil {
     {
         Pattern pattern = Pattern.compile(regexp);
         Matcher match = pattern.matcher(url);
-        if(match.matches())
-        {
-            if(match.groupCount()>=1)
-            {
+        if(match.matches()) {
+            if(match.groupCount()>=1) {
                 return Integer.parseInt(match.group(1));
             }
         }

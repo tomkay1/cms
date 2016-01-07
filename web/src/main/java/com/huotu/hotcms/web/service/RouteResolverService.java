@@ -31,17 +31,15 @@ public class RouteResolverService {
      * @return
      * */
     public Route getRoute(Site site,String url) {
-        Route routRuled=null;
-        Set<Route> ruleds =routeService.getRoute(site);
-        for(Route s : ruleds) {
+        Set<Route> routes =routeService.getRoute(site);
+        for(Route s : routes) {
             if(s.getRule()!=null) {
-                if (PatternMatchUtil.match(url, s.getRule().toString())) {
-                    routRuled = s;
-                    return routRuled;
+                if(url.matches(s.getRule())) {
+                    return s;
                 }
             }
         }
-        return routRuled;
+        return null;
     }
 
     /**
@@ -58,7 +56,7 @@ public class RouteResolverService {
     /**
      * 根据站点和路由类型获得错误页面路由模版
      *
-     * @param Site
+     * @param site
      * @param routeType
      * @return
      * */

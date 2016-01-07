@@ -24,9 +24,9 @@ public class CategoryForeachParam {
     private String siteid;
 
     /**
-     * 获取列表时排除的主键Id
+     * 获取列表时排除的主键Id(可排除多个，逗号分隔)
      */
-    private String excludeid;
+    private String excludeid;//TODO 上线前重命名为excludeids
 
     /**
      * 指定获取的栏目ID(逗号分隔)

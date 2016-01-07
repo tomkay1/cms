@@ -20,19 +20,8 @@ public class CurrentProcessorService extends BaseProcessorService {
         if(dialectPrefix.equals(DialectTypeEnum.CATEGORY.getDialectPrefix())) {
             return new SiteCurrentProcessorFactory().resolveDataByAttr(attributeValue, context);
         }
-        if(dialectPrefix.equals(DialectTypeEnum.DOWNLOAD.getDialectPrefix()))
-        {
-            return null;
-        }
-        if(dialectPrefix.equals(DialectTypeEnum.GALLERY.getDialectPrefix()))
-        {
-            return null;
-        }
+
         if(dialectPrefix.equals(DialectTypeEnum.LINK.getDialectPrefix()))
-        {
-            return null;
-        }
-        if(dialectPrefix.equals(DialectTypeEnum.NOTICE.getDialectPrefix()))
         {
             return null;
         }

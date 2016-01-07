@@ -56,14 +56,15 @@ public class ArticleResolveService {
     /**
      * 根据站点和Request获得文章对象
      *
-     * @param Site
-     * @param webrequest
+     * @param site
+     * @param request
      * @return
      * */
     public Article getArticleBySiteAndRequest(Site site,HttpServletRequest request){
-        Route routeRule=routeResolverService.getRoute(site, PatternMatchUtil.getUrl(request));
-        if(routeRule!=null){
-            Integer articleId=PatternMatchUtil.getUrlId(PatternMatchUtil.getUrl(request),routeRule.getRule());
+        String requestUrl = PatternMatchUtil.getUrl(request);
+        Route route=routeResolverService.getRoute(site, requestUrl);
+        if(route!=null){
+            Integer articleId=PatternMatchUtil.getUrlId(requestUrl, route.getRule());
             if(articleId!=null) {
                 Article article = articleService.findById(Long.valueOf(articleId));
                 return article;

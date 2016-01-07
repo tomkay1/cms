@@ -17,28 +17,16 @@ public class HrefProcessorService extends BaseProcessorService{
         if(dialectPrefix.equals(DialectTypeEnum.ARTICLE.getDialectPrefix())) {
             return new ArticleHrefProcessorFactory().resolveLinkData(assignation,LinkExpression,context);
         }
-        if(dialectPrefix.equals(DialectTypeEnum.SITE.getDialectPrefix())) {
-            return null;
-        }
+
         if(dialectPrefix.equals(DialectTypeEnum.CATEGORY.getDialectPrefix())) {
             return null;
         }
-        if(dialectPrefix.equals(DialectTypeEnum.DOWNLOAD.getDialectPrefix()))
-        {
-            return null;
-        }
-        if(dialectPrefix.equals(DialectTypeEnum.GALLERY.getDialectPrefix()))
-        {
-            return null;
-        }
+
         if(dialectPrefix.equals(DialectTypeEnum.LINK.getDialectPrefix()))
         {
             return null;
         }
-        if(dialectPrefix.equals(DialectTypeEnum.NOTICE.getDialectPrefix()))
-        {
-            return null;
-        }
+
         return null;
     }
 }

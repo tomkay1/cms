@@ -10,7 +10,7 @@ package com.huotu.hotcms.web.config;
 
 import com.huotu.hotcms.service.config.JpaConfig;
 import com.huotu.hotcms.service.config.ServiceConfig;
-import com.huotu.hotcms.web.interceptor.RoutInterceptor;
+import com.huotu.hotcms.web.interceptor.RouteInterceptor;
 import com.huotu.hotcms.web.interceptor.SiteResolver;
 import com.huotu.hotcms.web.util.CMSDialect;
 import com.huotu.hotcms.web.util.ArrayUtil;
@@ -54,7 +54,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
     private SiteResolver siteResolver;
 
     @Autowired
-    private RoutInterceptor routInterceptor;
+    private RouteInterceptor routeInterceptor;
 
 
     /**
@@ -83,7 +83,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(routInterceptor);
+        registry.addInterceptor(routeInterceptor);
         super.addInterceptors(registry);
     }
 

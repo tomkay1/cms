@@ -3,7 +3,7 @@ package com.huotu.hotcms.web.interceptor;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.web.service.RequestService;
-import com.huotu.hotcms.web.service.RoutResolverService;
+import com.huotu.hotcms.web.service.RouteResolverService;
 import com.huotu.hotcms.web.service.SiteResolveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,13 +22,13 @@ import javax.servlet.http.HttpServletResponse;
  * @since 1.0.0
  */
 @Component
-public class RoutInterceptor extends HandlerInterceptorAdapter {
+public class RouteInterceptor  extends HandlerInterceptorAdapter {
 
     @Autowired
     private SiteResolveService siteResolveService;
 
     @Autowired
-    private RoutResolverService routResolverService;
+    private RouteResolverService routeResolverService;
 
     @Autowired
     private RequestService requestService;
@@ -44,7 +44,7 @@ public class RoutInterceptor extends HandlerInterceptorAdapter {
         Site site=siteResolveService.getCurrentSite(request);
         Route ruled=null;
         if(site!=null){
-            ruled=routResolverService.getRout(site,servletPath);
+            ruled=routeResolverService.getRoute(site,servletPath);
             if(modelAndView==null){
                 modelAndView=new ModelAndView();
             }

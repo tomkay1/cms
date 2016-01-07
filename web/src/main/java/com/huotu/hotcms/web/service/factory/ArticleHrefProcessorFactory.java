@@ -5,7 +5,7 @@ import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.service.impl.ArticleServiceImpl;
 import com.huotu.hotcms.web.service.BaseProcessorService;
-import com.huotu.hotcms.web.service.RoutResolverService;
+import com.huotu.hotcms.web.service.RouteResolverService;
 import com.huotu.hotcms.web.thymeleaf.expression.VariableExpression;
 import com.huotu.hotcms.web.util.PatternMatchUtil;
 import com.huotu.hotcms.web.util.StringUtil;
@@ -37,8 +37,8 @@ public class ArticleHrefProcessorFactory extends BaseProcessorService {
                 HttpServletRequest request = (HttpServletRequest) expressContent.getObject("request");
                 WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
                 Site site = (Site) VariableExpression.getVariable(context, "site");
-                RoutResolverService routResolverService = (RoutResolverService) applicationContext.getBean("routResolverService");
-                Route routeRule = routResolverService.getRout(site, PatternMatchUtil.getUrl(request));//获得路由规则
+                RouteResolverService routResolverService = (RouteResolverService) applicationContext.getBean("routResolverService");
+                Route routeRule = routResolverService.getRoute(site, PatternMatchUtil.getUrl(request));//获得路由规则
                 if (routeRule != null) {
                     Integer articleId = PatternMatchUtil.getUrlId(PatternMatchUtil.getUrl(request), routeRule.getRule());//获得文章Id对象
                     if (articleId != null) {

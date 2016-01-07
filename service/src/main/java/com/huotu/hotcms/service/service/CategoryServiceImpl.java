@@ -39,15 +39,14 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> getCategoryList(CategoryForeachParam foreachParam) {
-        List<Category> categories = categoryRepository.findBySite_SiteIdAndDeletedOrderByOrderWeightDesc(Long.parseLong(foreachParam.getSiteId()), false);
-        Iterator<Category> iterator = categories.iterator();
-        while (iterator.hasNext()){
-            if(iterator.next().getId().toString().equals(foreachParam.getExcludeId())) {
-                categories.remove(iterator.next());
+        List<Category> categories = categoryRepository.findBySite_SiteIdAndDeletedOrderByOrderWeightDesc(Long.parseLong(foreachParam.getSiteid()), false);
+        for(Iterator<Category> it = categories.iterator();it.hasNext();) {
+            Category category = it.next();
+            if(category.getId().toString().equals(foreachParam.getExcludeid())) {
+                it.remove();
             }
         }
         return categories;
     }
-
 
 }

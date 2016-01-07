@@ -21,11 +21,11 @@ public class CategoryForeachParam {
     /**
      * 所属站点Id
      */
-    private String siteId;
+    private String siteid;
 
     /**
      * 获取列表时排除的主键Id
      */
-    private String excludeId;
+    private String excludeid;
 
 }

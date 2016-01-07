@@ -114,6 +114,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         resolver.setTemplateEngine(templateEngine(remoteHtmlTemplateResolver()));
         resolver.setContentType("text/html");
         resolver.setCharacterEncoding(UTF8);
+        resolver.setCache(false);
         resolver.setViewNames(ArrayUtil.array("**"));//设置通配目录结构
         return resolver;
     }

@@ -5,7 +5,8 @@
     <title></title>
     <link  href="/assets/css/admin.content.css"  type="text/css" rel="stylesheet"/>
     <link  href="/assets/css/admin.global.css"  type="text/css" rel="stylesheet"/>
-    <link  href="/assets/libs/layer/skin/layer.css"  type="text/css" rel="stylesheet"/>
+    <link  href="/assets/css/global.css"  type="text/css" rel="stylesheet"/>
+    <link href="/assets/libs/layer/skin/layer.css" rel="stylesheet"/>
     <script src="/assets/seajs/sea.js"></script>
     <script src="/assets/seajs/config.js"></script>
 </head>
@@ -42,7 +43,7 @@
                     <tr>
                         <th>站点描述：</th>
                         <td>
-                            <textarea rows="" cols="" style="width: 500px; height: 60px;" class="input-normal" id="description" name="txtModelDescription" ></textarea>
+                            <input name="description"  id="description" type="text" class="input-normal" placeholder="">
                         </td>
                     </tr>
                     <tr>
@@ -54,23 +55,18 @@
                     <tr>
                         <th>站点logo：</th>
                         <td>
-                            <div id="uploadpicCover" style="width: 80px; height: 80px; border: 1px solid #ccc; float: left; background: #efefef; line-height: 80px; text-align: center; color: #ccc;"><img src="#" style="width:80px;height:80px;"></div>
-
-                            <div style="margin-left: 10px; float: left; line-height: 80px;">
-                                <a id="uploadpic" class="btn-lit jUploader-button" href="#" style="cursor: pointer; position: relative; overflow: hidden; direction: ltr;"><span style="color: #c1b3a9">上传</span>
-                                    <input type="file" onchange="this.blur();" id="jUploader-file1" name="jUploaderFile" style="position: absolute; right: 0px; top: 0px; margin: 0px; opacity: 0; padding: 0px; font-family: Arial; font-size: 118px; vertical-align: baseline; cursor: pointer;"></a>
-                                <span style="color: #f00">*</span>      必填
-                                <span style="color: #ccc;">建议大小：300*300</span>
-                            </div>
-                            <!--<input name="txtReplyUrl1" type="hidden" id="txtReplyUrl1" value="/resource/images/wechat/mall_cat_def.png">-->
-                            <!--<img id="img_photo" th:src="${logoUri}" src="images/logo.png" style="width: 100px; height: auto;"/><input name="logoUri" id="logoUri" type="file"/>-->
-
+                            <img id="uploadLogoUri" style="width: 80px; height: 80px; border: 1px solid #ccc; float: left; background: #efefef; line-height: 80px; text-align: center; color: #ccc;" />
+                            <a id="uploadpic" class="btn-lit jUploader-button" style="cursor: pointer; position: relative; overflow: hidden; direction: ltr;"><span style="color: #c1b3a9" onclick="javascript:$('#btnFile').click();">上传</span></a>
+                            <input onchange="uploadImg('btnFile','uploadLogoUri','logoUri')"
+                                   id="btnFile" name="btnFile"
+                                   style="display:none;" type="file"/>
+                        <td><input type="hidden" id="logoUri" name="logoUri"/></td>
                         </td>
                     </tr>
                     <tr>
                         <th>版权信息：</th>
                         <td>
-                            <input name="copyright"  id="copyright" type="text" class="input-normal" placeholder="">
+                            <textarea rows="" cols="" style="width: 500px; height: 60px;" class="input-normal" id="copyright" name="copyright" ></textarea>
                         </td>
                     </tr>
                     <tr>
@@ -118,20 +114,6 @@
     </form>
 </div>
 
-<script>seajs.use(["addSite","layer","validate","message"]);</script>
-<script>
-    function changeradio(t){
-        if(t==1){
-            $("#customTemplateUrl").val("");
-            $("#custom_0").val("1");
-            document.getElementById("cUrl").style.display="";
-        }
-        else{
-            $("#custom_0").val("0");
-            document.getElementById("cUrl").style.display="none";
-        }
-
-    }
-</script>
+<script>seajs.use(["addSite","layer","validate","message","ajaxfileupload"]);</script>
 </body>
 </html>

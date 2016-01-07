@@ -1,5 +1,6 @@
 package com.huotu.hotcms.web.service;
 
+import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.service.RouteService;
@@ -43,9 +44,39 @@ public class RouteResolverService {
         return routRuled;
     }
 
+    /**
+     * 根据站点和路由模型获得路由规则
+     *
+     * @param site
+     * @param routeType
+     * @return
+     * */
+    public Route getRouteByRouteType(Site site,RouteType routeType){
+        return routeService.getRouteByRouteType(site,routeType);
+    }
 
-    public String getRouteTemplate(Route route){
-
-        return null;
+    /**
+     * 根据站点和路由类型获得错误页面路由模版
+     *
+     * @param Site
+     * @param routeType
+     * @return
+     * */
+    public String getRouteTemplate(Site site,RouteType routeType){
+        if(site!=null&&routeType!=null){
+            if(routeType.getCode().equals(RouteType.NOT_FOUND.getCode())){
+                Route route=getRouteByRouteType(site, routeType);
+                if(route!=null){
+                    return site.getCustomTemplateUrl() + route.getTemplate();//404路由模版
+                }
+            }
+            if(routeType.getCode().equals(RouteType.SERVER_ERROR.getCode())){
+                Route route=getRouteByRouteType(site, routeType);
+                if(route!=null){
+                    return site.getCustomTemplateUrl() + route.getTemplate();//服务器错误路由模版
+                }
+            }
+        }
+        return "";//我们系统默认404页面,后期添加这个页面
     }
 }

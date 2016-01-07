@@ -16,7 +16,14 @@ seajs.config({
 		"updateRegion":"js/page/system/updateRegion.js?t=2000",
 		"regionList":"js/page/system/regionList.js",
 		"noticeList":"js/page/contents/noticeList.js",
-		"addNotice":"js/page/contents/addNotice.js",
+		"addNotice":"js/page/contents/addNotice.js?t=11",
+		"updateNotice":"js/page/contents/updateNotice.js?t=11",
+		"articleList":"js/page/contents/articleList.js?t=11",
+		"addArticle":"js/page/contents/addArticle.js?t=11",
+		"updateArticle":"js/page/contents/updateArticle.js?t=11",
+		"linkList":"js/page/contents/linkList.js?t=111",
+		"addLink":"js/page/contents/addLink.js?t=1123",
+		"updateLink":"js/page/contents/updateLink.js?t=1131",
 		"siteList":"js/page/web/siteList.js?t=222",
 		"treegrid": "libs/treegrid/js/jquery.treegrid.js",
 		"addSite":"js/page/web/addSite.js?t=2000",
@@ -24,6 +31,7 @@ seajs.config({
 		"addCategory":"js/page/section/addCategory.js?t=2000",
 		"categoryList":"js/page/section/categoryList.js?t=2000",
 		"updateCategory":"js/page/section/updateCategory.js?t=2000",
+		"ajaxfileupload":"libs/ajaxfileupload.js",
 	},
 	preload: ['jquery']
 });

@@ -60,13 +60,25 @@
                     <ul class="children">
                         <li class="childMenus" style="cursor: pointer;">
                             <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
-                            <a href="javascript:void(0)"><i class="fa fa-caret-right"></i>新增内容<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
+                            <a th:href="@{/contents/contentsList?customerid={customerid}(customerid=${user.customerId})}" target="content" ><i class="fa fa-caret-right"></i>内容列表<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
                                 </span>
                             </a>
                         </li>
                         <li class="childMenus" style="cursor: pointer;">
                             <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
                             <a th:href="@{/notice/noticeList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>公告管理<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
+                                </span>
+                            </a>
+                        </li>
+                        <li class="childMenus" style="cursor: pointer;">
+                            <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
+                            <a th:href="@{/article/articleList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>文章管理<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
+                                </span>
+                            </a>
+                        </li>
+                        <li class="childMenus" style="cursor: pointer;">
+                            <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
+                            <a th:href="@{/link/linkList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>链接管理<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
                                 </span>
                             </a>
                         </li>

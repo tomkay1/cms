@@ -32,4 +32,16 @@ public enum ArticleSource implements CommonEnum {
     public Object getValue() {
         return value;
     }
+
+    public static ArticleSource valueOf(int value)
+    {
+        switch (value){
+            case 0:
+                return REPRINT;
+            case 1:
+                return ORIGINAL;
+            default:
+                return null;
+        }
+    }
 }

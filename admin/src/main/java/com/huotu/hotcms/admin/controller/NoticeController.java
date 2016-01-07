@@ -66,10 +66,10 @@ public class NoticeController {
     /*
   * 修改栏目
   * */
-    @RequestMapping("/updateCategory")
-    public ModelAndView updateCategory(@RequestParam(value = "id",defaultValue = "0") Long id,Integer customerId) throws Exception{
+    @RequestMapping("/updateNotice")
+    public ModelAndView updateNotice(@RequestParam(value = "id",defaultValue = "0") Long id,Integer customerId) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/view/notice/updateNotice.html");
+        modelAndView.setViewName("/view/contents/updateNotice.html");
         Notice notice= noticeService.findById(id);
         Set<Category> categorys=categoryRepository.findByCustomerId(customerId);
         modelAndView.addObject("categorys",categorys);
@@ -92,6 +92,9 @@ public class NoticeController {
             if(id!=null)
             {
                 notice.setUpdateTime(LocalDateTime.now());
+                Notice noticeOld = noticeService.findById(notice.getId());
+                notice.setCreateTime(noticeOld.getCreateTime());
+                notice.setUpdateTime(LocalDateTime.now());
             }
             else{
                 notice.setCreateTime(LocalDateTime.now());
@@ -110,30 +113,6 @@ public class NoticeController {
     }
 
 
-
-//    @RequestMapping("/updateNotice")
-//    public ModelAndView updateNotice(@RequestParam(value = "id",defaultValue = "0") Long id,int customerId) throws Exception{
-//        ModelAndView modelAndView=new ModelAndView();
-//        modelAndView.setViewName("/view/web/updateNotice.html");
-//
-//        if(id!=0) {
-//            Notice notice = noticeService.findByNoticeIdAndCustomerId(id, customerId);
-//            if (notice != null) {
-//                modelAndView.addObject("notice", notice);
-//                Set<Host> hosts =notice.getHosts();
-//                String domains="";
-//                for(Host host : hosts){
-//                    String domain= host.getDomain();
-//                    domains=domains+domain+",";
-//                }
-//                Region region= notice.getRegion();
-//                modelAndView.addObject("region",region);
-//                modelAndView.addObject("domains", domains.substring(0, domains.length() - 1));
-//            }
-//        }
-//        return modelAndView;
-//    }
-
     @RequestMapping(value = "/getNoticeList")
     @ResponseBody
     public PageData<NoticeCategory> getNoticeList(@RequestParam(name="customerId",required = false) Integer customerId,
@@ -146,7 +125,7 @@ public class NoticeController {
 
     @RequestMapping(value = "/deleteNotice",method = RequestMethod.POST)
     @ResponseBody
-    public ResultView deleteModel(@RequestParam(name = "id",required = true,defaultValue = "0") Long id,int customerId,HttpServletRequest request) {
+    public ResultView deleteNotice(@RequestParam(name = "id",required = true,defaultValue = "0") Long id,int customerId,HttpServletRequest request) {
         ResultView result=null;
         try{
             if(cookieUser.isSupper(request)) {

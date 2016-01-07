@@ -1,7 +1,5 @@
 package com.huotu.hotcms.admin.interceptor;
 
-import com.huotu.hotcms.service.entity.Host;
-import com.huotu.hotcms.service.entity.Region;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.service.HostService;
@@ -17,7 +15,6 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Set;
 
 /**
  * Created by cwb on 2015/12/21.
@@ -82,6 +79,10 @@ public class SiteResolver implements HandlerMethodArgumentResolver {
         }
         if(!StringUtils.isEmpty(request.getParameter("customerId"))) {
             site.setCustomerId(Integer.parseInt(request.getParameter("customerId")));
+            initSuccess = true;
+        }
+        if(!StringUtils.isEmpty(request.getParameter("logoUri"))) {
+            site.setLogoUri(request.getParameter("logoUri"));
             initSuccess = true;
         }
         if(!StringUtils.isEmpty(request.getParameter("name"))) {

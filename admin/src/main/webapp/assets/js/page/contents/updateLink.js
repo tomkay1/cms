@@ -1,34 +1,18 @@
 /**
- * Created by Administrator on 2015/12/23.
+ * Created by chendeyu on 2015/12/29.
  */
 define(function (require, exports, module) {
-    $("#addNoticeForm").validate({
+    $("#updateLinkForm").validate({
         //rules: {
-        //    txtModelName:{
+        //    title:{
         //        required: true,
-        //    },
-        //    txtModelDescription:{
-        //        maxlength:200
-        //    },
-        //    txtModelType: {
-        //        selrequired: "-1"
-        //    },
-        //    txtOrderWeight:{
-        //        digits:true,
+        //        maxlenght:50
         //    }
         //},
         //messages: {
-        //    txtModelName:{
-        //        required:"模型名称为必输项"
-        //    },
-        //    txtModelDescription:{
-        //        maxlength:"模型描述不能超过200个字符"
-        //    },
-        //    txtModelType: {
-        //        selrequired: "请选择模型类型"
-        //    },
-        //    txtOrderWeight:{
-        //        digits:"请输入数字",
+        //    title:{
+        //        required:"链接标题为必填项",
+        //        maxlenght:"链接标题最大为50个字符"
         //    }
         //},
         submitHandler: function (form, ev) {
@@ -36,12 +20,13 @@ define(function (require, exports, module) {
             commonUtil.setDisabled("jq-cms-Save");
             var customerId =commonUtil.getQuery("customerId");
             $.ajax({
-                url: "/notice/saveNotice",
+                url: "/link/saveLink",
                 data: {
-                    id:$("#hidNoticeID").val(),
+                    id:$("#hidLinkID").val(),
                     title:$("#title").val(),
                     customerId:customerId,
-                    content: $("#content").val(),
+                    linkUrl: $("#linkUrl").val(),
+                    description: $("#description").val(),
                     categoryId: $("#categoryId").val(),
                     orderWeight: $("#orderWeight").val()
                 },
@@ -56,10 +41,9 @@ define(function (require, exports, module) {
                         {
                             var layer=require("layer");
                             layer.msg("操作成功",{time: 2000});
-                            $("#title").val("");
-                            $("#content").val("");
-                            $("#categoryId").val("-1");
-                            $("#orderWeight").val("50");
+                            layer.msg("修改成功,2秒后将自动返回列表页面",{time: 2000})
+                            commonUtil.cancelDisabled("jq-cms-Save");
+                            window.location.href="http://"+window.location.host+"/"+"link/linkList?customerid=3447";
                         }
                         if(index==500)
                             layer.msg("操作失败",{time: 2000})

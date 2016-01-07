@@ -1,5 +1,6 @@
 package com.huotu.hotcms.admin.controller;
 
+import com.huotu.hotcms.admin.service.StaticResourceService;
 import com.huotu.hotcms.admin.util.web.CookieUser;
 import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Region;
@@ -13,6 +14,7 @@ import com.huotu.hotcms.service.util.ResultView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,6 +41,10 @@ public class SiteController {
 
     @Autowired
     private RegionRepository regionRepository;
+
+    @Autowired
+    private StaticResourceService resourceServer;
+
     @Autowired
     private CookieUser cookieUser;
 
@@ -118,11 +124,15 @@ public class SiteController {
     public ModelAndView updateSite(@RequestParam(value = "id",defaultValue = "0") Long id,int customerId) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("/view/web/updateSite.html");
-
+        String logo_uri="";
         if(id!=0) {
             Site site = siteService.findBySiteIdAndCustomerId(id,customerId);
             if (site != null) {
+                if(!StringUtils.isEmpty(site.getLogoUri())) {
+                     logo_uri = resourceServer.getResource(site.getLogoUri()).toString();
+                }
                 modelAndView.addObject("site", site);
+                modelAndView.addObject("logo_uri", logo_uri);
                 Set<Host> hosts =site.getHosts();
                 String domains="";
                 for(Host host : hosts){

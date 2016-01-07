@@ -1,5 +1,6 @@
 package com.huotu.hotcms.service.repository;
 
+import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +13,6 @@ import java.util.Set;
  */
 public interface RouteRepository extends JpaRepository<Route, Long>,JpaSpecificationExecutor {
     Set<Route> findBySite(Site site);
+
+    Route findBySiteAndRouteType(Site site,RouteType routeType);
 }

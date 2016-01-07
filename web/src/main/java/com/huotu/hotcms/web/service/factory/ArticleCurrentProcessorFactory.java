@@ -6,7 +6,7 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.service.impl.ArticleServiceImpl;
 import com.huotu.hotcms.web.service.BaseProcessorService;
 import com.huotu.hotcms.web.service.RoutResolverService;
-import com.huotu.hotcms.web.service.SiteResolveService;
+import com.huotu.hotcms.web.thymeleaf.expression.VariableExpression;
 import com.huotu.hotcms.web.util.PatternMatchUtil;
 import com.huotu.hotcms.web.util.StringUtil;
 import org.springframework.web.context.ContextLoader;
@@ -32,9 +32,10 @@ public class ArticleCurrentProcessorFactory extends BaseProcessorService {
         IExpressionObjects expressContent= context.getExpressionObjects();
         HttpServletRequest request=(HttpServletRequest)expressContent.getObject("request");
         WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
-        SiteResolveService siteResolveService = (SiteResolveService)applicationContext.getBean("siteResolveService");
+//        SiteResolveService siteResolveService = (SiteResolveService)applicationContext.getBean("siteResolveService");
+//         Site site = siteResolveService.getCurrentSite(request);
         try {
-            Site site = siteResolveService.getCurrentSite(request);
+            Site site = (Site) VariableExpression.getVariable(context, "site");
             RoutResolverService routResolverService=(RoutResolverService)applicationContext.getBean("routResolverService");
             RouteRule routeRule=routResolverService.getRout(site,PatternMatchUtil.getUrl(request));
             if(routeRule!=null)
@@ -46,7 +47,7 @@ public class ArticleCurrentProcessorFactory extends BaseProcessorService {
 
                     String attributeName = PatternMatchUtil.getMatchVal(attributeValue, regexp);
                     attributeName = StringUtil.toUpperCase(attributeName);
-                    Object object = article.getClass().getDeclaredMethod("get" + attributeName).invoke(article);
+                    Object object = article.getClass().getMethod("get" + attributeName).invoke(article);
                     return object;
                 }
             }
@@ -55,6 +56,6 @@ public class ArticleCurrentProcessorFactory extends BaseProcessorService {
         {
             //写错误日志操作
         }
-        return null;
+        return "";
     }
 }

@@ -28,4 +28,9 @@ public class CategoryForeachParam {
      */
     private String excludeid;
 
+    /**
+     * 指定获取的栏目ids
+     */
+    private String specifyids;
+
 }

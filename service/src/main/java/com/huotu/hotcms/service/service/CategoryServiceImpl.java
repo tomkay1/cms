@@ -6,9 +6,12 @@ import com.huotu.hotcms.service.model.thymeleaf.CategoryForeachParam;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
-import java.util.Iterator;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by chendeyu on 2015/12/31.
@@ -39,14 +42,15 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> getCategoryList(CategoryForeachParam foreachParam) {
-        List<Category> categories = categoryRepository.findBySite_SiteIdAndDeletedOrderByOrderWeightDesc(Long.parseLong(foreachParam.getSiteid()), false);
-        for(Iterator<Category> it = categories.iterator();it.hasNext();) {
-            Category category = it.next();
-            if(category.getId().toString().equals(foreachParam.getExcludeid())) {
-                it.remove();
-            }
+        if(!StringUtils.isEmpty(foreachParam.getSpecifyids())) {
+            String[] specifyIds = StringUtils.split(foreachParam.getSpecifyids(), ",");
+            List<String> ids = Arrays.asList(specifyIds);
+            Collection<Long> categoryIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
+            return categoryRepository.findByIdInAndDeletedOrderByOrderWeightDesc(categoryIds, false);
         }
-        return categories;
+        return categoryRepository.findBySite_SiteIdAndDeletedAndIdNotOrderByOrderWeightDesc(Long.parseLong(foreachParam.getSiteid()), false,Long.parseLong(foreachParam.getExcludeid()));
     }
+
+
 
 }

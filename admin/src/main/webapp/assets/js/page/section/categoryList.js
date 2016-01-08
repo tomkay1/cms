@@ -42,18 +42,21 @@ define(function (require, exports, module) {
         });
     }
     function initList(){
+        var employees=[];
         $.ajax({
             url: "/category/getCategoryList",
             data: {
                 siteId:$("#jq-cms-siteList").val(),
                 name: $("#categotyName").val()
             },
+            async:false,
             type: "POST",
             dataType: 'json',
             success: function (data) {
-
+                employees.push(data.data);
             }
         });
+        window.console.log(employees);
         var employees = [
             {
                 "EmployeeID": 2, "FirstName": "Andrew", "LastName": "Fuller", "Country": "USA", "Title": "Vice President, Sales", "HireDate": "1992-08-14 00:00:00", "BirthDate": "1952-02-19 00:00:00", "City": "Tacoma", "Address": "908 W. Capital Way", "expanded": "true",
@@ -73,14 +76,14 @@ define(function (require, exports, module) {
                 ]
             }
         ];
-
+        window.console.log(employees);
         // prepare the data
         var source =
         {
             dataType: "json",
             dataFields: [
-                { name: 'EmployeeID', type: 'number' },
-                { name: 'FirstName', type: 'string' },
+                { name: 'id', type: 'number' },
+                { name: 'name', type: 'string' },
                 { name: 'LastName', type: 'string' },
                 { name: 'Country', type: 'string' },
                 { name: 'City', type: 'string' },
@@ -95,7 +98,7 @@ define(function (require, exports, module) {
             {
                 root: 'children'
             },
-            id: 'EmployeeID',
+            id: 'id',
             localData: employees
         };
         var dataAdapter = new $.jqx.dataAdapter(source);
@@ -107,7 +110,7 @@ define(function (require, exports, module) {
                 source: dataAdapter,
                 sortable: true,
                 columns: [
-                    { text: '栏目名称', dataField: 'FirstName', width: gridWidth*0.2 },
+                    { text: '栏目名称', dataField: 'name', width: gridWidth*0.2 },
                     { text: '所属模型', dataField: 'LastName', width: gridWidth*0.2 },
                     { text: '创建时间', dataField: 'Title', width: gridWidth*0.2 },
                     { text: 'Birth Date', dataField: 'BirthDate', cellsFormat: 'd', width: 120 },

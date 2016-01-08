@@ -17,5 +17,5 @@ public interface CategoryService {
     List<Category>  getCategoryBySiteAndDeleted(Site site,Boolean deleted);
     List<Category> getCategoryList(CategoryForeachParam foreachParam);
 
-    List<CategoryTreeModel> ConvertCateGoryTreeByCategotry(Set<Category> categories);
+    List<CategoryTreeModel> ConvertCateGoryTreeByCategotry(List<Category> categories);
 }

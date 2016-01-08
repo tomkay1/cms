@@ -4,6 +4,7 @@ import com.huotu.hotcms.admin.util.web.CookieUser;
 import com.huotu.hotcms.service.common.ModelType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.model.CategoryTreeModel;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.service.impl.SiteServiceImpl;
@@ -95,6 +96,7 @@ public class CategoryController {
             }
         }
         catch (Exception ex){
+            log.error(ex.getMessage());
             result=new ResultView(ResultOptionEnum.SERVERFAILE.getCode(),ResultOptionEnum.SERVERFAILE.getValue(),null);
         }
         return result;
@@ -108,9 +110,12 @@ public class CategoryController {
         try{
             Site site=siteService.getSite(siteId);
             List<Category> categoryList=categoryService.getCategoryBySiteAndDeleted(site,false);
+            List<CategoryTreeModel> categoryTreeModelList= categoryService.ConvertCateGoryTreeByCategotry(categoryList);
+            resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(),categoryTreeModelList);
         }
         catch (Exception ex){
             log.error(ex.getMessage());
+            resultView=new ResultView(ResultOptionEnum.SERVERFAILE.getCode(),ResultOptionEnum.SERVERFAILE.getValue(),null);
         }
         return resultView;
     }

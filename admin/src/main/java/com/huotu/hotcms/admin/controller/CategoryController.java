@@ -4,11 +4,13 @@ import com.huotu.hotcms.admin.util.web.CookieUser;
 import com.huotu.hotcms.service.common.ModelType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.model.CategorySite;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.service.CategoryService;
+import com.huotu.hotcms.service.service.impl.SiteServiceImpl;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +21,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -29,6 +30,8 @@ import java.util.Set;
 @Controller
 @RequestMapping("/category")
 public class CategoryController {
+    private static final Log log = LogFactory.getLog(CategoryController.class);
+
     @Autowired
     private CookieUser cookieUser;
 
@@ -38,36 +41,78 @@ public class CategoryController {
     @Autowired
     SiteRepository siteRepository;
 
+    @Autowired
+    SiteServiceImpl siteService;
+
     @RequestMapping("/categoryList")
-    public ModelAndView columnList(HttpServletRequest request,Integer customerid) throws Exception{
+    public ModelAndView categoryList(HttpServletRequest request) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("/view/section/categoryList.html");
-        Set<Site> sites=siteRepository.findByCustomerIdAndDeleted(customerid, false);
-        List<CategorySite> categoriesList = new ArrayList<>();
-        for(Site site:sites){
-            List<Category> categories = categoryService.getCategoryBySiteAndDeleted(site,false);
-                CategorySite categorySite =new CategorySite();
-                categorySite.setSiteId(site.getSiteId());
-                categorySite.setSiteName(site.getName());
-                categorySite.setCategoryClass("treegrid-"+site.getSiteId()+"site");
-                categoriesList.add(categorySite);
-            for(Category category :categories ){//删除状态的不做显示
-                    categorySite =new CategorySite();
-                    categorySite.setModelType(category.getModelType());
-                    categorySite.setSiteId(site.getSiteId());
-                    categorySite.setSiteName(site.getName());
-                    categorySite.setName(category.getName());
-//                    categorySite.setParentId(category.getParent().getId());
-                    categorySite.setId(category.getId());
-//                    if(categorySite.getSite()=site){
-//
-//                    }
-                    categorySite.setCategoryClass("treegrid-"+category.getId()+" treegrid-parent-"+category.getParent().getId());
-                    categoriesList.add(categorySite);
+        return  modelAndView;
+//        ModelAndView modelAndView=new ModelAndView();
+//        modelAndView.setViewName("/view/section/categoryList.html");
+////        Set<Site> sites=siteRepository.findByCustomerIdAndDeleted(customerid, false);
+////        List<CategorySite> categoriesList = new ArrayList<>();
+////        for(Site site:sites){
+////            List<Category> categories = categoryService.getCategoryBySiteAndDeleted(site,false);
+////                CategorySite categorySite =new CategorySite();
+////                categorySite.setSiteId(site.getSiteId());
+////                categorySite.setSiteName(site.getName());
+////                categorySite.setCategoryClass("treegrid-"+site.getSiteId()+"site");
+////                categoriesList.add(categorySite);
+////            for(Category category :categories ){//删除状态的不做显示
+////                    categorySite =new CategorySite();
+////                    categorySite.setModelType(category.getModelType());
+////                    categorySite.setSiteId(site.getSiteId());
+////                    categorySite.setSiteName(site.getName());
+////                    categorySite.setName(category.getName());
+//////                    categorySite.setParentId(category.getParent().getId());
+////                    categorySite.setId(category.getId());
+//////                    if(categorySite.getSite()=site){
+//////
+//////                    }
+////                    categorySite.setCategoryClass("treegrid-"+category.getId()+" treegrid-parent-"+category.getParent().getId());
+////                    categoriesList.add(categorySite);
+////            }
+////        }
+////        modelAndView.addObject("categoriesList",categoriesList);
+//        return  modelAndView;
+    }
+
+    /**
+     * 根据商户ID获得站点列表业务API
+     * */
+    @RequestMapping("/getSiteList")
+    @ResponseBody
+    public ResultView getSiteList(@RequestParam(value = "customerId",defaultValue = "0") Integer customerid){
+        ResultView result=null;
+        try{
+            Set<Site> sites=siteService.findByCustomerIdAndDeleted(customerid, false);
+            if(sites!=null&&sites.size()>0) {
+                result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), sites.toArray(new Site[sites.size()]));
+            }else{
+                result = new ResultView(ResultOptionEnum.NOFIND.getCode(), ResultOptionEnum.NOFIND.getValue(),null);
             }
         }
-        modelAndView.addObject("categoriesList",categoriesList);
-        return  modelAndView;
+        catch (Exception ex){
+            result=new ResultView(ResultOptionEnum.SERVERFAILE.getCode(),ResultOptionEnum.SERVERFAILE.getValue(),null);
+        }
+        return result;
+    }
+
+    @RequestMapping("/getCategoryList")
+    @ResponseBody
+    public ResultView getCategotyList(@RequestParam(name="siteId",required = false) Long siteId,
+                                      @RequestParam(name = "name",required=false) String name){
+        ResultView resultView=null;
+        try{
+            Site site=siteService.getSite(siteId);
+            List<Category> categoryList=categoryService.getCategoryBySiteAndDeleted(site,false);
+        }
+        catch (Exception ex){
+            log.error(ex.getMessage());
+        }
+        return resultView;
     }
 
     /*
@@ -126,7 +171,7 @@ public class CategoryController {
             Category categoryParent=categoryService.getCategoryById(parentId);
             category.setSite(site);
             category.setCustomerId(site.getCustomerId());
-            category.setModelType(ModelType.valueOf(model));
+            category.setModelType(model);
             category.setParent(categoryParent);
             category.setCreateTime(LocalDateTime.now());
             category.setUpdateTime(LocalDateTime.now());
@@ -137,7 +182,7 @@ public class CategoryController {
                 Site site=siteRepository.findOne(siteId);
                 Category categoryParent=categoryService.getCategoryById(parentId);
                 category.setSite(site);
-                category.setModelType(ModelType.valueOf(model));
+                category.setModelType(model);
                 category.setCustomerId(site.getCustomerId());
                 category.setParent(categoryParent);
                 category.setUpdateTime(LocalDateTime.now());

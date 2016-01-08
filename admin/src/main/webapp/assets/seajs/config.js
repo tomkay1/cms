@@ -1,3 +1,4 @@
+var version="1.0.0";
 seajs.config({
 	alias: {
 		"jquery": "js/jquery-1.9.1.min.js",
@@ -25,13 +26,18 @@ seajs.config({
 		"addLink":"js/page/contents/addLink.js?t=1123",
 		"updateLink":"js/page/contents/updateLink.js?t=1131",
 		"siteList":"js/page/web/siteList.js?t=222",
-		"treegrid": "libs/treegrid/js/jquery.treegrid.js",
 		"addSite":"js/page/web/addSite.js?t=2000",
 		"updateSite":"js/page/web/updateSite.js?t=2000",
 		"addCategory":"js/page/section/addCategory.js?t=2000",
-		"categoryList":"js/page/section/categoryList.js?t=2000",
+		"categoryList":"js/page/section/categoryList.js?t="+version,
 		"updateCategory":"js/page/section/updateCategory.js?t=2000",
 		"ajaxfileupload":"libs/ajaxfileupload.js",
+		"jqxcore":"libs/jqwidgets/jqxcore.js",
+		"jqxdata":"libs/jqwidgets/jqxdata.js",
+		"jqxbuttons":"libs/jqwidgets/jqxbuttons.js",
+		"jqxscrollbar":"libs/jqwidgets/jqxscrollbar.js",
+		"jqxdatatable":"libs/jqwidgets/jqxdatatable.js",
+		"jqxtreegrid":"libs/jqwidgets/jqxtreegrid.js"
 	},
 	preload: ['jquery']
 });

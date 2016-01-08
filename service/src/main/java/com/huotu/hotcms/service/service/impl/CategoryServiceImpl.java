@@ -3,6 +3,7 @@ package com.huotu.hotcms.service.service.impl;
 import com.huotu.hotcms.service.common.ModelType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.model.CategoryTreeModel;
 import com.huotu.hotcms.service.model.thymeleaf.CategoryForeachParam;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.service.CategoryService;
@@ -13,8 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.Predicate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -92,6 +95,18 @@ public class CategoryServiceImpl implements CategoryService {
             }
         }
         return null;
+    }
+    @Override
+    public List<CategoryTreeModel> ConvertCateGoryTreeByCategotry(Set<Category> categories) {
+        List<CategoryTreeModel> categoryTreeModels=null;
+        if(categories!=null&&categories.size()>0){
+            for(Category category : categories){
+                if(category!=null){
+//                    if(category.getParent()==null)
+                }
+            }
+        }
+        return categoryTreeModels;
     }
 
 

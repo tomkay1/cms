@@ -21,21 +21,26 @@ public class ArticleForeachParam {
     /**
      * 所属栏目Id
      */
-    private String categoryid;
+    private Long categoryid;
 
     /**
-     * 获取列表时排除的主键Id
+     * 获取列表时排除的主键Id(可排除多个，逗号分隔)
      */
-    private String excludeid;
+    private String[] excludeid;//TODO 上线前重命名为excludeids
+
+    /**
+     * 获取指定Id的列表(可指定多个，逗号分隔)
+     */
+    private String[] specifyids;
 
     /**
      * 页码
      */
-    private String pageno;
+    private Integer pageno;
 
     /**
      * 列表大小
      */
-    private String pagesize;
+    private Integer pagesize;
 
 }

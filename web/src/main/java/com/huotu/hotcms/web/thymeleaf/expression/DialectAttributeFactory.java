@@ -33,7 +33,7 @@ public class DialectAttributeFactory {
     }
 
     public <T>T getForeachParam(IProcessableElementTag elementTag, Class<T> t) throws Exception{
-        Object obj = t.newInstance();
+        T obj = t.newInstance();
         IElementAttributes elementAttributes = elementTag.getAttributes();
         List<AttributeName> attributeNames = elementAttributes.getAllAttributeNames();
         for(AttributeName attr : attributeNames) {
@@ -41,12 +41,23 @@ public class DialectAttributeFactory {
             try {
                 Field field = t.getDeclaredField(attr.getAttributeName());
                 field.setAccessible(true);
-                field.set(obj,paramValue);
+                Class<?> classType = field.getType();
+                if(classType == Integer.class) {
+                    field.set(obj, Integer.parseInt(paramValue));
+                }else if(classType == Long.class) {
+                    field.set(obj, Long.parseLong(paramValue));
+                }else if(classType == String.class) {
+                    field.set(obj, paramValue);
+                }else if(classType == String[].class) {
+                    field.set(obj,paramValue.split(","));
+                }else {
+                    field.set(obj,paramValue);
+                }
             }catch (NoSuchFieldException e) {
                 continue;
             }
         }
-        return (T)obj;
+        return obj;
     }
 
 

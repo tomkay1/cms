@@ -50,7 +50,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> getCategoryList(CategoryForeachParam foreachParam) {
         if(!StringUtils.isEmpty(foreachParam.getSpecifyids())) {
-            List<String> ids = Arrays.asList(foreachParam.getSpecifyids().split(","));
+            List<String> ids = Arrays.asList(foreachParam.getSpecifyids());
             List<Long> categoryIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
             Specification<Category> specification = (root, query, cb) -> {
                 List<Predicate> predicates = categoryIds.stream().map(id -> cb.equal(root.get("id").as(Long.class), id)).collect(Collectors.toList());
@@ -59,10 +59,10 @@ public class CategoryServiceImpl implements CategoryService {
             return categoryRepository.findAll(specification,new Sort(Sort.Direction.DESC,"orderWeight"));
         }
 
-        Integer categoryType = convertCategoryType(foreachParam.getType());
+        Integer categoryType = foreachParam.getType();
 
         if(!StringUtils.isEmpty(foreachParam.getExcludeid())) {
-            List<String> ids = Arrays.asList(foreachParam.getExcludeid().split(","));
+            List<String> ids = Arrays.asList(foreachParam.getExcludeid());
             List<Long> categoryIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
             Specification<Category> specification = (root, query, cb) -> {
                 List<Predicate> predicates = categoryIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
@@ -72,15 +72,9 @@ public class CategoryServiceImpl implements CategoryService {
             };
             return categoryRepository.findAll(specification, new Sort(Sort.Direction.DESC, "orderWeight"));
         }
-        return categoryRepository.findBySite_SiteIdAndDeletedAndModelTypeOrderByOrderWeightDesc(Long.parseLong(foreachParam.getSiteid()), false, categoryType);
+        return categoryRepository.findBySite_SiteIdAndDeletedAndModelTypeOrderByOrderWeightDesc(foreachParam.getSiteid(), false, categoryType);
     }
 
-    private Integer convertCategoryType(String type) {
-        if(StringUtils.isEmpty(type)) {
-            return null;
-        }
-        return Integer.parseInt(type);
-    }
 
     @Override
     public List<CategoryTreeModel> ConvertCateGoryTreeByCategotry(Set<Category> categories) {

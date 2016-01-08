@@ -22,21 +22,21 @@ public class CategoryForeachParam {
     /**
      * 所属站点Id
      */
-    private String siteid;
+    private Long siteid;
 
     /**
      * 获取列表时排除的主键Id(可排除多个，逗号分隔)
      */
-    private String excludeid;//TODO 上线前重命名为excludeids
+    private String[] excludeid;//TODO 上线前重命名为excludeids
 
     /**
-     * 指定获取的栏目ID(逗号分隔)
+     * 获取指定Id的列表(可指定多个，逗号分隔)
      */
-    private String specifyids;
+    private String[] specifyids;
 
     /**
      * 栏目类型(""或者null表示公共类型)
      */
-    private String type;
+    private Integer type;
 
 }

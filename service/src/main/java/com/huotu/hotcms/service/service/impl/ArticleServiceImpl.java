@@ -30,7 +30,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<Article> getArticleList(ArticleForeachParam articleForeachParam) {
+    public Page<Article> getArticleList(ArticleForeachParam articleForeachParam) {
         return null;
     }
 

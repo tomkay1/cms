@@ -56,7 +56,7 @@ public class CategoryForeachProcessorFactory {
             CategoryForeachParam categoryForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag, CategoryForeachParam.class);
             if(StringUtils.isEmpty(categoryForeachParam.getSiteid())) {
                 Site site = (Site) VariableExpression.getVariable(context,"site");
-                categoryForeachParam.setSiteid(site.getSiteId().toString());
+                categoryForeachParam.setSiteid(site.getSiteId());
             }
             CategoryService categoryService = (CategoryService)applicationContext.getBean("categoryServiceImpl");
             categoryList = categoryService.getCategoryList(categoryForeachParam);

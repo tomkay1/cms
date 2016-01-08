@@ -42,4 +42,5 @@ public class Route extends BaseEntity {
 
     @Column(name = "routeType")
     private RouteType routeType;
+
 }

@@ -40,4 +40,5 @@ public enum RouteType implements CommonEnum{
                 return null;
         }
     }
+
 }

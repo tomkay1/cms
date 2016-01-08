@@ -8,12 +8,16 @@
 
 package com.huotu.hotcms.web.service.factory;
 
+import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.Article;
+import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.model.thymeleaf.ArticleForeachParam;
 import com.huotu.hotcms.service.service.ArticleService;
 import com.huotu.hotcms.web.thymeleaf.expression.DialectAttributeFactory;
+import com.huotu.hotcms.web.thymeleaf.expression.VariableExpression;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
@@ -45,12 +49,15 @@ public class ArticleForeachProcessorFactory {
     }
 
     public Object process(IProcessableElementTag elementTag,ITemplateContext context) {
-        List<Article> articles = new ArrayList<>();
+        Page<Article> articles = null;
         try {
             WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
             ArticleForeachParam articleForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag, ArticleForeachParam.class);
             if(StringUtils.isEmpty(articleForeachParam.getCategoryid())) {
-
+                Route route = (Route)VariableExpression.getVariable(context,"route");
+                if(route.getRouteType()==RouteType.ARTICLEDETILE) {
+                    throw new Exception("路由规则错误");
+                }
             }
             ArticleService articleService = (ArticleService)applicationContext.getBean("articleServiceImpl");
             articles = articleService.getArticleList(articleForeachParam);

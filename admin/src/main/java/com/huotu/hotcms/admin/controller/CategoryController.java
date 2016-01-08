@@ -7,8 +7,11 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.CategorySite;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.service.CategoryService;
+import com.huotu.hotcms.service.service.impl.SiteServiceImpl;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +32,8 @@ import java.util.Set;
 @Controller
 @RequestMapping("/category")
 public class CategoryController {
+    private static final Log log = LogFactory.getLog(CategoryController.class);
+
     @Autowired
     private CookieUser cookieUser;
 
@@ -38,8 +43,11 @@ public class CategoryController {
     @Autowired
     SiteRepository siteRepository;
 
+    @Autowired
+    SiteServiceImpl siteService;
+
     @RequestMapping("/categoryList")
-    public ModelAndView columnList(HttpServletRequest request) throws Exception{
+    public ModelAndView categoryList(HttpServletRequest request) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("/view/section/categoryList.html");
         return  modelAndView;
@@ -71,6 +79,42 @@ public class CategoryController {
 ////        }
 ////        modelAndView.addObject("categoriesList",categoriesList);
 //        return  modelAndView;
+    }
+
+    /**
+     * 根据商户ID获得站点列表业务API
+     * */
+    @RequestMapping("/getSiteList")
+    @ResponseBody
+    public ResultView getSiteList(@RequestParam(value = "customerId",defaultValue = "0") Integer customerid){
+        ResultView result=null;
+        try{
+            Set<Site> sites=siteService.findByCustomerIdAndDeleted(customerid, false);
+            if(sites!=null&&sites.size()>0) {
+                result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), sites.toArray(new Site[sites.size()]));
+            }else{
+                result = new ResultView(ResultOptionEnum.NOFIND.getCode(), ResultOptionEnum.NOFIND.getValue(),null);
+            }
+        }
+        catch (Exception ex){
+            result=new ResultView(ResultOptionEnum.SERVERFAILE.getCode(),ResultOptionEnum.SERVERFAILE.getValue(),null);
+        }
+        return result;
+    }
+
+    @RequestMapping("/getCategoryList")
+    @ResponseBody
+    public ResultView getCategotyList(@RequestParam(name="siteId",required = false) Long siteId,
+                                      @RequestParam(name = "name",required=false) String name){
+        ResultView resultView=null;
+        try{
+            Site site=siteService.getSite(siteId);
+            List<Category> categoryList=categoryService.getCategoryBySiteAndDeleted(site,false);
+        }
+        catch (Exception ex){
+            log.error(ex.getMessage());
+        }
+        return resultView;
     }
 
     /*

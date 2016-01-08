@@ -80,5 +80,15 @@ public class SiteServiceImpl implements SiteService {
         return true;
     }
 
+    @Override
+    public Set<Site> findByCustomerIdAndDeleted(Integer customerId, boolean deleted) {
+       Set<Site> siteList=siteRepository.findByCustomerIdAndDeleted(customerId,deleted);
+        for(Site site : siteList){
+            site.setHosts(null);
+            site.setRegion(null);
+        }
+        return siteList;
+    }
+
 
 }

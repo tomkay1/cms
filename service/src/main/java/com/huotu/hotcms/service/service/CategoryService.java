@@ -2,6 +2,7 @@ package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.model.CategoryTreeModel;
 import com.huotu.hotcms.service.model.thymeleaf.CategoryForeachParam;
 
 import java.util.List;
@@ -16,4 +17,5 @@ public interface CategoryService {
     List<Category>  getCategoryBySiteAndDeleted(Site site,Boolean deleted);
     List<Category> getCategoryList(CategoryForeachParam foreachParam);
 
+    List<CategoryTreeModel> ConvertCateGoryTreeByCategotry(Set<Category> categories);
 }

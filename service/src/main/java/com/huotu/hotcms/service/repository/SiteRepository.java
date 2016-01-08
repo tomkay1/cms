@@ -3,6 +3,7 @@ package com.huotu.hotcms.service.repository;
 import com.huotu.hotcms.service.entity.Site;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.Set;
 
@@ -19,4 +20,7 @@ public interface SiteRepository  extends JpaRepository<Site, Long>,JpaSpecificat
     Site findBySiteIdAndCustomerId(Long siteId,int customerId);
 
     Site findByTitle(String title);
+
+//    @Query(value = "SELECT site.siteId,site.name FROM cms_site site where site.customerId=?1 and site.deleted=?2",nativeQuery = true)
+//    Set<Site> findSiteList(int customerId,boolean deleted);
 }

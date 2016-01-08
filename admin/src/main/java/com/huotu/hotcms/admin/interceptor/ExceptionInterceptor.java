@@ -1,7 +1,5 @@
 package com.huotu.hotcms.admin.interceptor;
 
-import org.apache.commons.logging.LogFactory;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -10,7 +8,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
  */
 @ControllerAdvice
 public class ExceptionInterceptor {
-
 
     @ExceptionHandler(Throwable.class)
     public String catchExceptions(Throwable e) {

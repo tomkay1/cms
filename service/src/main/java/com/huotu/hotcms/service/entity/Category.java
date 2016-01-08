@@ -51,10 +51,12 @@ public class Category extends BaseEntity {
     private boolean custom;
 
     /**
-     * 系统数据类型
+     * 系统数据类型ID/TODO:待重命名
      */
     @Column(name = "modelType")
-    private ModelType modelType;
+    private Integer modelType;
+
+//    private
 
     /**
      * 所属站点

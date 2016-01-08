@@ -75,7 +75,11 @@ public class CategoryServiceImpl implements CategoryService {
     public List<CategoryTreeModel> ConvertCateGoryTreeByCategotry(Set<Category> categories) {
         List<CategoryTreeModel> categoryTreeModels=null;
         if(categories!=null&&categories.size()>0){
-
+            for(Category category : categories){
+                if(category!=null){
+//                    if(category.getParent()==null)
+                }
+            }
         }
         return categoryTreeModels;
     }

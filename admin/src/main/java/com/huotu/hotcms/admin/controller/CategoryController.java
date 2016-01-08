@@ -4,7 +4,6 @@ import com.huotu.hotcms.admin.util.web.CookieUser;
 import com.huotu.hotcms.service.common.ModelType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.model.CategorySite;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.service.impl.SiteServiceImpl;
@@ -22,7 +21,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -173,7 +171,7 @@ public class CategoryController {
             Category categoryParent=categoryService.getCategoryById(parentId);
             category.setSite(site);
             category.setCustomerId(site.getCustomerId());
-            category.setModelType(ModelType.valueOf(model));
+            category.setModelType(model);
             category.setParent(categoryParent);
             category.setCreateTime(LocalDateTime.now());
             category.setUpdateTime(LocalDateTime.now());
@@ -184,7 +182,7 @@ public class CategoryController {
                 Site site=siteRepository.findOne(siteId);
                 Category categoryParent=categoryService.getCategoryById(parentId);
                 category.setSite(site);
-                category.setModelType(ModelType.valueOf(model));
+                category.setModelType(model);
                 category.setCustomerId(site.getCustomerId());
                 category.setParent(categoryParent);
                 category.setUpdateTime(LocalDateTime.now());

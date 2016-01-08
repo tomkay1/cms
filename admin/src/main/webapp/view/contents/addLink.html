@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link  href="/assets/css/admin.content.css"  type="text/css" rel="stylesheet"/>
+    <link  href="/assets/css/admin.global.css"  type="text/css" rel="stylesheet"/>
+    <link  href="/assets/css/global.css"  type="text/css" rel="stylesheet"/>
+    <link href="/assets/libs/layer/skin/layer.css" rel="stylesheet"/>
+    <script src="/assets/seajs/sea.js" type="application/javascript"></script>
+    <script src="/assets/seajs/config.js" type="application/javascript"></script>
+</head>
+<body>
+<div class="block">
+    <div class="h">
+        <span class="icon-sprite icon-list"></span>
+        <h3>添加链接</h3>
+        <div class="bar">
+            <a class="btn-lit" th:href="@{/link/linkList?customerid={customerid}(customerid=${user.customerId})}" target="content">
+                <span>返回链接管理列表</span></a>
+        </div>
+    </div>
+    <div class="cnt-wp">
+        <form method="post" id="addLinkForm" enctype="multipart/form-data">
+            <div class="cnt form">
+                <div class="division">
+                    <input type="hidden" name="hidLinkID" id="hidLinkID" >
+                    <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                        <tbody>
+                        <tr>
+                            <th>链接标题：</th>
+                            <td>
+                                <input name="title" type="text" id="title" maxlength="50" class="input-normal" >
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>缩略图：</th>
+                            <td>
+                                <img id="uploadThumbUri" style="width: 80px; height: 80px; border: 1px solid #ccc; float: left; background: #efefef; line-height: 80px; text-align: center; color: #ccc;"/>
+                                <a id="uploadpic" class="btn-lit jUploader-button" style="cursor: pointer; position: relative; overflow: hidden; direction: ltr;"><span style="color: #c1b3a9" onclick="javascript:$('#btnLinkFile').click();">上传</span></a>
+                                <input onchange="uploadImg('btnLinkFile','uploadThumbUri','thumbUri')"
+                                       id="btnLinkFile" name="btnFile"
+                                       style="display:none;" type="file"/>
+                                <td><input type="hidden" id="thumbUri" name="thumbUri"/></td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>描述：</th>
+                            <td>
+                                <input name="description" type="text" id="description" maxlength="50" class="input-normal" >
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>链接：</th>
+                            <td>
+                                <input name="linkUrl" type="text" id="linkUrl" maxlength="100" class="input-normal" >
+                            </td>
+                        </tr>
+                        <tr>
+                        <th>所属栏目：</th>
+                        <td>
+                            <select name="categoryId" class="input-normal" id="categoryId">
+                                <option value="-1">==请选择栏目==</option>
+                                <option th:each="category:${categorys}" th:value="${category.id}" th:text="${category.name}"></option>
+                            </select>
+                        </td>
+                        </tr>
+
+                        <tr>
+                            <th>排序权重：</th>
+                            <td>
+                                <input name="orderWeight" type="text" id="orderWeight" value="50" class="input-normal" placeholder="请输入排序权重">
+                                <span style="color:#ccc;">数字越大排越前面</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div style="text-align: center;">
+                    <input type="submit" class="btn-lit" name="btnSave"  value="保存" data-submiting-text="提交中..." data-text="保存" id="jq-cms-Save">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>seajs.use(["validate","message","addLink","ajaxfileupload","layer"]);</script>
+<script type="text/javascript" th:inline="javascript">
+
+</script>
+</body>
+</html>

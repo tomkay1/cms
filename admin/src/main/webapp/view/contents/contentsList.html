@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link  href="/assets/css/admin.content.css"  type="text/css" rel="stylesheet"/>
+    <link  href="/assets/css/admin.global.css"  type="text/css" rel="stylesheet"/>
+    <link  href="/assets/libs/JGrid/theme/Jackson_skin_gray.css"  type="text/css" rel="stylesheet"/>
+    <link href="/assets/libs/layer/skin/layer.css" rel="stylesheet"/>
+    <script src="/assets/seajs/sea.js"></script>
+    <script src="/assets/seajs/config.js"></script>
+</head>
+<body onload="fisrstload()">
+<div class="search block">
+    <div class="h">
+        <span class="icon-sprite icon-magnifier"></span>
+        <h3>快速搜索</h3>
+    </div>
+    <div class="cnt-wp">
+        <div class="cnt">
+            <div class="search-bar">
+            <label class="first ">站点名称：</label>
+            <select name="siteId" class="input-normal" id="siteId">
+                <option th:each="site:${siteCategoryList}" th:value="${site.siteId}" th:text="${site.siteName}"></option>
+            </select>
+            <label class="first ">栏目名称：</label>
+            <select name="categoryId" class="input-normal" id="categoryId">
+                <option value="-1">==请选择站点==</option>
+                <option th:each="category:${siteCategoryList}" th:value="${category.categoryId}" th:text="${category.categoryName}"></option>
+            </select>
+        </div>
+            <div class="search-bar">
+                <div class="search-bar">
+                    <label class="first ">链接标题：</label>
+                    <input name="linkName" type="text" id="linkName" class="input-small" style="width: 200px;" placeholder=" 链接标题">
+                    <label><a class="btn-lit btn-middle " id="jq-cms-search" href="javascript:" style="margin-bottom: 3px;"><span>搜索</span></a></label>
+                    <label><a class="btn-lit btn-middle " id="jq-cms-searchAll" href="javascript:" style="margin-bottom: 3px;"><span>显示所有</span></a></label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="block">
+        <div class="h">
+            <span class="icon-sprite icon-list"></span>
+            <h3 style="float: left; width: 144px;">链接列表</h3>
+            <div class="bar">
+                <a class="btn-lit"  th:href="@{/link/addLink?customerid={customerid}(customerid=${user.customerId})}" target="content">
+                    <span>新增</span></a>
+            </div>
+        </div>
+        <div class="cnt-wp" id="js-LinkList"></div>
+    </div>
+
+    <script>seajs.use(["JGrid","linkList"]);</script>
+    <script>
+       function firstLoad(){
+
+       }
+    </script>
+</div>
+</body>
+</html>

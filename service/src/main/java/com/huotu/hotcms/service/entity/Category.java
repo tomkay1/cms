@@ -56,7 +56,6 @@ public class Category extends BaseEntity {
     @Column(name = "modelType")
     private Integer modelType;
 
-//    private
 
     /**
      * 所属站点

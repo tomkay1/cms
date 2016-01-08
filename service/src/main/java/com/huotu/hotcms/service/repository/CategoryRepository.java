@@ -15,8 +15,7 @@ import java.util.Set;
  */
 public interface CategoryRepository extends JpaRepository<Category, Long>,JpaSpecificationExecutor {
    List<Category> findBySiteAndDeletedOrderByOrderWeightDesc(Site site, Boolean deleted);
-   List<Category> findBySite_SiteIdAndDeletedAndIdNotOrderByOrderWeightDesc(long siteId, Boolean deleted, long categoryId);
    Set<Category> findByCustomerId(Integer customerId);
 
-   List<Category> findBySite_SiteIdAndDeletedAndModelTypeOrderByOrderWeightDesc(long siteId, boolean deleted,ModelType modelType);
+   List<Category> findBySite_SiteIdAndDeletedAndModelTypeOrderByOrderWeightDesc(long siteId, boolean deleted,Integer modelType);
 }

@@ -59,7 +59,7 @@ public class CategoryServiceImpl implements CategoryService {
             return categoryRepository.findAll(specification,new Sort(Sort.Direction.DESC,"orderWeight"));
         }
 
-        final ModelType modelType = convertStringToEnum(foreachParam.getType());
+        Integer categoryType = convertCategoryType(foreachParam.getType());
 
         if(!StringUtils.isEmpty(foreachParam.getExcludeid())) {
             List<String> ids = Arrays.asList(foreachParam.getExcludeid().split(","));
@@ -67,35 +67,21 @@ public class CategoryServiceImpl implements CategoryService {
             Specification<Category> specification = (root, query, cb) -> {
                 List<Predicate> predicates = categoryIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
                 predicates.add(cb.equal(root.get("site").get("siteId").as(Long.class),foreachParam.getSiteid()));
-                predicates.add(cb.equal(root.get("modelType").as(ModelType.class),modelType));
+                predicates.add(cb.equal(root.get("modelType").as(Integer.class),categoryType));
                 return cb.and(predicates.toArray(new Predicate[predicates.size()]));
             };
             return categoryRepository.findAll(specification, new Sort(Sort.Direction.DESC, "orderWeight"));
         }
-        return categoryRepository.findBySite_SiteIdAndDeletedAndModelTypeOrderByOrderWeightDesc(Long.parseLong(foreachParam.getSiteid()), false,modelType);
+        return categoryRepository.findBySite_SiteIdAndDeletedAndModelTypeOrderByOrderWeightDesc(Long.parseLong(foreachParam.getSiteid()), false, categoryType);
     }
 
-    private ModelType convertStringToEnum(String common) {
-        if(!StringUtils.isEmpty(common)) {
-            switch (common) {
-                case "0":
-                    return ModelType.ARTICLE;
-                case "1":
-                    return ModelType.NOTICE;
-                case "2":
-                    return ModelType.VIDEO;
-                case "3":
-                    return ModelType.GALLERY;
-                case "4":
-                    return ModelType.DOWNLOAD;
-                case "5":
-                    return ModelType.LINK;
-                default:
-                    return null;
-            }
+    private Integer convertCategoryType(String type) {
+        if(StringUtils.isEmpty(type)) {
+            return null;
         }
-        return null;
+        return Integer.parseInt(type);
     }
+
     @Override
     public List<CategoryTreeModel> ConvertCateGoryTreeByCategotry(Set<Category> categories) {
         List<CategoryTreeModel> categoryTreeModels=null;

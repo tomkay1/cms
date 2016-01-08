@@ -39,35 +39,38 @@ public class CategoryController {
     SiteRepository siteRepository;
 
     @RequestMapping("/categoryList")
-    public ModelAndView columnList(HttpServletRequest request,Integer customerid) throws Exception{
+    public ModelAndView columnList(HttpServletRequest request) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("/view/section/categoryList.html");
-        Set<Site> sites=siteRepository.findByCustomerIdAndDeleted(customerid, false);
-        List<CategorySite> categoriesList = new ArrayList<>();
-        for(Site site:sites){
-            List<Category> categories = categoryService.getCategoryBySiteAndDeleted(site,false);
-                CategorySite categorySite =new CategorySite();
-                categorySite.setSiteId(site.getSiteId());
-                categorySite.setSiteName(site.getName());
-                categorySite.setCategoryClass("treegrid-"+site.getSiteId()+"site");
-                categoriesList.add(categorySite);
-            for(Category category :categories ){//删除状态的不做显示
-                    categorySite =new CategorySite();
-                    categorySite.setModelType(category.getModelType());
-                    categorySite.setSiteId(site.getSiteId());
-                    categorySite.setSiteName(site.getName());
-                    categorySite.setName(category.getName());
-//                    categorySite.setParentId(category.getParent().getId());
-                    categorySite.setId(category.getId());
-//                    if(categorySite.getSite()=site){
-//
-//                    }
-                    categorySite.setCategoryClass("treegrid-"+category.getId()+" treegrid-parent-"+category.getParent().getId());
-                    categoriesList.add(categorySite);
-            }
-        }
-        modelAndView.addObject("categoriesList",categoriesList);
         return  modelAndView;
+//        ModelAndView modelAndView=new ModelAndView();
+//        modelAndView.setViewName("/view/section/categoryList.html");
+////        Set<Site> sites=siteRepository.findByCustomerIdAndDeleted(customerid, false);
+////        List<CategorySite> categoriesList = new ArrayList<>();
+////        for(Site site:sites){
+////            List<Category> categories = categoryService.getCategoryBySiteAndDeleted(site,false);
+////                CategorySite categorySite =new CategorySite();
+////                categorySite.setSiteId(site.getSiteId());
+////                categorySite.setSiteName(site.getName());
+////                categorySite.setCategoryClass("treegrid-"+site.getSiteId()+"site");
+////                categoriesList.add(categorySite);
+////            for(Category category :categories ){//删除状态的不做显示
+////                    categorySite =new CategorySite();
+////                    categorySite.setModelType(category.getModelType());
+////                    categorySite.setSiteId(site.getSiteId());
+////                    categorySite.setSiteName(site.getName());
+////                    categorySite.setName(category.getName());
+//////                    categorySite.setParentId(category.getParent().getId());
+////                    categorySite.setId(category.getId());
+//////                    if(categorySite.getSite()=site){
+//////
+//////                    }
+////                    categorySite.setCategoryClass("treegrid-"+category.getId()+" treegrid-parent-"+category.getParent().getId());
+////                    categoriesList.add(categorySite);
+////            }
+////        }
+////        modelAndView.addObject("categoriesList",categoriesList);
+//        return  modelAndView;
     }
 
     /*

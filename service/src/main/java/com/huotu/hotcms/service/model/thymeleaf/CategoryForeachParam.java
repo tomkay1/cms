@@ -8,6 +8,7 @@
 
 package com.huotu.hotcms.service.model.thymeleaf;
 
+import com.huotu.hotcms.service.common.ModelType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,5 +33,10 @@ public class CategoryForeachParam {
      * 指定获取的栏目ID(逗号分隔)
      */
     private String specifyids;
+
+    /**
+     * 栏目类型(""或者null表示公共类型)
+     */
+    private String type;
 
 }

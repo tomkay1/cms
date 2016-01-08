@@ -1,5 +1,6 @@
 package com.huotu.hotcms.service.repository;
 
+import com.huotu.hotcms.service.common.ModelType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,5 +18,5 @@ public interface CategoryRepository extends JpaRepository<Category, Long>,JpaSpe
    List<Category> findBySite_SiteIdAndDeletedAndIdNotOrderByOrderWeightDesc(long siteId, Boolean deleted, long categoryId);
    Set<Category> findByCustomerId(Integer customerId);
 
-   List<Category> findBySite_SiteIdAndDeletedOrderByOrderWeightDesc(long siteId, boolean deleted);
+   List<Category> findBySite_SiteIdAndDeletedAndModelTypeOrderByOrderWeightDesc(long siteId, boolean deleted,ModelType modelType);
 }

@@ -25,7 +25,7 @@ public class IndexController {
     @Autowired
     private SiteService siteService;
 
-    @RequestMapping({"/**","/",""})
+    @RequestMapping
     public ModelAndView index()
     {
         ModelAndView modelAndView=new ModelAndView();

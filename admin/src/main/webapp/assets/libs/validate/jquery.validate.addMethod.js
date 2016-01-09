@@ -75,3 +75,7 @@ jQuery.validator.addMethod("idcard", function (value, element) {
     var rel = /^((\d{15})|(\d{17}(\d|X|x)))$/;
     return this.optional(element) || (rel.test(value));
 }, "请输入正确的身份证号码");
+jQuery.validator.addMethod("route", function (value, element) {
+    var rel = /^[a-z0-9A-Z_/\.]{1,20}$/;
+    return this.optional(element) || (rel.test(value));
+}, "请使用字母、数字、下划线、反斜杠，且长度为1至20个字符");

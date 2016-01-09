@@ -3,34 +3,34 @@
  */
 define(function (require, exports, module) {
     $("#addColumnForm").validate({
-        //rules: {
-        //    txtModelName:{
-        //        required: true,
-        //    },
-        //    txtModelDescription:{
-        //        maxlength:200
-        //    },
-        //    txtModelType: {
-        //        selrequired: "-1"
-        //    },
-        //    txtOrderWeight:{
-        //        digits:true,
-        //    }
-        //},
-        //messages: {
-        //    txtModelName:{
-        //        required:"模型名称为必输项"
-        //    },
-        //    txtModelDescription:{
-        //        maxlength:"模型描述不能超过200个字符"
-        //    },
-        //    txtModelType: {
-        //        selrequired: "请选择模型类型"
-        //    },
-        //    txtOrderWeight:{
-        //        digits:"请输入数字",
-        //    }
-        //},
+        rules: {
+            categoryName:{
+                required: true
+            },
+            route:{
+                remote: {
+                    url: "/route/isExistsRouteBySiteAndRule",     //后台处理程序
+                    type: "post",               //数据发送方式
+                    dataType: "json",           //接受数据格式
+                    data: {                     //要传递的数据
+                        siteId:$("#siteId").val(),
+                        rule: function () {
+                            return $("#route").val();
+                        }
+                    }
+                },
+                route:true
+            }
+        },
+        messages: {
+            categoryName:{
+                required:"请输入栏目名称"
+            },
+            route:{
+                route:"请使用字母、数字、下划线、反斜杠，且长度为1至20个字符",
+                remote: "该栏目路由已经存在"
+            },
+        },
         submitHandler: function (form, ev) {
             var commonUtil = require("common");
             commonUtil.setDisabled("jq-cms-Save");
@@ -42,7 +42,8 @@ define(function (require, exports, module) {
                     parentId: $("#parentId").val(),
                     name: $("#name").val(),
                     model: $("#modelType").val(),
-                    orderWeight: $("#orderWeight").val()
+                    orderWeight: $("#orderWeight").val(),
+                    route:$("#route").val()
                 },
                 type: "POST",
                 dataType: 'json',

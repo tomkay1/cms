@@ -6,7 +6,6 @@ import com.huotu.hotcms.service.model.CategoryTreeModel;
 import com.huotu.hotcms.service.model.thymeleaf.CategoryForeachParam;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by chendeyu on 2015/12/31.

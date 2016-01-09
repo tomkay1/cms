@@ -41,7 +41,7 @@ define(function (require, exports, module) {
             }
         });
     }
-    function initList(){
+    function initCategoryList(){
         var employees=[];
         $.ajax({
             url: "/category/getCategoryList",
@@ -53,53 +53,43 @@ define(function (require, exports, module) {
             type: "POST",
             dataType: 'json',
             success: function (data) {
-                employees.push(data.data);
+                if(data!=null&&data.data!=null&&data.data.length>0){
+                    for (var i = 0; i < data.data.length; i++) {
+                        employees.push(data.data[i]);
+                    }
+                }else {
+                    //var siteName=$("#jq-cms-siteList").select
+                    var siteName=$("#jq-cms-siteList").find("option:selected").text();
+                    if ($("#jq-cms-siteList").val() != "-1") {
+                        employees.push({
+                            name: siteName+"(root)",
+                            id: -1,
+                            time: null,
+                            modelType: null
+                        });
+                    }
+                }
             }
         });
-        window.console.log(employees);
-        var employees = [
-            {
-                "EmployeeID": 2, "FirstName": "Andrew", "LastName": "Fuller", "Country": "USA", "Title": "Vice President, Sales", "HireDate": "1992-08-14 00:00:00", "BirthDate": "1952-02-19 00:00:00", "City": "Tacoma", "Address": "908 W. Capital Way", "expanded": "true",
-                children: [
-                    { "EmployeeID": 8, "FirstName": "Laura", "LastName": "Callahan", "Country": "USA", "Title": "Inside Sales Coordinator", "HireDate": "1994-03-05 00:00:00", "BirthDate": "1958-01-09 00:00:00", "City": "Seattle", "Address": "4726 - 11th Ave. N.E." },
-                    { "EmployeeID": 1, "FirstName": "Nancy", "LastName": "Davolio", "Country": "USA", "Title": "Sales Representative", "HireDate": "1992-05-01 00:00:00", "BirthDate": "1948-12-08 00:00:00", "City": "Seattle", "Address": "507 - 20th Ave. E.Apt. 2A" },
-                    { "EmployeeID": 3, "FirstName": "Janet", "LastName": "Leverling", "Country": "USA", "Title": "Sales Representative", "HireDate": "1992-04-01 00:00:00", "BirthDate": "1963-08-30 00:00:00", "City": "Kirkland", "Address": "722 Moss Bay Blvd." },
-                    { "EmployeeID": 4, "FirstName": "Margaret", "LastName": "Peacock", "Country": "USA", "Title": "Sales Representative", "HireDate": "1993-05-03 00:00:00", "BirthDate": "1937-09-19 00:00:00", "City": "Redmond", "Address": "4110 Old Redmond Rd." },
-                    {
-                        "EmployeeID": 5, "FirstName": "Steven", "LastName": "Buchanan", "Country": "UK", "Title": "Sales Manager", "HireDate": "1993-10-17 00:00:00", "BirthDate": "1955-03-04 00:00:00", "City": "London", "Address": "14 Garrett Hill", "expanded": "true",
-                        children: [
-                            { "EmployeeID": 6, "FirstName": "Michael", "LastName": "Suyama", "Country": "UK", "Title": "Sales Representative", "HireDate": "1993-10-17 00:00:00", "BirthDate": "1963-07-02 00:00:00", "City": "London", "Address": "Coventry House Miner Rd." },
-                            { "EmployeeID": 7, "FirstName": "Robert", "LastName": "King", "Country": "UK", "Title": "Sales Representative", "HireDate": "1994-01-02 00:00:00", "BirthDate": "1960-05-29 00:00:00", "City": "London", "Address": "Edgeham Hollow Winchester Way" },
-                            { "EmployeeID": 9, "FirstName": "Anne", "LastName": "Dodsworth", "Country": "UK", "Title": "Sales Representative", "HireDate": "1994-11-15 00:00:00", "BirthDate": "1966-01-27 00:00:00", "City": "London", "Address": "7 Houndstooth Rd." }
-                        ]
-                    }
-                ]
-            }
-        ];
-        window.console.log(employees);
-        // prepare the data
+        return employees;
+    }
+    function initList(){
         var source =
         {
             dataType: "json",
             dataFields: [
+                { name: 'children', type: 'array' },
                 { name: 'id', type: 'number' },
                 { name: 'name', type: 'string' },
-                { name: 'LastName', type: 'string' },
-                { name: 'Country', type: 'string' },
-                { name: 'City', type: 'string' },
-                { name: 'Address', type: 'string' },
-                { name: 'Title', type: 'string' },
-                { name: 'HireDate', type: 'date' },
-                { name: 'children', type: 'array' },
-                { name: 'expanded', type: 'bool' },
-                { name: 'BirthDate', type: 'date' }
+                { name: 'time', type: 'string' },
+                { name: 'modelType', type: 'number' }
             ],
             hierarchy:
             {
                 root: 'children'
             },
             id: 'id',
-            localData: employees
+            localData: initCategoryList()
         };
         var dataAdapter = new $.jqx.dataAdapter(source);
         var gridWidth=$(window).width()-45;
@@ -110,20 +100,85 @@ define(function (require, exports, module) {
                 source: dataAdapter,
                 sortable: true,
                 columns: [
-                    { text: '栏目名称', dataField: 'name', width: gridWidth*0.2 },
-                    { text: '所属模型', dataField: 'LastName', width: gridWidth*0.2 },
-                    { text: '创建时间', dataField: 'Title', width: gridWidth*0.2 },
-                    { text: 'Birth Date', dataField: 'BirthDate', cellsFormat: 'd', width: 120 },
-                    { text: 'Hire Date', dataField: 'HireDate', cellsFormat: 'd', width: 120 },
-                    { text: 'Address', dataField: 'Address', width: 250 },
-                    { text: 'City', dataField: 'City', width: 120 },
-                    { text: 'Country', dataField: 'Country' }
+                    { text: '栏目名称', dataField: 'name', width: gridWidth*0.25 },
+                    { text: '所属模型', dataField: 'modelType', width: gridWidth*0.25,cellsRenderer: function (row, column, value) {
+                        if(parseInt(value)>=0){
+                            switch (value){
+                                case 0:
+                                    return "文章模型";
+                                case 1:
+                                    return "公告模型";
+                                case 2:
+                                    return "视频模型";
+                                case 3:
+                                    return "图库模型";
+                                case 4:
+                                    return "下载模型";
+                                case 5:
+                                    return "链接模型";
+                                default :
+                                    return "自定义模型";
+                            }
+                        }else{
+                            return "未设置模型";
+                        }
+                    }},
+                    { text: '创建时间', dataField: 'time', width: gridWidth*0.25,cellsRenderer:function(row, column, value){
+                        if(value){
+                            return value.toString().substr(0,10);
+                        }
+                    } },
+                    {
+                        text: '操作', cellsAlign: 'center', align: "center", columnType: 'none',width: gridWidth*0.25, editable: false, sortable: false, dataField: null, cellsRenderer: function (row, column, value) {
+                        if(row==-1){
+                            return "<a href='#' title='新增栏目' data-id='"+row+"' style='color:blue;margin-right:5px;' class='js-cms-addCategory'>新增栏目</a>|<a href='#' class='js-cms-updateCategory' data-id='"+row+"' title='修改栏目' style='color:#cccccc;margin-right:5px;margin-left: 5px;'>修改栏目</a>|<a href='#' title='删除' style='color:#cccccc;margin-left: 5px;'>删除</a>";
+                        }else{
+                            return "<a href='#' title='新增栏目' data-id='"+row+"' style='color:blue;margin-right:5px;' class='js-cms-addCategory'>新增栏目</a>|<a href='#' class='js-cms-updateCategory' data-id='"+row+"' title='修改栏目' style='color:blue;margin-right:5px;margin-left: 5px;'>修改栏目</a>|<a href='#' title='删除' style='color:blue;margin-left: 5px;'>删除</a>";
+                        }
+                    }
+                    }
                 ]
             });
+        bindUpdateClick();
+        $('#treeGrid').on('rowExpand',function (event){//展开收缩事件
+                bindUpdateClick();
+            });
     }
-    initSite();
-    initList();
+    function bindUpdateClick(){
+        //新增栏目
+        var obj=$(".js-cms-addCategory");
+        $(".js-cms-addCategory").unbind("click");
+        $(".js-cms-updateCategory").unbind("click");
+        $.each(obj,function(item,dom){
+            $(dom).click(function(){
+                var id=$(dom).attr('data-id');
+                openUpdateCategory(id,"新增栏目");
+            })
+        })
+        //修改栏目
+        var objUpdate=$(".js-cms-updateCategory");
+        $.each(objUpdate,function(item,dom){
+            $(dom).click(function(){
+                var id=$(dom).attr('data-id');
+                openUpdateCategory(id,"修改栏目");
+            })
+        })
+    }
+    initSite();//加载站点列表信息
+    setTimeout(initList,500);//延时500毫秒加载,解决初次加载加载js出错问题
+    //initList();//加载栏目列表信息
     $("#jq-cms-siteList").on("change",function(){
         initList();
     })
+    function openUpdateCategory(id,title){
+        var siteId=$("#jq-cms-siteList").val();
+        layer.open({
+            type: 2,
+            title: title,
+            shadeClose: true,
+            shade: 0.8,
+            area: ['900px', '500px'],
+            content: '/category/addCategory/?id='+id+"&customerid="+customerId //iframe的url
+    });
+    }
 });

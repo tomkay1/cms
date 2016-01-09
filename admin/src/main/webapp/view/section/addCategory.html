@@ -15,13 +15,13 @@
     <div class="h">
         <span class="icon-sprite icon-list"></span>
         <h3>添加栏目</h3>
-        <div class="bar">
-            <a class="btn-lit" th:href="@{/column/columnList?customerid={customerid}(customerid=${user.customerId})}" target="content">
-                <span>返回栏目列表</span></a>
-        </div>
+        <!--<div class="bar">-->
+            <!--<a class="btn-lit" th:href="@{/column/columnList?customerid={customerid}(customerid=${user.customerId})}" target="content">-->
+                <!--<span>返回栏目列表</span></a>-->
+        <!--</div>-->
     </div>
     <div class="cnt-wp">
-        <form method="post" id="addColumnForm">
+        <form id="addColumnForm" method="post">
             <div class="cnt form">
                 <div class="division">
                     <input type="hidden" name="hidCategoryID" id="hidCategoryID" >
@@ -41,22 +41,15 @@
                         <tr>
                             <th>栏目名称：</th>
                             <td>
-                                <input name="name" type="text" id="name" maxlength="50" class="input-normal"  placeholder="请输入栏目名称">
-                                <!--<textarea rows="" cols="" style="width: 250px; height: 60px;" class="input-normal" id="txtModelDescription" name="txtModelDescription" ></textarea>-->
+                                <input name="categoryName" type="text" id="categoryName" maxlength="50" class="input-normal"  placeholder="请输入栏目名称">
                             </td>
                         </tr>
-                        <!--<tr>-->
-                            <!--<th>是否自定义模板：</th>-->
-                            <!--<td>-->
-                                <!--<table id="custom">-->
-                                    <!--<tbody>-->
-                                    <!--<tr>-->
-                                        <!--<td><input id="custom_0" type="radio" name="custom" value="1" checked="checked" onclick="javascript:changeradio(1)"><label for="custom_0">是</label></td>-->
-                                        <!--<td><input id="custom_1" type="radio" name="custom" value="0" onclick="javascript:changeradio(2)"><label for="custom_1">否</label></td>-->
-                                    <!--</tr>-->
-                                    <!--</tbody></table>-->
-                            <!--</td>-->
-                        <!--</tr>-->
+                        <tr>
+                            <th>栏目路由：</th>
+                            <td>
+                                <input name="route" type="text" id="route" maxlength="20" class="input-normal"  placeholder="请输入页面路由">
+                            </td>
+                        </tr>
                         <tr>
                             <th>系统数据类型：</th>
                             <td>

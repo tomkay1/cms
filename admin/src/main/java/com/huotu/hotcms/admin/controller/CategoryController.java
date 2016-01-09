@@ -167,7 +167,7 @@ public class CategoryController {
   * */
     @RequestMapping(value = "/saveCategory",method = RequestMethod.POST)
     @ResponseBody
-    public ResultView saveCategory(Category category,Integer model,Long siteId,Long parentId){
+    public ResultView saveCategory(Category category,Integer model,Long siteId,Long parentId,String route){
         ResultView result=null;
         Long categoryId = category.getId();
         try {

@@ -4,6 +4,7 @@ import com.huotu.hotcms.service.entity.Category;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,8 @@ import java.util.List;
 @Getter
 @Setter
 public class CategoryTreeModel extends Category {
+
+    public String time;
 
     public CategoryTreeModel(){
         children=new ArrayList<CategoryTreeModel>();
@@ -36,6 +39,8 @@ public class CategoryTreeModel extends Category {
             categoryTreeModel.setRoute(null);
             categoryTreeModel.setSite(null);
             categoryTreeModel.setUpdateTime(category.getUpdateTime());
+//            String time=category.getCreateTime().getYear()+"-"+category.getCreateTime().getMonthValue()+"-"+category.getCreateTime().getDayOfMonth();
+            categoryTreeModel.setTime(category.getCreateTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
             this.children.add(categoryTreeModel);
         };
         return;
@@ -55,6 +60,9 @@ public class CategoryTreeModel extends Category {
         categoryTreeModel.setParentIds(category.getParentIds());
         categoryTreeModel.setRoute(null);
         categoryTreeModel.setSite(null);
+//        category.getCreateTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+//        String time=category.getCreateTime().getYear()+"-"+category.getCreateTime().getMonthValue()+"-"+category.getCreateTime().getDayOfMonth();
+        categoryTreeModel.setTime(category.getCreateTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         categoryTreeModel.setUpdateTime(category.getUpdateTime());
         return categoryTreeModel;
     }

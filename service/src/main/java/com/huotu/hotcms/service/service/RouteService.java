@@ -18,4 +18,8 @@ public interface RouteService {
     Set<Route> getRoute(Site site);
 
     Route getRouteByRouteType(Site site,RouteType routeType);
+
+    Set<Route> getRouteByRuleAndSite(Site site,String rule);
+
+    boolean isExistsBySiteAndRule(Site site,String rule);
 }

@@ -179,12 +179,6 @@ public class CategoryServiceImpl implements CategoryService {
                         categoryTreeModel.setChildren(categoryTreeModelList1);
                         return  categoryTreeModelList;
                     }
-//                    return insertCategoryTreeById(categoryTreeModel.getChildren(), id, categoryTree);
-//                    if (categoryTreeModelList1 != null) {
-//                        return categoryTreeModelList1;
-//                    } else {
-//                        return insertCategoryTreeById(categoryTreeModel.getChildren(), id, categoryTree);
-//                    }
                 }
             }
         }

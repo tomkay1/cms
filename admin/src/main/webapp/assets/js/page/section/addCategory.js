@@ -20,7 +20,10 @@ define(function (require, exports, module) {
                     }
                 },
                 route:true
-            }
+            },
+            modelType: {
+                selrequired: "-1"
+            },
         },
         messages: {
             categoryName:{
@@ -30,6 +33,9 @@ define(function (require, exports, module) {
                 route:"请使用字母、数字、下划线、反斜杠，且长度为1至20个字符",
                 remote: "该栏目路由已经存在"
             },
+            modelType:{
+                selrequired: "请选择模型类型"
+            }
         },
         submitHandler: function (form, ev) {
             var commonUtil = require("common");

@@ -1,7 +1,5 @@
 package com.huotu.hotcms.service.service.impl;
 
-import com.huotu.hotcms.service.common.ModelType;
-import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
@@ -22,7 +20,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -107,6 +104,7 @@ public class CategoryServiceImpl implements CategoryService {
                 List<Predicate> predicates = categoryIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
                 predicates.add(cb.equal(root.get("site").get("siteId").as(Long.class),foreachParam.getSiteid()));
                 predicates.add(cb.equal(root.get("modelId").as(Integer.class),categoryType));
+                predicates.add(cb.equal(root.get("deleted").as(Boolean.class),0));
                 return cb.and(predicates.toArray(new Predicate[predicates.size()]));
             };
             return categoryRepository.findAll(specification, new Sort(Sort.Direction.DESC, "orderWeight"));
@@ -270,6 +268,11 @@ public class CategoryServiceImpl implements CategoryService {
             routeService.delete(route);
         }
         return true;
+    }
+
+    @Override
+    public Category getCategoryByRoute(Route route) {
+        return categoryRepository.findByRoute(route);
     }
 
 }

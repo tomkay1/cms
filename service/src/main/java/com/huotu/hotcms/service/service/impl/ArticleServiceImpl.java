@@ -6,7 +6,8 @@ import com.huotu.hotcms.service.model.thymeleaf.ArticleForeachParam;
 import com.huotu.hotcms.service.repository.ArticleRepository;
 import com.huotu.hotcms.service.service.ArticleService;
 import com.huotu.hotcms.service.util.PageData;
-import org.codehaus.plexus.util.StringUtils;
+import org.springframework.data.domain.Sort;
+import org.springframework.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,7 +16,10 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * Created by Administrator xhl 2016/1/6.
  */
@@ -31,7 +35,31 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Page<Article> getArticleList(ArticleForeachParam articleForeachParam) {
-        return null;
+        int pageIndex = articleForeachParam.getPageno()-1;
+        int pageSize = articleForeachParam.getPagesize();
+        Sort sort = new Sort(Sort.Direction.DESC, "orderWeight");
+
+        if(!StringUtils.isEmpty(articleForeachParam.getSpecifyids())) {
+            List<String> ids = Arrays.asList(articleForeachParam.getSpecifyids());
+            List<Long> articleIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
+            Specification<Article> specification = (root, criteriaQuery, cb) -> {
+                List<Predicate> predicates = articleIds.stream().map(id -> cb.equal(root.get("id").as(Long.class), id)).collect(Collectors.toList());
+                return cb.or(predicates.toArray(new Predicate[predicates.size()]));
+            };
+            return articleRepository.findAll(specification,new PageRequest(pageIndex,pageSize,sort));
+        }
+        Specification<Article> specification = (root, criteriaQuery, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            if(!StringUtils.isEmpty(articleForeachParam.getExcludeid())) {
+                List<String> ids = Arrays.asList(articleForeachParam.getExcludeid());
+                List<Long> articleIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
+                predicates = articleIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
+            }
+            predicates.add(cb.equal(root.get("deleted").as(Boolean.class),0));
+            predicates.add(cb.equal(root.get("category").get("id").as(Long.class), articleForeachParam.getCategoryid()));
+            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
+        return articleRepository.findAll(specification,new PageRequest(pageIndex,pageSize,sort));
     }
 
     //    @Override

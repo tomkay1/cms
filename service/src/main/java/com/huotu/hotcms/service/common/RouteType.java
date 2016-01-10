@@ -6,7 +6,7 @@ package com.huotu.hotcms.service.common;
 public enum RouteType implements CommonEnum{
     NOT_FOUND(0,"404页面"),
     SERVER_ERROR(1,"服务器错误页面"),
-    ARTICLEDETILE(2,"文章内容页面");
+    ARTICLE_CONTENT(2,"文章内容页面");
 
 
     RouteType(int code, String value) {
@@ -32,10 +32,10 @@ public enum RouteType implements CommonEnum{
     {
         switch (value){
             case 2:
-                return ARTICLEDETILE;
-            case 404:
+                return ARTICLE_CONTENT;
+            case 0:
                 return NOT_FOUND;
-            case 500:
+            case 1:
                 return SERVER_ERROR;
             default:
                 return null;

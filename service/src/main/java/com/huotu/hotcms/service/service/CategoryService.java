@@ -1,6 +1,7 @@
 package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.CategoryTreeModel;
 import com.huotu.hotcms.service.model.thymeleaf.CategoryForeachParam;
@@ -25,4 +26,6 @@ public interface CategoryService {
     Boolean updateCategoryAndRoute(Category category, String rule, String template,String noRule);
 
     Boolean deleteCategory(Category category);
+
+    Category getCategoryByRoute(Route route);
 }

@@ -64,7 +64,7 @@ public class RouteInterceptor  extends HandlerInterceptorAdapter {
     private ModelAndView getModelAndView(ModelAndView modelAndView,Site site,Route route,HttpServletRequest request){
         String resourcePath = site.isCustom() ? site.getCustomTemplateUrl():"";
         if(route.getRouteType()!=null) {
-            if (route.getRouteType().getCode().equals(RouteType.ARTICLEDETILE.getCode())) {
+            if (route.getRouteType().getCode().equals(RouteType.ARTICLE_CONTENT.getCode())) {
                 Article article = articleResolveService.getArticleBySiteAndRequest(site, request);
                 if (article != null) {
                     modelAndView.addObject("article", article);

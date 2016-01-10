@@ -10,9 +10,11 @@ package com.huotu.hotcms.web.service.factory;
 
 import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.Article;
+import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.model.thymeleaf.ArticleForeachParam;
 import com.huotu.hotcms.service.service.ArticleService;
+import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.web.thymeleaf.expression.DialectAttributeFactory;
 import com.huotu.hotcms.web.thymeleaf.expression.VariableExpression;
 import org.apache.commons.logging.Log;
@@ -22,17 +24,15 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 import org.thymeleaf.context.ITemplateContext;
-import org.thymeleaf.expression.IExpressionObjects;
 import org.thymeleaf.model.IProcessableElementTag;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by cwb on 2016/1/6.
  */
 public class ArticleForeachProcessorFactory {
+
+    private static final int PAGE_NO = 1;
+    private static final int PAGE_SIZE = 2;
 
     private static Log log = LogFactory.getLog(ArticleForeachProcessorFactory.class);
 
@@ -55,8 +55,17 @@ public class ArticleForeachProcessorFactory {
             ArticleForeachParam articleForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag, ArticleForeachParam.class);
             if(StringUtils.isEmpty(articleForeachParam.getCategoryid())) {
                 Route route = (Route)VariableExpression.getVariable(context,"route");
-                if(route.getRouteType()==RouteType.ARTICLEDETILE) {
+                if(route.getRouteType()==RouteType.ARTICLE_CONTENT) {
                     throw new Exception("路由规则错误");
+                }
+                CategoryService categoryService = (CategoryService)applicationContext.getBean("categoryServiceImpl");
+                Category category = categoryService.getCategoryByRoute(route);
+                articleForeachParam.setCategoryid(category.getId());
+                if(articleForeachParam.getPageno() == null) {
+                    articleForeachParam.setPageno(PAGE_NO);
+                }
+                if(articleForeachParam.getPagesize() == null) {
+                    articleForeachParam.setPagesize(PAGE_SIZE);
                 }
             }
             ArticleService articleService = (ArticleService)applicationContext.getBean("articleServiceImpl");

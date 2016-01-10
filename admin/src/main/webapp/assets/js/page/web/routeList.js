@@ -5,12 +5,14 @@ define(function (require, exports, module) {
     var commonUtil = require("common");
     commonUtil.setDisabled("jq-cms-Save");
     var customerId =commonUtil.getQuery("customerId");
+    commonUtil.getSiteList(customerId,"jq-cms-siteList");
     var SiteGrid=$("#js-RouteList").Grid({
         method: 'POST',//提交方式GET|POST
         form: 'form1',//表单ID
         pageSize: 10,
         dataParam:{
-            customerId:customerId
+            customerId:customerId,
+            siteId:$("#jq-cms-siteList").val()
         },
         height:'auto',
         showNumber: false,
@@ -19,9 +21,9 @@ define(function (require, exports, module) {
         pageDetail: true,
         url: '/route/getRouteList',//数据来源Url|通过mobel自定义属性配置
         rows: [
-            {width: '30%', field: 'rule', title: '路由规则', align: 'center'},
-            {width: '30%', field: 'template', title: '路由模版', align: 'center'},
-            {width: '30%', field: 'description', title: '描述', align: 'center'},
+            {width: '30%', field: 'rule', title: '路由规则', align: 'left'},
+            {width: '30%', field: 'template', title: '路由模版', align: 'left'},
+            {width: '30%', field: 'description', title: '描述', align: 'left'},
             {
                 width: '20%', field: 'createTime', title: '创建时间', align: 'center',
                 formatter: function (value, rowData) {
@@ -43,6 +45,15 @@ define(function (require, exports, module) {
         updateSite();
         deleteSite();
     });
+    $("#jq-cms-siteList").on("change",function(){
+        var option={
+            dataParam:{
+                customerId:customerId,
+                siteId:$("#jq-cms-siteList").val()
+            }
+        };
+        SiteGrid.Refresh(option);
+    })
 //TODO:搜索
     $("#jq-cms-search").click(function(){
         var commonUtil = require("common");

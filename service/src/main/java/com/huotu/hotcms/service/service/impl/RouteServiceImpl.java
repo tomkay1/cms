@@ -95,18 +95,21 @@ public class RouteServiceImpl  implements RouteService {
     @Override
     public PageData<Route> getPage(Site site,String description,Integer page,Integer pageSize) {
         PageData<Route> data = new PageData<Route>();
-//        Specification<Route> specification = (root, query, cb) -> {
-//            List<Predicate> predicates = new ArrayList<>();
-//            if (!StringUtils.isEmpty(description)) {
-//                predicates.add(cb.like(root.get("description").as(String.class), "%" + description + "%"));
-//            }
-//            if(siteId!=null){
-//                predicates.add(cb.and(root.get("description").as(String.class), "%" + description + "%"));
-//            }
-//            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
-//        };
-//        Page<Route> pageData = routeRepository.findAll(specification,new PageRequest(page - 1, pageSize));
-//        data=data.ConvertPageData(pageData,new Route[pageData.getContent().size()]);
+        Specification<Route> specification = (root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            if (!StringUtils.isEmpty(description)) {
+                predicates.add(cb.like(root.get("description").as(String.class), "%" + description + "%"));
+            }
+            if(site!=null){
+                predicates.add(cb.equal(root.get("site").as(Site.class), site));
+            }
+            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
+        Page<Route> pageData = routeRepository.findAll(specification,new PageRequest(page - 1, pageSize));
+        data=data.ConvertPageData(pageData,new Route[pageData.getContent().size()]);
+        for(Route route:pageData){
+            route.setSite(null);
+        }
         return  data;
     }
 }

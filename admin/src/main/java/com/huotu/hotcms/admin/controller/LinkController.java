@@ -11,6 +11,8 @@ import com.huotu.hotcms.service.service.LinkService;
 import com.huotu.hotcms.service.util.PageData;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,13 +32,11 @@ import java.util.Set;
 @Controller
 @RequestMapping("/link")
 public class LinkController {
+    private static final Log log = LogFactory.getLog(LinkController.class);
 
     @Autowired
     private LinkService linkService;
-    //
-//    @Autowired
-//    private HostService hostService;
-//
+
     @Autowired
     private SiteRepository siteRepository;
     @Autowired
@@ -115,6 +115,7 @@ public class LinkController {
         }
         catch (Exception ex)
         {
+            log.error(ex.getMessage());
             result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
         }
         return  result;
@@ -148,6 +149,7 @@ public class LinkController {
         }
         catch (Exception ex)
         {
+            log.error(ex.getMessage());
             result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
         }
         return  result;

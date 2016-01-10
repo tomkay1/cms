@@ -11,6 +11,8 @@ import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.util.PageData;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +34,7 @@ import java.util.Set;
 @Controller
 @RequestMapping("/site")
 public class SiteController {
+    private static final Log log = LogFactory.getLog(SiteController.class);
 
     @Autowired
     private SiteService siteService;
@@ -114,6 +117,7 @@ public class SiteController {
         }
         catch (Exception ex)
         {
+            log.error(ex.getMessage());
             result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
         }
         return  result;
@@ -121,28 +125,32 @@ public class SiteController {
 
 
     @RequestMapping("/updateSite")
-    public ModelAndView updateSite(@RequestParam(value = "id",defaultValue = "0") Long id,int customerId) throws Exception{
-        ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/view/web/updateSite.html");
-        String logo_uri="";
-        if(id!=0) {
-            Site site = siteService.findBySiteIdAndCustomerId(id,customerId);
-            if (site != null) {
-                if(!StringUtils.isEmpty(site.getLogoUri())) {
-                     logo_uri = resourceServer.getResource(site.getLogoUri()).toString();
+    public ModelAndView updateSite(@RequestParam(value = "id",defaultValue = "0") Long id,int customerId) throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
+        try {
+            modelAndView.setViewName("/view/web/updateSite.html");
+            String logo_uri = "";
+            if (id != 0) {
+                Site site = siteService.findBySiteIdAndCustomerId(id, customerId);
+                if (site != null) {
+                    if (!StringUtils.isEmpty(site.getLogoUri())) {
+                        logo_uri = resourceServer.getResource(site.getLogoUri()).toString();
+                    }
+                    modelAndView.addObject("site", site);
+                    modelAndView.addObject("logo_uri", logo_uri);
+                    Set<Host> hosts = site.getHosts();
+                    String domains = "";
+                    for (Host host : hosts) {
+                        String domain = host.getDomain();
+                        domains = domains + domain + ",";
+                    }
+                    Region region = site.getRegion();
+                    modelAndView.addObject("region", region);
+                    modelAndView.addObject("domains", domains.substring(0, domains.length() - 1));
                 }
-                modelAndView.addObject("site", site);
-                modelAndView.addObject("logo_uri", logo_uri);
-                Set<Host> hosts =site.getHosts();
-                String domains="";
-                for(Host host : hosts){
-                    String domain= host.getDomain();
-                    domains=domains+domain+",";
-                }
-                Region region= site.getRegion();
-                modelAndView.addObject("region",region);
-                modelAndView.addObject("domains", domains.substring(0, domains.length() - 1));
             }
+        } catch (Exception ex) {
+            log.error(ex.getMessage());
         }
         return modelAndView;
     }
@@ -152,8 +160,13 @@ public class SiteController {
     public PageData<Site> getModelList(@RequestParam(name="customerId",required = false) Integer customerId,
                             @RequestParam(name="name",required = false) String name,
                            @RequestParam(name = "page",required = true,defaultValue = "1") int page,
-                           @RequestParam(name = "pagesize",required = true,defaultValue = "20") int pageSize){
-        PageData<Site> pageModel=siteService.getPage(customerId,name, page, pageSize);
+                           @RequestParam(name = "pagesize",required = true,defaultValue = "20") int pageSize) {
+        PageData<Site> pageModel = null;
+        try {
+            pageModel = siteService.getPage(customerId, name, page, pageSize);
+        } catch (Exception ex) {
+            log.error(ex.getMessage());
+        }
         return pageModel;
     }
 
@@ -174,6 +187,7 @@ public class SiteController {
         }
         catch (Exception ex)
         {
+            log.error(ex.getMessage());
             result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
         }
         return  result;

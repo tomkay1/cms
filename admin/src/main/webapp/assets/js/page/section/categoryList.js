@@ -152,7 +152,7 @@ define(function (require, exports, module) {
         $.each(obj,function(item,dom){
             $(dom).click(function(){
                 var id=$(dom).attr('data-id');
-                openUpdateCategory(id,"新增栏目");
+                openUpdateCategory(id,"新增栏目",1);
             })
         })
         //修改栏目
@@ -160,7 +160,7 @@ define(function (require, exports, module) {
         $.each(objUpdate,function(item,dom){
             $(dom).click(function(){
                 var id=$(dom).attr('data-id');
-                openUpdateCategory(id,"修改栏目");
+                openUpdateCategory(id,"修改栏目",2);
             })
         })
     }
@@ -170,15 +170,19 @@ define(function (require, exports, module) {
     $("#jq-cms-siteList").on("change",function(){
         initList();
     })
-    function openUpdateCategory(id,title){
+    function openUpdateCategory(id,title,type){
         var siteId=$("#jq-cms-siteList").val();
+        var content='/category/addCategory/?id='+id+"&customerid="+customerId //iframe的url
+        if(type==2){
+            content='/category/updateCategory/?id='+id+"&customerid="+customerId //iframe的url
+        }
         layer.open({
             type: 2,
             title: title,
             shadeClose: true,
             shade: 0.8,
             area: ['900px', '500px'],
-            content: '/category/addCategory/?id='+id+"&customerid="+customerId //iframe的url
+            content: content
     });
     }
 });

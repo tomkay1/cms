@@ -8,6 +8,8 @@ import com.huotu.hotcms.service.service.impl.ModelServiceImpl;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
 import com.huotu.hotcms.service.util.PageData;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +29,7 @@ import java.time.LocalDateTime;
 @Controller
 @RequestMapping("/model")
 public class ModelController {
+    private static final Log log = LogFactory.getLog(ModelController.class);
     @Autowired
     private CookieUser cookieUser;
 
@@ -108,6 +111,7 @@ public class ModelController {
         }
         catch (Exception ex)
         {
+            log.error(ex.getMessage());
             result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
         }
         return  result;
@@ -120,9 +124,14 @@ public class ModelController {
     @ResponseBody
     public PageData<DataModel> getModelList(@RequestParam(name="name",required = false) String name,
                                    @RequestParam(name = "page",required = true,defaultValue = "1") Integer page,
-                                   @RequestParam(name = "pagesize",required = true,defaultValue = "20") Integer pageSize){
-       PageData<DataModel> pageModel=modelService.getPage(name, page, pageSize);
-       return pageModel;
+                                   @RequestParam(name = "pagesize",required = true,defaultValue = "20") Integer pageSize) {
+        PageData<DataModel> pageModel = null;
+        try {
+            pageModel = modelService.getPage(name, page, pageSize);
+        } catch (Exception ex) {
+            log.error(ex.getMessage());
+        }
+        return pageModel;
     }
 
     /*
@@ -143,6 +152,7 @@ public class ModelController {
         }
         catch (Exception ex)
         {
+            log.error(ex.getMessage());
             result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
         }
         return  result;

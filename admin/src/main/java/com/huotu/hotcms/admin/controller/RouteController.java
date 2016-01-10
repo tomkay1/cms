@@ -35,12 +35,29 @@ public class RouteController {
         try{
             if(!StringUtils.isEmpty(rule)){
                 Site site=siteService.getSite(siteId);
-                return !routeService.isExistsBySiteAndRule(site,rule);
+                return !routeService.isPatterBySiteAndRule(site,rule);
             }
             return true;
         }catch (Exception ex){
             log.error(ex.getMessage());
            return true;
+        }
+    }
+
+    @RequestMapping(value = "/isExistsRouteBySiteAndRuleIgnore",method = RequestMethod.POST)
+    @ResponseBody
+    public Boolean isExistsRouteBySiteAndRuleIgnore(@RequestParam(value = "siteId",defaultValue = "0") Long siteId,
+                                              @RequestParam(value = "rule") String rule,
+                                              @RequestParam(value = "noRule") String noRule){
+        try{
+            if(!StringUtils.isEmpty(rule)){
+                Site site=siteService.getSite(siteId);
+                return !routeService.isPatterBySiteAndRuleIgnore(site,rule,noRule);
+            }
+            return true;
+        }catch (Exception ex){
+            log.error(ex.getMessage());
+            return true;
         }
     }
 }

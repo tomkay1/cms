@@ -8,7 +8,6 @@
 
 package com.huotu.hotcms.service.entity;
 
-import com.huotu.hotcms.service.common.ModelType;
 import lombok.Getter;
 import lombok.Setter;
 

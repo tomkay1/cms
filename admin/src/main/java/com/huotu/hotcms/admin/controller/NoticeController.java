@@ -9,6 +9,8 @@ import com.huotu.hotcms.service.service.NoticeService;
 import com.huotu.hotcms.service.util.PageData;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,13 +30,11 @@ import java.util.Set;
 @Controller
 @RequestMapping("/notice")
 public class NoticeController {
+    private static final Log log = LogFactory.getLog(LinkController.class);
 
     @Autowired
     private NoticeService noticeService;
-//
-//    @Autowired
-//    private HostService hostService;
-//
+
     @Autowired
     private CategoryRepository categoryRepository;
     @Autowired
@@ -49,16 +49,11 @@ public class NoticeController {
         return  modelAndView;
     }
 
-
-
-
-
     @RequestMapping(value = "/addNotice")
     public ModelAndView addNotice(HttpServletRequest request,Integer customerid) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("/view/contents/addNotice.html");
         Set<Category> categorys=categoryRepository.findByCustomerId(customerid);
-//        List<Region> regions =regionRepository.findAll();
         modelAndView.addObject("categorys",categorys);
         return  modelAndView;
     }
@@ -100,13 +95,13 @@ public class NoticeController {
                 notice.setCreateTime(LocalDateTime.now());
                 notice.setUpdateTime(LocalDateTime.now());
             }
-
             notice.setCategory(category);
             noticeService.saveNotice(notice);
             result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
         }
         catch (Exception ex)
         {
+            log.error(ex.getMessage());
             result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
         }
         return  result;
@@ -119,7 +114,12 @@ public class NoticeController {
                                          @RequestParam(name="title",required = false) String title,
                                          @RequestParam(name = "page",required = true,defaultValue = "1") int page,
                                          @RequestParam(name = "pagesize",required = true,defaultValue = "20") int pageSize){
-        PageData<NoticeCategory> pageModel=noticeService.getPage(customerId,title, page, pageSize);
+        PageData<NoticeCategory> pageModel=null;
+        try {
+             pageModel = noticeService.getPage(customerId, title, page, pageSize);
+        }catch (Exception ex){
+            log.error(ex.getMessage());
+        }
         return pageModel;
     }
 
@@ -140,6 +140,7 @@ public class NoticeController {
         }
         catch (Exception ex)
         {
+            log.error(ex.getMessage());
             result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
         }
         return  result;

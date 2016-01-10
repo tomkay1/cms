@@ -39,8 +39,42 @@ public class RouteServiceImpl  implements RouteService {
     }
 
     @Override
-    public boolean isExistsBySiteAndRule(Site site, String rule) {
+    public Boolean isExistsBySiteAndRule(Site site, String rule) {
        Set<Route> routeSet=routeRepository.findBySiteAndRule(site,rule);
        return (routeSet!=null&&routeSet.size()>0)?true:false;
+    }
+
+    @Override
+    public Boolean isPatterBySiteAndRule(Site site, String rule) {
+        Set<Route> routes =getRoute(site);
+        for(Route s : routes) {
+            if(s.getRule()!=null) {
+                if(rule.matches(s.getRule())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public Boolean isPatterBySiteAndRuleIgnore(Site site, String rule, String noRule) {
+        Set<Route> routes =getRoute(site);
+        for(Route s : routes) {
+            if(s.getRule()!=null) {
+                if(!s.getRule().equals(noRule)) {
+                    if (rule.matches(s.getRule())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public Boolean save(Route route) {
+        Route route1= routeRepository.save(route);
+        return  route1!=null;
     }
 }

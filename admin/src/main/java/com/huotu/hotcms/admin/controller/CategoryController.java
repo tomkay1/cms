@@ -1,12 +1,12 @@
 package com.huotu.hotcms.admin.controller;
 
 import com.huotu.hotcms.admin.util.web.CookieUser;
-import com.huotu.hotcms.service.common.ModelType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.CategoryTreeModel;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.service.CategoryService;
+import com.huotu.hotcms.service.service.RouteService;
 import com.huotu.hotcms.service.service.impl.SiteServiceImpl;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
@@ -45,43 +45,21 @@ public class CategoryController {
     @Autowired
     SiteServiceImpl siteService;
 
+    @Autowired
+    RouteService routeService;
+
+    /**
+     * 栏目列表视图
+     * */
     @RequestMapping("/categoryList")
     public ModelAndView categoryList(HttpServletRequest request) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("/view/section/categoryList.html");
         return  modelAndView;
-//        ModelAndView modelAndView=new ModelAndView();
-//        modelAndView.setViewName("/view/section/categoryList.html");
-////        Set<Site> sites=siteRepository.findByCustomerIdAndDeleted(customerid, false);
-////        List<CategorySite> categoriesList = new ArrayList<>();
-////        for(Site site:sites){
-////            List<Category> categories = categoryService.getCategoryBySiteAndDeleted(site,false);
-////                CategorySite categorySite =new CategorySite();
-////                categorySite.setSiteId(site.getSiteId());
-////                categorySite.setSiteName(site.getName());
-////                categorySite.setCategoryClass("treegrid-"+site.getSiteId()+"site");
-////                categoriesList.add(categorySite);
-////            for(Category category :categories ){//删除状态的不做显示
-////                    categorySite =new CategorySite();
-////                    categorySite.setModelType(category.getModelType());
-////                    categorySite.setSiteId(site.getSiteId());
-////                    categorySite.setSiteName(site.getName());
-////                    categorySite.setName(category.getName());
-//////                    categorySite.setParentId(category.getParent().getId());
-////                    categorySite.setId(category.getId());
-//////                    if(categorySite.getSite()=site){
-//////
-//////                    }
-////                    categorySite.setCategoryClass("treegrid-"+category.getId()+" treegrid-parent-"+category.getParent().getId());
-////                    categoriesList.add(categorySite);
-////            }
-////        }
-////        modelAndView.addObject("categoriesList",categoriesList);
-//        return  modelAndView;
     }
 
     /**
-     * 根据商户ID获得站点列表业务API
+     * 根据商户ID获得站点列表业务API xhl
      * */
     @RequestMapping("/getSiteList")
     @ResponseBody
@@ -102,6 +80,9 @@ public class CategoryController {
         return result;
     }
 
+    /**
+     * 获得栏目列表 xhl
+     * */
     @RequestMapping("/getCategoryList")
     @ResponseBody
     public ResultView getCategotyList(@RequestParam(name="siteId",required = false) Long siteId,
@@ -119,18 +100,6 @@ public class CategoryController {
         }
         return resultView;
     }
-
-    /*
-   * 获得栏目列表
-   * */
-//    @RequestMapping(value = "/getModelList",method = RequestMethod.POST)
-//    @ResponseBody
-//    public PageData<DataModel> getModelList(@RequestParam(name="name",required = false) String name,
-//                                            @RequestParam(name = "page",required = true,defaultValue = "1") Integer page,
-//                                            @RequestParam(name = "pagesize",required = true,defaultValue = "20") Integer pageSize){
-//        PageData<DataModel> pageModel=modelService.getPage(name, page, pageSize);
-//        return pageModel;
-//    }
 
     /*
    * 增加栏目
@@ -154,65 +123,66 @@ public class CategoryController {
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("/view/section/updateCategory.html");
         Category category =categoryService.getCategoryById(id);
-        Category categoryParent =category.getParent();
-        Site site=category.getSite();
         modelAndView.addObject("category",category);
-        modelAndView.addObject("site", site);
         return modelAndView;
     }
 
-
-    /*
-  * 保存栏目
-  * */
+    /**
+     * 新增栏目信息 xhl
+     * */
     @RequestMapping(value = "/saveCategory",method = RequestMethod.POST)
     @ResponseBody
-    public ResultView saveCategory(Category category,Integer model,Long siteId,Long parentId,String route){
+    public ResultView saveCategory(Category category, Integer model,Long siteId,Long parentId,String rule,String template){
         ResultView result=null;
-        Long categoryId = category.getId();
         try {
-            if (categoryId==null){
-            Site site=siteRepository.findOne(siteId);
-            Category categoryParent=categoryService.getCategoryById(parentId);
-            category.setSite(site);
-            category.setCustomerId(site.getCustomerId());
-            category.setModelType(model);
-            category.setParent(categoryParent);
-            category.setCreateTime(LocalDateTime.now());
-            category.setUpdateTime(LocalDateTime.now());
-                categoryService.save(category);
-                result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
-            }
-            else {
-                Site site=siteRepository.findOne(siteId);
-                Category categoryParent=categoryService.getCategoryById(parentId);
+            if (!routeService.isPatterBySiteAndRule(category.getSite(), rule)) {
+                Site site = siteRepository.findOne(siteId);
+                Category categoryParent = categoryService.getCategoryById(parentId);
                 category.setSite(site);
-                category.setModelType(model);
                 category.setCustomerId(site.getCustomerId());
+                if (model >= 0) {
+                    category.setModelType(model);
+                }
                 category.setParent(categoryParent);
+                category.setCreateTime(LocalDateTime.now());
                 category.setUpdateTime(LocalDateTime.now());
-                categoryService.save(category);
-                result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
+                if (categoryService.saveCategoryAndRoute(category, rule, template)) {
+                    result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
+                } else {
+                    result = new ResultView(ResultOptionEnum.FAILE.getCode(), ResultOptionEnum.FAILE.getValue(), null);
+                }
+            } else {
+                result = new ResultView(ResultOptionEnum.ROUTE_EXISTS.getCode(), ResultOptionEnum.ROUTE_EXISTS.getValue(), null);
             }
-
         }
         catch (Exception ex)
         {
+            log.error(ex.getMessage());
             result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
         }
         return  result;
     }
 
+    /**
+     * 根据栏目ID来删除栏目 xhl
+     * */
     @RequestMapping(value = "/deleteCategory",method = RequestMethod.POST)
     @ResponseBody
-    public ResultView deleteCategory(@RequestParam(name = "id",required = true,defaultValue = "0") Long id,HttpServletRequest request) {
+    public ResultView deleteCategory(@RequestParam(name = "id",required = true,defaultValue = "0") Long id,
+                                     HttpServletRequest request) {
         ResultView result=null;
         try{
             if(cookieUser.isSupper(request)) {
                 Category category = categoryService.getCategoryById(id);
-                category.setDeleted(true);
-                categoryService.save(category);
-                result=new ResultView(ResultOptionEnum.OK.getCode(),ResultOptionEnum.OK.getValue(),null);
+                if(category.getCustomerId().equals(cookieUser.getCustomerId(request))) {//删除的时候验证是否是删除同一商户下面的栏目，增强安全性
+                    category.setDeleted(true);
+                    category.setRoute(null);
+                    categoryService.save(category);
+                    result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
+                }
+                else{
+                    result=new ResultView(ResultOptionEnum.NO_LIMITS.getCode(),ResultOptionEnum.NO_LIMITS.getValue(),null);
+                }
             }
             else {
                 result=new ResultView(ResultOptionEnum.NO_LIMITS.getCode(),ResultOptionEnum.NO_LIMITS.getValue(),null);
@@ -220,8 +190,46 @@ public class CategoryController {
         }
         catch (Exception ex)
         {
+            log.error(ex.getMessage());
             result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
         }
         return  result;
     }
+
+//    /**
+//     * 新增栏目信息 xhl
+//     * */
+//    @RequestMapping(value = "/modifyCategory",method = RequestMethod.POST)
+//    @ResponseBody
+//    public ResultView modifyCategory(@RequestParam(name = "id",required = true,defaultValue = "0") Long id,
+//                                     @RequestParam(name = "siteId",required = true) Long siteId,
+//                                     @RequestParam(name = "name",required = true) String name,
+//                                     @RequestParam(name = "modelType") Integer modelType,
+//                                     @RequestParam(name = "orderWeight") Long orderWeight,
+//                                     @RequestParam(name = "rule") String rule,
+//                                     @RequestParam(name = "template") String template,
+//                                     @RequestParam(name = "noRule") String noRule){
+//        ResultView result=null;
+//        try {
+//            if (!routeService.isPatterBySiteAndRuleIgnore(category.getSite(), rule, noRule)) {
+//                Site site = siteRepository.findOne(siteId);
+//                Category categoryParent = categoryService.getCategoryById(parentId);
+//                category.setSite(site);
+//                if (model >= 0) {
+//                    category.setModelType(model);
+//                }
+//                category.setCustomerId(site.getCustomerId());
+//                category.setParent(categoryParent);
+//                category.setUpdateTime(LocalDateTime.now());
+//                categoryService.save(category);
+//                result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
+//            }
+//        }
+//        catch (Exception ex)
+//        {
+//            log.error(ex.getMessage());
+//            result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
+//        }
+//        return  result;
+//    }
 }

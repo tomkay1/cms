@@ -24,6 +24,9 @@ define(function (require, exports, module) {
             modelType: {
                 selrequired: "-1"
             },
+            template:{
+                route:true
+            }
         },
         messages: {
             categoryName:{
@@ -33,8 +36,8 @@ define(function (require, exports, module) {
                 route:"请使用字母、数字、下划线、反斜杠，且长度为1至20个字符",
                 remote: "该栏目路由已经存在"
             },
-            modelType:{
-                selrequired: "请选择模型类型"
+            template:{
+                route:"请使用字母、数字、下划线、反斜杠，且长度为1至20个字符",
             }
         },
         submitHandler: function (form, ev) {
@@ -43,13 +46,13 @@ define(function (require, exports, module) {
             $.ajax({
                 url: "/category/saveCategory",
                 data: {
-                    id:$("#hidRegionID").val(),
                     siteId:$("#siteId").val(),
                     parentId: $("#parentId").val(),
-                    name: $("#name").val(),
+                    name: $("#categoryName").val(),
                     model: $("#modelType").val(),
                     orderWeight: $("#orderWeight").val(),
-                    route:$("#route").val()
+                    rule:$("#route").val(),
+                    template:$("#template").val()
                 },
                 type: "POST",
                 dataType: 'json',
@@ -58,16 +61,19 @@ define(function (require, exports, module) {
                     if(data!=null)
                     {
                         var index=parseInt(data.code);
-                        if(index==200)
-                        {
-                            var layer=require("layer");
-                            layer.msg("操作成功",{time: 2000});
-                            $("#name").val("");
-                            $("#modelType").val("");
-                            $("#orderWeight").val("50");
+                        switch (index){
+                            case 200:
+                                $("#route").val("");
+                                $("#template").val("")
+                                layer.msg("操作成功",{time: 2000});
+                                break;
+                            case 204:
+                                layer.msg("路由规则已经存在",{time: 2000});
+                                break;
+                            case 500:
+                                layer.msg("操作失败",{time: 2000})
+                                break;
                         }
-                        if(index==500)
-                            layer.msg("操作失败",{time: 2000})
                     }
                     commonUtil.cancelDisabled("jq-cms-Save");
                 },

@@ -14,68 +14,64 @@
 <div class="block">
     <div class="h">
         <span class="icon-sprite icon-list"></span>
-        <h3>添加栏目</h3>
-        <div class="bar">
-            <a class="btn-lit" th:href="@{/column/columnList?customerid={customerid}(customerid=${category.customerId})}" target="content">
-                <span>返回栏目列表</span></a>
-        </div>
+        <h3>修改栏目</h3>
     </div>
     <div class="cnt-wp">
-        <form method="post" id="updateColumnForm">
+        <form id="updateColumnForm" method="post">
             <div class="cnt form">
                 <div class="division">
-                    <input type="hidden" name="hidCategoryID" id="hidCategoryID" th:value="${category.id}">
+                    <input type="hidden" name="hidCategoryID" id="hidCategoryID" th:text="${category.id}">
                     <table width="100%" border="0" cellpadding="0" cellspacing="0">
                         <tr>
                             <th>所属站点：</th>
-                            <td th:text="${site.name}" th:value="${site.name}">
+                            <td th:text="${category.site.name}">
                             </td>
-                            <input name="siteId" type="hidden" id="siteId" th:value="${site.siteId}" maxlength="50" class="input-normal"  placeholder="请输入模型名称">
+                            <input name="siteId" type="hidden" id="siteId" th:value="${category.site.siteId}" maxlength="50" class="input-normal"  placeholder="请输入模型名称">
                         </tr>
                         <tr>
                             <th>父级栏目：</th>
-                            <td th:text="${category.parent.name}" th:value="${category.parent.name}">
+                            <td th:text="${category.parent}==null?'root':${category.parent.name}">
                             </td>
-                            <input name="parentId" type="hidden" id="parentId" th:value="${category.parent.id}" maxlength="50" class="input-normal"  placeholder="">
+                            <input name="parentId" type="hidden" id="parentId" th:value="${category.parent}==null?'':${category.parent.id}" maxlength="50" class="input-normal"  placeholder="">
                         </tr>
                         <tr>
                             <th>栏目名称：</th>
                             <td>
-                                <input name="name" type="text" id="name" maxlength="50" th:value="${category.name}" class="input-normal"  placeholder="请输入栏目名称">
-                                <!--<textarea rows="" cols="" style="width: 250px; height: 60px;" class="input-normal" id="txtModelDescription" name="txtModelDescription" ></textarea>-->
+                                <input name="categoryName"  th:value="${category.name}" type="text" id="categoryName" maxlength="50" class="input-normal"  placeholder="请输入栏目名称">
                             </td>
                         </tr>
-                        <!--<tr>-->
-                        <!--<th>是否自定义模板：</th>-->
-                        <!--<td>-->
-                        <!--<table id="custom">-->
-                        <!--<tbody>-->
-                        <!--<tr>-->
-                        <!--<td><input id="custom_0" type="radio" name="custom" value="1" checked="checked" onclick="javascript:changeradio(1)"><label for="custom_0">是</label></td>-->
-                        <!--<td><input id="custom_1" type="radio" name="custom" value="0" onclick="javascript:changeradio(2)"><label for="custom_1">否</label></td>-->
-                        <!--</tr>-->
-                        <!--</tbody></table>-->
-                        <!--</td>-->
-                        <!--</tr>-->
                         <tr>
                             <th>系统数据类型：</th>
                             <td>
                                 <select name="modelType" class="input-normal" id="modelType">
-                                    <option value="-1">==请选择模型类型==</option>
-                                    <option value="0" th:selected="${category.modelType.getCode()}=='0'?true:false" >文章模型</option>
-                                    <option value="1" th:selected="${category.modelType.getCode()}=='1'?true:false">公告模型</option>
-                                    <option value="2" th:selected="${category.modelType.getCode()}=='2'?true:false">视频模型</option>
-                                    <option value="3" th:selected="${category.modelType.getCode()}=='3'?true:false">图库模型</option>
-                                    <option value="4" th:selected="${category.modelType.getCode()}=='4'?true:false">下载模型</option>
-                                    <option value="5" th:selected="${category.modelType.getCode()}=='5'?true:false">链接模型</option>
+                                    <option value="-1" >==请选择模型类型==</option>
+                                    <option value="0" th:selected="${category.modelType}=='0'?true:false">文章模型</option>
+                                    <option value="1" th:selected="${category.modelType}=='1'?true:false">公告模型</option>
+                                    <option value="2" th:selected="${category.modelType}=='2'?true:false">视频模型</option>
+                                    <option value="3" th:selected="${category.modelType}=='3'?true:false">图库模型</option>
+                                    <option value="4" th:selected="${category.modelType}=='4'?true:false">下载模型</option>
+                                    <option value="5" th:selected="${category.modelType}=='5'?true:false">链接模型</option>
                                 </select>
                             </td>
                         </tr>
                         <tr>
                             <th>排序权重：</th>
                             <td>
-                                <input name="orderWeight" type="text" id="orderWeight" th:value="${category.orderWeight}" value="50" class="input-normal" placeholder="请输入排序权重">
+                                <input name="orderWeight" th:value="${category.orderWeight}"  type="text" id="orderWeight" value="50" class="input-normal" placeholder="请输入排序权重">
                                 <span style="color:#ccc;">数字越大排越前面</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>栏目路由：</th>
+                            <td>
+                                <input name="noRule" type="text" th:value="${category.route}==null?'':${category.route.rule}" id="noRule" maxlength="20" class="input-normal"  placeholder="请输入页面路由">
+                                <input name="route" type="text" th:value="${category.route}==null?'':${category.route.rule}" id="route" maxlength="20" class="input-normal"  placeholder="请输入页面路由">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>路由模版：</th>
+                            <td>
+                                <input name="template" type="text" th:value="${category.route}==null?'':${category.route.template}" id="template" maxlength="20" class="input-normal"  placeholder="请输入页面路由模版">
                             </td>
                         </tr>
                         </tbody>

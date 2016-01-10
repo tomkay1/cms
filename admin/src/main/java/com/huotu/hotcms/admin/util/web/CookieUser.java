@@ -21,11 +21,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Component
 public class CookieUser {
-//    @Autowired
-//    private HttpServletRequest request;
-//
-//    @Autowired
-//    private HttpServletResponse response;
 
     public CookieUser(){
 
@@ -35,6 +30,14 @@ public class CookieUser {
     * Cookie中读取customerID
     * */
     public  int getCustomerId(HttpServletRequest request, int customerId){
+        return  CookieHelper.getCookieValInteger(request, CMSEnums.CookieKeyValue.CustomerID.toString());
+    }
+
+    /**
+     * * Cookie中读取customerID
+       *
+     * */
+    public  int getCustomerId(HttpServletRequest request){
         return  CookieHelper.getCookieValInteger(request, CMSEnums.CookieKeyValue.CustomerID.toString());
     }
 

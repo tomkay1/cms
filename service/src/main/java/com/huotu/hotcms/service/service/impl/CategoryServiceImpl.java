@@ -1,19 +1,24 @@
 package com.huotu.hotcms.service.service.impl;
 
 import com.huotu.hotcms.service.common.ModelType;
+import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.CategoryTreeModel;
 import com.huotu.hotcms.service.model.thymeleaf.CategoryForeachParam;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.service.CategoryService;
+import com.huotu.hotcms.service.service.RouteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.Predicate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,6 +33,12 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     CategoryRepository categoryRepository;
+
+//    @Autowired
+//    CategoryService categoryService;
+
+    @Autowired
+    RouteService routeService;
 
     @Override
     public Category getCategoryById(Long id) {
@@ -128,7 +139,7 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryTreeModels;
     }
 
-    public boolean isExistsCategory(List<CategoryTreeModel> categoryTreeModelList,Category category) {
+    public Boolean isExistsCategory(List<CategoryTreeModel> categoryTreeModelList,Category category) {
         if(categoryTreeModelList!=null){
             for(CategoryTreeModel categoryTreeModel : categoryTreeModelList){
                 if(categoryTreeModel!=null&&categoryTreeModel.getId().equals(category.getId())){
@@ -184,4 +195,61 @@ public class CategoryServiceImpl implements CategoryService {
         }
         return null;
     }
+
+
+    @Override
+    @Transactional
+    public Boolean saveCategoryAndRoute(Category category, String rule,String template) {
+        if(!routeService.isPatterBySiteAndRule(category.getSite(), rule)) {
+            Route route1 = new Route();
+            route1.setDescription("栏目路由");
+            route1.setRule(rule);
+            route1.setSite(category.getSite());
+            route1.setTemplate(template);
+            route1.setCreateTime(LocalDateTime.now());
+            route1.setCustomerId(category.getCustomerId());
+            route1.setDeleted(false);
+            route1.setOrderWeight(50);
+            route1.setUpdateTime(LocalDateTime.now());
+            routeService.save(route1);
+            category.setRoute(route1);
+        }
+        save(category);
+        return true;
+    }
+
+    @Override
+    @Transactional
+    public Boolean updateCategoryAndRoute(Category category, String rule, String template,String noRule) {
+        if(!routeService.isPatterBySiteAndRuleIgnore(category.getSite(), rule, noRule)) {
+            Route route1 =category.getRoute();
+            if(route1!=null) {
+                route1.setRule(rule);
+                route1.setSite(category.getSite());
+                route1.setTemplate(template);
+                route1.setCreateTime(LocalDateTime.now());
+                route1.setCustomerId(category.getCustomerId());
+                route1.setDeleted(false);
+                route1.setOrderWeight(50);
+                route1.setUpdateTime(LocalDateTime.now());
+                routeService.save(route1);
+            }else{
+                route1 = new Route();
+                route1.setDescription("栏目路由");
+                route1.setRule(rule);
+                route1.setSite(category.getSite());
+                route1.setTemplate(template);
+                route1.setCreateTime(LocalDateTime.now());
+                route1.setCustomerId(category.getCustomerId());
+                route1.setDeleted(false);
+                route1.setOrderWeight(50);
+                route1.setUpdateTime(LocalDateTime.now());
+                routeService.save(route1);
+                category.setRoute(route1);
+            }
+        }
+        save(category);
+        return true;
+    }
+
 }

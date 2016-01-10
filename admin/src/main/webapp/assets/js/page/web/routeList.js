@@ -56,13 +56,11 @@ define(function (require, exports, module) {
     })
 //TODO:搜索
     $("#jq-cms-search").click(function(){
-        var commonUtil = require("common");
-        commonUtil.setDisabled("jq-cms-Save");
-        var customerId =commonUtil.getQuery("customerId");
         var option={
             dataParam:{
-                name:$("#siteName").val(),
-                customerId:customerId
+                customerId:customerId,
+                description:$("#description").val(),
+                siteId:$("#jq-cms-siteList").val()
             }
         };
         SiteGrid.Refresh(option);
@@ -70,13 +68,11 @@ define(function (require, exports, module) {
 
     //TODO:显示所有
     $("#jq-cms-searchAll").click(function(){
-        var commonUtil = require("common");
-        commonUtil.setDisabled("jq-cms-Save");
-        var customerId =commonUtil.getQuery("customerId");
         var option={
             dataParam:{
-                name:"",
-                customerId:customerId
+                customerId:customerId,
+                description:"",
+                siteId:$("#jq-cms-siteList").val()
             }
         };
         SiteGrid.Refresh(option);

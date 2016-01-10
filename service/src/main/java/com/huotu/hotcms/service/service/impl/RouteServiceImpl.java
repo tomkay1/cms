@@ -1,13 +1,22 @@
 package com.huotu.hotcms.service.service.impl;
 
 import com.huotu.hotcms.service.common.RouteType;
+import com.huotu.hotcms.service.entity.DataModel;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.repository.RouteRepository;
 import com.huotu.hotcms.service.service.RouteService;
+import com.huotu.hotcms.service.util.PageData;
+import org.codehaus.plexus.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.Predicate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -81,5 +90,26 @@ public class RouteServiceImpl  implements RouteService {
     @Override
     public void delete(Route route) {
         routeRepository.delete(route);
+    }
+
+    @Override
+    public PageData<Route> getPage(Site site,String description,Integer page,Integer pageSize) {
+        PageData<Route> data = new PageData<Route>();
+        Specification<Route> specification = (root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            if (!StringUtils.isEmpty(description)) {
+                predicates.add(cb.like(root.get("description").as(String.class), "%" + description + "%"));
+            }
+            if(site!=null){
+                predicates.add(cb.equal(root.get("site").as(Site.class), site));
+            }
+            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
+        Page<Route> pageData = routeRepository.findAll(specification,new PageRequest(page - 1, pageSize));
+        data=data.ConvertPageData(pageData,new Route[pageData.getContent().size()]);
+        for(Route route:pageData){
+            route.setSite(null);
+        }
+        return  data;
     }
 }

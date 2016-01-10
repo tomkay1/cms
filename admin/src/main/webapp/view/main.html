@@ -36,17 +36,17 @@
     <!--账号信息END--->
     <!--菜单BEGIN--->
     <div id="con_left" style="height: 546px;">
-        <div class="leftpanelinner" id="menuContainer" style="height: 778px; overflow-y: auto;">
+        <div class="leftpanelinner" id="menuContainer" style="overflow-y: auto;">
             <ul class="nav nav-pills nav-stacked nav-bracket" id="menuList">
                 <li class="nav-parent nav-active active js-cms-menus" style="cursor: pointer;">
                     <a class="aparent"><i class="fa fa-chevron-circle-right"></i><span>栏目管理</span></a>
                     <ul class="children">
-                        <li class="childMenus" style="cursor: pointer;">
-                            <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
-                            <a><i class="fa fa-caret-right"></i>新增栏目<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
-                                </span>
-                            </a>
-                        </li>
+                        <!--<li class="childMenus" style="cursor: pointer;">-->
+                            <!--<div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>-->
+                            <!--<a><i class="fa fa-caret-right"></i>新增栏目<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!-->
+                                <!--</span>-->
+                            <!--</a>-->
+                        <!--</li>-->
                         <li class="childMenus" style="cursor: pointer;">
                             <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
                             <a th:href="@{/category/categoryList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>栏目列表<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
@@ -90,6 +90,12 @@
                         <li class="childMenus" style="cursor: pointer;">
                             <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
                             <a th:href="@{/site/siteList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>站点管理<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
+                                </span>
+                            </a>
+                        </li>
+                        <li class="childMenus" style="cursor: pointer;">
+                            <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
+                            <a th:href="@{/route/routeList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>路由规则<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
                                 </span>
                             </a>
                         </li>

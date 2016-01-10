@@ -35,14 +35,6 @@ public class ModelServiceImpl implements ModelService {
         };
         Page<DataModel> pageData = modelRepository.findAll(specification,new PageRequest(page - 1, pageSize));
         data=data.ConvertPageData(pageData,new DataModel[pageData.getContent().size()]);
-//        if (pageData != null) {
-//            data = new PageData<DataModel>();
-//            data.setPageCount(pageData.getTotalPages());
-//            data.setPageIndex(pageData.getNumber());
-//            data.setPageSize(pageData.getSize());
-//            data.setTotal(pageData.getTotalElements());
-//            data.setRows((DataModel[])pageData.getContent().toArray(new DataModel[pageData.getContent().size()]));
-//        }
         return  data;
     }
 

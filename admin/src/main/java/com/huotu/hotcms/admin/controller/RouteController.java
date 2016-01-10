@@ -1,8 +1,11 @@
 package com.huotu.hotcms.admin.controller;
 
+import com.huotu.hotcms.service.entity.DataModel;
+import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.service.impl.RouteServiceImpl;
+import com.huotu.hotcms.service.util.PageData;
 import com.huotu.hotcms.service.util.ResultView;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Created by Administrator xhl 2016/1/9.
@@ -27,6 +31,32 @@ public class RouteController {
 
     @Autowired
     private RouteServiceImpl routeService;
+
+    @RequestMapping(value = "/routeList")
+    public ModelAndView routeList(){
+        ModelAndView modelAndView=new ModelAndView();
+        modelAndView.setViewName("/view/web/routeList.html");
+        return  modelAndView;
+    }
+
+    /**
+     * 获得模型列表
+     * */
+    @RequestMapping(value = "/getRouteList",method = RequestMethod.POST)
+    @ResponseBody
+    public PageData<Route> getModelList(@RequestParam(name="siteId",required = false) Long siteId,
+                                        @RequestParam(name="description",required = false) String description,
+                                            @RequestParam(name = "page",required = true,defaultValue = "1") Integer page,
+                                            @RequestParam(name = "pagesize",required = true,defaultValue = "20") Integer pageSize) {
+        PageData<Route> pageModel = null;
+        try {
+            Site site=siteService.getSite(siteId);
+            pageModel = routeService.getPage(site,description, page, pageSize);
+        } catch (Exception ex) {
+            log.error(ex.getMessage());
+        }
+        return pageModel;
+    }
 
     @RequestMapping(value = "/isExistsRouteBySiteAndRule",method = RequestMethod.POST)
     @ResponseBody

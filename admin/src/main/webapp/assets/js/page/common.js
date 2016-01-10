@@ -51,6 +51,42 @@ define(["js/jquery-1.9.1.min"],function () {
                 return "";
             if (arguments.length == 2)
                 return arguments[1];
+        },
+        getSiteList:function(customerId,div){
+            $.ajax({
+                url: "/category/getSiteList",
+                data: {
+                    customerId:customerId
+                },
+                async:false,
+                type: "POST",
+                dataType: 'json',
+                success: function (data) {
+                    if(data!=null){
+                        if(data.data!=null&&data.data.length>0){
+                            for(var i=0;i<data.data.length;i++){
+                                $("#"+div).append("<option value='"+data.data[i].siteId+"'>"+data.data[i].name+"</option>")
+                            }
+                        }else{
+                            switch (data.code){
+                                case 200:
+                                    $("#"+div).append("<option value='-1'>还没有站点信息</option>")
+                                    break;
+                                case 404:
+                                    $("#"+div).append("<option value='-1'>还没有站点信息</option>")
+                                    break;
+                                case 502:
+                                    layer.msg("服务器繁忙,加载站点信息失败",{time: 2000});
+                                    break;
+                            }
+                        }
+                    }
+                    else{
+                        layer.msg("服务器繁忙,加载站点信息失败",{time: 2000});
+                        $("#"+div).append("<option value='-1'>还没有站点信息</option>")
+                    }
+                }
+            });
         }
     }
 });

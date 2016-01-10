@@ -50,7 +50,7 @@ public class Category extends BaseEntity {
     private boolean custom;
 
     /**
-     * 系统数据类型ID/TODO:待重命名
+     * 系统数据类型ID/
      */
     @Column(name = "modelId")
     private Integer modelId;

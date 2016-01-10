@@ -22,17 +22,11 @@ define(function (require, exports, module) {
                 },
                 route:true
             },
-            modelType: {
-                selrequired: "-1"
-            },
             template:{
                 route:true
             }
         },
         messages: {
-            categoryName:{
-                required:"请输入栏目名称"
-            },
             route:{
                 route:"请使用字母、数字、下划线、反斜杠，且长度为1至20个字符",
                 remote: "该栏目路由已经存在"

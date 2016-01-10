@@ -31,7 +31,7 @@ public class CategoryTreeModel extends Category {
             categoryTreeModel.setCustom(category.isCustom());
             categoryTreeModel.setDeleted(category.isDeleted());
             categoryTreeModel.setId(category.getId());
-            categoryTreeModel.setModelType(category.getModelType());
+            categoryTreeModel.setModelId(category.getModelId());
             categoryTreeModel.setName(category.getName());
             categoryTreeModel.setOrderWeight(category.getOrderWeight());
             categoryTreeModel.setParent(category.getParent());
@@ -53,7 +53,7 @@ public class CategoryTreeModel extends Category {
         categoryTreeModel.setCustom(category.isCustom());
         categoryTreeModel.setDeleted(category.isDeleted());
         categoryTreeModel.setId(category.getId());
-        categoryTreeModel.setModelType(category.getModelType());
+        categoryTreeModel.setModelId(category.getModelId());
         categoryTreeModel.setName(category.getName());
         categoryTreeModel.setOrderWeight(category.getOrderWeight());
         categoryTreeModel.setParent(category.getParent());

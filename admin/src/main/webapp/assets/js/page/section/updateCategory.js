@@ -49,9 +49,8 @@ define(function (require, exports, module) {
                 data: {
                     id:$("#hidCategoryID").val(),
                     siteId:$("#siteId").val(),
-                    parentId: $("#parentId").val(),
                     name: $("#categoryName").val(),
-                    model: $("#modelType").val(),
+                    modelId: $("#modelId").val(),
                     orderWeight: $("#orderWeight").val(),
                     rule:$("#route").val(),
                     template:$("#template").val(),
@@ -61,6 +60,7 @@ define(function (require, exports, module) {
                 dataType: 'json',
                 success: function (data) {
                     var layer=require("layer");
+                    var layerIndex = parent.layer.getFrameIndex(window.name); //获取窗口索引
                     if(data!=null)
                     {
                         var index=parseInt(data.code);
@@ -68,6 +68,7 @@ define(function (require, exports, module) {
                             case 200:
                                 $("#route").val("");
                                 $("#template").val("")
+                                parent.layer.close(layerIndex);
                                 layer.msg("修改成功",{time: 2000});
                                 break;
                             case 204:

@@ -54,7 +54,7 @@ public class CookieUser {
     * */
     public void setCustomerId(HttpServletResponse response,int customerId)
     {
-        CookieHelper.setCookie(response,CMSEnums.CookieKeyValue.CustomerID.toString(),String.valueOf(customerId),60 * 24 * 7);
+        CookieHelper.setCookie(response,CMSEnums.CookieKeyValue.CustomerID.toString(),String.valueOf(customerId));
     }
 
     /*
@@ -76,19 +76,18 @@ public class CookieUser {
     /*
     * 检查登录
     * */
-    public  boolean checkLogin(HttpServletRequest request,int customerId)
+    public  boolean checkLogin(HttpServletRequest request,HttpServletResponse response,int customerId)
     {
         boolean loginIndex=false;
         String userIdStr=CookieHelper.getCookieVal(request,CMSEnums.CookieKeyValue.UserID.toString());
         if(null!=userIdStr&&!userIdStr.equals(""))
         {
+            setCustomerId(response,customerId);
             int userId=getUserId(request);
-            if(getRoleId(request)==-1)//超级管理员
-            {
+            if(isSupper(request)){//超级管理员
                 loginIndex=true;
             }
-            else
-            {
+            else{
                 if(userId==customerId||customerId==0)
                     loginIndex=true;
                 else

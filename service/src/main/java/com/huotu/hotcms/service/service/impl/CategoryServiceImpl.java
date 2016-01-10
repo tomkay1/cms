@@ -42,8 +42,13 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category getCategoryById(Long id) {
-       Category category= categoryRepository.getOne(id);
-        return  category;
+        try {
+            Category category = categoryRepository.getOne(id);
+            return category;
+        }catch (Exception ex){
+
+        }
+        return  null;
     }
 
     @Override
@@ -53,7 +58,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<Category> getCategoryBySiteAndDeleted(Site site, Boolean deleted) {
+    public List<Category> getCategoryBySiteAndDeletedOrderByOrderWeightDesc(Site site, Boolean deleted) {
         List<Category> categories = categoryRepository.findBySiteAndDeletedOrderByOrderWeightDesc(site, deleted);
         for(Category category:categories){
             if(category!=null){
@@ -101,12 +106,12 @@ public class CategoryServiceImpl implements CategoryService {
             Specification<Category> specification = (root, query, cb) -> {
                 List<Predicate> predicates = categoryIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
                 predicates.add(cb.equal(root.get("site").get("siteId").as(Long.class),foreachParam.getSiteid()));
-                predicates.add(cb.equal(root.get("modelType").as(Integer.class),categoryType));
+                predicates.add(cb.equal(root.get("modelId").as(Integer.class),categoryType));
                 return cb.and(predicates.toArray(new Predicate[predicates.size()]));
             };
             return categoryRepository.findAll(specification, new Sort(Sort.Direction.DESC, "orderWeight"));
         }
-        return categoryRepository.findBySite_SiteIdAndDeletedAndModelTypeOrderByOrderWeightDesc(foreachParam.getSiteid(), false, categoryType);
+        return categoryRepository.findBySite_SiteIdAndDeletedAndModelIdOrderByOrderWeightDesc(foreachParam.getSiteid(), false, categoryType);
     }
 
 
@@ -201,18 +206,20 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     public Boolean saveCategoryAndRoute(Category category, String rule,String template) {
         if(!routeService.isPatterBySiteAndRule(category.getSite(), rule)) {
-            Route route1 = new Route();
-            route1.setDescription("栏目路由");
-            route1.setRule(rule);
-            route1.setSite(category.getSite());
-            route1.setTemplate(template);
-            route1.setCreateTime(LocalDateTime.now());
-            route1.setCustomerId(category.getCustomerId());
-            route1.setDeleted(false);
-            route1.setOrderWeight(50);
-            route1.setUpdateTime(LocalDateTime.now());
-            routeService.save(route1);
-            category.setRoute(route1);
+            if(!StringUtils.isEmpty(rule)) {
+                Route route1 = new Route();
+                route1.setDescription("栏目路由");
+                route1.setRule(rule);
+                route1.setSite(category.getSite());
+                route1.setTemplate(template);
+                route1.setCreateTime(LocalDateTime.now());
+                route1.setCustomerId(category.getCustomerId());
+                route1.setDeleted(false);
+                route1.setOrderWeight(50);
+                route1.setUpdateTime(LocalDateTime.now());
+                routeService.save(route1);
+                category.setRoute(route1);
+            }
         }
         save(category);
         return true;
@@ -249,6 +256,19 @@ public class CategoryServiceImpl implements CategoryService {
             }
         }
         save(category);
+        return true;
+    }
+
+    @Override
+    @Transactional
+    public Boolean deleteCategory(Category category) {
+        category.setDeleted(true);
+        Route route=category.getRoute();
+        if(route!=null) {
+            category.setRoute(null);
+            save(category);
+            routeService.delete(route);
+        }
         return true;
     }
 

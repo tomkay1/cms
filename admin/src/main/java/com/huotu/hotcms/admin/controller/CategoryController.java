@@ -90,7 +90,7 @@ public class CategoryController {
         ResultView resultView=null;
         try{
             Site site=siteService.getSite(siteId);
-            List<Category> categoryList=categoryService.getCategoryBySiteAndDeleted(site,false);
+            List<Category> categoryList=categoryService.getCategoryBySiteAndDeletedOrderByOrderWeightDesc(site,false);
             List<CategoryTreeModel> categoryTreeModelList= categoryService.ConvertCateGoryTreeByCategotry(categoryList);
             resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(),categoryTreeModelList);
         }
@@ -105,13 +105,22 @@ public class CategoryController {
    * 增加栏目
    * */
     @RequestMapping("/addCategory")
-    public ModelAndView addModel(@RequestParam(value = "id", defaultValue = "0") Long id) throws Exception{
+    public ModelAndView addCategory(@RequestParam(value = "siteId") Long siteId,
+                                    @RequestParam(value = "id", defaultValue = "0") Long id) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/view/section/addCategory.html");
-        Category category =categoryService.getCategoryById(id);
-        Site site=category.getSite();
-        modelAndView.addObject("category",category);
-        modelAndView.addObject("site",site);
+        try {
+            modelAndView.setViewName("/view/section/addCategory.html");
+            Category category = categoryService.getCategoryById(id);
+            if(category==null) {
+                Site site = siteService.getSite(siteId);
+                modelAndView.addObject("site", site);
+            }else{
+                modelAndView.addObject("site", category.getSite());
+            }
+            modelAndView.addObject("category", category);
+        }catch (Exception ex){
+            log.error(ex.getMessage());
+        }
         return modelAndView;
     }
 
@@ -132,16 +141,19 @@ public class CategoryController {
      * */
     @RequestMapping(value = "/saveCategory",method = RequestMethod.POST)
     @ResponseBody
-    public ResultView saveCategory(Category category, Integer model,Long siteId,Long parentId,String rule,String template){
+    public ResultView saveCategory(String name, Integer model,Long siteId,Long parentId,Integer orderWeight,String rule,String template){
         ResultView result=null;
         try {
-            if (!routeService.isPatterBySiteAndRule(category.getSite(), rule)) {
-                Site site = siteRepository.findOne(siteId);
+            Category category=new Category();
+            Site site = siteRepository.findOne(siteId);
+            if (!routeService.isPatterBySiteAndRule(site, rule)) {
+                category.setName(name);
+                category.setOrderWeight(orderWeight);
                 Category categoryParent = categoryService.getCategoryById(parentId);
                 category.setSite(site);
                 category.setCustomerId(site.getCustomerId());
                 if (model >= 0) {
-                    category.setModelType(model);
+                    category.setModelId(model);
                 }
                 category.setParent(categoryParent);
                 category.setCreateTime(LocalDateTime.now());
@@ -174,18 +186,60 @@ public class CategoryController {
         try{
             if(cookieUser.isSupper(request)) {
                 Category category = categoryService.getCategoryById(id);
-                if(category.getCustomerId().equals(cookieUser.getCustomerId(request))) {//删除的时候验证是否是删除同一商户下面的栏目，增强安全性
-                    category.setDeleted(true);
-                    category.setRoute(null);
-                    categoryService.save(category);
-                    result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
-                }
-                else{
-                    result=new ResultView(ResultOptionEnum.NO_LIMITS.getCode(),ResultOptionEnum.NO_LIMITS.getValue(),null);
-                }
+//                if(category.getCustomerId().equals(cookieUser.getCustomerId(request))) {//删除的时候验证是否是删除同一商户下面的栏目，增强安全性
+                    if(categoryService.deleteCategory(category)) {
+                        result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
+                    }else{
+                        result = new ResultView(ResultOptionEnum.FAILE.getCode(), ResultOptionEnum.FAILE.getValue(), null);
+                    }
+//                }
+//                else{
+//                    result=new ResultView(ResultOptionEnum.NO_LIMITS.getCode(),ResultOptionEnum.NO_LIMITS.getValue(),null);
+//                }
             }
             else {
                 result=new ResultView(ResultOptionEnum.NO_LIMITS.getCode(),ResultOptionEnum.NO_LIMITS.getValue(),null);
+            }
+        }
+        catch (Exception ex)
+        {
+            log.error(ex.getMessage());
+            result=new ResultView(ResultOptionEnum.SERVERFAILE.getCode(),ResultOptionEnum.SERVERFAILE.getValue(),null);
+        }
+        return  result;
+    }
+
+    /**
+     * 新增栏目信息 xhl
+     * */
+    @RequestMapping(value = "/modifyCategory",method = RequestMethod.POST)
+    @ResponseBody
+    public ResultView modifyCategory(@RequestParam(name = "id",required = true,defaultValue = "0") Long id,
+                                     @RequestParam(name = "siteId",required = true) Long siteId,
+                                     @RequestParam(name = "name",required = true) String name,
+                                     @RequestParam(name = "modelId") Integer modelId,
+                                     @RequestParam(name = "orderWeight") Integer orderWeight,
+                                     @RequestParam(name = "rule") String rule,
+                                     @RequestParam(name = "template") String template,
+                                     @RequestParam(name = "noRule") String noRule){
+        ResultView result=null;
+        try {
+            Category category=categoryService.getCategoryById(id);
+            if(category!=null) {
+                Site site=category.getSite();
+                if (!routeService.isPatterBySiteAndRuleIgnore(site, rule, noRule)) {
+                    category.setSite(site);
+                    if (modelId >= 0) {
+                        category.setModelId(modelId);
+                    }
+                    category.setOrderWeight(orderWeight);
+                    category.setCustomerId(site.getCustomerId());
+                    category.setUpdateTime(LocalDateTime.now());
+                    categoryService.updateCategoryAndRoute(category,rule,template,noRule);
+                    result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
+                }
+            }else{
+                result = new ResultView(ResultOptionEnum.NOFIND.getCode(), ResultOptionEnum.NOFIND.getValue(), null);
             }
         }
         catch (Exception ex)
@@ -195,41 +249,4 @@ public class CategoryController {
         }
         return  result;
     }
-
-//    /**
-//     * 新增栏目信息 xhl
-//     * */
-//    @RequestMapping(value = "/modifyCategory",method = RequestMethod.POST)
-//    @ResponseBody
-//    public ResultView modifyCategory(@RequestParam(name = "id",required = true,defaultValue = "0") Long id,
-//                                     @RequestParam(name = "siteId",required = true) Long siteId,
-//                                     @RequestParam(name = "name",required = true) String name,
-//                                     @RequestParam(name = "modelType") Integer modelType,
-//                                     @RequestParam(name = "orderWeight") Long orderWeight,
-//                                     @RequestParam(name = "rule") String rule,
-//                                     @RequestParam(name = "template") String template,
-//                                     @RequestParam(name = "noRule") String noRule){
-//        ResultView result=null;
-//        try {
-//            if (!routeService.isPatterBySiteAndRuleIgnore(category.getSite(), rule, noRule)) {
-//                Site site = siteRepository.findOne(siteId);
-//                Category categoryParent = categoryService.getCategoryById(parentId);
-//                category.setSite(site);
-//                if (model >= 0) {
-//                    category.setModelType(model);
-//                }
-//                category.setCustomerId(site.getCustomerId());
-//                category.setParent(categoryParent);
-//                category.setUpdateTime(LocalDateTime.now());
-//                categoryService.save(category);
-//                result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
-//            }
-//        }
-//        catch (Exception ex)
-//        {
-//            log.error(ex.getMessage());
-//            result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
-//        }
-//        return  result;
-//    }
 }

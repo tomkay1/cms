@@ -29,4 +29,6 @@ public interface RouteService {
     Boolean isPatterBySiteAndRuleIgnore(Site site,String rule,String noRule);
 
     Boolean save(Route route);
+
+    void delete(Route route);
 }

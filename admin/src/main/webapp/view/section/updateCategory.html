@@ -20,7 +20,7 @@
         <form id="updateColumnForm" method="post">
             <div class="cnt form">
                 <div class="division">
-                    <input type="hidden" name="hidCategoryID" id="hidCategoryID" th:text="${category.id}">
+                    <input type="hidden" name="hidCategoryID" id="hidCategoryID" th:value="${category.id}">
                     <table width="100%" border="0" cellpadding="0" cellspacing="0">
                         <tr>
                             <th>所属站点：</th>
@@ -43,14 +43,14 @@
                         <tr>
                             <th>系统数据类型：</th>
                             <td>
-                                <select name="modelType" class="input-normal" id="modelType">
+                                <select name="modelId" class="input-normal" id="modelId">
                                     <option value="-1" >==请选择模型类型==</option>
-                                    <option value="0" th:selected="${category.modelType}=='0'?true:false">文章模型</option>
-                                    <option value="1" th:selected="${category.modelType}=='1'?true:false">公告模型</option>
-                                    <option value="2" th:selected="${category.modelType}=='2'?true:false">视频模型</option>
-                                    <option value="3" th:selected="${category.modelType}=='3'?true:false">图库模型</option>
-                                    <option value="4" th:selected="${category.modelType}=='4'?true:false">下载模型</option>
-                                    <option value="5" th:selected="${category.modelType}=='5'?true:false">链接模型</option>
+                                    <option value="0" th:selected="${category.modelId}=='0'?true:false">文章模型</option>
+                                    <option value="1" th:selected="${category.modelId}=='1'?true:false">公告模型</option>
+                                    <option value="2" th:selected="${category.modelId}=='2'?true:false">视频模型</option>
+                                    <option value="3" th:selected="${category.modelId}=='3'?true:false">图库模型</option>
+                                    <option value="4" th:selected="${category.modelId}=='4'?true:false">下载模型</option>
+                                    <option value="5" th:selected="${category.modelId}=='5'?true:false">链接模型</option>
                                 </select>
                             </td>
                         </tr>
@@ -64,7 +64,7 @@
                         <tr>
                             <th>栏目路由：</th>
                             <td>
-                                <input name="noRule" type="text" th:value="${category.route}==null?'':${category.route.rule}" id="noRule" maxlength="20" class="input-normal"  placeholder="请输入页面路由">
+                                <input name="noRule" type="hidden" th:value="${category.route}==null?'':${category.route.rule}" id="noRule" maxlength="20" class="input-normal"  placeholder="请输入页面路由">
                                 <input name="route" type="text" th:value="${category.route}==null?'':${category.route.rule}" id="route" maxlength="20" class="input-normal"  placeholder="请输入页面路由">
                             </td>
                         </tr>

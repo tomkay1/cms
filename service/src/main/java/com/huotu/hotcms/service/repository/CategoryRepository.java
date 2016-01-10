@@ -17,5 +17,5 @@ public interface CategoryRepository extends JpaRepository<Category, Long>,JpaSpe
    List<Category> findBySiteAndDeletedOrderByOrderWeightDesc(Site site, Boolean deleted);
    Set<Category> findByCustomerId(Integer customerId);
 
-   List<Category> findBySite_SiteIdAndDeletedAndModelTypeOrderByOrderWeightDesc(long siteId, boolean deleted,Integer modelType);
+   List<Category> findBySite_SiteIdAndDeletedAndModelIdOrderByOrderWeightDesc(long siteId, boolean deleted,Integer modelType);
 }

@@ -24,19 +24,18 @@
         <form id="addColumnForm" method="post">
             <div class="cnt form">
                 <div class="division">
-                    <input type="hidden" name="hidCategoryID" id="hidCategoryID" >
                     <table width="100%" border="0" cellpadding="0" cellspacing="0">
                         <tr>
                             <th>所属站点：</th>
-                            <td th:text="${site.name}" th:value="${site.name}">
+                            <td th:text="${site.name}" >
                             </td>
                                 <input name="siteId" type="hidden" id="siteId" th:value="${site.siteId}" maxlength="50" class="input-normal"  placeholder="请输入模型名称">
                         </tr>
                         <tr>
-                            <th>父级栏目：</th>
-                            <td th:text="${category.name}" th:value="${category.name}">
+                            <th >父级栏目：</th>
+                            <td  th:text="${category}==null?'站点(root)':${category.name}">
                             </td>
-                                <input name="parentId" type="hidden" id="parentId" th:value="${category.id}" maxlength="50" class="input-normal"  placeholder="">
+                                <input name="parentId" type="hidden" id="parentId" th:value="${category}==null?'':${category.id}" maxlength="50" class="input-normal"  placeholder="">
                         </tr>
                         <tr>
                             <th>栏目名称：</th>

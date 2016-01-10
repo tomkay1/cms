@@ -4,7 +4,7 @@
 define(function (require, exports, module) {
     var commonUtil = require("common");
     commonUtil.calcuHeight("mainpanel");
-    commonUtil.calcuHeightToTop("con_right",74);
+    commonUtil.calcuHeightToTop("con_right",100);
     commonUtil.calcuWidth("content",$(".leftpanel").width());
     commonUtil.calcuWidth("con_right",$(".leftpanel").width());
 

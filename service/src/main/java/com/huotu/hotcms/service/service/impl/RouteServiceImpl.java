@@ -77,4 +77,9 @@ public class RouteServiceImpl  implements RouteService {
         Route route1= routeRepository.save(route);
         return  route1!=null;
     }
+
+    @Override
+    public void delete(Route route) {
+        routeRepository.delete(route);
+    }
 }

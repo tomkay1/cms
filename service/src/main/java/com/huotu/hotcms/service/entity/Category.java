@@ -52,8 +52,8 @@ public class Category extends BaseEntity {
     /**
      * 系统数据类型ID/TODO:待重命名
      */
-    @Column(name = "modelType")
-    private Integer modelType;
+    @Column(name = "modelId")
+    private Integer modelId;
 
 
     /**

@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 /**
- * Created by Administrator on 2015/12/24.
+ * Created by xhl on 2015/12/24.
  */
 public interface ArticleRepository extends JpaRepository<Article,Long>,JpaSpecificationExecutor {
 

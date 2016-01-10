@@ -28,6 +28,7 @@ seajs.config({
 		"siteList":"js/page/web/siteList.js?v="+version,
 		"addSite":"js/page/web/addSite.js?v="+version,
 		"updateSite":"js/page/web/updateSite.js?v="+version,
+		"routeList":"js/page/web/routeList.js?v="+version,
 		"addCategory":"js/page/section/addCategory.js?v="+version,
 		"categoryList":"js/page/section/categoryList.js?t="+version,
 		"updateCategory":"js/page/section/updateCategory.js?v="+version,

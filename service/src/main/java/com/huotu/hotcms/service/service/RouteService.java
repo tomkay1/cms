@@ -1,8 +1,10 @@
 package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.common.RouteType;
+import com.huotu.hotcms.service.entity.DataModel;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.util.PageData;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.util.Set;
@@ -31,4 +33,6 @@ public interface RouteService {
     Boolean save(Route route);
 
     void delete(Route route);
+
+    PageData<Route> getPage(Site site,String description,Integer page,Integer pageSize);
 }

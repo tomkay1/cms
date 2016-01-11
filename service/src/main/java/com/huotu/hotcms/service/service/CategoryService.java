@@ -30,4 +30,10 @@ public interface CategoryService {
     Category getCategoryByRoute(Route route);
 
     List<Category> getCategoryList(Category parent);
+
+    List<Category> getSpecifyCategories(String[] specifyIds);
+
+    List<Category> getGivenTypeCategories(CategoryForeachParam param);
+
+    List<Category> getSubCategories(Long parentId);
 }

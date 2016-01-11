@@ -35,8 +35,10 @@ public class CategoryForeachParam {
     private String[] specifyids;
 
     /**
-     * 栏目类型(""或者null表示公共类型)
+     * 路由类型
      */
-    private Integer type;
+    private Integer routetype;
+
+    private Long parentid;
 
 }

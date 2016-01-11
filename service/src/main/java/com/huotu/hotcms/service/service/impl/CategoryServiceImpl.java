@@ -58,7 +58,7 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Category> getCategoryBySiteAndDeletedAndNameContainingOrderByOrderWeightDesc(Site site,Boolean deleted,String name) {
         List<Category> categories=null;
         if(StringUtils.isEmpty(name)){
-            categories = categoryRepository.findBySiteAndDeletedOrderByOrderWeightDesc(site,deleted);
+            categories = categoryRepository.findBySiteAndDeletedOrderByOrderWeightDesc(site, deleted);
         }else{
             categories = categoryRepository.findBySiteAndDeletedAndNameContainingOrderByOrderWeightDesc(site,deleted,name);
         }
@@ -211,7 +211,7 @@ public class CategoryServiceImpl implements CategoryService {
         if(!routeService.isPatterBySiteAndRule(category.getSite(), rule)) {
             if(!StringUtils.isEmpty(rule)) {
                 Route route1 = new Route();
-                route1.setDescription("栏目路由");
+                route1.setDescription(category.getName()+"路由");
                 route1.setRule(rule);
                 route1.setSite(category.getSite());
                 route1.setTemplate(template);
@@ -245,7 +245,7 @@ public class CategoryServiceImpl implements CategoryService {
                 routeService.save(route1);
             }else{
                 route1 = new Route();
-                route1.setDescription("栏目路由");
+                route1.setDescription(category.getName()+"路由");
                 route1.setRule(rule);
                 route1.setSite(category.getSite());
                 route1.setTemplate(template);

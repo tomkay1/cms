@@ -60,9 +60,9 @@ public class CategoryForeachProcessorFactory {
             Route route = (Route)VariableExpression.getVariable(context, "route");
             if(!StringUtils.isEmpty(categoryForeachParam.getSpecifyids())) {
                 categoryList = categoryService.getCategoryList(categoryForeachParam);
-            }else if(route==null){
+            }else if(route.getRouteType()==null) {
                 if (StringUtils.isEmpty(categoryForeachParam.getSiteid())) {
-                    Site site = (Site)VariableExpression.getVariable(context, "site");
+                    Site site = (Site) VariableExpression.getVariable(context, "site");
                     categoryForeachParam.setSiteid(site.getSiteId());
                 }
                 categoryList = categoryService.getCategoryList(categoryForeachParam);

@@ -56,15 +56,16 @@ public class RouteInterceptor  extends HandlerInterceptorAdapter {
             if(modelAndView==null){
                 modelAndView=new ModelAndView();
             }
-            if(route!=null){
-               modelAndView=getModelAndView(modelAndView,site,route,request);
+            if(route==null){
+                throw new Exception("请求路径错误");
             }
+            initModelAndView(modelAndView, site, route, request);
         }else {
             throw new Exception("域名解析失败");
         }
     }
 
-    private ModelAndView getModelAndView(ModelAndView modelAndView,Site site,Route route,HttpServletRequest request){
+    private ModelAndView initModelAndView(ModelAndView modelAndView, Site site, Route route, HttpServletRequest request){
         String resourcePath = site.isCustom() ? site.getCustomTemplateUrl():"";
         if(route.getRouteType()!=null) {
             if (route.getRouteType().getCode().equals(RouteType.ARTICLE_CONTENT.getCode())) {

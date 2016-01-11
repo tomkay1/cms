@@ -59,7 +59,7 @@ public class CategoryForeachProcessorFactory {
             Route route = (Route)VariableExpression.getVariable(context, "route");
             //根据指定id获取栏目列表
             if(!StringUtils.isEmpty(categoryForeachParam.getSpecifyids())) {
-                return categoryService.getSpecifyCategory(categoryForeachParam.getSpecifyids());
+                return categoryService.getSpecifyCategories(categoryForeachParam.getSpecifyids());
             }
             //获取导航栏目列表
             if(route.getRouteType()==null) {
@@ -67,7 +67,7 @@ public class CategoryForeachProcessorFactory {
                     Site site = (Site) VariableExpression.getVariable(context, "site");
                     categoryForeachParam.setSiteid(site.getSiteId());
                 }
-                if(categoryForeachParam.getType()==null) {
+                if(categoryForeachParam.getRoutetype()==null) {
 
                 }
 //                return categoryService.getCommonCategory()

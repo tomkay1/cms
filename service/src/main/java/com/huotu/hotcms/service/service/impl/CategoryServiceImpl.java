@@ -224,7 +224,8 @@ public class CategoryServiceImpl implements CategoryService {
                 category.setRoute(route1);
             }
         }
-        save(category);
+        Category category1= categoryRepository.saveAndFlush(category);
+        CategorySetParents(category1);
         return true;
     }
 
@@ -271,6 +272,8 @@ public class CategoryServiceImpl implements CategoryService {
             category.setRoute(null);
             save(category);
             routeService.delete(route);
+        }else{
+            save(category);
         }
         return true;
     }
@@ -280,6 +283,20 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.findByRoute(route);
     }
 
+    @Override
+    public Boolean CategorySetParents(Category category) {
+        Long categoryId=category.getId();
+        if(categoryId!=null) {
+            String categoryPath = category.getParentIds();
+            if (StringUtils.isEmpty(categoryPath)) {
+                category.setParentIds(categoryId.toString());
+            } else {
+                category.setParentIds(categoryPath + "|" + categoryId);
+            }
+            categoryRepository.saveAndFlush(category);
+        }
+        return true;
+    }
     @Override
     public List<Category> getCategoryList(Category parent) {
         return categoryRepository.findByParentOrderByOrderWeightDesc(parent);

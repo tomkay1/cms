@@ -11,7 +11,26 @@ public class ConfigInfo {
     @Value("${out.loginUrl}")
     private String outLoginUrl;
 
+    @Value("${out.mallManageUrl}")
+    private String mallManageUrl;
+
+    @Value("${out.mallSupperUrl}")
+    private String mallSupperUrl;
+
     public String getOutLoginUrl() {
         return outLoginUrl;
     }
+
+    /**
+     * 商户伙伴商城后台地址入口
+     * */
+    public String getMallManageUrl(){return mallManageUrl;}
+
+    /**
+     * 伙伴商城超级管理员后台地址入口
+     * */
+    public String getMallSupperUrl(Integer customerId){
+        return String.format(mallSupperUrl,customerId);
+    }
+
 }

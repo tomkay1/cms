@@ -21,6 +21,18 @@ public class ArticleHrefProcessorFactory extends BaseProcessorService {
 
     private static final Log log = LogFactory.getLog(CategoryForeachProcessorFactory.class);
 
+    private static ArticleHrefProcessorFactory instance;
+
+    private ArticleHrefProcessorFactory() {
+    }
+
+    public static ArticleHrefProcessorFactory getInstance() {
+        if(instance == null) {
+            instance = new ArticleHrefProcessorFactory();
+        }
+        return instance;
+    }
+
     @Override
     public String resolveLinkData(List<Assignation> assignations, String LinkExpression, ITemplateContext context) {
         try {

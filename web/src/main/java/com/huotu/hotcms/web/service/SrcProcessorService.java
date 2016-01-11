@@ -15,7 +15,7 @@ public class SrcProcessorService extends BaseProcessorService{
 
     public Object resolveSrcData(String attributeValue, ITemplateContext context){
         if(dialectPrefix.equals(DialectTypeEnum.ARTICLE.getDialectPrefix())) {
-            return new ArticleSrcProcessorFactory().resolveDataByAttr(attributeValue,context);
+            return ArticleSrcProcessorFactory.getInstance().resolveDataByAttr(attributeValue,context);
         }
         if(dialectPrefix.equals(DialectTypeEnum.SITE.getDialectPrefix())) {
             return null;

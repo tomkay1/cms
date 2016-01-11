@@ -22,6 +22,18 @@ public class SiteCurrentProcessorFactory  extends BaseProcessorService {
 
     private static final Log log = LogFactory.getLog(CategoryForeachProcessorFactory.class);
 
+    private static SiteCurrentProcessorFactory instance;
+
+    private SiteCurrentProcessorFactory() {
+    }
+
+    public static SiteCurrentProcessorFactory getInstance() {
+        if(instance == null) {
+            instance = new SiteCurrentProcessorFactory();
+        }
+        return instance;
+    }
+
     @Override
     public Object resolveDataByAttr(String attributeValue, ITemplateContext context){
         Site site = (Site) VariableExpression.getVariable(context, "site");

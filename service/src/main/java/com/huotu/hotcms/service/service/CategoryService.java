@@ -29,5 +29,7 @@ public interface CategoryService {
 
     Category getCategoryByRoute(Route route);
 
+    Boolean CategorySetParents(Category category);
+
     List<Category> getCategoryList(Category parent);
 }

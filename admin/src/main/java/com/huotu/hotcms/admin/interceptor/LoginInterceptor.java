@@ -34,6 +34,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             return true;
         }
         Integer customerId= QueryHelper.getQueryValInteger(request, "customerid");
+
         if(!cookieUser.checkLogin(request,response,customerId))//判断用户登录授权
         {
             String loginUrl=configInfo.getOutLoginUrl();

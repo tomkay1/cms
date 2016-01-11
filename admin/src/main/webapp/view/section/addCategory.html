@@ -22,6 +22,7 @@
     </div>
     <div class="cnt-wp">
         <form id="addColumnForm" method="post">
+            <input type="hidden" name="parentPath" id="parentPath" th:value="${category}==null?'':${category.parentIds}">
             <div class="cnt form">
                 <div class="division">
                     <table width="100%" border="0" cellpadding="0" cellspacing="0">
@@ -49,12 +50,6 @@
                                 <select name="modelType" class="input-normal" id="modelType">
                                     <option value="-1">==请选择模型类型==</option>
                                     <option value="0" th:each="modelType:${modelTypes}" th:value="${modelType.getCode()}" th:text="${modelType.getValue().toString()}">文章模型</option>
-                                    <!--<option value="0" th:each="routeType:${routeTypes}" th:value="${routeType.getCode()}" th:text="${routeType.getValue().toString()}"></option>-->
-                                    <!--<option value="1">公告模型</option>-->
-                                    <!--<option value="2">视频模型</option>-->
-                                    <!--<option value="3">图库模型</option>-->
-                                    <!--<option value="4">下载模型</option>-->
-                                    <!--<option value="5">链接模型</option>-->
                                 </select>
                             </td>
                         </tr>
@@ -68,13 +63,13 @@
                         <tr>
                             <th>栏目路由：</th>
                             <td>
-                                <input name="route" type="text" id="route" maxlength="50" class="input-normal"  placeholder="请输入页面路由">
+                                <input name="route" type="text" id="route" maxlength="50" class="input-normal"  placeholder="非专业人员请勿配置,默认留空即可">
                             </td>
                         </tr>
                         <tr>
                             <th>路由模版：</th>
                             <td>
-                                <input name="template" type="text" id="template" maxlength="200" class="input-normal"  placeholder="请输入页面路由模版">
+                                <input name="template" type="text" id="template" maxlength="200" class="input-normal"  placeholder="非专业人员请勿配置,默认留空即可">
                             </td>
                         </tr>
                         </tbody>

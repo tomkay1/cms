@@ -93,7 +93,7 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="childMenus" style="cursor: pointer;">
+                        <li class="childMenus" style="cursor: pointer;" th:if="${user.isSuperManage}">
                             <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
                             <a th:href="@{/route/routeList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>路由规则<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
                                 </span>
@@ -101,7 +101,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-parent nav-active active js-cms-menus" style="cursor: pointer;">
+                <li class="nav-parent nav-active active js-cms-menus" style="cursor: pointer;" th:if="${user.isSuperManage}">
                     <a class="aparent"><i class="fa fa-chevron-circle-right"></i><span>系统设置</span></a>
                     <ul class="children">
                         <li class="childMenus" style="cursor: pointer;">
@@ -135,30 +135,30 @@
             <div class="topnav">
                 <ul class="nav nav-horizontal">
                     <li class="" id="menuDesktop">
-                        <a href="javascript:" id="aDesktop"><i class="fa  fa-home"></i>
+                        <a th:href="@{/site/siteList?customerid={customerid}(customerid=${user.customerId})}" class="active" target="content"><i class="fa  fa-home"></i>
                             <span>桌面</span></a>
                     </li>
 
-                    <li class="active" id="menu01">
-                        <a style="cursor: pointer;" onclick="clickMenu('01')"><i class="fa fa-folder-o"></i>
-                            <span>商品管理</span><span class="fa pull-right badge badge-success"  style="display: none; background-color: red;">!</span></a>
+                    <li id="menu01">
+                        <a style="cursor: pointer;" th:href="@{/contents/contentsList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-folder-o"></i>
+                            <span>内容管理</span><span class="fa pull-right badge badge-success"  style="display: none; background-color: red;">!</span></a>
                     </li>
 
                     <li class="" id="menu02">
-                        <a style="cursor: pointer;" onclick="clickMenu('02')"><i class="fa fa-folder-o"></i>
-                            <span>订单管理</span><span class="fa pull-right badge badge-success" style="display: none; background-color: red;">!</span></a>
+                        <a style="cursor: pointer;" th:href="@{/site/siteList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-folder-o"></i>
+                            <span>站点管理</span><span class="fa pull-right badge badge-success" style="display: none; background-color: red;">!</span></a>
                     </li>
 
                     <li class="" id="menu03">
-                        <a style="cursor: pointer;" onclick="clickMenu('03')"><i class="fa fa-folder-o"></i>
-                            <span>营销推广</span><span class="fa pull-right badge badge-success" style="display: none; background-color: red;">!</span></a>
+                        <a style="cursor: pointer;" th:href=""><i class="fa fa-folder-o"></i>
+                            <span>伙伴商城</span><span class="fa pull-right badge badge-success" style="display: none; background-color: red;">!</span></a>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
     <div class="con_right" id="con_right">
-        <iframe id="content" name="content" width="1152" height="100%" class="hide" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" src="/model/modelList" th:src="@{/model/modelList}" style="display: inline;">
+        <iframe id="content" name="content" width="1152" height="100%" class="hide" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" src="/model/modelList" th:src="@{/site/siteList?customerid={customerid}(customerid=${user.customerId})}" style="display: inline;">
         </iframe>
     </div>
 </div>

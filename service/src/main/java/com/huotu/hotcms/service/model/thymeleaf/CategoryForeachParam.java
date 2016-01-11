@@ -9,6 +9,7 @@
 package com.huotu.hotcms.service.model.thymeleaf;
 
 import com.huotu.hotcms.service.common.ModelType;
+import com.huotu.hotcms.service.common.RouteType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,8 +38,7 @@ public class CategoryForeachParam {
     /**
      * 路由类型
      */
-    private Integer routetype;
-
+    private RouteType routetype;
     private Long parentid;
 
 }

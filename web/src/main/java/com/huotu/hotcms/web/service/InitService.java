@@ -11,7 +11,7 @@ package com.huotu.hotcms.web.service;
 import com.huotu.hotcms.service.entity.*;
 import com.huotu.hotcms.service.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 /**
  * Created by cwb on 2015/12/28.
  */
-@Service
+@Component
 public class InitService {
 
     @Autowired

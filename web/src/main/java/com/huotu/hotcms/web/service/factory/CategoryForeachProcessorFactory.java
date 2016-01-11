@@ -70,10 +70,10 @@ public class CategoryForeachProcessorFactory {
                 Site site = (Site) VariableExpression.getVariable(context, "site");
                 categoryForeachParam.setSiteid(site.getSiteId());
             }
-            //根据指定routeType获取栏目列表
-            Integer routeType = categoryForeachParam.getRoutetype();
+            //根据指定routeType获取栏目列表(默认返回导航栏目)
+            RouteType routeType = categoryForeachParam.getRoutetype();
             if(routeType==null) {
-                categoryForeachParam.setRoutetype(RouteType.HEADER_NAVIGATION.getCode());
+                categoryForeachParam.setRoutetype(RouteType.HEADER_NAVIGATION);
             }
             return categoryService.getGivenTypeCategories(categoryForeachParam);
         } catch (Exception e) {

@@ -1,6 +1,7 @@
 package com.huotu.hotcms.admin.controller;
 
 import com.huotu.hotcms.admin.util.web.CookieUser;
+import com.huotu.hotcms.service.common.ModelType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.CategoryTreeModel;
@@ -102,9 +103,9 @@ public class CategoryController {
         return resultView;
     }
 
-    /*
-   * 增加栏目
-   * */
+    /**
+       * 增加栏目
+       * */
     @RequestMapping("/addCategory")
     public ModelAndView addCategory(@RequestParam(value = "siteId") Long siteId,
                                     @RequestParam(value = "id", defaultValue = "0") Long id) throws Exception{
@@ -118,6 +119,7 @@ public class CategoryController {
             }else{
                 modelAndView.addObject("site", category.getSite());
             }
+            modelAndView.addObject("modelTypes", ModelType.ConvertMapToEnum());
             modelAndView.addObject("category", category);
         }catch (Exception ex){
             log.error(ex.getMessage());
@@ -125,15 +127,16 @@ public class CategoryController {
         return modelAndView;
     }
 
-    /*
-   * 修改栏目
-   * */
+    /**
+       * 修改栏目
+       * */
     @RequestMapping("/updateCategory")
     public ModelAndView updateCategory(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("/view/section/updateCategory.html");
         Category category =categoryService.getCategoryById(id);
         modelAndView.addObject("category",category);
+        modelAndView.addObject("modelTypes", ModelType.ConvertMapToEnum());
         return modelAndView;
     }
 

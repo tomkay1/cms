@@ -45,12 +45,13 @@
                             <td>
                                 <select name="modelId" class="input-normal" id="modelId">
                                     <option value="-1" >==请选择模型类型==</option>
-                                    <option value="0" th:selected="${category.modelId}=='0'?true:false">文章模型</option>
-                                    <option value="1" th:selected="${category.modelId}=='1'?true:false">公告模型</option>
-                                    <option value="2" th:selected="${category.modelId}=='2'?true:false">视频模型</option>
-                                    <option value="3" th:selected="${category.modelId}=='3'?true:false">图库模型</option>
-                                    <option value="4" th:selected="${category.modelId}=='4'?true:false">下载模型</option>
-                                    <option value="5" th:selected="${category.modelId}=='5'?true:false">链接模型</option>
+                                    <option value="0" th:each="modelType:${modelTypes}" th:value="${modelType.getCode()}" th:text="${modelType.getValue().toString()}" th:selected="(${category.modelId}==${modelType.getCode()}?true:false)">文章模型</option>
+                                    <!--<option value="0" th:selected="${category.modelId}=='0'?true:false">文章模型</option>-->
+                                    <!--<option value="1" th:selected="${category.modelId}=='1'?true:false">公告模型</option>-->
+                                    <!--<option value="2" th:selected="${category.modelId}=='2'?true:false">视频模型</option>-->
+                                    <!--<option value="3" th:selected="${category.modelId}=='3'?true:false">图库模型</option>-->
+                                    <!--<option value="4" th:selected="${category.modelId}=='4'?true:false">下载模型</option>-->
+                                    <!--<option value="5" th:selected="${category.modelId}=='5'?true:false">链接模型</option>-->
                                 </select>
                             </td>
                         </tr>

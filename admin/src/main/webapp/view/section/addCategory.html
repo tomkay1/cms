@@ -48,12 +48,13 @@
                             <td>
                                 <select name="modelType" class="input-normal" id="modelType">
                                     <option value="-1">==请选择模型类型==</option>
-                                    <option value="0">文章模型</option>
-                                    <option value="1">公告模型</option>
-                                    <option value="2">视频模型</option>
-                                    <option value="3">图库模型</option>
-                                    <option value="4">下载模型</option>
-                                    <option value="5">链接模型</option>
+                                    <option value="0" th:each="modelType:${modelTypes}" th:value="${modelType.getCode()}" th:text="${modelType.getValue().toString()}">文章模型</option>
+                                    <!--<option value="0" th:each="routeType:${routeTypes}" th:value="${routeType.getCode()}" th:text="${routeType.getValue().toString()}"></option>-->
+                                    <!--<option value="1">公告模型</option>-->
+                                    <!--<option value="2">视频模型</option>-->
+                                    <!--<option value="3">图库模型</option>-->
+                                    <!--<option value="4">下载模型</option>-->
+                                    <!--<option value="5">链接模型</option>-->
                                 </select>
                             </td>
                         </tr>

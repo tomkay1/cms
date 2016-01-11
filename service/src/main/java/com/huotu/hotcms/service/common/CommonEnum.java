@@ -8,6 +8,8 @@
 
 package com.huotu.hotcms.service.common;
 
+import java.util.Map;
+
 /**
  * Created by cwb on 2015/12/21.
  */

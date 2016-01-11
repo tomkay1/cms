@@ -28,6 +28,7 @@ a.btn-lit{text-decoration: none; }
 
 .btn-lit{
  display:inline-block; height:23px; line-height:23px; text-align:center; border:none;
+ cursor: pointer;
 background: #f00000;
  background-repeat:no-repeat; background-position:0px 0px;
  padding:0px 12px 0px 12px; text-decoration:none;

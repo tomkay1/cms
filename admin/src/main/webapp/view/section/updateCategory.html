@@ -64,14 +64,14 @@
                         <tr>
                             <th>栏目路由：</th>
                             <td>
-                                <input name="noRule" type="hidden" th:value="${category.route}==null?'':${category.route.rule}" id="noRule" maxlength="20" class="input-normal"  placeholder="请输入页面路由">
-                                <input name="route" type="text" th:value="${category.route}==null?'':${category.route.rule}" id="route" maxlength="20" class="input-normal"  placeholder="请输入页面路由">
+                                <input name="noRule" type="hidden" th:value="${category.route}==null?'':${category.route.rule}" id="noRule" maxlength="50" class="input-normal"  placeholder="请输入页面路由">
+                                <input name="route" type="text" th:value="${category.route}==null?'':${category.route.rule}" id="route" maxlength="50" class="input-normal"  placeholder="请输入页面路由">
                             </td>
                         </tr>
                         <tr>
                             <th>路由模版：</th>
                             <td>
-                                <input name="template" type="text" th:value="${category.route}==null?'':${category.route.template}" id="template" maxlength="20" class="input-normal"  placeholder="请输入页面路由模版">
+                                <input name="template" type="text" th:value="${category.route}==null?'':${category.route.template}" id="template" maxlength="200" class="input-normal"  placeholder="请输入页面路由模版">
                             </td>
                         </tr>
                         </tbody>

@@ -1,37 +1,44 @@
 /**
- * Created by xhl on 2016/1/10.
+ * Created by xhl on 2015/12/23.
  */
 define(function (require, exports, module) {
-    $("#updateColumnForm").validate({
+    $("#updateRouteForm").validate({
         rules: {
-            categoryName:{
-                required: true
+            routeName:{
+                required: true,
             },
-            route:{
+            routeRule:{
+                required: true,
+                route:true,
                 remote: {
                     url: "/route/isExistsRouteBySiteAndRuleIgnore",     //后台处理程序
                     type: "post",               //数据发送方式
                     dataType: "json",           //接受数据格式
                     data: {                     //要传递的数据
                         siteId:$("#siteId").val(),
-                        noRule:$("#route").val(),
+                        noRule:$("#oldRule").val(),
                         rule: function () {
-                            return $("#route").val();
+                            return $("#routeRule").val();
                         }
                     }
                 },
-                route:true
             },
             template:{
+                required: true,
                 route:true
             }
         },
         messages: {
-            route:{
+            routeName:{
+                required:"请输入路由描述信息",
                 route:"请使用非中文字符，且长度为1至50个字符",
                 remote: "该栏目路由已经存在"
             },
+            routeRule:{
+                required:"请输入页面路由规则"
+            },
             template:{
+                required:"请输入路由模版",
                 route:"请使用非中文字符，且长度为1至50个字符",
             }
         },
@@ -39,16 +46,13 @@ define(function (require, exports, module) {
             var commonUtil = require("common");
             commonUtil.setDisabled("jq-cms-Save");
             $.ajax({
-                url: "/category/modifyCategory",
+                url: "/route/modifyRoute",
                 data: {
-                    id:$("#hidCategoryID").val(),
-                    siteId:$("#siteId").val(),
-                    name: $("#categoryName").val(),
-                    modelId: $("#modelId").val(),
-                    orderWeight: $("#orderWeight").val(),
-                    rule:$("#route").val(),
+                    id:$("#id").val(),
+                    routeName: $("#routeName").val(),
+                    routeRule: $("#routeRule").val(),
                     template:$("#template").val(),
-                    noRule:$("#noRule").val()
+                    routeType:$("#routeType").val()
                 },
                 type: "POST",
                 dataType: 'json',
@@ -60,7 +64,9 @@ define(function (require, exports, module) {
                         var index=parseInt(data.code);
                         switch (index){
                             case 200:
-                                $("#route").val("");
+                                $("#routeName").val("");
+                                $("#routeRule").val("");
+                                $("#routeRule").val("");
                                 $("#template").val("")
                                 parent.layer.close(layerIndex);
                                 layer.msg("修改成功",{time: 2000});
@@ -68,14 +74,21 @@ define(function (require, exports, module) {
                             case 204:
                                 layer.msg("路由规则已经存在",{time: 2000});
                                 break;
+                            case 405:
+                                layer.msg("信息不存在",{time: 2000})
+                                break;
                             case 500:
                                 layer.msg("操作失败",{time: 2000})
+                                break;
+                            case 502:
+                                layer.msg("系统繁忙,请稍后再试",{time: 2000})
                                 break;
                         }
                     }
                     commonUtil.cancelDisabled("jq-cms-Save");
                 },
                 error: function () {
+                    layer.msg("系统繁忙,请稍后再试",{time: 2000})
                     commonUtil.cancelDisabled("jq-cms-Save");
                 }
             });
@@ -83,6 +96,6 @@ define(function (require, exports, module) {
         },
         invalidHandler: function () {
             return true;
-        }
+        },
     });
 });

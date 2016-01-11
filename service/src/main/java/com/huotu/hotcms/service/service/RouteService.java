@@ -35,4 +35,8 @@ public interface RouteService {
     void delete(Route route);
 
     PageData<Route> getPage(Site site,String description,Integer page,Integer pageSize);
+
+    Route getRoute(long id);
+
+    Boolean deleteRoute(Route route);
 }

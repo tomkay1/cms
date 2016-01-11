@@ -13,8 +13,10 @@ public enum ResultOptionEnum implements CommonEnum {
     NO_LIMITS(202,"没有权限"),
     DOMAIN_EXIST(203,"域名已经存在"),
     ROUTE_EXISTS(204,"路由规则已经存在"),
+    EXISTS_RELATION(205,"存在关联信息"),
 
     NOFIND(404,"没有信息"),
+    SITE_NOFIND(405,"站点不存在"),
     FAILE(500,"失败"),
     PARAMERROR(501,"参数错误"),
     SERVERFAILE(502,"服务器错误"), ;

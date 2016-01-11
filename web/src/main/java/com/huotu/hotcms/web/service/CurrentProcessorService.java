@@ -12,13 +12,13 @@ public class CurrentProcessorService extends BaseProcessorService {
     @Override
     public Object resolveDataByAttr(String attributeValue, ITemplateContext context) {
         if (dialectPrefix.equals(DialectTypeEnum.ARTICLE.getDialectPrefix())) {
-            return new ArticleCurrentProcessorFactory().resolveDataByAttr(attributeValue, context);
+            return ArticleCurrentProcessorFactory.getInstance().resolveDataByAttr(attributeValue, context);
         }
         if (dialectPrefix.equals(DialectTypeEnum.SITE.getDialectPrefix())) {
-            return new SiteCurrentProcessorFactory().resolveDataByAttr(attributeValue, context);
+            return SiteCurrentProcessorFactory.getInstance().resolveDataByAttr(attributeValue, context);
         }
         if(dialectPrefix.equals(DialectTypeEnum.CATEGORY.getDialectPrefix())) {
-            return new SiteCurrentProcessorFactory().resolveDataByAttr(attributeValue, context);
+            return null;
         }
 
         if(dialectPrefix.equals(DialectTypeEnum.LINK.getDialectPrefix()))

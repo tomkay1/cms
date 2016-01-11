@@ -22,6 +22,18 @@ public class ArticleCurrentProcessorFactory extends BaseProcessorService {
 
     private static final Log log = LogFactory.getLog(CategoryForeachProcessorFactory.class);
 
+    private static ArticleCurrentProcessorFactory instance;
+
+    private ArticleCurrentProcessorFactory() {
+    }
+
+    public static ArticleCurrentProcessorFactory getInstance() {
+        if(instance == null) {
+            instance = new ArticleCurrentProcessorFactory();
+        }
+        return instance;
+    }
+
     @Override
     public Object resolveDataByAttr(String attributeValue, ITemplateContext context){
 //        WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();

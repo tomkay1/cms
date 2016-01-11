@@ -78,6 +78,9 @@ public class CookieUser {
     * */
     public  boolean checkLogin(HttpServletRequest request,HttpServletResponse response,int customerId)
     {
+        if(customerId==-1){
+            customerId=Integer.valueOf(CookieHelper.getCookieVal(request,CMSEnums.CookieKeyValue.CustomerID.toString()));
+        }
         boolean loginIndex=false;
         String userIdStr=CookieHelper.getCookieVal(request,CMSEnums.CookieKeyValue.UserID.toString());
         if(null!=userIdStr&&!userIdStr.equals(""))

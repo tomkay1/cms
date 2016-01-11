@@ -17,6 +17,18 @@ public class ArticleSrcProcessorFactory extends BaseProcessorService {
 
     private static final Log log = LogFactory.getLog(CategoryForeachProcessorFactory.class);
 
+    private static ArticleSrcProcessorFactory instance;
+
+    private ArticleSrcProcessorFactory() {
+    }
+
+    public static ArticleSrcProcessorFactory getInstance() {
+        if(instance == null) {
+            instance = new ArticleSrcProcessorFactory();
+        }
+        return instance;
+    }
+
     @Override
     public Object resolveDataByAttr(String attributeValue, ITemplateContext context){
         try {

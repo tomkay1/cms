@@ -46,7 +46,8 @@ define(function (require, exports, module) {
                     model: $("#modelType").val(),
                     orderWeight: $("#orderWeight").val(),
                     rule:$("#route").val(),
-                    template:$("#template").val()
+                    template:$("#template").val(),
+                    parentPath:$("#parentPath").val(),
                 },
                 type: "POST",
                 dataType: 'json',

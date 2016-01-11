@@ -145,7 +145,7 @@ public class CategoryController {
      * */
     @RequestMapping(value = "/saveCategory",method = RequestMethod.POST)
     @ResponseBody
-    public ResultView saveCategory(String name, Integer model,Long siteId,Long parentId,Integer orderWeight,String rule,String template){
+    public ResultView saveCategory(String name, Integer model,Long siteId,Long parentId,Integer orderWeight,String rule,String template,String parentPath){
         ResultView result=null;
         try {
             Category category=new Category();
@@ -155,6 +155,7 @@ public class CategoryController {
                 category.setOrderWeight(orderWeight);
                 Category categoryParent = categoryService.getCategoryById(parentId);
                 category.setSite(site);
+                category.setParentIds(parentPath);
                 category.setCustomerId(site.getCustomerId());
                 if (model >= 0) {
                     category.setModelId(model);

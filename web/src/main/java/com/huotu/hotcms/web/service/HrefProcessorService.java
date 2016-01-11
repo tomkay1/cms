@@ -15,7 +15,7 @@ import java.util.List;
 public class HrefProcessorService extends BaseProcessorService{
     public String resolveLinkData(List<Assignation> assignation,String LinkExpression, ITemplateContext context){
         if(dialectPrefix.equals(DialectTypeEnum.ARTICLE.getDialectPrefix())) {
-            return new ArticleHrefProcessorFactory().resolveLinkData(assignation,LinkExpression,context);
+            return ArticleHrefProcessorFactory.getInstance().resolveLinkData(assignation,LinkExpression,context);
         }
 
         if(dialectPrefix.equals(DialectTypeEnum.CATEGORY.getDialectPrefix())) {
@@ -26,7 +26,6 @@ public class HrefProcessorService extends BaseProcessorService{
         {
             return null;
         }
-
         return null;
     }
 }

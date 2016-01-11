@@ -70,14 +70,14 @@ public class CategoryForeachProcessorFactory {
                 if(categoryForeachParam.getType()==null) {
 
                 }
-                return categoryService.getCommonCategory()
+//                return categoryService.getCommonCategory()
             }
             else if(route.getRouteType()==null) {
                 if (StringUtils.isEmpty(categoryForeachParam.getSiteid())) {
                     Site site = (Site) VariableExpression.getVariable(context, "site");
                     categoryForeachParam.setSiteid(site.getSiteId());
                 }
-                categoryList = categoryService.getCategoryList(categoryForeachParam);
+//                categoryList = categoryService.getCategoryList(categoryForeachParam);
             }else {
                 Category parent;
                 if(categoryForeachParam.getParentid()!=null) {
@@ -86,7 +86,7 @@ public class CategoryForeachProcessorFactory {
                     Category current = categoryService.getCategoryByRoute(route);
                     parent = current.getParent();
                 }
-                categoryList = categoryService.getCategoryList(parent);
+//                categoryList = categoryService.getCategoryList(parent);
             }
         } catch (Exception e) {
             log.error(e.getMessage());

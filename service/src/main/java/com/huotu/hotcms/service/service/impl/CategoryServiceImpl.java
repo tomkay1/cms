@@ -110,7 +110,7 @@ public class CategoryServiceImpl implements CategoryService {
             };
             return categoryRepository.findAll(specification, new Sort(Sort.Direction.DESC, "orderWeight"));
         }
-        return categoryRepository.findBySite_SiteIdAndRoute_RouteTypeAndDeletedOrderByOrderWeightDesc(param.getSiteid(),param.getRoutetype(),false);
+        return categoryRepository.findBySite_SiteIdAndRoute_RouteType_CodeAndDeletedOrderByOrderWeightDesc(param.getSiteid(), param.getRoutetype(), false);
     }
 
     @Override

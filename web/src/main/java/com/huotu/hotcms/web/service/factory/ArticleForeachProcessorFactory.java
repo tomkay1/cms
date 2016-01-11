@@ -24,7 +24,11 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 import org.thymeleaf.context.ITemplateContext;
+import org.thymeleaf.context.IWebContext;
 import org.thymeleaf.model.IProcessableElementTag;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * Created by cwb on 2016/1/6.
@@ -52,20 +56,42 @@ public class ArticleForeachProcessorFactory {
         Page<Article> articles = null;
         try {
             WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
+            HttpServletRequest request = ((IWebContext)context).getRequest();
             ArticleForeachParam articleForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag, ArticleForeachParam.class);
             if(StringUtils.isEmpty(articleForeachParam.getCategoryid())) {
                 Route route = (Route)VariableExpression.getVariable(context,"route");
-                if(route.getRouteType()==RouteType.ARTICLE_CONTENT) {
-                    throw new Exception("路由规则错误");
-                }
                 CategoryService categoryService = (CategoryService)applicationContext.getBean("categoryServiceImpl");
                 Category category = categoryService.getCategoryByRoute(route);
-                articleForeachParam.setCategoryid(category.getId());
-                if(articleForeachParam.getPageno() == null) {
-                    articleForeachParam.setPageno(PAGE_NO);
+                //如果不是具体子栏目，应根据父级栏目得到相应子栏目，然后取得其中优先级最高的子栏目进行展示
+                if(route.getRouteType()!=RouteType.ARTICLE_LIST) {
+                    List<Category> categoryList = categoryService.getCategoryList(category);
+                    if(categoryList.size() == 0) {
+                        throw new Exception("路由规则错误");
+                    }
+                    category = categoryList.get(0);
                 }
-                if(articleForeachParam.getPagesize() == null) {
+                articleForeachParam.setCategoryid(category.getId());
+            }
+            if(articleForeachParam.getPageno() == null) {
+                if(StringUtils.isEmpty(request.getParameter("pageNo"))) {
+                    articleForeachParam.setPageno(PAGE_NO);
+                }else {
+                    int pageNo = Integer.parseInt(request.getParameter("pageNo"));
+                    if(pageNo < 1) {
+                        throw new Exception("页码小于1");
+                    }
+                    articleForeachParam.setPageno(pageNo);
+                }
+            }
+            if(articleForeachParam.getPagesize() == null) {
+                if(StringUtils.isEmpty(request.getParameter("pageSize"))) {
                     articleForeachParam.setPagesize(PAGE_SIZE);
+                }else {
+                    int pageSize = Integer.parseInt(request.getParameter("pageSize"));
+                    if(pageSize < 1) {
+                        throw new Exception("请求数据列表容量小于1");
+                    }
+                    articleForeachParam.setPagesize(pageSize);
                 }
             }
             ArticleService articleService = (ArticleService)applicationContext.getBean("articleServiceImpl");

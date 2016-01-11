@@ -4,6 +4,7 @@ import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.service.RouteService;
 import com.huotu.hotcms.web.service.ArticleResolveService;
 import com.huotu.hotcms.web.service.RequestService;
 import com.huotu.hotcms.web.service.RouteResolverService;
@@ -38,6 +39,8 @@ public class RouteInterceptor  extends HandlerInterceptorAdapter {
 
     @Autowired
     private ArticleResolveService articleResolveService;
+    @Autowired
+    private RouteService routeService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -49,7 +52,7 @@ public class RouteInterceptor  extends HandlerInterceptorAdapter {
         String servletPath=request.getServletPath();
         Site site=siteResolveService.getCurrentSite(request);
         if(site!=null){
-            Route route = routeResolverService.getRoute(site,servletPath);
+            Route route = routeService.getRouteByRuleAndSite(site,servletPath);
             if(modelAndView==null){
                 modelAndView=new ModelAndView();
             }

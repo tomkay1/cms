@@ -72,6 +72,7 @@ public class InitService {
             host1.setCustomerId(3447);
             Site site = new Site();
             site.setCustomerId(3447);
+            site.setName("火图科技");
             site.setTitle("火图科技");
             site.setDescription("杭州火图科技有限公司是一家专业的微信商城服务提供商，" +
                     "专业/质优/高端微商城定制开发，为客户建立专属微信三级分销系统，并提供代运营、微商人才培训等服务");
@@ -83,6 +84,7 @@ public class InitService {
             siteRepository.save(site);
             Site s = new Site();
             s.setCustomerId(3447);
+            s.setName("huobanplus");
             s.setTitle("huobanplus");
             s.setDescription("Hangzhou fire science and Technology Co., Ltd. is a professional mall of micro channel service providers, " +
                     "professional / quality / high-end micro mall custom development……");
@@ -102,14 +104,14 @@ public class InitService {
             route.setSite(site);
             routeRepository.save(route);
             Route route1 = new Route();
-            route1.setDescription("新闻");
+            route1.setDescription("新闻资讯");
             route1.setCreateTime(LocalDateTime.now());
             route1.setRule("/news");
             route1.setTemplate("/newsList.html");
             route1.setSite(site);
             routeRepository.save(route1);
             Route route2 = new Route();
-            route2.setDescription("公告");
+            route2.setDescription("最新公告");
             route2.setCreateTime(LocalDateTime.now());
             route2.setRule("/notices");
             route2.setTemplate("/noticeList.html");
@@ -123,22 +125,25 @@ public class InitService {
             category.setCustomerId(3447);
             category.setOrderWeight(100);
             category.setSite(site);
+            category.setRoute(routeRepository.findBySiteAndRule(site, "/"));
             categoryRepository.save(category);
 
             Category category1 = new Category();
             category1.setCreateTime(LocalDateTime.now());
-            category1.setName("新闻");
+            category1.setName("新闻资讯");
             category1.setCustomerId(3447);
             category1.setOrderWeight(90);
             category1.setSite(site);
+            category1.setRoute(routeRepository.findBySiteAndRule(site,"/news"));
             categoryRepository.save(category1);
 
             Category category2 = new Category();
             category2.setCreateTime(LocalDateTime.now());
-            category2.setName("公告");
+            category2.setName("最新公告");
             category2.setCustomerId(3447);
             category2.setOrderWeight(90);
             category2.setSite(site);
+            category2.setRoute(routeRepository.findBySiteAndRule(site,"/notices"));
             categoryRepository.save(category2);
         }
     }

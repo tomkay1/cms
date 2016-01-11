@@ -22,7 +22,7 @@ public interface RouteService {
 
     Route getRouteByRouteType(Site site,RouteType routeType);
 
-    Set<Route> getRouteByRuleAndSite(Site site,String rule);
+    Route getRouteByRuleAndSite(Site site,String rule);
 
     Boolean isExistsBySiteAndRule(Site site,String rule);
 

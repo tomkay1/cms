@@ -8,7 +8,9 @@
 
 package com.huotu.hotcms.web.service.factory;
 
+import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.thymeleaf.CategoryForeachParam;
 import com.huotu.hotcms.service.service.CategoryService;
@@ -54,12 +56,21 @@ public class CategoryForeachProcessorFactory {
         try {
             WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
             CategoryForeachParam categoryForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag, CategoryForeachParam.class);
-            if(StringUtils.isEmpty(categoryForeachParam.getSiteid())) {
-                Site site = (Site) VariableExpression.getVariable(context,"site");
-                categoryForeachParam.setSiteid(site.getSiteId());
-            }
             CategoryService categoryService = (CategoryService)applicationContext.getBean("categoryServiceImpl");
-            categoryList = categoryService.getCategoryList(categoryForeachParam);
+            Route route = (Route)VariableExpression.getVariable(context, "route");
+            if(!StringUtils.isEmpty(categoryForeachParam.getSpecifyids())) {
+                categoryList = categoryService.getCategoryList(categoryForeachParam);
+            }else if(route==null){
+                if (StringUtils.isEmpty(categoryForeachParam.getSiteid())) {
+                    Site site = (Site)VariableExpression.getVariable(context, "site");
+                    categoryForeachParam.setSiteid(site.getSiteId());
+                }
+                categoryList = categoryService.getCategoryList(categoryForeachParam);
+            }else {
+                Category current = categoryService.getCategoryByRoute(route);
+                Category parent = current.getParent();
+                categoryList = categoryService.getCategoryList(parent);
+            }
         } catch (Exception e) {
             log.error(e.getMessage());
         }

@@ -275,4 +275,9 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.findByRoute(route);
     }
 
+    @Override
+    public List<Category> getCategoryList(Category parent) {
+        return categoryRepository.findByParentOrderByOrderWeightDesc(parent);
+    }
+
 }

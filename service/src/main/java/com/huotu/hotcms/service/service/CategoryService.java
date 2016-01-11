@@ -28,4 +28,6 @@ public interface CategoryService {
     Boolean deleteCategory(Category category);
 
     Category getCategoryByRoute(Route route);
+
+    List<Category> getCategoryList(Category parent);
 }

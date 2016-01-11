@@ -16,5 +16,5 @@ public interface RouteRepository extends JpaRepository<Route, Long>,JpaSpecifica
 
     Route findBySiteAndRouteType(Site site,RouteType routeType);
 
-    Set<Route> findBySiteAndRule(Site site,String rule);
+    Route findBySiteAndRule(Site site,String rule);
 }

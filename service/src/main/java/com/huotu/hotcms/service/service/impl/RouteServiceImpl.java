@@ -43,14 +43,14 @@ public class RouteServiceImpl  implements RouteService {
     }
 
     @Override
-    public Set<Route> getRouteByRuleAndSite(Site site, String rule) {
+    public Route getRouteByRuleAndSite(Site site, String rule) {
         return routeRepository.findBySiteAndRule(site, rule);
     }
 
     @Override
     public Boolean isExistsBySiteAndRule(Site site, String rule) {
-       Set<Route> routeSet=routeRepository.findBySiteAndRule(site,rule);
-       return (routeSet!=null&&routeSet.size()>0)?true:false;
+       Route routeSet=routeRepository.findBySiteAndRule(site,rule);
+       return routeSet!=null?true:false;
     }
 
     @Override

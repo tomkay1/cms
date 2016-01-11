@@ -24,4 +24,8 @@ public interface CategoryRepository extends JpaRepository<Category, Long>,JpaSpe
    Category findByRoute(Route route);
 
    List<Category> findByParentOrderByOrderWeightDesc(Category superCategory);
+
+   List<Category> findBySite_SiteIdAndRoute_RouteTypeAndDeletedOrderByOrderWeightDesc(Long siteId, Integer routeType, boolean b);
+
+   List<Category> findByParent_Id(Long parenId);
 }

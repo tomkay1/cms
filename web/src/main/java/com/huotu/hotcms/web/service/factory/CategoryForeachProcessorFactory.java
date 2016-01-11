@@ -52,28 +52,45 @@ public class CategoryForeachProcessorFactory {
     }
 
     public Object process(IProcessableElementTag elementTag, ITemplateContext context) {
-        List<Category> categoryList = new ArrayList<>();
         try {
             WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
             CategoryForeachParam categoryForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag, CategoryForeachParam.class);
             CategoryService categoryService = (CategoryService)applicationContext.getBean("categoryServiceImpl");
             Route route = (Route)VariableExpression.getVariable(context, "route");
+            //根据指定id获取栏目列表
             if(!StringUtils.isEmpty(categoryForeachParam.getSpecifyids())) {
-                categoryList = categoryService.getCategoryList(categoryForeachParam);
-            }else if(route.getRouteType()==null) {
+                return categoryService.getSpecifyCategory(categoryForeachParam.getSpecifyids());
+            }
+            //获取导航栏目列表
+            if(route.getRouteType()==null) {
+                if (StringUtils.isEmpty(categoryForeachParam.getSiteid())) {
+                    Site site = (Site) VariableExpression.getVariable(context, "site");
+                    categoryForeachParam.setSiteid(site.getSiteId());
+                }
+                if(categoryForeachParam.getType()==null) {
+
+                }
+                return categoryService.getCommonCategory()
+            }
+            else if(route.getRouteType()==null) {
                 if (StringUtils.isEmpty(categoryForeachParam.getSiteid())) {
                     Site site = (Site) VariableExpression.getVariable(context, "site");
                     categoryForeachParam.setSiteid(site.getSiteId());
                 }
                 categoryList = categoryService.getCategoryList(categoryForeachParam);
             }else {
-                Category current = categoryService.getCategoryByRoute(route);
-                Category parent = current.getParent();
+                Category parent;
+                if(categoryForeachParam.getParentid()!=null) {
+                    parent = categoryService.getCategoryById(categoryForeachParam.getParentid());
+                }else {
+                    Category current = categoryService.getCategoryByRoute(route);
+                    parent = current.getParent();
+                }
                 categoryList = categoryService.getCategoryList(parent);
             }
         } catch (Exception e) {
             log.error(e.getMessage());
         }
-        return categoryList;
+        return null;
     }
 }

@@ -12,6 +12,7 @@ import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.codehaus.plexus.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -90,7 +91,7 @@ public class CategoryController {
         ResultView resultView=null;
         try{
             Site site=siteService.getSite(siteId);
-            List<Category> categoryList=categoryService.getCategoryBySiteAndDeletedOrderByOrderWeightDesc(site,false);
+            List<Category> categoryList=categoryService.getCategoryBySiteAndDeletedAndNameContainingOrderByOrderWeightDesc(site,false,name);
             List<CategoryTreeModel> categoryTreeModelList= categoryService.ConvertCateGoryTreeByCategotry(categoryList);
             resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(),categoryTreeModelList);
         }
@@ -232,6 +233,7 @@ public class CategoryController {
                     if (modelId >= 0) {
                         category.setModelId(modelId);
                     }
+                    category.setName(name);
                     category.setOrderWeight(orderWeight);
                     category.setCustomerId(site.getCustomerId());
                     category.setUpdateTime(LocalDateTime.now());

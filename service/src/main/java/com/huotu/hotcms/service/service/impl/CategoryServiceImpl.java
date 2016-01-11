@@ -55,8 +55,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<Category> getCategoryBySiteAndDeletedOrderByOrderWeightDesc(Site site, Boolean deleted) {
-        List<Category> categories = categoryRepository.findBySiteAndDeletedOrderByOrderWeightDesc(site, deleted);
+    public List<Category> getCategoryBySiteAndDeletedAndNameContainingOrderByOrderWeightDesc(Site site,Boolean deleted,String name) {
+        List<Category> categories=null;
+        if(StringUtils.isEmpty(name)){
+            categories = categoryRepository.findBySiteAndDeletedOrderByOrderWeightDesc(site,deleted);
+        }else{
+            categories = categoryRepository.findBySiteAndDeletedAndNameContainingOrderByOrderWeightDesc(site,deleted,name);
+        }
         for(Category category:categories){
             if(category!=null){
                 category.setRoute(null);

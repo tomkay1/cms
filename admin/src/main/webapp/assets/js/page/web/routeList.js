@@ -97,7 +97,10 @@ define(function (require, exports, module) {
             shadeClose: true,
             shade: 0.8,
             area: ['900px', '500px'],
-            content: "/route/addRoute?siteId="+siteId
+            content: "/route/addRoute?siteId="+siteId,
+            end:function(){
+                Refresh();
+            }
         });
     })
 
@@ -113,7 +116,10 @@ define(function (require, exports, module) {
                     shadeClose: true,
                     shade: 0.8,
                     area: ['900px', '500px'],
-                    content: "/route/updateRoute?id="+id
+                    content: "/route/updateRoute?id="+id,
+                    end:function(){
+                       Refresh();
+                    }
                 });
             })
         })

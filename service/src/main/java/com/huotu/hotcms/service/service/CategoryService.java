@@ -16,7 +16,7 @@ import java.util.List;
 public interface CategoryService {
     Category getCategoryById(Long id);
     Boolean save(Category category);
-    List<Category>  getCategoryBySiteAndDeletedOrderByOrderWeightDesc(Site site,Boolean deleted);
+    List<Category>  getCategoryBySiteAndDeletedAndNameContainingOrderByOrderWeightDesc(Site site,Boolean deleted,String name);
     List<Category> getCategoryList(CategoryForeachParam foreachParam);
 
     List<CategoryTreeModel> ConvertCateGoryTreeByCategotry(List<Category> categories);

@@ -17,6 +17,8 @@ public class CategoryTreeModel extends Category {
 
     public String time;
 
+    public Boolean expanded;
+
     public CategoryTreeModel(){
         children=new ArrayList<CategoryTreeModel>();
     }
@@ -38,6 +40,7 @@ public class CategoryTreeModel extends Category {
             categoryTreeModel.setParentIds(category.getParentIds());
             categoryTreeModel.setRoute(null);
             categoryTreeModel.setSite(null);
+            categoryTreeModel.setExpanded(true);
             categoryTreeModel.setUpdateTime(category.getUpdateTime());
 //            String time=category.getCreateTime().getYear()+"-"+category.getCreateTime().getMonthValue()+"-"+category.getCreateTime().getDayOfMonth();
             categoryTreeModel.setTime(category.getCreateTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
@@ -60,8 +63,7 @@ public class CategoryTreeModel extends Category {
         categoryTreeModel.setParentIds(category.getParentIds());
         categoryTreeModel.setRoute(null);
         categoryTreeModel.setSite(null);
-//        category.getCreateTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-//        String time=category.getCreateTime().getYear()+"-"+category.getCreateTime().getMonthValue()+"-"+category.getCreateTime().getDayOfMonth();
+        categoryTreeModel.setExpanded(true);
         categoryTreeModel.setTime(category.getCreateTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         categoryTreeModel.setUpdateTime(category.getUpdateTime());
         return categoryTreeModel;

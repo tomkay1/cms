@@ -56,6 +56,7 @@ define(function (require, exports, module) {
                 id: -1,
                 time: null,
                 modelType: null,
+                expanded: true,
                 children:[]
             }];
             $.ajax({
@@ -86,6 +87,7 @@ define(function (require, exports, module) {
                     {name: 'id', type: 'number'},
                     {name: 'name', type: 'string'},
                     {name: 'time', type: 'string'},
+                    {name: 'orderWeight', type: 'number'},
                     {name: 'modelId', type: 'number'}
                 ],
                 hierarchy: {
@@ -94,7 +96,13 @@ define(function (require, exports, module) {
                 id: 'id',
                 localData: categoryModul.initCategoryList()
             };
-            var dataAdapter = new $.jqx.dataAdapter(source);
+            var dataAdapter = new $.jqx.dataAdapter(source,{
+                beforeLoadComplete: function (records) {
+                    for (var i = 0; i < records.length; i++) {
+                        records[i].expanded=true;
+                    }
+                }
+                });
             var gridWidth = $(window).width() - 45;
             // create Tree Grid
             $("#treeGrid").jqxTreeGrid(
@@ -107,7 +115,7 @@ define(function (require, exports, module) {
                         {
                             text: '所属模型',
                             dataField: 'modelId',
-                            width: gridWidth * 0.25,
+                            width: gridWidth * 0.20,
                             cellsRenderer: function (row, column, value) {
                                 if (parseInt(value) >= 0) {
                                     switch (value) {
@@ -131,10 +139,11 @@ define(function (require, exports, module) {
                                 }
                             }
                         },
+                        {text: '排序权重', dataField: 'orderWeight', width: gridWidth * 0.15},
                         {
                             text: '创建时间',
                             dataField: 'time',
-                            width: gridWidth * 0.25,
+                            width: gridWidth * 0.20,
                             cellsRenderer: function (row, column, value) {
                                 if (value) {
                                     return value.toString().substr(0, 10);
@@ -146,7 +155,7 @@ define(function (require, exports, module) {
                             cellsAlign: 'center',
                             align: "center",
                             columnType: 'none',
-                            width: gridWidth * 0.25,
+                            width: gridWidth * 0.20,
                             editable: false,
                             sortable: false,
                             dataField: null,
@@ -207,7 +216,10 @@ define(function (require, exports, module) {
                 shadeClose: true,
                 shade: 0.8,
                 area: ['900px', '500px'],
-                content: content
+                content: content,
+                end:function(){
+                    categoryModul.initList();
+                }
             });
         },
         deleteCategory:function(id){
@@ -252,6 +264,9 @@ define(function (require, exports, module) {
     setTimeout(categoryModul.initList,500);//延时500毫秒加载,解决初次加载加载js出错问题
     //initList();//加载栏目列表信息
     $("#jq-cms-siteList").on("change",function(){
+        categoryModul.initList();
+    })
+    $("#jq-cms-search").on("click",function(){
         categoryModul.initList();
     })
 });

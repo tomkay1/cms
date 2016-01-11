@@ -56,12 +56,14 @@ public class RouteServiceImpl  implements RouteService {
 
     @Override
     public Boolean isPatterBySiteAndRule(Site site, String rule) {
-        Set<Route> routes =getRoute(site);
-        for(Route s : routes) {
-            if(s.getRule()!=null) {
-                String dataRule=s.getRule();
-                if(rule.equals(dataRule)||rule.matches(dataRule)) {
-                    return true;
+        if(!StringUtils.isEmpty(rule)) {
+            Set<Route> routes = getRoute(site);
+            for (Route s : routes) {
+                if (s.getRule() != null) {
+                    String dataRule = s.getRule();
+                    if (rule.equals(dataRule) || rule.matches(dataRule)) {
+                        return true;
+                    }
                 }
             }
         }
@@ -70,13 +72,15 @@ public class RouteServiceImpl  implements RouteService {
 
     @Override
     public Boolean isPatterBySiteAndRuleIgnore(Site site, String rule, String noRule) {
-        Set<Route> routes =getRoute(site);
-        for(Route s : routes) {
-            String dataRule=s.getRule();
-            if(dataRule!=null) {
-                if(!dataRule.equals(noRule)) {
-                    if (rule.equals(dataRule)||rule.matches(s.getRule())) {
-                        return true;
+        if(!StringUtils.isEmpty(rule)) {
+            Set<Route> routes = getRoute(site);
+            for (Route s : routes) {
+                String dataRule = s.getRule();
+                if (dataRule != null) {
+                    if (!dataRule.equals(noRule)) {
+                        if (rule.equals(dataRule) || rule.matches(s.getRule())) {
+                            return true;
+                        }
                     }
                 }
             }

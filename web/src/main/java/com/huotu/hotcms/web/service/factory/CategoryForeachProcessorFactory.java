@@ -56,38 +56,26 @@ public class CategoryForeachProcessorFactory {
             WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
             CategoryForeachParam categoryForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag, CategoryForeachParam.class);
             CategoryService categoryService = (CategoryService)applicationContext.getBean("categoryServiceImpl");
-            Route route = (Route)VariableExpression.getVariable(context, "route");
             //根据指定id获取栏目列表
             if(!StringUtils.isEmpty(categoryForeachParam.getSpecifyids())) {
                 return categoryService.getSpecifyCategories(categoryForeachParam.getSpecifyids());
             }
-            //获取导航栏目列表
-            if(route.getRouteType()==null) {
-                if (StringUtils.isEmpty(categoryForeachParam.getSiteid())) {
-                    Site site = (Site) VariableExpression.getVariable(context, "site");
-                    categoryForeachParam.setSiteid(site.getSiteId());
-                }
-                if(categoryForeachParam.getRoutetype()==null) {
-
-                }
-//                return categoryService.getCommonCategory()
+            Long parentId = categoryForeachParam.getParentid();
+            //根据所属父节点获取栏目列表
+            if(parentId!=null) {
+                return categoryService.getSubCategories(parentId);
             }
-            else if(route.getRouteType()==null) {
-                if (StringUtils.isEmpty(categoryForeachParam.getSiteid())) {
-                    Site site = (Site) VariableExpression.getVariable(context, "site");
-                    categoryForeachParam.setSiteid(site.getSiteId());
-                }
-//                categoryList = categoryService.getCategoryList(categoryForeachParam);
-            }else {
-                Category parent;
-                if(categoryForeachParam.getParentid()!=null) {
-                    parent = categoryService.getCategoryById(categoryForeachParam.getParentid());
-                }else {
-                    Category current = categoryService.getCategoryByRoute(route);
-                    parent = current.getParent();
-                }
-//                categoryList = categoryService.getCategoryList(parent);
+            //获取当前站点
+            if (StringUtils.isEmpty(categoryForeachParam.getSiteid())) {
+                Site site = (Site) VariableExpression.getVariable(context, "site");
+                categoryForeachParam.setSiteid(site.getSiteId());
             }
+            //根据指定routeType获取栏目列表
+            Integer routeType = categoryForeachParam.getRoutetype();
+            if(routeType==null) {
+                categoryForeachParam.setRoutetype(RouteType.HEADER_NAVIGATION.getCode());
+            }
+            return categoryService.getGivenTypeCategories(categoryForeachParam);
         } catch (Exception e) {
             log.error(e.getMessage());
         }

@@ -31,9 +31,6 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     CategoryRepository categoryRepository;
 
-//    @Autowired
-//    CategoryService categoryService;
-
     @Autowired
     RouteService routeService;
 
@@ -120,36 +117,6 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Category> getSubCategories(Long parenId) {
         return categoryRepository.findByParent_Id(parenId);
     }
-
-    @Override
-    public List<Category> getCategoryList(CategoryForeachParam foreachParam) {
-        if(!StringUtils.isEmpty(foreachParam.getSpecifyids())) {
-            List<String> ids = Arrays.asList(foreachParam.getSpecifyids());
-            List<Long> categoryIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
-            Specification<Category> specification = (root, query, cb) -> {
-                List<Predicate> predicates = categoryIds.stream().map(id -> cb.equal(root.get("id").as(Long.class), id)).collect(Collectors.toList());
-                return cb.or(predicates.toArray(new Predicate[predicates.size()]));
-            };
-            return categoryRepository.findAll(specification,new Sort(Sort.Direction.DESC,"orderWeight"));
-        }
-
-        Integer categoryType = foreachParam.getRoutetype();
-
-        if(!StringUtils.isEmpty(foreachParam.getExcludeid())) {
-            List<String> ids = Arrays.asList(foreachParam.getExcludeid());
-            List<Long> categoryIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
-            Specification<Category> specification = (root, query, cb) -> {
-                List<Predicate> predicates = categoryIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
-                predicates.add(cb.equal(root.get("site").get("siteId").as(Long.class),foreachParam.getSiteid()));
-                predicates.add(cb.equal(root.get("modelId").as(Integer.class),categoryType));
-                predicates.add(cb.equal(root.get("deleted").as(Boolean.class),0));
-                return cb.and(predicates.toArray(new Predicate[predicates.size()]));
-            };
-            return categoryRepository.findAll(specification, new Sort(Sort.Direction.DESC, "orderWeight"));
-        }
-        return categoryRepository.findBySite_SiteIdAndDeletedAndModelIdOrderByOrderWeightDesc(foreachParam.getSiteid(), false, categoryType);
-    }
-
 
     @Override
     public List<CategoryTreeModel> ConvertCateGoryTreeByCategotry(List<Category> categories) {

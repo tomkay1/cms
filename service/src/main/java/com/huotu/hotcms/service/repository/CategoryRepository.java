@@ -13,7 +13,10 @@ import java.util.Set;
  * Created by chendeyu on 2015/12/31.
  */
 public interface CategoryRepository extends JpaRepository<Category, Long>,JpaSpecificationExecutor {
-   List<Category> findBySiteAndDeletedOrderByOrderWeightDesc(Site site, Boolean deleted);
+   List<Category> findBySiteAndDeletedAndNameContainingOrderByOrderWeightDesc(Site site,Boolean deleted,String name);
+
+   List<Category> findBySiteAndDeletedOrderByOrderWeightDesc(Site site,Boolean deleted);
+
    Set<Category> findByCustomerId(Integer customerId);
 
    List<Category> findBySite_SiteIdAndDeletedAndModelIdOrderByOrderWeightDesc(long siteId, boolean deleted,Integer modelType);

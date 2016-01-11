@@ -1,6 +1,7 @@
 package com.huotu.hotcms.admin.controller;
 
 import com.huotu.hotcms.admin.util.web.CookieUser;
+import com.huotu.hotcms.service.common.ModelType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.CategoryTreeModel;
@@ -12,6 +13,7 @@ import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.codehaus.plexus.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -90,7 +92,7 @@ public class CategoryController {
         ResultView resultView=null;
         try{
             Site site=siteService.getSite(siteId);
-            List<Category> categoryList=categoryService.getCategoryBySiteAndDeletedOrderByOrderWeightDesc(site,false);
+            List<Category> categoryList=categoryService.getCategoryBySiteAndDeletedAndNameContainingOrderByOrderWeightDesc(site,false,name);
             List<CategoryTreeModel> categoryTreeModelList= categoryService.ConvertCateGoryTreeByCategotry(categoryList);
             resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(),categoryTreeModelList);
         }
@@ -101,9 +103,9 @@ public class CategoryController {
         return resultView;
     }
 
-    /*
-   * 增加栏目
-   * */
+    /**
+       * 增加栏目
+       * */
     @RequestMapping("/addCategory")
     public ModelAndView addCategory(@RequestParam(value = "siteId") Long siteId,
                                     @RequestParam(value = "id", defaultValue = "0") Long id) throws Exception{
@@ -117,6 +119,7 @@ public class CategoryController {
             }else{
                 modelAndView.addObject("site", category.getSite());
             }
+            modelAndView.addObject("modelTypes", ModelType.ConvertMapToEnum());
             modelAndView.addObject("category", category);
         }catch (Exception ex){
             log.error(ex.getMessage());
@@ -124,15 +127,16 @@ public class CategoryController {
         return modelAndView;
     }
 
-    /*
-   * 修改栏目
-   * */
+    /**
+       * 修改栏目
+       * */
     @RequestMapping("/updateCategory")
     public ModelAndView updateCategory(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("/view/section/updateCategory.html");
         Category category =categoryService.getCategoryById(id);
         modelAndView.addObject("category",category);
+        modelAndView.addObject("modelTypes", ModelType.ConvertMapToEnum());
         return modelAndView;
     }
 
@@ -232,6 +236,7 @@ public class CategoryController {
                     if (modelId >= 0) {
                         category.setModelId(modelId);
                     }
+                    category.setName(name);
                     category.setOrderWeight(orderWeight);
                     category.setCustomerId(site.getCustomerId());
                     category.setUpdateTime(LocalDateTime.now());

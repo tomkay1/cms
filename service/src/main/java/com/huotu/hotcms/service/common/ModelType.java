@@ -9,15 +9,15 @@
 package com.huotu.hotcms.service.common;
 
 /**
- * Created by Administrator on 2015/12/22.
+ * Created by xhl on 2015/12/22.
  */
 public enum ModelType implements CommonEnum {
-    ARTICLE(0,"文章"),
-    NOTICE(1,"公告"),
-    VIDEO(2,"视频"),
-    GALLERY(3,"图库"),
-    DOWNLOAD(4,"下载"),
-    LINK(5,"链接");
+    ARTICLE(0,"文章模型"),
+    NOTICE(1,"公告模型"),
+    VIDEO(2,"视频模型"),
+    GALLERY(3,"图库模型"),
+    DOWNLOAD(4,"下载模型"),
+    LINK(5,"链接模型");
 
     ModelType(int code, String value) {
         this.code = code;
@@ -56,5 +56,9 @@ public enum ModelType implements CommonEnum {
             default:
                 return null;
         }
+    }
+    public static ModelType[] ConvertMapToEnum(){
+        ModelType[] routeTypes=ModelType.values();
+        return routeTypes;
     }
 }

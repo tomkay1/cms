@@ -1,6 +1,7 @@
 package com.huotu.hotcms.service.service.impl;
 
 import com.huotu.hotcms.service.common.RouteType;
+import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.DataModel;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
@@ -58,7 +59,8 @@ public class RouteServiceImpl  implements RouteService {
         Set<Route> routes =getRoute(site);
         for(Route s : routes) {
             if(s.getRule()!=null) {
-                if(rule.matches(s.getRule())) {
+                String dataRule=s.getRule();
+                if(rule.equals(dataRule)||rule.matches(dataRule)) {
                     return true;
                 }
             }
@@ -70,9 +72,10 @@ public class RouteServiceImpl  implements RouteService {
     public Boolean isPatterBySiteAndRuleIgnore(Site site, String rule, String noRule) {
         Set<Route> routes =getRoute(site);
         for(Route s : routes) {
-            if(s.getRule()!=null) {
-                if(!s.getRule().equals(noRule)) {
-                    if (rule.matches(s.getRule())) {
+            String dataRule=s.getRule();
+            if(dataRule!=null) {
+                if(!dataRule.equals(noRule)) {
+                    if (rule.equals(dataRule)||rule.matches(s.getRule())) {
                         return true;
                     }
                 }
@@ -111,5 +114,20 @@ public class RouteServiceImpl  implements RouteService {
             route.setSite(null);
         }
         return  data;
+    }
+
+    @Override
+    public Route getRoute(long id) {
+       return routeRepository.findOne(id);
+    }
+
+    @Override
+    public Boolean deleteRoute(Route route) {
+        return false;
+//        try{
+//            Category category=
+//        }catch (Exception ex){
+//
+//        }
     }
 }

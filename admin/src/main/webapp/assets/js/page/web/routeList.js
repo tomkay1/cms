@@ -36,14 +36,14 @@ define(function (require, exports, module) {
             },
             {width: '10%', field: 'title', title: '操作', align: 'center',
                 formatter: function (value, rowData) {
-                    return "<a href='javascript:' class='js-hot-siteDelete' data-id='"+rowData.siteId+"' style='margin-right:10px; color:blue;'>删除</a>" +
-                        "<a href='javascript:' class='js-hot-siteUpdate' data-id='"+rowData.siteId+"' style='margin-right:10px; color: blue'>修改</a>"
+                    return "<a href='javascript:' class='js-hot-routeUpdate' data-id='"+rowData.id+"' style='margin-right:10px; color:blue;' title='修改'>修改</a>" +
+                        "<a href='javascript:' class='js-hot-routeDelete' data-id='"+rowData.id+"' style='margin-right:10px; color: blue' title='删除'>删除</a>"
                 }
             }
         ]
     },function(){
-        updateSite();
-        deleteSite();
+        updateRoute();
+        deleteRoute();
     });
     $("#jq-cms-siteList").on("change",function(){
         var option={
@@ -54,7 +54,6 @@ define(function (require, exports, module) {
         };
         SiteGrid.Refresh(option);
     })
-//TODO:搜索
     $("#jq-cms-search").click(function(){
         var option={
             dataParam:{
@@ -66,7 +65,6 @@ define(function (require, exports, module) {
         SiteGrid.Refresh(option);
     })
 
-    //TODO:显示所有
     $("#jq-cms-searchAll").click(function(){
         var option={
             dataParam:{
@@ -78,58 +76,90 @@ define(function (require, exports, module) {
         SiteGrid.Refresh(option);
     })
 
-    //TODO:修改
-    function updateSite(){
-        var obj=$(".js-hot-siteUpdate");
+    function Refresh(){
+        var option={
+            dataParam:{
+                customerId:customerId,
+                description:$("#description").val(),
+                siteId:$("#jq-cms-siteList").val()
+            }
+        };
+        SiteGrid.Refresh(option);
+    }
+
+    var layer=require("layer");
+    //新增
+    $("#js-cms-addRoute").click(function(){
+        var siteId=$("#jq-cms-siteList").val();
+        layer.open({
+            type: 2,
+            title: "新增路由规则",
+            shadeClose: true,
+            shade: 0.8,
+            area: ['900px', '500px'],
+            content: "/route/addRoute?siteId="+siteId
+        });
+    })
+
+    //修改
+    function updateRoute(){
+        var obj=$(".js-hot-routeUpdate");
         $.each(obj,function(item,dom){
             $(dom).click(function(){//绑定修改事件
                 var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;
-                var commonUtil = require("common");
-                var customerId = commonUtil.getQuery("customerid");
-                window.location.href="http://"+window.location.host+"/"+"site/updateSite?id="+id+"&customerId="+customerId;
+                layer.open({
+                    type: 2,
+                    title: "修改路由规则",
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['900px', '500px'],
+                    content: "/route/updateRoute?id="+id
+                });
             })
         })
     }
 
-    //TODO:删除
-    function deleteSite(){
-        var obj=$(".js-hot-siteDelete");
-
+    //删除
+    function deleteRoute(){
+        var obj=$(".js-hot-routeDelete");
         $.each(obj,function(item,dom){
             $(dom).click(function(){//绑定删除事件
                 var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;
-                var commonUtil = require("common");
-                var customerId = commonUtil.getQuery("customerid");
-                var layer=require("layer");
-                layer.confirm('您确定要删除该站点吗？', {
+                layer.confirm('您确定要删除该路由？', {
                     btn: ['确定','取消'] //按钮
-                }, function() {
+                }, function(){
                     $.ajax({
-                        url: "/site/deleteSite",
+                        url: "/route/deleteRoute",
                         data: {
-                            id:id,
-                            customerId:customerId
+                            id: id
                         },
                         type: "POST",
                         dataType: 'json',
                         success: function (data) {
-                            if(data!=null)
-                            {
-                                var code=parseInt(data.code);
-                                switch(code)
-                                {
+                            if(data!=null) {
+                                var code = parseInt(data.code);
+                                switch (code) {
                                     case 200:
                                         layer.msg("删除成功",{time: 2000});
-                                        SiteGrid.reLoad();
+                                        Refresh();
+                                        break;
+                                    case 500:
+                                        layer.msg("删除失败",{time: 2000});
                                         break;
                                     case 202:
                                         layer.msg("对不起,您没有删除权限",{time: 2000});
                                         break;
-                                    default :
+                                    case 205:
+                                        layer.msg("该路由存在栏目关联信息,不能删除",{time: 2000});
+                                        break;
+                                    case 502:
                                         layer.msg("系统繁忙,请稍后再试...",{time: 2000});
                                         break;
                                 }
                             }
+                        },
+                        error:function(){
+                            layer.msg("网络出现异常,请稍后再试...",{time: 2000});
                         }
                     });
                 });

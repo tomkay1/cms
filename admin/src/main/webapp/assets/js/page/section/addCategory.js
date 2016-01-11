@@ -27,11 +27,11 @@ define(function (require, exports, module) {
         },
         messages: {
             route:{
-                route:"请使用字母、数字、下划线、反斜杠，且长度为1至20个字符",
+                route:"请使用非中文字符，且长度为1至50个字符",
                 remote: "该栏目路由已经存在"
             },
             template:{
-                route:"请使用字母、数字、下划线、反斜杠，且长度为1至20个字符",
+                route:"请使用非中文字符，且长度为1至50个字符",
             }
         },
         submitHandler: function (form, ev) {

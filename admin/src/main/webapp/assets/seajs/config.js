@@ -1,10 +1,10 @@
-var version="1.2.299449995500";
+var version="100.2.8989";
 seajs.config({
 	alias: {
 		"jquery": "js/jquery-1.9.1.min.js",
 		"bootstrap": "js/bootstrap.min.js",
 		"validate": "libs/validate/jquery.validate.min.js",
-		"message": "libs/validate/jquery.validate.addMethod.js",
+		"message": "libs/validate/jquery.validate.addMethod.js?v="+version,
 		"common":"js/page/common.js?v="+version,
 		"main":"js/page/main.js?v="+version,
 		"home":"js/page/home.js?v="+version,
@@ -29,6 +29,8 @@ seajs.config({
 		"addSite":"js/page/web/addSite.js?v="+version,
 		"updateSite":"js/page/web/updateSite.js?v="+version,
 		"routeList":"js/page/web/routeList.js?v="+version,
+		"addRoute":"js/page/web/addRoute.js?v="+version,
+		"updateRoute":"js/page/web/updateRoute.js?v="+version,
 		"addCategory":"js/page/section/addCategory.js?v="+version,
 		"categoryList":"js/page/section/categoryList.js?t="+version,
 		"updateCategory":"js/page/section/updateCategory.js?v="+version,

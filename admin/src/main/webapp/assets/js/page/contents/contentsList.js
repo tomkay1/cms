@@ -10,7 +10,6 @@ define(function (require, exports, module) {
     var ContentsGrid=$("#js-ContentsList").Grid({
         method: 'POST',//提交方式GET|POST
         form: 'form1',//表单ID
-        pageSize: 10,
         dataParam:{
             customerId:customerId,
             siteId:siteId,
@@ -18,17 +17,18 @@ define(function (require, exports, module) {
         },
         height:'auto',
         showNumber: false,
-        pageSize: 20,
+        pageSize: 3,
         pagerCount: 10,
         pageDetail: true,
         url: '/contents/getContentsList',//数据来源Url|
         rows: [
+            {width: '10%', field: 'id', title: '内容ID', align: 'center'},
             {width: '15%', field: 'name', title: '所属栏目', align: 'center'},
-            {width: '15%', field: 'modelname', title: '所属模型', align: 'center'},
+            {width: '10%', field: 'modelname', title: '所属模型', align: 'center'},
             {width: '15%', field: 'title', title: '标题', align: 'center'},
             {width: '20%', field: 'description', title: '描述', align: 'center'},
             {
-                width: '15%', field: 'createTime', title: '创建时间', align: 'center',
+                width: '10%', field: 'createTime', title: '创建时间', align: 'center',
             }
             ,
             {width: '10%', field: 'title', title: '操作', align: 'center',

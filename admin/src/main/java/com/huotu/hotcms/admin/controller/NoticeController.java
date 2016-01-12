@@ -45,7 +45,6 @@ public class NoticeController {
     {
         ModelAndView modelAndView=new ModelAndView();
         Notice notice= noticeService.findById(id);
-        Category category =notice.getCategory();
         modelAndView.addObject("notice",notice);
         modelAndView.setViewName("/view/contents/noticeList.html");
 

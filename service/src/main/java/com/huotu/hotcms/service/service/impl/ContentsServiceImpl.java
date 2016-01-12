@@ -26,6 +26,7 @@ public class ContentsServiceImpl implements ContentsService {
     public PageData<Contents> getPage(String title, Long siteId, Long category, int page, int pageSize) {
         PageData<Contents> data = null;
         List<Object[]> contentsList =new ArrayList<>();
+        List<Object[]> contentsSize =new ArrayList<>();
         if(title==null){
             title="%"+""+"%";
         }
@@ -33,10 +34,12 @@ public class ContentsServiceImpl implements ContentsService {
             title ="%"+title+"%";
         }
         if(category==-1){//当搜索条件只有站点时
-            contentsList = baseEntityRepository.findAllContentsBySiteIdAndName(siteId, title);
+            contentsList = baseEntityRepository.findAllContentsBySiteIdAndName(siteId, title,(page-1)*pageSize,pageSize);
+            contentsSize =baseEntityRepository.findContentsSizeBySiteIdAndName(siteId, title);
         }
         else{
-            contentsList = baseEntityRepository.findAllContentsBySiteIdAndCategoryIdAndName(siteId, category,title);
+            contentsList = baseEntityRepository.findAllContentsBySiteIdAndCategoryIdAndName(siteId, category,title,(page-1)*pageSize,pageSize);
+            contentsSize =baseEntityRepository.findContentsSizeBySiteIdAndCategoryIdAndName(siteId, category,title);
         }
         List<Contents> contentsList1 = new ArrayList<>();
         for(Object[] o : contentsList) {
@@ -56,11 +59,24 @@ public class ContentsServiceImpl implements ContentsService {
             contents.setCreateTime((String) str);
             contentsList1.add(contents);
         }
+        int PageCount =0;
+        if (contentsList.size()!=0){
+            int yushu=contentsSize.size()%pageSize;
+            if(yushu==0){
+                PageCount =contentsSize.size()/pageSize;
+            }
+            else {
+                PageCount =contentsSize.size()/pageSize+1;
+            }
+        }
+        else{
+             PageCount =0;
+        }
         data = new PageData<Contents>();
-//        data.setPageCount(pageData.getTotalPages());
-//        data.setPageIndex(pageData.getNumber());
-//        data.setPageSize(pageData.getSize());
-//        data.setTotal(pageData.getTotalElements());
+        data.setPageCount(PageCount);//总页码
+        data.setPageIndex(page);//页码
+        data.setPageSize(contentsList.size());//页容量
+        data.setTotal(contentsSize.size());//总数
         data.setRows((Contents[])contentsList1.toArray(new Contents[contentsList1.size()]));
         return data;
     }

@@ -56,4 +56,8 @@ public abstract class BaseEntity {
     @Column(name = "updateTime")
     private LocalDateTime updateTime;
 
+    @ManyToOne
+    @JoinColumn(name = "categoryId")
+    private Category category;
+
 }

@@ -86,4 +86,5 @@ public class Article extends BaseEntity {
 //    @JoinColumn(name = "categoryId")
 //    private Category category;
 
+
 }

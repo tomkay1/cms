@@ -65,7 +65,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 
     /**
      * for upload
-     */
+     * */
     @Bean
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver resolver = new CommonsMultipartResolver();
@@ -73,12 +73,10 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         return resolver;
     }
 
-
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(siteResolver);
     }
-
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
@@ -92,7 +90,6 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         registry.addInterceptor(loginInterceptor);
         super.addInterceptors(registry);
     }
-
 
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {

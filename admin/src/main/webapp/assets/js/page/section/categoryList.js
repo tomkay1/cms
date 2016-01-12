@@ -112,10 +112,11 @@ define(function (require, exports, module) {
                     sortable: true,
                     columns: [
                         {text: '栏目名称', dataField: 'name', width: gridWidth * 0.25},
+                        {text: '栏目ID', dataField: 'id', width: gridWidth * 0.15},
                         {
                             text: '所属模型',
                             dataField: 'modelId',
-                            width: gridWidth * 0.20,
+                            width: gridWidth * 0.15,
                             cellsRenderer: function (row, column, value) {
                                 if (parseInt(value) >= 0) {
                                     switch (value) {
@@ -143,7 +144,7 @@ define(function (require, exports, module) {
                         {
                             text: '创建时间',
                             dataField: 'time',
-                            width: gridWidth * 0.20,
+                            width: gridWidth * 0.15,
                             cellsRenderer: function (row, column, value) {
                                 if (value) {
                                     return value.toString().substr(0, 10);
@@ -155,7 +156,7 @@ define(function (require, exports, module) {
                             cellsAlign: 'center',
                             align: "center",
                             columnType: 'none',
-                            width: gridWidth * 0.20,
+                            width: gridWidth * 0.15,
                             editable: false,
                             sortable: false,
                             dataField: null,
@@ -178,6 +179,9 @@ define(function (require, exports, module) {
             $('#treeGrid').on('rowExpand', function (event) {//展开收缩事件
                 categoryModul.bindUpdateClick();
             });
+            $('#treeGrid').on('rowCollapse',function (event){
+                categoryModul.bindUpdateClick();
+             });
         },
         bindUpdateClick:function(){
             //新增栏目

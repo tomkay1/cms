@@ -50,8 +50,8 @@ public class Link extends BaseModel {
 //    /**
 //     * 所属栏目
 //     */
+//    @Basic
 //    @ManyToOne
 //    @JoinColumn(name = "categoryId")
 //    private Category category;
-
 }

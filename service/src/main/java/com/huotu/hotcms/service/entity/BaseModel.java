@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Getter
 @Setter
-public class BaseModel {
+public abstract class BaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -65,6 +65,6 @@ public class BaseModel {
      * 所属栏目
      */
     @ManyToOne
-    @JoinColumn(name = "categoryId")
-    private Category category;
+    @JoinColumn(name = "catgoryId")
+    public Category category;
 }

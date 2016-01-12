@@ -65,5 +65,4 @@ public class Video extends BaseModel {
 //    @ManyToOne
 //    @JoinColumn(name = "categoryId")
 //    private Category category;
-
 }

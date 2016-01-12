@@ -29,11 +29,11 @@ public class Gallery extends BaseModel {
 //    @Column(name = "title")
 //    private String title;
 
-    /**
-     * 描述
-     */
-    @Column(name = "description")
-    private String description;
+//    /**
+//     * 描述
+//     */
+//    @Column(name = "description")
+//    private String description;
 
     /**
      * 内容

@@ -25,6 +25,12 @@ public class BaseModel {
     private String title;
 
     /**
+     * 描述信息
+     */
+    @Column(name = "description")
+    private String description;
+
+    /**
      * 商户ID
      */
     @Column(name = "customerId")

@@ -29,11 +29,11 @@ public class Download extends BaseModel {
 //    @Column(name = "fileName")
 //    private String fileName;
 
-    /**
-     * 描述信息
-     */
-    @Column(name = "description")
-    private String description;
+//    /**
+//     * 描述信息
+//     */
+//    @Column(name = "description")
+//    private String description;
 
     /**
      * 下载地址

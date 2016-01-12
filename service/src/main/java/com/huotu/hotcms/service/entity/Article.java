@@ -36,11 +36,11 @@ public class Article extends BaseModel {
     @Column(name = "thumbUri")
     private String thumbUri;
 
-    /**
-     * 描述
-     */
-    @Column(name = "description")
-    private String description;
+//    /**
+//     * 描述
+//     */
+//    @Column(name = "description")
+//    private String description;
 
     /**
      * 作者

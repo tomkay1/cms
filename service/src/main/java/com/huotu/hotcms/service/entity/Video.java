@@ -35,11 +35,11 @@ public class Video extends BaseModel {
     @Column(name = "thumbUri")
     private String thumbUri;
 
-    /**
-     * 描述信息
-     */
-    @Column(name = "description")
-    private String description;
+//    /**
+//     * 描述信息
+//     */
+//    @Column(name = "description")
+//    private String description;
 
     /**
      * 内部储存地址

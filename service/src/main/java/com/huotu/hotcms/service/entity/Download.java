@@ -21,13 +21,13 @@ import javax.persistence.*;
 @Table(name = "cms_download")
 @Getter
 @Setter
-public class Download extends BaseEntity {
+public class Download extends BaseModel {
 
-    /**
-     * 文件名称
-     */
-    @Column(name = "fileName")
-    private String fileName;
+//    /**
+//     * 文件名称
+//     */
+//    @Column(name = "fileName")
+//    private String fileName;
 
     /**
      * 描述信息

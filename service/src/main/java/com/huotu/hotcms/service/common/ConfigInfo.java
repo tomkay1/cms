@@ -29,6 +29,7 @@ public class ConfigInfo {
     @Value("${out.mallSupperUrl}")
     private String mallSupperUrl;
 
+
     public String getResourcesSiteLogo() {
         return resourcesSiteLogo;
     }
@@ -62,4 +63,5 @@ public class ConfigInfo {
     public String getMallSupperUrl(Integer customerId){
         return String.format(mallSupperUrl,customerId);
     }
+
 }

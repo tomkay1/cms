@@ -22,13 +22,13 @@ import javax.persistence.*;
 @Table(name = "cms_article")
 @Getter
 @Setter
-public class Article extends BaseEntity {
+public class Article extends BaseModel {
 
-    /**
-     * 标题
-     */
-    @Column(name = "title")
-    private String title;
+//    /**
+//     * 标题
+//     */
+//    @Column(name = "title")
+//    private String title;
 
     /**
      * 缩略图

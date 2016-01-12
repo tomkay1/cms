@@ -5,6 +5,7 @@ import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.service.RouteService;
+import com.huotu.hotcms.web.common.ConfigInfo;
 import com.huotu.hotcms.web.service.ArticleResolveService;
 import com.huotu.hotcms.web.service.RequestService;
 import com.huotu.hotcms.web.service.RouteResolverService;
@@ -57,7 +58,8 @@ public class RouteInterceptor  extends HandlerInterceptorAdapter {
                 modelAndView=new ModelAndView();
             }
             if(route==null){
-                throw new Exception("请求路径错误");
+                modelAndView.setViewName(routeResolverService.getRouteTemplate(site,RouteType.NOT_FOUND));//请求路径错误给出404容错页面
+//                throw new Exception("请求路径错误");
             }
             initModelAndView(modelAndView, site, route, request);
         }else {
@@ -66,7 +68,7 @@ public class RouteInterceptor  extends HandlerInterceptorAdapter {
     }
 
     private ModelAndView initModelAndView(ModelAndView modelAndView, Site site, Route route, HttpServletRequest request){
-        String resourcePath = site.isCustom() ? site.getCustomTemplateUrl():"";
+        String resourcePath = site.isCustom() ? site.getCustomTemplateUrl():ConfigInfo.getRootTemplate(site.getCustomerId());
         if(route.getRouteType()!=null) {
             if (route.getRouteType().getCode().equals(RouteType.ARTICLE_CONTENT.getCode())) {
                 Article article = articleResolveService.getArticleBySiteAndRequest(site, request);

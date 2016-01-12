@@ -59,7 +59,8 @@ public class CategoryForeachProcessorFactory {
             Route route = (Route)VariableExpression.getVariable(context, "route");
             //根据指定id获取栏目列表
             if(!StringUtils.isEmpty(categoryForeachParam.getSpecifyids())) {
-                return categoryService.getSpecifyCategory(categoryForeachParam.getSpecifyids());
+                return null;
+//                return categoryService.getSpecifyCategory(categoryForeachParam.getSpecifyids());
             }
             //获取导航栏目列表
             if(route.getRouteType()==null) {
@@ -79,13 +80,13 @@ public class CategoryForeachProcessorFactory {
                 }
 //                categoryList = categoryService.getCategoryList(categoryForeachParam);
             }else {
-                Category parent;
-                if(categoryForeachParam.getParentid()!=null) {
-                    parent = categoryService.getCategoryById(categoryForeachParam.getParentid());
-                }else {
-                    Category current = categoryService.getCategoryByRoute(route);
-                    parent = current.getParent();
-                }
+//                Category parent;
+//                if(categoryForeachParam.getParentid()!=null) {
+//                    parent = categoryService.getCategoryById(categoryForeachParam.getParentid());
+//                }else {
+//                    Category current = categoryService.getCategoryByRoute(route);
+//                    parent = current.getParent();
+//                }
 //                categoryList = categoryService.getCategoryList(parent);
             }
         } catch (Exception e) {

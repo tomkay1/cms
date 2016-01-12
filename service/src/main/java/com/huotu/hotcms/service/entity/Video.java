@@ -21,13 +21,13 @@ import javax.persistence.*;
 @Table(name = "cms_video")
 @Getter
 @Setter
-public class Video extends BaseEntity {
+public class Video extends BaseModel {
 
-    /**
-     * 视频名称
-     */
-    @Column(name = "title")
-    private String title;
+//    /**
+//     * 视频名称
+//     */
+//    @Column(name = "title")
+//    private String title;
 
     /**
      * 缩略图uri

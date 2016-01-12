@@ -16,10 +16,7 @@ import com.huotu.hotcms.web.util.CMSDialect;
 import com.huotu.hotcms.web.util.ArrayUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.annotation.*;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
@@ -75,25 +72,24 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
-//        registry.viewResolver(htmlViewResolver());
-//        registry.viewResolver(javascriptViewResolver());
-//        registry.viewResolver(cssViewResolver());
+        registry.viewResolver(htmlViewResolver());
+        registry.viewResolver(javascriptViewResolver());
+        registry.viewResolver(cssViewResolver());
 //        registry.viewResolver(redirectViewResolver());
 //        registry.viewResolver(forwardViewResolver());
-//        registry.viewResolver(pngViewResolver());
-        registry.viewResolver(remoteHtmlViewResolver());
+//        registry.viewResolver(remoteHtmlViewResolver());
     }
-
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        super.addResourceHandlers(registry);
-//        registry.addResourceHandler("/css/index.css").addResourceLocations("/template/4539/css/index.css");
-//        registry.addResourceHandler("/**").addResourceLocations("/template/**");
-        super.addResourceHandlers(registry);
-//        registry.addResourceHandler("/**").addResourceLocations("/template/4539","classpath:/template/4539/");
-//        registry.addResourceHandler("/css/common.css").addResourceLocations("/template/4539/css/common.css");
-//        registry.addResourceHandler(STATIC_RESOURCES_PATH+"/**").addResourceLocations(STATIC_RESOURCES_PATH+"/");
-    }
+//
+//    @Override
+//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+////        super.addResourceHandlers(registry);
+//         registry.addResourceHandler("/css/index.css").addResourceLocations("/template/4539/css/index.css");
+////        registry.addResourceHandler("/**").addResourceLocations("/template/**");
+////        super.addResourceHandlers(registry);
+////        registry.addResourceHandler("/**").addResourceLocations("/template/4539","classpath:/template/4539/");
+////        registry.addResourceHandler("/css/common.css").addResourceLocations("/template/4539/css/common.css");
+////        registry.addResourceHandler(STATIC_RESOURCES_PATH+"/**").addResourceLocations(STATIC_RESOURCES_PATH+"/");
+//    }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -119,19 +115,19 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         resolver.setContentType("text/html");
         resolver.setCharacterEncoding(UTF8);
         resolver.setCache(false);
-        resolver.setViewNames(ArrayUtil.array("/view/**"));
+        resolver.setViewNames(ArrayUtil.array("*.html"));
         return resolver;
     }
-
-    public ViewResolver remoteHtmlViewResolver() {
-        ThymeleafViewResolver resolver = new ThymeleafViewResolver();
-        resolver.setTemplateEngine(templateEngine(remoteHtmlTemplateResolver()));
-        resolver.setContentType("text/html");
-        resolver.setCharacterEncoding(UTF8);
-        resolver.setCache(false);
-        resolver.setViewNames(ArrayUtil.array("**"));//设置通配目录结构
-        return resolver;
-    }
+//
+//    public ViewResolver remoteHtmlViewResolver() {
+//        ThymeleafViewResolver resolver = new ThymeleafViewResolver();
+//        resolver.setTemplateEngine(templateEngine(remoteHtmlTemplateResolver()));
+//        resolver.setContentType("text/html");
+//        resolver.setCharacterEncoding(UTF8);
+//        resolver.setCache(false);
+//        resolver.setViewNames(ArrayUtil.array("*.html"));//设置通配目录结构
+//        return resolver;
+//    }
 
     private ViewResolver javascriptViewResolver() {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();

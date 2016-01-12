@@ -93,8 +93,10 @@ public class RouteController {
                                             @RequestParam(name = "pagesize",required = true,defaultValue = "20") Integer pageSize) {
         PageData<Route> pageModel = null;
         try {
-            Site site=siteService.getSite(siteId);
-            pageModel = routeService.getPage(site,description, page, pageSize);
+            if(siteId>-1) {
+                Site site = siteService.getSite(siteId);
+                pageModel = routeService.getPage(site, description, page, pageSize);
+            }
         } catch (Exception ex) {
             log.error(ex.getMessage());
         }

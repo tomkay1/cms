@@ -46,6 +46,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        String servletPath=request.getServletPath();
         if(modelAndView!=null) {//加载用户信息
             UserInfo userInfo = new UserInfo();
             userInfo.setCustomerId(QueryHelper.getQueryValInteger(request, "customerid"));

@@ -35,10 +35,10 @@ public class Notice extends BaseModel {
      */
     private String content;
 
-    /**
-     * 所属栏目
-     */
-    @ManyToOne
-    private Category category;
+//    /**
+//     * 所属栏目
+//     */
+//    @ManyToOne
+//    private Category category;
 
 }

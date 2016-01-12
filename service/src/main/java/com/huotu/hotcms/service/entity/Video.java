@@ -59,11 +59,11 @@ public class Video extends BaseModel {
     @Column(name = "palyTimes")
     private int palyTimes;
 
-    /**
-     * 所属栏目
-     */
-    @ManyToOne
-    @JoinColumn(name = "categoryId")
-    private Category category;
+//    /**
+//     * 所属栏目
+//     */
+//    @ManyToOne
+//    @JoinColumn(name = "categoryId")
+//    private Category category;
 
 }

@@ -47,11 +47,11 @@ public class Download extends BaseModel {
     @Column(name = "downloads")
     private int downloads;
 
-    /**
-     * 所属栏目
-     */
-    @ManyToOne
-    @JoinColumn(name = "categoryId")
-    private Category category;
+//    /**
+//     * 所属栏目
+//     */
+//    @ManyToOne
+//    @JoinColumn(name = "categoryId")
+//    private Category category;
 
 }

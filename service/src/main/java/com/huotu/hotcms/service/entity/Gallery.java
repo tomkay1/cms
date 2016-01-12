@@ -54,10 +54,10 @@ public class Gallery extends BaseModel {
     @Column(name = "linkUrl")
     private String linkUrl;
 
-    /**
-     * 所属栏目
-     */
-    @ManyToOne
-    @JoinColumn(name = "categoryId")
-    private Category category;
+//    /**
+//     * 所属栏目
+//     */
+//    @ManyToOne
+//    @JoinColumn(name = "categoryId")
+//    private Category category;
 }

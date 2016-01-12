@@ -61,33 +61,41 @@ public class RouteInterceptor  extends HandlerInterceptorAdapter {
                 modelAndView.setViewName(routeResolverService.getRouteTemplate(site,RouteType.NOT_FOUND));//请求路径错误给出404容错页面
 //                throw new Exception("请求路径错误");
             }
-            initModelAndView(modelAndView, site, route, request);
+            initModelAndView(modelAndView, site, route, request,response);
         }else {
             throw new Exception("域名解析失败");
         }
     }
 
-    private ModelAndView initModelAndView(ModelAndView modelAndView, Site site, Route route, HttpServletRequest request){
-        String resourcePath = site.isCustom() ? site.getCustomTemplateUrl():ConfigInfo.getRootTemplate(site.getCustomerId());
-        if(route.getRouteType()!=null) {
-            if (route.getRouteType().getCode().equals(RouteType.ARTICLE_CONTENT.getCode())) {
-                Article article = articleResolveService.getArticleBySiteAndRequest(site, request);
-                if (article != null) {
-                    modelAndView.addObject("article", article);
-                    modelAndView.setViewName(routeResolverService.getRouteTemplate(site,RouteType.NOT_FOUND));
+    private ModelAndView initModelAndView(ModelAndView modelAndView, Site site, Route route, HttpServletRequest request,HttpServletResponse response){
+        try {
+            String resourcePath = site.isCustom() ? site.getCustomTemplateUrl() : ConfigInfo.getRootTemplate(site.getCustomerId());
+            if(route!=null) {
+                if (route.getRouteType() != null) {
+                    if (route.getRouteType().getCode().equals(RouteType.ARTICLE_CONTENT.getCode())) {
+                        Article article = articleResolveService.getArticleBySiteAndRequest(site, request);
+                        if (article != null) {
+                            modelAndView.addObject("article", article);
+                            modelAndView.setViewName(routeResolverService.getRouteTemplate(site, RouteType.NOT_FOUND));
+                        } else {
+                            modelAndView.setViewName(resourcePath + route.getTemplate());
+                        }
+                    } else {
+                        modelAndView.setViewName(resourcePath + route.getTemplate());
+                    }
                 } else {
                     modelAndView.setViewName(resourcePath + route.getTemplate());
                 }
-            } else {
-                modelAndView.setViewName(resourcePath + route.getTemplate());
+                modelAndView.addObject("route", route);
+                modelAndView.addObject("site", site);
+                modelAndView.addObject("resourcePath", resourcePath);
+                modelAndView.addObject("request", requestService.ConvertRequestModel(request));
+            }else{
+//                response.setHeader("Content-Type","text/css;charset=UTF-8");
+                modelAndView.setViewName(resourcePath +request.getServletPath());
             }
-        }else{
-            modelAndView.setViewName(resourcePath + route.getTemplate());
+        }catch (Exception ex){
         }
-        modelAndView.addObject("route",route);
-        modelAndView.addObject("site",site);
-        modelAndView.addObject("resourcePath",resourcePath);
-        modelAndView.addObject("request", requestService.ConvertRequestModel(request));
         return modelAndView;
     }
 }

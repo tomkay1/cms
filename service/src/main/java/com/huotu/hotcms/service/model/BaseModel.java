@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
  * 父模型
  * **/
 @Getter
+
 @Setter
 public class BaseModel {
 

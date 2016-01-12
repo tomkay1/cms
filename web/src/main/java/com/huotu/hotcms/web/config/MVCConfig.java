@@ -72,6 +72,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         argumentResolvers.add(siteResolver);
     }
 
+
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
 //        registry.viewResolver(htmlViewResolver());
@@ -79,7 +80,19 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 //        registry.viewResolver(cssViewResolver());
 //        registry.viewResolver(redirectViewResolver());
 //        registry.viewResolver(forwardViewResolver());
+//        registry.viewResolver(pngViewResolver());
         registry.viewResolver(remoteHtmlViewResolver());
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//        super.addResourceHandlers(registry);
+//        registry.addResourceHandler("/css/index.css").addResourceLocations("/template/4539/css/index.css");
+//        registry.addResourceHandler("/**").addResourceLocations("/template/**");
+        super.addResourceHandlers(registry);
+//        registry.addResourceHandler("/**").addResourceLocations("/template/4539","classpath:/template/4539/");
+//        registry.addResourceHandler("/css/common.css").addResourceLocations("/template/4539/css/common.css");
+//        registry.addResourceHandler(STATIC_RESOURCES_PATH+"/**").addResourceLocations(STATIC_RESOURCES_PATH+"/");
     }
 
     @Override
@@ -119,7 +132,6 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         resolver.setViewNames(ArrayUtil.array("**"));//设置通配目录结构
         return resolver;
     }
-
 
     private ViewResolver javascriptViewResolver() {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
@@ -170,7 +182,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         resolver.setCacheable(false);
         resolver.setCharacterEncoding(UTF8);
         resolver.setApplicationContext(applicationContext);
-        resolver.setPrefix("/assets/js/");
+//        resolver.setPrefix("/assets/js/");
         resolver.setTemplateMode(TemplateMode.JAVASCRIPT);
         return resolver;
     }
@@ -180,8 +192,9 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         resolver.setCacheable(false);
         resolver.setCharacterEncoding(UTF8);
         resolver.setApplicationContext(applicationContext);
-        resolver.setPrefix("/assets/css/");
+//        resolver.setPrefix("/assets/css/");
         resolver.setTemplateMode(TemplateMode.CSS);
         return resolver;
     }
+
 }

@@ -15,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+
 
 /**
  * Created by cwb on 2015/12/16.
@@ -26,12 +28,20 @@ public class IndexController {
     private SiteService siteService;
 
     @RequestMapping
-    public ModelAndView index()
+    public ModelAndView index(HttpServletRequest request)
     {
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.addObject("customTemplateUrl","http://www.cms.com");
         return modelAndView;
     }
+
+//    @RequestMapping(value = "/css/common.css")
+//    public ModelAndView css(){
+//        ModelAndView modelAndView=new ModelAndView();
+//        modelAndView.setViewName("/template/4539/css/common.css");
+////        modelAndView.addObject("customTemplateUrl","http://www.cms.com");
+//        return modelAndView;
+//    }
 
 //    @RequestMapping("/")
 //    public String testIndex(Site site,Model model){

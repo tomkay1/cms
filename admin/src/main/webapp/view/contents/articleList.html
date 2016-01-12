@@ -14,11 +14,11 @@
 <div class="block">
     <div class="h">
         <span class="icon-sprite icon-list"></span>
-        <h3>ÎÄÕÂÏêÇé
+        <h3>æ–‡ç« è¯¦æƒ…
         </h3>
         <div class="bar">
             <a class="btn-lit" th:href="@{/contents/contentsList?customerid={customerid}(customerid=${article.customerId})}" target="content">
-                <span>·µ»ØÄÚÈÝ¹ÜÀíÁÐ±í</span></a>
+                <span>è¿”å›žå†…å®¹ç®¡ç†åˆ—è¡¨</span></a>
         </div>
     </div>
     <div class="cnt-wp">
@@ -29,30 +29,30 @@
                     <table width="100%" border="0" cellpadding="0" cellspacing="0">
                         <tbody>
                         <tr>
-                            <th>ÎÄÕÂ±êÌâ£º</th>
+                            <th>æ–‡ç« æ ‡é¢˜ï¼š</th>
                             <td>
                                 <input name="title" type="text" id="title" maxlength="50" class="input-normal" th:value="${article.title}">
                             </td>
                         </tr>
                         <tr>
-                            <th>ËõÂÔÍ¼£º</th>
+                            <th>ç¼©ç•¥å›¾ï¼š</th>
                             <td>
                                 <img id="uploadThumbUri" th:src="${logo_uri}"style="width: 80px; height: 80px; border: 1px solid #ccc; float: left; background: #efefef; line-height: 80px; text-align: center; color: #ccc;"/>
                             </td>
                         </tr>
-                        <th>ÎÄÕÂÃèÊö£º</th>
+                        <th>æ–‡ç« æè¿°ï¼š</th>
                         <td>
                             <input name="description" type="text" id="description" maxlength="50" class="input-normal" th:value="${article.description}">
                         </td>
                         </tr>
                         <tr>
-                            <th>ÎÄÕÂ×÷Õß£º</th>
+                            <th>æ–‡ç« ä½œè€…ï¼š</th>
                             <td>
                                 <input name="author" type="text" id="author" maxlength="50" class="input-normal" th:value="${article.author}">
                             </td>
                         </tr>
                         <tr>
-                            <th>ÎÄÕÂÀ´Ô´£º</th>
+                            <th>æ–‡ç« æ¥æºï¼š</th>
                             <td>
                                 <select name="articleSource" class="input-normal" id="articleSource">
                                     <option th:text="${article.articleSource.getValue()}" th:selected=true></option>
@@ -60,48 +60,48 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>ÎÄÕÂÄÚÈÝ£º</th>
+                            <th>æ–‡ç« å†…å®¹ï¼š</th>
                             <td>
                                 <textarea rows="" cols="" style="width: 500px; height: 160px;" class="input-normal" id="content" name="content" th:text="${article.content}" ></textarea>
                             </td>
                         </tr>
                         <tr>
-                            <th>ä¯ÀÀÁ¿£º</th>
+                            <th>æµè§ˆé‡ï¼š</th>
                             <td>
                                 <input name="scans" type="text" id="scans" maxlength="50" class="input-normal" th:value="${article.scans}">
                             </td>
                         </tr>
                         <tr>
-                            <th>µãÔÞÊýÁ¿£º</th>
+                            <th>ç‚¹èµžæ•°é‡ï¼š</th>
                             <td>
                                 <input name="lauds" type="text" id="lauds" maxlength="50" class="input-normal" th:value="${article.lauds}">
                             </td>
                         </tr>
                         <tr>
-                            <th>±»²ÈÊýÁ¿£º</th>
+                            <th>è¢«è¸©æ•°é‡ï¼š</th>
                             <td>
                                 <input name="unlauds" type="text" id="unlauds" maxlength="50" class="input-normal" th:value="${article.unlauds}">
                             </td>
                         </tr>
                         <tr>
-                            <th>´´½¨Ê±¼ä£º</th>
+                            <th>åˆ›å»ºæ—¶é—´ï¼š</th>
                             <td>
                                 <span name="createTime" type="text" id="createTime" maxlength="50" class="input-normal" hot:java8time="${article.createTime}"></span>
                             </td>
                         </tr>
                         <tr>
-                            <th>¸üÐÂÊ±¼ä£º</th>
+                            <th>æ›´æ–°æ—¶é—´ï¼š</th>
                             <td>
                                 <span name="updateTime" type="text" id="updateTime" maxlength="50" class="input-normal" hot:java8time="${article.updateTime}"></span>
                             </td>
                         </tr>
                         <tr>
-                            <th>ÎÄÕÂÄÚÈÝ£º</th>
+                            <th>æ–‡ç« å†…å®¹ï¼š</th>
                             <td>
                                 <textarea rows="" cols="" style="width: 500px; height: 160px;" class="input-normal" id="content" name="content" th:text="${article.content}" ></textarea>
                             </td>
                         </tr>
-                        <th>ËùÊôÀ¸Ä¿£º</th>
+                        <th>æ‰€å±žæ ç›®ï¼š</th>
                         <td>
                             <select name="categoryId" class="input-normal" id="categoryId">
                                 <option  th:value="${article.category.id}" th:text="${article.category.name}" th:selected=true></option>
@@ -109,17 +109,18 @@
                         </td>
                         </tr>
                         <tr>
-                            <th>ÅÅÐòÈ¨ÖØ£º</th>
+                            <th>æŽ’åºæƒé‡ï¼š</th>
                             <td>
-                                <input name="orderWeight" type="text" id="orderWeight" value="50" class="input-normal" placeholder="ÇëÊäÈëÅÅÐòÈ¨ÖØ" th:value="${article.orderWeight}">
-                                <span style="color:#ccc;">Êý×ÖÔ½´óÅÅÔ½Ç°Ãæ</span>
+
+                                <input name="orderWeight" type="text" id="orderWeight" value="50" class="input-normal" placeholder="è¯·è¾“å…¥æŽ’åºæƒé‡" th:value="${article.orderWeight}">
+                                <span style="color:#ccc;">æ•°å­—è¶Šå¤§æŽ’è¶Šå‰é¢</span>
                             </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
                 <!--<div style="text-align: center;">-->
-                <!--<input type="submit" class="btn-lit" name="btnSave"  value="·µ»Ø"  data-text="·µ»Ø" id="jq-cms-return" onclick='location.href("index.aspx")' th:href="@{/contents/contentsList?customerid={customerid}(customerid=${article.customerId})}" target="content">-->
+                <!--<input type="submit" class="btn-lit" name="btnSave"  value="è¿”å›ž"  data-text="è¿”å›ž" id="jq-cms-return" onclick='location.href("index.aspx")' th:href="@{/contents/contentsList?customerid={customerid}(customerid=${article.customerId})}" target="content">-->
                 <!--</div>-->
             </div>
         </form>

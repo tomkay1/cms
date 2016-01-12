@@ -1,6 +1,5 @@
 package com.huotu.hotcms.service.repository;
 import com.huotu.hotcms.service.entity.Link;
-import com.huotu.hotcms.service.model.Contents;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;

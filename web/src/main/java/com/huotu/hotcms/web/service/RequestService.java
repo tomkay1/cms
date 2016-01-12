@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 public class RequestService {
     public RequestModel ConvertRequestModel(HttpServletRequest request){
         RequestModel model=new RequestModel();
-        model.setUrl(request.getRequestURI());
+        model.setUrl(request.getServletPath());
         model.setRequest(request);
         return model;
     }

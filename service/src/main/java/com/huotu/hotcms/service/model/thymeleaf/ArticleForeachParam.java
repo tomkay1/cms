@@ -24,6 +24,11 @@ public class ArticleForeachParam {
     private Long categoryid;
 
     /**
+     * 父栏目id(与所属栏目id存在性互斥)
+     */
+    private Long parentcid;
+
+    /**
      * 获取列表时排除的主键Id(可排除多个，逗号分隔)
      */
     private String[] excludeid;//TODO 上线前重命名为excludeids
@@ -42,5 +47,6 @@ public class ArticleForeachParam {
      * 列表大小
      */
     private Integer pagesize;
+
 
 }

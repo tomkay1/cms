@@ -58,19 +58,19 @@ public class ArticleForeachProcessorFactory {
             WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
             HttpServletRequest request = ((IWebContext)context).getRequest();
             ArticleForeachParam articleForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag, ArticleForeachParam.class);
+            Route route = (Route)VariableExpression.getVariable(context,"route");
+            CategoryService categoryService = (CategoryService)applicationContext.getBean("categoryServiceImpl");
+            Category current = categoryService.getCategoryByRoute(route);
             if(StringUtils.isEmpty(articleForeachParam.getCategoryid())) {
-                Route route = (Route)VariableExpression.getVariable(context,"route");
-                CategoryService categoryService = (CategoryService)applicationContext.getBean("categoryServiceImpl");
-                Category category = categoryService.getCategoryByRoute(route);
-                //如果不是具体子栏目，应根据父级栏目得到相应子栏目，然后取得其中优先级最高的子栏目进行展示
-                if(route.getRouteType()!=RouteType.ARTICLE_LIST) {
-                    List<Category> categoryList = categoryService.getCategoryList(category);
-                    if(categoryList.size() == 0) {
-                        throw new Exception("路由规则错误");
-                    }
-                    category = categoryList.get(0);
+                //如果不是具体子栏目，应取得当前栏目所有一级子栏目数据列表
+                if(route.getRouteType()==RouteType.ARTICLE_LIST) {
+                    articleForeachParam.setCategoryid(current.getId());
                 }
-                articleForeachParam.setCategoryid(category.getId());
+            }
+            if(StringUtils.isEmpty(articleForeachParam.getParentcid())) {
+                if(route.getRouteType()!=RouteType.ARTICLE_LIST) {
+                    articleForeachParam.setParentcid(current.getId());
+                }
             }
             if(articleForeachParam.getPageno() == null) {
                 if(StringUtils.isEmpty(request.getParameter("pageNo"))) {

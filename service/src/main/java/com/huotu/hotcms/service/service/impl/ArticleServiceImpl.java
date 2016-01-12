@@ -1,10 +1,12 @@
 package com.huotu.hotcms.service.service.impl;
 
 import com.huotu.hotcms.service.entity.Article;
+import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.model.ArticleCategory;
 import com.huotu.hotcms.service.model.thymeleaf.ArticleForeachParam;
 import com.huotu.hotcms.service.repository.ArticleRepository;
 import com.huotu.hotcms.service.service.ArticleService;
+import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.util.PageData;
 import org.springframework.data.domain.Sort;
 import org.springframework.util.StringUtils;
@@ -28,6 +30,9 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     private ArticleRepository articleRepository;
 
+    @Autowired
+    private CategoryService categoryService;
+
     @Override
     public Article findById(Long id) {
         return articleRepository.findById(id);
@@ -38,26 +43,64 @@ public class ArticleServiceImpl implements ArticleService {
         int pageIndex = articleForeachParam.getPageno()-1;
         int pageSize = articleForeachParam.getPagesize();
         Sort sort = new Sort(Sort.Direction.DESC, "orderWeight");
-
         if(!StringUtils.isEmpty(articleForeachParam.getSpecifyids())) {
-            List<String> ids = Arrays.asList(articleForeachParam.getSpecifyids());
-            List<Long> articleIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
-            Specification<Article> specification = (root, criteriaQuery, cb) -> {
-                List<Predicate> predicates = articleIds.stream().map(id -> cb.equal(root.get("id").as(Long.class), id)).collect(Collectors.toList());
-                return cb.or(predicates.toArray(new Predicate[predicates.size()]));
-            };
-            return articleRepository.findAll(specification,new PageRequest(pageIndex,pageSize,sort));
+            return getSpecifyArticles(articleForeachParam.getSpecifyids(),pageIndex,pageSize,sort);
         }
+        if(!StringUtils.isEmpty(articleForeachParam.getCategoryid())) {
+            return getArticles(articleForeachParam, pageIndex, pageSize, sort);
+        }else {
+            return getAllArticle(articleForeachParam, pageIndex, pageSize, sort);
+        }
+    }
+
+    private Page<Article> getAllArticle(ArticleForeachParam params, int pageIndex, int pageSize, Sort sort){
         Specification<Article> specification = (root, criteriaQuery, cb) -> {
+            List<Category> subCategories =  categoryService.getSubCategories(params.getParentcid());
+            if(subCategories.size()==0) {
+                try {
+                    throw new Exception("父栏目节点没有子栏目");
+                }catch (Exception e) {
+                    e.printStackTrace();//TODO 日志处理
+                }
+            }
             List<Predicate> predicates = new ArrayList<>();
-            if(!StringUtils.isEmpty(articleForeachParam.getExcludeid())) {
-                List<String> ids = Arrays.asList(articleForeachParam.getExcludeid());
+            for(Category category : subCategories) {
+                predicates.add(cb.equal(root.get("category").as(Category.class),category));
+            }
+            predicates.add(cb.or(predicates.toArray(new Predicate[predicates.size()])));
+            if(!StringUtils.isEmpty(params.getExcludeid())) {
+                List<String> ids = Arrays.asList(params.getExcludeid());
                 List<Long> articleIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
                 predicates = articleIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
             }
-            predicates.add(cb.equal(root.get("deleted").as(Boolean.class),0));
-            predicates.add(cb.equal(root.get("category").get("id").as(Long.class), articleForeachParam.getCategoryid()));
+            predicates.add(cb.equal(root.get("deleted").as(Boolean.class),false));
+            predicates.add(cb.equal(root.get("category").get("id").as(Long.class), params.getCategoryid()));
             return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
+        return articleRepository.findAll(specification,new PageRequest(pageIndex,pageSize,sort));
+    }
+
+    private Page<Article> getArticles(ArticleForeachParam params, int pageIndex, int pageSize, Sort sort) {
+        Specification<Article> specification = (root, criteriaQuery, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            if(!StringUtils.isEmpty(params.getExcludeid())) {
+                List<String> ids = Arrays.asList(params.getExcludeid());
+                List<Long> articleIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
+                predicates = articleIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
+            }
+            predicates.add(cb.equal(root.get("deleted").as(Boolean.class),false));
+            predicates.add(cb.equal(root.get("category").get("id").as(Long.class), params.getCategoryid()));
+            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
+        return articleRepository.findAll(specification,new PageRequest(pageIndex,pageSize,sort));
+    }
+
+    private Page<Article> getSpecifyArticles(String[] specifyIds,int pageIndex,int pageSize,Sort sort) {
+        List<String> ids = Arrays.asList(specifyIds);
+        List<Long> articleIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
+        Specification<Article> specification = (root, criteriaQuery, cb) -> {
+            List<Predicate> predicates = articleIds.stream().map(id -> cb.equal(root.get("id").as(Long.class), id)).collect(Collectors.toList());
+            return cb.or(predicates.toArray(new Predicate[predicates.size()]));
         };
         return articleRepository.findAll(specification,new PageRequest(pageIndex,pageSize,sort));
     }

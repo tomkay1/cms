@@ -79,11 +79,5 @@ public class Article extends BaseModel {
     @Column(name = "unlauds")
     private int unlauds;
 
-    /**
-     * 所属栏目
-     */
-    @ManyToOne
-    @JoinColumn(name = "categoryId")
-    private Category category;
 
 }

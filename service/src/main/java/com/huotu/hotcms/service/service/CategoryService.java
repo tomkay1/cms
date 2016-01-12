@@ -17,7 +17,6 @@ public interface CategoryService {
     Category getCategoryById(Long id);
     Boolean save(Category category);
     List<Category>  getCategoryBySiteAndDeletedAndNameContainingOrderByOrderWeightDesc(Site site,Boolean deleted,String name);
-    List<Category> getCategoryList(CategoryForeachParam foreachParam);
 
     List<CategoryTreeModel> ConvertCateGoryTreeByCategotry(List<Category> categories);
 
@@ -30,6 +29,12 @@ public interface CategoryService {
     Category getCategoryByRoute(Route route);
 
     Boolean CategorySetParents(Category category);
+
+    List<Category> getSpecifyCategories(String[] specifyIds);
+
+    List<Category> getGivenTypeCategories(CategoryForeachParam param);
+
+    List<Category> getSubCategories(Long parenId);
 
     List<Category> getCategoryList(Category parent);
 }

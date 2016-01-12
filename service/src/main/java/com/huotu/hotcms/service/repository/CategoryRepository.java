@@ -1,5 +1,6 @@
 package com.huotu.hotcms.service.repository;
 
+import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
@@ -28,4 +29,9 @@ public interface CategoryRepository extends JpaRepository<Category, Long>,JpaSpe
    Category findByRoute(Route route);
 
    List<Category> findByParentOrderByOrderWeightDesc(Category superCategory);
+
+   List<Category> findBySite_SiteIdAndRoute_RouteTypeAndDeletedOrderByOrderWeightDesc(Long siteid, RouteType routetype, boolean b);
+
+   List<Category> findByParent_Id(Long parenId);
+
 }

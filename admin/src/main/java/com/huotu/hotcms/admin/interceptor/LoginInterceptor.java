@@ -50,6 +50,11 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             UserInfo userInfo = new UserInfo();
             userInfo.setCustomerId(QueryHelper.getQueryValInteger(request, "customerid"));
             userInfo.setIsSuperManage(cookieUser.getRoleId(request) == -1);
+            if(cookieUser.isSupper(request)){
+                modelAndView.addObject("mallManageUrl",configInfo.getMallSupperUrl(userInfo.getCustomerId()));
+            }else{
+                modelAndView.addObject("mallManageUrl",configInfo.getMallManageUrl());
+            }
             modelAndView.addObject("user",userInfo);
         }
     }

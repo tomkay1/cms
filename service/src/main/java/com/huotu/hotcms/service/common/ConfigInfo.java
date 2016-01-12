@@ -21,7 +21,13 @@ public class ConfigInfo {
      private String resourcesUeditor;
 
     @Value("${resources.img}")
-        private String resourcesImg;
+    private String resourcesImg;
+
+    @Value("${out.mallManageUrl}")
+    private String mallManageUrl;
+
+    @Value("${out.mallSupperUrl}")
+    private String mallSupperUrl;
 
     public String getResourcesSiteLogo() {
         return resourcesSiteLogo;
@@ -39,11 +45,7 @@ public class ConfigInfo {
         return resourcesImg;
     }
 
-    @Value("${out.mallManageUrl}")
-    private String mallManageUrl;
 
-    @Value("${out.mallSupperUrl}")
-    private String mallSupperUrl;
 
     public String getOutLoginUrl() {
         return outLoginUrl;
@@ -60,5 +62,4 @@ public class ConfigInfo {
     public String getMallSupperUrl(Integer customerId){
         return String.format(mallSupperUrl,customerId);
     }
-
 }

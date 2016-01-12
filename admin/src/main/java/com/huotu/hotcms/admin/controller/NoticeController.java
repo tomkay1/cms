@@ -41,20 +41,21 @@ public class NoticeController {
     private CookieUser cookieUser;
 
     @RequestMapping("/noticeList")
-    public ModelAndView noticeList(HttpServletRequest request) throws Exception
+    public ModelAndView noticeList(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception
     {
         ModelAndView modelAndView=new ModelAndView();
+        Notice notice= noticeService.findById(id);
+        Category category =notice.getCategory();
+        modelAndView.addObject("notice",notice);
         modelAndView.setViewName("/view/contents/noticeList.html");
 
         return  modelAndView;
     }
 
     @RequestMapping(value = "/addNotice")
-    public ModelAndView addNotice(HttpServletRequest request,Integer customerid) throws Exception{
+    public ModelAndView addNotice(Integer customerId) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/view/contents/addNotice.html");
-        Set<Category> categorys=categoryRepository.findByCustomerId(customerid);
-        modelAndView.addObject("categorys",categorys);
+        modelAndView.setViewName("/view/widget/addNotice.html");
         return  modelAndView;
     }
 
@@ -66,7 +67,9 @@ public class NoticeController {
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("/view/contents/updateNotice.html");
         Notice notice= noticeService.findById(id);
-        Set<Category> categorys=categoryRepository.findByCustomerId(customerId);
+        Category category =notice.getCategory();
+        Integer modelType = category.getModelId();
+        Set<Category> categorys=categoryRepository.findByCustomerIdAndModelId(customerId,modelType);
         modelAndView.addObject("categorys",categorys);
         modelAndView.addObject("notice",notice);
         return modelAndView;

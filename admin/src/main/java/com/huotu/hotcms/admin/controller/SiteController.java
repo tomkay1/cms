@@ -45,6 +45,7 @@ public class SiteController {
     @Autowired
     private RegionRepository regionRepository;
 
+
     @Autowired
     private StaticResourceService resourceServer;
 
@@ -56,7 +57,6 @@ public class SiteController {
     {
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("/view/web/siteList.html");
-
         return  modelAndView;
     }
 

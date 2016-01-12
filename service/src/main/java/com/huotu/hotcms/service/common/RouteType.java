@@ -1,5 +1,8 @@
 package com.huotu.hotcms.service.common;
 
+import com.huotu.hotcms.service.entity.Route;
+
+import java.util.Map;
 
 /**
  * Created by Administrator xhl 2016/1/7.
@@ -12,6 +15,7 @@ public enum RouteType implements CommonEnum{
     GALLERY_CONTENT(4,"图片内容页面"),
     ARTICLE_LIST(5,"文章列表页面"),
     HEADER_NAVIGATION(6,"网站导航栏目");
+
 
     RouteType(int code, String value) {
         this.code = code;
@@ -35,20 +39,12 @@ public enum RouteType implements CommonEnum{
     public static RouteType valueOf(int value)
     {
         switch (value){
+            case 2:
+                return ARTICLE_CONTENT;
             case 0:
                 return NOT_FOUND;
             case 1:
                 return SERVER_ERROR;
-            case 2:
-                return ARTICLE_CONTENT;
-            case 3:
-                return VIDEO_CONTENT;
-            case 4:
-                return GALLERY_CONTENT;
-            case 5:
-                return ARTICLE_LIST;
-            case 6:
-                return HEADER_NAVIGATION;
             default:
                 return null;
         }

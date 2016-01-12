@@ -1,0 +1,67 @@
+<form method="post" id="addArticleForm">
+    <div class="cnt form">
+        <div class="division">
+            <input type="hidden" name="hidArticleID" id="hidArticleID" >
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                <tbody>
+                <tr>
+                    <th>文章标题：</th>
+                    <td>
+                        <input name="title" type="text" id="title" maxlength="50" class="input-normal" >
+                    </td>
+                </tr>
+                <tr>
+                    <th>缩略图：</th>
+                    <td>
+                        <img id="uploadThumbUri" style="width: 80px; height: 80px; border: 1px solid #ccc; float: left; background: #efefef; line-height: 80px; text-align: center; color: #ccc;"/>
+                        <a id="uploadpic" class="btn-lit jUploader-button" style="cursor: pointer; position: relative; overflow: hidden; direction: ltr;">
+                            <span style="color: #c1b3a9" onclick="javascript:$('#btnArticleFile').click();">上传</span></a>
+                        <input id="btnArticleFile" name="btnFile"
+                               style="display:none;" type="file"/>
+                    <td><input type="hidden" id="thumbUri" name="thumbUri" /></td>
+                    </td>
+                </tr>
+                <tr>
+                    <th>文章描述：</th>
+                    <td>
+                        <input name="description" type="text" id="description" maxlength="50" class="input-normal" >
+                    </td>
+                </tr>
+                <tr>
+                    <th>文章作者：</th>
+                    <td>
+                        <input name="author" type="text" id="author" maxlength="50" class="input-normal" >
+                    </td>
+                </tr>
+                <tr>
+                    <th>文章来源：</th>
+                    <td>
+                        <select name="articleSource" class="input-normal" id="articleSource">
+                            <option value="-1">==请选择来源==</option>
+                            <option value="0">转载</option>
+                            <option value="1">原创</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>文章内容：</th>
+                    <td>
+                        <textarea rows="" cols="" style="width: 250px; height: 60px;" class="input-normal" id="content" name="content" ></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th>排序权重：</th>
+                    <td>
+                        <input name="orderWeight" type="text" id="orderWeight" value="50" class="input-normal" placeholder="请输入排序权重">
+                        <span style="color:#ccc;">数字越大排越前面</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="text-align: center;">
+            <input type="submit" class="btn-lit" name="btnSave"  value="保存" data-submiting-text="提交中..." data-text="保存" id="jq-cms-Save">
+        </div>
+    </div>
+</form>
+<script>seajs.use(["validate","message","addArticle","ajaxfileupload","layer"]);</script>

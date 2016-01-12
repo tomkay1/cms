@@ -10,7 +10,7 @@
     <script src="/assets/seajs/sea.js"></script>
     <script src="/assets/seajs/config.js"></script>
 </head>
-<body onload="fisrstload()">
+<body>
 <div class="search block">
     <div class="h">
         <span class="icon-sprite icon-magnifier"></span>
@@ -20,19 +20,20 @@
         <div class="cnt">
             <div class="search-bar">
             <label class="first ">站点名称：</label>
-            <select name="siteId" class="input-normal" id="siteId">
-                <option th:each="site:${siteCategoryList}" th:value="${site.siteId}" th:text="${site.siteName}"></option>
+            <select name="siteId" class="input-normal" id="siteId" >
+                <option value="-1">==请选择站点==</option>
+                <option th:each="site:${siteSet}" th:value="${site.siteId}" th:text="${site.name}" th:selected="${site.siteId}==${siteSet[0].siteId}?true:false"></option>//
             </select>
             <label class="first ">栏目名称：</label>
-            <select name="categoryId" class="input-normal" id="categoryId">
-                <option value="-1">==请选择站点==</option>
-                <option th:each="category:${siteCategoryList}" th:value="${category.categoryId}" th:text="${category.categoryName}"></option>
+            <select name="category" class="input-normal" id="category">
+                <option value="-1">==请选择栏目==</option>
+                <!--<option th:each="category:${categorySet}" th:value="${category.Id}" th:text="${category.name}"></option>-->
             </select>
         </div>
             <div class="search-bar">
                 <div class="search-bar">
-                    <label class="first ">链接标题：</label>
-                    <input name="linkName" type="text" id="linkName" class="input-small" style="width: 200px;" placeholder=" 链接标题">
+                    <label class="first ">内容标题：</label>
+                    <input name="linkName" type="text" id="linkName" class="input-small" style="width: 200px;" placeholder=" 内容标题">
                     <label><a class="btn-lit btn-middle " id="jq-cms-search" href="javascript:" style="margin-bottom: 3px;"><span>搜索</span></a></label>
                     <label><a class="btn-lit btn-middle " id="jq-cms-searchAll" href="javascript:" style="margin-bottom: 3px;"><span>显示所有</span></a></label>
                 </div>
@@ -42,21 +43,15 @@
     <div class="block">
         <div class="h">
             <span class="icon-sprite icon-list"></span>
-            <h3 style="float: left; width: 144px;">链接列表</h3>
+            <h3 style="float: left; width: 144px;">内容列表</h3>
             <div class="bar">
-                <a class="btn-lit"  th:href="@{/link/addLink?customerid={customerid}(customerid=${user.customerId})}" target="content">
+                <a class="btn-lit"  th:href="@{/contents/addContents?customerId={customerid}(customerid=${customerId})}" target="content">
                     <span>新增</span></a>
             </div>
         </div>
-        <div class="cnt-wp" id="js-LinkList"></div>
+        <div class="cnt-wp" id="js-ContentsList"></div>
     </div>
-
-    <script>seajs.use(["JGrid","linkList"]);</script>
-    <script>
-       function firstLoad(){
-
-       }
-    </script>
+    <script>seajs.use(["JGrid","contentsList"]);</script>
 </div>
 </body>
 </html>

@@ -16,12 +16,12 @@
         <span class="icon-sprite icon-list"></span>
         <h3>修改链接</h3>
         <div class="bar">
-            <a class="btn-lit" th:href="@{/link/linkList?customerid={customerid}(customerid=${user.customerId})}" target="content">
-                <span>返回链接管理列表</span></a>
+            <a class="btn-lit" th:href="@{/contents/contentsList?customerid={customerid}(customerid=${link.customerId})}" target="content">
+                <span>返回内容管理列表</span></a>
         </div>
     </div>
     <div class="cnt-wp">
-        <form method="post" id="updateLinkForm">
+        <form method="post" id="updateLinkForm" enctype="multipart/form-data">
             <div class="cnt form">
                 <div class="division">
                     <input type="hidden" name="hidLinkID" id="hidLinkID" th:value="${link.id}">
@@ -36,28 +36,24 @@
                         <tr>
                             <th>缩略图：</th>
                             <td>
-                                <div id="uploadpicCover" style="width: 80px; height: 80px; border: 1px solid #ccc; float: left; background: #efefef; line-height: 80px; text-align: center; color: #ccc;"><img src="#" style="width:80px;height:80px;"></div>
-
-                                <div style="margin-left: 10px; float: left; line-height: 80px;">
-                                    <a id="uploadpic" class="btn-lit jUploader-button" href="#" style="cursor: pointer; position: relative; overflow: hidden; direction: ltr;"><span style="color: #c1b3a9">上传</span>
-                                        <input type="file" onchange="this.blur();" id="jUploader-file1" name="jUploaderFile" style="position: absolute; right: 0px; top: 0px; margin: 0px; opacity: 0; padding: 0px; font-family: Arial; font-size: 118px; vertical-align: baseline; cursor: pointer;"></a>
-                                    <span style="color: #f00">*</span>      必填
-                                    <span style="color: #ccc;">建议大小：300*300</span>
-                                </div>
-                                <!--<input name="txtReplyUrl1" type="hidden" id="txtReplyUrl1" value="/resource/images/wechat/mall_cat_def.png">-->
-                                <!--<img id="img_photo" th:src="${logoUri}" src="images/logo.png" style="width: 100px; height: auto;"/><input name="logoUri" id="logoUri" type="file"/>-->
-
+                                <img id="uploadThumbUri" th:src="${logo_uri}"style="width: 80px; height: 80px; border: 1px solid #ccc; float: left; background: #efefef; line-height: 80px; text-align: center; color: #ccc;"/>
+                                <a id="uploadpic" class="btn-lit jUploader-button" style="cursor: pointer; position: relative; overflow: hidden; direction: ltr;">
+                                    <span style="color: #c1b3a9" onclick="javascript:$('#btnLinkFile').click();">上传</span></a>
+                                <input id="btnLinkFile" name="btnFile"
+                                       style="display:none;" type="file"/>
+                            <td><input type="hidden" id="thumbUri" name="thumbUri" th:value="${link.thumbUri}"/></td>
                             </td>
+                        </tr>
                         <tr>
                             <th>描述：</th>
                             <td>
-                                <input name="description" type="text" id="description" maxlength="50" class="input-normal" th:value="${link.id}">
+                                <input name="description" type="text" id="description" maxlength="50" class="input-normal" th:value="${link.description}">
                             </td>
                         </tr>
                         <tr>
                             <th>链接：</th>
                             <td>
-                                <input name="linkUrl" type="text" id="linkUrl" maxlength="100" class="input-normal" th:value="${link.id}">
+                                <input name="linkUrl" type="text" id="linkUrl" maxlength="100" class="input-normal" th:value="${link.linkUrl}">
                             </td>
                         </tr>
                         <tr>
@@ -72,7 +68,7 @@
                         <tr>
                             <th>排序权重：</th>
                             <td>
-                                <input name="orderWeight" type="text" id="orderWeight" value="50" class="input-normal" placeholder="请输入排序权重">
+                                <input name="orderWeight" type="text" id="orderWeight" value="50" class="input-normal" th:value="${link.orderWeight}" placeholder="请输入排序权重">
                                 <span style="color:#ccc;">数字越大排越前面</span>
                             </td>
                         </tr>

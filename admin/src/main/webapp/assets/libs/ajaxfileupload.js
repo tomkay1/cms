@@ -45,11 +45,23 @@ jQuery.extend({
         return form;
     },
 
+    //后期添加新方法，支持参数方式传递
+    createParam:function(s){
+        var html=""
+        var jsonData= s.data;
+        for(var item in jsonData){
+            html+="<input type='text' name='"+item+"' value='"+jsonData[item]+"'/>";
+        }
+        return html;
+    },
     ajaxFileUpload: function (s) {
         // TODO introduce global settings, allowing the client to modify them for all requests, not only timeout  
         s = jQuery.extend({}, jQuery.ajaxSettings, s);
         var id = s.fileElementId;
         var form = jQuery.createUploadForm(id, s.fileElementId);
+        //后期修改
+        var paramHtml=jQuery.createParam(s);
+        form.append(paramHtml);
         var io = jQuery.createUploadIframe(id, s.secureuri);
         var frameId = 'jUploadFrame' + id;
         var formId = 'jUploadForm' + id;

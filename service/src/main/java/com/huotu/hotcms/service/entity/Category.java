@@ -51,6 +51,12 @@ public class Category extends BaseEntity {
 
     /**
      * 系统数据类型ID/
+     * 0:文章
+     * 1：公告
+     * 2：视频
+     * 3：图库
+     * 4：下载
+     * 5：链接
      */
     @Column(name = "modelId")
     private Integer modelId;

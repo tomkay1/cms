@@ -8,7 +8,6 @@
 
 package com.huotu.hotcms.web.thymeleaf.expression;
 
-import com.huotu.hotcms.service.common.RouteType;
 import org.thymeleaf.engine.AttributeName;
 import org.thymeleaf.model.IElementAttributes;
 import org.thymeleaf.model.IProcessableElementTag;
@@ -51,10 +50,7 @@ public class DialectAttributeFactory {
                     field.set(obj, paramValue);
                 }else if(classType == String[].class) {
                     field.set(obj,paramValue.split(","));
-                }else if(classType == RouteType.class) {
-                    field.set(obj,RouteType.valueOf(Integer.parseInt(paramValue)));
-                }
-                else {
+                }else {
                     field.set(obj,paramValue);
                 }
             }catch (NoSuchFieldException e) {

@@ -46,7 +46,7 @@ define(function (require, exports, module) {
                 maxlength:"站点描述不能超过200个字符"
             },
             regionId: {
-                selrequired: "地区"
+                selrequired: "请选择地区"
             },
             txtOrderWeight:{
                 digits:"请输入数字",
@@ -130,6 +130,42 @@ define(function (require, exports, module) {
             return true;
         },
     });
+
+    $("#btnFile").bind("change",function(){
+        var btnFile=document.getElementById('btnFile').getAttribute("id");
+        uploadImg(btnFile);
+    })
+
+    function uploadImg (btnFile) {
+        layer.msg("正在上传", {time: 2000});
+        var commonUtil = require("common");
+        commonUtil.setDisabled("jq-cms-Save");
+        var customerId =commonUtil.getQuery("customerId");
+        $.ajaxFileUpload({
+            url: "/cms/siteUpLoad",
+            secureuri: false,//安全协议
+            fileElementId: btnFile,//id
+            dataType: 'json',
+            type: "post",
+            data:{
+                customerId: customerId
+            },
+            error: function (data, status, e) {
+
+            },
+            success: function (json) {
+            if (json.result == 1) {
+                $("#uploadLogoUri").attr("src", json.fileUrl);
+                $("#logoUri").val(json.fileUri);
+                commonUtil.cancelDisabled("jq-cms-Save");
+                layer.msg("操作成功", {time: 2000});
+            } else {
+                layer.msg("操作失败", {time: 2000});
+                commonUtil.cancelDisabled("jq-cms-Save");
+            }
+        }
+        });
+    }
 });
 function changeradio(t){
     if(t==1){//选择是
@@ -144,26 +180,4 @@ function changeradio(t){
 
 }
 
-function uploadImg (btnFile, showImgId, pathId) {
-    layer.msg("正在上传", {time: 2000});
-    $.ajaxFileUpload({
-        url: "/cms/SiteUpload",
-        secureuri: false,//安全协议
-        fileElementId: btnFile,//id
-        dataType: 'json',
-        type: "post",
-        data: null,
-        error: function (data, status, e) {
 
-        },
-        success: function (json) {
-            if (json.result == 1) {
-                $("#" + showImgId).attr("src", json.fileUrl);
-                $("#" + pathId).val(json.fileUri);
-                layer.msg("操作成功", {time: 2000});
-            } else {
-                layer.msg("操作失败", {time: 2000});
-            }
-        }
-    });
-}

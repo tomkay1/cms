@@ -11,6 +11,34 @@ public class ConfigInfo {
     @Value("${out.loginUrl}")
     private String outLoginUrl;
 
+    @Value("${resources.site}")
+    private String resourcesSiteLogo;
+
+    @Value("${resources.video}")
+    private String resourcesVideo;
+
+    @Value("${resources.ueditor}")
+     private String resourcesUeditor;
+
+    @Value("${resources.img}")
+        private String resourcesImg;
+
+    public String getResourcesSiteLogo() {
+        return resourcesSiteLogo;
+    }
+
+    public String getResourcesVideo() {
+        return resourcesVideo;
+    }
+
+    public String getResourcesUeditor() {
+        return resourcesUeditor;
+    }
+
+    public String getResourcesImg() {
+        return resourcesImg;
+    }
+
     @Value("${out.mallManageUrl}")
     private String mallManageUrl;
 

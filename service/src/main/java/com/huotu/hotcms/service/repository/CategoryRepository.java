@@ -1,6 +1,5 @@
 package com.huotu.hotcms.service.repository;
 
-import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
@@ -14,17 +13,19 @@ import java.util.Set;
  * Created by chendeyu on 2015/12/31.
  */
 public interface CategoryRepository extends JpaRepository<Category, Long>,JpaSpecificationExecutor {
+   List<Category> findBySiteAndDeletedOrderByOrderWeightDesc(Site site, Boolean deleted);
+   List<Category> findBySite_SiteIdAndDeletedAndIdNotOrderByOrderWeightDesc(long siteId, Boolean deleted, long categoryId);
    List<Category> findBySiteAndDeletedAndNameContainingOrderByOrderWeightDesc(Site site,Boolean deleted,String name);
 
-   List<Category> findBySiteAndDeletedOrderByOrderWeightDesc(Site site,Boolean deleted);
 
    Set<Category> findByCustomerId(Integer customerId);
+   Set<Category> findByCustomerIdAndModelId(Integer customerId,Integer modelType);
+   List<Category> findBySiteOrderById(Site site);
+   List<Category> findBySite_SiteIdAndDeletedOrderByOrderWeightDesc(long siteId, boolean deleted);
+
+   List<Category> findBySite_SiteIdAndDeletedAndModelIdOrderByOrderWeightDesc(long siteId, boolean deleted,Integer modelType);
 
    Category findByRoute(Route route);
 
    List<Category> findByParentOrderByOrderWeightDesc(Category superCategory);
-
-   List<Category> findBySite_SiteIdAndRoute_RouteTypeAndDeletedOrderByOrderWeightDesc(Long siteId, RouteType routeType, boolean b);
-
-   List<Category> findByParent_Id(Long parenId);
 }

@@ -1,9 +1,9 @@
 package com.huotu.hotcms.admin.controller;
 
+import com.huotu.hotcms.admin.service.StaticResourceService;
 import com.huotu.hotcms.admin.util.web.CookieUser;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
-import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.LinkCategory;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
@@ -16,6 +16,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,6 +39,8 @@ public class LinkController {
     private LinkService linkService;
 
     @Autowired
+    private StaticResourceService resourceServer;
+    @Autowired
     private SiteRepository siteRepository;
     @Autowired
     private CategoryRepository categoryRepository;
@@ -46,30 +49,27 @@ public class LinkController {
 
 
     @RequestMapping("/linkList")
-    public ModelAndView linkList(HttpServletRequest request) throws Exception
+    public ModelAndView linkList(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception
     {
-        Integer customerId =Integer.valueOf(request.getParameter("customerid"));
-        Set<Site> siteSet =siteRepository.findByCustomerId(customerId);
-        Set<Category> categorySet =categoryRepository.findByCustomerId(customerId);
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.addObject("siteSet",siteSet);
-        modelAndView.addObject("categorySet",categorySet);
         modelAndView.setViewName("/view/contents/linkList.html");
-
-        return  modelAndView;
+        Link link= linkService.findById(id);
+        String logo_uri="";
+        if(!StringUtils.isEmpty(link.getThumbUri())) {
+            logo_uri = resourceServer.getResource(link.getThumbUri()).toString();
+        }
+        modelAndView.addObject("logo_uri",logo_uri);
+        modelAndView.addObject("link", link);
+        return modelAndView;
     }
 
 
 
 
-
     @RequestMapping(value = "/addLink")
-    public ModelAndView addLink(HttpServletRequest request,Integer customerid) throws Exception{
+    public ModelAndView addLink(Integer customerId) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/view/contents/addLink.html");
-        Set<Category> categorys=categoryRepository.findByCustomerId(customerid);
-//        List<Region> regions =regionRepository.findAll();
-        modelAndView.addObject("categorys",categorys);
+        modelAndView.setViewName("/view/widget/addLink.html");
         return  modelAndView;
     }
 
@@ -81,7 +81,14 @@ public class LinkController {
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("/view/contents/updateLink.html");
         Link link= linkService.findById(id);
-        Set<Category> categorys=categoryRepository.findByCustomerId(customerId);
+        String logo_uri="";
+        if(!StringUtils.isEmpty(link.getThumbUri())) {
+            logo_uri = resourceServer.getResource(link.getThumbUri()).toString();
+        }
+        Category category =link.getCategory();
+        Integer modelType = category.getModelId();
+        Set<Category> categorys=categoryRepository.findByCustomerIdAndModelId(customerId,modelType);
+        modelAndView.addObject("logo_uri",logo_uri);
         modelAndView.addObject("categorys",categorys);
         modelAndView.addObject("link",link);
         return modelAndView;

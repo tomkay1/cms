@@ -5,41 +5,74 @@
     <title></title>
     <link  href="/assets/css/admin.content.css"  type="text/css" rel="stylesheet"/>
     <link  href="/assets/css/admin.global.css"  type="text/css" rel="stylesheet"/>
-    <link  href="/assets/libs/JGrid/theme/Jackson_skin_gray.css"  type="text/css" rel="stylesheet"/>
+    <link  href="/assets/css/global.css"  type="text/css" rel="stylesheet"/>
     <link href="/assets/libs/layer/skin/layer.css" rel="stylesheet"/>
-    <script src="/assets/seajs/sea.js"></script>
-    <script src="/assets/seajs/config.js"></script>
+    <script src="/assets/seajs/sea.js" type="application/javascript"></script>
+    <script src="/assets/seajs/config.js" type="application/javascript"></script>
 </head>
 <body>
-<div class="search block">
-    <div class="h">
-        <span class="icon-sprite icon-magnifier"></span>
-        <h3>快速搜索</h3>
-    </div>
-    <div class="cnt-wp">
-        <div class="cnt">
-            <div class="search-bar">
-            <div class="search-bar">
-                <label class="first ">公告标题：</label>
-                <input name="noticeName" type="text" id="noticeName" class="input-small" style="width: 200px;" placeholder=" 公告标题">
-                <label><a class="btn-lit btn-middle " id="jq-cms-search" href="javascript:" style="margin-bottom: 3px;"><span>搜索</span></a></label>
-                <label><a class="btn-lit btn-middle " id="jq-cms-searchAll" href="javascript:" style="margin-bottom: 3px;"><span>显示所有</span></a></label>
-            </div>
-        </div>
-    </div>
-</div>
 <div class="block">
     <div class="h">
         <span class="icon-sprite icon-list"></span>
-        <h3 style="float: left; width: 144px;">公告列表</h3>
+        <h3>公告详情</h3>
         <div class="bar">
-            <a class="btn-lit"  th:href="@{/notice/addNotice?customerid={customerid}(customerid=${user.customerId})}" target="content">
-                <span>新增</span></a>
+            <a class="btn-lit" th:href="@{/contents/contentsList?customerid={customerid}(customerid=${notice.customerId})}" target="content">
+                <span>返回内容管理列表</span></a>
         </div>
     </div>
-    <div class="cnt-wp" id="js-NoticeList"></div>
+    <div class="cnt-wp">
+        <form method="post" id="updateNoticeForm">
+            <div class="cnt form">
+                <div class="division">
+                    <input type="hidden" name="hidNoticeID" id="hidNoticeID" th:value="${notice.id}">
+                    <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                        <tbody>
+                        <tr>
+                            <th>公告标题：</th>
+                            <td>
+                                <input name="title" type="text" id="title" maxlength="50" class="input-normal" th:value="${notice.title}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>公告内容：</th>
+                            <td>
+                                <input name="content" type="text" id="content" maxlength="50" class="input-normal" th:value="${notice.title}" >
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>创建时间：</th>
+                            <td>
+                                <span name="createTime" type="text" id="createTime" maxlength="50" class="input-normal" hot:java8time="${notice.createTime}"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>更新时间：</th>
+                            <td>
+                                <span name="updateTime" type="text" id="updateTime" maxlength="50" class="input-normal" hot:java8time="${notice.updateTime}"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>所属栏目：</th>
+                            <td>
+                                <select name="categoryId" class="input-normal" id="categoryId">
+                                    <option  th:value="${notice.category.id}" th:text="${notice.category.name}" th:selected=true></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>排序权重：</th>
+                            <td>
+                                <input name="orderWeight" type="text" id="orderWeight" value="50" class="input-normal" th:value="${notice.orderWeight}" placeholder="请输入排序权重">
+                                <span style="color:#ccc;">数字越大排越前面</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
-<script>seajs.use(["JGrid","noticeList"]);</script>
-</div>
+<script>seajs.use(["validate","message","noticeList"]);</script>
 </body>
 </html>

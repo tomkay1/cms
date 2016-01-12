@@ -1,5 +1,6 @@
 package com.huotu.hotcms.admin.controller;
 
+import com.huotu.hotcms.admin.service.StaticResourceService;
 import com.huotu.hotcms.admin.util.web.CookieUser;
 import com.huotu.hotcms.service.common.ArticleSource;
 import com.huotu.hotcms.service.entity.Article;
@@ -13,6 +14,7 @@ import com.huotu.hotcms.service.util.ResultView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,35 +34,36 @@ public class ArticleController {
 
     @Autowired
     private ArticleService articleService;
-    //
-//    @Autowired
-//    private HostService hostService;
-//
+    @Autowired
+    private StaticResourceService resourceServer;
+
     @Autowired
     private CategoryRepository categoryRepository;
     @Autowired
     private CookieUser cookieUser;
 
     @RequestMapping("/articleList")
-    public ModelAndView articleList(HttpServletRequest request) throws Exception
+    public ModelAndView articleList(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception
     {
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("/view/contents/articleList.html");
-
-        return  modelAndView;
+        Article article= articleService.findById(id);
+        String logo_uri="";
+        if(!StringUtils.isEmpty(article.getThumbUri())) {
+            logo_uri = resourceServer.getResource(article.getThumbUri()).toString();
+        }
+        modelAndView.addObject("logo_uri",logo_uri);
+        modelAndView.addObject("article",article);
+        return modelAndView;
     }
 
 
 
 
-
     @RequestMapping(value = "/addArticle")
-    public ModelAndView addArticle(HttpServletRequest request,Integer customerid) throws Exception{
+    public ModelAndView addArticle(Integer customerId) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/view/contents/addArticle.html");
-        Set<Category> categorys=categoryRepository.findByCustomerId(customerid);
-//        List<Region> regions =regionRepository.findAll();
-        modelAndView.addObject("categorys",categorys);
+        modelAndView.setViewName("/view/widget/addArticle.html");
         return  modelAndView;
     }
 
@@ -72,7 +75,14 @@ public class ArticleController {
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("/view/contents/updateArticle.html");
         Article article= articleService.findById(id);
-        Set<Category> categorys=categoryRepository.findByCustomerId(customerId);
+        String logo_uri="";
+        if(!StringUtils.isEmpty(article.getThumbUri())) {
+            logo_uri = resourceServer.getResource(article.getThumbUri()).toString();
+        }
+        Category category =article.getCategory();
+        Integer modelType = category.getModelId();
+        Set<Category> categorys=categoryRepository.findByCustomerIdAndModelId(customerId, modelType);
+        modelAndView.addObject("logo_uri",logo_uri);
         modelAndView.addObject("categorys",categorys);
         modelAndView.addObject("article",article);
         return modelAndView;

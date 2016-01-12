@@ -45,6 +45,24 @@ public abstract class BaseEntity {
     private boolean deleted = false;
 
     /**
+     //     * 标题
+     //     */
+    @Column(name = "title")
+    private String title;
+
+    /**
+     * 描述
+     */
+    @Column(name = "description")
+    private String description;
+
+    /**
+     * 作者
+     */
+    @Column(name = "author")
+    private String author;
+
+    /**
      * 创建时间
      */
     @Column(name = "createTime")

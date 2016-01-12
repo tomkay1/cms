@@ -24,11 +24,6 @@ import javax.persistence.*;
 @Setter
 public class Article extends BaseEntity {
 
-//    /**
-//     * 标题
-//     */
-//    @Column(name = "title")
-//    private String title;
 
     /**
      * 缩略图
@@ -36,17 +31,6 @@ public class Article extends BaseEntity {
     @Column(name = "thumbUri")
     private String thumbUri;
 
-//    /**
-//     * 描述
-//     */
-//    @Column(name = "description")
-//    private String description;
-
-    /**
-     * 作者
-     */
-    @Column(name = "author")
-    private String author;
 
     /**
      * 文章来源

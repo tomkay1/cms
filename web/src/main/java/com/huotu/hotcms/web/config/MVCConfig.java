@@ -72,6 +72,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         argumentResolvers.add(siteResolver);
     }
 
+
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
 //        registry.viewResolver(htmlViewResolver());

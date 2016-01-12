@@ -32,68 +32,6 @@ public class IndexController {
         modelAndView.addObject("customTemplateUrl","http://www.cms.com");
         return modelAndView;
     }
-
-//    @RequestMapping("/")
-//    public String testIndex(Site site,Model model){
-//        Set<Site> siteSet = siteService.getSite(3447);
-//        model.addAttribute("site",site);
-//        model.addAttribute("siteList",siteSet);
-//        String viewName = "/view/index.html";
-//        if(site.isCustom()) {
-//            viewName = site.getCustomTemplateUrl();
-//        }
-//        return viewName;
-//    }
-//
-//
-//    @RequestMapping("/test4")
-//    public ModelAndView testIndex4()
-//    {
-//        ModelAndView modelAndView=new ModelAndView();
-//        modelAndView.setViewName("http://www.cms.com/content.html");
-//        return  modelAndView;
-//    }
-//
-//    @RequestMapping("/*/*")
-//    public ModelAndView index(){
-//        ModelAndView modelAndView=new ModelAndView();
-////        modelAndView.setViewName("/view/system/regionList.html");
-//        return  modelAndView;
-//    }
-
-//
-//    @RequestMapping("/**")
-//    public String testIndex2(Site site,Model model) throws Exception {
-//        model.addAttribute("site",site);
-//        String viewName = "/view/index.html";
-//        if(site.isCustom()) {
-//            viewName = site.getCustomTemplateUrl();
-//        }
-//        return viewName;
-//    }
-
-//    @RequestMapping("/remote")
-//    public String testRemote(Model model) {
-//        model.addAttribute("seo",new Seo("Access remote template success!"));
-//        return "/pc/yun-index.html";
-//    }
-//
-//    @RequestMapping("/test")
-//    public  String test(Model model){
-//        return "/view/test.html";
-//    }
-//
-//    @ModelAttribute("categoryList")
-//    public List<Category> getSite() {
-//        return new ArrayList<>();
-//    }
-//
-//
-//    @RequestMapping("/content/2.html")
-//    public String test2(Model model){
-//
-//        return "/view/test2.html";
-//    }
-
+    
 
 }

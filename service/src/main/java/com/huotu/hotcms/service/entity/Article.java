@@ -63,15 +63,11 @@ public class Article extends BaseEntity {
     @Column(name = "unlauds")
     private int unlauds;
 
-
-
-//    /**
-//     * 所属栏目
-//     */
-//    @Basic
-//    @ManyToOne
-//    @JoinColumn(name = "categoryId")
-//    private Category category;
+    /**
+     * 作者
+     */
+    @Column(name = "author")
+    private String author;
 
 
 }

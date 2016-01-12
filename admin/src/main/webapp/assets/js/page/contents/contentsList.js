@@ -51,7 +51,9 @@ define(function (require, exports, module) {
         var customerId =commonUtil.getQuery("customerId");
         var option={
             dataParam:{
-                title:$("#linkName").val(),
+                siteId:$("#siteId").val(),
+                category:$("#category").val(),
+                name:$("#contentsName").val(),
                 customerId:customerId
             }
         };

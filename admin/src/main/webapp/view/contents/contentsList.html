@@ -22,20 +22,20 @@
             <label class="first ">站点名称：</label>
             <select name="siteId" class="input-normal" id="siteId" >
                 <option value="-1">==请选择站点==</option>
-                <option th:each="site:${siteSet}" th:value="${site.siteId}" th:text="${site.name}" th:selected="${site.siteId}==${siteSet[0].siteId}?true:false"></option>//
+                <option th:each="site:${siteList}" th:value="${site.siteId}" th:text="${site.name}" th:selected="${site.siteId}==${siteList[0].siteId}?true:false"></option>//
             </select>
             <label class="first ">栏目名称：</label>
             <select name="category" class="input-normal" id="category">
                 <option value="-1">==请选择栏目==</option>
-                <!--<option th:each="category:${categorySet}" th:value="${category.Id}" th:text="${category.name}"></option>-->
+                <option th:each="category:${categoryList}" th:value="${category.Id}" th:text="${category.name}"></option>
             </select>
         </div>
             <div class="search-bar">
                 <div class="search-bar">
                     <label class="first ">内容标题：</label>
-                    <input name="linkName" type="text" id="linkName" class="input-small" style="width: 200px;" placeholder=" 内容标题">
+                    <input name="contentsName" type="text" id="contentsName" class="input-small" style="width: 200px;" placeholder=" 内容标题">
                     <label><a class="btn-lit btn-middle " id="jq-cms-search" href="javascript:" style="margin-bottom: 3px;"><span>搜索</span></a></label>
-                    <label><a class="btn-lit btn-middle " id="jq-cms-searchAll" href="javascript:" style="margin-bottom: 3px;"><span>显示所有</span></a></label>
+                    <!--<label><a class="btn-lit btn-middle " id="jq-cms-searchAll" href="javascript:" style="margin-bottom: 3px;"><span>显示所有</span></a></label>-->
                 </div>
             </div>
         </div>

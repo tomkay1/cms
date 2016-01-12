@@ -57,12 +57,6 @@ public abstract class BaseEntity {
     private String description;
 
     /**
-     * 作者
-     */
-    @Column(name = "author")
-    private String author;
-
-    /**
      * 创建时间
      */
     @Column(name = "createTime")

@@ -3,8 +3,8 @@ package com.huotu.hotcms.service.repository;
 import com.huotu.hotcms.service.entity.Site;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -14,6 +14,8 @@ public interface SiteRepository  extends JpaRepository<Site, Long>,JpaSpecificat
     Site findByCustomerIdAndName(Integer customId,String name);
 
     Set<Site> findByCustomerId(int customerId);
+
+    List<Site> findByCustomerIdAndDeletedOrderBySiteIdDesc(int customerId,Boolean deleted);
 
     Set<Site> findByCustomerIdAndDeleted(int customerId,Boolean deleted);
 

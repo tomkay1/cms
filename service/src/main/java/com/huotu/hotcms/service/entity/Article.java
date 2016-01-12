@@ -63,6 +63,11 @@ public class Article extends BaseEntity {
     @Column(name = "unlauds")
     private int unlauds;
 
+    /**
+     * 作者
+     */
+    @Column(name = "author")
+    private String author;
 
 
 //    /**

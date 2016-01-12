@@ -178,6 +178,9 @@ define(function (require, exports, module) {
             $('#treeGrid').on('rowExpand', function (event) {//展开收缩事件
                 categoryModul.bindUpdateClick();
             });
+            $('#treeGrid').on('rowCollapse',function (event){
+                categoryModul.bindUpdateClick();
+             });
         },
         bindUpdateClick:function(){
             //新增栏目

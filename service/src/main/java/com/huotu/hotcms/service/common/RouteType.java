@@ -39,12 +39,20 @@ public enum RouteType implements CommonEnum{
     public static RouteType valueOf(int value)
     {
         switch (value){
-            case 2:
-                return ARTICLE_CONTENT;
             case 0:
                 return NOT_FOUND;
             case 1:
                 return SERVER_ERROR;
+            case 2:
+                return ARTICLE_CONTENT;
+            case 3:
+                return VIDEO_CONTENT;
+            case 4:
+                return GALLERY_CONTENT;
+            case 5:
+                return ARTICLE_LIST;
+            case 6:
+                return HEADER_NAVIGATION;
             default:
                 return null;
         }

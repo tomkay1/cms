@@ -17,7 +17,7 @@ public interface BaseEntityRepository extends JpaRepository<BaseEntity,Long>,Jpa
             "UNION\n" +
             "select b.title,b.description,c.name,b.id,c.modelId,b.createTime from cms_article b,cms_category c where b.categoryId=c.id and b.deleted=false and c.siteId = ?1 and b.title like %?2%\n" +
             "UNION\n" +
-            "select d.title,d.description,c.name,d.id,c.modelId,d.createTime from cms_notice d,cms_category c where d.category_Id=c.id and d.deleted=false and c.siteId = ?1 and d.title like %?2%\n" +
+            "select d.title,d.description,c.name,d.id,c.modelId,d.createTime from cms_notice d,cms_category c where d.categoryId=c.id and d.deleted=false and c.siteId = ?1 and d.title like %?2%\n" +
             "UNION\n" +
             "select e.title,e.description,c.name,e.id,c.modelId,e.createTime from cms_download e,cms_category c where e.categoryId=c.id and e.deleted=false and c.siteId = ?1 and e.title like %?2%\n" +
             "UNION\n" +
@@ -30,7 +30,7 @@ public interface BaseEntityRepository extends JpaRepository<BaseEntity,Long>,Jpa
             "UNION\n" +
             "select b.title,b.description,c.name,b.id,c.modelId,b.createTime from cms_article b,cms_category c where b.categoryId=c.id and b.deleted=false and c.siteId = ?1 and c.id=?2 and b.title like %?3%\n" +
             "UNION\n" +
-            "select d.title,d.description,c.name,d.id,c.modelId,d.createTime from cms_notice d,cms_category c where d.category_Id=c.id and d.deleted=false and c.siteId = ?1 and c.id=?2 and d.title like %?3%\n" +
+            "select d.title,d.description,c.name,d.id,c.modelId,d.createTime from cms_notice d,cms_category c where d.categoryId=c.id and d.deleted=false and c.siteId = ?1 and c.id=?2 and d.title like %?3%\n" +
             "UNION\n" +
             "select e.title,e.description,c.name,e.id,c.modelId,e.createTime from cms_download e,cms_category c where e.categoryId=c.id and e.deleted=false and c.siteId = ?1 and c.id=?2 and e.title like %?3%\n" +
             "UNION\n" +
@@ -44,7 +44,7 @@ public interface BaseEntityRepository extends JpaRepository<BaseEntity,Long>,Jpa
             "UNION\n" +
             "select b.title,b.description,c.name,b.id,c.modelId,b.createTime from cms_article b,cms_category c where b.categoryId=c.id and b.deleted=false and c.siteId = ?1 and b.title like %?2%\n" +
             "UNION\n" +
-            "select d.title,d.description,c.name,d.id,c.modelId,d.createTime from cms_notice d,cms_category c where d.category_Id=c.id and d.deleted=false and c.siteId = ?1 and d.title like %?2%\n" +
+            "select d.title,d.description,c.name,d.id,c.modelId,d.createTime from cms_notice d,cms_category c where d.categoryId=c.id and d.deleted=false and c.siteId = ?1 and d.title like %?2%\n" +
             "UNION\n" +
             "select e.title,e.description,c.name,e.id,c.modelId,e.createTime from cms_download e,cms_category c where e.categoryId=c.id and e.deleted=false and c.siteId = ?1 and e.title like %?2%\n" +
             "UNION\n" +
@@ -57,7 +57,7 @@ public interface BaseEntityRepository extends JpaRepository<BaseEntity,Long>,Jpa
             "UNION\n" +
             "select b.title,b.description,c.name,b.id,c.modelId,b.createTime from cms_article b,cms_category c where b.categoryId=c.id and b.deleted=false and c.siteId = ?1 and c.id=?2 and b.title like %?3%\n" +
             "UNION\n" +
-            "select d.title,d.description,c.name,d.id,c.modelId,d.createTime from cms_notice d,cms_category c where d.category_Id=c.id and d.deleted=false and c.siteId = ?1 and c.id=?2 and d.title like %?3%\n" +
+            "select d.title,d.description,c.name,d.id,c.modelId,d.createTime from cms_notice d,cms_category c where d.categoryId=c.id and d.deleted=false and c.siteId = ?1 and c.id=?2 and d.title like %?3%\n" +
             "UNION\n" +
             "select e.title,e.description,c.name,e.id,c.modelId,e.createTime from cms_download e,cms_category c where e.categoryId=c.id and e.deleted=false and c.siteId = ?1 and c.id=?2 and e.title like %?3%\n" +
             "UNION\n" +

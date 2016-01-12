@@ -42,10 +42,7 @@ define(function (require, exports, module) {
             commonUtil.setDisabled("jq-cms-Save");
             var customerId =commonUtil.getQuery("customerId");
             var f=$("#thumbUri").val();
-            if(f==""){
-                layer.msg("请上传图片",{time: 2000});commonUtil.cancelDisabled("jq-cms-Save");
-            }
-            else if(!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(f)) {
+            if(f!=""&&!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(f)) {
                 layer.msg("请上传正确图片",{time: 2000});commonUtil.cancelDisabled("jq-cms-Save");
             }
             else{

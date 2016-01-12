@@ -70,4 +70,13 @@ public class Article extends BaseEntity {
     private String author;
 
 
+//    /**
+//     * 所属栏目
+//     */
+//    @Basic
+//    @ManyToOne
+//    @JoinColumn(name = "categoryId")
+//    private Category category;
+
+
 }

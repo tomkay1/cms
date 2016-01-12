@@ -56,7 +56,6 @@ public abstract class BaseEntity {
     @Column(name = "description")
     private String description;
 
-
     /**
      * 创建时间
      */

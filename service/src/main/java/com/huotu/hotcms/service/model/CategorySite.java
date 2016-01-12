@@ -11,7 +11,7 @@ import lombok.Setter;
  */
 @Setter
 @Getter
-public class CategorySite extends BaseEntity {
+public class CategorySite extends BaseModel {
 
     /**
      * 栏目名称

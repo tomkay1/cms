@@ -15,9 +15,8 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
- *
- * Created by cwb on 2015/12/22.
- */
+ * 数据模型基类
+ * **/
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Getter

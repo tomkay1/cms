@@ -9,7 +9,7 @@ import lombok.Setter;
  */
 @Setter
 @Getter
-public class NoticeCategory extends BaseEntity {
+public class NoticeCategory extends BaseModel {
 
     /**
      * 公告标题

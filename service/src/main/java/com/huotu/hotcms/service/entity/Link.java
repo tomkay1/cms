@@ -21,7 +21,7 @@ import javax.persistence.*;
 @Table(name = "cms_link")
 @Getter
 @Setter
-public class Link extends BaseModel {
+public class Link extends BaseEntity {
 //
 //    /**
 //     * 标题

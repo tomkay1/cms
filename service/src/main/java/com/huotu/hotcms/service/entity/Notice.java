@@ -23,7 +23,7 @@ import javax.persistence.Table;
 @Table(name = "cms_notice")
 @Setter
 @Getter
-public class Notice extends BaseModel {
+public class Notice extends BaseEntity {
 
 //    /**
 //     * 公告标题

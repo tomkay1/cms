@@ -21,7 +21,7 @@ import javax.persistence.*;
 @Table(name = "cms_gallery")
 @Getter
 @Setter
-public class Gallery extends BaseModel {
+public class Gallery extends BaseEntity {
 
 //    /**
 //     * 标题

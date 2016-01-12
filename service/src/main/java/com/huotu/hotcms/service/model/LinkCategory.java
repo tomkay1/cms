@@ -10,7 +10,7 @@ import lombok.Setter;
  */
 @Setter
 @Getter
-public class LinkCategory extends BaseEntity {
+public class LinkCategory extends BaseModel {
 
     /**
      * 标题

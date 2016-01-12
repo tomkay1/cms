@@ -22,7 +22,7 @@ import javax.persistence.*;
 @Table(name = "cms_article")
 @Getter
 @Setter
-public class Article extends BaseModel {
+public class Article extends BaseEntity {
 
 //    /**
 //     * 标题

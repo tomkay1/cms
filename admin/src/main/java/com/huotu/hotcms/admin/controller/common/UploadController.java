@@ -6,6 +6,8 @@ import com.huotu.hotcms.service.common.ConfigInfo;
 import com.huotu.hotcms.service.model.Result;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +31,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/cms")
 public class UploadController {
-
+    private static final Log log = LogFactory.getLog(UploadController.class);
     @Autowired
     private StaticResourceService resourceServer;
 
@@ -58,6 +60,7 @@ public class UploadController {
                 resultView = new ResultView(ResultOptionEnum.FILE_FORMATTER_ERROR.getCode(), ResultOptionEnum.FILE_FORMATTER_ERROR.getValue(), null);
             }
         } catch (Exception e) {
+            log.error(e.getMessage());
             resultView = new ResultView(ResultOptionEnum.SERVERFAILE.getCode(),e.getMessage(), null);
         }
         return resultView;

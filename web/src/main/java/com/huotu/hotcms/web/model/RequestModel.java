@@ -2,9 +2,9 @@ package com.huotu.hotcms.web.model;
 
 
 import com.huotu.hotcms.service.entity.Site;
-import org.springframework.data.domain.Page;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  *
@@ -18,10 +18,9 @@ public class RequestModel{
      * */
     private String url;
 
-    /**
-     * 页面
-     * */
-    private Page page;
+    private List<PageModel> pages;
+
+    private int currentPage;
 
     /**
      * 当前请求的根路径
@@ -90,11 +89,19 @@ public class RequestModel{
         return null;
     }
 
-    public Page getPage() {
-        return page;
+    public List<PageModel> getPages() {
+        return pages;
     }
 
-    public void setPage(Page page) {
-        this.page = page;
+    public void setPages(List<PageModel> pages) {
+        this.pages = pages;
+    }
+
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
     }
 }

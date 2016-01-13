@@ -15,6 +15,7 @@ import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.model.thymeleaf.ArticleForeachParam;
 import com.huotu.hotcms.service.service.ArticleService;
 import com.huotu.hotcms.service.service.CategoryService;
+import com.huotu.hotcms.web.model.PageModel;
 import com.huotu.hotcms.web.model.RequestModel;
 import com.huotu.hotcms.web.thymeleaf.expression.DialectAttributeFactory;
 import com.huotu.hotcms.web.thymeleaf.expression.VariableExpression;
@@ -30,6 +31,7 @@ import org.thymeleaf.context.IWebContext;
 import org.thymeleaf.model.IProcessableElementTag;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -98,8 +100,15 @@ public class ArticleForeachProcessorFactory {
             }
             ArticleService articleService = (ArticleService)applicationContext.getBean("articleServiceImpl");
             articles = articleService.getArticleList(articleForeachParam);
-            RequestModel requestModel = (RequestModel)VariableExpression.getVariable(context, "request");
-            requestModel.setPage((Page)articles);
+            List<PageModel> pages = new ArrayList<>();
+            for(int i=0;i<articles.getTotalPages();i++) {
+                PageModel pageModel = new PageModel();
+                pageModel.setPageNo(i+1);
+                pages.add(pageModel);
+            }
+            RequestModel requestModel = (RequestModel)VariableExpression.getVariable(context,"request");
+            requestModel.setPages(pages);
+            requestModel.setCurrentPage(articleForeachParam.getPageno());
         }catch (Exception e) {
             log.error(e.getMessage());
         }

@@ -202,7 +202,8 @@
       <a>
         <img src="http://www.test.com/images/left.jpg" width="8px">
       </a>
-      <a class="on" data-th-each="p:${page}" data-th-text="${pStat.count}">
+      <a class="on" data-th-each="page:${request.pages}" data-th-text="${page.pageNo}"
+         data-th-class="${page.pageNo==request.currentPage} ? on">
         1
       </a>
       <a data-th-remove="all">

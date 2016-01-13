@@ -42,7 +42,10 @@ public class StringUtil {
      * */
     public static  String Trim(String str,String removeStr){
         if(!StringUtils.isEmpty(str)){
-           str=str.substring(0,str.lastIndexOf(removeStr));
+            Integer index=str.lastIndexOf(removeStr);
+            if(index>0) {
+                str = str.substring(0, str.lastIndexOf(removeStr));
+            }
             if(str.startsWith(removeStr)){
                 str=str.substring(removeStr.length());
             }

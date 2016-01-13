@@ -2,17 +2,18 @@
 <html>
 <head>
  <meta charset="utf-8">
- <title></title>
- <link rel="stylesheet" type="text/css" href="http://www.test.com/css/common.css">
- <link rel="stylesheet" type="text/css" href="http://www.test.com/css/index.css">
- <script type="text/javascript" src="http://www.test.com/js/jquery1.42.min.js"></script>
- <script type="text/javascript" src="http://www.test.com/js/jquery.SuperSlide.2.1.1.js"></script>
+ <title th:text="${site.title}"></title>
+ <meta name="keywords" th:content="${site.keywords}" />
+ <meta name="description" th:content="${site.description}"/>
+ <link rel="stylesheet" type="text/css" th:href="@{${request.root}+'/css/common.css'}">
+ <link rel="stylesheet" type="text/css" th:href="@{${request.root}+'/css/index.css'}">
+ <script type="text/javascript" th:href="@{${request.root}+'/js/jquery1.42.min.js'}"></script>
+ <script type="text/javascript" th:href="@{${request.root}+'/js/jquery.SuperSlide.2.1.1.js'}"></script>
 </head>
 <body>
-
 <!---头--->
 <div class="header">
- <img src="http://www.test.com/images/logo.png" class="logoimg">
+ <img th:src="${request.root}+'/images/logo.png'" class="logoimg">
  <ul class="nav" data-th-remove="all-but-first">
   <li class="active" data-category-foreach="category"  data-th-class="${request.url.startsWith(category.route.rule)}?active" data-param-routetype="6">
 	<a href="index.html" data-th-href="@{${category.route.rule}}" data-th-text="${category.name}">首页</a>
@@ -33,7 +34,6 @@
  <div class="bd">
   <ul>
    <li style="background:url(http://www.test.com/images/banner.jpg)  center 0 no-repeat;"></li>
-
   </ul>
  </div>
 

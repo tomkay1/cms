@@ -62,6 +62,7 @@ public class ArticleResolveService {
      * */
     public Article getArticleBySiteAndRequest(Site site,HttpServletRequest request){
         String requestUrl = PatternMatchUtil.getUrl(request);
+
         Route route=routeResolverService.getRoute(site, requestUrl);
         if(route!=null){
             Integer articleId=PatternMatchUtil.getUrlId(requestUrl, route.getRule());

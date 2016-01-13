@@ -15,11 +15,13 @@ import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.model.thymeleaf.ArticleForeachParam;
 import com.huotu.hotcms.service.service.ArticleService;
 import com.huotu.hotcms.service.service.CategoryService;
+import com.huotu.hotcms.web.model.RequestModel;
 import com.huotu.hotcms.web.thymeleaf.expression.DialectAttributeFactory;
 import com.huotu.hotcms.web.thymeleaf.expression.VariableExpression;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
@@ -96,6 +98,8 @@ public class ArticleForeachProcessorFactory {
             }
             ArticleService articleService = (ArticleService)applicationContext.getBean("articleServiceImpl");
             articles = articleService.getArticleList(articleForeachParam);
+            RequestModel requestModel = (RequestModel)VariableExpression.getVariable(context, "request");
+            requestModel.setPage((Page)articles);
         }catch (Exception e) {
             log.error(e.getMessage());
         }

@@ -1,15 +1,21 @@
 package com.huotu.hotcms.web.model;
 
-import lombok.Getter;
-import lombok.Setter;
+
+import org.springframework.data.domain.Page;
 
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ *
  * Created by Administrator xhl 2016/1/7.
  */
 public class RequestModel{
+
     private String hosts;
+    private String url;
+
+    private Page page;
+
 
     public String getUrl() {
         return url;
@@ -18,8 +24,6 @@ public class RequestModel{
     public void setUrl(String url) {
         this.url = url;
     }
-
-    private String url;
 
     public String getHosts() {
         return hosts;
@@ -40,5 +44,13 @@ public class RequestModel{
             return request.getParameter(param);
         }
         return null;
+    }
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
     }
 }

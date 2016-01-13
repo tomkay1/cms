@@ -2,6 +2,7 @@ package com.huotu.hotcms.web.interceptor;
 
 import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.Article;
+import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.web.common.ConfigInfo;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Vector;
 
 /**
  * <p>

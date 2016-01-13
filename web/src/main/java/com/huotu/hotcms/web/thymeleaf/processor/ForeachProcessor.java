@@ -9,6 +9,7 @@
 package com.huotu.hotcms.web.thymeleaf.processor;
 
 import com.huotu.hotcms.web.service.ForeachProcessorService;
+import org.springframework.data.domain.Page;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.engine.AttributeName;
@@ -37,6 +38,9 @@ public class ForeachProcessor extends AbstractAttributeTagProcessor {
     protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName, String attributeValue, String attributeTemplateName, int attributeLine, int attributeCol, IElementTagStructureHandler structureHandler){
         final Object iteratedValue;
         iteratedValue = foreachProcessorService.resolveDataByAttr(tag, context);
+        if(iteratedValue instanceof Page) {
+
+        }
         structureHandler.iterateElement(attributeValue, null, iteratedValue);
     }
 }

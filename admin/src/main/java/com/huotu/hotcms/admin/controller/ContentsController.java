@@ -64,7 +64,7 @@ public class ContentsController {
     public ModelAndView addContents(Integer customerId) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("/view/contents/addContents.html");
-        Set<Category> categorys=categoryRepository.findByCustomerId(customerId);
+        Set<Category> categorys=categoryRepository.findByCustomerIdAndDeletedAndModelIdNotNullOrderByOrderWeightDesc(customerId, false);
         modelAndView.addObject("categorys",categorys);
         modelAndView.addObject("customerId",customerId);
         return  modelAndView;

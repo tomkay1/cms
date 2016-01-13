@@ -18,7 +18,7 @@
                             <span style="color: #c1b3a9" onclick="javascript:$('#btnArticleFile').click();">上传</span></a>
                         <input id="btnArticleFile" name="btnFile"
                                style="display:none;" type="file"/>
-                    <td><input type="hidden" id="thumbUri" name="thumbUri" /></td>
+                    <input type="hidden" id="thumbUri" name="thumbUri" />
                     </td>
                 </tr>
                 <tr>
@@ -46,7 +46,7 @@
                 <tr>
                     <th>文章内容：</th>
                     <td>
-                        <textarea rows="" cols="" style="width: 250px; height: 60px;" class="input-normal" id="content" name="content" ></textarea>
+                        <textarea rows="" cols="" style="width: 750px; height: 300px;"  id="content" name="content" ></textarea>
                     </td>
                 </tr>
                 <tr>
@@ -64,4 +64,4 @@
         </div>
     </div>
 </form>
-<script>seajs.use(["validate","message","addArticle","ajaxfileupload","layer"]);</script>
+<script>seajs.use(["validate","message","ajaxfileupload","layer","ueditorConfig","ueditorAll","addArticle"]);</script>

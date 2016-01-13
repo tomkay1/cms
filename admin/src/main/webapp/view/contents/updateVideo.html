@@ -16,7 +16,7 @@
         <span class="icon-sprite icon-list"></span>
         <h3>修改视频</h3>
         <div class="bar">
-            <a class="btn-lit" th:href="@{/contents/contentsList?customerid={customerid}(customerid=${user.customerId})}" target="content">
+            <a class="btn-lit" th:href="@{/contents/contentsList?customerid={customerid}(customerid=${video.customerId})}" target="content">
                 <span>返回内容管理列表</span></a>
         </div>
     </div>
@@ -33,10 +33,10 @@
                                 <input name="title" type="text" id="title" maxlength="50" class="input-normal" th:value="${video.title}">
                             </td>
                         </tr>
-                         <tr>
-                            <th>缩略图uri：</th>
+                        <tr>
+                            <th>描述：</th>
                             <td>
-                                <input name="thumbUri" type="text" id="thumbUri" maxlength="50" class="input-normal" th:value="${video.title}">
+                                <input name="description" type="text" id="description" maxlength="50" th:value="${video.description}" class="input-normal" >
                             </td>
                         </tr>
                         <tr>
@@ -50,22 +50,16 @@
                             <td><input type="hidden" id="thumbUri" name="thumbUri" th:value="${video.thumbUri}"/></td>
                             </td>
                         </tr>
+                        <!--<tr>-->
+                            <!--<th>内部储存地址：</th>-->
+                            <!--<td>-->
+                                <!--<input name="videoUrl" type="text" id="videoUrl" maxlength="50" class="input-normal" th:value="${video.videoUrl}" >-->
+                            <!--</td>-->
+                        <!--</tr>-->
                         <tr>
-                            <th>描述：</th>
+                            <th>外部链接地址：</th>
                             <td>
-                                <input name="description" type="text" id="description" maxlength="50" class="input-normal" th:value="${gallery.description}" >
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>内容：</th>
-                            <td>
-                                <input name="content" type="text" id="content" maxlength="50" class="input-normal" th:value="${gallery.content}">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>链接：</th>
-                            <td>
-                                <input name="linkUrl" type="text" id="linkUrl" maxlength="100" class="input-normal" th:value="${gallery.linkUrl}">
+                                <input name="outLinkUrl" type="text" id="outLinkUrl" maxlength="100" class="input-normal" th:value="${video.outLinkUrl}">
                             </td>
                         </tr>
                         <tr>
@@ -73,7 +67,7 @@
                             <td>
                                 <select name="categoryId" class="input-normal" id="categoryId">
                                     <option value="-1">==请选择栏目==</option>
-                                    <option th:each="category:${categorys}" th:value="${category.id}" th:text="${category.name}" th:selected="${category.id}==${gallery.category.id}?true:false"></option>
+                                    <option th:each="category:${categorys}" th:value="${category.id}" th:text="${category.name}" th:selected="${category.id}==${video.category.id}?true:false"></option>
                                 </select>
                             </td>
                         </tr>
@@ -81,7 +75,7 @@
                         <tr>
                             <th>排序权重：</th>
                             <td>
-                                <input name="orderWeight" type="text" id="orderWeight" value="50" class="input-normal" placeholder="请输入排序权重" th:value="${gallery.orderWeight}">
+                                <input name="orderWeight" type="text" id="orderWeight" value="50" class="input-normal" placeholder="请输入排序权重" th:value="${video.orderWeight}">
                                 <span style="color:#ccc;">数字越大排越前面</span>
                             </td>
                         </tr>
@@ -96,6 +90,6 @@
         </form>
     </div>
 </div>
-<script>seajs.use(["validate","message","updateGallery","ajaxfileupload","layer"]);</script>
+<script>seajs.use(["validate","message","updateVideo","ajaxfileupload","layer"]);</script>
 </body>
 </html>

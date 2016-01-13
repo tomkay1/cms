@@ -1,4 +1,4 @@
-var version="8989444444.0.0";
+var version="4555610";
 seajs.config({
 	alias: {
 		"jquery": "js/jquery-1.9.1.min.js",
@@ -19,6 +19,9 @@ seajs.config({
 		"noticeList":"js/page/contents/noticeList.js?v="+version,
 		"addNotice":"js/page/contents/addNotice.js?v="+version,
 		"updateNotice":"js/page/contents/updateNotice.js?v="+version,
+		"videoList":"js/page/contents/videoList.js?v="+version,
+		"addVideo":"js/page/contents/addVideo.js?v="+version,
+		"updateVideo":"js/page/contents/updateVideo.js?v="+version,
 		"articleList":"js/page/contents/articleList.js?v="+version,
 		"addArticle":"js/page/contents/addArticle.js?v="+version,
 		"updateArticle":"js/page/contents/updateArticle.js?v="+version,
@@ -46,6 +49,9 @@ seajs.config({
 		"ajaxfileupload":"libs/ajaxfileupload.js?v="+version,
 		"ueditorConfig":"libs/ueditor/ueditor.config.js?v="+version,
 		"ueditorAll":"libs/ueditor/ueditor.all.js?v="+version,
+		"init":"libs/richText/init.js?v="+version,
+		"kindeditor":"libs/richText/kindeditor-min.js?v="+version,
+		"zh_CN":"libs/richText/lang/zh_CN.js?v="+version,
 		"jqxcore":"libs/jqwidgets/jqxcore.js?v="+version,
 		"jqxdata":"libs/jqwidgets/jqxdata.js?v="+version,
 		"jqxbuttons":"libs/jqwidgets/jqxbuttons.js?v="+version,

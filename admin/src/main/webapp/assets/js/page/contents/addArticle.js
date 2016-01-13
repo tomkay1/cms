@@ -142,5 +142,11 @@ define(function (require, exports, module) {
         });
     }
 
-    var ue = UE.getEditor('content');
+    var ue = UE.getEditor('content',{
+        //默认的编辑区域宽度
+        initialFrameWidth:1200,
+        //默认的编辑区域高度
+        initialFrameHeight:300,
+
+    });
 });

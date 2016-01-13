@@ -138,6 +138,4 @@ define(function (require, exports, module) {
             }
         });
     }
-
-    var ue = UE.getEditor('container');
 });

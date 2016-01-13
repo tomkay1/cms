@@ -167,8 +167,8 @@ define(function (require, exports, module) {
                                 if (row == -1) {
                                     return "<a href='javascript:;' title='新增栏目' data-id='" + row + "' style='color:blue;margin-right:5px;' class='js-cms-addCategory'>新增栏目</a>|<a href='javascript:;' class='js-cms-updateCategory' data-id='" + row + "' title='修改栏目' style='color:#cccccc;margin-right:5px;margin-left: 5px;'>修改栏目</a>|<a href='javascript:;' title='删除' style='color:#cccccc;margin-left: 5px;'>删除</a>";
                                 } else {
-                                    var supper=$("#supper").val();
-                                    if(supper=='True') {
+                                    //var supper=$("#supper").val();
+                                    if(true) {
                                         return "<a href='javascript:;' title='新增栏目' data-id='" + row + "' style='color:blue;margin-right:5px;' class='js-cms-addCategory'>新增栏目</a>|<a href='javascript:;' class='js-cms-updateCategory' data-id='" + row + "' title='修改栏目' style='color:blue;margin-right:5px;margin-left: 5px;'>修改栏目</a>|<a href='javascript:;' class='js-cms-categoryDelete' data-id='" + row + "' title='删除' style='color:blue;margin-left: 5px;'>删除</a>";
                                     }else{
                                         return "<a href='javascript:;' title='新增栏目' data-id='" + row + "' style='color:blue;margin-right:5px;' class='js-cms-addCategory'>新增栏目</a>|<a href='javascript:;' class='js-cms-updateCategory' data-id='" + row + "' title='修改栏目' style='color:blue;margin-right:5px;margin-left: 5px;'>修改栏目</a>|<a href='javascript:;'  data-id='" + row + "' title='删除' style='color:#cccccc;margin-left: 5px;'>删除</a>";

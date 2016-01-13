@@ -90,7 +90,7 @@ public class RouteInterceptor  extends HandlerInterceptorAdapter {
                 modelAndView.addObject("route", route);
                 modelAndView.addObject("site", site);
                 modelAndView.addObject("resourcePath", resourcePath);
-                modelAndView.addObject("request", requestService.ConvertRequestModel(request));
+                modelAndView.addObject("request", requestService.ConvertRequestModel(request,site));
             }else{
                 modelAndView.setViewName(resourcePath +request.getServletPath());
             }

@@ -2,7 +2,9 @@ package com.huotu.hotcms.admin.controller;
 
 import com.huotu.hotcms.admin.util.web.CookieUser;
 import com.huotu.hotcms.service.common.ModelType;
+import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.CategoryTreeModel;
 import com.huotu.hotcms.service.repository.SiteRepository;
@@ -120,6 +122,7 @@ public class CategoryController {
                 modelAndView.addObject("site", category.getSite());
             }
             modelAndView.addObject("modelTypes", ModelType.ConvertMapToEnum());
+            modelAndView.addObject("routeTypes", RouteType.ConvertMapToEnum());
             modelAndView.addObject("category", category);
         }catch (Exception ex){
             log.error(ex.getMessage());
@@ -137,6 +140,9 @@ public class CategoryController {
         Category category =categoryService.getCategoryById(id);
         modelAndView.addObject("category",category);
         modelAndView.addObject("modelTypes", ModelType.ConvertMapToEnum());
+        modelAndView.addObject("routeTypes", RouteType.ConvertMapToEnum());
+        Route route=category.getRoute();
+        modelAndView.addObject("routes",route!=null?route.getRouteType():null);
         return modelAndView;
     }
 

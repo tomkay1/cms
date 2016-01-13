@@ -49,7 +49,7 @@ public class PatternMatchUtil {
     }
 
     /**
-     * 获得请求的Url
+     * 获得请求的Url包含参数
      *
      * @return
      * */
@@ -61,6 +61,19 @@ public class PatternMatchUtil {
         }
         if(queryString!=null) {
             return servletPath+"?"+queryString;
+        }
+        return servletPath;
+    }
+
+    /**
+     * 获得请求的Url不包含参数
+     *
+     * @return
+     * */
+    public static String getServletUrl(HttpServletRequest request){
+        String servletPath = request.getServletPath();
+        if(PatternMatchUtil.match(servletPath,PatternMatchUtil.routeUrlRegexp)) {
+            servletPath = PatternMatchUtil.getUrlString(servletPath, PatternMatchUtil.routeUrlRegexp);
         }
         return servletPath;
     }

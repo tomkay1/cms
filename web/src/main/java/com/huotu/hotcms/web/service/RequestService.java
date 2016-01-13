@@ -1,6 +1,7 @@
 package com.huotu.hotcms.web.service;
 
 import com.huotu.hotcms.web.model.RequestModel;
+import com.huotu.hotcms.web.util.PatternMatchUtil;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 public class RequestService {
     public RequestModel ConvertRequestModel(HttpServletRequest request){
         RequestModel model=new RequestModel();
-        model.setUrl(request.getServletPath());
+        model.setUrl(PatternMatchUtil.getServletUrl(request));
         model.setRequest(request);
         return model;
     }

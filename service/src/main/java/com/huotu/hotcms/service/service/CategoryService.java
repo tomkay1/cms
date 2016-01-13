@@ -1,5 +1,6 @@
 package com.huotu.hotcms.service.service;
 
+import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
@@ -8,6 +9,7 @@ import com.huotu.hotcms.service.model.thymeleaf.CategoryForeachParam;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.management.LockInfo;
 import java.util.List;
 
 /**
@@ -20,9 +22,9 @@ public interface CategoryService {
 
     List<CategoryTreeModel> ConvertCateGoryTreeByCategotry(List<Category> categories);
 
-    Boolean saveCategoryAndRoute(Category category,String route,String template);
+    Boolean saveCategoryAndRoute(Category category,String route,String template,RouteType routeType);
 
-    Boolean updateCategoryAndRoute(Category category, String rule, String template,String noRule);
+    Boolean updateCategoryAndRoute(Category category, String rule, String template,String noRule,RouteType routeType);
 
     Boolean deleteCategory(Category category);
 

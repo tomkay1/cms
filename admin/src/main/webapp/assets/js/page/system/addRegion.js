@@ -36,12 +36,6 @@ define(function (require, exports, module) {
             langCode:{
                 required:"语言编号必填项"
             },
-            txtModelDescription:{
-                maxlength:"模型描述不能超过200个字符"
-            },
-            txtModelType: {
-                selrequired: "请选择模型类型"
-            },
             txtOrderWeight:{
                 digits:"请输入数字",
             }

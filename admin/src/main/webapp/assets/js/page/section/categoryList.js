@@ -2,17 +2,20 @@
  * Created by xhl on 2015/12/30.
  */
 define(function (require, exports, module) {
-    var jqxcore=require("jqxcore");
-    var jqxdata=require("jqxdata");
-    var jqxbuttons=require("jqxbuttons");
-    var jqxscrollbar=require("jqxscrollbar");
-    var jqxdatatable=require("jqxdatatable");
-    var jqxtreegrid=require("jqxtreegrid");
+    require.async(['jqxcore', 'jqxdata','jqxbuttons','jqxscrollbar','jqxdatatable','jqxtreegrid'], function() {
+        categoryModule.initList();
+    });
+    //var jqxcore=require("jqxcore");
+    //var jqxdata=require("jqxdata");
+    //var jqxbuttons=require("jqxbuttons");
+    //var jqxscrollbar=require("jqxscrollbar");
+    //var jqxdatatable=require("jqxdatatable");
+    //var jqxtreegrid=require("jqxtreegrid");
 
     var commonUtil = require("common");
     var customerId=commonUtil.getQuery("customerid");
     var layer=require("layer");
-    var categoryModul={
+    var categoryModule={
         initSite:function(){
             $.ajax({
                 url: "/category/getSiteList",
@@ -94,7 +97,7 @@ define(function (require, exports, module) {
                     root: 'children'
                 },
                 id: 'id',
-                localData: categoryModul.initCategoryList()
+                localData: categoryModule.initCategoryList()
             };
             var dataAdapter = new $.jqx.dataAdapter(source,{
                 beforeLoadComplete: function (records) {
@@ -175,12 +178,12 @@ define(function (require, exports, module) {
                         }
                     ]
                 });
-            categoryModul.bindUpdateClick();
+            categoryModule.bindUpdateClick();
             $('#treeGrid').on('rowExpand', function (event) {//展开收缩事件
-                categoryModul.bindUpdateClick();
+                categoryModule.bindUpdateClick();
             });
             $('#treeGrid').on('rowCollapse',function (event){
-                categoryModul.bindUpdateClick();
+                categoryModule.bindUpdateClick();
              });
         },
         bindUpdateClick:function(){
@@ -192,7 +195,7 @@ define(function (require, exports, module) {
             $.each(obj,function(item,dom){
                 $(dom).click(function(){
                     var id=$(dom).attr('data-id');
-                    categoryModul.openUpdateCategory(id,"新增栏目",1);
+                    categoryModule.openUpdateCategory(id,"新增栏目",1);
                 })
             })
             //修改栏目
@@ -200,7 +203,7 @@ define(function (require, exports, module) {
             $.each(objUpdate,function(item,dom){
                 $(dom).click(function(){
                     var id=$(dom).attr('data-id');
-                    categoryModul.openUpdateCategory(id,"修改栏目",2);
+                    categoryModule.openUpdateCategory(id,"修改栏目",2);
                 })
             })
 
@@ -209,7 +212,7 @@ define(function (require, exports, module) {
             $.each(objDelete,function(item,dom){
                 $(dom).click(function(){
                     var id=$(dom).attr('data-id');
-                    categoryModul.deleteCategory(id);
+                    categoryModule.deleteCategory(id);
                 })
             })
         },
@@ -227,7 +230,7 @@ define(function (require, exports, module) {
                 area: ['900px', '500px'],
                 content: content,
                 end:function(){
-                    categoryModul.initList();
+                    categoryModule.initList();
                 }
             });
         },
@@ -248,7 +251,7 @@ define(function (require, exports, module) {
                             switch (code) {
                                 case 200:
                                     layer.msg("删除成功",{time: 2000});
-                                    categoryModul.initList();
+                                    categoryModule.initList();
                                     break;
                                 case 500:
                                     layer.msg("删除失败",{time: 2000});
@@ -269,13 +272,13 @@ define(function (require, exports, module) {
             });
         }
     };
-    categoryModul.initSite();//加载站点列表信息
-    setTimeout(categoryModul.initList,500);//延时500毫秒加载,解决初次加载加载js出错问题
+    categoryModule.initSite();//加载站点列表信息
+    setTimeout(categoryModule.initList,500);//延时500毫秒加载,解决初次加载加载js出错问题
     //initList();//加载栏目列表信息
     $("#jq-cms-siteList").on("change",function(){
-        categoryModul.initList();
+        categoryModule.initList();
     })
     $("#jq-cms-search").on("click",function(){
-        categoryModul.initList();
+        categoryModule.initList();
     })
 });

@@ -2,7 +2,7 @@
  * Created by chendeyu on 2016/1/11.
  */
 define(function (require, exports, module) {
-    $("#updateGalleryForm").validate({
+    $("#updateVideoForm").validate({
         rules: {
             title:{
                 required: true,
@@ -10,11 +10,9 @@ define(function (require, exports, module) {
             description:{
                 required: true,
             },
-            content:{
+            outLinkUrl:{
                 required: true,
-            },
-            linkUrl:{
-                required: true,
+                url:true
             },
             categoryId: {
                 selrequired: "-1"
@@ -30,11 +28,9 @@ define(function (require, exports, module) {
             description:{
                 required:"请输入描述"
             },
-            content:{
-                required:"请输入内容"
-            },
-            linkUrl:{
-                required:"请输入链接地址"
+            outLinkUrl:{
+                required: "请输入视频链接网址",
+                url:"请输入正确的视频链接网址"
             },
             categoryId: {
                 selrequired: "请选择栏目"
@@ -48,23 +44,19 @@ define(function (require, exports, module) {
             commonUtil.setDisabled("jq-cms-Save");
             var customerId =commonUtil.getQuery("customerId");
             var f=$("#thumbUri").val();
-            if(f==""){
-                layer.msg("请上传图片",{time: 2000});commonUtil.cancelDisabled("jq-cms-Save");
-            }
-            else if(!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(f)) {
+            if(f!=""&&!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(f)) {
                 layer.msg("请上传正确图片",{time: 2000});commonUtil.cancelDisabled("jq-cms-Save");
             }
             else{
                 $.ajax({
-                    url: "/gallery/saveGallery",
+                    url: "/video/saveVideo",
                     data: {
-                        id:$("#hidGalleryID").val(),
+                        id:$("#hidVideoID").val(),
                         title:$("#title").val(),
                         customerId:customerId,
-                        linkUrl: $("#linkUrl").val(),
-                        content: $("#content").val(),
                         thumbUri: $("#thumbUri").val(),
                         description: $("#description").val(),
+                        outLinkUrl: $("#outLinkUrl").val(),
                         categoryId: $("#categoryId").val(),
                         orderWeight: $("#orderWeight").val()
                     },
@@ -78,10 +70,11 @@ define(function (require, exports, module) {
                             if(index==200)
                             {
                                 var layer=require("layer");
-                                layer.msg("操作成功",{time: 2000});
-                                layer.msg("修改成功,2秒后将自动返回列表页面",{time: 2000})
-                                commonUtil.cancelDisabled("jq-cms-Save");
-                                window.location.href="http://"+window.location.host+"/"+"contents/contentsList?&customerid="+customerId;
+                                layer.msg("操作成功,2秒后将自动返回列表页面",{time: 2000})
+                                setTimeout(function(){
+                                        window.location.href="http://"+window.location.host+"/"+"contents/contentsList?&customerid="+customerId;
+                                    }
+                                    ,1000);
                             }
                             if(index==500)
                                 layer.msg("操作失败",{time: 2000})
@@ -99,8 +92,8 @@ define(function (require, exports, module) {
         }
     });
 
-    $("#btnGalleryFile").bind("change",function(){
-        var btnFile=document.getElementById('btnGalleryFile').getAttribute("id");
+    $("#btnVideoFile").bind("change",function(){
+        var btnFile=document.getElementById('btnVideoFile').getAttribute("id");
         uploadImg(btnFile);
     })
 

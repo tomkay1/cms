@@ -2,14 +2,10 @@ package com.huotu.hotcms.admin.controller;
 
 import com.huotu.hotcms.admin.service.StaticResourceService;
 import com.huotu.hotcms.admin.util.web.CookieUser;
-import com.huotu.hotcms.service.common.ArticleSource;
-import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Video;
-import com.huotu.hotcms.service.model.ArticleCategory;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.service.VideoService;
-import com.huotu.hotcms.service.util.PageData;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +26,7 @@ import java.util.Set;
  * Created by chendeyu on 2016/1/11.
  */
 @Controller
+@RequestMapping("/video")
 public class VideoController {
 
     @Autowired
@@ -68,7 +65,7 @@ public class VideoController {
     }
 
     /*
-  * 修改栏目
+  * 修改VIdeo
   * */
     @RequestMapping("/updateVideo")
     public ModelAndView updateVideo(@RequestParam(value = "id",defaultValue = "0") Long id,Integer customerId) throws Exception{
@@ -90,7 +87,7 @@ public class VideoController {
 
 
     /*
-      * 更新公告
+      * 保存video
       * */
     @RequestMapping(value = "/saveVideo",method = RequestMethod.POST)
     @Transactional(value = "transactionManager")

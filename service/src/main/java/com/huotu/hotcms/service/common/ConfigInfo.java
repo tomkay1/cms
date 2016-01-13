@@ -30,23 +30,21 @@ public class ConfigInfo {
     private String mallSupperUrl;
 
 
-    public String getResourcesSiteLogo() {
-        return resourcesSiteLogo;
+    public String getResourcesSiteLogo(Integer customerId) {
+        return String.format(resourcesSiteLogo,customerId) ;
     }
 
-    public String getResourcesVideo() {
-        return resourcesVideo;
+    public String getResourcesVideo(Integer customerId) {
+        return String.format(resourcesVideo,customerId);
     }
 
-    public String getResourcesUeditor() {
-        return resourcesUeditor;
+    public String getResourcesUeditor(Integer customerId) {
+         return String.format(resourcesUeditor,customerId);
     }
 
-    public String getResourcesImg() {
-        return resourcesImg;
+    public String getResourcesImg(Integer customerId) {
+        return String.format(resourcesImg,customerId);
     }
-
-
 
     public String getOutLoginUrl() {
         return outLoginUrl;

@@ -67,7 +67,7 @@
                         <tr>
                             <th>文章内容：</th>
                             <td>
-                                <textarea rows="" cols="" style="width: 500px; height: 160px;" class="input-normal" id="content" name="content" th:text="${article.content}" ></textarea>
+                                <textarea rows="" cols="" style="width: 500px; height: 160px;" id="content" name="content" th:text="${article.content}" ></textarea>
                             </td>
                         </tr>
                         <th>所属栏目：</th>
@@ -95,6 +95,6 @@
         </form>
     </div>
 </div>
-<script>seajs.use(["validate","message","updateArticle","ajaxfileupload","layer","ueditorConfig","ueditorAll"]);</script>
+<script>seajs.use(["validate","message","ajaxfileupload","layer","kindeditor","zh_CN","init","updateArticle"]);</script>
 </body>
 </html>

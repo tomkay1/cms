@@ -48,6 +48,7 @@ define(function (require, exports, module) {
                     rule:$("#route").val(),
                     template:$("#template").val(),
                     parentPath:$("#parentPath").val(),
+                    routeType:$("#routeType").val()
                 },
                 type: "POST",
                 dataType: 'json',
@@ -82,4 +83,13 @@ define(function (require, exports, module) {
             return true;
         }
     });
+
+    $("#route").on("blur",function(){
+        var value=$("#route").val();
+        if(value!=''){
+            $("#jq-cms-routeType").show();
+        }else{
+            $("#jq-cms-routeType").hide();
+        }
+    })
 });

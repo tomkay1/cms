@@ -75,6 +75,15 @@
                                 <input name="template" type="text" th:value="${category.route}==null?'':${category.route.template}" id="template" maxlength="200" class="input-normal"  placeholder="非专业人员请勿配置,默认留空即可">
                             </td>
                         </tr>
+                        <tr id="jq-cms-routeType">
+                            <th>路由类型：</th>
+                            <td>
+                                <select name="routeType" class="input-normal" id="routeType">
+                                    <option value="-1">==公共路由==</option>
+                                    <option value="0" th:each="routeType:${routeTypes}" th:value="${routeType.getCode()}" th:text="${routeType.getValue().toString()}" th:selected="${routes}!=null?((${routes.getCode()}==${routeType.getCode()})?true:false)" ></option>
+                                </select>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>

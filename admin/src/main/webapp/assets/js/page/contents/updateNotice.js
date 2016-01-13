@@ -61,10 +61,12 @@ define(function (require, exports, module) {
                         var index=parseInt(data.code);
                         if(index==200)
                         {
-                            layer.msg("操作成功",{time: 2000});
-                            layer.msg("修改成功,2秒后将自动返回列表页面",{time: 2000})
-                            commonUtil.cancelDisabled("jq-cms-Save");
-                            window.location.href="http://"+window.location.host+"/"+"contents/contentsList?&customerid="+customerId;
+                            var layer=require("layer");
+                            layer.msg("操作成功,2秒后将自动返回列表页面",{time: 2000})
+                            setTimeout(function(){
+                                    window.location.href="http://"+window.location.host+"/"+"contents/contentsList?&customerid="+customerId;
+                                }
+                                ,1000);
                         }
                         if(index==500)
                             layer.msg("操作失败",{time: 2000})

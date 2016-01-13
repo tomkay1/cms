@@ -68,18 +68,11 @@ define(function (require, exports, module) {
                         if(index==200)
                         {
                             var layer=require("layer");
-                            layer.msg("操作成功",{time: 2000});
-                            //$("#title").val("");
-                            //$("#linkUrl").val("");
-                            //$("#thumbUri").val("");
-                            //$("#uploadThumbUri").attr("src","");
-                            //$("#description").val("");
-                            //$("#categoryId").val("-1");
-                            //$("#orderWeight").val("50");
-                            layer.msg("操作成功",{time: 2000});
-                            layer.msg("修改成功,2秒后将自动返回列表页面",{time: 2000})
-                            commonUtil.cancelDisabled("jq-cms-Save");
-                            window.location.href="http://"+window.location.host+"/"+"contents/contentsList?&customerid="+customerId;
+                            layer.msg("操作成功,2秒后将自动返回列表页面",{time: 2000})
+                            setTimeout(function(){
+                                    window.location.href="http://"+window.location.host+"/"+"contents/contentsList?&customerid="+customerId;
+                                }
+                                ,1000);
                         }
                         if(index==500)
                             layer.msg("操作失败",{time: 2000})

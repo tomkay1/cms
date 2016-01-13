@@ -53,7 +53,7 @@ public class RouteInterceptor  extends HandlerInterceptorAdapter {
         String servletPath=request.getServletPath();
         Site site=siteResolveService.getCurrentSite(request);
         if(site!=null){
-            Route route = routeService.getRouteByRuleAndSite(site,servletPath);
+            Route route=routeResolverService.getRoute(site,servletPath);
             if(modelAndView==null){
                 modelAndView=new ModelAndView();
             }
@@ -76,9 +76,9 @@ public class RouteInterceptor  extends HandlerInterceptorAdapter {
                         Article article = articleResolveService.getArticleBySiteAndRequest(site, request);
                         if (article != null) {
                             modelAndView.addObject("article", article);
-                            modelAndView.setViewName(routeResolverService.getRouteTemplate(site, RouteType.NOT_FOUND));
-                        } else {
                             modelAndView.setViewName(resourcePath + route.getTemplate());
+                        } else {
+                            modelAndView.setViewName(routeResolverService.getRouteTemplate(site, RouteType.NOT_FOUND));
                         }
                     } else {
                         modelAndView.setViewName(resourcePath + route.getTemplate());
@@ -91,7 +91,6 @@ public class RouteInterceptor  extends HandlerInterceptorAdapter {
                 modelAndView.addObject("resourcePath", resourcePath);
                 modelAndView.addObject("request", requestService.ConvertRequestModel(request));
             }else{
-//                response.setHeader("Content-Type","text/css;charset=UTF-8");
                 modelAndView.setViewName(resourcePath +request.getServletPath());
             }
         }catch (Exception ex){

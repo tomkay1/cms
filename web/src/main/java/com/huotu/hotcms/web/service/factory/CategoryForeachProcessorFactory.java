@@ -73,7 +73,8 @@ public class CategoryForeachProcessorFactory {
             //根据指定routeType获取栏目列表(默认返回导航栏目)
             RouteType routeType = categoryForeachParam.getRoutetype();
             if(routeType==null) {
-                categoryForeachParam.setRoutetype(RouteType.HEADER_NAVIGATION);
+                Route route = (Route)VariableExpression.getVariable(context,"route");
+                categoryForeachParam.setRoutetype(route.getRouteType());
             }
             return categoryService.getGivenTypeCategories(categoryForeachParam);
         } catch (Exception e) {

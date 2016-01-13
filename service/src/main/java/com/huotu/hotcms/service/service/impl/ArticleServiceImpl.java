@@ -54,27 +54,28 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     private Page<Article> getAllArticle(ArticleForeachParam params, int pageIndex, int pageSize, Sort sort){
+        List<Category> subCategories =  categoryService.getSubCategories(params.getParentcid());
+        if(subCategories.size()==0) {
+            try {
+                throw new Exception("父栏目节点没有子栏目");
+            }catch (Exception e) {
+                e.printStackTrace();//TODO 日志处理
+            }
+        }
         Specification<Article> specification = (root, criteriaQuery, cb) -> {
-            List<Category> subCategories =  categoryService.getSubCategories(params.getParentcid());
-            if(subCategories.size()==0) {
-                try {
-                    throw new Exception("父栏目节点没有子栏目");
-                }catch (Exception e) {
-                    e.printStackTrace();//TODO 日志处理
-                }
-            }
-            List<Predicate> predicates = new ArrayList<>();
+            List<Predicate> p1 = new ArrayList<>();
             for(Category category : subCategories) {
-                predicates.add(cb.equal(root.get("category").as(Category.class),category));
+                p1.add(cb.equal(root.get("category").as(Category.class), category));
             }
-            predicates.add(cb.or(predicates.toArray(new Predicate[predicates.size()])));
+            Predicate predicate = cb.or(p1.toArray(new Predicate[p1.size()]));
+            List<Predicate> predicates = new ArrayList<>();
             if(!StringUtils.isEmpty(params.getExcludeid())) {
                 List<String> ids = Arrays.asList(params.getExcludeid());
                 List<Long> articleIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
                 predicates = articleIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
             }
-            predicates.add(cb.equal(root.get("deleted").as(Boolean.class),false));
-            predicates.add(cb.equal(root.get("category").get("id").as(Long.class), params.getCategoryid()));
+            predicates.add(cb.equal(root.get("deleted").as(Boolean.class), false));
+            predicates.add(predicate);
             return cb.and(predicates.toArray(new Predicate[predicates.size()]));
         };
         return articleRepository.findAll(specification,new PageRequest(pageIndex,pageSize,sort));

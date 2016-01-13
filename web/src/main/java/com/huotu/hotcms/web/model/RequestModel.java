@@ -18,6 +18,16 @@ public class RequestModel{
 
     private String root;
 
+    private String resourcesPath;
+
+    public String getResourcesPath() {
+        return resourcesPath;
+    }
+
+    public void setResourcesPath(String resourcesPath) {
+        this.resourcesPath = resourcesPath;
+    }
+
     public String getRoot() {
         return root;
     }

@@ -21,17 +21,12 @@ public class RequestService {
         model.setRequest(request);
         String contextPath=request.getContextPath();
         if(!StringUtils.isEmpty(contextPath)){
-            contextPath=StringUtil.Trim(contextPath,"/");
-            model.setResourcesPath(contextPath+"/");
-        }else{
             model.setResourcesPath(contextPath);
+        }else{
+            model.setResourcesPath(null);
         }
         if(site!=null){
-            if(site.isCustom()){
-                model.setRoot(site.getCustomTemplateUrl()+"/");
-            }else{
-                model.setRoot("/");
-            }
+            model.setRoot(site,request);
         }
         return model;
     }

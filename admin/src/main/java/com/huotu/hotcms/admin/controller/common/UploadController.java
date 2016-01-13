@@ -4,6 +4,8 @@ import com.huotu.hotcms.admin.common.StringUtil;
 import com.huotu.hotcms.admin.service.StaticResourceService;
 import com.huotu.hotcms.service.common.ConfigInfo;
 import com.huotu.hotcms.service.model.Result;
+import com.huotu.hotcms.service.util.ResultOptionEnum;
+import com.huotu.hotcms.service.util.ResultView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,38 +40,41 @@ public class UploadController {
 
     @RequestMapping(value = "/siteUpLoad", method = RequestMethod.POST)
     @ResponseBody
-    public Map<Object, Object> siteUpLoad(String customerId, @RequestParam(value = "btnFile", required = false) MultipartFile files) {
-        int result = 0;
-        Map<Object, Object> responseData = new HashMap<Object, Object>();
+    public ResultView siteUpLoad(Integer customerId, @RequestParam(value = "btnFile", required = false) MultipartFile files) {
+        ResultView resultView = null;
         try {
             Date now = new Date();
             String fileName = files.getOriginalFilename();
             String prefix = fileName.substring(fileName.lastIndexOf(".") + 1);
-            String[] img =configInfo.getResourcesSiteLogo().split("/");
-            String path =img[0]+"/"+customerId+"/"+img[2]+"/"+ StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + prefix;
-            URI uri = resourceServer.uploadResource(path, files.getInputStream());
-            responseData.put("fileUrl", uri);
-            responseData.put("fileUri", path);
-            result = 1;
+            if("jpg, jpeg,png,gif,bmp".contains(prefix))
+            {
+                String path=configInfo.getResourcesSiteLogo(customerId)+"/"+StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + prefix;
+                URI uri = resourceServer.uploadResource(path, files.getInputStream());
+                Map<String,Object> map= new HashMap<String, Object>();
+                map.put("fileUrl", uri);
+                map.put("fileUri", path);
+                resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), map);
+            }else{
+                resultView = new ResultView(ResultOptionEnum.FILE_FORMATTER_ERROR.getCode(), ResultOptionEnum.FILE_FORMATTER_ERROR.getValue(), null);
+            }
         } catch (Exception e) {
-            responseData.put("msg", e.getMessage());
+            resultView = new ResultView(ResultOptionEnum.SERVERFAILE.getCode(),e.getMessage(), null);
         }
-        responseData.put("result", result);
-
-        return responseData;
+        return resultView;
     }
 
     @RequestMapping(value = "/impUpLoad", method = RequestMethod.POST)
     @ResponseBody
-    public Map<Object, Object> impUpLoad(String customerId, @RequestParam(value = "btnFile", required = false) MultipartFile files) {
+    public Map<Object, Object> impUpLoad(Integer customerId, @RequestParam(value = "btnFile", required = false) MultipartFile files) {
         int result = 0;
         Map<Object, Object> responseData = new HashMap<Object, Object>();
         try {
             Date now = new Date();
             String fileName = files.getOriginalFilename();
             String prefix = fileName.substring(fileName.lastIndexOf(".") + 1);
-            String[] img =configInfo.getResourcesImg().split("/");
-            String path =img[0]+"/"+customerId+"/"+img[2]+"/"+ StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + prefix;
+//            String[] img =configInfo.getResourcesImg(customerId).split("/");
+//            String path =img[0]+"/"+customerId+"/"+img[2]+"/"+ StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + prefix;
+            String path=configInfo.getResourcesImg(customerId)+"/"+StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + prefix;
             URI uri = resourceServer.uploadResource(path, files.getInputStream());
             responseData.put("fileUrl", uri);
             responseData.put("fileUri", path);
@@ -85,14 +90,16 @@ public class UploadController {
 
     @RequestMapping(value="/kindeditorUpload",method = RequestMethod.POST)
     @ResponseBody
-    public Result fileUploadUeImage(MultipartHttpServletRequest request) throws Exception {
+    public Result fileUploadUeImage(Integer customerId,MultipartHttpServletRequest request) throws Exception {
         Result result=new Result();
         Date now = new Date();
         MultipartFile file=request.getFile("imgFile");
-        String[] img =configInfo.getResourcesUeditor().split("/");
+//        String[] img =configInfo.getResourcesUeditor().split("/");
         //取得扩展名
         String fileExt = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1).toLowerCase();
-        String path =img[0]+"/"+3447+"/"+img[2]+"/"+ StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + fileExt;
+//        String path =img[0]+"/"+3447+"/"+img[2]+"/"+ StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + fileExt;
+
+        String path=configInfo.getResourcesUeditor(customerId)+"/"+StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + fileExt;
 
         URI uri =resourceServer.uploadResource(path, file.getInputStream());
         result.setError(0);
@@ -103,7 +110,7 @@ public class UploadController {
 
     @RequestMapping("/ajaxEditorFileUpload")
     @ResponseBody
-    public Result ajaxEditorFileUpload(String imgsrc) throws Exception {
+    public Result ajaxEditorFileUpload(Integer customerId,String imgsrc) throws Exception {
         Result result = new Result();
         //去掉字符串前面多余的字符"data:image/png;base64,"，获得纯粹的二进制地址
         imgsrc = imgsrc.substring(22);
@@ -111,10 +118,12 @@ public class UploadController {
             //将String转换成InputStream流
             byte[] bytes1 = decoder.decodeBuffer(imgsrc);
             ByteArrayInputStream bais = new ByteArrayInputStream(bytes1);
-            String[] img =configInfo.getResourcesImg().split("/");
+//            String[] img =configInfo.getResourcesImg().split("/");
+//            Date now = new Date();
+//            String path =img[0]+"/"+3447+"/"+img[2]+"/"+ StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + "png";
             Date now = new Date();
-            String path =img[0]+"/"+3447+"/"+img[2]+"/"+ StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + "png";
-
+//            String fileExt = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1).toLowerCase();
+            String path=configInfo.getResourcesUeditor(customerId)+"/"+StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + ".png";
             //上传至服务器
 //            String fileName = StaticResourceService.RICHTEXT_UPLOAD + UUID.randomUUID().toString() + ".png";
             URI uri =resourceServer.uploadResource(path, bais);

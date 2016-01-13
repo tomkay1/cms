@@ -1,4 +1,4 @@
-var version="45556111110";
+var version="89.0.0";
 seajs.config({
 	alias: {
 		"jquery": "js/jquery-1.9.1.min.js",
@@ -47,6 +47,7 @@ seajs.config({
 		"updateCategory":"js/page/section/updateCategory.js??v="+version,
 		"contentsList":"js/page/contents/contentsList.js?v="+version,
 		"ajaxfileupload":"libs/ajaxfileupload.js?v="+version,
+		"jupload":"libs/upload/jackson-upload.js?v="+version,
 		"ueditorConfig":"libs/ueditor/ueditor.config.js?v="+version,
 		"ueditorAll":"libs/ueditor/ueditor.all.js?v="+version,
 		"init":"libs/richText/init.js?v="+version,

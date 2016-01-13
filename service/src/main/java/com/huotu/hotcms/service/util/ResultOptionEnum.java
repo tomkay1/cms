@@ -15,6 +15,7 @@ public enum ResultOptionEnum implements CommonEnum {
     ROUTE_EXISTS(204,"路由规则已经存在"),
     EXISTS_RELATION(205,"存在关联信息"),
 
+    FILE_FORMATTER_ERROR(403,"文件格式错误"),
     NOFIND(404,"没有信息"),
     SITE_NOFIND(405,"站点不存在"),
     FAILE(500,"失败"),

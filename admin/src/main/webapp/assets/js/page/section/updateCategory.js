@@ -48,7 +48,8 @@ define(function (require, exports, module) {
                     orderWeight: $("#orderWeight").val(),
                     rule:$("#route").val(),
                     template:$("#template").val(),
-                    noRule:$("#noRule").val()
+                    noRule:$("#noRule").val(),
+                    routeType:$("#routeType").val()
                 },
                 type: "POST",
                 dataType: 'json',
@@ -85,4 +86,19 @@ define(function (require, exports, module) {
             return true;
         }
     });
+
+
+    function showRouteType(){
+        var value=$("#route").val();
+        if(value==''){
+            $("#jq-cms-routeType").hide();
+        }else{
+            $("#jq-cms-routeType").show();
+        }
+    }
+
+    $("#route").on("blur",function(){
+        showRouteType();
+    })
+    showRouteType();
 });

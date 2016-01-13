@@ -151,7 +151,7 @@ public class CategoryController {
      * */
     @RequestMapping(value = "/saveCategory",method = RequestMethod.POST)
     @ResponseBody
-    public ResultView saveCategory(String name, Integer model,Long siteId,Long parentId,Integer orderWeight,String rule,String template,String parentPath){
+    public ResultView saveCategory(String name, Integer model,Long siteId,Long parentId,Integer orderWeight,String rule,String template,String parentPath,Integer routeType){
         ResultView result=null;
         try {
             Category category=new Category();
@@ -169,7 +169,7 @@ public class CategoryController {
                 category.setParent(categoryParent);
                 category.setCreateTime(LocalDateTime.now());
                 category.setUpdateTime(LocalDateTime.now());
-                if (categoryService.saveCategoryAndRoute(category, rule, template)) {
+                if (categoryService.saveCategoryAndRoute(category, rule, template, RouteType.valueOf(routeType))) {
                     result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
                 } else {
                     result = new ResultView(ResultOptionEnum.FAILE.getCode(), ResultOptionEnum.FAILE.getValue(), null);
@@ -232,7 +232,8 @@ public class CategoryController {
                                      @RequestParam(name = "orderWeight") Integer orderWeight,
                                      @RequestParam(name = "rule") String rule,
                                      @RequestParam(name = "template") String template,
-                                     @RequestParam(name = "noRule") String noRule){
+                                     @RequestParam(name = "noRule") String noRule,
+                                     @RequestParam(name = "routeType") Integer routeType){
         ResultView result=null;
         try {
             Category category=categoryService.getCategoryById(id);
@@ -247,7 +248,7 @@ public class CategoryController {
                     category.setOrderWeight(orderWeight);
                     category.setCustomerId(site.getCustomerId());
                     category.setUpdateTime(LocalDateTime.now());
-                    categoryService.updateCategoryAndRoute(category,rule,template,noRule);
+                    categoryService.updateCategoryAndRoute(category,rule,template,noRule,RouteType.valueOf(routeType));
                     result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
                 }
             }else{

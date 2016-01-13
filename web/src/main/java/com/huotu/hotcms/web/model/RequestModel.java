@@ -11,13 +11,21 @@ import javax.servlet.http.HttpServletRequest;
  * Created by Administrator xhl 2016/1/7.
  */
 public class RequestModel{
-
-
     private String hosts;
+
+    /**
+     * 当前请求的相对目录Url
+     * */
     private String url;
 
+    /**
+     * 页面
+     * */
     private Page page;
 
+    /**
+     * 当前请求的根路径
+     * */
     private String root;
 
     private String resourcesPath;

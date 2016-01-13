@@ -4,12 +4,13 @@ import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.service.RouteService;
 import com.huotu.hotcms.web.common.ConfigInfo;
 import com.huotu.hotcms.web.service.ArticleResolveService;
 import com.huotu.hotcms.web.service.RequestService;
 import com.huotu.hotcms.web.service.RouteResolverService;
 import com.huotu.hotcms.web.service.SiteResolveService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
@@ -28,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Component
 public class RouteInterceptor  extends HandlerInterceptorAdapter {
+    private static final Log log = LogFactory.getLog(RouteInterceptor.class);
 
     @Autowired
     private SiteResolveService siteResolveService;
@@ -40,8 +42,6 @@ public class RouteInterceptor  extends HandlerInterceptorAdapter {
 
     @Autowired
     private ArticleResolveService articleResolveService;
-    @Autowired
-    private RouteService routeService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -59,11 +59,10 @@ public class RouteInterceptor  extends HandlerInterceptorAdapter {
             }
             if(route==null){
                 modelAndView.setViewName(routeResolverService.getRouteTemplate(site,RouteType.NOT_FOUND));//请求路径错误给出404容错页面
-//                throw new Exception("请求路径错误");
             }
             initModelAndView(modelAndView, site, route, request,response);
         }else {
-            throw new Exception("域名解析失败");
+            modelAndView.setViewName(routeResolverService.getRouteTemplate(site,RouteType.SERVER_ERROR));//解析站点错误给出容错页面
         }
     }
 
@@ -94,6 +93,7 @@ public class RouteInterceptor  extends HandlerInterceptorAdapter {
                 modelAndView.setViewName(resourcePath +request.getServletPath());
             }
         }catch (Exception ex){
+            log.error(ex.getMessage());
         }
         return modelAndView;
     }

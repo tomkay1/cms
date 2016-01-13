@@ -20,6 +20,8 @@ import java.util.Set;
  */
 @Component
 public class RouteResolverService {
+
+
     @Autowired
     private RouteService routeService;
 
@@ -31,6 +33,9 @@ public class RouteResolverService {
      * @return
      * */
     public Route getRoute(Site site,String url) {
+        if(PatternMatchUtil.match(url,PatternMatchUtil.routeUrlRegexp)) {
+            url = PatternMatchUtil.getUrlString(url, PatternMatchUtil.routeUrlRegexp);
+        }
         Set<Route> routes =routeService.getRoute(site);
         for(Route s : routes) {
             if(s.getRule()!=null) {

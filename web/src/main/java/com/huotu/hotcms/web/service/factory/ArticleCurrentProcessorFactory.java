@@ -20,7 +20,7 @@ import org.thymeleaf.context.ITemplateContext;
 public class ArticleCurrentProcessorFactory extends BaseProcessorService {
     private static final String regexp="\\$\\{([^\\}]+)}";//匹配${key}模式的正则表达式
 
-    private static final Log log = LogFactory.getLog(CategoryForeachProcessorFactory.class);
+    private static final Log log = LogFactory.getLog(ArticleCurrentProcessorFactory.class);
 
     private static ArticleCurrentProcessorFactory instance;
 

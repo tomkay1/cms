@@ -79,22 +79,10 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 //        registry.viewResolver(forwardViewResolver());
 //        registry.viewResolver(remoteHtmlViewResolver());
     }
-//
-//    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-////        super.addResourceHandlers(registry);
-//         registry.addResourceHandler("/css/index.css").addResourceLocations("/template/4539/css/index.css");
-////        registry.addResourceHandler("/**").addResourceLocations("/template/**");
-////        super.addResourceHandlers(registry);
-////        registry.addResourceHandler("/**").addResourceLocations("/template/4539","classpath:/template/4539/");
-////        registry.addResourceHandler("/css/common.css").addResourceLocations("/template/4539/css/common.css");
-////        registry.addResourceHandler(STATIC_RESOURCES_PATH+"/**").addResourceLocations(STATIC_RESOURCES_PATH+"/");
-//    }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(routeInterceptor);
-        super.addInterceptors(registry);
     }
 
     public ViewResolver redirectViewResolver() {

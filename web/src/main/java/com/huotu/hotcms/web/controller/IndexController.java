@@ -10,9 +10,12 @@ package com.huotu.hotcms.web.controller;
 
 
 import com.huotu.hotcms.service.service.SiteService;
+import com.sun.javafx.sg.prism.NGShape;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,65 +25,19 @@ import javax.servlet.http.HttpServletRequest;
  * Created by cwb on 2015/12/16.
  */
 @Controller
+@RequestMapping(value = "/web")
 public class IndexController {
 
     @Autowired
     private SiteService siteService;
 
-    @RequestMapping
+    @RequestMapping(value = "**")
     public ModelAndView index(HttpServletRequest request)
     {
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.addObject("customTemplateUrl","http://www.cms.com");
         return modelAndView;
     }
-
-//    @RequestMapping(value = "/css/common.css")
-//    public ModelAndView css(){
-//        ModelAndView modelAndView=new ModelAndView();
-//        modelAndView.setViewName("/template/4539/css/common.css");
-////        modelAndView.addObject("customTemplateUrl","http://www.cms.com");
-//        return modelAndView;
-//    }
-
-//    @RequestMapping("/")
-//    public String testIndex(Site site,Model model){
-//        Set<Site> siteSet = siteService.getSite(3447);
-//        model.addAttribute("site",site);
-//        model.addAttribute("siteList",siteSet);
-//        String viewName = "/view/index.html";
-//        if(site.isCustom()) {
-//            viewName = site.getCustomTemplateUrl();
-//        }
-//        return viewName;
-//    }
-//
-//
-//    @RequestMapping("/test4")
-//    public ModelAndView testIndex4()
-//    {
-//        ModelAndView modelAndView=new ModelAndView();
-//        modelAndView.setViewName("http://www.cms.com/content.html");
-//        return  modelAndView;
-//    }
-//
-//    @RequestMapping("/*/*")
-//    public ModelAndView index(){
-//        ModelAndView modelAndView=new ModelAndView();
-////        modelAndView.setViewName("/view/system/regionList.html");
-//        return  modelAndView;
-//    }
-
-//
-//    @RequestMapping("/**")
-//    public String testIndex2(Site site,Model model) throws Exception {
-//        model.addAttribute("site",site);
-//        String viewName = "/view/index.html";
-//        if(site.isCustom()) {
-//            viewName = site.getCustomTemplateUrl();
-//        }
-//        return viewName;
-//    }
 
 //    @RequestMapping("/remote")
 //    public String testRemote(Model model) {

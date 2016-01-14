@@ -106,8 +106,8 @@ define(function (require, exports, module) {
                         }
                         if(index==500){layer.msg("操作失败",{time: 2000})}
 
-                        if(index==999){
-                            layer.msg("域名已被占用",{time: 2000})
+                        if(index==203){
+                            layer.msg("域名已被其他商户占用，请修改域名名",{time: 2000})
                         }
                     }
                     commonUtil.cancelDisabled("jq-cms-Save");

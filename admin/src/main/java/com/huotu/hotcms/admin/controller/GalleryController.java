@@ -8,6 +8,8 @@ import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.service.GalleryService;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,27 +30,27 @@ import java.util.Set;
 @Controller
 @RequestMapping("/gallery")
 public class GalleryController {
-
-//        @Autowired
-//        private LinkService linkService;
+    private static final Log log = LogFactory.getLog(GalleryController.class);
 
     @Autowired
     private GalleryService galleryService;
 //
     @Autowired
     private StaticResourceService resourceServer;
-//        @Autowired
-//        private SiteRepository siteRepository;
-        @Autowired
-        private CategoryRepository categoryRepository;
-        @Autowired
-        private CookieUser cookieUser;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    private CookieUser cookieUser;
 
 
         @RequestMapping("/galleryList")
         public ModelAndView galleryList(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception
         {
+
             ModelAndView modelAndView=new ModelAndView();
+            try{
             modelAndView.setViewName("/view/contents/galleryList.html");
             Gallery gallery= galleryService.findById(id);
             String logo_uri="";
@@ -57,6 +59,9 @@ public class GalleryController {
             }
             modelAndView.addObject("logo_uri",logo_uri);
             modelAndView.addObject("gallery", gallery);
+            }catch (Exception ex){
+                log.error(ex.getMessage());
+            }
             return modelAndView;
         }
 
@@ -75,6 +80,7 @@ public class GalleryController {
         @RequestMapping("/updateGallery")
         public ModelAndView updateGallery(@RequestParam(value = "id",defaultValue = "0") Long id,Integer customerId) throws Exception{
             ModelAndView modelAndView=new ModelAndView();
+            try{
             modelAndView.setViewName("/view/contents/updateGallery.html");
             Gallery gallery= galleryService.findById(id);
             String logo_uri="";
@@ -87,6 +93,9 @@ public class GalleryController {
             modelAndView.addObject("logo_uri",logo_uri);
             modelAndView.addObject("categorys",categorys);
             modelAndView.addObject("gallery",gallery);
+            }catch (Exception ex){
+                log.error(ex.getMessage());
+            }
             return modelAndView;
         }
 
@@ -118,6 +127,7 @@ public class GalleryController {
             }
             catch (Exception ex)
             {
+                log.error(ex.getMessage());
                 result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
             }
             return  result;
@@ -143,6 +153,7 @@ public class GalleryController {
             }
             catch (Exception ex)
             {
+                log.error(ex.getMessage());
                 result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
             }
             return  result;

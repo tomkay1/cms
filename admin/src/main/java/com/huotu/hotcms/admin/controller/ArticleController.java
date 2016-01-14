@@ -11,6 +11,8 @@ import com.huotu.hotcms.service.service.ArticleService;
 import com.huotu.hotcms.service.util.PageData;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +33,7 @@ import java.util.Set;
 @Controller
 @RequestMapping("/article")
 public class ArticleController {
+    private static final Log log = LogFactory.getLog(ArticleController.class);
 
     @Autowired
     private ArticleService articleService;
@@ -46,6 +49,7 @@ public class ArticleController {
     public ModelAndView articleList(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception
     {
         ModelAndView modelAndView=new ModelAndView();
+        try{
         modelAndView.setViewName("/view/contents/articleList.html");
         Article article= articleService.findById(id);
         String logo_uri="";
@@ -54,6 +58,9 @@ public class ArticleController {
         }
         modelAndView.addObject("logo_uri",logo_uri);
         modelAndView.addObject("article",article);
+        }catch (Exception ex){
+            log.error(ex.getMessage());
+        }
         return modelAndView;
     }
 
@@ -73,6 +80,7 @@ public class ArticleController {
     @RequestMapping("/updateArticle")
     public ModelAndView updateArticle(@RequestParam(value = "id",defaultValue = "0") Long id,Integer customerId) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
+        try{
         modelAndView.setViewName("/view/contents/updateArticle.html");
         Article article= articleService.findById(id);
         String logo_uri="";
@@ -85,6 +93,9 @@ public class ArticleController {
         modelAndView.addObject("logo_uri",logo_uri);
         modelAndView.addObject("categorys",categorys);
         modelAndView.addObject("article",article);
+        }catch (Exception ex){
+            log.error(ex.getMessage());
+        }
         return modelAndView;
     }
 
@@ -121,6 +132,7 @@ public class ArticleController {
         }
         catch (Exception ex)
         {
+            log.error(ex.getMessage());
             result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
         }
         return  result;
@@ -133,7 +145,12 @@ public class ArticleController {
                                                   @RequestParam(name="title",required = false) String title,
                                                   @RequestParam(name = "page",required = true,defaultValue = "1") int page,
                                                   @RequestParam(name = "pagesize",required = true,defaultValue = "20") int pageSize){
-        PageData<ArticleCategory> pageModel=articleService.getPage(customerId,title, page, pageSize);
+        PageData<ArticleCategory> pageModel=  null;
+        try{
+        pageModel=  articleService.getPage(customerId,title, page, pageSize);
+        }catch (Exception ex){
+            log.error(ex.getMessage());
+        }
         return pageModel;
     }
 
@@ -154,6 +171,7 @@ public class ArticleController {
         }
         catch (Exception ex)
         {
+            log.error(ex.getMessage());
             result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
         }
         return  result;

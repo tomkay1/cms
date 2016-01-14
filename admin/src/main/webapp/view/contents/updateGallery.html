@@ -7,6 +7,7 @@
     <link  href="/assets/css/admin.global.css"  type="text/css" rel="stylesheet"/>
     <link  href="/assets/css/global.css"  type="text/css" rel="stylesheet"/>
     <link href="/assets/libs/layer/skin/layer.css" rel="stylesheet"/>
+    <link href="/assets/libs/upload/JUpload.css" rel="stylesheet"/>
     <script src="/assets/seajs/sea.js" type="application/javascript"></script>
     <script src="/assets/seajs/config.js" type="application/javascript"></script>
 </head>
@@ -36,12 +37,9 @@
                         <tr>
                             <th>缩略图：</th>
                             <td>
-                                <img id="uploadThumbUri" th:src="${logo_uri}"style="width: 80px; height: 80px; border: 1px solid #ccc; float: left; background: #efefef; line-height: 80px; text-align: center; color: #ccc;"/>
-                                <a id="uploadpic" class="btn-lit jUploader-button" style="cursor: pointer; position: relative; overflow: hidden; direction: ltr;">
-                                    <span style="color: #c1b3a9" onclick="javascript:$('#btnGalleryFile').click();">上传</span></a>
-                                <input id="btnGalleryFile" name="btnFile"
-                                       style="display:none;" type="file"/>
-                            <td><input type="hidden" id="thumbUri" name="thumbUri" th:value="${gallery.thumbUri}"/></td>
+                                <img id="uploadThumbUri" th:src="${logo_uri}" style="width: 80px; height: 80px; border: 1px solid #ccc; float: left; background: #efefef; line-height: 80px; text-align: center; color: #ccc;"/>
+                                <span id="btnFile" name="btnFile" style="margin-left: 100px; margin-top: 20px; display: block;"/>
+                                <input type="hidden" id="thumbUri" name="thumbUri" />
                             </td>
                         </tr>
                         <tr>
@@ -90,6 +88,6 @@
         </form>
     </div>
 </div>
-<script>seajs.use(["validate","message","updateGallery","ajaxfileupload","layer"]);</script>
+<script>seajs.use(["validate","message","jupload","updateGallery","layer"]);</script>
 </body>
 </html>

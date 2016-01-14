@@ -7,6 +7,8 @@ import com.huotu.hotcms.service.service.RegionService;
 import com.huotu.hotcms.service.util.PageData;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,9 +25,10 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("/region")
 public class RegionController {
+    private static final Log log = LogFactory.getLog(RegionController.class);
+
     @Autowired
     private CookieUser cookieUser;
-
     @Autowired
     private RegionRepository regionRepository;
     @Autowired
@@ -105,6 +108,7 @@ public class RegionController {
         }
         catch (Exception ex)
         {
+            log.error(ex.getMessage());
             result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
         }
         return  result;
@@ -140,6 +144,7 @@ public class RegionController {
         }
         catch (Exception ex)
         {
+            log.error(ex.getMessage());
             result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
         }
         return  result;

@@ -30,7 +30,7 @@ import java.util.Set;
 @Controller
 @RequestMapping("/notice")
 public class NoticeController {
-    private static final Log log = LogFactory.getLog(LinkController.class);
+    private static final Log log = LogFactory.getLog(NoticeController.class);
 
     @Autowired
     private NoticeService noticeService;
@@ -44,10 +44,13 @@ public class NoticeController {
     public ModelAndView noticeList(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception
     {
         ModelAndView modelAndView=new ModelAndView();
+        try{
         Notice notice= noticeService.findById(id);
         modelAndView.addObject("notice",notice);
         modelAndView.setViewName("/view/contents/noticeList.html");
-
+        }catch (Exception ex){
+            log.error(ex.getMessage());
+        }
         return  modelAndView;
     }
 
@@ -64,6 +67,7 @@ public class NoticeController {
     @RequestMapping("/updateNotice")
     public ModelAndView updateNotice(@RequestParam(value = "id",defaultValue = "0") Long id,Integer customerId) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
+        try{
         modelAndView.setViewName("/view/contents/updateNotice.html");
         Notice notice= noticeService.findById(id);
         Category category =notice.getCategory();
@@ -71,6 +75,9 @@ public class NoticeController {
         Set<Category> categorys=categoryRepository.findByCustomerIdAndModelId(customerId,modelType);
         modelAndView.addObject("categorys",categorys);
         modelAndView.addObject("notice",notice);
+        }catch (Exception ex){
+            log.error(ex.getMessage());
+        }
         return modelAndView;
     }
 

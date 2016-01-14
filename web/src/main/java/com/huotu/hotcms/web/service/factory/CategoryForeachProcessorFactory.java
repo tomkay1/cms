@@ -67,23 +67,38 @@ public class CategoryForeachProcessorFactory {
             }else if(categoryForeachParam.getSize()<1) {
                 categoryForeachParam.setSize(1);
             }
-            Long parentId = categoryForeachParam.getParentid();
-            //根据所属父节点获取栏目列表
-            if(parentId!=null) {
-                return categoryService.getSubCategories(parentId,categoryForeachParam.getSize());
-            }
-            //获取当前站点
+            //根据所属父节点及路由类型取得列表
+            //设置站点id
             if (StringUtils.isEmpty(categoryForeachParam.getSiteid())) {
                 Site site = (Site) VariableExpression.getVariable(context, "site");
                 categoryForeachParam.setSiteid(site.getSiteId());
             }
-            //根据指定routeType获取栏目列表(默认返回导航栏目)
-            RouteType routeType = categoryForeachParam.getRoutetype();
-            if(routeType==null) {
-                Route route = (Route)VariableExpression.getVariable(context,"route");
+            //设置路由类型
+            Route route = (Route)VariableExpression.getVariable(context,"route");
+            if(categoryForeachParam.getRoutetype()==null) {
                 categoryForeachParam.setRoutetype(route.getRouteType());
             }
-            return categoryService.getGivenTypeCategories(categoryForeachParam);
+            //设置父节点id
+            Long parentId = categoryForeachParam.getParentid();
+            if(parentId==null) {
+                parentId = categoryService.getCategoryByRoute(route).getId();
+                categoryForeachParam.setParentid(parentId);
+            }
+            return categoryService.findByRouteTypeAndParentId(categoryForeachParam);
+
+//            if(parentId!=null) {
+//                return categoryService.getSubCategories(parentId,categoryForeachParam.getSize());
+//            }
+//            if (StringUtils.isEmpty(categoryForeachParam.getSiteid())) {
+//                Site site = (Site) VariableExpression.getVariable(context, "site");
+//                categoryForeachParam.setSiteid(site.getSiteId());
+//            }
+//            RouteType routeType = categoryForeachParam.getRoutetype();
+//            if(routeType==null) {
+//                Route route = (Route)VariableExpression.getVariable(context,"route");
+//                categoryForeachParam.setRoutetype(route.getRouteType());
+//            }
+//            return categoryService.getGivenTypeCategories(categoryForeachParam);
         } catch (Exception e) {
             log.error(e.getMessage());
         }

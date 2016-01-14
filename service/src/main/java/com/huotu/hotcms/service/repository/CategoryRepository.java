@@ -32,8 +32,9 @@ public interface CategoryRepository extends JpaRepository<Category, Long>,JpaSpe
 
    List<Category> findByParentOrderByOrderWeightDesc(Category superCategory);
 
-   List<Category> findBySite_SiteIdAndRoute_RouteTypeAndDeletedOrderByOrderWeightDesc(Long siteid, RouteType routetype, boolean b);
+   List<Category> findBySite_SiteIdAndRoute_RouteTypeAndDeletedAndParent_IdOrderByOrderWeightDesc(Long siteid, RouteType routetype, boolean b,Long parentId);
 
    List<Category> findByParent_Id(Long parenId);
 
+   List<Category> findBySite_SiteIdAndRoute_RouteTypeAndDeletedOrderByOrderWeightDesc(Long siteid, RouteType routetype, boolean b);
 }

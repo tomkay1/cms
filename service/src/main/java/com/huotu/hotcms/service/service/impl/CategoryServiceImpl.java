@@ -103,6 +103,31 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public List<Category> findByRouteTypeAndParentId(CategoryForeachParam param) {
+        int requestSize = param.getSize();
+        if(!StringUtils.isEmpty(param.getExcludeid())) {
+            Sort sort = new Sort(Sort.Direction.DESC, "orderWeight");
+            List<String> ids = Arrays.asList(param.getExcludeid());
+            List<Long> categoryIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
+            Specification<Category> specification = (root, query, cb) -> {
+                List<Predicate> predicates = categoryIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
+                predicates.add(cb.equal(root.get("site").get("siteId").as(Long.class),param.getSiteid()));
+                predicates.add(cb.equal(root.get("route").get("routeType").as(RouteType.class), param.getRoutetype()));
+                predicates.add(cb.equal(root.get("deleted").as(Boolean.class),0));
+                predicates.add(cb.equal(root.get("parent").get("id").as(Long.class),param.getParentid()));
+                return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+            };
+            return categoryRepository.findAll(specification,new PageRequest(0,requestSize,sort)).getContent();
+        }
+        List<Category> categoryList = categoryRepository.findBySite_SiteIdAndRoute_RouteTypeAndDeletedAndParent_IdOrderByOrderWeightDesc(param.getSiteid(), param.getRoutetype(), false,param.getParentid());
+        int origionSize = categoryList.size();
+        if(requestSize > origionSize - 1) {
+            requestSize = origionSize;
+        }
+        return categoryList.subList(0,requestSize);
+    }
+
+    @Override
     public List<Category> getGivenTypeCategories(CategoryForeachParam param) {
         int requestSize = param.getSize();
         if(!StringUtils.isEmpty(param.getExcludeid())) {
@@ -112,7 +137,8 @@ public class CategoryServiceImpl implements CategoryService {
             Specification<Category> specification = (root, query, cb) -> {
                 List<Predicate> predicates = categoryIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
                 predicates.add(cb.equal(root.get("site").get("siteId").as(Long.class),param.getSiteid()));
-                predicates.add(cb.equal(root.get("route").get("routeType").as(Integer.class),param.getRoutetype()));
+                RouteType routeType = param.getRoutetype()==null?RouteType.HEADER_NAVIGATION:param.getRoutetype();
+                predicates.add(cb.equal(root.get("route").get("routeType").as(Integer.class),routeType));
                 predicates.add(cb.equal(root.get("deleted").as(Boolean.class),0));
                 return cb.and(predicates.toArray(new Predicate[predicates.size()]));
             };
@@ -339,5 +365,6 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Category> getCategoryList(Category parent) {
         return categoryRepository.findByParentOrderByOrderWeightDesc(parent);
     }
+
 
 }

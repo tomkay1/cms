@@ -6,14 +6,18 @@
   ~  Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District 2013-2015. All rights reserved.
   -->
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>产品</title>
-    <link rel="stylesheet" type="text/css" href="http://www.test.com/css/common.css" th:href="@{${request.root}+'/css/common.css'}"/>
-    <link rel="stylesheet" type="text/css" href="http://www.test.com/css/lobo.css" th:href="@{${request.root}+'/css/lobo.css'}"/>
-    <link rel="stylesheet" type="text/css" href="http://www.test.com/css/index.css" th:href="@{${request.root}+'/css/index.css'}"/>
+    <link rel="stylesheet" type="text/css" href="http://www.test.com/css/common.css"
+          th:href="@{${request.root}+'/css/common.css'}"/>
+    <link rel="stylesheet" type="text/css" href="http://www.test.com/css/lobo.css"
+          th:href="@{${request.root}+'/css/lobo.css'}"/>
+    <link rel="stylesheet" type="text/css" href="http://www.test.com/css/index.css"
+          th:href="@{${request.root}+'/css/index.css'}"/>
 </head>
 
 <body>
@@ -57,21 +61,21 @@
 <p style="clear:both"></p>
 <!---头--->
 
-<div  class="hr_pro" style="position: relative;">
+<div class="hr_pro" style="position: relative;">
     <div class="r" style="height:429px;">
         <div class="ee qa">
         </div>
     </div>
-    <div class="gt"><img src="http://www.test.com/images/product_06.jpg" /></div>
+    <div class="gt"><img src="http://www.test.com/images/product_06.jpg"/></div>
     <div class="keywords">
         <ul style="margin: 10px 0px 20px 0px;">
             <li>
-                <a href="product">
+                <a href="#" class="on" data-th-href="@{/product}" data-th-class="${route.rule}=='/product'?on">
                     全部
                 </a>
             </li>
             <li data-category-foreach="category" data-param-routetype="5">
-                <a href="#" data-th-text="${category.name}" data-th-href="@{${category.route.rule}}">
+                <a class="on" href="#" data-th-text="${category.name}" data-th-href="@{${category.route.rule}}" data-th-class="${request.url==category.route.rule}?on">
                     2016春夏款
                 </a>
             </li>
@@ -106,9 +110,11 @@
     <div class="cp">
         <ul data-th-remove="all-but-first">
             <li class="nuy ffr" data-article-foreach="article">
-                <div><img src="http://www.test.com/images/c1.jpg" data-th-src="@{'~/'+${article.thumbUri}}" style="width:233px;height:233px;"/></div>
+                <div><img src="http://www.test.com/images/c1.jpg" data-th-src="@{'~/'+${article.thumbUri}}"
+                          style="width:233px;height:233px;"/></div>
                 <div class="gytr">
                     <p class="biaoti"><strong data-th-text="${article.title}">产品名称</strong></p>
+
                     <p class="miaoshu" data-th-text="${article.description}">永春丝袜打底裤袜女 冬季加厚保暖加绒一体裤 踩脚保暖连裤袜子</p>
                 </div>
             </li>
@@ -116,6 +122,7 @@
                 <div><img src="http://www.test.com/images/c2.jpg" style="width:233px;height:233px;"/></div>
                 <div class="gytr">
                     <p class="biaoti"><b>产品名称</b></p>
+
                     <p class="miaoshu">永春丝袜打底裤袜女 冬季加厚保暖加绒一体裤 踩脚保暖连裤袜子</p>
                 </div>
             </li>
@@ -123,6 +130,7 @@
                 <div><img src="http://www.test.com/images/c3.jpg" style="width:233px;height:233px;"/></div>
                 <div class="gytr">
                     <p class="biaoti"><b>产品名称</b></p>
+
                     <p class="miaoshu">永春丝袜打底裤袜女 冬季加厚保暖加绒一体裤 踩脚保暖连裤袜子</p>
                 </div>
             </li>
@@ -130,6 +138,7 @@
                 <div><img src="http://www.test.com/images/c4.jpg" style="width:233px;height:233px;"/></div>
                 <div class="gytr">
                     <p class="biaoti"><b>产品名称</b></p>
+
                     <p class="miaoshu">永春丝袜打底裤袜女 冬季加厚保暖加绒一体裤 踩脚保暖连裤袜子</p>
                 </div>
             </li>
@@ -137,6 +146,7 @@
                 <div><img src="http://www.test.com/images/c1.jpg" style="width:233px;height:233px;"/></div>
                 <div class="gytr">
                     <p class="biaoti"><strong data-th-text="${article.title}">产品名称</strong></p>
+
                     <p class="miaoshu" data-th-text="${article.description}">永春丝袜打底裤袜女 冬季加厚保暖加绒一体裤 踩脚保暖连裤袜子</p>
                 </div>
             </li>
@@ -144,6 +154,7 @@
                 <div><img src="http://www.test.com/images/c2.jpg" style="width:233px;"/></div>
                 <div class="gytr">
                     <p class="biaoti"><b>产品名称</b></p>
+
                     <p class="miaoshu">永春丝袜打底裤袜女 冬季加厚保暖加绒一体裤 踩脚保暖连裤袜子</p>
                 </div>
             </li>
@@ -151,6 +162,7 @@
                 <div><img src="http://www.test.com/images/c3.jpg" style="width:233px;"/></div>
                 <div class="gytr">
                     <p class="biaoti"><b>产品名称</b></p>
+
                     <p class="miaoshu">永春丝袜打底裤袜女 冬季加厚保暖加绒一体裤 踩脚保暖连裤袜子</p>
                 </div>
             </li>
@@ -158,6 +170,7 @@
                 <div><img src="http://www.test.com/images/c4.jpg" style="width:233px;"/></div>
                 <div class="gytr">
                     <p class="biaoti"><b>产品名称</b></p>
+
                     <p class="miaoshu">永春丝袜打底裤袜女 冬季加厚保暖加绒一体裤 踩脚保暖连裤袜子</p>
                 </div>
             </li>
@@ -165,6 +178,7 @@
                 <div><img src="http://www.test.com/images/c1.jpg" style="width:233px;"/></div>
                 <div class="gytr">
                     <p class="biaoti"><strong data-th-text="${article.title}">产品名称</strong></p>
+
                     <p class="miaoshu" data-th-text="${article.description}">永春丝袜打底裤袜女 冬季加厚保暖加绒一体裤 踩脚保暖连裤袜子</p>
                 </div>
             </li>
@@ -172,6 +186,7 @@
                 <div><img src="http://www.test.com/images/c2.jpg" style="width:233px;"/></div>
                 <div class="gytr">
                     <p class="biaoti"><b>产品名称</b></p>
+
                     <p class="miaoshu">永春丝袜打底裤袜女 冬季加厚保暖加绒一体裤 踩脚保暖连裤袜子</p>
                 </div>
             </li>
@@ -179,6 +194,7 @@
                 <div><img src="http://www.test.com/images/c3.jpg" style="width:233px;"/></div>
                 <div class="gytr">
                     <p class="biaoti"><b>产品名称</b></p>
+
                     <p class="miaoshu">永春丝袜打底裤袜女 冬季加厚保暖加绒一体裤 踩脚保暖连裤袜子</p>
                 </div>
             </li>
@@ -186,6 +202,7 @@
                 <div><img src="http://www.test.com/images/c4.jpg" style="width:233px;"/></div>
                 <div class="gytr">
                     <p class="biaoti"><b>产品名称</b></p>
+
                     <p class="miaoshu">永春丝袜打底裤袜女 冬季加厚保暖加绒一体裤 踩脚保暖连裤袜子</p>
                 </div>
             </li>
@@ -233,7 +250,7 @@
 
 <!--脚-->
 <div style="background-color:#1a1a1a">
-    <div  class="footsy">
+    <div class="footsy">
         <ul>
             <li>
                 <a>
@@ -341,8 +358,12 @@
         </ul>
         <div style=" float:right"><img src="http://www.test.com/images/erweima.png"></div>
         <p style="clear:both"></p>
+
         <p style="border-bottom:1px solid #373737; width:100%;height:20px;">&nbsp;</p>
-        <P style="margin-top:10px;font-size:12px;">集团总部地址：浙江省义乌市下骆宅工业区  邮编：322013  电话：0579-85086166 85086188  E-mail：zhejiangyongchun@126.com</P>
+
+        <P style="margin-top:10px;font-size:12px;">集团总部地址：浙江省义乌市下骆宅工业区 邮编：322013 电话：0579-85086166 85086188
+            E-mail：zhejiangyongchun@126.com</P>
+
         <p style="font-size:12px;">Copyright © 2016 Yongchun knitting.</p>
     </div>
 </div>

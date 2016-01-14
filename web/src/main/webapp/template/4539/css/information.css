@@ -28,6 +28,7 @@
 }
 /*404end*/
 /*wechat*/
+/*wechat*/
 .cj-information .backimg {
 	background: url(../images/wechat-img.jpg) 50% 0px no-repeat;
 	position: absolute;
@@ -83,7 +84,7 @@
 	float: left;
 	margin-left: 25px;
 }
-.cj-information .boxlist-a p {
+.cj-information .boxlist-a .pp {
 	border-bottom: 1px solid #ddd;
 	text-align: center;
 	line-height: 40px;
@@ -94,7 +95,7 @@
 	margin-bottom: 10px;
 }
 .cj-information .listap .on {
-	background-color: #d97613;
+	background-color: #d97613;color: #fff;
 }
 .cj-information .listap .on a {
 	color: #fff;
@@ -196,3 +197,4 @@
 	height: 529px;
 	overflow: hidden;
 }
+.cj-information .ayu a{  cursor: pointer;}

@@ -65,7 +65,20 @@ define(function (require, exports, module) {
         var customerId =commonUtil.getQuery("customerId");
         var siteId=$("#siteId").val();
         var category=$("#category").val();
-        window.location.href="http://"+window.location.host+"/contents/addContents"+"?siteId="+siteId+"&customerId="+customerId+"&category="+category;
+        var layer=require("layer");
+        //window.location.href="http://"+window.location.host+"/contents/addContents"+"?siteId="+siteId+"&customerId="+customerId+"&category="+category;
+        var content="/contents/addContents"+"?siteId="+siteId+"&customerId="+customerId+"&category="+category;
+        layer.open({
+            type: 2,
+            title: "添加内容",
+            shadeClose: true,
+            shade: 0.8,
+            area: ['1000px', '600px'],
+            content: content,
+            end:function(){
+                ContentsGrid.Refresh();
+            }
+        });
     })
 
     //TODO:显示所有
@@ -181,9 +194,10 @@ define(function (require, exports, module) {
     })
     }
 
+
     $("#siteId").bind("change",function(){
         setSecond(this);
-    })
+    })//当改变站点时，栏目产生变化
     function setSecond(obj){
         var siteId = obj.value;
         var commonUtil = require("common");

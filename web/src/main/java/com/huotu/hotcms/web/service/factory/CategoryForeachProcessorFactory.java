@@ -37,7 +37,7 @@ import java.util.List;
  */
 public class CategoryForeachProcessorFactory {
 
-    private final int DEFAULT_SIZE = 5;
+    private final int DEFAULT_SIZE = 6;
 
     private static final Log log = LogFactory.getLog(CategoryForeachProcessorFactory.class);
 

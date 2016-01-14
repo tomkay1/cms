@@ -118,6 +118,12 @@ public class ArticleForeachProcessorFactory {
             RequestModel requestModel = (RequestModel)VariableExpression.getVariable(context,"request");
             requestModel.setPages(pages);
             requestModel.setHasNextPage(articles.hasNext());
+            if(articles.hasNext()) {
+                requestModel.setNextPageHref("?pageNo=" + (currentPage + 1));
+            }
+            if(articles.hasPrevious()) {
+                requestModel.setPrevPageHref("?pageNo=" + (currentPage - 1));
+            }
             requestModel.setHasPrevPage(articles.hasPrevious());
             requestModel.setCurrentPage(currentPage);
         }catch (Exception e) {

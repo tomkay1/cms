@@ -191,7 +191,7 @@ margin:0 auto;
 .hr_pro .nuy {
 	width: 233px;
 	float: left;
-	margin-top:20px;
+	height:327px;
 	border: 1px solid #DFDFDF;
 }
 .hr_pro .ffr {
@@ -216,6 +216,11 @@ margin:0 auto;
 	font-size: 18px;
 	padding: 10px 0px 10px;
 	color: #000000;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	height: 18px;
+	line-height: 18px;
 }
 .hr_pro .miaoshu {
 	font-size: 12px;
@@ -241,4 +246,15 @@ margin:0 auto;
 	background-color: #d97613;
 	color: #fff;
 }
+
+
+
+.hr_pro .cp ul li:nth-child(4n){
+	margin-right: 0px;
+}
+.hr_pro .cp ul li{
+	margin-bottom:20px;
+}
+
+
  /*产品页面end*/

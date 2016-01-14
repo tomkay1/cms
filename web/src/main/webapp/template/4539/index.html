@@ -23,7 +23,7 @@
 <div class="header">
  <img th:src="${request.root}+'/images/logo.png'" class="logoimg">
  <ul class="nav" data-th-remove="all-but-first">
-  <li class="active" data-category-foreach="category"  data-th-class="${request.url.startsWith(category.route.rule)}?active" data-param-routetype="6">
+  <li class="active" data-category-foreach="category" data-th-class="${request.url.startsWith(category.route.rule)}?active" data-param-routetype="6">
 	<a href="index.html" data-th-href="@{${category.route.rule}}" data-th-text="${category.name}">首页</a>
   </li>
   <li><a href="index2.html">品牌中心</a></li>

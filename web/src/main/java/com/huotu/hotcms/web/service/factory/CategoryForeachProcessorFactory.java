@@ -37,6 +37,8 @@ import java.util.List;
  */
 public class CategoryForeachProcessorFactory {
 
+    private final int DEFAULT_SIZE = 5;
+
     private static final Log log = LogFactory.getLog(CategoryForeachProcessorFactory.class);
 
     private static CategoryForeachProcessorFactory instance;
@@ -60,10 +62,15 @@ public class CategoryForeachProcessorFactory {
             if(!StringUtils.isEmpty(categoryForeachParam.getSpecifyids())) {
                 return categoryService.getSpecifyCategories(categoryForeachParam.getSpecifyids());
             }
+            if(categoryForeachParam.getSize()==null) {
+                categoryForeachParam.setSize(DEFAULT_SIZE);
+            }else if(categoryForeachParam.getSize()<1) {
+                categoryForeachParam.setSize(1);
+            }
             Long parentId = categoryForeachParam.getParentid();
             //根据所属父节点获取栏目列表
             if(parentId!=null) {
-                return categoryService.getSubCategories(parentId);
+                return categoryService.getSubCategories(parentId,categoryForeachParam.getSize());
             }
             //获取当前站点
             if (StringUtils.isEmpty(categoryForeachParam.getSiteid())) {

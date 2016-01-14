@@ -10,10 +10,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>产品</title>
-  <link rel="stylesheet" type="text/css" href="http://www.test.com/css/common.css"/>
-  <link rel="stylesheet" type="text/css" href="http://www.test.com/css/lobo.css" />
-  <link rel="stylesheet" type="text/css" href="http://www.test.com/css/index.css" />
+  <title th:text="${site.title}+'|产品中心'"></title>
+  <meta name="keywords" th:content="${site.keywords}" />
+  <meta name="description" th:content="${site.description}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{${request.root}+'/css/common.css'}">
+  <link rel="stylesheet" type="text/css" th:href="@{${request.root}+'/css/lobo.css'}">
+  <link rel="stylesheet" type="text/css" th:href="@{${request.root}+'/css/index.css'}">
 </head>
 
 <body>
@@ -70,7 +72,7 @@
 		  全部
 		</a>
 		</li>
-	  <li data-category-foreach="category" data-param-specifyids="30,31">
+	  <li data-category-foreach="category" data-param-routetype="5" data-param-size="6">
 		<a href="#" data-th-text="${category.name}" data-th-href="@{${category.route.rule}}">
 		  2016春夏款
 		</a>
@@ -199,11 +201,11 @@
   <!--页数-->
   <div style="width:1000px;margin:0 auto;text-align:center;padding:20px 0px;height:30px;">
     <div class="number">
-      <a>
+      <a data-th-remove="!${request.hasPrevPage} ? all" data-th-href="@{'?pageNo='+${request.currentPage-1}}">
         <img src="http://www.test.com/images/left.jpg" width="8px">
       </a>
       <a class="on" data-th-each="page:${request.pages}" data-th-text="${page.pageNo}"
-         data-th-class="${page.pageNo==request.currentPage} ? on">
+         data-th-class="${page.pageNo==request.currentPage} ? on" data-th-href="@{${page.pageHref}}">
         1
       </a>
       <a data-th-remove="all">
@@ -221,7 +223,7 @@
       <a data-th-remove="all">
         6
       </a>
-      <a>
+      <a data-th-remove="${!request.hasNextPage} ? all" data-th-href="@{'?pageNo='+${request.currentPage+1}}">
         <img src="http://www.test.com/images/right.jpg" width="8px">
       </a>
     </div>
@@ -233,7 +235,7 @@
 
 <!--脚-->
 <div style="background-color:#1a1a1a">
-  <div  class="footsy">
+  <div  class="footsy" data-th-replace="${resourcePath}+'/index.html' :: .footsy">
     <ul>
       <li>
         <a>

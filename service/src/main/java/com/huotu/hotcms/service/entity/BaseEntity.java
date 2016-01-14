@@ -45,15 +45,15 @@ public abstract class BaseEntity {
     private boolean deleted = false;
 
     /**
-     //     * 标题
-     //     */
-    @Column(name = "title")
+     * 标题
+     */
+    @Column(name = "title",length = 50)
     private String title;
 
     /**
      * 描述
      */
-    @Column(name = "description")
+    @Column(name = "description",length = 200)
     private String description;
 
     /**

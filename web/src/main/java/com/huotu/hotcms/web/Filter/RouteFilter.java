@@ -12,6 +12,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -53,6 +54,11 @@ public class RouteFilter implements Filter {
                     chain.doFilter(request,response);
                 }
             }
+//            int status=((HttpServletResponse) response).getStatus();
+//            if(status==404){
+//                request.getRequestDispatcher("/web/404").forward(request, response);
+//            }
+//            return;
         }catch (Exception ex){
             log.error(ex.getMessage());
         }

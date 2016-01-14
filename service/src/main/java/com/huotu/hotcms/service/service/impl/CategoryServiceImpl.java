@@ -10,6 +10,7 @@ import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.service.RouteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -103,7 +104,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> getGivenTypeCategories(CategoryForeachParam param) {
+        int requestSize = param.getSize();
         if(!StringUtils.isEmpty(param.getExcludeid())) {
+            Sort sort = new Sort(Sort.Direction.DESC, "orderWeight");
             List<String> ids = Arrays.asList(param.getExcludeid());
             List<Long> categoryIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
             Specification<Category> specification = (root, query, cb) -> {
@@ -113,9 +116,24 @@ public class CategoryServiceImpl implements CategoryService {
                 predicates.add(cb.equal(root.get("deleted").as(Boolean.class),0));
                 return cb.and(predicates.toArray(new Predicate[predicates.size()]));
             };
-            return categoryRepository.findAll(specification, new Sort(Sort.Direction.DESC, "orderWeight"));
+            return categoryRepository.findAll(specification,new PageRequest(0,requestSize,sort)).getContent();
         }
-        return categoryRepository.findBySite_SiteIdAndRoute_RouteTypeAndDeletedOrderByOrderWeightDesc(param.getSiteid(), param.getRoutetype(), false);
+        List<Category> categoryList = categoryRepository.findBySite_SiteIdAndRoute_RouteTypeAndDeletedOrderByOrderWeightDesc(param.getSiteid(), param.getRoutetype(), false);
+        int origionSize = categoryList.size();
+        if(requestSize > origionSize - 1) {
+            requestSize = origionSize;
+        }
+        return categoryList.subList(0,requestSize);
+    }
+
+    @Override
+    public List<Category> getSubCategories(Long parenId,int size) {
+        List<Category> categoryList = categoryRepository.findByParent_Id(parenId);
+        int origionSize = categoryList.size();
+        if(size > origionSize - 1) {
+            size = origionSize;
+        }
+        return categoryList.subList(0,size);
     }
 
     @Override

@@ -39,6 +39,15 @@ public class CategoryForeachParam {
      * 路由类型
      */
     private RouteType routetype;
+
+    /**
+     * 父节点id
+     */
     private Long parentid;
+
+    /**
+     * 取得列表大小
+     */
+    private Integer size;
 
 }

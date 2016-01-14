@@ -10,6 +10,7 @@
 package com.huotu.hotcms.service.service.impl;
 
 import com.huotu.hotcms.service.entity.Region;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.repository.RegionRepository;
 import com.huotu.hotcms.service.service.RegionService;
 import com.huotu.hotcms.service.util.PageData;
@@ -23,6 +24,7 @@ import org.springframework.util.StringUtils;
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by cwb on 2015/12/24.
@@ -59,5 +61,21 @@ public class RegionServiceImpl implements RegionService {
 //            data.setRows((DataModel[])pageData.getContent().toArray(new DataModel[pageData.getContent().size()]));
 //        }
         return  data;
+    }
+
+    @Override
+    public Region getRegionByCode(String regionCode) {
+        return regionRepository.findByRegionCodeIgnoreCase(regionCode);
+    }
+
+    @Override
+    public Boolean isRegionByCode(String regionCode) {
+        Region region=regionRepository.findByRegionCodeIgnoreCase(regionCode);
+        return region!=null;
+    }
+
+    @Override
+    public Region getRegionByLangCodeAndRegionCode(String langCode, String regionCode) {
+       return regionRepository.findByLangCodeAndRegionCodeIgnoreCase(langCode,regionCode);
     }
 }

@@ -21,12 +21,14 @@ public class RequestService {
         model.setRequest(request);
         String contextPath=request.getContextPath();
         if(!StringUtils.isEmpty(contextPath)){
-            model.setResourcesPath(contextPath);
+            model.setContextPath(contextPath);
         }else{
-            model.setResourcesPath(null);
+            model.setContextPath(null);
         }
         if(site!=null){
             model.setRoot(site,request);
+            model.setRootUri(site, request);
+            model.setResourcesUri(site.getResourceUrl());
         }
         return model;
     }

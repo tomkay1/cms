@@ -2,6 +2,8 @@ package com.huotu.hotcms.web.model;
 
 
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.web.util.PatternMatchUtil;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -31,19 +33,73 @@ public class RequestModel{
     private String prevPageHref;
 
     /**
+     * 当前请求的根路径并且加上语言版本参数(如果有则加上,没有相同于root属性)
+     * */
+    private String rootUri;
+
+    public String getRootUri() {
+        return rootUri;
+    }
+
+    public void setRootUri(Site site,HttpServletRequest request) {
+        String rootUrl="";
+        String langParam=PatternMatchUtil.getEffecterLangParam(request, site);
+        if(site.isCustom()){
+            if(this.getContextPath()!=null) {
+                rootUrl = site.getCustomTemplateUrl()+this.getContextPath();
+            }else{
+                rootUrl = site.getCustomTemplateUrl();
+            }
+        }else {
+            if(StringUtils.isEmpty(langParam)){
+                if(this.getContextPath()!=null) {
+                    rootUrl = "http://" + request.getServerName() + ":" + request.getServerPort()+this.getContextPath();
+                }else{
+                    rootUrl = "http://" + request.getServerName() + ":" + request.getServerPort();
+                }
+            }else{
+                if(this.getContextPath()!=null) {
+                    rootUrl = "http://" + request.getServerName() + ":" + request.getServerPort()+this.getContextPath() + "/"+langParam;
+                }else{
+                    rootUrl = "http://" + request.getServerName() + ":" + request.getServerPort()+"/"+langParam;
+                }
+            }
+        }
+        this.rootUri = rootUrl;
+    }
+
+    /**
      * 当前请求的根路径
      * */
     private String root;
 
-    private String resourcesPath;
-
-    public String getResourcesPath() {
-        return resourcesPath;
+    public void setContextPath(String contextPath) {
+        this.contextPath = contextPath;
     }
 
-    public void setResourcesPath(String resourcesPath) {
-        this.resourcesPath = resourcesPath;
+    /**
+     * 虚拟目录
+     * */
+    private String contextPath;
+
+
+    /**
+     * CMS图片资源（可以配置CDN）
+     * **/
+    private String resourcesUri;
+
+    public String getResourcesUri() {
+        return resourcesUri;
     }
+
+    public void setResourcesUri(String resourcesUri) {
+        this.resourcesUri = resourcesUri;
+    }
+
+    public String getContextPath() {
+        return contextPath;
+    }
+
 
     public String getRoot() {
         return root;
@@ -52,14 +108,14 @@ public class RequestModel{
     public void setRoot(Site site,HttpServletRequest request) {
         String rootUrl="";
         if(site.isCustom()){
-            if(this.getResourcesPath()!=null) {
-                rootUrl = site.getCustomTemplateUrl()+this.getResourcesPath();
+            if(this.getContextPath()!=null) {
+                rootUrl = site.getCustomTemplateUrl()+this.getContextPath();
             }else{
                 rootUrl = site.getCustomTemplateUrl();
             }
         }else {
-            if(this.getResourcesPath()!=null) {
-                rootUrl = "http://" + request.getServerName() + ":" + request.getServerPort()+this.getResourcesPath();
+            if(this.getContextPath()!=null) {
+                rootUrl = "http://" + request.getServerName() + ":" + request.getServerPort()+this.getContextPath();
             }else{
                 rootUrl = "http://" + request.getServerName() + ":" + request.getServerPort();
             }

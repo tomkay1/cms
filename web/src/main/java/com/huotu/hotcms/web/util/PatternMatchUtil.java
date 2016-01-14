@@ -1,10 +1,10 @@
 package com.huotu.hotcms.web.util;
 
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.util.StringUtil;
 import org.codehaus.plexus.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.beans.Statement;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -151,7 +151,7 @@ public class PatternMatchUtil {
      * **/
    public static String getLangParam(HttpServletRequest request){
         String path=request.getServletPath();
-        String param=StringUtil.getIndex(path,1,"/");
+        String param= StringUtil.getIndex(path, 1, "/");
         if(!StringUtils.isEmpty(param)){
             if(param.equalsIgnoreCase("web")){
                 param=StringUtil.getIndex(path,2,"/");

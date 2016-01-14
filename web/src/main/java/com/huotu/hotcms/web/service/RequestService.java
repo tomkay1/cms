@@ -3,7 +3,6 @@ package com.huotu.hotcms.web.service;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.web.model.RequestModel;
 import com.huotu.hotcms.web.util.PatternMatchUtil;
-import com.huotu.hotcms.web.util.StringUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 

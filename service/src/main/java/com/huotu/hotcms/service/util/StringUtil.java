@@ -1,7 +1,8 @@
-package com.huotu.hotcms.web.util;
+package com.huotu.hotcms.service.util;
 
 import org.codehaus.plexus.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Stack;
 
 /**
@@ -71,5 +72,21 @@ public class StringUtil {
             }
         }
         return null;
+    }
+
+    /**
+     * 根据requst获得跟目录下的第一个参数
+     * @param path 要处理的字符串
+     * @param ignoreStr 忽略的字符串
+     * @return
+     * **/
+    public static String getFirstParam(String path,String ignoreStr){
+        String param= StringUtil.getIndex(path, 1, "/");
+        if(!StringUtils.isEmpty(param)){
+            if(param.equalsIgnoreCase(ignoreStr)){
+                param=StringUtil.getIndex(path,2,"/");
+            }
+        }
+        return param;
     }
 }

@@ -1,7 +1,7 @@
 package com.huotu.hotcms.web.thymeleaf.processor;
 
 import com.huotu.hotcms.web.service.HrefProcessorService;
-import com.huotu.hotcms.web.util.StringUtil;
+import com.huotu.hotcms.service.util.StringUtil;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.engine.AttributeName;

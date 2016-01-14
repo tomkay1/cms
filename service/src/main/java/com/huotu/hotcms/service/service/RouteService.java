@@ -39,4 +39,6 @@ public interface RouteService {
     Route getRoute(long id);
 
     Boolean deleteRoute(Route route);
+
+    Boolean isExistsRegion(String rule);
 }

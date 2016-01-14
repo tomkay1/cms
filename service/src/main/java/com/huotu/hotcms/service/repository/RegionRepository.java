@@ -20,4 +20,5 @@ public interface RegionRepository extends JpaRepository<Region,Long>,JpaSpecific
     Region findByRegionCodeIgnoreCase(String regionCode);
 
     Region findByLangCodeAndRegionCodeIgnoreCase(String langCode,String regionCode);
+
 }

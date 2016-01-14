@@ -60,6 +60,14 @@ define(function (require, exports, module) {
         ContentsGrid.Refresh(option);
     })
 
+    $("#jq-cms-add").click(function(){
+        var commonUtil = require("common");
+        var customerId =commonUtil.getQuery("customerId");
+        var siteId=$("#siteId").val();
+        var category=$("#category").val();
+        window.location.href="http://"+window.location.host+"/contents/addContents"+"?siteId="+siteId+"&customerId="+customerId+"&category="+category;
+    })
+
     //TODO:显示所有
     $("#jq-cms-searchAll").click(function(){
         var commonUtil = require("common");

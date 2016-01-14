@@ -4,6 +4,7 @@
 define(function (require, exports, module) {
 
     $("#categoryId").on("change",function(){
+        $(".jq-jupload-box").remove();
         var modelId= $("#categoryId").find("option:selected").attr("data-modelType");
         var commonUtil = require("common");
         commonUtil.setDisabled("jq-cms-Save");

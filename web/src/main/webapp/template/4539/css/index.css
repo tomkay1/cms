@@ -198,7 +198,8 @@ transition: all 0.20s ease-in;}
 /**脚**/
 .footsy{width:1000px; margin:0 auto; padding:30px 0px; font-size:16px; line-height:30px;}
 .footsy ul{float:left; width:180px;}
+.footsy ul a{ color:#5a5a5a}
 .footsy ul a:hover{ color:#fff}
 .footsy ul li:nth-child(1) a{color:#fff}
-
+.footsy .copyright{line-height: 30px;margin-top:10px; font-size: 12px; }
 

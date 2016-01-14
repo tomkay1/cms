@@ -14,7 +14,8 @@ public enum RouteType implements CommonEnum{
     VIDEO_CONTENT(3,"视频内容页面"),
     GALLERY_CONTENT(4,"图片内容页面"),
     ARTICLE_LIST(5,"文章列表页面"),
-    HEADER_NAVIGATION(6,"网站导航栏目");
+    HEADER_NAVIGATION(6,"网站导航栏目"),
+    VIDEO_LIST(7,"视频列表页面");
 
 
     RouteType(int code, String value) {

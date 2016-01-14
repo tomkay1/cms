@@ -2,14 +2,16 @@
 <html>
 <head>
  <meta charset="utf-8">
- <title>永春资讯页-礼盒定制</title>
- <link rel="stylesheet" type="text/css" href="css/common.css">
- <link rel="stylesheet" type="text/css" href="css/information.css">
- <link rel="stylesheet" type="text/css" href="css/index.css">
+ <title th:text="${site.title}+'|礼盒定制'"></title>
+ <meta name="keywords" th:content="${site.keywords}" />
+ <meta name="description" th:content="${site.description}"/>
+ <link rel="stylesheet" type="text/css" th:href="@{${request.root}+'/css/common.css'}">
+ <link rel="stylesheet" type="text/css" th:href="@{${request.root}+'/css/index.css'}">
+ <link rel="stylesheet" type="text/css" th:href="@{${request.root}+'/css/information.css'}">
 </head>
 <body>
 <!---头--->
-<div class="header">
+<div class="header" data-th-replace="${resourcePath}+'/index.html' :: .header">
  <img src="images/logo.png" class="logoimg">
  <ul class="nav">
   <li class="active"><a href="index.html">首页</a></li>
@@ -51,7 +53,7 @@
 <p style="clear:both; height:100px"></p>
 <!--脚-->
 <div style="background-color:#1a1a1a">
- <div  class="footsy">
+ <div  class="footsy" data-th-replace="${resourcePath}+'/index.html' :: .footsy">
   <ul><li><a>首页</a></li><li><a>品牌中心</a></li><li><a>产品中心</a></li><li><a>服务支持</a></li></ul>
   <ul><li><a>品牌中心</a></li><li><a>公司介绍</a></li><li><a>品牌理念</a></li><li><a>品牌新闻</a></li></ul>
   <ul><li><a>产品中心</a></li><li><a>热销产品</a></li><li><a>短袜系列</a></li><li><a>微压瘦腿</a></li></ul>

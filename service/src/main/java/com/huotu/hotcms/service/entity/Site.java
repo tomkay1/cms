@@ -108,6 +108,12 @@ public class Site {
     private boolean deleted = false;
 
     /**
+     * 资源跟路径(可以CDN方式读取缓存)
+     */
+    @Column(name = "resourceRoot")
+    private String resourceRoot;
+
+    /**
      * 所属地区
      */
     @OneToOne(optional = false)

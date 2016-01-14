@@ -10,10 +10,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>产品</title>
-  <link rel="stylesheet" type="text/css" href="http://www.test.com/css/common.css"/>
-  <link rel="stylesheet" type="text/css" href="http://www.test.com/css/lobo.css" />
-  <link rel="stylesheet" type="text/css" href="http://www.test.com/css/index.css" />
+  <title th:text="${site.title}+'|产品中心'"></title>
+  <meta name="keywords" th:content="${site.keywords}" />
+  <meta name="description" th:content="${site.description}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{${request.root}+'/css/common.css'}">
+  <link rel="stylesheet" type="text/css" th:href="@{${request.root}+'/css/lobo.css'}">
+  <link rel="stylesheet" type="text/css" th:href="@{${request.root}+'/css/index.css'}">
 </head>
 
 <body>
@@ -233,7 +235,7 @@
 
 <!--脚-->
 <div style="background-color:#1a1a1a">
-  <div  class="footsy">
+  <div  class="footsy" data-th-replace="${resourcePath}+'/index.html' :: .footsy">
     <ul>
       <li>
         <a>

@@ -36,6 +36,8 @@ public interface CategoryService {
 
     List<Category> getGivenTypeCategories(CategoryForeachParam param);
 
+    List<Category> getSubCategories(Long parenId,int size);
+
     List<Category> getSubCategories(Long parenId);
 
     List<Category> getCategoryList(Category parent);

@@ -31,7 +31,7 @@ $.fn.extend({
         var temporary_descript_id = 'temporary-descript-' + (new Date()).getTime() + '-' + (parseInt(Math.random() * 1000));
         this.fileid = temporary_file_id;
         var htmlText = '';
-        htmlText += '<form id="' + temporary_form_id + '" method="' + options.method + '" style="top:' + top + 'px;left:' + left + 'px;width:600px;  position: absolute;" action="' + options.url + '" target="' + temporary_iframe_id + '" enctype="' + options.enctype + '">';
+        htmlText += '<form id="' + temporary_form_id + '" class="jq-jupload-box" method="' + options.method + '" style="top:' + top + 'px;left:' + left + 'px;width:600px;  position: absolute;" action="' + options.url + '" target="' + temporary_iframe_id + '" enctype="' + options.enctype + '">';
         htmlText += '<div class="'+options.className+'">';
         htmlText += '<span style="display: inline-block;margin-top: 5px;color: #666;font-size: 12px;" id="' + temporary_input_id + '">' + options.text + '</span>';
         htmlText += '<input type="file" id="' + temporary_file_id + '" name="' + options.name + '" accept="'+options.accept+'" style="position:absolute;left:0;top:0;width:100px;height:30px;box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.2);opacity:0;-moz-opacity: 0;filter: alpha(opacity=0);cursor:pointer"/>';
@@ -39,7 +39,7 @@ $.fn.extend({
         htmlText += '</div><div class="clear"></div>';
         htmlText += '<span style="margin-left:5px;line-height:30px;" id="' + temporary_descript_id + '">' + options.description + '</span>';
         htmlText += '</form>';
-        htmlText += '<iframe id="' + temporary_iframe_id + '" style="position:absolute; z-index:-1; visibility: hidden;" frameborder="0" width="0" height="0" src="about:blank" name="' + temporary_iframe_id + '"></iframe>';
+        htmlText += '<iframe id="' + temporary_iframe_id + '" class="jq-jupload-box" style="position:absolute; z-index:-1; visibility: hidden;" frameborder="0" width="0" height="0" src="about:blank" name="' + temporary_iframe_id + '"></iframe>';
         $("body").append(htmlText);
         //this.html(htmlText);
         if (options.submit) {

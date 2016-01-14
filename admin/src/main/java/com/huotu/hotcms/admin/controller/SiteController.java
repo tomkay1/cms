@@ -84,17 +84,17 @@ public class SiteController {
             if (domains.length != 0) {
                 for (String domain : domains) {
                     Host flag = hostService.getHost(domain);
-                    if (flag == null) {
+                    if (flag == null) {//全新域名
                         Host host = new Host();
                         host.setCustomerId(site.getCustomerId());
                         host.setDomain(domain);
                         site.addHost(host);
                     } else {
-                        if (flag.getCustomerId() .equals(site.getCustomerId())) {
+                        if (flag.getCustomerId() .equals(site.getCustomerId())&&!regionId.equals(site.getRegion().getId())) {//域名相同，但是地区不同
                             siteService.save(site);
                             site.addHost(flag);
 
-                        } else {//域名被占用
+                        } else {//当域名已被占用
                             result = new ResultView(ResultOptionEnum.DOMAIN_EXIST.getCode(), ResultOptionEnum.DOMAIN_EXIST.getValue(), null);
                             return result;
                         }
@@ -114,6 +114,7 @@ public class SiteController {
                 }
                 result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
             }
+
         }
         catch (Exception ex)
         {

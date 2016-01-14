@@ -50,10 +50,11 @@ public class ContentsController {
         List<Category> categoryList =new ArrayList<>();
         if(siteList.size()!=0){
             Site site=siteList.get(0);
-            categoryList= categoryRepository.findBySiteOrderById(site);
+            categoryList= categoryRepository.findBySiteAndDeletedAndModelIdNotNullOrderByOrderWeightDesc(site, false);
         }
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.addObject("customerId",customerId);
+        modelAndView.addObject("siteId",siteId);
         modelAndView.addObject("siteList", siteList);
         modelAndView.addObject("categoryList", categoryList);
         modelAndView.setViewName("/view/contents/contentsList.html");
@@ -61,10 +62,16 @@ public class ContentsController {
     }
 
     @RequestMapping(value = "/addContents")
-    public ModelAndView addContents(Integer customerId) throws Exception{
+    public ModelAndView addContents(Integer customerId,Long siteId,Long category) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("/view/contents/addContents.html");
-        Set<Category> categorys=categoryRepository.findByCustomerIdAndDeletedAndModelIdNotNullOrderByOrderWeightDesc(customerId, false);
+        List<Category> categorys = new ArrayList<>();
+        if(category==-1){
+            categorys=categoryRepository.findByCustomerIdAndSite_SiteIdAndDeletedAndModelIdNotNullOrderByOrderWeightDesc(customerId, siteId, false);
+        }
+        else{
+           categorys=categoryRepository.findByCustomerIdAndSite_SiteIdAndIdAndDeletedAndModelIdNotNullOrderByOrderWeightDesc(customerId, siteId, category, false);
+        }
         modelAndView.addObject("categorys",categorys);
         modelAndView.addObject("customerId",customerId);
         return  modelAndView;
@@ -77,7 +84,7 @@ public class ContentsController {
         Integer customerId =Integer.valueOf(request.getParameter("customerid"));
         Set<Site> siteList =siteRepository.findByCustomerIdAndDeleted(customerId, false);
         Site site = siteRepository.findOne(siteId);
-        List<Category> categoryList =categoryRepository.findBySiteOrderById(site);
+        List<Category> categoryList =categoryRepository.findBySiteAndDeletedAndModelIdNotNullOrderByOrderWeightDesc(site, false);
         List<SiteCategory> siteCategoryList = new ArrayList<>();
         for(Category category:categoryList){
             SiteCategory siteCategory = new SiteCategory();

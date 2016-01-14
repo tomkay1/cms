@@ -45,13 +45,17 @@
             <span class="icon-sprite icon-list"></span>
             <h3 style="float: left; width: 144px;">内容列表</h3>
             <div class="bar">
-                <a class="btn-lit"  th:href="@{/contents/addContents?customerId={customerid}(customerid=${customerId})}" target="content">
+                <a class="btn-lit"   id="jq-cms-add" href="javascript:" >
+                <!--<a class="btn-lit"  onclick="haha()" target="content">-->
                     <span>新增</span></a>
             </div>
         </div>
         <div class="cnt-wp" id="js-ContentsList"></div>
     </div>
     <script>seajs.use(["JGrid","contentsList"]);</script>
+    <!--<script>function haha(){-->
+        <!--alert("1");}-->
+    <!--</script>-->
 </div>
 </body>
 </html>

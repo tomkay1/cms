@@ -2,6 +2,7 @@
  * Created by Administrator on 2015/12/21.
  */
 define(function (require, exports, module) {
+    $("#regionId").attr("disabled","disabled");
     var commonUtil = require("common");
     var customerId =commonUtil.getQuery("customerId");
     $("#updateSiteForm").validate({
@@ -21,14 +22,8 @@ define(function (require, exports, module) {
             copyright:{
                 required: true,
             },
-            txtModelDescription:{
-                maxlength:200
-            },
             regionId: {
                 selrequired: "-1"
-            },
-            txtOrderWeight:{
-                digits:true,
             }
         },
         messages: {
@@ -44,22 +39,32 @@ define(function (require, exports, module) {
             domains:{
                 required:"域名为必输项"
             },
-            txtModelDescription:{
+            description:{
                 maxlength:"站点描述不能超过200个字符"
             },
             regionId: {
                 selrequired: "请选择地区"
-            },
-            txtOrderWeight:{
-                digits:"请输入数字",
             }
         },
         submitHandler: function (form, ev) {
             var commonUtil = require("common");
-            commonUtil.setDisabled("jq-cms-Save");
-            var customerId =commonUtil.getQuery("customerId");
             var custom= $("#custom_0").val();
             var customTemplateUrl= $("#customTemplateUrl").val();
+            var layer=require("layer");
+            var custom= $("#custom_0").val();
+            var ary = $("#domains").val();
+            var nary= ary.split(",");
+            var flag=0;
+            for(var i=0;i<nary.length-1;i++)
+            {
+                if (nary[i]==nary[i+1])
+                {
+                    flag=1;
+                    layer.msg("操作失败,请不要填写重复域名",{time: 2000})
+                    break;
+                }
+            }
+            if(flag==0){
             if(custom==1&&(customTemplateUrl==""||customTemplateUrl==null)){
                 layer.msg("请填上根路径",{time: 2000})
                 commonUtil.cancelDisabled("jq-cms-Save");
@@ -92,8 +97,10 @@ define(function (require, exports, module) {
                         {
                             var layer=require("layer");
                             layer.msg("修改成功,2秒后将自动返回列表页面",{time: 2000})
-                            commonUtil.cancelDisabled("jq-cms-Save");
-                            window.location.href="http://"+window.location.host+"/"+"site/siteList?customerId="+customerId;
+                            setTimeout(function(){
+                                    window.location.href="http://"+window.location.host+"/"+"site/siteList?customerId="+customerId;
+                                }
+                                ,1000);
                             //commonUtil.redirectUrl("/model/modelList");
                             //$("#txtModelName").val("");
                             //$("#txtModelDescription").val("");
@@ -101,7 +108,7 @@ define(function (require, exports, module) {
                         if(index==500)
                             layer.msg("修改失败",{time: 2000})
                         if(index==203){
-                            layer.msg("域名已被其他商户占用，请修改域名名",{time: 2000})
+                            layer.msg("域名已被占用，请修改域名",{time: 2000})
                         }
                     }
                     commonUtil.cancelDisabled("jq-cms-Save");
@@ -109,7 +116,7 @@ define(function (require, exports, module) {
                 error: function () {
                     commonUtil.cancelDisabled("jq-cms-Save");
                 }
-            })};
+            })}};
             return false;
         },
         invalidHandler: function () {

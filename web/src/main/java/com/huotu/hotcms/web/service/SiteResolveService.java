@@ -5,6 +5,7 @@ import com.huotu.hotcms.service.entity.Region;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.service.HostService;
 import com.huotu.hotcms.service.service.RegionService;
+import com.huotu.hotcms.web.util.PatternMatchUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -29,38 +30,109 @@ public class SiteResolveService {
     @Autowired
     private RegionService regionService;
 
-    public Site getCurrentSite(HttpServletRequest request) throws Exception{
+    /**
+     * 根据当前浏览器环境获得站点
+     * */
+    public Site getEnvironmentSite(HttpServletRequest request) throws Exception{
         Site site = new Site();
-        String path = request.getServletPath();
         String domain = request.getServerName();
         Set<Site> sites = getSitesThroughDomain(domain);
-        String language = "";
-        if(isHomeSitePath(path)) {
-            language = request.getLocale().getLanguage();
-            if(StringUtils.isEmpty(language)) {
-                language = "zh";
+        String language = request.getLocale().getLanguage();
+        String country=request.getLocale().getCountry();
+        Region region=regionService.getRegionByLangCodeAndRegionCode(language,country);
+        if(region!=null){
+            for(Site s : sites) {
+                String lang = s.getRegion().getLangCode();
+                String regionCode=s.getRegion().getRegionCode();
+                if(language.equalsIgnoreCase(lang)&&country.equalsIgnoreCase(regionCode)) {
+                    site = s;
+                    break;
+                }
             }
-        }else {
-            String regionCode = "";
-            if(path.substring(1).contains("/")) {
-                regionCode = path.substring(0, path.indexOf("/", 0));
-            }else {
-                regionCode = path.substring(1);
-            }
-            Region region = regionService.getRegion(regionCode);
-            if(region == null) {
-                throw new Exception("请求错误");
-            }
-            language = region.getLangCode();
-        }
-        for(Site s : sites) {
-            String lang = s.getRegion().getLangCode();
-            if(language.equalsIgnoreCase(lang)) {
-                site = s;
-                break;
+        }else{
+            for(Site s : sites) {
+                String lang = s.getRegion().getLangCode();
+                if(language.equalsIgnoreCase(lang)) {
+                    site = s;
+                    break;
+                }
             }
         }
         return site;
+    }
+
+    /**
+     * 根据当前地址栏中输入的言语参数来获得站点信息
+     * */
+    public Site getParamSite(HttpServletRequest request,String langParam) throws Exception{
+        String domain = request.getServerName();
+        Set<Site> sites = getSitesThroughDomain(domain);
+        if(langParam.contains("-")){//完整的语言地区参数
+            for(Site s : sites) {
+                String regionCode1=s.getRegion().getRegionCode();
+                String langCode1=s.getRegion().getLangCode();
+                if(langParam.equalsIgnoreCase(langCode1+"-"+regionCode1)) {
+                    return s;
+                }
+            }
+        }else{//地区参数
+            for(Site s : sites) {
+                String regionCode=s.getRegion().getRegionCode();
+                if(langParam.equalsIgnoreCase(regionCode)) {
+                    return s;
+                }
+            }
+        }
+       return null;
+    }
+
+    public Site getCurrentSite(HttpServletRequest request) throws Exception{
+//        String languageParam= PatternMatchUtil.getUrlString(path,PatternMatchUtil.langRegexp);
+        String languageParam=PatternMatchUtil.getLangParam(request);
+        if(StringUtils.isEmpty(languageParam)){
+            return getEnvironmentSite(request);
+        }else{
+            if(languageParam.contains("-")){
+                if(regionService.isRegionByCode(languageParam.split("-")[1])){
+                    return getParamSite(request,languageParam);
+                }else{
+                    return getEnvironmentSite(request);
+                }
+            }else{
+                if(regionService.isRegionByCode(languageParam)){
+                    return getParamSite(request,languageParam);
+                }else{
+                    return getEnvironmentSite(request);
+                }
+            }
+        }
+//        if(isHomeSitePath(path)) {
+//            language = request.getLocale().getLanguage();
+//            if(StringUtils.isEmpty(language)) {
+//                language = "zh";
+//            }
+//        }else {
+//            String regionCode = "";
+//            if(path.substring(1).contains("/")) {
+//                regionCode = path.substring(0, path.indexOf("/", 0));
+//            }else {
+//                regionCode = path.substring(1);
+//            }
+//            Region region = regionService.getRegion(regionCode);
+//            if(region == null) {
+//                throw new Exception("请求错误");
+//            }
+//            language = region.getLangCode();
+//        }
+//        for(Site s : sites) {
+//            String lang = s.getRegion().getLangCode();
+//
+//            if(language.equalsIgnoreCase(lang)) {
+//                site = s;
+//                break;
+//            }
+//        }
+//        return site;
     }
 
     public Set<Site> getSitesThroughDomain(String domain) throws Exception{

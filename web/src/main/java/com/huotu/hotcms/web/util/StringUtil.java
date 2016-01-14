@@ -52,4 +52,24 @@ public class StringUtil {
         }
         return str;
     }
+
+    /**
+     * 字符串移除开始和结束制定的字符串
+     *
+     * @param str
+     * @param index 获得制定索引下的分割内容
+     * @param charStr 要分隔的字符串
+     * @return
+     * */
+    public static String getIndex(String str,Integer index,String charStr){
+        if(str.contains(charStr)){
+            String[] list=str.split(charStr);
+            if(list!=null){
+                if(list.length>index){
+                    return list[index];
+                }
+            }
+        }
+        return null;
+    }
 }

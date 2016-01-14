@@ -8,6 +8,7 @@ define(function (require, exports, module) {
         rules: {
             title:{
                 required: true,
+                maxlength:200
             },
             description:{
                 required: true,
@@ -27,7 +28,8 @@ define(function (require, exports, module) {
         },
         messages: {
             title:{
-                required:"请输入文件名称"
+                required:"请输入文件名称",
+                maxlength:"文章标题不许超过200个字符"
             },
             description:{
                 required:"请输入描述"

@@ -17,6 +17,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
  */
 public interface RegionRepository extends JpaRepository<Region,Long>,JpaSpecificationExecutor {
 
-    Region findByRegionCodeIgnoreCase(String regionCdoe);
+    Region findByRegionCodeIgnoreCase(String regionCode);
 
+    Region findByLangCodeAndRegionCodeIgnoreCase(String langCode,String regionCode);
 }

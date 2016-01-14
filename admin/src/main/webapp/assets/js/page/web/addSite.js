@@ -46,77 +46,82 @@ define(function (require, exports, module) {
             }
         },
         submitHandler: function (form, ev) {
-            commonUtil.setDisabled("jq-cms-Save");
+            var commonUtil = require("common");
+            var custom= $("#custom_0").val();
+            var customTemplateUrl= $("#customTemplateUrl").val();
             var layer=require("layer");
             var custom= $("#custom_0").val();
             var ary = $("#domains").val();
             var nary= ary.split(",");
+            var flag=0;
             for(var i=0;i<nary.length-1;i++)
             {
                 if (nary[i]==nary[i+1])
-            {
-                layer.msg("操作失败,请不要填写重复域名",{time: 2000})
+                {
+                    flag=1;
+                    layer.msg("操作失败,请不要填写重复域名",{time: 2000})
+                    break;
+                }
             }
-            }
-            //var customTemplateUrl= $("#customTemplateUrl").val();
-            //if(custom==1&&(customTemplateUrl==""||customTemplateUrl==null)){
-            //    layer.msg("请填上根路径",{time: 2000})
-            //    commonUtil.cancelDisabled("jq-cms-Save");
-            //}
-            //else{
-            //$.ajax({
-            //    url: "/site/saveSite",
-            //    data: {
-            //        siteId:$("#hidSiteID").val(),
-            //        customerId:customerId,
-            //        name: $("#name").val(),
-            //        title: $("#title").val(),
-            //        keywords: $("#keywords").val(),
-            //        copyright: $("#copyright").val(),
-            //        logoUri: $("#logoUri").val(),
-            //        custom: $("#custom_0").val(),
-            //        customTemplateUrl: $("#customTemplateUrl").val(),
-            //        domains: $("#domains").val(),
-            //        regionId: $("#regionId").val(),
-            //        description: $("#description").val()
-            //    },
-            //    type: "POST",
-            //    dataType: 'json',
-            //    success: function (data) {
-            //        var layer=require("layer");
-            //        if(data!=null)
-            //        {
-            //            var index=parseInt(data.code);
-            //            if(index==200)
-            //            {
-            //                var layer=require("layer");
-            //                layer.msg("操作成功",{time: 2000});
-            //                $("#name").val("");
-            //                $("#title").val("");
-            //                $("#keywords").val("");
-            //                $("#copyright").val("");
-            //                $("#logoUri").val("");
-            //                $("#custom_0").val("1");
-            //                $("#uploadLogoUri").attr("src","");
-            //                document.getElementById('custom_0').checked = true;
-            //                document.getElementById("cUrl").style.display="";
-            //                $("#customTemplateUrl").val("");
-            //                $("#domains").val("");
-            //                $("#regionId").val("-1");
-            //                $("#description").val("");
-            //            }
-            //            if(index==500){layer.msg("操作失败",{time: 2000})}
-            //
-            //            if(index==203){
-            //                layer.msg("域名已被占用，请修改域名",{time: 2000})
-            //            }
-            //        }
-            //        commonUtil.cancelDisabled("jq-cms-Save");
-            //    },
-            //    error: function () {
-            //        commonUtil.cancelDisabled("jq-cms-Save");
-            //    }
-            //})};
+            if(flag==0){
+                if(custom==1&&(customTemplateUrl==""||customTemplateUrl==null)){
+                    layer.msg("请填上根路径",{time: 2000})
+                    commonUtil.cancelDisabled("jq-cms-Save");
+                }
+                else{
+            $.ajax({
+                url: "/site/saveSite",
+                data: {
+                    siteId:$("#hidSiteID").val(),
+                    customerId:customerId,
+                    name: $("#name").val(),
+                    title: $("#title").val(),
+                    keywords: $("#keywords").val(),
+                    copyright: $("#copyright").val(),
+                    logoUri: $("#logoUri").val(),
+                    custom: $("#custom_0").val(),
+                    customTemplateUrl: $("#customTemplateUrl").val(),
+                    domains: $("#domains").val(),
+                    regionId: $("#regionId").val(),
+                    description: $("#description").val()
+                },
+                type: "POST",
+                dataType: 'json',
+                success: function (data) {
+                    var layer=require("layer");
+                    if(data!=null)
+                    {
+                        var index=parseInt(data.code);
+                        if(index==200)
+                        {
+                            var layer=require("layer");
+                            layer.msg("操作成功",{time: 2000});
+                            $("#name").val("");
+                            $("#title").val("");
+                            $("#keywords").val("");
+                            $("#copyright").val("");
+                            $("#logoUri").val("");
+                            $("#custom_0").val("1");
+                            $("#uploadLogoUri").attr("src","");
+                            document.getElementById('custom_0').checked = true;
+                            document.getElementById("cUrl").style.display="";
+                            $("#customTemplateUrl").val("");
+                            $("#domains").val("");
+                            $("#regionId").val("-1");
+                            $("#description").val("");
+                        }
+                        if(index==500){layer.msg("操作失败",{time: 2000})}
+
+                        if(index==203){
+                            layer.msg("域名已被占用，请修改域名",{time: 2000})
+                        }
+                    }
+                    commonUtil.cancelDisabled("jq-cms-Save");
+                },
+                error: function () {
+                    commonUtil.cancelDisabled("jq-cms-Save");
+                }
+            })}};
             return false;
         },
         invalidHandler: function () {

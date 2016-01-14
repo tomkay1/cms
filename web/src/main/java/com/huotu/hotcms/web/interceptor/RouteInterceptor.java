@@ -10,6 +10,7 @@ import com.huotu.hotcms.web.service.ArticleResolveService;
 import com.huotu.hotcms.web.service.RequestService;
 import com.huotu.hotcms.web.service.RouteResolverService;
 import com.huotu.hotcms.web.service.SiteResolveService;
+import com.huotu.hotcms.web.util.PatternMatchUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +53,8 @@ public class RouteInterceptor  extends HandlerInterceptorAdapter {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        String servletPath=request.getServletPath();
         Site site=siteResolveService.getCurrentSite(request);
+        String servletPath= PatternMatchUtil.getServletPath(site,request);
         if(site!=null){
             Route route=routeResolverService.getRoute(site,servletPath);
             if(modelAndView==null){

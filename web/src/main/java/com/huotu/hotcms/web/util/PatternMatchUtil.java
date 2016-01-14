@@ -1,5 +1,8 @@
 package com.huotu.hotcms.web.util;
 
+import com.huotu.hotcms.service.entity.Site;
+import org.codehaus.plexus.util.StringUtils;
+
 import javax.servlet.http.HttpServletRequest;
 import java.beans.Statement;
 import java.util.regex.Matcher;
@@ -7,7 +10,7 @@ import java.util.regex.Pattern;
 
 /**
  * <p>
- * 正则表达式操作类
+ * 正则表达式匹配处理操作类
  * </P>
  *
  * @author xhl
@@ -16,10 +19,14 @@ import java.util.regex.Pattern;
 public class PatternMatchUtil {
     public static final String routeUrlRegexp="^/web(.*?)$";//
 
-    public static final String webStringRegexp="^/web";//
+    public static final String webStringRegexp="^/web";//用于内部模版动态资源跳转路由mapping,CMS路由关键字
 
-    public static final String templateRegexp="^/template";
+    public static final String templateRegexp="^/template";//用于内部模版静态资源跳转CMS路由关键字
 
+    /**
+     * 获得第一个语言参数
+     * */
+    public static final String langRegexp="^/([^/]+)";
 
     /**
      * 是否匹配路由规则
@@ -135,5 +142,75 @@ public class PatternMatchUtil {
             }
         }
         return null;
+    }
+
+    /**
+     * 根据requst获得跟目录下的第一个参数
+     * @param request
+     * @return
+     * **/
+   public static String getLangParam(HttpServletRequest request){
+        String path=request.getServletPath();
+        String param=StringUtil.getIndex(path,1,"/");
+        if(!StringUtils.isEmpty(param)){
+            if(param.equalsIgnoreCase("web")){
+                param=StringUtil.getIndex(path,2,"/");
+            }
+        }
+        return param;
+    }
+
+    /**
+     * 根据requst获得有效语言参数
+     *
+     * @param request
+     * @param site 站点信息
+     * @return
+     * **/
+    public static  String getEffecterLangParam(HttpServletRequest request,Site site){
+        if(site!=null) {
+            String langParam = getLangParam(request);
+            if(!StringUtils.isEmpty(langParam)) {
+                if (langParam.contains("-")) {
+                    String siteLang = site.getRegion().getLangCode() + "-" + site.getRegion().getRegionCode();
+                    if (siteLang.equalsIgnoreCase(langParam)) {
+                        return langParam;
+                    }
+                } else {
+                    if (langParam.equalsIgnoreCase(site.getRegion().getRegionCode())) {
+                        return langParam;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * 根据站点信息以及Request获得ServletPath(把语言相关参数移除)
+     * **/
+    public static String getServletPath(Site site,HttpServletRequest request){
+        String path=request.getServletPath();
+        if(site!=null){
+           String langParam=getEffecterLangParam(request,site);
+            if(!StringUtils.isEmpty(langParam)) {
+                path=path.replace(langParam,"");
+//                if (langParam.contains("-")) {
+//                    if (site.getRegion() != null) {
+//                        String siteLang = site.getRegion().getLangCode() + "-" + site.getRegion().getRegionCode();
+//                        if (siteLang.equalsIgnoreCase(langParam)) {
+//                            path=path.toLowerCase().replace(siteLang.toLowerCase(), "");
+//                        }
+//                    }
+//                } else {
+//                    if (site.getRegion() != null) {
+//                        path= path.toLowerCase().replace(site.getRegion().getRegionCode().toLowerCase(), "");
+//                    }
+//                }
+            }
+        }
+        path=path.replace("//","/");
+        return path;
     }
 }

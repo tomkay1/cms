@@ -14,7 +14,25 @@ package com.huotu.hotcms.web.model;
 
 public class PageModel {
 
+    /**
+     * 页码
+     */
     private int pageNo;
+
+    /**
+     * 页码链接
+     */
+    private String pageHref;
+
+
+
+    public String getPageHref() {
+        return pageHref;
+    }
+
+    public void setPageHref(String pageHref) {
+        this.pageHref = pageHref;
+    }
 
     public int getPageNo() {
         return pageNo;

@@ -48,5 +48,10 @@ public class ArticleForeachParam {
      */
     private Integer pagesize;
 
+    /**
+     * 指定需要展示的页数
+     */
+    private Integer pagenumber;
+
 
 }

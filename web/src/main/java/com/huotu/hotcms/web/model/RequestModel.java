@@ -22,6 +22,14 @@ public class RequestModel{
 
     private int currentPage;
 
+    private boolean hasNextPage;
+
+    private String nextPageHref;
+
+    private boolean hasPrevPage;
+
+    private String prevPageHref;
+
     /**
      * 当前请求的根路径
      * */
@@ -103,5 +111,37 @@ public class RequestModel{
 
     public void setCurrentPage(int currentPage) {
         this.currentPage = currentPage;
+    }
+
+    public boolean isHasNextPage() {
+        return hasNextPage;
+    }
+
+    public void setHasNextPage(boolean hasNextPage) {
+        this.hasNextPage = hasNextPage;
+    }
+
+    public boolean isHasPrevPage() {
+        return hasPrevPage;
+    }
+
+    public void setHasPrevPage(boolean hasPrevPage) {
+        this.hasPrevPage = hasPrevPage;
+    }
+
+    public String getNextPageHref() {
+        return nextPageHref;
+    }
+
+    public void setNextPageHref(String nextPageHref) {
+        this.nextPageHref = nextPageHref;
+    }
+
+    public String getPrevPageHref() {
+        return prevPageHref;
+    }
+
+    public void setPrevPageHref(String prevPageHref) {
+        this.prevPageHref = prevPageHref;
     }
 }

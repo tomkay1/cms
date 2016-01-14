@@ -199,11 +199,11 @@
   <!--页数-->
   <div style="width:1000px;margin:0 auto;text-align:center;padding:20px 0px;height:30px;">
     <div class="number">
-      <a>
+      <a data-th-remove="!${request.hasPrevPage} ? all" data-th-href="@{/(pageNo=${request.currentPage-1})}">
         <img src="http://www.test.com/images/left.jpg" width="8px">
       </a>
       <a class="on" data-th-each="page:${request.pages}" data-th-text="${page.pageNo}"
-         data-th-class="${page.pageNo==request.currentPage} ? on">
+         data-th-class="${page.pageNo==request.currentPage} ? on" data-th-href="@{${page.pageHref}}">
         1
       </a>
       <a data-th-remove="all">
@@ -221,7 +221,7 @@
       <a data-th-remove="all">
         6
       </a>
-      <a>
+      <a data-th-remove="${!request.hasNextPage} ? all" data-th-href="@{/(pageNo=${request.currentPage+1})}">
         <img src="http://www.test.com/images/right.jpg" width="8px">
       </a>
     </div>

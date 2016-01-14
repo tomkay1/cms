@@ -22,7 +22,6 @@ import com.huotu.hotcms.web.thymeleaf.expression.VariableExpression;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
@@ -39,8 +38,9 @@ import java.util.List;
  */
 public class ArticleForeachProcessorFactory {
 
-    private static final int PAGE_NO = 1;
-    private static final int PAGE_SIZE = 2;
+    private final int DEFAULT_PAGE_NO = 1;
+    private final int DEFAULT_PAGE_SIZE = 2;
+    private final int DEFAULT_PAGE_NUMBER = 5;
 
     private static Log log = LogFactory.getLog(ArticleForeachProcessorFactory.class);
 
@@ -78,7 +78,7 @@ public class ArticleForeachProcessorFactory {
             }
             if(articleForeachParam.getPageno() == null) {
                 if(StringUtils.isEmpty(request.getParameter("pageNo"))) {
-                    articleForeachParam.setPageno(PAGE_NO);
+                    articleForeachParam.setPageno(DEFAULT_PAGE_NO);
                 }else {
                     int pageNo = Integer.parseInt(request.getParameter("pageNo"));
                     if(pageNo < 1) {
@@ -89,7 +89,7 @@ public class ArticleForeachProcessorFactory {
             }
             if(articleForeachParam.getPagesize() == null) {
                 if(StringUtils.isEmpty(request.getParameter("pageSize"))) {
-                    articleForeachParam.setPagesize(PAGE_SIZE);
+                    articleForeachParam.setPagesize(DEFAULT_PAGE_SIZE);
                 }else {
                     int pageSize = Integer.parseInt(request.getParameter("pageSize"));
                     if(pageSize < 1) {
@@ -98,20 +98,39 @@ public class ArticleForeachProcessorFactory {
                     articleForeachParam.setPagesize(pageSize);
                 }
             }
+            if(articleForeachParam.getPagenumber() == null) {
+                articleForeachParam.setPagenumber(DEFAULT_PAGE_NUMBER);
+            }
             ArticleService articleService = (ArticleService)applicationContext.getBean("articleServiceImpl");
             articles = articleService.getArticleList(articleForeachParam);
             List<PageModel> pages = new ArrayList<>();
-            for(int i=0;i<articles.getTotalPages();i++) {
+            int currentPage = articleForeachParam.getPageno();
+            int totalPages = articles.getTotalPages();
+            int pageNumber = DEFAULT_PAGE_NUMBER < totalPages ? DEFAULT_PAGE_NUMBER : totalPages;
+            int startPage = calculateStartPageNo(currentPage,pageNumber,totalPages);
+            for(int i=1;i<=pageNumber;i++) {
                 PageModel pageModel = new PageModel();
-                pageModel.setPageNo(i+1);
+                pageModel.setPageNo(startPage);
+                pageModel.setPageHref("?pageNo=" + startPage);
                 pages.add(pageModel);
+                startPage++;
             }
             RequestModel requestModel = (RequestModel)VariableExpression.getVariable(context,"request");
             requestModel.setPages(pages);
-            requestModel.setCurrentPage(articleForeachParam.getPageno());
+            requestModel.setHasNextPage(articles.hasNext());
+            requestModel.setHasPrevPage(articles.hasPrevious());
+            requestModel.setCurrentPage(currentPage);
         }catch (Exception e) {
             log.error(e.getMessage());
         }
         return articles;
     }
+
+    private int calculateStartPageNo(int currentPage, int pageNumber, int totalPages) {
+        if(pageNumber == totalPages) {
+            return 1;
+        }
+        return currentPage - pageNumber + 1 < 1 ? 1 : currentPage - pageNumber + 1;
+    }
+
 }

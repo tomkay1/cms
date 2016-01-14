@@ -110,8 +110,8 @@ public class Site {
     /**
      * 资源根路径(可以CDN方式读取缓存)
      */
-    @Column(name = "resourceRoot")
-    private String resourceRoot;
+    @Column(name = "resourceUrl")
+    private String resourceUrl;
 
     /**
      * 所属地区

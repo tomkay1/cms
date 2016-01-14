@@ -119,7 +119,7 @@ public class CategoryServiceImpl implements CategoryService {
             };
             return categoryRepository.findAll(specification,new PageRequest(0,requestSize,sort)).getContent();
         }
-        List<Category> categoryList = categoryRepository.findBySite_SiteIdAndRoute_RouteTypeAndDeletedAndParent_IdOrderByOrderWeightDesc(param.getSiteid(), param.getRoutetype(), false,param.getParentid());
+        List<Category> categoryList = categoryRepository.findBySite_SiteIdAndParent_Route_RouteTypeAndDeletedAndParent_IdOrderByOrderWeightDesc(param.getSiteid(), param.getRoutetype(), false, param.getParentid());
         int origionSize = categoryList.size();
         if(requestSize > origionSize - 1) {
             requestSize = origionSize;

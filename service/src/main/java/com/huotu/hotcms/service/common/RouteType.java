@@ -54,6 +54,8 @@ public enum RouteType implements CommonEnum{
                 return ARTICLE_LIST;
             case 6:
                 return HEADER_NAVIGATION;
+            case 7:
+                return VIDEO_LIST;
             default:
                 return null;
         }

@@ -8,6 +8,8 @@ import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.service.VideoService;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +30,7 @@ import java.util.Set;
 @Controller
 @RequestMapping("/video")
 public class VideoController {
-
+    private static final Log log = LogFactory.getLog(SiteController.class);
     @Autowired
     private VideoService videoService;
     @Autowired
@@ -43,6 +45,7 @@ public class VideoController {
     public ModelAndView videoList(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception
     {
         ModelAndView modelAndView=new ModelAndView();
+        try{
         modelAndView.setViewName("/view/contents/videoList.html");
         Video video= videoService.findById(id);
         String logo_uri="";
@@ -51,6 +54,9 @@ public class VideoController {
         }
         modelAndView.addObject("logo_uri",logo_uri);
         modelAndView.addObject("video",video);
+        }catch (Exception ex){
+            log.error(ex.getMessage());
+        }
         return modelAndView;
     }
 
@@ -70,6 +76,7 @@ public class VideoController {
     @RequestMapping("/updateVideo")
     public ModelAndView updateVideo(@RequestParam(value = "id",defaultValue = "0") Long id,Integer customerId) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
+        try{
         modelAndView.setViewName("/view/contents/updateVideo.html");
         Video video= videoService.findById(id);
         String logo_uri="";
@@ -82,6 +89,9 @@ public class VideoController {
         modelAndView.addObject("logo_uri",logo_uri);
         modelAndView.addObject("categorys",categorys);
         modelAndView.addObject("video",video);
+        }catch (Exception ex){
+            log.error(ex.getMessage());
+        }
         return modelAndView;
     }
 
@@ -113,6 +123,7 @@ public class VideoController {
         }
         catch (Exception ex)
         {
+            log.error(ex.getMessage());
             result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
         }
         return  result;
@@ -138,6 +149,7 @@ public class VideoController {
         }
         catch (Exception ex)
         {
+            log.error(ex.getMessage());
             result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
         }
         return  result;

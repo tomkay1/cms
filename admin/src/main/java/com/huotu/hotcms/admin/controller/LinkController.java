@@ -52,6 +52,7 @@ public class LinkController {
     public ModelAndView linkList(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception
     {
         ModelAndView modelAndView=new ModelAndView();
+        try{
         modelAndView.setViewName("/view/contents/linkList.html");
         Link link= linkService.findById(id);
         String logo_uri="";
@@ -60,6 +61,9 @@ public class LinkController {
         }
         modelAndView.addObject("logo_uri",logo_uri);
         modelAndView.addObject("link", link);
+        }catch (Exception ex){
+            log.error(ex.getMessage());
+        }
         return modelAndView;
     }
 
@@ -74,11 +78,12 @@ public class LinkController {
     }
 
     /*
-  * 修改栏目
+  * 修改链接
   * */
     @RequestMapping("/updateLink")
     public ModelAndView updateLink(@RequestParam(value = "id",defaultValue = "0") Long id,Integer customerId) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
+        try{
         modelAndView.setViewName("/view/contents/updateLink.html");
         Link link= linkService.findById(id);
         String logo_uri="";
@@ -91,6 +96,9 @@ public class LinkController {
         modelAndView.addObject("logo_uri",logo_uri);
         modelAndView.addObject("categorys",categorys);
         modelAndView.addObject("link",link);
+        }catch (Exception ex){
+            log.error(ex.getMessage());
+        }
         return modelAndView;
     }
 

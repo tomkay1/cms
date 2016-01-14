@@ -8,6 +8,8 @@ import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.service.DownloadService;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +29,7 @@ import java.util.Set;
 @Controller
 @RequestMapping("/download")
 public class DownloadController {
+    private static final Log log = LogFactory.getLog(DownloadController.class);
 
     @Autowired
     private DownloadService downloadService;
@@ -44,10 +47,14 @@ public class DownloadController {
         public ModelAndView downloadList(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception
         {
             ModelAndView modelAndView=new ModelAndView();
+            try{
             Download download= downloadService.findById(id);
             Category category =download.getCategory();
             modelAndView.addObject("download",download);
             modelAndView.setViewName("/view/contents/downloadList.html");
+            }catch (Exception ex){
+                log.error(ex.getMessage());
+            }
 
             return  modelAndView;
         }
@@ -69,6 +76,7 @@ public class DownloadController {
     @RequestMapping("/updateDownload")
     public ModelAndView updateDownload(@RequestParam(value = "id",defaultValue = "0") Long id,Integer customerId) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
+        try{
         modelAndView.setViewName("/view/contents/updateDownload.html");
         Download download= downloadService.findById(id);
         Category category= download.getCategory();
@@ -76,6 +84,9 @@ public class DownloadController {
         Set<Category> categorys=categoryRepository.findByCustomerIdAndModelId(customerId, modelType);
         modelAndView.addObject("categorys",categorys);
         modelAndView.addObject("download",download);
+        }catch (Exception ex){
+            log.error(ex.getMessage());
+        }
         return modelAndView;
     }
 
@@ -107,6 +118,7 @@ public class DownloadController {
         }
         catch (Exception ex)
         {
+            log.error(ex.getMessage());
             result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
         }
         return  result;
@@ -132,6 +144,7 @@ public class DownloadController {
         }
         catch (Exception ex)
         {
+            log.error(ex.getMessage());
             result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
         }
         return  result;

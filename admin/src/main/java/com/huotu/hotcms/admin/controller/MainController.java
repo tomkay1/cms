@@ -23,17 +23,4 @@ public class MainController {
         return modelAndView;
     }
 
-
-    @RequestMapping("/articlelist")
-    public ModelAndView articlelist(HttpServletRequest request) throws Exception{
-        ModelAndView modelAndView=new ModelAndView();
-       return  modelAndView;
-    }
-
-//    @RequestMapping("/announlist")
-//    public ModelAndView announlist(HttpServletRequest request) throws Exception{
-//        ModelAndView modelAndView=new ModelAndView();
-//        return  modelAndView;
-//    }
-
 }

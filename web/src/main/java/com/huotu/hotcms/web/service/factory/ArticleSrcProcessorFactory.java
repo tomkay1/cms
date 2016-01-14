@@ -4,7 +4,7 @@ import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.web.service.BaseProcessorService;
 import com.huotu.hotcms.web.thymeleaf.expression.VariableExpression;
 import com.huotu.hotcms.web.util.PatternMatchUtil;
-import com.huotu.hotcms.web.util.StringUtil;
+import com.huotu.hotcms.service.util.StringUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.thymeleaf.context.ITemplateContext;

@@ -34,7 +34,7 @@ define(function (require, exports, module) {
             routeRule:{
                 required:"请输入页面路由规则",
                 route:"请使用非中文字符，且长度为1至50个字符",
-                remote: "该栏目路由已经存在"
+                remote: "该栏目路由已经存在,或者内置关键字"
             },
             template:{
                 required:"请输入路由模版",

@@ -28,7 +28,7 @@ define(function (require, exports, module) {
         messages: {
             route:{
                 route:"请使用非中文字符，且长度为1至50个字符",
-                remote: "该栏目路由已经存在"
+                remote: "该栏目路由已经存在,或者内置关键字"
             },
             template:{
                 route:"请使用非中文字符，且长度为1至50个字符",

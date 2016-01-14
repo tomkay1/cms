@@ -7,7 +7,6 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.service.impl.ArticleServiceImpl;
 import com.huotu.hotcms.web.thymeleaf.expression.VariableExpression;
 import com.huotu.hotcms.web.util.PatternMatchUtil;
-import com.huotu.hotcms.web.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.context.ITemplateContext;

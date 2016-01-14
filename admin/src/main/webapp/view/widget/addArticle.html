@@ -14,10 +14,7 @@
                     <th>缩略图：</th>
                     <td>
                         <img id="uploadThumbUri" style="width: 80px; height: 80px; border: 1px solid #ccc; float: left; background: #efefef; line-height: 80px; text-align: center; color: #ccc;"/>
-                        <a id="uploadpic" class="btn-lit jUploader-button" style="cursor: pointer; position: relative; overflow: hidden; direction: ltr;">
-                            <span style="color: #c1b3a9" onclick="javascript:$('#btnArticleFile').click();">上传</span></a>
-                        <input id="btnArticleFile" name="btnFile"
-                               style="display:none;" type="file"/>
+                        <span id="btnFile" name="btnFile" style="margin-left: 100px; margin-top: 20px; display: block;"/>
                     <input type="hidden" id="thumbUri" name="thumbUri" />
                     </td>
                 </tr>
@@ -64,4 +61,4 @@
         </div>
     </div>
 </form>
-<script>seajs.use(["validate","message","ajaxfileupload","layer","ueditorConfig","ueditorAll","addArticle"]);</script>
+<script>seajs.use(["validate","message","jupload","layer","ueditorConfig","ueditorAll","addArticle"]);</script>

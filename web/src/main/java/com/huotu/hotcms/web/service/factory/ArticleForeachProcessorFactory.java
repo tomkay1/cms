@@ -39,7 +39,7 @@ import java.util.List;
 public class ArticleForeachProcessorFactory {
 
     private final int DEFAULT_PAGE_NO = 1;
-    private final int DEFAULT_PAGE_SIZE = 2;
+    private final int DEFAULT_PAGE_SIZE = 12;
     private final int DEFAULT_PAGE_NUMBER = 5;
 
     private static Log log = LogFactory.getLog(ArticleForeachProcessorFactory.class);

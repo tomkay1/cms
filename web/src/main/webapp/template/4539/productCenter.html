@@ -105,7 +105,7 @@
 
     <div class="cp">
         <ul data-th-remove="all-but-first">
-            <li class="nuy ffr" data-article-foreach="article" data-param-pagesize="13">
+            <li class="nuy ffr" data-article-foreach="article">
                 <div><img src="http://www.test.com/images/c1.jpg" data-th-src="@{'~/'+${article.thumbUri}}" style="width:233px;height:233px;"/></div>
                 <div class="gytr">
                     <p class="biaoti"><strong data-th-text="${article.title}">产品名称</strong></p>
@@ -199,7 +199,7 @@
     <!--页数-->
     <div style="width:1000px;margin:0 auto;text-align:center;padding:20px 0px;height:30px;">
         <div class="number">
-            <a data-th-remove="${!request.hasPrevPage} ? all" data-th-href="@{${prevPageHref}}">
+            <a data-th-remove="${!request.hasPrevPage} ? all" data-th-href="@{${request.prevPageHref}}">
                 <img src="http://www.test.com/images/left.jpg" width="8px">
             </a>
             <a class="on" data-th-each="page:${request.pages}" data-th-text="${page.pageNo}"

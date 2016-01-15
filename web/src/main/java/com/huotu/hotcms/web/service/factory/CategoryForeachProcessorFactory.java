@@ -68,7 +68,7 @@ public class CategoryForeachProcessorFactory {
                 categoryForeachParam.setSize(1);
             }
             //根据所属父节点及路由类型取得列表
-            /*//设置站点id
+            //设置站点id
             if (StringUtils.isEmpty(categoryForeachParam.getSiteid())) {
                 Site site = (Site) VariableExpression.getVariable(context, "site");
                 categoryForeachParam.setSiteid(site.getSiteId());
@@ -82,13 +82,11 @@ public class CategoryForeachProcessorFactory {
             Long parentId = categoryForeachParam.getParentid();
             if(parentId==null) {
                 Category current = categoryService.getCategoryByRoute(route);
-                Category parent = current.getParent();
-                parentId = parent == null ? null : parent.getId();
-                categoryForeachParam.setParentid(parentId);
+                categoryForeachParam.setParentid(current.getId());
             }
-            return categoryService.findByRouteTypeAndParentId(categoryForeachParam);*/
+            return categoryService.findByRouteTypeAndParentId(categoryForeachParam);
 
-            //设置父节点id
+            /*//设置父节点id
             Long parentId = categoryForeachParam.getParentid();
             if(parentId!=null) {
                 return categoryService.getSubCategories(parentId,categoryForeachParam.getSize());
@@ -107,7 +105,7 @@ public class CategoryForeachProcessorFactory {
             if(current.getParent()!=null) {
                 categoryForeachParam.setParentid(current.getId());
             }
-            return categoryService.getGivenTypeCategories(categoryForeachParam);
+            return categoryService.getGivenTypeCategories(categoryForeachParam);*/
         } catch (Exception e) {
             log.error(e.getMessage());
         }

@@ -105,6 +105,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> findByRouteTypeAndParentId(CategoryForeachParam param) {
         int requestSize = param.getSize();
+        if(param.getRoutetype()==RouteType.HEADER_NAVIGATION) {
+            return categoryRepository.findBySite_SiteIdAndDeletedAndRoute_RouteType(param.getSiteid(),false,RouteType.HEADER_NAVIGATION);
+        }
+        Category parent = categoryRepository.findOne(param.getParentid());
         if(!StringUtils.isEmpty(param.getExcludeid())) {
             Sort sort = new Sort(Sort.Direction.DESC, "orderWeight");
             List<String> ids = Arrays.asList(param.getExcludeid());
@@ -114,12 +118,12 @@ public class CategoryServiceImpl implements CategoryService {
                 predicates.add(cb.equal(root.get("site").get("siteId").as(Long.class),param.getSiteid()));
                 predicates.add(cb.equal(root.get("route").get("routeType").as(RouteType.class), param.getRoutetype()));
                 predicates.add(cb.equal(root.get("deleted").as(Boolean.class),false));
-                predicates.add(cb.equal(root.get("parent").get("id").as(Long.class),param.getParentid()));
+                predicates.add(cb.equal(root.get("parent").as(Category.class), parent));
                 return cb.and(predicates.toArray(new Predicate[predicates.size()]));
             };
             return categoryRepository.findAll(specification,new PageRequest(0,requestSize,sort)).getContent();
         }
-        List<Category> categoryList = categoryRepository.findBySite_SiteIdAndRoute_RouteTypeAndDeletedAndParent_IdOrderByOrderWeightDesc(param.getSiteid(), param.getRoutetype(), false, param.getParentid());
+        List<Category> categoryList = categoryRepository.findBySite_SiteIdAndRoute_RouteTypeAndDeletedAndParentOrderByOrderWeightDesc(param.getSiteid(), param.getRoutetype(), false, parent);
         int origionSize = categoryList.size();
         if(requestSize > origionSize - 1) {
             requestSize = origionSize;
@@ -130,6 +134,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> getGivenTypeCategories(CategoryForeachParam param) {
         int requestSize = param.getSize();
+        Category parent = param.getParentid()==null ? null : categoryRepository.findOne(param.getParentid());
         if(!StringUtils.isEmpty(param.getExcludeid())) {
             Sort sort = new Sort(Sort.Direction.DESC, "orderWeight");
             List<String> ids = Arrays.asList(param.getExcludeid());
@@ -140,19 +145,14 @@ public class CategoryServiceImpl implements CategoryService {
                 RouteType routeType = param.getRoutetype()==null?RouteType.HEADER_NAVIGATION:param.getRoutetype();
                 predicates.add(cb.equal(root.get("route").get("routeType").as(Integer.class),routeType));
                 if(param.getParentid()!=null) {
-                    predicates.add(cb.equal(root.get("parent").get("id").as(Long.class), param.getParentid()));
+                    predicates.add(cb.equal(root.get("parent").as(Category.class), parent));
                 }
                 predicates.add(cb.equal(root.get("deleted").as(Boolean.class),false));
                 return cb.and(predicates.toArray(new Predicate[predicates.size()]));
             };
             return categoryRepository.findAll(specification,new PageRequest(0,requestSize,sort)).getContent();
         }
-        List<Category> categoryList;
-        if(param.getParentid()!=null) {
-            categoryList = categoryRepository.findBySite_SiteIdAndRoute_RouteTypeAndDeletedAndParent_IdOrderByOrderWeightDesc(param.getSiteid(), param.getRoutetype(), false, param.getParentid());
-        }else {
-            categoryList = categoryRepository.findBySite_SiteIdAndRoute_RouteTypeAndDeletedOrderByOrderWeightDesc(param.getSiteid(),param.getRoutetype(),false);
-        }
+        List<Category> categoryList = categoryRepository.findBySite_SiteIdAndRoute_RouteTypeAndDeletedAndParentOrderByOrderWeightDesc(param.getSiteid(), param.getRoutetype(), false, parent);
         int origionSize = categoryList.size();
         if(requestSize > origionSize - 1) {
             requestSize = origionSize;

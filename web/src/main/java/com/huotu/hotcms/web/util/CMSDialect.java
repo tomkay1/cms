@@ -1,9 +1,6 @@
 package com.huotu.hotcms.web.util;
 
-import com.huotu.hotcms.web.thymeleaf.dialect.ArticleDialect;
-import com.huotu.hotcms.web.thymeleaf.dialect.CategoryDialect;
-import com.huotu.hotcms.web.thymeleaf.dialect.LinkDialect;
-import com.huotu.hotcms.web.thymeleaf.dialect.SiteDialect;
+import com.huotu.hotcms.web.thymeleaf.dialect.*;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
 
 import java.util.ArrayList;
@@ -35,5 +32,6 @@ public class CMSDialect {
         dialectList.add(new LinkDialect());
         dialectList.add(new SiteDialect());
         dialectList.add(new CategoryDialect());
+        dialectList.add(new VideoDialect());
     }
 }

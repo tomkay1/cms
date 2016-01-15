@@ -15,7 +15,8 @@ public enum DialectTypeEnum {
     DOWNLOAD("download",ParamEnum.DOWNLOAD),
     GALLERY("gallery",ParamEnum.GALLERY),
     NOTICE("notice",ParamEnum.NOTICE),
-    CATEGORY("category",ParamEnum.CATEGORY);
+    CATEGORY("category",ParamEnum.CATEGORY),
+    VIDEO("video",ParamEnum.VIDEO);
     private String dialectPrefix;
     private Object  params;
 

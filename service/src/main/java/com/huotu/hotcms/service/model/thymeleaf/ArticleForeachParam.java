@@ -53,5 +53,4 @@ public class ArticleForeachParam {
      */
     private Integer pagenumber;
 
-
 }

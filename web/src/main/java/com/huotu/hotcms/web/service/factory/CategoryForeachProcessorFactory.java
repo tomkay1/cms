@@ -62,22 +62,25 @@ public class CategoryForeachProcessorFactory {
             if(!StringUtils.isEmpty(categoryForeachParam.getSpecifyids())) {
                 return categoryService.getSpecifyCategories(categoryForeachParam.getSpecifyids());
             }
+            //设置路由类型
+            Route route = (Route)VariableExpression.getVariable(context,"route");
+            if(categoryForeachParam.getRoutetype()==null) {
+                categoryForeachParam.setRoutetype(route.getRouteType());
+            }
+            //设置站点id
+            if (StringUtils.isEmpty(categoryForeachParam.getSiteid())) {
+                Site site = (Site) VariableExpression.getVariable(context, "site");
+                categoryForeachParam.setSiteid(site.getSiteId());
+            }
+            if(isHeaderCategory(categoryForeachParam.getRoutetype())) {
+                return categoryService.getHeaderCategoryList(categoryForeachParam);
+            }
             if(categoryForeachParam.getSize()==null) {
                 categoryForeachParam.setSize(DEFAULT_SIZE);
             }else if(categoryForeachParam.getSize()<1) {
                 categoryForeachParam.setSize(1);
             }
             //根据所属父节点及路由类型取得列表
-            //设置站点id
-            if (StringUtils.isEmpty(categoryForeachParam.getSiteid())) {
-                Site site = (Site) VariableExpression.getVariable(context, "site");
-                categoryForeachParam.setSiteid(site.getSiteId());
-            }
-            //设置路由类型
-            Route route = (Route)VariableExpression.getVariable(context,"route");
-            if(categoryForeachParam.getRoutetype()==null) {
-                categoryForeachParam.setRoutetype(route.getRouteType());
-            }
             //设置父节点id
             Long parentId = categoryForeachParam.getParentid();
             if(parentId==null) {
@@ -86,7 +89,7 @@ public class CategoryForeachProcessorFactory {
             }
             return categoryService.findByRouteTypeAndParentId(categoryForeachParam);
 
-            /*//设置父节点id
+            /*//设置父节点id//TODO 上线前清理
             Long parentId = categoryForeachParam.getParentid();
             if(parentId!=null) {
                 return categoryService.getSubCategories(parentId,categoryForeachParam.getSize());
@@ -110,5 +113,9 @@ public class CategoryForeachProcessorFactory {
             log.error(e.getMessage());
         }
         return null;
+    }
+
+    private boolean isHeaderCategory(RouteType routetype) {
+        return routetype==RouteType.HEADER_NAVIGATION;
     }
 }

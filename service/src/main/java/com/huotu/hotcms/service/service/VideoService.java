@@ -1,6 +1,8 @@
 package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.entity.Video;
+import com.huotu.hotcms.service.model.thymeleaf.VideoForeachParam;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 /**
@@ -10,4 +12,6 @@ import org.springframework.stereotype.Service;
 public interface VideoService {
     Boolean saveVideo(Video video);
     Video findById(Long id);
+
+    Page<Video> getVideoList(VideoForeachParam videoForeachParam);
 }

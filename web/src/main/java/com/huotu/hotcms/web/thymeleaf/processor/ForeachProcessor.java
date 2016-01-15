@@ -38,9 +38,6 @@ public class ForeachProcessor extends AbstractAttributeTagProcessor {
     protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName, String attributeValue, String attributeTemplateName, int attributeLine, int attributeCol, IElementTagStructureHandler structureHandler){
         final Object iteratedValue;
         iteratedValue = foreachProcessorService.resolveDataByAttr(tag, context);
-        if(iteratedValue instanceof Page) {
-
-        }
         structureHandler.iterateElement(attributeValue, null, iteratedValue);
     }
 }

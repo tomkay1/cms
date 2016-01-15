@@ -1,4 +1,6 @@
-<form method="post" id="addArticleForm">
+<script src="/assets/libs/richText/kindeditor-min.js" type="application/javascript"></script>
+<script src="/assets/libs/richText/lang/zh_CN.js" type="application/javascript"></script>
+<form method="post" id="addArticleForm" >
     <div class="cnt form">
         <div class="division">
             <input type="hidden" name="hidArticleID" id="hidArticleID" >
@@ -46,6 +48,7 @@
                         <textarea rows="" cols="" style="width: 750px; height: 300px;"  id="content" name="content" ></textarea>
                     </td>
                 </tr>
+
                 <tr>
                     <th>排序权重：</th>
                     <td>
@@ -61,4 +64,18 @@
         </div>
     </div>
 </form>
-<script>seajs.use(["validate","message","jupload","layer","addArticle","kindeditor","zh_CN","init"]);</script>
+<script>
+    window.editor = KindEditor.create('#content', {
+        resizeType: '0',
+        width: '680px',
+        height: '300px',
+        uploadJson: '/cms/kindeditorUpload',
+        afterBlur: function () { this.sync(); }
+    });
+</script>
+<script>
+seajs.use(["validate","message","jupload","addArticle"],function(a,b,c,d){
+    d.fromValidata();
+    d.uploadImg();
+})
+</script>

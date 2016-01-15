@@ -48,4 +48,9 @@
                 </div>
             </div>
         </form>
-<script>seajs.use(["validate","message","addLink","jupload","layer"]);</script>
+<script>
+    seajs.use(["validate","message","jupload","addLink"],function(a,b,c,d){
+        d.fromValidata();
+        d.uploadImg();
+    })
+</script>

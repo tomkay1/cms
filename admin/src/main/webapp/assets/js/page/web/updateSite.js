@@ -78,6 +78,7 @@ define(function (require, exports, module) {
                     name: $("#name").val(),
                     title: $("#title").val(),
                     keywords: $("#keywords").val(),
+                    resourceUrl: $("#resourceUrl").val(),
                     copyright: $("#copyright").val(),
                     custom: $("#custom_0").val(),
                     logoUri: $("#logoUri").val(),

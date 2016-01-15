@@ -73,7 +73,7 @@ define(function (require, exports, module) {
             title: "添加内容",
             shadeClose: true,
             shade: 0.8,
-            area: ['1000px', '600px'],
+            area: ['1000px', '700px'],
             content: content,
             end:function(){
                 ContentsGrid.Refresh();

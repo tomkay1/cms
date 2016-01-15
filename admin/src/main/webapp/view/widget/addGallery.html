@@ -53,6 +53,12 @@
                 </div>
             </div>
         </form>
-<script>seajs.use(["validate","message","addGallery","jupload","layer"]);</script>
+<script>
+        seajs.use(["validate","message","jupload","addGallery"],function(a,b,c,d){
+            d.fromValidata();
+            d.uploadImg();
+        })
+</script>
+
 </body>
 </html>

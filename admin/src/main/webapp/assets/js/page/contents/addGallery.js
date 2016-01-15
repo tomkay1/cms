@@ -4,87 +4,99 @@
 define(function (require, exports, module) {
     var commonUtil = require("common");
     var customerId =commonUtil.getQuery("customerId");
-    $("#addGalleryForm").validate({
-        rules: {
-            title:{
-                required: true,
-            },
-            description:{
-                required: true,
-            },
-            content:{
-                required: true,
-            },
-            linkUrl:{
-                required: true,
-            },
-            OrderWeight:{
-                digits:true,
-            }
-        },
-        messages: {
-            title:{
-                required:"请输入标题"
-            },
-            description:{
-                required:"请输入描述"
-            },
-            content:{
-                required:"请输入内容"
-            },
-            linkUrl:{
-                required:"请输入链接地址"
-            },
-            OrderWeight:{
-                digits:"请输入数字",
-            }
-        },
-        submitHandler: function (form, ev) {
-            commonUtil.setDisabled("jq-cms-Save");
-            $.ajax({
-                url: "/gallery/saveGallery",
-                data: {
-                    id:$("#hidLGalleryID").val(),
-                    title:$("#title").val(),
-                    customerId:customerId,
-                    linkUrl: $("#linkUrl").val(),
-                    content: $("#content").val(),
-                    thumbUri: $("#thumbUri").val(),
-                    description: $("#description").val(),
-                    categoryId: $("#categoryId").val(),
-                    orderWeight: $("#orderWeight").val()
+    exports.fromValidata=function() {
+        $("#addGalleryForm").validate({
+            rules: {
+                title: {
+                    required: true,
                 },
-                type: "POST",
-                dataType: 'json',
-                success: function (data) {
-                    var layer=require("layer");
-                    if(data!=null)
-                    {
-                        var index=parseInt(data.code);
-                        if(index==200)
-                        {
-                            var layer=require("layer");
-                            layer.msg("操作成功,2秒后将自动返回列表页面",{time: 2000})
-                            setTimeout(function(){
-                                    window.location.href="http://"+window.location.host+"/"+"contents/contentsList?&customerid="+customerId;
-                                }
-                                ,1000);
-                        }
-                        if(index==500)
-                            layer.msg("操作失败",{time: 2000})
-                    }
-                    commonUtil.cancelDisabled("jq-cms-Save");
+                description: {
+                    required: true,
                 },
-                error: function () {
-                    commonUtil.cancelDisabled("jq-cms-Save");
+                content: {
+                    required: true,
+                },
+                linkUrl: {
+                    required: true,
+                },
+                OrderWeight: {
+                    digits: true,
                 }
-            });
-            return false;
-        },
-        invalidHandler: function () {
-            return true;
-        }
-    });
+            },
+            messages: {
+                title: {
+                    required: "请输入标题"
+                },
+                description: {
+                    required: "请输入描述"
+                },
+                content: {
+                    required: "请输入内容"
+                },
+                linkUrl: {
+                    required: "请输入链接地址"
+                },
+                OrderWeight: {
+                    digits: "请输入数字",
+                }
+            },
+            submitHandler: function (form, ev) {
+                commonUtil.setDisabled("jq-cms-Save");
+                $.ajax({
+                    url: "/gallery/saveGallery",
+                    data: {
+                        id: $("#hidLGalleryID").val(),
+                        title: $("#title").val(),
+                        customerId: customerId,
+                        linkUrl: $("#linkUrl").val(),
+                        content: $("#content").val(),
+                        thumbUri: $("#thumbUri").val(),
+                        description: $("#description").val(),
+                        categoryId: $("#categoryId").val(),
+                        orderWeight: $("#orderWeight").val()
+                    },
+                    type: "POST",
+                    dataType: 'json',
+                    success: function (data) {
+                        var layer = require("layer");
+                        if (data != null) {
+                            var index = parseInt(data.code);
+                            if (index == 200) {
+                                var layer = require("layer");
+                                layer.msg("保存成功！", {time: 2000})
+                                $("#title").val("");
+                                $("#linkUrl").val("");
+                                $("#content").val("");
+                                $("#thumbUri").val("");
+                                $("#description").val("");
+                                $("#uploadThumbUri").attr("src","");
+                                $("#orderWeight").val("50")
+                                //layer.msg("操作成功,2秒后将自动返回列表页面", {time: 2000})
+                                //setTimeout(function () {
+                                //        window.location.href = "http://" + window.location.host + "/" + "contents/contentsList?&customerid=" + customerId;
+                                //    }
+                                //    , 1000);
+                            }
+                            if (index == 500)
+                                layer.msg("操作失败", {time: 2000})
+                        }
+                        commonUtil.cancelDisabled("jq-cms-Save");
+                    },
+                    error: function () {
+                        commonUtil.cancelDisabled("jq-cms-Save");
+                    }
+                });
+                return false;
+            },
+            invalidHandler: function () {
+                return true;
+            }
+        });
+    }
+
+    exports.uploadImg=function(){
+        uploadModule.uploadImg();
+    }
 
     //上传图片模块
     var uploadModule={
@@ -126,7 +138,7 @@ define(function (require, exports, module) {
         }
     }
 
-    uploadModule.uploadImg();
+    //uploadModule.uploadImg();
 
 });
 

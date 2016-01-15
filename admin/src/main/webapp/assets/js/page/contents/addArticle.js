@@ -4,96 +4,113 @@
 define(function (require, exports, module) {
     var commonUtil = require("common");
     var customerId =commonUtil.getQuery("customerId");
-    $("#addArticleForm").validate({
-        rules: {
-            title:{
-                required: true,
-                maxlength:200
-            },
-            description:{
-                required: true,
-            },
-            content:{
-                required: true,
-            },
-            author:{
-                required: true,
-            },
-            articleSource: {
-                selrequired: "-1"
-            },
-            OrderWeight:{
-                digits:true,
-            }
-        },
-        messages: {
-            title:{
-                required:"请输入文件名称",
-                maxlength:"文章标题不许超过200个字符"
-            },
-            description:{
-                required:"请输入描述"
-            },
-            content:{
-                required:"请输入内容"
-            },
-            author:{
-                required:"请输入文章作者"
-            },
-            articleSource: {
-                selrequired: "请选择文章来源"
-            },
-            OrderWeight:{
-                digits:"请输入数字",
-            }
-        },
-        submitHandler: function (form, ev) {
-            commonUtil.setDisabled("jq-cms-Save");
-            $.ajax({
-                url: "/article/saveArticle",
-                data: {
-                    id:$("#hidArticleID").val(),
-                    title:$("#title").val(),
-                    customerId:customerId,
-                    content: $("#content").val(),
-                    thumbUri: $("#thumbUri").val(),
-                    description: $("#description").val(),
-                    author: $("#author").val(),
-                    articleSourceId: $("#articleSource").val(),
-                    categoryId: $("#categoryId").val(),
-                    orderWeight: $("#orderWeight").val()
+    exports.fromValidata=function(){
+        $("#addArticleForm").validate({
+            rules: {
+                title:{
+                    required: true,
+                    maxlength:200
                 },
-                type: "POST",
-                dataType: 'json',
-                success: function (data) {
-                    var layer=require("layer");
-                    if(data!=null)
-                    {
-                        var index=parseInt(data.code);
-                        if(index==200)
-                        {
-                            var layer=require("layer");
-                            layer.msg("操作成功,2秒后将自动返回列表页面",{time: 2000})
-                            setTimeout(function(){
-                                    window.location.href="http://"+window.location.host+"/"+"contents/contentsList?&customerid="+customerId;
-                                }
-                                ,1000);
-                        }
-                        if(index==500)
-                            layer.msg("操作失败",{time: 2000})
-                    }
-                    commonUtil.cancelDisabled("jq-cms-Save");
+                description:{
+                    required: true,
                 },
-                error: function () {
-                    commonUtil.cancelDisabled("jq-cms-Save");
+                content:{
+                    required: true,
+                },
+                author:{
+                    required: true,
+                },
+                articleSource: {
+                    selrequired: "-1"
+                },
+                OrderWeight:{
+                    digits:true,
                 }
-            });
-            return false;
-        },
-        invalidHandler: function () {
-            return true;
-        }
-    });
+            },
+            messages: {
+                title:{
+                    required:"请输入文件名称",
+                    maxlength:"文章标题不许超过200个字符"
+                },
+                description:{
+                    required:"请输入描述"
+                },
+                content:{
+                    required:"请输入内容"
+                },
+                author:{
+                    required:"请输入文章作者"
+                },
+                articleSource: {
+                    selrequired: "请选择文章来源"
+                },
+                OrderWeight:{
+                    digits:"请输入数字",
+                }
+            },
+            submitHandler: function (form, ev) {
+                commonUtil.setDisabled("jq-cms-Save");
+                editor.sync();
+                $.ajax({
+                    url: "/article/saveArticle",
+                    data: {
+                        id:$("#hidArticleID").val(),
+                        title:$("#title").val(),
+                        customerId:customerId,
+                        content: $("#content").val(),
+                        thumbUri: $("#thumbUri").val(),
+                        description: $("#description").val(),
+                        author: $("#author").val(),
+                        articleSourceId: $("#articleSource").val(),
+                        categoryId: $("#categoryId").val(),
+                        orderWeight: $("#orderWeight").val()
+                    },
+                    type: "POST",
+                    dataType: 'json',
+                    success: function (data) {
+                        var layer=require("layer");
+                        if(data!=null)
+                        {
+                            var index=parseInt(data.code);
+                            if(index==200)
+                            {
+                                var layer=require("layer");
+                                layer.msg("保存成功！", {time: 2000})
+                                $("#title").val("");
+                                $("#linkUrl").val("");
+                                editor.html("");
+                                $("#author").val("");
+                                $("#thumbUri").val("");
+                                $("#description").val("");
+                                $("#articleSource").val("-1");
+                                $("#uploadThumbUri").attr("src","");
+                                $("#orderWeight").val("50")
+                                //layer.msg("操作成功,2秒后将自动返回列表页面",{time: 2000})
+                                //setTimeout(function(){
+                                //        window.location.href="http://"+window.location.host+"/"+"contents/contentsList?&customerid="+customerId;
+                                //    }
+                                //    ,1000);
+                            }
+                            if(index==500)
+                                layer.msg("操作失败",{time: 2000})
+                        }
+                        commonUtil.cancelDisabled("jq-cms-Save");
+                    },
+                    error: function () {
+                        commonUtil.cancelDisabled("jq-cms-Save");
+                    }
+                });
+                return false;
+            },
+            invalidHandler: function () {
+                return true;
+            }
+        });
+    }
+    exports.uploadImg=function(){
+        uploadModule.uploadImg();
+    }
+
 
     //上传图片模块
     var uploadModule={
@@ -135,7 +152,7 @@ define(function (require, exports, module) {
         }
     }
 
-    uploadModule.uploadImg();
+    //uploadModule.uploadImg();
 
 
     //var ue = UE.getEditor('content',{

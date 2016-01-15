@@ -78,6 +78,7 @@ define(function (require, exports, module) {
                     title: $("#title").val(),
                     keywords: $("#keywords").val(),
                     copyright: $("#copyright").val(),
+                    resourceUrl: $("#resourceUrl").val(),
                     logoUri: $("#logoUri").val(),
                     custom: $("#custom_0").val(),
                     customTemplateUrl: $("#customTemplateUrl").val(),
@@ -100,6 +101,7 @@ define(function (require, exports, module) {
                             $("#title").val("");
                             $("#keywords").val("");
                             $("#copyright").val("");
+                            $("#resourceUrl").val("");
                             $("#logoUri").val("");
                             $("#custom_0").val("1");
                             $("#uploadLogoUri").attr("src","");

@@ -29,7 +29,7 @@
                             <th>所属栏目：</th>
                             <td>
                                 <select name="categoryId" class="input-normal" id="categoryId">
-                                    <option value="-1">==请选择栏目==</option>
+                                    <option value="-1" th:attr="data-modelType=-1">==请选择栏目==</option>
                                     <option th:each="category:${categorys}" th:value="${category.id}" th:attr="data-modelType=${category.modelId}" th:text="${category.name}"></option>
                                 </select>
                             </td>

@@ -30,12 +30,13 @@
   </div>
  </div>
  <div class="cj-box-a bacfff posup">
-  <div class="boxlist-a listap">
-   <p class="imgxian"><img src="images/zx-1.png"/></p>
-   <p class="on"><a>公司介绍</a></p>
-   <a><p>品牌理念</p></a>
-   <a><p>新闻资讯</p></a>
-   <a><p>品牌饰品</p></a>
+  <div class="boxlist-a listap" style="width: 170px;">
+   <p class="imgxian"><img th:src="${request.root}+'/images/zx-1.png'"/></p>
+   <div class="ayu">
+    <a data-th-href="@{${category.route.rule}}" data-category-foreach="category" data-param-specifyids="33,34,35,36">
+     <div class="pp on" data-th-class="${request.url==category.route.rule}?'pp on':'pp'"  data-th-text="${category.name}">品牌视频</div>
+    </a>
+   </div>
   </div>
   <div class="leftbox-a">
    <p class="fristp imgxian">当前位置&nbsp;:&nbsp;首页&nbsp;>&nbsp;品牌中心&nbsp;><i class="jieshao">&nbsp;品牌视频</i></p>

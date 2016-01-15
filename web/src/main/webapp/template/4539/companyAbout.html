@@ -1,8 +1,16 @@
 <!doctype html>
+<!--
+  ~ 版权所有:杭州火图科技有限公司
+  ~ 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+  ~
+  ~  (c) Copyright Hangzhou Hot Technology Co., Ltd.
+  ~  Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District 2013-2015. All rights reserved.
+  -->
+
 <html>
 <head>
   <meta charset="utf-8">
-  <title th:text="${site.title}+'|新闻资讯'"></title>
+  <title th:text="${site.title}+'|品牌中心'"></title>
   <meta name="keywords" th:content="${site.keywords}" />
   <meta name="description" th:content="${site.description}"/>
   <link rel="stylesheet" type="text/css" th:href="@{${request.root}+'/css/common.css'}">
@@ -12,7 +20,7 @@
 <body>
 <!---头--->
 <div class="header" data-th-replace="${resourcePath}+'/index.html' :: .header">
-  <img src="images/logo.png" class="logoimg">
+  <img src="http://www.test.com/images/logo.png" class="logoimg">
   <ul class="nav">
     <li class="active"><a href="index.html">首页</a></li>
     <li><a href="index2.html">品牌中心</a></li>
@@ -34,56 +42,27 @@
       <p class="imgian"><img th:src="${request.root}+'/images/zx-1.png'"/></p>
       <div class="ayu">
         <a data-th-href="@{${category.route.rule}}" data-category-foreach="category" data-param-specifyids="33,34,35,36">
-          <div class="pp on" data-th-class="${request.url==category.route.rule}?'pp on':'pp'"  data-th-text="${category.name}">新闻资讯</div>
+          <div class="pp on" data-th-class="${request.url==category.route.rule}?'pp on':'pp'"  data-th-text="${category.name}">公司介绍</div>
         </a>
+        <a href="#" data-th-remove="all"><div class="pp">品牌理念</div></a>
+        <a href="#" data-th-remove="all"><div class="pp">新闻资讯</div></a>
+        <a href="#" data-th-remove="all"><div class="pp">品牌视频</div></a>
       </div>
     </div>
     <div class="leftbox-a">
-      <p class="fristp imgxian">当前位置&nbsp;:&nbsp;首页&nbsp;>&nbsp;品牌中心&nbsp;><i class="jieshao">&nbsp;新闻资讯</i></p>
+      <p class="fristp imgxian">当前位置&nbsp;:&nbsp;首页&nbsp;>&nbsp;品牌中心&nbsp;><i class="jieshao">&nbsp;公司介绍</i></p>
       <p style="height:17px"></p>
-      <ul data-article-foreach="article" data-param-pagesize="8">
-        <li style="float:left"><i class=" cj-font-c"><a th:href="${request.rootUri}+'/new/'+${article.id}+'.html'"  data-th-text="${article.title}">永春2009秋冬产品订货会圆满闭幕</a> </i></li>
-        <li style="float:right" class="cj-time-a" data-th-text="${article.createTime}">2015-07-25</li>
-        <p style="clear:both"></p>
-        <li><p class="fontno"><i class="nocolor">摘要：</i><span data-th-text="${article.description}"></span></p></li>
-        <p style="clear:both;margin-bottom: 25px;" class="xiannext-b"></p>
-      </ul>
-      <p style="clear:both;"></p>
-      <div class="number">
-        <a data-th-remove="${!request.hasPrevPage} ? all" data-th-href="@{${request.prevPageHref}}">
-          <img th:src="${request.root}+'/images/left.jpg'" width="8px">
-        </a>
-        <a class="on" data-th-each="page:${request.pages}" data-th-text="${page.pageNo}"
-           data-th-class="${request.currentPage==page.pageNo}?on" data-th-href="@{${page.pageHref}}">
-          1
-        </a>
-        <!--<a data-th-remove="all">-->
-          <!--2-->
-        <!--</a>-->
-        <!--<a data-th-remove="all">-->
-          <!--3-->
-        <!--</a>-->
-        <!--<a data-th-remove="all">-->
-          <!--4-->
-        <!--</a>-->
-        <!--<a data-th-remove="all">-->
-          <!--5-->
-        <!--</a>-->
-        <!--<a data-th-remove="all">-->
-          <!--6-->
-        <!--</a>-->
-        <a data-th-remove="${!request.hasNextPage} ? all" data-th-href="@{${request.nextPageHref}}">
-          <img th:src="${request.root}+'/images/right.jpg'" width="8px">
-        </a>
-        <!--<a><img th:src="${request.root}+'/images/left.jpg'" width="8px"/></a>-->
-        <!--<a class="on">1</a>-->
-        <!--<a>2</a>-->
-        <!--<a>3</a>-->
-        <!--<a>4</a>-->
-        <!--<a>5</a>-->
-        <!--<a>6</a>-->
-        <!--<a><img th:src="${request.root}+'/images/right.jpg'" width="8px"/></a>-->
-      </div>
+      <p style="text-align:center" class="jieshao cj-font-b">永春2009秋冬产品订货会圆满闭幕</p>
+      <p class="cj-time">2015-07-25</p>
+      <p class="xiannext-b"></p>
+      <p style="text-align:center"><img th:src="${request.root}+'/images/zx-2.png'" width="717"/></p>
+      <p class="text-a"> &nbsp; &nbsp;2009年6月22日，永春袜业秋冬产品订货会在新投产的龙游工厂隆重举行，全国各地代理商齐聚一堂，共赴“永春之约 欢畅之旅”。
+        随着永春龙游新工厂的投产使用，公司进入了新一轮发展阶段。公司领导对此次产品订货会高度重视，全体员工通力协作、精心准备，确保订货会顺利举行。
+        此次订货会上公司推出了一系列新产品，丰富了永春品牌；同时实行新的市场品牌推广扶持政策，有效地提升了客户的经销积极性和品牌忠诚度。一系列新品新政策的推出，再一次见证了永春的整体实力。
+        各地经销商在详细了解产品后，对公司给予了很高的评价，纷纷踊跃下单订货。经销商的积极态度体现了客户对永春品牌的信任和对永春前景的信心。订货会取得了圆满成功。
+        为了答谢经销商多年来对永春针织的大力支持，会后公司组织全体经销商前往风景秀丽的旅游景点千岛湖一日游， 秀丽的千岛湖畔留下了全体永春人的欢声笑语，青山绿水共同见证永春品牌的茁壮成长。
+        2009年“永春之约欢畅之旅”秋冬产品订货会在和谐融洽的气氛中圆满落下帷幕! </p>
+      <p style="height:20px" class="xiannext-b"></p>
     </div>
   </div>
 </div>
@@ -96,7 +75,7 @@
     <ul><li><a>产品中心</a></li><li><a>热销产品</a></li><li><a>短袜系列</a></li><li><a>微压瘦腿</a></li></ul>
     <ul><li><a>企业采购</a></li><li><a>工艺制作</a></li><li><a>代理批发</a></li><li><a>礼盒定制</a></li></ul>
     <ul><li><a>LookBook</a></li><li><a>在线商城</a></li><li><a>微信活动</a></li></ul>
-    <div style=" float:right"><img src="images/erweima.png"></div>
+    <div style=" float:right"><img th:src="${request.root}+'/images/erweima.png'"></div>
     <p style="clear:both"></p>
     <p style="border-bottom:1px solid #373737; width:100%;height:20px;">&nbsp;</p>
     <P style="margin-top:10px;font-size:12px;">集团总部地址：浙江省义乌市下骆宅工业区  邮编：322013  电话：0579-85086166 85086188  E-mail：zhejiangyongchun@126.com</P>

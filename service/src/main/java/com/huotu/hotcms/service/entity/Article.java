@@ -69,6 +69,11 @@ public class Article extends BaseEntity {
     @Column(name = "author")
     private String author;
 
+    /**
+     * 是否系统文章,系统文章不允许删除
+     * **/
+    @Column(name="isSystem")
+    private Boolean isSystem;
 
 //    /**
 //     * 所属栏目

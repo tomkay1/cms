@@ -1,347 +1,102 @@
-<!--
-  ~ 版权所有:杭州火图科技有限公司
-  ~ 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
-  ~
-  ~  (c) Copyright Hangzhou Hot Technology Co., Ltd.
-  ~  Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District 2013-2015. All rights reserved.
-  -->
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!doctype html>
+<html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title th:text="${site.title}+'|产品中心'"></title>
+  <meta charset="utf-8">
+  <title th:text="${site.title}+'|新闻资讯'"></title>
   <meta name="keywords" th:content="${site.keywords}" />
   <meta name="description" th:content="${site.description}"/>
   <link rel="stylesheet" type="text/css" th:href="@{${request.root}+'/css/common.css'}">
-  <link rel="stylesheet" type="text/css" th:href="@{${request.root}+'/css/lobo.css'}">
+  <link rel="stylesheet" type="text/css" th:href="@{${request.root}+'/css/information.css'}">
   <link rel="stylesheet" type="text/css" th:href="@{${request.root}+'/css/index.css'}">
 </head>
-
 <body>
-
 <!---头--->
 <div class="header" data-th-replace="${resourcePath}+'/index.html' :: .header">
-  <img src="http://www.test.com/images/logo.png" class="logoimg">
+  <img src="images/logo.png" class="logoimg">
   <ul class="nav">
-    <li class="active">
-      <a href="index.html">
-        首页
-      </a>
-    </li>
-    <li>
-      <a href="index2.html">
-        品牌中心
-      </a>
-    </li>
-    <li>
-      <a href="index3.html">
-        产品中心
-      </a>
-    </li>
-    <li>
-      <a href="about.html">
-        在线商城
-      </a>
-    </li>
-    <li>
-      <a href="http://login.huobanmall.com">
-        微信活动
-      </a>
-    </li>
-    <li>
-      <a href="http://login.huobanmall.com/register.html">
-        LOOKBOOK
-      </a>
-    </li>
+    <li class="active"><a href="index.html">首页</a></li>
+    <li><a href="index2.html">品牌中心</a></li>
+    <li><a href="index3.html">产品中心</a></li>
+    <li><a href="about.html">在线商城</a></li>
+    <li><a href="http://login.huobanmall.com">微信活动</a></li>
+    <li><a href="http://login.huobanmall.com/register.html">LOOKBOOK</a></li>
   </ul>
 </div>
 <p style="clear:both"></p>
 <!---头--->
-
-<div  class="hr_pro" style="position: relative;">
-  <div class="r" style="height:429px;">
-    <div class="ee qa">
+<div class="cj-information">
+  <div class="cj-bigbox-a">
+    <div class="zximg">
     </div>
   </div>
-  <div class="gt"><img src="http://www.test.com/images/product_06.jpg" /></div>
-  <div class="keywords">
-	<ul style="margin: 10px 0px 20px 0px;">
-		<li>
-		<a href="product">
-		  全部
-		</a>
-		</li>
-	  <li data-category-foreach="category" data-param-routetype="5" data-param-size="6">
-		<a href="#" data-th-text="${category.name}" data-th-href="@{${category.route.rule}}">
-		  2016春夏款
-		</a>
-	  </li>
-	  <li data-th-remove="all">
-		<a href="#">
-		  常规款
-		</a>
-	  </li>
-	  <li data-th-remove="all">
-		<a href="#">
-		  新概念系列
-		</a>
-	  </li>
-	  <li data-th-remove="all">
-		<a href="#">
-		  孕妇富姐系列
-		</a>
-	  </li>
-	  <li data-th-remove="all">
-		<a href="#">
-		  短袜系列
-		</a>
-	  </li>
-	  <li data-th-remove="all">
-		<a href="#">
-		  永春礼盒
-		</a>
-	  </li>
-	</ul>
-  </div>
-
-  <div class="cp">
-    <ul data-th-remove="all-but-first">
-      <li class="nuy ffr" data-article-foreach="article">
-        <div><img src="http://www.test.com/images/c1.jpg" data-th-src="@{'~/'+${article.thumbUri}}" style="width:233px;"/></div>
-        <div class="gytr">
-          <p class="biaoti"><strong data-th-text="${article.title}">产品名称</strong></p>
-          <p class="miaoshu" data-th-text="${article.description}">永春丝袜打底裤袜女 冬季加厚保暖加绒一体裤 踩脚保暖连裤袜子</p>
-        </div>
-      </li>
-      <li class="nuy ffr">
-        <div><img src="http://www.test.com/images/c2.jpg" style="width:233px;"/></div>
-        <div class="gytr">
-          <p class="biaoti"><b>产品名称</b></p>
-          <p class="miaoshu">永春丝袜打底裤袜女 冬季加厚保暖加绒一体裤 踩脚保暖连裤袜子</p>
-        </div>
-      </li>
-      <li class="nuy ffr">
-        <div><img src="http://www.test.com/images/c3.jpg" style="width:233px;"/></div>
-        <div class="gytr">
-          <p class="biaoti"><b>产品名称</b></p>
-          <p class="miaoshu">永春丝袜打底裤袜女 冬季加厚保暖加绒一体裤 踩脚保暖连裤袜子</p>
-        </div>
-      </li>
-      <li class="nuy">
-        <div><img src="http://www.test.com/images/c4.jpg" style="width:233px;"/></div>
-        <div class="gytr">
-          <p class="biaoti"><b>产品名称</b></p>
-          <p class="miaoshu">永春丝袜打底裤袜女 冬季加厚保暖加绒一体裤 踩脚保暖连裤袜子</p>
-        </div>
-      </li>
-	  <li class="nuy ffr" data-article-foreach="article">
-        <div><img src="http://www.test.com/images/c1.jpg" style="width:233px;"/></div>
-        <div class="gytr">
-          <p class="biaoti"><strong data-th-text="${article.title}">产品名称</strong></p>
-          <p class="miaoshu" data-th-text="${article.description}">永春丝袜打底裤袜女 冬季加厚保暖加绒一体裤 踩脚保暖连裤袜子</p>
-        </div>
-      </li>
-      <li class="nuy ffr">
-        <div><img src="http://www.test.com/images/c2.jpg" style="width:233px;"/></div>
-        <div class="gytr">
-          <p class="biaoti"><b>产品名称</b></p>
-          <p class="miaoshu">永春丝袜打底裤袜女 冬季加厚保暖加绒一体裤 踩脚保暖连裤袜子</p>
-        </div>
-      </li>
-      <li class="nuy ffr">
-        <div><img src="http://www.test.com/images/c3.jpg" style="width:233px;"/></div>
-        <div class="gytr">
-          <p class="biaoti"><b>产品名称</b></p>
-          <p class="miaoshu">永春丝袜打底裤袜女 冬季加厚保暖加绒一体裤 踩脚保暖连裤袜子</p>
-        </div>
-      </li>
-      <li class="nuy">
-        <div><img src="http://www.test.com/images/c4.jpg" style="width:233px;"/></div>
-        <div class="gytr">
-          <p class="biaoti"><b>产品名称</b></p>
-          <p class="miaoshu">永春丝袜打底裤袜女 冬季加厚保暖加绒一体裤 踩脚保暖连裤袜子</p>
-        </div>
-      </li>
-	  <li class="nuy ffr" data-article-foreach="article">
-        <div><img src="http://www.test.com/images/c1.jpg" style="width:233px;"/></div>
-        <div class="gytr">
-          <p class="biaoti"><strong data-th-text="${article.title}">产品名称</strong></p>
-          <p class="miaoshu" data-th-text="${article.description}">永春丝袜打底裤袜女 冬季加厚保暖加绒一体裤 踩脚保暖连裤袜子</p>
-        </div>
-      </li>
-      <li class="nuy ffr">
-        <div><img src="http://www.test.com/images/c2.jpg" style="width:233px;"/></div>
-        <div class="gytr">
-          <p class="biaoti"><b>产品名称</b></p>
-          <p class="miaoshu">永春丝袜打底裤袜女 冬季加厚保暖加绒一体裤 踩脚保暖连裤袜子</p>
-        </div>
-      </li>
-      <li class="nuy ffr">
-        <div><img src="http://www.test.com/images/c3.jpg" style="width:233px;"/></div>
-        <div class="gytr">
-          <p class="biaoti"><b>产品名称</b></p>
-          <p class="miaoshu">永春丝袜打底裤袜女 冬季加厚保暖加绒一体裤 踩脚保暖连裤袜子</p>
-        </div>
-      </li>
-      <li class="nuy">
-        <div><img src="http://www.test.com/images/c4.jpg" style="width:233px;"/></div>
-        <div class="gytr">
-          <p class="biaoti"><b>产品名称</b></p>
-          <p class="miaoshu">永春丝袜打底裤袜女 冬季加厚保暖加绒一体裤 踩脚保暖连裤袜子</p>
-        </div>
-      </li>
-    </ul>
-
-
-  </div>
-  <p style="clear:both;"></p>
-
-
-  <!--页数-->
-  <div style="width:1000px;margin:0 auto;text-align:center;padding:20px 0px;height:30px;">
-    <div class="number">
-      <a data-th-remove="!${request.hasPrevPage} ? all" data-th-href="@{'?pageNo='+${request.currentPage-1}}">
-        <img src="http://www.test.com/images/left.jpg" width="8px">
-      </a>
-      <a class="on" data-th-each="page:${request.pages}" data-th-text="${page.pageNo}"
-         data-th-class="${page.pageNo==request.currentPage} ? on" data-th-href="@{${page.pageHref}}">
-        1
-      </a>
-      <a data-th-remove="all">
-        2
-      </a>
-      <a data-th-remove="all">
-        3
-      </a>
-      <a data-th-remove="all">
-        4
-      </a>
-      <a data-th-remove="all">
-        5
-      </a>
-      <a data-th-remove="all">
-        6
-      </a>
-      <a data-th-remove="${!request.hasNextPage} ? all" data-th-href="@{'?pageNo='+${request.currentPage+1}}">
-        <img src="http://www.test.com/images/right.jpg" width="8px">
-      </a>
+  <div class="cj-box-a bacfff posup">
+    <div class="boxlist-a listap">
+      <p class="imgian"><img th:src="${request.root}+'/images/zx-1.png'"/></p>
+      <div class="ayu">
+        <a data-th-href="@{${category.route.rule}}" data-category-foreach="category" data-param-parentid="25">
+          <div class="pp on" data-th-class="${request.url==category.route.rule}?'pp on':'pp'"  data-th-text="${category.name}">公司介绍</div>
+        </a>
+      </div>
+    </div>
+    <div class="leftbox-a">
+      <p class="fristp imgxian">当前位置&nbsp;:&nbsp;首页&nbsp;>&nbsp;品牌中心&nbsp;><i class="jieshao">&nbsp;公司介绍</i></p>
+      <p style="height:17px"></p>
+      <ul data-article-foreach="article" data-param-pagesize="8">
+        <li style="float:left"><i class=" cj-font-c"><a th:href="${request.rootUri}+'/new/'+${article.id}+'.html'"  data-th-text="${article.title}">永春2009秋冬产品订货会圆满闭幕</a> </i></li>
+        <li style="float:right" class="cj-time-a" data-th-text="${article.createTime}">2015-07-25</li>
+        <p style="clear:both"></p>
+        <li><p class="fontno"><i class="nocolor">摘要：</i><span data-th-text="${article.description}"></span></p></li>
+        <p style="clear:both;margin-bottom: 25px;" class="xiannext-b"></p>
+      </ul>
+      <p style="clear:both;"></p>
+      <div class="number">
+        <a data-th-remove="${!request.hasPrevPage} ? all" data-th-href="@{${request.prevPageHref}}">
+          <img th:src="${request.root}+'/images/left.jpg'" width="8px">
+        </a>
+        <a class="on" data-th-each="page:${request.pages}" data-th-text="${page.pageNo}"
+           data-th-class="${request.currentPage==page.pageNo}?on" data-th-href="@{${page.pageHref}}">
+          1
+        </a>
+        <!--<a data-th-remove="all">-->
+          <!--2-->
+        <!--</a>-->
+        <!--<a data-th-remove="all">-->
+          <!--3-->
+        <!--</a>-->
+        <!--<a data-th-remove="all">-->
+          <!--4-->
+        <!--</a>-->
+        <!--<a data-th-remove="all">-->
+          <!--5-->
+        <!--</a>-->
+        <!--<a data-th-remove="all">-->
+          <!--6-->
+        <!--</a>-->
+        <a data-th-remove="${!request.hasNextPage} ? all" data-th-href="@{${request.nextPageHref}}">
+          <img th:src="${request.root}+'/images/right.jpg'" width="8px">
+        </a>
+        <!--<a><img th:src="${request.root}+'/images/left.jpg'" width="8px"/></a>-->
+        <!--<a class="on">1</a>-->
+        <!--<a>2</a>-->
+        <!--<a>3</a>-->
+        <!--<a>4</a>-->
+        <!--<a>5</a>-->
+        <!--<a>6</a>-->
+        <!--<a><img th:src="${request.root}+'/images/right.jpg'" width="8px"/></a>-->
+      </div>
     </div>
   </div>
-
-  <!--页数-->
-  <p style="clear:both"></p>
 </div>
-
+<p style="clear:both; height:734px;background-color:#efefef"></p>
 <!--脚-->
 <div style="background-color:#1a1a1a">
-  <div  class="footsy" data-th-replace="${resourcePath}+'/index.html' :: .footsy">
-    <ul>
-      <li>
-        <a>
-          首页
-        </a>
-      </li>
-      <li>
-        <a>
-          品牌中心
-        </a>
-      </li>
-      <li>
-        <a>
-          产品中心
-        </a>
-      </li>
-      <li>
-        <a>
-          服务支持
-        </a>
-      </li>
-    </ul>
-    <ul>
-      <li>
-        <a>
-          品牌中心
-        </a>
-      </li>
-      <li>
-        <a>
-          公司介绍
-        </a>
-      </li>
-      <li>
-        <a>
-          品牌理念
-        </a>
-      </li>
-      <li>
-        <a>
-          品牌新闻
-        </a>
-      </li>
-    </ul>
-    <ul>
-      <li>
-        <a>
-          产品中心
-        </a>
-      </li>
-      <li>
-        <a>
-          热销产品
-        </a>
-      </li>
-      <li>
-        <a>
-          短袜系列
-        </a>
-      </li>
-      <li>
-        <a>
-          微压瘦腿
-        </a>
-      </li>
-    </ul>
-    <ul>
-      <li>
-        <a>
-          企业采购
-        </a>
-      </li>
-      <li>
-        <a>
-          工艺制作
-        </a>
-      </li>
-      <li>
-        <a>
-          代理批发
-        </a>
-      </li>
-      <li>
-        <a>
-          礼盒定制
-        </a>
-      </li>
-    </ul>
-    <ul>
-      <li>
-        <a>
-          LookBook
-        </a>
-      </li>
-      <li>
-        <a>
-          在线商城
-        </a>
-      </li>
-      <li>
-        <a>
-          微信活动
-        </a>
-      </li>
-    </ul>
-    <div style=" float:right"><img src="http://www.test.com/images/erweima.png"></div>
+  <div  class="footsy"  data-th-replace="${resourcePath}+'/index.html' :: .footsy">
+    <ul><li><a>首页</a></li><li><a>品牌中心</a></li><li><a>产品中心</a></li><li><a>服务支持</a></li></ul>
+    <ul><li><a>品牌中心</a></li><li><a>公司介绍</a></li><li><a>品牌理念</a></li><li><a>品牌新闻</a></li></ul>
+    <ul><li><a>产品中心</a></li><li><a>热销产品</a></li><li><a>短袜系列</a></li><li><a>微压瘦腿</a></li></ul>
+    <ul><li><a>企业采购</a></li><li><a>工艺制作</a></li><li><a>代理批发</a></li><li><a>礼盒定制</a></li></ul>
+    <ul><li><a>LookBook</a></li><li><a>在线商城</a></li><li><a>微信活动</a></li></ul>
+    <div style=" float:right"><img src="images/erweima.png"></div>
     <p style="clear:both"></p>
     <p style="border-bottom:1px solid #373737; width:100%;height:20px;">&nbsp;</p>
     <P style="margin-top:10px;font-size:12px;">集团总部地址：浙江省义乌市下骆宅工业区  邮编：322013  电话：0579-85086166 85086188  E-mail：zhejiangyongchun@126.com</P>

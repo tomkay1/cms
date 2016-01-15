@@ -4,6 +4,7 @@ import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.service.RouteService;
+import com.huotu.hotcms.web.common.ConfigInfo;
 import com.huotu.hotcms.web.util.PatternMatchUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -67,16 +68,17 @@ public class RouteResolverService {
      * */
     public String getRouteTemplate(Site site,RouteType routeType){
         if(site!=null&&routeType!=null){
+            String resourcePath = site.isCustom() ? site.getCustomTemplateUrl() : ConfigInfo.getRootTemplate(site.getCustomerId());
             if(routeType.getCode().equals(RouteType.NOT_FOUND.getCode())){
                 Route route=getRouteByRouteType(site, routeType);
                 if(route!=null){
-                    return site.getCustomTemplateUrl() + route.getTemplate();//404路由模版
+                    return resourcePath + route.getTemplate();//404路由模版
                 }
             }
             if(routeType.getCode().equals(RouteType.SERVER_ERROR.getCode())){
                 Route route=getRouteByRouteType(site, routeType);
                 if(route!=null){
-                    return site.getCustomTemplateUrl() + route.getTemplate();//服务器错误路由模版
+                    return resourcePath + route.getTemplate();//服务器错误路由模版
                 }
             }
         }

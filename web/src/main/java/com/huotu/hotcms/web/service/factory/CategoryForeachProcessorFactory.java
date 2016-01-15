@@ -67,7 +67,7 @@ public class CategoryForeachProcessorFactory {
             }else if(categoryForeachParam.getSize()<1) {
                 categoryForeachParam.setSize(1);
             }
-            /*//根据所属父节点及路由类型取得列表
+            //根据所属父节点及路由类型取得列表
             //设置站点id
             if (StringUtils.isEmpty(categoryForeachParam.getSiteid())) {
                 Site site = (Site) VariableExpression.getVariable(context, "site");
@@ -82,13 +82,11 @@ public class CategoryForeachProcessorFactory {
             Long parentId = categoryForeachParam.getParentid();
             if(parentId==null) {
                 Category current = categoryService.getCategoryByRoute(route);
-                Category parent = current.getParent();
-                parentId = parent == null ? null : parent.getId();
-                categoryForeachParam.setParentid(parentId);
+                categoryForeachParam.setParentid(current.getId());
             }
-            return categoryService.findByRouteTypeAndParentId(categoryForeachParam);*/
+            return categoryService.findByRouteTypeAndParentId(categoryForeachParam);
 
-            //设置父节点id
+            /*//设置父节点id
             Long parentId = categoryForeachParam.getParentid();
             if(parentId!=null) {
                 return categoryService.getSubCategories(parentId,categoryForeachParam.getSize());
@@ -102,7 +100,12 @@ public class CategoryForeachProcessorFactory {
                 Route route = (Route)VariableExpression.getVariable(context,"route");
                 categoryForeachParam.setRoutetype(route.getRouteType());
             }
-            return categoryService.getGivenTypeCategories(categoryForeachParam);
+            Route route = (Route)VariableExpression.getVariable(context,"route");
+            Category current = categoryService.getCategoryByRoute(route);
+            if(current.getParent()!=null) {
+                categoryForeachParam.setParentid(current.getId());
+            }
+            return categoryService.getGivenTypeCategories(categoryForeachParam);*/
         } catch (Exception e) {
             log.error(e.getMessage());
         }

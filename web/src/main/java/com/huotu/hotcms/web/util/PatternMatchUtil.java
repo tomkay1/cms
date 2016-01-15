@@ -23,6 +23,8 @@ public class PatternMatchUtil {
 
     public static final String templateRegexp="^/template";//用于内部模版静态资源跳转CMS路由关键字
 
+    public static final String urlParamRegexp=".*?(\\d*).html";
+
     /**
      * 获得第一个语言参数
      * */
@@ -99,6 +101,24 @@ public class PatternMatchUtil {
         if(match.matches()) {
             if(match.groupCount()>=1) {
                 return Integer.parseInt(match.group(1));
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 根据url和路由规则来获得ID
+     *
+     * @param url
+     * @param regexp
+     * @return 返回ID
+     * */
+    public static Long getUrlIdByLongType(String url,String regexp){
+        Pattern pattern = Pattern.compile(regexp);
+        Matcher match = pattern.matcher(url);
+        if(match.matches()) {
+            if(match.groupCount()>=1) {
+                return Long.parseLong(match.group(1));
             }
         }
         return null;
@@ -213,4 +233,5 @@ public class PatternMatchUtil {
         path=path.replace("//","/");
         return path;
     }
+
 }

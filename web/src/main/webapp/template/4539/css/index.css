@@ -40,7 +40,7 @@ line-height: 18px; width:130px;
 }
 .header .nav li.active a {
 position: relative;  
-color: #005e3c;padding:20px 20px 20px 20px;-webkit-transition: all 0.30s ease-out;
+color: #005e3c;padding:20px 15px 20px 15px;-webkit-transition: all 0.30s ease-out;
 -moz-transition: all 0.30s ease-out;
 -ms-transition: all 0.30s ease-out;
 -o-transition: all 0.30s ease-out;

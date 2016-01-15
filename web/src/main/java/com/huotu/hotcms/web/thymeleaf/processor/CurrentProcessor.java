@@ -20,31 +20,16 @@ import org.thymeleaf.templatemode.TemplateMode;
  * @since 1.0.0
  */
 public class CurrentProcessor extends AbstractAttributeTagProcessor {
-    public static final int PRECEDENCE = 1300;
+    public static final int PRECEDENCE = 800;
 
     public static final String ATTR_NAME = "current";
     private CurrentProcessorService currentProcessorService;
 
     public CurrentProcessor(final IProcessorDialect dialect, final String dialectPrefix) {
-//        super(dialect, TemplateMode.HTML, dialectPrefix, ATTR_NAME, PRECEDENCE, true);
         super(dialect, TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
         this.currentProcessorService = new CurrentProcessorService();
         this.currentProcessorService.setDialectPrefix(dialectPrefix);
     }
-//
-//    @Override
-//    protected void doProcess(ITemplateContext context,
-//                             IProcessableElementTag tag,
-//                             AttributeName attributeName,
-//                             String attributeValue,
-//                             String attributeTemplateName,
-//                             int attributeLine,
-//                             int attributeCol,
-//                             Object expressionResult,
-//                             IElementTagStructureHandler structureHandler) {
-//        final String text = (String) this.currentProcessorService.resolveDataByAttr(tag,attributeValue, context);
-//        structureHandler.setBody(text, true);
-//    }
 
     @Override
     protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName, String attributeValue, String attributeTemplateName, int attributeLine, int attributeCol, IElementTagStructureHandler structureHandler){

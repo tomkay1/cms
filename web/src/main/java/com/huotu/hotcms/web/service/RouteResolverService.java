@@ -40,8 +40,15 @@ public class RouteResolverService {
         Set<Route> routes =routeService.getRoute(site);
         for(Route s : routes) {
             if(s.getRule()!=null) {
-                if(url.matches(s.getRule())) {
-                    return s;
+                if(s.getRule().contains("?")){
+                    String ruleStr= s.getRule().substring(0,s.getRule().indexOf("?"));
+                    if (url.matches(ruleStr)) {
+                        return s;
+                    }
+                }else {
+                    if (url.matches(s.getRule())) {
+                        return s;
+                    }
                 }
             }
         }

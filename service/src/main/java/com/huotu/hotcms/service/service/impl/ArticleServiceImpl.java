@@ -4,6 +4,7 @@ import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.model.ArticleCategory;
 import com.huotu.hotcms.service.model.thymeleaf.ArticleForeachParam;
+import com.huotu.hotcms.service.model.thymeleaf.current.ArticleCurrentParam;
 import com.huotu.hotcms.service.repository.ArticleRepository;
 import com.huotu.hotcms.service.service.ArticleService;
 import com.huotu.hotcms.service.service.CategoryService;
@@ -156,5 +157,15 @@ public class ArticleServiceImpl implements ArticleService {
         return true;
     }
 
-
+    @Override
+    public Article getArticleByParam(ArticleCurrentParam articleCurrentParam) {
+        if (articleCurrentParam != null) {
+            if (articleCurrentParam.getId() != null) {
+                return articleRepository.getOne(articleCurrentParam.getId());
+            } else {
+                return articleRepository.getOne(articleCurrentParam.getDefaultid());
+            }
+        }
+        return null;
+    }
 }

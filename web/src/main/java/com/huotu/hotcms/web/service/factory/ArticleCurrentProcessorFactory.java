@@ -74,9 +74,14 @@ public class ArticleCurrentProcessorFactory extends BaseProcessorService {
                 WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
                 ArticleService articleService = (ArticleService)applicationContext.getBean("articleServiceImpl");
                 ArticleCurrentParam articleCurrentParam = DialectAttributeFactory.getInstance().getForeachParam(tab, ArticleCurrentParam.class);
-                if(articleCurrentParam!=null){
-                    return articleService.findById(articleCurrentParam.getId());
+                HttpServletRequest request = ((IWebContext)context).getRequest();
+                String selvertUrl=PatternMatchUtil.getServletUrl(request);
+                if(articleCurrentParam!=null){//根据当前请求的Uri来获得指定的ID
+                    if(articleCurrentParam.getId()==null){
+                        articleCurrentParam.setId(PatternMatchUtil.getUrlIdByLongType(selvertUrl,PatternMatchUtil.urlParamRegexp));
+                    }
                 }
+                return  articleService.getArticleByParam(articleCurrentParam);
             }
         }catch (Exception ex){
             log.error(ex.getMessage());

@@ -67,8 +67,8 @@ public class CategoryForeachProcessorFactory {
             }else if(categoryForeachParam.getSize()<1) {
                 categoryForeachParam.setSize(1);
             }
-            /*//根据所属父节点及路由类型取得列表
-            //设置站点id
+            //根据所属父节点及路由类型取得列表
+            /*//设置站点id
             if (StringUtils.isEmpty(categoryForeachParam.getSiteid())) {
                 Site site = (Site) VariableExpression.getVariable(context, "site");
                 categoryForeachParam.setSiteid(site.getSiteId());
@@ -102,6 +102,9 @@ public class CategoryForeachProcessorFactory {
                 Route route = (Route)VariableExpression.getVariable(context,"route");
                 categoryForeachParam.setRoutetype(route.getRouteType());
             }
+            Route route = (Route)VariableExpression.getVariable(context,"route");
+            Category parent = categoryService.getCategoryByRoute(route);
+            categoryForeachParam.setParentid(parent.getId());
             return categoryService.getGivenTypeCategories(categoryForeachParam);
         } catch (Exception e) {
             log.error(e.getMessage());

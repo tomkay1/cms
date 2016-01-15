@@ -70,12 +70,12 @@ public class VideoForeachProcessorFactory {
             Category current = categoryService.getCategoryByRoute(route);
             if(StringUtils.isEmpty(videoForeachParam.getCategoryid())) {
                 //如果不是具体子栏目，应取得当前栏目所有一级子栏目数据列表
-                if(route.getRouteType()== RouteType.ARTICLE_LIST) {
+                if(route.getRouteType()== RouteType.VIDEO_LIST) {
                     videoForeachParam.setCategoryid(current.getId());
                 }
             }
             if(StringUtils.isEmpty(videoForeachParam.getParentcid())) {
-                if(route.getRouteType()!=RouteType.ARTICLE_LIST) {
+                if(route.getRouteType()!=RouteType.VIDEO_LIST) {
                     videoForeachParam.setParentcid(current.getId());
                 }
             }

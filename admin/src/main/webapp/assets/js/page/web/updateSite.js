@@ -48,6 +48,7 @@ define(function (require, exports, module) {
         },
         submitHandler: function (form, ev) {
             var commonUtil = require("common");
+            commonUtil.setDisabled("jq-cms-Save");
             var custom= $("#custom_0").val();
             var customTemplateUrl= $("#customTemplateUrl").val();
             var layer=require("layer");

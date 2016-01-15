@@ -1,5 +1,6 @@
 package com.huotu.hotcms.service.repository;
 
+import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Site;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -12,6 +13,8 @@ import java.util.Set;
  */
 public interface SiteRepository  extends JpaRepository<Site, Long>,JpaSpecificationExecutor {
     Site findByCustomerIdAndName(Integer customId,String name);
+
+    List<Site> findByHosts(Host host);
 
     Set<Site> findByCustomerId(int customerId);
 

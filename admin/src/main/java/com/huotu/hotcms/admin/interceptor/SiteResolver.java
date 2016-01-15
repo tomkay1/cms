@@ -105,6 +105,10 @@ public class SiteResolver implements HandlerMethodArgumentResolver {
             site.setCopyright(request.getParameter("copyright"));
             initSuccess = true;
         }
+        if(!StringUtils.isEmpty(request.getParameter("resourceUrl"))) {
+            site.setResourceUrl(request.getParameter("resourceUrl"));
+            initSuccess = true;
+        }
         if(!StringUtils.isEmpty(request.getParameter("custom"))) {
             site.setCustom("0".equals(request.getParameter("custom")) ? false : true);
             initSuccess = true;

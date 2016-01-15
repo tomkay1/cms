@@ -6,6 +6,7 @@ import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Region;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.repository.RegionRepository;
+import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.service.HostService;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.util.PageData;
@@ -25,6 +26,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -44,6 +47,9 @@ public class SiteController {
 
     @Autowired
     private RegionRepository regionRepository;
+
+    @Autowired
+    private SiteRepository siteRepository;
 
 
     @Autowired
@@ -80,28 +86,107 @@ public class SiteController {
     @ResponseBody
     public ResultView updateSite(Site site,Long regionId,String...domains){
         ResultView result=null;
+//        try {
+//                for (String domain : domains) {
+//                    Host flag = hostService.getHost(domain);
+//                    if (flag == null) {//全新域名
+//                        Host host = new Host();
+//                        host.setCustomerId(site.getCustomerId());
+//                        host.setDomain(domain);
+//                        site.addHost(host);
+//                    } else {
+//                        if (flag.getCustomerId() .equals(site.getCustomerId())&&!regionId.equals(site.getRegion().getId())) {//域名相同，但是地区不同
+//                            siteService.save(site);
+//                            site.addHost(flag);
+//
+//                        } else {//当域名已被占用
+//                            result = new ResultView(ResultOptionEnum.DOMAIN_EXIST.getCode(), ResultOptionEnum.DOMAIN_EXIST.getValue(), null);
+//                            return result;
+//                        }
+//                    }
+//                }
+//                Long siteId = site.getSiteId();
+//                Region region = regionRepository.findOne(regionId);
+//                String resourceUrl = site.getResourceUrl();
+//                if(StringUtils.isEmpty(resourceUrl)){
+//                    resourceUrl =resourceServer.getResource("").toString();
+//                }
+//                site.setResourceUrl(resourceUrl);
+//                if (siteId == null) {
+//                    site.setCreateTime(LocalDateTime.now());
+//                    site.setUpdateTime(LocalDateTime.now());
+//                    site.setRegion(region);
+//                    site.setDeleted(false);
+//                    siteService.save(site);
+//                } else {
+//                    site.setUpdateTime(LocalDateTime.now());
+//                    siteService.save(site);
+//                }
+//                result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
+//        }
+//        catch (Exception ex)
+//        {
+//            log.error(ex.getMessage());
+//            result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
+//        }
+        Set<Host> hostSet = new HashSet<>();
         try {
-            if (domains.length != 0) {
+            Long siteId = site.getSiteId();
+            if (siteId == null) {//新增站点
                 for (String domain : domains) {
                     Host flag = hostService.getHost(domain);
                     if (flag == null) {//全新域名
                         Host host = new Host();
                         host.setCustomerId(site.getCustomerId());
                         host.setDomain(domain);
-                        site.addHost(host);
+                        hostSet.add(host);
                     } else {
-                        if (flag.getCustomerId() .equals(site.getCustomerId())&&!regionId.equals(site.getRegion().getId())) {//域名相同，但是地区不同
-                            siteService.save(site);
-                            site.addHost(flag);
-
-                        } else {//当域名已被占用
-                            result = new ResultView(ResultOptionEnum.DOMAIN_EXIST.getCode(), ResultOptionEnum.DOMAIN_EXIST.getValue(), null);
+                       if( flag.getCustomerId().equals(site.getCustomerId())){//如果是同一商户
+                           List<Site> siteList=siteRepository.findByHosts(flag);
+                           List<Long> regionList = new ArrayList<>();
+                           for(Site site1 :siteList){
+                               regionList.add(site1.getRegion().getId());//取得包含该域名下的所有地区列表
+                           }
+                           if(regionList.contains(regionId)){
+                               result = new ResultView(ResultOptionEnum.DOMAIN_EXIST.getCode(), ResultOptionEnum.DOMAIN_EXIST.getValue(), null);
+                               return result;
+                           }
+                           else {
+                               hostSet.add(flag);
+                           }
+                       }
+                        else {//不同商户
+                           result = new ResultView(ResultOptionEnum.DOMAIN_EXIST.getCode(), ResultOptionEnum.DOMAIN_EXIST.getValue(), null);
                             return result;
+                       }
+                    }
+                }
+            }
+            else {//修改站点
+                for (String domain : domains) {
+                    Host flag = hostService.getHost(domain);
+                    if (flag == null) {//全新域名
+                        Host host = new Host();
+                        host.setCustomerId(site.getCustomerId());
+                        host.setDomain(domain);
+                        hostSet.add(host);
+                    } else {//不是全新域名
+                        if(flag.getCustomerId().equals(site.getCustomerId()))
+                            hostSet.add(flag);
+                        else{
+                            result = new ResultView(ResultOptionEnum.DOMAIN_EXIST.getCode(), ResultOptionEnum.DOMAIN_EXIST.getValue(), null);
+                                return result;
                         }
                     }
                 }
-                Long siteId = site.getSiteId();
+            }
+                site.setHosts(hostSet);
                 Region region = regionRepository.findOne(regionId);
+                String resourceUrl = site.getResourceUrl();
+                if(StringUtils.isEmpty(resourceUrl)){
+                    resourceUrl =resourceServer.getResource("").toString();
+                }
+                site.setResourceUrl(resourceUrl);
                 if (siteId == null) {
                     site.setCreateTime(LocalDateTime.now());
                     site.setUpdateTime(LocalDateTime.now());
@@ -113,15 +198,13 @@ public class SiteController {
                     siteService.save(site);
                 }
                 result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
-            }
-
         }
         catch (Exception ex)
         {
             log.error(ex.getMessage());
             result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
         }
-        return  result;
+        return result;
     }
 
 

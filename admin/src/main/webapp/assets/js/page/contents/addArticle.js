@@ -23,6 +23,9 @@ define(function (require, exports, module) {
                 articleSource: {
                     selrequired: "-1"
                 },
+                isSystem: {
+                    selrequired: "-1"
+                },
                 OrderWeight:{
                     digits:true,
                 }
@@ -41,6 +44,9 @@ define(function (require, exports, module) {
                 author:{
                     required:"请输入文章作者"
                 },
+                isSystem: {
+                    selrequired: "请选择文章类型"
+                },
                 articleSource: {
                     selrequired: "请选择文章来源"
                 },
@@ -58,6 +64,7 @@ define(function (require, exports, module) {
                         title:$("#title").val(),
                         customerId:customerId,
                         content: $("#content").val(),
+                        isSystem: $("#isSystem").val(),
                         thumbUri: $("#thumbUri").val(),
                         description: $("#description").val(),
                         author: $("#author").val(),
@@ -80,6 +87,7 @@ define(function (require, exports, module) {
                                 $("#linkUrl").val("");
                                 editor.html("");
                                 $("#author").val("");
+                                $("#isSystem").val("-1");
                                 $("#thumbUri").val("");
                                 $("#description").val("");
                                 $("#articleSource").val("-1");

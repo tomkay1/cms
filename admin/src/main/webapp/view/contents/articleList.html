@@ -7,6 +7,8 @@
     <link  href="/assets/css/admin.global.css"  type="text/css" rel="stylesheet"/>
     <link  href="/assets/css/global.css"  type="text/css" rel="stylesheet"/>
     <link href="/assets/libs/layer/skin/layer.css" rel="stylesheet"/>
+    <script src="/assets/libs/richText/kindeditor-min.js" type="application/javascript"></script>
+    <script src="/assets/libs/richText/lang/zh_CN.js" type="application/javascript"></script>
     <script src="/assets/seajs/sea.js" type="application/javascript"></script>
     <script src="/assets/seajs/config.js" type="application/javascript"></script>
 </head>
@@ -40,15 +42,25 @@
                                 <img id="uploadThumbUri" th:src="${logo_uri}"style="width: 80px; height: 80px; border: 1px solid #ccc; float: left; background: #efefef; line-height: 80px; text-align: center; color: #ccc;"/>
                             </td>
                         </tr>
-                        <th>文章描述：</th>
-                        <td>
-                            <input name="description" type="text" id="description" maxlength="50" class="input-normal" th:value="${article.description}">
-                        </td>
+                        <tr>
+                             <th>文章描述：</th>
+                            <td>
+                              <textarea rows="" cols="" style="width: 250px; height: 60px;" class="input-normal" id="description" name="description" th:text="${article.description}" ></textarea>
+                            </td>
                         </tr>
                         <tr>
                             <th>文章作者：</th>
                             <td>
                                 <input name="author" type="text" id="author" maxlength="50" class="input-normal" th:value="${article.author}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>文章类型：</th>
+                            <td>
+                                <select name="isSystem" class="input-normal" id="isSystem">
+                                    <option value="0"  th:selected="${article.isSystem}==true?true:false">系统文章</option>
+                                    <option value="1" th:selected="${article.isSystem}==false?true:false">普通文章</option></select>
+                                <span style="color:#f00;">（警告:系统文章不允许删除）</span>
                             </td>
                         </tr>
                         <tr>
@@ -120,6 +132,15 @@
         </form>
     </div>
 </div>
+<script>
+    window.editor = KindEditor.create('#content', {
+        resizeType: '0',
+        width: '980px',
+        height: '300px',
+        uploadJson: '/cms/kindeditorUpload',
+        afterBlur: function () { this.sync(); }
+    });
+</script>
 <script>seajs.use(["validate","message","kindeditor","zh_CN","init","articleList"]);</script>
 </body>
 </html>

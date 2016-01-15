@@ -14,6 +14,8 @@ public enum ResultOptionEnum implements CommonEnum {
     DOMAIN_EXIST(203,"域名已经存在"),
     ROUTE_EXISTS(204,"路由规则已经存在"),
     EXISTS_RELATION(205,"存在关联信息"),
+    SYSTEM_ARTICLE(206,"系统文章不可做删除操作"),
+
 
     FILE_FORMATTER_ERROR(403,"文件格式错误"),
     NOFIND(404,"没有信息"),

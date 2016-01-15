@@ -165,6 +165,9 @@ define(function (require, exports, module) {
                                     case 202:
                                         layer.msg("对不起,您没有删除权限",{time: 2000});
                                         break;
+                                    case 206:
+                                        layer.msg("对不起,系统文章不可做删除操作",{time: 2000});
+                                        break;
                                     default :
                                         layer.msg("系统繁忙,请稍后再试...",{time: 2000});
                                         break;

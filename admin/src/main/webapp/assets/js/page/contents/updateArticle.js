@@ -21,6 +21,9 @@ define(function (require, exports, module) {
             categoryId: {
                 selrequired: "-1"
             },
+            isSystem: {
+                selrequired: "-1"
+            },
             articleSource: {
                 selrequired: "-1"
             },
@@ -44,6 +47,9 @@ define(function (require, exports, module) {
             categoryId: {
                 selrequired: "请选择栏目"
             },
+            isSystem: {
+                selrequired: "请选择文章类型"
+            },
             articleSource: {
                 selrequired: "请选择文章来源"
             },
@@ -61,6 +67,7 @@ define(function (require, exports, module) {
                     title:$("#title").val(),
                     customerId:customerId,
                     thumbUri: $("#thumbUri").val(),
+                    isSystem: $("#isSystem").val(),
                     content: $("#content").val(),
                     description: $("#description").val(),
                     author: $("#author").val(),

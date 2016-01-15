@@ -46,7 +46,7 @@
                         </tr>
                             <th>文章描述：</th>
                             <td>
-                                <input name="description" type="text" id="description" maxlength="50" class="input-normal" th:value="${article.description}">
+                                <textarea rows="" cols="" style="width: 250px; height: 60px;" class="input-normal" id="description" name="description" th:text="${article.description}" ></textarea>
                             </td>
                         </tr>
                         <tr>
@@ -56,10 +56,20 @@
                             </td>
                         </tr>
                         <tr>
+                            <th>文章类型：</th>
+                            <td>
+                                <select name="isSystem" class="input-normal" id="isSystem">
+                                    <option value="-1">==请选择文章类型==</option>
+                                    <option value="0"  th:selected="${article.isSystem}==true?true:false">系统文章</option>
+                                    <option value="1" th:selected="${article.isSystem}==false?true:false">普通文章</option></select>
+                                <span style="color:#f00;">（警告:系统文章不允许删除）</span>
+                            </td>
+                        </tr>
+                        <tr>
                             <th>文章来源：</th>
                             <td>
                                 <select name="articleSource" class="input-normal" id="articleSource">
-                                    <option value="-1">==请选择文章==</option>
+                                    <option value="-1">==请选择文章来源==</option>
                                     <option value="0"  th:selected="${article.articleSource.getCode()}=='0'?true:false">转载</option>
                                     <option value="1" th:selected="${article.articleSource.getCode()}=='1'?true:false">原创</option></select>
                             </td>

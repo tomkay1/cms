@@ -161,9 +161,14 @@ public class ArticleController {
         try{
             if(cookieUser.isSupper(request)) {
                 Article article = articleService.findById(id);
+                if(article.getIsSystem()==true){
+                    result=new ResultView(ResultOptionEnum.SYSTEM_ARTICLE.getCode(),ResultOptionEnum.SYSTEM_ARTICLE.getValue(),null);
+                    return  result;
+                }
+                else{
                 article.setDeleted(true);
                 articleService.saveArticle(article);
-                result=new ResultView(ResultOptionEnum.OK.getCode(),ResultOptionEnum.OK.getValue(),null);
+                result=new ResultView(ResultOptionEnum.OK.getCode(),ResultOptionEnum.OK.getValue(),null);}
             }
             else {
                 result=new ResultView(ResultOptionEnum.NO_LIMITS.getCode(),ResultOptionEnum.NO_LIMITS.getValue(),null);

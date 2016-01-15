@@ -9,6 +9,7 @@
 package com.huotu.hotcms.web.common;
 
 import com.huotu.hotcms.service.model.thymeleaf.ArticleForeachParam;
+import com.huotu.hotcms.service.model.thymeleaf.VideoForeachParam;
 import com.huotu.hotcms.web.util.ArrayUtil;
 
 
@@ -40,6 +41,9 @@ public enum  ParamEnum {
     },
     CATEGORY{
         public Object getForeachParams(){return ArrayUtil.array("id");}
+    },
+    VIDEO{
+        public Class<?> getForeachParams() {return VideoForeachParam.class;}
     };
     public static final String PARAM_PREFIX = "param";
     public abstract Object getForeachParams();

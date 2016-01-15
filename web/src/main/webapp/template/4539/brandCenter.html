@@ -38,7 +38,7 @@
         </div>
     </div>
     <div class="cj-box-a bacfff posup">
-      <div class="boxlist-a listap">
+      <div class="boxlist-a listap" style="width: 170px;">
             <p class="imgian"><img th:src="${request.root}+'/images/zx-1.png'"/></p>
             <div class="ayu">
             <a data-th-href="@{${category.route.rule}}" data-category-foreach="category" data-param-specifyids="33,34,35,36">
@@ -52,11 +52,14 @@
         <div class="leftbox-a">
             <p class="fristp imgxian">当前位置&nbsp;:&nbsp;首页&nbsp;>&nbsp;品牌中心&nbsp;><i class="jieshao">&nbsp;公司介绍</i></p>
             <p style="height:17px"></p>
-            <p style="text-align:center" class="jieshao cj-font-b">永春2009秋冬产品订货会圆满闭幕</p>
+            <p style="text-align:center" class="jieshao cj-font-b" th:text="${article.title}">永春2009秋冬产品订货会圆满闭幕</p>
             <p class="cj-time">2015-07-25</p>
             <p class="xiannext-b"></p>
-            <p style="text-align:center"><img th:src="${request.root}+'/images/zx-2.png'" width="717"/></p>
-            <p class="text-a"> &nbsp; &nbsp;2009年6月22日，永春袜业秋冬产品订货会在新投产的龙游工厂隆重举行，全国各地代理商齐聚一堂，共赴“永春之约 欢畅之旅”。
+            <div th:utext="${article.content}">
+
+            </div>
+            <p style="text-align:center"  data-th-remove="all"><img th:src="${request.root}+'/images/zx-2.png'" width="717"/></p>
+            <p class="text-a" data-th-remove="all"> &nbsp; &nbsp;2009年6月22日，永春袜业秋冬产品订货会在新投产的龙游工厂隆重举行，全国各地代理商齐聚一堂，共赴“永春之约 欢畅之旅”。
                 随着永春龙游新工厂的投产使用，公司进入了新一轮发展阶段。公司领导对此次产品订货会高度重视，全体员工通力协作、精心准备，确保订货会顺利举行。
                 此次订货会上公司推出了一系列新产品，丰富了永春品牌；同时实行新的市场品牌推广扶持政策，有效地提升了客户的经销积极性和品牌忠诚度。一系列新品新政策的推出，再一次见证了永春的整体实力。
                 各地经销商在详细了解产品后，对公司给予了很高的评价，纷纷踊跃下单订货。经销商的积极态度体现了客户对永春品牌的信任和对永春前景的信心。订货会取得了圆满成功。

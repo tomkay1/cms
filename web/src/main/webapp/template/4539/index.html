@@ -40,7 +40,7 @@
 <div class="fullSlide" style="top: -78px; z-index:-1">
  <div class="bd">
   <ul>
-   <li style="background:url(http://www.test.com/images/banner.jpg)  center 0 no-repeat;"></li>
+   <li th:style="'background:url('+${request.rootUri}+'/images/banner.jpg)  center 0 no-repeat;'"></li>
   </ul>
  </div>
 
@@ -58,16 +58,17 @@
 <!--资讯---->
 <div class="syzx">
  <div  class="syzxzuo">
-  <img src="http://www.test.com/images/player.jpg">
+  <img th:src="${request.rootUri}+'/images/player.jpg'">
   <p class="b"><span><b>永春的企业文化</b></span>&nbsp;<span style="color:#949494">CORPORATE CULTURE</span></p>
   <p class="c">我们本着精益求精，客户至上的宗旨，不断为世界各地的消费者生产出更多的好产品。我们将伴随着中国经济一起腾飞。</p>
  </div>
 
- <p style="height:44px;margin-top: 10px;"><span class="kx" data-category-foreach="category" data-param-specifyids="9" data-th-text="${category.name}">快讯 news</span><a><span class="fr">查看更多>></span></a></p>
+ <p style="height:44px;margin-top: 10px;"><span class="kx" >快讯 news</span><a><span class="fr">查看更多>></span></a></p>
  <div class="kxbg" data-th-remove="all-but-first">
-  <p class="newstbg" data-article-foreach="article" data-param-pagesize="6" data-param-categoryid="9">
-   <a><span class="newsta">永春2009秋冬产品订货会圆满闭幕</span>
-    <span class="newstb">2015-07-25</span></a></p>
+  <p class="newstbg" data-article-foreach="article" data-param-pagesize="6" data-param-categoryid="35">
+   <a th:href="${request.rootUri}+'/new/'+${article.id}+'.html'" ><span class="newsta" data-th-text="${article.title}">永春2009秋冬产品订货会圆满闭幕</span>
+    <span class="newstb">2015-07-25</span></a>
+  </p>
   <p class="newstbg">
    <a><span class="newsta">永春2009秋冬产品订货会圆满闭幕</span>
     <span class="newstb">2015-07-25</span></a></p>
@@ -91,21 +92,21 @@
 
 <div class="jztp" >
  <div class="sybg_tbg">
-  <p><img src="http://www.test.com/images/syt1.png"></p>
+  <p><img th:src="${request.root}+'/images/syt1.png'"></p>
   <p style="padding:30px 0px">
-   <img src="http://www.test.com/images/b01.png">
-   <img src="http://www.test.com/images/b02.png">
-   <img src="http://www.test.com/images/b03.png">
-   <img src="http://www.test.com/images/b04.png">
+   <img th:src="${request.root}+'/images/b01.png'">
+   <img th:src="${request.root}+'/images/b02.png'">
+   <img th:src="${request.root}+'/images/b03.png'">
+   <img th:src="${request.root}+'/images/b04.png'">
   </p>
  </div>
 </div>
 
 <div class="qiehuansy">
- <a href=""><div class="qiehuansya"></div></a>
- <a href=""><div class="qiehuansyb"></div></a>
- <a href=""><div class="qiehuansyc"></div></a>
- <a href=""><div class="qiehuansyd"></div></a>
+ <a th:href="${request.rootUri}+'/stock'"><div class="qiehuansya"></div></a>
+ <a th:href="${request.rootUri}+'/crafts'"><div class="qiehuansyb"></div></a>
+ <a href="javascript:;"><div class="qiehuansyc"></div></a>
+ <a th:href="${request.rootUri}+'/about'"><div class="qiehuansyd"></div></a>
  <p style="clear:both"></p>
 </div>
 

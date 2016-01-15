@@ -139,13 +139,20 @@ public class CategoryServiceImpl implements CategoryService {
                 predicates.add(cb.equal(root.get("site").get("siteId").as(Long.class),param.getSiteid()));
                 RouteType routeType = param.getRoutetype()==null?RouteType.HEADER_NAVIGATION:param.getRoutetype();
                 predicates.add(cb.equal(root.get("route").get("routeType").as(Integer.class),routeType));
-                predicates.add(cb.equal(root.get("parent").get("id").as(Long.class),param.getParentid()));
+                if(param.getParentid()!=null) {
+                    predicates.add(cb.equal(root.get("parent").get("id").as(Long.class), param.getParentid()));
+                }
                 predicates.add(cb.equal(root.get("deleted").as(Boolean.class),false));
                 return cb.and(predicates.toArray(new Predicate[predicates.size()]));
             };
             return categoryRepository.findAll(specification,new PageRequest(0,requestSize,sort)).getContent();
         }
-        List<Category> categoryList = categoryRepository.findBySite_SiteIdAndRoute_RouteTypeAndDeletedAndParent_IdOrderByOrderWeightDesc(param.getSiteid(), param.getRoutetype(), false,param.getParentid());
+        List<Category> categoryList;
+        if(param.getParentid()!=null) {
+            categoryList = categoryRepository.findBySite_SiteIdAndRoute_RouteTypeAndDeletedAndParent_IdOrderByOrderWeightDesc(param.getSiteid(), param.getRoutetype(), false, param.getParentid());
+        }else {
+            categoryList = categoryRepository.findBySite_SiteIdAndRoute_RouteTypeAndDeletedOrderByOrderWeightDesc(param.getSiteid(),param.getRoutetype(),false);
+        }
         int origionSize = categoryList.size();
         if(requestSize > origionSize - 1) {
             requestSize = origionSize;

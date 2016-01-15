@@ -103,8 +103,10 @@ public class CategoryForeachProcessorFactory {
                 categoryForeachParam.setRoutetype(route.getRouteType());
             }
             Route route = (Route)VariableExpression.getVariable(context,"route");
-            Category parent = categoryService.getCategoryByRoute(route);
-            categoryForeachParam.setParentid(parent.getId());
+            Category current = categoryService.getCategoryByRoute(route);
+            if(current.getParent()!=null) {
+                categoryForeachParam.setParentid(current.getId());
+            }
             return categoryService.getGivenTypeCategories(categoryForeachParam);
         } catch (Exception e) {
             log.error(e.getMessage());

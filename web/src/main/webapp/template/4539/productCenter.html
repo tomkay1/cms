@@ -366,5 +366,12 @@
     </div>
 </div>
 <!--脚-->
+<script type="text/javascript" th:src="@{${request.root}+'/js/jquery-1.9.1.min.js'}"></script>
+<script type="text/javascript"  th:src="@{${request.root}+'/js/common.js'}"></script>
+<script type="text/javascript">
+    $(function(){
+        navigate.topCategoryArtive(2,"categoryNav","li");
+    })
+</script>
 </body>
 </html>

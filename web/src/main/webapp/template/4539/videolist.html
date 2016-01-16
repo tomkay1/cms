@@ -32,7 +32,6 @@
     <div class="cj-box-a bacfff posup">
         <div class="boxlist-a listap" style="width: 170px;">
             <p class="imgxian"><img th:src="${request.root}+'/images/zx-1.png'"/></p>
-
             <div class="ayu">
                 <a data-th-href="@{${category.route.rule}}" data-category-foreach="category"
                    data-param-specifyids="33,34,35,36">
@@ -44,20 +43,29 @@
         </div>
         <div class="leftbox-a">
             <p class="fristp imgxian">当前位置&nbsp;:&nbsp;首页&nbsp;>&nbsp;品牌中心&nbsp;><i class="jieshao">&nbsp;品牌视频</i></p>
-
             <p style="height:17px"></p>
-
-            <div data-th-remove="all-but-first">
-                <p class="media-left" data-video-foreach="video" data-param-specifyids="30">
-                    <img src="images/cj-media-1.jpg" data-th-src="@{'~/'+${video.thumbUri}}">
-                    <span data-th-text="${video.title}"></span>
+            <div data-th-remove="all-but-first" class="clear">
+                <p class="media-left" data-video-foreach="video" data-param-categoryid="36" style="width: 355px;margin-left: 10px;" data-param-pagesize="8">
+                   <a data-th-href="${video.outLinkUrl}" target="_blank"><img src="http://localhost:8081/images/cj-media-1.jpg" width="100%" height="190"  data-th-src="${video.thumbUri}"></a>
+                    <!--<span data-th-text="${video.title}"></span>-->
                 </p>
-
                 <p class="media-right"><img src="images/cj-media-2.jpg"></p>
 
                 <p class="media-left"><img src="images/cj-media-1.jpg"></p>
 
                 <p class="media-right"><img src="images/cj-media-2.jpg"></p>
+            </div>
+            <div class="number" >
+                <a data-th-remove="${!request.hasPrevPage} ? all" data-th-href="@{${request.prevPageHref}}">
+                    <img th:src="${request.root}+'/images/left.jpg'" width="8px">
+                </a>
+                <a class="on" data-th-each="page:${request.pages}" data-th-text="${page.pageNo}"
+                   data-th-class="${request.currentPage==page.pageNo}?on" data-th-href="@{${page.pageHref}}">
+                    1
+                </a>
+                <a data-th-remove="${!request.hasNextPage} ? all" data-th-href="@{${request.nextPageHref}}">
+                    <img th:src="${request.root}+'/images/right.jpg'" width="8px">
+                </a>
             </div>
         </div>
     </div>
@@ -107,5 +115,12 @@
     </div>
 </div>
 <!--脚-->
+<script type="text/javascript" th:src="@{${request.root}+'/js/jquery-1.9.1.min.js'}"></script>
+<script type="text/javascript"  th:src="@{${request.root}+'/js/common.js'}"></script>
+<script type="text/javascript">
+    $(function(){
+        navigate.topCategoryArtive(1,"categoryNav","li");
+    })
+</script>
 </body>
 </html>

@@ -113,6 +113,7 @@
 	float: left;
 	width: 75%;
 	margin-left: 20px;
+	min-height: 500px;
 	height: 1032px;
 }
 .cj-information .leftbox-a .fristp {

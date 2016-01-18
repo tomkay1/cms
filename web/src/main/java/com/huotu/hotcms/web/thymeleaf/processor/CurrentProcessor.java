@@ -20,7 +20,7 @@ import org.thymeleaf.templatemode.TemplateMode;
  * @since 1.0.0
  */
 public class CurrentProcessor extends AbstractAttributeTagProcessor {
-    public static final int PRECEDENCE = 800;
+    public static final int PRECEDENCE = 200;
 
     public static final String ATTR_NAME = "current";
     private CurrentProcessorService currentProcessorService;

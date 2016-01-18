@@ -9,10 +9,8 @@
 package com.huotu.hotcms.web.service;
 
 import com.huotu.hotcms.web.common.DialectTypeEnum;
-import com.huotu.hotcms.web.service.factory.ArticleForeachProcessorFactory;
-import com.huotu.hotcms.web.service.factory.CategoryForeachProcessorFactory;
-import com.huotu.hotcms.web.service.factory.LinkForeachProcessorFactory;
-import com.huotu.hotcms.web.service.factory.VideoForeachProcessorFactory;
+import com.huotu.hotcms.web.common.ParamEnum;
+import com.huotu.hotcms.web.service.factory.*;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.model.IProcessableElementTag;
 
@@ -28,14 +26,20 @@ public class ForeachProcessorService extends BaseProcessorService {
         if(dialectPrefix.equals(DialectTypeEnum.ARTICLE.getDialectPrefix())) {
             return ArticleForeachProcessorFactory.getInstance().process(elementTag, context);
         }
-        if(dialectPrefix.equals(DialectTypeEnum.LINK.getDialectPrefix())) {
-            return LinkForeachProcessorFactory.getInstance().process(elementTag, context);
-        }
         if(dialectPrefix.equals(DialectTypeEnum.CATEGORY.getDialectPrefix())) {
             return CategoryForeachProcessorFactory.getInstance().process(elementTag,context);
         }
         if(dialectPrefix.equals(DialectTypeEnum.VIDEO.getDialectPrefix())) {
             return VideoForeachProcessorFactory.getInstance().process(elementTag, context);
+        }
+        if(dialectPrefix.equals(DialectTypeEnum.LINK.getDialectPrefix())) {
+            return LinkForeachProcessorFactory.getInstance().process(elementTag, context);
+        }
+        if(dialectPrefix.equals(DialectTypeEnum.NOTICE.getDialectPrefix())) {
+            return NoticeForeachProcessorFactory.getInstance().process(elementTag,context);
+        }
+        if(dialectPrefix.equals(DialectTypeEnum.DOWNLOAD.getDialectPrefix())) {
+            return DownloadForeachProcessorFactory.getInstance().process(elementTag,context);
         }
         return null;
     }

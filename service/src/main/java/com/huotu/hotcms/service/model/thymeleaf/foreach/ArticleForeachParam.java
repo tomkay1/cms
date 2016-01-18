@@ -6,10 +6,8 @@
  *  Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District 2013-2015. All rights reserved.
  */
 
-package com.huotu.hotcms.service.model.thymeleaf;
+package com.huotu.hotcms.service.model.thymeleaf.foreach;
 
-import com.huotu.hotcms.service.common.ModelType;
-import com.huotu.hotcms.service.common.RouteType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,12 +16,17 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class CategoryForeachParam {
+public class ArticleForeachParam {
 
     /**
-     * 所属站点Id
+     * 所属栏目Id
      */
-    private Long siteid;
+    private Long categoryid;
+
+    /**
+     * 父栏目id(与所属栏目id存在性互斥)
+     */
+    private Long parentcid;
 
     /**
      * 获取列表时排除的主键Id(可排除多个，逗号分隔)
@@ -36,18 +39,18 @@ public class CategoryForeachParam {
     private String[] specifyids;
 
     /**
-     * 路由类型
+     * 页码
      */
-    private RouteType routetype;
+    private Integer pageno;
 
     /**
-     * 父节点id
+     * 列表大小
      */
-    private Long parentid;
+    private Integer pagesize;
 
     /**
-     * 取得列表大小
+     * 指定需要展示的页数
      */
-    private Integer size;
+    private Integer pagenumber;
 
 }

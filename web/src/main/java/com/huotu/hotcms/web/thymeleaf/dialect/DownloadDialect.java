@@ -8,10 +8,7 @@
 
 package com.huotu.hotcms.web.thymeleaf.dialect;
 
-import com.huotu.hotcms.web.thymeleaf.processor.CurrentProcessor;
 import com.huotu.hotcms.web.thymeleaf.processor.ForeachProcessor;
-import com.huotu.hotcms.web.thymeleaf.processor.HrefProcessor;
-import com.huotu.hotcms.web.thymeleaf.processor.SrcProcessor;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.processor.IProcessor;
@@ -20,14 +17,14 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * Created by cwb on 2016/1/15.
+ * Created by cwb on 2016/1/18.
  */
-public class VideoDialect extends AbstractProcessorDialect {
-    public static  String NAME = "Video";
-    public static  String PREFIX = "video";
+public class DownloadDialect extends AbstractProcessorDialect {
+    public static  String NAME = "Download";
+    public static  String PREFIX = "download";
     public static  int PROCESSOR_PRECEDENCE = 800;
 
-    public VideoDialect() {
+    public DownloadDialect() {
         super(NAME, PREFIX, PROCESSOR_PRECEDENCE);
     }
 
@@ -38,8 +35,7 @@ public class VideoDialect extends AbstractProcessorDialect {
 
     private Set<IProcessor> createArticleProcessorsSet(final IProcessorDialect dialect, final String dialectPrefix) {
         final Set<IProcessor> processors = new LinkedHashSet<IProcessor>();
-        processors.add(new ForeachProcessor(dialect,dialectPrefix));
-        processors.add(new CurrentProcessor(dialect,dialectPrefix));
+        processors.add(new ForeachProcessor(dialect, dialectPrefix));
         return processors;
     }
 }

@@ -30,8 +30,9 @@ public class CMSDialect {
     public static void initDialect(){
         dialectList.add(new ArticleDialect());
         dialectList.add(new LinkDialect());
-        dialectList.add(new SiteDialect());
         dialectList.add(new CategoryDialect());
         dialectList.add(new VideoDialect());
+        dialectList.add(new NoticeDialect());
+        dialectList.add(new DownloadDialect());
     }
 }

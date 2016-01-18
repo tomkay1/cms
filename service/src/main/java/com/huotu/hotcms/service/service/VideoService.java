@@ -1,7 +1,8 @@
 package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.entity.Video;
-import com.huotu.hotcms.service.model.thymeleaf.VideoForeachParam;
+import com.huotu.hotcms.service.model.thymeleaf.current.VideoCurrentParam;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.VideoForeachParam;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -14,4 +15,8 @@ public interface VideoService {
     Video findById(Long id);
 
     Page<Video> getVideoList(VideoForeachParam videoForeachParam);
+
+    Video getVideoByParam(VideoCurrentParam videoCurrentParam);
+
+    Video setVideoResourcesPath(Video video);
 }

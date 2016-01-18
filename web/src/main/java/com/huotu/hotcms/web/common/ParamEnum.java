@@ -8,9 +8,8 @@
 
 package com.huotu.hotcms.web.common;
 
-import com.huotu.hotcms.service.model.thymeleaf.ArticleForeachParam;
-import com.huotu.hotcms.service.model.thymeleaf.VideoForeachParam;
-import com.huotu.hotcms.web.util.ArrayUtil;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.ArticleForeachParam;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.VideoForeachParam;
 
 
 /**
@@ -18,32 +17,32 @@ import com.huotu.hotcms.web.util.ArrayUtil;
  */
 public enum  ParamEnum {
     ARTICLE {
-        public Class<?> getForeachParams(){
+        public Object getForeachParams(){
             return ArticleForeachParam.class;
         }
     },
     LINK {
         public Object getForeachParams(){
-            return ArrayUtil.array("id", "excludeId");
+            return ArticleForeachParam.class;
         }
     },
     SITE{
-        public Object getForeachParams(){return ArrayUtil.array("id");}
+        public Object getForeachParams(){return ArticleForeachParam.class;}
     },
     DOWNLOAD{
-        public Object getForeachParams(){return ArrayUtil.array("id");}
+        public Object getForeachParams(){return ArticleForeachParam.class;}
     },
     GALLERY{
-        public Object getForeachParams(){return ArrayUtil.array("id");}
+        public Object getForeachParams(){return ArticleForeachParam.class;}
     },
     NOTICE{
-        public Object getForeachParams(){return ArrayUtil.array("id");}
+        public Object getForeachParams(){return ArticleForeachParam.class;}
     },
     CATEGORY{
-        public Object getForeachParams(){return ArrayUtil.array("id");}
+        public Object getForeachParams(){return ArticleForeachParam.class;}
     },
     VIDEO{
-        public Class<?> getForeachParams() {return VideoForeachParam.class;}
+        public Object getForeachParams() {return VideoForeachParam.class;}
     };
     public static final String PARAM_PREFIX = "param";
     public abstract Object getForeachParams();

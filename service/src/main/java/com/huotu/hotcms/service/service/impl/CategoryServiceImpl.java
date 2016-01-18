@@ -5,7 +5,7 @@ import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.CategoryTreeModel;
-import com.huotu.hotcms.service.model.thymeleaf.CategoryForeachParam;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.CategoryForeachParam;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.service.RouteService;

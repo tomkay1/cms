@@ -10,8 +10,8 @@ package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.model.ArticleCategory;
-import com.huotu.hotcms.service.model.thymeleaf.foreach.ArticleForeachParam;
 import com.huotu.hotcms.service.model.thymeleaf.current.ArticleCurrentParam;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.PageableForeachParam;
 import com.huotu.hotcms.service.util.PageData;
 import org.springframework.data.domain.Page;
 
@@ -28,7 +28,7 @@ public interface ArticleService {
     Boolean saveArticle(Article article);
     Article findById(Long id);
 
-    Page<Article> getArticleList(ArticleForeachParam articleForeachParam);
+    Page<Article> getArticleList(PageableForeachParam articleForeachParam);
 
     Article getArticleByParam(ArticleCurrentParam articleCurrentParam);
 }

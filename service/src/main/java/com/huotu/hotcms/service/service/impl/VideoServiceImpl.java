@@ -5,7 +5,7 @@ import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.Video;
 import com.huotu.hotcms.service.model.thymeleaf.current.VideoCurrentParam;
-import com.huotu.hotcms.service.model.thymeleaf.foreach.VideoForeachParam;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.PageableForeachParam;
 import com.huotu.hotcms.service.repository.VideoRepository;
 import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.service.VideoService;
@@ -48,7 +48,7 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public Page<Video> getVideoList(VideoForeachParam videoForeachParam) {
+    public Page<Video> getVideoList(PageableForeachParam videoForeachParam) {
         int pageIndex = videoForeachParam.getPageno()-1;
         int pageSize = videoForeachParam.getPagesize();
         Sort sort = new Sort(Sort.Direction.DESC, "orderWeight");
@@ -62,7 +62,7 @@ public class VideoServiceImpl implements VideoService {
         }
     }
 
-    private Page<Video> getAllVideo(VideoForeachParam params, int pageIndex, int pageSize, Sort sort) {
+    private Page<Video> getAllVideo(PageableForeachParam params, int pageIndex, int pageSize, Sort sort) {
         List<Category> subCategories =  categoryService.getSubCategories(params.getParentcid());
         if(subCategories.size()==0) {
             try {
@@ -90,7 +90,7 @@ public class VideoServiceImpl implements VideoService {
         return videoRepository.findAll(specification,new PageRequest(pageIndex,pageSize,sort));
     }
 
-    private Page<Video> getVideos(VideoForeachParam params, int pageIndex, int pageSize, Sort sort) {
+    private Page<Video> getVideos(PageableForeachParam params, int pageIndex, int pageSize, Sort sort) {
         Specification<Article> specification = (root, criteriaQuery, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             if(!StringUtils.isEmpty(params.getExcludeid())) {

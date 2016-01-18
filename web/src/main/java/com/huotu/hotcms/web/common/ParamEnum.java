@@ -8,8 +8,7 @@
 
 package com.huotu.hotcms.web.common;
 
-import com.huotu.hotcms.service.model.thymeleaf.foreach.ArticleForeachParam;
-import com.huotu.hotcms.service.model.thymeleaf.foreach.VideoForeachParam;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.PageableForeachParam;
 
 
 /**
@@ -18,31 +17,31 @@ import com.huotu.hotcms.service.model.thymeleaf.foreach.VideoForeachParam;
 public enum  ParamEnum {
     ARTICLE {
         public Object getForeachParams(){
-            return ArticleForeachParam.class;
+            return PageableForeachParam.class;
         }
     },
     LINK {
         public Object getForeachParams(){
-            return ArticleForeachParam.class;
+            return PageableForeachParam.class;
         }
     },
     SITE{
-        public Object getForeachParams(){return ArticleForeachParam.class;}
+        public Object getForeachParams(){return PageableForeachParam.class;}
     },
     DOWNLOAD{
-        public Object getForeachParams(){return ArticleForeachParam.class;}
+        public Object getForeachParams(){return PageableForeachParam.class;}
     },
     GALLERY{
-        public Object getForeachParams(){return ArticleForeachParam.class;}
+        public Object getForeachParams(){return PageableForeachParam.class;}
     },
     NOTICE{
-        public Object getForeachParams(){return ArticleForeachParam.class;}
+        public Object getForeachParams(){return PageableForeachParam.class;}
     },
     CATEGORY{
-        public Object getForeachParams(){return ArticleForeachParam.class;}
+        public Object getForeachParams(){return PageableForeachParam.class;}
     },
     VIDEO{
-        public Object getForeachParams() {return VideoForeachParam.class;}
+        public Object getForeachParams() {return PageableForeachParam.class;}
     };
     public static final String PARAM_PREFIX = "param";
     public abstract Object getForeachParams();

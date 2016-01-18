@@ -10,7 +10,7 @@ package com.huotu.hotcms.web.service.factory;
 
 import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.*;
-import com.huotu.hotcms.service.model.thymeleaf.foreach.VideoForeachParam;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.PageableForeachParam;
 import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.service.VideoService;
 import com.huotu.hotcms.web.model.PageModel;
@@ -57,7 +57,7 @@ public class VideoForeachProcessorFactory {
     public Object process(IProcessableElementTag elementTag,ITemplateContext context) {
         Page<Video> videoPage = null;
         try {
-            VideoForeachParam videoForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag, VideoForeachParam.class);
+            PageableForeachParam videoForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag, PageableForeachParam.class);
 
             WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
             HttpServletRequest request = ((IWebContext)context).getRequest();
@@ -115,7 +115,7 @@ public class VideoForeachProcessorFactory {
         return videoPage;
     }
 
-    private void setPageList(VideoForeachParam videoForeachParam,Page<Video> videoPage,ITemplateContext context) {
+    private void setPageList(PageableForeachParam videoForeachParam,Page<Video> videoPage,ITemplateContext context) {
         int currentPage = videoForeachParam.getPageno();
         int totalPages = videoPage.getTotalPages();
         int pageNumber = DEFAULT_PAGE_NUMBER < totalPages ? DEFAULT_PAGE_NUMBER : totalPages;

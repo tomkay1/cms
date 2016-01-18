@@ -2,7 +2,7 @@ package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.entity.Video;
 import com.huotu.hotcms.service.model.thymeleaf.current.VideoCurrentParam;
-import com.huotu.hotcms.service.model.thymeleaf.foreach.VideoForeachParam;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.PageableForeachParam;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ public interface VideoService {
     Boolean saveVideo(Video video);
     Video findById(Long id);
 
-    Page<Video> getVideoList(VideoForeachParam videoForeachParam);
+    Page<Video> getVideoList(PageableForeachParam pageableForeachParam);
 
     Video getVideoByParam(VideoCurrentParam videoCurrentParam);
 

@@ -3,8 +3,8 @@ package com.huotu.hotcms.service.service.impl;
 import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.model.ArticleCategory;
-import com.huotu.hotcms.service.model.thymeleaf.foreach.ArticleForeachParam;
 import com.huotu.hotcms.service.model.thymeleaf.current.ArticleCurrentParam;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.PageableForeachParam;
 import com.huotu.hotcms.service.repository.ArticleRepository;
 import com.huotu.hotcms.service.service.ArticleService;
 import com.huotu.hotcms.service.service.CategoryService;
@@ -40,7 +40,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Page<Article> getArticleList(ArticleForeachParam articleForeachParam) {
+    public Page<Article> getArticleList(PageableForeachParam articleForeachParam) {
         int pageIndex = articleForeachParam.getPageno()-1;
         int pageSize = articleForeachParam.getPagesize();
         Sort sort = new Sort(Sort.Direction.DESC, "orderWeight");
@@ -54,7 +54,7 @@ public class ArticleServiceImpl implements ArticleService {
         }
     }
 
-    private Page<Article> getAllArticle(ArticleForeachParam params, int pageIndex, int pageSize, Sort sort){
+    private Page<Article> getAllArticle(PageableForeachParam params, int pageIndex, int pageSize, Sort sort){
         List<Category> subCategories =  categoryService.getSubCategories(params.getParentcid());
         if(subCategories.size()==0) {
             try {
@@ -82,7 +82,7 @@ public class ArticleServiceImpl implements ArticleService {
         return articleRepository.findAll(specification,new PageRequest(pageIndex,pageSize,sort));
     }
 
-    private Page<Article> getArticles(ArticleForeachParam params, int pageIndex, int pageSize, Sort sort) {
+    private Page<Article> getArticles(PageableForeachParam params, int pageIndex, int pageSize, Sort sort) {
         Specification<Article> specification = (root, criteriaQuery, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             if(!StringUtils.isEmpty(params.getExcludeid())) {

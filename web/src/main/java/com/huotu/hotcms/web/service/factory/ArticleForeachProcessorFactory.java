@@ -13,7 +13,7 @@ import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.model.thymeleaf.foreach.ArticleForeachParam;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.PageableForeachParam;
 import com.huotu.hotcms.service.service.ArticleService;
 import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.web.model.PageModel;
@@ -62,16 +62,16 @@ public class ArticleForeachProcessorFactory {
         try {
             WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
             HttpServletRequest request = ((IWebContext)context).getRequest();
-            ArticleForeachParam articleForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag, ArticleForeachParam.class);
+            PageableForeachParam articleForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag, PageableForeachParam.class);
             Route route = (Route)VariableExpression.getVariable(context,"route");
             CategoryService categoryService = (CategoryService)applicationContext.getBean("categoryServiceImpl");
             Category current = categoryService.getCategoryByRoute(route);
             if(StringUtils.isEmpty(articleForeachParam.getCategoryid())) {
-                //如果不是具体子栏目，应取得当前栏目所有一级子栏目数据列表
                 if(route.getRouteType()==RouteType.ARTICLE_LIST) {
                     articleForeachParam.setCategoryid(current.getId());
                 }
             }
+            //如果不是具体子栏目，应取得当前栏目所有一级子栏目数据列表
             if(StringUtils.isEmpty(articleForeachParam.getParentcid())) {
                 if(route.getRouteType()!=RouteType.ARTICLE_LIST) {
                     articleForeachParam.setParentcid(current.getId());

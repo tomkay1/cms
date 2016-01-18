@@ -25,16 +25,6 @@ public class CategoryForeachParam {
     private Long siteid;
 
     /**
-     * 获取列表时排除的主键Id(可排除多个，逗号分隔)
-     */
-    private String[] excludeid;//TODO 上线前重命名为excludeids
-
-    /**
-     * 获取指定Id的列表(可指定多个，逗号分隔)
-     */
-    private String[] specifyids;
-
-    /**
      * 路由类型
      */
     private RouteType routetype;
@@ -48,5 +38,15 @@ public class CategoryForeachParam {
      * 取得列表大小
      */
     private Integer size;
+
+    /**
+     * 获取列表时排除的主键Id(可排除多个，逗号分隔)
+     */
+    protected String[] excludeid;//TODO 上线前重命名为excludeids
+
+    /**
+     * 获取指定Id的列表(可指定多个，逗号分隔)
+     */
+    protected String[] specifyids;
 
 }

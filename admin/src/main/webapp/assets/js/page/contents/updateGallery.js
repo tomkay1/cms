@@ -137,6 +137,12 @@ define(function (require, exports, module) {
     }
     uploadModule.uploadImg();
 
+    $("#jq-cms-return").click(function(){
+        var layer=require("layer");
+        var layerIndex = parent.layer.getFrameIndex(window.name); //获取窗口索引
+        parent.layer.close(layerIndex);
+    })
+
 });
 
 

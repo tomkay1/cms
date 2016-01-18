@@ -9,6 +9,7 @@
 package com.huotu.hotcms.service.model.thymeleaf.foreach;
 
 /**
+ * 分页遍历解析器参数模型(文章、视频)
  * Created by cwb on 2016/1/18.
  */
 public class PageableForeachParam {

@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * 栏目遍历解析器参数模型
  * Created by cwb on 2016/1/6.
  */
 @Getter

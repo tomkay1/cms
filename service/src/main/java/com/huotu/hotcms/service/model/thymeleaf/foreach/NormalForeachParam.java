@@ -9,6 +9,7 @@
 package com.huotu.hotcms.service.model.thymeleaf.foreach;
 
 /**
+ * 列表遍历解析器参数模型(公告、链接、下载)
  * Created by cwb on 2016/1/18.
  */
 public class NormalForeachParam {

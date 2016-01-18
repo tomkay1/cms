@@ -8,7 +8,7 @@
 
 package com.huotu.hotcms.web.service.factory;
 
-import com.huotu.hotcms.service.model.thymeleaf.foreach.LinkForeachParam;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.NormalForeachParam;
 import com.huotu.hotcms.service.service.LinkService;
 import com.huotu.hotcms.web.thymeleaf.expression.DialectAttributeFactory;
 import org.apache.commons.logging.Log;
@@ -40,7 +40,7 @@ public class LinkForeachProcessorFactory {
 
     public Object process(IProcessableElementTag elementTag, ITemplateContext context) {
         try {
-            LinkForeachParam linkForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag, LinkForeachParam.class);
+            NormalForeachParam linkForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag, NormalForeachParam.class);
             WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
             LinkService linkService = (LinkService)applicationContext.getBean("linkServiceImpl");
             //根据指定id获取栏目列表

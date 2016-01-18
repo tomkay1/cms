@@ -1,7 +1,7 @@
 package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.entity.Download;
-import com.huotu.hotcms.service.model.thymeleaf.foreach.DownloadForeachParam;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.NormalForeachParam;
 
 import java.util.List;
 
@@ -14,5 +14,5 @@ public interface DownloadService {
 
     List<Download> getSpecifyDownloads(String[] specifyIds);
 
-    List<Download> getDownloadList(DownloadForeachParam downloadForeachParam);
+    List<Download> getDownloadList(NormalForeachParam downloadForeachParam);
 }

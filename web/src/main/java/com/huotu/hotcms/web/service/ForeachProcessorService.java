@@ -26,14 +26,14 @@ public class ForeachProcessorService extends BaseProcessorService {
         if(dialectPrefix.equals(DialectTypeEnum.ARTICLE.getDialectPrefix())) {
             return ArticleForeachProcessorFactory.getInstance().process(elementTag, context);
         }
-        if(dialectPrefix.equals(DialectTypeEnum.LINK.getDialectPrefix())) {
-            return LinkForeachProcessorFactory.getInstance().process(elementTag, context);
-        }
         if(dialectPrefix.equals(DialectTypeEnum.CATEGORY.getDialectPrefix())) {
             return CategoryForeachProcessorFactory.getInstance().process(elementTag,context);
         }
         if(dialectPrefix.equals(DialectTypeEnum.VIDEO.getDialectPrefix())) {
             return VideoForeachProcessorFactory.getInstance().process(elementTag, context);
+        }
+        if(dialectPrefix.equals(DialectTypeEnum.LINK.getDialectPrefix())) {
+            return LinkForeachProcessorFactory.getInstance().process(elementTag, context);
         }
         if(dialectPrefix.equals(DialectTypeEnum.NOTICE.getDialectPrefix())) {
             return NoticeForeachProcessorFactory.getInstance().process(elementTag,context);

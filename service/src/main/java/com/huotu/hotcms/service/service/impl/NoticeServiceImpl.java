@@ -3,7 +3,7 @@ package com.huotu.hotcms.service.service.impl;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Notice;
 import com.huotu.hotcms.service.model.NoticeCategory;
-import com.huotu.hotcms.service.model.thymeleaf.foreach.NoticeForeachParam;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.NormalForeachParam;
 import com.huotu.hotcms.service.repository.NoticeRepository;
 import com.huotu.hotcms.service.service.NoticeService;
 import com.huotu.hotcms.service.util.PageData;
@@ -92,7 +92,7 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public List<Notice> getNoticeList(NoticeForeachParam param) {
+    public List<Notice> getNoticeList(NormalForeachParam param) {
         Sort sort = new Sort(Sort.Direction.DESC,"orderWeight");
         Specification<Link> specification = (root, query, cb) -> {
             List<Predicate> predicates;

@@ -2,7 +2,7 @@ package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.entity.Notice;
 import com.huotu.hotcms.service.model.NoticeCategory;
-import com.huotu.hotcms.service.model.thymeleaf.foreach.NoticeForeachParam;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.NormalForeachParam;
 import com.huotu.hotcms.service.util.PageData;
 
 import java.util.List;
@@ -17,5 +17,5 @@ public interface NoticeService {
 
     List<Notice> getSpecifyNotices(String[] specifyIds);
 
-    List<Notice> getNoticeList(NoticeForeachParam noticeForeachParam);
+    List<Notice> getNoticeList(NormalForeachParam noticeForeachParam);
 }

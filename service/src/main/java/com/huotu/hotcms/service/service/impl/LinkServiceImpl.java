@@ -2,7 +2,7 @@ package com.huotu.hotcms.service.service.impl;
 
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.model.LinkCategory;
-import com.huotu.hotcms.service.model.thymeleaf.foreach.LinkForeachParam;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.NormalForeachParam;
 import com.huotu.hotcms.service.repository.LinkRepository;
 import com.huotu.hotcms.service.service.LinkService;
 import com.huotu.hotcms.service.util.PageData;
@@ -78,7 +78,7 @@ public class LinkServiceImpl implements LinkService {
     }
 
     @Override
-    public List<Link> getLinkList(LinkForeachParam param) {
+    public List<Link> getLinkList(NormalForeachParam param) {
         Sort sort = new Sort(Sort.Direction.DESC,"orderWeight");
         Specification<Link> specification = (root, query, cb) -> {
           List<Predicate> predicates;

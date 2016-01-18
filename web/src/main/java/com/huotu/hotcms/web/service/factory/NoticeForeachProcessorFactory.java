@@ -9,7 +9,7 @@
 package com.huotu.hotcms.web.service.factory;
 
 import com.huotu.hotcms.service.entity.Notice;
-import com.huotu.hotcms.service.model.thymeleaf.foreach.NoticeForeachParam;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.NormalForeachParam;
 import com.huotu.hotcms.service.service.NoticeService;
 import com.huotu.hotcms.web.thymeleaf.expression.DialectAttributeFactory;
 import org.apache.commons.logging.Log;
@@ -44,7 +44,7 @@ public class NoticeForeachProcessorFactory {
 
     public List<Notice> process(IProcessableElementTag elementTag,ITemplateContext context) {
         try {
-            NoticeForeachParam noticeForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag, NoticeForeachParam.class);
+            NormalForeachParam noticeForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag, NormalForeachParam.class);
             WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
             NoticeService noticeService = (NoticeService)applicationContext.getBean("noticeServiceImpl");
             //根据指定id获取栏目列表

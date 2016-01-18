@@ -2,7 +2,7 @@ package com.huotu.hotcms.service.service.impl;
 
 import com.huotu.hotcms.service.entity.Download;
 import com.huotu.hotcms.service.entity.Link;
-import com.huotu.hotcms.service.model.thymeleaf.foreach.DownloadForeachParam;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.NormalForeachParam;
 import com.huotu.hotcms.service.repository.DownloadRepository;
 import com.huotu.hotcms.service.service.DownloadService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +50,7 @@ public class DownloadServiceImpl implements DownloadService {
     }
 
     @Override
-    public List<Download> getDownloadList(DownloadForeachParam param) {
+    public List<Download> getDownloadList(NormalForeachParam param) {
         Sort sort = new Sort(Sort.Direction.DESC,"orderWeight");
         Specification<Link> specification = (root, query, cb) -> {
             List<Predicate> predicates;

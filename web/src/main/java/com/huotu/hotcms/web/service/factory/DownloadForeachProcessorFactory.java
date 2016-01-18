@@ -9,7 +9,7 @@
 package com.huotu.hotcms.web.service.factory;
 
 import com.huotu.hotcms.service.entity.Download;
-import com.huotu.hotcms.service.model.thymeleaf.foreach.DownloadForeachParam;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.NormalForeachParam;
 import com.huotu.hotcms.service.service.DownloadService;
 import com.huotu.hotcms.web.thymeleaf.expression.DialectAttributeFactory;
 import org.apache.commons.logging.Log;
@@ -44,7 +44,7 @@ public class DownloadForeachProcessorFactory {
 
     public List<Download> process(IProcessableElementTag elementTag,ITemplateContext context) {
         try {
-            DownloadForeachParam downloadForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag, DownloadForeachParam.class);
+            NormalForeachParam downloadForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag, NormalForeachParam.class);
             WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
             DownloadService downloadService = (DownloadService)applicationContext.getBean("downloadServiceImpl");
             //根据指定id获取栏目列表

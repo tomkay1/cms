@@ -1,12 +1,8 @@
 package com.huotu.hotcms.web.service.factory;
 
 import com.huotu.hotcms.service.entity.Article;
-import com.huotu.hotcms.service.entity.Route;
-import com.huotu.hotcms.service.model.thymeleaf.ArticleForeachParam;
 import com.huotu.hotcms.service.model.thymeleaf.current.ArticleCurrentParam;
 import com.huotu.hotcms.service.service.ArticleService;
-import com.huotu.hotcms.service.service.CategoryService;
-import com.huotu.hotcms.service.service.impl.ArticleServiceImpl;
 import com.huotu.hotcms.web.service.BaseProcessorService;
 import com.huotu.hotcms.web.thymeleaf.expression.DialectAttributeFactory;
 import com.huotu.hotcms.web.thymeleaf.expression.VariableExpression;

@@ -12,9 +12,8 @@ import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.model.thymeleaf.CategoryForeachParam;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.CategoryForeachParam;
 import com.huotu.hotcms.service.service.CategoryService;
-import com.huotu.hotcms.web.service.SiteResolveService;
 import com.huotu.hotcms.web.thymeleaf.expression.DialectAttributeFactory;
 import com.huotu.hotcms.web.thymeleaf.expression.VariableExpression;
 import org.apache.commons.logging.Log;
@@ -23,14 +22,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 import org.thymeleaf.context.ITemplateContext;
-import org.thymeleaf.expression.IExpressionObjects;
 import org.thymeleaf.model.IProcessableElementTag;
-import org.thymeleaf.spring4.expression.SPELVariableExpressionEvaluator;
-import org.thymeleaf.standard.expression.StandardExpressionExecutionContext;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by cwb on 2016/1/6.

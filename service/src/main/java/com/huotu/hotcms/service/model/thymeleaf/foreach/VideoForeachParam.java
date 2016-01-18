@@ -6,18 +6,17 @@
  *  Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District 2013-2015. All rights reserved.
  */
 
-package com.huotu.hotcms.service.model.thymeleaf;
+package com.huotu.hotcms.service.model.thymeleaf.foreach;
 
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Created by cwb on 2016/1/6.
+ * Created by cwb on 2016/1/15.
  */
 @Getter
 @Setter
-public class ArticleForeachParam {
-
+public class VideoForeachParam {
     /**
      * 所属栏目Id
      */
@@ -52,5 +51,4 @@ public class ArticleForeachParam {
      * 指定需要展示的页数
      */
     private Integer pagenumber;
-
 }

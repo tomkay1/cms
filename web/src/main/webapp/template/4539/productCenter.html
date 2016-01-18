@@ -110,7 +110,7 @@
     <div class="cp">
         <ul data-th-remove="all-but-first">
             <li class="nuy ffr" data-article-foreach="article">
-                <div><img src="http://www.test.com/images/c1.jpg" data-th-src="@{'~/'+${article.thumbUri}}"
+                <div><img src="http://www.test.com/images/c1.jpg" data-th-src="${article.thumbUri}"
                           style="width:233px;height:233px;"/></div>
                 <div class="gytr">
                     <p class="biaoti"><strong data-th-text="${article.title}">产品名称</strong></p>

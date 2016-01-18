@@ -3,7 +3,7 @@ package com.huotu.hotcms.service.service.impl;
 import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.model.ArticleCategory;
-import com.huotu.hotcms.service.model.thymeleaf.ArticleForeachParam;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.ArticleForeachParam;
 import com.huotu.hotcms.service.model.thymeleaf.current.ArticleCurrentParam;
 import com.huotu.hotcms.service.repository.ArticleRepository;
 import com.huotu.hotcms.service.service.ArticleService;
@@ -107,11 +107,6 @@ public class ArticleServiceImpl implements ArticleService {
         return articleRepository.findAll(specification,new PageRequest(pageIndex,pageSize,sort));
     }
 
-    //    @Override
-//    public List<Article> getArticleList(ArticleForeachParam articleForeachParam) {
-//        return null;
-//    }
-//
     @Override
     public PageData<ArticleCategory> getPage(Integer customerId, String title, int page, int pageSize) {
         PageData<ArticleCategory> data = null;

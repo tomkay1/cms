@@ -104,7 +104,12 @@
  <a th:href="${request.rootUri}+'/about'"><div class="qiehuansyd"></div></a>
  <p style="clear:both"></p>
 </div>
-
+<div>
+    <ul data-th-remove="all-but-first">
+        <li data-link-foreach="link" data-param-categoryid="49" data-param-excludeid="5" data-th-text="${link.title}">友情链接一</li>
+        <li>友情链接二</li>
+    </ul>
+</div>
 <!--脚-->
 <div style="background-color:#1a1a1a">
  <div  class="footsy">

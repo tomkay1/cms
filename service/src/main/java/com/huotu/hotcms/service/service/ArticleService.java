@@ -10,12 +10,10 @@ package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.model.ArticleCategory;
-import com.huotu.hotcms.service.model.thymeleaf.ArticleForeachParam;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.ArticleForeachParam;
 import com.huotu.hotcms.service.model.thymeleaf.current.ArticleCurrentParam;
 import com.huotu.hotcms.service.util.PageData;
 import org.springframework.data.domain.Page;
-
-import java.util.List;
 
 /**
  * <p>

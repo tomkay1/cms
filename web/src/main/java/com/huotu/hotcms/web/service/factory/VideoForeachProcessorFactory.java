@@ -9,13 +9,8 @@
 package com.huotu.hotcms.web.service.factory;
 
 import com.huotu.hotcms.service.common.RouteType;
-import com.huotu.hotcms.service.entity.Article;
-import com.huotu.hotcms.service.entity.Category;
-import com.huotu.hotcms.service.entity.Route;
-import com.huotu.hotcms.service.entity.Video;
-import com.huotu.hotcms.service.model.thymeleaf.ArticleForeachParam;
-import com.huotu.hotcms.service.model.thymeleaf.VideoForeachParam;
-import com.huotu.hotcms.service.service.ArticleService;
+import com.huotu.hotcms.service.entity.*;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.VideoForeachParam;
 import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.service.VideoService;
 import com.huotu.hotcms.web.model.PageModel;
@@ -58,6 +53,7 @@ public class VideoForeachProcessorFactory {
         return instance;
     }
 
+
     public Object process(IProcessableElementTag elementTag,ITemplateContext context) {
         Page<Video> videoPage = null;
         try {
@@ -69,12 +65,12 @@ public class VideoForeachProcessorFactory {
             CategoryService categoryService = (CategoryService)applicationContext.getBean("categoryServiceImpl");
             Category current = categoryService.getCategoryByRoute(route);
             if(StringUtils.isEmpty(videoForeachParam.getCategoryid())) {
-                //如果不是具体子栏目，应取得当前栏目所有一级子栏目数据列表
                 if(route.getRouteType()== RouteType.VIDEO_LIST) {
                     videoForeachParam.setCategoryid(current.getId());
                 }
             }
             if(StringUtils.isEmpty(videoForeachParam.getParentcid())) {
+                //如果不是具体子栏目，应取得当前栏目所有一级子栏目数据列表
                 if(route.getRouteType()!=RouteType.VIDEO_LIST) {
                     videoForeachParam.setParentcid(current.getId());
                 }
@@ -106,6 +102,11 @@ public class VideoForeachProcessorFactory {
             }
             VideoService videoService = (VideoService)applicationContext.getBean("videoServiceImpl");
             videoPage = videoService.getVideoList(videoForeachParam);
+            //图片路径处理
+            Site site = (Site)VariableExpression.getVariable(context,"site");
+            for(Video video : videoPage) {
+                video.setThumbUri(site.getResourceUrl()+video.getThumbUri());
+            }
             //形成页码列表
             setPageList(videoForeachParam,videoPage,context);
         }catch (Exception e) {

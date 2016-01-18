@@ -12,7 +12,8 @@ import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Route;
-import com.huotu.hotcms.service.model.thymeleaf.ArticleForeachParam;
+import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.ArticleForeachParam;
 import com.huotu.hotcms.service.service.ArticleService;
 import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.web.model.PageModel;
@@ -103,6 +104,11 @@ public class ArticleForeachProcessorFactory {
             }
             ArticleService articleService = (ArticleService)applicationContext.getBean("articleServiceImpl");
             articles = articleService.getArticleList(articleForeachParam);
+            //图片路径处理
+            Site site = (Site)VariableExpression.getVariable(context,"site");
+            for(Article article : articles) {
+                article.setThumbUri(site.getResourceUrl() + article.getThumbUri());
+            }
             List<PageModel> pages = new ArrayList<>();
             int currentPage = articleForeachParam.getPageno();
             int totalPages = articles.getTotalPages();
@@ -129,8 +135,10 @@ public class ArticleForeachProcessorFactory {
         }catch (Exception e) {
             log.error(e.getMessage());
         }
+
         return articles;
     }
+
 
     private int calculateStartPageNo(int currentPage, int pageNumber, int totalPages) {
         if(pageNumber == totalPages) {

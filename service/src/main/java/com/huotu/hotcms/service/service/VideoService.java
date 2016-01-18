@@ -1,7 +1,7 @@
 package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.entity.Video;
-import com.huotu.hotcms.service.model.thymeleaf.VideoForeachParam;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.VideoForeachParam;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 

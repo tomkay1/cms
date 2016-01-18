@@ -3,7 +3,7 @@ package com.huotu.hotcms.service.service.impl;
 import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Video;
-import com.huotu.hotcms.service.model.thymeleaf.VideoForeachParam;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.VideoForeachParam;
 import com.huotu.hotcms.service.repository.VideoRepository;
 import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.service.VideoService;

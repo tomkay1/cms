@@ -6,26 +6,23 @@
  *  Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District 2013-2015. All rights reserved.
  */
 
-package com.huotu.hotcms.service.model.thymeleaf;
+package com.huotu.hotcms.service.model.thymeleaf.foreach;
 
+import com.huotu.hotcms.service.common.RouteType;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Created by cwb on 2016/1/15.
+ * Created by cwb on 2016/1/6.
  */
 @Getter
 @Setter
-public class VideoForeachParam {
-    /**
-     * 所属栏目Id
-     */
-    private Long categoryid;
+public class CategoryForeachParam {
 
     /**
-     * 父栏目id(与所属栏目id存在性互斥)
+     * 所属站点Id
      */
-    private Long parentcid;
+    private Long siteid;
 
     /**
      * 获取列表时排除的主键Id(可排除多个，逗号分隔)
@@ -38,17 +35,18 @@ public class VideoForeachParam {
     private String[] specifyids;
 
     /**
-     * 页码
+     * 路由类型
      */
-    private Integer pageno;
+    private RouteType routetype;
 
     /**
-     * 列表大小
+     * 父节点id
      */
-    private Integer pagesize;
+    private Long parentid;
 
     /**
-     * 指定需要展示的页数
+     * 取得列表大小
      */
-    private Integer pagenumber;
+    private Integer size;
+
 }

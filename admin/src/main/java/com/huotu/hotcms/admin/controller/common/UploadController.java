@@ -69,7 +69,7 @@ public class UploadController {
 
     @RequestMapping(value = "/imgUpLoad", method = RequestMethod.POST)
     @ResponseBody
-    public ResultView imgUpLoad(Integer customerId, @RequestParam(value = "btnFile", required = false) MultipartFile files) {
+    public ResultView imgUpLoad(HttpServletRequest request,Integer customerId, @RequestParam(value = "btnFile", required = false) MultipartFile files) {
         ResultView resultView = null;
         try {
             Date now = new Date();
@@ -77,7 +77,7 @@ public class UploadController {
             String prefix = fileName.substring(fileName.lastIndexOf(".") + 1);
             if("jpg, jpeg,png,gif,bmp".contains(prefix)){
             String path=configInfo.getResourcesImg(customerId)+"/"+StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + prefix;
-            URI uri = resourceServer.uploadResource(path, files.getInputStream());
+                URI uri = resourceServer.uploadResource(request,path, files.getInputStream());
                 Map<String,Object> map= new HashMap<String, Object>();
                 map.put("fileUrl", uri);
                 map.put("fileUri", path);
@@ -95,10 +95,10 @@ public class UploadController {
 
     @RequestMapping(value="/kindeditorUpload",method = RequestMethod.POST)
     @ResponseBody
-    public Result fileUploadUeImage(Integer customerId,MultipartHttpServletRequest request) throws Exception {
+    public Result fileUploadUeImage(HttpServletRequest request,Integer customerId,MultipartHttpServletRequest multipartHttpServletRequest) throws Exception {
         Result result=new Result();
         Date now = new Date();
-        MultipartFile file=request.getFile("imgFile");
+        MultipartFile file=multipartHttpServletRequest.getFile("imgFile");
 //        String[] img =configInfo.getResourcesUeditor().split("/");
         //取得扩展名
         String fileExt = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1).toLowerCase();
@@ -106,7 +106,7 @@ public class UploadController {
 
         String path=configInfo.getResourcesUeditor(customerId)+"/"+StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + fileExt;
 
-        URI uri =resourceServer.uploadResource(path, file.getInputStream());
+        URI uri = resourceServer.uploadResource(request,path, file.getInputStream());
         result.setError(0);
         result.setUrl(uri.toString());
         return result;
@@ -115,7 +115,7 @@ public class UploadController {
 
     @RequestMapping("/ajaxEditorFileUpload")
     @ResponseBody
-    public Result ajaxEditorFileUpload(Integer customerId,String imgsrc) throws Exception {
+    public Result ajaxEditorFileUpload(HttpServletRequest request,Integer customerId,String imgsrc) throws Exception {
         Result result = new Result();
         //去掉字符串前面多余的字符"data:image/png;base64,"，获得纯粹的二进制地址
         imgsrc = imgsrc.substring(22);
@@ -131,7 +131,7 @@ public class UploadController {
             String path=configInfo.getResourcesUeditor(customerId)+"/"+StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + ".png";
             //上传至服务器
 //            String fileName = StaticResourceService.RICHTEXT_UPLOAD + UUID.randomUUID().toString() + ".png";
-            URI uri =resourceServer.uploadResource(path, bais);
+            URI uri =resourceServer.uploadResource(request,path, bais);
 
             result.setStatus(0);
             result.setMessage(path);

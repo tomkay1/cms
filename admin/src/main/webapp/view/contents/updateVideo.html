@@ -17,7 +17,7 @@
         <span class="icon-sprite icon-list"></span>
         <h3>修改视频</h3>
         <div class="bar">
-            <a class="btn-lit" th:href="@{/contents/contentsList?customerid={customerid}(customerid=${video.customerId})}" target="content">
+            <a class="btn-lit" id="jq-cms-return" target="content">
                 <span>返回内容管理列表</span></a>
         </div>
     </div>
@@ -37,7 +37,7 @@
                         <tr>
                             <th>描述：</th>
                             <td>
-                                <input name="description" type="text" id="description" maxlength="50" th:value="${video.description}" class="input-normal" >
+                                <textarea rows="" cols="" style="width: 500px; height: 60px;" class="input-normal" id="description" name="description" th:value="${video.description}"></textarea>
                             </td>
                         </tr>
                         <tr>

@@ -11,13 +11,13 @@
     <script src="/assets/seajs/sea.js" type="application/javascript"></script>
     <script src="/assets/seajs/config.js" type="application/javascript"></script>
 </head>
-<body>
+<body id="contentsId">
 <div class="block">
     <div class="h">
         <span class="icon-sprite icon-list"></span>
         <h3>添加内容</h3>
         <div class="bar">
-            <a class="btn-lit" th:href="@{/contents/contentsList?customerid={customerid}(customerid=${customerId})}" target="content">
+            <a class="btn-lit" id="jq-cms-return" target="content">
                 <span>返回内容管理列表</span></a>
         </div>
     </div>
@@ -29,8 +29,9 @@
                             <th>所属栏目：</th>
                             <td>
                                 <select name="categoryId" class="input-normal" id="categoryId">
-                                    <option value="-1" th:attr="data-modelType=-1">==请选择栏目==</option>
-                                    <option th:each="category:${categorys}" th:value="${category.id}" th:attr="data-modelType=${category.modelId}" th:text="${category.name}"></option>
+                                    <option th:if="${size}==0" th:attr="data-modelType=-2">还没有栏目信息</option>
+                                    <!--<option value="-1" th:attr="data-modelType=-1">==请选择栏目来源==</option>-->
+                                    <option  th:each="category:${categorys}" th:value="${category.id}" th:attr="data-modelType=${category.modelId}" th:text="${category.name}"></option>
                                 </select>
                             </td>
                         </tr>

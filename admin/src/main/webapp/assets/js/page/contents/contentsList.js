@@ -44,8 +44,8 @@ define(function (require, exports, module) {
         deleteContents();
         contentsList();
     });
-//TODO:搜索
-    $("#jq-cms-search").click(function(){
+
+    function search(){
         var commonUtil = require("common");
         commonUtil.setDisabled("jq-cms-Save");
         var customerId =commonUtil.getQuery("customerId");
@@ -58,6 +58,10 @@ define(function (require, exports, module) {
             }
         };
         ContentsGrid.Refresh(option);
+    }
+//TODO:搜索
+    $("#jq-cms-search").click(function(){
+        search();
     })
 
     $("#jq-cms-add").click(function(){
@@ -225,7 +229,12 @@ define(function (require, exports, module) {
 
     $("#siteId").bind("change",function(){
         setSecond(this);
-    })//当改变站点时，栏目产生变化
+        search();
+    })
+    $("#category").bind("change",function(){
+        search();
+    })
+    //当改变站点时，栏目产生变化
     function setSecond(obj){
         var siteId = obj.value;
         var commonUtil = require("common");

@@ -16,7 +16,7 @@
         <span class="icon-sprite icon-list"></span>
         <h3>下载详情</h3>
         <div class="bar">
-            <a class="btn-lit" th:href="@{/contents/contentsList?customerid={customerid}(customerid=${user.customerId})}" target="content">
+            <a class="btn-lit" id="jq-cms-return" target="content">
                 <span>返回内容管理列表</span></a>
         </div>
     </div>
@@ -30,13 +30,13 @@
                         <tr>
                             <th>文件名称：</th>
                             <td>
-                                <input name="fileName" type="fileName" id="title" maxlength="50" class="input-normal" th:value="${download.fileName}">
+                                <input name="title" type="text" id="title" maxlength="50" class="input-normal" th:value="${download.title}">
                             </td>
                         </tr>
                         <tr>
                             <th>描述：</th>
                             <td>
-                                <input name="description" type="text" id="description" maxlength="50" class="input-normal" th:value="${download.description}" >
+                                <textarea rows="" cols="" style="width: 500px; height: 60px;" class="input-normal" id="description" name="description" th:text="${download.description}"></textarea>
                             </td>
                         </tr>
                         <tr>

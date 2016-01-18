@@ -84,51 +84,8 @@ public class SiteController {
     @RequestMapping(value = "/saveSite",method = RequestMethod.POST)
     @Transactional(value = "transactionManager")
     @ResponseBody
-    public ResultView updateSite(Site site,Long regionId,String...domains){
+    public ResultView updateSite(HttpServletRequest request,Site site,Long regionId,String...domains){
         ResultView result=null;
-//        try {
-//                for (String domain : domains) {
-//                    Host flag = hostService.getHost(domain);
-//                    if (flag == null) {//全新域名
-//                        Host host = new Host();
-//                        host.setCustomerId(site.getCustomerId());
-//                        host.setDomain(domain);
-//                        site.addHost(host);
-//                    } else {
-//                        if (flag.getCustomerId() .equals(site.getCustomerId())&&!regionId.equals(site.getRegion().getId())) {//域名相同，但是地区不同
-//                            siteService.save(site);
-//                            site.addHost(flag);
-//
-//                        } else {//当域名已被占用
-//                            result = new ResultView(ResultOptionEnum.DOMAIN_EXIST.getCode(), ResultOptionEnum.DOMAIN_EXIST.getValue(), null);
-//                            return result;
-//                        }
-//                    }
-//                }
-//                Long siteId = site.getSiteId();
-//                Region region = regionRepository.findOne(regionId);
-//                String resourceUrl = site.getResourceUrl();
-//                if(StringUtils.isEmpty(resourceUrl)){
-//                    resourceUrl =resourceServer.getResource("").toString();
-//                }
-//                site.setResourceUrl(resourceUrl);
-//                if (siteId == null) {
-//                    site.setCreateTime(LocalDateTime.now());
-//                    site.setUpdateTime(LocalDateTime.now());
-//                    site.setRegion(region);
-//                    site.setDeleted(false);
-//                    siteService.save(site);
-//                } else {
-//                    site.setUpdateTime(LocalDateTime.now());
-//                    siteService.save(site);
-//                }
-//                result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
-//        }
-//        catch (Exception ex)
-//        {
-//            log.error(ex.getMessage());
-//            result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
-//        }
         Set<Host> hostSet = new HashSet<>();
         try {
             Long siteId = site.getSiteId();
@@ -184,7 +141,7 @@ public class SiteController {
                 Region region = regionRepository.findOne(regionId);
                 String resourceUrl = site.getResourceUrl();
                 if(StringUtils.isEmpty(resourceUrl)){
-                    resourceUrl =resourceServer.getResource("").toString();
+                    resourceUrl =resourceServer.getResource(request,"").toString();
                 }
                 site.setResourceUrl(resourceUrl);
                 if (siteId == null) {
@@ -209,7 +166,7 @@ public class SiteController {
 
 
     @RequestMapping("/updateSite")
-    public ModelAndView updateSite(@RequestParam(value = "id",defaultValue = "0") Long id,int customerId) throws Exception {
+    public ModelAndView updateSite(HttpServletRequest request,@RequestParam(value = "id",defaultValue = "0") Long id,int customerId) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         try {
             modelAndView.setViewName("/view/web/updateSite.html");
@@ -218,7 +175,7 @@ public class SiteController {
                 Site site = siteService.findBySiteIdAndCustomerId(id, customerId);
                 if (site != null) {
                     if (!StringUtils.isEmpty(site.getLogoUri())) {
-                        logo_uri = resourceServer.getResource(site.getLogoUri()).toString();
+                        logo_uri = resourceServer.getResource(request,site.getLogoUri()).toString();
                     }
                     modelAndView.addObject("site", site);
                     modelAndView.addObject("logo_uri", logo_uri);

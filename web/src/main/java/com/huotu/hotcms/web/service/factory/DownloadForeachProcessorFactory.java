@@ -9,9 +9,11 @@
 package com.huotu.hotcms.web.service.factory;
 
 import com.huotu.hotcms.service.entity.Download;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.NormalForeachParam;
 import com.huotu.hotcms.service.service.DownloadService;
 import com.huotu.hotcms.web.thymeleaf.expression.DialectAttributeFactory;
+import com.huotu.hotcms.web.thymeleaf.expression.VariableExpression;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.util.StringUtils;
@@ -47,9 +49,14 @@ public class DownloadForeachProcessorFactory {
             NormalForeachParam downloadForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag, NormalForeachParam.class);
             WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
             DownloadService downloadService = (DownloadService)applicationContext.getBean("downloadServiceImpl");
+            Site site = (Site) VariableExpression.getVariable(context,"site");
             //根据指定id获取栏目列表
             if(downloadForeachParam.getSpecifyids()!=null) {
-                return downloadService.getSpecifyDownloads(downloadForeachParam.getSpecifyids());
+                List<Download> downloads = downloadService.getSpecifyDownloads(downloadForeachParam.getSpecifyids());
+                for(Download download : downloads) {
+                    download.setDownloadUrl(site.getResourceUrl() + download.getDownloadUrl());
+                }
+                return downloads;
             }
             if(StringUtils.isEmpty(downloadForeachParam.getCategoryid())) {
                 throw new Exception("栏目id没有指定");
@@ -57,7 +64,12 @@ public class DownloadForeachProcessorFactory {
             if(downloadForeachParam.getSize()==null) {
                 downloadForeachParam.setSize(DEFAULT_PAGE_SIZE);
             }
-            return downloadService.getDownloadList(downloadForeachParam);
+            List<Download> downloads;
+            downloads = downloadService.getDownloadList(downloadForeachParam);
+            for(Download download : downloads) {
+                download.setDownloadUrl(site.getResourceUrl() + download.getDownloadUrl());
+            }
+            return downloads;
         }catch (Exception e) {
             e.printStackTrace();
             log.error(e.getMessage());//TODO 上线时删除

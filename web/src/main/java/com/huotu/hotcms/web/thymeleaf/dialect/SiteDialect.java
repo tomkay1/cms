@@ -31,7 +31,7 @@ public class SiteDialect extends AbstractProcessorDialect {
         final Set<IProcessor> processors = new LinkedHashSet<IProcessor>();
         processors.add(new ForeachProcessor(dialect, dialectPrefix));
         processors.add(new CurrentProcessor(dialect, dialectPrefix));
-        processors.add(new HrefProcessor(dialect, dialectPrefix));
+//        processors.add(new HrefProcessor(dialect, dialectPrefix));
         return processors;
     }
 }

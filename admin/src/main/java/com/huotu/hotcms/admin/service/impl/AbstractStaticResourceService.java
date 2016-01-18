@@ -67,32 +67,32 @@ public abstract class AbstractStaticResourceService implements StaticResourceSer
         return getResource(path);
     }
 
-    @Override
-    public URI uploadResource(HttpServletRequest request, String path, InputStream data) throws IOException, IllegalStateException, URISyntaxException {
-        StringBuilder stringBuilder = new StringBuilder(fileHome.toString());
-        if (!stringBuilder.toString().endsWith("/") && !path.startsWith("/"))
-            stringBuilder.append("/");
-        stringBuilder.append(path);
-
-        vfsHelper.handle(stringBuilder.toString(), file -> {
-            if (file.exists())
-                throw new IllegalStateException("" + file.toString() + " already existing");
-            OutputStream out = file.getContent().getOutputStream();
-            try {
-                StreamUtils.copy(data, out);
-            } catch (IOException e) {
-                throw new FileSystemException(e);
-            } finally {
-                try {
-                    data.close();
-                    out.close();
-                } catch (IOException e) {
-                    log.info("Exception on close stream." + e);
-                }
-            }
-        });
-        return getResource(request,path);
-    }
+//    @Override
+//    public URI uploadResource(HttpServletRequest request, String path, InputStream data) throws IOException, IllegalStateException, URISyntaxException {
+//        StringBuilder stringBuilder = new StringBuilder(fileHome.toString());
+//        if (!stringBuilder.toString().endsWith("/") && !path.startsWith("/"))
+//            stringBuilder.append("/");
+//        stringBuilder.append(path);
+//
+//        vfsHelper.handle(stringBuilder.toString(), file -> {
+//            if (file.exists())
+//                throw new IllegalStateException("" + file.toString() + " already existing");
+//            OutputStream out = file.getContent().getOutputStream();
+//            try {
+//                StreamUtils.copy(data, out);
+//            } catch (IOException e) {
+//                throw new FileSystemException(e);
+//            } finally {
+//                try {
+//                    data.close();
+//                    out.close();
+//                } catch (IOException e) {
+//                    log.info("Exception on close stream." + e);
+//                }
+//            }
+//        });
+//        return getResource(request,path);
+//    }
 
     @Override
     public URI getResource(String path) throws URISyntaxException {
@@ -103,15 +103,15 @@ public abstract class AbstractStaticResourceService implements StaticResourceSer
         return new URI(stringBuilder.toString());
     }
 
-    @Override
-    public URI getResource(HttpServletRequest request, String path) throws URISyntaxException {
-        String rootUri="http://"+request.getServerName()+":"+request.getServerPort();
-        StringBuilder stringBuilder = new StringBuilder(rootUri);
-        if (!stringBuilder.toString().endsWith("/") && !path.startsWith("/"))
-            stringBuilder.append("/");
-        stringBuilder.append(path);
-        return new URI(stringBuilder.toString());
-    }
+//    @Override
+//    public URI getResource(HttpServletRequest request, String path) throws URISyntaxException {
+//        String rootUri="http://"+request.getServerName()+":"+request.getServerPort();
+//        StringBuilder stringBuilder = new StringBuilder(rootUri);
+//        if (!stringBuilder.toString().endsWith("/") && !path.startsWith("/"))
+//            stringBuilder.append("/");
+//        stringBuilder.append(path);
+//        return new URI(stringBuilder.toString());
+//    }
 
     @Override
     public void deleteResource(URI uri) throws IOException {

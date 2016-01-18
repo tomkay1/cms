@@ -39,5 +39,4 @@ public class LocalStaticResourceService extends AbstractStaticResourceService{
             throw new InternalError("解析"+stringBuilder.toString()+"失败");
         }
     }
-
 }

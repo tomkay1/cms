@@ -44,17 +44,17 @@ public interface StaticResourceService {
      */
     URI uploadResource(String path, InputStream data) throws IOException,IllegalStateException,URISyntaxException;
 
-    /**
-     * 上传资源
-     *
-     * @param request webrequest
-     * @param path 资源路径
-     * @param data 数据
-     * @return 新资源的资源定位符
-     * @throws IOException 保存是出错
-     * @throws IllegalStateException 如果该资源已存在
-     */
-    URI uploadResource(HttpServletRequest request, String path,InputStream data) throws IOException,IllegalStateException,URISyntaxException;
+//    /**
+//     * 上传资源
+//     *
+//     * @param request webrequest
+//     * @param path 资源路径
+//     * @param data 数据
+//     * @return 新资源的资源定位符
+//     * @throws IOException 保存是出错
+//     * @throws IllegalStateException 如果该资源已存在
+//     */
+//    URI uploadResource(HttpServletRequest request, String path,InputStream data) throws IOException,IllegalStateException,URISyntaxException;
 
 
     /**
@@ -65,13 +65,13 @@ public interface StaticResourceService {
      */
     URI getResource(String path) throws URISyntaxException;
 
-    /**
-     * 获取指定资源的资源定位符
-     * @param path
-     * @return
-     * @throws URISyntaxException
-     */
-    URI getResource(HttpServletRequest request,String path) throws URISyntaxException;
+//    /**
+//     * 获取指定资源的资源定位符
+//     * @param path
+//     * @return
+//     * @throws URISyntaxException
+//     */
+//    URI getResource(HttpServletRequest request,String path) throws URISyntaxException;
 
     /**
      * 删除资源

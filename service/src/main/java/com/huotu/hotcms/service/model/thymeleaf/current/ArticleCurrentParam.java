@@ -15,7 +15,7 @@ public class ArticleCurrentParam {
     private Long id;
 
     /**
-     * 文章默认ID,优先级最后,如果文章制定ID不为空则取默认
+     * 文章默认ID,优先级最后,如果文章指定ID不为空则取默认
      * **/
     private Long defaultid;
 }

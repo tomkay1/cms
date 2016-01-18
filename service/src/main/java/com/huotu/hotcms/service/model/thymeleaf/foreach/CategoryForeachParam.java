@@ -43,7 +43,7 @@ public class CategoryForeachParam {
     /**
      * 获取列表时排除的主键Id(可排除多个，逗号分隔)
      */
-    protected String[] excludeid;//TODO 上线前重命名为excludeids
+    protected String[] excludeids;
 
     /**
      * 获取指定Id的列表(可指定多个，逗号分隔)

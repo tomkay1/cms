@@ -49,7 +49,7 @@ public class LinkController {
 
 
     @RequestMapping("/linkList")
-    public ModelAndView linkList(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception
+    public ModelAndView linkList(HttpServletRequest request,@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception
     {
         ModelAndView modelAndView=new ModelAndView();
         try{
@@ -57,7 +57,7 @@ public class LinkController {
         Link link= linkService.findById(id);
         String logo_uri="";
         if(!StringUtils.isEmpty(link.getThumbUri())) {
-            logo_uri = resourceServer.getResource(link.getThumbUri()).toString();
+            logo_uri = resourceServer.getResource(request,link.getThumbUri()).toString();
         }
         modelAndView.addObject("logo_uri",logo_uri);
         modelAndView.addObject("link", link);
@@ -81,14 +81,14 @@ public class LinkController {
   * 修改链接
   * */
     @RequestMapping("/updateLink")
-    public ModelAndView updateLink(@RequestParam(value = "id",defaultValue = "0") Long id,Integer customerId) throws Exception{
+    public ModelAndView updateLink(HttpServletRequest request,@RequestParam(value = "id",defaultValue = "0") Long id,Integer customerId) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
         try{
         modelAndView.setViewName("/view/contents/updateLink.html");
         Link link= linkService.findById(id);
         String logo_uri="";
         if(!StringUtils.isEmpty(link.getThumbUri())) {
-            logo_uri = resourceServer.getResource(link.getThumbUri()).toString();
+            logo_uri = resourceServer.getResource(request,link.getThumbUri()).toString();
         }
         Category category =link.getCategory();
         Integer modelType = category.getModelId();

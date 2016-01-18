@@ -16,7 +16,7 @@
         <span class="icon-sprite icon-list"></span>
         <h3>视频详情</h3>
         <div class="bar">
-            <a class="btn-lit" th:href="@{/contents/contentsList?customerid={customerid}(customerid=${video.customerId})}" target="content">
+            <a class="btn-lit" id="jq-cms-return" target="content">
                 <span>返回内容管理列表</span></a>
         </div>
     </div>
@@ -36,7 +36,7 @@
                         <tr>
                             <th>描述：</th>
                             <td>
-                                <textarea rows="" cols="" style="width: 500px; height: 60px;" class="input-normal" id="description" name="description" th:value="${video.description}"></textarea>
+                                <textarea rows="" cols="" style="width: 500px; height: 60px;" class="input-normal" id="description" name="description" th:text="${video.description}"></textarea>
                             </td>
                         </tr>
                         <tr>
@@ -91,6 +91,6 @@
         </form>
     </div>
 </div>
-<script>seajs.use(["validate","updateVideo"]);</script>
+<script>seajs.use(["validate","videoList"]);</script>
 </body>
 </html>

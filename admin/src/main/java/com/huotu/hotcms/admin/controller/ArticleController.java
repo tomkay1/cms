@@ -46,7 +46,7 @@ public class ArticleController {
     private CookieUser cookieUser;
 
     @RequestMapping("/articleList")
-    public ModelAndView articleList(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception
+    public ModelAndView articleList(HttpServletRequest request,@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception
     {
         ModelAndView modelAndView=new ModelAndView();
         try{
@@ -54,7 +54,7 @@ public class ArticleController {
         Article article= articleService.findById(id);
         String logo_uri="";
         if(!StringUtils.isEmpty(article.getThumbUri())) {
-            logo_uri = resourceServer.getResource(article.getThumbUri()).toString();
+            logo_uri = resourceServer.getResource(request,article.getThumbUri()).toString();
         }
         modelAndView.addObject("logo_uri",logo_uri);
         modelAndView.addObject("article",article);
@@ -78,14 +78,14 @@ public class ArticleController {
   * 修改栏目
   * */
     @RequestMapping("/updateArticle")
-    public ModelAndView updateArticle(@RequestParam(value = "id",defaultValue = "0") Long id,Integer customerId) throws Exception{
+    public ModelAndView updateArticle(HttpServletRequest request,@RequestParam(value = "id",defaultValue = "0") Long id,Integer customerId) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
         try{
         modelAndView.setViewName("/view/contents/updateArticle.html");
         Article article= articleService.findById(id);
         String logo_uri="";
         if(!StringUtils.isEmpty(article.getThumbUri())) {
-            logo_uri = resourceServer.getResource(article.getThumbUri()).toString();
+            logo_uri = resourceServer.getResource(request,article.getThumbUri()).toString();
         }
         Category category =article.getCategory();
         Integer modelType = category.getModelId();

@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import sun.misc.BASE64Decoder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URI;
@@ -42,7 +43,7 @@ public class UploadController {
 
     @RequestMapping(value = "/siteUpLoad", method = RequestMethod.POST)
     @ResponseBody
-    public ResultView siteUpLoad(Integer customerId, @RequestParam(value = "btnFile", required = false) MultipartFile files) {
+    public ResultView siteUpLoad(HttpServletRequest request,Integer customerId, @RequestParam(value = "btnFile", required = false) MultipartFile files) {
         ResultView resultView = null;
         try {
             Date now = new Date();
@@ -51,7 +52,7 @@ public class UploadController {
             if("jpg, jpeg,png,gif,bmp".contains(prefix))
             {
                 String path=configInfo.getResourcesSiteLogo(customerId)+"/"+StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + prefix;
-                URI uri = resourceServer.uploadResource(path, files.getInputStream());
+                URI uri = resourceServer.uploadResource(request,path, files.getInputStream());
                 Map<String,Object> map= new HashMap<String, Object>();
                 map.put("fileUrl", uri);
                 map.put("fileUri", path);

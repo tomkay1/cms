@@ -42,7 +42,7 @@ public class VideoController {
     private CookieUser cookieUser;
 
     @RequestMapping("/videoList")
-    public ModelAndView videoList(HttpServletRequest request,@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception
+    public ModelAndView videoList(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception
     {
         ModelAndView modelAndView=new ModelAndView();
         try{
@@ -50,7 +50,7 @@ public class VideoController {
         Video video= videoService.findById(id);
         String logo_uri="";
         if(!StringUtils.isEmpty(video.getThumbUri())) {
-            logo_uri = resourceServer.getResource(request,video.getThumbUri()).toString();
+            logo_uri = resourceServer.getResource(video.getThumbUri()).toString();
         }
         modelAndView.addObject("logo_uri",logo_uri);
         modelAndView.addObject("video",video);
@@ -74,14 +74,14 @@ public class VideoController {
   * 修改VIdeo
   * */
     @RequestMapping("/updateVideo")
-    public ModelAndView updateVideo(HttpServletRequest request,@RequestParam(value = "id",defaultValue = "0") Long id,Integer customerId) throws Exception{
+    public ModelAndView updateVideo(@RequestParam(value = "id",defaultValue = "0") Long id,Integer customerId) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
         try{
         modelAndView.setViewName("/view/contents/updateVideo.html");
         Video video= videoService.findById(id);
         String logo_uri="";
         if(!StringUtils.isEmpty(video.getThumbUri())) {
-            logo_uri = resourceServer.getResource(request,video.getThumbUri()).toString();
+            logo_uri = resourceServer.getResource(video.getThumbUri()).toString();
         }
         Category category =video.getCategory();
         Integer modelType = category.getModelId();

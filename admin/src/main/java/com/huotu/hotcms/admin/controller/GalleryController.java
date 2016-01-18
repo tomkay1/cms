@@ -46,7 +46,7 @@ public class GalleryController {
 
 
         @RequestMapping("/galleryList")
-        public ModelAndView galleryList(HttpServletRequest request,@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception
+        public ModelAndView galleryList(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception
         {
 
             ModelAndView modelAndView=new ModelAndView();
@@ -55,7 +55,7 @@ public class GalleryController {
             Gallery gallery= galleryService.findById(id);
             String logo_uri="";
             if(!StringUtils.isEmpty(gallery.getThumbUri())) {
-                logo_uri = resourceServer.getResource(request,gallery.getThumbUri()).toString();
+                logo_uri = resourceServer.getResource(gallery.getThumbUri()).toString();
             }
             modelAndView.addObject("logo_uri",logo_uri);
             modelAndView.addObject("gallery", gallery);
@@ -78,14 +78,14 @@ public class GalleryController {
       * 修改图库
       * */
         @RequestMapping("/updateGallery")
-        public ModelAndView updateGallery(HttpServletRequest request,@RequestParam(value = "id",defaultValue = "0") Long id,Integer customerId) throws Exception{
+        public ModelAndView updateGallery(@RequestParam(value = "id",defaultValue = "0") Long id,Integer customerId) throws Exception{
             ModelAndView modelAndView=new ModelAndView();
             try{
             modelAndView.setViewName("/view/contents/updateGallery.html");
             Gallery gallery= galleryService.findById(id);
             String logo_uri="";
             if(!StringUtils.isEmpty(gallery.getThumbUri())) {
-                logo_uri = resourceServer.getResource(request,gallery.getThumbUri()).toString();
+                logo_uri = resourceServer.getResource(gallery.getThumbUri()).toString();
             }
             Category category =gallery.getCategory();
             Integer modelType = category.getModelId();

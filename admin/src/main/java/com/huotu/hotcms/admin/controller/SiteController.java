@@ -84,7 +84,7 @@ public class SiteController {
     @RequestMapping(value = "/saveSite",method = RequestMethod.POST)
     @Transactional(value = "transactionManager")
     @ResponseBody
-    public ResultView updateSite(HttpServletRequest request,Site site,Long regionId,String...domains){
+    public ResultView updateSite(Site site,Long regionId,String...domains){
         ResultView result=null;
         Set<Host> hostSet = new HashSet<>();
         try {
@@ -141,7 +141,7 @@ public class SiteController {
                 Region region = regionRepository.findOne(regionId);
                 String resourceUrl = site.getResourceUrl();
                 if(StringUtils.isEmpty(resourceUrl)){
-                    resourceUrl =resourceServer.getResource(request,"").toString();
+                    resourceUrl =resourceServer.getResource("").toString();
                 }
                 site.setResourceUrl(resourceUrl);
                 if (siteId == null) {
@@ -166,7 +166,7 @@ public class SiteController {
 
 
     @RequestMapping("/updateSite")
-    public ModelAndView updateSite(HttpServletRequest request,@RequestParam(value = "id",defaultValue = "0") Long id,int customerId) throws Exception {
+    public ModelAndView updateSite(@RequestParam(value = "id",defaultValue = "0") Long id,int customerId) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         try {
             modelAndView.setViewName("/view/web/updateSite.html");
@@ -175,7 +175,7 @@ public class SiteController {
                 Site site = siteService.findBySiteIdAndCustomerId(id, customerId);
                 if (site != null) {
                     if (!StringUtils.isEmpty(site.getLogoUri())) {
-                        logo_uri = resourceServer.getResource(request,site.getLogoUri()).toString();
+                        logo_uri = resourceServer.getResource(site.getLogoUri()).toString();
                     }
                     modelAndView.addObject("site", site);
                     modelAndView.addObject("logo_uri", logo_uri);

@@ -12,6 +12,11 @@ define(["js/jquery-1.9.1.min"],function () {
             var height = $(document).height()-topHeight;
             $("#"+id).height(height);
         },
+        cacleHeightByIframe:function(id,topHeight)
+        {
+            var height = document.body.clientHeight -topHeight;
+            $("#"+id).height(height);
+        },
         calcuWidth:function(id,leftWidth){
             var win = $(window);
             var width = win.width() - leftWidth;

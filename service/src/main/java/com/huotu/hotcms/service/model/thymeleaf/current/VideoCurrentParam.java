@@ -10,12 +10,12 @@ import lombok.Setter;
 @Getter
 public class VideoCurrentParam {
     /**
-     * 文章ID,如果没有则根据当前请求的Uri的环境获得当前所属文章ID
+     * 视频ID,如果没有则根据当前请求的Uri的环境获得当前所属视频ID
      * **/
     private Long id;
 
     /**
-     * 文章默认ID,优先级最后,如果文章制定ID不为空则取默认
+     * 视频默认ID,优先级最后,如果视频指定ID不为空则取默认
      * **/
     private Long defaultid;
 }

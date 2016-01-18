@@ -30,7 +30,7 @@ public class LocalStaticResourceService extends AbstractStaticResourceService{
         this.fileHome = file.toURI();
         String url=System.getProperty("user.dir");
 //        String servletHost=context.getServletContext().getServlet
-        StringBuilder stringBuilder = new StringBuilder("http://localhost:8081");
+        StringBuilder stringBuilder = new StringBuilder("http://localhost:8080");
         stringBuilder.append(context.getServletContext().getContextPath());
         try {
             this.uriPrefix = new URI(stringBuilder.toString());
@@ -39,5 +39,4 @@ public class LocalStaticResourceService extends AbstractStaticResourceService{
             throw new InternalError("解析"+stringBuilder.toString()+"失败");
         }
     }
-
 }

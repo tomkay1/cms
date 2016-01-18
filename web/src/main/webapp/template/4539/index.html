@@ -48,17 +48,18 @@
 <p style="clear:both"></p>
 <!---轮播--->
 <div class="jztp sybg" style="top:-50px">
- <div class="sybg_div"><a href="#"><span class="button">MORE</span></a></div>
+ <div class="sybg_div"><a th:href="${request.rootUri}+'/brand/company'"><span class="button">MORE</span></a></div>
 </div>
 <!--资讯---->
 <div class="syzx">
- <div  class="syzxzuo">
-  <img th:src="${request.rootUri}+'/images/player.jpg'">
-  <p class="b"><span><b>永春的企业文化</b></span>&nbsp;<span style="color:#949494">CORPORATE CULTURE</span></p>
-  <p class="c">我们本着精益求精，客户至上的宗旨，不断为世界各地的消费者生产出更多的好产品。我们将伴随着中国经济一起腾飞。</p>
+ <div  class="syzxzuo" data-video-current="video" data-param-defaultid="4">
+  <a data-th-href="${video.outLinkUrl}" target="_blank">
+      <img data-th-src="${video.thumbUri}" width="446" height="190">
+  </a>
+  <p class="b"><span><b data-th-text="${video.title}">永春的企业文化</b></span>&nbsp;<span style="color:#949494">CORPORATE CULTURE</span></p>
+  <p class="c" data-th-text="${video.description}">我们本着精益求精，客户至上的宗旨，不断为世界各地的消费者生产出更多的好产品。我们将伴随着中国经济一起腾飞。</p>
  </div>
-
- <p style="height:44px;margin-top: 10px;"><span class="kx" >快讯 news</span><a><span class="fr">查看更多>></span></a></p>
+ <p style="height:44px;margin-top: 10px;"><span class="kx" >快讯 news</span><a th:href="@{${request.root}+'/brand/news'}"><span class="fr">查看更多>></span></a></p>
  <div class="kxbg" data-th-remove="all-but-first">
   <p class="newstbg" data-article-foreach="article" data-param-pagesize="6" data-param-categoryid="35">
    <a th:href="${request.rootUri}+'/new/'+${article.id}+'.html'" ><span class="newsta" data-th-text="${article.title}">永春2009秋冬产品订货会圆满闭幕</span>

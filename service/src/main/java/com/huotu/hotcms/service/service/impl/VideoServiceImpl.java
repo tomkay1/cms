@@ -2,7 +2,9 @@ package com.huotu.hotcms.service.service.impl;
 
 import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.Video;
+import com.huotu.hotcms.service.model.thymeleaf.current.VideoCurrentParam;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.VideoForeachParam;
 import com.huotu.hotcms.service.repository.VideoRepository;
 import com.huotu.hotcms.service.service.CategoryService;
@@ -111,5 +113,42 @@ public class VideoServiceImpl implements VideoService {
             return cb.or(predicates.toArray(new Predicate[predicates.size()]));
         };
         return videoRepository.findAll(specification,new PageRequest(pageIndex,pageSize,sort));
+    }
+
+    @Override
+    public Video getVideoByParam(VideoCurrentParam videoCurrentParam) {
+        Video video=null;
+        if (videoCurrentParam != null) {
+            if (videoCurrentParam.getId() != null) {
+                video= videoRepository.getOne(videoCurrentParam.getId());
+            } else {
+                video= videoRepository.getOne(videoCurrentParam.getDefaultid());
+            }
+        }
+        ///图片资源处理
+        video=setVideoResourcesPath(video);
+        return video;
+    }
+
+    @Override
+    public Video setVideoResourcesPath(Video video) {
+        if(video!=null){
+            Category category=video.getCategory();
+            if(category!=null) {
+                Site site = category.getSite();
+                if(site!=null&&!StringUtils.isEmpty(site.getResourceUrl())){
+                    if(!StringUtils.isEmpty(video.getVideoUrl())){
+                        video.setVideoUrl(site.getResourceUrl()+video.getVideoUrl());
+                    }
+                    if(!StringUtils.isEmpty(video.getThumbUri())) {
+                        video.setThumbUri(site.getResourceUrl() + video.getThumbUri());
+                    }
+                    if(!StringUtils.isEmpty(video.getOutLinkUrl())){
+                        video.setVideoUrl(site.getResourceUrl()+video.getOutLinkUrl());
+                    }
+                }
+            }
+        }
+        return video;
     }
 }

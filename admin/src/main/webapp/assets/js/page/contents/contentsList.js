@@ -17,7 +17,7 @@ define(function (require, exports, module) {
         },
         height:'auto',
         showNumber: false,
-        pageSize: 3,
+        pageSize: 20,
         pagerCount: 10,
         pageDetail: true,
         url: '/contents/getContentsList',//数据来源Url|
@@ -103,6 +103,7 @@ define(function (require, exports, module) {
                 var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;
                 var model=$(this).attr("data-model");//Html5可以使用$(this).data('id')方式来写;
                 var arrayText =model.split("");//article->Article
+                var layer=require("layer");
                 var link="";
                 for(var i=0;i<arrayText.length;i++){
                     if(i==0){
@@ -114,7 +115,19 @@ define(function (require, exports, module) {
                 }
                 var commonUtil = require("common");
                 var customerId = commonUtil.getQuery("customerId");
-                window.location.href="http://"+window.location.host+"/"+model+"/update"+link+"?id="+id+"&customerId="+customerId;
+                //window.location.href="http://"+window.location.host+"/"+model+"/update"+link+"?id="+id+"&customerId="+customerId;
+                var content ="/"+model+"/update"+link+"?id="+id+"&customerId="+customerId;
+                layer.open({
+                    type: 2,
+                    title: "修改内容",
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['1000px', '700px'],
+                    content: content,
+                    end:function(){
+                        ContentsGrid.Refresh();
+                    }
+                });
             })
         })
     }
@@ -191,8 +204,20 @@ define(function (require, exports, module) {
                 model=$.trim(model);
                 var commonUtil = require("common");
                 var customerId = commonUtil.getQuery("customerId");
-                //alert("http://"+window.location.host+"/"+model+"/"+model+"List"+"?id="+id+"&customerId="+customerId);
-                window.location.href="http://"+window.location.host+"/"+model+"/"+model+"List"+"?id="+id+"&customerId="+customerId;
+                //window.location.href="http://"+window.location.host+"/"+model+"/"+model+"List"+"?id="+id+"&customerId="+customerId;
+                var content="/"+model+"/"+model+"List"+"?id="+id+"&customerId="+customerId;
+                var layer=require("layer");
+                layer.open({
+                    type: 2,
+                    title: "内容详情",
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['1000px', '700px'],
+                    content: content,
+                    end:function(){
+                        ContentsGrid.Refresh();
+                    }
+                });
         })
     })
     }

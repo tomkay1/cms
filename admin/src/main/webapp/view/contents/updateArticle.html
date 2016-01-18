@@ -46,7 +46,7 @@
                         </tr>
                             <th>文章描述：</th>
                             <td>
-                                <textarea rows="" cols="" style="width: 250px; height: 60px;" class="input-normal" id="description" name="description" th:text="${article.description}" ></textarea>
+                                <textarea rows="" cols="" style="width: 500px; height: 60px;" class="input-normal" id="description" name="description" th:text="${article.description}" ></textarea>
                             </td>
                         </tr>
                         <tr>
@@ -60,9 +60,9 @@
                             <td>
                                 <select name="isSystem" class="input-normal" id="isSystem">
                                     <option value="-1">==请选择文章类型==</option>
-                                    <option value="0"  th:selected="${article.isSystem}==true?true:false">系统文章</option>
-                                    <option value="1" th:selected="${article.isSystem}==false?true:false">普通文章</option></select>
-                                <span style="color:#f00;">（警告:系统文章不允许删除）</span>
+                                    <option value="true"  th:selected="${article.isSystem}==true?true:false">系统文章</option>
+                                    <option value="false" th:selected="${article.isSystem}==false?true:false">普通文章</option></select>
+                                <span style="color:#f00;">（温馨提示:系统文章不允许删除）</span>
                             </td>
                         </tr>
                         <tr>
@@ -108,7 +108,7 @@
 <script>
     window.editor = KindEditor.create('#content', {
         resizeType: '0',
-        width: '980px',
+        width: '680px',
         height: '300px',
         uploadJson: '/cms/kindeditorUpload',
         afterBlur: function () { this.sync(); }

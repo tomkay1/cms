@@ -72,6 +72,8 @@ public class ContentsController {
         else{
            categorys=categoryRepository.findByCustomerIdAndSite_SiteIdAndIdAndDeletedAndModelIdNotNullOrderByOrderWeightDesc(customerId, siteId, category, false);
         }
+        int size =categorys.size();
+        modelAndView.addObject("size",size);
         modelAndView.addObject("categorys",categorys);
         modelAndView.addObject("customerId",customerId);
         return  modelAndView;
@@ -109,47 +111,3 @@ public class ContentsController {
     }
 }
 
-
-
-
-
-
-//    PageData<Contents> data = null;
-//        List<Object[]> contentsList =new ArrayList<>();
-//        if(name==null){
-//            name="%"+""+"%";
-//        }
-//        else{
-//            name ="%"+name+"%";
-//        }
-//        if(category==-1){//当搜索条件只有站点时
-//            contentsList = linkRepository.findAllContentsBySiteIdAndName(siteId, name);
-//        }
-//        else{
-//            contentsList = linkRepository.findAllContentsBySiteIdAndCategoryIdAndName(siteId, category,name);
-//        }
-//        List<Contents> contentsList1 = new ArrayList<>();
-//        for(Object[] o : contentsList) {
-//            Contents contents = new Contents();
-//            contents.setTitle((String)o[0]);
-//            contents.setDescription((String)o[1]);
-//            contents.setName((String) o[2]);
-//            contents.setId((Long) o[3]);
-//            Integer modelId=(Integer) o[4];
-//            if(modelId!=null) {
-//                contents.setModel(ModelType.valueOf(modelId).toString().toLowerCase());
-//                contents.setModelname(ModelType.valueOf(modelId).getValue().toString());
-//            }
-//            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//定义格式，不显示毫秒
-//            String str = df.format(o[5]);
-//            contents.setCreateTime((String) str);
-//            contentsList1.add(contents);
-//        }
-//        data = new PageData<Contents>();
-////        data.setPageCount(pageData.getTotalPages());
-////        data.setPageIndex(pageData.getNumber());
-////        data.setPageSize(pageData.getSize());
-////        data.setTotal(pageData.getTotalElements());
-//        data.setRows((Contents[])contentsList1.toArray(new Contents[contentsList1.size()]));
-//        return data;
-//        }

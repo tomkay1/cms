@@ -45,4 +45,5 @@ public interface CategoryService {
     List<Category> findByRouteTypeAndParentId(CategoryForeachParam categoryForeachParam);
 
     List<Category> getHeaderCategoryList(CategoryForeachParam param);
+
 }

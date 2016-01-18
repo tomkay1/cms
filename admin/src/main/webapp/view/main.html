@@ -22,7 +22,7 @@
                             </span>
 
                             <span style="width: 160px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; display: inline-block;">
-                                <a href="javascript:" style="color: #8f939e">商户编号：10004886</a>
+                                <a href="javascript:" style="color: #8f939e" th:text="'商户编号：1000'+${user.customerId}">商户编号：10004886</a>
                             </span>
                     <br>
                             <span>
@@ -158,7 +158,7 @@
         </div>
     </div>
     <div class="con_right" id="con_right">
-        <iframe id="content" name="content" width="1152" height="100%" class="hide" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" src="/model/modelList" th:src="@{/site/siteList?customerid={customerid}(customerid=${user.customerId})}" style="display: inline;">
+        <iframe id="content" name="content" width="1152" height="800" class="hide" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" src="/model/modelList" th:src="@{/site/siteList?customerid={customerid}(customerid=${user.customerId})}" style="display: inline;">
         </iframe>
     </div>
 </div>

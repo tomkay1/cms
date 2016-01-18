@@ -91,7 +91,8 @@ define(function (require, exports, module) {
                     {name: 'name', type: 'string'},
                     {name: 'time', type: 'string'},
                     {name: 'orderWeight', type: 'number'},
-                    {name: 'modelId', type: 'number'}
+                    {name: 'modelId', type: 'number'},
+                    {name: 'routeType', type: 'number'}
                 ],
                 hierarchy: {
                     root: 'children'
@@ -115,9 +116,9 @@ define(function (require, exports, module) {
                     sortable: true,
                     columns: [
                         {text: '栏目名称', dataField: 'name', width: gridWidth * 0.25},
-                        {text: '栏目ID', dataField: 'id', width: gridWidth * 0.15},
+                        {text: '栏目ID', dataField: 'id', width: gridWidth * 0.10},
                         {
-                            text: '所属模型',
+                            text: '数据模型',
                             dataField: 'modelId',
                             width: gridWidth * 0.15,
                             cellsRenderer: function (row, column, value) {
@@ -143,7 +144,38 @@ define(function (require, exports, module) {
                                 }
                             }
                         },
-                        {text: '排序权重', dataField: 'orderWeight', width: gridWidth * 0.15},
+                        {
+                            text: '路由模型',
+                            dataField: 'routeType',
+                            width: gridWidth * 0.1,
+                            cellsRenderer: function (row, column, value) {
+                                if (parseInt(value) >= 0) {
+                                    switch (value) {
+                                        case 0:
+                                            return "404页面";
+                                        case 1:
+                                            return "服务器错误页面";
+                                        case 2:
+                                            return "文章内容页面";
+                                        case 3:
+                                            return "视频内容页面";
+                                        case 4:
+                                            return "图片内容页面";
+                                        case 5:
+                                            return "文章列表页面";
+                                        case 6:
+                                            return "网站导航栏目";
+                                        case 7:
+                                            return "视频列表页面";
+                                        default :
+                                            return "";
+                                    }
+                                } else {
+                                    return "";
+                                }
+                            }
+                        },
+                        {text: '排序权重', dataField: 'orderWeight', width: gridWidth * 0.10},
                         {
                             text: '创建时间',
                             dataField: 'time',

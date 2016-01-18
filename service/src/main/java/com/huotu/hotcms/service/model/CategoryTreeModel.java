@@ -1,5 +1,6 @@
 package com.huotu.hotcms.service.model;
 
+import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.Category;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +19,11 @@ public class CategoryTreeModel extends Category {
     public String time;
 
     public Boolean expanded;
+
+    /**
+     * 所属路由模型
+     * */
+    public Integer routeType;
 
     public CategoryTreeModel(){
         children=new ArrayList<CategoryTreeModel>();
@@ -38,8 +44,11 @@ public class CategoryTreeModel extends Category {
             categoryTreeModel.setOrderWeight(category.getOrderWeight());
             categoryTreeModel.setParent(category.getParent());
             categoryTreeModel.setParentIds(category.getParentIds());
-            categoryTreeModel.setRoute(null);
-            categoryTreeModel.setSite(null);
+            if(category.getRoute()!=null&&category.getRoute().getRouteType()!=null) {
+                categoryTreeModel.setRouteType(category.getRoute().getRouteType().getCode());
+            }
+//            categoryTreeModel.setRoute(null);
+//            categoryTreeModel.setSite(null);
             categoryTreeModel.setExpanded(true);
             categoryTreeModel.setUpdateTime(category.getUpdateTime());
 //            String time=category.getCreateTime().getYear()+"-"+category.getCreateTime().getMonthValue()+"-"+category.getCreateTime().getDayOfMonth();
@@ -61,11 +70,40 @@ public class CategoryTreeModel extends Category {
         categoryTreeModel.setOrderWeight(category.getOrderWeight());
         categoryTreeModel.setParent(category.getParent());
         categoryTreeModel.setParentIds(category.getParentIds());
-        categoryTreeModel.setRoute(null);
-        categoryTreeModel.setSite(null);
+        if(category.getRoute()!=null&&category.getRoute().getRouteType()!=null) {
+            categoryTreeModel.setRouteType(category.getRoute().getRouteType().getCode());
+        }
+//        categoryTreeModel.setRouteType(category.getRoute()!=null?category.getRoute().getRouteType():null);
+//        categoryTreeModel.setRoute(null);
+//        categoryTreeModel.setSite(null);
         categoryTreeModel.setExpanded(true);
         categoryTreeModel.setTime(category.getCreateTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         categoryTreeModel.setUpdateTime(category.getUpdateTime());
         return categoryTreeModel;
     }
+
+    public static List<CategoryTreeModel> setEmptyCategoryTreeModel(List<CategoryTreeModel> categoryTreeModelList){
+        for(CategoryTreeModel categoryTreeModel:categoryTreeModelList){
+            if(categoryTreeModel!=null)
+            {
+                categoryTreeModel.setRoute(null);
+                categoryTreeModel.setSite(null);
+                if(categoryTreeModel.getChildren()!=null&&categoryTreeModel.getChildren().size()>=0){
+                   categoryTreeModel.setChildren(setEmptyCategoryTreeModel(categoryTreeModel.getChildren()));
+                }
+            }
+        }
+        return categoryTreeModelList;
+    }
+//
+//    public static CategoryTreeModel setEmpty(CategoryTreeModel categoryTreeModel){
+//        if(categoryTreeModel!=null){
+//            categoryTreeModel.setRoute(null);
+//            categoryTreeModel.setSite(null);
+//            if(categoryTreeModel.getChildren()!=null&&categoryTreeModel.getChildren().size()>=){
+//
+//            }
+//        }
+//        return null;
+//    }
 }

@@ -11,13 +11,7 @@ define(function (require, exports, module) {
                     required: true,
                     maxlength:200
                 },
-                description:{
-                    required: true,
-                },
                 content:{
-                    required: true,
-                },
-                author:{
                     required: true,
                 },
                 articleSource: {
@@ -35,14 +29,8 @@ define(function (require, exports, module) {
                     required:"请输入文件名称",
                     maxlength:"文章标题不许超过200个字符"
                 },
-                description:{
-                    required:"请输入描述"
-                },
                 content:{
                     required:"请输入内容"
-                },
-                author:{
-                    required:"请输入文章作者"
                 },
                 isSystem: {
                     selrequired: "请选择文章类型"

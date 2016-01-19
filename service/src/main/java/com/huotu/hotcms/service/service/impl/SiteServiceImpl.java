@@ -64,10 +64,6 @@ public class SiteServiceImpl implements SiteService {
         return  site;
     }
 
-    @Override
-    public Set<Site> getSite(int customerId) {
-        return siteRepository.findByCustomerId(customerId);
-    }
 
     @Override
     public Site getSite(long siteId) {

@@ -9,9 +9,6 @@ define(function (require, exports, module) {
             title:{
                 required: true,
             },
-            description:{
-                required: true,
-            },
             outLinkUrl:{
                 required: true,
                 url:true
@@ -26,9 +23,6 @@ define(function (require, exports, module) {
         messages: {
             title:{
                 required:"请输入标题名称"
-            },
-            description:{
-                required:"请输入描述"
             },
             outLinkUrl:{
                 required: "请输入视频链接网址",

@@ -34,15 +34,15 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>描述：</th>
+                            <th>公告描述：</th>
                             <td>
-                                <input name="description" type="text" id="description" maxlength="50" th:value="${notice.description}" class="input-normal" >
+                                <textarea rows="" cols="" style="width: 500px; height: 60px;" class="input-normal" id="description" name="description" th:text="${notice.description}" ></textarea>
                             </td>
                         </tr>
                         <tr>
                             <th>公告内容：</th>
                             <td>
-                                <input name="content" type="text" id="content" maxlength="50" class="input-normal" th:value="${notice.title}" >
+                                <textarea rows="" cols="" style="width: 500px; height: 60px;" class="input-normal" id="content" name="content" th:text="${notice.content}" ></textarea>
                             </td>
                         </tr>
                         <tr>

@@ -16,7 +16,6 @@ public interface SiteService {
     Boolean save(Site site);
 
     Site findBySiteIdAndCustomerId(Long siteId,int customerId);
-    Set<Site> getSite(int customerId);
 
     Set<Site> findByCustomerIdAndDeleted(Integer customerId,boolean deleted);
 }

@@ -7,9 +7,6 @@ define(function (require, exports, module) {
             title:{
                 required: true,
             },
-            description:{
-                required: true,
-            },
             downloadUrl:{
                 required: true,
             },
@@ -23,9 +20,6 @@ define(function (require, exports, module) {
         messages: {
             title:{
                 required:"请输入文件名称"
-            },
-            description:{
-                required:"请输入描述"
             },
             downloadUrl:{
                 required:"请输入下载地址"

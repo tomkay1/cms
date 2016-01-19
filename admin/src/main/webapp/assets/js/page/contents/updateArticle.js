@@ -9,13 +9,7 @@ define(function (require, exports, module) {
             title:{
                 required: true,
             },
-            description:{
-                required: true,
-            },
             content:{
-                required: true,
-            },
-            author:{
                 required: true,
             },
             categoryId: {
@@ -35,14 +29,8 @@ define(function (require, exports, module) {
             title:{
                 required:"请输入文件名称"
             },
-            description:{
-                required:"请输入描述"
-            },
             content:{
                 required:"请输入内容"
-            },
-            author:{
-                required:"请输入文章作者"
             },
             categoryId: {
                 selrequired: "请选择栏目"

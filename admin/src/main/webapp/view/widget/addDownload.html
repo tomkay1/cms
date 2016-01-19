@@ -18,9 +18,11 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>下载地址：</th>
-                            <td>
-                                <input name="downloadUrl" type="text" id="downloadUrl" maxlength="100" class="input-normal">
+                            <th>文件上传：</th>
+                            <td style="height: 60px;">
+                                <span id="btnFile" name="btnFile" style="margin-left: 10px;margin-top: 10px; display: block;" ></span>
+                                <a id="downloadFile" target="_blank" style="margin-left: 10px;margin-top: 50px;" >预览文件</a>
+                                <input name="downloadUrl" type="hidden" id="downloadUrl" maxlength="100" class="input-normal"/>
                             </td>
                         </tr>
                         <tr>
@@ -41,6 +43,11 @@
         </form>
     </div>
 </div>
-<script>seajs.use(["validate","message","addDownload","layer"]);</script>
+<script>
+        seajs.use(["validate","message","jupload","addDownload"],function(a,b,c,d){
+        d.fromValidata();
+        d.uploadDownload();
+        })
+</script>
 </body>
 </html>

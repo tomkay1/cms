@@ -39,7 +39,7 @@
                             <td>
                                 <img id="uploadThumbUri" th:src="${logo_uri}" style="width: 80px; height: 80px; border: 1px solid #ccc; float: left; background: #efefef; line-height: 80px; text-align: center; color: #ccc;"/>
                                 <span id="btnFile" name="btnFile" style="margin-left: 100px; margin-top: 20px; display: block;"/>
-                                <input type="hidden" id="thumbUri" name="thumbUri" />
+                                <input type="hidden" id="thumbUri" name="thumbUri" th:value="${gallery.thumbUri}" />
                             </td>
                         </tr>
                         <tr>

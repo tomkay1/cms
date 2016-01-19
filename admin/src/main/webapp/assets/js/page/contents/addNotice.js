@@ -7,9 +7,6 @@ define(function (require, exports, module) {
             title:{
                 required: true,
             },
-            description:{
-                required: true,
-            },
             content:{
                 required: true,
             },
@@ -20,9 +17,6 @@ define(function (require, exports, module) {
         messages: {
             title:{
                 required:"请输入标题名称"
-            },
-            description:{
-                required: "请输入描述",
             },
             content:{
                 required:"请输入公告内容",

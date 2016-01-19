@@ -91,6 +91,31 @@ public class UploadController {
         return resultView;
     }
 
+    @RequestMapping(value = "/downloadUpLoad", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultView downloadUpLoad(Integer customerId, @RequestParam(value = "btnFile", required = false) MultipartFile files) {
+        ResultView resultView = null;
+        try {
+            Date now = new Date();
+            String fileName = files.getOriginalFilename();
+            String prefix = fileName.substring(fileName.lastIndexOf(".") + 1);
+            if("txt,zip,jar,docx,doc,xlsx".contains(prefix)){
+                String path=configInfo.getResourcesDownload(customerId)+"/"+StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + prefix;
+                URI uri = resourceServer.uploadResource(path, files.getInputStream());
+                Map<String,Object> map= new HashMap<String, Object>();
+                map.put("fileUrl", uri);
+                map.put("fileUri", path);
+                resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), map);
+            }else{
+                resultView = new ResultView(ResultOptionEnum.FILE_FORMATTER_ERROR.getCode(), ResultOptionEnum.FILE_FORMATTER_ERROR.getValue(), null);
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            resultView = new ResultView(ResultOptionEnum.SERVERFAILE.getCode(),e.getMessage(), null);
+        }
+        return resultView;
+    }
+
 
     @RequestMapping(value="/kindeditorUpload",method = RequestMethod.POST)
     @ResponseBody

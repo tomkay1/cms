@@ -73,7 +73,7 @@ public class Article extends BaseEntity {
      * 是否系统文章,系统文章不允许删除
      * **/
     @Column(name="isSystem")
-    private Boolean isSystem;
+    private boolean isSystem=false;
 
 //    /**
 //     * 所属栏目

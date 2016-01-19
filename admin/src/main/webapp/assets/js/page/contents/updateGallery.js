@@ -9,14 +9,12 @@ define(function (require, exports, module) {
             title:{
                 required: true,
             },
-            description:{
-                required: true,
-            },
             content:{
                 required: true,
             },
             linkUrl:{
                 required: true,
+                url:true
             },
             categoryId: {
                 selrequired: "-1"
@@ -29,14 +27,12 @@ define(function (require, exports, module) {
             title:{
                 required:"请输入标题名称"
             },
-            description:{
-                required:"请输入描述"
-            },
             content:{
                 required:"请输入内容"
             },
             linkUrl:{
-                required:"请输入链接地址"
+                required:"请输入链接地址",
+                url:"请输入正确的链接地址"
             },
             categoryId: {
                 selrequired: "请选择栏目"

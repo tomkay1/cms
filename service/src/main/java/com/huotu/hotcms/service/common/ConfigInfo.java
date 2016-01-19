@@ -1,6 +1,5 @@
 package com.huotu.hotcms.service.common;
 
-import jdk.nashorn.internal.objects.annotations.Constructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -44,6 +43,9 @@ public class ConfigInfo {
     @Value("${resources.img}")
     private String resourcesImg;
 
+    @Value("${resources.download}")
+    private String resourcesDownload;
+
 //    @Value("${out.mallManageUrl}")
 //    private String mallManageUrl;
 
@@ -65,6 +67,10 @@ public class ConfigInfo {
 
     public String getResourcesImg(Integer customerId) {
         return String.format(resourcesImg,customerId);
+    }
+
+    public String getResourcesDownload(Integer customerId) {
+        return String.format(resourcesDownload,customerId);
     }
 
     public String getOutLoginUrl() {

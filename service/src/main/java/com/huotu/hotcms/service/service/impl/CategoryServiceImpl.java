@@ -109,8 +109,8 @@ public class CategoryServiceImpl implements CategoryService {
         Sort sort = new Sort(Sort.Direction.DESC, "orderWeight");
         Specification<Category> specification = (root, query, cb) -> {
             List<Predicate> predicates;
-            if(!StringUtils.isEmpty(param.getExcludeid())) {
-                List<String> ids = Arrays.asList(param.getExcludeid());
+            if(!StringUtils.isEmpty(param.getExcludeids())) {
+                List<String> ids = Arrays.asList(param.getExcludeids());
                 List<Long> categoryIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
                 predicates = categoryIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
             }else {
@@ -135,9 +135,9 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Category> getGivenTypeCategories(CategoryForeachParam param) {
         int requestSize = param.getSize();
         Category parent = param.getParentid()==null ? null : categoryRepository.findOne(param.getParentid());
-        if(!StringUtils.isEmpty(param.getExcludeid())) {
+        if(!StringUtils.isEmpty(param.getExcludeids())) {
             Sort sort = new Sort(Sort.Direction.DESC, "orderWeight");
-            List<String> ids = Arrays.asList(param.getExcludeid());
+            List<String> ids = Arrays.asList(param.getExcludeids());
             List<Long> categoryIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
             Specification<Category> specification = (root, query, cb) -> {
                 List<Predicate> predicates = categoryIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());

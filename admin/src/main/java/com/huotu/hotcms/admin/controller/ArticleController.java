@@ -161,7 +161,7 @@ public class ArticleController {
         try{
             if(cookieUser.isSupper(request)) {
                 Article article = articleService.findById(id);
-                if(article.getIsSystem()==true){
+                if(article.isSystem()==true){
                     result=new ResultView(ResultOptionEnum.SYSTEM_ARTICLE.getCode(),ResultOptionEnum.SYSTEM_ARTICLE.getValue(),null);
                     return  result;
                 }

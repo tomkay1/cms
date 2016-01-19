@@ -16,6 +16,9 @@ define(function (require, exports, module) {
             description:{
                 maxlength:200
             },
+            keywords:{
+                maxlength:200
+            },
             domains:{
                 required: true,
             },
@@ -41,6 +44,9 @@ define(function (require, exports, module) {
             },
             description:{
                 maxlength:"站点描述不能超过200个字符"
+            },
+            keywords:{
+                maxlength:"站点关键字不能超过200个字符"
             },
             regionId: {
                 selrequired: "请选择地区"

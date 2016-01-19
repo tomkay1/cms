@@ -13,6 +13,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -82,6 +83,11 @@ public class DownloadController {
         Category category= download.getCategory();
         Integer modelType = category.getModelId();
         Set<Category> categorys=categoryRepository.findByCustomerIdAndModelId(customerId, modelType);
+            String downloadFile="";
+            if(!StringUtils.isEmpty(download.getDownloadUrl())) {
+                downloadFile = resourceServer.getResource(download.getDownloadUrl()).toString();
+            }
+        modelAndView.addObject("downloadFile",downloadFile);
         modelAndView.addObject("categorys",categorys);
         modelAndView.addObject("download",download);
         }catch (Exception ex){
@@ -89,7 +95,6 @@ public class DownloadController {
         }
         return modelAndView;
     }
-
 
     /*
       * 更新下载

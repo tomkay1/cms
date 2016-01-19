@@ -9,11 +9,9 @@ define(function (require, exports, module) {
             title:{
                 required: true,
             },
-            content:{
-                required: true,
-            },
             linkUrl:{
                 required: true,
+                url:true
             },
             categoryId: {
                 selrequired: "-1"
@@ -27,7 +25,8 @@ define(function (require, exports, module) {
                 required:"请输入标题名称"
             },
             linkUrl:{
-                required:"请输入链接地址"
+                required:"请输入链接地址",
+                url:"请输入正确的链接地址"
             },
             categoryId: {
                 selrequired: "请选择栏目"

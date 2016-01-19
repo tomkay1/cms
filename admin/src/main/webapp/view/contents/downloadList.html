@@ -40,9 +40,9 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>下载地址：</th>
+                            <th>文件上传：</th>
                             <td>
-                                <input name="downloadUrl" type="text" id="downloadUrl" maxlength="100" class="input-normal" th:value="${download.downloadUrl}">
+                                <a id="downloadFile" th:href="${downloadFile}" target="_blank" style="margin-left: 10px;margin-top: 50px;display:block;" >预览文件</a>
                             </td>
                         </tr>
                         <tr>
@@ -61,8 +61,7 @@
                             <th>所属栏目：</th>
                             <td>
                                 <select name="categoryId" class="input-normal" id="categoryId">
-                                    <option value="-1">==请选择栏目==</option>
-                                    <option th:each="category:${categorys}" th:value="${category.id}" th:text="${category.name}" th:selected="${category.id}==${download.category.id}?true:false"></option>
+                                    <option  th:value="${download.category.id}" th:text="${download.category.name}" th:selected=true></option></select>
                                 </select>
                             </td>
                         </tr>
@@ -78,13 +77,10 @@
                     </table>
 
                 </div>
-                <div style="text-align: center;">
-                    <input type="submit" class="btn-lit" name="btnSave"  value="保存" data-submiting-text="提交中..." data-text="保存" id="jq-cms-Save">
-                </div>
             </div>
         </form>
     </div>
 </div>
-<script>seajs.use(["validate","message","updateDownload","layer"]);</script>
+<script>seajs.use(["validate","message","downloadList"]);</script>
 </body>
 </html>

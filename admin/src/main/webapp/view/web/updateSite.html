@@ -49,7 +49,7 @@
                         <tr>
                             <th>站点关键字：</th>
                             <td>
-                                <input name="keywords"  id="keywords" type="text" class="input-normal" placeholder="" th:value="${site.keywords}">
+                                <textarea rows="" cols="" style="width: 500px; height: 60px;" class="input-normal" id="keywords" name="keywords" th:text="${site.keywords}"></textarea>
                             </td>
                         </tr>
                         <tr>
@@ -59,7 +59,7 @@
                                 <!--<a id="uploadpic" class="btn-lit jUploader-button" style="cursor: pointer; position: relative; overflow: hidden; direction: ltr;"><span style="color: #c1b3a9" onclick="javascript:$('#btnFile').click();">上传</span></a>-->
                                 <!--<input id="btnFile" name="btnFile" style="display:none;" type="file"/>-->
                                 <span id="btnFile" name="btnFile" style="margin-left: 100px; margin-top: 20px; display: block;"/>
-                                <input type="hidden" id="logoUri" name="logoUri"/>
+                                <input type="hidden" id="logoUri" name="logoUri" th:value="${site.logoUri}"/>
                             </td>
                         </tr>
                         <tr>

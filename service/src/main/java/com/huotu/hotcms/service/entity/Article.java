@@ -31,7 +31,6 @@ public class Article extends BaseEntity {
     @Column(name = "thumbUri")
     private String thumbUri;
 
-
     /**
      * 文章来源
      */

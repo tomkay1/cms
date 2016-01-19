@@ -96,8 +96,8 @@ public class NoticeServiceImpl implements NoticeService {
         Sort sort = new Sort(Sort.Direction.DESC,"orderWeight");
         Specification<Link> specification = (root, query, cb) -> {
             List<Predicate> predicates;
-            if(!org.springframework.util.StringUtils.isEmpty(param.getExcludeid())) {
-                List<String> ids = Arrays.asList(param.getExcludeid());
+            if(!org.springframework.util.StringUtils.isEmpty(param.getExcludeids())) {
+                List<String> ids = Arrays.asList(param.getExcludeids());
                 List<Long> linkIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
                 predicates = linkIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class),id)).collect(Collectors.toList());
             }else {

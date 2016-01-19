@@ -81,26 +81,6 @@ public class CategoryForeachProcessorFactory {
             }
             return categoryService.findByRouteTypeAndParentId(categoryForeachParam);
 
-            /*//设置父节点id//TODO 上线前清理
-            Long parentId = categoryForeachParam.getParentid();
-            if(parentId!=null) {
-                return categoryService.getSubCategories(parentId,categoryForeachParam.getSize());
-            }
-            if (StringUtils.isEmpty(categoryForeachParam.getSiteid())) {
-                Site site = (Site) VariableExpression.getVariable(context, "site");
-                categoryForeachParam.setSiteid(site.getSiteId());
-            }
-            RouteType routeType = categoryForeachParam.getRoutetype();
-            if(routeType==null) {
-                Route route = (Route)VariableExpression.getVariable(context,"route");
-                categoryForeachParam.setRoutetype(route.getRouteType());
-            }
-            Route route = (Route)VariableExpression.getVariable(context,"route");
-            Category current = categoryService.getCategoryByRoute(route);
-            if(current.getParent()!=null) {
-                categoryForeachParam.setParentid(current.getId());
-            }
-            return categoryService.getGivenTypeCategories(categoryForeachParam);*/
         } catch (Exception e) {
             log.error(e.getMessage());
         }

@@ -18,32 +18,26 @@ public class PageableForeachParam {
      * 所属栏目id
      */
     protected Long categoryid;
-
     /**
      * 所属二级栏目id(所属栏目的父节点)，与所属栏目id存在性互斥
      */
     private Long parentcid;
-
     /**
      * 页码
      */
     private Integer pageno;
-
     /**
      * 分页大小
      */
     private Integer pagesize;
-
     /**
      * 指定需要展示的页数
      */
     private Integer pagenumber;
-
     /**
      * 获取列表时排除的主键Id(可排除多个，逗号分隔)
      */
-    protected String[] excludeid;//TODO 上线前重命名为excludeids
-
+    protected String[] excludeids;
     /**
      * 获取指定Id的列表(可指定多个，逗号分隔)
      */
@@ -57,12 +51,12 @@ public class PageableForeachParam {
         this.categoryid = categoryid;
     }
 
-    public String[] getExcludeid() {
-        return excludeid;
+    public String[] getExcludeids() {
+        return excludeids;
     }
 
-    public void setExcludeid(String[] excludeid) {
-        this.excludeid = excludeid;
+    public void setExcludeids(String[] excludeids) {
+        this.excludeids = excludeids;
     }
 
     public String[] getSpecifyids() {

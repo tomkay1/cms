@@ -78,8 +78,8 @@ public class VideoServiceImpl implements VideoService {
             }
             Predicate predicate = cb.or(p1.toArray(new Predicate[p1.size()]));
             List<Predicate> predicates = new ArrayList<>();
-            if(!StringUtils.isEmpty(params.getExcludeid())) {
-                List<String> ids = Arrays.asList(params.getExcludeid());
+            if(!StringUtils.isEmpty(params.getExcludeids())) {
+                List<String> ids = Arrays.asList(params.getExcludeids());
                 List<Long> articleIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
                 predicates = articleIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
             }
@@ -93,8 +93,8 @@ public class VideoServiceImpl implements VideoService {
     private Page<Video> getVideos(PageableForeachParam params, int pageIndex, int pageSize, Sort sort) {
         Specification<Article> specification = (root, criteriaQuery, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
-            if(!StringUtils.isEmpty(params.getExcludeid())) {
-                List<String> ids = Arrays.asList(params.getExcludeid());
+            if(!StringUtils.isEmpty(params.getExcludeids())) {
+                List<String> ids = Arrays.asList(params.getExcludeids());
                 List<Long> articleIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
                 predicates = articleIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
             }

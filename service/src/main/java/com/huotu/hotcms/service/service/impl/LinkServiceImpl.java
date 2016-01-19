@@ -82,8 +82,8 @@ public class LinkServiceImpl implements LinkService {
         Sort sort = new Sort(Sort.Direction.DESC,"orderWeight");
         Specification<Link> specification = (root, query, cb) -> {
           List<Predicate> predicates;
-            if(!StringUtils.isEmpty(param.getExcludeid())) {
-                List<String> ids = Arrays.asList(param.getExcludeid());
+            if(!StringUtils.isEmpty(param.getExcludeids())) {
+                List<String> ids = Arrays.asList(param.getExcludeids());
                 List<Long> linkIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
                 predicates = linkIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class),id)).collect(Collectors.toList());
             }else {

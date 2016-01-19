@@ -27,19 +27,19 @@ public class NormalForeachParam {
     /**
      * 获取列表时排除的主键Id(可排除多个，逗号分隔)
      */
-    protected String[] excludeid;//TODO 上线前重命名为excludeids
+    protected String[] excludeids;
 
     /**
      * 获取指定Id的列表(可指定多个，逗号分隔)
      */
     protected String[] specifyids;
 
-    public String[] getExcludeid() {
-        return excludeid;
+    public String[] getExcludeids() {
+        return excludeids;
     }
 
-    public void setExcludeid(String[] excludeid) {
-        this.excludeid = excludeid;
+    public void setExcludeids(String[] excludeids) {
+        this.excludeids = excludeids;
     }
 
     public String[] getSpecifyids() {

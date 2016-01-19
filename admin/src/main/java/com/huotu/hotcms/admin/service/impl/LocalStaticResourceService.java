@@ -29,7 +29,6 @@ public class LocalStaticResourceService extends AbstractStaticResourceService{
         File file = new File(context.getServletContext().getRealPath("/"));
         this.fileHome = file.toURI();
         String url=System.getProperty("user.dir");
-//        String servletHost=context.getServletContext().getServlet
         StringBuilder stringBuilder = new StringBuilder("http://localhost:8080");
         stringBuilder.append(context.getServletContext().getContextPath());
         try {

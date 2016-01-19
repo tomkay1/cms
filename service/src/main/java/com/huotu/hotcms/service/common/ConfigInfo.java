@@ -1,15 +1,36 @@
 package com.huotu.hotcms.service.common;
 
+import jdk.nashorn.internal.objects.annotations.Constructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Created by xhl on 2015/12/23.
  */
 @Component
 public class ConfigInfo {
-    @Value("${out.loginUrl}")
-    private String outLoginUrl;
+    private  String outLoginUrl="";
+
+    private  String mallManageUrl="";
+
+    private  String mallSupperUrl="";
+
+    @Autowired
+    private Environment ev;
+
+    @PostConstruct
+    public void InitConfigInfo() {
+        this.outLoginUrl = ev.getProperty("cms.loginUrl", "http://manager.51flashmall.com");
+        this.mallSupperUrl = ev.getProperty("huobanmall.mallManageUrl", "http://pdmall.51flashmall.com/home.aspx");
+        this.mallManageUrl = ev.getProperty("huobanmall.mallSupperUrl", "http://manager.51flashmall.com/home.aspx?customerid=%s");
+    }
+
+//    @Value("${out.loginUrl}")
+//    private String outLoginUrl;
 
     @Value("${resources.site}")
     private String resourcesSiteLogo;
@@ -23,11 +44,11 @@ public class ConfigInfo {
     @Value("${resources.img}")
     private String resourcesImg;
 
-    @Value("${out.mallManageUrl}")
-    private String mallManageUrl;
+//    @Value("${out.mallManageUrl}")
+//    private String mallManageUrl;
 
-    @Value("${out.mallSupperUrl}")
-    private String mallSupperUrl;
+//    @Value("${out.mallSupperUrl}")
+//    private String mallSupperUrl;
 
 
     public String getResourcesSiteLogo(Integer customerId) {

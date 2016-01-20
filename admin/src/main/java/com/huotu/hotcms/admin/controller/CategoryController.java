@@ -182,7 +182,7 @@ public class CategoryController {
         catch (Exception ex)
         {
             log.error(ex.getMessage());
-            result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
+            result=new ResultView(ResultOptionEnum.SERVERFAILE.getCode(),ResultOptionEnum.SERVERFAILE.getValue(),null);
         }
         return  result;
     }

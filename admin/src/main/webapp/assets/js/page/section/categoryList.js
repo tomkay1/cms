@@ -11,7 +11,6 @@ define(function (require, exports, module) {
     //var jqxscrollbar=require("jqxscrollbar");
     //var jqxdatatable=require("jqxdatatable");
     //var jqxtreegrid=require("jqxtreegrid");
-
     var commonUtil = require("common");
     var customerId=commonUtil.getQuery("customerid");
     var layer=require("layer");

@@ -59,6 +59,7 @@ define(function (require, exports, module) {
                         var index=parseInt(data.code);
                         switch (index){
                             case 200:
+                                $("#categoryName").val("")
                                 $("#route").val("");
                                 $("#template").val("")
                                 layer.msg("操作成功",{time: 2000});

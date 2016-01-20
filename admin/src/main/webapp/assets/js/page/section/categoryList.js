@@ -2,9 +2,6 @@
  * Created by xhl on 2015/12/30.
  */
 define(function (require, exports, module) {
-    //require.async(['jqxcore', 'jqxdata','jqxbuttons','jqxscrollbar','jqxdatatable','jqxtreegrid'], function() {
-    //    categoryModule.initList();
-    //});
     var commonUtil = require("common");
     var customerId=commonUtil.getQuery("customerid");
     var layer=require("layer");
@@ -190,7 +187,7 @@ define(function (require, exports, module) {
                             dataField: null,
                             cellsRenderer: function (row, column, value) {
                                 if (row == -1) {
-                                    return "<a href='javascript:;' title='新增栏目' data-id='" + row + "' style='color:blue;margin-right:5px;' class='js-cms-addCategory'>新增栏目</a>|<a href='javascript:;' class='js-cms-updateCategory' data-id='" + row + "' title='修改栏目' style='color:#cccccc;margin-right:5px;margin-left: 5px;'>修改栏目</a>|<a href='javascript:;' title='删除' style='color:#cccccc;margin-left: 5px;'>删除</a>";
+                                    return "<a href='javascript:;' title='新增栏目' data-id='" + row + "' style='color:blue;margin-right:5px;' class='js-cms-addCategory'>新增栏目</a>|<a href='javascript:;' data-id='" + row + "' title='修改栏目' style='color:#cccccc;margin-right:5px;margin-left: 5px;'>修改栏目</a>|<a href='javascript:;' title='删除' style='color:#cccccc;margin-left: 5px;'>删除</a>";
                                 } else {
                                     //var supper=$("#supper").val();
                                     if(true) {
@@ -298,22 +295,34 @@ define(function (require, exports, module) {
         }
     };
     categoryModule.initSite();//加载站点列表信息
-    setTimeout(categoryModule.initList,500);//延时500毫秒加载,解决初次加载加载js出错问题
-    require.async('jquery',function() {
-        var jqxcore=require("jqxcore");
-        var jqxdata=require("jqxdata");
-        var jqxbuttons=require("jqxbuttons");
-        var jqxscrollbar=require("jqxscrollbar");
-        var jqxlistbox = require("jqxlistbox");
-        var jqxdropdownlist = require("jqxdropdownlist");
-        var jqxdatatable=require("jqxdatatable");
-        var jqxtreegrid=require("jqxtreegrid");
-    });
-    categoryModule.initList();//加载栏目列表信息
+    //setTimeout(categoryModule.initList,500);//延时500毫秒加载,解决初次加载js出错问题
+    //require.async('jquery',function() {
+    //    var jqxcore=require("jqxcore");
+    //    var jqxdata=require("jqxdata");
+    //    var jqxbuttons=require("jqxbuttons");
+    //    var jqxscrollbar=require("jqxscrollbar");
+    //    var jqxlistbox = require("jqxlistbox");
+    //    var jqxdropdownlist = require("jqxdropdownlist");
+    //    var jqxdatatable=require("jqxdatatable");
+    //    var jqxtreegrid=require("jqxtreegrid");
+    //});
+
+    //categoryModule.initList();//加载栏目列表信息
     $("#jq-cms-siteList").on("change",function(){
         categoryModule.initList();
     })
     $("#jq-cms-search").on("click",function(){
         categoryModule.initList();
     })
+    require.async(['jqxcore', 'jqxdata','jqxbuttons','jqxscrollbar','jqxdatatable','jqxtreegrid'], function() {
+            //var jqxdata=require("jqxdata");
+            //var jqxbuttons=require("jqxbuttons");
+            //var jqxscrollbar=require("jqxscrollbar");
+            //var jqxlistbox = require("jqxlistbox");
+            //var jqxdropdownlist = require("jqxdropdownlist");
+            //var jqxdatatable=require("jqxdatatable");
+            //var jqxtreegrid=require("jqxtreegrid");
+        setTimeout(categoryModule.initList,500);//延时500毫秒加载,解决初次加载js出错问题
+        //categoryModule.initList();
+    });
 });

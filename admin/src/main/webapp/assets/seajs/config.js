@@ -39,7 +39,6 @@ seajs.config({
 		"routeList":"js/page/web/routeList.js?v="+version,
 		"addRoute":"js/page/web/addRoute.js?v="+version,
 		"updateRoute":"js/page/web/updateRoute.js?v="+version,
-		"treegrid": "libs/treegrid/js/jquery.treegrid.js?v="+version,
 		"addSite":"js/page/web/addSite.js?v="+version,
 		"updateSite":"js/page/web/updateSite.js?v="+version,
 		"addCategory":"js/page/section/addCategory.js?v="+version,

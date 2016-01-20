@@ -11,7 +11,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>产品</title>
+    <title th:text="'产品中心|'+${site.title}"></title>
+    <meta name="keywords" th:content="${site.keywords}" />
+    <meta name="description" th:content="${site.description}"/>
     <link rel="stylesheet" type="text/css" href="http://www.test.com/css/common.css"
           th:href="@{${request.root}+'/css/common.css'}"/>
     <link rel="stylesheet" type="text/css" href="http://www.test.com/css/lobo.css"

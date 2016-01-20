@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta charset="utf-8">
-  <title th:text="${site.title}+'|产品中心'"></title>
+  <title th:text="${article.title}+'|'+${site.title}"></title>
   <meta name="keywords" th:content="${site.keywords}" />
   <meta name="description" th:content="${site.description}"/>
   <link rel="stylesheet" type="text/css" th:href="@{${request.root}+'/css/common.css'}">
@@ -53,7 +53,6 @@
 <!---头--->
 <div class="" style="background-color:#efefef;min-width:1000px;padding-bottom:20px;">
   <div class="prointroduce" style="width:1000px;margin:0 auto;">
-
     <p class="" style="line-height: 55px;">
       <span>当前位置&nbsp;:&nbsp;</span>
       <span>

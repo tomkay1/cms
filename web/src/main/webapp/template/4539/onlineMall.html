@@ -2,7 +2,7 @@
 <html>
 <head>
  <meta charset="utf-8">
- <title th:text="${site.title}+'|在线商城'"></title>
+ <title th:text="'在线商城|'+${site.title}"></title>
  <meta name="keywords" th:content="${site.keywords}" />
  <meta name="description" th:content="${site.description}"/>
  <link rel="stylesheet" type="text/css" th:href="@{${request.root}+'/css/common.css'}">

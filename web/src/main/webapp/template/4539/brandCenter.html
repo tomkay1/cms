@@ -10,7 +10,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title th:text="${site.title}+'|品牌中心'"></title>
+    <title th:text="'品牌中心|'+${site.title}"></title>
     <meta name="keywords" th:content="${site.keywords}" />
     <meta name="description" th:content="${site.description}"/>
     <link rel="stylesheet" type="text/css" th:href="@{${request.root}+'/css/common.css'}">

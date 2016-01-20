@@ -2,15 +2,9 @@
  * Created by xhl on 2015/12/30.
  */
 define(function (require, exports, module) {
-    require.async(['jqxcore', 'jqxdata','jqxbuttons','jqxscrollbar','jqxdatatable','jqxtreegrid'], function() {
-        categoryModule.initList();
-    });
-    //var jqxcore=require("jqxcore");
-    //var jqxdata=require("jqxdata");
-    //var jqxbuttons=require("jqxbuttons");
-    //var jqxscrollbar=require("jqxscrollbar");
-    //var jqxdatatable=require("jqxdatatable");
-    //var jqxtreegrid=require("jqxtreegrid");
+    //require.async(['jqxcore', 'jqxdata','jqxbuttons','jqxscrollbar','jqxdatatable','jqxtreegrid'], function() {
+    //    categoryModule.initList();
+    //});
     var commonUtil = require("common");
     var customerId=commonUtil.getQuery("customerid");
     var layer=require("layer");
@@ -305,7 +299,17 @@ define(function (require, exports, module) {
     };
     categoryModule.initSite();//加载站点列表信息
     setTimeout(categoryModule.initList,500);//延时500毫秒加载,解决初次加载加载js出错问题
-    //initList();//加载栏目列表信息
+    require.async('jquery',function() {
+        var jqxcore=require("jqxcore");
+        var jqxdata=require("jqxdata");
+        var jqxbuttons=require("jqxbuttons");
+        var jqxscrollbar=require("jqxscrollbar");
+        var jqxlistbox = require("jqxlistbox");
+        var jqxdropdownlist = require("jqxdropdownlist");
+        var jqxdatatable=require("jqxdatatable");
+        var jqxtreegrid=require("jqxtreegrid");
+    });
+    categoryModule.initList();//加载栏目列表信息
     $("#jq-cms-siteList").on("change",function(){
         categoryModule.initList();
     })

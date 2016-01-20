@@ -57,7 +57,9 @@ seajs.config({
 		"jqxbuttons":"libs/jqwidgets/jqxbuttons.js?v="+version,
 		"jqxscrollbar":"libs/jqwidgets/jqxscrollbar.js?v="+version,
 		"jqxdatatable":"libs/jqwidgets/jqxdatatable.js?v="+version,
-		"jqxtreegrid":"libs/jqwidgets/jqxtreegrid.js?v="+version
+		"jqxtreegrid":"libs/jqwidgets/jqxtreegrid.js?v="+version,
+		"jqxlistbox":"libs/jqwidgets/jqxlistbox.js?v="+version,
+		"jqxdropdownlist":"libs/jqwidgets/jqxdropdownlist.js?v="+version
 	},
 	preload: ['jquery']
 });

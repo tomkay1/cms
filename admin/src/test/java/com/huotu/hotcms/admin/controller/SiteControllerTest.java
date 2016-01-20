@@ -9,14 +9,18 @@
 package com.huotu.hotcms.admin.controller;
 
 import com.huotu.hotcms.admin.config.TestAdminConfig;
+import com.huotu.hotcms.service.entity.Region;
+import com.huotu.hotcms.service.repository.RegionRepository;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.mock.web.MockHttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MvcResult;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -24,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import javax.servlet.http.Cookie;
 import javax.transaction.Transactional;
+import java.util.List;
 
 /**
  * Created by cwb on 2016/1/20.
@@ -35,13 +40,30 @@ import javax.transaction.Transactional;
 @Transactional
 public class SiteControllerTest extends WebTestBase {
 
+    @Autowired
+    private RegionRepository regionRepository;
+
     @Test
     public void testShowSiteList() throws Exception {
-        Cookie cookie = new Cookie("UserID","4539");
         mockMvc.perform(get("/site/siteList").cookie(cookie)
-                .param("customerid", "4539")
+                .param("customerid","4539")
         )
                 .andExpect(status().isOk())
                 .andExpect(view().name("/view/web/siteList.html"));
+    }
+
+    @Test
+    public void testAddSitePage() throws Exception {
+        MvcResult result =  mockMvc.perform(get("/site/addSize")
+                        .param("customerid", "4539")
+        )
+                .andExpect(status().isOk())
+                .andExpect(view().name("/view/web/addSite.html"))
+                .andExpect(model().attributeExists("regions"))
+                .andReturn();
+        List<Region> expectRegions =  regionRepository.findAll();
+        List<Region> actualRegions = (List<Region>)result.getModelAndView().getModel().get("regions");
+        Assert.assertArrayEquals(expectRegions.toArray(),actualRegions.toArray());
+
     }
 }

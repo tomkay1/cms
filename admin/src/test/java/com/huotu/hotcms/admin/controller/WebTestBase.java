@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.Cookie;
 
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
@@ -23,6 +24,8 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
  * Created by Administrator on 2016/1/20.
  */
 public class WebTestBase {
+
+    protected Cookie cookie;
 
     /**
      * 自动注入应用程序上下文
@@ -49,11 +52,9 @@ public class WebTestBase {
     @Before
     public void creatMockMVC() {
         mockMvc = webAppContextSetup(context).build();
+        if(cookie==null) {
+            cookie = new Cookie("UserID", "4539");
+        }
     }
 
-    protected MockHttpSession loginAs(int customerId) {
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute("customerid",4539);
-        return session;
-    }
 }

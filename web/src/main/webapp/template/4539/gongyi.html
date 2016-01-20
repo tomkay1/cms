@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title th:text="${site.title}+'|工艺介绍'"></title>
+    <title th:text="'工艺介绍|'+${site.title}"></title>
     <meta name="keywords" th:content="${site.keywords}" />
     <meta name="description" th:content="${site.description}"/>
     <link rel="stylesheet" type="text/css" th:href="@{${request.root}+'/css/common.css'}">

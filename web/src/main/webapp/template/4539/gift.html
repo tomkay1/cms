@@ -2,7 +2,7 @@
 <html>
 <head>
  <meta charset="utf-8">
- <title th:text="${site.title}+'|礼盒定制'"></title>
+ <title th:text="'礼盒定制|'+${site.title}"></title>
  <meta name="keywords" th:content="${site.keywords}" />
  <meta name="description" th:content="${site.description}"/>
  <link rel="stylesheet" type="text/css" th:href="@{${request.root}+'/css/common.css'}">

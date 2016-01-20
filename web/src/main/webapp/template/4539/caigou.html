@@ -2,16 +2,15 @@
 <html>
 <head>
 <meta charset="utf-8">
-	<title th:text="${site.title}+'|采购流程'"></title>
+	<title th:text="'采购流程|'+${site.title}"></title>
 	<meta name="keywords" th:content="${site.keywords}" />
 	<meta name="description" th:content="${site.description}"/>
 	<link rel="stylesheet" type="text/css" th:href="@{${request.root}+'/css/common.css'}">
 	<link rel="stylesheet" type="text/css" th:href="@{${request.root}+'/css/index.css'}">
- <script type="text/javascript" th:src="@{${request.root}+'/js/jquery1.42.min.js'}"></script>
-<script type="text/javascript" th:src="@{${request.root}+'/js/jquery.SuperSlide.2.1.1.js'}"></script>
+	<script type="text/javascript" th:src="@{${request.root}+'/js/jquery1.42.min.js'}"></script>
+	<script type="text/javascript" th:src="@{${request.root}+'/js/jquery.SuperSlide.2.1.1.js'}"></script>
 </head>
 <body>
-
 <!---头--->
 <div class="header" data-th-replace="${resourcePath}+'/index.html' :: .header">
 <img src="images/logo.png" class="logoimg">               
@@ -69,11 +68,8 @@
 						</ul>
 						<a class="sNext" href="javascript:void(0)"></a>
 					</div><!-- slideBox End -->
-
-				 
 			</div><!-- parBd End -->
 		</div>
-
 		<script type="text/javascript">
 			/*
 			SuperSlide组合注意：
@@ -96,12 +92,10 @@
     <p>商女士</p>
 <p>17705813347</p></div>
 </div>
-
 <div class="lxdh_c">
 <div class="lxdh_bs"><img src="images/dw.png" style=" margin-top:30px"></div>
 <div  class="lxdh_dw">
     <p>集团总部地址：浙江省义乌市下骆宅工业区  </p>    
-
 <p>邮编：322013 </p>
 <p>E-mail：1319429338@qq.com</p></div>
 </div>
@@ -123,7 +117,6 @@
  </div>
  </div>
   <!--脚-->
-<script type="text/javascript" th:src="@{${request.root}+'/js/jquery-1.9.1.min.js'}"></script>
 <script type="text/javascript"  th:src="@{${request.root}+'/js/common.js'}"></script>
 <script type="text/javascript">
 	$(function(){

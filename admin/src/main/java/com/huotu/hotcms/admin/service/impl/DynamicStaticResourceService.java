@@ -22,9 +22,6 @@ import java.net.URISyntaxException;
  */
 @Service
 @Profile("container")
-// spring.profiles.active container
-// huotu.resourcesUri
-// huotu.resourcesHome
 public class DynamicStaticResourceService extends AbstractStaticResourceService {
 
     private static final Log log = LogFactory.getLog(DynamicStaticResourceService.class);

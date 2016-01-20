@@ -3,7 +3,7 @@
  */
 define(function (require, exports, module) {
 
-    //TODO:初始化加载模型列表
+    //初始化加载模型列表
    var ModelGrid= $("#js-ModelList").Grid({
         method: 'POST',//提交方式GET|POST
         pageSize: 10,
@@ -42,7 +42,7 @@ define(function (require, exports, module) {
        deleteModel();
    });
 
-    //TODO:搜索
+    //搜索
     $("#jq-cms-search").click(function(){
         var option={
             dataParam:{
@@ -52,7 +52,7 @@ define(function (require, exports, module) {
         ModelGrid.Refresh(option);
     })
 
-    //TODO:显示所有
+    //显示所有
     $("#jq-cms-searchAll").click(function(){
         var option={
             dataParam:{
@@ -62,7 +62,7 @@ define(function (require, exports, module) {
         ModelGrid.Refresh(option);
     })
 
-    //TODO:删除
+    //删除
     function deleteModel(){
         var obj=$(".js-hot-modelDelete");
         $.each(obj,function(item,dom){

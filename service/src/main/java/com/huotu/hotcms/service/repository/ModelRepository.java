@@ -10,7 +10,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
  * @time 2015/15/25
  */
 public interface ModelRepository extends JpaRepository<DataModel, Long>,JpaSpecificationExecutor {
-//    Page<DataModel> findByName(Pageable pageRequest,Specification<DataModel> specification);
 
-//    Page<DataModel> findByName(String name,Pageable pageRequest);
 }

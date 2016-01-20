@@ -8,7 +8,7 @@ define(function (require, exports, module) {
     commonUtil.calcuHeightToTop("con_right",74);
     commonUtil.calcuWidth("con_right",$("#con_left").width());
 
-    //TODO:左边显示隐藏
+    //左边显示隐藏
     $("#shrink_span").click(Shrink);
 
     function Shrink(){

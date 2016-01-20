@@ -181,7 +181,8 @@ public class CategoryController {
         }
         catch (Exception ex)
         {
-            log.error(ex.getMessage());
+            log.error(String.format("saveCategory error-->%s ,Message-->%s",ex.getStackTrace(),ex.getMessage()));
+//            log.error(ex.getMessage());
             result=new ResultView(ResultOptionEnum.SERVERFAILE.getCode(),ResultOptionEnum.SERVERFAILE.getValue(),null);
         }
         return  result;
@@ -215,7 +216,6 @@ public class CategoryController {
         }
         catch (Exception ex)
         {
-            log.error(ex.getMessage());
             result=new ResultView(ResultOptionEnum.SERVERFAILE.getCode(),ResultOptionEnum.SERVERFAILE.getValue(),null);
         }
         return  result;

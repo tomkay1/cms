@@ -55,7 +55,6 @@ public class LinkForeachProcessorFactory {
             }
             return linkService.getLinkList(linkForeachParam);
         }catch (Exception e) {
-            e.printStackTrace();//TODO 上线时删除
             log.error(e.getMessage());
         }
         return null;

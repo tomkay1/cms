@@ -59,8 +59,7 @@ public class NoticeForeachProcessorFactory {
             }
             return noticeService.getNoticeList(noticeForeachParam);
         }catch (Exception e) {
-            e.printStackTrace();
-            log.error(e.getMessage());//TODO 上线时删除
+            log.error(e.getMessage());
         }
         return null;
     }

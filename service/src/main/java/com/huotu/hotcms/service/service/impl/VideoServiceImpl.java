@@ -9,6 +9,8 @@ import com.huotu.hotcms.service.model.thymeleaf.foreach.PageableForeachParam;
 import com.huotu.hotcms.service.repository.VideoRepository;
 import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.service.VideoService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,6 +30,8 @@ import java.util.stream.Collectors;
  */
 @Service
 public class VideoServiceImpl implements VideoService {
+
+    private static Log log = LogFactory.getLog(VideoServiceImpl.class);
 
     @Autowired
     VideoRepository videoRepository;
@@ -68,7 +72,7 @@ public class VideoServiceImpl implements VideoService {
             try {
                 throw new Exception("父栏目节点没有子栏目");
             }catch (Exception e) {
-                e.printStackTrace();//TODO 日志处理
+                log.error(e.getMessage());
             }
         }
         Specification<Article> specification = (root, criteriaQuery, cb) -> {

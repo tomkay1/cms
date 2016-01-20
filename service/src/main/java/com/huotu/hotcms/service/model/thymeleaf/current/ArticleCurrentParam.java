@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * 文章当前记录解析器参数模型
  * Created by Administrator xhl 2016/1/15.
  */
 @Setter

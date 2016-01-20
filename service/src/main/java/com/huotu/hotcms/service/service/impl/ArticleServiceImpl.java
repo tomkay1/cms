@@ -5,6 +5,8 @@ import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.model.ArticleCategory;
 import com.huotu.hotcms.service.model.thymeleaf.current.ArticleCurrentParam;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.PageableForeachParam;
+import com.huotu.hotcms.service.model.thymeleaf.next.ArticleNextParam;
+import com.huotu.hotcms.service.model.thymeleaf.next.ArticlePreviousParam;
 import com.huotu.hotcms.service.repository.ArticleRepository;
 import com.huotu.hotcms.service.service.ArticleService;
 import com.huotu.hotcms.service.service.CategoryService;
@@ -159,6 +161,26 @@ public class ArticleServiceImpl implements ArticleService {
                 return articleRepository.getOne(articleCurrentParam.getId());
             } else {
                 return articleRepository.getOne(articleCurrentParam.getDefaultid());
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Article getArticleNextByParam(ArticleNextParam articleNextParam) {
+        if(articleNextParam!=null){
+            if(articleNextParam.getId()!=null){
+                return articleRepository.findAllByIdAndNext(articleNextParam.getId());
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Article getArticlePreiousByParam(ArticlePreviousParam articlePreviousParam) {
+        if(articlePreviousParam!=null){
+            if(articlePreviousParam.getId()!=null){
+                return articleRepository.findAllByIdAndPreious(articlePreviousParam.getId());
             }
         }
         return null;

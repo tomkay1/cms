@@ -8,10 +8,7 @@
 
 package com.huotu.hotcms.web.thymeleaf.dialect;
 
-import com.huotu.hotcms.web.thymeleaf.processor.CurrentProcessor;
-import com.huotu.hotcms.web.thymeleaf.processor.ForeachProcessor;
-import com.huotu.hotcms.web.thymeleaf.processor.HrefProcessor;
-import com.huotu.hotcms.web.thymeleaf.processor.SrcProcessor;
+import com.huotu.hotcms.web.thymeleaf.processor.*;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.processor.IProcessor;
@@ -41,6 +38,8 @@ public class ArticleDialect extends AbstractProcessorDialect {
         final Set<IProcessor> processors = new LinkedHashSet<IProcessor>();
         processors.add(new ForeachProcessor(dialect,dialectPrefix));
         processors.add(new CurrentProcessor(dialect, dialectPrefix));
+        processors.add(new NextProcessor(dialect, dialectPrefix));
+        processors.add(new PreviousProcessor(dialect, dialectPrefix));
 //        processors.add(new HrefProcessor(dialect, dialectPrefix));
 //        processors.add(new SrcProcessor(dialect, dialectPrefix));
         return processors;

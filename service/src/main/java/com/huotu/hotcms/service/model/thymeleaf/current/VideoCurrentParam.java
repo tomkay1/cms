@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * 视频当前记录解析器参数模型
  * Created by Administrator on 2016/1/18.
  */
 @Setter

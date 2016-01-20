@@ -20,9 +20,11 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * <p>
  * 自定义thymeleaf 语法标签解析
+ * 当前文章输出方言
  * </P>
  *
  * @author xhl
+ *
  * @since 1.0.0
  */
 public class ArticleCurrentProcessorFactory extends BaseProcessorService {

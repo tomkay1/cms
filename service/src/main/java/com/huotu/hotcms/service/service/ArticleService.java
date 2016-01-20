@@ -12,6 +12,8 @@ import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.model.ArticleCategory;
 import com.huotu.hotcms.service.model.thymeleaf.current.ArticleCurrentParam;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.PageableForeachParam;
+import com.huotu.hotcms.service.model.thymeleaf.next.ArticleNextParam;
+import com.huotu.hotcms.service.model.thymeleaf.next.ArticlePreviousParam;
 import com.huotu.hotcms.service.util.PageData;
 import org.springframework.data.domain.Page;
 
@@ -31,4 +33,8 @@ public interface ArticleService {
     Page<Article> getArticleList(PageableForeachParam articleForeachParam);
 
     Article getArticleByParam(ArticleCurrentParam articleCurrentParam);
+
+    Article getArticleNextByParam(ArticleNextParam articleNextParam);
+
+    Article getArticlePreiousByParam(ArticlePreviousParam articlePreviousParam);
 }

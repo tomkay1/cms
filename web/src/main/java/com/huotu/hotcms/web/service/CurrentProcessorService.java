@@ -8,7 +8,14 @@ import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.model.IProcessableElementTag;
 
 /**
- * Created by Administrator xhl 2016/1/6.
+ * <p>
+ * 自定义thymeleaf 语法标签解析
+ * 根据条件当前输出方言解析服务入口
+ * </P>
+ *
+ * @author xhl
+ *
+ * @since 1.0.0
  */
 public class CurrentProcessorService extends BaseProcessorService {
     public Object resolveDataByAttr(IProcessableElementTag tag,String attributeValue, ITemplateContext context) {

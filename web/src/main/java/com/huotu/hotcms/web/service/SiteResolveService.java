@@ -6,6 +6,8 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.service.HostService;
 import com.huotu.hotcms.service.service.RegionService;
 import com.huotu.hotcms.web.util.PatternMatchUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -23,7 +25,7 @@ import java.util.Set;
  */
 @Component
 public class SiteResolveService {
-
+    private static final Log log = LogFactory.getLog(SiteResolveService.class);
     @Autowired
     private HostService hostService;
 
@@ -34,29 +36,34 @@ public class SiteResolveService {
      * 根据当前浏览器环境获得站点
      * */
     public Site getEnvironmentSite(HttpServletRequest request) throws Exception{
-        Site site = new Site();
-        String domain = request.getServerName();
-        Set<Site> sites = getSitesThroughDomain(domain);
-        String language = request.getLocale().getLanguage();
-        String country=request.getLocale().getCountry();
-        Region region=regionService.getRegionByLangCodeAndRegionCode(language,country);
-        if(region!=null){
-            for(Site s : sites) {
-                String lang = s.getRegion().getLangCode();
-                String regionCode=s.getRegion().getRegionCode();
-                if(language.equalsIgnoreCase(lang)&&country.equalsIgnoreCase(regionCode)) {
-                    site = s;
-                    break;
+        Site site = null;
+        try {
+            site = new Site();
+            String domain = request.getServerName();
+            Set<Site> sites = getSitesThroughDomain(domain);
+            String language = request.getLocale().getLanguage();
+            String country = request.getLocale().getCountry();
+            Region region = regionService.getRegionByLangCodeAndRegionCode(language, country);
+            if (region != null) {
+                for (Site s : sites) {
+                    String lang = s.getRegion().getLangCode();
+                    String regionCode = s.getRegion().getRegionCode();
+                    if (language.equalsIgnoreCase(lang) && country.equalsIgnoreCase(regionCode)) {
+                        site = s;
+                        break;
+                    }
+                }
+            } else {
+                for (Site s : sites) {
+                    String lang = s.getRegion().getLangCode();
+                    if (language.equalsIgnoreCase(lang)) {
+                        site = s;
+                        break;
+                    }
                 }
             }
-        }else{
-            for(Site s : sites) {
-                String lang = s.getRegion().getLangCode();
-                if(language.equalsIgnoreCase(lang)) {
-                    site = s;
-                    break;
-                }
-            }
+        }catch (Exception ex){
+            throw new Exception("getEnvironmentSite exception->"+ex.getMessage()+" domain-->"+request.getServerName());
         }
         return site;
     }
@@ -138,7 +145,7 @@ public class SiteResolveService {
     public Set<Site> getSitesThroughDomain(String domain) throws Exception{
         Host host = hostService.getHost(domain);
         if(host == null) {
-            throw new Exception("域名错误");
+            throw new Exception("domain no find");
         }
         return host.getSites();
     }

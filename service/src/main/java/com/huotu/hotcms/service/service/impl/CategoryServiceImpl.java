@@ -265,7 +265,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public Boolean saveCategoryAndRoute(Category category, String rule,String template,RouteType routeType) {
+    public Boolean saveCategoryAndRoute(Category category, String rule,String template,RouteType routeType) throws Exception{
         if(!routeService.isPatterBySiteAndRule(category.getSite(), rule)) {
             if(!StringUtils.isEmpty(rule)) {
                 Route route1 = new Route();

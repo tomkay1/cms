@@ -57,21 +57,29 @@ public class RouteServiceImpl  implements RouteService {
     }
 
     @Override
-    public Boolean isPatterBySiteAndRule(Site site, String rule) {
-        if(!StringUtils.isEmpty(rule)) {
-            if(isExistsRegion(rule)){
-                return  true;
-            }else {
-                Set<Route> routes = getRoute(site);
-                for (Route s : routes) {
-                    if (s.getRule() != null) {
-                        String dataRule = s.getRule();
-                        if (rule.equals(dataRule) || rule.matches(dataRule)) {
-                            return true;
+    public Boolean isPatterBySiteAndRule(Site site, String rule) throws Exception {
+        try {
+            if (!StringUtils.isEmpty(rule)) {
+                if (isExistsRegion(rule)) {
+                    return true;
+                } else {
+                    Set<Route> routes = getRoute(site);
+                    if(routes!=null) {
+                        for (Route s : routes) {
+                            if(s!=null) {
+                                if (s.getRule() != null) {
+                                    String dataRule = s.getRule();
+                                    if (rule.equals(dataRule) || rule.matches(dataRule)) {
+                                        return true;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
+        }catch(Exception ex){
+            throw new Exception("isPatterBySiteAndRule exception "+ ex.toString());
         }
         return false;
     }
@@ -152,22 +160,24 @@ public class RouteServiceImpl  implements RouteService {
     @Override
     public Boolean isExistsRegion(String rule) {
         String langParam= StringUtil.getFirstParam(rule,"web");
-        if(langParam.contains("-")){
-            String[] list=langParam.split("-");
-            if(list!=null&&list.length>=2) {
-                String langCode = list[0];
-                String regionCode = list[1];
-                Region region = regionService.getRegionByLangCodeAndRegionCode(langCode, regionCode);
-                return region != null;
-            }
-        }else{
-            if(langParam.equalsIgnoreCase("web")){
-                return true;
-            }else {
-                Region region = regionService.getRegionByCode(langParam);
-                return region != null;
+        if(!StringUtils.isEmpty(langParam)) {
+            if (langParam.contains("-")) {
+                String[] list = langParam.split("-");
+                if (list != null && list.length >= 2) {
+                    String langCode = list[0];
+                    String regionCode = list[1];
+                    Region region = regionService.getRegionByLangCodeAndRegionCode(langCode, regionCode);
+                    return region != null;
+                }
+            } else {
+                if (langParam.equalsIgnoreCase("web")) {
+                    return true;
+                } else {
+                    Region region = regionService.getRegionByCode(langParam);
+                    return region != null;
+                }
             }
         }
-        return null;
+        return false;
     }
 }

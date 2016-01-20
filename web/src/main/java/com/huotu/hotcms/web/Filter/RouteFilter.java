@@ -40,6 +40,7 @@ public class RouteFilter implements Filter {
             WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
             SiteResolveService siteResolveService = (SiteResolveService) applicationContext.getBean("siteResolveService");
             Site site = siteResolveService.getCurrentSite(request1);
+            log.error("site-->"+site.hashCode());
             String servletPath=PatternMatchUtil.getServletPath(site,request1);//获得ServletPath 国际化带语言参数经一步处理(移除国际化参数信息)得到的跟配置的路由一致
             String langParam=PatternMatchUtil.getEffecterLangParam(request1, site);//获得国际化参数(url上带上的语言地区参数信息)
             if(PatternMatchUtil.isMatchFilter(servletPath)) {
@@ -61,7 +62,7 @@ public class RouteFilter implements Filter {
                 }
             }
         }catch (Exception ex){
-            log.error(ex.getMessage());
+            log.error(String.format("doFilter error-->%s ,Message-->%s",ex.getStackTrace(),ex.getLocalizedMessage()));
         }
         chain.doFilter(request,response);
     }

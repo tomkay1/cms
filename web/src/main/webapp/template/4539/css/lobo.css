@@ -252,3 +252,229 @@ margin:0 auto;
 
 
  /*产品页面end*/
+
+/*产品详情开始*/
+
+#preview {
+	float: left;
+	padding-bottom: 15px;
+	display: inline;
+	width: 378px;
+	position: relative;
+}
+#spec-n1 {
+	width: 350px;
+	height: 350px;
+	margin: 14px 0 14px 14px;
+	position: relative;
+}
+#spec-list {
+	position: relative;
+	width: 310px;
+	height: 54px;
+	overflow: hidden;
+	padding: 0 20px 0 34px;
+}
+#preview #spec-list a.disabled {
+	cursor: default;
+}
+#spec-forward.disabled {
+	background-position: -56px -346px;
+}
+#spec-list .spec-control {
+	display: block;
+	position: absolute;
+	top: 0;
+	width: 14px;
+	height: 54px;
+}
+#spec-forward {
+	left: 14px;
+	background-position: 0 -346px;
+}
+#spec-backward.disabled {
+	background-position: -70px -346px;
+}
+#spec-backward {
+	right: 0;
+	background-position: -14px -346px;
+}
+#spec-list .spec-items {
+	position: absolute;
+	top: 0;
+	left: 36px;
+}
+.lh {
+	overflow: hidden;
+	zoom: 1;
+}
+#spec-list .spec-items li {
+	width: 62px;
+	text-align: center;
+	font-size: 0;
+	position: relative;
+}
+.lh li {
+	float: left;
+}
+#spec-list .spec-items img {
+	width: 50px;
+	height: 50px;
+	padding: 2px;
+	display: block;
+}
+.spec-control{
+	background-image: url(../images/newicon20140910.png);
+	background-repeat: no-repeat;
+}
+#spec-list .spec-items img.img-hover {
+	border: 2px solid #e4393c;
+	padding: 0;
+}
+
+.m-item-inner {
+	width: 580px;
+	float: left;
+
+}
+#itemInfo {
+	position: relative;
+	width: 100%;
+}
+#name {
+	padding: 15px 0px 10px 0;
+	zoom: 1;
+}
+#name h1 {
+	line-height: 1.5em;
+	overflow: hidden;
+	font-weight: 700;
+	font-family: arial,"microsoft yahei";
+	font-size: 16px;
+}
+#choose {
+	width: 100%;
+	padding-top: 10px;
+	border-top: 1px dotted #ddd;
+	margin-top: 5px;
+	margin-bottom: 20px;
+}
+#choose .li {
+	width: 516px;
+	padding: 5px 0 5px 72px;
+	float: left;
+}
+#choose-color .dt {
+	margin-top: 10px;
+}
+.dt {
+	float: left;
+	width: 72px;
+	margin-left: -72px;
+	display: inline;
+	text-align: right;
+	font-family: simsun;
+}
+#choose .dd {
+	_margin-right: -3px;
+	overflow: hidden;
+}
+.p-choose-wrap .item {
+	float: left;
+	margin: 2px 8px 2px 0;
+}
+#choose-color .item a {
+	font-size: 0;
+	padding: 1px;  float: left;
+}
+#choose-color .item a img {
+	margin: 1px 3px 1px 1px;
+	display: inline-block;
+	vertical-align: middle;
+}
+#choose-color .item a i {
+	display: inline-block;
+	font-size: 12px;
+	vertical-align: middle;
+}
+#choose-color i {
+	font-style: normal;
+	margin-right: 3px;
+}
+.p-choose-wrap .item.selected {
+	position: relative;
+	zoom: 1;
+}
+.p-choose-wrap .item {
+	float: left;
+	margin: 2px 8px 2px 0;
+}
+.p-choose-wrap .item.selected b {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	width: 12px;
+	height: 12px;
+	overflow: hidden;
+	background: url(../images/newicon20140910.png) no-repeat -202px -224px;
+}
+
+.p-choose-wrap .item.selected a {
+	padding: 3px 5px;
+	border: 2px solid #e4393c;
+}
+.p-choose-wrap .item a {
+	padding: 4px 6px;
+	border: 1px solid #ccc;
+	background: #fff;
+}
+#fitting-suit{
+	overflow: visible;
+	padding-top: 2px;
+	background: url(../images/tab.png) 0 -41px repeat-x;
+
+}
+.m{
+	margin-bottom: 10px;
+}
+#fitting-suit .float-nav-wrap {
+	height: 41px;
+	position: relative;
+}
+#fitting-suit .mt {
+	height: 28px;
+	background-position: 0 -287px;
+}
+#fitting-suit .mt .tab {
+	margin-left: -1px;
+	overflow: visible;
+}
+#fitting-suit .tab .curr {
+	height: 37px;
+	border-top: 2px solid #e4393c;
+
+	margin-top: -6px;
+
+	color: #e4393c;
+	background-color: #efefef;;
+}
+
+#fitting-suit .tab .curr a {
+	line-height: 36px;
+	padding: 0 12px;
+	border-left: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+	color: #e4393c;
+	background-color: #ffffff;
+	padding: 9px 10px;
+	border-top: 2px solid #e4393c;
+	border-right: 1px solid #ddd;
+}
+.tab li a {
+	font: 700 15px/30px "microsoft yahei";
+}
+
+
+
+
+/*产品详情end*/

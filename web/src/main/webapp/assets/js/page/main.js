@@ -8,7 +8,7 @@ define(function (require, exports, module) {
     commonUtil.calcuWidth("content",$(".leftpanel").width());
     commonUtil.calcuWidth("con_right",$(".leftpanel").width());
 
-    //TODO:左边栏目效果
+    //左边栏目效果
     var menusObj=$(".js-cms-menus");
     $.each(menusObj,function(item,dom){
         $(dom).find(".aparent").click(function(){

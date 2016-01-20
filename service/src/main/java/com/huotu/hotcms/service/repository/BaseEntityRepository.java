@@ -11,7 +11,6 @@ import java.util.List;
  * Created by chendeyu on 2016/1/12.
  */
 public interface BaseEntityRepository extends JpaRepository<BaseEntity,Long>,JpaSpecificationExecutor {
-    List<BaseEntity> findByCategoryId(Long categoryId);
 
     @Query(value = "select * from (select a.title,a.description,c.name,a.id,c.modelId,a.createTime from cms_link a,cms_category c where a.categoryId=c.id and a.deleted=false and c.siteId = ?1 and a.title like %?2%\n" +
             "UNION\n" +
@@ -38,7 +37,6 @@ public interface BaseEntityRepository extends JpaRepository<BaseEntity,Long>,Jpa
             "UNION\n" +
             "select g.title,g.description,c.name,g.id,c.modelId,g.createTime from cms_gallery g,cms_category c where g.categoryId=c.id and g.deleted=false and c.siteId = ?1 and c.id=?2 and g.title like %?3%) as t order by id,modelId limit ?4,?5",nativeQuery = true)
     List<Object[]> findAllContentsBySiteIdAndCategoryIdAndName(Long siteId,Long categoryId,String name,int page, int pageSize);
-
 
     @Query(value = "select * from (select a.title,a.description,c.name,a.id,c.modelId,a.createTime from cms_link a,cms_category c where a.categoryId=c.id and a.deleted=false and c.siteId = ?1 and a.title like %?2%\n" +
             "UNION\n" +

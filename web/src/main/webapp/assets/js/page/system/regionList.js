@@ -3,7 +3,7 @@
  */
 define(function (require, exports, module) {
 
-    //TODO:初始化加载模型列表
+    //初始化加载地区列表
     var RegionGrid= $("#js-RegionList").Grid({
         method: 'POST',//提交方式GET|POST
         form: 'form1',//表单ID
@@ -37,7 +37,7 @@ define(function (require, exports, module) {
         deleteRegion();
     });
 
-    //TODO:搜索
+    //搜索
     $("#jq-cms-search").click(function(){
         var option={
             dataParam:{
@@ -47,7 +47,7 @@ define(function (require, exports, module) {
         RegionGrid.Refresh(option);
     })
 
-    //TODO:显示所有
+    //显示所有
     $("#jq-cms-searchAll").click(function(){
         var option={
             dataParam:{
@@ -57,7 +57,7 @@ define(function (require, exports, module) {
         RegionGrid.Refresh(option);
     })
 
-    //TODO:删除
+    //删除
     function deleteRegion(){
         var obj=$(".js-hot-regionDelete");
         $.each(obj,function(item,dom){

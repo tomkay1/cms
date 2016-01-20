@@ -15,18 +15,13 @@ import java.util.Set;
  */
 public interface CategoryRepository extends JpaRepository<Category, Long>,JpaSpecificationExecutor {
    List<Category> findBySiteAndDeletedOrderByOrderWeightDesc(Site site, Boolean deleted);
-   List<Category> findBySite_SiteIdAndDeletedAndIdNotOrderByOrderWeightDesc(long siteId, Boolean deleted, long categoryId);
    List<Category> findBySiteAndDeletedAndNameContainingOrderByOrderWeightDesc(Site site,Boolean deleted,String name);
 
 
-   Set<Category> findByCustomerIdAndDeletedAndModelIdNotNullOrderByOrderWeightDesc(Integer customerId,boolean deleted);
    List<Category> findByCustomerIdAndSite_SiteIdAndDeletedAndModelIdNotNullOrderByOrderWeightDesc(Integer customerId,Long siteId,boolean deleted);
    List<Category> findByCustomerIdAndSite_SiteIdAndIdAndDeletedAndModelIdNotNullOrderByOrderWeightDesc(Integer customerId,Long siteId,Long categoryId,boolean deleted);
    Set<Category> findByCustomerIdAndModelId(Integer customerId,Integer modelType);
    List<Category> findBySiteAndDeletedAndModelIdNotNullOrderByOrderWeightDesc(Site site,boolean deleted);
-   List<Category> findBySite_SiteIdAndDeletedOrderByOrderWeightDesc(long siteId, boolean deleted);
-
-   List<Category> findBySite_SiteIdAndDeletedAndModelIdOrderByOrderWeightDesc(long siteId, boolean deleted,Integer modelType);
 
    Category findByRoute(Route route);
 

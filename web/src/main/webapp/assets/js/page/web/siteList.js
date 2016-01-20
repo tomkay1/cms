@@ -37,7 +37,7 @@ define(function (require, exports, module) {
         updateSite();
         deleteSite();
     });
-//TODO:搜索
+//搜索
     $("#jq-cms-search").click(function(){
         var option={
             dataParam:{
@@ -47,7 +47,7 @@ define(function (require, exports, module) {
         SiteGrid.Refresh(option);
     })
 
-    //TODO:显示所有
+    //显示所有
     $("#jq-cms-searchAll").click(function(){
         var option={
             dataParam:{
@@ -57,7 +57,7 @@ define(function (require, exports, module) {
         SiteGrid.Refresh(option);
     })
 
-    //TODO:修改
+    //修改
     function updateSite(){
         var obj=$(".js-hot-siteUpdate");
         $.each(obj,function(item,dom){
@@ -71,7 +71,7 @@ define(function (require, exports, module) {
     }
 
 
-    //TODO:删除
+    //删除
     function deleteSite(){
         var obj=$(".js-hot-siteDelete");
 

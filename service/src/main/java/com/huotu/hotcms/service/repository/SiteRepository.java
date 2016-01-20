@@ -26,6 +26,4 @@ public interface SiteRepository  extends JpaRepository<Site, Long>,JpaSpecificat
 
     Site findByTitle(String title);
 
-//    @Query(value = "SELECT site.siteId,site.name FROM cms_site site where site.customerId=?1 and site.deleted=?2",nativeQuery = true)
-//    Set<Site> findSiteList(int customerId,boolean deleted);
 }

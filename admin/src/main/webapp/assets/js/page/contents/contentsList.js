@@ -59,7 +59,7 @@ define(function (require, exports, module) {
         };
         ContentsGrid.Refresh(option);
     }
-//TODO:搜索
+//搜索
     $("#jq-cms-search").click(function(){
         search();
     })
@@ -85,7 +85,7 @@ define(function (require, exports, module) {
         });
     })
 
-    //TODO:显示所有
+    //显示所有
     $("#jq-cms-searchAll").click(function(){
         var commonUtil = require("common");
         commonUtil.setDisabled("jq-cms-Save");
@@ -99,7 +99,7 @@ define(function (require, exports, module) {
         ContentsGrid.Refresh(option);
     })
 
-    //TODO:修改
+    //修改
     function updateContents(){
         var obj=$(".js-hot-contentsUpdate");
         $.each(obj,function(item,dom){
@@ -137,7 +137,7 @@ define(function (require, exports, module) {
     }
 
 
-    //TODO:删除
+    //删除
     function deleteContents(){
         var obj=$(".js-hot-contentsDelete");
 
@@ -197,7 +197,7 @@ define(function (require, exports, module) {
         })
     }
 
-    //TODO:查看详情
+    //查看详情
     function contentsList(){
         var obj=$(".js-hot-contentsList");
 

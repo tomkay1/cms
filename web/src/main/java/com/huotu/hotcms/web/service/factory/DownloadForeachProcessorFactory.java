@@ -71,8 +71,7 @@ public class DownloadForeachProcessorFactory {
             }
             return downloads;
         }catch (Exception e) {
-            e.printStackTrace();
-            log.error(e.getMessage());//TODO 上线时删除
+            log.error(e.getMessage());
         }
         return null;
     }

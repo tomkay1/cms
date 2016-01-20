@@ -11,6 +11,8 @@ import com.huotu.hotcms.service.repository.ArticleRepository;
 import com.huotu.hotcms.service.service.ArticleService;
 import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.util.PageData;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.data.domain.Sort;
 import org.springframework.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,10 @@ import java.util.stream.Collectors;
  */
 @Service
 public class ArticleServiceImpl implements ArticleService {
+
+
+    private static Log log = LogFactory.getLog(ArticleServiceImpl.class);
+
     @Autowired
     private ArticleRepository articleRepository;
 
@@ -62,7 +68,7 @@ public class ArticleServiceImpl implements ArticleService {
             try {
                 throw new Exception("父栏目节点没有子栏目");
             }catch (Exception e) {
-                e.printStackTrace();//TODO 日志处理
+                log.error(e.getMessage());
             }
         }
         Specification<Article> specification = (root, criteriaQuery, cb) -> {

@@ -67,6 +67,27 @@ public class SiteController {
     }
 
 
+    /**
+     * 根据商户ID获得站点列表业务API xhl
+     * */
+    @RequestMapping("/getSiteList")
+    @ResponseBody
+    public ResultView getSiteList(@RequestParam(value = "customerId",defaultValue = "0") Integer customerid){
+        ResultView result=null;
+        try{
+            Set<Site> sites=siteService.findByCustomerIdAndDeleted(customerid, false);
+            if(sites!=null&&sites.size()>0) {
+                result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), sites.toArray(new Site[sites.size()]));
+            }else{
+                result = new ResultView(ResultOptionEnum.NOFIND.getCode(), ResultOptionEnum.NOFIND.getValue(),null);
+            }
+        }
+        catch (Exception ex){
+            log.error(ex.getMessage());
+            result=new ResultView(ResultOptionEnum.SERVERFAILE.getCode(),ResultOptionEnum.SERVERFAILE.getValue(),null);
+        }
+        return result;
+    }
 
     @RequestMapping(value = "/addSite")
     public ModelAndView addSite(HttpServletRequest request) throws Exception{

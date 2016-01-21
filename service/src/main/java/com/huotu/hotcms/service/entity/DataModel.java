@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 @Table(name = "cms_dataModel")
 @Getter
 @Setter
+@Cacheable(value = false)
 public class DataModel {
 
     @Id

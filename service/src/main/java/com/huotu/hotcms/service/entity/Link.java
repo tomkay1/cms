@@ -21,6 +21,7 @@ import javax.persistence.*;
 @Table(name = "cms_link")
 @Getter
 @Setter
+@Cacheable(value = false)
 public class Link extends BaseEntity {
 //
 //    /**

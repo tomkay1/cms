@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @Table(name = "cms_route")
 @Setter
 @Getter
+@Cacheable(value = false)
 public class Route {
 
     @Id

@@ -21,6 +21,7 @@ import javax.persistence.*;
 @Table(name = "cms_video")
 @Getter
 @Setter
+@Cacheable(value = false)
 public class Video extends BaseEntity {
 
 //    /**

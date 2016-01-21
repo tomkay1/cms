@@ -21,6 +21,7 @@ import javax.persistence.*;
 @Table(name = "cms_notice")
 @Setter
 @Getter
+@Cacheable(value = false)
 public class Notice extends BaseEntity {
 
 //    /**

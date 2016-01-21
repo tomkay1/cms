@@ -21,6 +21,7 @@ import javax.persistence.*;
 @Table(name = "cms_download")
 @Getter
 @Setter
+@Cacheable(value = false)
 public class Download extends BaseEntity {
 
 //    /**

@@ -22,6 +22,7 @@ import javax.persistence.*;
 @Table(name = "cms_article")
 @Getter
 @Setter
+@Cacheable(value = false)
 public class Article extends BaseEntity {
 
 

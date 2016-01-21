@@ -16,6 +16,7 @@ import java.util.Set;
 @Table(name = "cms_site")
 @Setter
 @Getter
+@Cacheable(value = false)
 public class Site {
 
     @Id

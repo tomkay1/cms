@@ -21,19 +21,9 @@ import javax.persistence.*;
 @Table(name = "cms_gallery")
 @Getter
 @Setter
+@Cacheable(value = false)
 public class Gallery extends BaseEntity {
 
-//    /**
-//     * 标题
-//     */
-//    @Column(name = "title")
-//    private String title;
-
-//    /**
-//     * 描述
-//     */
-//    @Column(name = "description")
-//    private String description;
 
     /**
      * 内容

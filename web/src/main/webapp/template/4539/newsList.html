@@ -9,7 +9,7 @@
   <link rel="stylesheet" type="text/css" th:href="@{${request.root}+'/css/information.css'}">
   <link rel="stylesheet" type="text/css" th:href="@{${request.root}+'/css/index.css'}">
 </head>
-<body>
+<body class="zximg">
 <!---头--->
 <div class="header" data-th-replace="${resourcePath}+'/index.html' :: .header">
   <img src="images/logo.png" class="logoimg">
@@ -24,12 +24,8 @@
 </div>
 <p style="clear:both"></p>
 <!---头--->
-<div class="cj-information">
-  <div class="cj-bigbox-a">
-    <div class="zximg">
-    </div>
-  </div>
-  <div class="cj-box-a bacfff posup">
+<p style=" clear:both; height:300px;"></p>
+<div class="cj-information cj-information-kl">
     <div class="boxlist-a listap" style="width: 170px;">
       <p class="imgian"><img th:src="${request.root}+'/images/zx-1.png'"/></p>
       <div class="ayu">
@@ -89,9 +85,8 @@
         <!--<a><img th:src="${request.root}+'/images/right.jpg'" width="8px"/></a>-->
       </div>
     </div>
-  </div>
+  <p style="clear:both; height:100px;"></p>
 </div>
-<p style="clear:both; height:734px;background-color:#efefef"></p>
 <!--脚-->
 <div style="background-color:#1a1a1a">
   <div  class="footsy"  data-th-replace="${resourcePath}+'/index.html' :: .footsy">

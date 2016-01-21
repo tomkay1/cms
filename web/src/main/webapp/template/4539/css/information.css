@@ -114,7 +114,6 @@
 	width: 75%;
 	margin-left: 20px;
 	min-height: 500px;
-	height: 1032px;
 }
 .cj-information .leftbox-a .fristp {
 	line-height: 55px;
@@ -176,11 +175,12 @@
 	width: 50%;
 	margin-bottom: 30px
 }
-.cj-information .zximg {
+.zximg {
 	background: url(../images/cj-banner.jpg) 50% 0px no-repeat;
 	position: absolute;
 	width: 100%;
-	height: 100%;
+	height: 574px;
+	background-position-y: 78px;
 }
 .cj-bigbox-a {
 	position: relative;
@@ -199,3 +199,13 @@
 	overflow: hidden;
 }
 .cj-information .ayu a{  cursor: pointer;}
+.cj-information-kl {
+	width: 1000px;
+	background-color: #fff;
+	margin: 0 auto;
+}
+.cj-information .boxlist-a p {
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+  line-height: 40px;
+}

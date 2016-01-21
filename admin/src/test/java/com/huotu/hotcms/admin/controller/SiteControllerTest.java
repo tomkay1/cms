@@ -25,8 +25,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
-import javax.servlet.http.Cookie;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -46,7 +44,7 @@ public class SiteControllerTest extends WebTestBase {
     @Test
     public void testShowSiteList() throws Exception {
         mockMvc.perform(get("/site/siteList").cookie(cookie)
-                .param("customerid","4539")
+                .param("customerid", "4539")
         )
                 .andExpect(status().isOk())
                 .andExpect(view().name("/view/web/siteList.html"));
@@ -66,4 +64,5 @@ public class SiteControllerTest extends WebTestBase {
         Assert.assertArrayEquals(expectRegions.toArray(),actualRegions.toArray());
 
     }
+
 }

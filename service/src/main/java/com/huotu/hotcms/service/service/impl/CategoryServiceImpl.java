@@ -127,7 +127,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> getHeaderCategoryList(CategoryForeachParam param) {
-        return categoryRepository.findBySite_SiteIdAndDeletedAndRoute_RouteType(param.getSiteid(),false,RouteType.HEADER_NAVIGATION);
+        return categoryRepository.findBySite_SiteIdAndRoute_RouteTypeAndDeletedOrderByOrderWeightDesc(param.getSiteid(), RouteType.HEADER_NAVIGATION, false);
     }
 
 

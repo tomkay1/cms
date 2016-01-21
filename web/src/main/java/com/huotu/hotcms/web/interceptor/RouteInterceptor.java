@@ -79,8 +79,6 @@ public class RouteInterceptor  extends HandlerInterceptorAdapter {
                         if (article != null) {
                             modelAndView.addObject("article", article);
                             modelAndView.setViewName(resourcePath + route.getTemplate());
-                        } else {
-//                            modelAndView.setViewName(routeResolverService.getRouteTemplate(site, RouteType.NOT_FOUND));
                         }
                         modelAndView.setViewName(resourcePath + route.getTemplate());
                     } else {

@@ -26,6 +26,11 @@ import java.util.Set;
 @Component
 public class SiteResolveService {
     private static final Log log = LogFactory.getLog(SiteResolveService.class);
+
+    private static final String default_country="cn";
+
+    private static final String default_language="zh";
+
     @Autowired
     private HostService hostService;
 
@@ -95,24 +100,30 @@ public class SiteResolveService {
 
     public Site getCurrentSite(HttpServletRequest request) throws Exception{
 //        String languageParam= PatternMatchUtil.getUrlString(path,PatternMatchUtil.langRegexp);
+        Site site=null;
         String languageParam=PatternMatchUtil.getLangParam(request);
         if(StringUtils.isEmpty(languageParam)){
-            return getEnvironmentSite(request);
+            site= getEnvironmentSite(request);
         }else{
             if(languageParam.contains("-")){
                 if(regionService.isRegionByCode(languageParam.split("-")[1])){
-                    return getParamSite(request,languageParam);
+                    site= getParamSite(request,languageParam);
                 }else{
-                    return getEnvironmentSite(request);
+                    site= getEnvironmentSite(request);
                 }
             }else{
                 if(regionService.isRegionByCode(languageParam)){
-                    return getParamSite(request,languageParam);
+                    site= getParamSite(request,languageParam);
                 }else{
-                    return getEnvironmentSite(request);
+                    site= getEnvironmentSite(request);
                 }
             }
         }
+        if(site==null){//其他语言站点没有则默认访问中文站点
+            String domain = request.getServerName();
+            site=getSiteByDomainAndLange(domain,default_language);
+        }
+        return site;
 //        if(isHomeSitePath(path)) {
 //            language = request.getLocale().getLanguage();
 //            if(StringUtils.isEmpty(language)) {
@@ -148,6 +159,22 @@ public class SiteResolveService {
             throw new Exception("domain no find");
         }
         return host.getSites();
+    }
+
+    /**
+     * 根据域名以及语言来获得唯一的站点信息
+     * **/
+    public Site getSiteByDomainAndLange(String domain,String language) throws Exception{
+        Site site=null;
+        Set<Site> sites=getSitesThroughDomain(domain);
+        for (Site s : sites) {
+            String lang = s.getRegion().getLangCode();
+            if (language.equalsIgnoreCase(lang)) {
+                site = s;
+                break;
+            }
+        }
+        return site;
     }
 
     public boolean isHomeSitePath(String path) {

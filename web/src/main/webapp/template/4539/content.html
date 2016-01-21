@@ -41,7 +41,7 @@
     <div class="boxlist-a listap" style="width: 170px;">
       <p class="imgian"><img th:src="${request.root}+'/images/zx-1.png'"/></p>
       <div class="ayu" id="leftActive">
-        <a data-th-href="@{${category.route.rule}}" data-category-foreach="category" data-param-specifyids="33,34,35,36">
+        <a data-th-href="@{${category.route.rule}}" data-category-foreach="category" data-param-specifyids="17,18,19,20">
           <div class="pp on" data-th-class="${request.url==category.route.rule}?'pp on':'pp'"  data-th-text="${category.name}">新闻资讯</div>
         </a>
         <a href="#" data-th-remove="all"><div class="pp">品牌理念</div></a>
@@ -89,7 +89,7 @@
 <script type="text/javascript"  th:src="@{${request.root}+'/js/common.js'}"></script>
 <script type="text/javascript">
   $(function(){
-    navigate.topCategoryArtive(2,"categoryNav","li");
+    navigate.topCategoryArtive(1,"categoryNav","li");
     navigate.CategoryActive(2,"leftActive","div","on")
   })
 </script>

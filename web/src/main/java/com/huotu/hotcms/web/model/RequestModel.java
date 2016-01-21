@@ -44,6 +44,7 @@ public class RequestModel{
     public void setRootUri(Site site,HttpServletRequest request) {
         String rootUrl="";
         String langParam=PatternMatchUtil.getEffecterLangParam(request, site);
+        Integer port=request.getServerPort();
         if(site.isCustom()){
             if(this.getContextPath()!=null) {
                 rootUrl = site.getCustomTemplateUrl()+this.getContextPath();
@@ -53,15 +54,31 @@ public class RequestModel{
         }else {
             if(StringUtils.isEmpty(langParam)){
                 if(this.getContextPath()!=null) {
-                    rootUrl = "http://" + request.getServerName() + ":" + request.getServerPort()+this.getContextPath();
+                    if(port.equals(80)){
+                        rootUrl = "http://" + request.getServerName() + this.getContextPath();
+                    }else {
+                        rootUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + this.getContextPath();
+                    }
                 }else{
-                    rootUrl = "http://" + request.getServerName() + ":" + request.getServerPort();
+                    if(port.equals(80)){
+                        rootUrl = "http://" + request.getServerName() ;
+                    }else {
+                        rootUrl = "http://" + request.getServerName() + ":" + request.getServerPort();
+                    }
                 }
             }else{
                 if(this.getContextPath()!=null) {
-                    rootUrl = "http://" + request.getServerName() + ":" + request.getServerPort()+this.getContextPath() + "/"+langParam;
+                    if(port.equals(80)) {
+                        rootUrl = "http://" + request.getServerName() + this.getContextPath() + "/" + langParam;
+                    }else {
+                        rootUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + this.getContextPath() + "/" + langParam;
+                    }
                 }else{
-                    rootUrl = "http://" + request.getServerName() + ":" + request.getServerPort()+"/"+langParam;
+                    if(port.equals(80)) {
+                        rootUrl = "http://" + request.getServerName() + "/" + langParam;
+                    }else {
+                        rootUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + "/" + langParam;
+                    }
                 }
             }
         }
@@ -107,6 +124,7 @@ public class RequestModel{
 
     public void setRoot(Site site,HttpServletRequest request) {
         String rootUrl="";
+        Integer port=request.getServerPort();
         if(site.isCustom()){
             if(this.getContextPath()!=null) {
                 rootUrl = site.getCustomTemplateUrl()+this.getContextPath();
@@ -115,9 +133,17 @@ public class RequestModel{
             }
         }else {
             if(this.getContextPath()!=null) {
-                rootUrl = "http://" + request.getServerName() + ":" + request.getServerPort()+this.getContextPath();
+                if(port.equals(80)) {
+                    rootUrl = "http://" + request.getServerName()  + this.getContextPath();
+                }else {
+                    rootUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + this.getContextPath();
+                }
             }else{
-                rootUrl = "http://" + request.getServerName() + ":" + request.getServerPort();
+                if(port.equals(80)) {
+                    rootUrl = "http://" + request.getServerName();
+                }else {
+                    rootUrl = "http://" + request.getServerName() + ":" + request.getServerPort();
+                }
             }
 
         }

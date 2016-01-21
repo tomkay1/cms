@@ -40,16 +40,17 @@ public class RouteFilter implements Filter {
             WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
             SiteResolveService siteResolveService = (SiteResolveService) applicationContext.getBean("siteResolveService");
             Site site = siteResolveService.getCurrentSite(request1);
-            log.error("site-->"+site.hashCode());
             String servletPath=PatternMatchUtil.getServletPath(site,request1);//获得ServletPath 国际化带语言参数经一步处理(移除国际化参数信息)得到的跟配置的路由一致
             String langParam=PatternMatchUtil.getEffecterLangParam(request1, site);//获得国际化参数(url上带上的语言地区参数信息)
             if(PatternMatchUtil.isMatchFilter(servletPath)) {
                 RouteResolverService routeResolverService = (RouteResolverService) applicationContext.getBean("routeResolverService");
                 if (site != null) {
                     Route route = routeResolverService.getRoute(site, servletPath);
+//                    log.error("customerId:"+site.getCustomerId()+" siteName-->"+site.getTitle()+" siteId-->"+site.getSiteId()+" route-->");
                     if (route == null&&!site.isCustom()) {
                         request.getRequestDispatcher("/template/" + site.getCustomerId() + servletPath).forward(request, response);
                     } else {
+//                        log.error("customerId:"+site.getCustomerId()+" siteName-->"+site.getTitle()+" siteId-->"+site.getSiteId()+" route-->"+route.getRouteType().getCode());
                         if(!StringUtils.isEmpty(langParam)) {//语言参数不为空追加上语言参数并做服务端forward
                             request.getRequestDispatcher("/web/"+langParam+servletPath).forward(request, response);
                         }else{

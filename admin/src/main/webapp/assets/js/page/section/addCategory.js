@@ -70,6 +70,9 @@ define(function (require, exports, module) {
                             case 500:
                                 layer.msg("操作失败",{time: 2000})
                                 break;
+                            case 502:
+                                layer.msg("服务器错误",{time: 2000})
+                                break;
                         }
                     }
                     commonUtil.cancelDisabled("jq-cms-Save");

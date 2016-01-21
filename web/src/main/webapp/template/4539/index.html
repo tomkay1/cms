@@ -23,7 +23,7 @@
 <div class="header">
  <a th:href="${request.rootUri}+'/'" th:title="${site.title}"><img th:src="${request.root}+'/images/logo.png'" class="logoimg"></a>
  <ul class="nav" data-th-remove="all-but-first" id="categoryNav">
-  <li class="active" data-category-foreach="category" data-param-routetype="6" data-th-class="${request.url}==${category.route.rule}?active">
+  <li class="active" data-category-foreach="category" data-param-routetype="6" data-th-name="${request.url}" data-th-id="${category.route.rule}" data-th-class="${request.url}==${category.route.rule}?active">
 	<a href="index.html" data-th-href="${request.rootUri}+${category.route.rule}" data-th-text="${category.name}">首页</a>
   </li>
   <li><a href="index2.html">品牌中心</a></li>
@@ -52,7 +52,7 @@
 </div>
 <!--资讯---->
 <div class="syzx">
- <div  class="syzxzuo" data-video-current="video" data-param-defaultid="4">
+ <div  class="syzxzuo" data-video-current="video" data-param-defaultid="1">
   <a data-th-href="${video.outLinkUrl}" target="_blank">
       <img data-th-src="${video.thumbUri}" width="446" height="190">
   </a>
@@ -61,7 +61,7 @@
  </div>
  <p style="height:44px;margin-top: 10px;"><span class="kx" >快讯 news</span><a th:href="@{${request.root}+'/brand/news'}"><span class="fr">查看更多>></span></a></p>
  <div class="kxbg" data-th-remove="all-but-first">
-  <p class="newstbg" data-article-foreach="article" data-param-pagesize="6" data-param-categoryid="35">
+  <p class="newstbg" data-article-foreach="article" data-param-pagesize="6" data-param-categoryid="19">
    <a th:href="${request.rootUri}+'/new/'+${article.id}+'.html'" ><span class="newsta" data-th-text="${article.title}">永春2009秋冬产品订货会圆满闭幕</span>
     <span class="newstb">2015-07-25</span></a>
   </p>

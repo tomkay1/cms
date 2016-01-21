@@ -19,7 +19,7 @@ public interface CategoryService {
 
     List<CategoryTreeModel> ConvertCateGoryTreeByCategotry(List<Category> categories);
 
-    Boolean saveCategoryAndRoute(Category category,String route,String template,RouteType routeType);
+    Boolean saveCategoryAndRoute(Category category,String route,String template,RouteType routeType) throws Exception;
 
     Boolean updateCategoryAndRoute(Category category, String rule, String template,String noRule,RouteType routeType);
 

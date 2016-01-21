@@ -9,6 +9,8 @@ import com.huotu.hotcms.service.repository.LinkRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.service.ContentsService;
 import com.huotu.hotcms.service.util.PageData;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +30,8 @@ import java.util.Set;
 @RequestMapping("/contents")
 public class ContentsController {
 
+    private static final Log log = LogFactory.getLog(ContentsController.class);
+
     @Autowired
     SiteRepository siteRepository;
 
@@ -44,26 +48,30 @@ public class ContentsController {
     @RequestMapping("/contentsList")
     public ModelAndView contentsList(HttpServletRequest request,
                                      @RequestParam(name = "siteId",required = false,defaultValue = "0")Long siteId) throws Exception {
-
-        Integer customerId =Integer.valueOf(request.getParameter("customerid"));
-        List<Site> siteList =siteRepository.findByCustomerIdAndDeletedOrderBySiteIdDesc(customerId,false);
-        List<Category> categoryList =new ArrayList<>();
-        if(siteList.size()!=0){
-            Site site=siteList.get(0);
-            categoryList= categoryRepository.findBySiteAndDeletedAndModelIdNotNullOrderByOrderWeightDesc(site, false);
-        }
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.addObject("customerId",customerId);
-        modelAndView.addObject("siteId",siteId);
-        modelAndView.addObject("siteList", siteList);
-        modelAndView.addObject("categoryList", categoryList);
-        modelAndView.setViewName("/view/contents/contentsList.html");
-        return  modelAndView;
-    }
+        try{
+            Integer customerId =Integer.valueOf(request.getParameter("customerid"));
+            List<Site> siteList =siteRepository.findByCustomerIdAndDeletedOrderBySiteIdDesc(customerId,false);
+            List<Category> categoryList =new ArrayList<>();
+            if(siteList.size()!=0){
+                Site site=siteList.get(0);
+                categoryList= categoryRepository.findBySiteAndDeletedAndModelIdNotNullOrderByOrderWeightDesc(site, false);
+            }
+            modelAndView.addObject("customerId",customerId);
+            modelAndView.addObject("siteId",siteId);
+            modelAndView.addObject("siteList", siteList);
+            modelAndView.addObject("categoryList", categoryList);
+            modelAndView.setViewName("/view/contents/contentsList.html");
+        }catch (Exception ex){
+            log.error(ex.getMessage());
+        }
+        return modelAndView;
+        }
 
     @RequestMapping(value = "/addContents")
     public ModelAndView addContents(Integer customerId,Long siteId,Long category) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
+        try{
         modelAndView.setViewName("/view/contents/addContents.html");
         List<Category> categorys = new ArrayList<>();
         if(category==-1){
@@ -76,9 +84,13 @@ public class ContentsController {
         modelAndView.addObject("size",size);
         modelAndView.addObject("categorys",categorys);
         modelAndView.addObject("customerId",customerId);
-        return  modelAndView;
-    }
+        }catch (Exception ex){
+                log.error(ex.getMessage());
+        }
+            return modelAndView;
+        }
 
+    //当改变站点时，栏目自动变化
     @RequestMapping("/contentsSelect")
     @ResponseBody
     public List<SiteCategory> contentsSelect(HttpServletRequest request,

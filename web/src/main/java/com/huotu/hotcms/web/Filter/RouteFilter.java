@@ -46,9 +46,11 @@ public class RouteFilter implements Filter {
                 RouteResolverService routeResolverService = (RouteResolverService) applicationContext.getBean("routeResolverService");
                 if (site != null) {
                     Route route = routeResolverService.getRoute(site, servletPath);
+//                    log.error("customerId:"+site.getCustomerId()+" siteName-->"+site.getTitle()+" siteId-->"+site.getSiteId()+" route-->");
                     if (route == null&&!site.isCustom()) {
                         request.getRequestDispatcher("/template/" + site.getCustomerId() + servletPath).forward(request, response);
                     } else {
+//                        log.error("customerId:"+site.getCustomerId()+" siteName-->"+site.getTitle()+" siteId-->"+site.getSiteId()+" route-->"+route.getRouteType().getCode());
                         if(!StringUtils.isEmpty(langParam)) {//语言参数不为空追加上语言参数并做服务端forward
                             request.getRequestDispatcher("/web/"+langParam+servletPath).forward(request, response);
                         }else{
@@ -61,7 +63,7 @@ public class RouteFilter implements Filter {
                 }
             }
         }catch (Exception ex){
-            log.error(ex.getMessage());
+            log.error(String.format("doFilter error-->%s ,Message-->%s",ex.getStackTrace(),ex.getLocalizedMessage()));
         }
         chain.doFilter(request,response);
     }

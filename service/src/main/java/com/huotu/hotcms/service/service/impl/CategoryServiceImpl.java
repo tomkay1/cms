@@ -127,7 +127,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> getHeaderCategoryList(CategoryForeachParam param) {
-        return categoryRepository.findBySite_SiteIdAndDeletedAndRoute_RouteType(param.getSiteid(),false,RouteType.HEADER_NAVIGATION);
+        return categoryRepository.findBySite_SiteIdAndRoute_RouteTypeAndDeletedOrderByOrderWeightDesc(param.getSiteid(), RouteType.HEADER_NAVIGATION, false);
     }
 
 
@@ -265,7 +265,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public Boolean saveCategoryAndRoute(Category category, String rule,String template,RouteType routeType) {
+    public Boolean saveCategoryAndRoute(Category category, String rule,String template,RouteType routeType) throws Exception{
         if(!routeService.isPatterBySiteAndRule(category.getSite(), rule)) {
             if(!StringUtils.isEmpty(rule)) {
                 Route route1 = new Route();

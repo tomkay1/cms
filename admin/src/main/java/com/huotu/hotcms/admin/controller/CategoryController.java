@@ -158,6 +158,7 @@ public class CategoryController {
             Category category=new Category();
             Site site = siteRepository.findOne(siteId);
             if (!routeService.isPatterBySiteAndRule(site, rule)) {
+                log.error("site-->"+site.hashCode());
                 category.setName(name);
                 category.setOrderWeight(orderWeight);
                 Category categoryParent = categoryService.getCategoryById(parentId);
@@ -170,6 +171,7 @@ public class CategoryController {
                 category.setParent(categoryParent);
                 category.setCreateTime(LocalDateTime.now());
                 category.setUpdateTime(LocalDateTime.now());
+                log.error("site2-->"+site.hashCode());
                 if (categoryService.saveCategoryAndRoute(category, rule, template, RouteType.valueOf(routeType))) {
                     result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
                 } else {
@@ -181,7 +183,7 @@ public class CategoryController {
         }
         catch (Exception ex)
         {
-            log.error(ex.getMessage());
+            log.error(String.format("saveCategory error-->%s ,Message-->%s",ex.getStackTrace(),ex.getLocalizedMessage()));
             result=new ResultView(ResultOptionEnum.SERVERFAILE.getCode(),ResultOptionEnum.SERVERFAILE.getValue(),null);
         }
         return  result;
@@ -215,7 +217,6 @@ public class CategoryController {
         }
         catch (Exception ex)
         {
-            log.error(ex.getMessage());
             result=new ResultView(ResultOptionEnum.SERVERFAILE.getCode(),ResultOptionEnum.SERVERFAILE.getValue(),null);
         }
         return  result;

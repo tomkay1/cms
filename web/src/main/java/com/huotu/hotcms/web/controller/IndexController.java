@@ -10,6 +10,8 @@ package com.huotu.hotcms.web.controller;
 
 
 import com.huotu.hotcms.service.service.SiteService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping(value = "/web")
 public class IndexController {
+    private static final Log log = LogFactory.getLog(IndexController.class);
 
     @Autowired
     private SiteService siteService;
@@ -31,8 +34,9 @@ public class IndexController {
     @RequestMapping(value = "**")
     public ModelAndView index(HttpServletRequest request)
     {
+        log.error("indexController-->"+request.getServletPath());
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.addObject("customTemplateUrl","http://www.cms.com");
+//        modelAndView.addObject("customTemplateUrl","http://www.cms.com");
         return modelAndView;
     }
 

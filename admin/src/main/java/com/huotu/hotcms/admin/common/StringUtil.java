@@ -1,6 +1,6 @@
 /*
- * ç‰ˆæƒæ‰?æœ?:æ­å·ç«å›¾ç§‘æŠ€æœ‰é™å…¬å¸
- * åœ°å€:æµ™æ±Ÿçœæ­å·å¸‚æ»¨æ±ŸåŒºè¥¿å…´è¡—é“é˜¡é™Œè·¯æ™ºæ…§Eè°·Bå¹?4æ¥?
+ * é—å Ÿæ½ˆéµ?éˆ?:é‰î…çªéî‚¢æµ˜ç»‰æˆå¦§éˆå¤æªºéî„€å¾ƒ
+ * é¦æ¿æ½ƒ:å¨´æ¬ç™éªä½¹æ¾€å®¸ç‚²ç«¶å©Šã„¦ç™é–é¸¿ã‚¿éç£‹î”œé–¬æ’»æ§¨é—„å²ƒçŸ¾é…çƒ˜åEç’‹ç¨¡éª?4å¦¤?
  *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
@@ -46,12 +46,12 @@ public class StringUtil {
     }
 
     /**
-     * ½«×Ö·û´®°´ÕÕÖÆ¶ÈÎÄ×ÖÇĞ¸îÎªList?<br>
+     * å°†å­—ç¬¦ä¸²æŒ‰ç…§åˆ¶åº¦æ–‡å­—åˆ‡å‰²ä¸ºList?<br>
      * <br>
      *
-     * @param pstrString Ô´×Ö·û´®
-     * @param pstrSep    ÇĞ¸îÎÄ×Ö
-     * @return ÇĞ¸îºóµÄList
+     * @param pstrString æºå­—ç¬¦ä¸²
+     * @param pstrSep    åˆ‡å‰²æ–‡å­—
+     * @return åˆ‡å‰²åçš„List
      */
 
     public static List<String> splitStringToList(String pstrString, String pstrSep) {
@@ -63,9 +63,9 @@ public class StringUtil {
     }
 
     /**
-     * 04	     * ¼ì²âÊÇ·ñÓĞemoji×Ö·û
+     * 04	     * æ£€æµ‹æ˜¯å¦æœ‰emojiå­—ç¬¦
      * 05	     * @param source
-     * 06	     * @return Ò»µ©º¬ÓĞ¾ÍÅ×³ö
+     * 06	     * @return ä¸€æ—¦å«æœ‰å°±æŠ›å‡º
      * 07
      */
     public static boolean containsEmoji(String source) {
@@ -79,7 +79,7 @@ public class StringUtil {
             char codePoint = source.charAt(i);
 
             if (isEmojiCharacter(codePoint)) {
-                //do nothing£¬ÅĞ¶Ïµ½ÁËÕâÀï±íÃ÷£¬È·ÈÏÓĞ±íÇé×Ö·û
+                //do nothingï¼Œåˆ¤æ–­åˆ°äº†è¿™é‡Œè¡¨æ˜ï¼Œç¡®è®¤æœ‰è¡¨æƒ…å­—ç¬¦
                 return true;
             }
         }
@@ -98,7 +98,7 @@ public class StringUtil {
     }
 
     /**
-     * 38	     * ¹ıÂËemoji »òÕß ÆäËû·ÇÎÄ×ÖÀàĞÍµÄ×Ö·û
+     * 38	     * è¿‡æ»¤emoji æˆ–è€… å…¶ä»–éæ–‡å­—ç±»å‹çš„å­—ç¬¦
      * 39	     * @param source
      * 40	     * @return
      * 41
@@ -106,9 +106,9 @@ public class StringUtil {
     public static String filterEmoji(String source) {
 
         if (!containsEmoji(source)) {
-            return source;//Èç¹û²»°üº¬£¬Ö±½Ó·µ»Ø
+            return source;//å¦‚æœä¸åŒ…å«ï¼Œç›´æ¥è¿”å›
         }
-        //µ½ÕâÀïÌú¶¨°üº¬
+        //åˆ°è¿™é‡Œé“å®šåŒ…å«
         StringBuilder buf = null;
 
         int len = source.length();
@@ -126,9 +126,9 @@ public class StringUtil {
         }
 
         if (buf == null) {
-            return source;//Èç¹ûÃ»ÓĞÕÒµ½ emoji±íÇé£¬Ôò·µ»ØÔ´×Ö·û´®
+            return source;//å¦‚æœæ²¡æœ‰æ‰¾åˆ° emojiè¡¨æƒ…ï¼Œåˆ™è¿”å›æºå­—ç¬¦ä¸²
         } else {
-            if (buf.length() == len) {//ÕâÀïµÄÒâÒåÔÚÓÚ¾¡¿ÉÄÜÉÙµÄtoString£¬ÒòÎª»áÖØĞÂÉú³É×Ö·û´®
+            if (buf.length() == len) {//è¿™é‡Œçš„æ„ä¹‰åœ¨äºå°½å¯èƒ½å°‘çš„toStringï¼Œå› ä¸ºä¼šé‡æ–°ç”Ÿæˆå­—ç¬¦ä¸²
                 buf = null;
                 return source;
             } else {
@@ -159,9 +159,9 @@ public class StringUtil {
     }
 
     /**
-     * ½«±àÂë×ª»¯³ÉÍ¨ÓÃµÄISO±àÂë£¬?ºÏ½«ÊäÈë×Ö·û×ª»»³ÉÖĞÎÄ
+     * å°†ç¼–ç è½¬åŒ–æˆé€šç”¨çš„ISOç¼–ç ï¼Œ?åˆå°†è¾“å…¥å­—ç¬¦è½¬æ¢æˆä¸­æ–‡
      *
-     * @param str String ÊäÈë×Ö·û?
+     * @param str String è¾“å…¥å­—ç¬¦?
      * @return String
      */
     public static String getStr(String str) {
@@ -177,7 +177,7 @@ public class StringUtil {
     }
 
     /**
-     * Ïàµ±ÓÚÖØĞ´String.valueOf£¬Èç¹ûobjectÎª¿Õ£¬²»·µ»Ø"null"£¬¶ø·µ»Ønull
+     * ç›¸å½“äºé‡å†™String.valueOfï¼Œå¦‚æœobjectä¸ºç©ºï¼Œä¸è¿”å›"null"ï¼Œè€Œè¿”å›null
      *
      * @param object
      * @return
@@ -190,7 +190,7 @@ public class StringUtil {
     }
 
     /**
-     * ½«ÊäÈë×Ö·û´®<param>input</param>ÖĞµÄ'×ª»»? \'ÒÔ¼°"×ª»¯³É\". ÕâÑù²»»áÒıÆğ½Å±¾ÆçÒå? ¿ÉÒÔÖ±½ÓÔÚJSÖĞÓ¦ÓÃ??
+     * å°†è¾“å…¥å­—ç¬¦ä¸²<param>input</param>ä¸­çš„'è½¬æ¢? \'ä»¥åŠ"è½¬åŒ–æˆ\". è¿™æ ·ä¸ä¼šå¼•èµ·è„šæœ¬æ­§ä¹‰? å¯ä»¥ç›´æ¥åœ¨JSä¸­åº”ç”¨??
      *
      * @param input String
      * @return String
@@ -248,17 +248,17 @@ public class StringUtil {
     }
 
     /**
-     * ÅĞ¶Ï×Ö·û?<param>str</param>ÊÇÄÄÖÖÓï?µÄÎÄ×Ö??
-     * <LI>¸ù¾İunicode±àÂë£¬Èç¹û×Ö·û´®ÖĞµÄÄ³¸ö×Ö·ûÖµÔÚ<br>
-     * ºº×Ö? Unicode ÀïÃæÓĞµ¥¶ÀµÄ¼¸¿éÇøÓò£¬ÊÇÖĞÈÕº«£¨³¯ÏÊ£©¹²ÏíµÄ¡£ÒÔÏÂÁ½? U+4e00 ~ U+9FBB Ô­À´ GB2312 ? GBK
-     * ÖĞµÄºº×Ö U+3400 ~ U+4DB6 °üÀ¨ GB18030.2000 ÖĞÄÇĞ©Ôö¼ÓµÄºº×Ö <br>
-     * Ö®¼ä£¬Ôò×Ö·û´®ÖĞº¬ÓĞÖĞÎÄ?
-     * <LI>?Ğ©ÖĞÎÄ·ûºÅÊô? CJK Symbols and Punctuation ·¶Î§£¬´Ó u+3000 ? u+303F
-     * <LI>Éú³ÉÃüÁîĞÅ¼şÊ±£¬Ó¦¸ÃÊ¹ÓÃ·½·¨ <code>toGBStringBinary</code>½øĞĞ×ª»»?<strong>×¢Òâ²ÎÊı±ØĞëÊÇunicode±àÂë²ÅĞĞ<strong>
-     * <LI>ÓÉÓÚÄ¿Ç°ÏµÍ³¿¼ÂÇÖ»Ö§³ÖÖĞÓ¢ÎÄ£¬ÆäËüÇé¿öÒ»ÂÉÈÏÎªÊÇÓ¢ÎÄ£¬Ê¹ÓÃ·½? <code>toISOStringBinary</code>½øĞĞ×ª»»?
+     * åˆ¤æ–­å­—ç¬¦?<param>str</param>æ˜¯å“ªç§è¯­?çš„æ–‡å­—??
+     * <LI>æ ¹æ®unicodeç¼–ç ï¼Œå¦‚æœå­—ç¬¦ä¸²ä¸­çš„æŸä¸ªå­—ç¬¦å€¼åœ¨<br>
+     * æ±‰å­—? Unicode é‡Œé¢æœ‰å•ç‹¬çš„å‡ å—åŒºåŸŸï¼Œæ˜¯ä¸­æ—¥éŸ©ï¼ˆæœé²œï¼‰å…±äº«çš„ã€‚ä»¥ä¸‹ä¸¤? U+4e00 ~ U+9FBB åŸæ¥ GB2312 ? GBK
+     * ä¸­çš„æ±‰å­— U+3400 ~ U+4DB6 åŒ…æ‹¬ GB18030.2000 ä¸­é‚£äº›å¢åŠ çš„æ±‰å­— <br>
+     * ä¹‹é—´ï¼Œåˆ™å­—ç¬¦ä¸²ä¸­å«æœ‰ä¸­æ–‡?
+     * <LI>?äº›ä¸­æ–‡ç¬¦å·å±? CJK Symbols and Punctuation èŒƒå›´ï¼Œä» u+3000 ? u+303F
+     * <LI>ç”Ÿæˆå‘½ä»¤ä¿¡ä»¶æ—¶ï¼Œåº”è¯¥ä½¿ç”¨æ–¹æ³• <code>toGBStringBinary</code>è¿›è¡Œè½¬æ¢?<strong>æ³¨æ„å‚æ•°å¿…é¡»æ˜¯unicodeç¼–ç æ‰è¡Œ<strong>
+     * <LI>ç”±äºç›®å‰ç³»ç»Ÿè€ƒè™‘åªæ”¯æŒä¸­è‹±æ–‡ï¼Œå…¶å®ƒæƒ…å†µä¸€å¾‹è®¤ä¸ºæ˜¯è‹±æ–‡ï¼Œä½¿ç”¨æ–¹? <code>toISOStringBinary</code>è¿›è¡Œè½¬æ¢?
      *
-     * @param str ±»ÑéÖ¤µÄ×Ö·û?
-     * @return º¬ÖĞÎÄ×Ö·û´®?"zh"£¬ÆäËüµÄ×Ö·û´®ÈÏÎªÊÇÓ¢ÎÄ×Ö·û´®£¬·µ»Ø:"en"
+     * @param str è¢«éªŒè¯çš„å­—ç¬¦?
+     * @return å«ä¸­æ–‡å­—ç¬¦ä¸²?"zh"ï¼Œå…¶å®ƒçš„å­—ç¬¦ä¸²è®¤ä¸ºæ˜¯è‹±æ–‡å­—ç¬¦ä¸²ï¼Œè¿”å›:"en"
      */
     public static String getLanguageFromStr(String str) {
         int len;
@@ -267,7 +267,7 @@ public class StringUtil {
         for (int i = 0; i < len; i++) {
             ch = str.charAt(i);
             int value = (int) ch;
-            // ÖĞÎÄÅĞ±ğ
+            // ä¸­æ–‡åˆ¤åˆ«
             if ((value >= 0x4e00 && value <= 0x9fbb)
                     || (value >= 0x3400 && value <= 0x4db6)
                     || (value >= 0x3000 && value <= 0x303F)) {
@@ -278,10 +278,10 @@ public class StringUtil {
     }
 
     /**
-     * È«½Ç×ª°ë½ÇµÄ·½·¨
+     * å…¨è§’è½¬åŠè§’çš„æ–¹æ³•
      *
-     * @param QJstr ÊäÈëµÄ×Ö·û´®
-     * @return ×ª»»³É°ë½ÇµÄ×Ö·û?
+     * @param QJstr è¾“å…¥çš„å­—ç¬¦ä¸²
+     * @return è½¬æ¢æˆåŠè§’çš„å­—ç¬¦?
      */
     public static final String SBCchange(String QJstr) {
         if (QJstr == null || QJstr.trim().length() == 0) {
@@ -317,7 +317,7 @@ public class StringUtil {
     }
 
     /**
-     * ¸ù¾İ±í¸ñ¿í¶È½â¾ö×Ö·û´®»»ĞĞÎÊÌâ
+     * æ ¹æ®è¡¨æ ¼å®½åº¦è§£å†³å­—ç¬¦ä¸²æ¢è¡Œé—®é¢˜
      *
      * @param locale
      * @param tableWidth
@@ -354,10 +354,10 @@ public class StringUtil {
     }
 
     /**
-     * ÅĞ¶ÏstrÊÇ·ñÎª¿Õ
+     * åˆ¤æ–­stræ˜¯å¦ä¸ºç©º
      *
-     * @param str ÒªÅĞ¶ÏµÄ×Ö·û
-     * @return strÎªnull»ò?Îª""Ôò·µ»Øtrue,·ñÔò·µ»Øfalse
+     * @param str è¦åˆ¤æ–­çš„å­—ç¬¦
+     * @return strä¸ºnullæˆ–?ä¸º""åˆ™è¿”å›true,å¦åˆ™è¿”å›false
      */
     public static boolean isEmptyStr(String str) {
         if (str == null)
@@ -368,7 +368,7 @@ public class StringUtil {
     }
 
     /**
-     * ÑéÖ¤¿Õ´®
+     * éªŒè¯ç©ºä¸²
      *
      * @param
      * @return
@@ -381,7 +381,7 @@ public class StringUtil {
     }
 
     /**
-     * ÊÇ·ñ²»Îª?
+     * æ˜¯å¦ä¸ä¸º?
      *
      * @param str
      * @return
@@ -399,12 +399,12 @@ public class StringUtil {
 
 
     /**
-     * ×Ö·û´®MD5ĞÎÊ½¼ÓÃÜ?<BR>
+     * å­—ç¬¦ä¸²MD5å½¢å¼åŠ å¯†?<BR>
      * <br>
-     * ×Ö·û´®Îªnull»ò²»ÄÜ¼ÓÃÜµÄÇé¿öÏÂ·µ»Ønull?
+     * å­—ç¬¦ä¸²ä¸ºnullæˆ–ä¸èƒ½åŠ å¯†çš„æƒ…å†µä¸‹è¿”å›null?
      *
-     * @param aString ¶ÔÏó×Ö·û?
-     * @return ¼ÓÃÜºóµÄ×Ö·û?
+     * @param aString å¯¹è±¡å­—ç¬¦?
+     * @return åŠ å¯†åçš„å­—ç¬¦?
      */
 
     public static String encrypt(String aString) {
@@ -427,7 +427,7 @@ public class StringUtil {
     }
 
     /**
-     * ½«nullµÄ×Ö·û´®×ª»»?""
+     * å°†nullçš„å­—ç¬¦ä¸²è½¬æ¢?""
      *
      * @param str
      * @return
@@ -451,7 +451,7 @@ public class StringUtil {
     }
 
     /**
-     * ½«string×ª»»Îªint£¬×ª»»Òì³£Ôò·µ»Ø0
+     * å°†stringè½¬æ¢ä¸ºintï¼Œè½¬æ¢å¼‚å¸¸åˆ™è¿”å›0
      *
      * @param str
      * @return
@@ -465,7 +465,7 @@ public class StringUtil {
     }
 
     /**
-     * ½«object×ª»»Îªint£¬×ª»»Òì³£Ôò·µ»Ø0
+     * å°†objectè½¬æ¢ä¸ºintï¼Œè½¬æ¢å¼‚å¸¸åˆ™è¿”å›0
      *
      * @param obj
      * @return
@@ -479,7 +479,7 @@ public class StringUtil {
     }
 
     /**
-     * ½«object×ª»»Îªdouble£¬×ª»»Òì³£Ôò·µ»Ø0
+     * å°†objectè½¬æ¢ä¸ºdoubleï¼Œè½¬æ¢å¼‚å¸¸åˆ™è¿”å›0
      *
      * @param obj
      * @return
@@ -517,7 +517,7 @@ public class StringUtil {
     }
 
     /**
-     * ½«Ò»¸öÊ±¼ä×Ö·û´®¸ñÊ½»¯ÎªÁíÒ»¸öÊ±¼ä×Ö·û´®
+     * å°†ä¸€ä¸ªæ—¶é—´å­—ç¬¦ä¸²æ ¼å¼åŒ–ä¸ºå¦ä¸€ä¸ªæ—¶é—´å­—ç¬¦ä¸²
      *
      * @param dateStr
      * @param oldPattern
@@ -540,7 +540,7 @@ public class StringUtil {
     }
 
     /**
-     * ¸ü¾ß¹æÔò¸ñÊ½»¯Ê±?
+     * æ›´å…·è§„åˆ™æ ¼å¼åŒ–æ—¶?
      *
      * @param date
      * @param newPattern
@@ -556,7 +556,7 @@ public class StringUtil {
     }
 
     /**
-     * ¸ù¾İ×Ö·û´®¸ñÊ½»¯³ÉÊ±?
+     * æ ¹æ®å­—ç¬¦ä¸²æ ¼å¼åŒ–æˆæ—¶?
      *
      * @param dateStr
      * @param pattern
@@ -570,7 +570,7 @@ public class StringUtil {
     }
 
     /**
-     * µÃµ½Ëæ»ú×Ö·û´®²¢md5¼ÓÃÜ
+     * å¾—åˆ°éšæœºå­—ç¬¦ä¸²å¹¶md5åŠ å¯†
      *
      * @return
      */
@@ -585,7 +585,7 @@ public class StringUtil {
 //    }
 
     /**
-     * µÃµ½Ëæ»ú×Ö·û´®
+     * å¾—åˆ°éšæœºå­—ç¬¦ä¸²
      *
      * @return
      */
@@ -602,7 +602,7 @@ public class StringUtil {
     }
 
     /**
-     * Èç¹ûÎª¿Õ£¬Ôò·µ»ØÄ¬ÈÏÊıÖµ
+     * å¦‚æœä¸ºç©ºï¼Œåˆ™è¿”å›é»˜è®¤æ•°å€¼
      *
      * @param number
      * @param defNumber

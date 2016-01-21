@@ -26,7 +26,7 @@ public interface RouteService {
 
     Boolean isExistsBySiteAndRule(Site site,String rule);
 
-    Boolean isPatterBySiteAndRule(Site site,String rule);
+    Boolean isPatterBySiteAndRule(Site site,String rule) throws Exception;
 
     Boolean isPatterBySiteAndRuleIgnore(Site site,String rule,String noRule);
 

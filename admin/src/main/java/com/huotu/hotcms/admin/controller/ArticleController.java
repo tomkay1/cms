@@ -106,7 +106,7 @@ public class ArticleController {
     @RequestMapping(value = "/saveArticle",method = RequestMethod.POST)
     @Transactional(value = "transactionManager")
     @ResponseBody
-    public ResultView saveArticle(Article article,Long categoryId,int articleSourceId){
+    public ResultView saveArticle(Article article,Boolean isSystem,Long categoryId,int articleSourceId){
         ResultView result=null;
         try {
             Long id = article.getId();
@@ -126,6 +126,7 @@ public class ArticleController {
                 article.setUpdateTime(LocalDateTime.now());
             }
             article.setArticleSource(articleSource);
+            article.setSystem(isSystem);
             article.setCategory(category);
             articleService.saveArticle(article);
             result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);

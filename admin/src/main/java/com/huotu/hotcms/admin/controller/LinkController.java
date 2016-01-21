@@ -6,7 +6,6 @@ import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.model.LinkCategory;
 import com.huotu.hotcms.service.repository.CategoryRepository;
-import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.service.LinkService;
 import com.huotu.hotcms.service.util.PageData;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
@@ -40,8 +39,7 @@ public class LinkController {
 
     @Autowired
     private StaticResourceService resourceServer;
-    @Autowired
-    private SiteRepository siteRepository;
+
     @Autowired
     private CategoryRepository categoryRepository;
     @Autowired

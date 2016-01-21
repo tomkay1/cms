@@ -38,12 +38,12 @@ margin:0 auto;
 .hr_gyi .gyib .ek {
 	float: right;
 	width: 500px;
-	position: relative;
+	/*position: relative;*/
 }
 .hr_gyi .gyib .ek-left {
 	padding-left: 30px;
 	padding-top: 90px;
-	position: absolute;
+	/*position: absolute;*/
 }
 .hr_gyi .gyib .u {
 	font-size: 20px;
@@ -65,12 +65,12 @@ margin:0 auto;
 .hr_gyi .gyib .ee {
 	float: left;
 	width: 500px;
-	position: relative;
+	/*position: relative;*/
 }
 .hr_gyi .gyib .ee .ek-right {
-	padding-left: 30px;
+	padding-right: 30px;
 	padding-top: 90px;
-	position: absolute;
+	/*position: absolute;*/
 	text-align: right;
 }
 /*工艺介绍end*/

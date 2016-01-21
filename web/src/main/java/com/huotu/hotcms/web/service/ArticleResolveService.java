@@ -7,6 +7,8 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.service.impl.ArticleServiceImpl;
 import com.huotu.hotcms.web.thymeleaf.expression.VariableExpression;
 import com.huotu.hotcms.web.util.PatternMatchUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.context.ITemplateContext;
@@ -24,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Component
 public class ArticleResolveService {
-
+    private static final Log log = LogFactory.getLog(ArticleResolveService.class);
     @Autowired
     private RouteResolverService routeResolverService;
 
@@ -61,7 +63,6 @@ public class ArticleResolveService {
      * */
     public Article getArticleBySiteAndRequest(Site site,HttpServletRequest request){
         String requestUrl = PatternMatchUtil.getUrl(request);
-
         Route route=routeResolverService.getRoute(site, requestUrl);
         if(route!=null){
             Integer articleId=PatternMatchUtil.getUrlId(requestUrl, route.getRule());

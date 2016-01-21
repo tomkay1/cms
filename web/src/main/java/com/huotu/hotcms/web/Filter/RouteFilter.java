@@ -48,6 +48,7 @@ public class RouteFilter implements Filter {
                     Route route = routeResolverService.getRoute(site, servletPath);
 //                    log.error("customerId:"+site.getCustomerId()+" siteName-->"+site.getTitle()+" siteId-->"+site.getSiteId()+" route-->");
                     if (route == null&&!site.isCustom()) {
+                        log.error("servletPath-->" + servletPath);
                         request.getRequestDispatcher("/template/" + site.getCustomerId() + servletPath).forward(request, response);
                     } else {
 //                        log.error("customerId:"+site.getCustomerId()+" siteName-->"+site.getTitle()+" siteId-->"+site.getSiteId()+" route-->"+route.getRouteType().getCode());

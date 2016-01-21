@@ -39,7 +39,11 @@
       </div>
     </div>
     <div class="leftbox-a">
-      <p class="fristp imgxian">当前位置&nbsp;:&nbsp;首页&nbsp;>&nbsp;品牌中心&nbsp;><i class="jieshao">&nbsp;新闻资讯</i></p>
+      <!--<p class="fristp imgxian">当前位置&nbsp;:&nbsp;首页&nbsp;>&nbsp;品牌中心&nbsp;><i class="jieshao">&nbsp;新闻资讯</i></p>-->
+      <p class="fristp imgxian">当前位置&nbsp;:&nbsp;
+        <a th:href="${request.rootUri}+'/'" title="首页"> 首页</a>&nbsp;>&nbsp;
+        <a th:href="${request.rootUri}+'/brand'" title="品牌中心">品牌中心</a>&nbsp;><i class="jieshao">&nbsp;新闻资讯</i>
+      </p>
       <p style="height:17px"></p>
       <ul data-article-foreach="article" data-param-pagesize="8">
         <li style="float:left"><i class=" cj-font-c"><a th:href="${request.rootUri}+'/new/'+${article.id}+'.html'"  data-th-text="${article.title}">永春2009秋冬产品订货会圆满闭幕</a> </i></li>

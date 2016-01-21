@@ -39,7 +39,7 @@
   </div>
   <div class="cj-box-a bacfff posup">
     <div class="boxlist-a listap" style="width: 170px;">
-      <p class="imgian"><img th:src="${request.root}+'/images/zx-1.png'"/></p>
+      <p class="imgxian"><img th:src="${request.root}+'/images/zx-1.png'"/></p>
       <div class="ayu" id="leftActive">
         <a data-th-href="@{${category.route.rule}}" data-category-foreach="category" data-param-specifyids="17,18,19,20">
           <div class="pp on" data-th-class="${request.url==category.route.rule}?'pp on':'pp'"  data-th-text="${category.name}">公司介绍</div>
@@ -50,12 +50,15 @@
       </div>
     </div>
     <div class="leftbox-a" data-article-current="article"  data-param-defaultid="1">
-      <p class="fristp imgxian">当前位置&nbsp;:&nbsp;首页&nbsp;>&nbsp;品牌中心&nbsp;><i class="jieshao">&nbsp;公司介绍</i></p>
+      <p class="fristp imgxian">当前位置&nbsp;:&nbsp;
+        <a th:href="${request.rootUri}+'/'" title="首页"> 首页</a>&nbsp;>&nbsp;
+        <a th:href="${request.rootUri}+'/brand'" title="品牌中心">品牌中心</a>&nbsp;><i class="jieshao">&nbsp;公司介绍</i>
+      </p>
       <p style="height:17px"></p>
       <p style="text-align:center" class="jieshao cj-font-b" data-th-text="${article.title}">永春2009秋冬产品订货会圆满闭幕</p>
       <p class="cj-time" >2015-07-25</p>
       <p class="xiannext-b"></p>
-      <div data-th-utext="${article.content}">
+      <div data-th-utext="${article.content}" class="text-a">
 
       </div>
       <!--<p style="text-align:center"><img th:src="${request.root}+'/images/zx-2.png'" width="717"/></p>-->

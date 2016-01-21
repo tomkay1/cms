@@ -42,7 +42,11 @@
             </div>
         </div>
         <div class="leftbox-a">
-            <p class="fristp imgxian">当前位置&nbsp;:&nbsp;首页&nbsp;>&nbsp;品牌中心&nbsp;><i class="jieshao">&nbsp;品牌视频</i></p>
+            <!--<p class="fristp imgxian">当前位置&nbsp;:&nbsp;首页&nbsp;>&nbsp;品牌中心&nbsp;><i class="jieshao">&nbsp;品牌视频</i></p>-->
+            <p class="fristp imgxian">当前位置&nbsp;:&nbsp;
+                <a th:href="${request.rootUri}+'/'" title="首页"> 首页</a>&nbsp;>&nbsp;
+                <a th:href="${request.rootUri}+'/brand'" title="品牌中心">品牌中心</a>&nbsp;><i class="jieshao">&nbsp;品牌视频</i>
+            </p>
             <p style="height:17px"></p>
             <div data-th-remove="all-but-first" class="clear">
                 <p class="media-left" data-video-foreach="video" data-param-categoryid="36" style="width: 355px;margin-left: 10px;" data-param-pagesize="8">

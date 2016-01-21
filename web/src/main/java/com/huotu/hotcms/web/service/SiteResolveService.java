@@ -43,7 +43,6 @@ public class SiteResolveService {
     public Site getEnvironmentSite(HttpServletRequest request) throws Exception{
         Site site = null;
         try {
-            site = new Site();
             String domain = request.getServerName();
             Set<Site> sites = getSitesThroughDomain(domain);
             String language = request.getLocale().getLanguage();
@@ -122,6 +121,10 @@ public class SiteResolveService {
         if(site==null){//其他语言站点没有则默认访问中文站点
             String domain = request.getServerName();
             site=getSiteByDomainAndLange(domain,default_language);
+            if(site!=null) {
+                String language = request.getLocale().getLanguage();
+                String country = request.getLocale().getCountry();
+            }
         }
         return site;
 //        if(isHomeSitePath(path)) {

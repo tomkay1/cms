@@ -54,7 +54,7 @@ public class SiteControllerTest extends WebTestBase {
 
     @Test
     public void testAddSitePage() throws Exception {
-        MvcResult result =  mockMvc.perform(get("/site/addSize")
+        MvcResult result =  mockMvc.perform(get("/site/addSite").cookie(cookie)
                         .param("customerid", "4539")
         )
                 .andExpect(status().isOk())

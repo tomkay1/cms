@@ -47,6 +47,7 @@ define(function (require, exports, module) {
         },
         submitHandler: function (form, ev) {
             commonUtil.setDisabled("jq-cms-Save");
+            window.console.log($("#isSystem").val());
             editor.sync();
             $.ajax({
                 url: "/article/saveArticle",

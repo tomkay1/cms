@@ -34,7 +34,7 @@ public class GalleryController {
 
     @Autowired
     private GalleryService galleryService;
-//
+
     @Autowired
     private StaticResourceService resourceServer;
 

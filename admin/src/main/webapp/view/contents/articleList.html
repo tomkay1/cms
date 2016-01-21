@@ -58,8 +58,8 @@
                             <th>文章类型：</th>
                             <td>
                                 <select name="isSystem" class="input-normal" id="isSystem">
-                                    <option value="0"  th:selected="${article.isSystem}==true?true:false">系统文章</option>
-                                    <option value="1" th:selected="${article.isSystem}==false?true:false">普通文章</option></select>
+                                    <option value="true"  th:if="${article.isSystem()}==true">系统文章</option>
+                                    <option value="false" th:if="${article.isSystem()}==false">普通文章</option></select>
                                 <span style="color:#f00;">（温馨提示:系统文章不允许删除）</span>
                             </td>
                         </tr>

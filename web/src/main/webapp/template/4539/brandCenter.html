@@ -52,7 +52,7 @@
                 <a th:href="${request.rootUri}+'/brand'" title="品牌中心">品牌中心</a>&nbsp;><i class="jieshao">&nbsp;公司介绍</i></p>
             <p style="height:17px"></p>
             <p style="text-align:center" class="jieshao cj-font-b" th:text="${article.title}">永春2009秋冬产品订货会圆满闭幕</p>
-            <p class="cj-time">2015-07-25</p>
+            <p class="cj-time" data-time-format="${article.createTime}" data-param-format="yyyy-MM-dd">2015-07-25</p>
             <p class="xiannext-b"></p>
             <div th:utext="${article.content}">
 

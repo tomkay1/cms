@@ -16,7 +16,8 @@ public enum DialectTypeEnum {
     GALLERY("gallery",ParamEnum.GALLERY),
     NOTICE("notice",ParamEnum.NOTICE),
     CATEGORY("category",ParamEnum.CATEGORY),
-    VIDEO("video",ParamEnum.VIDEO);
+    VIDEO("video",ParamEnum.VIDEO),
+    TIME("time",ParamEnum.TIME);
     private String dialectPrefix;
     private Object  params;
 
@@ -45,6 +46,8 @@ public enum DialectTypeEnum {
                 return ParamEnum.GALLERY;
             case "notice":
                 return ParamEnum.NOTICE;
+            case "time":
+                return ParamEnum.TIME;
         }
         return null;
     }

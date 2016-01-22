@@ -42,6 +42,9 @@ public enum  ParamEnum {
     },
     VIDEO{
         public Object getForeachParams() {return PageableForeachParam.class;}
+    },
+    TIME{
+        public Object getForeachParams() {return PageableForeachParam.class;}
     };
     public static final String PARAM_PREFIX = "param";
     public abstract Object getForeachParams();

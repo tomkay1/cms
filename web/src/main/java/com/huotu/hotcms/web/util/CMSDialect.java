@@ -34,5 +34,6 @@ public class CMSDialect {
         dialectList.add(new VideoDialect());
         dialectList.add(new NoticeDialect());
         dialectList.add(new DownloadDialect());
+        dialectList.add(new TimeDialect());
     }
 }

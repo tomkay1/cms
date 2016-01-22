@@ -43,7 +43,7 @@
       <p style="height:17px"></p>
       <ul data-article-foreach="article" data-param-pagesize="8">
         <li style="float:left"><i class=" cj-font-c"><a th:href="${request.rootUri}+'/new/'+${article.id}+'.html'"  data-th-text="${article.title}">永春2009秋冬产品订货会圆满闭幕</a> </i></li>
-        <li style="float:right" class="cj-time-a" data-th-text="${article.createTime}">2015-07-25</li>
+        <li style="float:right" class="cj-time-a" data-time-format="${article.createTime}" data-param-format="yyyy-MM-dd">2015-07-25</li>
         <p style="clear:both"></p>
         <li><p class="fontno"><i class="nocolor">摘要：</i><span data-th-text="${article.description}"></span></p></li>
         <p style="clear:both;margin-bottom: 25px;" class="xiannext-b"></p>

@@ -26,6 +26,7 @@
   <li class="active" data-category-foreach="category" data-param-routetype="6" data-th-name="${request.url}" data-th-id="${category.route.rule}" data-th-class="${request.url}==${category.route.rule}?active">
 	<a href="index.html" data-th-href="${request.rootUri}+${category.route.rule}" data-th-text="${category.name}">首页</a>
   </li>
+  </ul>
   <li><a href="index2.html">品牌中心</a></li>
   <li><a href="/product.html">产品中心</a></li>
   <li><a href="about.html">在线商城</a></li>
@@ -116,7 +117,7 @@
   <ul>
       <li><a th:href="@{${request.rootUri}+'/brand'}" title="品牌中心">品牌中心</a></li>
       <li><a th:href="@{${request.rootUri}+'/brand/company'}" title="公司介绍">公司介绍</a></li>
-      <li><a th:href="@{${request.rootUri}+'/brand/44.html'}" title="品牌理念">品牌理念</a></li>
+      <li><a th:href="@{${request.rootUri}+'/brand/2.html'}" title="品牌理念">品牌理念</a></li>
       <li><a th:href="@{${request.rootUri}+'/brand/news'}" title="品牌新闻">品牌新闻</a></li></ul>
   <ul>
       <li><a th:href="@{${request.rootUri}+'/product'}" title="产品中心">产品中心</a></li>

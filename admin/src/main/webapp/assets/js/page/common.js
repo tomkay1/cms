@@ -14,7 +14,8 @@ define(["js/jquery-1.9.1.min"],function () {
         },
         cacleHeightByIframe:function(id,topHeight)
         {
-            var height = document.body.clientHeight -topHeight;
+            //var height = document.body.clientHeight -topHeight;
+            var height=$(window).height()-topHeight;
             $("#"+id).height(height);
         },
         calcuWidth:function(id,leftWidth){

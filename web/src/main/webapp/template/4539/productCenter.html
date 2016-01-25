@@ -224,21 +224,6 @@
                data-th-class="${request.currentPage==page.pageNo}?on" data-th-href="@{${page.pageHref}}">
                 1
             </a>
-            <a data-th-remove="all">
-                2
-            </a>
-            <a data-th-remove="all">
-                3
-            </a>
-            <a data-th-remove="all">
-                4
-            </a>
-            <a data-th-remove="all">
-                5
-            </a>
-            <a data-th-remove="all">
-                6
-            </a>
             <a data-th-remove="${!request.hasNextPage} ? all" data-th-href="@{${request.nextPageHref}}">
                 <img th:src="${request.root}+'/images/right.jpg'" width="8px">
             </a>

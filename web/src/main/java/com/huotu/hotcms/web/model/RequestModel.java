@@ -47,9 +47,19 @@ public class RequestModel{
         Integer port=request.getServerPort();
         if(site.isCustom()){
             if(this.getContextPath()!=null) {
-                rootUrl = site.getCustomTemplateUrl()+this.getContextPath();
+                if(port.equals(80)){
+                    rootUrl = "http://" + request.getServerName() + this.getContextPath();
+                }else {
+                    rootUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + this.getContextPath();
+                }
+//                rootUrl = site.getCustomTemplateUrl()+this.getContextPath();
             }else{
-                rootUrl = site.getCustomTemplateUrl();
+                if(port.equals(80)){
+                    rootUrl = "http://" + request.getServerName() ;
+                }else {
+                    rootUrl = "http://" + request.getServerName() + ":" + request.getServerPort();
+                }
+//                rootUrl = site.getCustomTemplateUrl();
             }
         }else {
             if(StringUtils.isEmpty(langParam)){

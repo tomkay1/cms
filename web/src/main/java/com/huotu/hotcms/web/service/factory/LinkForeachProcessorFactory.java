@@ -8,9 +8,12 @@
 
 package com.huotu.hotcms.web.service.factory;
 
+import com.huotu.hotcms.service.entity.Link;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.NormalForeachParam;
 import com.huotu.hotcms.service.service.LinkService;
 import com.huotu.hotcms.web.thymeleaf.expression.DialectAttributeFactory;
+import com.huotu.hotcms.web.thymeleaf.expression.VariableExpression;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.util.StringUtils;
@@ -18,6 +21,8 @@ import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.model.IProcessableElementTag;
+
+import java.util.List;
 
 
 /**
@@ -39,6 +44,7 @@ public class LinkForeachProcessorFactory {
     }
 
     public Object process(IProcessableElementTag elementTag, ITemplateContext context) {
+        List<Link> linkList=null;
         try {
             NormalForeachParam linkForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag, NormalForeachParam.class);
             WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
@@ -53,10 +59,14 @@ public class LinkForeachProcessorFactory {
             if(linkForeachParam.getSize()==null) {
                 linkForeachParam.setSize(DEFAULT_PAGE_SIZE);
             }
-            return linkService.getLinkList(linkForeachParam);
+            Site site = (Site) VariableExpression.getVariable(context, "site");
+            linkList= linkService.getLinkList(linkForeachParam);
+            for(Link link : linkList) {
+                link.setThumbUri(site.getResourceUrl() + link.getThumbUri());
+            }
         }catch (Exception e) {
             log.error(e.getMessage());
         }
-        return null;
+        return linkList;
     }
 }

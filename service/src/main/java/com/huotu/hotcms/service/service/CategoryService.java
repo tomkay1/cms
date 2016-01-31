@@ -17,7 +17,7 @@ public interface CategoryService {
     Boolean save(Category category);
     List<Category>  getCategoryBySiteAndDeletedAndNameContainingOrderByOrderWeightDesc(Site site,Boolean deleted,String name);
 
-    List<CategoryTreeModel> ConvertCateGoryTreeByCategotry(List<Category> categories);
+    List<CategoryTreeModel> ConvertCategoryTreeByCategotry(List<Category> categories);
 
     Boolean saveCategoryAndRoute(Category category,String route,String template,RouteType routeType) throws Exception;
 

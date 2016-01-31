@@ -59,7 +59,7 @@ public class CategoryTreeModel extends Category {
         return;
     }
 
-    public static CategoryTreeModel ConvertToCateboryTreeModel(Category category){
+    public static CategoryTreeModel ConvertToCategoryTreeModel(Category category){
         CategoryTreeModel categoryTreeModel = new CategoryTreeModel();
         categoryTreeModel.setCreateTime(category.getCreateTime());
         categoryTreeModel.setCustomerId(category.getCustomerId());

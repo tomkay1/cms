@@ -176,24 +176,24 @@ public class CategoryServiceImpl implements CategoryService {
 
 
     @Override
-    public List<CategoryTreeModel> ConvertCateGoryTreeByCategotry(List<Category> categories) {
+    public List<CategoryTreeModel> ConvertCategoryTreeByCategotry(List<Category> categories) {
         List<CategoryTreeModel> categoryTreeModels=new ArrayList<CategoryTreeModel>();
         if(categories!=null&&categories.size()>0){
             for(Category category : categories){
                 if(category!=null){
                     if(category.getParent()==null){//父节点为空时
                         if(!isExistsCategory(categoryTreeModels,category)){
-                            categoryTreeModels.add(CategoryTreeModel.ConvertToCateboryTreeModel(category));
+                            categoryTreeModels.add(CategoryTreeModel.ConvertToCategoryTreeModel(category));
                         }
                     }else{//父节点不为空
                         Long index=getCategoryTreeId(categoryTreeModels, category.getParent());
                         if(index!=null){//父节点存在则把该节点加入到父节点下面
-                            List<CategoryTreeModel> categoryTreeModels1 =insertCategoryTreeById(categoryTreeModels, index, CategoryTreeModel.ConvertToCateboryTreeModel(category));
+                            List<CategoryTreeModel> categoryTreeModels1 =insertCategoryTreeById(categoryTreeModels, index, CategoryTreeModel.ConvertToCategoryTreeModel(category));
                             if(categoryTreeModels1!=null){
                                 categoryTreeModels=categoryTreeModels1;
                             }
                         }else {
-                            CategoryTreeModel categoryTreeModel = CategoryTreeModel.ConvertToCateboryTreeModel(category.getParent());
+                            CategoryTreeModel categoryTreeModel = CategoryTreeModel.ConvertToCategoryTreeModel(category.getParent());
                             categoryTreeModel.addChildren(category);
                             categoryTreeModels.add(categoryTreeModel);
                         }

@@ -1,6 +1,5 @@
 package com.huotu.hotcms.service.model;
 
-import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.Category;
 import lombok.Getter;
 import lombok.Setter;
@@ -46,6 +45,8 @@ public class CategoryTreeModel extends Category {
             categoryTreeModel.setParentIds(category.getParentIds());
             if(category.getRoute()!=null&&category.getRoute().getRouteType()!=null) {
                 categoryTreeModel.setRouteType(category.getRoute().getRouteType().getCode());
+            }else{
+                categoryTreeModel.setRouteType(((CategoryTreeModel) category).getRouteType());
             }
 //            categoryTreeModel.setRoute(null);
 //            categoryTreeModel.setSite(null);
@@ -86,15 +87,18 @@ public class CategoryTreeModel extends Category {
         for(CategoryTreeModel categoryTreeModel:categoryTreeModelList){
             if(categoryTreeModel!=null)
             {
+                if(categoryTreeModel.getRoute()!=null) {
+                    categoryTreeModel.setRouteType(categoryTreeModel.getRoute().getRouteType().getCode());
+                }
                 categoryTreeModel.setRoute(null);
                 categoryTreeModel.setSite(null);
                 if(categoryTreeModel.getChildren()!=null&&categoryTreeModel.getChildren().size()>=0){
                    categoryTreeModel.setChildren(setEmptyCategoryTreeModel(categoryTreeModel.getChildren()));
                 }
-                if(categoryTreeModel.getParent()!=null&&categoryTreeModel.getParent()!=null){
+                if(categoryTreeModel.getParent()!=null && categoryTreeModel.getParent()!=null){
                     categoryTreeModel.getParent().setSite(null);
                     categoryTreeModel.getParent().setRoute(null);
-//                    categoryTreeModel.setParent();
+//                    categoryTreeModel.setParent(setEmptyCategoryTreeModel(categoryTreeModel.getParent()));
                 }
             }
         }

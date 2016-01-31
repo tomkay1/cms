@@ -48,7 +48,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Page<Article> getArticleList(PageableForeachParam articleForeachParam) {
+    public Page<Article> getArticleList(PageableForeachParam articleForeachParam) throws Exception {
         int pageIndex = articleForeachParam.getPageno()-1;
         int pageSize = articleForeachParam.getPagesize();
         Sort sort = new Sort(Sort.Direction.DESC, "orderWeight");
@@ -90,19 +90,23 @@ public class ArticleServiceImpl implements ArticleService {
         return articleRepository.findAll(specification,new PageRequest(pageIndex,pageSize,sort));
     }
 
-    private Page<Article> getArticles(PageableForeachParam params, int pageIndex, int pageSize, Sort sort) {
-        Specification<Article> specification = (root, criteriaQuery, cb) -> {
-            List<Predicate> predicates = new ArrayList<>();
-            if(!StringUtils.isEmpty(params.getExcludeids())) {
-                List<String> ids = Arrays.asList(params.getExcludeids());
-                List<Long> articleIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
-                predicates = articleIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
-            }
-            predicates.add(cb.equal(root.get("deleted").as(Boolean.class),false));
-            predicates.add(cb.equal(root.get("category").get("id").as(Long.class), params.getCategoryid()));
-            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
-        };
-        return articleRepository.findAll(specification,new PageRequest(pageIndex,pageSize,sort));
+    private Page<Article> getArticles(PageableForeachParam params, int pageIndex, int pageSize, Sort sort) throws Exception {
+        try {
+            Specification<Article> specification = (root, criteriaQuery, cb) -> {
+                List<Predicate> predicates = new ArrayList<>();
+                if (!StringUtils.isEmpty(params.getExcludeids())) {
+                    List<String> ids = Arrays.asList(params.getExcludeids());
+                    List<Long> articleIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
+                    predicates = articleIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
+                }
+                predicates.add(cb.equal(root.get("deleted").as(Boolean.class), false));
+                predicates.add(cb.equal(root.get("category").get("id").as(Long.class), params.getCategoryid()));
+                return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+            };
+            return articleRepository.findAll(specification, new PageRequest(pageIndex, pageSize, sort));
+        }catch (Exception ex){
+            throw new Exception("获得文章列表出现错误");
+        }
     }
 
     private Page<Article> getSpecifyArticles(String[] specifyIds,int pageIndex,int pageSize,Sort sort) {

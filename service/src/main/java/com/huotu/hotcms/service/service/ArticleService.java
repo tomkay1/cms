@@ -30,7 +30,7 @@ public interface ArticleService {
     Boolean saveArticle(Article article);
     Article findById(Long id);
 
-    Page<Article> getArticleList(PageableForeachParam articleForeachParam);
+    Page<Article> getArticleList(PageableForeachParam articleForeachParam) throws Exception;
 
     Article getArticleByParam(ArticleCurrentParam articleCurrentParam);
 

@@ -134,9 +134,8 @@ public class ArticleForeachProcessorFactory {
             requestModel.setHasPrevPage(articles.hasPrevious());
             requestModel.setCurrentPage(currentPage);
         }catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("articleForeach process-->"+e.getMessage());
         }
-
         return articles;
     }
 

@@ -65,15 +65,16 @@ public class ArticleForeachProcessorFactory {
             PageableForeachParam articleForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag, PageableForeachParam.class);
             Route route = (Route)VariableExpression.getVariable(context,"route");
             CategoryService categoryService = (CategoryService)applicationContext.getBean("categoryServiceImpl");
-            Category current = categoryService.getCategoryByRoute(route);
             if(StringUtils.isEmpty(articleForeachParam.getCategoryid())) {
                 if(route.getRouteType()==RouteType.ARTICLE_LIST) {
+                    Category current = categoryService.getCategoryByRoute(route);
                     articleForeachParam.setCategoryid(current.getId());
                 }
             }
             //如果不是具体子栏目，应取得当前栏目所有一级子栏目数据列表
             if(StringUtils.isEmpty(articleForeachParam.getParentcid())) {
                 if(route.getRouteType()!=RouteType.ARTICLE_LIST) {
+                    Category current = categoryService.getCategoryByRoute(route);
                     articleForeachParam.setParentcid(current.getId());
                 }
             }

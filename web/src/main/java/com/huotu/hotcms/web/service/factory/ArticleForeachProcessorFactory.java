@@ -73,7 +73,7 @@ public class ArticleForeachProcessorFactory {
             }
             //如果不是具体子栏目，应取得当前栏目所有一级子栏目数据列表
             if(StringUtils.isEmpty(articleForeachParam.getParentcid())) {
-                if(route.getRouteType()!=RouteType.ARTICLE_LIST) {
+                if(route.getRouteType()!=RouteType.ARTICLE_LIST && route.getRouteType()!=RouteType.ARTICLE_CONTENT) {
                     Category current = categoryService.getCategoryByRoute(route);
                     articleForeachParam.setParentcid(current.getId());
                 }

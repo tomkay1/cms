@@ -17,16 +17,37 @@
         </layout>
     </appender>
     <appender name="ServerDailyRollingFile" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="Encoding" value="UTF-8" />
         <param name="DatePattern" value="'.'yyyy-MM-dd'.log'"/>
         <param name="File" value="logs/hotcms/service/cms_service.log"/>
         <param name="Append" value="true"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d - %m%n"/>
         </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="levelMin" value="error" />
+            <param name="levelMax" value="error" />
+            <param name="AcceptOnMatch" value="true" />
+        </filter>
+    </appender>
+    <appender name="ServerJoinFile" class="org.apache.log4j.RollingFileAppender">
+        <param name="Encoding" value="UTF-8" />
+        <param  name="DataPattern" value="info"/>
+        <param name="File" value="logs/hotcms/service/cms_join.log"/>
+        <param name="Append" value="true"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d - %m%n"/>
+        </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="levelMin" value="info" />
+            <param name="levelMax" value="info" />
+            <param name="AcceptOnMatch" value="true" />
+        </filter>
     </appender>
     <root>
         <level value="info"/>
         <appender-ref ref="ServerDailyRollingFile"/>
         <appender-ref ref="stdout"/>
+        <appender-ref ref="ServerJoinFile"/>
     </root>
 </log4j:configuration>

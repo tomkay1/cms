@@ -34,7 +34,6 @@ public class IndexController {
     @RequestMapping(value = "**")
     public ModelAndView index(HttpServletRequest request)
     {
-        log.error("indexController-->"+request.getServletPath());
         ModelAndView modelAndView=new ModelAndView();
 //        modelAndView.addObject("customTemplateUrl","http://www.cms.com");
         return modelAndView;

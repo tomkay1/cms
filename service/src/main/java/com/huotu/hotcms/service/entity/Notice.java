@@ -34,6 +34,7 @@ public class Notice extends BaseEntity {
      */
     private String content;
 
+
 //    /**
 //     * 所属栏目
 //     */

@@ -23,7 +23,7 @@ public class ArticleDialect extends AbstractProcessorDialect {
 
     public static  String NAME = "Article";
     public static  String PREFIX = "article";
-    public static  int PROCESSOR_PRECEDENCE = 800;
+    public static  int PROCESSOR_PRECEDENCE = 2000;
 
     public ArticleDialect() {
         super(NAME, PREFIX, PROCESSOR_PRECEDENCE);

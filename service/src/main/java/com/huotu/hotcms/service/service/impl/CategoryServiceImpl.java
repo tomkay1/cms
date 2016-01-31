@@ -66,7 +66,6 @@ public class CategoryServiceImpl implements CategoryService {
         }
         for(Category category:categories){
             if(category!=null){
-//                category.setRoute(null);
                 category.setSite(null);
                 category=setReleationEmpty(category);
             }
@@ -79,7 +78,7 @@ public class CategoryServiceImpl implements CategoryService {
             Category parentCategory = category.getParent();
             if(parentCategory!=null) {
                 parentCategory.setSite(null);
-                parentCategory.setRoute(null);
+//                parentCategory.setRoute(null);
                 category.setParent(parentCategory);
                 if (parentCategory.getParent() != null) {
                     return setReleationEmpty(parentCategory.getParent());

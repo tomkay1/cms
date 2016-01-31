@@ -91,6 +91,11 @@ public class CategoryTreeModel extends Category {
                 if(categoryTreeModel.getChildren()!=null&&categoryTreeModel.getChildren().size()>=0){
                    categoryTreeModel.setChildren(setEmptyCategoryTreeModel(categoryTreeModel.getChildren()));
                 }
+                if(categoryTreeModel.getParent()!=null&&categoryTreeModel.getParent()!=null){
+                    categoryTreeModel.getParent().setSite(null);
+                    categoryTreeModel.getParent().setRoute(null);
+//                    categoryTreeModel.setParent();
+                }
             }
         }
         return categoryTreeModelList;

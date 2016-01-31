@@ -23,7 +23,7 @@ public class NoticeDialect extends AbstractProcessorDialect {
 
     public static  String NAME = "Notice";
     public static  String PREFIX = "notice";
-    public static  int PROCESSOR_PRECEDENCE = 800;
+    public static  int PROCESSOR_PRECEDENCE = 2000;
 
     public NoticeDialect() {
         super(NAME, PREFIX, PROCESSOR_PRECEDENCE);

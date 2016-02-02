@@ -95,7 +95,7 @@ public class CategoryController {
         try{
             Site site=siteService.getSite(siteId);
             List<Category> categoryList=categoryService.getCategoryBySiteAndDeletedAndNameContainingOrderByOrderWeightDesc(site,false,name);
-            List<CategoryTreeModel> categoryTreeModelList= categoryService.ConvertCateGoryTreeByCategotry(categoryList);
+            List<CategoryTreeModel> categoryTreeModelList= categoryService.ConvertCategoryTreeByCategotry(categoryList);
             categoryTreeModelList=CategoryTreeModel.setEmptyCategoryTreeModel(categoryTreeModelList);
             resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(),categoryTreeModelList);
         }

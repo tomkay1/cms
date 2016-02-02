@@ -23,7 +23,7 @@ public class CategoryDialect extends AbstractProcessorDialect{
 
     public static  String NAME = "Category";
     public static  String PREFIX = "category";
-    public static  int PROCESSOR_PRECEDENCE = 2000;
+    public static  int PROCESSOR_PRECEDENCE = 800;
 
     public CategoryDialect() {
         super(NAME,PREFIX,PROCESSOR_PRECEDENCE);

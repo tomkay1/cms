@@ -22,7 +22,7 @@ import java.util.Set;
 public class DownloadDialect extends AbstractProcessorDialect {
     public static  String NAME = "Download";
     public static  String PREFIX = "download";
-    public static  int PROCESSOR_PRECEDENCE = 2000;
+    public static  int PROCESSOR_PRECEDENCE = 800;
 
     public DownloadDialect() {
         super(NAME, PREFIX, PROCESSOR_PRECEDENCE);

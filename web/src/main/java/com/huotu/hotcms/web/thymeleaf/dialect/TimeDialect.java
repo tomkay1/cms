@@ -19,7 +19,7 @@ import java.util.Set;
 public class TimeDialect extends AbstractProcessorDialect {
     public static  String NAME = "Time";
     public static  String PREFIX = "time";
-    public static  int PROCESSOR_PRECEDENCE = 2000;
+    public static  int PROCESSOR_PRECEDENCE = 800;
 
     public TimeDialect() {
         super(NAME, PREFIX, PROCESSOR_PRECEDENCE);

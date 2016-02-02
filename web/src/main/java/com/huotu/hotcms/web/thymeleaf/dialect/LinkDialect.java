@@ -25,7 +25,7 @@ public class LinkDialect extends AbstractProcessorDialect {
 
     public static  String NAME = "Link";
     public static  String PREFIX = "link";
-    public static  int PROCESSOR_PRECEDENCE = 2000;
+    public static  int PROCESSOR_PRECEDENCE = 800;
 
     public LinkDialect() {
         super(NAME, PREFIX, PROCESSOR_PRECEDENCE);

@@ -25,7 +25,7 @@ import java.util.Set;
 public class VideoDialect extends AbstractProcessorDialect {
     public static  String NAME = "Video";
     public static  String PREFIX = "video";
-    public static  int PROCESSOR_PRECEDENCE = 2000;
+    public static  int PROCESSOR_PRECEDENCE = 800;
 
     public VideoDialect() {
         super(NAME, PREFIX, PROCESSOR_PRECEDENCE);

@@ -16,7 +16,7 @@ import java.util.Set;
 public class SiteDialect extends AbstractProcessorDialect {
     public static  String NAME = "Site";
     public static  String PREFIX = "site";
-    public static  int PROCESSOR_PRECEDENCE = 2000;
+    public static  int PROCESSOR_PRECEDENCE = 800;
 
     public SiteDialect() {
         super(NAME, PREFIX, PROCESSOR_PRECEDENCE);

@@ -176,7 +176,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 
     @Override
-    public List<CategoryTreeModel> ConvertCategoryTreeByCategotry(List<Category> categories) {
+    public List<CategoryTreeModel> ConvertCategoryTreeByCategory(List<Category> categories) {
         List<CategoryTreeModel> categoryTreeModels=new ArrayList<CategoryTreeModel>();
         if(categories!=null&&categories.size()>0){
             for(Category category : categories){

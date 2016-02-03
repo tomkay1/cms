@@ -15,7 +15,6 @@ import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.codehaus.plexus.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -89,13 +88,13 @@ public class CategoryController {
      * */
     @RequestMapping("/getCategoryList")
     @ResponseBody
-    public ResultView getCategotyList(@RequestParam(name="siteId",required = false) Long siteId,
+    public ResultView getCategoryList(@RequestParam(name="siteId",required = false) Long siteId,
                                       @RequestParam(name = "name",required=false) String name){
         ResultView resultView=null;
         try{
             Site site=siteService.getSite(siteId);
             List<Category> categoryList=categoryService.getCategoryBySiteAndDeletedAndNameContainingOrderByOrderWeightDesc(site,false,name);
-            List<CategoryTreeModel> categoryTreeModelList= categoryService.ConvertCategoryTreeByCategotry(categoryList);
+            List<CategoryTreeModel> categoryTreeModelList= categoryService.ConvertCategoryTreeByCategory(categoryList);
             categoryTreeModelList=CategoryTreeModel.setEmptyCategoryTreeModel(categoryTreeModelList);
             resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(),categoryTreeModelList);
         }

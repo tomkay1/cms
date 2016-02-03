@@ -13,14 +13,14 @@ define(["js/jquery-1.9.1.min"],function () {
                     }
                     if (data[i].children != null && data[i].children.length > 0) {
                         var blank = "";
-                        for (var j = 0; j < depthIndex; j++) {
+                        for (var j = 1; j < depthIndex; j++) {
                             blank += "&nbsp;&nbsp;&nbsp;";
                         }
                         $("#" + div).append("<option value='" + data[i].id + "'>" + blank + data[i].name + "</option>")
                         initTreeSelect(data[i].children, div);
                     } else {
                         var blank = "";
-                        for (var j = 0; j < depthIndex; j++) {
+                        for (var j = 1; j < depthIndex; j++) {
                             blank += "&nbsp;&nbsp;&nbsp;";
                         }
                         $("#" + div).append("<option value='" + data[i].id + "'>" + blank + data[i].name + "</option>")

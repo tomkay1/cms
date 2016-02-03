@@ -8,6 +8,7 @@ import com.huotu.hotcms.service.service.ContentsService;
 import com.huotu.hotcms.service.util.PageData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -44,6 +45,7 @@ public class ContentsServiceImpl implements ContentsService {
         }
         else{
             String parentIds=categoryService.getCategoryParentIds(category);
+//            Page<Object> page1=baseEntityRepository.findAllContents(siteId,parentIds,title,new PageRequest(page - 1, pageSize));
             contentsList=baseEntityRepository.findAllContentsBySiteIdAndCategoryIdsAndName(siteId,parentIds,title,(page-1)*pageSize,pageSize);
 //            contentsList=baseEntityRepository.findAllContentsBySiteIdAndCategoryIdsAndName(siteId,"26,31,32,39,40,41",title,(page-1)*pageSize,pageSize);
 //            contentsList = baseEntityRepository.findAllContentsBySiteIdAndCategoryIdAndName(siteId, category,title,(page-1)*pageSize,pageSize);

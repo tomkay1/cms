@@ -43,4 +43,7 @@ public interface CategoryService {
 
     List<Category> getHeaderCategoryList(CategoryForeachParam param);
 
+    List<Category> findByParentIdsLike(String parentId);
+
+    String getCategoryParentIds(Long parentId);
 }

@@ -4,8 +4,11 @@
 define(function (require, exports, module) {
     var commonUtil = require("common");
     commonUtil.setDisabled("jq-cms-Save");
+
+    var commonCategory=require("categoryCommon");
     var customerId =commonUtil.getQuery("customerId");
     var siteId = $("#siteId").val();
+    commonCategory.getCategoryList(siteId,"","category");
     var category = $("#category").val();
     var ContentsGrid=$("#js-ContentsList").Grid({
         method: 'POST',//提交方式GET|POST
@@ -77,7 +80,7 @@ define(function (require, exports, module) {
             title: "添加内容",
             shadeClose: true,
             shade: 0.8,
-            area: ['1000px', '700px'],
+            area: ['1000px', '500px'],
             content: content,
             end:function(){
                 ContentsGrid.Refresh();
@@ -228,8 +231,10 @@ define(function (require, exports, module) {
 
 
     $("#siteId").bind("change",function(){
-        setSecond(this);
+        //setSecond(this);
         search();
+        siteId= $("#siteId").val();
+        commonCategory.getCategoryList(siteId,"","category");
     })
     $("#category").bind("change",function(){
         search();

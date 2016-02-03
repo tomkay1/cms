@@ -20,14 +20,14 @@
         <div class="cnt">
             <div class="search-bar">
             <label class="first ">站点名称：</label>
-            <select name="siteId" class="input-normal" id="siteId" >
+            <select name="siteId" class="input-normal jq-cms-sitelist" id="siteId" >
                 <option value="-1">==请选择站点==</option>
                 <option th:each="site:${siteList}" th:value="${site.siteId}" th:text="${site.name}" th:selected="${site.siteId}==${siteList[0].siteId}?true:false"></option>//
             </select>
             <label class="first ">栏目名称：</label>
             <select name="category" class="input-normal" id="category">
                 <option value="-1">==请选择栏目==</option>
-                <option th:each="category:${categoryList}" th:value="${category.Id}" th:text="${category.name}"></option>
+                <!--<option th:each="category:${categoryList}" th:value="${category.Id}" th:text="${category.name}"></option>-->
             </select>
         </div>
             <div class="search-bar">

@@ -32,4 +32,6 @@ public interface CategoryRepository extends JpaRepository<Category, Long>,JpaSpe
    List<Category> findByParent_Id(Long parenId);
    List<Category> findBySite_SiteIdAndDeletedAndRoute_RouteType(Long siteId,boolean b,RouteType routeType);
    List<Category> findBySite_SiteIdAndRoute_RouteTypeAndDeletedOrderByOrderWeightDesc(Long siteid, RouteType routetype, boolean b);
+
+   List<Category> findByParentIdsContainingAndDeleted(String parentId,boolean deleted);
 }

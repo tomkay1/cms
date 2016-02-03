@@ -1,4 +1,4 @@
-var version="1.0.0";
+var version="1.0.2";
 seajs.config({
 	alias: {
 		"jquery": "js/jquery-1.9.1.min.js",
@@ -59,7 +59,8 @@ seajs.config({
 		"jqxdatatable":"libs/jqwidgets/jqxdatatable.js?v="+version,
 		"jqxtreegrid":"libs/jqwidgets/jqxtreegrid.js?v="+version,
 		"jqxlistbox":"libs/jqwidgets/jqxlistbox.js?v="+version,
-		"jqxdropdownlist":"libs/jqwidgets/jqxdropdownlist.js?v="+version
+		"jqxdropdownlist":"libs/jqwidgets/jqxdropdownlist.js?v="+version,
+		"categoryCommon":"js/page/categoryCommon.js?v="+version
 	},
 	preload: ['jquery']
 });

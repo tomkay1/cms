@@ -5,6 +5,7 @@ import com.huotu.hotcms.admin.util.web.CookieUser;
 import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Region;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.repository.HostRepository;
 import com.huotu.hotcms.service.repository.RegionRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.service.HostService;
@@ -46,6 +47,9 @@ public class SiteController {
     private HostService hostService;
 
     @Autowired
+    private HostRepository hostRepository;
+
+    @Autowired
     private RegionRepository regionRepository;
 
     @Autowired
@@ -84,86 +88,91 @@ public class SiteController {
     @RequestMapping(value = "/saveSite",method = RequestMethod.POST)
     @Transactional(value = "transactionManager")
     @ResponseBody
-    public ResultView updateSite(Site site,Long regionId,String...domains){
-        ResultView result=null;
-        Set<Host> hostSet = new HashSet<>();
+    public ResultView updateSite(Site site,Long regionId,String...domains) {
+        ResultView result = null;
         try {
             Long siteId = site.getSiteId();
             if (siteId == null) {//新增站点
-                for (String domain : domains) {
-                    Host flag = hostService.getHost(domain);
-                    if (flag == null) {//全新域名
-                        Host host = new Host();
-                        host.setCustomerId(site.getCustomerId());
-                        host.setDomain(domain);
-                        hostSet.add(host);
-                    } else {
-                       if( flag.getCustomerId().equals(site.getCustomerId())){//如果是同一商户
-                           List<Site> siteList=siteRepository.findByHosts(flag);
-                           List<Long> regionList = new ArrayList<>();
-                           for(Site site1 :siteList){
-                               regionList.add(site1.getRegion().getId());//取得包含该域名下的所有地区列表
-                           }
-                           if(regionList.contains(regionId)){
-                               result = new ResultView(ResultOptionEnum.DOMAIN_EXIST.getCode(), ResultOptionEnum.DOMAIN_EXIST.getValue(), null);
-                               return result;
-                           }
-                           else {
-                               hostSet.add(flag);
-                           }
-                       }
-                        else {//不同商户
-                           result = new ResultView(ResultOptionEnum.DOMAIN_EXIST.getCode(), ResultOptionEnum.DOMAIN_EXIST.getValue(), null);
-                            return result;
-                       }
-                    }
+                if (hostService.isExistsByDomains(domains, regionId)) {
+                    result = new ResultView(ResultOptionEnum.DOMAIN_EXIST.getCode(), ResultOptionEnum.DOMAIN_EXIST.getValue(), null);
+                    return result;
                 }
-            }
-            else {//修改站点
                 for (String domain : domains) {
                     Host flag = hostService.getHost(domain);
                     if (flag == null) {//全新域名
                         Host host = new Host();
                         host.setCustomerId(site.getCustomerId());
                         host.setDomain(domain);
-                        hostSet.add(host);
-                    } else {//不是全新域名
-                        if(flag.getCustomerId().equals(site.getCustomerId()))
-                            hostSet.add(flag);
-                        else{
-                            result = new ResultView(ResultOptionEnum.DOMAIN_EXIST.getCode(), ResultOptionEnum.DOMAIN_EXIST.getValue(), null);
+                        site.addHost(host);
+//                        hostSet.add(host);
+                    } else {
+                        if (flag.getCustomerId().equals(site.getCustomerId())) {//如果是同一商户
+                            List<Site> siteList = siteRepository.findByHosts(flag);
+                            List<Long> regionList = new ArrayList<>();
+                            for (Site site1 : siteList) {
+                                regionList.add(site1.getRegion().getId());//取得包含该域名下的所有地区列表
+                            }
+                            if (regionList.contains(regionId)) {
+                                result = new ResultView(ResultOptionEnum.DOMAIN_EXIST.getCode(), ResultOptionEnum.DOMAIN_EXIST.getValue(), null);
                                 return result;
+                            } else {
+                                site.addHost(flag);
+//                                hostSet.add(flag);
+                            }
+                        } else {//不同商户
+                            result = new ResultView(ResultOptionEnum.DOMAIN_EXIST.getCode(), ResultOptionEnum.DOMAIN_EXIST.getValue(), null);
+                            return result;
                         }
                     }
                 }
+            } else {//修改站点
+                if (hostService.isNotExistsByDomainsAndSite(domains, site, regionId)) {
+                    result = new ResultView(ResultOptionEnum.DOMAIN_EXIST.getCode(), ResultOptionEnum.DOMAIN_EXIST.getValue(), null);
+                    return result;
+                }
+                for (String domain : domains) {
+                    if (!hostService.isExists(domain, site.getHosts())) {//不包含该域名则做下一步的判断工作
+                        Host flag = hostService.getHost(domain);
+                        if (flag == null) {//全新域名
+                            Host host = new Host();
+                            host.setCustomerId(site.getCustomerId());
+                            host.setDomain(domain);
+                            site.addHost(host);
+                        } else {//不是全新域名
+                            if (flag.getCustomerId().equals(site.getCustomerId()))
+                                site.addHost(flag);
+                            else {
+                                result = new ResultView(ResultOptionEnum.DOMAIN_EXIST.getCode(), ResultOptionEnum.DOMAIN_EXIST.getValue(), null);
+                                return result;
+                            }
+                        }
+                    }
+                }
+                site = hostService.mergeSite(domains, site);
             }
-                site.setHosts(hostSet);
-                Region region = regionRepository.findOne(regionId);
-                String resourceUrl = site.getResourceUrl();
-                if(StringUtils.isEmpty(resourceUrl)){
-                    resourceUrl =resourceServer.getResource("").toString();
-                }
-                site.setResourceUrl(resourceUrl);
-                if (siteId == null) {
-                    site.setCreateTime(LocalDateTime.now());
-                    site.setUpdateTime(LocalDateTime.now());
-                    site.setRegion(region);
-                    site.setDeleted(false);
-                    siteService.save(site);
-                } else {
-                    site.setUpdateTime(LocalDateTime.now());
-                    siteService.save(site);
-                }
-                result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
-        }
-        catch (Exception ex)
-        {
+            Region region = regionRepository.findOne(regionId);
+            String resourceUrl = site.getResourceUrl();
+            if (StringUtils.isEmpty(resourceUrl)) {
+                resourceUrl = resourceServer.getResource("").toString();
+            }
+            site.setResourceUrl(resourceUrl);
+            if (siteId == null) {
+                site.setCreateTime(LocalDateTime.now());
+                site.setUpdateTime(LocalDateTime.now());
+                site.setRegion(region);
+                site.setDeleted(false);
+                siteService.save(site);
+            } else {
+                site.setUpdateTime(LocalDateTime.now());
+                siteService.save(site);
+            }
+            result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
+        } catch (Exception ex) {
             log.error(ex.getMessage());
-            result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
+            result = new ResultView(ResultOptionEnum.FAILE.getCode(), ResultOptionEnum.FAILE.getValue(), null);
         }
         return result;
     }
-
 
     @RequestMapping("/updateSite")
     public ModelAndView updateSite(@RequestParam(value = "id",defaultValue = "0") Long id,int customerId) throws Exception {
@@ -234,5 +243,27 @@ public class SiteController {
         return  result;
     }
 
+//    @RequestMapping(value = "/isExistsDomain",method = RequestMethod.POST)
+//    @ResponseBody
+//    public Boolean isExistsDomain(String...domains){
+//        try{
+//            return !hostService.isExistsByDomains(domains);
+//        }catch (Exception ex){
+//            log.error(ex.getMessage());
+//            return true;
+//        }
+//    }
+//
+//    @RequestMapping(value = "/isNoExistsDomain",method = RequestMethod.POST)
+//    @ResponseBody
+//    public Boolean isNoExistsDomain(Long siteId,String...domains){
+//        try{
+//            Site site=siteService.getSite(siteId);
+//            return !hostService.isNotExistsByDomainsAndSite(domains,site);
+//        }catch (Exception ex){
+//            log.error(ex.getMessage());
+//            return true;
+//        }
+//    }
 
 }

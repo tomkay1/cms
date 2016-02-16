@@ -21,6 +21,17 @@ define(function (require, exports, module) {
             },
             domains:{
                 required: true,
+                remote: {
+                    url: "/site/isNoExistsDomain",     //后台处理程序
+                    type: "post",               //数据发送方式
+                    dataType: "json",           //接受数据格式
+                    data: {                     //要传递的数据
+                        siteId:$("#hidSiteID").val(),
+                        domains: function () {
+                            return $("#domains").val();
+                        }
+                    }
+                },
             },
             copyright:{
                 required: true,
@@ -40,7 +51,8 @@ define(function (require, exports, module) {
                 required:"标题为必输项"
             },
             domains:{
-                required:"域名为必输项"
+                required:"域名为必输项",
+                remote:"域名列表存在重复"
             },
             description:{
                 maxlength:"站点描述不能超过200个字符"

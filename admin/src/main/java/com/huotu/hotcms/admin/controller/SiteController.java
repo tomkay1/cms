@@ -5,7 +5,6 @@ import com.huotu.hotcms.admin.util.web.CookieUser;
 import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Region;
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.repository.HostRepository;
 import com.huotu.hotcms.service.repository.RegionRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.service.HostService;
@@ -45,9 +44,6 @@ public class SiteController {
 
     @Autowired
     private HostService hostService;
-
-    @Autowired
-    private HostRepository hostRepository;
 
     @Autowired
     private RegionRepository regionRepository;
@@ -268,5 +264,4 @@ public class SiteController {
 //            return true;
 //        }
 //    }
-
 }

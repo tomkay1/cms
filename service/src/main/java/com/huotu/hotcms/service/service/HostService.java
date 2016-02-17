@@ -18,6 +18,13 @@ public interface HostService {
 
     Site mergeSite(String[] domains,Site site);
 
+    /**
+     * <p>
+     *     根据域名列表和地区ID判断域名列表中是否存在重复
+     * </p>
+     * @param domains 域名列表
+     * @param regionId 地区ID
+     * */
     Boolean isExistsByDomains(String[] domains,Long regionId);
 
     Boolean isNotExistsByDomainsAndSite(String[] domains,Site site,Long regionId);

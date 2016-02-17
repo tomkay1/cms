@@ -27,6 +27,13 @@ public interface HostService {
      * */
     Boolean isExistsByDomains(String[] domains,Long regionId);
 
+    /**
+     * <p>
+     *     根据域名列表、站点信息、地区ID判断域名列表中新添加的域名是否存在重复值
+     * </p>
+     * @param domains 域名列表
+     * @param regionId 地区ID
+     * */
     Boolean isNotExistsByDomainsAndSite(String[] domains,Site site,Long regionId);
 
     /**

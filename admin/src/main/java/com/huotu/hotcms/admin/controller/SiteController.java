@@ -90,6 +90,8 @@ public class SiteController {
     @ResponseBody
     public ResultView updateSite(Site site,Long regionId,String...domains) {
         ResultView result = null;
+        Set<Host> hosts=new HashSet<>();
+        Site site2=null;
         try {
             Long siteId = site.getSiteId();
             if (siteId == null) {//新增站点
@@ -104,7 +106,6 @@ public class SiteController {
                         host.setCustomerId(site.getCustomerId());
                         host.setDomain(domain);
                         site.addHost(host);
-//                        hostSet.add(host);
                     } else {
                         if (flag.getCustomerId().equals(site.getCustomerId())) {//如果是同一商户
                             List<Site> siteList = siteRepository.findByHosts(flag);
@@ -117,7 +118,6 @@ public class SiteController {
                                 return result;
                             } else {
                                 site.addHost(flag);
-//                                hostSet.add(flag);
                             }
                         } else {//不同商户
                             result = new ResultView(ResultOptionEnum.DOMAIN_EXIST.getCode(), ResultOptionEnum.DOMAIN_EXIST.getValue(), null);
@@ -148,7 +148,9 @@ public class SiteController {
                         }
                     }
                 }
+                site2=siteService.getSite(site.getSiteId());
                 site = hostService.mergeSite(domains, site);
+                hosts=hostService.getRemoveHost(domains,site2);
             }
             Region region = regionRepository.findOne(regionId);
             String resourceUrl = site.getResourceUrl();
@@ -166,6 +168,7 @@ public class SiteController {
                 site.setUpdateTime(LocalDateTime.now());
                 siteService.save(site);
             }
+            hostService.removeHost(hosts);
             result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
         } catch (Exception ex) {
             log.error(ex.getMessage());

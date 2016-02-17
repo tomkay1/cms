@@ -21,4 +21,20 @@ public interface HostService {
     Boolean isExistsByDomains(String[] domains,Long regionId);
 
     Boolean isNotExistsByDomainsAndSite(String[] domains,Site site,Long regionId);
+
+    /**
+     * <p>
+     *     获得需要移除的Host列表
+     * </p>
+     * @param domains 新的域名列表
+     * @param site 目标站点信息
+     * @return
+     * */
+    Set<Host> getRemoveHost(String[] domains,Site site);
+
+    /**
+     * <p>删除Host列表</p>
+     * @param hostSet 要移除的Host列表
+     * */
+    boolean removeHost(Set<Host> hostSet);
 }

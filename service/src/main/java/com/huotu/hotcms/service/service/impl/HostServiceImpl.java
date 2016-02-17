@@ -8,6 +8,7 @@ import com.huotu.hotcms.service.service.HostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -53,16 +54,63 @@ public class HostServiceImpl implements HostService {
                     isExists=true;
                 }
             }
-            if(!isExists){
-                if(host.getSites()!=null&&host.getSites().size()==0) {
-                    hostRepository.delete(host);
-                }
-            }else{
+            if(isExists){
                 site1.addHost(host);
             }
         }
         site.setHosts(site1.getHosts());
         return site;
+    }
+
+    @Override
+    /**
+     * <p>
+     *     获得需要移除的Host列表
+     * </p>
+     * @param domains 新的域名列表
+     * @param site 目标站点信息
+     * @return
+     * */
+    public Set<Host> getRemoveHost(String[] domains, Site site) {
+        Set<Host> hosts = new HashSet<>();
+        Set<Host> hostSet = site.getHosts();
+        for (Host host : hostSet) {
+            boolean isExists = false;
+            for (String domain : domains) {
+                if (domain.equals(host.getDomain())) {
+                    isExists = true;
+                }
+            }
+            if (!isExists) {
+                if (host.getSites() != null) {
+                    if (host.getSites().size() == 0) {
+                        hosts.add(host);
+                    } else if (host.getSites().size() == 1) {
+                        if (host.getSites().contains(site)) {
+                            hosts.add(host);
+                        }
+                    }
+                }
+            }
+        }
+        return hosts;
+    }
+
+    @Override
+    /**
+     * <p>删除Host列表</p>
+     * @param hostSet 要移除的Host列表
+     * */
+    public boolean removeHost(Set<Host> hostSet) {
+        if(hostSet!=null) {
+            for (Host host : hostSet) {
+                if (host != null) {
+                    host.setSites(null);
+                    hostRepository.delete(host);
+                }
+            }
+        }
+        return true;
     }
 
     @Override

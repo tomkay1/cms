@@ -258,7 +258,7 @@ public class SiteController {
 //    public Boolean isNoExistsDomain(Long siteId,String...domains){
 //        try{
 //            Site site=siteService.getSite(siteId);
-//            return !hostService.isNotExistsByDomainsAndSite(domains,site);
+//            return !hostService.isNotExistsByDomainsAndSite(domains,);
 //        }catch (Exception ex){
 //            log.error(ex.getMessage());
 //            return true;

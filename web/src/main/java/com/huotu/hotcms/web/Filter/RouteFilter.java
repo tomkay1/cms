@@ -2,6 +2,7 @@ package com.huotu.hotcms.web.Filter;
 
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.util.CheckMobile;
 import com.huotu.hotcms.web.service.RouteResolverService;
 import com.huotu.hotcms.web.service.SiteResolveService;
 import com.huotu.hotcms.web.util.PatternMatchUtil;
@@ -39,9 +40,21 @@ public class RouteFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         try {
             HttpServletRequest request1 = ((HttpServletRequest) request);
+
             WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
             SiteResolveService siteResolveService = (SiteResolveService) applicationContext.getBean("siteResolveService");
             Site site = siteResolveService.getCurrentSite(request1);
+
+            //目前为了兼容我们公司自己的官网，暂时先这样处理兼容,后面考虑在网站配置中新增一个字段(是否有手机官网，如果有则做该业务判断),统一使用m.xxx.com为手机官网地址
+            if(site.getCustomerId().equals(5)) {
+                boolean isMobile = CheckMobile.check(request1);
+                if (isMobile) {
+                    String mobileUrl=CheckMobile.getMobileUrl(request1);
+                    ((HttpServletResponse) response).sendRedirect(mobileUrl);
+                    return;
+                }
+            }
+
             String servletPath=PatternMatchUtil.getServletPath(site,request1);//获得ServletPath 国际化带语言参数经一步处理(移除国际化参数信息)得到的跟配置的路由一致
             String langParam=PatternMatchUtil.getEffecterLangParam(request1, site);//获得国际化参数(url上带上的语言地区参数信息)
             if(!servletPath.contains(filter)) {

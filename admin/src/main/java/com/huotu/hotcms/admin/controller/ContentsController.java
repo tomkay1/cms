@@ -7,6 +7,7 @@ import com.huotu.hotcms.service.model.SiteCategory;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.LinkRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
+import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.service.ContentsService;
 import com.huotu.hotcms.service.util.PageData;
 import org.apache.commons.logging.Log;
@@ -41,6 +42,9 @@ public class ContentsController {
 
     @Autowired
     LinkRepository linkRepository;
+
+    @Autowired
+    CategoryService categoryService;
 
     @Autowired
     CategoryRepository categoryRepository;
@@ -78,7 +82,8 @@ public class ContentsController {
             categorys=categoryRepository.findByCustomerIdAndSite_SiteIdAndDeletedAndModelIdNotNullOrderByOrderWeightDesc(customerId, siteId, false);
         }
         else{
-           categorys=categoryRepository.findByCustomerIdAndSite_SiteIdAndIdAndDeletedAndModelIdNotNullOrderByOrderWeightDesc(customerId, siteId, category, false);
+//           categorys=categoryRepository.findByCustomerIdAndSite_SiteIdAndIdAndDeletedAndModelIdNotNullOrderByOrderWeightDesc(customerId, siteId, category, false);
+            categorys=categoryService.findByParentIdsLike(category.toString());
         }
         int size =categorys.size();
         modelAndView.addObject("size",size);
@@ -90,7 +95,7 @@ public class ContentsController {
             return modelAndView;
         }
 
-    //µ±¸Ä±äÕ¾µãÊ±£¬À¸Ä¿×Ô¶¯±ä»¯
+    //ï¿½ï¿½ï¿½Ä±ï¿½Õ¾ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½Ô¶ï¿½ï¿½ä»¯
     @RequestMapping("/contentsSelect")
     @ResponseBody
     public List<SiteCategory> contentsSelect(HttpServletRequest request,

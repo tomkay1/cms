@@ -3,9 +3,12 @@ package com.huotu.hotcms.service.service.impl;
 import com.huotu.hotcms.service.common.ModelType;
 import com.huotu.hotcms.service.model.Contents;
 import com.huotu.hotcms.service.repository.BaseEntityRepository;
+import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.service.ContentsService;
 import com.huotu.hotcms.service.util.PageData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -21,6 +24,9 @@ public class ContentsServiceImpl implements ContentsService {
 
     @Autowired
     BaseEntityRepository baseEntityRepository;
+
+    @Autowired
+    CategoryService categoryService;
 
     @Override
     public PageData<Contents> getPage(String title, Long siteId, Long category, int page, int pageSize) {
@@ -38,8 +44,12 @@ public class ContentsServiceImpl implements ContentsService {
             contentsSize =baseEntityRepository.findContentsSizeBySiteIdAndName(siteId, title);
         }
         else{
-            contentsList = baseEntityRepository.findAllContentsBySiteIdAndCategoryIdAndName(siteId, category,title,(page-1)*pageSize,pageSize);
-            contentsSize =baseEntityRepository.findContentsSizeBySiteIdAndCategoryIdAndName(siteId, category,title);
+            String parentIds=categoryService.getCategoryParentIds(category);
+//            Page<Object> page1=baseEntityRepository.findAllContents(siteId,parentIds,title,new PageRequest(page - 1, pageSize));
+            contentsList=baseEntityRepository.findAllContentsBySiteIdAndCategoryIdsAndName(siteId,parentIds,title,(page-1)*pageSize,pageSize);
+//            contentsList=baseEntityRepository.findAllContentsBySiteIdAndCategoryIdsAndName(siteId,"26,31,32,39,40,41",title,(page-1)*pageSize,pageSize);
+//            contentsList = baseEntityRepository.findAllContentsBySiteIdAndCategoryIdAndName(siteId, category,title,(page-1)*pageSize,pageSize);
+            contentsSize =baseEntityRepository.findContentsSizeBySiteIdAndCategoryIdsAndName(siteId, parentIds, title);
         }
         List<Contents> contentsList1 = new ArrayList<>();
         for(Object[] o : contentsList) {

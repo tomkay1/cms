@@ -1,4 +1,4 @@
-var version="1.0.0";
+var version="1.0.2";
 seajs.config({
 	alias: {
 		"jquery": "js/jquery-1.9.1.min.js",
@@ -45,6 +45,7 @@ seajs.config({
 		"categoryList":"js/page/section/categoryList.js?v="+version,
 		"updateCategory":"js/page/section/updateCategory.js??v="+version,
 		"contentsList":"js/page/contents/contentsList.js?v="+version,
+
 		"ajaxfileupload":"libs/ajaxfileupload.js?v="+version,
 		"jupload":"libs/upload/jackson-upload.js?v="+version,
 		"ueditorConfig":"libs/ueditor/ueditor.config.js?v="+version,
@@ -52,6 +53,7 @@ seajs.config({
 		"kindeditor":"libs/richText/kindeditor-min.js?v="+version,
 		"init":"libs/richText/init.js?v="+version,
 		"zh_CN":"libs/richText/lang/zh_CN.js?v="+version,
+
 		"jqxcore":"libs/jqwidgets/jqxcore.js?v="+version,
 		"jqxdata":"libs/jqwidgets/jqxdata.js?v="+version,
 		"jqxbuttons":"libs/jqwidgets/jqxbuttons.js?v="+version,
@@ -59,7 +61,8 @@ seajs.config({
 		"jqxdatatable":"libs/jqwidgets/jqxdatatable.js?v="+version,
 		"jqxtreegrid":"libs/jqwidgets/jqxtreegrid.js?v="+version,
 		"jqxlistbox":"libs/jqwidgets/jqxlistbox.js?v="+version,
-		"jqxdropdownlist":"libs/jqwidgets/jqxdropdownlist.js?v="+version
+		"jqxdropdownlist":"libs/jqwidgets/jqxdropdownlist.js?v="+version,
+		"categoryCommon":"js/page/categoryCommon.js?v="+version
 	},
 	preload: ['jquery']
 });

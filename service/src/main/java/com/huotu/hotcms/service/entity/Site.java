@@ -128,7 +128,9 @@ public class Site {
         if(host.getSites() == null) {
             host.setSites(new HashSet<>());
         }
-        host.getSites().add(this);
+        if(this.getSiteId()!=null) {
+            host.getSites().add(this);
+        }
         this.hosts.add(host);
     }
 

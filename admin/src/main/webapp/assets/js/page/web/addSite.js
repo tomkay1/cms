@@ -19,7 +19,17 @@ define(function (require, exports, module) {
                 maxlength:200
             },
             domains:{
-                required: true,
+                required: true
+                //remote: {
+                //    url: "/site/isExistsDomain",     //后台处理程序
+                //    type: "post",               //数据发送方式
+                //    dataType: "json",           //接受数据格式
+                //    data: {                     //要传递的数据
+                //        domains: function () {
+                //            return $("#domains").val();
+                //        }
+                //    }
+                //},
             },
             copyright:{
                 required: true,
@@ -40,6 +50,7 @@ define(function (require, exports, module) {
             },
             domains:{
                 required:"域名为必输项"
+                //remote:"存在相同的域名"
             },
             description:{
                 maxlength:"站点描述不能超过200个字符"

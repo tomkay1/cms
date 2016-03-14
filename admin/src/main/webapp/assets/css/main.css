@@ -508,3 +508,9 @@ background-color:#04B299;
     list-style-type: none;
     line-height: 42px;
 }
+.childMenus:hover,.childMenus.active{
+    background: #292A2C;
+}
+.childMenus:hover,.childMenus.active{
+    color: #ffffff;
+}

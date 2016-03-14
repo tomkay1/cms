@@ -29,4 +29,15 @@ define(function (require, exports, module) {
             }
         });
     })
+
+    var subMenusObj=$(".js-cms-submunes");
+    $.each(subMenusObj,function(item,dom){
+        $(dom).click(function(){
+            $(".js-cms-submunes").removeClass("active");
+            $(".js-cms-menus").removeClass("active")
+            $(dom).addClass("active");
+            var parentId=$(dom).data('id');
+            $("#"+parentId).addClass("active");
+        })
+    })
 });

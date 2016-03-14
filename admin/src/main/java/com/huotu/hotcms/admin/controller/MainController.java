@@ -1,6 +1,7 @@
 package com.huotu.hotcms.admin.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,4 +24,10 @@ public class MainController {
         return modelAndView;
     }
 
+    @RequestMapping( value = "/decorated")
+    public ModelAndView decorated( @RequestParam("customerid") Integer customerid) throws Exception{
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("/view/decorated.html");
+        return modelAndView;
+    }
 }

@@ -1,11 +1,19 @@
 ﻿td {  FONT-SIZE: 12px;}
 td .a {FONT-SIZE: 12px;}
-.jackson-data-datatable-box {border: 1px solid #cbcbcb;overflow-x: auto; color:#5b5959;}
+.jackson-data-datatable-box {border: 1px solid #ddd;overflow-x: auto; color:#5b5959;}
 .jackson-data-datatable-box > table {table-layout: fixed;overflow:auto; border-collapse: inherit;}
 .jackson-data-datatable-box > table > tr > td {word-wrap: break-word;padding-left:10px;}
 .jackson-data-rows-title {height: 31px;line-height: 31px;}
 .jackson-data-datatable-box table .over {height: 31px;line-height: 31px;}
-.jackson-data-rows-title > th,.jackson-data-datatable-box table .over> th {background:url(../img/data-table-th.gif); height:31px; font-size:12px; line-height:31px;font-weight:bold; color:#2e3740;}
+.jackson-data-rows-title > th,.jackson-data-datatable-box table .over> th {
+  /*background:url(../img/data-table-th.gif);*/
+  background:#eee !important;
+  height:35px;
+  font-size:12px;
+  line-height:35px;
+  font-weight:bold;
+  color:#2e3740;
+}
 
 .jackson-data-rows-datarow {height: 35px;line-height: 35px;}
 .jackson-data-rows-datarow:hover{height: 35px;line-height: 35px;background: #E5EBEE;table-layout:fixed; word-break: break-all; overflow:hidden;}

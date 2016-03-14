@@ -174,7 +174,8 @@ background: transparent url(../img/plus-white.png) no-repeat 96% center;
 }
 .mainpanel {
 margin-left: 200px;
-background: #e4e7ea;
+background: #F1F3FA;
+
 /*min-height: 1000px;*/
 }.headerbar {
 background: #292a2c;

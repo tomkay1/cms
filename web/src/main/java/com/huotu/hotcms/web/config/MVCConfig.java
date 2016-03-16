@@ -10,13 +10,14 @@ package com.huotu.hotcms.web.config;
 
 import com.huotu.hotcms.service.config.JpaConfig;
 import com.huotu.hotcms.service.config.ServiceConfig;
+import com.huotu.hotcms.service.util.CMSDialect;
 import com.huotu.hotcms.web.interceptor.RouteInterceptor;
 import com.huotu.hotcms.web.interceptor.SiteResolver;
-import com.huotu.hotcms.web.util.CMSDialect;
 import com.huotu.hotcms.web.util.ArrayUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.*;
+import org.springframework.core.env.Environment;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
@@ -50,6 +51,8 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
     private ApplicationContext applicationContext;
     @Autowired
     private SiteResolver siteResolver;
+    @Autowired
+    private Environment environment;
 
     @Autowired
     private RouteInterceptor routeInterceptor;
@@ -75,9 +78,6 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         registry.viewResolver(htmlViewResolver());
         registry.viewResolver(javascriptViewResolver());
         registry.viewResolver(cssViewResolver());
-//        registry.viewResolver(redirectViewResolver());
-//        registry.viewResolver(forwardViewResolver());
-//        registry.viewResolver(remoteHtmlViewResolver());
     }
 
     @Override
@@ -85,38 +85,19 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         registry.addInterceptor(routeInterceptor);
     }
 
-    public ViewResolver redirectViewResolver() {
-        ThymeleafViewResolver resolver = new ThymeleafViewResolver();
-        resolver.setViewNames(ArrayUtil.array("redirect:*"));
-        return resolver;
-    }
-
-    public ViewResolver forwardViewResolver() {
-        ThymeleafViewResolver resolver = new ThymeleafViewResolver();
-        resolver.setViewNames(ArrayUtil.array("forward:*"));
-        return resolver;
-    }
 
     public ViewResolver htmlViewResolver() {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
         resolver.setTemplateEngine(templateEngine(htmlTemplateResolver()));
         resolver.setContentType("text/html");
         resolver.setCharacterEncoding(UTF8);
-//        resolver.setOrder();
-        resolver.setCache(false);
+        if(environment.acceptsProfiles("development")) {
+            resolver.setCache(false);
+        }
         resolver.setViewNames(ArrayUtil.array("*.html"));
         return resolver;
     }
-//
-//    public ViewResolver remoteHtmlViewResolver() {
-//        ThymeleafViewResolver resolver = new ThymeleafViewResolver();
-//        resolver.setTemplateEngine(templateEngine(remoteHtmlTemplateResolver()));
-//        resolver.setContentType("text/html");
-//        resolver.setCharacterEncoding(UTF8);
-//        resolver.setCache(false);
-//        resolver.setViewNames(ArrayUtil.array("*.html"));//设置通配目录结构
-//        return resolver;
-//    }
+
 
     private ViewResolver javascriptViewResolver() {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
@@ -146,16 +127,9 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 
     private ITemplateResolver htmlTemplateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
-        resolver.setCacheable(false);
-        resolver.setCharacterEncoding(UTF8);
-        resolver.setApplicationContext(applicationContext);
-        resolver.setTemplateMode(TemplateMode.HTML);
-        return resolver;
-    }
-
-    private ITemplateResolver remoteHtmlTemplateResolver() {
-        SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
-        resolver.setCacheable(false);
+        if(environment.acceptsProfiles("development")) {
+            resolver.setCacheable(false);
+        }
         resolver.setCharacterEncoding(UTF8);
         resolver.setApplicationContext(applicationContext);
         resolver.setTemplateMode(TemplateMode.HTML);
@@ -164,20 +138,22 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 
     private ITemplateResolver javascriptTemplateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
-        resolver.setCacheable(false);
+        if(environment.acceptsProfiles("development")) {
+            resolver.setCacheable(false);
+        }
         resolver.setCharacterEncoding(UTF8);
         resolver.setApplicationContext(applicationContext);
-//        resolver.setPrefix("/assets/js/");
         resolver.setTemplateMode(TemplateMode.JAVASCRIPT);
         return resolver;
     }
 
     private ITemplateResolver cssTemplateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
-        resolver.setCacheable(false);
+        if(environment.acceptsProfiles("development")) {
+            resolver.setCacheable(false);
+        }
         resolver.setCharacterEncoding(UTF8);
         resolver.setApplicationContext(applicationContext);
-//        resolver.setPrefix("/assets/css/");
         resolver.setTemplateMode(TemplateMode.CSS);
         return resolver;
     }

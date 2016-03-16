@@ -40,7 +40,8 @@ import java.util.List;
         "com.huotu.hotcms.admin.interceptor",
         "com.huotu.hotcms.admin.util.web",
         "com.huotu.hotcms.admin.common",
-        "com.huotu.hotcms.service.common"
+        "com.huotu.hotcms.service.common",
+        "com.huotu.hotcms.service.widget"
 })
 @Import({JpaConfig.class, ServiceConfig.class})
 public class MVCConfig extends WebMvcConfigurerAdapter {

@@ -133,7 +133,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         resolver.setContentType("text/html");
         resolver.setCharacterEncoding(UTF8);
 //        resolver.setViewNames(ArrayUtil.array("/view/**"));
-        resolver.setViewNames(ArrayUtil.array(".html"));
+        resolver.setViewNames(ArrayUtil.array("*.html"));
         return resolver;
     }
 

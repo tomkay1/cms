@@ -3,6 +3,7 @@ package com.huotu.hotcms.admin.config;
 import com.huotu.hotcms.admin.interceptor.SiteResolver;
 import com.huotu.hotcms.admin.dialect.HotDialect;
 import com.huotu.hotcms.admin.interceptor.LoginInterceptor;
+import com.huotu.hotcms.admin.thymeleaf.templateresolver.WidgetTemplateResolver;
 import com.huotu.hotcms.admin.util.ArrayUtil;
 import com.huotu.hotcms.service.config.JpaConfig;
 import com.huotu.hotcms.service.config.ServiceConfig;
@@ -115,6 +116,15 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         return resolver;
     }
 
+    public ViewResolver widgetViewResolver() {
+        ThymeleafViewResolver resolver = new ThymeleafViewResolver();
+        resolver.setViewNames(ArrayUtil.array("/widget/**"));
+        resolver.setCharacterEncoding(UTF8);
+        resolver.setTemplateEngine(templateEngine(widgetTemplateResolver()));
+        return resolver;
+    }
+
+
     public ViewResolver htmlViewResolver() {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
         resolver.setTemplateEngine(templateEngine(htmlTemplateResolver()));
@@ -182,6 +192,12 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         return resolver;
     }
 
+    private ITemplateResolver widgetTemplateResolver() {
+        WidgetTemplateResolver resolver = new WidgetTemplateResolver();
+        resolver.setCharacterEncoding(UTF8);
+        resolver.setApplicationContext(applicationContext);
+        return resolver;
+    }
     private ITemplateResolver remoteHtmlTemplateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
         resolver.setCacheable(false);

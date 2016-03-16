@@ -8,8 +8,8 @@
 
 package com.huotu.hotcms.service.thymeleaf.service;
 
-import com.huotu.hotcms.web.common.DialectTypeEnum;
-import com.huotu.hotcms.web.service.factory.ArticlePreviousProcessorFactory;
+import com.huotu.hotcms.service.thymeleaf.common.DialectTypeEnum;
+import com.huotu.hotcms.service.thymeleaf.service.factory.ArticlePreviousProcessorFactory;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.model.IProcessableElementTag;
 

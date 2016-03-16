@@ -13,7 +13,7 @@ import com.huotu.hotcms.service.entity.Region;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.service.HostService;
 import com.huotu.hotcms.service.service.RegionService;
-import com.huotu.hotcms.web.util.PatternMatchUtil;
+import com.huotu.hotcms.service.util.PatternMatchUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,7 +108,7 @@ public class SiteResolveService {
     public Site getCurrentSite(HttpServletRequest request) throws Exception{
 //        String languageParam= PatternMatchUtil.getUrlString(path,PatternMatchUtil.langRegexp);
         Site site=null;
-        String languageParam=PatternMatchUtil.getLangParam(request);
+        String languageParam= PatternMatchUtil.getLangParam(request);
         if(StringUtils.isEmpty(languageParam)){
             site= getEnvironmentSite(request);
         }else{

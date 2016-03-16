@@ -8,10 +8,10 @@
 
 package com.huotu.hotcms.service.thymeleaf.service;
 
-import com.huotu.hotcms.web.common.DialectTypeEnum;
-import com.huotu.hotcms.web.service.factory.ArticleCurrentProcessorFactory;
-import com.huotu.hotcms.web.service.factory.SiteCurrentProcessorFactory;
-import com.huotu.hotcms.web.service.factory.VideoCurrentProcessorFactory;
+import com.huotu.hotcms.service.thymeleaf.common.DialectTypeEnum;
+import com.huotu.hotcms.service.thymeleaf.service.factory.ArticleCurrentProcessorFactory;
+import com.huotu.hotcms.service.thymeleaf.service.factory.SiteCurrentProcessorFactory;
+import com.huotu.hotcms.service.thymeleaf.service.factory.VideoCurrentProcessorFactory;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.model.IProcessableElementTag;
 

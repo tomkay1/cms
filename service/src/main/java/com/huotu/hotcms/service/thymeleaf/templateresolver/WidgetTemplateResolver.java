@@ -6,9 +6,9 @@
  *  Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District 2013-2015. All rights reserved.
  */
 
-package com.huotu.hotcms.admin.thymeleaf.templateresolver;
+package com.huotu.hotcms.service.thymeleaf.templateresolver;
 
-import com.huotu.hotcms.admin.thymeleaf.templateresource.WidgetTemplateResource;
+import com.huotu.hotcms.service.thymeleaf.templateresource.WidgetTemplateResource;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.thymeleaf.IEngineConfiguration;

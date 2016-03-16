@@ -12,8 +12,8 @@ import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.service.RouteService;
-import com.huotu.hotcms.web.common.ConfigInfo;
-import com.huotu.hotcms.web.util.PatternMatchUtil;
+import com.huotu.hotcms.service.thymeleaf.common.ConfigInfo;
+import com.huotu.hotcms.service.util.PatternMatchUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -42,7 +42,7 @@ public class RouteResolverService {
      * @return
      * */
     public Route getRoute(Site site,String url) {
-        if(PatternMatchUtil.match(url,PatternMatchUtil.routeUrlRegexp)) {
+        if(PatternMatchUtil.match(url, PatternMatchUtil.routeUrlRegexp)) {
             url = PatternMatchUtil.getUrlString(url, PatternMatchUtil.routeUrlRegexp);
         }
         Set<Route> routes =routeService.getRoute(site);

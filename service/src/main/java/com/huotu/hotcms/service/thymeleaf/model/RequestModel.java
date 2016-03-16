@@ -10,7 +10,7 @@ package com.huotu.hotcms.service.thymeleaf.model;
 
 
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.web.util.PatternMatchUtil;
+import com.huotu.hotcms.service.util.PatternMatchUtil;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,7 +51,7 @@ public class RequestModel{
 
     public void setRootUri(Site site,HttpServletRequest request) {
         String rootUrl="";
-        String langParam=PatternMatchUtil.getEffecterLangParam(request, site);
+        String langParam= PatternMatchUtil.getEffecterLangParam(request, site);
         Integer port=request.getServerPort();
         if(site.isCustom()){
             if(this.getContextPath()!=null) {

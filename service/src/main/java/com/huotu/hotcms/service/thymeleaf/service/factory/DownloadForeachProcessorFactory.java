@@ -12,8 +12,8 @@ import com.huotu.hotcms.service.entity.Download;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.NormalForeachParam;
 import com.huotu.hotcms.service.service.DownloadService;
-import com.huotu.hotcms.web.thymeleaf.expression.DialectAttributeFactory;
-import com.huotu.hotcms.web.thymeleaf.expression.VariableExpression;
+import com.huotu.hotcms.service.thymeleaf.expression.DialectAttributeFactory;
+import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.util.StringUtils;
@@ -49,7 +49,7 @@ public class DownloadForeachProcessorFactory {
             NormalForeachParam downloadForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag, NormalForeachParam.class);
             WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
             DownloadService downloadService = (DownloadService)applicationContext.getBean("downloadServiceImpl");
-            Site site = (Site) VariableExpression.getVariable(context,"site");
+            Site site = (Site) VariableExpression.getVariable(context, "site");
             //根据指定id获取栏目列表
             if(downloadForeachParam.getSpecifyids()!=null) {
                 List<Download> downloads = downloadService.getSpecifyDownloads(downloadForeachParam.getSpecifyids());

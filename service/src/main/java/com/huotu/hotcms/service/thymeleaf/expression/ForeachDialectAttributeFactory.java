@@ -7,9 +7,8 @@
  */
 
 package com.huotu.hotcms.service.thymeleaf.expression;
-
-import com.huotu.hotcms.web.common.DialectHtml5AttrEnum;
-import com.huotu.hotcms.web.model.ForeachDialectModel;
+import com.huotu.hotcms.service.thymeleaf.common.DialectHtml5AttrEnum;
+import com.huotu.hotcms.service.thymeleaf.model.ForeachDialectModel;
 import org.thymeleaf.model.IElementAttributes;
 import org.thymeleaf.model.IProcessableElementTag;
 

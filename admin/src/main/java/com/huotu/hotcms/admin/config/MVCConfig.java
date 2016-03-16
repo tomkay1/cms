@@ -3,7 +3,7 @@ package com.huotu.hotcms.admin.config;
 import com.huotu.hotcms.admin.interceptor.SiteResolver;
 import com.huotu.hotcms.admin.dialect.HotDialect;
 import com.huotu.hotcms.admin.interceptor.LoginInterceptor;
-import com.huotu.hotcms.admin.thymeleaf.templateresolver.WidgetTemplateResolver;
+import com.huotu.hotcms.service.thymeleaf.templateresolver.WidgetTemplateResolver;
 import com.huotu.hotcms.admin.util.ArrayUtil;
 import com.huotu.hotcms.service.config.JpaConfig;
 import com.huotu.hotcms.service.config.ServiceConfig;
@@ -101,6 +101,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         registry.viewResolver(redirectViewResolver());
         registry.viewResolver(forwardViewResolver());
         registry.viewResolver(remoteHtmlViewResolver());
+        registry.viewResolver(widgetViewResolver());
     }
 
 
@@ -118,7 +119,8 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 
     public ViewResolver widgetViewResolver() {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
-        resolver.setViewNames(ArrayUtil.array("/widget/**"));
+//        resolver.setViewNames(ArrayUtil.array("/widget/**"));
+        resolver.setViewNames(ArrayUtil.array("*.shtml"));
         resolver.setCharacterEncoding(UTF8);
         resolver.setTemplateEngine(templateEngine(widgetTemplateResolver()));
         return resolver;
@@ -130,9 +132,11 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         resolver.setTemplateEngine(templateEngine(htmlTemplateResolver()));
         resolver.setContentType("text/html");
         resolver.setCharacterEncoding(UTF8);
-        resolver.setViewNames(ArrayUtil.array("/view/**"));
+//        resolver.setViewNames(ArrayUtil.array("/view/**"));
+        resolver.setViewNames(ArrayUtil.array(".html"));
         return resolver;
     }
+
 
     public ViewResolver remoteHtmlViewResolver() {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();

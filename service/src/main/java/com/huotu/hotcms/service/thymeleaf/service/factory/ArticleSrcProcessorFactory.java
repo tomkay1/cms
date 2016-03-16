@@ -9,10 +9,10 @@
 package com.huotu.hotcms.service.thymeleaf.service.factory;
 
 import com.huotu.hotcms.service.entity.Article;
+import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
+import com.huotu.hotcms.service.thymeleaf.service.BaseProcessorService;
+import com.huotu.hotcms.service.util.PatternMatchUtil;
 import com.huotu.hotcms.service.util.StringUtil;
-import com.huotu.hotcms.web.service.BaseProcessorService;
-import com.huotu.hotcms.web.thymeleaf.expression.VariableExpression;
-import com.huotu.hotcms.web.util.PatternMatchUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.thymeleaf.context.ITemplateContext;

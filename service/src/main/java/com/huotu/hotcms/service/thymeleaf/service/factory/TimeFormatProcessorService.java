@@ -9,7 +9,7 @@
 package com.huotu.hotcms.service.thymeleaf.service.factory;
 
 import com.huotu.hotcms.service.model.thymeleaf.format.TimeFormatParam;
-import com.huotu.hotcms.web.thymeleaf.expression.DialectAttributeFactory;
+import com.huotu.hotcms.service.thymeleaf.expression.DialectAttributeFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.util.StringUtils;

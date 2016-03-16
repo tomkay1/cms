@@ -9,8 +9,8 @@
 package com.huotu.hotcms.service.thymeleaf.service;
 
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.web.model.RequestModel;
-import com.huotu.hotcms.web.util.PatternMatchUtil;
+import com.huotu.hotcms.service.thymeleaf.model.RequestModel;
+import com.huotu.hotcms.service.util.PatternMatchUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 

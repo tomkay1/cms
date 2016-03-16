@@ -8,7 +8,7 @@
 
 package com.huotu.hotcms.service.thymeleaf.processor;
 
-import com.huotu.hotcms.web.service.SrcProcessorService;
+import com.huotu.hotcms.service.thymeleaf.service.SrcProcessorService;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.engine.AttributeName;
@@ -50,7 +50,7 @@ public class SrcProcessor extends AbstractStandardExpressionAttributeTagProcesso
         Object srcObject=this.srcProcessorService.resolveSrcData(attributeValue,context);
         newAttributeValue=srcObject!=null?srcObject.toString():"";
 
-        newAttributeValue=HtmlEscape.escapeHtml4Xml(newAttributeValue == null ? "" : newAttributeValue.toString());
+        newAttributeValue= HtmlEscape.escapeHtml4Xml(newAttributeValue == null ? "" : newAttributeValue.toString());
 
         // Let RequestDataValueProcessor modify the attribute value if needed
         newAttributeValue = RequestDataValueProcessorUtils.processUrl(context, newAttributeValue);

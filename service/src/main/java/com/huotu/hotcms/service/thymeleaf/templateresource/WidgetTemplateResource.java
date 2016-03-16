@@ -6,12 +6,11 @@
  *  Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District 2013-2015. All rights reserved.
  */
 
-package com.huotu.hotcms.admin.thymeleaf.templateresource;
+package com.huotu.hotcms.service.thymeleaf.templateresource;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 import org.thymeleaf.templateresource.ITemplateResource;
-import org.thymeleaf.util.StringUtils;
 import org.thymeleaf.util.Validate;
 
 import java.io.*;
@@ -22,7 +21,7 @@ import java.io.*;
  */
 public class WidgetTemplateResource implements ITemplateResource {
 
-    private final Resource resource;
+//    private final Resource resource;
     private final String characterEncoding;
 
     public WidgetTemplateResource(final ApplicationContext applicationContext, final String location, final String characterEncoding) {
@@ -31,7 +30,7 @@ public class WidgetTemplateResource implements ITemplateResource {
         Validate.notNull(applicationContext, "Application Context cannot be null");
         Validate.notEmpty(location, "Resource Location cannot be null or empty");
         // Character encoding CAN be null (system default will be used)
-        this.resource = applicationContext.getResource(location);
+//        this.resource = applicationContext.getResource(location);
         this.characterEncoding = characterEncoding;
     }
 
@@ -42,40 +41,45 @@ public class WidgetTemplateResource implements ITemplateResource {
         Validate.notNull(resource, "Resource cannot be null");
         // Character encoding CAN be null (system default will be used)
 
-        this.resource = resource;
+//        this.resource = resource;
         this.characterEncoding = characterEncoding;
     }
 
     @Override
     public String getDescription() {
-        return this.resource.getDescription();
+//        return this.resource.getDescription();
+        return "";
     }
 
     @Override
     public String getBaseName() {
-        return computeBaseName(this.resource.getFilename());
+//        return computeBaseName(this.resource.getFilename());
+        return "";
     }
 
     @Override
     public boolean exists() {
-        return this.resource.exists();
+//        return this.resource.exists();
+        return true;
     }
 
     @Override
     public Reader reader() throws IOException {
-
+        String test="<div th:text=\"${test2}\" style=\"color:red\"></div><div>测试</div><div></div>";
         //TODO 自定义流
-        final InputStream inputStream = this.resource.getInputStream();
-        return new BufferedReader(new InputStreamReader(new BufferedInputStream(inputStream)));
+//        final InputStream inputStream = this.resource.getInputStream();
+//        final InputStream inputStream = is;
+        return new StringReader(test);
+//        return new BufferedReader(new InputStreamReader(new BufferedInputStream(inputStream)));
     }
 
     @Override
     public ITemplateResource relative(final String relativeLocation) throws IOException {
-        return new WidgetTemplateResource(this.resource.createRelative(relativeLocation), this.characterEncoding);
+//        return new WidgetTemplateResource(this.resource.createRelative(relativeLocation), this.characterEncoding);
+        return null;
     }
 
     static String computeBaseName(final String path) {
-
         if (path == null) {
             return null;
         }

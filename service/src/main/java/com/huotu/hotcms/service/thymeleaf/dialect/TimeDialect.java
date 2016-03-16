@@ -8,6 +8,7 @@
 
 package com.huotu.hotcms.service.thymeleaf.dialect;
 
+import com.huotu.hotcms.service.thymeleaf.processor.FormatProcessor;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.processor.IProcessor;

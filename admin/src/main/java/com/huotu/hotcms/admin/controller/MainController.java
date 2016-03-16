@@ -72,9 +72,9 @@ public class MainController {
         layoutTests.add(new layoutTest("<div style='height:80px; width:100%;border:1px #cccccc solid'></div>"));
         layoutTests.add(new layoutTest("<div style='height:90px; width:100%;border:1px #cccccc solid'></div>"));
         modelAndView.addObject("layouts",layoutTests.toArray());
-        modelAndView.addObject("test","测试哦");
+        modelAndView.addObject("test2","测试哦");
 //        modelAndView.setView(new View);
-        modelAndView.setViewName("/view/pc_test.html");
+        modelAndView.setViewName("/view/a_test.shtml");
 //        writers.write("<div>测试哦</div>");
         return modelAndView;
     }

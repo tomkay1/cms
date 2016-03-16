@@ -8,7 +8,7 @@
 
 package com.huotu.hotcms.service.thymeleaf.processor;
 
-import com.huotu.hotcms.web.service.CurrentProcessorService;
+import com.huotu.hotcms.service.thymeleaf.service.CurrentProcessorService;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.engine.AttributeName;

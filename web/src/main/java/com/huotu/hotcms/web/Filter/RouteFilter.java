@@ -2,10 +2,10 @@ package com.huotu.hotcms.web.Filter;
 
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.thymeleaf.service.RouteResolverService;
+import com.huotu.hotcms.service.thymeleaf.service.SiteResolveService;
 import com.huotu.hotcms.service.util.CheckMobile;
-import com.huotu.hotcms.web.service.RouteResolverService;
-import com.huotu.hotcms.web.service.SiteResolveService;
-import com.huotu.hotcms.web.util.PatternMatchUtil;
+import com.huotu.hotcms.service.util.PatternMatchUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.util.StringUtils;
@@ -55,7 +55,7 @@ public class RouteFilter implements Filter {
                 }
             }
 
-            String servletPath=PatternMatchUtil.getServletPath(site,request1);//获得ServletPath 国际化带语言参数经一步处理(移除国际化参数信息)得到的跟配置的路由一致
+            String servletPath= PatternMatchUtil.getServletPath(site, request1);//获得ServletPath 国际化带语言参数经一步处理(移除国际化参数信息)得到的跟配置的路由一致
             String langParam=PatternMatchUtil.getEffecterLangParam(request1, site);//获得国际化参数(url上带上的语言地区参数信息)
             if(!servletPath.contains(filter)) {
                 if (PatternMatchUtil.isMatchFilter(servletPath)) {

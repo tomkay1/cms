@@ -8,7 +8,6 @@
 
 package com.huotu.hotcms.web.service;
 
-import com.huotu.hotcms.service.common.ModelType;
 import com.huotu.hotcms.service.entity.*;
 import com.huotu.hotcms.service.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;

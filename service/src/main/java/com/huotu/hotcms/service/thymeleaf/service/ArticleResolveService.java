@@ -44,7 +44,7 @@ public class ArticleResolveService {
     /**
      * 根据Context获得文章对象
      *
-     * @param ITemplateContext
+     * @param context
      * @return
      * */
     public Article getArticleByContent( ITemplateContext context){

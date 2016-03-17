@@ -45,6 +45,9 @@ seajs.config({
 		"categoryList":"js/page/section/categoryList.js?v="+version,
 		"updateCategory":"js/page/section/updateCategory.js??v="+version,
 		"contentsList":"js/page/contents/contentsList.js?v="+version,
+		"widgetTypeList":"js/page/widget/widgetTypeList.js?v="+version,
+		"addWidgetType":"js/page/widget/addWidgetType.js?v="+version,
+		"updateWidgetType":"js/page/widget/updateWidgetType.js?v="+version,
 
 		"ajaxfileupload":"libs/ajaxfileupload.js?v="+version,
 		"jupload":"libs/upload/jackson-upload.js?v="+version,

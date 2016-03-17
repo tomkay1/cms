@@ -28,7 +28,7 @@ import java.util.Map;
  * 组件模板资源解析器
  * Created by cwb on 2016/3/16.
  */
-public class WidgetTemplateResolver extends AbstractTemplateResolver {
+public class WidgetTemplateResolver extends AbstractTemplateResolver{
 
     public static final TemplateMode DEFAULT_TEMPLATE_MODE = TemplateMode.XML;
     private ApplicationContext applicationContext = null;

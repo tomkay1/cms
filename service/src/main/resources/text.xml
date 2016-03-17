@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<page url="http://www.abc.com">
+<page url="/{siteId}.cshtml">
     <layout layoutType="0">
 
     </layout>

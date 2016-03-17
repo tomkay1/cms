@@ -8,6 +8,8 @@
 
 package com.huotu.hotcms.service.thymeleaf.templateresource;
 
+import com.huotu.hotcms.service.widget.service.PageResourceService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 import org.thymeleaf.templateresource.ITemplateResource;
@@ -21,14 +23,18 @@ import java.io.*;
  */
 public class WidgetTemplateResource implements ITemplateResource {
 
-//    private final Resource resource;
+    @Autowired
+    private PageResourceService pageResourceService;
+
+//  private final Resource resource;
     private final String characterEncoding;
 
     public WidgetTemplateResource(final ApplicationContext applicationContext, final String location, final String characterEncoding) {
         super();
-
         Validate.notNull(applicationContext, "Application Context cannot be null");
         Validate.notEmpty(location, "Resource Location cannot be null or empty");
+//        SiteResolveService siteResolveService = (SiteResolveService) applicationContext.getBean("siteResolveService");
+//        Site site = siteResolveService.getCurrentSite(request1);
         // Character encoding CAN be null (system default will be used)
 //        this.resource = applicationContext.getResource(location);
         this.characterEncoding = characterEncoding;
@@ -65,11 +71,13 @@ public class WidgetTemplateResource implements ITemplateResource {
 
     @Override
     public Reader reader() throws IOException {
-        String test="<div th:text=\"${test2}\" style=\"color:red\"></div><div>测试</div><div></div>";
+        String htmlTemplate="";
+//       String htmlTemplate=pageResourceService.getHtmlTemplateByWidgetPage();
+//        String test="<div th:text=\"${test2}\" style=\"color:red\"></div><div>测试</div><div></div>";
         //TODO 自定义流
 //        final InputStream inputStream = this.resource.getInputStream();
 //        final InputStream inputStream = is;
-        return new StringReader(test);
+        return new StringReader(htmlTemplate);
 //        return new BufferedReader(new InputStreamReader(new BufferedInputStream(inputStream)));
     }
 

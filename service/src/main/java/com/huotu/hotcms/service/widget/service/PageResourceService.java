@@ -28,6 +28,9 @@ public class PageResourceService {
     @Autowired
     private StaticResourceService resourceServer;
 
+    @Autowired
+    private PageResolveService pageResolveService;
+
     public String getHtmlTemplateByWidgetPage(WidgetPage widgetPage){
         String htmlTemplate="";
         if(widgetPage!=null){
@@ -35,8 +38,7 @@ public class PageResourceService {
            if(widgetLayouts!=null){
                for(WidgetLayout widgetLayout:widgetLayouts){
                    if(widgetLayout!=null) {
-                       List<String> moduleTemplateList=getWidgetModuleTemplateByWidgetModuleList(widgetLayout.getModule());
-//                       LayoutEnum.LEFT_CENTER_RIGHT_PART_LAYOUT_323x324x323.getLayoutTemplate();
+                       htmlTemplate+=getWidgetLayoutTemplateByWidgetLayout(widgetLayout);
                    }
                }
            }
@@ -99,52 +101,64 @@ public class PageResourceService {
         String layoutTemplate="";
         if(widgetLayout!=null){
             List<String> moduleTemplateList=getWidgetModuleTemplateByWidgetModuleList(widgetLayout.getModule());
+            String templateParam0="";
+            String templateParam1="";
+            String templateParam2="";
+            if(moduleTemplateList!=null) {
+                try {
+                    templateParam0 = moduleTemplateList.get(0);
+                    templateParam1 = moduleTemplateList.get(1);
+                    templateParam2 = moduleTemplateList.get(2);
+                }catch (Exception ex){
+                    ex.getStackTrace();
+                }
+            }
             switch (widgetLayout.getLayoutType()){
-//                case 0:
-//                    layoutTemplate= "<div>%s</div><div>%s</div><div>%s</div>";
-//                    break;
-//                case 1:
-//                    layoutTemplate= "<div>%s</div>";
-//                    break;
-//                case 2:
-//                    layoutTemplate= "<div>%s</div><div>%s</div>";
-//                    break;
-//                case 3:
-//                    layoutTemplate= "<div>%s</div><div>%s</div><div>%s</div>";
-//                    break;
-//                case 4:
-//                    layoutTemplate= "<div>%s</div><div>%s</div>";
-//                    break;
-//                case 5:
-//                    layoutTemplate= "<div>%s</div><div>%s</div><div>%s</div>";
-//                    break;
-//                case 6:
-//                    layoutTemplate= "<div>%s</div><div>%s</div><div>%s</div>";
-//                    break;
-//                case 7:
-//                    layoutTemplate= "<div>%s</div><div>%s</div>";
-//                    break;
-//                case 8:
-//                    layoutTemplate= "<div>%s</div><div>%s</div>";
-//                    break;
-//                case 9:
-//                    layoutTemplate= "<div>%s</div><div>%s</div>";
-//                    break;
-//                case 10:
-//                    layoutTemplate= "<div>%s</div><div>%s</div>";
-//                    break;
-//                case 11:
-//                    layoutTemplate= "<div>%s</div><div>%s</div>";
-//                    break;
-//                case 12:
-//                    layoutTemplate= "<div>%s</div><div>%s</div>";
-//                    break;
-//                case 13:
-//                    layoutTemplate= "<div>%s</div><div>%s</div><div>%s</div>";
-//                    break;
-//                case 14:
-//                    layoutTemplate= "<div>%s</div>";
-//                    break;
+                case 0:
+                    layoutTemplate= String.format(LayoutEnum.THREE_COLUMN_LAYOUT_190x590x190.getLayoutTemplate(),templateParam0,templateParam1,templateParam2);
+                    break;
+                case 1:
+                    layoutTemplate= String.format(LayoutEnum.WITHOUT_COLUMN_LAYOUT_990.getLayoutTemplate(),templateParam0);
+                    break;
+                case 2:
+                    layoutTemplate= String.format(LayoutEnum.LEFT_RIGHT_COLUMN_LAYOUT_190x790.getLayoutTemplate(),templateParam0,templateParam1);
+                    break;
+                case 3:
+                    layoutTemplate= String.format(LayoutEnum.RIGHT_PART_LAYOUT_190x390x390.getLayoutTemplate(),templateParam0,templateParam1,templateParam2);
+                    break;
+                case 4:
+                    layoutTemplate= String.format(LayoutEnum.LEFT_RIGHT_COLUMN_LAYOUT_790x190.getLayoutTemplate(),templateParam0,templateParam1);
+                    break;
+                case 5:
+                    layoutTemplate= String.format(LayoutEnum.LEFT_PART_LAYOUT_390x390x190.getLayoutTemplate(),templateParam0,templateParam1,templateParam2);
+                    break;
+                case 6:
+                    layoutTemplate= String.format(LayoutEnum.THREE_COLUMN_LAYOUT_254x717x239.getLayoutTemplate(),templateParam0,templateParam1,templateParam2);
+                    break;
+                case 7:
+                    layoutTemplate= String.format(LayoutEnum.LEFT_RIGHT_COLUMN_LAYOUT_254x956.getLayoutTemplate(),templateParam0,templateParam1);
+                    break;
+                case 8:
+                    layoutTemplate= String.format(LayoutEnum.LEFT_RIGHT_COLUMN_LAYOUT_272x718.getLayoutTemplate(),templateParam0,templateParam1);
+                    break;
+                case 9:
+                    layoutTemplate= String.format(LayoutEnum.LEFT_RIGHT_COLUMN_LAYOUT_215x765.getLayoutTemplate(),templateParam0,templateParam1);
+                    break;
+                case 10:
+                    layoutTemplate= String.format(LayoutEnum.LEFT_RIGHT_COLUMN_LAYOUT_330x650.getLayoutTemplate(),templateParam0,templateParam1);
+                    break;
+                case 11:
+                    layoutTemplate= String.format(LayoutEnum.LEFT_RIGHT_COLUMN_LAYOUT_650x330.getLayoutTemplate(),templateParam0,templateParam1);
+                    break;
+                case 12:
+                    layoutTemplate= String.format(LayoutEnum.LEFT_RIGHT_PART_LAYOUT_490x490.getLayoutTemplate(),templateParam0,templateParam1);
+                    break;
+                case 13:
+                    layoutTemplate= String.format(LayoutEnum.LEFT_CENTER_RIGHT_PART_LAYOUT_323x324x323.getLayoutTemplate(),templateParam0,templateParam1,templateParam2);
+                    break;
+                case 14:
+                    layoutTemplate= String.format(LayoutEnum.WITHOUT_COLUMN_LAYOUT_99999.getLayoutTemplate(),templateParam0);
+                    break;
             }
         }
         return layoutTemplate;

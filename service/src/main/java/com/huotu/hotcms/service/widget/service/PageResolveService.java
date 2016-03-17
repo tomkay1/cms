@@ -57,4 +57,29 @@ public class PageResolveService {
         return widgetPage;
     }
 
+    /**
+     * 根据页面配置信息获得WidgetPage对象
+     * @param pageConfigName
+     * @param site
+     * @return widgetPage
+     * */
+    public WidgetPage getWidgetPageByConfig(String pageConfigName,Site site){
+        WidgetPage widgetPage=null;
+        String path=configInfo.getResourcesConfig(site.getCustomerId(),site.getSiteId())+"/"+pageConfigName;
+        try {
+            URI url=resourceServer.getResource(path);
+            if(url!=null) {
+                InputStream inputStream = HttpUtils.getInputStreamByUrl(url.toURL());
+                widgetPage = JAXB.unmarshal(inputStream, WidgetPage.class);
+            }
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return widgetPage;
+    }
+
 }

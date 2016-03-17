@@ -28,9 +28,6 @@ public class ConfigInfo {
         this.mallManageUrl = ev.getProperty("huobanmall.mallSupperUrl", "http://manager.51flashmall.com/home.aspx?customerid=%s");
     }
 
-//    @Value("${out.loginUrl}")
-//    private String outLoginUrl;
-
     @Value("${resources.site}")
     private String resourcesSiteLogo;
 
@@ -51,13 +48,6 @@ public class ConfigInfo {
 
     @Value("${resources.config}")
     private String resourcesConfig;
-
-//    @Value("${out.mallManageUrl}")
-//    private String mallManageUrl;
-
-//    @Value("${out.mallSupperUrl}")
-//    private String mallSupperUrl;
-
 
     public String getResourcesSiteLogo(Integer customerId) {
         return String.format(resourcesSiteLogo,customerId) ;

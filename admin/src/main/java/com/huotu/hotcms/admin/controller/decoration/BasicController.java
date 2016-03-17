@@ -2,6 +2,7 @@ package com.huotu.hotcms.admin.controller.decoration;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,9 +19,9 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/basic")
 public class BasicController {
     @RequestMapping("/head")
-    public ModelAndView widgetTypeList(HttpServletRequest request) throws Exception{
+    public ModelAndView widgetTypeList(HttpServletRequest request, @RequestParam("customerid") Integer customerid) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/decoration/basic/head.html");
+        modelAndView.setViewName(String.format("/s%_head.shtml",customerid.toString()));
         return  modelAndView;
     }
 }

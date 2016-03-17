@@ -79,6 +79,11 @@ public class Site {
     @Column(name = "customViewUrl")
     private String customTemplateUrl;
 
+    /**
+     * 站点是否个性化
+     * */
+    @Column(name = "isPersonalise")
+    private boolean isPersonalise;
 
      /**
       * 对应域名

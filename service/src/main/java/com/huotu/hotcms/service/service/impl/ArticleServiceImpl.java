@@ -49,36 +49,36 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Page<Article> getArticleList(PageableForeachParam articleForeachParam) throws Exception {
-        int pageIndex = articleForeachParam.getPageno()-1;
+        int pageIndex = articleForeachParam.getPageno() - 1;
         int pageSize = articleForeachParam.getPagesize();
         Sort sort = new Sort(Sort.Direction.DESC, "orderWeight");
-        if(!StringUtils.isEmpty(articleForeachParam.getSpecifyids())) {
-            return getSpecifyArticles(articleForeachParam.getSpecifyids(),pageIndex,pageSize,sort);
+        if (!StringUtils.isEmpty(articleForeachParam.getSpecifyids())) {
+            return getSpecifyArticles(articleForeachParam.getSpecifyids(), pageIndex, pageSize, sort);
         }
-        if(!StringUtils.isEmpty(articleForeachParam.getCategoryid())) {
+        if (!StringUtils.isEmpty(articleForeachParam.getCategoryid())) {
             return getArticles(articleForeachParam, pageIndex, pageSize, sort);
-        }else {
+        } else {
             return getAllArticle(articleForeachParam, pageIndex, pageSize, sort);
         }
     }
 
-    private Page<Article> getAllArticle(PageableForeachParam params, int pageIndex, int pageSize, Sort sort){
-        List<Category> subCategories =  categoryService.getSubCategories(params.getParentcid());
-        if(subCategories.size()==0) {
+    private Page<Article> getAllArticle(PageableForeachParam params, int pageIndex, int pageSize, Sort sort) {
+        List<Category> subCategories = categoryService.getSubCategories(params.getParentcid());
+        if (subCategories.size() == 0) {
             try {
                 throw new Exception("父栏目节点没有子栏目");
-            }catch (Exception e) {
+            } catch (Exception e) {
                 log.error(e.getMessage());
             }
         }
         Specification<Article> specification = (root, criteriaQuery, cb) -> {
             List<Predicate> p1 = new ArrayList<>();
-            for(Category category : subCategories) {
+            for (Category category : subCategories) {
                 p1.add(cb.equal(root.get("category").as(Category.class), category));
             }
             Predicate predicate = cb.or(p1.toArray(new Predicate[p1.size()]));
             List<Predicate> predicates = new ArrayList<>();
-            if(!StringUtils.isEmpty(params.getExcludeids())) {
+            if (!StringUtils.isEmpty(params.getExcludeids())) {
                 List<String> ids = Arrays.asList(params.getExcludeids());
                 List<Long> articleIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
                 predicates = articleIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
@@ -87,7 +87,7 @@ public class ArticleServiceImpl implements ArticleService {
             predicates.add(predicate);
             return cb.and(predicates.toArray(new Predicate[predicates.size()]));
         };
-        return articleRepository.findAll(specification,new PageRequest(pageIndex,pageSize,sort));
+        return articleRepository.findAll(specification, new PageRequest(pageIndex, pageSize, sort));
     }
 
     private Page<Article> getArticles(PageableForeachParam params, int pageIndex, int pageSize, Sort sort) throws Exception {
@@ -104,19 +104,19 @@ public class ArticleServiceImpl implements ArticleService {
                 return cb.and(predicates.toArray(new Predicate[predicates.size()]));
             };
             return articleRepository.findAll(specification, new PageRequest(pageIndex, pageSize, sort));
-        }catch (Exception ex){
+        } catch (Exception ex) {
             throw new Exception("获得文章列表出现错误");
         }
     }
 
-    private Page<Article> getSpecifyArticles(String[] specifyIds,int pageIndex,int pageSize,Sort sort) {
+    private Page<Article> getSpecifyArticles(String[] specifyIds, int pageIndex, int pageSize, Sort sort) {
         List<String> ids = Arrays.asList(specifyIds);
         List<Long> articleIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
         Specification<Article> specification = (root, criteriaQuery, cb) -> {
             List<Predicate> predicates = articleIds.stream().map(id -> cb.equal(root.get("id").as(Long.class), id)).collect(Collectors.toList());
             return cb.or(predicates.toArray(new Predicate[predicates.size()]));
         };
-        return articleRepository.findAll(specification,new PageRequest(pageIndex,pageSize,sort));
+        return articleRepository.findAll(specification, new PageRequest(pageIndex, pageSize, sort));
     }
 
     @Override
@@ -131,11 +131,11 @@ public class ArticleServiceImpl implements ArticleService {
             predicates.add(cb.equal(root.get("customerId").as(Integer.class), customerId));
             return cb.and(predicates.toArray(new Predicate[predicates.size()]));
         };
-        Page<Article> pageData = articleRepository.findAll(specification,new PageRequest(page - 1, pageSize));
+        Page<Article> pageData = articleRepository.findAll(specification, new PageRequest(page - 1, pageSize));
         if (pageData != null) {
-            List<Article> articles =pageData.getContent();
-            List<ArticleCategory> articleCategoryList =new ArrayList<>();
-            for(Article article : articles){
+            List<Article> articles = pageData.getContent();
+            List<ArticleCategory> articleCategoryList = new ArrayList<>();
+            for (Article article : articles) {
                 ArticleCategory articleCategory = new ArticleCategory();
                 articleCategory.setSiteName(article.getCategory().getSite().getName());
 //                articleCategory.setSite(article.getCategory().getSite());
@@ -153,9 +153,9 @@ public class ArticleServiceImpl implements ArticleService {
             data.setPageIndex(pageData.getNumber());
             data.setPageSize(pageData.getSize());
             data.setTotal(pageData.getTotalElements());
-            data.setRows((ArticleCategory[])articleCategoryList.toArray(new ArticleCategory[articleCategoryList.size()]));
+            data.setRows((ArticleCategory[]) articleCategoryList.toArray(new ArticleCategory[articleCategoryList.size()]));
         }
-        return  data;
+        return data;
     }
 
     @Override
@@ -178,8 +178,8 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Article getArticleNextByParam(ArticleNextParam articleNextParam) {
-        if(articleNextParam!=null){
-            if(articleNextParam.getId()!=null){
+        if (articleNextParam != null) {
+            if (articleNextParam.getId() != null) {
                 return articleRepository.findAllByIdAndNext(articleNextParam.getId());
             }
         }
@@ -188,8 +188,8 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Article getArticlePreiousByParam(ArticlePreviousParam articlePreviousParam) {
-        if(articlePreviousParam!=null){
-            if(articlePreviousParam.getId()!=null){
+        if (articlePreviousParam != null) {
+            if (articlePreviousParam.getId() != null) {
                 return articleRepository.findAllByIdAndPreious(articlePreviousParam.getId());
             }
         }

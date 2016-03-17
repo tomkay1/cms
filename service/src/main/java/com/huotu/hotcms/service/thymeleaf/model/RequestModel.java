@@ -40,6 +40,10 @@ public class RequestModel{
 
     private String prevPageHref;
 
+    private int totalPages;
+    private int totalRecords;
+    private List<Integer> pageNos;//页码btn集合
+
     /**
      * 当前请求的根路径并且加上语言版本参数(如果有则加上,没有相同于root属性)
      * */
@@ -243,5 +247,29 @@ public class RequestModel{
 
     public void setPrevPageHref(String prevPageHref) {
         this.prevPageHref = prevPageHref;
+    }
+
+    public int getTotalPages() {
+        return totalPages;
+    }
+
+    public void setTotalPages(int totalPages) {
+        this.totalPages = totalPages;
+    }
+
+    public int getTotalRecords() {
+        return totalRecords;
+    }
+
+    public void setTotalRecords(int totalRecords) {
+        this.totalRecords = totalRecords;
+    }
+
+    public List<Integer> getPageNos() {
+        return pageNos;
+    }
+
+    public void setPageNos(List<Integer> pageNos) {
+        this.pageNos = pageNos;
     }
 }

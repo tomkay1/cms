@@ -8,14 +8,19 @@
 
 package com.huotu.hotcms.service.thymeleaf.processor;
 
+import com.huotu.hotcms.service.common.SysConstant;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.PageableForeachParam;
 import com.huotu.hotcms.service.thymeleaf.expression.DialectAttributeFactory;
 import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
+import com.huotu.hotcms.service.thymeleaf.model.RequestModel;
+import com.huotu.hotcms.service.util.PageUtils;
 import com.huotu.hotcms.service.widget.model.Goods;
 import com.huotu.hotcms.service.widget.model.GoodsSearcher;
 import com.huotu.hotcms.service.widget.model.Page;
 import com.huotu.hotcms.service.widget.service.GoodsService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 import org.thymeleaf.context.ITemplateContext;
@@ -26,13 +31,19 @@ import org.thymeleaf.processor.element.AbstractAttributeTagProcessor;
 import org.thymeleaf.processor.element.IElementTagStructureHandler;
 import org.thymeleaf.templatemode.TemplateMode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 商品分页组件处理器
  * Created by cwb on 2016/3/17.
  */
 public class GoodsPageableTagProcessor extends AbstractAttributeTagProcessor {
+
     public static final String ATTR_NAME = "page";
     public static final int PRECEDENCE = 1300;
+
+    private static Log log = LogFactory.getLog(GoodsPageableTagProcessor.class);
 
     public GoodsPageableTagProcessor(IProcessorDialect dialect, String dialectPrefix) {
         super(dialect, TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
@@ -53,10 +64,26 @@ public class GoodsPageableTagProcessor extends AbstractAttributeTagProcessor {
         Page<Goods> goodsPage = null;
         try {
             GoodsSearcher goodsSearcher = DialectAttributeFactory.getInstance().getForeachParam(tag, GoodsSearcher.class);
-
-        goodsPage = goodsService.searchGoods(customerId,goodsSearcher);
+            goodsPage = goodsService.searchGoods(customerId,goodsSearcher);
+            //分页标签处理
+            RequestModel requestModel = (RequestModel)VariableExpression.getVariable(context,"request");
+            int pageNo = goodsPage.getCurrentPageNo();
+            int totalPages = goodsPage.getTotalPages();
+            int pageBtnNum = totalPages > SysConstant.DEFAULT_PAGE_BUTTON_NUM ? SysConstant.DEFAULT_PAGE_BUTTON_NUM : totalPages;
+            int startPageNo = PageUtils.calculateStartPageNo(pageNo, pageBtnNum, totalPages);
+            List<Integer> pageNos = new ArrayList<>();
+            for (int i = 1; i <= pageBtnNum; i++) {
+                pageNos.add(startPageNo);
+                startPageNo++;
+            }
+            requestModel.setCurrentPage(pageNo);
+            requestModel.setTotalPages(totalPages);
+            requestModel.setTotalRecords(goodsPage.getTotalRecords());
+            requestModel.setHasPrevPage(pageNo > 1);
+            requestModel.setHasNextPage(pageNo < totalPages);
+            requestModel.setPageNos(pageNos);
         }catch (Exception e) {
-
+            log.error(e.getMessage());
         }
         return goodsPage.getRecords();
     }

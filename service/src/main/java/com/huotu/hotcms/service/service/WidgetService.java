@@ -9,10 +9,16 @@ import com.huotu.hotcms.service.entity.WidgetType;
 import com.huotu.hotcms.service.util.PageData;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public  interface WidgetService {
 
     PageData<WidgetType> getWidgetTypePage(String name,int page,int pageSize);
+
+    PageData<WidgetMains> getWidgetMainsPage(String name,int page,int pageSize);
+
+    List<WidgetType> findAllWidgetType();
 
     Boolean saveWidgetType(WidgetType widgetType);
 
@@ -21,7 +27,7 @@ public  interface WidgetService {
     void delWidgetMains(Long id);
 
 
-    Boolean saveWidgetMains(WidgetType widgetType);
+    Boolean saveWidgetMains(WidgetMains widgetMains);
 
     WidgetType findWidgetTypeById(Long id);
 

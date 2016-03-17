@@ -45,10 +45,26 @@ public class WidgetServiceImpl implements WidgetService {
     }
 
     @Override
-    public Boolean saveWidgetType(WidgetType widgetType) {
-        widgetTypeRepository.save(widgetType);
-        return true;
+    public PageData<WidgetMains> getWidgetMainsPage(String name, int page, int pageSize) {
+        PageData<WidgetMains> data = new PageData<WidgetMains>();
+        Specification<Site> specification = (root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            if (!StringUtils.isEmpty(name)) {
+                predicates.add(cb.like(root.get("name").as(String.class), "%" + name + "%"));
+            }
+            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
+        Page<WidgetMains> pageData = widgetMainsRepository.findAll(specification,new PageRequest(page - 1, pageSize));
+        data=data.ConvertPageData(pageData,new WidgetMains[pageData.getContent().size()]);
+        return  data;
     }
+
+    @Override
+    public List<WidgetType> findAllWidgetType() {
+        List<WidgetType> widgetTypes = widgetTypeRepository.findAll();
+        return widgetTypes;
+    }
+
 
     @Override
     public void delWidgetType(Long id) {
@@ -62,7 +78,13 @@ public class WidgetServiceImpl implements WidgetService {
     }
 
     @Override
-    public Boolean saveWidgetMains(WidgetType widgetType) {
+    public Boolean saveWidgetMains(WidgetMains widgetMains) {
+        widgetMainsRepository.save(widgetMains);
+        return true;
+    }
+
+    @Override
+    public Boolean saveWidgetType(WidgetType widgetType) {
         widgetTypeRepository.save(widgetType);
         return true;
     }

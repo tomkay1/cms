@@ -11,6 +11,7 @@ import org.codehaus.plexus.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -130,7 +131,7 @@ public class RouteServiceImpl  implements RouteService {
             }
             return cb.and(predicates.toArray(new Predicate[predicates.size()]));
         };
-        Page<Route> pageData = routeRepository.findAll(specification,new PageRequest(page - 1, pageSize));
+        Page<Route> pageData = routeRepository.findAll(specification,new PageRequest(page - 1, pageSize, new Sort(Sort.Direction.DESC, "orderWeight")));
         data=data.ConvertPageData(pageData,new Route[pageData.getContent().size()]);
         for(Route route:pageData){
             route.setSite(null);

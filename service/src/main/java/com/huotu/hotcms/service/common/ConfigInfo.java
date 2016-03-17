@@ -46,6 +46,9 @@ public class ConfigInfo {
     @Value("${resources.download}")
     private String resourcesDownload;
 
+    @Value("${resources.widget}")
+    private String resourcesWidget;
+
 //    @Value("${out.mallManageUrl}")
 //    private String mallManageUrl;
 
@@ -68,6 +71,11 @@ public class ConfigInfo {
     public String getResourcesImg(Integer customerId) {
         return String.format(resourcesImg,customerId);
     }
+
+    public String getResourcesWidget() {
+        return resourcesWidget;
+    }
+
 
     public String getResourcesDownload(Integer customerId) {
         return String.format(resourcesDownload,customerId);

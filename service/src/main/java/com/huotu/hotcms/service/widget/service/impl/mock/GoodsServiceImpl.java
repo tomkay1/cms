@@ -8,20 +8,27 @@
 
 package com.huotu.hotcms.service.widget.service.impl.mock;
 
-import com.huotu.hotcms.service.widget.model.GoodsCategory;
-import com.huotu.hotcms.service.widget.service.GoodsCategoryService;
+import com.huotu.hotcms.service.widget.model.Goods;
+import com.huotu.hotcms.service.widget.model.GoodsSearcher;
+import com.huotu.hotcms.service.widget.model.Page;
+import com.huotu.hotcms.service.widget.service.GoodsService;
 import org.springframework.context.annotation.Profile;
 
 import java.util.List;
 
 /**
- * 商品分类组件服务mock层
+ * 商品组件服务mock层
  * Created by cwb on 2016/3/17.
  */
 @Profile("!container")
-public class GoodsCategoryServiceImpl implements GoodsCategoryService {
+public class GoodsServiceImpl implements GoodsService {
     @Override
-    public List<GoodsCategory> getGoodsCategories(int customerId) {
+    public Page<Goods> searchGoods(int customerId, GoodsSearcher goodsSearcher) {
+        return null;
+    }
+
+    @Override
+    public List<Goods> getHotGoodsList(int customerId) {
         return null;
     }
 }

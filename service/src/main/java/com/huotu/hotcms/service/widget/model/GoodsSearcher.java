@@ -7,7 +7,6 @@
  */
 
 package com.huotu.hotcms.service.widget.model;
-
 import com.huotu.hotcms.service.common.SortEnum;
 
 /**

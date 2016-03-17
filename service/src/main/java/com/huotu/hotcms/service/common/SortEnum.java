@@ -9,6 +9,8 @@
 package com.huotu.hotcms.service.common;
 
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * 排序依据
  * Created by cwb on 2016/3/17.
@@ -26,6 +28,7 @@ public enum SortEnum implements CommonEnum{
     }
 
     @Override
+    @JsonValue
     public Object getCode() {
         return code;
     }
@@ -42,4 +45,6 @@ public enum SortEnum implements CommonEnum{
     public void setValue(String value) {
         this.value = value;
     }
+
+
 }

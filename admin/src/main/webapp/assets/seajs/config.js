@@ -1,4 +1,4 @@
-var version="1.0.2";
+var version="1.0.1";
 seajs.config({
 	alias: {
 		"jquery": "js/jquery-1.9.1.min.js",
@@ -48,6 +48,9 @@ seajs.config({
 		"widgetTypeList":"js/page/widget/widgetTypeList.js?v="+version,
 		"addWidgetType":"js/page/widget/addWidgetType.js?v="+version,
 		"updateWidgetType":"js/page/widget/updateWidgetType.js?v="+version,
+		"widgetMainsList":"js/page/widget/widgetMainsList.js?v="+version,
+		"addWidgetMains":"js/page/widget/addWidgetMains.js?v="+version,
+		"updateWidgetMains":"js/page/widget/updateWidgetMains.js?v="+version,
 
 		"ajaxfileupload":"libs/ajaxfileupload.js?v="+version,
 		"jupload":"libs/upload/jackson-upload.js?v="+version,

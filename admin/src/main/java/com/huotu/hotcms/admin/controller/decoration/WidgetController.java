@@ -1,6 +1,8 @@
 package com.huotu.hotcms.admin.controller.decoration;
 
+import com.huotu.hotcms.admin.service.StaticResourceService;
 import com.huotu.hotcms.admin.util.web.CookieUser;
+import com.huotu.hotcms.service.entity.WidgetMains;
 import com.huotu.hotcms.service.entity.WidgetType;
 import com.huotu.hotcms.service.service.WidgetService;
 import com.huotu.hotcms.service.util.PageData;
@@ -11,6 +13,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Created by chendeyu on 2016/3/17.
@@ -33,26 +37,67 @@ public class WidgetController {
     private CookieUser cookieUser;
 
     @Autowired
+    private StaticResourceService resourceServer;
+
+    @Autowired
     private WidgetService widgetService;
 
 
 
     @RequestMapping("/widgetTypeList")
-    public ModelAndView widgetTypeList(HttpServletRequest request) throws Exception{
+    public ModelAndView widgetTypeList() throws Exception{
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("/decoration/widget/widgetTypeList.html");
         return  modelAndView;
     }
 
+    @RequestMapping("/widgetMainsList")
+    public ModelAndView widgetMainsList() throws Exception{
+        ModelAndView modelAndView=new ModelAndView();
+        modelAndView.setViewName("/decoration/widget/widgetMainsList.html");
+        return  modelAndView;
+    }
+
+
     @RequestMapping(value = "/addWidgetType")
-    public ModelAndView addWidgetType(HttpServletRequest request) throws Exception{
+    public ModelAndView addWidgetType() throws Exception{
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("/decoration/widget/addWidgetType.html");
         return  modelAndView;
     }
 
+    @RequestMapping(value = "/addWidgetMains")
+    public ModelAndView addWidgetMains() throws Exception{
+        ModelAndView modelAndView=new ModelAndView();
+        List<WidgetType> widgetTypes = widgetService.findAllWidgetType();
+        modelAndView.setViewName("/decoration/widget/addWidgetMains.html");
+        modelAndView.addObject("widgetTypes",widgetTypes);
+        return  modelAndView;
+    }
+
+
+    @RequestMapping("/updateWidgetMains")
+    public ModelAndView updateWidgetMains(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception{
+        ModelAndView modelAndView=new ModelAndView();
+        try{
+            modelAndView.setViewName("/decoration/widget/updateWidgetMains.html");
+            WidgetMains widgetMains= widgetService.findWidgetMainsById(id);
+            List<WidgetType> widgetTypes = widgetService.findAllWidgetType();
+            String logo_uri =null;
+            if(!StringUtils.isEmpty(widgetMains.getImageUri())) {
+                logo_uri = resourceServer.getResource(widgetMains.getImageUri()).toString();
+            }
+            modelAndView.addObject("widgetMains",widgetMains);
+            modelAndView.addObject("logo_uri",logo_uri);
+            modelAndView.addObject("widgetTypes",widgetTypes);
+        }catch (Exception ex){
+            log.error(ex.getMessage());
+        }
+        return modelAndView;
+    }
+
     @RequestMapping("/updateWidgetType")
-    public ModelAndView updateWidgetType(@RequestParam(value = "id",defaultValue = "0") Long id,Integer customerId) throws Exception{
+    public ModelAndView updateWidgetType(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
         try{
             modelAndView.setViewName("/decoration/widget/updateWidgetType.html");
@@ -71,8 +116,39 @@ public class WidgetController {
     public ResultView saveWidgetType(WidgetType widgetType){
         ResultView result=null;
         try {
-            widgetType.setCreateTime(LocalDateTime.now());
+            if(widgetType.getId()==null){
+                widgetType.setCreateTime(LocalDateTime.now());
+            }
+            else {
+                widgetType.setCreateTime(widgetService.findWidgetTypeById(widgetType.getId()).getCreateTime());
+            }
             widgetService.saveWidgetType(widgetType);
+            result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
+        }
+        catch (Exception ex)
+        {
+            log.error(ex.getMessage());
+            result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
+        }
+        return  result;
+    }
+
+    @RequestMapping(value = "/saveWidgetMains",method = RequestMethod.POST)
+    @Transactional(value = "transactionManager")
+    @ResponseBody
+    public ResultView saveWidgetMains(WidgetMains widgetMains,Long widgetTypeId){
+        ResultView result=null;
+        try {
+            WidgetType widgetType = widgetService.findWidgetTypeById(widgetTypeId);
+            if(widgetMains.getId()==null){
+                widgetMains.setCreateTime(LocalDateTime.now());
+            }
+            else {
+                widgetMains.setCreateTime(widgetService.findWidgetMainsById(widgetMains.getId()).getCreateTime());
+            }
+            widgetMains.setWidgetType(widgetType);
+            widgetMains.setCreateTime(LocalDateTime.now());
+            widgetService.saveWidgetMains(widgetMains);
             result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
         }
         catch (Exception ex)
@@ -97,6 +173,20 @@ public class WidgetController {
         return pageModel;
     }
 
+    @RequestMapping(value = "/getWidgetMainsList",method = RequestMethod.POST)
+    @ResponseBody
+    public PageData<WidgetMains> getWidgetMainsList(@RequestParam(name="name",required = false) String name,
+                                                  @RequestParam(name = "page",required = true,defaultValue = "1") Integer page,
+                                                  @RequestParam(name = "pagesize",required = true,defaultValue = "20") Integer pageSize) {
+        PageData<WidgetMains> pageModel = null;
+        try {
+            pageModel = widgetService.getWidgetMainsPage(name, page, pageSize);
+        } catch (Exception ex) {
+            log.error(ex.getMessage());
+        }
+        return pageModel;
+    }
+
 
     @RequestMapping(value = "/deleteWidgetType",method = RequestMethod.POST)
     @ResponseBody
@@ -105,6 +195,28 @@ public class WidgetController {
         try{
             if(cookieUser.isSupper(request)) {
                 widgetService.delWidgetType(id);
+                result=new ResultView(ResultOptionEnum.OK.getCode(),ResultOptionEnum.OK.getValue(),null);
+            }
+            else {
+                result=new ResultView(ResultOptionEnum.NO_LIMITS.getCode(),ResultOptionEnum.NO_LIMITS.getValue(),null);
+            }
+        }
+        catch (Exception ex)
+        {
+            log.error(ex.getMessage());
+            result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
+        }
+        return  result;
+    }
+
+
+    @RequestMapping(value = "/deleteWidgetMains",method = RequestMethod.POST)
+    @ResponseBody
+    public ResultView deleteWidgetMains(@RequestParam(name = "id",required = true,defaultValue = "0") Long id,HttpServletRequest request) {
+        ResultView result=null;
+        try{
+            if(cookieUser.isSupper(request)) {
+                widgetService.delWidgetMains(id);
                 result=new ResultView(ResultOptionEnum.OK.getCode(),ResultOptionEnum.OK.getValue(),null);
             }
             else {

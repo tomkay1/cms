@@ -18,8 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import sun.misc.BASE64Decoder;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URI;
 import java.util.Date;
 import java.util.HashMap;
@@ -47,10 +46,10 @@ public class UploadController {
         try {
             Date now = new Date();
             String fileName = files.getOriginalFilename();
-            String prefix = fileName.substring(fileName.lastIndexOf(".") + 1);
-            if("jpg, jpeg,png,gif,bmp".contains(prefix))
+            String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
+            if("jpg, jpeg,png,gif,bmp".contains(suffix))
             {
-                String path=configInfo.getResourcesSiteLogo(customerId)+"/"+StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + prefix;
+                String path=configInfo.getResourcesSiteLogo(customerId)+"/"+StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + suffix;
                 URI uri = resourceServer.uploadResource(path, files.getInputStream());
                 Map<String,Object> map= new HashMap<String, Object>();
                 map.put("fileUrl", uri);
@@ -73,9 +72,9 @@ public class UploadController {
         try {
             Date now = new Date();
             String fileName = files.getOriginalFilename();
-            String prefix = fileName.substring(fileName.lastIndexOf(".") + 1);
-            if("jpg, jpeg,png,gif,bmp".contains(prefix)){
-            String path=configInfo.getResourcesImg(customerId)+"/"+StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + prefix;
+            String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
+            if("jpg, jpeg,png,gif,bmp".contains(suffix)){
+            String path=configInfo.getResourcesImg(customerId)+"/"+StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + suffix;
                 URI uri = resourceServer.uploadResource(path, files.getInputStream());
                 Map<String,Object> map= new HashMap<String, Object>();
                 map.put("fileUrl", uri);
@@ -91,6 +90,62 @@ public class UploadController {
         return resultView;
     }
 
+    @RequestMapping(value = "/widgetUpLoad", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultView widgetUpLoad( @RequestParam(value = "btnFile1", required = false) MultipartFile files) {
+        ResultView resultView = null;
+        try {
+            Date now = new Date();
+            String fileName = files.getOriginalFilename();
+            String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
+            if("html".contains(suffix)){
+                String path=configInfo.getResourcesWidget()+"/"+StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + suffix;
+                URI uri = resourceServer.uploadResource(path, files.getInputStream());
+                String content = getFileContent(uri.toString());
+                Map<String,Object> map= new HashMap<String, Object>();
+                map.put("fileContent",content);
+                map.put("fileUrl", uri);
+                map.put("fileUri", path);
+                resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), map);
+            }else{
+                resultView = new ResultView(ResultOptionEnum.FILE_FORMATTER_ERROR.getCode(), ResultOptionEnum.FILE_FORMATTER_ERROR.getValue(), null);
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            resultView = new ResultView(ResultOptionEnum.SERVERFAILE.getCode(),e.getMessage(), null);
+        }
+        return resultView;
+    }
+
+
+
+    private String getFileContent(String fileName){
+        File file = new File(fileName);
+        BufferedReader reader = null;
+        String ans = "";
+        try{
+            reader = new BufferedReader(new FileReader(file));
+            String tmpString = null;
+            //一行一行的读取文件里面的内容
+            while((tmpString = reader.readLine()) != null){
+                ans += tmpString + "\n";//保存在ans里面
+            }
+        }catch(IOException e){
+            e.printStackTrace();
+        }finally{
+            if(reader != null)
+            {
+                try{
+                    reader.close();
+                }catch(IOException e1){
+                    e1.printStackTrace();
+                }
+            }
+        }
+        //返回获得的文件内容
+        return ans;
+    }
+
     @RequestMapping(value = "/downloadUpLoad", method = RequestMethod.POST)
     @ResponseBody
     public ResultView downloadUpLoad(Integer customerId, @RequestParam(value = "btnFile", required = false) MultipartFile files) {
@@ -98,9 +153,9 @@ public class UploadController {
         try {
             Date now = new Date();
             String fileName = files.getOriginalFilename();
-            String prefix = fileName.substring(fileName.lastIndexOf(".") + 1);
-            if("txt,zip,jar,docx,doc,xlsx".contains(prefix)){
-                String path=configInfo.getResourcesDownload(customerId)+"/"+StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + prefix;
+            String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
+            if("txt,zip,jar,docx,doc,xlsx".contains(suffix)){
+                String path=configInfo.getResourcesDownload(customerId)+"/"+StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + suffix;
                 URI uri = resourceServer.uploadResource(path, files.getInputStream());
                 Map<String,Object> map= new HashMap<String, Object>();
                 map.put("fileUrl", uri);

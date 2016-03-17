@@ -4,6 +4,7 @@
 define(function (require, exports, module) {
     var commonUtil = require("common");
     var customerId =commonUtil.getQuery("customerId");
+    var layer=require("layer");
     exports.fromValidata=function(){
         $("#addArticleForm").validate({
             rules: {
@@ -63,13 +64,11 @@ define(function (require, exports, module) {
                     type: "POST",
                     dataType: 'json',
                     success: function (data) {
-                        var layer=require("layer");
                         if(data!=null)
                         {
                             var index=parseInt(data.code);
                             if(index==200)
                             {
-                                var layer=require("layer");
                                 layer.msg("保存成功！", {time: 2000})
                                 $("#title").val("");
                                 $("#linkUrl").val("");

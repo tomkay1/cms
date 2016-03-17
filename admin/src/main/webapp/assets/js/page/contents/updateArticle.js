@@ -4,6 +4,7 @@
 define(function (require, exports, module) {
     var commonUtil = require("common");
     var customerId =commonUtil.getQuery("customerId");
+    var layer=require("layer");
     $("#updateArticleForm").validate({
         rules: {
             title:{
@@ -67,7 +68,6 @@ define(function (require, exports, module) {
                 type: "POST",
                 dataType: 'json',
                 success: function (data) {
-                    var layer=require("layer");
                     var layerIndex = parent.layer.getFrameIndex(window.name); //获取窗口索引
                     if(data!=null)
                     {

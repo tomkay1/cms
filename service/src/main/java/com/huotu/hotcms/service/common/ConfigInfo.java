@@ -28,9 +28,6 @@ public class ConfigInfo {
         this.mallManageUrl = ev.getProperty("huobanmall.mallSupperUrl", "http://manager.51flashmall.com/home.aspx?customerid=%s");
     }
 
-//    @Value("${out.loginUrl}")
-//    private String outLoginUrl;
-
     @Value("${resources.site}")
     private String resourcesSiteLogo;
 
@@ -46,12 +43,11 @@ public class ConfigInfo {
     @Value("${resources.download}")
     private String resourcesDownload;
 
-//    @Value("${out.mallManageUrl}")
-//    private String mallManageUrl;
+    @Value("${resources.widget}")
+    private String resourcesWidget;
 
-//    @Value("${out.mallSupperUrl}")
-//    private String mallSupperUrl;
-
+    @Value("${resources.config}")
+    private String resourcesConfig;
 
     public String getResourcesSiteLogo(Integer customerId) {
         return String.format(resourcesSiteLogo,customerId) ;
@@ -71,6 +67,20 @@ public class ConfigInfo {
 
     public String getResourcesDownload(Integer customerId) {
         return String.format(resourcesDownload,customerId);
+    }
+
+    /**
+     * 获得控件主体地址目录
+     * */
+    public String getResourcesWidget(){
+        return resourcesWidget;
+    }
+
+    /**
+     * 获得商户装修的页面配置存储目录地址
+     * */
+    public String getResourcesConfig(Integer customerId,Long siteId){
+        return String.format(resourcesConfig,customerId,siteId);
     }
 
     public String getOutLoginUrl() {

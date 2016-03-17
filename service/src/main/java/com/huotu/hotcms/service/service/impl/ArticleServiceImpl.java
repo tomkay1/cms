@@ -21,7 +21,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.Arrays;

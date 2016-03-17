@@ -1,6 +1,5 @@
 package com.huotu.hotcms.admin.controller;
 
-import com.huotu.hotcms.admin.service.StaticResourceService;
 import com.huotu.hotcms.admin.util.web.CookieUser;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Video;
@@ -8,6 +7,7 @@ import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.service.VideoService;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
+import com.huotu.hotcms.service.widget.service.StaticResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;

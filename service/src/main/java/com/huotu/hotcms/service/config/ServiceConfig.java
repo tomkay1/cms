@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
 @Configuration
-@ComponentScan({"com.huotu.hotcms.service.service"})
+@ComponentScan({"com.huotu.hotcms.service"})
 @EnableTransactionManagement
 @ImportResource({"classpath:spring_dev.xml","classpath:spring_prod.xml"})
 public class ServiceConfig {

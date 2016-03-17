@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<page url="/{siteId}.cshtml">
+    <layout layoutType="0">
+
+    </layout>
+    <layout size="190,590,190" layoutType="0">
+        <module position="190">
+            <widget widgetUri="/xxx.cp.html" id="15">
+                <property name="bgcolor" value="#ffffff"></property>
+                <property name="bgcolor2" value="#ffffff"></property>
+                <property name="bgcolor3" value="#ffffff"></property>
+            </widget>
+            <widget widgetUri="/xxx.cp.html" id="18">
+
+            </widget>
+        </module>
+        <module position="590">
+            <widget widgetUri="/xxx.cp.html" id="16">
+
+            </widget>
+        </module>
+        <module position="190">
+            <widget widgetUri="/xxx.cp.html" id="19">
+
+            </widget>
+        </module>
+    </layout>
+</page>

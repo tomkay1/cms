@@ -20,6 +20,7 @@ define(function (require, exports, module) {
                 selrequired: "-1"
             },
             txtOrderWeight:{
+                required: true,
                 digits:true,
             }
         },
@@ -51,7 +52,8 @@ define(function (require, exports, module) {
                     regionName: $("#regionName").val(),
                     langCode: $("#langCode").val(),
                     langTag: $("#langTag").val(),
-                    langName: $("#langName").val()
+                    langName: $("#langName").val(),
+                    orderWeight: $("#txtOrderWeight").val()
                 },
                 type: "POST",
                 dataType: 'json',

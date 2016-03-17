@@ -17,7 +17,7 @@ define(function (require, exports, module) {
         pageSize: 20,
         pagerCount: 10,
         pageDetail: true,
-        url: '/widget/widgetTypeList',//数据来源Url|通过mobel自定义属性配置
+        url: '/widget/getWidgetTypeList',//数据来源Url|通过mobel自定义属性配置
         rows: [
             {width: '30%', field: 'name', title: '类型名称', align: 'center'},
             {

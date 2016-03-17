@@ -42,7 +42,7 @@ define(function (require, exports, module) {
                                 time: 2000 //2秒关闭（如果不配置，默认是3秒）
                             }, function(){
                                 $("#name").val("");
-                                $("#txtOrderWeight").val("");
+                                $("#txtOrderWeight").val("50");
                             });
                         }
                         if(index==500)
@@ -51,7 +51,7 @@ define(function (require, exports, module) {
                                 time: 2000 //2秒关闭（如果不配置，默认是3秒）
                             }, function(){
                                 $("#name").val("");
-                                $("#txtOrderWeight").val("");
+                                $("#txtOrderWeight").val("50");
                             });
                     }
                     commonUtil.cancelDisabled("jq-cms-Save");

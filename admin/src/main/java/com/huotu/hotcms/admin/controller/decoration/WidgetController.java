@@ -1,4 +1,4 @@
-package com.huotu.hotcms.admin.controller;
+package com.huotu.hotcms.admin.controller.decoration;
 
 import com.huotu.hotcms.admin.util.web.CookieUser;
 import com.huotu.hotcms.service.entity.WidgetType;
@@ -40,14 +40,14 @@ public class WidgetController {
     @RequestMapping("/widgetTypeList")
     public ModelAndView widgetTypeList(HttpServletRequest request) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/pcMall/widget/widgetTypeList.html");
+        modelAndView.setViewName("/decoration/widget/widgetTypeList.html");
         return  modelAndView;
     }
 
     @RequestMapping(value = "/addWidgetType")
     public ModelAndView addWidgetType(HttpServletRequest request) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/pcMall/widget/addWidgetType.html");
+        modelAndView.setViewName("/decoration/widget/addWidgetType.html");
         return  modelAndView;
     }
 
@@ -55,7 +55,7 @@ public class WidgetController {
     public ModelAndView updateWidgetType(@RequestParam(value = "id",defaultValue = "0") Long id,Integer customerId) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
         try{
-            modelAndView.setViewName("/view/contents/updateNotice.html");
+            modelAndView.setViewName("/decoration/widget/updateWidgetType.html");
             WidgetType widgetType= widgetService.findWidgetTypeById(id);
             modelAndView.addObject("widgetType",widgetType);
         }catch (Exception ex){

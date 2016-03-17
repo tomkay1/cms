@@ -68,6 +68,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         configurer.enable();
     }
 
+
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(siteResolver);

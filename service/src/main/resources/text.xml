@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <page url="http://www.abc.com">
-    <layout>
+    <layout layoutType="0">
 
     </layout>
-    <layout size="190,590,190">
+    <layout size="190,590,190" layoutType="0">
         <module position="190">
             <widget widgetUri="/xxx.cp.html" id="15">
                 <property name="bgcolor" value="#ffffff"></property>

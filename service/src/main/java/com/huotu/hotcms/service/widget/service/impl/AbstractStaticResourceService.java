@@ -1,7 +1,7 @@
-package com.huotu.hotcms.admin.service.impl;
+package com.huotu.hotcms.service.widget.service.impl;
 
-import com.huotu.hotcms.admin.service.StaticResourceService;
-import com.huotu.hotcms.admin.service.VFSHelper;
+import com.huotu.hotcms.service.widget.service.StaticResourceService;
+import com.huotu.hotcms.service.widget.service.VFSHelper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.vfs2.FileObject;
@@ -9,7 +9,6 @@ import org.apache.commons.vfs2.FileSystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StreamUtils;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;

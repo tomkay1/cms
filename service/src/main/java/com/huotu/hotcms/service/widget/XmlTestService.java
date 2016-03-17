@@ -33,7 +33,7 @@ public class XmlTestService {
 
 
         XMLStreamReader reader = XMLInputFactory.newFactory().createXMLStreamReader(getClass().getResourceAsStream("/text.xml"));
-        TestModel model1 =mapper.readValue(reader,TestModel.class);
+//        TestModel model1 =mapper.readValue(reader,TestModel.class);
         WidgetPage model =mapper.readValue(reader,WidgetPage.class);
 
         System.out.println(model);

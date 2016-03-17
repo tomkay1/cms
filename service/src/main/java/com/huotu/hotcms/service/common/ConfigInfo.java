@@ -46,6 +46,12 @@ public class ConfigInfo {
     @Value("${resources.download}")
     private String resourcesDownload;
 
+    @Value("${resources.widget}")
+    private String resourcesWidget;
+
+    @Value("${resources.config}")
+    private String resourcesConfig;
+
 //    @Value("${out.mallManageUrl}")
 //    private String mallManageUrl;
 
@@ -71,6 +77,20 @@ public class ConfigInfo {
 
     public String getResourcesDownload(Integer customerId) {
         return String.format(resourcesDownload,customerId);
+    }
+
+    /**
+     * 获得控件主体地址目录
+     * */
+    public String getResourcesWidget(){
+        return resourcesWidget;
+    }
+
+    /**
+     * 获得商户装修的页面配置存储目录地址
+     * */
+    public String getResourcesConfig(Integer customerId,Long siteId){
+        return String.format(resourcesConfig,customerId,siteId);
     }
 
     public String getOutLoginUrl() {

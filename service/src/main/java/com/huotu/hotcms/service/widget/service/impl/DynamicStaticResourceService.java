@@ -1,4 +1,4 @@
-package com.huotu.hotcms.admin.service.impl;
+package com.huotu.hotcms.service.widget.service.impl;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import java.util.List;
 
 
 /**
@@ -25,5 +26,6 @@ public class WidgetModule {
     @XmlAttribute(name = "position")
     private String position;
 
-    private WidgetBase[] widget;
+//    private WidgetBase[] widget;
+    private List<WidgetBase> widget;
 }

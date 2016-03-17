@@ -10,8 +10,7 @@ package com.huotu.hotcms.service.common;
  * @author xhl
  */
 public enum LayoutEnum implements CommonEnum {
-
-    THREE_COLUMN_LAYOUT_190x590x190(0,"三栏布局(190x590x190)"),
+   THREE_COLUMN_LAYOUT_190x590x190(0,"三栏布局(190x590x190)"),
     WITHOUT_COLUMN_LAYOUT_990(1,"通栏布局(990)"),
     LEFT_RIGHT_COLUMN_LAYOUT_190x790(2,"左右栏布局（190x790)"),
     RIGHT_PART_LAYOUT_190x390x390(3,"右等分布局(190x390x390)"),
@@ -27,7 +26,6 @@ public enum LayoutEnum implements CommonEnum {
     LEFT_CENTER_RIGHT_PART_LAYOUT_323x324x323(13,"左中右等分布局(323x324x323)"),
     WITHOUT_COLUMN_LAYOUT_99999(14,"通栏布局(100%)");
 
-
     LayoutEnum(int code, String value) {
         this.code = code;
         this.value = value;
@@ -37,12 +35,67 @@ public enum LayoutEnum implements CommonEnum {
     private String value;
 
     @Override
-    public Object getCode() {
+    public final Integer getCode() {
         return this.code;
     }
 
     @Override
-    public Object getValue() {
+    public String getValue() {
         return this.value;
+    }
+
+    /**
+     *获得布局模版
+     * */
+    public String getLayoutTemplate(){
+        String layoutTemplate="";
+        switch (this.code){
+            case 0:
+                layoutTemplate= "<div>%s</div><div>%s</div><div>%s</div>";
+                break;
+            case 1:
+                layoutTemplate= "<div>%s</div>";
+                break;
+            case 2:
+                layoutTemplate= "<div>%s</div><div>%s</div>";
+                break;
+            case 3:
+                layoutTemplate= "<div>%s</div><div>%s</div><div>%s</div>";
+                break;
+            case 4:
+                layoutTemplate= "<div>%s</div><div>%s</div>";
+                break;
+            case 5:
+                layoutTemplate= "<div>%s</div><div>%s</div><div>%s</div>";
+                break;
+            case 6:
+                layoutTemplate= "<div>%s</div><div>%s</div><div>%s</div>";
+                break;
+            case 7:
+                layoutTemplate= "<div>%s</div><div>%s</div>";
+                break;
+            case 8:
+                layoutTemplate= "<div>%s</div><div>%s</div>";
+                break;
+            case 9:
+                layoutTemplate= "<div>%s</div><div>%s</div>";
+                break;
+            case 10:
+                layoutTemplate= "<div>%s</div><div>%s</div>";
+                break;
+            case 11:
+                layoutTemplate= "<div>%s</div><div>%s</div>";
+                break;
+            case 12:
+                layoutTemplate= "<div>%s</div><div>%s</div>";
+                break;
+            case 13:
+                layoutTemplate= "<div>%s</div><div>%s</div><div>%s</div>";
+                break;
+            case 14:
+                layoutTemplate= "<div>%s</div>";
+                break;
+        }
+        return layoutTemplate;
     }
 }

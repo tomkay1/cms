@@ -1,4 +1,4 @@
-package com.huotu.hotcms.admin.service.impl;
+package com.huotu.hotcms.service.widget.service.impl;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -7,10 +7,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 

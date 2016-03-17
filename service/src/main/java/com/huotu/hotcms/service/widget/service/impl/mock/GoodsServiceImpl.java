@@ -13,6 +13,7 @@ import com.huotu.hotcms.service.widget.model.GoodsSearcher;
 import com.huotu.hotcms.service.widget.model.Page;
 import com.huotu.hotcms.service.widget.service.GoodsService;
 import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ import java.util.List;
  * Created by cwb on 2016/3/17.
  */
 @Profile("!container")
+@Service
 public class GoodsServiceImpl implements GoodsService {
     @Override
     public Page<Goods> searchGoods(int customerId, GoodsSearcher goodsSearcher) {

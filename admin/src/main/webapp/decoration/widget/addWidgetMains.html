@@ -17,7 +17,7 @@
         <span class="icon-sprite icon-list"></span>
         <h3>添加控件主体</h3>
         <div class="bar">
-            <a class="btn-lit" th:href="@{/widget/widgetTypeMainsList?customerid={customerid}(customerid=${user.customerId})}" target="content">
+            <a class="btn-lit" th:href="@{/widget/widgetMainsList?customerid={customerid}(customerid=${user.customerId})}" target="content">
                 <span>返回控件主体管理列表</span></a>
         </div>
     </div>
@@ -42,11 +42,20 @@
                         </tr>
 
                         <tr>
+                            <th>资源上传：</th>
+                            <td>
+                                <textarea rows="" cols="" style="width: 500px; height: 60px;" class="input-normal" id="uploadWidgetUri" name="uploadWidgetUri" ></textarea>
+                                <span id="btnFile1" name="btnFile" style="margin-left: 100px; margin-top: 20px; display: block;"/>
+                                <input type="hidden" id="resourceUri" name="resourceUri" />
+                            </td>
+                        </tr>
+
+                        <tr>
                             <th>缩略图：</th>
                             <td>
                                 <img id="uploadThumbUri" style="width: 80px; height: 80px; border: 1px solid #ccc; float: left; background: #efefef; line-height: 80px; text-align: center; color: #ccc;"/>
                                 <span id="btnFile" name="btnFile" style="margin-left: 100px; margin-top: 20px; display: block;"/>
-                                <input type="hidden" id="thumbUri" name="thumbUri" />
+                                <input type="text" id="thumbUri" name="thumbUri" />
                             </td>
                         </tr>
 

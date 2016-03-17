@@ -1,4 +1,4 @@
-package com.huotu.hotcms.admin.service;
+package com.huotu.hotcms.service.widget.service;
 
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;

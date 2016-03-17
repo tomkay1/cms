@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import java.util.List;
 
 
 /**
@@ -29,5 +30,6 @@ public class WidgetPage {
     /**
     * 页面中的布局列表
     * **/
-    private WidgetLayout[] layout;
+//    private WidgetLayout[] layout;
+    private List<WidgetLayout> layout;
 }

@@ -7,11 +7,13 @@ import com.huotu.hotcms.service.service.WidgetService;
 import com.huotu.hotcms.service.util.PageData;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
+import com.huotu.hotcms.service.widget.service.StaticResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,6 +35,9 @@ public class WidgetController {
 
     @Autowired
     private CookieUser cookieUser;
+
+    @Autowired
+    private StaticResourceService resourceServer;
 
     @Autowired
     private WidgetService widgetService;
@@ -77,7 +82,14 @@ public class WidgetController {
         try{
             modelAndView.setViewName("/decoration/widget/updateWidgetMains.html");
             WidgetMains widgetMains= widgetService.findWidgetMainsById(id);
+            List<WidgetType> widgetTypes = widgetService.findAllWidgetType();
+            String logo_uri =null;
+            if(!StringUtils.isEmpty(widgetMains.getImageUri())) {
+                logo_uri = resourceServer.getResource(widgetMains.getImageUri()).toString();
+            }
             modelAndView.addObject("widgetMains",widgetMains);
+            modelAndView.addObject("logo_uri",logo_uri);
+            modelAndView.addObject("widgetTypes",widgetTypes);
         }catch (Exception ex){
             log.error(ex.getMessage());
         }
@@ -104,8 +116,11 @@ public class WidgetController {
     public ResultView saveWidgetType(WidgetType widgetType){
         ResultView result=null;
         try {
-            if(widgetType.getId()!=null){
+            if(widgetType.getId()==null){
                 widgetType.setCreateTime(LocalDateTime.now());
+            }
+            else {
+                widgetType.setCreateTime(widgetService.findWidgetTypeById(widgetType.getId()).getCreateTime());
             }
             widgetService.saveWidgetType(widgetType);
             result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
@@ -125,8 +140,11 @@ public class WidgetController {
         ResultView result=null;
         try {
             WidgetType widgetType = widgetService.findWidgetTypeById(widgetTypeId);
-            if(widgetMains.getId()!=null){
+            if(widgetMains.getId()==null){
                 widgetMains.setCreateTime(LocalDateTime.now());
+            }
+            else {
+                widgetMains.setCreateTime(widgetService.findWidgetMainsById(widgetMains.getId()).getCreateTime());
             }
             widgetMains.setWidgetType(widgetType);
             widgetMains.setCreateTime(LocalDateTime.now());
@@ -212,11 +230,4 @@ public class WidgetController {
         }
         return  result;
     }
-
-
-
-
-
-
-
 }

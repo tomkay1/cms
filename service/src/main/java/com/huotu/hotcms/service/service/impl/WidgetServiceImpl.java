@@ -11,6 +11,7 @@ import org.codehaus.plexus.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +40,7 @@ public class WidgetServiceImpl implements WidgetService {
             }
             return cb.and(predicates.toArray(new Predicate[predicates.size()]));
         };
-        Page<WidgetType> pageData = widgetTypeRepository.findAll(specification,new PageRequest(page - 1, pageSize));
+        Page<WidgetType> pageData = widgetTypeRepository.findAll(specification,new PageRequest(page - 1, pageSize, new Sort(Sort.Direction.DESC, "orderWeight")));
         data=data.ConvertPageData(pageData,new WidgetType[pageData.getContent().size()]);
         return  data;
     }
@@ -54,7 +55,7 @@ public class WidgetServiceImpl implements WidgetService {
             }
             return cb.and(predicates.toArray(new Predicate[predicates.size()]));
         };
-        Page<WidgetMains> pageData = widgetMainsRepository.findAll(specification,new PageRequest(page - 1, pageSize));
+        Page<WidgetMains> pageData = widgetMainsRepository.findAll(specification,new PageRequest(page - 1, pageSize, new Sort(Sort.Direction.DESC, "orderWeight")));
         data=data.ConvertPageData(pageData,new WidgetMains[pageData.getContent().size()]);
         return  data;
     }

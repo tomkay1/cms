@@ -1,6 +1,5 @@
-package com.huotu.hotcms.admin.service;
+package com.huotu.hotcms.service.widget.service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;

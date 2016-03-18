@@ -8,7 +8,7 @@
 
 package com.huotu.hotcms.service.thymeleaf.dialect;
 
-import com.huotu.hotcms.service.thymeleaf.processor.GoodsCATGTagProcessor;
+//import com.huotu.hotcms.service.thymeleaf.processor.GoodsCATGTagProcessor;
 import com.huotu.hotcms.service.thymeleaf.processor.GoodsPageableTagProcessor;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
 import org.thymeleaf.dialect.IProcessorDialect;
@@ -39,7 +39,7 @@ public class WidgetDialect extends AbstractProcessorDialect {
     private Set<IProcessor> createWidgetProcessorsSet(final IProcessorDialect dialect, String dialectPrefix) {
         final Set<IProcessor> processors = new LinkedHashSet<IProcessor>();
         processors.add(new GoodsPageableTagProcessor(dialect,dialectPrefix));
-        processors.add(new GoodsCATGTagProcessor(dialect,dialectPrefix));
+//        processors.add(new GoodsCATGTagProcessor(dialect,dialectPrefix));
         return processors;
     }
 

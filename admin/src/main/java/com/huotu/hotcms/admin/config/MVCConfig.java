@@ -7,6 +7,7 @@ import com.huotu.hotcms.service.thymeleaf.templateresolver.WidgetTemplateResolve
 import com.huotu.hotcms.admin.util.ArrayUtil;
 import com.huotu.hotcms.service.config.JpaConfig;
 import com.huotu.hotcms.service.config.ServiceConfig;
+import com.huotu.hotcms.service.util.CMSDialect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.*;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.thymeleaf.ITemplateEngine;
+import org.thymeleaf.dialect.AbstractProcessorDialect;
 import org.thymeleaf.messageresolver.IMessageResolver;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.messageresolver.SpringMessageResolver;
@@ -121,7 +123,6 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 
     public ViewResolver widgetViewResolver() {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
-//        resolver.setViewNames(ArrayUtil.array("/widget/**"));
         resolver.setViewNames(ArrayUtil.array("*.shtml"));
         resolver.setCharacterEncoding(UTF8);
         resolver.setTemplateEngine(templateEngine(widgetTemplateResolver()));
@@ -203,6 +204,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         WidgetTemplateResolver resolver = new WidgetTemplateResolver();
         resolver.setCharacterEncoding(UTF8);
         resolver.setApplicationContext(applicationContext);
+        resolver.setTemplateMode(TemplateMode.TEXT);
         return resolver;
     }
     private ITemplateResolver remoteHtmlTemplateResolver() {

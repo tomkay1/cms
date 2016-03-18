@@ -10,6 +10,7 @@ package com.huotu.hotcms.service.util;
 
 import com.huotu.hotcms.service.thymeleaf.dialect.*;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
+import org.thymeleaf.templatemode.TemplateMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,10 +33,28 @@ public class CMSDialect {
         return dialectList;
     }
 
+    public static List<AbstractProcessorDialect> getDialectList(TemplateMode templateMode) {
+        initDialect();
+        return dialectList;
+    }
+
     /*
     * 初始化thymeleaf 扩展的标签
     * */
     public static void initDialect(){
+        dialectList.add(new ArticleDialect());
+        dialectList.add(new LinkDialect());
+        dialectList.add(new CategoryDialect());
+        dialectList.add(new VideoDialect());
+        dialectList.add(new NoticeDialect());
+        dialectList.add(new DownloadDialect());
+        dialectList.add(new TimeDialect());
+    }
+
+    /*
+   * 初始化thymeleaf 扩展的标签
+   * */
+    public static void initDialect(TemplateMode templateMode){
         dialectList.add(new ArticleDialect());
         dialectList.add(new LinkDialect());
         dialectList.add(new CategoryDialect());

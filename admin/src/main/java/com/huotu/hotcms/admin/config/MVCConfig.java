@@ -3,6 +3,7 @@ package com.huotu.hotcms.admin.config;
 import com.huotu.hotcms.admin.interceptor.SiteResolver;
 import com.huotu.hotcms.admin.dialect.HotDialect;
 import com.huotu.hotcms.admin.interceptor.LoginInterceptor;
+import com.huotu.hotcms.service.thymeleaf.dialect.WidgetDialect;
 import com.huotu.hotcms.service.thymeleaf.templateresolver.WidgetTemplateResolver;
 import com.huotu.hotcms.admin.util.ArrayUtil;
 import com.huotu.hotcms.service.config.JpaConfig;
@@ -174,6 +175,8 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         engine.setTemplateResolver(templateResolver);
         engine.addMessageResolver(messageResolver());
         engine.addDialect(new HotDialect());
+        List<AbstractProcessorDialect> list= CMSDialect.getDialectList();
+        list.forEach(engine::addDialect);
         return engine;
     }
 

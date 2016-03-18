@@ -49,6 +49,7 @@ public class CMSDialect {
         dialectList.add(new NoticeDialect());
         dialectList.add(new DownloadDialect());
         dialectList.add(new TimeDialect());
+        dialectList.add(new WidgetDialect());
     }
 
     /*

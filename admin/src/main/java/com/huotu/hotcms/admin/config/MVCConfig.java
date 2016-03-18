@@ -3,10 +3,12 @@ package com.huotu.hotcms.admin.config;
 import com.huotu.hotcms.admin.interceptor.SiteResolver;
 import com.huotu.hotcms.admin.dialect.HotDialect;
 import com.huotu.hotcms.admin.interceptor.LoginInterceptor;
+import com.huotu.hotcms.service.thymeleaf.dialect.WidgetDialect;
 import com.huotu.hotcms.service.thymeleaf.templateresolver.WidgetTemplateResolver;
 import com.huotu.hotcms.admin.util.ArrayUtil;
 import com.huotu.hotcms.service.config.JpaConfig;
 import com.huotu.hotcms.service.config.ServiceConfig;
+import com.huotu.hotcms.service.util.CMSDialect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.*;
@@ -19,6 +21,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.thymeleaf.ITemplateEngine;
+import org.thymeleaf.dialect.AbstractProcessorDialect;
 import org.thymeleaf.messageresolver.IMessageResolver;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.messageresolver.SpringMessageResolver;
@@ -173,6 +176,8 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         engine.setTemplateResolver(templateResolver);
         engine.addMessageResolver(messageResolver());
         engine.addDialect(new HotDialect());
+        List<AbstractProcessorDialect> list= CMSDialect.getDialectList();
+        list.forEach(engine::addDialect);
         return engine;
     }
 

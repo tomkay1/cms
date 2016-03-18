@@ -46,7 +46,7 @@ public class GoodsPageableTagProcessor extends AbstractAttributeTagProcessor {
     private static Log log = LogFactory.getLog(GoodsPageableTagProcessor.class);
 
     public GoodsPageableTagProcessor(IProcessorDialect dialect, String dialectPrefix) {
-        super(dialect, TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
+        super(dialect, TemplateMode.XML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
     }
 
     @Override

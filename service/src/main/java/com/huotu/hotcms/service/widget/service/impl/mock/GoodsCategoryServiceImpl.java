@@ -13,6 +13,7 @@ import com.huotu.hotcms.service.widget.service.GoodsCategoryService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,6 +25,13 @@ import java.util.List;
 public class GoodsCategoryServiceImpl implements GoodsCategoryService {
     @Override
     public List<GoodsCategory> getGoodsCategories(int customerId) {
-        return null;
+        List<GoodsCategory> goodsCategories = new ArrayList<>();
+        GoodsCategory goodsCategory = new GoodsCategory();
+        goodsCategory.setName("rerwnds");
+        goodsCategories.add(goodsCategory);
+        GoodsCategory goodsCategory1 = new GoodsCategory();
+        goodsCategory1.setName("二温热微软");
+        goodsCategories.add(goodsCategory1);
+        return goodsCategories;
     }
 }

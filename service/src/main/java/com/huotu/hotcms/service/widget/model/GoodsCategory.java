@@ -8,7 +8,6 @@
 
 package com.huotu.hotcms.service.widget.model;
 
-import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 import lombok.Setter;
 

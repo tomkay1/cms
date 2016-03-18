@@ -25,7 +25,7 @@ public class WidgetDialect extends AbstractProcessorDialect {
 
     public static String NAME = "widget";
     public static String PREFIX = "widget";
-    public static  int PROCESSOR_PRECEDENCE = 195;
+    public static  int PROCESSOR_PRECEDENCE = 800;
 
     public WidgetDialect() {
         super(NAME, PREFIX, PROCESSOR_PRECEDENCE);

@@ -10,24 +10,24 @@ define(function (require, exports, module) {
     var commonUtil = require("common");
     commonUtil.setDisabled("jq-cms-Save");
     var customerId =commonUtil.getQuery("customerId");
-    var SiteGrid=$("#tab1").Grid({
+    var pageGrid=$("#tab1").Grid({
         method: 'POST',//提交方式GET|POST
         form: 'form1',//表单ID
         pageSize: 10,
         dataParam:{
-            customerId:customerId
+            siteId:customerId,
+            delete:true
         },
         height:'auto',
         showNumber: false,
         pageSize: 20,
         pagerCount: 10,
         pageDetail: true,
-        url: '/site/getSiteList',//数据来源Url|通过mobel自定义属性配置
+        url: '/pages/getPagesList',//数据来源Url|通过mobel自定义属性配置
         rows: [
-            {width: '30%', field: 'name', title: '站点名称', align: 'center'},
-            {width: '30%', field: 'title', title: '站点标题', align: 'center'},
+            {width: '40%', field: 'name', title: '页面名称', align: 'center'},
             {
-                width: '20%', field: 'createTime', title: '创建时间', align: 'center',
+                width: '30%', field: 'createTime', title: '创建时间', align: 'center',
                 formatter: function (value, rowData) {
                     if(value!=null)
                     {
@@ -36,10 +36,49 @@ define(function (require, exports, module) {
                     return "";
                 }
             },
-            {width: '20%', field: 'title', title: '操作', align: 'center',
+            {width: '30%', field: 'title', title: '操作', align: 'center',
                 formatter: function (value, rowData) {
-                    return "<a href='javascript:' class='js-hot-siteDelete' data-id='"+rowData.siteId+"' style='margin-right:10px; color:blue;'>删除</a>" +
-                        "<a href='javascript:' class='js-hot-siteUpdate' data-id='"+rowData.siteId+"' style='margin-right:10px; color: blue'>修改</a>"
+                    return "<a href='#' style='color:#07d;margin-right:5px;margin-left:5px;' title='编辑'>编辑</a>|"+
+                        "<a href='javascript:void(0)'  style='color:#07d;margin-right:5px;margin-left:5px;' title='丢草稿箱'>丢草稿箱</a>|"+
+                        "<a href='javascript:void(0)' style='color:#999 !important;margin-right:5px;margin-left:5px;' title='店铺主页'>店铺主页</a>|"+
+                       " <a href='javascript:void(0)' style='color:#07d !important;margin-right:5px;margin-left:5px;' title='链接'>链接</a>";
+                }
+            }
+        ]
+    });
+
+    var pageGrid2=$("#tab2").Grid({
+        method: 'POST',//提交方式GET|POST
+        form: 'form1',//表单ID
+        pageSize: 10,
+        dataParam:{
+            siteId:customerId,
+            delete:false
+        },
+        height:'auto',
+        showNumber: false,
+        pageSize: 20,
+        pagerCount: 10,
+        pageDetail: true,
+        url: '/pages/getPagesList',//数据来源Url|通过mobel自定义属性配置
+        rows: [
+            {width: '40%', field: 'name', title: '页面名称', align: 'center'},
+            {
+                width: '30%', field: 'createTime', title: '创建时间', align: 'center',
+                formatter: function (value, rowData) {
+                    if(value!=null)
+                    {
+                        return value.year+"-"+value.monthValue+"-"+value.dayOfMonth+" "+value.hour+":"+value.minute;
+                    }
+                    return "";
+                }
+            },
+            {width: '30%', field: 'title', title: '操作', align: 'center',
+                formatter: function (value, rowData) {
+                    return "<a href='#' style='color:#07d;margin-right:5px;margin-left:5px;' title='编辑'>编辑</a>|"+
+                        "<a href='javascript:void(0)'  style='color:#07d;margin-right:5px;margin-left:5px;' title='丢草稿箱'>丢草稿箱</a>|"+
+                        "<a href='javascript:void(0)' style='color:#999 !important;margin-right:5px;margin-left:5px;' title='店铺主页'>店铺主页</a>|"+
+                        " <a href='javascript:void(0)' style='color:#07d !important;margin-right:5px;margin-left:5px;' title='链接'>链接</a>";
                 }
             }
         ]

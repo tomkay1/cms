@@ -23,17 +23,6 @@ import java.util.Set;
  */
 @Service
 public class SiteServiceImpl implements SiteService {
-    private static SiteServiceImpl instance;
-
-    private SiteServiceImpl() {
-    }
-
-    public static SiteServiceImpl getInstance() {
-        if(instance == null) {
-            instance = new SiteServiceImpl();
-        }
-        return instance;
-    }
 
     @Autowired
     SiteRepository siteRepository ;

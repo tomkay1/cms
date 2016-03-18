@@ -48,7 +48,8 @@ public class GoodsCATGTagProcessor extends AbstractAttributeTagProcessor {
         WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
         GoodsCategoryService goodsCategoryService = (GoodsCategoryService)applicationContext.getBean("goodsCategoryServiceImpl");
         Site site = (Site)VariableExpression.getVariable(context,"site");
-        int customerId = site.getCustomerId();
+//        int customerId = site.getCustomerId();
+        int customerId = 0;
         List<GoodsCategory> categories = goodsCategoryService.getGoodsCategories(customerId);
         return categories;
     }

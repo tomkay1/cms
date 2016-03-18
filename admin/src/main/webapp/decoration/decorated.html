@@ -15,10 +15,10 @@
     <div id="con_left" style="height: 546px;">
         <div class="leftpanelinner" id="menuContainer" style="overflow-y: auto;">
             <ul class="nav nav-pills nav-stacked nav-bracket" id="menuList">
-                <li class="nav-parent nav-active js-cms-menus" id="menus01" style="cursor: pointer;">
+                <li class="nav-parent nav-active active js-cms-menus" id="menus01" style="cursor: pointer;">
                     <a class="aparent"><i class="fa fa-chevron-circle-right"></i><span>页面管理</span></a>
                     <ul class="children">
-                        <li class="childMenus js-cms-submunes" data-id="menus01"  style="cursor: pointer;">
+                        <li class="childMenus js-cms-submunes active" data-id="menus01"  style="cursor: pointer;">
                             <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
                             <a th:href="@{/page/list?customerid={customerid}(customerid=${user.customerId})}" target="content" ><i class="fa fa-caret-right"></i>页面管理<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
                                 </span>
@@ -26,7 +26,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-parent nav-active active js-cms-menus" id="menus02" style="cursor: pointer;">
+                <li class="nav-parent nav-active js-cms-menus" id="menus02" style="cursor: pointer;">
                     <a class="aparent"><i class="fa fa-chevron-circle-right"></i><span>默认页面</span></a>
                     <ul class="children">
                         <li class="childMenus js-cms-submunes" data-id="menus02" style="cursor: pointer;">
@@ -122,7 +122,7 @@
         </div>
     </div>
     <div class="con_right" id="con_right">
-        <iframe id="content" name="content" width="1152" height="800" class="hide" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" src="/model/modelList" th:src="@{/site/siteList?customerid={customerid}(customerid=${user.customerId})}" style="display: inline;">
+        <iframe id="content" name="content" width="1152" height="800" class="hide" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" src="/model/modelList" th:src="@{/page/list?customerid={customerid}(customerid=${user.customerId})}" style="display: inline;">
         </iframe>
     </div>
 </div>

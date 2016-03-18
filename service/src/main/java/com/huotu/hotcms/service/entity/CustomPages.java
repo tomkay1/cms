@@ -20,6 +20,12 @@ public class CustomPages {
     private Long id;
 
     /**
+     * 商户ID
+     */
+    @Column(name = "customerId")
+    private Integer customerId;
+
+    /**
      * 页面名称
      */
     @Column(name = "name")
@@ -34,14 +40,14 @@ public class CustomPages {
     /**
      * 是否为首页
      * */
-    @Column(name = "isHome")
-    private boolean isHome=false;
+    @Column(name = "home")
+    private boolean home=false;
 
     /**
     * 是否发布
     * */
-    @Column(name ="isPublish")
-    private boolean isPublish=false;
+    @Column(name ="publish")
+    private boolean publish=false;
 
     /**
      * 排序权重

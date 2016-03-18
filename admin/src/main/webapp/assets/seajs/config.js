@@ -68,7 +68,12 @@ seajs.config({
 		"jqxtreegrid":"libs/jqwidgets/jqxtreegrid.js?v="+version,
 		"jqxlistbox":"libs/jqwidgets/jqxlistbox.js?v="+version,
 		"jqxdropdownlist":"libs/jqwidgets/jqxdropdownlist.js?v="+version,
-		"categoryCommon":"js/page/categoryCommon.js?v="+version
+		"categoryCommon":"js/page/categoryCommon.js?v="+version,
+
+		"selectPlug":"libs/select/jackson-select-ui.min.js",
+        "tabPlug":"libs/tab/jackson.tabs.min.js",
+
+		"pagesList":"js/page/pages/list.js?v="+version,
 	},
 	preload: ['jquery']
 });

@@ -9,21 +9,19 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
- *     基础页装修控制器
+ *     页面管理控制器
  * </p>
  * @since xhl
  *
  * @version 1.2
  */
 @Controller
-@RequestMapping("/basic")
-public class BasicController {
-    @RequestMapping("/head")
+@RequestMapping("/page")
+public class PagesController {
+    @RequestMapping("/list")
     public ModelAndView widgetTypeList(HttpServletRequest request, @RequestParam("customerid") Integer customerid) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
-        String[] goods = {"dd","ss","zz"};
-        modelAndView.addObject("goods",goods);
-        modelAndView.setViewName("11_head.shtml");
+        modelAndView.setViewName("/decoration/pages/list.html");
         return  modelAndView;
     }
 }

@@ -46,7 +46,7 @@ public class GoodsPageableTagProcessor extends AbstractAttributeTagProcessor {
     private static Log log = LogFactory.getLog(GoodsPageableTagProcessor.class);
 
     public GoodsPageableTagProcessor(IProcessorDialect dialect, String dialectPrefix) {
-        super(dialect, TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
+        super(dialect, TemplateMode.XML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
     }
 
     @Override
@@ -59,32 +59,35 @@ public class GoodsPageableTagProcessor extends AbstractAttributeTagProcessor {
     private Object invokeGoodsPageableService(IProcessableElementTag tag, ITemplateContext context) {
         WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
         GoodsService goodsService = (GoodsService)applicationContext.getBean("goodsServiceImpl");
-        Site site = (Site) VariableExpression.getVariable(context, "site");
-        int customerId = site.getCustomerId();
+        int customerId = ((Site)VariableExpression.getVariable(context, "site")).getCustomerId();
         Page<Goods> goodsPage = null;
         try {
             GoodsSearcher goodsSearcher = DialectAttributeFactory.getInstance().getForeachParam(tag, GoodsSearcher.class);
             goodsPage = goodsService.searchGoods(customerId,goodsSearcher);
-            //分页标签处理
-            RequestModel requestModel = (RequestModel)VariableExpression.getVariable(context,"request");
-            int pageNo = goodsPage.getCurrentPageNo();
-            int totalPages = goodsPage.getTotalPages();
-            int pageBtnNum = totalPages > SysConstant.DEFAULT_PAGE_BUTTON_NUM ? SysConstant.DEFAULT_PAGE_BUTTON_NUM : totalPages;
-            int startPageNo = PageUtils.calculateStartPageNo(pageNo, pageBtnNum, totalPages);
-            List<Integer> pageNos = new ArrayList<>();
-            for (int i = 1; i <= pageBtnNum; i++) {
-                pageNos.add(startPageNo);
-                startPageNo++;
-            }
-            requestModel.setCurrentPage(pageNo);
-            requestModel.setTotalPages(totalPages);
-            requestModel.setTotalRecords(goodsPage.getTotalRecords());
-            requestModel.setHasPrevPage(pageNo > 1);
-            requestModel.setHasNextPage(pageNo < totalPages);
-            requestModel.setPageNos(pageNos);
+            putPageAttrsIntoModel(context,goodsPage);
         }catch (Exception e) {
             log.error(e.getMessage());
         }
         return goodsPage.getRecords();
+    }
+
+    private void putPageAttrsIntoModel(ITemplateContext context,Page<Goods> goodsPage) {
+        //分页标签处理
+        RequestModel requestModel = (RequestModel)VariableExpression.getVariable(context,"request");
+        int pageNo = goodsPage.getCurrentPageNo();
+        int totalPages = goodsPage.getTotalPages();
+        int pageBtnNum = totalPages > SysConstant.DEFAULT_PAGE_BUTTON_NUM ? SysConstant.DEFAULT_PAGE_BUTTON_NUM : totalPages;
+        int startPageNo = PageUtils.calculateStartPageNo(pageNo, pageBtnNum, totalPages);
+        List<Integer> pageNos = new ArrayList<>();
+        for (int i = 1; i <= pageBtnNum; i++) {
+            pageNos.add(startPageNo);
+            startPageNo++;
+        }
+        requestModel.setCurrentPage(pageNo);
+        requestModel.setTotalPages(totalPages);
+        requestModel.setTotalRecords(goodsPage.getTotalRecords());
+        requestModel.setHasPrevPage(pageNo > 1);
+        requestModel.setHasNextPage(pageNo < totalPages);
+        requestModel.setPageNos(pageNos);
     }
 }

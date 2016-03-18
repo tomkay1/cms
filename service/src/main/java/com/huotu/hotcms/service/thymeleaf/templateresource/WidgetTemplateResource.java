@@ -13,7 +13,6 @@ import com.huotu.hotcms.service.model.widget.WidgetPage;
 import com.huotu.hotcms.service.service.impl.SiteServiceImpl;
 import com.huotu.hotcms.service.widget.service.PageResolveService;
 import com.huotu.hotcms.service.widget.service.PageResourceService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 import org.thymeleaf.templateresource.ITemplateResource;
@@ -110,13 +109,7 @@ public class WidgetTemplateResource implements ITemplateResource {
             WidgetPage widgetPage= pageResolveService.getWidgetPageByConfig(pageConfigName, site);
             htmlTemplate=pageResourceService.getHtmlTemplateByWidgetPage(widgetPage);
         }
-//       String htmlTemplate=pageResourceService.getHtmlTemplateByWidgetPage();
-//        String test="<div th:text=\"${test2}\" style=\"color:red\"></div><div>测试</div><div></div>";
-        //TODO 自定义流
-//        final InputStream inputStream = this.resource.getInputStream();
-//        final InputStream inputStream = is;
         return new StringReader(htmlTemplate);
-//        return new BufferedReader(new InputStreamReader(new BufferedInputStream(inputStream)));
     }
 
     @Override

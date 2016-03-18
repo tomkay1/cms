@@ -4,6 +4,7 @@ import com.huotu.hotcms.admin.util.web.CookieUser;
 import com.huotu.hotcms.service.entity.WidgetMains;
 import com.huotu.hotcms.service.entity.WidgetType;
 import com.huotu.hotcms.service.service.WidgetService;
+import com.huotu.hotcms.service.util.HttpUtils;
 import com.huotu.hotcms.service.util.PageData;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
@@ -84,11 +85,17 @@ public class WidgetController {
             WidgetMains widgetMains= widgetService.findWidgetMainsById(id);
             List<WidgetType> widgetTypes = widgetService.findAllWidgetType();
             String logo_uri =null;
+            String content ="";
             if(!StringUtils.isEmpty(widgetMains.getImageUri())) {
                 logo_uri = resourceServer.getResource(widgetMains.getImageUri()).toString();
             }
+            if(!StringUtils.isEmpty(widgetMains.getResourceUri())) {
+                 content = HttpUtils.getHtmlByUrl(resourceServer.getResource(widgetMains.getResourceUri()).toURL());
+            }
+
             modelAndView.addObject("widgetMains",widgetMains);
             modelAndView.addObject("logo_uri",logo_uri);
+            modelAndView.addObject("content",content);
             modelAndView.addObject("widgetTypes",widgetTypes);
         }catch (Exception ex){
             log.error(ex.getMessage());

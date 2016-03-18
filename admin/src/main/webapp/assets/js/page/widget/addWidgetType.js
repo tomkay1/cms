@@ -41,20 +41,22 @@ define(function (require, exports, module) {
                                 icon: 1,
                                 time: 2000 //2秒关闭（如果不配置，默认是3秒）
                             }, function(){
-                                $("#name").val("");
-                                $("#txtOrderWeight").val("50");
+                                //$("#name").val("");
+                                //$("#txtOrderWeight").val("50");
+                                location.reload();
                             });
                         }
-                        if(index==500)
+                        if(index==500) {
                             layer.msg("操作失败", {
                                 icon: 2,
                                 time: 2000 //2秒关闭（如果不配置，默认是3秒）
-                            }, function(){
+                            }, function () {
                                 $("#name").val("");
                                 $("#txtOrderWeight").val("50");
+                                commonUtil.cancelDisabled("jq-cms-Save");
                             });
+                        }
                     }
-                    commonUtil.cancelDisabled("jq-cms-Save");
                 },
                 error: function () {
                     commonUtil.cancelDisabled("jq-cms-Save");

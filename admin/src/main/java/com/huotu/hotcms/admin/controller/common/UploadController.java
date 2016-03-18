@@ -2,7 +2,10 @@ package com.huotu.hotcms.admin.controller.common;
 
 import com.huotu.hotcms.admin.common.StringUtil;
 import com.huotu.hotcms.service.common.ConfigInfo;
+import com.huotu.hotcms.service.entity.WidgetMains;
 import com.huotu.hotcms.service.model.Result;
+import com.huotu.hotcms.service.service.WidgetService;
+import com.huotu.hotcms.service.util.HttpUtils;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
 import com.huotu.hotcms.service.widget.service.StaticResourceService;
@@ -33,6 +36,9 @@ public class UploadController {
     private static final Log log = LogFactory.getLog(UploadController.class);
     @Autowired
     private StaticResourceService resourceServer;
+    @Autowired
+    private WidgetService widgetService;
+
 
     static BASE64Decoder decoder = new sun.misc.BASE64Decoder();
 
@@ -92,17 +98,20 @@ public class UploadController {
 
     @RequestMapping(value = "/widgetUpLoad", method = RequestMethod.POST)
     @ResponseBody
-    public ResultView widgetUpLoad( @RequestParam(value = "btnFile1", required = false) MultipartFile files) {
+    public ResultView widgetUpLoad(Long widgetId, @RequestParam(value = "btnFile1", required = false) MultipartFile files) {
         ResultView resultView = null;
         try {
             Date now = new Date();
             String fileName = files.getOriginalFilename();
             String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
             if("html".contains(suffix)){
-                String path=configInfo.getResourcesWidget()+"/"+StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + suffix;
+                String path=configInfo.getResourcesWidget()+"/template_"+widgetId + "." + suffix;
                 URI uri = resourceServer.uploadResource(path, files.getInputStream());
-                String content = getFileContent(uri.toString());
+                String content = HttpUtils.getHtmlByUrl(uri.toURL());
                 Map<String,Object> map= new HashMap<String, Object>();
+                WidgetMains widgetMains = widgetService.findWidgetMainsById(widgetId);//修改
+                widgetMains.setResourceUri(path);
+                widgetService.saveWidgetMains(widgetMains);
                 map.put("fileContent",content);
                 map.put("fileUrl", uri);
                 map.put("fileUri", path);
@@ -117,34 +126,6 @@ public class UploadController {
         return resultView;
     }
 
-
-
-    private String getFileContent(String fileName){
-        File file = new File(fileName);
-        BufferedReader reader = null;
-        String ans = "";
-        try{
-            reader = new BufferedReader(new FileReader(file));
-            String tmpString = null;
-            //一行一行的读取文件里面的内容
-            while((tmpString = reader.readLine()) != null){
-                ans += tmpString + "\n";//保存在ans里面
-            }
-        }catch(IOException e){
-            e.printStackTrace();
-        }finally{
-            if(reader != null)
-            {
-                try{
-                    reader.close();
-                }catch(IOException e1){
-                    e1.printStackTrace();
-                }
-            }
-        }
-        //返回获得的文件内容
-        return ans;
-    }
 
     @RequestMapping(value = "/downloadUpLoad", method = RequestMethod.POST)
     @ResponseBody

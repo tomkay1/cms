@@ -3,7 +3,7 @@ $.fn.extend({
         var $this = this;
         var self = this;//Grid对象
         var settings = {
-            text: "上传图片",
+            text: "上传",
             submit:true,
             name:"file",
             accept: "jpg, jpeg,png,gif,bmp",

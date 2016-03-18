@@ -50,6 +50,7 @@ define(function (require, exports, module) {
                         widgetTypeId: $("#widgetTypeId").val(),
                         description: $("#description").val(),
                         imageUri: $("#thumbUri").val(),
+                        //resourceUri: $("#resourceUri").val(),
                         orderWeight: $("#txtOrderWeight").val()
                     },
                     type: "POST",
@@ -76,9 +77,10 @@ define(function (require, exports, module) {
                                     $("#description").val("");
                                     $("#txtOrderWeight").val("50");
                                     $("#widgetTypeId").val("-1");
+                                    commonUtil.cancelDisabled("jq-cms-Save");
                                 });
                         }
-                        commonUtil.cancelDisabled("jq-cms-Save");
+
                     },
                     error: function () {
                         commonUtil.cancelDisabled("jq-cms-Save");
@@ -94,7 +96,7 @@ define(function (require, exports, module) {
 
     exports.uploadImg=function(){
         uploadModule.uploadImg();
-        uploadModule.uploadWidget();
+        //uploadModule.uploadWidget();
     }
 
     //上传图片模块
@@ -169,7 +171,7 @@ define(function (require, exports, module) {
                                 });
                                 break;
                             case 403:
-                                layer.msg("文件格式错误,请上传jpg, jpeg,png,gif,bmp格式的图片", {
+                                layer.msg("文件格式错误,请上传.html格式的文件", {
                                     icon: 2,
                                     time: 2000 //2秒关闭（如果不配置，默认是3秒）
                                 })

@@ -52,6 +52,7 @@ define(function (require, exports, module) {
                             widgetTypeId: $("#widgetTypeId").val(),
                             description: $("#description").val(),
                             imageUri: $("#thumbUri").val(),
+                            resourceUri: $("#resourceUri").val(),
                             orderWeight: $("#txtOrderWeight").val()
                         },
                         type: "POST",
@@ -66,7 +67,7 @@ define(function (require, exports, module) {
                                         icon: 1,
                                         time: 2000 //2秒关闭（如果不配置，默认是3秒）
                                     }, function () {
-                                        location.reload()
+                                        window.location.href="http://"+window.location.host+"/"+"widget/widgetMainsList";
                                     });
                                 }
                                 if (index == 500)
@@ -74,10 +75,9 @@ define(function (require, exports, module) {
                                         icon: 2,
                                         time: 2000 //2秒关闭（如果不配置，默认是3秒）
                                     }, function () {
-
+                                        commonUtil.cancelDisabled("jq-cms-Save");
                                     });
                             }
-                            commonUtil.cancelDisabled("jq-cms-Save");
                         },
                         error: function () {
                             commonUtil.cancelDisabled("jq-cms-Save");
@@ -93,6 +93,7 @@ define(function (require, exports, module) {
 
     exports.uploadImg=function(){
         uploadModule.uploadImg();
+        //uploadModule.uploadWidget();
     }
 
     //上传图片模块
@@ -115,11 +116,62 @@ define(function (require, exports, module) {
                             case 200:
                                 $("#uploadThumbUri").attr("src", json.data.fileUrl);
                                 $("#thumbUri").val(json.data.fileUri);
-                                commonUtil.cancelDisabled("jq-cms-Save");
-                                layer.msg("操作成功", {time: 2000});
+                                layer.msg("操作成功", {
+                                    icon: 1,
+                                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                                }, function () {
+                                    commonUtil.cancelDisabled("jq-cms-Save");
+                                });
                                 break;
                             case 403:
-                                layer.msg("文件格式错误,请上传jpg, jpeg,png,gif,bmp格式的图片", {time: 2000});
+                                layer.msg("文件格式错误", {
+                                    icon: 2,
+                                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                                })
+                                break;
+                            case 502:
+                                layer.msg("服务器错误,请稍后再试", {time: 2000});
+                                break;
+                        }
+                    }
+                },
+                timeout: 30000,
+                timeout_callback: function () {
+                    layer.msg("图片上传操作", {time: 2000});
+                }
+            });
+        },
+
+        uploadWidget:function(){
+            $("#btnFile1").jacksonUpload({
+                url: "/cms/widgetUpLoad",
+                name: "btnFile1",
+                enctype: "multipart/form-data",
+                submit: true,
+                method: "post",
+                data:{
+                    customerId: customerId
+                },
+                callback: function (json) {
+                    if(json!=null)
+                    {
+                        var code=parseInt(json.code);
+                        switch (code){
+                            case 200:
+                                $("#uploadWidgetUri").val(json.data.fileContent);
+                                $("#resourceUri").val(json.data.fileUri);
+                                layer.msg("操作成功", {
+                                    icon: 1,
+                                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                                }, function () {
+                                    commonUtil.cancelDisabled("jq-cms-Save");
+                                });
+                                break;
+                            case 403:
+                                layer.msg("文件格式错误,请上传.html格式的文件", {
+                                    icon: 2,
+                                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                                })
                                 break;
                             case 502:
                                 layer.msg("服务器错误,请稍后再试", {time: 2000});
@@ -133,6 +185,7 @@ define(function (require, exports, module) {
                 }
             });
         }
+
     }
 
 });

@@ -40,7 +40,14 @@
                                 <textarea rows="" cols="" style="width: 500px; height: 60px;" class="input-normal" id="description" name="description" th:text="${widgetMains.description}" ></textarea>
                             </td>
                         </tr>
-
+                        <tr>
+                            <th>资源上传：</th>
+                            <td>
+                                <textarea rows="" cols="" style="width: 500px; height: 360px;" class="input-normal" id="uploadWidgetUri" name="uploadWidgetUri" th:text="${content}" readonly></textarea>
+                                <!--<span id="btnFile1" name="btnFile1" style="margin-left: 100px; margin-top: 20px; display: block;"/>-->
+                                <input type="hidden" id="resourceUri" name="resourceUri" th:value="${widgetMains.resourceUri}" />
+                            </td>
+                        </tr>
                         <tr>
                             <th>缩略图：</th>
                             <td>

@@ -22,7 +22,11 @@ public class HttpUtils {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();//利用HttpURLConnection对象,我们可以从网络中获取网页数据.
             conn.setDoInput(true);
             conn.connect();
+//            conn.setRequestProperty("Charset", "utf-8");
             is = conn.getInputStream(); //得到网络返回的输入流
+//            DataOutputStream dos = new DataOutputStream(urlConn.getOutputStream());
+//            is.writeBytes("tqpadmac="+URLEncoder.encode("B407F9D67C80", "utf-8"));
+//            is.writeBytes("tqpadver="+URLEncoder.encode("1", "utf-8"));
         }
         return is;
     }
@@ -31,7 +35,7 @@ public class HttpUtils {
         String html="";
         InputStream inputStream=getInputStreamByUrl(url);
         byte[] getData = readInputStream(inputStream); //获得网站的二进制数据
-        html = new String(getData);
+        html = new String(getData,"utf-8");
         return html;
     }
 

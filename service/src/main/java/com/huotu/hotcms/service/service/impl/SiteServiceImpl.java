@@ -23,6 +23,17 @@ import java.util.Set;
  */
 @Service
 public class SiteServiceImpl implements SiteService {
+    private static SiteServiceImpl instance;
+
+    private SiteServiceImpl() {
+    }
+
+    public static SiteServiceImpl getInstance() {
+        if(instance == null) {
+            instance = new SiteServiceImpl();
+        }
+        return instance;
+    }
 
     @Autowired
     SiteRepository siteRepository ;
@@ -43,7 +54,7 @@ public class SiteServiceImpl implements SiteService {
             predicates.add(cb.equal(root.get("customerId").as(Integer.class), customerId));
             return cb.and(predicates.toArray(new Predicate[predicates.size()]));
         };
-        Page<Site> pageData = siteRepository.findAll(specification,new PageRequest(page - 1, pageSize, new Sort(Sort.Direction.DESC, "orderWeight")));
+        Page<Site> pageData = siteRepository.findAll(specification,new PageRequest(page - 1, pageSize));
         if (pageData != null) {
             List<Site> site =pageData.getContent();
             for(Site site1 : site){

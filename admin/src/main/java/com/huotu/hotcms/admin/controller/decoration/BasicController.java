@@ -21,7 +21,7 @@ public class BasicController {
     @RequestMapping("/head")
     public ModelAndView widgetTypeList(HttpServletRequest request, @RequestParam("customerid") Integer customerid) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName(String.format("/s%_head.shtml",customerid.toString()));
+        modelAndView.setViewName("11_head.shtml");
         return  modelAndView;
     }
 }

@@ -21,26 +21,26 @@ public class XmlTestService {
 //        mapper.readTree()
 
 //        TestModel model = JAXB.unmarshal(getClass().getResourceAsStream("/test.xml"), TestModel.class);
-        WidgetPage model = JAXB.unmarshal(getClass().getResourceAsStream("/text.xml"), WidgetPage.class);
-        System.out.println(model);
-//        model.setValue("laoxie");
-        StringWriter stringWriter = new StringWriter();
-        JAXB.marshal(model,stringWriter);
-        System.out.println(stringWriter.toString());
+//        WidgetPage model = JAXB.unmarshal(getClass().getResourceAsStream("/text.xml"), WidgetPage.class);
+//        System.out.println(model);
+////        model.setValue("laoxie");
+//        StringWriter stringWriter = new StringWriter();
+//        JAXB.marshal(model,stringWriter);
+//        System.out.println(stringWriter.toString());
     }
     public void testJacksonXML() throws XMLStreamException, IOException {
-        XmlMapper mapper = new XmlMapper();
-
-
-        XMLStreamReader reader = XMLInputFactory.newFactory().createXMLStreamReader(getClass().getResourceAsStream("/text.xml"));
-//        TestModel model1 =mapper.readValue(reader,TestModel.class);
-        WidgetPage model =mapper.readValue(reader,WidgetPage.class);
-
-        System.out.println(model);
-//        model.setValue("laoxie");
-        StringWriter stringWriter = new StringWriter();
-        mapper.writeValue(stringWriter,model);
-//        mapper.
-        System.out.println(stringWriter.toString());
+//        XmlMapper mapper = new XmlMapper();
+//
+//
+//        XMLStreamReader reader = XMLInputFactory.newFactory().createXMLStreamReader(getClass().getResourceAsStream("/text.xml"));
+////        TestModel model1 =mapper.readValue(reader,TestModel.class);
+//        WidgetPage model =mapper.readValue(reader,WidgetPage.class);
+//
+//        System.out.println(model);
+////        model.setValue("laoxie");
+//        StringWriter stringWriter = new StringWriter();
+//        mapper.writeValue(stringWriter,model);
+////        mapper.
+//        System.out.println(stringWriter.toString());
     }
 }

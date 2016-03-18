@@ -87,9 +87,9 @@ public class PageResourceService {
      * */
     public List<String> getWidgetModuleTemplateByWidgetModuleList(List<WidgetModule> widgetModules){
         List<String> moduleTemplateList=new ArrayList<>();
-        String moduleTemplate="";
         if(widgetModules!=null){
             for (WidgetModule widgetModule:widgetModules){
+                String moduleTemplate="";
                 moduleTemplate+=getWidgetModuleTemplateByWidgetModule(widgetModule);
                 moduleTemplateList.add(moduleTemplate);
             }

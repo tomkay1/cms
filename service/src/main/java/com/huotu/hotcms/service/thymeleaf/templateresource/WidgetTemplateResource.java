@@ -8,6 +8,10 @@
 
 package com.huotu.hotcms.service.thymeleaf.templateresource;
 
+import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.model.widget.WidgetPage;
+import com.huotu.hotcms.service.service.impl.SiteServiceImpl;
+import com.huotu.hotcms.service.widget.service.PageResolveService;
 import com.huotu.hotcms.service.widget.service.PageResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -22,9 +26,13 @@ import java.io.*;
  * Created by cwb on 2016/3/16.
  */
 public class WidgetTemplateResource implements ITemplateResource {
+    private String location;//格式如下{siteId}_{pageConfigName}.shtml
 
-    @Autowired
     private PageResourceService pageResourceService;
+
+    private PageResolveService pageResolveService;
+
+    SiteServiceImpl siteService ;
 
 //  private final Resource resource;
     private final String characterEncoding;
@@ -33,10 +41,15 @@ public class WidgetTemplateResource implements ITemplateResource {
         super();
         Validate.notNull(applicationContext, "Application Context cannot be null");
         Validate.notEmpty(location, "Resource Location cannot be null or empty");
+        pageResourceService = (PageResourceService) applicationContext.getBean("pageResourceService");
+        pageResolveService = (PageResolveService) applicationContext.getBean("pageResolveService");
+        siteService = (SiteServiceImpl) applicationContext.getBean("siteServiceImpl");
+//        Site site = siteResolveService.getCurrentSite(request1);
 //        SiteResolveService siteResolveService = (SiteResolveService) applicationContext.getBean("siteResolveService");
 //        Site site = siteResolveService.getCurrentSite(request1);
         // Character encoding CAN be null (system default will be used)
 //        this.resource = applicationContext.getResource(location);
+        this.location=location;
         this.characterEncoding = characterEncoding;
     }
 
@@ -69,9 +82,34 @@ public class WidgetTemplateResource implements ITemplateResource {
         return true;
     }
 
+    public Long getSiteId(){
+        if(this.location!=null){
+            if(this.location.indexOf("_")>0){
+                return Long.valueOf(this.location.substring(0,this.location.indexOf("_")));
+            }
+        }
+        return null;
+    }
+
+    public String getPageConfigName(){
+        if(this.location!=null){
+            if(this.location.indexOf("_")>0&&this.location.indexOf(".shtml")>0){
+                return this.location.substring(this.location.indexOf("_")+1,this.location.indexOf(".shtml"))+".xml";
+            }
+        }
+        return null;
+    }
+
     @Override
     public Reader reader() throws IOException {
-        String htmlTemplate="";
+        Long siteId=this.getSiteId();
+        String htmlTemplate = "";
+        if(siteId!=null) {
+            String pageConfigName = this.getPageConfigName();
+            Site site = siteService.getSite(siteId);
+            WidgetPage widgetPage= pageResolveService.getWidgetPageByConfig(pageConfigName, site);
+            htmlTemplate=pageResourceService.getHtmlTemplateByWidgetPage(widgetPage);
+        }
 //       String htmlTemplate=pageResourceService.getHtmlTemplateByWidgetPage();
 //        String test="<div th:text=\"${test2}\" style=\"color:red\"></div><div>测试</div><div></div>";
         //TODO 自定义流

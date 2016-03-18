@@ -68,18 +68,25 @@ define(function (require, exports, module) {
                         var index=parseInt(data.code);
                         if(index==200)
                         {
-                            var layer=require("layer");
-                            layer.msg("修改成功,2秒后将自动返回列表页面",{time: 2000})
-                            commonUtil.cancelDisabled("jq-cms-Save");
-                            window.location.href="http://"+window.location.host+"/"+"region/regionList";
-                            //commonUtil.redirectUrl("/model/modelList");
-                            //$("#txtModelName").val("");
-                            //$("#txtModelDescription").val("");
+                            layer.msg("修改成功，即将返回列表", {
+                                icon: 1,
+                                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                            }, function(){
+                                window.location.href="http://"+window.location.host+"/"+"region/regionList";
+                            });
+
                         }
-                        if(index==500)
-                            layer.msg("修改失败",{time: 2000})
+                        if(index==500){
+
+                            layer.msg("操作失败", {
+                                icon: 2,
+                                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                            }, function(){
+                                commonUtil.cancelDisabled("jq-cms-Save");
+                            });
+
+                        }
                     }
-                    commonUtil.cancelDisabled("jq-cms-Save");
                 },
                 error: function () {
                     commonUtil.cancelDisabled("jq-cms-Save");

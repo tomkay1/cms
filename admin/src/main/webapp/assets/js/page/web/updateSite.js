@@ -73,6 +73,14 @@ define(function (require, exports, module) {
             var custom= $("#custom_0").val();
             var ary = $("#domains").val();
             var nary= ary.split(",");
+            var isPersonalise;
+            var  x = $('input:radio[id="isPersonalise_1"]:checked').val();//判断是否个性化
+            if(x == undefined){
+                isPersonalise = false;
+            }
+            else{
+                isPersonalise = true;
+            }
             var flag=0;
             for(var i=0;i<nary.length-1;i++)
             {
@@ -100,6 +108,7 @@ define(function (require, exports, module) {
                     resourceUrl: $("#resourceUrl").val(),
                     copyright: $("#copyright").val(),
                     custom: $("#custom_0").val(),
+                    personalise:isPersonalise,
                     logoUri: $("#logoUri").val(),
                     customTemplateUrl: $("#customTemplateUrl").val(),
                     domains: $("#domains").val(),

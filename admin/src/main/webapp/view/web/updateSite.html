@@ -80,6 +80,19 @@
                                     </tbody></table>
                             </td>
                         </tr>
+                        <tr>
+                            <th>是否个性化：</th>
+                            <td>
+                                <table id="isPersonalise">
+                                    <tbody>
+                                    <tr>
+                                        <td><input id="isPersonalise_1" type="radio" name="isPersonalise"  th:checked="${site.Personalise==true?true:false}" ><label for="isPersonalise_1">是</label></td>
+                                        <td><input id="isPersonalise_2" type="radio" name="isPersonalise" th:checked="${site.Personalise==false?true:false}" ><label for="isPersonalise_2">否</label></td>
+                                    </tr>
+                                    </tbody></table>
+                            </td>
+                        </tr>
+
                         <tr id ="cUrl" th:style="${site.custom}?'display:':'display:none'">
                             <th>自定义模板根路径：</th>
                             <td>

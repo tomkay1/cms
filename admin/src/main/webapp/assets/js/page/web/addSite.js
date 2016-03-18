@@ -65,13 +65,20 @@ define(function (require, exports, module) {
         submitHandler: function (form, ev) {
             var commonUtil = require("common");
             commonUtil.setDisabled("jq-cms-Save");
-            var custom= $("#custom_0").val();
             var customTemplateUrl= $("#customTemplateUrl").val();
             var layer=require("layer");
             var custom= $("#custom_0").val();
             var ary = $("#domains").val();
             var nary= ary.split(",");
             var flag=0;
+            var isPersonalise;
+            var  x = $('input:radio[id="isPersonalise_1"]:checked').val();//判断是否个性化
+            if(x == undefined){
+                isPersonalise = false;
+            }
+            else{
+                isPersonalise = true;
+            }
             for(var i=0;i<nary.length-1;i++)
             {
                 if (nary[i]==nary[i+1])
@@ -99,6 +106,7 @@ define(function (require, exports, module) {
                     resourceUrl: $("#resourceUrl").val(),
                     logoUri: $("#logoUri").val(),
                     custom: $("#custom_0").val(),
+                    personalise:isPersonalise,
                     customTemplateUrl: $("#customTemplateUrl").val(),
                     domains: $("#domains").val(),
                     regionId: $("#regionId").val(),

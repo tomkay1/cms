@@ -34,8 +34,8 @@ public class MainController {
     public ModelAndView index(HttpServletRequest request, @RequestParam("customerid") Integer customerid) throws Exception{
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/view/main.html");
-        xmlTestService.testXmlJAXB();
-        xmlTestService.testJacksonXML();
+//        xmlTestService.testXmlJAXB();
+//        xmlTestService.testJacksonXML();
         return modelAndView;
     }
 

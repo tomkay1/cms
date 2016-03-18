@@ -84,9 +84,10 @@ public class SiteController {
     @RequestMapping(value = "/saveSite",method = RequestMethod.POST)
     @Transactional(value = "transactionManager")
     @ResponseBody
-    public ResultView updateSite(Site site,Long regionId,String...domains) {
+    public ResultView updateSite(Site site,Long regionId,Boolean personalise,String...domains) {
         ResultView result = null;
         Set<Host> hosts=new HashSet<>();
+        site.setPersonalise(personalise);
         Site site2=null;
         try {
             Long siteId = site.getSiteId();

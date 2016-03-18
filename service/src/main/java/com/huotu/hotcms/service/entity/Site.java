@@ -82,8 +82,8 @@ public class Site {
     /**
      * 站点是否个性化
      * */
-    @Column(name = "isPersonalise")
-    private boolean isPersonalise;
+    @Column(name = "personalise")
+    private boolean personalise;
 
      /**
       * 对应域名

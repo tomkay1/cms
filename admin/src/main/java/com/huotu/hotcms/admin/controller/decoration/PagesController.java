@@ -1,7 +1,9 @@
 package com.huotu.hotcms.admin.controller.decoration;
 
+import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.CustomPages;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.service.CustomPagesService;
 import com.huotu.hotcms.service.util.PageData;
 import org.apache.commons.logging.Log;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -29,12 +33,21 @@ public class PagesController {
     private static final Log log = LogFactory.getLog(PagesController.class);
 
     @Autowired
+    private SiteRepository siteRepository;
+
+    @Autowired
     private CustomPagesService customPagesService;
 
     @RequestMapping("/list")
     public ModelAndView widgetTypeList(HttpServletRequest request, @RequestParam("customerid") Integer customerid) throws Exception{
-        ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/decoration/pages/list.html");
+        ModelAndView modelAndView = new ModelAndView();
+        try {
+            List<Site> siteList = siteRepository.findByCustomerIdAndDeletedAndPersonaliseOrderBySiteIdDesc(customerid, false, true);
+            modelAndView.addObject("siteList", siteList);
+            modelAndView.setViewName("/decoration/pages/list.html");
+        }catch (Exception ex){
+            log.error(ex);
+        }
         return  modelAndView;
     }
 
@@ -52,5 +65,18 @@ public class PagesController {
             log.error(ex.getMessage());
         }
         return pageModel;
+    }
+
+    @RequestMapping(value = "/defaults")
+    public ModelAndView defaults(HttpServletRequest request, @RequestParam("customerid") Integer customerid){
+        ModelAndView modelAndView = new ModelAndView();
+        try {
+            List<Site> siteList = siteRepository.findByCustomerIdAndDeletedAndPersonaliseOrderBySiteIdDesc(customerid, false, true);
+            modelAndView.addObject("siteList", siteList);
+            modelAndView.setViewName("/decoration/pages/defaults.html");
+        }catch (Exception ex){
+            log.error(ex);
+        }
+        return  modelAndView;
     }
 }

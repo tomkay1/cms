@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<head>
+    <title>店铺装修-火图CMS内容管理系统</title>
+    <meta charset="UTF-8" content="text/html">
+    <link  href="/assets/css/main.css"  type="text/css" rel="stylesheet"/>
+    <script src="/assets/seajs/sea.js"></script>
+    <script src="/assets/seajs/config.js"></script>
+</head>
+<body>
+<div class="mainpanel" id="mainpanel" style="margin-left: 0px;">
+    <div class="headerbar">
+        <a class="logo" style="left:0px;width:200px;margin-left:0px;float: left " th:href="@{/main/?customerid={customerid}(customerid=${user.customerId})}" title="伙伴">
+        </a>
+        <div class="header-left" style="padding-left: 5px;float: right;">
+            <div class="header-edit">
+                <ul class="project-opts clearfix">
+                    <li>
+                        <a href="http://www.huobanplus.com/" class="btn-contact-us" style="right:374px; border-right:none;" target="_blank">
+                            <span><img style="height: auto;max-width: 100%;vertical-align: middle;" src="/assets/img/lianxi.png"></span>
+                            <span>联系我们</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="huoban active" style="right:249px;" th:href="@{/main/decorated?customerid={customerid}(customerid=${user.customerId})}">
+                            <span><img src="/assets/img/iconfont-zhuangxiu.png" style="height: 20px; width:22px;vertical-align: middle;"></span>
+                            <span>店铺装修</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="huoban" style="right:124px;" th:href="@{${mallManageUrl}}" target="_blank">
+                            <span><img src="/assets/img/huoban.png" style="height: auto;max-width: 100%;vertical-align: middle;"></span>
+                            <span>伙伴商城</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="out js-hot-save" style="width:125px;border-right:none; right: 0px;" href="javascript:void(0)">
+                            <span><img src="/assets/img/out.png" style="height: auto;max-width: 100%;vertical-align: middle;"></span>
+                            <span>注销</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="toolbar">
+        <div class="toolbar-extra">
+            <label style="color:#fff;font-size:13px;"><b>是否使用店铺公共头部</b></label><input id="use_common_head" class="forms_check" type="checkbox" checked="">
+            <a class="link-gray" href="javascript:void(0)" target="_blank" title="预览页面">预览</a>
+            <a class="link-gray" href="javascript:void(0)" target="_blank" title="进入店铺">进入店铺</a>
+            <a class="link-yellow" href="javascript:;" id="btnPublish" title="点击发布当前页面 ">发布</a>
+            <a class="link-yellow" id="btnBackup" href="javascript:;" title="备份">备份</a>
+        </div>
+        <div class="operate">
+            <ul>
+                <li class="current"><a href="javascript:;">页面装修</a></li>
+                <!--<li><a href="/decorate/pageLayout.html?appId=310185&amp;pageInstanceId=39552520&amp;prototypeId=5&amp;open=1&#10;">页面布局</a></li>-->
+                <!--<li><a href="/decorate/ip/shopPageBackConfig.html?appId=310185&amp;pageInstanceId=39552520&amp;prototypeId=5&amp;open=1&#10;">页面背景</a></li>-->
+                <li><a href="javascript:void(0)">页面属性</a></li>
+            </ul>
+        </div>
+    <div class="con_right" id="con_right">
+        <iframe id="content" name="content" width="100%" height="800" class="hide" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" th:src="${url}"  style="display: inline;">
+        </iframe>
+    </div>
+</div>
+</div>
+<script>seajs.use(["pagesEditMain"]);</script>
+</body>
+</html>

@@ -93,6 +93,22 @@ define(["js/jquery-1.9.1.min"],function () {
                     }
                 }
             });
-        }
+        },
+        formatString: function () {
+            if (arguments.length == 0) return '';
+            if (arguments.length == 1) return arguments[0];
+            var args =cloneArray(arguments);
+            args.splice(0, 1);
+            return arguments[0].replace(/{(\d+)?}/g,
+                function ($0, $1) { return args[parseInt($1)]; });
+            function cloneArray (arr) {
+                var cloned = [];
+                for (var i = 0, j = arr.length; i < j; i++) {
+                    cloned[i] = arr[i];
+                }
+                return cloned;
+            }
+        },
+
     }
 });

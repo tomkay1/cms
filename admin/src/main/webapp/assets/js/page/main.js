@@ -19,13 +19,19 @@ define(function (require, exports, module) {
             {
                 $(dom).removeClass("nav-active")
                 $(dom).find("ul").removeClass("hidden");
+                $(dom).removeClass("nav-active-bottom");
                 //$(dom).find("ul").addClass("hidden")
             }
-            else
-            {
-                //$(dom).find("ul").removeClass("hidden")
-                $(dom).addClass("nav-active");
-                $(dom).find("ul").addClass("hidden");
+            else {
+                if ($(dom).find("ul").length > 0) {
+                    //$(dom).find("ul").removeClass("hidden")
+                    $(dom).addClass("nav-active");
+                    $(dom).find("ul").addClass("hidden");
+                    $(dom).addClass("nav-active-bottom");
+                }else {
+                    menusObj.removeClass("active")
+                    $(dom).addClass("active");
+                }
             }
         });
     })

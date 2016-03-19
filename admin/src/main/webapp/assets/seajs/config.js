@@ -74,6 +74,8 @@ seajs.config({
         "tabPlug":"libs/tab/jackson.tabs.min.js",
 
 		"pagesList":"js/page/pages/list.js?v="+version,
+		"pagesDefaults":"js/page/pages/defaults.js?v="+version,
+		"pagesEditMain":"js/page/edit/main.js?v="+version
 	},
 	preload: ['jquery']
 });

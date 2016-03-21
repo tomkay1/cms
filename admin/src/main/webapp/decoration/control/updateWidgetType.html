@@ -15,28 +15,28 @@
     <div class="h">
         <span class="icon-sprite icon-list"></span>
         <h3>添加控件类型</h3>
-        <div class="bar">
-            <a class="btn-lit" th:href="@{/widget/widgetTypeList?customerid={customerid}(customerid=${user.customerId})}" target="content">
-                <span>返回控件类型管理列表</span></a>
-        </div>
+        <!--<div class="bar">-->
+            <!--<a class="btn-lit" th:href="@{/widget/widgetTypeList?customerid={customerid}(customerid=${user.customerId})}" target="content">-->
+                <!--<span>返回控件类型管理列表</span></a>-->
+        <!--</div>-->
     </div>
     <div class="cnt-wp">
-        <form method="post" id="addWidgetTypeForm">
+        <form method="post" id="updateWidgetTypeForm">
             <div class="cnt form">
                 <div class="division">
                     <table width="100%" border="0" cellpadding="0" cellspacing="0">
                         <tbody>
-
+                        <input type="hidden" name="hidWidgetTypeID" id="hidWidgetTypeID" th:value="${widgetType.id}">
                         <tr>
                             <th>控件类型名称：</th>
                             <td>
-                                <input name="name" type="text" id="name" maxlength="50" class="input-normal" >
+                                <input name="name" type="text" id="name" maxlength="50" th:value="${widgetType.name}" class="input-normal" >
                             </td>
                         </tr>
                         <tr>
                             <th>排序权重：</th>
                             <td>
-                                <input name="txtOrderWeight" type="text" id="txtOrderWeight" value="50" class="input-normal" placeholder="请输入排序权重">
+                                <input name="txtOrderWeight" type="text" id="txtOrderWeight" value="50" th:value="${widgetType.orderWeight}" class="input-normal" placeholder="请输入排序权重">
                                 <span style="color:#ccc;">数字越大排越前面</span>
                             </td>
                         </tr>
@@ -50,6 +50,6 @@
         </form>
     </div>
 </div>
-<script>seajs.use(["validate","message","addWidgetType"]);</script>
+<script>seajs.use(["validate","message","updateWidgetType"]);</script>
 </body>
 </html>

@@ -41,9 +41,9 @@ define(function (require, exports, module) {
                                 icon: 1,
                                 time: 2000 //2秒关闭（如果不配置，默认是3秒）
                             }, function(){
-                                //$("#name").val("");
-                                //$("#txtOrderWeight").val("50");
-                                location.reload();
+                                $("#name").val("");
+                                $("#txtOrderWeight").val("50");
+                                commonUtil.cancelDisabled("jq-cms-Save");
                             });
                         }
                         if(index==500) {

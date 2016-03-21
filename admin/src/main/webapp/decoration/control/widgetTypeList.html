@@ -19,7 +19,7 @@
     <div class="cnt-wp">
         <div class="cnt">
             <div class="search-bar">
-                <label class="first ">主体名称：</label>
+                <label class="first ">类型名称：</label>
                 <input name="name" type="text" id="name" class="input-small" style="width: 200px;" placeholder=" 类型名称">
                 <label><a class="btn-lit btn-middle " id="jq-cms-search" href="javascript:" style="margin-bottom: 3px;"><span>搜索</span></a></label>
                 <label><a class="btn-lit btn-middle " id="jq-cms-searchAll" href="javascript:" style="margin-bottom: 3px;"><span>显示所有</span></a></label>
@@ -30,14 +30,14 @@
 <div class="block">
     <div class="h">
         <span class="icon-sprite icon-list"></span>
-        <h3 style="float: left; width: 144px;">主体列表</h3>
+        <h3 style="float: left; width: 144px;">类型列表</h3>
         <div class="bar">
-            <a class="btn-lit"  th:href="@{/widget/addWidgetMains?customerid={customerid}(customerid=${user.customerId})}" target="content">
+            <a class="btn-lit"  href="javascript:;" id="js-cms-addWidgetType" target="content">
                 <span>新增</span></a>
         </div>
     </div>
-    <div class="cnt-wp" id="js-WidgetMainsList"></div>
+    <div class="cnt-wp" id="js-WidgetTypeList"></div>
 </div>
-<script>seajs.use(["JGrid","jupload","widgetMainsList"]);</script>
+<script>seajs.use(["JGrid","widgetTypeList"]);</script>
 </body>
 </html>

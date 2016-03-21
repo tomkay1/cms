@@ -121,6 +121,27 @@ define(function (require, exports, module) {
     }
 
 
+    var layer=require("layer");
+    //新增
+    $("#js-cms-addWidgetMains").click(function(){
+        layer.open({
+            type: 2,
+            title: "新增控件主体",
+            shadeClose: true,
+            shade: 0.8,
+            area: ['900px', '500px'],
+            content: "/widget/addWidgetMains",
+            end:function(){
+                var option={
+                    dataParam:{
+                        customerId:customerId
+                    }
+                };
+                WidgetMainsGrid.Refresh(option);
+            }
+        });
+    })
+
     //修改
     function updateWidgetMains(){
         var obj=$(".js-hot-widgetMainsUpdate");

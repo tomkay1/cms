@@ -65,7 +65,13 @@ define(function (require, exports, module) {
                                     icon: 1,
                                     time: 2000 //2秒关闭（如果不配置，默认是3秒）
                                 }, function () {
-                                    location.reload()
+                                    $("#name").val("");
+                                    $("#description").val("");
+                                    $("#txtOrderWeight").val("50");
+                                    $("#widgetTypeId").val("-1");
+                                    $("#uploadThumbUri").attr("src", null);
+                                    $("#thumbUri").val("");
+                                    commonUtil.cancelDisabled("jq-cms-Save");
                                 });
                             }
                             if (index == 500)
@@ -77,6 +83,8 @@ define(function (require, exports, module) {
                                     $("#description").val("");
                                     $("#txtOrderWeight").val("50");
                                     $("#widgetTypeId").val("-1");
+                                    $("#uploadThumbUri").attr("src", null);
+                                    $("#thumbUri").val("");
                                     commonUtil.cancelDisabled("jq-cms-Save");
                                 });
                         }

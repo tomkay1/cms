@@ -7,7 +7,100 @@
     <script src="/assets/seajs/config.js"></script>
 </head>
 <body>
-<div class="mainpanel" id="mainpanel" style="margin-left: 0px;">
+<div class="leftpanel" style="background: #1c1d1f">
+    <a class="logo" style="left:0px;width:200px;margin-left:0px; " th:href="@{/main/?customerid={customerid}(customerid=${user.customerId})}" title="伙伴">
+    </a>
+    <!--账号信息END--->
+    <!--菜单BEGIN--->
+    <div id="con_left" style="height: 546px;">
+        <div class="leftpanelinner" id="menuContainer" style="overflow-y: auto;">
+            <ul class="nav nav-pills nav-stacked nav-bracket" id="menuList">
+                <li class="nav-parent nav-active  js-cms-menus nav-app" id="menus01" style="cursor: pointer;margin-bottom: 15px;">
+                    <a class="aparent" th:href="@{/page/list?customerid={customerid}(customerid=${user.customerId})}" target="content" >
+                        <i class="icon add"></i>
+                        <!--<i class="fa fa-chevron-circle-right"></i>-->
+                        <span>页面管理</span></a>
+                    <!--<ul class="children">-->
+                    <!--<li class="childMenus js-cms-submunes active" data-id="menus01"  style="cursor: pointer;">-->
+                    <!--<div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>-->
+                    <!--<a th:href="@{/page/list?customerid={customerid}(customerid=${user.customerId})}" target="content" ><i class="fa fa-caret-right"></i>页面管理<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!-->
+                    <!--</span>-->
+                    <!--</a>-->
+                    <!--</li>-->
+                    <!--</ul>-->
+                </li>
+                <li class="nav-parent nav-active js-cms-menus active nav-app" id="menus02" style="cursor: pointer;margin-bottom: 15px;">
+                    <a class="aparent" th:href="@{/page/defaults?customerid={customerid}(customerid=${user.customerId})}" target="content">
+                        <i class="icon add"></i>
+                        <!--<i class="fa fa-chevron-circle-right"></i>-->
+                        <span>默认页面</span></a>
+                    <!--<ul class="children">-->
+                    <!--<li class="childMenus js-cms-submunes" data-id="menus02" style="cursor: pointer;">-->
+                    <!--<div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>-->
+                    <!--<a th:href="@{/basic/head?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>公共头部<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!-->
+                    <!--</span>-->
+                    <!--</a>-->
+                    <!--</li>-->
+                    <!--<li class="childMenus js-cms-submunes" data-id="menus01"  style="cursor: pointer;">-->
+                    <!--<div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>-->
+                    <!--<a th:href="@{/category/categoryList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>店铺首页<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!-->
+                    <!--</span>-->
+                    <!--</a>-->
+                    <!--</li>-->
+                    <!--<li class="childMenus js-cms-submunes" data-id="menus01"  style="cursor: pointer;">-->
+                    <!--<div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>-->
+                    <!--<a th:href="@{/category/categoryList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>商品列表页<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!-->
+                    <!--</span>-->
+                    <!--</a>-->
+                    <!--</li>-->
+                    <!--<li class="childMenus js-cms-submunes" data-id="menus01"  style="cursor: pointer;">-->
+                    <!--<div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>-->
+                    <!--<a th:href="@{/category/categoryList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>搜索结果页<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!-->
+                    <!--</span>-->
+                    <!--</a>-->
+                    <!--</li>-->
+                    <!--</ul>-->
+                </li>
+                <li class="nav-parent nav-active js-cms-menus nav-app" id="menus03" style="cursor: pointer;">
+                    <a class="aparent">
+                        <i class="icon add"></i>
+                        <!--<i class="fa fa-chevron-circle-right"></i>-->
+                        <span>备份管理</span></a>
+                    <ul class="children">
+                        <li class="childMenus js-cms-submunes" data-id="menus03" style="cursor: pointer;">
+                            <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
+                            <a th:href="@{/site/siteList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>备份列表<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-parent nav-active js-cms-menus nav-app" id="menus04" style="cursor: pointer;" th:if="${user.isSuperManage}">
+                    <a class="aparent">
+                        <i class="icon add"></i>
+                        <!--<i class="fa fa-chevron-circle-right"></i>-->
+                        <span>控件主体管理</span></a>
+                    <ul class="children">
+                        <li class="childMenus js-cms-submunes" data-id="menus04"  style="cursor: pointer;">
+                            <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
+                            <a th:href="@{/widget/widgetTypeList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>控件类型<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
+                                </span>
+                            </a>
+                        </li>
+                        <li class="childMenus js-cms-submunes" data-id="menus04" style="cursor: pointer;">
+                            <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
+                            <a th:href="@{/widget/widgetMainsList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>控件主体<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--菜单END--->
+</div>
+<div class="mainpanel" id="mainpanel">
     <div class="headerbar">
         <a class="logo" style="left:0px;width:200px;margin-left:0px;float: left " th:href="@{/main/?customerid={customerid}(customerid=${user.customerId})}" title="伙伴">
         </a>
@@ -55,6 +148,7 @@
                 <li class="current"><a href="javascript:;">页面装修</a></li>
                 <!--<li><a href="/decorate/pageLayout.html?appId=310185&amp;pageInstanceId=39552520&amp;prototypeId=5&amp;open=1&#10;">页面布局</a></li>-->
                 <!--<li><a href="/decorate/ip/shopPageBackConfig.html?appId=310185&amp;pageInstanceId=39552520&amp;prototypeId=5&amp;open=1&#10;">页面背景</a></li>-->
+                <li><a href="javascript:void(0)">页面背景</a></li>
                 <li><a href="javascript:void(0)">页面属性</a></li>
             </ul>
         </div>
@@ -64,6 +158,6 @@
     </div>
 </div>
 </div>
-<script>seajs.use(["pagesEditMain"]);</script>
+<script>seajs.use(["main"]);</script>
 </body>
 </html>

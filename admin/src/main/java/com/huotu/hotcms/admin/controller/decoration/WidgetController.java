@@ -48,14 +48,14 @@ public class WidgetController {
     @RequestMapping("/widgetTypeList")
     public ModelAndView widgetTypeList() throws Exception{
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/decoration/widget/widgetTypeList.html");
+        modelAndView.setViewName("/decoration/control/widgetTypeList.html");
         return  modelAndView;
     }
 
     @RequestMapping("/widgetMainsList")
     public ModelAndView widgetMainsList() throws Exception{
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/decoration/widget/widgetMainsList.html");
+        modelAndView.setViewName("/decoration/control/widgetMainsList.html");
         return  modelAndView;
     }
 
@@ -63,7 +63,7 @@ public class WidgetController {
     @RequestMapping(value = "/addWidgetType")
     public ModelAndView addWidgetType() throws Exception{
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/decoration/widget/addWidgetType.html");
+        modelAndView.setViewName("/decoration/control/addWidgetType.html");
         return  modelAndView;
     }
 
@@ -71,7 +71,7 @@ public class WidgetController {
     public ModelAndView addWidgetMains() throws Exception{
         ModelAndView modelAndView=new ModelAndView();
         List<WidgetType> widgetTypes = widgetService.findAllWidgetType();
-        modelAndView.setViewName("/decoration/widget/addWidgetMains.html");
+        modelAndView.setViewName("/decoration/control/addWidgetMains.html");
         modelAndView.addObject("widgetTypes",widgetTypes);
         return  modelAndView;
     }
@@ -81,7 +81,7 @@ public class WidgetController {
     public ModelAndView updateWidgetMains(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
         try{
-            modelAndView.setViewName("/decoration/widget/updateWidgetMains.html");
+            modelAndView.setViewName("/decoration/control/updateWidgetMains.html");
             WidgetMains widgetMains= widgetService.findWidgetMainsById(id);
             List<WidgetType> widgetTypes = widgetService.findAllWidgetType();
             String logo_uri =null;
@@ -107,7 +107,7 @@ public class WidgetController {
     public ModelAndView updateWidgetType(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
         try{
-            modelAndView.setViewName("/decoration/widget/updateWidgetType.html");
+            modelAndView.setViewName("/decoration/control/updateWidgetType.html");
             WidgetType widgetType= widgetService.findWidgetTypeById(id);
             modelAndView.addObject("widgetType",widgetType);
         }catch (Exception ex){

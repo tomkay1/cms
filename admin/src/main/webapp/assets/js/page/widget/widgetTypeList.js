@@ -69,18 +69,53 @@ define(function (require, exports, module) {
         WidgetTypeGrid.Refresh(option);
     })
 
+    var layer=require("layer");
+    //新增
+    $("#js-cms-addWidgetType").click(function(){
+        layer.open({
+            type: 2,
+            title: "新增控件类型",
+            shadeClose: true,
+            shade: 0.8,
+            area: ['900px', '500px'],
+            content: "/widget/addWidgetType",
+            end:function(){
+                var option={
+                    dataParam:{
+                        customerId:customerId
+                    }
+                };
+                WidgetTypeGrid.Refresh(option);
+            }
+        });
+    })
+
     //修改
     function updateWidgetType(){
         var obj=$(".js-hot-widgetUpdate");
         $.each(obj,function(item,dom){
             $(dom).click(function(){//绑定修改事件
                 var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;
-                var commonUtil = require("common");
-                var customerId = commonUtil.getQuery("customerid");
-                window.location.href="http://"+window.location.host+"/"+"widget/updateWidgetType?id="+id+"&customerId="+customerId;
+                layer.open({
+                    type: 2,
+                    title: "修改控件类型",
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['900px', '500px'],
+                    content: "/widget/updateWidgetType?id="+id,
+                    end:function(){
+                        var option={
+                            dataParam:{
+                                customerId:customerId
+                            }
+                        };
+                        WidgetTypeGrid.Refresh(option);
+                    }
+                });
             })
         })
     }
+
 
 
     //删除

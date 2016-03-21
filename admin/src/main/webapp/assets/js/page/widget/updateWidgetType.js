@@ -40,7 +40,8 @@ define(function (require, exports, module) {
                                 icon: 1,
                                 time: 2000 //2秒关闭（如果不配置，默认是3秒）
                             }, function(){
-                                window.location.href="http://"+window.location.host+"/"+"widget/widgetTypeList";
+                                var layerIndex = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                                parent.layer.close(layerIndex);
                                 //commonUtil.cancelDisabled("jq-cms-Save");
 
                             });

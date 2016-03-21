@@ -1,6 +1,5 @@
 package com.huotu.hotcms.service.widget.service;
 
-import com.huotu.hotcms.service.common.ConfigInfo;
 import com.huotu.hotcms.service.common.LayoutEnum;
 import com.huotu.hotcms.service.model.widget.*;
 import com.huotu.hotcms.service.util.HttpUtils;

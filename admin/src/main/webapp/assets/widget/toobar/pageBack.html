@@ -1,0 +1,69 @@
+<html>
+<head>
+    <link  href="/assets/css/admin.content.css"  type="text/css" rel="stylesheet"/>
+    <link  href="/assets/css/admin.global.css"  type="text/css" rel="stylesheet"/>
+    <link  href="/assets/libs/JGrid/theme/Jackson_skin_gray.css"  type="text/css" rel="stylesheet"/>
+    <link href="/assets/libs/layer/skin/layer.css" rel="stylesheet"/>
+    <script src="/assets/seajs/sea.js"></script>
+    <script src="/assets/seajs/config.js"></script>
+</head>
+<body>
+<div class="cnt form">
+    <div class="division">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+            <tbody>
+            <tr>
+                <th>背景颜色：</th>
+                <td>
+                    <input name="title" type="text" id="title" maxlength="50" class="input-normal"/>
+                </td>
+            </tr>
+            <tr>
+                <th>背景图片：</th>
+                <td>
+                    <img id="uploadThumbUri" style="width: 80px; height: 80px; border: 1px solid #ccc; float: left; background: #efefef; line-height: 80px; text-align: center; color: #ccc;"/>
+                </td>
+            </tr>
+            <tr>
+                <th>背景平铺：</th>
+                <td>
+                    <select class="input-small" id="pic_repeat">
+                        <option value="no-repeat">不平铺</option>
+                        <option value="repeat">平铺</option>
+                        <option value="repeat-x">横向平铺</option>
+                        <option value="repeat-y">纵向平铺</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>左右对齐：</th>
+                <td>
+                    <select class="input-small" id="pic_left_right">
+                        <option value="">请选择</option>
+                        <option value="left">居左</option>
+                        <option value="center">居中</option>
+                        <option value="right">居右</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>上下对齐：</th>
+                <td>
+                    <select class="select-short" id="pic_top_right">
+                        <option value="">请选择</option>
+                        <option value="top">居上</option>
+                        <option value="center">居中</option>
+                        <option value="bottom">居下</option>
+                    </select>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div style="text-align: center;">
+        <input type="submit" class="btn-lit" name="btnSave"  value="保存" data-submiting-text="提交中..." data-text="保存" id="jq-cms-Save">
+    </div>
+</div>
+</body>
+</html>
+

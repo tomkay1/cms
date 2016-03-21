@@ -35,4 +35,12 @@ public class BasicController {
         modelAndView.setViewName("/decoration/edit/editMain.html");
         return  modelAndView;
     }
+
+    @RequestMapping("/test")
+    public ModelAndView test(HttpServletRequest request) throws Exception{
+        ModelAndView modelAndView=new ModelAndView();
+        modelAndView.setViewName("/decoration/test.html");
+
+        return  modelAndView;
+    }
 }

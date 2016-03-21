@@ -26,6 +26,31 @@ import java.io.*;
  */
 public class WidgetTemplateResource implements ITemplateResource {
     private String location;//格式如下{siteId}_{pageConfigName}.shtml
+    private final String SERVICE_JAVASCRIPT="<script>seajs.use([\"widgetTooBar\"]);</script>";
+    private final String SERVICE_HTML_BOX="<!DOCTYPE html><html>\n" +
+            "<head>\n" +
+            "    <title>店铺装修-可视化编辑</title>\n" +
+            "    <meta charset=\"UTF-8\" content=\"text/html\"/>\n" +
+            " <link  href=\"/assets/css/main.css\"  type=\"text/css\" rel=\"stylesheet\"/>\n" +
+            " <link href=\"/assets/libs/layer/skin/layer.css\" rel=\"stylesheet\"/>" +
+            "    <script src=\"/assets/seajs/sea.js\"></script>\n" +
+            "    <script src=\"/assets/seajs/config.js\"></script>\n" +
+            "</head>\n" +
+            "<body style=\"background:#ffffff;\">" +
+            "%s" +
+            "%s" +
+            "</body>" +
+            "</html>";
+    private final String WEB_HTML_BOX="<!DOCTYPE html><html>\n" +
+            "<head>\n" +
+            "    <title>店铺装修-火图CMS内容管理系统</title>\n" +
+            "    <meta charset=\"UTF-8\" content=\"text/html\"/>\n" +
+            "</head>\n" +
+            "<body>" +
+            "%s" +
+            "%s" +
+            "</body>" +
+            "</html>";
 
     private PageResourceService pageResourceService;
 
@@ -109,6 +134,7 @@ public class WidgetTemplateResource implements ITemplateResource {
             WidgetPage widgetPage= pageResolveService.getWidgetPageByConfig(pageConfigName, site);
             htmlTemplate=pageResourceService.getHtmlTemplateByWidgetPage(widgetPage);
         }
+        htmlTemplate=String.format(this.SERVICE_HTML_BOX,htmlTemplate,SERVICE_JAVASCRIPT);
         return new StringReader(htmlTemplate);
     }
 

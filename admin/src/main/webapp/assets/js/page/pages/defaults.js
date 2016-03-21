@@ -17,7 +17,7 @@ define(function (require, exports, module) {
             var urlFormatter=$(dom).data("url");
             var siteId=$("#siteId").val();
             var url=commonUtil.formatString(urlFormatter,customerId,siteId);
-            window.top.location.href=url;
+            window.location.href=url;
         })
     })
 });

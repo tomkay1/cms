@@ -27,7 +27,7 @@ public interface GoodsService {
      * @param goodsSearcher 检索条件
      * @return
      */
-    Page<Goods> searchGoods(int customerId,GoodsSearcher goodsSearcher);
+    Page<Goods> searchGoods(int customerId,GoodsSearcher goodsSearcher) throws Exception;
 
     /**
      * 热销产品
@@ -35,7 +35,7 @@ public interface GoodsService {
      * @param customerId
      * @return
      */
-    List<Goods> getHotGoodsList(int customerId);
+    List<Goods> getHotGoodsList(int customerId) throws Exception;
 
 
 }

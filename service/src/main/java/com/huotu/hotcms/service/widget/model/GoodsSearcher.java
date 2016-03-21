@@ -61,5 +61,4 @@ public class GoodsSearcher {
      */
     private int direction;
 
-
 }

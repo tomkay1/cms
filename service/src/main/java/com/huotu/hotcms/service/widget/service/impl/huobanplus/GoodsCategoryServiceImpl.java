@@ -8,12 +8,20 @@
 
 package com.huotu.hotcms.service.widget.service.impl.huobanplus;
 
+import com.alibaba.fastjson.JSON;
+import com.huotu.hotcms.service.util.ApiResult;
 import com.huotu.hotcms.service.widget.model.GoodsCategory;
 import com.huotu.hotcms.service.widget.service.GoodsCategoryService;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.net.URI;
 import java.util.List;
 
 /**
@@ -24,14 +32,22 @@ import java.util.List;
 @Service
 public class GoodsCategoryServiceImpl implements GoodsCategoryService {
     @Override
-    public List<GoodsCategory> getGoodsCategories(int customerId) {
-        List<GoodsCategory> goodsCategories = new ArrayList<>();
-        GoodsCategory goodsCategory = new GoodsCategory();
-        goodsCategory.setName("rerwnds");
-        goodsCategories.add(goodsCategory);
-        GoodsCategory goodsCategory1 = new GoodsCategory();
-        goodsCategory1.setName("二温热微软");
-        goodsCategories.add(goodsCategory1);
-        return goodsCategories;
+    public List<GoodsCategory> getGoodsCategories(int customerId) throws Exception{
+        String content = invokeGoodsCatgProce(customerId);
+        ApiResult<List<GoodsCategory>> jsonData = JSON.parseObject(content,ApiResult.class);
+        return jsonData.getData();
+    }
+
+    private String invokeGoodsCatgProce(int customerId) throws Exception {
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        URI uri = new URIBuilder()
+                .setScheme("http")
+                .setHost("")
+                .setPath("")
+                .setParameter("customerId", Integer.toString(customerId))
+                .build();
+        HttpGet httpGet = new HttpGet(uri);
+        CloseableHttpResponse response = httpClient.execute(httpGet);
+        return EntityUtils.toString(response.getEntity());
     }
 }

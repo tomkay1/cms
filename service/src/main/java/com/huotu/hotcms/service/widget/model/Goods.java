@@ -60,5 +60,16 @@ public class Goods {
      */
     private String thumbnail;
 
-
+    public Goods() {
+    }
+    public Goods(int id,String name,String shelveTime,int sales,double marketPrice,double salePrice,double vipPrice,String thumbnail) {
+        this.id = id;
+        this.name = name;
+        this.shelveTime = shelveTime;
+        this.sales = sales;
+        this.marketPrice = marketPrice;
+        this.salePrice = salePrice;
+        this.vipPrice = vipPrice;
+        this.thumbnail = thumbnail;
+    }
 }

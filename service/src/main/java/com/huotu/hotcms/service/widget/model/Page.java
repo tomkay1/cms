@@ -38,4 +38,11 @@ public class Page<T> {
      */
     private List<T> records;
 
+    public Page() {
+    }
+    public Page(int currentPageNo,int totalPages,int totalRecords) {
+        this.currentPageNo = currentPageNo;
+        this.totalPages = totalPages;
+        this.totalRecords = totalRecords;
+    }
 }

@@ -11,6 +11,7 @@ package com.huotu.hotcms.service.widget.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,4 +41,20 @@ public class GoodsCategory {
      * 完整的图片url
      */
     private String picUrl;
+
+    public GoodsCategory() {
+    }
+    public GoodsCategory(int id,String name,Integer goodsTypeId,String picUrl) {
+        this.id = id;
+        this.name = name;
+        this.goodsTypeId = goodsTypeId;
+        this.picUrl = picUrl;
+    }
+
+    public void addChild(GoodsCategory goodsCategory) {
+        if(children==null||children.size()==0) {
+            children = new ArrayList<>();
+        }
+        children.add(goodsCategory);
+    }
 }

@@ -64,6 +64,17 @@ public interface StaticResourceService {
      */
     URI getResource(String path) throws URISyntaxException;
 
+    /**
+     * 获取指定资源的资源定位符
+     * @param path
+     * @return
+     * @throws URISyntaxException
+     */
+    URI getWidgetResource(String path) throws URISyntaxException;
+
+
+
+
 //    /**
 //     * 获取指定资源的资源定位符
 //     * @param path

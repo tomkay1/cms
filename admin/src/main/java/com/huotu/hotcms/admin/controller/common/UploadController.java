@@ -23,6 +23,7 @@ import sun.misc.BASE64Decoder;
 
 import java.io.*;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,6 +42,7 @@ public class UploadController {
 
 
     static BASE64Decoder decoder = new sun.misc.BASE64Decoder();
+    protected URI fileHome;
 
     @Autowired
     private ConfigInfo configInfo;
@@ -98,13 +100,14 @@ public class UploadController {
 
     @RequestMapping(value = "/widgetUpLoad", method = RequestMethod.POST)
     @ResponseBody
-    public ResultView widgetUpLoad(Long widgetId, @RequestParam(value = "btnFile1", required = false) MultipartFile files) {
+    public ResultView widgetUpLoad(Long id, @RequestParam(value = "btnFile1", required = false) MultipartFile files) {
         ResultView resultView = null;
         try {
             Date now = new Date();
             String fileName = files.getOriginalFilename();
             String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
             if("html".contains(suffix)){
+                Long widgetId = Long.valueOf(id);
                 String path=configInfo.getResourcesWidget()+"/template_"+widgetId + "." + suffix;
                 URI uri = resourceServer.uploadResource(path, files.getInputStream());
                 String content = HttpUtils.getHtmlByUrl(uri.toURL());
@@ -113,8 +116,8 @@ public class UploadController {
                 widgetMains.setResourceUri(path);
                 widgetService.saveWidgetMains(widgetMains);
                 map.put("fileContent",content);
-                map.put("fileUrl", uri);
-                map.put("fileUri", path);
+                map.put("fileUri", uri);
+                map.put("fileUrl", path);
                 resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), map);
             }else{
                 resultView = new ResultView(ResultOptionEnum.FILE_FORMATTER_ERROR.getCode(), ResultOptionEnum.FILE_FORMATTER_ERROR.getValue(), null);
@@ -125,6 +128,28 @@ public class UploadController {
         }
         return resultView;
     }
+
+    @RequestMapping(value = "/saveWidget", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultView saveWidget(Long id,String content,String path) throws URISyntaxException {
+        ResultView resultView = null;
+        String uri = resourceServer.getWidgetResource(path).toString();
+        File file=new File(uri);
+        try {
+            WidgetMains widgetMains = widgetService.findWidgetMainsById(id);
+            widgetMains.setResourceUri(path);
+            widgetService.saveWidgetMains(widgetMains);
+            BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+            bw.write(content);
+            bw.close();
+            resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            resultView = new ResultView(ResultOptionEnum.SERVERFAILE.getCode(),e.getMessage(), null);
+        }
+        return resultView;
+    }
+
 
 
     @RequestMapping(value = "/downloadUpLoad", method = RequestMethod.POST)

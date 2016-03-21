@@ -47,8 +47,8 @@ public abstract class AbstractStaticResourceService implements StaticResourceSer
         stringBuilder.append(path);
 
         vfsHelper.handle(stringBuilder.toString(), file -> {
-            if (file.exists())
-                throw new IllegalStateException("" + file.toString() + " already existing");
+//            if (file.exists())
+//                throw new IllegalStateException("" + file.toString() + " already existing");
             OutputStream out = file.getContent().getOutputStream();
             try {
                 StreamUtils.copy(data, out);
@@ -100,6 +100,16 @@ public abstract class AbstractStaticResourceService implements StaticResourceSer
             stringBuilder.append("/");
         stringBuilder.append(path);
         return new URI(stringBuilder.toString());
+    }
+
+    @Override
+    public URI getWidgetResource(String path) throws URISyntaxException {
+        StringBuilder stringBuilder = new StringBuilder(fileHome.toString());
+        String stringBuilder1 = stringBuilder.substring(6,stringBuilder.length());
+        if (!stringBuilder1.endsWith("/") && !path.startsWith("/"))
+            stringBuilder1 = stringBuilder1+"/";
+        stringBuilder1 = stringBuilder1+path;
+        return new URI(stringBuilder1);
     }
 
 //    @Override

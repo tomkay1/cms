@@ -77,43 +77,20 @@ define(function (require, exports, module) {
         $.each(obj,function(item,dom){
             $(dom).click(function(){//绑定修改事件
                 var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;
-                $("#upload").jacksonUpload({
-                    url: "/cms/widgetUpLoad",
-                    name: "btnFile1",
-                    enctype: "multipart/form-data",
-                    submit: true,
-                    method: "post",
-                    data:{
-                        widgetId: id
-                    },
-                    callback: function (json) {
-                        if(json!=null)
-                        {
-                            var code=parseInt(json.code);
-                            switch (code){
-                                case 200:
-                                    layer.msg("操作成功", {
-                                        icon: 1,
-                                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
-                                    }, function () {
-                                        location.reload()
-                                    });
-                                    break;
-                                case 403:
-                                    layer.msg("文件格式错误", {
-                                        icon: 2,
-                                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
-                                    })
-                                    break;
-                                case 502:
-                                    layer.msg("服务器错误,请稍后再试", {time: 2000});
-                                    break;
+                layer.open({
+                    type: 2,
+                    title: "上传控件主体",
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['900px', '600px'],
+                    content: "/widget/uploadWidget?id="+id,
+                    end:function(){
+                        var option={
+                            dataParam:{
+                                name:"",
                             }
-                        }
-                    },
-                    timeout: 30000,
-                    timeout_callback: function () {
-                        layer.msg("图片上传操作", {time: 2000});
+                        };
+                        WidgetMainsGrid.Refresh(option);
                     }
                 });
             })

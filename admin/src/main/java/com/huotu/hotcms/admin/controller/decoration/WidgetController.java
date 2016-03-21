@@ -76,6 +76,14 @@ public class WidgetController {
         return  modelAndView;
     }
 
+    @RequestMapping(value = "/uploadWidget")
+    public ModelAndView uploadWidget(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception{
+        ModelAndView modelAndView=new ModelAndView();
+        modelAndView.setViewName("/decoration/control/widgetUpload.html");
+        modelAndView.addObject("id",id);
+        return  modelAndView;
+    }
+
 
     @RequestMapping("/updateWidgetMains")
     public ModelAndView updateWidgetMains(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception{

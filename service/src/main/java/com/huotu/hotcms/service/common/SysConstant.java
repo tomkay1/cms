@@ -7,5 +7,6 @@ package com.huotu.hotcms.service.common;
 public class SysConstant {
 
     public static final int DEFAULT_PAGE_BUTTON_NUM = 5;
+    public static final String WIDGET_KEY = "1621302";
 
 }

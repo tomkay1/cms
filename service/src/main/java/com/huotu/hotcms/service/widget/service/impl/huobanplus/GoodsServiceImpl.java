@@ -9,7 +9,10 @@
 package com.huotu.hotcms.service.widget.service.impl.huobanplus;
 
 import com.alibaba.fastjson.JSON;
+import com.huotu.hotcms.service.common.SysConstant;
 import com.huotu.hotcms.service.util.ApiResult;
+import com.huotu.hotcms.service.util.HttpUtils;
+import com.huotu.hotcms.service.util.SignBuilder;
 import com.huotu.hotcms.service.widget.model.Goods;
 import com.huotu.hotcms.service.widget.model.GoodsSearcher;
 import com.huotu.hotcms.service.widget.model.Page;
@@ -21,12 +24,18 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Field;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * 商品组件服务
@@ -43,48 +52,25 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     private String invokeGoodsSearchProce(int customerId, GoodsSearcher goodsSearcher) throws Exception{
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        List nameValuePairs = new ArrayList<>();
-        if(goodsSearcher.getGoodsCatId()!=0) {
-            nameValuePairs.add(new BasicNameValuePair("goodsCatId",Integer.toString(goodsSearcher.getGoodsCatId())));
+        Map<String,Object> params = buildSortedParams(customerId,goodsSearcher);
+        String sign = SignBuilder.buildSignIgnoreEmpty(params, null, SysConstant.WIDGET_KEY);
+        params.put("sign",sign);
+        return HttpUtils.httpGet("http", "", "", params);
+    }
+
+    private Map<String, Object> buildSortedParams(int customerId, GoodsSearcher goodsSearcher) throws Exception{
+        Map<String,Object> params = new TreeMap<>();
+        params.put("customerId",customerId);
+//        PropertyDescriptor[] propertyDescriptors = BeanUtils.getPropertyDescriptors(goodsSearcher.getClass());
+//        for(PropertyDescriptor property : propertyDescriptors) {
+//            params.put(property.getName(),property.getValue(property.getName()));
+//        }
+        Field[] fields = goodsSearcher.getClass().getFields();
+        for(Field field : fields) {
+            field.setAccessible(true);
+            params.put(field.getName(),field.get(field.getName()));
         }
-        if(goodsSearcher.getGoodsTypeId()!=0) {
-            nameValuePairs.add(new BasicNameValuePair("goodsTypeId",Integer.toString(goodsSearcher.getGoodsTypeId())));
-        }
-        if(goodsSearcher.getBrandId()!=0) {
-            nameValuePairs.add(new BasicNameValuePair("brandId",Integer.toString(goodsSearcher.getBrandId())));
-        }
-        if(goodsSearcher.getMinPrice()!=0) {
-            nameValuePairs.add(new BasicNameValuePair("minPrice",Integer.toString(goodsSearcher.getMinPrice())));
-        }
-        if(goodsSearcher.getMaxPrice()!=0) {
-            nameValuePairs.add(new BasicNameValuePair("maxPrice",Integer.toString(goodsSearcher.getMaxPrice())));
-        }
-        if(goodsSearcher.getUserId()!=0) {
-            nameValuePairs.add(new BasicNameValuePair("userId",Integer.toString(goodsSearcher.getUserId())));
-        }
-        if(!StringUtils.isEmpty(goodsSearcher.getKeyword())) {
-            nameValuePairs.add(new BasicNameValuePair("keyword",goodsSearcher.getKeyword()));
-        }
-        if(goodsSearcher.getPageNo()!=0) {
-            nameValuePairs.add(new BasicNameValuePair("pageNo",Integer.toString(goodsSearcher.getPageNo())));
-        }
-        if(goodsSearcher.getDirection()!=0) {
-            nameValuePairs.add(new BasicNameValuePair("direction",Integer.toString(goodsSearcher.getDirection())));
-        }
-        if(goodsSearcher.getSortEnum()!=null) {
-            nameValuePairs.add(new BasicNameValuePair("sortEnum",(String)goodsSearcher.getSortEnum().getCode()));
-        }
-        URI uri = new URIBuilder()
-                .setScheme("http")
-                .setHost("")
-                .setPath("")
-                .setParameter("customerId", Integer.toString(customerId))
-                .setParameters(nameValuePairs)
-                .build();
-        HttpGet httpGet = new HttpGet(uri);
-        CloseableHttpResponse response = httpClient.execute(httpGet);
-        return EntityUtils.toString(response.getEntity());
+        return params;
     }
 
     @Override
@@ -95,15 +81,10 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     private String invokeHotGoodsProce(int customerId) throws Exception{
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        URI uri = new URIBuilder()
-                .setScheme("http")
-                .setHost("")
-                .setPath("")
-                .setParameter("customerId", Integer.toString(customerId))
-                .build();
-        HttpGet httpGet = new HttpGet(uri);
-        CloseableHttpResponse response = httpClient.execute(httpGet);
-        return EntityUtils.toString(response.getEntity());
+        Map<String,Object> params = new TreeMap<>();
+        params.put("customerId",customerId);
+        String sign = SignBuilder.buildSignIgnoreEmpty(params, null, SysConstant.WIDGET_KEY);
+        params.put("sign",sign);
+        return HttpUtils.httpGet("http", "", "", params);
     }
 }

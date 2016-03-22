@@ -31,6 +31,7 @@ import org.springframework.util.StringUtils;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,14 +62,12 @@ public class GoodsServiceImpl implements GoodsService {
     private Map<String, Object> buildSortedParams(int customerId, GoodsSearcher goodsSearcher) throws Exception{
         Map<String,Object> params = new TreeMap<>();
         params.put("customerId",customerId);
-//        PropertyDescriptor[] propertyDescriptors = BeanUtils.getPropertyDescriptors(goodsSearcher.getClass());
-//        for(PropertyDescriptor property : propertyDescriptors) {
-//            params.put(property.getName(),property.getValue(property.getName()));
-//        }
-        Field[] fields = goodsSearcher.getClass().getFields();
+        Class clazz = goodsSearcher.getClass();
+        Field[] fields = clazz.getFields();
         for(Field field : fields) {
-            field.setAccessible(true);
-            params.put(field.getName(),field.get(field.getName()));
+            PropertyDescriptor pd = new PropertyDescriptor(field.getName(),clazz);
+            Method method = pd.getReadMethod();
+            params.put(field.getName(),method.invoke(goodsSearcher));
         }
         return params;
     }

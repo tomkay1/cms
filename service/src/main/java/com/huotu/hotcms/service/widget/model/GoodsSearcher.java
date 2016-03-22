@@ -8,11 +8,15 @@
 
 package com.huotu.hotcms.service.widget.model;
 import com.huotu.hotcms.service.common.SortEnum;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 商品检索条件
  * Created by cwb on 2016/3/17.
  */
+@Getter
+@Setter
 public class GoodsSearcher {
 
     /**
@@ -22,6 +26,7 @@ public class GoodsSearcher {
     /**
      * 商品类型主键id
      */
+    private int goodsTypeId;
     /**
      * 品牌主键id
      */
@@ -55,6 +60,5 @@ public class GoodsSearcher {
      * 0:降序 1:升序
      */
     private int direction;
-
 
 }

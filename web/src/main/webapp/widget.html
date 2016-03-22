@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cache-control" content="no-cache">
+    <title>CMS组件服务接口文档</title>
+    <link rel="stylesheet"
+          href="./css/bootstrap.css"
+          type="text/css"/>
+    <link rel="stylesheet"
+          href="https://media.readthedocs.org/css/sphinx_rtd_theme.css"
+          type="text/css"/>
+</head>
+<body class="wy-body-for-nav" role="document">
+<div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+        <div class="wy-side-nav-search">
+            <a href="#" class="fa fa-home">CMS组件服务接口文档</a>
+        </div>
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+            <ul>
+                <li class="toctree-l1">
+                    <a class="reference internal" href="#sign">签名算法</a>
+                </li>
+                <li class="toctree-l1">
+                    <a class="reference internal" href="#goodsCatg">商品分类列表</a>
+                </li>
+                <li class="toctree-l1">
+                    <a class="reference internal" href="#searchGoods">商品检索</a>
+                </li>
+                <li class="toctree-l1">
+                    <a class="reference internal" href="#hotGoods">热销产品</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+        <div class="wy-nav-content">
+            <div class="container-fluid">
+                <div role="main" class="document">
+                    <!--签名算法-->
+                    <div class="section" id="sign">
+                        <h3>签名算法：</h3>
+
+<pre>
+    第一步，设所有发送或者接收到的数据为集合M，将集合M内非空参数值的参数
+    (不包括sign)按照参数名ASCII码从小到大排序（字典序），使用URL键值对的格式
+    （即key1value1key2value2…）拼接成字符串stringA。
+
+    特别注意以下重要规则：
+    · 参数名ASCII码从小到大排序（字典序）；
+    · 如果参数的值为空不参与签名；
+    · 参数名区分大小写；
+
+    第二步，在stringA最后拼接上key（接口密钥）得到stringSignTemp字符串，
+    并对stringSignTemp进行MD5运算，得到sign值signValue。
+
+    举例：
+        假设传送的参数如下：
+
+        appid：	wxd930ea5d5a258f4f
+        mch_id：	10000100
+        device_info：	1000
+        body：	test
+
+        第一步：对参数按照keyvalue的格式，并按照参数名ASCII字典序排序如下：
+        stringA="appidwxd930ea5d5a258f4fbodytestdevice_info1000mch_id10000100";
+
+        第二步：拼接API密钥（假设密钥为123）：
+        stringSignTemp="appidwxd930ea5d5a258f4fbodytestdevice_info1000mch_id10000100123"
+        sign=MD5(stringSignTemp)="9A0A8659F005D6984697E2CA0A9CF3B7"
+
+    最终发送的参数为：
+
+        appid：	wxd930ea5d5a258f4f
+        mch_id：	10000100
+        device_info：	1000
+        body：	test
+        sign：9A0A8659F005D6984697E2CA0A9CF3B7
+
+</pre>
+                    </div>
+                    <!--商品分类列表-->
+                    <div class="section" id="goodsCatg">
+                        <h1>
+                            <span>商品分类列表接口</span>
+                        </h1>
+                        <h3>接口地址：</h3>
+                        <p>待补充</p>
+                        <h3>支持格式：</h3>
+                        <p>json</p>
+                        <h3>请求方式：</h3>
+                        <p>get</p>
+                        <h3>请求参数：</h3>
+                        <table border="0" class="docutils">
+                            <colgroup>
+                                <col width="15%"/>
+                                <col width="25%"/>
+                                <col width="25%"/>
+                                <col width="25%"/>
+                                <col width="25%"/>
+                            </colgroup>
+                            <tbody valign="top">
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td><strong>名称</strong></td>
+                                <td><strong>类型</strong></td>
+                                <td><strong>必须</strong></td>
+                                <td><strong>说明</strong></td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>customerId</td>
+                                <td>Integer</td>
+                                <td>&nbsp;&nbsp;是</td>
+                                <td>商户主键id</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>sign</td>
+                                <td>String</td>
+                                <td>&nbsp;&nbsp;是</td>
+                                <td>签名</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <h3>接口备注：</h3>
+                        <p>如果该分类还有子分类，则应该同时返回一级子分类的数据</p>
+                        <h3>返回示例：</h3>
+                        <p><pre>
+{
+    "code": 200,
+    "data": [
+        {
+            "children": [
+                {
+                    "goodsTypeId": 2,
+                    "id": 2,
+                    "name": "女装",
+                    "picUrl": "http://www.cms.com/2.jpg"
+                },
+                {
+                    "goodsTypeId": 2,
+                    "id": 3,
+                    "name": "男装",
+                    "picUrl": "http://www.cms.com/3.jpg"
+                }
+            ],
+            "goodsTypeId": 1,
+            "id": 1,
+            "name": "服装内衣",
+            "picUrl": "http://www.cms.com/1.jpg"
+        },
+        {
+            "goodsTypeId": 3,
+            "id": 4,
+            "name": "护肤彩妆",
+            "picUrl": "http://www.cms.com/4.jpg"
+        }
+    ],
+    "msg": "数据获取成功"
+}
+    </pre>
+                        </p>
+                        <h3>json字段：</h3>
+                        <table border="0" class="docutils">
+                            <colgroup>
+                                <col width="15%"/>
+                                <col width="25%"/>
+                                <col width="25%"/>
+                                <col width="25%"/>
+                                <col width="25%"/>
+                            </colgroup>
+                            <tbody valign="top">
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td><strong>名称</strong></td>
+                                <td><strong>类型</strong></td>
+                                <td><strong>必有</strong></td>
+                                <td><strong>说明</strong></td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>code</td>
+                                <td>Integer</td>
+                                <td>&nbsp;是</td>
+                                <td>状态码（请求数据成功应返回200状态码）</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>msg</td>
+                                <td>String</td>
+                                <td>&nbsp;是</td>
+                                <td>请求状态说明</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>data</td>
+                                <td>Array</td>
+                                <td>&nbsp;否</td>
+                                <td>数据内容</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>id</td>
+                                <td>Integer</td>
+                                <td>&nbsp;是</td>
+                                <td>商品分类主键id</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>name</td>
+                                <td>String</td>
+                                <td>&nbsp;是</td>
+                                <td>商品分类名称</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>goodsTypeId</td>
+                                <td>Integer</td>
+                                <td>&nbsp;否</td>
+                                <td>商品类型id</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>picUrl</td>
+                                <td>String</td>
+                                <td>&nbsp;是</td>
+                                <td>完整的图片url</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>children</td>
+                                <td>Array</td>
+                                <td>&nbsp;否</td>
+                                <td>该商品分类下的所有一级子分类</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!--商品检索-->
+                    <div class="section" id="searchGoods">
+                        <h1>
+                            <span>商品检索接口</span>
+                        </h1>
+                        <h3>接口地址：</h3>
+                        <p>待补充</p>
+                        <h3>支持格式：</h3>
+                        <p>json</p>
+                        <h3>请求方式：</h3>
+                        <p>get</p>
+                        <h3>请求参数：</h3>
+                        <table border="0" class="docutils">
+                            <colgroup>
+                                <col width="15%"/>
+                                <col width="25%"/>
+                                <col width="25%"/>
+                                <col width="25%"/>
+                                <col width="25%"/>
+                            </colgroup>
+                            <tbody valign="top">
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td><strong>名称</strong></td>
+                                <td><strong>类型</strong></td>
+                                <td><strong>必须</strong></td>
+                                <td><strong>说明</strong></td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>customerId</td>
+                                <td>Integer</td>
+                                <td>&nbsp;&nbsp;是</td>
+                                <td>商户主键id</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>goodsCatId</td>
+                                <td>Integer</td>
+                                <td>&nbsp;&nbsp;否</td>
+                                <td>商品分类主键id</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>goodsTypeId</td>
+                                <td>Integer</td>
+                                <td>&nbsp;&nbsp;否</td>
+                                <td>商品类型主键id</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>brandId</td>
+                                <td>Integer</td>
+                                <td>&nbsp;&nbsp;否</td>
+                                <td>品牌主键id</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>minPrice</td>
+                                <td>Integer</td>
+                                <td>&nbsp;&nbsp;否</td>
+                                <td>起始价格</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>maxPrice</td>
+                                <td>Integer</td>
+                                <td>&nbsp;&nbsp;否</td>
+                                <td>结束价格</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>userId</td>
+                                <td>Integer</td>
+                                <td>&nbsp;&nbsp;否</td>
+                                <td>会员主键id（用于查询会员价）</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>keyword</td>
+                                <td>String</td>
+                                <td>&nbsp;&nbsp;否</td>
+                                <td>商品关键字（可模糊匹配）</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>pageNo</td>
+                                <td>Integer</td>
+                                <td>&nbsp;&nbsp;否</td>
+                                <td>页码</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>sortEnum</td>
+                                <td>Integer</td>
+                                <td>&nbsp;&nbsp;否</td>
+                                <td>排序依据（0:销量,1:价格,2；上架时间）</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>direction</td>
+                                <td>Integer</td>
+                                <td>&nbsp;&nbsp;否</td>
+                                <td>升降序（0:降序,1:升序）</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>sign</td>
+                                <td>String</td>
+                                <td>&nbsp;&nbsp;是</td>
+                                <td>签名</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <h3>接口备注：</h3>
+                        <p>默认返回第一页，按上架时间降序排序</p>
+                        <h3>返回示例：</h3>
+
+                        <p><pre>
+{
+    "code": 200,
+    "data": {
+        "currentPageNo": 1,
+        "records": [
+            {
+                "id": 1,
+                "marketPrice": 299,
+                "name": "KROP女装抓毛长裙卫衣",
+                "salePrice": 145,
+                "sales": 45,
+                "shelveTime": "2016-3-22 18:34:33",
+                "thumbnail": "http://www.cms.com/11.jpg",
+                "vipPrice": 135
+            },
+            {
+                "id": 2,
+                "marketPrice": 399,
+                "name": "花花公子女士牛仔裤女秋经典简约修身潮流小脚女裤牛仔长裤子",
+                "salePrice": 199,
+                "sales": 88,
+                "shelveTime": "2016-3-20 18:34:33",
+                "thumbnail": "http://www.cms.com/12.jpg",
+                "vipPrice": 179
+            }
+        ],
+        "totalPages": 2,
+        "totalRecords": 3
+    },
+    "msg": "数据获取成功"
+}
+    </pre>
+                        </p>
+                        <h3>json字段：</h3>
+                        <table border="0" class="docutils">
+                            <colgroup>
+                                <col width="15%"/>
+                                <col width="25%"/>
+                                <col width="25%"/>
+                                <col width="25%"/>
+                                <col width="25%"/>
+                            </colgroup>
+                            <tbody valign="top">
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td><strong>名称</strong></td>
+                                <td><strong>类型</strong></td>
+                                <td><strong>必有</strong></td>
+                                <td><strong>说明</strong></td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>code</td>
+                                <td>Integer</td>
+                                <td>&nbsp;是</td>
+                                <td>状态码（请求数据成功应返回200状态码）</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>msg</td>
+                                <td>String</td>
+                                <td>&nbsp;是</td>
+                                <td>请求状态说明</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>data</td>
+                                <td>Object</td>
+                                <td>&nbsp;否</td>
+                                <td>数据内容</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>currentPageNo</td>
+                                <td>Integer</td>
+                                <td>&nbsp;是</td>
+                                <td>当前页码</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>totalPages</td>
+                                <td>Integer</td>
+                                <td>&nbsp;是</td>
+                                <td>总页数</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>totalRecords</td>
+                                <td>Integer</td>
+                                <td>&nbsp;否</td>
+                                <td>总记录数</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>records</td>
+                                <td>Array</td>
+                                <td>&nbsp;否</td>
+                                <td>检索结果集</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>id</td>
+                                <td>Integer</td>
+                                <td>&nbsp;是</td>
+                                <td>商品主键id</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>name</td>
+                                <td>String</td>
+                                <td>&nbsp;是</td>
+                                <td>商品名称</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>shelveTime</td>
+                                <td>String</td>
+                                <td>&nbsp;是</td>
+                                <td>上架时间（日期格式:"yyyy-MM-dd HH:mm:ss"）</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>sales</td>
+                                <td>Integer</td>
+                                <td>&nbsp;是</td>
+                                <td>销量</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>marketPrice</td>
+                                <td>double</td>
+                                <td>&nbsp;是</td>
+                                <td>市场价</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>salePrice</td>
+                                <td>double</td>
+                                <td>&nbsp;是</td>
+                                <td>销售价</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>vipPrice</td>
+                                <td>double</td>
+                                <td>&nbsp;否</td>
+                                <td>会员价</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>thumbnail</td>
+                                <td>String</td>
+                                <td>&nbsp;是</td>
+                                <td>缩略图完整url</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!--热销产品-->
+                    <div class="section" id="hotGoods">
+                        <h1>
+                            <span>热销产品接口</span>
+                        </h1>
+                        <h3>接口地址：</h3>
+                        <p>待补充</p>
+                        <h3>支持格式：</h3>
+                        <p>json</p>
+                        <h3>请求方式：</h3>
+                        <p>get</p>
+                        <h3>请求参数：</h3>
+                        <table border="0" class="docutils">
+                            <colgroup>
+                                <col width="15%"/>
+                                <col width="25%"/>
+                                <col width="25%"/>
+                                <col width="25%"/>
+                                <col width="25%"/>
+                            </colgroup>
+                            <tbody valign="top">
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td><strong>名称</strong></td>
+                                <td><strong>类型</strong></td>
+                                <td><strong>必须</strong></td>
+                                <td><strong>说明</strong></td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>customerId</td>
+                                <td>Integer</td>
+                                <td>&nbsp;&nbsp;是</td>
+                                <td>商户主键id</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>sign</td>
+                                <td>String</td>
+                                <td>&nbsp;&nbsp;是</td>
+                                <td>签名</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <h3>接口备注：</h3>
+                        <p>返回数据量固定，只返回销量排行前十的产品</p>
+                        <h3>返回示例：</h3>
+
+                        <p><pre>
+{
+    "code": 200,
+    "data": [
+        {
+            "id": 1,
+            "marketPrice": 299,
+            "name": "KROP女装抓毛长裙卫衣",
+            "salePrice": 145,
+            "sales": 45,
+            "shelveTime": "2016-3-22 18:34:33",
+            "thumbnail": "http://www.cms.com/11.jpg",
+            "vipPrice": 135
+        },
+        {
+            "id": 2,
+            "marketPrice": 399,
+            "name": "花花公子女士牛仔裤女秋经典简约修身潮流小脚女裤牛仔长裤子",
+            "salePrice": 199,
+            "sales": 88,
+            "shelveTime": "2016-3-20 18:34:33",
+            "thumbnail": "http://www.cms.com/12.jpg",
+            "vipPrice": 179
+        },
+        {
+            "id": 3,
+            "marketPrice": 299,
+            "name": "春季新品牛仔裙女修身显瘦包臀开叉气质韩版中长连衣裙潮",
+            "salePrice": 145,
+            "sales": 45,
+            "shelveTime": "2016-3-22 18:34:33",
+            "thumbnail": "http://www.cms.com/13.jpg",
+            "vipPrice": 135
+        },
+        {
+            "id": 4,
+            "marketPrice": 299,
+            "name": "BF风大码学生女宽松垮裤潮",
+            "salePrice": 145,
+            "sales": 45,
+            "shelveTime": "2016-3-22 18:34:33",
+            "thumbnail": "http://www.cms.com/14.jpg",
+            "vipPrice": 135
+        },
+        {
+            "id": 5,
+            "marketPrice": 299,
+            "name": "代购 街头潮牌US风衣潮女原宿情侣宽松大码工装连帽外套",
+            "salePrice": 145,
+            "sales": 45,
+            "shelveTime": "2016-3-22 18:34:33",
+            "thumbnail": "http://www.cms.com/15.jpg",
+            "vipPrice": 135
+        },
+        {
+            "id": 6,
+            "marketPrice": 299,
+            "name": "babygirl韩版新款街头时尚抽绳连帽纯色风衣休闲百搭外套学院风女",
+            "salePrice": 145,
+            "sales": 45,
+            "shelveTime": "2016-3-22 18:34:33",
+            "thumbnail": "http://www.cms.com/16.jpg",
+            "vipPrice": 135
+        },
+        {
+            "id": 7,
+            "marketPrice": 299,
+            "name": "2016新款韩国街头夏季纯色t恤女韩版宽松大码简约百搭打底衫短袖",
+            "salePrice": 145,
+            "sales": 45,
+            "shelveTime": "2016-3-22 18:34:33",
+            "thumbnail": "http://www.cms.com/17.jpg",
+            "vipPrice": 135
+        },
+        {
+            "id": 8,
+            "marketPrice": 299,
+            "name": "天天特价春秋季韩版百搭复古宽松古着街头男女夹克情侣装牛仔外套",
+            "salePrice": 145,
+            "sales": 45,
+            "shelveTime": "2016-3-22 18:34:33",
+            "thumbnail": "http://www.cms.com/18.jpg",
+            "vipPrice": 135
+        },
+        {
+            "id": 9,
+            "marketPrice": 299,
+            "name": "uti尤缇2016新款春装欧美街头时尚拼接百搭长款风衣UC108125C125",
+            "salePrice": 145,
+            "sales": 45,
+            "shelveTime": "2016-3-22 18:34:33",
+            "thumbnail": "http://www.cms.com/19.jpg",
+            "vipPrice": 135
+        },
+        {
+            "id": 10,
+            "marketPrice": 299,
+            "name": "达令女王2016春季新款百搭时尚韩范街头酷风BF皮衣棒球服外套女",
+            "salePrice": 145,
+            "sales": 45,
+            "shelveTime": "2016-3-22 18:34:33",
+            "thumbnail": "http://www.cms.com/110.jpg",
+            "vipPrice": 135
+        }
+    ],
+    "msg": "数据获取成功"
+}
+    </pre>
+                        </p>
+                        <h3>json字段：</h3>
+                        <table border="0" class="docutils">
+                            <colgroup>
+                                <col width="15%"/>
+                                <col width="25%"/>
+                                <col width="25%"/>
+                                <col width="25%"/>
+                                <col width="25%"/>
+                            </colgroup>
+                            <tbody valign="top">
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td><strong>名称</strong></td>
+                                <td><strong>类型</strong></td>
+                                <td><strong>必有</strong></td>
+                                <td><strong>说明</strong></td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>code</td>
+                                <td>Integer</td>
+                                <td>&nbsp;是</td>
+                                <td>状态码（请求数据成功应返回200状态码）</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>msg</td>
+                                <td>String</td>
+                                <td>&nbsp;是</td>
+                                <td>请求状态说明</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>data</td>
+                                <td>Array</td>
+                                <td>&nbsp;否</td>
+                                <td>数据内容</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>id</td>
+                                <td>Integer</td>
+                                <td>&nbsp;是</td>
+                                <td>商品主键id</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>name</td>
+                                <td>String</td>
+                                <td>&nbsp;是</td>
+                                <td>商品名称</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>shelveTime</td>
+                                <td>String</td>
+                                <td>&nbsp;是</td>
+                                <td>上架时间（日期格式:"yyyy-MM-dd HH:mm:ss"）</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>sales</td>
+                                <td>Integer</td>
+                                <td>&nbsp;是</td>
+                                <td>销量</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>marketPrice</td>
+                                <td>double</td>
+                                <td>&nbsp;是</td>
+                                <td>市场价</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>salePrice</td>
+                                <td>double</td>
+                                <td>&nbsp;是</td>
+                                <td>销售价</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>vipPrice</td>
+                                <td>double</td>
+                                <td>&nbsp;否</td>
+                                <td>会员价</td>
+                            </tr>
+                            <tr class="row-odd">
+                                <td>&nbsp;</td>
+                                <td>thumbnail</td>
+                                <td>String</td>
+                                <td>&nbsp;是</td>
+                                <td>缩略图完整url</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script type="text/javascript" src="./js/jquery-1.7.2.js"></script>
+<script type="text/javascript" src="./js/bootstrap.js"></script>
+<script type="text/javascript" src="https://media.readthedocs.org/javascript/readthedocs-doc-embed.js"></script>
+<script type="text/javascript" src="https://media.readthedocs.org/javascript/underscore.js"></script>
+<script type="text/javascript" src="https://media.readthedocs.org/javascript/doctools.js"></script>
+<script type="text/javascript" src="https://media.readthedocs.org/javascript/underscore.js"></script>
+</body>
+</html>

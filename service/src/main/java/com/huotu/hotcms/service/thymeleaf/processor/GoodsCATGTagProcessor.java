@@ -10,7 +10,6 @@ package com.huotu.hotcms.service.thymeleaf.processor;
 
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
-import com.huotu.hotcms.service.widget.model.GoodsCategory;
 import com.huotu.hotcms.service.widget.service.GoodsCategoryService;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
@@ -21,8 +20,6 @@ import org.thymeleaf.model.IProcessableElementTag;
 import org.thymeleaf.processor.element.AbstractAttributeTagProcessor;
 import org.thymeleaf.processor.element.IElementTagStructureHandler;
 import org.thymeleaf.templatemode.TemplateMode;
-
-import java.util.List;
 
 /**
  * 商品分类组件处理器
@@ -50,7 +47,8 @@ public class GoodsCATGTagProcessor extends AbstractAttributeTagProcessor {
         Site site = (Site)VariableExpression.getVariable(context,"site");
 //        int customerId = site.getCustomerId();
         int customerId = 0;
-        List<GoodsCategory> categories = goodsCategoryService.getGoodsCategories(customerId);
-        return categories;
+//        List<GoodsCategory> categories = goodsCategoryService.getGoodsCategories(customerId);
+//        return categories;
+        return null;
     }
 }

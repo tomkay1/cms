@@ -45,7 +45,6 @@ public abstract class AbstractStaticResourceService implements StaticResourceSer
         if (!stringBuilder.toString().endsWith("/") && !path.startsWith("/"))
             stringBuilder.append("/");
         stringBuilder.append(path);
-
         vfsHelper.handle(stringBuilder.toString(), file -> {
 //            if (file.exists())
 //                throw new IllegalStateException("" + file.toString() + " already existing");

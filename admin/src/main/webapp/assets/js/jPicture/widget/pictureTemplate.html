@@ -1,7 +1,12 @@
-<li class="picture-file">
-    <img src="/assets/js/jPicture/w01.png" alt="">
+{{each Rows as row i}}
+{{if row.PFCate==0}}
+<li class="picture-file" data-id="{{row.PFId}}" data-parentid="{{row.PFatherId}}"><img src="/assets/js/jPicture/w01.png" alt="{{row.PFName}}"><p>{{row.PFName}}</p></li>
+{{else}}
+<li class="picture-photo"  data-id="{{row.PFId}}" data-parentid="{{row.PFatherId}}">
+    <img src="{{row.PFUrl}}" alt="{{row.PFName}}">
+    <div class="widget-image-meta">{{row.PFSize}}</div>
+    <p>{{row.PFName}}</p>
+    <div class="selected-style"><i class="icon-ok icon-white"></i></div>
 </li>
-<li class="picture-photo">
-    <img src="http://img11.360buyimg.com/n4/jfs/t2164/130/2347757919/235194/b90c5488/56ce6e22Neb025cc6.jpg" alt=""><p>90x90</p>
-    <div class="selected-style" style="display: block;"><i class="icon-ok icon-white"></i></div>
-</li>
+{/if}
+{{/each}}

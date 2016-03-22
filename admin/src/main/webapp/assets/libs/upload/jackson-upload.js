@@ -4,12 +4,14 @@ $.fn.extend({
         var self = this;//Grid对象
         var settings = {
             text: "上传",
+            color:"#666",
             submit:true,
             name:"file",
             accept: "jpg, jpeg,png,gif,bmp",
             description: "",
             className: "jq-site-bottom",
             classLoadName: "jq-site-bottom-loadding",
+            boxWidth:"600",
             loadText: "上传中..."
         };
         //后期添加新方法，支持参数方式传递
@@ -31,9 +33,9 @@ $.fn.extend({
         var temporary_descript_id = 'temporary-descript-' + (new Date()).getTime() + '-' + (parseInt(Math.random() * 1000));
         this.fileid = temporary_file_id;
         var htmlText = '';
-        htmlText += '<form id="' + temporary_form_id + '" class="jq-jupload-box" method="' + options.method + '" style="top:' + top + 'px;left:' + left + 'px;width:600px;  position: absolute;" action="' + options.url + '" target="' + temporary_iframe_id + '" enctype="' + options.enctype + '">';
+        htmlText += '<form id="' + temporary_form_id + '" class="jq-jupload-box" method="' + options.method + '" style="top:' + top + 'px;left:' + left + 'px;width:'+boxWidth+'px;  position: absolute;" action="' + options.url + '" target="' + temporary_iframe_id + '" enctype="' + options.enctype + '">';
         htmlText += '<div class="'+options.className+'">';
-        htmlText += '<span style="display: inline-block;margin-top: 5px;color: #666;font-size: 12px;" id="' + temporary_input_id + '">' + options.text + '</span>';
+        htmlText += '<span style="display: inline-block;margin-top: 5px;color: '+options.color+';font-size: 12px;" id="' + temporary_input_id + '">' + options.text + '</span>';
         htmlText += '<input type="file" id="' + temporary_file_id + '" name="' + options.name + '" accept="'+options.accept+'" style="position:absolute;left:0;top:0;width:100px;height:30px;box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.2);opacity:0;-moz-opacity: 0;filter: alpha(opacity=0);cursor:pointer"/>';
         htmlText+=self.createParam(options);
         htmlText += '</div><div class="clear"></div>';

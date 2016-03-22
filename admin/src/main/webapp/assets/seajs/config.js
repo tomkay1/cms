@@ -78,7 +78,9 @@ seajs.config({
 
 		"pagesList":"js/page/pages/list.js?v="+version,
 		"pagesDefaults":"js/page/pages/defaults.js?v="+version,
-		"pagesEditMain":"js/page/edit/main.js?v="+version
+		"pagesEditMain":"js/page/edit/main.js?v="+version,
+
+		"widgetTooBar":"widget/toobar/toobar.js?v="+version
 	},
 	preload: ['jquery']
 });

@@ -8,7 +8,7 @@ define(function (require, exports, module) {
     commonUtil.calcuHeightToTop("con_right",74);
     commonUtil.calcuHeightToTop("con_left",$("#con_left").offset().top);
     commonUtil.calcuWidth("content",$(".leftpanel").width());
-    commonUtil.cacleHeightByIframe("content",74);
+    commonUtil.cacleHeightByIframe("content",42);
     commonUtil.calcuWidth("con_right",$(".leftpanel").width());
 
     //左边栏目效果

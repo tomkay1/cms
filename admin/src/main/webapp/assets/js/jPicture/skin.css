@@ -3,13 +3,13 @@
 .jpicture-title ul li{float: left; width: 100px;height: 30px; margin-top: 10px; line-height: 30px; list-style-type: none;margin-right: 10px;}
 .jpicture-title ul li a{width: 100px;height: 30px; display: block; font-size: 12px; text-decoration: none; background:#c23700; color: #ffffff; text-align: center;}
 .jpicture-title ul li a:hover{width: 100px;height: 30px; background:#c23700; color: #ffffff; text-align: center;}
-.clearfix{clear: both;}
+.clearfix,.clearfix:after,.clearfix:before{clear: both;}
 .jpicture-content{margin-top: 10px}
 .jpicture-content ul{padding: 0px; margin: 0px;}
-.jpicture-content li{float: left; position: relative; width:90px; height: 90px; text-align: center; list-style-type: none; border: 1px #eee solid;margin: 5px 5px; }
-.jpicture-content li img{width: 60px;padding-top: 5px; border: none;}
-.jpicture-content li.picture-file img{width: 60px;padding-top: 15px; border: none;}
-.jpicture-content li img{width: 60px;}
+.jpicture-content li{float: left; position: relative; width:100px; height: 110px; text-align: center; list-style-type: none; border: 1px #eee solid;margin: 5px 5px; }
+.jpicture-content li img{width: 80px;height: 80px; padding-top: 5px; border: none;}
+/*.jpicture-content li.picture-file img{width: 60px;padding-top: 15px; border: none;}*/
+.jpicture-content li img{width:80px;}
 .jpicture-content li p{padding: 0px; margin: 0px; font-size: 14px; line-height: 25px;}
 
 .jpicture-content .selected-style {
@@ -51,4 +51,16 @@
     border: 14px solid #09f;
     border-left-color: transparent;
     border-top-color: transparent;
+}
+.jpicture-content .widget-image-meta {
+    position: absolute;
+    bottom: 27px;
+    height: 20px;
+    width: 80px;
+    left: 10px;
+    line-height: 20px;
+    background: rgba(0,0,0,0.5);
+    text-align: center;
+    color: #eee;
+    overflow: hidden;
 }

@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "cms_GalleryList")
+@Table(name = "cms_galleryList")
 @Getter
 @Setter
 @Cacheable(value = false)
@@ -36,6 +36,13 @@ public class GalleryList {
     private String size;
 
     /**
+     * 缩略图Uri
+     */
+    @Column(name = "thumbUri")
+    private String thumbUri;
+
+
+    /**
      * 是否已删除
      */
     @Column(name = "deleted")
@@ -46,7 +53,7 @@ public class GalleryList {
      */
     @ManyToOne
     @JoinColumn(name = "galleryId")
-    private Gallery galleryId;
+    private Gallery gallery;
 
     /**
      * 创建时间

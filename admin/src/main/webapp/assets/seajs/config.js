@@ -1,4 +1,4 @@
-var version="1.0.131112";
+var version="1.0.111112";
 seajs.config({
 	alias: {
 		"jquery": "js/jquery-1.9.1.min.js",
@@ -32,8 +32,10 @@ seajs.config({
 		"addDownload":"js/page/contents/addDownload.js?v="+version,
 		"updateDownload":"js/page/contents/updateDownload.js?v="+version,
 		"addGallery":"js/page/contents/addGallery.js?v="+version,
+		"addGalleryList":"js/page/contents/addGalleryList.js?v="+version,
 		"galleryList":"js/page/contents/galleryList.js?v="+version,
 		"updateGallery":"js/page/contents/updateGallery.js?v="+version,
+		"updateGalleryList":"js/page/contents/updateGalleryList.js?v="+version,
 		"addContents":"js/page/contents/addContents.js?v="+version,
 		"siteList":"js/page/web/siteList.js?v="+version,
 		"routeList":"js/page/web/routeList.js?v="+version,

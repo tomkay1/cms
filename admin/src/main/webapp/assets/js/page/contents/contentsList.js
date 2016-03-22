@@ -4,7 +4,6 @@
 define(function (require, exports, module) {
     var commonUtil = require("common");
     commonUtil.setDisabled("jq-cms-Save");
-
     var commonCategory=require("categoryCommon");
     var customerId =commonUtil.getQuery("customerId");
     var siteId = $("#siteId").val();
@@ -36,9 +35,17 @@ define(function (require, exports, module) {
             ,
             {width: '10%', field: 'title', title: '操作', align: 'center',
                 formatter: function (value, rowData) {
-                    return "<a href='javascript:' class='js-hot-contentsDelete' data-model='"+rowData.model+" 'data-id='"+rowData.id+"' style='margin-right:10px; color:blue;'>删除</a>" +
+                    if(rowData.model=="gallery"){
+                        return    "<a href='javascript:' class='js-hot-contentsDelete' data-model='"+rowData.model+" 'data-id='"+rowData.id+"' style='margin-right:10px; color:blue;'>删除</a>" +
                         "<a href='javascript:' class='js-hot-contentsUpdate'data-model='"+rowData.model+" ' data-id='"+rowData.id+"' style='margin-right:10px; color: blue'>修改</a>"+
                         "<a href='javascript:' class='js-hot-contentsList'data-model='"+rowData.model+" ' data-id='"+rowData.id+"' style='margin-right:10px; color: blue'>查看详情</a>"
+                        + "<a href='javascript:' class='js-hot-addGalleryList'data-model='"+rowData.model+" ' data-id='"+rowData.id+"' style='margin-right:10px; color: blue'>添加图片</a>"+
+                        "<a href='javascript:' class='js-hot-galleryListDetail'data-model='"+rowData.model+" ' data-id='"+rowData.id+"' style='margin-right:10px; color: blue'>查看图库</a>"
+                    }else{
+                        return     "<a href='javascript:' class='js-hot-contentsDelete' data-model='"+rowData.model+" 'data-id='"+rowData.id+"' style='margin-right:10px; color:blue;'>删除</a>" +
+                        "<a href='javascript:' class='js-hot-contentsUpdate'data-model='"+rowData.model+" ' data-id='"+rowData.id+"' style='margin-right:10px; color: blue'>修改</a>"+
+                        "<a href='javascript:' class='js-hot-contentsList'data-model='"+rowData.model+" ' data-id='"+rowData.id+"' style='margin-right:10px; color: blue'>查看详情</a>"
+                    }
                 }
             }
         ]
@@ -46,6 +53,8 @@ define(function (require, exports, module) {
         updateContents();
         deleteContents();
         contentsList();
+        addGalleryList();
+        galleryList();
     });
 
     function search(){
@@ -228,6 +237,58 @@ define(function (require, exports, module) {
         })
     })
     }
+
+    //添加图片
+    function addGalleryList(){
+        var obj=$(".js-hot-addGalleryList");
+
+        $.each(obj,function(item,dom){
+            $(dom).click(function(){//绑定删除事件
+                var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;
+                var content="/gallery/addGalleryList"+"?id="+id+"&customerId="+customerId;
+                var layer=require("layer");
+                layer.open({
+                    type: 2,
+                    title: "添加图片",
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['1000px', '700px'],
+                    content: content,
+                    end:function(){
+                        ContentsGrid.Refresh();
+                    }
+                });
+            })
+        })
+    }
+
+    //查看图库列表
+    function galleryList(){
+        var obj=$(".js-hot-galleryListDetail");
+
+        $.each(obj,function(item,dom){
+            $(dom).click(function(){//绑定删除事件
+                var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;
+                var model=$(this).attr("data-model");//Html5可以使用$(this).data('id')方式来写;
+                model=$.trim(model);
+                var content="/gallery/galleryListDetail"+"?id="+id+"&customerId="+customerId;
+                var layer=require("layer");
+                layer.open({
+                    type: 2,
+                    title: "图库列表",
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['1000px', '700px'],
+                    content: content,
+                    end:function(){
+                        ContentsGrid.Refresh();
+                    }
+                });
+            })
+        })
+    }
+
+
 
 
     $("#siteId").bind("change",function(){

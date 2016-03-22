@@ -17,7 +17,6 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +25,7 @@ import java.util.Map;
  */
 public class HttpUtils {
     /**
-     * 通过图片url返回图片Bitmap
+     * 通过图片url返回图片InputStream
      * @param url
      * @return
      */
@@ -36,11 +35,7 @@ public class HttpUtils {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();//利用HttpURLConnection对象,我们可以从网络中获取网页数据.
             conn.setDoInput(true);
             conn.connect();
-//            conn.setRequestProperty("Charset", "utf-8");
             is = conn.getInputStream(); //得到网络返回的输入流
-//            DataOutputStream dos = new DataOutputStream(urlConn.getOutputStream());
-//            is.writeBytes("tqpadmac="+URLEncoder.encode("B407F9D67C80", "utf-8"));
-//            is.writeBytes("tqpadver="+URLEncoder.encode("1", "utf-8"));
         }
         return is;
     }

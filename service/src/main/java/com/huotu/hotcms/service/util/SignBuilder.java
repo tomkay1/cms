@@ -1,6 +1,6 @@
 /*
- * °æÈ¨ËùÓĞ:º¼Öİ»ğÍ¼¿Æ¼¼ÓĞÏŞ¹«Ë¾
- * µØÖ·:Õã½­Ê¡º¼ÖİÊĞ±õ½­ÇøÎ÷ĞË½ÖµÀÚäÄ°Â·ÖÇ»ÛE¹ÈB´±4Â¥
+ * ç‰ˆæƒæ‰€æœ‰:æ­å·ç«å›¾ç§‘æŠ€æœ‰é™å…¬å¸
+ * åœ°å€:æµ™æ±Ÿçœæ­å·å¸‚æ»¨æ±ŸåŒºè¥¿å…´è¡—é“é˜¡é™Œè·¯æ™ºæ…§Eè°·Bå¹¢4æ¥¼
  *
  *  (c) Copyright Hangzhou Hot Technology Co., Ltd.
  *  Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District 2013-2015. All rights reserved.
@@ -20,13 +20,13 @@ import java.util.Map;
  */
 public class SignBuilder {
     /**
-     * ´´½¨Ò»¸ösignÇ©Ãû
-     * ºöÂÔÖµÎª¿ÕµÄ
+     * åˆ›å»ºä¸€ä¸ªsignç­¾å
+     * å¿½ç•¥å€¼ä¸ºç©ºçš„
      *
-     * @param params ´úÇ©Ãû²ÎÊı£¬keyÅÅĞòµÄmap
-     * @param prefix Ç©ÃûÇ°×º
-     * @param suffix Ç©Ãûºó×º
-     * @return ·µ»Ø¼øÈ¨ĞÅÏ¢×Ö·û´®
+     * @param params ä»£ç­¾åå‚æ•°ï¼Œkeyæ’åºçš„map
+     * @param prefix ç­¾åå‰ç¼€
+     * @param suffix ç­¾ååç¼€
+     * @return è¿”å›é‰´æƒä¿¡æ¯å­—ç¬¦ä¸²
      */
     public static String buildSignIgnoreEmpty(Map<String, Object> params, String prefix, String suffix) throws UnsupportedEncodingException {
         if (prefix == null)
@@ -46,13 +46,13 @@ public class SignBuilder {
     }
 
     /**
-     * ´´½¨Ò»¸ösignÇ©Ãû
-     * ²»ºöÂÔÖµÎª¿ÕµÄ
+     * åˆ›å»ºä¸€ä¸ªsignç­¾å
+     * ä¸å¿½ç•¥å€¼ä¸ºç©ºçš„
      *
-     * @param params ´úÇ©Ãû²ÎÊı£¬keyÅÅĞòµÄmap
-     * @param prefix Ç©ÃûÇ°×º
-     * @param suffix Ç©Ãûºó×º
-     * @return ·µ»Ø¼øÈ¨ĞÅÏ¢×Ö·û´®
+     * @param params ä»£ç­¾åå‚æ•°ï¼Œkeyæ’åºçš„map
+     * @param prefix ç­¾åå‰ç¼€
+     * @param suffix ç­¾ååç¼€
+     * @return è¿”å›é‰´æƒä¿¡æ¯å­—ç¬¦ä¸²
      */
     public static String buildSign(Map<String, String> params, String prefix, String suffix) throws UnsupportedEncodingException {
         if (prefix == null)

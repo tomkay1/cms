@@ -10,6 +10,7 @@ package com.huotu.hotcms.service.widget.service;
 
 import com.huotu.hotcms.service.widget.model.Goods;
 import com.huotu.hotcms.service.widget.model.GoodsSearcher;
+import com.huotu.hotcms.service.widget.model.JsonModel;
 import com.huotu.hotcms.service.widget.model.Page;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public interface GoodsService {
      * @param goodsSearcher 检索条件
      * @return
      */
-    Page<Goods> searchGoods(int customerId,GoodsSearcher goodsSearcher) throws Exception;
+    JsonModel<List<Goods>> searchGoods(int customerId,GoodsSearcher goodsSearcher) throws Exception;
 
     /**
      * 热销产品

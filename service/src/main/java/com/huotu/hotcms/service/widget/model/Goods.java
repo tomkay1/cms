@@ -27,7 +27,7 @@ public class Goods {
     /**
      * 商品名称
      */
-    private String name;
+    private String title;
 
     /**
      * 上架时间
@@ -48,7 +48,7 @@ public class Goods {
     /**
      * 销售价
      */
-    private double salePrice;
+    private double price;
 
     /**
      *会员价
@@ -62,13 +62,13 @@ public class Goods {
 
     public Goods() {
     }
-    public Goods(int id,String name,String shelveTime,int sales,double marketPrice,double salePrice,double vipPrice,String thumbnail) {
+    public Goods(int id,String title,String shelveTime,int sales,double marketPrice,double price,double vipPrice,String thumbnail) {
         this.id = id;
-        this.name = name;
+        this.title = title;
         this.shelveTime = shelveTime;
         this.sales = sales;
         this.marketPrice = marketPrice;
-        this.salePrice = salePrice;
+        this.price = price;
         this.vipPrice = vipPrice;
         this.thumbnail = thumbnail;
     }

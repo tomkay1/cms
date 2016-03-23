@@ -10,6 +10,7 @@ package com.huotu.hotcms.service.widget.service.impl.mock;
 
 import com.huotu.hotcms.service.widget.model.Goods;
 import com.huotu.hotcms.service.widget.model.GoodsSearcher;
+import com.huotu.hotcms.service.widget.model.JsonModel;
 import com.huotu.hotcms.service.widget.model.Page;
 import com.huotu.hotcms.service.widget.service.GoodsService;
 import org.springframework.context.annotation.Profile;
@@ -25,12 +26,12 @@ import java.util.List;
 @Service
 public class GoodsServiceImpl implements GoodsService {
     @Override
-    public Page<Goods> searchGoods(int customerId, GoodsSearcher goodsSearcher) {
+    public JsonModel<List<Goods>> searchGoods(int customerId, GoodsSearcher goodsSearcher) throws Exception {
         return null;
     }
 
     @Override
-    public List<Goods> getHotGoodsList(int customerId) {
+    public List<Goods> getHotGoodsList(int customerId) throws Exception {
         return null;
     }
 }

@@ -42,6 +42,8 @@ public class GoodsCategory {
      */
     private String picUrl;
 
+    private Link _links;
+
     public GoodsCategory() {
     }
     public GoodsCategory(int id,String name,Integer goodsTypeId,String picUrl) {

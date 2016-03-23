@@ -7,7 +7,6 @@
  */
 
 package com.huotu.hotcms.service.widget.model;
-import com.huotu.hotcms.service.common.SortEnum;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,11 +31,11 @@ public class GoodsSearcher {
      */
     private Integer brandId;
     /**
-     * 起始价格
+     * 起始销售价格(闭合，如果会员是登录状态则查询的应该是会员价)
      */
     private Integer minPrice;
     /**
-     * 结束价格
+     * 结束销售价格(闭合，如果会员是登录状态则查询的应该是会员价)
      */
     private Integer maxPrice;
     /**
@@ -50,15 +49,10 @@ public class GoodsSearcher {
     /**
      * 页码
      */
-    private Integer pageNo;
+    private Integer page;
     /**
-     * 排序依据
+     * 排序(propertyName[,desc|asc]，排序方向默认asc，这个参数支持多个以达成多条件排序)
      */
-    private SortEnum sortEnum;
-    /**
-     * 升降序
-     * 0:降序 1:升序
-     */
-    private Integer direction;
+    private String sort;
 
 }

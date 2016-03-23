@@ -11,6 +11,7 @@ package com.huotu.hotcms.service.widget.service.impl.huobanplus;
 import com.alibaba.fastjson.JSON;
 import com.huotu.hotcms.service.util.ApiResult;
 import com.huotu.hotcms.service.util.HttpUtils;
+import com.huotu.hotcms.service.widget.model.JsonModel;
 import com.huotu.hotcms.service.widget.model.GoodsCategory;
 import com.huotu.hotcms.service.widget.service.GoodsCategoryService;
 import org.springframework.context.annotation.Profile;
@@ -33,13 +34,12 @@ public class GoodsCategoryServiceImpl implements GoodsCategoryService {
         if(apiResult.getCode()!=200) {
             throw new Exception(apiResult.getMsg());
         }
-        List<GoodsCategory> goodsCategories = JSON.parseArray(apiResult.getData(), GoodsCategory.class);
-        return goodsCategories;
+        return JSON.parseArray(apiResult.getData(), GoodsCategory.class);
     }
 
     private ApiResult<String> invokeGoodsCatgProce(Integer customerId) throws Exception {
         Map<String,Object> params = new TreeMap<>();
-        params.put("customerId",customerId);
-        return HttpUtils.httpGet_prod("http", "api.open.huobanplus.com", null, "", params);
+        params.put("merchantId",customerId);
+        return HttpUtils.httpGet_prod("http", "api.open.huobanplus.com", null, "/categories/search/findByMerchantId", params);
     }
 }

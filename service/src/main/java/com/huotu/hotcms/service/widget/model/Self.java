@@ -11,31 +11,11 @@ package com.huotu.hotcms.service.widget.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 /**
- * 自定义分页
- * Created by cwb on 2016/3/17.
+ * Created by cwb on 2016/3/23.
  */
 @Getter
 @Setter
-public class Page {
-
-    /**
-     * 当前页码
-     */
-    private Integer number;
-    /**
-     * 总页数
-     */
-    private Integer totalPages;
-    /**
-     * 总记录数
-     */
-    private Integer totalElements;
-    /**
-     * 结果集
-     */
-    private Integer size;
-
+public class Self {
+    private String href;
 }

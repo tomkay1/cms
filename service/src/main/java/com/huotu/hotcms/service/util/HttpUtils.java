@@ -60,7 +60,7 @@ public class HttpUtils {
         return bos.toByteArray();
     }
 
-    public static String httpGet(String scheme,String host,Integer port,String path, Map<String, Object> params) throws Exception{
+    public static ApiResult<String> httpGet(String scheme,String host,Integer port,String path, Map<String, Object> params) throws Exception{
         CloseableHttpClient httpClient = HttpClients.createDefault();
         List<NameValuePair> nameValuePairs = new ArrayList<>();
         params.forEach((key,value)->{
@@ -77,7 +77,11 @@ public class HttpUtils {
                 .build();
         HttpGet httpGet = new HttpGet(uri);
         CloseableHttpResponse response = httpClient.execute(httpGet);
-        return EntityUtils.toString(response.getEntity());
+        ApiResult<String> apiResult = new ApiResult();
+        apiResult.setCode(response.getStatusLine().getStatusCode());
+        apiResult.setMsg(response.getStatusLine().getReasonPhrase());
+        apiResult.setData(EntityUtils.toString(response.getEntity()));
+        return apiResult;
     }
 
     public static ApiResult<String> httpGet_prod(String scheme, String host, Integer port, String path, Map<String, Object> params) throws Exception {

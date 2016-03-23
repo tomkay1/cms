@@ -9,10 +9,8 @@
 package com.huotu.hotcms.service.widget.service.impl.huobanplus;
 
 import com.alibaba.fastjson.JSON;
-import com.huotu.hotcms.service.common.SysConstant;
 import com.huotu.hotcms.service.util.ApiResult;
 import com.huotu.hotcms.service.util.HttpUtils;
-import com.huotu.hotcms.service.util.SignBuilder;
 import com.huotu.hotcms.service.widget.model.GoodsCategory;
 import com.huotu.hotcms.service.widget.service.GoodsCategoryService;
 import org.springframework.context.annotation.Profile;
@@ -31,16 +29,17 @@ import java.util.TreeMap;
 public class GoodsCategoryServiceImpl implements GoodsCategoryService {
     @Override
     public List<GoodsCategory> getGoodsCategories(int customerId) throws Exception{
-        String content = invokeGoodsCatgProce(customerId);
-        ApiResult<List<GoodsCategory>> jsonData = JSON.parseObject(content,ApiResult.class);
-        return jsonData.getData();
+        ApiResult<String> apiResult = invokeGoodsCatgProce(customerId);
+        if(apiResult.getCode()!=200) {
+            throw new Exception(apiResult.getMsg());
+        }
+        List<GoodsCategory> goodsCategories = JSON.parseArray(apiResult.getData(), GoodsCategory.class);
+        return goodsCategories;
     }
 
-    private String invokeGoodsCatgProce(int customerId) throws Exception {
+    private ApiResult<String> invokeGoodsCatgProce(Integer customerId) throws Exception {
         Map<String,Object> params = new TreeMap<>();
         params.put("customerId",customerId);
-        String sign = SignBuilder.buildSignIgnoreEmpty(params, null, SysConstant.WIDGET_KEY);
-        params.put("sign",sign);
-        return HttpUtils.httpGet("http","","",params);
+        return HttpUtils.httpGet_prod("http", "api.open.huobanplus.com", null, "", params);
     }
 }

@@ -9,31 +9,18 @@
 package com.huotu.hotcms.service.widget.service.impl.huobanplus;
 
 import com.alibaba.fastjson.JSON;
-import com.huotu.hotcms.service.common.SysConstant;
 import com.huotu.hotcms.service.util.ApiResult;
 import com.huotu.hotcms.service.util.HttpUtils;
-import com.huotu.hotcms.service.util.SignBuilder;
 import com.huotu.hotcms.service.widget.model.Goods;
 import com.huotu.hotcms.service.widget.model.GoodsSearcher;
 import com.huotu.hotcms.service.widget.model.Page;
 import com.huotu.hotcms.service.widget.service.GoodsService;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -47,16 +34,25 @@ import java.util.TreeMap;
 public class GoodsServiceImpl implements GoodsService {
     @Override
     public Page<Goods> searchGoods(int customerId, GoodsSearcher goodsSearcher) throws Exception{
-        String content = invokeGoodsSearchProce(customerId,goodsSearcher);
-        ApiResult<Page<Goods>> jsonData = JSON.parseObject(content,ApiResult.class);
-        return jsonData.getData();
+        ApiResult<String> apiResult = invokeGoodsSearchProce(customerId,goodsSearcher);
+        if(apiResult.getCode()!=200) {
+            throw new Exception(apiResult.getMsg());
+        }
+        return JSON.parseObject(apiResult.getData(),Page.class);
     }
 
-    private String invokeGoodsSearchProce(int customerId, GoodsSearcher goodsSearcher) throws Exception{
+    @Override
+    public List<Goods> getHotGoodsList(int customerId) throws Exception{
+        ApiResult<String> apiResult = invokeHotGoodsProce(customerId);
+        if(apiResult.getCode()!=200) {
+            throw new Exception(apiResult.getMsg());
+        }
+        return JSON.parseArray(apiResult.getData(), Goods.class);
+    }
+
+    private ApiResult<String> invokeGoodsSearchProce(int customerId, GoodsSearcher goodsSearcher) throws Exception{
         Map<String,Object> params = buildSortedParams(customerId,goodsSearcher);
-        String sign = SignBuilder.buildSignIgnoreEmpty(params, null, SysConstant.WIDGET_KEY);
-        params.put("sign",sign);
-        return HttpUtils.httpGet("http", "", "", params);
+        return HttpUtils.httpGet_prod("http", "api.open.huobanplus.com", null, "", params);
     }
 
     private Map<String, Object> buildSortedParams(int customerId, GoodsSearcher goodsSearcher) throws Exception{
@@ -72,18 +68,8 @@ public class GoodsServiceImpl implements GoodsService {
         return params;
     }
 
-    @Override
-    public List<Goods> getHotGoodsList(int customerId) throws Exception{
-        String content = invokeHotGoodsProce(customerId);
-        ApiResult<List<Goods>> jsonData = JSON.parseObject(content,ApiResult.class);
-        return jsonData.getData();
-    }
-
-    private String invokeHotGoodsProce(int customerId) throws Exception{
+    private ApiResult<String> invokeHotGoodsProce(int customerId) throws Exception{
         Map<String,Object> params = new TreeMap<>();
-        params.put("customerId",customerId);
-        String sign = SignBuilder.buildSignIgnoreEmpty(params, null, SysConstant.WIDGET_KEY);
-        params.put("sign",sign);
-        return HttpUtils.httpGet("http", "", "", params);
+        return HttpUtils.httpGet_prod("http", "api.open.huobanplus.com", null, "", params);
     }
 }

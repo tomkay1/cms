@@ -22,27 +22,27 @@ public class GoodsSearcher {
     /**
      * 商品分类主键id
      */
-    private int goodsCatId;
+    private Integer goodsCatId;
     /**
      * 商品类型主键id
      */
-    private int goodsTypeId;
+    private Integer goodsTypeId;
     /**
      * 品牌主键id
      */
-    private int brandId;
+    private Integer brandId;
     /**
      * 起始价格
      */
-    private int minPrice;
+    private Integer minPrice;
     /**
      * 结束价格
      */
-    private int maxPrice;
+    private Integer maxPrice;
     /**
      * 会员主键id（用于查询会员价）
      */
-    private int userId;
+    private Integer userId;
     /**
      * 商品关键字（可模糊匹配）
      */
@@ -50,7 +50,7 @@ public class GoodsSearcher {
     /**
      * 页码
      */
-    private int pageNo;
+    private Integer pageNo;
     /**
      * 排序依据
      */
@@ -59,6 +59,6 @@ public class GoodsSearcher {
      * 升降序
      * 0:降序 1:升序
      */
-    private int direction;
+    private Integer direction;
 
 }

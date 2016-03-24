@@ -26,7 +26,7 @@ import java.util.List;
 @Service
 public class GoodsServiceImpl implements GoodsService {
     @Override
-    public JsonModel<List<Goods>> searchGoods(int customerId, GoodsSearcher goodsSearcher) throws Exception {
+    public JsonModel searchGoods(int customerId, GoodsSearcher goodsSearcher) throws Exception {
         return null;
     }
 

@@ -13,6 +13,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import redis.clients.jedis.Jedis;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -34,7 +35,7 @@ public class HttpUtils {
      * @param url
      * @return
      */
-    public static InputStream getInputStreamByUrl(URL url) throws MalformedURLException ,IOException {
+    public static InputStream getInputStreamByUrl(URL url) throws IOException {
         InputStream is = null;
         if (url != null) {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();//利用HttpURLConnection对象,我们可以从网络中获取网页数据.
@@ -46,10 +47,9 @@ public class HttpUtils {
     }
 
     public static String getHtmlByUrl(URL url) throws IOException {
-        String html="";
         InputStream inputStream=getInputStreamByUrl(url);
         byte[] getData = readInputStream(inputStream); //获得网站的二进制数据
-        html = new String(getData,"utf-8");
+        String html = new String(getData,"utf-8");
         return html;
     }
 

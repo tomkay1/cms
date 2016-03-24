@@ -40,6 +40,14 @@ public class HttpServiceImpl implements HttpService {
 
     @Override
     public ApiResult<String> httpGet_prod(String scheme, String host, Integer port, String path, Map<String, Object> params) throws Exception {
+        String appKey = environment.getProperty("appKey");
+        if(appKey == null) {
+            throw new IllegalStateException("请设置appKey属性");
+        }
+        String appSecret = environment.getProperty("appSecret");
+        if(appSecret == null) {
+            throw new IllegalStateException("请设置appSecret属性");
+        }
         CloseableHttpClient httpClient = HttpClients.createDefault();
         List<NameValuePair> nameValuePairs = new ArrayList<>();
         params.forEach((key,value)->{
@@ -56,8 +64,6 @@ public class HttpServiceImpl implements HttpService {
                 .build();
         HttpGet httpGet = new HttpGet(uri);
         String random = String.valueOf(System.currentTimeMillis());
-        String appKey = environment.getProperty("appKey");
-        String appSecret = environment.getProperty("appSecret");
         httpGet.setHeader("_user_key",appKey);
         httpGet.setHeader("_user_random",random);
         httpGet.setHeader("_user_secure",createDigest(appKey,random,appSecret));

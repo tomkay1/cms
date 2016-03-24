@@ -132,7 +132,11 @@ public class WidgetTemplateResource implements ITemplateResource {
             String pageConfigName = this.getPageConfigName();
             Site site = siteService.getSite(siteId);
             WidgetPage widgetPage= pageResolveService.getWidgetPageByConfig(pageConfigName, site);
-            htmlTemplate=pageResourceService.getHtmlTemplateByWidgetPage(widgetPage);
+            try {
+                htmlTemplate = pageResourceService.getHtmlTemplateByWidgetPage(widgetPage);
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         htmlTemplate=String.format(this.SERVICE_HTML_BOX,htmlTemplate,SERVICE_JAVASCRIPT);
         return new StringReader(htmlTemplate);

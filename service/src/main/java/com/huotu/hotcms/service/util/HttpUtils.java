@@ -1,10 +1,14 @@
 package com.huotu.hotcms.service.util;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.BasicHttpEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
@@ -58,6 +62,43 @@ public class HttpUtils {
         }
         bos.close();
         return bos.toByteArray();
+    }
+
+    public static ApiResult<String> httpGet(String url,Map<String, Object> params) throws Exception {
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        List<NameValuePair> nameValuePairs = new ArrayList<>();
+        params.forEach((key,value)->{
+            if(value != null) {
+                nameValuePairs.add(new BasicNameValuePair(key,String.valueOf(value)));
+            }
+        });
+        URI uri=new URIBuilder(url).setParameters(nameValuePairs).build();
+        HttpGet httpGet = new HttpGet(uri);
+        CloseableHttpResponse response = httpClient.execute(httpGet);
+        ApiResult<String> apiResult = new ApiResult();
+        apiResult.setCode(response.getStatusLine().getStatusCode());
+        apiResult.setMsg(response.getStatusLine().getReasonPhrase());
+        apiResult.setData(EntityUtils.toString(response.getEntity()));
+        return apiResult;
+    }
+
+    public static ApiResult<String> httpPost(String url,Map<String, Object> params) throws Exception {
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        List<NameValuePair> nameValuePairs = new ArrayList<>();
+        params.forEach((key,value)->{
+            if(value != null) {
+                nameValuePairs.add(new BasicNameValuePair(key,String.valueOf(value)));
+            }
+        });
+        URI uri=new URIBuilder(url).build();
+        HttpPost httpPost = new HttpPost(uri);
+        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs,"UTF-8"));
+        CloseableHttpResponse response = httpClient.execute(httpPost);
+        ApiResult<String> apiResult = new ApiResult();
+        apiResult.setCode(response.getStatusLine().getStatusCode());
+        apiResult.setMsg(response.getStatusLine().getReasonPhrase());
+        apiResult.setData(EntityUtils.toString(response.getEntity()));
+        return apiResult;
     }
 
     public static ApiResult<String> httpGet(String scheme,String host,Integer port,String path, Map<String, Object> params) throws Exception{
@@ -115,6 +156,6 @@ public class HttpUtils {
     }
 
     private static String createDigest(String appId,String random,String secret) {
-        return DigestUtils.md5Hex(DigestUtils.md5(appId + random)+secret);
+        return DigestUtils.md5Hex(DigestUtils.md5(appId + random) +secret);
     }
 }

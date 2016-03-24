@@ -1,4 +1,4 @@
-var version="1.0.111112";
+var version="1.2.0";
 seajs.config({
 	alias: {
 		"jquery": "js/jquery-1.9.1.min.js",
@@ -80,7 +80,8 @@ seajs.config({
 		"pagesDefaults":"js/page/pages/defaults.js?v="+version,
 		"pagesEditMain":"js/page/edit/main.js?v="+version,
 
-		"widgetTooBar":"widget/toobar/toobar.js?v="+version
+		"widgetTooBar":"widget/toobar/toobar.js?v="+version,
+		"widgetPageBack":"widget/toobar/pageBack.js?v="+version
 	},
 	preload: ['jquery']
 });

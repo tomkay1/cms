@@ -51,49 +51,49 @@ public enum LayoutEnum implements CommonEnum {
         String layoutTemplate="";
         switch (this.code){
             case 0:
-                layoutTemplate= "<div>%s</div><div>%s</div><div>%s</div>";
+                layoutTemplate= "<div class=\'js-layout\'>%s</div><div  class='js-layout'>%s</div><div  class='js-layout'>%s</div>";
                 break;
             case 1:
-                layoutTemplate= "<div>%s</div>";
+                layoutTemplate= "<div  class='js-layout'>%s</div>";
                 break;
             case 2:
-                layoutTemplate= "<div>%s</div><div>%s</div>";
+                layoutTemplate= "<div  class='js-layout'>%s</div><div class='js-layout'>%s</div>";
                 break;
             case 3:
-                layoutTemplate= "<div>%s</div><div>%s</div><div>%s</div>";
+                layoutTemplate= "<div class='js-layout'>%s</div><div class='js-layout'>%s</div><div class='js-layout'>%s</div>";
                 break;
             case 4:
-                layoutTemplate= "<div>%s</div><div>%s</div>";
+                layoutTemplate= "<div class='js-layout'>%s</div><div class='js-layout'>%s</div>";
                 break;
             case 5:
-                layoutTemplate= "<div>%s</div><div>%s</div><div>%s</div>";
+                layoutTemplate= "<div class='js-layout'>%s</div><div class='js-layout'>%s</div><div class='js-layout'>%s</div>";
                 break;
             case 6:
-                layoutTemplate= "<div>%s</div><div>%s</div><div>%s</div>";
+                layoutTemplate= "<div class='js-layout'>%s</div><div class='js-layout'>%s</div><div class='js-layout'>%s</div>";
                 break;
             case 7:
-                layoutTemplate= "<div>%s</div><div>%s</div>";
+                layoutTemplate= "<div class='js-layout'>%s</div><div class='js-layout'>%s</div>";
                 break;
             case 8:
-                layoutTemplate= "<div>%s</div><div>%s</div>";
+                layoutTemplate= "<div class='js-layout'>%s</div><div class='js-layout'>%s</div>";
                 break;
             case 9:
-                layoutTemplate= "<div>%s</div><div>%s</div>";
+                layoutTemplate= "<div class='js-layout'>%s</div><div class='js-layout'>%s</div>";
                 break;
             case 10:
-                layoutTemplate= "<div>%s</div><div>%s</div>";
+                layoutTemplate= "<div class='js-layout'>%s</div><div class='js-layout'>%s</div>";
                 break;
             case 11:
-                layoutTemplate= "<div>%s</div><div>%s</div>";
+                layoutTemplate= "<div class='js-layout'>%s</div><div class='js-layout'>%s</div>";
                 break;
             case 12:
-                layoutTemplate= "<div>%s</div><div>%s</div>";
+                layoutTemplate= "<div class='js-layout'>%s</div><div class='js-layout'>%s</div>";
                 break;
             case 13:
-                layoutTemplate= "<div>%s</div><div>%s</div><div>%s</div>";
+                layoutTemplate= "<div class='js-layout'>%s</div><div class='js-layout'>%s</div class='js-layout'><div>%s</div>";
                 break;
             case 14:
-                layoutTemplate= "<div>%s</div>";
+                layoutTemplate= "<div class='js-layout'>%s</div>";
                 break;
         }
         return layoutTemplate;

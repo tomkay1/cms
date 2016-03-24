@@ -7,9 +7,26 @@
  * @author xhl <supper@9126.org> <http://www.9126.org/>
  +-------------------------------------------------------------------
 
- 使用说明：使用该插件依次应用以下js和css
-
- 以下仅是例子,正式使用的时候请注意路径可用
+ ======================================================== 使用说明 ================================================================
+ 1、使用该插件时需要调用该目录下的photo.html页面资源,并且需要带上两个参数，一下使用layer.js弹出调用图片库方式例子如下：
+         layer.open({
+                type: 2,
+                title: "图片库",
+                shadeClose: true,
+                shade: 0.8,
+                closeBtn:1,
+                area: ['580px', '500px'],
+                content: "/assets/js/jPicture/photo.html?customerId="+customerId+"&isMult=false",
+                //btn:["确定"],
+                end: function(index, layero){
+                    var jsonStr=$("#js_cms_picture_value").val();
+                    alert(jsonStr);
+                }
+        });
+    1，content参数中是layer.js弹出请求的地址,该地址中需要两个参数
+        a,customerId ---->商户ID
+        b,isMult     ---->是否可以选择多张图片
+ 2、修改photo.html 里面的引用js和css路径,让其路径是可用状态;以下仅是例子:
      <link  href="/assets/js/jPicture/skin.css"  type="text/css" rel="stylesheet"/>
      <link  href="/assets/libs/layer/skin/layer.css"  type="text/css" rel="stylesheet"/>
      <link  href="/assets/libs/upload/jupload_skin_red.css"  type="text/css" rel="stylesheet"/>
@@ -20,7 +37,15 @@
      <script type="application/javascript" src="/assets/libs/layer/extend/layer.ext.js"></script>
      <script type="application/javascript" src="/assets/libs/upload/jackson-upload.js"></script>
      <script type="application/javascript" src="/assets/js/jPicture/jPicture.js"></script>
- +-------------------------------------------------------------------
+
+ ======================================================== 返回值说明 ================================================================
+ 返回分会值说明:
+ 该图库使用layer.js 弹出方式来体现,弹出窗口后选择一张图片或者多张图片,点击确认后,会把选中的值绑定到父窗口#js-photo-selectvalue 输入框中,没有会创建,有则修改里面的值
+ 弹出回调后只需要获得这个值即可,里面的值格式如下（标准的json格式,拿到值后需要转成json对象来处理选择的图片值）:
+ [
+   {"uri":"/resource/images/photo/3447/20160323172012.png","localUri":"http://res.huobanj.cn/resource/images/photo/3447/20160323172012.png","ID":3066},
+   {"uri":"/resource/images/photo/3447/20160323155048.png","localUri":"http://res.huobanj.cn/resource/images/photo/3447/20160323155048.png","ID":3065}
+ ]
  */
 var _pictureTemplateBox="<div>" +
 "    <div class=\"jpicture-title\">" +
@@ -40,7 +65,7 @@ var _pictureDataTemplate="<ul>{{each Rows as row i}}" +
     "<li class=\"picture-file\" data-id=\"{{row.PFId}}\" data-parentid=\"{{row.PFatherId}}\"><img src=\"{image}\" alt=\"{{row.PFName}}\"><p>{{row.PFName}}</p></li>" +
     "{{else}}" +
     "<li class=\"picture-photo\"  data-id=\"{{row.PFId}}\" data-localurl=\"{{row.imgurl}}\" data-url=\"{{row.PFUrl}}\" data-parentid=\"{{row.PFatherId}}\">" +
-    "    <img src=\"{{row.PFUrl}}\" alt=\"{{row.PFName}}\">" +
+    "    <img src=\"{{row.imgurl}}\" alt=\"{{row.PFName}}\">" +
     "    <div class=\"widget-image-meta\">{{row.PFSize}}</div>" +
     "    <p>{{row.PFName}}</p>" +
     "    <div class=\"selected-style\"><i class=\"icon-ok icon-white\"></i></div>" +
@@ -53,11 +78,11 @@ $.fn.extend({
         var self = this;//Grid对象
         var settings = {
             label: $element.attr("id"),
-            url:"http://photoapi.pdmall.com",//伙伴商城 mallAPI 根目录URI
+            url:"http://devmallapi.huobanj.cn",//伙伴商城 mallAPI 根目录URI
             isMult:true,//是否可以选择多张图片
             customerId:"3677", //商户ID
             fileImg:"/assets/js/jPicture/w01.png",
-            pageSize:"20",
+            pageSize:"24",
             uploadUrl:"",//上传图片api接口
             array:[]
         };
@@ -83,13 +108,14 @@ $.fn.extend({
                 data: { page: 1, pagesize: option.pageSize,fileid:fileid,customerid:option.customerId},
                 Templete: template,
                 isArtTemplete: true,
-                scorllBox: "test",
+                scorllBox:""
             },function() {
                 var obj=$(".picture-file");
                 $.each(obj,function(item,dom){
                     $(dom).click(function(){
                         var fileId=$(dom).data("id");
                         var parentId=$(dom).data("parentid");
+                        $("input[name='fileId']").val(fileId);
                         $("#js-picture-addFile").attr("data-fileid",fileId);
                         JQueue.PutQueue(parentId);
                         $element.data('_picture', option);
@@ -121,6 +147,7 @@ $.fn.extend({
             return _html;
         };
         self.selectBind=function(option){
+            $(".picture-photo").unbind("click");
             var obj=$(".picture-photo");
             $.each(obj,function(item,dom){
                 $(dom).click(function(){
@@ -150,26 +177,29 @@ $.fn.extend({
                     //重新设置对象的array数据对象,用于后面获得
                     var $this = $element.data('_picture');
                     $this.array=pQueue.array;
+                    $("#js-photo-selectvalue").val(JSON.stringify($this.array));
                     $element.data('_picture', ops);
-                    window.console.log($element.data('_picture'));
                 });
             });
         }
         self.uploadPhoto=function(){
             var $this = $element.data('_picture');
             $("#js-picture-photo").jacksonUpload({
-                url: "/cms/imgUpLoad",
+                url: "/mallapi/uploadPhoto",
                 enctype: "multipart/form-data",
                 submit: true,
                 method: "post",
+                name:"fileName",
                 text:"上传图片",
                 color:"#ffffff",
                 boxWidth:'100',
+                position:"fixed",
                 data: {
-                    customerId: $this.customerId
+                    customerId: $this.customerId,
+                    fileId:$("#js-picture-addFile").attr('data-fileid')
                 },
                 callback: function (json) {
-
+                    $("#"+$this.label).resolveDataTemplate($("#js-picture-addFile").attr('data-fileid'));
                 }
             })
         }

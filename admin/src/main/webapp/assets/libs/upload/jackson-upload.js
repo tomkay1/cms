@@ -12,6 +12,7 @@ $.fn.extend({
             className: "jq-site-bottom",
             classLoadName: "jq-site-bottom-loadding",
             boxWidth:"600",
+            position:"absolute",
             loadText: "上传中..."
         };
         //后期添加新方法，支持参数方式传递
@@ -33,7 +34,12 @@ $.fn.extend({
         var temporary_descript_id = 'temporary-descript-' + (new Date()).getTime() + '-' + (parseInt(Math.random() * 1000));
         this.fileid = temporary_file_id;
         var htmlText = '';
-        htmlText += '<form id="' + temporary_form_id + '" class="jq-jupload-box" method="' + options.method + '" style="top:' + top + 'px;left:' + left + 'px;width:'+boxWidth+'px;  position: absolute;" action="' + options.url + '" target="' + temporary_iframe_id + '" enctype="' + options.enctype + '">';
+        if(options.position=="absolute"){
+            htmlText += '<form id="' + temporary_form_id + '" class="jq-jupload-box" method="' + options.method + '" style="top:' + top + 'px;left:' + left + 'px;width:'+options.boxWidth+'px;  position: absolute;" action="' + options.url + '" target="' + temporary_iframe_id + '" enctype="' + options.enctype + '">';
+        }else{
+            htmlText += '<form id="' + temporary_form_id + '" class="jq-jupload-box" method="' + options.method + '" style="width:'+options.boxWidth+'px; " action="' + options.url + '" target="' + temporary_iframe_id + '" enctype="' + options.enctype + '">';
+        }
+        htmlText += '<form id="' + temporary_form_id + '" class="jq-jupload-box" method="' + options.method + '" style="top:' + top + 'px;left:' + left + 'px;width:'+options.boxWidth+'px;  position: absolute;" action="' + options.url + '" target="' + temporary_iframe_id + '" enctype="' + options.enctype + '">';
         htmlText += '<div class="'+options.className+'">';
         htmlText += '<span style="display: inline-block;margin-top: 5px;color: '+options.color+';font-size: 12px;" id="' + temporary_input_id + '">' + options.text + '</span>';
         htmlText += '<input type="file" id="' + temporary_file_id + '" name="' + options.name + '" accept="'+options.accept+'" style="position:absolute;left:0;top:0;width:100px;height:30px;box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.2);opacity:0;-moz-opacity: 0;filter: alpha(opacity=0);cursor:pointer"/>';
@@ -84,14 +90,18 @@ $.fn.extend({
             });
         }
         $(window).resize(function () {
-            var top = $this.offset().top;
-            var left = $this.offset().left
-            $("#" + temporary_form_id).css({ top: top, left: left });
+            if(options.position=="absolute"){
+                var top = $this.offset().top;
+                var left = $this.offset().left
+                $("#" + temporary_form_id).css({ top: top, left: left });
+            }
         });
         $(window).scroll(function () {
-            var top = $this.offset().top;
-            var left = $this.offset().left
-            $("#" + temporary_form_id).css({ top: top, left: left });
+            if(options.position=="absolute"){
+                var top = $this.offset().top;
+                var left = $this.offset().left
+                $("#" + temporary_form_id).css({ top: top, left: left });
+            }
         })
     }
 });

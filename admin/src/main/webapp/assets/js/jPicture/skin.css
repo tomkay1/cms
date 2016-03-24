@@ -1,10 +1,12 @@
-.jpicture-title{background:#F8F8F8;height: 50px; line-height: 50px; border-bottom: 1px #eee solid;}
+.jpicture-title{background:#F8F8F8;height: 50px; line-height: 50px; border-bottom: 1px #eee solid;position: fixed;
+    z-index: 99999;
+    width: 100%;}
 .jpicture-title ul{padding: 0px;margin: 0px 0px 0px 10px;; }
 .jpicture-title ul li{float: left; width: 100px;height: 30px; margin-top: 10px; line-height: 30px; list-style-type: none;margin-right: 10px;}
 .jpicture-title ul li a{width: 100px;height: 30px; display: block; font-size: 12px; text-decoration: none; background:#c23700; color: #ffffff; text-align: center;}
 .jpicture-title ul li a:hover{width: 100px;height: 30px; background:#c23700; color: #ffffff; text-align: center;}
 .clearfix,.clearfix:after,.clearfix:before{clear: both;}
-.jpicture-content{margin-top: 10px}
+.jpicture-content{margin-top: 10px;margin-bottom: 40px; padding-top: 50px}
 .jpicture-content ul{padding: 0px; margin: 0px;}
 .jpicture-content li{float: left; position: relative; width:100px; height: 110px; text-align: center; list-style-type: none; border: 1px #eee solid;margin: 5px 5px; }
 .jpicture-content li img{width: 80px;height: 80px; padding-top: 5px; border: none;}

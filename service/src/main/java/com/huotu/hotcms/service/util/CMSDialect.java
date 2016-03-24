@@ -48,6 +48,8 @@ public class CMSDialect {
         dialectList.add(new VideoDialect());
         dialectList.add(new NoticeDialect());
         dialectList.add(new DownloadDialect());
+        dialectList.add(new GalleryDialect());
+        dialectList.add(new GalleryListDialect());
         dialectList.add(new TimeDialect());
         dialectList.add(new WidgetDialect());
     }
@@ -61,6 +63,8 @@ public class CMSDialect {
         dialectList.add(new CategoryDialect());
         dialectList.add(new VideoDialect());
         dialectList.add(new NoticeDialect());
+        dialectList.add(new GalleryDialect());
+        dialectList.add(new GalleryListDialect());
         dialectList.add(new DownloadDialect());
         dialectList.add(new TimeDialect());
     }

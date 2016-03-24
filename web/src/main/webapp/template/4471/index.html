@@ -1,0 +1,144 @@
+<!doctype html>
+<!--
+  ~ 版权所有:杭州火图科技有限公司
+  ~ 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+  ~
+  ~  (c) Copyright Hangzhou Hot Technology Co., Ltd.
+  ~  Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District 2013-2015. All rights reserved.
+  -->
+
+<html>
+<head>
+ <meta charset="utf-8">
+ <title th:text="${site.title}"></title>
+ <meta name="keywords" th:content="${site.keywords}" />
+ <meta name="description" th:content="${site.description}"/>
+ <link rel="stylesheet" type="text/css" th:href="@{${request.root}+'/css/common.css'}">
+ <link rel="stylesheet" type="text/css" th:href="@{${request.root}+'/css/index.css'}">
+ <script type="text/javascript" th:src="@{${request.root}+'/js/jquery1.42.min.js'}"></script>
+ <script type="text/javascript" th:src="@{${request.root}+'/js/jquery.SuperSlide.2.1.1.js'}"></script>
+</head>
+<body>
+<!---头--->
+<div class="header">
+ <a th:href="${request.rootUri}+'/'" th:title="${site.title}"><img th:src="${request.root}+'/images/logo.png'" class="logoimg"></a>
+ <ul class="nav" data-th-remove="all-but-first" id="categoryNav">
+  <li class="active" data-category-foreach="category" data-param-routetype="6" data-th-name="${request.url}" data-th-id="${category.route.rule}" data-th-class="${request.url}==${category.route.rule}?active">
+	<a href="index.html" data-th-href="${request.rootUri}+${category.route.rule}" data-th-text="${category.name}">首页</a>
+  </li>
+ </ul>
+</div>
+<p style="clear:both"></p>
+<!---头--->
+
+<!---轮播--->
+<div class="fullSlide" style="top: -78px; z-index:-1">
+ <div class="bd">
+  <ul>
+   <li th:style="'background:url('+${request.rootUri}+'/images/banner.jpg)  center 0 no-repeat;'"></li>
+  </ul>
+ </div>
+ <div class="hd"><ul></ul></div>
+</div>
+<p style="clear:both"></p>
+<!---轮播--->
+<div class="jztp sybg" style="top:-50px">
+ <div class="sybg_div"><a th:href="${request.rootUri}+'/brand/company'"><span class="button">MORE</span></a></div>
+</div>
+<!--资讯---->
+<div class="syzx">
+ <div  class="syzxzuo" data-video-current="video" data-param-defaultid="1">
+  <a data-th-href="${video.outLinkUrl}" target="_blank">
+      <img data-th-src="${video.thumbUri}" width="446" height="190">
+  </a>
+  <p class="b"><span><b data-th-text="${video.title}">永春的企业文化</b></span>&nbsp;<span style="color:#949494">CORPORATE CULTURE</span></p>
+  <p class="c" data-th-text="${video.description}">我们本着精益求精，客户至上的宗旨，不断为世界各地的消费者生产出更多的好产品。我们将伴随着中国经济一起腾飞。</p>
+ </div>
+ <p style="height:44px;margin-top: 10px;"><span class="kx" >快讯 news</span><a th:href="@{${request.root}+'/brand/news'}"><span class="fr">查看更多>></span></a></p>
+ <div class="kxbg" data-th-remove="all-but-first">
+  <p class="newstbg" data-article-foreach="article" data-param-pagesize="6" data-param-categoryid="19">
+   <a th:href="${request.rootUri}+'/new/'+${article.id}+'.html'" ><span class="newsta" data-th-text="${article.title}">永春2009秋冬产品订货会圆满闭幕</span>
+    <span class="newstb">2015-07-25</span></a>
+  </p>
+  <p class="newstbg">
+   <a><span class="newsta">永春2009秋冬产品订货会圆满闭幕</span>
+    <span class="newstb">2015-07-25</span></a></p>
+  <p class="newstbg">
+   <a><span class="newsta">永春2009秋冬产品订货会圆满闭幕</span>
+    <span class="newstb">2015-07-25</span></a></p>
+  <p class="newstbg">
+   <a><span class="newsta">永春2009秋冬产品订货会圆满闭幕</span>
+    <span class="newstb">2015-07-25</span></a></p>
+  <p class="newstbg">
+   <a><span class="newsta">永春2009秋冬产品订货会圆满闭幕</span>
+    <span class="newstb">2015-07-25</span></a></p>
+  <p class="newstbg">
+   <a><span class="newsta">永春2009秋冬产品订货会圆满闭幕</span>
+    <span class="newstb">2015-07-25</span></a></p>
+ </div>
+ <P style="clear:both"></P>
+</div>
+<!--资讯---->
+
+
+<div class="jztp" >
+ <div class="sybg_tbg">
+  <p><img th:src="${request.root}+'/images/syt1.png'"></p>
+  <p style="padding:30px 0px">
+   <img th:src="${request.root}+'/images/b01.png'">
+   <img th:src="${request.root}+'/images/b02.png'">
+   <img th:src="${request.root}+'/images/b03.png'">
+   <img th:src="${request.root}+'/images/b04.png'">
+  </p>
+ </div>
+</div>
+
+<div class="qiehuansy">
+ <a th:href="${request.rootUri}+'/stock'"><div class="qiehuansya"></div></a>
+ <a th:href="${request.rootUri}+'/crafts'"><div class="qiehuansyb"></div></a>
+ <a href="javascript:;"><div class="qiehuansyc"></div></a>
+ <a th:href="${request.rootUri}+'/about'"><div class="qiehuansyd"></div></a>
+ <p style="clear:both"></p>
+</div>
+<!--脚-->
+<div style="background-color:#1a1a1a">
+ <div  class="footsy">
+  <ul>
+      <li><a th:href="@{${request.rootUri}+'/'}" title="首页">首页</a></li>
+      <li><a th:href="@{${request.rootUri}+'/brand'}" title="品牌中心">品牌中心</a></li>
+      <li><a th:href="@{${request.rootUri}+'/product'}" title="产品中心">产品中心</a></li>
+      <li><a th:href="@{${request.rootUri}+'/about'}" title="联系我们">联系我们</a></li></ul>
+  <ul>
+      <li><a th:href="@{${request.rootUri}+'/brand'}" title="品牌中心">品牌中心</a></li>
+      <li><a th:href="@{${request.rootUri}+'/brand/company'}" title="公司介绍">公司介绍</a></li>
+      <li><a th:href="@{${request.rootUri}+'/brand/2.html'}" title="品牌理念">品牌理念</a></li>
+      <li><a th:href="@{${request.rootUri}+'/brand/news'}" title="品牌新闻">品牌新闻</a></li></ul>
+  <ul>
+      <li><a th:href="@{${request.rootUri}+'/product'}" title="产品中心">产品中心</a></li>
+      <li><a th:href="@{${request.rootUri}+'/product/hot'}" title="热销产品">热销产品</a></li>
+      <li><a th:href="@{${request.rootUri}+'/product/sox'}" title="短袜系列">短袜系列</a></li>
+      <li><a th:href="@{${request.rootUri}+'/stovepipe'}" title="微压瘦腿">微压瘦腿</a></li></ul>
+  <ul>
+      <li><a th:href="@{${request.rootUri}+'/stock'}" title="企业采购">企业采购</a></li>
+      <li><a th:href="@{${request.rootUri}+'/crafts'}" title="工艺制作">工艺制作</a></li>
+      <li><a href="javascript:void(0)" title="代理批发">代理批发</a></li>
+      <li><a th:href="@{${request.rootUri}+'/about'}" title="联系我们">礼盒定制</a></li></ul>
+  <ul>
+      <li><a th:href="@{${request.rootUri}+'/lookbook'}" title="LookBook">LookBook</a></li>
+      <li><a th:href="@{${request.rootUri}+'/onlineMall'}" title="在线商城">在线商城</a></li>
+      <li><a th:href="@{${request.rootUri}+'/wechatActivity'}" title="在线商城">微信活动</a></li></ul>
+  <div style=" float:right"><img th:src="${request.root}+'/images/erweima.png'"></div>
+  <p style="clear:both"></p>
+  <p style="border-bottom:1px solid #373737; width:100%;height:20px;">&nbsp;</p>
+  <div class="copyright" th:utext="${site.copyright}">
+      集团总部地址：浙江省义乌市下骆宅工业区  邮编：322013  电话：0579-85086166 85086188  E-mail：zhejiangyongchun@126.combr>
+      Copyright &copy; 2016 Yongchun knitting.
+  </div>
+ </div>
+</div>
+<!--脚-->
+</body>
+</html>
+<script type="text/javascript">
+ jQuery(".fullSlide").slide({ titCell:".hd ul", mainCell:".bd ul", effect:"fold",  autoPlay:true, autoPage:true, trigger:"click" });
+</script>

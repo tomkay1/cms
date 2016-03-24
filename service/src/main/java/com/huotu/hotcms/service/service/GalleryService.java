@@ -5,18 +5,17 @@ package com.huotu.hotcms.service.service;
  */
 
 import com.huotu.hotcms.service.entity.Gallery;
-import com.huotu.hotcms.service.entity.GalleryList;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.PageableForeachParam;
 import org.springframework.data.domain.Page;
 
-import java.net.URISyntaxException;
+import java.util.List;
 
 public interface  GalleryService {
     Boolean saveGallery(Gallery gallery);
     Gallery findById(Long id);
 
-    Page<GalleryList> getPage(Integer customerId,Long galleryId, int page, int pageSize) throws URISyntaxException;
+    List<Gallery> getSpecifyGallerys(String[] specifyIds);
 
-    Boolean saveGalleryList(GalleryList galleryList);
+    Page<Gallery> getGalleryList(PageableForeachParam oreachParam) throws Exception;
 
-    GalleryList findGalleryListById(Long id);
 }

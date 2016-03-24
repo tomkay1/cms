@@ -34,6 +34,9 @@ public enum  ParamEnum {
     GALLERY{
         public Object getForeachParams(){return PageableForeachParam.class;}
     },
+    GALLERYLIST{
+        public Object getForeachParams(){return PageableForeachParam.class;}
+    },
     NOTICE{
         public Object getForeachParams(){return PageableForeachParam.class;}
     },

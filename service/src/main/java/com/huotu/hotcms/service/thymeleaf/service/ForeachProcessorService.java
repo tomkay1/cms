@@ -39,6 +39,12 @@ public class ForeachProcessorService extends BaseProcessorService {
         if(dialectPrefix.equals(DialectTypeEnum.DOWNLOAD.getDialectPrefix())) {
             return DownloadForeachProcessorFactory.getInstance().process(elementTag,context);
         }
+        if(dialectPrefix.equals(DialectTypeEnum.GALLERY.getDialectPrefix())) {
+            return GalleryForeachProcessorFactory.getInstance().process(elementTag,context);
+        }
+        if(dialectPrefix.equals(DialectTypeEnum.GALLERYLIST.getDialectPrefix())) {
+            return GalleryListForeachProcessorFactory.getInstance().process(elementTag,context);
+        }
         return null;
     }
 

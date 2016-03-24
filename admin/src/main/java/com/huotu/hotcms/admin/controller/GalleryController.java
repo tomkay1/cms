@@ -5,6 +5,7 @@ import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Gallery;
 import com.huotu.hotcms.service.entity.GalleryList;
 import com.huotu.hotcms.service.repository.CategoryRepository;
+import com.huotu.hotcms.service.service.GalleryListService;
 import com.huotu.hotcms.service.service.GalleryService;
 import com.huotu.hotcms.service.util.PageData;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
@@ -38,6 +39,9 @@ public class GalleryController {
 
     @Autowired
     private GalleryService galleryService;
+
+    @Autowired
+    private GalleryListService galleryListService;
 
     @Autowired
     private StaticResourceService resourceServer;
@@ -92,7 +96,7 @@ public class GalleryController {
                                            @RequestParam(name = "pagesize",required = true,defaultValue = "20") int pageSize) {
             PageData<GalleryList> pageModel = null;
             try {
-               Page<GalleryList> galleryServicePage = galleryService.getPage(customerId, galleryId, page, pageSize);
+               Page<GalleryList> galleryServicePage = galleryListService.getPage(customerId, galleryId, page, pageSize);
                 if (galleryServicePage != null) {//先取得分页page再进行转化
                     List<GalleryList> galleryLists =galleryServicePage.getContent();
                     for(GalleryList gallery : galleryLists){
@@ -163,7 +167,7 @@ public class GalleryController {
             ModelAndView modelAndView=new ModelAndView();
             try{
                 modelAndView.setViewName("/view/contents/updateGalleryList.html");
-                GalleryList  galleryList= galleryService.findGalleryListById(id);
+                GalleryList  galleryList= galleryListService.findGalleryListById(id);
                 String logo_uri="";
                 if(!StringUtils.isEmpty(galleryList.getThumbUri())) {
                     logo_uri = resourceServer.getResource(galleryList.getThumbUri()).toString();
@@ -225,17 +229,17 @@ public class GalleryController {
                     galleryList.setCreateTime(LocalDateTime.now());
                 }
                 else{
-                    galleryList.setCreateTime(galleryService.findGalleryListById(id).getCreateTime());
+                    galleryList.setCreateTime(galleryListService.findGalleryListById(id).getCreateTime());
                     galleryList.setUpdateTime(LocalDateTime.now());
                     if (wide.equals("")) {
-                        galleryList.setSize(galleryService.findGalleryListById(id).getSize());
+                        galleryList.setSize(galleryListService.findGalleryListById(id).getSize());
                     }
                 }
                 if (!wide.equals("")){
                     galleryList.setSize(wide+"*"+height);
                 }
                 galleryList.setGallery(galleryService.findById(galleryId));
-                galleryService.saveGalleryList(galleryList);
+                galleryListService.saveGalleryList(galleryList);
                 result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
             }
             catch (Exception ex)
@@ -278,9 +282,9 @@ public class GalleryController {
             ResultView result=null;
             try{
                 if(cookieUser.isSupper(request)) {
-                    GalleryList galleryList = galleryService.findGalleryListById(id);
+                    GalleryList galleryList = galleryListService.findGalleryListById(id);
                     galleryList.setDeleted(true);
-                    galleryService.saveGalleryList(galleryList);
+                    galleryListService.saveGalleryList(galleryList);
                     result=new ResultView(ResultOptionEnum.OK.getCode(),ResultOptionEnum.OK.getValue(),null);
                 }
                 else {

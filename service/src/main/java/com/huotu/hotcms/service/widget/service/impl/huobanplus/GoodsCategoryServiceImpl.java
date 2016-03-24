@@ -11,7 +11,6 @@ package com.huotu.hotcms.service.widget.service.impl.huobanplus;
 import com.alibaba.fastjson.JSON;
 import com.huotu.hotcms.service.util.ApiResult;
 import com.huotu.hotcms.service.util.HttpUtils;
-import com.huotu.hotcms.service.widget.model.JsonModel;
 import com.huotu.hotcms.service.widget.model.GoodsCategory;
 import com.huotu.hotcms.service.widget.service.GoodsCategoryService;
 import org.springframework.context.annotation.Profile;

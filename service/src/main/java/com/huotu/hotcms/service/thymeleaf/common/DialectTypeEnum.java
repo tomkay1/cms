@@ -22,6 +22,7 @@ public enum DialectTypeEnum {
     SITE("site",ParamEnum.SITE),
     DOWNLOAD("download",ParamEnum.DOWNLOAD),
     GALLERY("gallery",ParamEnum.GALLERY),
+    GALLERYLIST("galleryList",ParamEnum.GALLERYLIST),
     NOTICE("notice",ParamEnum.NOTICE),
     CATEGORY("category",ParamEnum.CATEGORY),
     VIDEO("video",ParamEnum.VIDEO),
@@ -52,6 +53,8 @@ public enum DialectTypeEnum {
                 return ParamEnum.DOWNLOAD;
             case "gallery":
                 return ParamEnum.GALLERY;
+            case "galleryList":
+                return ParamEnum.GALLERYLIST;
             case "notice":
                 return ParamEnum.NOTICE;
             case "time":

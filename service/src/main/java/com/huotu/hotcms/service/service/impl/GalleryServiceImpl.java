@@ -1,22 +1,26 @@
 package com.huotu.hotcms.service.service.impl;
 
+import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Gallery;
-import com.huotu.hotcms.service.entity.GalleryList;
-import com.huotu.hotcms.service.repository.GalleryListRepository;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.PageableForeachParam;
 import com.huotu.hotcms.service.repository.GalleryRepository;
+import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.service.GalleryService;
-import com.huotu.hotcms.service.widget.service.StaticResourceService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.Predicate;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by chendeyu on 2016/1/10.
@@ -24,12 +28,14 @@ import java.util.List;
 @Service
 public class GalleryServiceImpl implements GalleryService {
 
+    private static Log log = LogFactory.getLog(GalleryServiceImpl.class);
+
     @Autowired
     private GalleryRepository galleryRepository;
-    @Autowired
-    private GalleryListRepository galleryListRepository;
 
-    private StaticResourceService resourceServer;
+
+    @Autowired
+    private CategoryService categoryService;
 
     @Override
     public Boolean saveGallery(Gallery gallery) {
@@ -39,32 +45,93 @@ public class GalleryServiceImpl implements GalleryService {
 
     @Override
     public Gallery findById(Long id) {
-        Gallery gallery =  galleryRepository.findOne(id);
+        Gallery gallery = galleryRepository.findOne(id);
         return gallery;
     }
 
     @Override
-    public Page<GalleryList> getPage(Integer customerId, Long galleryId, int page, int pageSize) throws URISyntaxException {
-        Specification<GalleryList> specification = (root, query, cb) -> {
+    public List<Gallery> getSpecifyGallerys(String[] specifyIds) {
+        List<String> ids = Arrays.asList(specifyIds);
+        List<Long> noticeIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
+        Specification<Gallery> specification = (root, query, cb) -> {
+            List<Predicate> predicates = noticeIds.stream().map(id -> cb.equal(root.get("id").as(Long.class), id)).collect(Collectors.toList());
+            return cb.or(predicates.toArray(new Predicate[predicates.size()]));
+        };
+        return galleryRepository.findAll(specification, new Sort(Sort.Direction.DESC, "orderWeight"));
+    }
+
+
+    @Override
+    public Page<Gallery> getGalleryList(PageableForeachParam galleryForeachParam) throws Exception {
+        int pageIndex = galleryForeachParam.getPageno() - 1;
+        int pageSize = galleryForeachParam.getPagesize();
+        Sort sort = new Sort(Sort.Direction.DESC, "orderWeight");
+        if (!StringUtils.isEmpty(galleryForeachParam.getSpecifyids())) {
+            return getSpecifyGallerys(galleryForeachParam.getSpecifyids(), pageIndex, pageSize, sort);
+        }
+        if (!StringUtils.isEmpty(galleryForeachParam.getCategoryid())) {
+            return getGalleries(galleryForeachParam, pageIndex, pageSize, sort);
+        } else {
+            return getAllGallery(galleryForeachParam, pageIndex, pageSize, sort);
+        }
+    }
+
+    private Page<Gallery> getAllGallery(PageableForeachParam params, int pageIndex, int pageSize, Sort sort) {
+        List<Category> subCategories = categoryService.getSubCategories(params.getParentcid());
+        if (subCategories.size() == 0) {
+            try {
+                throw new Exception("父栏目节点没有子栏目");
+            } catch (Exception e) {
+                log.error(e.getMessage());
+            }
+        }
+        Specification<Gallery> specification = (root, criteriaQuery, cb) -> {
+            List<Predicate> p1 = new ArrayList<>();
+            for (Category category : subCategories) {
+                p1.add(cb.equal(root.get("category").as(Category.class), category));
+            }
+            Predicate predicate = cb.or(p1.toArray(new Predicate[p1.size()]));
             List<Predicate> predicates = new ArrayList<>();
-            predicates.add(cb.equal(root.get("deleted").as(String.class), false));
-            predicates.add(cb.equal(root.get("customerId").as(Integer.class), customerId));
-            predicates.add(cb.equal(root.get("gallery").get("id").as(Long.class), galleryId));
+            if (!StringUtils.isEmpty(params.getExcludeids())) {
+                List<String> ids = Arrays.asList(params.getExcludeids());
+                List<Long> galleryIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
+                predicates = galleryIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
+            }
+            predicates.add(cb.equal(root.get("deleted").as(Boolean.class), false));
+            predicates.add(predicate);
             return cb.and(predicates.toArray(new Predicate[predicates.size()]));
         };
-        Page<GalleryList> pageData = galleryListRepository.findAll(specification,new PageRequest(page - 1, pageSize,new Sort(Sort.Direction.DESC,"orderWeight")));
-        return  pageData;
+        return galleryRepository.findAll(specification, new PageRequest(pageIndex, pageSize, sort));
+    }
+
+    private Page<Gallery> getGalleries(PageableForeachParam params, int pageIndex, int pageSize, Sort sort) throws Exception {
+        try {
+            Specification<Gallery> specification = (root, criteriaQuery, cb) -> {
+                List<Predicate> predicates = new ArrayList<>();
+                if (!StringUtils.isEmpty(params.getExcludeids())) {
+                    List<String> ids = Arrays.asList(params.getExcludeids());
+                    List<Long> galleryIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
+                    predicates = galleryIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
+                }
+                predicates.add(cb.equal(root.get("deleted").as(Boolean.class), false));
+                predicates.add(cb.equal(root.get("category").get("id").as(Long.class), params.getCategoryid()));
+                return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+            };
+            return galleryRepository.findAll(specification, new PageRequest(pageIndex, pageSize, sort));
+        } catch (Exception ex) {
+            throw new Exception("获得图库列表出现错误");
+        }
+    }
+
+    private Page<Gallery> getSpecifyGallerys(String[] specifyIds, int pageIndex, int pageSize, Sort sort) {
+        List<String> ids = Arrays.asList(specifyIds);
+        List<Long> galleryIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
+        Specification<Gallery> specification = (root, criteriaQuery, cb) -> {
+            List<Predicate> predicates = galleryIds.stream().map(id -> cb.equal(root.get("id").as(Long.class), id)).collect(Collectors.toList());
+            return cb.or(predicates.toArray(new Predicate[predicates.size()]));
+        };
+        return galleryRepository.findAll(specification, new PageRequest(pageIndex, pageSize, sort));
     }
 
 
-    @Override
-    public Boolean saveGalleryList(GalleryList galleryList) {
-        galleryListRepository.save(galleryList);
-        return true;
-    }
-
-    @Override
-    public GalleryList findGalleryListById(Long id) {
-        return galleryListRepository.findOne(id);
-    }
 }

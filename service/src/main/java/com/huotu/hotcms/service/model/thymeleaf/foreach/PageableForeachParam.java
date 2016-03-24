@@ -9,7 +9,7 @@
 package com.huotu.hotcms.service.model.thymeleaf.foreach;
 
 /**
- * 分页遍历解析器参数模型(文章、视频)
+ * 分页遍历解析器参数模型(文章、视频、图片)
  * Created by cwb on 2016/1/18.
  */
 public class PageableForeachParam {
@@ -22,6 +22,11 @@ public class PageableForeachParam {
      * 所属二级栏目id(所属栏目的父节点)，与所属栏目id存在性互斥
      */
     private Long parentcid;
+
+    /**
+     * 所属图库的id
+     */
+    private Long galleryId;
     /**
      * 页码
      */
@@ -77,6 +82,14 @@ public class PageableForeachParam {
 
     public Integer getPageno() {
         return pageno;
+    }
+
+    public Long getGalleryId() {
+        return galleryId;
+    }
+
+    public void setGalleryId(Long galleryId) {
+        this.galleryId = galleryId;
     }
 
     public void setPageno(Integer pageno) {

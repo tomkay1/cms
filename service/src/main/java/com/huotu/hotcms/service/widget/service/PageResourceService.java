@@ -6,12 +6,6 @@ import com.huotu.hotcms.service.service.RedisService;
 import com.huotu.hotcms.service.util.HttpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
-import redis.clients.jedis.Jedis;
-
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +22,6 @@ import java.util.List;
 public class PageResourceService {
     @Autowired
     private StaticResourceService resourceServer;
-    @Autowired
-    private PageResolveService pageResolveService;
     @Autowired
     private RedisService redisService;
 
@@ -49,7 +41,11 @@ public class PageResourceService {
     }
 
     public String getWidgetTemplateByWidgetBase(WidgetBase widgetBase) throws Exception {
-        return isWidgetTemplateCached(widgetBase) ? getCachedWidgetTemplate(widgetBase) : getWidgetTemplateFromFile(widgetBase);
+        if(redisService.isConnected()){
+            return isWidgetTemplateCached(widgetBase) ? getCachedWidgetTemplate(widgetBase) : getWidgetTemplateFromFile(widgetBase);
+        }else{
+            return  getWidgetTemplateFromFile(widgetBase);
+        }
     }
 
     private String getCachedWidgetTemplate(WidgetBase widgetBase) {

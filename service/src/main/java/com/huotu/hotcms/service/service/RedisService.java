@@ -18,4 +18,6 @@ public interface RedisService {
 
     Boolean exists(String key);
 
+    Boolean isConnected();
+
 }

@@ -1,16 +1,22 @@
 package com.huotu.hotcms.admin.controller.decoration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.CustomPages;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.model.widget.WidgetPage;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.service.CustomPagesService;
 import com.huotu.hotcms.service.util.PageData;
+import com.huotu.hotcms.service.util.ResultOptionEnum;
+import com.huotu.hotcms.service.util.ResultView;
+import com.huotu.hotcms.service.widget.service.PageResolveService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -31,6 +37,9 @@ import java.util.List;
 @RequestMapping("/page")
 public class PagesController {
     private static final Log log = LogFactory.getLog(PagesController.class);
+
+    @Autowired
+    private PageResolveService pageResolveService;
 
     @Autowired
     private SiteRepository siteRepository;
@@ -78,5 +87,28 @@ public class PagesController {
             log.error(ex);
         }
         return  modelAndView;
+    }
+
+    @RequestMapping(value = "/createPage",method = RequestMethod.POST)
+    @ResponseBody
+    public ResultView createPage(@RequestParam("widgetStr") String widgetPage,
+                                 @RequestParam("customerid") Integer customerid,
+                                 @RequestParam("siteId") Long siteId,
+                                 @RequestParam("publish") boolean publish){
+        ResultView resultView=null;
+        try{
+            ObjectMapper mapper = new ObjectMapper();
+            WidgetPage widget=mapper.readValue(widgetPage,WidgetPage.class);
+            boolean Flag=pageResolveService.createPageConfigByWidgetPage(widget,customerid,siteId,publish);
+            if(Flag){
+                resultView=new ResultView(ResultOptionEnum.OK.getCode(),ResultOptionEnum.OK.getValue(),null);
+            }else{
+                resultView=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
+            }
+        }catch (Exception ex){
+            log.error(ex);
+            resultView=new ResultView(ResultOptionEnum.SERVERFAILE.getCode(),ResultOptionEnum.SERVERFAILE.getValue(),null);
+        }
+        return  resultView;
     }
 }

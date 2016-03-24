@@ -32,8 +32,8 @@ public class CustomPagesServiceImpl implements CustomPagesService {
             if (!StringUtils.isEmpty(name)) {
                 predicates.add(cb.like(root.get("name").as(String.class), "%" + name + "%"));
             }
-            predicates.add(cb.equal(root.get("deleted").as(String.class), delete));
-            predicates.add(cb.equal(root.get("siteId").as(Integer.class), siteId));
+            predicates.add(cb.equal(root.get("deleted").as(Boolean.class), delete));
+            predicates.add(cb.equal(root.get("site").get("siteId").as(Integer.class), siteId));
             return cb.and(predicates.toArray(new Predicate[predicates.size()]));
         };
         Page<CustomPages> pageData = customPagesRepository.findAll(specification,new PageRequest(page - 1, pageSize));
@@ -58,7 +58,7 @@ public class CustomPagesServiceImpl implements CustomPagesService {
     }
 
     @Override
-    public Boolean save(CustomPages customPages) {
-        return null;
+    public CustomPages save(CustomPages customPages) {
+        return customPagesRepository.save(customPages);
     }
 }

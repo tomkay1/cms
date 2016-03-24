@@ -27,7 +27,5 @@ public class WidgetBase {
     @XmlAttribute(name = "widgetUri")
     private String widgetUri;
 
-//    private WidgetProperty[] property;
-
     private List<WidgetProperty> property;
 }

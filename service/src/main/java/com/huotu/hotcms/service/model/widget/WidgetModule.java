@@ -26,6 +26,5 @@ public class WidgetModule {
     @XmlAttribute(name = "position")
     private String position;
 
-//    private WidgetBase[] widget;
     private List<WidgetBase> widget;
 }

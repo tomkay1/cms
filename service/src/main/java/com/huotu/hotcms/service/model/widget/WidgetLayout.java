@@ -28,6 +28,5 @@ public class WidgetLayout {
     /**
     * 页面布局模块
     * */
-//    private WidgetModule[] module;
     private List<WidgetModule> module;
 }

@@ -30,4 +30,9 @@ public class RedisServiceImpl implements RedisService {
     public Boolean exists(String key) {
         return jedis.exists(key);
     }
+
+    @Override
+    public Boolean isConnected() {
+        return  jedis.isConnected();
+    }
 }

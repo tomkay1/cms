@@ -15,7 +15,7 @@ define(function (require, exports, module) {
         form: 'form1',//表单ID
         pageSize: 10,
         dataParam:{
-            siteId:customerId,
+            siteId:$("#siteType").val(),
             delete:true
         },
         height:'auto',
@@ -52,7 +52,7 @@ define(function (require, exports, module) {
         form: 'form1',//表单ID
         pageSize: 10,
         dataParam:{
-            siteId:customerId,
+            siteId:$("#siteType").val(),
             delete:false
         },
         height:'auto',

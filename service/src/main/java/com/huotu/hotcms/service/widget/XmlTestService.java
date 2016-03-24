@@ -19,7 +19,7 @@ import java.io.StringWriter;
 public class XmlTestService {
     public void testXmlJAXB(){
 //        mapper.readTree()
-
+//
 //        TestModel model = JAXB.unmarshal(getClass().getResourceAsStream("/test.xml"), TestModel.class);
 //        WidgetPage model = JAXB.unmarshal(getClass().getResourceAsStream("/text.xml"), WidgetPage.class);
 //        System.out.println(model);

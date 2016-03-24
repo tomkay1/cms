@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Js面向对象Demo</title>
+    <script src="/assets/seajs/sea.js"></script>
+    <script src="/assets/seajs/config.js"></script>
+</head>
+<body>
+    <div>
+        页面名称
+        <input type="text" id="testName"><a href="#" id="name">设置</a>
+    </div>
+    <div>
+        页面关键字
+        <input type="text" id="keyWordTest"><a href="#" id="keyWord">设置</a>
+    </div>
+    <div>
+        页面描述信息
+        <input type="text" id="testDescription"><a href="#" id="Description">设置</a>
+    </div>
+    <div>
+        <a href="#" id="addModel">添加对象</a>
+    </div>
+    <div>
+        <a href="#" id="jsonObject">系列化对象</a>
+    </div>
+    <div>
+        <textarea rows="40" cols="200" id="objectTest">
+
+        </textarea>
+    </div>
+    <script>seajs.use(["widgetPageModel"],function(a){
+        var widgetPage=a.widgetPage();
+        $("#name").click(function(){
+            widgetPage.setName($("#testName").val())
+        });
+        $("#keyWord").click(function(){
+            var obj= widgetPage.setKeyWords($("#keyWordTest").val())
+            window.console.log(obj);
+        });
+        $("#Description").click(function(){
+            widgetPage.setDescription($("#testDescription").val())
+        });
+//        $("#addModel").click(function(){
+//            widgetPage.setKeyWords($("#testDescription").val())
+//        });
+        $("#jsonObject").click(function(){
+            var objectStr=JSON.stringify(widgetPage.getInstance());
+            $("#objectTest").val(objectStr);
+        });
+        $("#addModel").click(function(){
+            var obj={name:"测试",pageImg:"ss"};
+            widgetPage.setModel(obj);
+        })
+    });</script>
+</body>
+</html>

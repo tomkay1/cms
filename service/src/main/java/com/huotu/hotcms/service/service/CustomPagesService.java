@@ -10,5 +10,5 @@ public interface CustomPagesService {
     PageData<CustomPages> getPage(String name,Long siteId,boolean delete, int page,int pageSize);
 
     CustomPages getCustomPages(long id);
-    Boolean save(CustomPages customPages);
+    CustomPages save(CustomPages customPages);
 }

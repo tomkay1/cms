@@ -39,6 +39,7 @@ public class TestJson {
         List<Goods> goodses = new ArrayList<>();
         Goods g1 = new Goods(1,"KROP女装抓毛长裙卫衣","2016-3-22 18:34:33",45,299,145,135,"http://www.cms.com/11.jpg");
         Link link1 = new Link();
+
         Self self = new Self();
         self.setHref("http://www.cms.com/11.jpg");
         link1.setSelf(self);

@@ -9,11 +9,12 @@
 package com.huotu.hotcms.service.widget.service.impl.huobanplus;
 
 import com.alibaba.fastjson.JSON;
+import com.huotu.hotcms.service.service.HttpService;
 import com.huotu.hotcms.service.util.ApiResult;
 import com.huotu.hotcms.service.util.HttpUtils;
-import com.huotu.hotcms.service.widget.model.JsonModel;
 import com.huotu.hotcms.service.widget.model.GoodsCategory;
 import com.huotu.hotcms.service.widget.service.GoodsCategoryService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,10 @@ import java.util.TreeMap;
 @Profile("container")
 @Service
 public class GoodsCategoryServiceImpl implements GoodsCategoryService {
+
+    @Autowired
+    private HttpService httpService;
+
     @Override
     public List<GoodsCategory> getGoodsCategories(int customerId) throws Exception{
         ApiResult<String> apiResult = invokeGoodsCatgProce(customerId);
@@ -40,6 +45,6 @@ public class GoodsCategoryServiceImpl implements GoodsCategoryService {
     private ApiResult<String> invokeGoodsCatgProce(Integer customerId) throws Exception {
         Map<String,Object> params = new TreeMap<>();
         params.put("merchantId",customerId);
-        return HttpUtils.httpGet_prod("http", "api.open.huobanplus.com", null, "/categories/search/findByMerchantId", params);
+        return httpService.httpGet_prod("http", "api.open.huobanplus.com", null, "/categories/search/findByMerchantId", params);
     }
 }

@@ -28,7 +28,7 @@ public interface GoodsService {
      * @param goodsSearcher 检索条件
      * @return
      */
-    JsonModel<List<Goods>> searchGoods(int customerId,GoodsSearcher goodsSearcher) throws Exception;
+    JsonModel searchGoods(int customerId, GoodsSearcher goodsSearcher) throws Exception;
 
     /**
      * 热销产品

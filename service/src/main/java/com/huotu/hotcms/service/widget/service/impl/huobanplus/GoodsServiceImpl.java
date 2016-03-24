@@ -9,13 +9,13 @@
 package com.huotu.hotcms.service.widget.service.impl.huobanplus;
 
 import com.alibaba.fastjson.JSON;
+import com.huotu.hotcms.service.service.HttpService;
 import com.huotu.hotcms.service.util.ApiResult;
-import com.huotu.hotcms.service.util.HttpUtils;
 import com.huotu.hotcms.service.widget.model.Goods;
 import com.huotu.hotcms.service.widget.model.GoodsSearcher;
 import com.huotu.hotcms.service.widget.model.JsonModel;
-import com.huotu.hotcms.service.widget.model.Page;
 import com.huotu.hotcms.service.widget.service.GoodsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -33,8 +33,12 @@ import java.util.TreeMap;
 @Profile("container")
 @Service
 public class GoodsServiceImpl implements GoodsService {
+
+    @Autowired
+    private HttpService httpService;
+
     @Override
-    public JsonModel<List<Goods>> searchGoods(int customerId, GoodsSearcher goodsSearcher) throws Exception{
+    public JsonModel searchGoods(int customerId, GoodsSearcher goodsSearcher) throws Exception{
         ApiResult<String> apiResult = invokeGoodsSearchProce(customerId,goodsSearcher);
         if(apiResult.getCode()!=200) {
             throw new Exception(apiResult.getMsg());
@@ -53,7 +57,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     private ApiResult<String> invokeGoodsSearchProce(int customerId, GoodsSearcher goodsSearcher) throws Exception{
         Map<String,Object> params = buildSortedParams(customerId,goodsSearcher);
-        return HttpUtils.httpGet_prod("http", "api.open.huobanplus.com", null, "http://api.open.huobanplus.com/goodses", params);
+        return httpService.httpGet_prod("http", "api.open.huobanplus.com", null, "http://api.open.huobanplus.com/goodses", params);
     }
 
     private Map<String, Object> buildSortedParams(int customerId, GoodsSearcher goodsSearcher) throws Exception{
@@ -72,6 +76,6 @@ public class GoodsServiceImpl implements GoodsService {
     private ApiResult<String> invokeHotGoodsProce(int customerId) throws Exception{
         Map<String,Object> params = new TreeMap<>();
         params.put("merchantId",customerId);
-        return HttpUtils.httpGet_prod("http", "api.open.huobanplus.com", null, "/goodses/search/findTop10BySales", params);
+        return httpService.httpGet_prod("http", "api.open.huobanplus.com", null, "/goodses/search/findTop10BySales", params);
     }
 }

@@ -124,38 +124,4 @@ public class HttpUtils {
         apiResult.setData(EntityUtils.toString(response.getEntity()));
         return apiResult;
     }
-
-    public static ApiResult<String> httpGet_prod(String scheme, String host, Integer port, String path, Map<String, Object> params) throws Exception {
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        List<NameValuePair> nameValuePairs = new ArrayList<>();
-        params.forEach((key,value)->{
-            if(value != null) {
-                nameValuePairs.add(new BasicNameValuePair(key,String.valueOf(value)));
-            }
-        });
-        URI uri = new URIBuilder()
-                .setScheme(scheme)
-                .setHost(host)
-                .setPort(port == null ? 80 : port)
-                .setPath(path)
-                .setParameters(nameValuePairs)
-                .build();
-        HttpGet httpGet = new HttpGet(uri);
-        String random = String.valueOf(System.currentTimeMillis());
-        String appId = "";//TODO 从环境中获得
-        String appSecret = "";//TODO 从环境中获得
-        httpGet.setHeader("_user_key",appId);
-        httpGet.setHeader("_user_random",random);
-        httpGet.setHeader("_user_secure",createDigest(appId,random,appSecret));
-        CloseableHttpResponse response = httpClient.execute(httpGet);
-        ApiResult<String> apiResult = new ApiResult();
-        apiResult.setCode(response.getStatusLine().getStatusCode());
-        apiResult.setMsg(response.getStatusLine().getReasonPhrase());
-        apiResult.setData(EntityUtils.toString(response.getEntity()));
-        return apiResult;
-    }
-
-    private static String createDigest(String appId,String random,String secret) {
-        return DigestUtils.md5Hex(DigestUtils.md5(appId + random) +secret);
-    }
 }

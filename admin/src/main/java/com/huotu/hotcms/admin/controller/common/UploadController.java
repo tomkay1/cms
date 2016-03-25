@@ -4,6 +4,7 @@ import com.huotu.hotcms.admin.common.StringUtil;
 import com.huotu.hotcms.service.common.ConfigInfo;
 import com.huotu.hotcms.service.entity.WidgetMains;
 import com.huotu.hotcms.service.model.Result;
+import com.huotu.hotcms.service.service.RedisService;
 import com.huotu.hotcms.service.service.WidgetService;
 import com.huotu.hotcms.service.util.HttpUtils;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
@@ -40,6 +41,8 @@ public class UploadController {
     private StaticResourceService resourceServer;
     @Autowired
     private WidgetService widgetService;
+    @Autowired
+    private RedisService redisService;
 
 
     static BASE64Decoder decoder = new sun.misc.BASE64Decoder();
@@ -135,7 +138,13 @@ public class UploadController {
 
     @RequestMapping(value = "/saveWidget", method = RequestMethod.POST)
     @ResponseBody
-    public ResultView saveWidget(Long id,String content,String path) throws URISyntaxException {
+    public ResultView saveWidget(Long id,String content,String path) throws Exception {
+        if(id==null) {
+            throw new Exception("id 不能为空");
+        }
+        if(redisService.isConnected()) {
+            redisService.saveWidget(id,content);
+        }
         ResultView resultView = null;
         String uri = resourceServer.getWidgetResource(path).toString();
         File file=new File(uri);

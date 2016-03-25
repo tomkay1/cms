@@ -36,4 +36,9 @@ public class RedisServiceImpl implements RedisService {
     public Boolean isConnected() {
         return  jedis.isConnected();
     }
+
+    @Override
+    public void saveWidget(Long widgetId,String content) {
+        jedis.hset(CMS_WIDGET_KEY,String.valueOf(widgetId),content);
+    }
 }

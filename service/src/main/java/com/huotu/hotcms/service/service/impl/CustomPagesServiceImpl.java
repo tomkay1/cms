@@ -25,7 +25,7 @@ public class CustomPagesServiceImpl implements CustomPagesService {
     private CustomPagesRepository customPagesRepository;
 
     @Override
-    public PageData<CustomPages> getPage(String name,Long siteId,boolean delete,int page,int pageSize) {
+    public PageData<CustomPages> getPage(String name,Long siteId,boolean delete,boolean publish,int page,int pageSize) {
         PageData<CustomPages> data = null;
         Specification<CustomPages> specification = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
@@ -33,6 +33,7 @@ public class CustomPagesServiceImpl implements CustomPagesService {
                 predicates.add(cb.like(root.get("name").as(String.class), "%" + name + "%"));
             }
             predicates.add(cb.equal(root.get("deleted").as(Boolean.class), delete));
+            predicates.add(cb.equal(root.get("publish").as(Boolean.class), publish));
             predicates.add(cb.equal(root.get("site").get("siteId").as(Integer.class), siteId));
             return cb.and(predicates.toArray(new Predicate[predicates.size()]));
         };
@@ -54,7 +55,7 @@ public class CustomPagesServiceImpl implements CustomPagesService {
 
     @Override
     public CustomPages getCustomPages(long id) {
-        return null;
+      return customPagesRepository.findOne(id);
     }
 
     @Override

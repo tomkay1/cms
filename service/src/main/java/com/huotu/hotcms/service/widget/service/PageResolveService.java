@@ -9,14 +9,13 @@ import com.huotu.hotcms.service.repository.CustomPagesRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.service.WidgetService;
 import com.huotu.hotcms.service.util.HttpUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.xml.bind.JAXB;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -33,6 +32,8 @@ import java.time.LocalDateTime;
  */
 @Component
 public class PageResolveService {
+    private static final Log log = LogFactory.getLog(PageResolveService.class);
+
     @Autowired
     private ConfigInfo configInfo;
 
@@ -90,12 +91,13 @@ public class PageResolveService {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
+//            log.error("页面配置文件不存在");
             e.printStackTrace();
         }
         return widgetPage;
     }
 
-    public boolean createPageConfigByWidgetPage(WidgetPage widgetPage,Integer customerId,Long siteId,Boolean publish) throws IOException, URISyntaxException {
+    public boolean createPageAndConfigByWidgetPage(WidgetPage widgetPage,Integer customerId,Long siteId,Boolean publish) throws IOException, URISyntaxException {
         CustomPages customPages=new CustomPages();
         if(widgetPage!=null) {
             Site site = siteRepository.findOne(siteId);
@@ -118,6 +120,41 @@ public class PageResolveService {
                     URI uri = resourceServer.uploadResource(path, inputStream);
                     return true;
                 }
+            }
+        }
+        return false;
+    }
+
+    public boolean createDefaultPageConfigByWidgetPage(WidgetPage widgetPage,Integer customerId,Long siteId,String config) throws IOException, URISyntaxException {
+        if(widgetPage!=null) {
+            Site site = siteRepository.findOne(siteId);
+            if (site != null) {
+                StringWriter stringWriter = new StringWriter();
+                JAXB.marshal(widgetPage, stringWriter);
+                InputStream inputStream = new ByteArrayInputStream(stringWriter.toString().getBytes("utf-8"));
+                String path = configInfo.getResourcesConfig(customerId, siteId) + "/" +config + ".xml";
+                URI uri = resourceServer.uploadResource(path, inputStream);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean patchPageAndConfigByWidgetPage(WidgetPage widgetPage,Integer customerId,Long pageId,Boolean publish) throws IOException, URISyntaxException {
+        CustomPages customPages=customPagesRepository.findOne(pageId);
+        if(widgetPage!=null) {
+            if (customPages != null) {
+                customPages.setDescription(widgetPage.getPageDescription());
+                customPages.setName(widgetPage.getPageName());
+                customPages.setPublish(publish);
+                customPages = customPagesRepository.save(customPages);
+                Site site=customPages.getSite();
+                StringWriter stringWriter = new StringWriter();
+                JAXB.marshal(widgetPage, stringWriter);
+                InputStream inputStream = new ByteArrayInputStream(stringWriter.toString().getBytes("utf-8"));
+                String path = configInfo.getResourcesConfig(customerId, site.getSiteId()) + "/" + pageId+ ".xml";
+                URI uri = resourceServer.uploadResource(path, inputStream);
+                return true;
             }
         }
         return false;

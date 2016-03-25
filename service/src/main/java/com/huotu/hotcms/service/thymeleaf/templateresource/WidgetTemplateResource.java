@@ -8,13 +8,19 @@
 
 package com.huotu.hotcms.service.thymeleaf.templateresource;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.huotu.hotcms.service.entity.CustomPages;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.widget.WidgetPage;
+import com.huotu.hotcms.service.repository.CustomPagesRepository;
+import com.huotu.hotcms.service.service.CustomPagesService;
+import com.huotu.hotcms.service.service.impl.CustomPagesServiceImpl;
 import com.huotu.hotcms.service.service.impl.SiteServiceImpl;
 import com.huotu.hotcms.service.widget.service.PageResolveService;
 import com.huotu.hotcms.service.widget.service.PageResourceService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
+import org.springframework.util.StringUtils;
 import org.thymeleaf.templateresource.ITemplateResource;
 import org.thymeleaf.util.Validate;
 
@@ -31,6 +37,8 @@ public class WidgetTemplateResource implements ITemplateResource {
             "<head>\n" +
             "    <title>店铺装修-可视化编辑</title>\n" +
             "    <meta charset=\"UTF-8\" content=\"text/html\"/>\n" +
+            "    <meta name=\"widget\" content=\"{config_widgetJson}\"/>\n" +
+            "    <meta name=\"exists\" content=\"{config_existsPage}\"/>\n" +
             " <link  href=\"/assets/css/main.css\"  type=\"text/css\" rel=\"stylesheet\"/>\n" +
             " <link href=\"/assets/libs/layer/skin/layer.css\" rel=\"stylesheet\"/>" +
             "    <script src=\"/assets/seajs/sea.js\"></script>\n" +
@@ -56,7 +64,9 @@ public class WidgetTemplateResource implements ITemplateResource {
 
     private PageResolveService pageResolveService;
 
-    SiteServiceImpl siteService ;
+    private CustomPagesServiceImpl customPagesService;
+
+    private SiteServiceImpl siteService ;
 
 //  private final Resource resource;
     private final String characterEncoding;
@@ -68,11 +78,7 @@ public class WidgetTemplateResource implements ITemplateResource {
         pageResourceService = (PageResourceService) applicationContext.getBean("pageResourceService");
         pageResolveService = (PageResolveService) applicationContext.getBean("pageResolveService");
         siteService = (SiteServiceImpl) applicationContext.getBean("siteServiceImpl");
-//        Site site = siteResolveService.getCurrentSite(request1);
-//        SiteResolveService siteResolveService = (SiteResolveService) applicationContext.getBean("siteResolveService");
-//        Site site = siteResolveService.getCurrentSite(request1);
-        // Character encoding CAN be null (system default will be used)
-//        this.resource = applicationContext.getResource(location);
+        customPagesService=(CustomPagesServiceImpl) applicationContext.getBean("customPagesServiceImpl");
         this.location=location;
         this.characterEncoding = characterEncoding;
     }
@@ -106,7 +112,7 @@ public class WidgetTemplateResource implements ITemplateResource {
         return true;
     }
 
-    public Long getSiteId(){
+    private Long getSiteId(){
         if(this.location!=null){
             if(this.location.indexOf("_")>0){
                 return Long.valueOf(this.location.substring(0,this.location.indexOf("_")));
@@ -115,23 +121,47 @@ public class WidgetTemplateResource implements ITemplateResource {
         return null;
     }
 
-    public String getPageConfigName(){
+    private String getPageConfigNameContainXml(){
+        String configName=this.getPageConfigName();
+        if(StringUtils.isEmpty(configName)){
+            return null;
+        }
+        return configName+".xml";
+    }
+
+    private String getPageConfigName(){
         if(this.location!=null){
             if(this.location.indexOf("_")>0&&this.location.indexOf(".shtml")>0){
-                return this.location.substring(this.location.indexOf("_")+1,this.location.indexOf(".shtml"))+".xml";
+                return this.location.substring(this.location.indexOf("_")+1,this.location.indexOf(".shtml"));
             }
         }
         return null;
     }
 
+    private Boolean isExists(String pageConfigName){
+        try {
+            CustomPages customPages = customPagesService.getCustomPages(Long.valueOf(pageConfigName));
+            return  customPages!=null;
+        }catch (Exception ex){
+            ex.getStackTrace();
+        }
+        return false;
+    }
+
     @Override
     public Reader reader() throws IOException {
+        ObjectMapper mapper=new ObjectMapper();
         Long siteId=this.getSiteId();
         String htmlTemplate = "";
+        WidgetPage widgetPage=null;
+        String pageConfigName=null;
+        String pageConfigNameContainXml=null;
         if(siteId!=null) {
-            String pageConfigName = this.getPageConfigName();
+            pageConfigName=this.getPageConfigName();
+            pageConfigNameContainXml = this.getPageConfigNameContainXml();
+            boolean isExists=false;
             Site site = siteService.getSite(siteId);
-            WidgetPage widgetPage= pageResolveService.getWidgetPageByConfig(pageConfigName, site);
+            widgetPage= pageResolveService.getWidgetPageByConfig(pageConfigNameContainXml, site);
             try {
                 htmlTemplate = pageResourceService.getHtmlTemplateByWidgetPage(widgetPage);
             }catch (Exception e) {
@@ -139,6 +169,8 @@ public class WidgetTemplateResource implements ITemplateResource {
             }
         }
         htmlTemplate=String.format(this.SERVICE_HTML_BOX,htmlTemplate,SERVICE_JAVASCRIPT);
+//        htmlTemplate=htmlTemplate.replace("{config_widgetJson}",mapper.writeValueAsString(widgetPage));
+        htmlTemplate=htmlTemplate.replace("{config_existsPage}",(isExists(pageConfigName)?pageConfigName:"0"));
         return new StringReader(htmlTemplate);
     }
 

@@ -16,7 +16,8 @@ define(function (require, exports, module) {
         pageSize: 10,
         dataParam:{
             siteId:$("#siteType").val(),
-            delete:true
+            delete:false,
+            publish:true
         },
         height:'auto',
         showNumber: false,
@@ -38,9 +39,9 @@ define(function (require, exports, module) {
             },
             {width: '30%', field: 'title', title: '操作', align: 'center',
                 formatter: function (value, rowData) {
-                    return "<a href='#' style='color:#07d;margin-right:5px;margin-left:5px;' title='编辑'>编辑</a>|"+
+                    return "<a href='/customPages/"+rowData.id+"?customerid="+rowData.customerId+"&siteId="+$("#siteType").val()+"' target='content'' style='color:#07d;margin-right:5px;margin-left:5px;' title='编辑'>编辑</a>|"+
                         "<a href='javascript:void(0)'  style='color:#07d;margin-right:5px;margin-left:5px;' title='丢草稿箱'>丢草稿箱</a>|"+
-                        "<a href='javascript:void(0)' style='color:#999 !important;margin-right:5px;margin-left:5px;' title='店铺主页'>店铺主页</a>|"+
+                        "<a href='javascript:void(0)' style='color:#07d !important;margin-right:5px;margin-left:5px;' title='店铺主页'>店铺主页</a>|"+
                        " <a href='javascript:void(0)' style='color:#07d !important;margin-right:5px;margin-left:5px;' title='链接'>链接</a>";
                 }
             }
@@ -53,7 +54,8 @@ define(function (require, exports, module) {
         pageSize: 10,
         dataParam:{
             siteId:$("#siteType").val(),
-            delete:false
+            delete:false,
+            publish:false
         },
         height:'auto',
         showNumber: false,
@@ -75,12 +77,23 @@ define(function (require, exports, module) {
             },
             {width: '30%', field: 'title', title: '操作', align: 'center',
                 formatter: function (value, rowData) {
-                    return "<a href='#' style='color:#07d;margin-right:5px;margin-left:5px;' title='编辑'>编辑</a>|"+
+                    return "<a href='/customPages/"+rowData.id+"?customerid="+rowData.customerId+"&siteId="+$("#siteType").val()+"' target='content'' style='color:#07d;margin-right:5px;margin-left:5px;' title='编辑'>编辑</a>|"+
                         "<a href='javascript:void(0)'  style='color:#07d;margin-right:5px;margin-left:5px;' title='丢草稿箱'>丢草稿箱</a>|"+
-                        "<a href='javascript:void(0)' style='color:#999 !important;margin-right:5px;margin-left:5px;' title='店铺主页'>店铺主页</a>|"+
-                        " <a href='javascript:void(0)' style='color:#07d !important;margin-right:5px;margin-left:5px;' title='链接'>链接</a>";
+                        "<a href='javascript:void(0)' style='color:#07d !important;margin-right:5px;margin-left:5px;' title='设置主页'>设置主页</a>|"+
+                        "<a href='javascript:void(0)' style='color:#07d !important;margin-right:5px;margin-left:5px;' title='链接'>链接</a>";
                 }
             }
         ]
     });
+
+    var obj=$(".js-cms-defaults");
+    $.each(obj,function(item,dom){
+        $(dom).click(function(){
+            var customerId=$(dom).data("customerid");
+            var urlFormatter=$(dom).data("url");
+            var siteId=$("#siteType").val();
+            var url=commonUtil.formatString(urlFormatter,customerId,siteId);
+            window.location.href=url;
+        })
+    })
 });

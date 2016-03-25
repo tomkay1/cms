@@ -20,19 +20,25 @@ import redis.clients.jedis.Jedis;
 public class RedisServiceImpl implements RedisService {
 
     Jedis jedis = new Jedis("localhost");
+    private static final String CMS_WIDGET_KEY = "cms_widget";
 
     @Override
-    public String get(String key) {
-        return jedis.get(key);
+    public String findByWidgetId(Long widgetId) {
+        return jedis.hget(CMS_WIDGET_KEY,String.valueOf(widgetId));
     }
 
     @Override
-    public Boolean exists(String key) {
-        return jedis.exists(key);
+    public Boolean isWidgetExists(Long widgetId) {
+        return jedis.hexists(CMS_WIDGET_KEY,String.valueOf(widgetId));
     }
 
     @Override
     public Boolean isConnected() {
         return  jedis.isConnected();
+    }
+
+    @Override
+    public void saveWidget(Long widgetId,String content) {
+        jedis.hset(CMS_WIDGET_KEY,String.valueOf(widgetId),content);
     }
 }

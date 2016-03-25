@@ -14,10 +14,11 @@ package com.huotu.hotcms.service.service;
  */
 public interface RedisService {
 
-    String get(String key);
+    String findByWidgetId(Long widgetId);
 
-    Boolean exists(String key);
+    Boolean isWidgetExists(Long widgetId);
 
     Boolean isConnected();
 
+    void saveWidget(Long widgetId,String content);
 }

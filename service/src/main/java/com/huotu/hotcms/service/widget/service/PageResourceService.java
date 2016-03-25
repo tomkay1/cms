@@ -49,11 +49,11 @@ public class PageResourceService {
     }
 
     private String getCachedWidgetTemplate(WidgetBase widgetBase) {
-        return redisService.get("cms_widget" + widgetBase.getId());
+        return redisService.findByWidgetId(widgetBase.getId());
     }
 
     private boolean isWidgetTemplateCached(WidgetBase widgetBase) {
-        return redisService.exists("cms_widget" + widgetBase.getId());
+        return redisService.isWidgetExists(widgetBase.getId());
     }
 
     private String getWidgetTemplateFromFile(WidgetBase widgetBase) throws Exception{

@@ -26,12 +26,7 @@ public class CookieUser {
 
     }
 
-    /*
-    * Cookie中读取customerID
-    * */
-    public  int getCustomerId(HttpServletRequest request, int customerId){
-        return  CookieHelper.getCookieValInteger(request, CMSEnums.CookieKeyValue.CustomerID.toString());
-    }
+
 
     /**
      * * Cookie中读取customerID

@@ -80,6 +80,7 @@ define(function (require, exports, module) {
                         url: "/gallery/deleteGalleryList",
                         data: {
                             id:id,
+                            customerId : customerId
                         },
                         type: "POST",
                         dataType: 'json',

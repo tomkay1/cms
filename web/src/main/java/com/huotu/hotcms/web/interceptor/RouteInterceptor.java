@@ -78,7 +78,7 @@ public class RouteInterceptor  extends HandlerInterceptorAdapter {
                             if(article.getCustomerId().equals(site.getCustomerId())){
                                 modelAndView.addObject("article", article);
                                 modelAndView.setViewName(resourcePath + route.getTemplate());
-                            }else{//涓嶆槸璇ュ晢鎴蜂笅闈㈢殑鏂囩珷鍒欑粰鍑�404椤甸潰
+                            }else{//不是该商户下面的文章则给出404页面
                                 modelAndView.setViewName(routeResolverService.getRouteTemplate(site,RouteType.NOT_FOUND));
                             }
                         }else {

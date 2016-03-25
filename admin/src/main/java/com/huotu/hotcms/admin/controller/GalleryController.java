@@ -255,10 +255,10 @@ public class GalleryController {
 
         @RequestMapping(value = "/deleteGallery",method = RequestMethod.POST)
         @ResponseBody
-        public ResultView deleteGallery(@RequestParam(name = "id",required = true,defaultValue = "0") Long id,HttpServletRequest request) {
+        public ResultView deleteGallery(@RequestParam(name = "id",required = true,defaultValue = "0") Long id,int customerId,HttpServletRequest request) {
             ResultView result=null;
             try{
-                if(cookieUser.isSupper(request)) {
+                if(cookieUser.getCustomerId(request) == customerId) {
                     Gallery gallery = galleryService.findById(id);
                     gallery.setDeleted(true);
                     galleryService.saveGallery(gallery);
@@ -278,10 +278,10 @@ public class GalleryController {
 
         @RequestMapping(value = "/deleteGalleryList",method = RequestMethod.POST)
         @ResponseBody
-        public ResultView deleteGalleryList(@RequestParam(name = "id",required = true,defaultValue = "0") Long id,HttpServletRequest request) {
+        public ResultView deleteGalleryList(@RequestParam(name = "id",required = true,defaultValue = "0") Long id,int customerId,HttpServletRequest request) {
             ResultView result=null;
             try{
-                if(cookieUser.isSupper(request)) {
+                if(cookieUser.getCustomerId(request) == customerId) {
                     GalleryList galleryList = galleryListService.findGalleryListById(id);
                     galleryList.setDeleted(true);
                     galleryListService.saveGalleryList(galleryList);

@@ -160,7 +160,7 @@ public class ArticleController {
     public ResultView deleteArticle(@RequestParam(name = "id",required = true,defaultValue = "0") Long id,int customerId,HttpServletRequest request) {
         ResultView result=null;
         try{
-            if(cookieUser.isSupper(request)) {
+            if(cookieUser.getCustomerId(request) == customerId) {
                 Article article = articleService.findById(id);
                 if(article.isSystem()==true){
                     result=new ResultView(ResultOptionEnum.SYSTEM_ARTICLE.getCode(),ResultOptionEnum.SYSTEM_ARTICLE.getValue(),null);

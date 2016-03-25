@@ -137,7 +137,7 @@ public class DownloadController {
     public ResultView deleteDownload(@RequestParam(name = "id",required = true,defaultValue = "0") Long id,int customerId,HttpServletRequest request) {
         ResultView result=null;
         try{
-            if(cookieUser.isSupper(request)) {
+            if(cookieUser.getCustomerId(request) == customerId) {
                 Download download = downloadService.findById(id);
                 download.setDeleted(true);
                 downloadService.saveDownload(download);

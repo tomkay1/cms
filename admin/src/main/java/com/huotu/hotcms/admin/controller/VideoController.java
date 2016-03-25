@@ -137,7 +137,7 @@ public class VideoController {
     public ResultView deleteVideo(@RequestParam(name = "id",required = true,defaultValue = "0") Long id,int customerId,HttpServletRequest request) {
         ResultView result=null;
         try{
-            if(cookieUser.isSupper(request)) {
+            if(cookieUser.getCustomerId(request) == customerId) {
                 Video video = videoService.findById(id);
                 video.setDeleted(true);
                 videoService.saveVideo(video);

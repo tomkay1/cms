@@ -150,7 +150,7 @@ public class LinkController {
     public ResultView deleteLink(@RequestParam(name = "id",required = true,defaultValue = "0") Long id,int customerId,HttpServletRequest request) {
         ResultView result=null;
         try{
-            if(cookieUser.isSupper(request)) {
+            if(cookieUser.getCustomerId(request) == customerId) {
                 Link link = linkService.findById(id);
                 link.setDeleted(true);
                 linkService.saveLink(link);

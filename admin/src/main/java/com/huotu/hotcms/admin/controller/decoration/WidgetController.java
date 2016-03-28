@@ -3,12 +3,14 @@ package com.huotu.hotcms.admin.controller.decoration;
 import com.huotu.hotcms.admin.util.web.CookieUser;
 import com.huotu.hotcms.service.entity.WidgetMains;
 import com.huotu.hotcms.service.entity.WidgetType;
+import com.huotu.hotcms.service.model.WidgetList;
 import com.huotu.hotcms.service.service.WidgetService;
 import com.huotu.hotcms.service.util.HttpUtils;
 import com.huotu.hotcms.service.util.PageData;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
 import com.huotu.hotcms.service.widget.service.StaticResourceService;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,6 +126,18 @@ public class WidgetController {
         return modelAndView;
     }
 
+    @RequestMapping("/widgetList")
+    public ModelAndView getWidgetList(){
+        ModelAndView modelAndView=new ModelAndView();
+        try{
+            modelAndView.setViewName("/assets/widget/select.html");
+            List<WidgetList> widgetLists= widgetService.findList();
+            modelAndView.addObject("widgetList",widgetLists);
+        }catch (Exception ex){
+            log.error(ex.getMessage());
+        }
+        return modelAndView;
+    }
 
     @RequestMapping(value = "/saveWidgetType",method = RequestMethod.POST)
     @Transactional(value = "transactionManager")
@@ -202,7 +216,6 @@ public class WidgetController {
         return pageModel;
     }
 
-
     @RequestMapping(value = "/deleteWidgetType",method = RequestMethod.POST)
     @ResponseBody
     public ResultView deleteWidgetType(@RequestParam(name = "id",required = true,defaultValue = "0") Long id,HttpServletRequest request) {
@@ -224,7 +237,6 @@ public class WidgetController {
         return  result;
     }
 
-
     @RequestMapping(value = "/deleteWidgetMains",method = RequestMethod.POST)
     @ResponseBody
     public ResultView deleteWidgetMains(@RequestParam(name = "id",required = true,defaultValue = "0") Long id,HttpServletRequest request) {
@@ -245,4 +257,5 @@ public class WidgetController {
         }
         return  result;
     }
+
 }

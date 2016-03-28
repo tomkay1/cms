@@ -2,17 +2,19 @@ define(function (require, exports, module) {
     require.async("widgetPageModel", function (a) {//页面对象处理->widgetPage
         var widgetPage = a.widgetPage();
         var widgetPageModel = widgetPage.getInstance();//页面持久化对象,后面根据这个对象系列化传递到后台,并创建对应的xml 配置文件
-        $.get("/assets/widget/toobar/toobar.html?t=66", function (html) {
+        $.get("/assets/widget/toobar/toobar.html?t=77", function (html) {
             var divObj = document.createElement("div");
             divObj.innerHTML = html;
             var first = document.body.firstChild;//得到页面的第一个元素
             document.body.insertBefore(divObj, first);//在得到的第一个元素之前插入
-            page.pageBind();
             page.pageTab();
+            page.pagePhoto();
             page.pageColor();
             $("#tab1").addClass("current");
             page.pageProperty(widgetPageModel);
             page.pageSave(widgetPageModel);
+            page.widgetAdd();
+            page.layoutAdd(widgetPageModel);
         })
         var layer = require("layer");
         var common = require("common");
@@ -20,7 +22,7 @@ define(function (require, exports, module) {
         var siteId = common.getQuery("siteId");
         var configName = common.getQuery("config");
         var page = {
-            pageBind: function () {
+            pageTab: function () {
                 var obj = $(".js-page-tab");
                 $.each(obj, function (item, dom) {
                     $(dom).click(function () {
@@ -51,7 +53,7 @@ define(function (require, exports, module) {
                     });
                 });
             },
-            pageTab: function () {
+            pagePhoto: function () {
                 $("#js-cms-selectPhoto").click(function () {
                     layer.open({
                         type: 2,
@@ -160,6 +162,66 @@ define(function (require, exports, module) {
                         }
                     }
                 })
+            },
+            widgetAdd:function(){
+                var obj=$(".js-widget-add");
+                $.each(obj,function(item,dom){
+                    $(dom).click(function(){
+                        layer.open({
+                            type: 2,
+                            title: "组件模块",
+                            shadeClose: true,
+                            shade: 0.8,
+                            closeBtn: 1,
+                            area: ['700px', '580px'],
+                            content: "/widget/widgetList?v=1.2",
+                            //btn:["确定"],
+                            end: function (index, layero) {
+                                //var jsonStr = $("#js_cms_picture_value").val();
+                                //var obj = JSON.parse(jsonStr);
+                                //if (typeof obj !== "undefined") {
+                                //    for (var i = 0; i < obj.length; i++) {
+                                //        $("#pageBackImage").val(obj[i].localUri);
+                                //    }
+                                //}
+                            }
+                        });
+                    });
+                });
+            },
+            layoutAdd:function(widgetPageModel){
+                var obj=$(".js-layout-add");
+                $.each(obj,function(item,dom){
+                    $(dom).click(function(){
+                        layer.open({
+                            type: 2,
+                            title: "添加布局",
+                            shadeClose: true,
+                            shade: 0.8,
+                            closeBtn: 1,
+                            area: ['600px', '480px'],
+                            content: "/assets/widget/layout.html?v=1.3",
+                            end: function (index, layero) {
+                                var layoutTypeId=$("#js_layoutType_id_input_value").val();
+                                var widgetLayout= a.widgetLayout();
+                                window.console.log(layoutTypeId);
+                                var widgetLayoutModel=widgetLayout.getInstance();
+                                widgetLayoutModel=widgetLayout.setLayoutType(layoutTypeId);
+                                window.console.log(widgetLayoutModel);
+                                widgetPageModel=widgetPage.pushWidgetLayout(widgetLayoutModel);
+                                window.console.log("-----------------------")
+                                window.console.log(widgetPageModel)
+                                //var jsonStr = $("#js_cms_picture_value").val();
+                                //var obj = JSON.parse(jsonStr);
+                                //if (typeof obj !== "undefined") {
+                                //    for (var i = 0; i < obj.length; i++) {
+                                //        $("#pageBackImage").val(obj[i].localUri);
+                                //    }
+                                //}
+                            }
+                        });
+                    });
+                });
             }
         }
     })

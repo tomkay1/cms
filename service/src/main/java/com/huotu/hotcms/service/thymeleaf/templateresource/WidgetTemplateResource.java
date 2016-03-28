@@ -12,8 +12,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.service.entity.CustomPages;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.widget.WidgetPage;
-import com.huotu.hotcms.service.repository.CustomPagesRepository;
-import com.huotu.hotcms.service.service.CustomPagesService;
 import com.huotu.hotcms.service.service.impl.CustomPagesServiceImpl;
 import com.huotu.hotcms.service.service.impl.SiteServiceImpl;
 import com.huotu.hotcms.service.widget.service.PageResolveService;
@@ -33,13 +31,18 @@ import java.io.*;
 public class WidgetTemplateResource implements ITemplateResource {
     private String location;//格式如下{siteId}_{pageConfigName}.shtml
     private final String SERVICE_JAVASCRIPT="<script>seajs.use([\"widgetTooBar\"]);</script>";
+    private final String version="1.0}";
+
+    private  String WIDGET_RESOURCES=" " +
+            " <link rel=\"stylesheet\" type=\"text/css\" href=\"{PREFIX}/css/index.css?v={version}\"/>\n";
+
     private final String SERVICE_HTML_BOX="<!DOCTYPE html><html>\n" +
             "<head>\n" +
             "    <title>店铺装修-可视化编辑</title>\n" +
             "    <meta charset=\"UTF-8\" content=\"text/html\"/>\n" +
             "    <meta name=\"widget\" content=\"{config_widgetJson}\"/>\n" +
             "    <meta name=\"exists\" content=\"{config_existsPage}\"/>\n" +
-            " <link  href=\"/assets/css/main.css\"  type=\"text/css\" rel=\"stylesheet\"/>\n" +
+            " <link  href=\"/assets/css/main.css\"  type=\"text/css\" rel=\"stylesheet\"/>\n%s" +
             " <link href=\"/assets/libs/layer/skin/layer.css\" rel=\"stylesheet\"/>" +
             "    <script src=\"/assets/seajs/sea.js\"></script>\n" +
             "    <script src=\"/assets/seajs/config.js\"></script>\n" +
@@ -47,6 +50,11 @@ public class WidgetTemplateResource implements ITemplateResource {
             "<body style=\"background:#ffffff;\">" +
             "%s" +
             "%s" +
+            "<div class=\"layout-area HOT-layout-add js-layout js-layout-add\" id=\"insertToLayout\">\n" +
+            "    <div class=\"layout\">\n" +
+            "      <a href=\"javascript:;\" class=\"link-add-layout\" id=\"addLayout\">添加布局</a>\n" +
+            "    </div>\n" +
+            "  </div>" +
             "</body>" +
             "</html>";
     private final String WEB_HTML_BOX="<!DOCTYPE html><html>\n" +
@@ -68,11 +76,14 @@ public class WidgetTemplateResource implements ITemplateResource {
 
     private SiteServiceImpl siteService ;
 
+    private  String URI_PREFIX;
+
 //  private final Resource resource;
     private final String characterEncoding;
 
     public WidgetTemplateResource(final ApplicationContext applicationContext, final String location, final String characterEncoding) {
         super();
+        URI_PREFIX= this.getURI_PREFIX(applicationContext);
         Validate.notNull(applicationContext, "Application Context cannot be null");
         Validate.notEmpty(location, "Resource Location cannot be null or empty");
         pageResourceService = (PageResourceService) applicationContext.getBean("pageResourceService");
@@ -81,6 +92,14 @@ public class WidgetTemplateResource implements ITemplateResource {
         customPagesService=(CustomPagesServiceImpl) applicationContext.getBean("customPagesServiceImpl");
         this.location=location;
         this.characterEncoding = characterEncoding;
+    }
+
+    private String getURI_PREFIX(ApplicationContext applicationContext){
+        String uriPrefix=applicationContext.getEnvironment().getProperty("cms.resourcesPrefix", (String) null);
+        if(uriPrefix==null){
+            uriPrefix="http://cms.huobanj.cn";
+        }
+        return uriPrefix;
     }
 
     public WidgetTemplateResource(final Resource resource,final String characterEncoding) {
@@ -159,7 +178,6 @@ public class WidgetTemplateResource implements ITemplateResource {
         if(siteId!=null) {
             pageConfigName=this.getPageConfigName();
             pageConfigNameContainXml = this.getPageConfigNameContainXml();
-            boolean isExists=false;
             Site site = siteService.getSite(siteId);
             widgetPage= pageResolveService.getWidgetPageByConfig(pageConfigNameContainXml, site);
             try {
@@ -168,7 +186,9 @@ public class WidgetTemplateResource implements ITemplateResource {
                 e.printStackTrace();
             }
         }
-        htmlTemplate=String.format(this.SERVICE_HTML_BOX,htmlTemplate,SERVICE_JAVASCRIPT);
+        this.WIDGET_RESOURCES=this.WIDGET_RESOURCES.replace("{PREFIX}",this.URI_PREFIX);
+        this.WIDGET_RESOURCES=this.WIDGET_RESOURCES.replace("{version}",this.version);
+        htmlTemplate=String.format(this.SERVICE_HTML_BOX,this.WIDGET_RESOURCES, htmlTemplate, SERVICE_JAVASCRIPT);
 //        htmlTemplate=htmlTemplate.replace("{config_widgetJson}",mapper.writeValueAsString(widgetPage));
         htmlTemplate=htmlTemplate.replace("{config_existsPage}",(isExists(pageConfigName)?pageConfigName:"0"));
         return new StringReader(htmlTemplate);

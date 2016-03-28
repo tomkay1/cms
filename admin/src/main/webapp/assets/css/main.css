@@ -15,7 +15,6 @@ background: #353535;
 font-family: "微软雅黑", Helvetica, sans-serif;
 line-height: 21px;font-size: 14px;
 color: #575757;
-overflow: hidden;
 }
 html, body
 {
@@ -607,3 +606,6 @@ background-color:#04B299;
     background: #f37200;
 
 }
+
+
+/*******组件选择css*****/

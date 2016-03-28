@@ -3,10 +3,13 @@ package com.huotu.hotcms.service.service.impl;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.WidgetMains;
 import com.huotu.hotcms.service.entity.WidgetType;
+import com.huotu.hotcms.service.model.WidgetList;
 import com.huotu.hotcms.service.repository.WidgetMainsRepository;
 import com.huotu.hotcms.service.repository.WidgetTypeRepository;
 import com.huotu.hotcms.service.service.WidgetService;
 import com.huotu.hotcms.service.util.PageData;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.codehaus.plexus.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,9 +27,11 @@ import java.util.List;
  */
 @Service
 public class WidgetServiceImpl implements WidgetService {
+    private static Log log = LogFactory.getLog(WidgetServiceImpl.class);
 
     @Autowired
     private WidgetMainsRepository widgetMainsRepository;
+
     @Autowired
     private WidgetTypeRepository widgetTypeRepository;
 
@@ -102,4 +107,26 @@ public class WidgetServiceImpl implements WidgetService {
         return widgetMains;
     }
 
+    @Override
+    public List<WidgetMains> findWidgetMainsByWidgetTypeId(Long id) {
+        return widgetMainsRepository.findWidgetMainsByWidgetTypeId(id);
+    }
+
+    @Override
+    public List<WidgetList> findList() {
+        List<WidgetList> widgetList=new ArrayList<>();
+        try{
+            List<WidgetType> widgetTypeList=findAllWidgetType();
+            for (WidgetType widgetType:widgetTypeList){
+                WidgetList widget=new WidgetList();
+                widget.setName(widgetType.getName());
+                widget.setTypeId(widgetType.getId());
+                widget.setWidgetMainsList(findWidgetMainsByWidgetTypeId(widgetType.getId()));
+                widgetList.add(widget);
+            }
+        }catch (Exception ex){
+            log.error(ex);
+        }
+        return widgetList;
+    }
 }

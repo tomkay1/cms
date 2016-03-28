@@ -6,6 +6,7 @@ package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.entity.WidgetMains;
 import com.huotu.hotcms.service.entity.WidgetType;
+import com.huotu.hotcms.service.model.WidgetList;
 import com.huotu.hotcms.service.util.PageData;
 import org.springframework.stereotype.Service;
 
@@ -32,4 +33,8 @@ public  interface WidgetService {
     WidgetType findWidgetTypeById(Long id);
 
     WidgetMains findWidgetMainsById(Long id);
+
+    List<WidgetMains> findWidgetMainsByWidgetTypeId(Long id);
+
+    List<WidgetList> findList();
 }

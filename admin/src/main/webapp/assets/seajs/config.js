@@ -87,6 +87,8 @@ seajs.config({
 		"widgetColor":"libs/JColor/hotColor.js?v="+version,
 
 		"widgetPageModel":"js/widgetPageModel.js?v="+version,
+
+		"widgetSelect":"widget/select.js?v="+version,
 	},
 	preload: ['jquery']
 });

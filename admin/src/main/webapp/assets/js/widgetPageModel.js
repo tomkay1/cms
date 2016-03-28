@@ -47,6 +47,9 @@ define(function (require, exports, module) {
                 return $this;
             },
             pushWidgetLayout:function(widgetLayout){
+                if(typeof $this.layout=='undefined'){
+                    $this.layout=[];
+                }
                 $this.layout.push(widgetLayout);
                 return $this;
             },

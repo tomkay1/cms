@@ -37,10 +37,8 @@ define(["js/jquery-1.9.1.min"],function () {
         },
         redirectUrl:function(url){
             parent.frames["content"].src=url;
-            //alert("fff");
-            //parent.frames["content"].window.href=url;
         },
-        /*
+        /**
         * @brief 获得页面参数
         * @param 参数名
         * */

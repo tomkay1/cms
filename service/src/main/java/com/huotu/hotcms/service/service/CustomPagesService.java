@@ -2,6 +2,7 @@ package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.entity.CustomPages;
 import com.huotu.hotcms.service.util.PageData;
+import org.springframework.data.domain.Sort;
 
 /**
  * Created by Administrator on 2016/3/18.

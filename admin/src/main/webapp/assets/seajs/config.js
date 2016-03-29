@@ -1,4 +1,4 @@
-var version="1.4.4";
+var version="1.3.4";
 seajs.config({
 	alias: {
 		"jquery": "js/jquery-1.9.1.min.js",

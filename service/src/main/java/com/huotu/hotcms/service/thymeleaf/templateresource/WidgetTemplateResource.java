@@ -31,10 +31,14 @@ import java.io.*;
 public class WidgetTemplateResource implements ITemplateResource {
     private String location;//格式如下{siteId}_{pageConfigName}.shtml
     private final String SERVICE_JAVASCRIPT="<script>seajs.use([\"widgetTooBar\"]);</script>";
-    private final String version="1.0}";
+    private final String version="1.2";
 
     private  String WIDGET_RESOURCES=" " +
-            " <link rel=\"stylesheet\" type=\"text/css\" href=\"{PREFIX}/css/index.css?v={version}\"/>\n";
+            "<link rel=\"stylesheet\" type=\"text/css\" href=\"{PREFIX}/css/mall.base.css?v={version}\"/>\n" +
+            "<link rel=\"stylesheet\" type=\"text/css\" href=\"{PREFIX}/css/mall.set.css?v={version}\"/>\n" +
+            "<link rel=\"stylesheet\" type=\"text/css\" href=\"{PREFIX}/css/mall.layout.css?v={version}\"/>\n" +
+            "<link rel=\"stylesheet\" type=\"text/css\" href=\"{PREFIX}/css/mall.design.css?v={version}\"/>\n" +
+            "<link rel=\"stylesheet\" type=\"text/css\" href=\"{PREFIX}/css/Advanced-search.css?v={version}\"/>";
 
     private final String SERVICE_HTML_BOX="<!DOCTYPE html><html>\n" +
             "<head>\n" +

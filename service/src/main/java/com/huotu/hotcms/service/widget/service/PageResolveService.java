@@ -97,24 +97,24 @@ public class PageResolveService {
         return widgetPage;
     }
 
-    public boolean createPageAndConfigByWidgetPage(WidgetPage widgetPage,Integer customerId,Long siteId,Boolean publish) throws IOException, URISyntaxException {
+    public boolean createPageAndConfigByWidgetPage(WidgetPage page,Integer customerId,Long siteId,Boolean publish) throws IOException, URISyntaxException {
         CustomPages customPages=new CustomPages();
-        if(widgetPage!=null) {
+        if(page!=null) {
             Site site = siteRepository.findOne(siteId);
             if (site != null) {
                 customPages.setSite(site);
                 customPages.setCustomerId(customerId);
                 customPages.setDeleted(false);
-                customPages.setDescription(widgetPage.getPageDescription());
+                customPages.setDescription(page.getPageDescription());
                 customPages.setHome(false);
-                customPages.setName(widgetPage.getPageName());
+                customPages.setName(page.getPageName());
                 customPages.setOrderWeight(50);
                 customPages.setPublish(publish);
                 customPages.setCreateTime(LocalDateTime.now());
                 customPages = customPagesRepository.save(customPages);
                 if (customPages != null) {
                     StringWriter stringWriter = new StringWriter();
-                    JAXB.marshal(widgetPage, stringWriter);
+                    JAXB.marshal(page, stringWriter);
                     InputStream inputStream = new ByteArrayInputStream(stringWriter.toString().getBytes("utf-8"));
                     String path = configInfo.getResourcesConfig(customerId, siteId) + "/" + customPages.getId() + ".xml";
                     URI uri = resourceServer.uploadResource(path, inputStream);

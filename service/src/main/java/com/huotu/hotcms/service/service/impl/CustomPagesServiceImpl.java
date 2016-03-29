@@ -9,10 +9,12 @@ import org.codehaus.plexus.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +37,12 @@ public class CustomPagesServiceImpl implements CustomPagesService {
             predicates.add(cb.equal(root.get("deleted").as(Boolean.class), delete));
             predicates.add(cb.equal(root.get("publish").as(Boolean.class), publish));
             predicates.add(cb.equal(root.get("site").get("siteId").as(Integer.class), siteId));
-            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+//            predicates.sort();
+            query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
+            query.orderBy(cb.desc(root.get("createTime").as(LocalDateTime.class)));
+
+            return query.getRestriction();
+//            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
         };
         Page<CustomPages> pageData = customPagesRepository.findAll(specification,new PageRequest(page - 1, pageSize));
         if (pageData != null) {

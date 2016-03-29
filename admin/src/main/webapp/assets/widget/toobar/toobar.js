@@ -53,6 +53,37 @@ define(function (require, exports, module) {
                     });
                 });
             },
+            pageTabNumber: function (number) {
+                var obj = $(".js-page-tab");
+                $.each(obj, function (item, dom) {
+                    if (item == number) {
+                        var id = $(dom).attr('id');
+                        switch (id) {
+                            case "tab1":
+                                $(".js-page-tab").removeClass("current");
+                                $(".js-layout").show();
+                                $(dom).addClass("current");
+                                $("#tab-box-2").hide();
+                                $("#tab-box-3").hide();
+                                break;
+                            case "tab2":
+                                $(".js-page-tab").removeClass("current");
+                                $("#tab-box-2").show();
+                                $(".js-layout").hide();
+                                $("#tab-box-3").hide();
+                                $(dom).addClass("current");
+                                break;
+                            case "tab3":
+                                $(".js-page-tab").removeClass("current");
+                                $("#tab-box-3").show();
+                                $(".js-layout").hide();
+                                $("#tab-box-2").hide();
+                                $(dom).addClass("current");
+                                break;
+                        }
+                    }
+                });
+            },
             pagePhoto: function () {
                 $("#js-cms-selectPhoto").click(function () {
                     layer.open({
@@ -88,25 +119,25 @@ define(function (require, exports, module) {
                         var formId = $(dom).data('form');
                         var json = $("#" + formId).serializeJson();
                         widgetPageModel = widgetPage.setModel(json);
-                        window.console.log(widgetPageModel);
+                        page.pageTabNumber(0);
                     });
                 })
             },
-            pageSave:function(widgetPage){
+            pageSave: function (widgetPage) {
                 var obj = $(".js-page-create");
                 $.each(obj, function (item, dom) {
                     $(dom).click(function () {
                         var publish = $(dom).data('publish');
-                        var pageId=$("meta[name='exists']").attr('content');
-                        if(pageId<=0){
-                            page.createPage(widgetPage)
-                        }else{
-                            page.patchPage(widgetPage,publish,pageId);
+                        var pageId = $("meta[name='exists']").attr('content');
+                        if (pageId <= 0) {
+                            page.createPage(widgetPage, publish);
+                        } else {
+                            page.patchPage(widgetPage, publish, pageId);
                         }
                     })
                 })
             },
-            createPage: function (widgetPage,publish) {
+            createPage: function (widgetPage, publish) {
                 $.ajax({
                     type: "post",
                     dataType: "json",
@@ -135,7 +166,7 @@ define(function (require, exports, module) {
                     }
                 })
             },
-            patchPage:function(widgetPage,publish,pageId){
+            patchPage: function (widgetPage, publish, pageId) {
                 $.ajax({
                     type: "post",
                     dataType: "json",
@@ -163,10 +194,11 @@ define(function (require, exports, module) {
                     }
                 })
             },
-            widgetAdd:function(){
-                var obj=$(".js-widget-add");
-                $.each(obj,function(item,dom){
-                    $(dom).click(function(){
+            widgetAdd: function () {
+                var obj = $(".js-module-add");
+                $(".js-module-add").unbind("click");
+                $.each(obj, function (item, dom) {
+                    $(dom).click(function () {
                         layer.open({
                             type: 2,
                             title: "组件模块",
@@ -189,10 +221,10 @@ define(function (require, exports, module) {
                     });
                 });
             },
-            layoutAdd:function(widgetPageModel){
-                var obj=$(".js-layout-add");
-                $.each(obj,function(item,dom){
-                    $(dom).click(function(){
+            layoutAdd: function (widgetPageModel) {
+                var obj = $(".js-layout-add");
+                $.each(obj, function (item, dom) {
+                    $(dom).click(function () {
                         layer.open({
                             type: 2,
                             title: "添加布局",
@@ -202,22 +234,21 @@ define(function (require, exports, module) {
                             area: ['600px', '480px'],
                             content: "/assets/widget/layout.html?v=1.3",
                             end: function (index, layero) {
-                                var layoutTypeId=$("#js_layoutType_id_input_value").val();
-                                var widgetLayout= a.widgetLayout();
-                                window.console.log(layoutTypeId);
-                                var widgetLayoutModel=widgetLayout.getInstance();
-                                widgetLayoutModel=widgetLayout.setLayoutType(layoutTypeId);
+                                page.widgetAdd();
+                                var layoutTypeId = $("#js_layoutType_id_input_value").val();//页面布局id -->layout
+                                var widgetLayout = a.widgetLayout();
+                                var widgetLayoutModel = widgetLayout.getInstance();
+                                widgetLayoutModel = widgetLayout.setLayoutType(layoutTypeId);
+                                //widgetLayoutModel=widgetLayout.setModel([]);
                                 window.console.log(widgetLayoutModel);
-                                widgetPageModel=widgetPage.pushWidgetLayout(widgetLayoutModel);
-                                window.console.log("-----------------------")
-                                window.console.log(widgetPageModel)
-                                //var jsonStr = $("#js_cms_picture_value").val();
-                                //var obj = JSON.parse(jsonStr);
-                                //if (typeof obj !== "undefined") {
-                                //    for (var i = 0; i < obj.length; i++) {
-                                //        $("#pageBackImage").val(obj[i].localUri);
-                                //    }
-                                //}
+                                window.console.log("--------------------------------");
+                                if (typeof widgetPageModel.layout == "undefined") {
+                                    window.console.log("---------------undefined-----------------");
+                                    widgetPageModel = widgetPage.setWidgetLayout(widgetLayoutModel);
+                                } else {
+                                    widgetPageModel = widgetPage.pushWidgetLayout(widgetLayoutModel);
+                                }
+                                window.console.log(widgetPageModel);
                             }
                         });
                     });

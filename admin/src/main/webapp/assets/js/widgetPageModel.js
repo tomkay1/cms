@@ -1,94 +1,92 @@
 define(function (require, exports, module) {
+    var page={},layout={},module={},widget={};
     exports.widgetPage=function(){
-        var $this=this;
         return{
             getInstance:function(){
-              return $this;
+              return page;
             },
             setName:function(name){
                 $this.pageName=name;
-                return $this;
+                return page;
             },
             setKeyWords:function(keyWords){
                 window.console.log($this.pageKeyWords);
-                $this.pageKeyWords=keyWords;
-                return $this;
+                page.pageKeyWords=keyWords;
+                return page;
             },
             setDescription:function(description){
-                $this.pageDescription=description;
-                return $this;
+                page.pageDescription=description;
+                return page;
             },
             setUrl:function(url){
-                $this.url=url;
-                return $this;
+                page.url=url;
+                return page;
             },
             setBackGround:function(backGround){
-                $this.pageBackGround=backGround;
-                return $this;
+                page.pageBackGround=backGround;
+                return page;
             },
             setPageBackImage:function(backImage){
-                $this.pageBackImage=backImage;
-                return $this;
+                page.pageBackImage=backImage;
+                return page;
             },
             setPageBackRepeat:function(backRepect){
-                $this.pageBackRepeat=backRepect;
-                return $this;
+                page.pageBackRepeat=backRepect;
+                return page;
             },
             setPageBackAlign:function(backAlign){
-                $this.pageBackAlign=backAlign;
-                return $this;
+                page.pageBackAlign=backAlign;
+                return page;
             },
             setPageBackVertical:function(backVertical){
-                $this.pageBackVertical=backVertical;
-                return $this;
+                page.pageBackVertical=backVertical;
+                return page;
             },
             setWidgetLayout:function(widgetLayout){
-                $this.layout=widgetLayout;
-                return $this;
+                page.layout=[];
+                page.layout.push(widgetLayout);
+                return page;
             },
             pushWidgetLayout:function(widgetLayout){
-                if(typeof $this.layout=='undefined'){
-                    $this.layout=[];
-                }
-                $this.layout.push(widgetLayout);
-                return $this;
+                page.layout.push(widgetLayout);
+                return page;
             },
             setModel:function(widgetPage){
                 for(var item in widgetPage){
-                    $this[item]=widgetPage[item];
+                    page[item]=widgetPage[item];
                 }
-                return $this;
+                return page;
             }
         };
     }
     exports.widgetLayout=function(){
-        var $this=this;
         return{
             getInstance:function(){
-                return $this;
+                layout={};
+                return layout;
             },
             setLayoutType:function(layoutType){
-                $this.layoutType=layoutType;
-                return $this;
+                layout.layoutType=layoutType;
+                return layout;
             },
             setWidgetModule:function(widgetModule){
-                $this.module=widgetModule;
-                return $this;
+                layout.module=widgetModule;
+                return layout;
             },
             pushWidgetModule:function(widgetModule){
-                $this.module.push(widgetModule);
-                return $this;
+                layout.module.push(widgetModule);
+                return layout;
             },
             setModel:function(widgetLayout){
                 for(var item in widgetLayout){
-                    $this[item]=widgetLayout[item];
+                    layout[item]=widgetLayout[item];
                 }
-                return $this;
+                return layout;
             }
         }
     }
     exports.widgetModule=function(){
-        var $this=this;
+        var $this=module;
         return{
             getInstance:function(){
                 return $this;
@@ -114,7 +112,7 @@ define(function (require, exports, module) {
         }
     }
     exports.widgetBase=function(){
-        var $this=this;
+        var $this=widget;
         return{
             getInstance:function(){
                 return $this;

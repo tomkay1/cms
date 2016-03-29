@@ -29,8 +29,8 @@ import java.io.*;
  * Created by cwb on 2016/3/16.
  */
 public class WidgetTemplateResource implements ITemplateResource {
-    private String location;//格式如下{siteId}_{pageConfigName}.shtml
-    private final String SERVICE_JAVASCRIPT="<script>seajs.use([\"widgetTooBar\"]);</script>";
+    private String location;//编辑格式如下{siteId}_{pageConfigName}.shtml
+    private final String EDIT_JAVASCRIPT="<script>seajs.use([\"widgetTooBar\"]);</script>";
     private final String version="1.2";
 
     private  String WIDGET_RESOURCES=" " +
@@ -40,7 +40,7 @@ public class WidgetTemplateResource implements ITemplateResource {
             "<link rel=\"stylesheet\" type=\"text/css\" href=\"{PREFIX}/css/mall.design.css?v={version}\"/>\n" +
             "<link rel=\"stylesheet\" type=\"text/css\" href=\"{PREFIX}/css/Advanced-search.css?v={version}\"/>";
 
-    private final String SERVICE_HTML_BOX="<!DOCTYPE html><html>\n" +
+    private final String EDIT_HTML_BOX="<!DOCTYPE html><html>\n" +
             "<head>\n" +
             "    <title>店铺装修-可视化编辑</title>\n" +
             "    <meta charset=\"UTF-8\" content=\"text/html\"/>\n" +
@@ -61,9 +61,9 @@ public class WidgetTemplateResource implements ITemplateResource {
             "  </div>" +
             "</body>" +
             "</html>";
-    private final String WEB_HTML_BOX="<!DOCTYPE html><html>\n" +
+    private final String BROWSE_HTML_BOX="<!DOCTYPE html><html>\n" +
             "<head>\n" +
-            "    <title>店铺装修-火图CMS内容管理系统</title>\n" +
+            "    <title>商城首页</title>\n" +
             "    <meta charset=\"UTF-8\" content=\"text/html\"/>\n" +
             "</head>\n" +
             "<body>" +
@@ -144,6 +144,13 @@ public class WidgetTemplateResource implements ITemplateResource {
         return null;
     }
 
+    private Boolean isBrowse(){
+        if(this.location!=null){
+            return this.location.contains(".cshtml");
+        }
+        return false;
+    }
+
     private String getPageConfigNameContainXml(){
         String configName=this.getPageConfigName();
         if(StringUtils.isEmpty(configName)){
@@ -152,11 +159,15 @@ public class WidgetTemplateResource implements ITemplateResource {
         return configName+".xml";
     }
 
-    private String getPageConfigName(){
-        if(this.location!=null){
-            if(this.location.indexOf("_")>0&&this.location.indexOf(".shtml")>0){
-                return this.location.substring(this.location.indexOf("_")+1,this.location.indexOf(".shtml"));
-            }
+    private String getPageConfigName() {
+        String suffix = "";
+        if(isBrowse()){
+            suffix=".cshtml";
+        }else{
+            suffix=".shtml";
+        }
+        if (this.location.indexOf("_") > 0 && this.location.indexOf(suffix) > 0) {
+            return this.location.substring(this.location.indexOf("_") + 1, this.location.indexOf(suffix));
         }
         return null;
     }
@@ -190,11 +201,14 @@ public class WidgetTemplateResource implements ITemplateResource {
                 e.printStackTrace();
             }
         }
-        this.WIDGET_RESOURCES=this.WIDGET_RESOURCES.replace("{PREFIX}",this.URI_PREFIX);
-        this.WIDGET_RESOURCES=this.WIDGET_RESOURCES.replace("{version}",this.version);
-        htmlTemplate=String.format(this.SERVICE_HTML_BOX,this.WIDGET_RESOURCES, htmlTemplate, SERVICE_JAVASCRIPT);
-//        htmlTemplate=htmlTemplate.replace("{config_widgetJson}",mapper.writeValueAsString(widgetPage));
-        htmlTemplate=htmlTemplate.replace("{config_existsPage}",(isExists(pageConfigName)?pageConfigName:"0"));
+        this.WIDGET_RESOURCES = this.WIDGET_RESOURCES.replace("{PREFIX}", this.URI_PREFIX);
+        this.WIDGET_RESOURCES = this.WIDGET_RESOURCES.replace("{version}", this.version);
+        if(isBrowse()){
+            htmlTemplate = String.format(this.BROWSE_HTML_BOX, this.WIDGET_RESOURCES, htmlTemplate);
+        }else {
+            htmlTemplate = String.format(this.EDIT_HTML_BOX, this.WIDGET_RESOURCES, htmlTemplate,EDIT_JAVASCRIPT);
+            htmlTemplate = htmlTemplate.replace("{config_existsPage}", (isExists(pageConfigName) ? pageConfigName : "0"));
+        }
         return new StringReader(htmlTemplate);
     }
 

@@ -5,6 +5,8 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.repository.CustomPagesRepository;
 import com.huotu.hotcms.service.service.CustomPagesService;
 import com.huotu.hotcms.service.util.PageData;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.codehaus.plexus.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.Predicate;
 import java.time.LocalDateTime;
@@ -23,6 +26,8 @@ import java.util.List;
  */
 @Service
 public class CustomPagesServiceImpl implements CustomPagesService {
+    private static final Log log = LogFactory.getLog(CustomPagesServiceImpl.class);
+
     @Autowired
     private CustomPagesRepository customPagesRepository;
 
@@ -68,5 +73,35 @@ public class CustomPagesServiceImpl implements CustomPagesService {
     @Override
     public CustomPages save(CustomPages customPages) {
         return customPagesRepository.save(customPages);
+    }
+
+    @Override
+    public CustomPages findHomePages() {
+        List<CustomPages> customPages=customPagesRepository.findByHome(true);
+        if(customPages!=null&&customPages.size()==1){
+            return  customPages.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    public Boolean setHomePages(Long id) {
+        Boolean flag=false;
+        try {
+            List<CustomPages> customPages = customPagesRepository.findByHome(true);
+            for (CustomPages customPages1 : customPages) {
+                customPages1.setHome(false);
+                customPagesRepository.save(customPages1);
+            }
+            CustomPages customPages1 = customPagesRepository.findOne(id);
+            if (customPages1 != null) {
+                customPages1.setHome(true);
+                customPagesRepository.saveAndFlush(customPages1);
+                return true;
+            }
+        }catch (Exception ex){
+            log.error(ex);
+        }
+        return false;
     }
 }

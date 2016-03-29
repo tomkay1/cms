@@ -102,18 +102,6 @@ public class PageResourceService {
         String layoutTemplate = "";
         if (widgetLayout != null) {
             List<String> moduleTemplateList = getWidgetModuleTemplateByWidgetModuleList(widgetLayout.getModule());
-            String templateParam0 = "";
-            String templateParam1 = "";
-            String templateParam2 = "";
-            if (moduleTemplateList != null) {
-                try {
-                    templateParam0 = moduleTemplateList.get(0);
-                    templateParam1 = moduleTemplateList.get(1);
-                    templateParam2 = moduleTemplateList.get(2);
-                } catch (Exception ex) {
-                    ex.getStackTrace();
-                }
-            }
             switch (widgetLayout.getLayoutType()) {
                 case 0:
                     layoutTemplate=LayoutEnum.THREE_COLUMN_LAYOUT_190x590x190.getLayoutTemplate(moduleTemplateList);

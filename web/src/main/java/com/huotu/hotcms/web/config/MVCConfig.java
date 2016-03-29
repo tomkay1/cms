@@ -10,6 +10,7 @@ package com.huotu.hotcms.web.config;
 
 import com.huotu.hotcms.service.config.JpaConfig;
 import com.huotu.hotcms.service.config.ServiceConfig;
+import com.huotu.hotcms.service.thymeleaf.templateresolver.WidgetTemplateResolver;
 import com.huotu.hotcms.service.util.CMSDialect;
 import com.huotu.hotcms.web.interceptor.RouteInterceptor;
 import com.huotu.hotcms.web.interceptor.SiteResolver;
@@ -80,6 +81,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         registry.viewResolver(htmlViewResolver());
         registry.viewResolver(javascriptViewResolver());
         registry.viewResolver(cssViewResolver());
+        registry.viewResolver(widgetViewResolver());
     }
 
     @Override
@@ -116,6 +118,23 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         resolver.setContentType("text/css");
         resolver.setCharacterEncoding(UTF8);
         resolver.setViewNames(ArrayUtil.array("*.css"));
+        return resolver;
+    }
+
+    public ViewResolver widgetViewResolver() {
+        ThymeleafViewResolver resolver = new ThymeleafViewResolver();
+        resolver.setViewNames(ArrayUtil.array("*.cshtml"));
+        resolver.setCharacterEncoding(UTF8);
+        resolver.setTemplateEngine(templateEngine(widgetTemplateResolver()));
+        return resolver;
+    }
+
+    private ITemplateResolver widgetTemplateResolver() {
+        System.out.print(this.hashCode());
+        WidgetTemplateResolver resolver = new WidgetTemplateResolver();
+        resolver.setCharacterEncoding(UTF8);
+        resolver.setApplicationContext(applicationContext);
+        resolver.setTemplateMode(TemplateMode.TEXT);
         return resolver;
     }
 

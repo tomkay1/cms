@@ -12,4 +12,8 @@ public interface CustomPagesService {
 
     CustomPages getCustomPages(long id);
     CustomPages save(CustomPages customPages);
+
+    CustomPages findHomePages();
+
+    Boolean setHomePages(Long id);
 }

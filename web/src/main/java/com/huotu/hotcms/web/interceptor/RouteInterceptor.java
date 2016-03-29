@@ -52,18 +52,20 @@ public class RouteInterceptor  extends HandlerInterceptorAdapter {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         Site site=siteResolveService.getCurrentSite(request);
-        String servletPath= PatternMatchUtil.getServletPath(site, request);
-        if(site!=null){
-            Route route=routeResolverService.getRoute(site,servletPath);
-            if(modelAndView==null){
-                modelAndView=new ModelAndView();
+        if(!site.isPersonalise()){
+            String servletPath= PatternMatchUtil.getServletPath(site, request);
+            if(site!=null){
+                Route route=routeResolverService.getRoute(site,servletPath);
+                if(modelAndView==null){
+                    modelAndView=new ModelAndView();
+                }
+                if(route==null){
+                    modelAndView.setViewName(routeResolverService.getRouteTemplate(site,RouteType.NOT_FOUND));
+                }
+                initModelAndView(modelAndView, site, route, request,response);
+            }else {
+                modelAndView.setViewName(routeResolverService.getRouteTemplate(site,RouteType.SERVER_ERROR));
             }
-            if(route==null){
-                modelAndView.setViewName(routeResolverService.getRouteTemplate(site,RouteType.NOT_FOUND));//璇锋眰璺緞閿欒缁欏嚭404瀹归敊椤甸潰
-            }
-            initModelAndView(modelAndView, site, route, request,response);
-        }else {
-            modelAndView.setViewName(routeResolverService.getRouteTemplate(site,RouteType.SERVER_ERROR));//瑙ｆ瀽绔欑偣閿欒缁欏嚭瀹归敊椤甸潰
         }
     }
 

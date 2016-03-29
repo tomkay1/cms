@@ -28,11 +28,11 @@ import java.util.List;
 
 /**
  * <p>
- *     页面管理控制器
+ * 页面管理控制器
  * </p>
- * @since xhl
  *
  * @version 1.2
+ * @since xhl
  */
 @Controller
 @RequestMapping("/page")
@@ -52,29 +52,29 @@ public class PagesController {
     private CookieUser cookieUser;
 
     @RequestMapping("/list")
-    public ModelAndView widgetTypeList(HttpServletRequest request, @RequestParam("customerid") Integer customerid) throws Exception{
+    public ModelAndView widgetTypeList(HttpServletRequest request, @RequestParam("customerid") Integer customerid) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         try {
             List<Site> siteList = siteRepository.findByCustomerIdAndDeletedAndPersonaliseOrderBySiteIdDesc(customerid, false, true);
             modelAndView.addObject("siteList", siteList);
             modelAndView.setViewName("/decoration/pages/list.html");
-        }catch (Exception ex){
+        } catch (Exception ex) {
             log.error(ex);
         }
-        return  modelAndView;
+        return modelAndView;
     }
 
     @RequestMapping(value = "/getPagesList")
     @ResponseBody
-    public PageData<CustomPages> getPagesList(@RequestParam(name="siteId",required = false) Long siteId,
-                                       @RequestParam(name="name",required = false) String name,
-                                       @RequestParam(name="delete",required = true) boolean delete,
-                                       @RequestParam(name="publish",required = true) boolean publish,
-                                       @RequestParam(name = "page",required = true,defaultValue = "1") int page,
-                                       @RequestParam(name = "pagesize",required = true,defaultValue = "20") int pageSize) {
+    public PageData<CustomPages> getPagesList(@RequestParam(name = "siteId", required = false) Long siteId,
+                                              @RequestParam(name = "name", required = false) String name,
+                                              @RequestParam(name = "delete", required = true) boolean delete,
+                                              @RequestParam(name = "publish", required = true) boolean publish,
+                                              @RequestParam(name = "page", required = true, defaultValue = "1") int page,
+                                              @RequestParam(name = "pagesize", required = true, defaultValue = "20") int pageSize) {
         PageData<CustomPages> pageModel = null;
         try {
-            pageModel = customPagesService.getPage(name,siteId,delete,publish,page,pageSize);
+            pageModel = customPagesService.getPage(name, siteId, delete, publish, page, pageSize);
         } catch (Exception ex) {
             log.error(ex.getMessage());
         }
@@ -82,45 +82,45 @@ public class PagesController {
     }
 
     @RequestMapping(value = "/defaults")
-    public ModelAndView defaults(HttpServletRequest request, @RequestParam("customerid") Integer customerid){
+    public ModelAndView defaults(HttpServletRequest request, @RequestParam("customerid") Integer customerid) {
         ModelAndView modelAndView = new ModelAndView();
         try {
             List<Site> siteList = siteRepository.findByCustomerIdAndDeletedAndPersonaliseOrderBySiteIdDesc(customerid, false, true);
             modelAndView.addObject("siteList", siteList);
             modelAndView.setViewName("/decoration/pages/defaults.html");
-        }catch (Exception ex){
+        } catch (Exception ex) {
             log.error(ex);
         }
-        return  modelAndView;
+        return modelAndView;
     }
 
-    @RequestMapping(value = "/createPage",method = RequestMethod.POST)
+    @RequestMapping(value = "/createPage", method = RequestMethod.POST)
     @ResponseBody
     public ResultView createPage(@RequestParam("widgetStr") String widgetPage,
                                  @RequestParam("customerId") Integer customerId,
                                  @RequestParam("siteId") Long siteId,
                                  @RequestParam("publish") boolean publish,
-                                 @RequestParam(value = "config",required = false) String config){
-        ResultView resultView=null;
-        try{
+                                 @RequestParam(value = "config", required = false) String config) {
+        ResultView resultView = null;
+        try {
             ObjectMapper mapper = new ObjectMapper();
-            WidgetPage widget=mapper.readValue(widgetPage,WidgetPage.class);
-            boolean Flag=false;
-            if(StringUtils.isEmpty(config)){
-                Flag=pageResolveService.createPageAndConfigByWidgetPage(widget, customerId, siteId, publish);
-            }else{
-                Flag=pageResolveService.createDefaultPageConfigByWidgetPage(widget, customerId, siteId, config);
+            WidgetPage widget = mapper.readValue(widgetPage, WidgetPage.class);
+            boolean Flag = false;
+            if (StringUtils.isEmpty(config)) {
+                Flag = pageResolveService.createPageAndConfigByWidgetPage(widget, customerId, siteId, publish);
+            } else {
+                Flag = pageResolveService.createDefaultPageConfigByWidgetPage(widget, customerId, siteId, config);
             }
-            if(Flag){
-                resultView=new ResultView(ResultOptionEnum.OK.getCode(),ResultOptionEnum.OK.getValue(),null);
-            }else{
-                resultView=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
+            if (Flag) {
+                resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
+            } else {
+                resultView = new ResultView(ResultOptionEnum.FAILE.getCode(), ResultOptionEnum.FAILE.getValue(), null);
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             log.error(ex);
-            resultView=new ResultView(ResultOptionEnum.SERVERFAILE.getCode(),ResultOptionEnum.SERVERFAILE.getValue(),null);
+            resultView = new ResultView(ResultOptionEnum.SERVERFAILE.getCode(), ResultOptionEnum.SERVERFAILE.getValue(), null);
         }
-        return  resultView;
+        return resultView;
     }
 
     @RequestMapping(value = "/patch")
@@ -128,34 +128,34 @@ public class PagesController {
     public ResultView updatePage(@RequestParam("widgetStr") String widgetPage,
                                  @RequestParam("customerId") Integer customerId,
                                  @RequestParam("publish") boolean publish,
-                                 @RequestParam("id") Long id){
-        ResultView resultView=null;
-        try{
+                                 @RequestParam("id") Long id) {
+        ResultView resultView = null;
+        try {
             ObjectMapper mapper = new ObjectMapper();
-            WidgetPage widget=mapper.readValue(widgetPage,WidgetPage.class);
-            boolean Flag=pageResolveService.patchPageAndConfigByWidgetPage(widget,customerId,id,publish);
-            if(Flag){
-                resultView=new ResultView(ResultOptionEnum.OK.getCode(),ResultOptionEnum.OK.getValue(),null);
-            }else{
-                resultView=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
+            WidgetPage widget = mapper.readValue(widgetPage, WidgetPage.class);
+            boolean Flag = pageResolveService.patchPageAndConfigByWidgetPage(widget, customerId, id, publish);
+            if (Flag) {
+                resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
+            } else {
+                resultView = new ResultView(ResultOptionEnum.FAILE.getCode(), ResultOptionEnum.FAILE.getValue(), null);
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             log.error(ex);
-            resultView=new ResultView(ResultOptionEnum.SERVERFAILE.getCode(),ResultOptionEnum.SERVERFAILE.getValue(),null);
+            resultView = new ResultView(ResultOptionEnum.SERVERFAILE.getCode(), ResultOptionEnum.SERVERFAILE.getValue(), null);
         }
-        return  resultView;
+        return resultView;
     }
 
     @RequestMapping(value = "/delete")
     @ResponseBody
     public ResultView deletePage(HttpServletRequest request,
                                  @RequestParam("id") Long id,
-                                 @RequestParam("publish") boolean publish){
-        ResultView resultView=null;
-        try{
-            CustomPages customPages=customPagesService.getCustomPages(id);
-            if(customPages!=null){
-                if(cookieUser.isCustomer(request,customPages.getCustomerId())) {
+                                 @RequestParam("publish") boolean publish) {
+        ResultView resultView = null;
+        try {
+            CustomPages customPages = customPagesService.getCustomPages(id);
+            if (customPages != null) {
+                if (cookieUser.isCustomer(request, customPages.getCustomerId())) {
                     customPages.setPublish(publish);
                     CustomPages customPages1 = customPagesService.save(customPages);
                     if (customPages1 != null) {
@@ -163,16 +163,33 @@ public class PagesController {
                     } else {
                         resultView = new ResultView(ResultOptionEnum.FAILE.getCode(), ResultOptionEnum.FAILE.getValue(), null);
                     }
-                }
-                else{
+                } else {
                     resultView = new ResultView(ResultOptionEnum.NO_LIMITS.getCode(), ResultOptionEnum.NO_LIMITS.getValue(), null);
                 }
+            } else {
+                resultView = new ResultView(ResultOptionEnum.NOFIND.getCode(), ResultOptionEnum.NOFIND.getValue(), null);
             }
-            else{
-                resultView=new ResultView(ResultOptionEnum.NOFIND.getCode(),ResultOptionEnum.NOFIND.getValue(),null);
-            }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             log.error(ex);
+        }
+        return resultView;
+    }
+
+
+    @RequestMapping(value = "/home")
+    @ResponseBody
+    public ResultView homePage(@RequestParam("id") Long id) {
+        ResultView resultView = null;
+        try {
+            Boolean flag = customPagesService.setHomePages(id);
+            if(flag){
+                resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
+            }else{
+                resultView = new ResultView(ResultOptionEnum.FAILE.getCode(), ResultOptionEnum.FAILE.getValue(), null);
+            }
+        } catch (Exception ex) {
+            log.error(ex);
+            resultView = new ResultView(ResultOptionEnum.SERVERFAILE.getCode(), ResultOptionEnum.SERVERFAILE.getValue(), null);
         }
         return resultView;
     }

@@ -30,9 +30,7 @@ public class RouteFilter implements Filter {
 
     private static final String filter = "interim/join";
 
-    private static final String[] shop_filter = new String[]{"/shop","/bind", "/template/0/"};
-
-    private static final String[] bind_filter = new String[]{"/bind"};
+    private static final String[] shop_filter = new String[]{"/shop","/bind", "/template/0/"};//DIV网站过滤规则
 
     private boolean isContains(String servletPath) {
         boolean flag = false;
@@ -44,18 +42,73 @@ public class RouteFilter implements Filter {
         return flag;
     }
 
-    private boolean isBindCallback(String servletPath) {
-        boolean flag = false;
-        for (String str : bind_filter) {
-            if (servletPath.contains(str)) {
-                return true;
-            }
-        }
-        return flag;
-    }
-
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
+    }
+
+    /**
+     * DIY网站过滤拦截方法
+     * */
+    private boolean personaliseFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws Exception {
+        HttpServletRequest request1 = ((HttpServletRequest) request);
+
+        WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
+        SiteResolveService siteResolveService = (SiteResolveService) applicationContext.getBean("siteResolveService");
+        Site site = siteResolveService.getCurrentSite(request1);
+        String servletPath = PatternMatchUtil.getServletPath(site, request1);
+        if (!isContains(servletPath)) {
+            if(servletPath.equals("/")){
+                request.getRequestDispatcher("/shop" + servletPath).forward(request, response);
+            }else{
+                request.getRequestDispatcher(servletPath).forward(request, response);
+            }
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 定制过滤拦截方法
+     * */
+    private boolean customizeFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws Exception {
+        HttpServletRequest request1 = ((HttpServletRequest) request);
+
+        WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
+        SiteResolveService siteResolveService = (SiteResolveService) applicationContext.getBean("siteResolveService");
+        Site site = siteResolveService.getCurrentSite(request1);
+        //目前为了兼容我们公司自己的官网，暂时先这样处理兼容,后面考虑在网站配置中新增一个字段(是否有手机官网，如果有则做该业务判断),统一使用m.xxx.com为手机官网地址
+        if (site.getCustomerId().equals(5)) {
+            boolean isMobile = CheckMobile.check(request1);
+            if (isMobile) {
+                String mobileUrl = CheckMobile.getMobileUrl(request1);
+                ((HttpServletResponse) response).sendRedirect(mobileUrl);
+                return false;
+            }
+        }
+
+        String servletPath = PatternMatchUtil.getServletPath(site, request1);//获得ServletPath 国际化带语言参数经一步处理(移除国际化参数信息)得到的跟配置的路由一致
+        String langParam = PatternMatchUtil.getEffecterLangParam(request1, site);//获得国际化参数(url上带上的语言地区参数信息)
+        if (!servletPath.contains(filter)) {
+            if (PatternMatchUtil.isMatchFilter(servletPath)) {
+                RouteResolverService routeResolverService = (RouteResolverService) applicationContext.getBean("routeResolverService");
+                if (site != null) {
+                    Route route = routeResolverService.getRoute(site, servletPath);
+                    if (route == null && !site.isCustom()) {
+                        request.getRequestDispatcher("/template/" + site.getCustomerId() + servletPath).forward(request, response);
+                    } else {
+                        if (!StringUtils.isEmpty(langParam)) {//语言参数不为空追加上语言参数并做服务端forward
+                            request.getRequestDispatcher("/web/" + langParam + servletPath).forward(request, response);
+                        } else {
+                            request.getRequestDispatcher("/web" + servletPath).forward(request, response);
+                        }
+                    }
+                    return false;
+                } else {
+                    chain.doFilter(request, response);
+                }
+            }
+        }
+        return true;
     }
 
     @Override
@@ -66,50 +119,9 @@ public class RouteFilter implements Filter {
             WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
             SiteResolveService siteResolveService = (SiteResolveService) applicationContext.getBean("siteResolveService");
             Site site = siteResolveService.getCurrentSite(request1);
-            if (site.isPersonalise()) {//兼容PC商城，个性化装修使用
-                String servletPath = PatternMatchUtil.getServletPath(site, request1);
-                if (!isContains(servletPath)) {
-                    if(servletPath.equals("/")){
-                        request.getRequestDispatcher("/shop" + servletPath).forward(request, response);
-                    }else{
-                        request.getRequestDispatcher(servletPath).forward(request, response);
-                    }
-                    return;
-                }
-            } else {//定制商城或者网站
-                //目前为了兼容我们公司自己的官网，暂时先这样处理兼容,后面考虑在网站配置中新增一个字段(是否有手机官网，如果有则做该业务判断),统一使用m.xxx.com为手机官网地址
-                if (site.getCustomerId().equals(5)) {
-                    boolean isMobile = CheckMobile.check(request1);
-                    if (isMobile) {
-                        String mobileUrl = CheckMobile.getMobileUrl(request1);
-                        ((HttpServletResponse) response).sendRedirect(mobileUrl);
-                        return;
-                    }
-                }
-
-                String servletPath = PatternMatchUtil.getServletPath(site, request1);//获得ServletPath 国际化带语言参数经一步处理(移除国际化参数信息)得到的跟配置的路由一致
-                String langParam = PatternMatchUtil.getEffecterLangParam(request1, site);//获得国际化参数(url上带上的语言地区参数信息)
-                if (!servletPath.contains(filter)) {
-                    if (PatternMatchUtil.isMatchFilter(servletPath)) {
-                        RouteResolverService routeResolverService = (RouteResolverService) applicationContext.getBean("routeResolverService");
-                        if (site != null) {
-                            Route route = routeResolverService.getRoute(site, servletPath);
-                            if (route == null && !site.isCustom()) {
-                                request.getRequestDispatcher("/template/" + site.getCustomerId() + servletPath).forward(request, response);
-                            } else {
-                                if (!StringUtils.isEmpty(langParam)) {//语言参数不为空追加上语言参数并做服务端forward
-                                    request.getRequestDispatcher("/web/" + langParam + servletPath).forward(request, response);
-                                } else {
-                                    request.getRequestDispatcher("/web" + servletPath).forward(request, response);
-                                }
-                            }
-                            return;
-                        } else {
-                            chain.doFilter(request, response);
-                        }
-                    }
-                }
-            }
+            boolean Flag=site.isPersonalise()?personaliseFilter(request, response, chain):customizeFilter(request,response,chain);
+            if(!Flag)
+                return;
         } catch (Exception ex) {
             log.error(String.format("doFilter error-->%s ,Message-->%s", ex.getStackTrace(), ex.getLocalizedMessage()));
         }

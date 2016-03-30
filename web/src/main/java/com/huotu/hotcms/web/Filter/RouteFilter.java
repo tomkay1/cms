@@ -30,11 +30,11 @@ public class RouteFilter implements Filter {
 
     private static final String filter = "interim/join";
 
-    private static final String[] shop_filter = new String[]{"/shop","/bind", "/template/0/"};//DIV网站过滤规则
+    private static final String[] diy_filter = new String[]{"/shop","/bind", "/template/0/"};//DIV网站过滤规则->(PC官网装修,PC商城装修)
 
     private boolean isContains(String servletPath) {
         boolean flag = false;
-        for (String str : shop_filter) {
+        for (String str : diy_filter) {
             if (servletPath.contains(str)) {
                 return true;
             }
@@ -47,7 +47,7 @@ public class RouteFilter implements Filter {
     }
 
     /**
-     * DIY网站过滤拦截方法
+     * DIY网站过滤拦截方法,个性化装修(官网装修、商城装修)
      * */
     private boolean personaliseFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws Exception {
         HttpServletRequest request1 = ((HttpServletRequest) request);
@@ -68,7 +68,7 @@ public class RouteFilter implements Filter {
     }
 
     /**
-     * 定制过滤拦截方法
+     * 定制网站过滤拦截方法
      * */
     private boolean customizeFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws Exception {
         HttpServletRequest request1 = ((HttpServletRequest) request);

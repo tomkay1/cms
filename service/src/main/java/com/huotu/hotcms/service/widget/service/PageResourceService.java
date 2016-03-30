@@ -103,65 +103,8 @@ public class PageResourceService {
         String layoutTemplate = "";
         if (widgetLayout != null) {
             List<String> moduleTemplateList = getWidgetModuleTemplateByWidgetModuleList(widgetLayout.getModule());
-            switch (widgetLayout.getLayoutType()) {
-                case 0:
-                    layoutTemplate=LayoutEnum.THREE_COLUMN_LAYOUT_190x590x190.getLayoutTemplate(moduleTemplateList,isEdit);
-                    break;
-                case 1:
-                    layoutTemplate=LayoutEnum.WITHOUT_COLUMN_LAYOUT_990.getLayoutTemplate(moduleTemplateList,isEdit);
-                    break;
-                case 2:
-                    layoutTemplate=LayoutEnum.LEFT_RIGHT_COLUMN_LAYOUT_190x790.getLayoutTemplate(moduleTemplateList,isEdit);
-                    break;
-                case 3:
-                    layoutTemplate=LayoutEnum.RIGHT_PART_LAYOUT_190x390x390.getLayoutTemplate(moduleTemplateList,isEdit);
-//                    layoutTemplate = String.format(LayoutEnum.RIGHT_PART_LAYOUT_190x390x390.getLayoutTemplate(), templateParam0, templateParam1, templateParam2);
-                    break;
-                case 4:
-                    layoutTemplate=LayoutEnum.LEFT_RIGHT_COLUMN_LAYOUT_790x190.getLayoutTemplate(moduleTemplateList,isEdit);
-//                    layoutTemplate = String.format(LayoutEnum.LEFT_RIGHT_COLUMN_LAYOUT_790x190.getLayoutTemplate(), templateParam0, templateParam1);
-                    break;
-                case 5:
-                    layoutTemplate=LayoutEnum.LEFT_PART_LAYOUT_390x390x190.getLayoutTemplate(moduleTemplateList,isEdit);
-//                    layoutTemplate = String.format(LayoutEnum.LEFT_PART_LAYOUT_390x390x190.getLayoutTemplate(), templateParam0, templateParam1, templateParam2);
-                    break;
-                case 6:
-                    layoutTemplate=LayoutEnum.THREE_COLUMN_LAYOUT_254x717x239.getLayoutTemplate(moduleTemplateList,isEdit);
-//                    layoutTemplate = String.format(LayoutEnum.THREE_COLUMN_LAYOUT_254x717x239.getLayoutTemplate(), templateParam0, templateParam1, templateParam2);
-                    break;
-                case 7:
-                    layoutTemplate=LayoutEnum.LEFT_RIGHT_COLUMN_LAYOUT_254x956.getLayoutTemplate(moduleTemplateList,isEdit);
-//                    layoutTemplate = String.format(LayoutEnum.LEFT_RIGHT_COLUMN_LAYOUT_254x956.getLayoutTemplate(), templateParam0, templateParam1);
-                    break;
-                case 8:
-                    layoutTemplate=LayoutEnum.LEFT_RIGHT_COLUMN_LAYOUT_272x718.getLayoutTemplate(moduleTemplateList,isEdit);
-//                    layoutTemplate = String.format(LayoutEnum.LEFT_RIGHT_COLUMN_LAYOUT_272x718.getLayoutTemplate(), templateParam0, templateParam1);
-                    break;
-                case 9:
-                    layoutTemplate=LayoutEnum.LEFT_RIGHT_COLUMN_LAYOUT_215x765.getLayoutTemplate(moduleTemplateList,isEdit);
-//                    layoutTemplate = String.format(LayoutEnum.LEFT_RIGHT_COLUMN_LAYOUT_215x765.getLayoutTemplate(), templateParam0, templateParam1);
-                    break;
-                case 10:
-                    layoutTemplate=LayoutEnum.LEFT_RIGHT_COLUMN_LAYOUT_330x650.getLayoutTemplate(moduleTemplateList,isEdit);
-//                    layoutTemplate = String.format(LayoutEnum.LEFT_RIGHT_COLUMN_LAYOUT_330x650.getLayoutTemplate(), templateParam0, templateParam1);
-                    break;
-                case 11:
-                    layoutTemplate=LayoutEnum.LEFT_RIGHT_COLUMN_LAYOUT_650x330.getLayoutTemplate(moduleTemplateList,isEdit);
-//                    layoutTemplate = String.format(LayoutEnum.LEFT_RIGHT_COLUMN_LAYOUT_650x330.getLayoutTemplate(), templateParam0, templateParam1);
-                    break;
-                case 12:
-                    layoutTemplate=LayoutEnum.LEFT_RIGHT_PART_LAYOUT_490x490.getLayoutTemplate(moduleTemplateList,isEdit);
-//                    layoutTemplate = String.format(LayoutEnum.LEFT_RIGHT_PART_LAYOUT_490x490.getLayoutTemplate(), templateParam0, templateParam1);
-                    break;
-                case 13:
-                    layoutTemplate=LayoutEnum.LEFT_CENTER_RIGHT_PART_LAYOUT_323x324x323.getLayoutTemplate(moduleTemplateList,isEdit);
-//                    layoutTemplate = String.format(LayoutEnum.LEFT_CENTER_RIGHT_PART_LAYOUT_323x324x323.getLayoutTemplate(), templateParam0, templateParam1, templateParam2);
-                    break;
-                case 14:
-                    layoutTemplate=LayoutEnum.WITHOUT_COLUMN_LAYOUT_99999.getLayoutTemplate(moduleTemplateList,isEdit);
-//                    layoutTemplate = String.format(LayoutEnum.WITHOUT_COLUMN_LAYOUT_99999.getLayoutTemplate(), templateParam0);
-                    break;
-            }
+            LayoutEnum layoutEnum=LayoutEnum.valueOf(widgetLayout.getLayoutType());
+            layoutTemplate=layoutEnum.getLayoutTemplate(moduleTemplateList,isEdit);
         }
         return layoutTemplate;
     }

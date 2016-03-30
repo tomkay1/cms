@@ -2,7 +2,7 @@ define(function (require, exports, module) {
     require.async("widgetPageModel", function (a) {//页面对象处理->widgetPage
         var widgetPage = a.widgetPage();
         var widgetPageModel = widgetPage.getInstance();//页面持久化对象,后面根据这个对象系列化传递到后台,并创建对应的xml 配置文件
-        $.get("/assets/widget/toobar/toobar.html?t=88", function (html) {
+        $.get("/assets/widget/toobar/toobar.html?t=32", function (html) {
             var divObj = document.createElement("div");
             divObj.innerHTML = html;
             var first = document.body.firstChild;//得到页面的第一个元素
@@ -210,6 +210,8 @@ define(function (require, exports, module) {
                             content: "/widget/widgetList?v=1.2",
                             //btn:["确定"],
                             end: function (index, layero) {
+                                window.console.log($("#js_widget_template_value").val())
+                                $(dom).before($("#js_widget_template_value").val());
                                 //var jsonStr = $("#js_cms_picture_value").val();
                                 //var obj = JSON.parse(jsonStr);
                                 //if (typeof obj !== "undefined") {
@@ -240,16 +242,11 @@ define(function (require, exports, module) {
                                 var widgetLayout = a.widgetLayout();
                                 var widgetLayoutModel = widgetLayout.getInstance();
                                 widgetLayoutModel = widgetLayout.setLayoutType(layoutTypeId);
-                                //widgetLayoutModel=widgetLayout.setModel([]);
-                                window.console.log(widgetLayoutModel);
-                                window.console.log("--------------------------------");
                                 if (typeof widgetPageModel.layout == "undefined") {
-                                    window.console.log("---------------undefined-----------------");
                                     widgetPageModel = widgetPage.setWidgetLayout(widgetLayoutModel);
                                 } else {
                                     widgetPageModel = widgetPage.pushWidgetLayout(widgetLayoutModel);
                                 }
-                                window.console.log(widgetPageModel);
                             }
                         });
                     });

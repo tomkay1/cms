@@ -21,4 +21,5 @@ public interface RedisService {
     Boolean isConnected();
 
     void saveWidget(Long widgetId,String content);
+
 }

@@ -41,12 +41,8 @@ public class UploadController {
     private StaticResourceService resourceServer;
     @Autowired
     private WidgetService widgetService;
-    @Autowired
-    private RedisService redisService;
-
 
     static BASE64Decoder decoder = new sun.misc.BASE64Decoder();
-    protected URI fileHome;
 
     @Autowired
     private ConfigInfo configInfo;
@@ -141,9 +137,6 @@ public class UploadController {
     public ResultView saveWidget(Long id,String content,String path) throws Exception {
         if(id==null) {
             throw new Exception("id 不能为空");
-        }
-        if(redisService.isConnected()) {
-            redisService.saveWidget(id,content);
         }
         ResultView resultView = null;
         String uri = resourceServer.getWidgetResource(path).toString();

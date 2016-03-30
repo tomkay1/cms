@@ -67,6 +67,7 @@ public class PageResourceService {
                 }
             }
         }
+        redisService.saveWidget(widgetBase.getId(),widgetTemplate);
         return widgetTemplate;
     }
 

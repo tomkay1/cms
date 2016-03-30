@@ -9,8 +9,10 @@
 package com.huotu.hotcms.service.service.impl;
 
 import com.huotu.hotcms.service.service.RedisService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
-import redis.clients.jedis.Jedis;
+
 
 /**
  * 缓存服务
@@ -19,26 +21,32 @@ import redis.clients.jedis.Jedis;
 @Service
 public class RedisServiceImpl implements RedisService {
 
-    Jedis jedis = new Jedis("localhost");
+    private static final Log log = LogFactory.getLog(RedisServiceImpl.class);
+
     private static final String CMS_WIDGET_KEY = "cms_widget";
+
+    private static String host;
+    private static int port;
+    private static String auth;
 
     @Override
     public String findByWidgetId(Long widgetId) {
-        return jedis.hget(CMS_WIDGET_KEY,String.valueOf(widgetId));
+        return null;//TODO
     }
 
     @Override
     public Boolean isWidgetExists(Long widgetId) {
-        return jedis.hexists(CMS_WIDGET_KEY,String.valueOf(widgetId));
+        return null;//TODO
     }
 
     @Override
     public Boolean isConnected() {
-        return  jedis.isConnected();
+        return null;//TODO
     }
 
     @Override
     public void saveWidget(Long widgetId,String content) {
-        jedis.hset(CMS_WIDGET_KEY,String.valueOf(widgetId),content);
+
     }
+
 }

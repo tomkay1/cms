@@ -19,7 +19,7 @@ import java.io.IOException;
 
 /**
  * <p>
- * 解析过滤器过滤器
+ * 解析过滤器
  * </p>
  *
  * @author xhl

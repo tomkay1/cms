@@ -41,11 +41,7 @@ public class PageResourceService {
     }
 
     public String getWidgetTemplateByWidgetBase(WidgetBase widgetBase) throws Exception {
-        if(redisService.isConnected()){
-            return isWidgetTemplateCached(widgetBase) ? getCachedWidgetTemplate(widgetBase) : getWidgetTemplateFromFile(widgetBase);
-        }else{
-            return  getWidgetTemplateFromFile(widgetBase);
-        }
+        return isWidgetTemplateCached(widgetBase) ? getCachedWidgetTemplate(widgetBase) : getWidgetTemplateFromFile(widgetBase);
     }
 
     private String getCachedWidgetTemplate(WidgetBase widgetBase) {

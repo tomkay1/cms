@@ -11,7 +11,12 @@ package com.huotu.hotcms.service.service.impl;
 import com.huotu.hotcms.service.service.RedisService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
 
 
 /**
@@ -25,28 +30,31 @@ public class RedisServiceImpl implements RedisService {
 
     private static final String CMS_WIDGET_KEY = "cms_widget";
 
-    private static String host;
-    private static int port;
-    private static String auth;
+
+    @Autowired
+    private RedisTemplate<String,String> redisTemplate;
+
+    private HashOperations<String,Object,String> operations;
+
+    @PostConstruct
+    public void init() {
+        operations = redisTemplate.opsForHash();
+    }
 
     @Override
     public String findByWidgetId(Long widgetId) {
-        return null;//TODO
+        return operations.get(CMS_WIDGET_KEY,widgetId);
     }
 
     @Override
     public Boolean isWidgetExists(Long widgetId) {
-        return null;//TODO
+        return operations.hasKey(CMS_WIDGET_KEY,widgetId);
     }
 
-    @Override
-    public Boolean isConnected() {
-        return null;//TODO
-    }
 
     @Override
     public void saveWidget(Long widgetId,String content) {
-
+        operations.put(CMS_WIDGET_KEY,widgetId,content);
     }
 
 }

@@ -18,7 +18,6 @@ public interface RedisService {
 
     Boolean isWidgetExists(Long widgetId);
 
-    Boolean isConnected();
 
     void saveWidget(Long widgetId,String content);
 

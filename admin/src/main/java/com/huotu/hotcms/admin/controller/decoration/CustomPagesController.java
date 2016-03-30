@@ -34,7 +34,7 @@ public class CustomPagesController {
     @RequestMapping("/{id}")
     public ModelAndView widgetTypeList(
                                        @RequestParam("siteId") String siteId,
-                                       @PathVariable("id") Long id) throws Exception{
+                                       @PathVariable("id") Long id){
         ModelAndView modelAndView = new ModelAndView();
         try {
             Integer isExists=0;

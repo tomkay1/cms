@@ -19,20 +19,40 @@ import java.io.IOException;
 
 /**
  * <p>
- *     解析过滤器过滤器
+ * 解析过滤器过滤器
  * </p>
  *
  * @author xhl
- *
  * @since 1.0.0
- *
  */
 public class RouteFilter implements Filter {
     private static final Log log = LogFactory.getLog(RouteFilter.class);
 
-    private static final String filter="interim/join";
+    private static final String filter = "interim/join";
 
-    private static final String shop_filter="/shop/";
+    private static final String[] shop_filter = new String[]{"/shop","/bind", "/template/0/"};
+
+    private static final String[] bind_filter = new String[]{"/bind"};
+
+    private boolean isContains(String servletPath) {
+        boolean flag = false;
+        for (String str : shop_filter) {
+            if (servletPath.contains(str)) {
+                return true;
+            }
+        }
+        return flag;
+    }
+
+    private boolean isBindCallback(String servletPath) {
+        boolean flag = false;
+        for (String str : bind_filter) {
+            if (servletPath.contains(str)) {
+                return true;
+            }
+        }
+        return flag;
+    }
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -46,13 +66,17 @@ public class RouteFilter implements Filter {
             WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
             SiteResolveService siteResolveService = (SiteResolveService) applicationContext.getBean("siteResolveService");
             Site site = siteResolveService.getCurrentSite(request1);
-            if(site.isPersonalise()){//兼容PC商城，个性化装修使用
-                String servletPath= PatternMatchUtil.getServletPath(site, request1);
-                if (!servletPath.contains(shop_filter)) {
-                    request.getRequestDispatcher("/shop" + servletPath).forward(request, response);
+            if (site.isPersonalise()) {//兼容PC商城，个性化装修使用
+                String servletPath = PatternMatchUtil.getServletPath(site, request1);
+                if (!isContains(servletPath)) {
+                    if(servletPath.equals("/")){
+                        request.getRequestDispatcher("/shop" + servletPath).forward(request, response);
+                    }else{
+                        request.getRequestDispatcher(servletPath).forward(request, response);
+                    }
                     return;
                 }
-            }else {//定制商城或者网站
+            } else {//定制商城或者网站
                 //目前为了兼容我们公司自己的官网，暂时先这样处理兼容,后面考虑在网站配置中新增一个字段(是否有手机官网，如果有则做该业务判断),统一使用m.xxx.com为手机官网地址
                 if (site.getCustomerId().equals(5)) {
                     boolean isMobile = CheckMobile.check(request1);
@@ -86,10 +110,10 @@ public class RouteFilter implements Filter {
                     }
                 }
             }
-        }catch (Exception ex){
-            log.error(String.format("doFilter error-->%s ,Message-->%s",ex.getStackTrace(),ex.getLocalizedMessage()));
+        } catch (Exception ex) {
+            log.error(String.format("doFilter error-->%s ,Message-->%s", ex.getStackTrace(), ex.getLocalizedMessage()));
         }
-        chain.doFilter(request,response);
+        chain.doFilter(request, response);
     }
 
     @Override

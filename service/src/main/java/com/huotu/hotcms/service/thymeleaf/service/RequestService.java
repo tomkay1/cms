@@ -39,4 +39,16 @@ public class RequestService {
         }
         return model;
     }
+
+    public RequestModel ConvertRequestModelByError(HttpServletRequest request){
+        RequestModel model=new RequestModel();
+        String contextPath=request.getContextPath();
+        if(!StringUtils.isEmpty(contextPath)){
+            model.setContextPath(contextPath);
+        }else{
+            model.setContextPath(null);
+        }
+        model.setRoot(request);
+        return model;
+    }
 }

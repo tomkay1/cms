@@ -196,7 +196,7 @@ public class WidgetTemplateResource implements ITemplateResource {
             Site site = siteService.getSite(siteId);
             widgetPage= pageResolveService.getWidgetPageByConfig(pageConfigNameContainXml, site);
             try {
-                htmlTemplate = pageResourceService.getHtmlTemplateByWidgetPage(widgetPage);
+                htmlTemplate = pageResourceService.getHtmlTemplateByWidgetPage(widgetPage,!isBrowse());
             }catch (Exception e) {
                 e.printStackTrace();
             }

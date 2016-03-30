@@ -4,11 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.admin.util.web.CookieUser;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.CustomPages;
+import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.Result;
 import com.huotu.hotcms.service.model.widget.WidgetPage;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.service.CustomPagesService;
+import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.util.PageData;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
@@ -25,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -50,6 +53,9 @@ public class PagesController {
 
     @Autowired
     private CookieUser cookieUser;
+
+    @Autowired
+    private SiteService siteService;
 
     @RequestMapping("/list")
     public ModelAndView widgetTypeList(HttpServletRequest request, @RequestParam("customerid") Integer customerid) throws Exception {
@@ -190,6 +196,30 @@ public class PagesController {
         } catch (Exception ex) {
             log.error(ex);
             resultView = new ResultView(ResultOptionEnum.SERVERFAILE.getCode(), ResultOptionEnum.SERVERFAILE.getValue(), null);
+        }
+        return resultView;
+    }
+
+    @RequestMapping("/root")
+    @ResponseBody
+    public ResultView getWebRoot(@RequestParam("siteId") Long siteId) {
+        ResultView resultView = null;
+        try {
+            String url="http://";
+            Site site=siteService.getSite(siteId);
+            if(site!=null) {
+                Set<Host> hosts = site.getHosts();
+                for (Host host:hosts){
+                    url=url+host.getDomain();
+//                    url=url+host.getDomain()+":8080/front/";//测试时候使用
+                    resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(),url);
+                    return resultView;
+                }
+            }else{
+                resultView = new ResultView(ResultOptionEnum.NOFIND.getCode(), ResultOptionEnum.NOFIND.getValue(),url);
+            }
+        } catch (Exception ex) {
+            log.error(ex);
         }
         return resultView;
     }

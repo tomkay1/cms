@@ -30,11 +30,15 @@ public class DefaultsPagesController {
 
     @RequestMapping("/{name}")
     public ModelAndView widgetTypeList(@RequestParam("siteId") String siteId,
-                                       @PathVariable("name") String name) throws Exception{
+                                       @PathVariable("name") String name){
         ModelAndView modelAndView=new ModelAndView();
-        String[] goods = {"dd","ss","zz"};
-        modelAndView.addObject("goods",goods);
-        modelAndView.setViewName(String.format("%s_%s.shtml",siteId,name));
+        try{
+            String[] goods = {"dd","ss","zz"};
+            modelAndView.addObject("goods",goods);
+            modelAndView.setViewName(String.format("%s_%s.shtml",siteId,name));
+        }catch (Exception ex){
+            log.error(ex);
+        }
         return  modelAndView;
     }
 

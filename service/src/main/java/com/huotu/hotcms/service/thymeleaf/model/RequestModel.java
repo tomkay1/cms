@@ -167,7 +167,25 @@ public class RequestModel{
                     rootUrl = "http://" + request.getServerName() + ":" + request.getServerPort();
                 }
             }
+        }
+        this.root = rootUrl;
+    }
 
+    public void setRoot(HttpServletRequest request){
+        String rootUrl="";
+        Integer port=request.getServerPort();
+        if(this.getContextPath()!=null) {
+            if(port.equals(80)) {
+                rootUrl = "http://" + request.getServerName()  + this.getContextPath();
+            }else {
+                rootUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + this.getContextPath();
+            }
+        }else{
+            if(port.equals(80)) {
+                rootUrl = "http://" + request.getServerName();
+            }else {
+                rootUrl = "http://" + request.getServerName() + ":" + request.getServerPort();
+            }
         }
         this.root = rootUrl;
     }

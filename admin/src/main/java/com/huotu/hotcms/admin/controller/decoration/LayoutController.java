@@ -32,7 +32,7 @@ public class LayoutController {
             if (layoutEnum == null) {
                 resultView = new ResultView(ResultOptionEnum.NOFIND.getCode(), ResultOptionEnum.NOFIND.getValue(), null);
             }else {
-                resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), layoutEnum.getLayoutTemplate(null));
+                resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), layoutEnum.getLayoutTemplate(null,true));
             }
         } catch (Exception ex) {
             log.error(ex.getMessage());

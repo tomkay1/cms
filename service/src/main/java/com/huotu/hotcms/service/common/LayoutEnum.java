@@ -38,7 +38,7 @@ public enum LayoutEnum implements CommonEnum {
 
     public final String ADD_TEMPLATE = "<a href=\"javascript:;\" class=\"link-add HOT-module-add js-module-add\">添加模块</a>";
 
-    public String MODULE_ADD="<div class=\"layout-toolbar HOT-layout-toolbar ui-draggable v\">\n" +
+    public String MODULE_ADD = "<div class=\"layout-toolbar HOT-layout-toolbar ui-draggable v\">\n" +
             "    <span class=\"layout-extra\">\n" +
             "        <a class=\"icon-del HOT-layout-del\" data-id=\'%s\' href=\"javascript:;\"></a>\n" +
             "        <a class=\"icon-up HOT-layout-up\"  data-id='%s' href=\"javascript:;\" style=\"display: block;\"></a>\n" +
@@ -59,264 +59,155 @@ public enum LayoutEnum implements CommonEnum {
     }
 
 
-    public String getLayoutTemplate(List<String> argument) {
-        if(argument==null){
-            argument=new ArrayList<>();
+    public String getLayoutTemplate(List<String> argument, Boolean isEdit) {
+        if (isEdit) {
+            return getLayoutTemplateByEdit(argument);
+        } else {
+            return getLayoutTemplateByBrowse(argument);
+        }
+    }
+
+    public String getLayoutTemplateByEdit(List<String> argument) {
+        if (argument == null) {
+            argument = new ArrayList<>();
             argument.add(this.ADD_TEMPLATE);
             argument.add(this.ADD_TEMPLATE);
             argument.add(this.ADD_TEMPLATE);
-        }else{
-            if(argument.size()==0){
+        } else {
+            if (argument.size() == 0) {
                 argument.add(this.ADD_TEMPLATE);
                 argument.add(this.ADD_TEMPLATE);
                 argument.add(this.ADD_TEMPLATE);
             }
-            if(argument.size()==1){
+            if (argument.size() == 1) {
                 argument.add(this.ADD_TEMPLATE);
                 argument.add(this.ADD_TEMPLATE);
-            }if(argument.size()==2){
+            }
+            if (argument.size() == 2) {
                 argument.add(this.ADD_TEMPLATE);
             }
         }
         String layoutTemplate = "";
-        this.MODULE_ADD=String.format(this.MODULE_ADD,this.code,this.code,this.code,this.getValue());
+        this.MODULE_ADD = String.format(this.MODULE_ADD, this.code, this.code, this.code, this.getValue());
+        LayoutTemplate layoutTemplate1=LayoutTemplate.valueOf(this.code);
         switch (this.code) {
             case 0:
-                layoutTemplate = "<div class=\"layout-area HOT-layout-area js-layout\">\n" +
-                        "    <div class=\"layout HOT-layout layout-box\" >\n" +
-                        "      <div class=\"layout-three-left w190\" name=\"left\" style=\"margin-bottom:20px;\">\n" +
-                        "       <div class=\"layout-tool HOT-tool\">%s" +
-                        "        </div>" +
-                        "      </div>\n" +
-                        "      <div class=\"layout-three-middle w590\" name=\"middle\" style=\"margin-bottom:20px;\">\n" +
-                        "       <div class=\"layout-tool HOT-tool\">%s" +
-                        "        </div>" +
-                        "      </div>\n" +
-                        "      <div class=\"layout-three-right w190\" name=\"right\" style=\"margin-bottom:20px;\">\n" +
-                        "       <div class=\"layout-tool HOT-tool\">%s" +
-                        "        </div>" +
-                        "      </div>%s" +
-                        "    </div>\n" +
-                        "  </div>";
-                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1), argument.get(2),this.MODULE_ADD);
+                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), argument.get(2), this.MODULE_ADD);
                 break;
             case 1:
-                layoutTemplate = "<div class=\"layout-area HOT-layout-area js-layout\">\n" +
-                        "    <div class=\"layout HOT-layout layout-box\">\n" +
-                        "      <div class=\"layout-one w990\" name=\"main\" style=\"margin-bottom:20px;\">\n" +
-                        "       <div class=\"layout-tool HOT-tool\">%s" +
-                        "        </div>" +
-                        "      </div>%s" +
-                        "    </div>\n" +
-                        "  </div>";
-                layoutTemplate = String.format(layoutTemplate, argument.get(0),this.MODULE_ADD);
+                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), this.MODULE_ADD);
                 break;
             case 2:
-                layoutTemplate = "<div class=\"layout-area HOT-layout-area js-layout\">\n" +
-                        "    <div class=\"layout HOT-layout layout-box\" >\n" +
-                        "      <div class=\"layout-two-left w190\" name=\"left\" style=\"margin-bottom:20px;\">\n" +
-                        "       <div class=\"layout-tool HOT-tool\">%s" +
-                        "        </div>" +
-                        "      </div>\n" +
-                        "      <div class=\"layout-two-right w790 \" name=\"right-extra\" style=\"margin-bottom:20px;\">\n" +
-                        "       <div class=\"layout-tool HOT-tool\">%s" +
-                        "        </div>" +
-                        "      </div>%s" +
-                        "    </div>\n" +
-                        "  </div>";
-                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1),this.MODULE_ADD);
+                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), this.MODULE_ADD);
                 break;
             case 3:
-                layoutTemplate = "<div class=\"layout-area HOT-layout-area js-layout\">\n" +
-                        "    <div class=\"layout HOT-layout layout-box\">\n" +
-                        "      <div class=\"layout-three-left w190\" name=\"left\" style=\"margin-bottom:20px;\">\n" +
-                        "       <div class=\"layout-tool HOT-tool\">%s" +
-                        "        </div>" +
-                        "      </div>\n" +
-                        "      <div class=\"layout-three-middle w390\" name=\"middle-m\" style=\"margin-bottom:20px;\">\n" +
-                        "       <div class=\"layout-tool HOT-tool\">%s" +
-                        "        </div>" +
-                        "      </div>\n" +
-                        "      <div class=\"layout-three-right w390\" name=\"middle-r\" style=\"margin-bottom:20px;\">\n" +
-                        "       <div class=\"layout-tool HOT-tool\">%s" +
-                        "        </div>" +
-                        "      </div>%s" +
-                        "    </div>\n" +
-                        "  </div>";
-                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1), argument.get(2),this.MODULE_ADD);
+                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), argument.get(2), this.MODULE_ADD);
                 break;
             case 4:
-                layoutTemplate = "<div class=\"layout-area HOT-layout-area js-layout\">\n" +
-                        "    <div class=\"layout HOT-layout layout-box\">\n" +
-                        "      <div class=\"layout-two-left w790\" name=\"left\" style=\"margin-bottom:20px;\">\n" +
-                        "       <div class=\"layout-tool HOT-tool\">%s" +
-                        "        </div>" +
-                        "      </div>\n" +
-                        "      <div class=\"layout-two-right w190\" name=\"right-extra\" style=\"margin-bottom:20px;\">\n" +
-                        "       <div class=\"layout-tool HOT-tool\">%s" +
-                        "        </div>" +
-                        "      </div>%s" +
-                        "    </div>\n" +
-                        "  </div>";
-                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1),this.MODULE_ADD);
+                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), this.MODULE_ADD);
                 break;
             case 5:
-                layoutTemplate = "<div class=\"layouttarea HOT-layout-area js-layout\">\n" +
-                        "    <div class=\"layout HOT-layout layout-box\">\n" +
-                        "      <div class=\"layout-three-left w390\" name=\"left\" style=\"margin-bottom:20px;\">\n" +
-                        "       <div class=\"layout-tool HOT-tool\">%s" +
-                        "        </div>" +
-                        "      </div>\n" +
-                        "      <div class=\"layout-three-middle w390\" name=\"middle-m\" style=\"margin-bottom:20px;\">\n" +
-                        "       <div class=\"layout-tool HOT-tool\">%s" +
-                        "        </div>" +
-                        "      </div>\n" +
-                        "      <div class=\"layout-three-right w190\" name=\"middle-r\" style=\"margin-bottom:20px;\">\n" +
-                        "       <div class=\"layout-tool HOT-tool\">%s" +
-                        "        </div>" +
-                        "      </div>%s" +
-                        "    </div>\n" +
-                        "  </div>";
-                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1), argument.get(2),this.MODULE_ADD);
+                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), argument.get(2), this.MODULE_ADD);
                 break;
             case 6:
-                layoutTemplate = "<div class=\"layout-area HOT-layout-area js-layout\">\n" +
-                        "    <div class=\"layout HOT-layout layout-box\" style=\"width:1210px;\">\n" +
-                        "      <div class=\"layout-three-left\" name=\"left\" style=\"width:254px;margin-bottom:20px;\">\n" +
-                        "       <div class=\"layout-tool HOT-tool\">%s" +
-                        "        </div>" +
-                        "      </div>\n" +
-                        "      <div class=\"layout-three-middle\" name=\"middle\" style=\"width:717px;margin-left:0;margin-bottom:20px;\">\n" +
-                        "       <div class=\"layout-tool HOT-tool\">%s" +
-                        "        </div>" +
-                        "      </div>\n" +
-                        "      <div class=\"layout-three-right\" name=\"right\" style=\"width:239px;margin-left:0;margin-bottom:20px;\">\n" +
-                        "       <div class=\"layout-tool HOT-tool\">%s" +
-                        "        </div>" +
-                        "      </div>%s" +
-                        "    </div>\n" +
-                        "  </div>";
-                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1), argument.get(2),this.MODULE_ADD);
+                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), argument.get(2), this.MODULE_ADD);
                 break;
             case 7:
-                layoutTemplate = "<div class=\"layout-area HOT-layout-area js-layout\">\n" +
-                        "    <div class=\"layout HOT-layout layout-box\" style=\"width:1210px;\">\n" +
-                        "      <div class=\"layout-two-left\" name=\"left\" style=\"width:254px;margin:0;margin-bottom:20px;\">\n" +
-                        "       <div class=\"layout-tool HOT-tool\">%s" +
-                        "        </div>" +
-                        "      </div>\n" +
-                        "      <div class=\"layout-two-right\" name=\"right-extra\" style=\"width:956px;margin:0;margin-bottom:20px;\">\n" +
-                        "       <div class=\"layout-tool HOT-tool\">%s" +
-                        "        </div>" +
-                        "      </div>%s" +
-                        "    </div>\n" +
-                        "  </div>";
-                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1),this.MODULE_ADD);
+                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), this.MODULE_ADD);
                 break;
             case 8:
-                layoutTemplate = "<div class=\"layout-area HOT-layout-area js-layout\">\n" +
-                        "    <div class=\"layout HOT-layout layout-box\">\n" +
-                        "      <div class=\"layout-two-left\" name=\"left\" style=\"width:272px;margin:0;margin-bottom:20px;\">\n" +
-                        "       <div class=\"layout-tool HOT-tool\">%s" +
-                        "        </div>" +
-                        "      </div>\n" +
-                        "      <div class=\"layout-two-right\" name=\"right-extra\" style=\"width:718px;margin:0;margin-bottom:20px;\">\n" +
-                        "       <div class=\"layout-tool HOT-tool\">%s" +
-                        "        </div>" +
-                        "      </div>%s" +
-                        "    </div>\n" +
-                        "  </div>";
-                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1),this.MODULE_ADD);
+                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), this.MODULE_ADD);
                 break;
             case 9:
-                layoutTemplate = "<div class=\"layout-area HOT-layout-area js-layout\">\n" +
-                        "    <div class=\"layout HOT-layout layout-box\">\n" +
-                        "      <div class=\"layout-two-left w215\" name=\"left\" style='margin-bottom:20px;'>\n" +
-                        "       <div class=\"layout-tool HOT-tool\">%s" +
-                        "        </div>" +
-                        "      </div>\n" +
-                        "      <div class=\"layout-two-right w765\" name=\"right\" style='margin-bottom:20px;'>\n" +
-                        "       <div class=\"layout-tool HOT-tool\">%s" +
-                        "        </div>" +
-                        "      </div>%s" +
-                        "    </div>\n" +
-                        "  </div>";
-                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1),this.MODULE_ADD);
+                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), this.MODULE_ADD);
                 break;
             case 10:
-                layoutTemplate = "<div class=\"layout-area HOT-layout-area js-layout\">\n" +
-                        "    <div class=\"layout HOT-layout layout-box\">\n" +
-                        "      <div class=\"layout-two-left\" style=\"width:330px;\" name=\"left\" style='margin-bottom:20px;'>\n" +
-                        "       <div class=\"layout-tool HOT-tool\">%s" +
-                        "        </div>" +
-                        "      </div>\n" +
-                        "      <div class=\"layout-two-right\" style=\"width:650px;\" name=\"right-extra\" style='margin-bottom:20px;'>\n" +
-                        "       <div class=\"layout-tool HOT-tool\">%s" +
-                        "        </div>" +
-                        "      </div>%s" +
-                        "    </div>\n" +
-                        "  </div>";
-                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1),this.MODULE_ADD);
+                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), this.MODULE_ADD);
                 break;
             case 11:
-                layoutTemplate = "<div class=\"layout-area HOT-layout-area js-layout\">\n" +
-                        "    <div class=\"layout HOT-layout layout-box\">\n" +
-                        "      <div class=\"layout-two-left\" style=\"width:650px;margin-bottom:20px;\" name=\"left\">\n" +
-                        "       <div class=\"layout-tool HOT-tool\">%s" +
-                        "        </div>" +
-                        "      </div>\n" +
-                        "      <div class=\"layout-two-right\" style=\"width:330px;margin-bottom:20px;\" name=\"right-extra\">\n" +
-                        "       <div class=\"layout-tool HOT-tool\">%s" +
-                        "        </div>" +
-                        "      </div>%s" +
-                        "    </div>\n" +
-                        "  </div>";
-                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1),this.MODULE_ADD);
+                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), this.MODULE_ADD);
                 break;
             case 12:
-                layoutTemplate = "<div class=\"layout-area HOT-layout-area js-layout\">\n" +
-                        "    <div class=\"layout HOT-layout layout-box\">\n" +
-                        "      <div class=\"layout-two-left w490\" name=\"left\" style='margin-bottom:20px;'>\n" +
-                        "       <div class=\"layout-tool HOT-tool\">%s" +
-                        "        </div>" +
-                        "      </div>\n" +
-                        "      <div class=\"layout-two-right w490\" name=\"right-extra\" style='margin-bottom:20px;'>\n" +
-                        "       <div class=\"layout-tool HOT-tool\">%s" +
-                        "        </div>" +
-                        "      </div>%s" +
-                        "    </div>\n" +
-                        "  </div>";
-                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1),this.MODULE_ADD);
+                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), this.MODULE_ADD);
                 break;
             case 13:
-                layoutTemplate = "<div class=\"layout-area HOT-layout-area js-layout\">\n" +
-                        "    <div class=\"layout HOT-layout layout-box\">\n" +
-                        "      <div class=\"layout-three-left w323\" name=\"left\" style='margin-bottom:20px;'>\n" +
-                        "       <div class=\"layout-tool HOT-tool\">%s" +
-                        "        </div>" +
-                        "      </div>\n" +
-                        "      <div class=\"layout-three-middle w324\" name=\"middle-m\" style='margin-bottom:20px;'>\n" +
-                        "       <div class=\"layout-tool HOT-tool\">%s" +
-                        "        </div>" +
-                        "      </div>\n" +
-                        "      <div class=\"layout-three-right w323\" name=\"middle-r\" style='margin-bottom:20px;'>\n" +
-                        "       <div class=\"layout-tool HOT-tool\">%s" +
-                        "        </div>" +
-                        "      </div>%s" +
-                        "    </div>\n" +
-                        "  </div>";
-                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1), argument.get(2),this.MODULE_ADD);
+                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), argument.get(2), this.MODULE_ADD);
                 break;
             case 14:
-                layoutTemplate = "<div class=\"layout-area HOT-layout-area js-layout\">\n" +
-                        "    <div class=\"layout layout-auto HOT-layout layout-box\">\n" +
-                        "      <div class=\"layout-one layout-hover\" name=\"main\" style='margin-bottom:20px;'>\n" +
-                        "       <div class=\"layout-tool HOT-tool\">%s" +
-                        "        </div>" +
-                        "      </div>%s" +
-                        "    </div>\n" +
-                        "  </div>";
-                layoutTemplate = String.format(layoutTemplate, argument.get(0),this.MODULE_ADD);
+                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), this.MODULE_ADD);
+                break;
+        }
+        return layoutTemplate;
+    }
+
+    public String getLayoutTemplateByBrowse(List<String> argument) {
+        String addTool = "";
+        if (argument == null) {
+            argument = new ArrayList<>();
+            argument.add(addTool);
+            argument.add(addTool);
+            argument.add(addTool);
+        } else {
+            if (argument.size() == 0) {
+                argument.add(addTool);
+                argument.add(addTool);
+                argument.add(addTool);
+            }
+            if (argument.size() == 1) {
+                argument.add(addTool);
+                argument.add(addTool);
+            }
+            if (argument.size() == 2) {
+                argument.add(addTool);
+            }
+        }
+        String layoutTemplate = "";
+        LayoutTemplate layoutTemplate1=LayoutTemplate.valueOf(this.code);
+        switch (this.code) {
+            case 0:
+                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), argument.get(2), "");
+                break;
+            case 1:
+                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), "");
+                break;
+            case 2:
+                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), "");
+                break;
+            case 3:
+                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), argument.get(2), "");
+                break;
+            case 4:
+                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), "");
+                break;
+            case 5:
+                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), argument.get(2), "");
+                break;
+            case 6:
+                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), argument.get(2), "");
+                break;
+            case 7:
+                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), "");
+                break;
+            case 8:
+                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), "");
+                break;
+            case 9:
+                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), "");
+                break;
+            case 10:
+                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), "");
+                break;
+            case 11:
+                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), "");
+                break;
+            case 12:
+                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), "");
+                break;
+            case 13:
+                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), argument.get(2), "");
+                break;
+            case 14:
+                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), "");
                 break;
         }
         return layoutTemplate;

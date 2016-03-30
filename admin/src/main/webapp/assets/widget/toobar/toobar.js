@@ -2,7 +2,7 @@ define(function (require, exports, module) {
     require.async("widgetPageModel", function (a) {//页面对象处理->widgetPage
         var widgetPage = a.widgetPage();
         var widgetPageModel = widgetPage.getInstance();//页面持久化对象,后面根据这个对象系列化传递到后台,并创建对应的xml 配置文件
-        $.get("/assets/widget/toobar/toobar.html?t=77", function (html) {
+        $.get("/assets/widget/toobar/toobar.html?t=88", function (html) {
             var divObj = document.createElement("div");
             divObj.innerHTML = html;
             var first = document.body.firstChild;//得到页面的第一个元素
@@ -15,6 +15,7 @@ define(function (require, exports, module) {
             page.pageSave(widgetPageModel);
             page.widgetAdd();
             page.layoutAdd(widgetPageModel);
+            page.getWebRoot();
         })
         var layer = require("layer");
         var common = require("common");
@@ -253,8 +254,29 @@ define(function (require, exports, module) {
                         });
                     });
                 });
-            }
+            },
+            getWebRoot:function(){
+                $.ajax({
+                    type: "post",
+                    dataType: "json",
+                    url: '/page/root',//提交到一般处理程序请求数据
+                    data: {
+                        siteId: siteId
+                    },
+                    success: function (data) {
+                        if(data!=null){
+                            if(data.code==200){
+                                var urlRoot=data.data;
+                                if(common.isDebug()=="1"){//调试模式
+                                    urlRoot=urlRoot+":8080/front/";
+                                }
+                                $("#js-web-root").val(urlRoot);
+                                $("#jq-web-home").attr("href",urlRoot);
+                            }
+                        }
+                    }
+                });
+            },
         }
     })
-
 });

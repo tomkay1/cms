@@ -107,6 +107,8 @@ define(["js/jquery-1.9.1.min"],function () {
                 return cloned;
             }
         },
-
+        isDebug:function(){
+            return 1;//调试模式
+        }
     }
 });

@@ -41,7 +41,7 @@
             <a th:href="${request.rootUri}+'/brand'" title="品牌中心">品牌中心</a>&nbsp;><i class="jieshao">&nbsp;新闻资讯</i>
         </p>
         <p style="height:17px"></p>
-        <ul data-galleryList-foreach="gallery" data-param-pagesize="8">
+        <ul data-gallery-foreach="gallery" data-param-pagesize="8">
             <li style="float:left"><i class=" cj-font-c"><a th:href="${request.rootUri}+'/xiangce/'+${gallery.id}+'.html'"  data-th-text="${gallery.title}">永春2009秋冬产品订货会圆满闭幕</a> </i></li>
             <li style="float:right" class="cj-time-a" data-time-format="${gallery.createTime}" data-param-format="yyyy-MM-dd">2015-07-25</li>
             <p style="clear:both"></p>

@@ -51,18 +51,11 @@ a
 text-decoration: none;
 color: #5a5a5a;
 cursor: pointer;
-transition: all .3s ease-out;
--moz-transition: all .3s ease-out;
--webkit-transition: all .15s ease-out;
--o-transition: all .15s ease-out
+ 
 }
 a:hover
 {
  
-transition: all .3s ease-out;
--moz-transition: all .3s ease-out;
--webkit-transition: all .15s ease-out;
--o-transition: all .15s ease-out
 }
 input[type=button]{-webkit-appearance:none;}
 
@@ -101,6 +94,3 @@ color: #AFAFAF;
 font-weight: 400;
 }
 p,h1,h2,h3,h4{cursor: default;}
-.clear{
-	clear: both;
-}

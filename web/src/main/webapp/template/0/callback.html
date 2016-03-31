@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"/>
+  <script type="application/javascript" href="/template/0/css/common.css" th:scr="@{${localUrl}+'/template/0/css/common.css'}"></script>
+    <script type="text/javascript" th:src="@{${localUrl}+'/template/0/js/jquery-1.9.1.min.js'}"></script>
+</head>
+<body onload="bind.getAccess_token()">
+<script>
+  var common={
+    /**
+     * @brief 获得页面参数
+     * @param 参数名
+     * */
+    getQuery:function(name) {
+      var strHref = window.document.location.href;
+      var intPos = strHref.indexOf("?");
+      var strRight = strHref.substr(intPos + 1);
+      var arrTmp = strRight.split("&");
+      for (var i = 0; i < arrTmp.length; i++) {
+        var arrTemp = arrTmp[i].split("=");
+        if (arrTemp[0].toUpperCase() == name.toUpperCase()) return arrTemp[1];
+      }
+      if (arguments.length == 1)
+        return "";
+      if (arguments.length == 2)
+        return arguments[1];
+    },
+  }
+
+  var bind={
+     getAccess_token:function(){
+       var code=common.getQuery("code");
+       var state=common.getQuery("state");
+       var appid="wx1dde8f55df10ccec";
+       var seccret="c5e850c525bde7cb882a705ac1304fea";
+       var url="https://api.weixin.qq.com/sns/oauth2/access_token?appid="+appid+"&secret="+seccret+"&code="+code+"&grant_type=authorization_code";
+         window.console.log(url);
+       $.ajax({
+         url: "/front/bind/getAccessToken",
+           data :{
+               url :url,
+           },
+         type: "GET",
+         dataType: 'json',
+         success: function (data) {
+             window.console.log(data);
+//           if(data!=null)
+//           {
+//            window.console.log(data);
+//             }
+
+
+         },
+         error: function () {
+            alert("ss");
+         }
+       });
+
+     },
+  }
+
+</script>
+
+1111
+</body>
+</html>

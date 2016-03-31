@@ -12,6 +12,7 @@ import com.huotu.hotcms.service.service.RedisService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ import javax.annotation.PostConstruct;
  * Created by cwb on 2016/3/24.
  */
 @Service
+@Profile("container")
 public class RedisServiceImpl implements RedisService {
 
     private static final Log log = LogFactory.getLog(RedisServiceImpl.class);
@@ -32,7 +34,7 @@ public class RedisServiceImpl implements RedisService {
 
 
     @Autowired
-    private RedisTemplate<String,String> redisTemplate;
+    private RedisTemplate<String,Object> redisTemplate;
 
     private HashOperations<String,Object,String> operations;
 

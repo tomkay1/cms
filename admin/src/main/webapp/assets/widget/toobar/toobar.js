@@ -2,7 +2,7 @@ define(function (require, exports, module) {
     require.async("widgetPageModel", function (a) {//页面对象处理->widgetPage
         var widgetPage = a.widgetPage();
         var widgetPageModel = widgetPage.getInstance();//页面持久化对象,后面根据这个对象系列化传递到后台,并创建对应的xml 配置文件
-        $.get("/assets/widget/toobar/toobar.html?t=32", function (html) {
+        $.get("/assets/widget/toobar/toobar.html?t=90", function (html) {
             var divObj = document.createElement("div");
             divObj.innerHTML = html;
             var first = document.body.firstChild;//得到页面的第一个元素
@@ -19,6 +19,7 @@ define(function (require, exports, module) {
         })
         var layer = require("layer");
         var common = require("common");
+        //var queue=require("cmsQueue");
         var customerId = common.getQuery("customerid");
         var siteId = common.getQuery("siteId");
         var configName = common.getQuery("config");
@@ -210,15 +211,14 @@ define(function (require, exports, module) {
                             content: "/widget/widgetList?v=1.2",
                             //btn:["确定"],
                             end: function (index, layero) {
-                                window.console.log($("#js_widget_template_value").val())
-                                $(dom).before($("#js_widget_template_value").val());
-                                //var jsonStr = $("#js_cms_picture_value").val();
-                                //var obj = JSON.parse(jsonStr);
-                                //if (typeof obj !== "undefined") {
-                                //    for (var i = 0; i < obj.length; i++) {
-                                //        $("#pageBackImage").val(obj[i].localUri);
-                                //    }
-                                //}
+                                var widgetJson=$("#js_widget_json_value").val();
+                                var widgetObj=JSON.parse(widgetJson);
+                                $(dom).before(widgetObj.template);
+                                delete widgetObj["template"];//对json对象进行删除template模版数据
+                                var layoutId=$(dom).data("id");
+                                var layoutPosition=$(dom).data("index");
+                                JQueue.putQueueLayoutWidget(layoutId,layoutPosition,widgetObj);
+                                //window.console.log(JQueue.toJson());//测试查看数据使用
                             }
                         });
                     });
@@ -238,15 +238,9 @@ define(function (require, exports, module) {
                             content: "/assets/widget/layout.html?v=1.3",
                             end: function (index, layero) {
                                 page.widgetAdd();
-                                var layoutTypeId = $("#js_layoutType_id_input_value").val();//页面布局id -->layout
-                                var widgetLayout = a.widgetLayout();
-                                var widgetLayoutModel = widgetLayout.getInstance();
-                                widgetLayoutModel = widgetLayout.setLayoutType(layoutTypeId);
-                                if (typeof widgetPageModel.layout == "undefined") {
-                                    widgetPageModel = widgetPage.setWidgetLayout(widgetLayoutModel);
-                                } else {
-                                    widgetPageModel = widgetPage.pushWidgetLayout(widgetLayoutModel);
-                                }
+                                var layoutJson=$("#js_layout_json_value").val();
+                                var layoutObj=JSON.parse(layoutJson);
+                                JQueue.putQueue(layoutObj);
                             }
                         });
                     });

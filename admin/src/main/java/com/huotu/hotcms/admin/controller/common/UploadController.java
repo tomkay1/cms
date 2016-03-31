@@ -82,7 +82,7 @@ public class UploadController {
             String fileName = files.getOriginalFilename();
             String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
             if("jpg, jpeg,png,gif,bmp".contains(suffix)){
-            String path=configInfo.getResourcesImg(customerId)+"/"+StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + suffix;
+            String path=configInfo.getResourceWidgetImg()+"/"+StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + suffix;
                 URI uri = resourceServer.uploadResource(path, files.getInputStream());
                 BufferedImage sourceImg = javax.imageio.ImageIO.read(files.getInputStream());
                 Map<String,Object> map= new HashMap<String, Object>();

@@ -96,13 +96,21 @@
                 success: function (data) {
                     if(data!=null) {
                         if (data.code == 200) {
-                            var dom=parent.$('#js_layoutType_id_input_value');
+                            var dom=parent.$('#js_layout_json_value');
+                            var moduleCount=data.data.moduleCount;
+                            var module=addModule(moduleCount);
+                            var layoutObj={
+                                layoutId:data.data.id,
+                                layoutType:typeId,
+                                module:module
+                            };
+                            var layoutJson=JSON.stringify(layoutObj)
                             if(typeof dom=="undefined"||dom.length<=0){
-                                parent.$("body").append("<input type='hidden' id='js_layoutType_id_input_value' value='"+typeId+"'/>");
+                                parent.$("body").append("<input type='hidden' id='js_layout_json_value' value='"+layoutJson+"'/>");
                             }else{
-                                parent.$("#js_layoutType_id_input_value").val(typeId);
+                                parent.$("#js_layout_json_value").val(layoutJson);
                             }
-                            parent.$(".js-layout-add").before(data.data);
+                            parent.$(".js-layout-add").before(data.data.template);
                         }
                     }else{
                         layer.msg("获得布局失败...", {
@@ -115,6 +123,13 @@
             });
         });
     })
+    function addModule(moduleCount){
+        var module=new Array();
+        for(var i=0;i<moduleCount;i++){
+            module.push({position:i,widget:[]});
+        }
+        return module;
+    }
 </script>
 </body>
 </html>

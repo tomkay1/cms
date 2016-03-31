@@ -76,6 +76,10 @@ public class ConfigInfo {
         return resourcesWidget;
     }
 
+    public String getResourceWidgetImg(){
+        return resourcesWidget+"/img";
+    }
+
     /**
      * 获得商户装修的页面配置存储目录地址
      * */

@@ -100,7 +100,7 @@ public class PageResourceService {
         if (widgetLayout != null) {
             List<String> moduleTemplateList = getWidgetModuleTemplateByWidgetModuleList(widgetLayout.getModule());
             LayoutEnum layoutEnum=LayoutEnum.valueOf(widgetLayout.getLayoutType());
-            layoutTemplate=layoutEnum.getLayoutTemplate(moduleTemplateList,isEdit);
+            layoutTemplate=layoutEnum.getLayoutTemplate(moduleTemplateList,isEdit,widgetLayout.getLayoutId());
         }
         return layoutTemplate;
     }

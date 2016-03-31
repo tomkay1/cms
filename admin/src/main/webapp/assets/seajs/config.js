@@ -1,4 +1,4 @@
-var version="1.5.4";
+var version="1.2.4";
 seajs.config({
 	alias: {
 		"jquery": "js/jquery-1.9.1.min.js",
@@ -89,6 +89,7 @@ seajs.config({
 		"widgetPageModel":"js/widgetPageModel.js?v="+version,
 
 		"widgetSelect":"widget/select.js?v="+version,
+		"cmsQueue":"js/jquery.cms.queue.js?v="+version,
 	},
 	preload: ['jquery']
 });

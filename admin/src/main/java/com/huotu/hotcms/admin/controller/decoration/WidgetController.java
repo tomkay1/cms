@@ -1,5 +1,6 @@
 package com.huotu.hotcms.admin.controller.decoration;
 
+import com.huotu.hotcms.admin.common.StringUtil;
 import com.huotu.hotcms.admin.util.web.CookieUser;
 import com.huotu.hotcms.service.entity.WidgetMains;
 import com.huotu.hotcms.service.entity.WidgetType;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -165,9 +167,11 @@ public class WidgetController {
     @RequestMapping(value = "/saveWidgetMains",method = RequestMethod.POST)
     @Transactional(value = "transactionManager")
     @ResponseBody
-    public ResultView saveWidgetMains(WidgetMains widgetMains,Long widgetTypeId){
+    public ResultView saveWidgetMains(WidgetMains widgetMains,Long widgetTypeId,String template){
         ResultView result=null;
         try {
+            InputStream inputStream=StringUtil.getInputStream(template);
+            resourceServer.uploadResource(widgetMains.getResourceUri(),inputStream);
             WidgetType widgetType = widgetService.findWidgetTypeById(widgetTypeId);
             if(widgetMains.getId()==null){
                 widgetMains.setCreateTime(LocalDateTime.now());

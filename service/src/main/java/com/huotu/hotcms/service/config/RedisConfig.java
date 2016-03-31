@@ -41,27 +41,27 @@ public class RedisConfig {
     private Long maxWait;
     private Integer maxIdle;
 
-    @PostConstruct
     public void init() {
         hostName = env.getProperty("redisHost");
         if (hostName == null) {
             throw new IllegalStateException("请设置redisHost属性");
         }
-        port = env.getProperty("redisPort",Integer.class);
+        port = env.getProperty("redisPort", Integer.class);
         if (port == null) {
             throw new IllegalStateException("请设置redisPort属性");
         }
         password = env.getProperty("redisAuth");
-        if(password == null) {
+        if (password == null) {
             throw new IllegalStateException("请设置redisAuth属性");
         }
-        maxTotal = env.getProperty("jedisPool.maxTotal",Integer.class,500);
-        maxWait = env.getProperty("jedisPool.maxWait",Long.class,1000l*3);
-        maxIdle = env.getProperty("jedisPool.maxIdle",Integer.class,200);
+        maxTotal = env.getProperty("jedisPool.maxTotal", Integer.class, 500);
+        maxWait = env.getProperty("jedisPool.maxWait", Long.class, 1000l * 3);
+        maxIdle = env.getProperty("jedisPool.maxIdle", Integer.class, 200);
     }
 
     @Bean
     public JedisConnectionFactory jedisConnectionFactory() {
+        init();
         JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
         jedisConnectionFactory.setHostName(hostName);
         jedisConnectionFactory.setPassword(password);
@@ -80,8 +80,8 @@ public class RedisConfig {
     }
 
     @Bean
-    public RedisTemplate<String,Object> redisTemplate() {
-        RedisTemplate<String,Object> redisTemplate = new RedisTemplate<>();
+    public RedisTemplate<String, Object> redisTemplate() {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(jedisConnectionFactory);
         redisTemplate.setDefaultSerializer(new StringRedisSerializer());
         return redisTemplate;

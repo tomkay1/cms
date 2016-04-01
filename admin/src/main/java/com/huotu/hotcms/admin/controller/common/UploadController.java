@@ -197,7 +197,7 @@ public class UploadController {
         File file=new File(uri);
         try {
             WidgetMains widgetMains = widgetService.findWidgetMainsById(id);
-            widgetMains.setResourceUri(path);
+            widgetMains.setResourceEditUri(path);
             widgetService.saveWidgetMains(widgetMains);
             OutputStreamWriter write = new OutputStreamWriter(new FileOutputStream(file),"UTF-8");
             BufferedWriter writer=new BufferedWriter(write);

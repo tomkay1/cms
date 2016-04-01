@@ -32,10 +32,15 @@ define(function (require, exports, module) {
                     return "";
                 }
             },
+            {width: '20%', field: 'title', title: '上传', align: 'center',
+                formatter: function (value, rowData) {
+                    return  "<a href='javascript:' class='js-hot-widgetMainsUploadRead' id='upload' data-id='"+rowData.id+"' style='margin-right:10px; color:blue;'>浏览视图</a>" +
+                        "<a href='javascript:' class='js-hot-widgetMainsUploadEdit' data-id='"+rowData.id+"' style='margin-right:10px; color:blue;'>编辑视图</a>"
+                }
+            },
             {width: '20%', field: 'title', title: '操作', align: 'center',
                 formatter: function (value, rowData) {
-                    return  "<a href='javascript:' class='js-hot-widgetMainsUpload' id='upload' data-id='"+rowData.id+"' style='margin-right:10px; color:blue;'>上传</a>" +
-                    "<a href='javascript:' class='js-hot-widgetMainsDelete' data-id='"+rowData.id+"' style='margin-right:10px; color:blue;'>删除</a>" +
+                    return"<a href='javascript:' class='js-hot-widgetMainsDelete' data-id='"+rowData.id+"' style='margin-right:10px; color:blue;'>删除</a>" +
                         "<a href='javascript:' class='js-hot-widgetMainsUpdate' data-id='"+rowData.id+"' style='margin-right:10px; color: blue'>修改</a>"
                 }
             }
@@ -73,17 +78,39 @@ define(function (require, exports, module) {
 
     //上传
     function uploadWidgetMains(){
-        var obj=$(".js-hot-widgetMainsUpload");
+        var obj=$(".js-hot-widgetMainsUploadRead");
         $.each(obj,function(item,dom){
             $(dom).click(function(){//绑定修改事件
                 var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;
                 layer.open({
                     type: 2,
-                    title: "上传控件主体",
+                    title: "浏览控件视图",
                     shadeClose: true,
                     shade: 0.8,
                     area: ['900px', '600px'],
-                    content: "/widget/uploadWidget?id="+id,
+                    content: "/widget/widgetUpLoadRead?id="+id,
+                    end:function(){
+                        var option={
+                            dataParam:{
+                                name:"",
+                            }
+                        };
+                        WidgetMainsGrid.Refresh(option);
+                    }
+                });
+            })
+        })
+        var obj1=$(".js-hot-widgetMainsUploadEdit");
+        $.each(obj1,function(item,dom){
+            $(dom).click(function(){//绑定修改事件
+                var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;
+                layer.open({
+                    type: 2,
+                    title: "编辑控件视图",
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['900px', '600px'],
+                    content: "/widget/widgetUpLoadEdit?id="+id,
                     end:function(){
                         var option={
                             dataParam:{

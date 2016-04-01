@@ -3,8 +3,8 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>产品</title>
-  <link rel="stylesheet" type="text/css" href="css/lobo.css" />
-  <link rel="stylesheet" type="text/css" href="css/scfdforPC.css"/>
+  <link rel="stylesheet" type="text/css" href="css/lobo.css" th:src="@{${localUrl}+'/template/0/css/lobo.css'}" />
+  <link rel="stylesheet" type="text/css" href="css/scfdforPC.css" th:src="@{${localUrl}+'/template/0/css/scfdforPC.css'}"/>
 </head>
 <body>
 <div>
@@ -133,11 +133,11 @@
           <div id="mcover" onclick="document.getElementById('mcover').style.display='';" style="display: none;">
             <div class="code">
               <p style=" text-align:right; padding-bottom:10px"><img src="images/colos.gif" style="width:18px;" /></p>
-              <img class="tutu" src="images/TB1uSyHLVXXXXbbaXXXwu0bFXXX.png" />
+              <!--<img class="tutu" src="images/TB1uSyHLVXXXXbbaXXXwu0bFXXX.png" />-->
               <p style=" margin-top:10px">扫一扫，进入购买</p>
             </div>
           </div>
-          <a href="#" class="tb-btn-sku" onclick="document.getElementById('mcover').style.display='block';"><img src="images/iconfont-saoyisao.png" style="width:16px; vertical-align:middle; margin-right:6px; margin-top:-1px" />扫码购买</a>
+          <a href="#" class="tb-btn-sku" onclick="showQRCode()"><img src="images/iconfont-saoyisao.png" style="width:16px; vertical-align:middle; margin-right:6px; margin-top:-1px" />扫码购买</a>
           <a href="#" class="tb-btn-sku tb-btn-basket" style="display:none"><img src="images/iconfont-gouwuche.png" style="width:16px; vertical-align:middle; margin-right:6px" />加入购物车</a>
         </div>
       </div>
@@ -163,3 +163,25 @@
 </div>
 </body>
 </html>
+<script src="js/jquery-1.9.1.min.js" th:src="@{${localUrl}+'/template/0/js/jquery-1.9.1.min.js'}"></script>
+<script src="js/layer/layer.js" th:src="@{${localUrl}+'/template/0/js/layer/layer.js'}"></script>
+<script>
+  function showQRCode(){
+    layer.open({
+      type: 2,
+      title: "请扫码登录 ",
+      shadeClose: true,
+      shade: 0.8,
+      area: ['900px', '500px'],
+      content: "https://open.weixin.qq.com/connect/qrconnect?appid=wx1dde8f55df10ccec&redirect_uri=http%3A%2F%2Fhot.huobanplus.com%3A8080%2Ffront%2Fbind%2Fcallback%2F&response_type=code&scope=snsapi_login",
+      end:function(){
+        var option={
+          dataParam:{
+            customerId:customerId
+          }
+        };
+        WidgetTypeGrid.Refresh(option);
+      }
+    });
+  }
+</script>

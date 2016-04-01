@@ -44,6 +44,7 @@ public class PageResourceService {
         return isWidgetTemplateCached(widgetBase) ? getCachedWidgetTemplate(widgetBase) : getWidgetTemplateFromFile(widgetBase);
     }
 
+
     private String getCachedWidgetTemplate(WidgetBase widgetBase) {
         return redisService.findByWidgetId(widgetBase.getId());
     }
@@ -66,6 +67,7 @@ public class PageResourceService {
         redisService.saveWidget(widgetBase.getId(),widgetTemplate);
         return widgetTemplate;
     }
+
 
     public String getWidgetModuleTemplateByWidgetModule(WidgetModule widgetModule) throws Exception {
         String moduleTemplate = "";

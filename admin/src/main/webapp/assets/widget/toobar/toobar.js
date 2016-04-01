@@ -218,6 +218,7 @@ define(function (require, exports, module) {
                                 var layoutId=$(dom).data("id");
                                 var layoutPosition=$(dom).data("index");
                                 JQueue.putQueueLayoutWidget(layoutId,layoutPosition,widgetObj);
+                                page.widgetEdit();
                                 //window.console.log(JQueue.toJson());//测试查看数据使用
                             }
                         });
@@ -269,9 +270,25 @@ define(function (require, exports, module) {
                 });
             },
             widgetEdit:function(){
-                var obj=$(". js-widget-edit");
+                var obj=$(".js-widget-edit");
                 $.each(obj,function(item,dom){
-
+                    $(dom).click(function(){
+                        var widgetId=$(dom).data("id");
+                        //var widgetUrl=$(dom).data("url");
+                        //var widgetEditUrl=$(dom).data("editurl");
+                        layer.open({
+                            type: 2,
+                            title: "设置",
+                            shadeClose: true,
+                            shade: 0.8,
+                            closeBtn: 1,
+                            area: ['700px', '580px'],
+                            content: '/assets/widget/widgetEdit.html?widgetId='+widgetId+"&t="+Math.random(),//提交到一般处理程序请求数据
+                            end: function (index, layero) {
+                                //page.widgetAdd();
+                            }
+                        });
+                    })
                 })
             }
         }

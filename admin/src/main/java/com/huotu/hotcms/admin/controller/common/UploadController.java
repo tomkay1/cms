@@ -143,9 +143,10 @@ public class UploadController {
             WidgetMains widgetMains = widgetService.findWidgetMainsById(id);
             widgetMains.setResourceUri(path);
             widgetService.saveWidgetMains(widgetMains);
-            BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-            bw.write(content);
-            bw.close();
+            OutputStreamWriter write = new OutputStreamWriter(new FileOutputStream(file),"UTF-8");
+            BufferedWriter writer=new BufferedWriter(write);
+            writer.write(content);
+            writer.close();
             resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -198,9 +199,10 @@ public class UploadController {
             WidgetMains widgetMains = widgetService.findWidgetMainsById(id);
             widgetMains.setResourceUri(path);
             widgetService.saveWidgetMains(widgetMains);
-            BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-            bw.write(content);
-            bw.close();
+            OutputStreamWriter write = new OutputStreamWriter(new FileOutputStream(file),"UTF-8");
+            BufferedWriter writer=new BufferedWriter(write);
+            writer.write(content);
+            writer.close();
             resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
         } catch (Exception e) {
             log.error(e.getMessage());

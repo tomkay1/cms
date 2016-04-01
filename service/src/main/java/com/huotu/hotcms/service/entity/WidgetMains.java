@@ -34,6 +34,9 @@ public class WidgetMains {
     @Column(name ="resourceUri" )
     private String resourceUri;
 
+    @Column(name="resourceEditUri")
+    private String resourceEditUri;
+
     /**
      * 控件主体描述信息
      * */

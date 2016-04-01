@@ -1,7 +1,9 @@
 package com.huotu.hotcms.admin.controller.decoration;
 
 import com.huotu.hotcms.service.common.LayoutEnum;
+import com.huotu.hotcms.service.entity.WidgetMains;
 import com.huotu.hotcms.service.model.widget.WidgetBase;
+import com.huotu.hotcms.service.repository.WidgetMainsRepository;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
 import com.huotu.hotcms.service.widget.service.PageResourceService;
@@ -30,16 +32,25 @@ public class WidgetTemplateController {
     @Autowired
     private PageResourceService pageResourceService;
 
+    @Autowired
+    private WidgetMainsRepository widgetMainsRepository;
+
     @RequestMapping("/{id}")
     @ResponseBody
     public ResultView getWidgetTemplate(@RequestParam("url") String url, @PathVariable("id") Long id) {
         ResultView resultView = null;
         try {
-            WidgetBase widgetBase=new WidgetBase();
-            widgetBase.setId(id);
-            widgetBase.setWidgetUri(url);
-            String html=pageResourceService.getWidgetTemplateByWidgetBase(widgetBase);
-            resultView=new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), html);
+            WidgetMains widgetMains=widgetMainsRepository.findOne(id);
+            if(widgetMains!=null) {
+                WidgetBase widgetBase = new WidgetBase();
+                widgetBase.setId(id);
+                widgetBase.setWidgetUri(url);
+                widgetBase.setWidgetEditUri(widgetMains.getResourceEditUri());
+                String html = pageResourceService.getWidgetTemplateByWidgetBase(widgetBase);
+                resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), html);
+            }else{
+                resultView = new ResultView(ResultOptionEnum.NOFIND.getCode(), ResultOptionEnum.NOFIND.getValue(), null);
+            }
         } catch (Exception ex) {
             log.error(ex.getMessage());
             resultView=new ResultView(ResultOptionEnum.SERVERFAILE.getCode(), ResultOptionEnum.SERVERFAILE.getValue(),null);

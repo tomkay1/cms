@@ -268,6 +268,12 @@ define(function (require, exports, module) {
                     }
                 });
             },
+            widgetEdit:function(){
+                var obj=$(". js-widget-edit");
+                $.each(obj,function(item,dom){
+
+                })
+            }
         }
     })
 });

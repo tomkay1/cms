@@ -45,9 +45,10 @@ public class WidgetResolveService {
 
     public String widgetBriefView(String templateResources,WidgetBase widgetBase){
         if(widgetBase!=null) {
-            Map<String, Object> map =null;
+            Map map =null;
             if(widgetBase.getProperty()!=null){
-                map = ConverMapByList(widgetBase.getProperty());
+//                map = ConverMapByList(widgetBase.getProperty());
+                map = widgetBase.getProperty();
             }else{
                 map=new HashMap<>();
             }
@@ -57,7 +58,8 @@ public class WidgetResolveService {
                     map.put(field.getName(), getFieldValueByName(field.getName(), widgetBase));
                 }
             }
-            Context context = new Context(Locale.CHINA, map);
+            Context context=null;
+            context = new Context(Locale.CHINA, map);
             StringWriter writer = new StringWriter();
             templateEngine.process(templateResources, context, writer);
             return writer.toString();
@@ -68,9 +70,10 @@ public class WidgetResolveService {
     public String widgetEditView(WidgetBase widgetBase){
         String templateResources=getWidgetEditTemplate(widgetBase);
         if(widgetBase!=null) {
-            Map<String, Object> map =null;
+            Map map =null;
             if(widgetBase.getProperty()!=null){
-                map = ConverMapByList(widgetBase.getProperty());
+//                map = ConverMapByList(widgetBase.getProperty());
+                map = widgetBase.getProperty();
             }else{
                 map=new HashMap<>();
             }
@@ -131,5 +134,9 @@ public class WidgetResolveService {
             objectMap.put(widgetProperty.getName(),widgetProperty.getValue());
         }
         return objectMap;
+    }
+
+    public List<WidgetProperty> ConvertWidgetPropertyByMap(Map property){
+        return null;
     }
 }

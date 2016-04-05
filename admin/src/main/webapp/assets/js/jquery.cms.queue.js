@@ -94,6 +94,13 @@ var aElement = new Array();
         toJson: function () {
             return JSON.stringify(aElement);
         },
+        toLayoutList:function(){
+          return aElement;
+        },
+
+        /**
+         * @brief 把控件主体放入布局队列中，存在则修改
+         * */
         putQueueLayoutWidget:function(layoutId,position,widget){
             var layout=JQueue.find(layoutId);
             if(layout!=null&&layout.module!=null){
@@ -107,7 +114,52 @@ var aElement = new Array();
                 JQueue.patchQueue(layout);
             }
         },
-
+        /**
+         *@brief 修改布局中的组件信息对象
+         * */
+        patchQueueLayoutWidget:function(widget){
+            var layout=JQueue.find(widget.layoutId);
+            if(layout!=null&&layout.module!=null){
+                if(layout.module.length>0){
+                    for(var i=0;i<layout.module.length;i++){
+                        if(layout.module[i].position==widget.layoutPosition){
+                            if(layout.module[i].widget!=null&&layout.module[i].widget.length>0){
+                                for(var j=0;j<layout.module[i].widget.length;j++){
+                                    if(layout.module[i].widget[j].id==widget.id){
+                                        layout.module[i].widget[j]=widget;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                JQueue.patchQueue(layout);
+            }
+        },
+        /**
+         * @breaf 查找布局下面的控件主体是否存在
+         * @param widget
+         * @return widget|-1
+         * */
+        findLayoutWdigetByPositionAndWidgetId:function(layoutId,position,widgetId){
+            var layout=JQueue.find(layoutId);
+            if(layout!=null&&layout.module!=null){
+                if(layout.module.length>0){
+                    for(var i=0;i<layout.module.length;i++){
+                        if(layout.module[i].position==position){
+                            if(layout.module[i].widget!=null&&layout.module[i].widget.length>0){
+                                for(var j=0;j<layout.module[i].widget.length;j++){
+                                    if(layout.module[i].widget[j].id==widgetId){
+                                        return layout.module[i].widget[j];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return -1;
+        },
         /**
          * @brief: 将队列元素转化为字符串
          * @return: 队列元素字符串

@@ -19,7 +19,6 @@ define(function (require, exports, module) {
         })
         var layer = require("layer");
         var common = require("common");
-        //var queue=require("cmsQueue");
         var customerId = common.getQuery("customerid");
         var siteId = common.getQuery("siteId");
         var configName = common.getQuery("config");
@@ -139,7 +138,9 @@ define(function (require, exports, module) {
                     })
                 })
             },
-            createPage: function (widgetPage, publish) {
+            createPage: function (widgetPage,publish) {
+                widgetPage.layout=JQueue.toLayoutList();
+                window.console.log(widgetPage);
                 $.ajax({
                     type: "post",
                     dataType: "json",
@@ -200,6 +201,8 @@ define(function (require, exports, module) {
                 var obj = $(".js-module-add");
                 $(".js-module-add").unbind("click");
                 $.each(obj, function (item, dom) {
+                    var layoutId=$(dom).data('id');
+                    var layoutPositionIndex=$(dom).data("index");
                     $(dom).click(function () {
                         layer.open({
                             type: 2,
@@ -208,15 +211,17 @@ define(function (require, exports, module) {
                             shade: 0.8,
                             closeBtn: 1,
                             area: ['700px', '580px'],
-                            content: "/widget/widgetList?v=1.2",
+                            content: "/widget/widgetList?layoutId="+layoutId+"&index="+layoutPositionIndex,
                             //btn:["确定"],
                             end: function (index, layero) {
                                 var widgetJson=$("#js_widget_json_value").val();
                                 var widgetObj=JSON.parse(widgetJson);
                                 $(dom).before(widgetObj.template);
                                 delete widgetObj["template"];//对json对象进行删除template模版数据
-                                var layoutId=$(dom).data("id");
-                                var layoutPosition=$(dom).data("index");
+                                var layoutId=$(dom).data("id");//布局ID
+                                var layoutPosition=$(dom).data("index");//布局位置
+                                widgetObj.layoutId=layoutId;
+                                widgetObj.layoutPosition=layoutPosition;
                                 JQueue.putQueueLayoutWidget(layoutId,layoutPosition,widgetObj);
                                 page.widgetEdit();
                                 //window.console.log(JQueue.toJson());//测试查看数据使用
@@ -271,11 +276,21 @@ define(function (require, exports, module) {
             },
             widgetEdit:function(){
                 var obj=$(".js-widget-edit");
+                obj.unbind("click");
                 $.each(obj,function(item,dom){
                     $(dom).click(function(){
                         var widgetId=$(dom).data("id");
-                        //var widgetUrl=$(dom).data("url");
-                        //var widgetEditUrl=$(dom).data("editurl");
+                        var layoutId=$(dom).data("layoutid");
+                        var layoutPositionIndex=$(dom).data("position");
+                        if(typeof layoutId=="undefined"||typeof layoutPositionIndex=='undefined'){
+                            layer.msg("控件主体没有具备的布局信息标签[data-layoutid][data-position]");
+                            return;
+                        }
+                        //window.console.log("layoutId-->"+layoutId+" layoutPositionIndex-->"+layoutPositionIndex+" widgetId-->"+widgetId);
+                        var widget=JQueue.findLayoutWdigetByPositionAndWidgetId(layoutId,layoutPositionIndex,widgetId);//查找队列中改布局下的控件主体对象
+                        //window.console.log(widget);
+                        var json=JSON.stringify(widget);
+                        widgetData.saveTempWidget(json);//把当前的控件主体的配置信息保存到临时隐藏域中
                         layer.open({
                             type: 2,
                             title: "设置",
@@ -285,11 +300,53 @@ define(function (require, exports, module) {
                             area: ['700px', '580px'],
                             content: '/assets/widget/widgetEdit.html?widgetId='+widgetId+"&t="+Math.random(),//提交到一般处理程序请求数据
                             end: function (index, layero) {
-                                //page.widgetAdd();
+                                var widgetSettingJson=$("#js_widgetSetting_json_value").val();//获得控件主体设置信息
+                                var widgetSettingObj=JSON.parse(widgetSettingJson);
+                                //window.console.log(JQueue.toJson())
+                                //window.console.log("layoutId-->"+layoutId+"  layoutPostion-->"+layoutPositionIndex+"  widgetId-->"+widgetId);
+                                var widget=JQueue.findLayoutWdigetByPositionAndWidgetId(layoutId,layoutPositionIndex,widgetId);//查找队列中改布局下的控件主体对象
+                                if(widget==-1){
+                                    layer.msg("没有找到控件主体信息");
+                                    return;
+                                }
+                                widget.property=widgetSettingObj;//设置该控件主体下的设置信息
+                                //window.console.log(widget);
+                                JQueue.patchQueueLayoutWidget(widget)//修改该控件主体到队列中
+                                //window.console.log(JQueue.toJson());
+                                widgetModule.getWidgetBrief(widgetId,layoutId,layoutPositionIndex,widgetSettingJson);//获得控件主体预览视图
                             }
                         });
                     })
                 })
+            }
+        };
+        var widgetModule={
+            getWidgetBrief:function(widgetId,layoutId,positionIndex,settingString){
+                $.ajax({
+                    type: "post",
+                    dataType: "json",
+                    url: '/widgetTemplate/' + widgetId,//组件模版编辑预览视图解析
+                    data: {
+                        properties:settingString,
+                        layoutId:layoutId,
+                        layoutPosition:positionIndex
+                    },
+                    success: function (data) {
+                        if(data!=null){
+                            if(data.code==200){
+                                $("#"+widgetId).replaceWith(data.data);
+                                page.widgetEdit();
+                            }else{
+                                layer.msg("解析模版错误");
+                            }
+                        }else{
+                            layer.msg("解析模版错误");
+                        }
+                    },
+                    error:function(){
+                        layer.msg("系统或者网络繁忙,请稍候再试...");
+                    }
+                });
             }
         }
     })

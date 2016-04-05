@@ -6,9 +6,12 @@ import com.huotu.hotcms.service.service.RedisService;
 import com.huotu.hotcms.service.util.HttpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.thymeleaf.TemplateEngine;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -24,6 +27,8 @@ public class PageResourceService {
     private StaticResourceService resourceServer;
     @Autowired
     private RedisService redisService;
+
+    private TemplateEngine templateEngine = new TemplateEngine();
 
     public String getHtmlTemplateByWidgetPage(WidgetPage widgetPage,Boolean isEdit) throws Exception {
         String htmlTemplate = "";
@@ -55,15 +60,16 @@ public class PageResourceService {
 
     private String getWidgetTemplateFromFile(WidgetBase widgetBase) throws Exception{
         URL url = resourceServer.getResource(widgetBase.getWidgetUri()).toURL();
-        List<WidgetProperty> widgetProperties = widgetBase.getProperty();
+//        List<WidgetProperty> widgetProperties = widgetBase.getProperty();
+//        Map widgetProperties=widgetBase.getProperty();
         String widgetTemplate = HttpUtils.getHtmlByUrl(url);
-        if (widgetProperties != null) {
-            for (WidgetProperty widgetProperty : widgetProperties) {
-                if (widgetProperty != null) {
-                    widgetTemplate = widgetTemplate.replace("{" + widgetProperty.getName() + "}", widgetProperty.getValue());
-                }
-            }
-        }
+//        if (widgetProperties != null) {
+//            for (WidgetProperty widgetProperty : widgetProperties) {
+//                if (widgetProperty != null) {
+//                    widgetTemplate = widgetTemplate.replace("{" + widgetProperty.getName() + "}", widgetProperty.getValue());
+//                }
+//            }
+//        }
         redisService.saveWidget(widgetBase.getId(),widgetTemplate);
         return widgetTemplate;
     }

@@ -4,8 +4,9 @@
 <head>
     <title></title>
     <script type="application/javascript" src="/assets/js/jquery-1.11.1.min.js"></script>
-    <script type="application/javascript" src="/assets/widget/jquery.utils.js"></script>
-    <link  href="/assets/css/widget-edit.css?v=1.0"  type="text/css" rel="stylesheet"/>
+    <script type="application/javascript" src="/assets/widget/jquery.utils.js?v=1.2"></script>
+    <script type="application/javascript" src="/assets/widget/widgetData.js?v=1.2"></script>
+    <link href="/assets/css/widget-edit.css?v=1.0" type="text/css" rel="stylesheet"/>
 </head>
 <body>
 <form action="" id="js-widget-form">
@@ -35,34 +36,54 @@
             return "";
         if (arguments.length == 2)
             return arguments[1];
-    };
-    var setModule={
-        initWidgetEditTemplate:function(){
-            var widgetId=getQuery("widgetId");
+    }
+    ;
+    var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+    var setModule = {
+        initWidgetEditTemplate: function () {
+            var widgetId = getQuery("widgetId");
+            var widgetObj = widgetData.getTempWidgetByParent();
+            var dataParam = {};
+            if (widgetObj != null) {
+                dataParam = {
+                    layoutId: widgetObj.layoutId,
+                    layoutPosition: widgetObj.layoutPosition,
+                    properties:JUtils.jsonLenth(widgetObj.property)>0?JSON.stringify(widgetObj.property):null
+                }
+            }
             $.ajax({
                 type: "post",
                 dataType: "json",
-                url: '/widgetTemplate/edit/'+widgetId+"?t="+Math.random(),//提交到一般处理程序请求数据
+                url: '/widgetTemplate/edit/' + widgetId + "?t=" + Math.random(),//提交到一般处理程序请求数据
+                data:dataParam,
                 success: function (data) {
-                    if(data!=null){
-                        if(data.code==200){
+                    if (data != null) {
+                        if (data.code == 200) {
                             $("#js-widget-box").html(data.data);
-                        }else{
+                        } else {
                             $("#js-widget-box").html("<div>加载控件主体设置视图失败</div>");
                         }
-                    }else{
+                    } else {
                         $("#js-widget-box").html("<div>加载控件主体设置视图失败</div>");
                     }
                 },
-                error:function(){
+                error: function () {
                     $("#js-widget-box").html("<div>加载控件主体设置视图失败</div>");
                 }
             })
         },
-        save:function(){
-            $("#js-widget-save").click(function(){
-                var obj=$("#js-widget-form").serializeJsonList();
-                window.console.log(obj);
+        save: function () {
+            $("#js-widget-save").click(function () {
+                var obj = $("#js-widget-form").serializeJsonListByTag();
+                var widgetSettingJson = JSON.stringify(obj)
+                widgetData.saveWidgetSetting(widgetSettingJson);
+//                var dom=parent.$('#js_widgetSetting_json_value');
+//                if(typeof dom=="undefined"||dom.length<=0){
+//                    parent.$("body").append("<input type='hidden' id='js_widgetSetting_json_value' value='"+widgetSettingJson+"'/>");
+//                }else{
+//                    parent.$("#js_widgetSetting_json_value").val(widgetSettingJson);
+//                }
+                parent.layer.close(index);
             });
         }
     }

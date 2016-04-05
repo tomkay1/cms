@@ -1,5 +1,8 @@
 define(function (require, exports, module) {
     var layer = require("layer");
+    var common=require("common");
+    var layoutId=common.getQuery("layoutId");//所在布局ID
+    var positionIndex=common.getQuery("index");//所在布局的位置index
     var widget = {
         widgetTab: function () {
             var obj = $(".js-widget-module");
@@ -23,9 +26,10 @@ define(function (require, exports, module) {
                     $.ajax({
                         type: "post",
                         dataType: "json",
-                        url: '/widgetTemplate/'+widgetId,//提交到一般处理程序请求数据
+                        url: '/widgetTemplate/'+widgetId,//组件模版编辑预览视图解析
                         data: {
-                            url: widgetUrl
+                            layoutId:layoutId,
+                            layoutPosition:positionIndex
                         },
                         success: function (data) {
                             if(data!=null){
@@ -33,16 +37,18 @@ define(function (require, exports, module) {
                                     var widget={
                                         id:widgetId,
                                         widgetUri:widgetUrl,
+                                        widgetEditUri:"",
                                         property:[],
                                         template:data.data
                                     }
                                     var widgetJson=JSON.stringify(widget)
-                                    var dom=parent.$('#js_widget_json_value');
-                                    if(typeof dom=="undefined"||dom.length<=0){
-                                        parent.$("body").append("<input type='hidden' id='js_widget_json_value' value='"+widgetJson+"'/>");
-                                    }else{
-                                        parent.$("#js_widget_json_value").val(widgetJson);
-                                    }
+                                    widgetData.saveWidget(widgetJson);
+                                    //var dom=parent.$('#js_widget_json_value');
+                                    //if(typeof dom=="undefined"||dom.length<=0){
+                                    //    parent.$("body").append("<input type='hidden' id='js_widget_json_value' value='"+widgetJson+"'/>");
+                                    //}else{
+                                    //    parent.$("#js_widget_json_value").val(widgetJson);
+                                    //}
                                 }else{
                                     layer.msg("获得组件模版失败,请稍后再试...");
                                 }

@@ -8,6 +8,7 @@
     <script type="application/javascript" src="/assets/js/jquery-1.11.1.min.js"></script>
     <script type="application/javascript" src="/assets/libs/layer/layer.js?v=1.0"></script>
     <script type="application/javascript" src="/assets/libs/layer/extend/layer.ext.js?v=1.0"></script>
+    <script type="application/javascript" src="/assets/widget/widgetData.js?v=1.2"></script>
 </head>
 <body>
 <div class="J-content dialog-area">
@@ -96,7 +97,6 @@
                 success: function (data) {
                     if(data!=null) {
                         if (data.code == 200) {
-                            var dom=parent.$('#js_layout_json_value');
                             var moduleCount=data.data.moduleCount;
                             var module=addModule(moduleCount);
                             var layoutObj={
@@ -105,11 +105,13 @@
                                 module:module
                             };
                             var layoutJson=JSON.stringify(layoutObj)
-                            if(typeof dom=="undefined"||dom.length<=0){
-                                parent.$("body").append("<input type='hidden' id='js_layout_json_value' value='"+layoutJson+"'/>");
-                            }else{
-                                parent.$("#js_layout_json_value").val(layoutJson);
-                            }
+                            widgetData.saveLayout(layoutJson);
+//                            var dom=parent.$('#js_layout_json_value');
+//                            if(typeof dom=="undefined"||dom.length<=0){
+//                                parent.$("body").append("<input type='hidden' id='js_layout_json_value' value='"+layoutJson+"'/>");
+//                            }else{
+//                                parent.$("#js_layout_json_value").val(layoutJson);
+//                            }
                             parent.$(".js-layout-add").before(data.data.template);
                         }
                     }else{

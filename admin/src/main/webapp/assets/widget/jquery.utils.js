@@ -35,7 +35,15 @@ var JUtils = [];
             window.console.log(Rows);
             //obj.Rows=Rows;
             return obj;
-        }
+        },
+        jsonLenth:function(obj) {
+            var size = 0, key;
+            for (key in obj) {
+                if (obj.hasOwnProperty(key)) size++;
+            }
+            return size;
+        },
+
     });
     /**
      * @brief: 表单系列化Json对象
@@ -62,25 +70,50 @@ var JUtils = [];
      * @brief: 表单系列化Json对象
      * @return: 返回系列化后的json对象
      */
-    $.fn.serializeJsonList = function () {
-        var serializeObj = {};
-        var array = this.serializeArray();
-        var Rows={};
-        $(array).each(function () {
-            if(this.name.indexOf("|Rows")>0){
-                Rows[this.name]=this.value;
-            }
-            if (serializeObj[this.name]) {
-                if ($.isArray(serializeObj[this.name])) {
-                    serializeObj[this.name].push(this.value);
-                } else {
-                    serializeObj[this.name] = [serializeObj[this.name], this.value];
+    $.fn.serializeJsonListByTag = function () {
+        var self=this;
+        self.serializeJson=function(){
+            var serializeObj = {};
+            var array = self.serializeArray();
+            var rows={};
+            var rowsTotal=0;
+            $(array).each(function () {
+                if(this.name.indexOf("_Rows")>0){
+                    if(typeof rows[this.name]=="undefined"){
+                        rows[this.name]=[];
+                    }
+                    rows[this.name].push(this.value);
+                    rowsTotal++;
+                }else {
+                    if (serializeObj[this.name]) {
+                        if ($.isArray(serializeObj[this.name])) {
+                            serializeObj[this.name].push(this.value);
+                        } else {
+                            serializeObj[this.name] = [serializeObj[this.name], this.value];
+                        }
+                    } else {
+                        serializeObj[this.name] = this.value;
+                    }
                 }
-            } else {
-                serializeObj[this.name] = this.value;
+            });
+            rows["total"]=rowsTotal/(JUtils.jsonLenth(rows));
+            var Rows=self.getRows(rows);
+            serializeObj["Rows"]=Rows;
+            return serializeObj;
+        }
+        self.getRows=function(rows){
+            var Rows=[];
+            if(typeof rows!="undefined"){
+                for(var i=0;i<rows.total;i++){
+                    var obj={};
+                    for(var item in rows) {
+                        obj[item] = rows[item][i];
+                    }
+                    Rows.push(obj);
+                }
             }
-        });
-        window.console.log(Rows)
-        return serializeObj;
+            return Rows;
+        }
+        return self.serializeJson();
     };
 })(jQuery);

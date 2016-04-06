@@ -1,0 +1,433 @@
+﻿﻿<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8"/>
+<meta charset="utf-8">
+<meta name="description" th:content="${site.description}"/>
+<meta name="keywords" th:content="${site.keywords}"/>
+<meta property="qc:admins" content="2336157637605721604536375" />
+<title th:text="${site.title}"></title>
+<link rel="stylesheet" type="text/css" href="css/common.css" th:href="@{${request.root}+'/css/common.css'}"/>
+<link rel="Shortcut Icon" href="/favicon.ico" th:href="@{${request.root}+'/favicon.ico'}"/>
+<link rel="stylesheet" type="text/css" href="css/gwgx.css" th:href="@{${request.root}+'/css/gwgx.css'}"/>
+<link rel="stylesheet" type="text/css" href="css/video-js.css" th:href="@{${request.root}+'/css/video-js.css'}"/>
+<script src="http://t.cn/RGSQSu4"></script>
+    <link rel="stylesheet" type="text/css" href="js/jprompt/jquery.alert.css"
+          th:href="@{${request.root}+'/js/jprompt/jquery.alert.css'}"/>
+    <script type="text/javascript" src="js/jquery-1.9.1.min.js"
+            th:src="@{${request.root}+'/js/jquery-1.9.1.min.js'}"></script>
+<script type="text/javascript" src="js/jquery.SuperSlide.2.1.1.js"
+            th:src="@{${request.root}+'/js/jquery.SuperSlide.2.1.1.js'}"></script>
+<script type="text/javascript" src="js/carouFredSel.js" th:src="@{${request.root}+'/js/carouFredSel.js'}"></script>
+    <script type="text/javascript" src="js/jquery.cityselect.js"
+            th:src="@{${request.root}+'/js/jquery.cityselect.js'}"></script>
+    <script type="text/javascript" src="js/jprompt/jquery.alert.js"
+            th:src="@{${request.root}+'/js/jprompt/jquery.alert.js'}"></script>
+</head>
+<body>
+<div class="huobanjiagw">
+  <!--导航栏-->
+  <div style="background-color:#343434;">
+    <div class="headeri" data-th-replace="${resourcePath}+'/index.html' :: #header">
+      <div class="headlogo"><img style="width:80%" src="images/logohh.png" class="logoimgi"/></div>
+      <ul class="navi">
+        <li>
+          <a href=" #">
+          首页
+          </a>
+        </li>
+        <li class="nav_menu_li_1">
+          <a style="padding: 0px 10px;" href="#">
+          产品/服务
+          </a>
+          <div class="sub-nav">
+            <a href="">
+            伙伴商城
+            </a>
+            <a href="">
+            代运营
+            </a>
+            <a href="">
+            伙伴MAD
+            </a>
+            <a href="">
+            云商学院
+            </a>
+          </div>
+        </li>
+        <li>
+          <a href=" #">
+          客户案例
+          </a>
+        </li>
+        <li>
+          <a href="#">
+          加盟代理
+          </a>
+        </li>
+        <li class="nav_menu_li_1">
+          <a style="padding: 0px 10px;" href="#">
+          关于我们
+          </a>
+          <div class="sub-nav">
+            <a href="">
+            火图新闻
+            </a>
+            <a href="">
+            火图历程
+            </a>
+            <a href="">
+            火图招聘
+            </a>
+          </div>
+        </li>
+        <li class="nav_menu_li_1">
+          <a style="padding: 0px 10px;" href="#">
+          帮助中心
+          </a>
+          <div class="sub-nav">
+            <a href="">
+            产品问答
+            </a>
+            <a href="">
+            操作指南
+            </a>
+            <a href="">
+            咨询客服
+            </a>
+            <a href="">
+            联系我们
+            </a>
+          </div>
+        </li>
+        <li>
+          <a href="#">
+          火图论坛
+          </a>
+        </li>
+        <li class="zc">
+          <a href="#">
+          注册
+          </a>
+        </li>
+        <li class="dl">
+          <a href="#">
+          登录
+          </a>
+        </li>
+      </ul>
+      <p style="clear:both;">
+      </p>
+    </div>
+  </div>
+  <!--导航栏end-->
+  
+  <p style="clear:both;">
+  </p>
+  <div style="position:relative;">
+    <!--banner轮播-->
+    <div class="hb-bigbox-b" >
+      <div class="fullSlide">
+        <div class="bd">
+          <ul>
+            <li style="background:url(images/jmbanner01.jpg) 50% 0px no-repeat;  position: absolute; width: 100%; height: 100%;">
+              <a href="" title="">
+              </a>
+            </li>
+            <li style="background:url(images/jmbanner02.jpg) 50% 0px no-repeat;  position: absolute; width: 100%; height: 100%;">
+              <a href="" title="">
+              </a>
+            </li>
+            <li style="background:url(images/jmbanner03.jpg) 50% 0px no-repeat;  position: absolute; width: 100%; height: 100%;">
+              <a href="" title="">
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="hd">
+          <ul>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    <!--定位-->
+    
+    <div class="ddww" style="position:absolute; bottom:0px; right:100px; margin:0 auto; text-align:center;">
+      <p>
+        <img src="images/dw01_01.png"  style="display:none;" th:src="@{${request.root}+'/images/dw01_01.png'}" />
+      </p>
+      <p>
+        <img src="images/dw01_02.png" style="margin-top:100px;" th:src="@{${request.root}+'/images/dw01_02.png'}"  />
+      </p>
+      <a target="_blank" href="javascript:void(0)" title="代理商登录 ">
+      <p>
+        <img src="images/dw01_03.png" style="margin-top:50px;" th:src="@{${request.root}+'/images/dw01_03.png'}"  />
+      </p>
+      </a>
+    </div>
+    
+    <!--定位end-->
+  </div>
+  <!--banner轮播end-->
+  <p style="clear:both;">
+  </p>
+  
+  <!--1-->
+  <div class="huobj-bigbox-jj">
+    <div class="jm-a ">
+    </div>
+  </div>
+  <!--1end-->
+  
+  <!--2-->
+  <div class="jma huobj-bigbox-jj">
+    <div class="jm-b ">
+    </div>
+  </div>
+  <!--2end-->
+  
+  <!--3-->
+  <div style="position:relative;">
+    <div class=" jmb huobj-bigbox-jj">
+      <div class="jm-c ">
+      </div>
+    </div>
+    <div style="width:1000px; position:relative;left:0px; right:0px; text-align:center; margin:0 auto">
+      <a href=" " th:href="@{${request.rootUri}+'/mall'}" title="伙伴商城" style="display:block; height:50px; line-height:50px; color:#FFFFFF;width:130px;  background-color:#f98e2b; border-radius:4px; position:absolute; bottom:100px; left:70px;">
+      了解更多
+      </a>
+      <a href=" " th:href="@{${request.rootUri}+'/operator'}" title="代运营" style="display:block; height:50px; width:130px; line-height:50px; color:#FFFFFF;background-color:#f98e2b; border-radius:4px; position:absolute; bottom:100px; left:320px;bottom:170px; ">
+      了解更多
+      </a>
+      <a href=" " th:href="@{${request.rootUri}+'/mad'}" title=" 移动广告" style="display:block; height:50px; width:130px;  line-height:50px; color:#FFFFFF;background-color:#f98e2b; border-radius:4px; position:absolute; bottom:100px; left:560px; ">
+      了解更多
+      </a>
+      <a href="http://www.huobanj.com/pc/index" target="_blank" title="云商学院" style="display:block; height:50px; width:130px; line-height:50px; color:#FFFFFF;background-color:#f98e2b; border-radius:4px; position:absolute; bottom:100px; left:800px;bottom:170px;">
+      了解更多
+      </a>
+    </div>
+  </div>
+  <!--3end-->
+  
+  <!--4-->
+  <div class="jmc huobj-bigbox-jj">
+    <div class="jm-d ">
+    </div>
+  </div>
+  <!--4end-->
+  
+  <!--5-->
+  <div class=" jmc huobj-bigbox-jj">
+    <div class="jm-e ">
+    </div>
+  </div>
+  <!--5end-->
+  
+  <!--6-->
+  <div class=" jmd huobj-bigbox-jj">
+    <div class="jm-f ">
+    </div>
+  </div>
+  <!--6end-->
+  
+  <p style="clear:both;">
+  </p>
+  
+  <!--表单-->
+  <div class=" jme huobj-bigbox-jj">
+    <div class="jm-g ">
+      <div class="jmdla">
+        <div style=" width:1000px;margin: 0 auto;text-align:center; margin-top:200px;
+">
+          <p  style="color:#FFFFFF; font-size:25px;">
+            申请代理填写表
+          </p>
+          <div class="daili">
+            <div class="hbj_z" style="height:700px;">
+              <div class="hr_daili4">
+                <div class="hr_jmf">
+                  <ul class="hr_daili5">
+                    <li class="jm_oo">
+                      <input id="company" type="text" placeholder=" 公司名称" class="jm_input int">
+                    </li>
+                    <li class="jm_oo">
+                      <input id="name" type="text" placeholder=" 姓名" class="jm_input int">
+                    </li>
+                    <li class="jm_oo">
+                      <div id="Button_yzm" type="button" class="yanzheng"
+                                         style="width: 80px;height: 42px; text-align:center;" value="获取验证码">获取验证码 </div>
+                      <input id="mobile" type="text" placeholder=" 手机号" class="jm_input int">
+                    </li>
+                    <li class="jm_oo">
+                      <input type="text" placeholder="输入手机验证码,123456即可" class="jm_input int">
+                    </li>
+                    <li class="jm_oo">
+                      <input id="qq" type="text" placeholder=" QQ" class="jm_input int">
+                    </li>
+                    <li class="jm_oo" id="apply_prov">
+                      <select name="province" id="province" class="jm_input inp prov">
+                      </select>
+                      <select name="city" id="city" class="jm_input inp city">
+                      </select>
+                    </li>
+                    <li style="width:98%;height:152px">
+                      <textarea name="remark" id="desciption" class="txt_input"
+                                              placeholder="需求说明"></textarea>
+                    </li>
+                  </ul>
+                  <p style="clear:both;  height: 20px;">
+                  </p>
+                  <div id="applyJoin"
+                                 style="float: none;margin: 0px auto;cursor:pointer; padding: 10px 20px;background-color: #00A3FF; width: 200px;font-size: 16px;">
+                    <a href="javascript:void(0)" style="color: #ffffff;">
+                    提交申请
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--表单结束-->
+  
+  <p style="clear:both;">
+  </p>
+  
+  <!--底部-->
+  <div style="background-color:#343434; height:120px; padding-right:50px;  ">
+    <div class="headeri"  data-th-replace="${resourcePath}+'/index.html' :: #footer">
+      <div class="headlogo"><img style="    margin-top: 40px; margin-left:90px;width:100%" src="images/logo.png"  class="logoimgi" /></div>
+      <div style="float:right; margin-top:10px;" >
+        <p class="hbj_ft">
+          <span class="hbj_foot">
+          产品服务
+          </span>
+          <span class="hbj_foot">
+          客户案例
+          </span>
+          <span class="hbj_foot">
+          加盟代理
+          </span>
+          <span class="hbj_foot">
+          关于我们
+          </span>
+          <span class="hbj_foot">
+          帮助中心
+          </span>
+          <span class="hbj_foot">
+          火图论坛
+          </span>
+          <span class="hbj_foot">
+          注册
+          </span>
+          <span class="hbj_foot" style="border:0px;">
+          登录
+          </span>
+        </p>
+        <p class="hbj_ft" style=" margin-left: 14px;">
+          服务热线：400-1818-357
+          <span style="margin-left:15px;">
+          联系电话：0571-56532880
+          </span>
+        </p>
+        <p class="hbj_ft" style=" margin-left: 14px;" >
+          公司地址： 杭州市滨江区阡陌路482号智慧e谷B幢4楼
+        </p>
+        <p class="hbj_ft" style=" margin-left: 14px;" >
+          Copyright©2013-2015. 杭州火图科技有限公司,浙ICP备13027761号-5
+        </p>
+      </div>
+    </div>
+  </div>
+  <!--底部结束-->
+  
+</div>
+<script type="text/javascript">
+    jQuery(".fullSlide").slide({
+        titCell: ".hd ul",
+        mainCell: ".bd ul",
+        effect: "fold",
+        autoPlay: true,
+        autoPage: true,
+        trigger: "click"
+    });
+
+    $("#apply_prov").citySelect({
+        prov: "北京",
+        nodata: "none"
+    });
+
+    jQuery(".tmall-brand").slide({titCell: ".fCl-nav li", mainCell: ".fCl-slide", effect: "left", delayTime: 200});
+
+    $("#Button_yzm").click(function () {
+        var $this = $("#Button_yzm");
+        $.LastTime($this, "button");
+    })
+
+    $("#applyJoin").click(function () {
+        var comopany = $("#company").val();
+        var name = $("#name").val();
+        var mobile = $("#mobile").val();
+        var qq = $("#qq").val();
+        var province = $("#province").val();
+        var city = $("#city").val();
+        var desciption = $("#desciption").val();
+        if (comopany == "") {
+            $.setAlert("请输入公司名称");
+            return;
+        }
+        if (name == "") {
+            $.setAlert("请输入姓名");
+            return;
+        }
+        if (mobile == "") {
+            $.setAlert("请输入手机号码");
+            return;
+        }
+        if (qq == "") {
+            $.setAlert("请输入QQ号码");
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: '/interim/join',
+            dataType: "json",
+            data: {
+                company: $("#company").val(),
+                name: $("#name").val(),
+                mobile: $("#mobile").val(),
+                qq: $("#qq").val(),
+                province: $("#province").val(),
+                city: $("#city").val(),
+                desciption: $("#desciption").val()
+            },
+            success: function (data) {
+                if (data.code == 200) {
+                    $.setAlert("恭喜您,提交申请成功！");
+                    $("#company").val("")
+                    $("#name").val("")
+                    $("#mobile").val("")
+                    $("#qq").val("")
+                    $("#city").val("")
+                    $("#desciption").val("")
+                } else {
+                    $.setAlert("对不起！服务器玩啥去了,请稍后再试...");
+                }
+            },
+            error: function () {
+                $.setAlert("对不起！服务器玩啥去了,请稍后再试...");
+            }
+        });
+
+    })
+</script>
+<style>
+#iddd,#iidd{ display:none;}
+
+
+</style>
+</body>

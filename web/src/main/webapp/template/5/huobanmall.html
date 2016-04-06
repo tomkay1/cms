@@ -1,0 +1,366 @@
+﻿<!doctype html>
+<!--
+  ~ 版权所有:杭州火图科技有限公司
+  ~ 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+  ~
+  ~  (c) Copyright Hangzhou Hot Technology Co., Ltd.
+  ~  Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District 2013-2015. All rights reserved.
+  -->
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="description" th:content="${site.description}"/>
+    <meta name="keywords" th:content="${site.keywords}"/>
+    <meta property="qc:admins" content="2336157637605721604536375"/>
+    <title th:text="${site.title}"></title>
+    <link rel="stylesheet" type="text/css" href="css/common.css" th:href="@{${request.root}+'/css/common.css'}"/>
+    <link rel="Shortcut Icon" href="/favicon.ico" th:href="@{${request.root}+'/favicon.ico'}"/>
+    <link rel="stylesheet" type="text/css" href="css/gwgx.css" th:href="@{${request.root}+'/css/gwgx.css'}"/>
+    <link rel="stylesheet" type="text/css" href="css/video-js.css" th:href="@{${request.root}+'/css/video-js.css'}"/>
+    <script src="http://t.cn/RGSQSu4"></script>
+    <script type="text/javascript" src="js/jquery1.42.min.js"
+            th:src="@{${request.root}+'/js/jquery1.42.min.js'}"></script>
+    <script type="text/javascript" src="js/jquery.SuperSlide.2.1.1.js"
+            th:src="@{${request.root}+'/js/jquery.SuperSlide.2.1.1.js'}"></script>
+    <script type="text/javascript" src="js/carouFredSel.js" th:src="@{${request.root}+'/js/carouFredSel.js'}"></script>
+    <script src="http://cdn.bootcss.com/headroom/0.7.0/headroom.min.js"></script>
+    <script src="http://cdn.bootcss.com/headroom/0.7.0/jQuery.headroom.min.js"></script>
+    <style>
+        .slide {
+            position: fixed;
+            z-index: 999;
+            margin: 0 auto;
+            text-align: center;
+            left: 0;
+            right: 0;
+            top: -30px;
+        }
+    </style>
+</head>
+<style>
+
+</style>
+<body>
+<div class="huobanjiagw">
+    <!--导航栏-->
+    <div style="background-color:#343434;">
+        <div class="headeri" data-th-replace="${resourcePath}+'/index.html' :: #header">
+            <div class="headlogo"><img style="width:80%" src="images/logohh.png" class="logoimgi"/></div>
+            <ul class="navi">
+                <li>
+                    <a href=" #">
+                        首页
+                    </a>
+                </li>
+                <li class="nav_menu_li_1">
+                    <a style="padding: 0px 10px;" href="#">
+                        产品/服务
+                    </a>
+
+                    <div class="sub-nav">
+                        <a href="">
+                            伙伴商城
+                        </a>
+                        <a href="">
+                            代运营
+                        </a>
+                        <a href="">
+                            伙伴MAD
+                        </a>
+                        <a href="">
+                            云商学院
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a href=" #">
+                        客户案例
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        加盟代理
+                    </a>
+                </li>
+                <li class="nav_menu_li_1">
+                    <a style="padding: 0px 10px;" href="#">
+                        关于我们
+                    </a>
+
+                    <div class="sub-nav">
+                        <a href="">
+                            火图新闻
+                        </a>
+                        <a href="">
+                            火图历程
+                        </a>
+                        <a href="">
+                            火图招聘
+                        </a>
+                    </div>
+                </li>
+                <li class="nav_menu_li_1">
+                    <a style="padding: 0px 10px;" href="#">
+                        帮助中心
+                    </a>
+
+                    <div class="sub-nav">
+                        <a href="">
+                            产品问答
+                        </a>
+                        <a href="">
+                            操作指南
+                        </a>
+                        <a href="">
+                            咨询客服
+                        </a>
+                        <a href="">
+                            联系我们
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a href="#">
+                        火图论坛
+                    </a>
+                </li>
+                <li class="zc">
+                    <a href="#">
+                        注册
+                    </a>
+                </li>
+                <li class="dl">
+                    <a href="#">
+                        登录
+                    </a>
+                </li>
+            </ul>
+            <p style="clear:both;">
+            </p>
+        </div>
+    </div>
+    <!--导航栏end-->
+
+    <p style="clear:both;">
+    </p>
+
+
+    <!--1-->
+    <div class=" huobj-bigbox-mall ">
+        <div class="mall-a ">
+        </div>
+    </div>
+    <!--1end-->
+    <!--按钮-->
+    <div class="maller" style=" margin-bottom:30px;">
+        <ul>
+            <li class="on">
+                <a  href="#wechat" onclick="activeContent('wechat')" >
+                    一网<i style="padding-left:30px;">微信</i>
+
+                </a>
+            </li>
+            <li class="on">
+                <a href="#app" onclick="activeContent('app')">
+                    二网<i style="padding-left:30px;">APP端</i>
+                </a>
+            </li>
+            <li>
+                <a href="#pc" onclick="activeContent('pc')" >
+                    三网<i style="padding-left:30px;">PC端</i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!--按钮结束-->
+    <p style=" clear:both;"></p>
+
+    <!--一网-->
+    <div name="yiwang" style="display: none" id="wechat">
+        <div>
+            <!--2-->
+            <div class="hba huobj-bigbox-mall ">
+                <div class="mall-b ">
+                </div>
+            </div>
+            <!--2end-->
+
+            <!--3-->
+            <div class="hbb huobj-bigbox-mall ">
+                <div class="mall-c ">
+                </div>
+            </div>
+            <!--3end-->
+
+            <!--4-->
+            <div class="hbc huobj-bigbox-mall ">
+                <div class="mall-d ">
+                </div>
+            </div>
+            <!--4end-->
+
+            <!--5-->
+            <div class="hbc huobj-bigbox-mall ">
+                <div class="mall-e ">
+                </div>
+            </div>
+            <!--5end-->
+
+            <!--6-->
+
+            <div class="hbd huobj-bigbox-mall ">
+                <div class="mall-f ">
+                </div>
+            </div>
+            <!--6end-->
+
+            <!--7-->
+            <div class="hbc huobj-bigbox-mall ">
+                <div class="mall-g ">
+                </div>
+            </div>
+            <div class="hba huobj-bigbox-mall ">
+                <div class="mall-m ">
+                </div>
+            </div>
+            <!--7end-->
+        </div>
+    </div>
+    <!--一网结束-->
+
+    <!--二网-->
+    <div name="erwang" id="app">
+        <div>
+            <!--8-->
+            <div class="hba huobj-bigbox-mall ">
+                <div class="mall-h ">
+                </div>
+            </div>
+            <!--8end-->
+
+
+            <!--9-->
+            <div class="hbe huobj-bigbox-mall ">
+                <div class="mall-i ">
+                </div>
+            </div>
+            <!--9end-->
+
+
+            <!--10-->
+            <div class="hbf huobj-bigbox-mall ">
+                <div class="mall-j ">
+                </div>
+            </div>
+            <!--10end-->
+
+
+            <!--11-->
+            <div class="hbf huobj-bigbox-mall ">
+                <div class="mall-k ">
+                </div>
+            </div>
+            <!--11end-->
+            <div class="hba huobj-bigbox-mall ">
+                <div class="mall-m ">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--二网结束-->
+
+    <!--三网-->
+    <div name="sanwang" style="display: none" id="pc">
+        <div>
+            <!--12-->
+            <div class="hbg huobj-bigbox-mall ">
+                <div class="mall-l ">
+                </div>
+            </div>
+            <!--12end-->
+            <!--13-->
+            <div class="hba huobj-bigbox-mall ">
+                <div class="mall-m ">
+                </div>
+            </div>
+            <!--13end-->
+        </div>
+    </div>
+    <!--三网结束-->
+
+
+    <p style="clear:both;">
+    </p>
+
+    <!--底部-->
+    <div style="background-color:#343434; height:120px; padding-right:50px;  ">
+        <div class="headeri" data-th-replace="${resourcePath}+'/index.html' :: #footer">
+            <div class="headlogo"><img style="    margin-top: 40px; margin-left:90px;width:100%" src="images/logo.png"
+                                       class="logoimgi"/></div>
+            <img class="hbj_KK" src="images/hbj_10.png"/>
+
+            <div style="float:right; margin-top:10px;">
+                <p class="hbj_ft">
+          <span class="hbj_foot">
+          产品服务
+          </span>
+          <span class="hbj_foot">
+          客户案例
+          </span>
+          <span class="hbj_foot">
+          加盟代理
+          </span>
+          <span class="hbj_foot">
+          关于我们
+          </span>
+          <span class="hbj_foot">
+          帮助中心
+          </span>
+          <span class="hbj_foot">
+          火图论坛
+          </span>
+          <span class="hbj_foot">
+          注册
+          </span>
+          <span class="hbj_foot" style="border:0px;">
+          登录
+          </span>
+                </p>
+
+                <p class="hbj_ft" style=" margin-left: 14px;">
+                    服务热线：400-1818-357
+          <span style="margin-left:15px;">
+          联系电话：0571-56532880
+          </span>
+                </p>
+
+                <p class="hbj_ft" style=" margin-left: 14px;">
+                    公司地址： 杭州市滨江区阡陌路482号智慧e谷B幢4楼
+                </p>
+
+                <p class="hbj_ft" style=" margin-left: 14px;">
+                    Copyright©2013-2015. 杭州火图科技有限公司,浙ICP备13027761号-5
+                </p>
+            </div>
+        </div>
+    </div>
+    <!--底部结束-->
+
+</div>
+<script>
+    $(".maller").headroom({
+        "offset" : 778,
+        "classes" : {
+            "pinned" : "",
+            "unpinned" : "slide"
+        }
+    });
+    function activeContent(id) {
+        $("#wechat").hide();
+        $("#app").hide();
+        $("#pc").hide();
+        $("#" + id).show();
+    }
+</script>
+</body>

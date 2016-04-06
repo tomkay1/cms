@@ -1,0 +1,252 @@
+﻿<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8"/>
+ <meta charset="utf-8">
+ <meta name="description" th:content="${site.description}" />
+ <meta name="keywords" th:content="${site.keywords}" />
+  <meta property="qc:admins" content="2336157637605721604536375" />
+ <title th:text="${site.title}"></title>
+<link rel="stylesheet" type="text/css" th:href="@{${request.root}+'/css/common.css'}"/>
+<link rel="stylesheet" type="text/css" href="css/huobanj.css" th:href="@{${request.root}+'/css/huobanj.css'}"/>
+<link rel="Shortcut Icon" href="/favicon.ico"  th:href="@{${request.root}+'/favicon.ico'}"/>
+  <script src="http://t.cn/RGSQSu4"></script>
+<script type="text/javascript" src="js/jquery1.42.min.js" th:src="@{request.root}+'/js/jquery1.42.min.js'"></script>
+<script type="text/javascript" src="js/jquery.SuperSlide.2.1.1.js" th:src="@{${request.root}+'/js/jquery.SuperSlide.2.1.1.js'}"></script>
+<script type="text/javascript" src="js/carouFredSel.js" th:src="@{${request.root}+'/js/carouFredSel.js'}"></script>
+</head>
+<body style=" background-color:#f4f7fc;">
+<div class="huobanjiagw">
+
+<!--导航栏-->
+<div style="background-color:#343434;">
+ <div class="headeri" data-th-replace="${resourcePath}+'/index.html' :: #header">
+    <div class="headlogo"><img style="width:80%" src="images/logohh.png"  class="logoimgi"/></div>
+    <ul class="navi">
+      <li>
+        <a href=" #">
+        首页
+        </a>
+      </li>
+      <li class="nav_menu_li_1">
+        <a style="padding: 0px 10px;" href="#">
+        产品/服务
+        </a>
+        <div class="sub-nav">
+          <a href="">
+          伙伴商城
+          </a>
+          <a href="">
+          代运营
+          </a>
+          <a href="">
+          伙伴MAD
+          </a>
+          <a href="">
+          云商学院
+          </a>
+        </div>
+      </li>
+      <li>
+        <a href=" #" >
+        客户案例
+        </a>
+      </li>
+      <li>
+        <a href="#">
+        加盟代理
+        </a>
+      </li>
+      <li class="nav_menu_li_1">
+        <a style="padding: 0px 10px;" href="#">
+        关于我们
+        </a>
+        <div class="sub-nav">
+          <a href="" >
+          火图新闻
+          </a>
+          <a href="">
+          火图历程
+          </a>
+          <a href="">
+          火图招聘
+          </a>
+        </div>
+      </li>
+      <li class="nav_menu_li_1">
+        <a style="padding: 0px 10px;" href="#">
+        帮助中心
+        </a>
+        <div class="sub-nav">
+          <a href="">
+          产品问答
+          </a>
+          <a href="">
+          操作指南
+          </a>
+          <a href="">
+          咨询客服
+          </a>
+          <a href="">
+          联系我们
+          </a>
+        </div>
+      </li>
+      <li>
+        <a href="#">
+        火图论坛
+        </a>
+      </li>
+      <li class="zc">
+        <a href="#">
+        注册
+        </a>
+      </li>
+      <li class="dl">
+        <a href="#">
+        登录
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+<!--导航栏end-->
+  <p style="clear:both"></p>
+  <p style="height: 40px;"></p>
+  
+  <!--新闻资讯列表开始 -->
+  
+  <div class="hr_news">
+    <div class="searchLeftS xLeft" >
+      <!-- 活动列表 -->
+      <div class="upJyBox">
+        <div class="crumb-wrapf">
+          <div class="crumb-list">
+            <a href="http://www.huobanplus.com" th:href="@{/news}">
+            火图新闻
+            </a>
+            <span class="crumb-step">&gt;</span><span class="crumb-name">新闻详情</span></div>
+        </div>
+        <ul data-article-current="article">
+          <li>
+            <b class="ysxqbt"><span data-th-text="${article.title}">火图科技与飞科集团达成战略合作！</span></b>
+            <p style="clear: both;"></p>
+            <div class="mt5 c999"><span class="fLeft">
+              <a href="#" target="_blank">
+              火图科技
+              </a>
+              <span class="ml10" data-time-format="${article.updateTime}" data-param-format="yyyy-MM-dd HH:mm:ss">2015-12-18</span></span></div>
+          </li>
+          <li style="line-height: 22px; font-size: 14px;" data-th-utext="${article.content}">
+            <span>
+            
+            <p><strong><br>
+              </strong></p>
+            <p style="text-align: center;"><img src="images/1450421420688523.jpg" title="logo" alt="logo"></p>
+            <p><br>
+            </p>
+            <p>日前，“移动互联网营销专家”<strong style="text-align: center; white-space: normal;">
+              <a href="http://www.banhuoplus.com/" target="_self" title="火图新闻" style="font-size: 18px;">
+              <span style="text-decoration: none;">火图科技</span>
+              </a>
+              </strong>与全国领先的“剃须专家”飞科集团宣布达成深度战略合作，强强联手，进一步完善飞科在移动电商领域的营销布局，快速对其移动端渠道进行扩展。</p>
+            
+            <p style="text-align: center;">
+              <a href="http://HTTP://WWW.HUOBANPLUS.COM" target="_self" title="火图新闻" alt="火图新闻">
+             
+              </a>
+            </p>
+            <p><strong style="text-align: center; white-space: normal;"><br>
+              </strong></p>
+            <p>飞科集团，创建于1999年，历经10多年跨越式发展，现已成为一家以技术研发和品牌运营为核心竞争力，集剃须刀及小家电研发、制造、销售于一体的无区域集团企业。“FLYCO飞科”是剃须刀行业首枚“中国驰名商标”；是中国剃须刀行业公认的第一品牌。飞科坚持“时尚、简约、科技”的设计理念，现已成为家喻户晓的品牌。 而飞科凭借多年累积的产品优势跟营销优势进军移动电商领域，意在打造新型品牌概念，抢占移动端市场。</p>
+            <p><br>
+            </p>
+            <p>本次与<strong style="text-align: center; white-space: normal;">
+              <a href="http://www.banhuoplus.com/" target="_self" title="火图新闻" style="font-size: 18px;">
+              <span style="text-decoration: none;">火图科技</span>
+              </a>
+              </strong>的合作，是飞科布局移动电商领域的重要一环。飞科方面表示，公司一直致力于把满足功能需求的个人护理电器行业，打造成为高科技的时尚产业，不断创造客户需求、改变消费者生活方式为公司使命，从不同渠道与顾客加强互动，希望为顾客带来更便利的购物体验。如今，移动电商的发展势头迅猛，相比于传统电商，移动端的流量引入后不容易流失，更能牢牢的圈住顾客，并且能更好的实现客户的便利性和互动性。</p>
+            <p><br>
+            </p>
+            <p style="text-align: center;">
+              <a href="http://HTTP://WWW.HUOBANPLUS.COM" target="_self">
+             
+              </a>
+            </p>
+            
+            
+            <p>之所以选择<strong style="text-align: center; white-space: normal;">
+              <a href="http://www.banhuoplus.com/" target="_self" title="火图新闻" style="font-size: 18px;">
+              <span style="text-decoration: none;">火图科技</span>
+              </a>
+              </strong>，飞科方面的相关负责人也为我们进行了分析。如今的<strong style="text-align: center; white-space: normal;">
+              <a href="http://www.banhuoplus.com/" target="_self" title="火图新闻" style="font-size: 18px;">
+              <span style="text-decoration: none;">火图科技</span>
+              </a>
+              </strong>，是一家专注于帮助企业转型的移动电商梦工厂，并且已经帮助了众多知名品牌成功转型。能够根据企业其自身特征规划出一套完善的转型方案，定制专属的系统平台。其业务涵盖内容更是广而深，除主营业务伙伴商城外，火图科技还推出了代运营、云商学院、自媒体广告、DSP广告、朋友圈广告等众多辅助业务。飞科认为，这些都有利于其在移动端的布局，牢牢把握住顾客的脉搏。</p>
+            <p><br>
+            </p>
+            <p>就双方的合作，火图方面也是非常期待。火图公司CEO杨震昊表示，火图会根据飞科自身特点，完善其移动端体系，助力其稳稳立足移动电商领域，比同行对手更快的把握住客户，这就是“抢滩登陆”。同时，杨总还说，现在<strong style="text-align: center; white-space: normal;">
+              <a href="http://www.banhuoplus.com/" target="_self" title="火图新闻" style="font-size: 18px;">
+              <span style="text-decoration: none;">火图科技</span>
+              </a>
+              </strong>已经有充分的实力为大品牌企业提供一站式转型服务，公司的核心技术团队均来自互联网资深领域，大数据分析能力更是覆盖全网，并且囊括数以万计的渠道推广资源，从各个方面为企业完善移动互联整体解决方案。</p>
+            <p><br>
+            </p>
+            <p>把购物融化于生活，把生活升级为艺术！见证品质，尊享智能，那就让我们一同见证<strong style="text-align: center; white-space: normal;">
+              <a href="http://www.banhuoplus.com/" target="_self" title="火图新闻" style="font-size: 18px;">
+              <span style="text-decoration: none;">火图科技</span>
+              </a>
+              </strong>跟飞科集团碰撞出的火花吧！</p>
+            <p><br>
+            </p>
+            </span>
+          </li>
+        </ul>
+      </div>
+    
+    </div>
+    <div style="text-align: center; margin-top: 10px; margin-bottom: 10px; display: none;">
+      <p style="color: red;">暂无数据</p>
+    </div>
+  </div>
+  <p style="clear: both"></p>
+  <p style="height: 60px"></p>
+  
+  <!--新闻资讯列表end -->
+  
+   <!--底部-->
+<div style="background-color:#343434; height:120px; padding-right:50px;  ">
+      <div class="headeri"  data-th-replace="${resourcePath}+'/index.html' :: #footer">
+      <div class="headlogo"><img style="    margin-top: 40px; margin-left:90px;width:100%" src="images/logo.png"  class="logoimgi" /></div>
+      <img class="hbj_KK" src="images/hbj_10.png"/>
+    <div style="float:right; margin-top:10px;" >
+     <p class="hbj_ft">
+    <span class="hbj_foot">产品服务</span><span class="hbj_foot">客户案例</span><span class="hbj_foot">加盟代理</span><span class="hbj_foot">关于我们</span>
+     <span class="hbj_foot">帮助中心</span><span class="hbj_foot">火图论坛</span><span class="hbj_foot">注册</span><span class="hbj_foot" style="border:0px;">登录</span>
+    
+    </p>
+    <p class="hbj_ft" style=" margin-left: 14px;">服务热线：400-1818-357 <span style="margin-left:15px;">  联系电话：0571-56532880</span> </p>
+    <p class="hbj_ft" style=" margin-left: 14px;" >公司地址： 杭州市滨江区阡陌路482号智慧e谷B幢4楼</p>
+   <p class="hbj_ft" style=" margin-left: 14px;" >Copyright©2013-2015. 杭州火图科技有限公司,浙ICP备13027761号-5</p>
+     
+    </div>
+  </div>
+
+</div>       
+   <!--底部结束-->
+</div>
+</body>
+<script type="text/javascript" th:remove="all">
+</script>
+<script type="text/javascript">
+    jQuery(".fullSlide").slide({
+        titCell: ".hd ul",
+        mainCell: ".bd ul",
+        effect: "fold",
+        autoPlay: true,
+        autoPage: true,
+        trigger: "click"
+    });
+</script>
+</html>

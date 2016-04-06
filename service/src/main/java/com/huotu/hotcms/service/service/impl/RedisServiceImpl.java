@@ -25,7 +25,7 @@ import javax.annotation.PostConstruct;
  * Created by cwb on 2016/3/24.
  */
 @Service
-@Profile("container")
+@Profile("prod")
 public class RedisServiceImpl implements RedisService {
 
     private static final Log log = LogFactory.getLog(RedisServiceImpl.class);

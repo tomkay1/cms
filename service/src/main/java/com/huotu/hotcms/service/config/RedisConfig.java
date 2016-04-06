@@ -24,7 +24,7 @@ import redis.clients.jedis.JedisPoolConfig;
  * Created by cwb on 2016/3/30.
  */
 @Configuration
-@Profile("container")
+@Profile("prod")
 public class RedisConfig {
 
     @Autowired

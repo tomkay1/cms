@@ -214,8 +214,14 @@ define(function (require, exports, module) {
                             content: "/widget/widgetList?layoutId="+layoutId+"&index="+layoutPositionIndex,
                             //btn:["确定"],
                             end: function (index, layero) {
-                                var widgetJson=$("#js_widget_json_value").val();
+                                //var widgetJson=$("#js_widget_json_value").val();
+                                var widgetJson=$("#js_widget_json_value").html();
+                                //window.console.log(widgetJson);
                                 var widgetObj=JSON.parse(widgetJson);
+                                //window.console.log("-------------------------------------------")
+                                //window.console.log(widgetObj.template);
+                                //var template=decodeURI(widgetObj.template);
+                                //window.console.log(widgetObj.template)
                                 $(dom).before(widgetObj.template);
                                 delete widgetObj["template"];//对json对象进行删除template模版数据
                                 var layoutId=$(dom).data("id");//布局ID
@@ -241,10 +247,10 @@ define(function (require, exports, module) {
                             shade: 0.8,
                             closeBtn: 1,
                             area: ['600px', '480px'],
-                            content: "/assets/widget/layout.html?v=1.3",
+                            content: "/assets/widget/layout.html?v=1.42",
                             end: function (index, layero) {
                                 page.widgetAdd();
-                                var layoutJson=$("#js_layout_json_value").val();
+                                var layoutJson=$("#js_layout_json_value").html();
                                 var layoutObj=JSON.parse(layoutJson);
                                 JQueue.putQueue(layoutObj);
                             }

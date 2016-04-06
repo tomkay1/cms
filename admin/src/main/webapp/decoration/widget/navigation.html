@@ -9,7 +9,6 @@
                     </li>
                     <li class="menu all-cate" th:if="${showProductType}">
                         <a class="main-link" href="#" target="">全部分类<span class="arrow"></span></a>
-
                         <div class="sub-menu-wrap">
                             <dl class="sub-pannel">
                                 <dt class="sub-title">
@@ -38,7 +37,7 @@
                             </dl>
                         </div>
                     </li>
-                    <li class="menu"  th:each="row:${Rows}">
+                    <li class="menu" th:each="row:${Rows}">
                         <a class="main-link" target="" th:href="${row.url_Rows}" th:text="${row.name_Rows}">测试2</a>
                     </li>
                 </ul>
@@ -52,7 +51,7 @@
         </div>
 
     </div>
-    <div class="module-toolbal-container ui-draggable">
+    <div class="module-toolbal-container ui-draggable" th:if="${edit}">
         <div class="module-assist" style="padding-top: 32px;"></div>
         <div class="module-toolbar HOT-module-toolbar" style="height:50px; width:100%;">
             <h4 style="cursor: move;">
@@ -116,21 +115,23 @@
         <div class="table-tbody" id="links-form" style="max-height:255px;">
             <table id="linkTable" cellspacing="0" cellpadding="0" border="0">
                 <tbody id="js-nav-box">
-                    <tr th:each="row,iterStat:${Rows}" th:id="${iterStat.index}">
-                        <td><input type="text" class="text-short" name="name_Rows" maxlength="32" th:value="${row.name_Rows}"></td>
-                        <td><input type="text" class="text-normal" name="url_Rows" th:value="${row.url_Rows}" maxlength="256" ></td>
-                        <td>
-                            <select name="type_Rows" class="select-short">
-                                <option value="0" th:selected="(${row.type_Rows}=='0'?selected)">当前窗口打开</option>
-                                <option value="1" th:selected="(${row.type_Rows}=='1'?selected)">新窗口打开</option>
-                            </select>
-                        </td>
-                        <td class="operate">
-                            <span class="icon-up js-nav-up" title="上移" th:attr="data-id=${iterStat.index}"></span>
-                            <span class="icon-down js-nav-next"  title="下移" th:attr="data-id=${iterStat.index}"></span>
-                            <span class="icon-del js-nav-delete" title="删除" th:attr="data-id=${iterStat.index}"></span>
-                        </td>
-                    </tr>
+                <tr th:each="row,iterStat:${Rows}" th:id="${iterStat.index}">
+                    <td><input type="text" class="text-short" name="name_Rows" maxlength="32"
+                               th:value="${row.name_Rows}"></td>
+                    <td><input type="text" class="text-normal" name="url_Rows" th:value="${row.url_Rows}"
+                               maxlength="256"></td>
+                    <td>
+                        <select name="type_Rows" class="select-short">
+                            <option value="0" th:selected="(${row.type_Rows}=='0'?selected)">当前窗口打开</option>
+                            <option value="1" th:selected="(${row.type_Rows}=='1'?selected)">新窗口打开</option>
+                        </select>
+                    </td>
+                    <td class="operate">
+                        <span class="icon-up js-nav-up" title="上移" th:attr="data-id=${iterStat.index}"></span>
+                        <span class="icon-down js-nav-next" title="下移" th:attr="data-id=${iterStat.index}"></span>
+                        <span class="icon-del js-nav-delete" title="删除" th:attr="data-id=${iterStat.index}"></span>
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -151,7 +152,7 @@
     <script type="application/template" id="js-nav-template">
         <tr id="{id}">
             <td><input type="text" class="text-short" name="name_Rows" maxlength="32" value=""></td>
-            <td><input type="text" class="text-normal" name="url_Rows" maxlength="256" ></td>
+            <td><input type="text" class="text-normal" name="url_Rows" maxlength="256"></td>
             <td>
                 <select name="type_Rows" class="select-short">
                     <option value="0">当前窗口打开</option>
@@ -160,33 +161,33 @@
             </td>
             <td class="operate">
                 <span class="icon-up js-nav-up" title="上移" data-id="{id}"></span>
-                <span class="icon-down js-nav-next"  title="下移" data-id="{id}"></span>
+                <span class="icon-down js-nav-next" title="下移" data-id="{id}"></span>
                 <span class="icon-del js-nav-delete" title="删除" data-id="{id}"></span>
             </td>
         </tr>
-</script>
+    </script>
     <script type="application/javascript">
-        var navModule={
-            addNav:function(){
-                var obj=$("#js-nav-add");
-                $.each(obj,function(item,dom){
-                   $(dom).click(function(){
-                       var html=$("#js-nav-template").html();
-                       var defaultID = new Date().getTime();
-                       var obj={id:defaultID};
-                       html=JUtils.resolveTemplate(obj,html);
-                       $("#js-nav-box").append(html);
+        var navModule = {
+            addNav: function () {
+                var obj = $("#js-nav-add");
+                $.each(obj, function (item, dom) {
+                    $(dom).click(function () {
+                        var html = $("#js-nav-template").html();
+                        var defaultID = new Date().getTime();
+                        var obj = {id: defaultID};
+                        html = JUtils.resolveTemplate(obj, html);
+                        $("#js-nav-box").append(html);
                         navModule.deleteNav();
-                   });
+                    });
                 });
             },
-            deleteNav:function(){
-                var obj=$(".js-nav-delete");
+            deleteNav: function () {
+                var obj = $(".js-nav-delete");
                 obj.unbind("click");
-                $.each(obj,function(item,dom){
-                    $(dom).click(function(){
-                        var id=$(dom).data('id');
-                        $("#"+id).remove();
+                $.each(obj, function (item, dom) {
+                    $(dom).click(function () {
+                        var id = $(dom).data('id');
+                        $("#" + id).remove();
                     });
                 });
             }

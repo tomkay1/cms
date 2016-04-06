@@ -52,4 +52,6 @@ public class WidgetBase {
 
     @XmlElement(name = "property")
     private List<WidgetProperty> property;
+
+    private Boolean edit;
 }

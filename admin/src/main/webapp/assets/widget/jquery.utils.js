@@ -43,7 +43,15 @@ var JUtils = [];
             }
             return size;
         },
-
+        parseMap:function(obj){
+            alert(obj);
+            var property=[];
+            for (key in obj) {
+                var valueJson=JSON.stringify(obj[key]);
+                property.push({name:key,value:valueJson});
+            }
+            return property;
+        }
     });
     /**
      * @brief: 表单系列化Json对象

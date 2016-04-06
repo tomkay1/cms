@@ -1,9 +1,12 @@
 package com.huotu.hotcms.admin.controller.decoration;
 
+import com.alibaba.fastjson.JSONArray;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.admin.common.StringUtil;
 import com.huotu.hotcms.service.entity.WidgetMains;
 import com.huotu.hotcms.service.model.widget.WidgetBase;
+import com.huotu.hotcms.service.model.widget.WidgetListProperty;
+import com.huotu.hotcms.service.model.widget.WidgetProperty;
 import com.huotu.hotcms.service.repository.WidgetMainsRepository;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
@@ -40,8 +43,8 @@ public class WidgetTemplateController {
     @Autowired
     private WidgetResolveService widgetResolveService;
 
-    @Autowired
-    private XmlTestService xmlTestService;
+//    @Autowired
+//    private XmlTestService xmlTestService;
 
 
     @RequestMapping(value = "/{id}",method = RequestMethod.POST)
@@ -49,10 +52,12 @@ public class WidgetTemplateController {
     public ResultView getWidgetTemplate(@PathVariable("id") Long id,String layoutId,String layoutPosition, String properties) {
         ResultView resultView = null;
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            Map map=null;
+            List<WidgetProperty> properties1=null;
             if(null!=properties){
-                map = objectMapper.readValue(properties,Map.class);
+                properties1=JSONArray.parseArray(properties,WidgetProperty.class);
+//                map = objectMapper.readValue(properties,Map.class);
+//                properties1=objectMapper.readValue(properties,WidgetProperty[].class);
+//                properties1=WidgetResolveService.ConvertWidgetPropertyByMap(map);
             }
             WidgetMains widgetMains=widgetMainsRepository.findOne(id);
             if(widgetMains!=null) {
@@ -63,7 +68,7 @@ public class WidgetTemplateController {
                 widgetBase.setWidgetUri(widgetMains.getResourceUri());
                 widgetBase.setWidgetEditUri(widgetMains.getResourceEditUri());
                 String html = pageResourceService.getWidgetTemplateByWidgetBase(widgetBase);
-                widgetBase.setProperty(map);
+                widgetBase.setProperty(properties1);
                 html=widgetResolveService.widgetBriefView(html,widgetBase);
                 resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), html);
             }else{
@@ -81,10 +86,13 @@ public class WidgetTemplateController {
     public ResultView getWidgetEditTemplate(@PathVariable("id") Long id,String layoutId,String layoutPosition, String properties){
         ResultView resultView = null;
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            Map map=null;
+//            WidgetListProperty<WidgetProperty> widgetPropertyWidgetListProperty=null;
+            List<WidgetProperty> widgetProperties=null;
             if(!StringUtil.isEmptyStr(properties)){
-                map = objectMapper.readValue(properties,Map.class);
+//                map = objectMapper.readValue(properties,Map.class);
+                widgetProperties=JSONArray.parseArray(properties,WidgetProperty.class);
+//                widgetPropertyWidgetListProperty=WidgetResolveService.ConvertWidgetPropertyListByMap(map);
+//                widgetProperties=WidgetResolveService.ConvertWidgetPropertyByMap(map);
             }
             WidgetMains widgetMains=widgetMainsRepository.findOne(id);
             if(widgetMains!=null) {
@@ -94,7 +102,7 @@ public class WidgetTemplateController {
                 widgetBase.setLayoutPosition(layoutPosition);
                 widgetBase.setWidgetUri(widgetMains.getResourceUri());
                 widgetBase.setWidgetEditUri(widgetMains.getResourceEditUri());
-                widgetBase.setProperty(map);
+                widgetBase.setProperty(widgetProperties);
                 String html=widgetResolveService.widgetEditView(widgetBase);
                 resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), html);
             }else{

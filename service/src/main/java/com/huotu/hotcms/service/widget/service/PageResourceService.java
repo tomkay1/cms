@@ -28,6 +28,9 @@ public class PageResourceService {
     @Autowired
     private RedisService redisService;
 
+    @Autowired
+    private WidgetResolveService widgetResolveService;
+
     private TemplateEngine templateEngine = new TemplateEngine();
 
     public String getHtmlTemplateByWidgetPage(WidgetPage widgetPage,Boolean isEdit) throws Exception {
@@ -63,6 +66,7 @@ public class PageResourceService {
 //        List<WidgetProperty> widgetProperties = widgetBase.getProperty();
 //        Map widgetProperties=widgetBase.getProperty();
         String widgetTemplate = HttpUtils.getHtmlByUrl(url);
+        widgetTemplate= widgetResolveService.widgetBriefView(widgetTemplate,widgetBase);
 //        if (widgetProperties != null) {
 //            for (WidgetProperty widgetProperty : widgetProperties) {
 //                if (widgetProperty != null) {

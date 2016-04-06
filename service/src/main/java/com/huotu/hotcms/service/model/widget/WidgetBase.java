@@ -44,6 +44,12 @@ public class WidgetBase {
 
 //    private List<WidgetProperty> property;
 //    @XmlAnyElement
-    @XmlElementWrapper(name="property")
-    private Map property;
+//    @XmlElementWrapper(name="property")
+//    private Map property;
+
+//    @XmlElementWrapper(name="widgetProperty")
+//    private WidgetListProperty property;
+
+    @XmlElement(name = "property")
+    private List<WidgetProperty> property;
 }

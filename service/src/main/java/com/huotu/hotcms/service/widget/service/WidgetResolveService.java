@@ -1,6 +1,10 @@
 package com.huotu.hotcms.service.widget.service;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.service.model.widget.WidgetBase;
+import com.huotu.hotcms.service.model.widget.WidgetListProperty;
 import com.huotu.hotcms.service.model.widget.WidgetProperty;
 import com.huotu.hotcms.service.service.RedisService;
 import com.huotu.hotcms.service.util.HttpUtils;
@@ -17,10 +21,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Administrator on 2016/4/1.
@@ -43,12 +44,13 @@ public class WidgetResolveService {
         return writer.toString();
     }
 
-    public String widgetBriefView(String templateResources,WidgetBase widgetBase){
+    public String widgetBriefView(String templateResources,WidgetBase widgetBase) throws IOException {
         if(widgetBase!=null) {
             Map map =null;
             if(widgetBase.getProperty()!=null){
-//                map = ConverMapByList(widgetBase.getProperty());
-                map = widgetBase.getProperty();
+                map = ConverMapByList(widgetBase.getProperty());
+//                map = widgetBase.getProperty();
+//                map=ConvertMapByWidgetListProperty(widgetBase.getProperty());
             }else{
                 map=new HashMap<>();
             }
@@ -67,13 +69,14 @@ public class WidgetResolveService {
         return templateResources;
     }
 
-    public String widgetEditView(WidgetBase widgetBase){
+    public String widgetEditView(WidgetBase widgetBase) throws IOException {
         String templateResources=getWidgetEditTemplate(widgetBase);
         if(widgetBase!=null) {
             Map map =null;
             if(widgetBase.getProperty()!=null){
-//                map = ConverMapByList(widgetBase.getProperty());
-                map = widgetBase.getProperty();
+                map = ConverMapByList(widgetBase.getProperty());
+//                map = widgetBase.getProperty();
+//                map=ConvertMapByWidgetListProperty(widgetBase.getProperty());
             }else{
                 map=new HashMap<>();
             }
@@ -128,15 +131,52 @@ public class WidgetResolveService {
         }
     }
 
-    private Map<String,Object> ConverMapByList(List<WidgetProperty> properties){
-        Map<String,Object> objectMap=new HashMap<>();
+    private Map<String,Object> ConverMapByList(List<WidgetProperty> properties) throws IOException {
+        Map<String,Object> objectMap=new HashMap<String,Object>();
+        ObjectMapper objectMapper = new ObjectMapper();
         for(WidgetProperty widgetProperty:properties){
-            objectMap.put(widgetProperty.getName(),widgetProperty.getValue());
+            Object obj=objectMapper.readValue(widgetProperty.getValue(),Object.class);
+            objectMap.put(widgetProperty.getName(),obj);
         }
         return objectMap;
     }
 
-    public List<WidgetProperty> ConvertWidgetPropertyByMap(Map property){
-        return null;
+    public static List<WidgetProperty> ConvertWidgetPropertyByMap(Map<String,Object> property) throws JsonProcessingException {
+        List<WidgetProperty> list = new ArrayList<WidgetProperty>();
+        ObjectMapper objectMapper = new ObjectMapper();
+        for (Map.Entry<String, Object> entry : property.entrySet()) {
+            WidgetProperty widgetProperty=new WidgetProperty();
+            widgetProperty.setName(entry.getKey());
+            String json=objectMapper.writeValueAsString(entry.getValue());
+            widgetProperty.setValue(json);
+            list.add(widgetProperty);
+        }
+        return list;
     }
+
+//    public static WidgetListProperty<WidgetProperty> ConvertWidgetPropertyListByMap(Map<String,Object> property) throws JsonProcessingException {
+//        WidgetListProperty<WidgetProperty> listProperty = new WidgetListProperty<WidgetProperty>();
+//        List<WidgetProperty> list = new ArrayList<WidgetProperty>();
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        for (Map.Entry<String, Object> entry : property.entrySet()) {
+//            WidgetProperty widgetProperty=new WidgetProperty();
+//            widgetProperty.setName(entry.getKey());
+//            String json=objectMapper.writeValueAsString(entry.getValue());
+//            widgetProperty.setValue(json);
+//            list.add(widgetProperty);
+//        }
+//        listProperty.setList(list);
+//        return listProperty;
+//    }
+//
+//    public Map<String,Object> ConvertMapByWidgetListProperty(WidgetListProperty<WidgetProperty> widgetListProperty) throws IOException {
+//        Map<String,Object> map=new HashMap<String,Object>();
+//        List<WidgetProperty> widgetProperties=widgetListProperty.getList();
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        for (WidgetProperty widgetProperty:widgetProperties){
+//            Object obj=objectMapper.readValue(widgetProperty.getValue(),Object.class);
+//            map.put(widgetProperty.getName(),obj);
+//        }
+//        return map;
+//    }
 }

@@ -67,9 +67,9 @@ public class WidgetTemplateController {
                 widgetBase.setLayoutPosition(layoutPosition);
                 widgetBase.setWidgetUri(widgetMains.getResourceUri());
                 widgetBase.setWidgetEditUri(widgetMains.getResourceEditUri());
-                String html = pageResourceService.getWidgetTemplateByWidgetBase(widgetBase);
                 widgetBase.setProperty(properties1);
-                html=widgetResolveService.widgetBriefView(html,widgetBase);
+                String html = pageResourceService.getWidgetTemplateByWidgetBase(widgetBase);
+//                html=widgetResolveService.widgetBriefView(html,widgetBase);
                 resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), html);
             }else{
                 resultView = new ResultView(ResultOptionEnum.NOFIND.getCode(), ResultOptionEnum.NOFIND.getValue(), null);

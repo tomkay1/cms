@@ -49,8 +49,6 @@ public class WidgetResolveService {
             Map map =null;
             if(widgetBase.getProperty()!=null){
                 map = ConverMapByList(widgetBase.getProperty());
-//                map = widgetBase.getProperty();
-//                map=ConvertMapByWidgetListProperty(widgetBase.getProperty());
             }else{
                 map=new HashMap<>();
             }
@@ -75,8 +73,6 @@ public class WidgetResolveService {
             Map map =null;
             if(widgetBase.getProperty()!=null){
                 map = ConverMapByList(widgetBase.getProperty());
-//                map = widgetBase.getProperty();
-//                map=ConvertMapByWidgetListProperty(widgetBase.getProperty());
             }else{
                 map=new HashMap<>();
             }

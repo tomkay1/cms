@@ -15,6 +15,7 @@ import com.huotu.hotcms.service.util.PageData;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
 import com.huotu.hotcms.service.util.StringUtil;
+import com.huotu.hotcms.service.widget.XmlTestService;
 import com.huotu.hotcms.service.widget.service.PageResolveService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -56,6 +57,9 @@ public class PagesController {
 
     @Autowired
     private SiteService siteService;
+
+    @Autowired
+    private XmlTestService xmlTestService;
 
     @RequestMapping("/list")
     public ModelAndView widgetTypeList(HttpServletRequest request, @RequestParam("customerid") Integer customerid) throws Exception {

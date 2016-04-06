@@ -41,6 +41,7 @@ import java.util.List;
         "com.huotu.hotcms.web.service",
         "com.huotu.hotcms.web.controller",
         "com.huotu.hotcms.web.interceptor",
+        "com.huotu.hotcms.web.util.web",
         "com.huotu.hotcms.service.thymeleaf.expression",
         "com.huotu.hotcms.service.thymeleaf.service"
 })

@@ -6,9 +6,12 @@ import com.huotu.hotcms.service.service.RedisService;
 import com.huotu.hotcms.service.util.HttpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.thymeleaf.TemplateEngine;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -24,6 +27,11 @@ public class PageResourceService {
     private StaticResourceService resourceServer;
     @Autowired
     private RedisService redisService;
+
+    @Autowired
+    private WidgetResolveService widgetResolveService;
+
+    private TemplateEngine templateEngine = new TemplateEngine();
 
     public String getHtmlTemplateByWidgetPage(WidgetPage widgetPage,Boolean isEdit) throws Exception {
         String htmlTemplate = "";
@@ -44,6 +52,7 @@ public class PageResourceService {
         return isWidgetTemplateCached(widgetBase) ? getCachedWidgetTemplate(widgetBase) : getWidgetTemplateFromFile(widgetBase);
     }
 
+
     private String getCachedWidgetTemplate(WidgetBase widgetBase) {
         return redisService.findByWidgetId(widgetBase.getId());
     }
@@ -54,18 +63,21 @@ public class PageResourceService {
 
     private String getWidgetTemplateFromFile(WidgetBase widgetBase) throws Exception{
         URL url = resourceServer.getResource(widgetBase.getWidgetUri()).toURL();
-        List<WidgetProperty> widgetProperties = widgetBase.getProperty();
+//        List<WidgetProperty> widgetProperties = widgetBase.getProperty();
+//        Map widgetProperties=widgetBase.getProperty();
         String widgetTemplate = HttpUtils.getHtmlByUrl(url);
-        if (widgetProperties != null) {
-            for (WidgetProperty widgetProperty : widgetProperties) {
-                if (widgetProperty != null) {
-                    widgetTemplate = widgetTemplate.replace("{" + widgetProperty.getName() + "}", widgetProperty.getValue());
-                }
-            }
-        }
+        widgetTemplate= widgetResolveService.widgetBriefView(widgetTemplate,widgetBase);
+//        if (widgetProperties != null) {
+//            for (WidgetProperty widgetProperty : widgetProperties) {
+//                if (widgetProperty != null) {
+//                    widgetTemplate = widgetTemplate.replace("{" + widgetProperty.getName() + "}", widgetProperty.getValue());
+//                }
+//            }
+//        }
         redisService.saveWidget(widgetBase.getId(),widgetTemplate);
         return widgetTemplate;
     }
+
 
     public String getWidgetModuleTemplateByWidgetModule(WidgetModule widgetModule) throws Exception {
         String moduleTemplate = "";
@@ -100,7 +112,7 @@ public class PageResourceService {
         if (widgetLayout != null) {
             List<String> moduleTemplateList = getWidgetModuleTemplateByWidgetModuleList(widgetLayout.getModule());
             LayoutEnum layoutEnum=LayoutEnum.valueOf(widgetLayout.getLayoutType());
-            layoutTemplate=layoutEnum.getLayoutTemplate(moduleTemplateList,isEdit);
+            layoutTemplate=layoutEnum.getLayoutTemplate(moduleTemplateList,isEdit,widgetLayout.getLayoutId());
         }
         return layoutTemplate;
     }

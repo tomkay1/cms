@@ -21,4 +21,10 @@ public interface RedisService {
 
     void saveWidget(Long widgetId,String content);
 
+    String findByWidgetEditId(Long widgetId);
+
+    boolean isWidgetEditExists(Long widgetId);
+
+    void saveWidgetEdit(Long widgetId,String content);
+
 }

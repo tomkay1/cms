@@ -1,5 +1,6 @@
 package com.huotu.hotcms.admin.controller.decoration;
 
+import com.huotu.hotcms.admin.common.StringUtil;
 import com.huotu.hotcms.admin.util.web.CookieUser;
 import com.huotu.hotcms.service.entity.WidgetMains;
 import com.huotu.hotcms.service.entity.WidgetType;
@@ -10,7 +11,6 @@ import com.huotu.hotcms.service.util.PageData;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
 import com.huotu.hotcms.service.widget.service.StaticResourceService;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -78,10 +79,17 @@ public class WidgetController {
         return  modelAndView;
     }
 
-    @RequestMapping(value = "/uploadWidget")
-    public ModelAndView uploadWidget(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception{
+    @RequestMapping(value = "/widgetUpLoadRead")
+    public ModelAndView widgetUpLoadRead(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/decoration/control/widgetUpload.html");
+        modelAndView.setViewName("/decoration/control/widgetRead.html");
+        modelAndView.addObject("id",id);
+        return  modelAndView;
+    }
+    @RequestMapping(value = "/widgetUpLoadEdit")
+    public ModelAndView widgetUpLoadEdit(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception{
+        ModelAndView modelAndView=new ModelAndView();
+        modelAndView.setViewName("/decoration/control/widgetEdit.html");
         modelAndView.addObject("id",id);
         return  modelAndView;
     }
@@ -90,25 +98,34 @@ public class WidgetController {
     @RequestMapping("/updateWidgetMains")
     public ModelAndView updateWidgetMains(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
+        String logo_uri =null;
+        String content ="";
+        String editContent ="";
         try{
             modelAndView.setViewName("/decoration/control/updateWidgetMains.html");
             WidgetMains widgetMains= widgetService.findWidgetMainsById(id);
-            List<WidgetType> widgetTypes = widgetService.findAllWidgetType();
-            String logo_uri =null;
-            String content ="";
             if(!StringUtils.isEmpty(widgetMains.getImageUri())) {
                 logo_uri = resourceServer.getResource(widgetMains.getImageUri()).toString();
             }
             if(!StringUtils.isEmpty(widgetMains.getResourceUri())) {
-                 content = HttpUtils.getHtmlByUrl(resourceServer.getResource(widgetMains.getResourceUri()).toURL());
+                    content = HttpUtils.getHtmlByUrl(resourceServer.getResource(widgetMains.getResourceUri()).toURL());
+            }
+            if(!StringUtils.isEmpty(widgetMains.getResourceEditUri())) {
+                editContent = HttpUtils.getHtmlByUrl(resourceServer.getResource(widgetMains.getResourceEditUri()).toURL());
             }
 
+
+        }catch (Exception ex){
+            log.error(ex.getMessage());
+        }
+        finally {
+            WidgetMains widgetMains= widgetService.findWidgetMainsById(id);
+            List<WidgetType> widgetTypes = widgetService.findAllWidgetType();
             modelAndView.addObject("widgetMains",widgetMains);
             modelAndView.addObject("logo_uri",logo_uri);
             modelAndView.addObject("content",content);
+            modelAndView.addObject("editContent",editContent);
             modelAndView.addObject("widgetTypes",widgetTypes);
-        }catch (Exception ex){
-            log.error(ex.getMessage());
         }
         return modelAndView;
     }
@@ -165,9 +182,17 @@ public class WidgetController {
     @RequestMapping(value = "/saveWidgetMains",method = RequestMethod.POST)
     @Transactional(value = "transactionManager")
     @ResponseBody
-    public ResultView saveWidgetMains(WidgetMains widgetMains,Long widgetTypeId){
+    public ResultView saveWidgetMains(WidgetMains widgetMains,Long widgetTypeId,String template,String editTemplate){
         ResultView result=null;
         try {
+            if(template!=null&&template!=""){
+                InputStream inputStream=StringUtil.getInputStream(template);
+                resourceServer.uploadResource(widgetMains.getResourceUri(),inputStream);
+            }
+            if(editTemplate!=null&&editTemplate!=""){
+                InputStream inputStream1=StringUtil.getInputStream(editTemplate);
+                resourceServer.uploadResource(widgetMains.getResourceEditUri(),inputStream1);
+            }
             WidgetType widgetType = widgetService.findWidgetTypeById(widgetTypeId);
             if(widgetMains.getId()==null){
                 widgetMains.setCreateTime(LocalDateTime.now());

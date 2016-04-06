@@ -2,10 +2,9 @@ package com.huotu.hotcms.service.model.widget;
 
 import lombok.Data;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -18,6 +17,7 @@ import java.util.List;
  *
  */
 @Data
+@XmlSeeAlso({WidgetBase.class})
 @XmlAccessorType(XmlAccessType.FIELD)
 public class WidgetBase {
 
@@ -27,5 +27,29 @@ public class WidgetBase {
     @XmlAttribute(name = "widgetUri")
     private String widgetUri;
 
+    @XmlAttribute(name = "widgetEditUri")
+    private String widgetEditUri;
+
+    /**
+     * 所属布局ID
+     * */
+    @XmlAttribute(name = "layoutId")
+    private String layoutId;
+
+    /**
+     * 所属布局位置模块index
+     * **/
+    @XmlAttribute(name = "layoutPosition")
+    private String layoutPosition;
+
+//    private List<WidgetProperty> property;
+//    @XmlAnyElement
+//    @XmlElementWrapper(name="property")
+//    private Map property;
+
+//    @XmlElementWrapper(name="widgetProperty")
+//    private WidgetListProperty property;
+
+    @XmlElement(name = "property")
     private List<WidgetProperty> property;
 }

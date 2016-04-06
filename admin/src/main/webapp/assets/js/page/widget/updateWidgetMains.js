@@ -53,7 +53,10 @@ define(function (require, exports, module) {
                             description: $("#description").val(),
                             imageUri: $("#thumbUri").val(),
                             resourceUri: $("#resourceUri").val(),
-                            orderWeight: $("#txtOrderWeight").val()
+                            resourceEditUri: $("#resourceEditUri").val(),
+                            orderWeight: $("#txtOrderWeight").val(),
+                            template:$("#uploadWidgetUri").val(),
+                            editTemplate:$("#uploadWidgetEditUri").val()
                         },
                         type: "POST",
                         dataType: 'json',

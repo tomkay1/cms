@@ -115,6 +115,7 @@ public class PageResolveService {
                 if (customPages != null) {
                     StringWriter stringWriter = new StringWriter();
                     JAXB.marshal(page, stringWriter);
+
                     InputStream inputStream = new ByteArrayInputStream(stringWriter.toString().getBytes("utf-8"));
                     String path = configInfo.getResourcesConfig(customerId, siteId) + "/" + customPages.getId() + ".xml";
                     URI uri = resourceServer.uploadResource(path, inputStream);

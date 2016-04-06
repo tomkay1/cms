@@ -32,6 +32,8 @@ public class RedisServiceImpl implements RedisService {
 
     private static final String CMS_WIDGET_KEY = "cms_widget";
 
+    private static final String CMS_WIDGET_EDIT_KEY="cms_widget_edit";
+
 
     @Autowired
     private RedisTemplate<String,Object> redisTemplate;
@@ -59,4 +61,18 @@ public class RedisServiceImpl implements RedisService {
         operations.put(CMS_WIDGET_KEY,widgetId,content);
     }
 
+    @Override
+    public String findByWidgetEditId(Long widgetId) {
+        return operations.get(CMS_WIDGET_EDIT_KEY,widgetId);
+    }
+
+    @Override
+    public boolean isWidgetEditExists(Long widgetId) {
+        return operations.hasKey(CMS_WIDGET_EDIT_KEY, widgetId);
+    }
+
+    @Override
+    public void saveWidgetEdit(Long widgetId, String content) {
+        operations.put(CMS_WIDGET_EDIT_KEY,widgetId,content);
+    }
 }

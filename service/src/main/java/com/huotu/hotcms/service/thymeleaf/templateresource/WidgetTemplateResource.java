@@ -30,8 +30,9 @@ import java.io.*;
  */
 public class WidgetTemplateResource implements ITemplateResource {
     private String location;//编辑格式如下{siteId}_{pageConfigName}.shtml
-    private final String EDIT_JAVASCRIPT="<script>seajs.use([\"widgetTooBar\"]);</script>";
-    private final String version="1.3";
+    private final String EDIT_JAVASCRIPT="<script>seajs.use([\"widgetTooBar\",\"cmsQueue\",\"widgetData\"]);</script>";
+//    private final String EDIT_JAVASCRIPT="<script>seajs.use([\"widgetTooBar\",\"cmsQueue\"]);</script>";
+    private final String version="1.4";
 
     private  String WIDGET_RESOURCES=" " +
             "<link rel=\"stylesheet\" type=\"text/css\" href=\"{PREFIX}/css/mall.base.css?v={version}\"/>\n" +

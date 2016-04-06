@@ -1,4 +1,4 @@
-var version="1.5.4";
+var version="1.90.9";
 seajs.config({
 	alias: {
 		"jquery": "js/jquery-1.9.1.min.js",
@@ -53,7 +53,8 @@ seajs.config({
 		"widgetMainsList":"js/page/widget/widgetMainsList.js?v="+version,
 		"addWidgetMains":"js/page/widget/addWidgetMains.js?v="+version,
 		"updateWidgetMains":"js/page/widget/updateWidgetMains.js?v="+version,
-		"widgetUpload":"js/page/widget/widgetUpload.js?v="+version,
+		"widgetUploadRead":"js/page/widget/widgetUploadRead.js?v="+version,
+		"widgetUploadEdit":"js/page/widget/widgetUploadEdit.js?v="+version,
 
 		"ajaxfileupload":"libs/ajaxfileupload.js?v="+version,
 		"jupload":"libs/upload/jackson-upload.js?v="+version,
@@ -89,6 +90,8 @@ seajs.config({
 		"widgetPageModel":"js/widgetPageModel.js?v="+version,
 
 		"widgetSelect":"widget/select.js?v="+version,
+		"cmsQueue":"js/jquery.cms.queue.js?v="+version,
+		"widgetData":"widget/widgetData.js?v="+version,
 	},
 	preload: ['jquery']
 });

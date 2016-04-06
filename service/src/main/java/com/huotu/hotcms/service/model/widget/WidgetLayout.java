@@ -21,6 +21,8 @@ import java.util.List;
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
 public class WidgetLayout {
+    @XmlAttribute(name = "layoutId")
+    private String layoutId;
 
     @XmlAttribute(name = "layoutType")
     private int layoutType;

@@ -83,6 +83,13 @@
             <artifactId>spring-data-redis</artifactId>
             <version>1.6.4.RELEASE</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.huotu.huobanplus</groupId>
+            <artifactId>common-client</artifactId>
+            <version>1.4.1</version>
+        </dependency>
+
     </dependencies>
 
     <properties>

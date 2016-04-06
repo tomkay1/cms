@@ -31,8 +31,11 @@ public class WidgetMains {
     /**
      * 控件主体资源Uri
      * */
-    @Column(name ="resourceUri" )
+    @Column(name ="resourceUri")
     private String resourceUri;
+
+    @Column(name="resourceEditUri")
+    private String resourceEditUri;
 
     /**
      * 控件主体描述信息

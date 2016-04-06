@@ -1,73 +1,96 @@
-body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, textarea, p, blockquote, th, td {
+@charset "utf-8";
+/* CSS Document */
+html, body
+{
 margin: 0;
-padding: 0;
+padding: 0; 
+}html,body{height:100%}
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, textarea, p, blockquote, th, td, hr, button, article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section
+{
+margin: 0;
+padding: 0
 }
 a, img, button, input, select {
--webkit-tap-highlight-color: transparent;
-outline: 0;-webkit-appearance:none;
--moz-appearance:none;
-appearance:none;
+	-webkit-tap-highlight-color: transparent;
+	outline: 0;
 }
 img {
-border: 0 none;
-/*vertical-align: top/2015102310:05*/
+	border: 0 none;
+	vertical-align: top
 }
-i, em { font-style: normal }
-ol, ul { list-style: none }
+i, em {
+	font-style: normal
+}
+ol, ul {
+	 list-style-type:none
+}
 input, select, button, h1, h2, h3, h4, h5, h6 {
-font-size: 100%;
-font-family: inherit
+	font-size: 100%;
+	font-family: inherit
 }
-body { font-family:微软雅黑; }
-a:link, a:visited { color: #333; }
+body {
+ font-family:Helvetica, STHeiti STXihei, Microsoft JhengHei, Microsoft YaHei, Arial; 
+}
+ 
+a:link, a:visited {
+	color:#333;
+}
 .fn-clear:after {
-visibility: hidden;
-display: block;
-font-size: 0;
-content: " ";
-clear: both;
-height: 0;
+	visibility:hidden;
+	display:block;
+	font-size:0;
+	content:" ";
+	clear:both;
+	height:0;
 }
-.fn-clear { zoom: 1; }
-a { text-decoration: none; }
-em
+.fn-clear {
+	zoom:1;
+}
+a
 {
-    font-style:italic;
+text-decoration: none;
+color: #5a5a5a;
+cursor: pointer;
+ 
 }
-input[type=button] { -webkit-appearance: none; }
-p {
-display: block;
--webkit-margin-before: 0em;
--webkit-margin-after: 0em;
--webkit-margin-start: 0px;
--webkit-margin-end: 0px;
+a:hover
+{
+ 
 }
-ul {
-  list-style-type: none;
-  display: block;
-  -webkit-margin-before: 0em;
-  -webkit-margin-after: 0em;
-  -webkit-margin-start: 0px;
-  -webkit-margin-end: 0px;
-}
+input[type=button]{-webkit-appearance:none;}
 
-.btn_wrap_fixed {
-position: fixed;
-bottom: 0;
-left: 0;
-z-index: 5;
-width: 100%;
-height: 110px;
-padding: 0;
-background: rgba(0, 0, 0, 0.7);
+input[type="text"], input[type="password"]{    
+     box-sizing: border-box;
+     -webkit-box-sizing:border-box;
+     -moz-box-sizing: border-box;
+}
+.tm_tit {
+height: 20px;
+padding: 0px 0;
+margin: 0 auto;
+text-align: center;
 overflow: hidden;
--webkit-transition: all 0.3s ease;
-transition: all 0.3s ease;
--webkit-transform: translateY(60px);
-transform: translateY(60px);
+position: relative;
+} 
+ 
+.tm_tit:after {
+left: 0;
 }
-#submitContainer
-{
-    height:110px;
+.tm_tit:before {
+right: 0;
 }
-select{-webkit-tap-highlight-color:rgba(0,0,0,0);}
+.tm_tit:after, .tm_tit:before {
+height: 1px;
+width:22%;
+content: '\20';
+position: absolute;
+top: 10px;
+display: block;
+background: #ddd;
+}.tm_tit h3 {
+font-size: 12px;
+line-height: 20px;
+color: #AFAFAF;
+font-weight: 400;
+}
+p,h1,h2,h3,h4{cursor: default;}

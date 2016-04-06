@@ -98,30 +98,34 @@ public class WidgetController {
     @RequestMapping("/updateWidgetMains")
     public ModelAndView updateWidgetMains(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
+        String logo_uri =null;
+        String content ="";
+        String editContent ="";
         try{
             modelAndView.setViewName("/decoration/control/updateWidgetMains.html");
             WidgetMains widgetMains= widgetService.findWidgetMainsById(id);
-            List<WidgetType> widgetTypes = widgetService.findAllWidgetType();
-            String logo_uri =null;
-            String content ="";
-            String editContent ="";
             if(!StringUtils.isEmpty(widgetMains.getImageUri())) {
                 logo_uri = resourceServer.getResource(widgetMains.getImageUri()).toString();
             }
             if(!StringUtils.isEmpty(widgetMains.getResourceUri())) {
-                 content = HttpUtils.getHtmlByUrl(resourceServer.getResource(widgetMains.getResourceUri()).toURL());
+                    content = HttpUtils.getHtmlByUrl(resourceServer.getResource(widgetMains.getResourceUri()).toURL());
             }
             if(!StringUtils.isEmpty(widgetMains.getResourceEditUri())) {
                 editContent = HttpUtils.getHtmlByUrl(resourceServer.getResource(widgetMains.getResourceEditUri()).toURL());
             }
 
+
+        }catch (Exception ex){
+            log.error(ex.getMessage());
+        }
+        finally {
+            WidgetMains widgetMains= widgetService.findWidgetMainsById(id);
+            List<WidgetType> widgetTypes = widgetService.findAllWidgetType();
             modelAndView.addObject("widgetMains",widgetMains);
             modelAndView.addObject("logo_uri",logo_uri);
             modelAndView.addObject("content",content);
             modelAndView.addObject("editContent",editContent);
             modelAndView.addObject("widgetTypes",widgetTypes);
-        }catch (Exception ex){
-            log.error(ex.getMessage());
         }
         return modelAndView;
     }

@@ -39,6 +39,9 @@ public class BindController {
     @Autowired
     private RequestService requestService;
 
+
+
+
     @Autowired
     private ConfigInfo configInfo;
 
@@ -58,7 +61,6 @@ public class BindController {
             String url="https://api.weixin.qq.com/sns/oauth2/access_token?appid="+appid+"&secret="+secret+"&code="+code+"&grant_type=authorization_code"+"&state="+state;
             WxUser wxUser =getWxUser(url);
             modelAndView.addObject("wxUser",wxUser);
-
         }catch (Exception ex){
             log.error(ex);
         }

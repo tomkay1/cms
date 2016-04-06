@@ -5,24 +5,30 @@
   <title>产品</title>
   <link rel="stylesheet" type="text/css" href="css/lobo.css" th:src="@{${localUrl}+'/template/0/css/lobo.css'}" />
   <link rel="stylesheet" type="text/css" href="css/scfdforPC.css" th:src="@{${localUrl}+'/template/0/css/scfdforPC.css'}"/>
+    <link rel="stylesheet" href="css/ShopShow.css" type="text/css" />
+    <link rel="stylesheet" href="css/MagicZoom.css" type="text/css" />
+    <script src="js/MagicZoom.js" type="text/javascript"></script>
+    <script src="js/ShopShow.js"></script>
 </head>
 <body>
 <div>
   <div class="prointroduce" style="width:1000px;margin:0 auto;">
     <div style="background-color:#ffffff;padding:20px 0px 20px 0px;min-height:440px;">
       <div id="preview">
-        <div id="spec-n1" class="jqzoom" style="position:relative" >
+        <!--<div id="spec-n1" class="jqzoom" style="position:relative" >-->
+        <div id="spec-n1" class="jqzoom" style="width:450px;height:450px" >
           <span style="position:absolute;bottom:0px;right:0px; z-index:9999"><img src="images/sss.png" /></span>
-          <span style="position:absolute"><img width="100%"  src="images/TB14cYpLVXXXXciXpXXXXXXXXXX_!!0-item_pic.jpg_430x430q90.jpg" alt="" ></span>
+          <!--<span style="position:absolute"><img width="100%"  src="images/1.jpg" alt="" ></span>-->
+            <div id="tsImgS"><a href="images/ghi.jpg" title="Images" class="MagicZoom" id="MagicZoom"><img width="100%"  src="images/ghi.jpg" /></a></div>
         </div>
         <div id="spec-list" >
           <div class="spec-items">
             <ul class="lh">
-              <li><img class="" alt="NICE CLAUP2015夏商场同款日系女装甜美高腰蝴蝶结直筒九分裤111510450A 青色 均码" src="images/c4.jpg" data-url="" data-img="1" width="50" height="50" ks_mark="y"></li>
-              <li><img alt="NICE CLAUP2015夏商场同款日系女装甜美高腰蝴蝶结直筒九分裤111510450A 青色 均码" src="images/c4.jpg" data-url="" data-img="1" width="50" height="50" ks_mark="y" class=""></li>
-              <li><img alt="NICE CLAUP2015夏商场同款日系女装甜美高腰蝴蝶结直筒九分裤111510450A 青色 均码" src="images/c4.jpg" data-url="" data-img="1" width="50" height="50" ks_mark="y" class=""></li>
-              <li><img alt="NICE CLAUP2015夏商场同款日系女装甜美高腰蝴蝶结直筒九分裤111510450A 青色 均码" src="images/c4.jpg" data-url="" data-img="1" width="50" height="50" ks_mark="y" class="img-hover"></li>
-              <li><img alt="NICE CLAUP2015夏商场同款日系女装甜美高腰蝴蝶结直筒九分裤111510450A 青色 均码" src="images/c4.jpg" data-url="" data-img="1" width="50" height="50" ks_mark="y"></li>
+              <li rel="MagicZoom"><img class="" alt="NICE CLAUP2015夏商场同款日系女装甜美高腰蝴蝶结直筒九分裤111510450A 青色 均码"  src="images/1.jpg"  tsImgS="images/c4.jpg"data-url="" data-img="1" width="50" height="50" ks_mark="y" class="img-hover"></li>
+              <li rel="MagicZoom"><img alt="NICE CLAUP2015夏商场同款日系女装甜美高腰蝴蝶结直筒九分裤111510450A 青色 均码" src="images/1.jpg"  tsImgS="images/1.jpg"data-url="" data-img="1" width="50" height="50" ks_mark="y" class=""></li>
+              <li rel="MagicZoom"><img alt="NICE CLAUP2015夏商场同款日系女装甜美高腰蝴蝶结直筒九分裤111510450A 青色 均码" src="images/1.jpg" tsImgS="images/1.jpg" data-url="" data-img="1" width="50" height="50" ks_mark="y" class=""></li>
+              <li rel="MagicZoom"><img alt="NICE CLAUP2015夏商场同款日系女装甜美高腰蝴蝶结直筒九分裤111510450A 青色 均码" src="images/1.jpg" tsImgS="images/c4.jpg" data-url="" data-img="1" width="50" height="50" ks_mark="y" ></li>
+              <li rel="MagicZoom"><img alt="NICE CLAUP2015夏商场同款日系女装甜美高腰蝴蝶结直筒九分裤111510450A 青色 均码" src="images/1.jpg" tsImgS="images/c4.jpg" data-url="" data-img="1" width="50" height="50" ks_mark="y"></li>
             </ul>
           </div>
         </div>

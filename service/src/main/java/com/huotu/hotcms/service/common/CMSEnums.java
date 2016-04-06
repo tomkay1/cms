@@ -94,4 +94,66 @@ public class CMSEnums {
 
     }
 
+
+    public enum MallCookieKeyValue
+    {
+        /*
+        * 商户ID
+        * */
+        CustomerID,
+
+        /*
+        * 用户ID
+        * */
+        UnionID,
+
+        /*
+        * 登录用户名
+        * */
+        xLoginName,
+
+        /*
+        * 上次登录地址
+         * */
+        LoginIP,
+
+        /*
+        * 角色名称
+        * */
+        RoleName,
+
+        /*
+        * 登录次数
+        * */
+        LoginCount,
+
+        /*
+        * 上次登录IP
+        * */
+        LastLoginIP,
+
+        /*
+        * 上次登录时间
+        * */
+        LastLoginTime,
+
+
+        /*
+        * 当前登录时间
+        * */
+        CurrentLoginTime,
+
+        /*
+        * 当前登录用户所属路径
+        * */
+        CurrentLoginUserParentPath,
+
+        /*
+        * 当前用户版本,0:1.x|1:2.x
+        * */
+        UserVersion
+
+    }
+
+
 }

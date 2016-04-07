@@ -1,0 +1,132 @@
+*{margin:0;padding:0;}
+ 
+ 
+.jjlogo{text-align: center;float:left; width:140px; margin-top:120px}
+.jjlogo img{border: 6px solid #eee; width: 100px; border-radius: 100%} 
+ 
+.clearfix:after {content: ".";display: block;height: 0;clear: both;visibility: hidden;}
+.clearfix {display: inline-block;}
+* html .clearfix { height: 1%;}
+.clearfix {display: block;}
+ 
+h1.logo{background:url('../img/logo.jpg') no-repeat 50% 25px;overflow:hidden;height:93px;padding: 25px 0;}
+h1.logo a{display:block;text-indent:-9999px;height:93px;}
+.container2{margin:0 auto;}
+.container2 h2 {font-weight:normal;line-height:28px;}
+.container2 p{padding:10px 0;}
+.credit{text-align:center;padding: 20px 0 100px;font-size:10px;}
+ 
+a, a:visited {text-decoration:none;outline:none;color:#000;}
+a:hover{text-decoration:none;}
+ 
+.demotips{margin:0 auto;text-align:center;font-size:25px;}
+.demotips a{margin:0 10px;}
+/*-核心代码-*/
+/* Menu style */
+	.timeline {
+		width: 1000px;
+		height: 200px;
+		overflow: hidden;
+		margin: 0 auto;
+		position: relative;
+		background: url('../images/dot.gif') left 45px repeat-x;
+	}
+		.dates {
+			width: 900px;
+			height: 60px;
+			overflow: hidden; margin-bottom:30px;
+		}
+			.dates li {
+				list-style: none;
+				float: left;
+				width: 110px;
+				height: 50px;
+				font-size:12px;
+				text-align: center;
+				background: url('../images/biggerdot.png') center bottom no-repeat;
+			}
+				.dates a {
+					line-height: 38px;
+					padding-bottom: 10px; color:#ccc; text-decoration:none; font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif; font-weight:bold
+				}
+				.dates a:hover{ color:#000}
+				.dates .selected {
+			        font-size:20px; color:#000
+				}
+		
+		.issues {
+			width: 1000px;
+			height: 350px;
+			overflow: hidden;  
+		}	
+			.issues li {
+				width:1000px;
+				height:200px;
+				list-style: none;
+				float: left;
+			}
+				.issues li img {
+					float: left;
+					margin: -4px 30px 0px 50px; border: 1px dotted #ccc; border-left:0px;
+				}
+				.issues li h1 {
+					color:#333;
+					font-size:25px;
+					margin:30px 0px 4px 0;
+					 
+				}
+				.issues li p {
+					font-size:16px;
+					margin-right: 70px;
+					font-weight: normal;
+					line-height: 22px;
+					 
+				}
+		
+		.grad_left,
+		.grad_right {
+			width: 100px;
+			height: 350px;
+			position: absolute;
+			top: 0;
+		}
+			.grad_left {
+		        left: 0;
+		        
+			}
+			.grad_right {
+		        right: 0;
+		      
+			}
+		
+		.next,
+		.prev {
+			position: absolute;
+			top: 0;
+			font-size: 70px;
+			top:130px;
+			width: 22px;
+			height: 38px;
+			background-position: 0 0;
+			background-repeat: no-repeat;
+			text-indent: -9999px;
+			overflow: hidden;
+		}
+			.next:hover,
+			.prev:hover {
+				background-position: 0 -76px;
+			}
+			.next {
+				right: 0;
+				background-image: url('../images/next.png');
+			}
+			.prev {
+				left: 0;
+				background-image: url('../images/prev.png');
+			}
+				.next.disabled,
+				.prev.disabled {
+					opacity: 0.2;
+				}
+				.issues li h1,.issues li p{ margin-left:60px;}
+				 

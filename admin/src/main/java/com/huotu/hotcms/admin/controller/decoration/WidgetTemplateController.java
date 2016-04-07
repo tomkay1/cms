@@ -5,12 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.admin.common.StringUtil;
 import com.huotu.hotcms.service.entity.WidgetMains;
 import com.huotu.hotcms.service.model.widget.WidgetBase;
-import com.huotu.hotcms.service.model.widget.WidgetListProperty;
 import com.huotu.hotcms.service.model.widget.WidgetProperty;
 import com.huotu.hotcms.service.repository.WidgetMainsRepository;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
-import com.huotu.hotcms.service.widget.XmlTestService;
 import com.huotu.hotcms.service.widget.service.PageResourceService;
 import com.huotu.hotcms.service.widget.service.WidgetResolveService;
 import org.apache.commons.logging.Log;
@@ -60,7 +58,7 @@ public class WidgetTemplateController {
 //                properties1=WidgetResolveService.ConvertWidgetPropertyByMap(map);
             }
             WidgetMains widgetMains=widgetMainsRepository.findOne(id);
-            if(widgetMains!=null) {
+            if(widgetMains!=null&&null!=widgetMains.getResourceUri()) {
                 WidgetBase widgetBase = new WidgetBase();
                 widgetBase.setId(id);
                 widgetBase.setLayoutId(layoutId);

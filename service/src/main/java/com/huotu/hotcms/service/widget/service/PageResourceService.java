@@ -105,9 +105,11 @@ public class PageResourceService {
         List<String> moduleTemplateList = new ArrayList<>();
         if (widgetModules != null) {
             for (WidgetModule widgetModule : widgetModules) {
-                String moduleTemplate = "";
-                moduleTemplate += getWidgetModuleTemplateByWidgetModule(widgetModule,isEdit);
-                moduleTemplateList.add(moduleTemplate);
+                if(widgetModule.getWidget()!=null) {
+                    String moduleTemplate = "";
+                    moduleTemplate += getWidgetModuleTemplateByWidgetModule(widgetModule, isEdit);
+                    moduleTemplateList.add(moduleTemplate);
+                }
             }
         }
         return moduleTemplateList;

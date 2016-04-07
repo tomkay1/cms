@@ -1,0 +1,218 @@
+﻿<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta charset="utf-8">
+    <meta name="description" th:content="${site.description}" />
+    <meta name="keywords" th:content="${site.keywords}" />
+    <meta property="qc:admins" content="2336157637605721604536375" />
+    <title th:text="${site.title}"></title>
+    <link rel="stylesheet" type="text/css" href="css/common.css" th:href="@{${request.root}+'/css/common.css'}" />
+    <link rel="stylesheet" type="text/css" href="css/huobanj.css" th:href="@{${request.root}+'/css/huobanj.css'}" />
+<link rel="Shortcut Icon" href="/favicon.ico"  th:href="@{${request.root}+'/favicon.ico'}"/>
+    <script src="http://t.cn/RGSQSu4"></script>
+    <script type="text/javascript" src="js/jquery1.42.min.js" th:src="@{${request.root}+'/js/jquery1.42.min.js'}"></script>
+    <script type="text/javascript" src="js/jquery.SuperSlide.2.1.1.js" th:src="@{${request.root}+'/js/jquery.SuperSlide.2.1.1.js'}"></script>
+    <script type="text/javascript" src="js/carouFredSel.js" th:src="@{${request.root}+'/js/carouFredSel.js'}"></script>
+</head>
+<body>
+    <div class="huobanjiagw">
+        <!--导航栏-->
+        <div style="background-color: #343434;">
+            <div class="headeri" data-th-replace="${resourcePath}+'/index.html' :: #header">
+                <div class="headlogo">
+                    <img style="width: 80%" src="images/logohh.png" class="logoimgi" /></div>
+                <ul class="navi">
+                    <li>
+                        <a href=" #">首页
+                        </a>
+                    </li>
+                    <li class="nav_menu_li_1">
+                        <a style="padding: 0px 10px;" href="#">产品/服务
+                        </a>
+                        <div class="sub-nav">
+                            <a href="">伙伴商城
+                            </a>
+                            <a href="">代运营
+                            </a>
+                            <a href="">伙伴MAD
+                            </a>
+                            <a href="">云商学院
+                            </a>
+                        </div>
+                    </li>
+                    <li>
+                        <a href=" #">客户案例
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">加盟代理
+                        </a>
+                    </li>
+                    <li class="nav_menu_li_1">
+                        <a style="padding: 0px 10px;" href="#">关于我们
+                        </a>
+                        <div class="sub-nav">
+                            <a href="">火图新闻
+                            </a>
+                            <a href="">火图历程
+                            </a>
+                            <a href="">火图招聘
+                            </a>
+                        </div>
+                    </li>
+                    <li class="nav_menu_li_1">
+                        <a style="padding: 0px 10px;" href="#">帮助中心
+                        </a>
+                        <div class="sub-nav">
+                            <a href="">产品问答
+                            </a>
+                            <a href="">操作指南
+                            </a>
+                            <a href="">咨询客服
+                            </a>
+                            <a href="">联系我们
+                            </a>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#">火图论坛
+                        </a>
+                    </li>
+                    <li class="zc">
+                        <a href="#">注册
+                        </a>
+                    </li>
+                    <li class="dl">
+                        <a href="#">登录
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!--导航栏end-->
+        <p style="clear: both"></p>
+        <!--加入我们-->
+        <div style="margin: 0 auto; width: 1000px; padding: 40px 0px 20px 0px;" data-article-current="article" data-param-id="23" >
+            <div th:utext="${article.content}">
+                <img th:src="@{${request.root}+'/images/fhzm.png'}" style="width: 1000px;" />
+            <div style="width: 1000px; font-size: 18px; padding: 2px 0px; margin: 20px 0px;">
+                <p style="line-height: 30px; height: 80px; font-size: 16px;">
+                    我们是火图——致力于帮助中国传统企业完成移动互联网转型升级，使其拥有属于自己的移动互联网能力，与品牌企业一起打造全球化移动电商梦工厂。
+目前公司已经完成pre A轮5000万融资，估值超5亿，员工超过100人，其中50%为技术研发人员，核心团队成员主要来自百度、阿里巴巴、UT斯达康、爱奇艺、方正、美团、大众点评等行业的资深专家。
+期待您的加盟，跟我们一起携手向前。
+                </p>
+                <p style="margin: 50px 0px 10px 0px; font-size: 16px;">招聘邮箱：zhaopin@huobanplus.com</p>
+                <p style="margin: 10px 0px; font-size: 16px;">招聘热线：0571-86870109</p>
+                <p style="margin: 10px 0px; font-size: 16px;">招聘QQ：3307008057</p>
+            </div>
+            <p style="clear: both"></p>
+            <div class="jrwm_zz">
+                <ul>
+                    <li>
+                        <b>.net开发工程师 </b>
+                        <p style="margin-top: 4px;">岗位职责:</p>
+                        <p>1、根据产品需求，编写开发所需的各类设计文档</p>
+                        <p>2、根据开发计划，按时保质保量的完成产品的开发</p>
+                        <p>3、完成上级领导交办的其它工作</p>
+                        <p>任职条件:</p>
+                        <p>1、熟悉.net framework以及相关的框架，如：asp.net mvc、ado.net等等，且对底层技术和框架有比较深入的认知与理解</p>
+                        <p>2、2年以上实际项目开发经验，大型bs项目开发经验者优先考虑</p>
+                        <p>3、有创意，工作态度端正</p>
+                        <p>4、能适应适度加班，有团队合作意识</p>
+
+                    </li>
+                    <li>
+                        <b>资深VI平面设计  </b>
+                        <p style="margin-top: 4px;">岗位职责:</p>
+                        <p>1、负责公司品牌宣传相关物料（DM、产品封套、宣传手册、广告等）设计</p>
+                        <p>2、负责公司线上推广页面（PC端、移动端）广告创意设计</p>
+                        <p>3、负责公司线下活动物料（海报、背景板等）设计</p>
+                        <p>4、负责公司新|自媒体基础页面、活动页面设计</p>
+                        <p>5、配合公司其他部门设计需求</p>
+                        <p>6、配合主管完成其他设计工作</p>
+                        <p>任职条件:</p>
+                        <p>1、设计相关专业，2~3年工作经验</p>
+                        <p>2、熟练运用Ps、Ai、IIustrator、Dreamweaver、Coreldraw、Indesign等相关设计软件</p>
+                        <p>3、有创意，工作态度端正</p>
+                        <p>4、能适应适度加班，有团队合作意识</p>
+
+                    </li>
+                    <li>
+                        <b>Java开发工程师    </b>
+                        <p style="margin-top: 4px;">岗位职责:</p>
+                        <p>1、参与业务系统的设计、开发过程</p>
+                        <p>2、根据编码规范、组件、架构、开发平台，进行编码工作</p>
+                        <p>3、根据业务需求和概要设计，高质量的完成软件详细设计</p>
+                        <p>4、根据详细设计和需求分析，设计集成测试用例，完成集成测试，并记录、纠正测试问题</p>
+                        <p>5、配合或者负责完成项目所要求的详细设计、集成测试用例、技术支持、经验总结等文档的撰写、整理工作</p>
+                        <p>6、解决业务系统项目中的关键问题和技术难题</p>
+                        <p>任职条件:</p>
+                        <p>1、本科或以上学历，计算机或相关专业，二年以上Java开发经验为佳</p>
+                        <p>2、精通java 语言，熟悉Maven构建系统，理解并精通单元测试，熟练掌握面向对象设计方法，理解设计模式</p>
+                        <p>3、了解J2EE技术构架、理解主流开发框架，对关系型数据库了解，熟悉B/S模式系统开发</p>
+                        <p>4、熟悉Spring、JPA、JSP/Servlet、JavaScript、Html、CSS、XML等语言工具和开发术；熟悉JBoss或tomcat</p>
+                        <p>5、至少掌握Oracle、MySql、DB2中至少一种数据库管理系统的开发技术并有开发经验</p>
+                        <p>6、具有良好的团队精神和沟通能力，学习能力强</p>
+
+                    </li>
+                    <li>
+                        <b>渠道经理      </b>
+                        <p style="margin-top: 4px;">岗位职责:</p>
+                        <p>1、搜索全国范围内具备互联网产品销售能力的公司与之建立合作</p>
+                        <p>2、与客户保持良好沟通，实时把握客户需求，为客户提供主动、热情、满意、周到的服务</p>
+                        <p>3、根据公司产品、价格及市场策略，独立处置询盘、报价、合同条约的协商及合同签订等事宜</p>
+                        <p>4、维护和开拓新的销售渠道和新客户，自主开发及拓展上下游用户，尤其是终端用户</p>
+                        <p>5、认真观测执行公司的销售管理规定和实施细则，努力提高自身业务水平</p>
+                        <p>6、积极完成规定的销售指标</p>
+                        <p>任职条件:</p>
+                        <p>1、有2年以上的业务拓展经验，1年以上管理经验，有过移动电商经验者优先</p>
+                        <p>2、性格开朗，抗压力强，遇到困难保持乐观心态，愿意主动工作，具备良好的沟通与协调能力</p>
+                        <p>3、良好的执行力，有较强的责任心与进取心</p>
+                    </li>
+                    <li>
+                        <b>软件测试工程师   </b>
+                        <p style="margin-top: 4px;">岗位职责:</p>
+                        <p>1、负责系统一个或多个模块的测试工作，能够制定测试计划，跟踪项目进度，能够带领测试组成员完成测试任务</p>
+                        <p style="height: 53px; line-height: 29px;">2、参与并指导测试成员进行测试分析/用例设计/测试执行，定期汇报项目进展情况；对于自动化和性能测试负责，能够独立应用执行，并对质量结果做出良好的分析</p>
+                        <p>3、监督和审核项目过程中配置管理规范的实施情况，为项目提供配置管理流程、工具方面的咨询、培训和支持</p>
+                        <p>4、对测试流程提出改进建议，提高测试人员的工作效率</p>
+                        <p>任职条件:</p>
+                        <p>1、本科及以上学历，计算机、软件工程相关专业，1年以上iOS、Android移动应用测试经验，熟悉iOS、Android平台特性</p>
+                        <p>2、熟悉各种APP应用测试工具，有独立开发过自动化测试经验者优先考虑</p>
+                        <p>3、熟悉主流手机平台编程语言（Object-C或Java等）者优先考虑</p>
+                        <p>4、熟悉性能测试、功能测试、集成测试、系统测试、压力测试等，熟练使用常用测试工具、Bug跟踪工具</p>
+                        <p>5、工作认真细致，有较强的责任心，具备较强的逻辑思维能力和新技术调研能力</p>
+                    </li>
+                </ul>
+            </div>
+            </div>
+            
+        </div>
+        <p style="clear: both; height: 40px;"></p>
+        <!--联系我们end-->
+
+        <!--底部-->
+        <div style="background-color: #343434; height: 120px; padding-right: 50px;">
+            <div class="headeri" data-th-replace="${resourcePath}+'/index.html' :: #footer">
+                <div class="headlogo">
+                    <img style="margin-top: 40px; margin-left: 90px; width: 100%" src="images/logo.png" class="logoimgi" /></div>
+                <img class="hbj_KK" src="images/hbj_10.png" />
+                <div style="float: right; margin-top: 10px;">
+                    <p class="hbj_ft">
+                        <span class="hbj_foot">产品服务</span><span class="hbj_foot">客户案例</span><span class="hbj_foot">加盟代理</span><span class="hbj_foot">关于我们</span>
+                        <span class="hbj_foot">帮助中心</span><span class="hbj_foot">火图论坛</span><span class="hbj_foot">注册</span><span class="hbj_foot" style="border: 0px;">登录</span>
+
+                    </p>
+                    <p class="hbj_ft" style="margin-left: 14px;">服务热线：400-1818-357 <span style="margin-left: 15px;">联系电话：0571-56532880</span> </p>
+                    <p class="hbj_ft" style="margin-left: 14px;">公司地址： 杭州市滨江区阡陌路482号智慧e谷B幢4楼</p>
+                    <p class="hbj_ft" style="margin-left: 14px;">Copyright©2013-2015. 杭州火图科技有限公司,浙ICP备13027761号-5</p>
+
+                </div>
+            </div>
+
+        </div>
+        <!--底部结束-->
+    </div>
+</body>
+</html>

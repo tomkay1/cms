@@ -28,7 +28,7 @@
                         <tr>
                             <th>背景颜色：</th>
                             <td>
-                                <input type="text" class="js-hot-color input-normal" data-default="#ffffff" data-input="pageBackGround"/>
+                                <input type="text" class="js-hot-color input-normal" id="pageBackGround" data-default="#ffffff" data-input="pageBackGround"/>
                                 <input type="hidden" class="js-hot-properties" name="pageBackGround" style="background:#ffffff"/>
                             </td>
                         </tr>
@@ -41,7 +41,7 @@
                         <tr>
                             <th>背景平铺：</th>
                             <td>
-                                <select class="input-small" name="pageBackRepeat">
+                                <select class="input-small" id="pageBackRepeat" name="pageBackRepeat">
                                     <option value="no-repeat">不平铺</option>
                                     <option value="repeat">平铺</option>
                                     <option value="repeat-x">横向平铺</option>
@@ -52,7 +52,7 @@
                         <tr>
                             <th>左右对齐：</th>
                             <td>
-                                <select class="input-small" name="pageBackAlign">
+                                <select class="input-small" id="pageBackAlign" name="pageBackAlign">
                                     <option value="">请选择</option>
                                     <option value="left">居左</option>
                                     <option value="center">居中</option>
@@ -63,7 +63,7 @@
                         <tr>
                             <th>上下对齐：</th>
                             <td>
-                                <select class="select-short" name="pageBackVertical">
+                                <select class="select-short" id="pageBackVertical" name="pageBackVertical">
                                     <option value="">请选择</option>
                                     <option value="top">居上</option>
                                     <option value="center">居中</option>
@@ -89,21 +89,20 @@
                         <tr>
                             <th>页面名称：</th>
                             <td>
-                                <input type="text" maxlength="50" name="pageName" class="input-normal" >
-                                <a href="javascript:void(0)" class="js-widget-add">添加</a>
+                                <input type="text" maxlength="50" id="pageName" name="pageName" class="input-normal" >
                             </td>
                         </tr>
                         <tr>
                             <th>关键词：</th>
                             <td>
-                                <input type="text" maxlength="50" name="pageKeyWords" class="input-normal" >
+                                <input type="text" maxlength="50" id="pageKeyWords" name="pageKeyWords" class="input-normal" >
                                 <span style="color: red;">设置店铺关键词有利于提升店铺的流量</span>
                             </td>
                         </tr>
                         <tr>
                             <th>页面描述：</th>
                             <td>
-                                <textarea rows="5"  class="textarea-long" name="pageDescription" ></textarea>
+                                <textarea rows="5"  class="textarea-long" id="pageDescription" name="pageDescription" ></textarea>
                             </td>
                         </tr>
                         </tbody>

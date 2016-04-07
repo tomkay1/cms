@@ -14,15 +14,20 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.widget.WidgetPage;
 import com.huotu.hotcms.service.service.impl.CustomPagesServiceImpl;
 import com.huotu.hotcms.service.service.impl.SiteServiceImpl;
+import com.huotu.hotcms.service.util.DesEncryption;
 import com.huotu.hotcms.service.widget.service.PageResolveService;
 import com.huotu.hotcms.service.widget.service.PageResourceService;
+import jdk.nashorn.internal.runtime.regexp.joni.EncodingHelper;
+import org.apache.commons.vfs2.util.EncryptUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.util.StringUtils;
 import org.thymeleaf.templateresource.ITemplateResource;
 import org.thymeleaf.util.Validate;
+import sun.security.krb5.EncryptedData;
 
 import java.io.*;
+import java.net.URLEncoder;
 
 /**
  * 组件模板资源
@@ -32,7 +37,7 @@ public class WidgetTemplateResource implements ITemplateResource {
     private String location;//编辑格式如下{siteId}_{pageConfigName}.shtml
     private final String EDIT_JAVASCRIPT="<script>seajs.use([\"widgetTooBar\",\"cmsQueue\",\"widgetData\"]);</script>";
 //    private final String EDIT_JAVASCRIPT="<script>seajs.use([\"widgetTooBar\",\"cmsQueue\"]);</script>";
-    private final String version="1.4";
+    private final String version="1.5";
 
     private  String WIDGET_RESOURCES=" " +
             "<link rel=\"stylesheet\" type=\"text/css\" href=\"{PREFIX}/css/mall.base.css?v={version}\"/>\n" +
@@ -40,6 +45,7 @@ public class WidgetTemplateResource implements ITemplateResource {
             "<link rel=\"stylesheet\" type=\"text/css\" href=\"{PREFIX}/css/mall.layout.css?v={version}\"/>\n" +
             "<link rel=\"stylesheet\" type=\"text/css\" href=\"{PREFIX}/css/mall.design.css?v={version}\"/>\n" +
             "<link rel=\"stylesheet\" type=\"text/css\" href=\"{PREFIX}/css/Advanced-search.css?v={version}\"/>";
+
 
     private final String EDIT_HTML_BOX="<!DOCTYPE html><html>\n" +
             "<head>\n" +
@@ -62,13 +68,16 @@ public class WidgetTemplateResource implements ITemplateResource {
             "  </div>" +
             "</body>" +
             "</html>";
+
+    private String BROWSE_RESOURCES="<link rel=\"stylesheet\" type=\"text/css\" href=\"{PREFIX}/css/mall.global.css?v={version}\"/>";
+
     private final String BROWSE_HTML_BOX="<!DOCTYPE html><html>\n" +
             "<head>\n" +
             "    <title>商城首页</title>\n" +
             "    <meta charset=\"UTF-8\" content=\"text/html\"/>\n" +
-            "</head>\n" +
+            "%s\n" +
+            "</head>" +
             "<body>" +
-            "%s" +
             "%s" +
             "</body>" +
             "</html>";
@@ -205,10 +214,14 @@ public class WidgetTemplateResource implements ITemplateResource {
         this.WIDGET_RESOURCES = this.WIDGET_RESOURCES.replace("{PREFIX}", this.URI_PREFIX);
         this.WIDGET_RESOURCES = this.WIDGET_RESOURCES.replace("{version}", this.version);
         if(isBrowse()){
-            htmlTemplate = String.format(this.BROWSE_HTML_BOX, this.WIDGET_RESOURCES, htmlTemplate);
+            this.BROWSE_RESOURCES = this.BROWSE_RESOURCES.replace("{PREFIX}", this.URI_PREFIX);
+            this.BROWSE_RESOURCES = this.BROWSE_RESOURCES.replace("{version}", this.version);
+            htmlTemplate = String.format(this.BROWSE_HTML_BOX, this.WIDGET_RESOURCES+this.BROWSE_RESOURCES, htmlTemplate);
         }else {
             htmlTemplate = String.format(this.EDIT_HTML_BOX, this.WIDGET_RESOURCES, htmlTemplate,EDIT_JAVASCRIPT);
             htmlTemplate = htmlTemplate.replace("{config_existsPage}", (isExists(pageConfigName) ? pageConfigName : "0"));
+            String widgetJson=mapper.writeValueAsString(widgetPage);
+            htmlTemplate=htmlTemplate.replace("{config_widgetJson}", DesEncryption.encryptData(widgetJson));
         }
         return new StringReader(htmlTemplate);
     }

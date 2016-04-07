@@ -8,15 +8,24 @@
 
 package com.huotu.hotcms.service.widget.service.impl.mock;
 
+import com.alibaba.fastjson.JSON;
+import com.huotu.hotcms.service.service.HttpService;
+import com.huotu.hotcms.service.util.ApiResult;
 import com.huotu.hotcms.service.widget.model.Goods;
 import com.huotu.hotcms.service.widget.model.GoodsSearcher;
 import com.huotu.hotcms.service.widget.model.JsonModel;
-import com.huotu.hotcms.service.widget.model.Page;
 import com.huotu.hotcms.service.widget.service.GoodsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * 商品组件服务mock层
@@ -25,13 +34,48 @@ import java.util.List;
 @Profile("!container")
 @Service
 public class GoodsServiceImpl implements GoodsService {
+    @Autowired
+    private HttpService httpService;
+
     @Override
-    public JsonModel searchGoods(int customerId, GoodsSearcher goodsSearcher) throws Exception {
-        return null;
+    public JsonModel searchGoods(int customerId, GoodsSearcher goodsSearcher) throws Exception{
+        ApiResult<String> apiResult = invokeGoodsSearchProce(customerId,goodsSearcher);
+        if(apiResult.getCode()!=200) {
+            return new JsonModel();
+        }
+        return JSON.parseObject(apiResult.getData(), JsonModel.class);
     }
 
     @Override
-    public List<Goods> getHotGoodsList(int customerId) throws Exception {
-        return null;
+    public List<Goods> getHotGoodsList(int customerId) throws Exception{
+        ApiResult<String> apiResult = invokeHotGoodsProce(customerId);
+        if(apiResult.getCode()!=200) {
+            return new ArrayList<>();
+        }
+        return JSON.parseArray(apiResult.getData(), Goods.class);
+    }
+
+    private ApiResult<String> invokeGoodsSearchProce(int customerId, GoodsSearcher goodsSearcher) throws Exception{
+        Map<String,Object> params = buildSortedParams(customerId,goodsSearcher);
+        return httpService.httpGet_prod("http", "api.open.fancat.cn", 8081, "/goodses/search/findByMixed", params);
+    }
+
+    private Map<String, Object> buildSortedParams(int customerId, GoodsSearcher goodsSearcher) throws Exception{
+        Map<String,Object> params = new TreeMap<>();
+        params.put("merchantId",customerId);
+        Class clazz = goodsSearcher.getClass();
+        Field[] fields = clazz.getFields();
+        for(Field field : fields) {
+            PropertyDescriptor pd = new PropertyDescriptor(field.getName(),clazz);
+            Method method = pd.getReadMethod();
+            params.put(field.getName(),method.invoke(goodsSearcher));
+        }
+        return params;
+    }
+
+    private ApiResult<String> invokeHotGoodsProce(int customerId) throws Exception{
+        Map<String,Object> params = new TreeMap<>();
+        params.put("merchantId",customerId);
+        return httpService.httpGet_prod("http", "api.open.fancat.cn", 8081, "/goodese/search/findTop10BySales", params);
     }
 }

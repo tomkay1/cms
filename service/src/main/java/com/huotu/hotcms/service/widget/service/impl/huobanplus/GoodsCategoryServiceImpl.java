@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -34,15 +35,15 @@ public class GoodsCategoryServiceImpl implements GoodsCategoryService {
     private HttpService httpService;
 
     @Override
-    public List<GoodsCategory> getGoodsCategories(int customerId) throws Exception{
+    public List<GoodsCategory> getGoodsCategories(int customerId) {
         ApiResult<String> apiResult = invokeGoodsCatgProce(customerId);
         if(apiResult.getCode()!=200) {
-            throw new Exception(apiResult.getMsg());
+            return new ArrayList<>();
         }
         return JSON.parseArray(apiResult.getData(), GoodsCategory.class);
     }
 
-    private ApiResult<String> invokeGoodsCatgProce(Integer customerId) throws Exception {
+    private ApiResult<String> invokeGoodsCatgProce(Integer customerId) {
         Map<String,Object> params = new TreeMap<>();
         params.put("merchantId",customerId);
         return httpService.httpGet_prod("http", "api.open.huobanplus.com", null, "/categories/search/findByMerchantId", params);

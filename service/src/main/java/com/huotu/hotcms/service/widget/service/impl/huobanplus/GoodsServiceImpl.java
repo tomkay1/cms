@@ -57,7 +57,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     private ApiResult<String> invokeGoodsSearchProce(int customerId, GoodsSearcher goodsSearcher) throws Exception{
         Map<String,Object> params = buildSortedParams(customerId,goodsSearcher);
-        return httpService.httpGet_prod("http", "api.open.huobanplus.com", null, "http://api.open.huobanplus.com/goodses", params);
+        return httpService.httpGet_prod("http", "api.open.huobanplus.com", null, "/goodses/search/findByMixed", params);
     }
 
     private Map<String, Object> buildSortedParams(int customerId, GoodsSearcher goodsSearcher) throws Exception{

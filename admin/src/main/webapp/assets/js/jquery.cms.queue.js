@@ -26,6 +26,11 @@ var aElement = new Array();
             }
             return aElement.length;
         },
+        putQueueList:function(layoutList){
+            for(var i=0;i<layoutList.length;i++){
+                JQueue.putQueue(layoutList[i]);
+            }
+        },
         /**
          * @brief: 元素出队
          * @return: vElement

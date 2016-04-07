@@ -1,0 +1,544 @@
+﻿<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta charset="utf-8">
+    <meta name="description" th:content="${site.description}"/>
+    <meta name="keywords" th:content="${site.keywords}"/>
+    <meta property="qc:admins" content="2336157637605721604536375" />
+    <title th:text="${site.title}"></title>
+    <link rel="stylesheet" type="text/css" th:href="@{${request.root}+'/css/common.css'}"/>
+    <link rel="stylesheet" type="text/css" href="css/huobanj.css" th:href="@{${request.root}+'/css/huobanj.css'}"/>
+<link rel="Shortcut Icon" href="/favicon.ico"  th:href="@{${request.root}+'/favicon.ico'}"/>
+    <script src="http://t.cn/RGSQSu4"></script>
+    <script type="text/javascript" src="js/jquery1.42.min.js" th:src="${request.root}+'/js/jquery1.42.min.js'"></script>
+    <script type="text/javascript" src="js/jquery.SuperSlide.2.1.1.js"
+            th:src="@{${request.root}+'/js/jquery.SuperSlide.2.1.1.js'}"></script>
+    <script type="text/javascript" src="js/carouFredSel.js" th:src="@{${request.root}+'/js/carouFredSel.js'}"></script>
+</head>
+<body style=" background-color:#f4f7fc;">
+<div class="huobanjiagw">
+
+
+    <!--导航栏-->
+    <div style="background-color:#343434;">
+        <div class="headeri" data-th-replace="${resourcePath}+'/index.html' :: #header">
+            <div class="headlogo"><img style="width:80%" src="images/logohh.png" class="logoimgi"/></div>
+            <ul class="navi">
+                <li>
+                    <a href=" #">
+                        首页
+                    </a>
+                </li>
+                <li class="nav_menu_li_1">
+                    <a style="padding: 0px 10px;" href="#">
+                        产品/服务
+                    </a>
+
+                    <div class="sub-nav">
+                        <a href="">
+                            伙伴商城
+                        </a>
+                        <a href="">
+                            代运营
+                        </a>
+                        <a href="">
+                            伙伴MAD
+                        </a>
+                        <a href="">
+                            云商学院
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a href=" #">
+                        客户案例
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        加盟代理
+                    </a>
+                </li>
+                <li class="nav_menu_li_1">
+                    <a style="padding: 0px 10px;" href="http://www.huobanplus.com">
+                        关于我们
+                    </a>
+
+                    <div class="sub-nav">
+                        <a href="">
+                            火图新闻
+                        </a>
+                        <a href="">
+                            火图历程
+                        </a>
+                        <a href="">
+                            火图招聘
+                        </a>
+                    </div>
+                </li>
+                <li class="nav_menu_li_1">
+                    <a style="padding: 0px 10px;" href="#">
+                        帮助中心
+                    </a>
+
+                    <div class="sub-nav">
+                        <a href="">
+                            产品问答
+                        </a>
+                        <a href="">
+                            操作指南
+                        </a>
+                        <a href="">
+                            咨询客服
+                        </a>
+                        <a href="">
+                            联系我们
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a href="#">
+                        火图论坛
+                    </a>
+                </li>
+                <li class="zc">
+                    <a href="#">
+                        注册
+                    </a>
+                </li>
+                <li class="dl">
+                    <a href="#">
+                        登录
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--导航栏end-->
+
+    <p style="clear:both">
+    </p>
+
+    <p style="height: 40px;">
+    </p>
+
+    <!--新闻资讯列表开始 -->
+
+    <div class="hr_news">
+        <div class="searchLeftS xLeft">
+            <!-- 活动列表 -->
+            <div class="upJyBox">
+                <div class="crumb-wrapf">
+                    <div class="crumb-list">
+                        <span class="crumb-name">火图新闻</span>
+                    </div>
+                </div>
+                <ul id="newslist" th:remove="all-but-first">
+                    <li article:foreach="article" param:pagesize="6">
+                        <a class="fLeft mr10" th:href="${request.rootUri}+'/news/'+${article.id}+'.html'">
+                            <img width="120" height="90" src="images/1450421045.jpg" th:src="${article.thumbUri}"
+                                 th:alt="${article.title}" alt="火图科技9大绝技-助你赢在微指端！">
+                        </a>
+
+                        <div class="upJyBoxConp">
+                            <div class="ujTitle">
+                                <b>
+                                    <a title="" href="" th:text="${article.title}"
+                                       th:href="${request.rootUri}+'/news/'+${article.id}+'.html'">
+                                        火图科技9大绝技-助你赢在微指端！
+                                    </a>
+                                </b>
+                <span class="hotSpan lv2">
+                </span>
+                            </div>
+                            <div class="mt5" style="height: 66px">
+                                <p style="height: 63px;" class="c999 mt5 ofHidden" th:text="${article.description}">
+                                    独特营销 由你打造 单挑微商 怒刷粉丝 指尖 PK 胜者为王 屠龙宝刀 点击就送 极品装备 一秒刷爆 幸运抽奖 惊喜不断 经典装备 极品属性 神秘宝箱 开箱有喜
+                                    无限刷怪 多倍惊奇 我不断的“洗澡，有泥的师姐”（寻找，有你的世界）在哪里 ？
+                                </p>
+                            </div>
+                            <div class="mt5 c999">
+                <span class="fright">
+                <span class="ml20" time:format="${article.updateTime}" param:format="yyyy-MM-dd HH:mm">
+                2016-01-05
+                </span>
+                </span>
+                            </div>
+                        </div>
+                    </li>
+                    <li onclick="window.location.href='news.php?id=56'">
+                        <a class="fLeft mr10">
+                            <img width="120" height="90" src="images/1450421045.jpg" alt="火图CEO—杨震昊的经营管理哲学2">
+                        </a>
+
+                        <div class="upJyBoxConp">
+                            <div class="ujTitle">
+                                <b>
+                                    <a target="_blank" title="" href="news.php?id=56">
+                                        火图CEO—杨震昊的经营管理哲学2
+                                    </a>
+                                </b>
+                <span class="hotSpan lv2">
+                </span>
+                            </div>
+                            <div class="mt5" style="height: 66px">
+                                <p style="height: 63px;" class="c999 mt5 ofHidden">
+                                    如何让5%的希望变成你理想的100%的现实
+                                </p>
+                            </div>
+                            <div class="mt5 c999">
+                <span class="fright">
+                <span class="ml20">
+                2016-01-05
+                </span>
+                </span>
+                            </div>
+                        </div>
+                    </li>
+                    <li onclick="window.location.href='news.php?id=55'">
+                        <a class="fLeft mr10">
+                            <img width="120" height="90" src="images/1450421045.jpg" alt="火图CEO—杨震昊的经营管理哲学1">
+                        </a>
+
+                        <div class="upJyBoxConp">
+                            <div class="ujTitle">
+                                <b>
+                                    <a target="_blank" title="" href="news.php?id=55">
+                                        火图CEO—杨震昊的经营管理哲学1
+                                    </a>
+                                </b>
+                <span class="hotSpan lv2">
+                </span>
+                            </div>
+                            <div class="mt5" style="height: 66px">
+                                <p style="height: 63px;" class="c999 mt5 ofHidden">
+                                    杨震昊给商业创业者的一堂无价的商业课程！
+                                </p>
+                            </div>
+                            <div class="mt5 c999">
+                <span class="fright">
+                <span class="ml20">
+                2016-01-05
+                </span>
+                </span>
+                            </div>
+                        </div>
+                    </li>
+                    <li onclick="window.location.href='news.php?id=54'">
+                        <a class="fLeft mr10">
+                            <img width="120" height="90" src="images/1450421045.jpg" alt="火图为啥老上头条？？？">
+                        </a>
+
+                        <div class="upJyBoxConp">
+                            <div class="ujTitle">
+                                <b>
+                                    <a target="_blank" title="" href="news.php?id=54">
+                                        火图为啥老上头条？？？
+                                    </a>
+                                </b>
+                <span class="hotSpan lv2">
+                </span>
+                            </div>
+                            <div class="mt5" style="height: 66px">
+                                <p style="height: 63px;" class="c999 mt5 ofHidden">
+                                    你想上头条吗？你想上头条吗？？你想上头条吗？？？
+                                </p>
+                            </div>
+                            <div class="mt5 c999">
+                <span class="fright">
+                <span class="ml20">
+                2015-12-25
+                </span>
+                </span>
+                            </div>
+                        </div>
+                    </li>
+                    <li onclick="window.location.href='news.php?id=52'">
+                        <a class="fLeft mr10">
+                            <img width="120" height="90" src="images/1450421045.jpg" alt="第二届互联网大会--大佬们都在讲什么？">
+                        </a>
+
+                        <div class="upJyBoxConp">
+                            <div class="ujTitle">
+                                <b>
+                                    <a target="_blank" title="" href="news.php?id=52">
+                                        第二届互联网大会--大佬们都在讲什么？
+                                    </a>
+                                </b>
+                <span class="hotSpan lv2">
+                </span>
+                            </div>
+                            <div class="mt5" style="height: 66px">
+                                <p style="height: 63px;" class="c999 mt5 ofHidden">
+                                    前几天第二届互联网大会在乌镇隆重开幕，此次大会盛况空前，不仅有习大大亲自坐阵致辞，国内互联网及相关企业大佬也都悉数到场，让我们一起看看他们都有哪些观点。
+                                </p>
+                            </div>
+                            <div class="mt5 c999">
+                <span class="fright">
+                <span class="ml20">
+                2015-12-28
+                </span>
+                </span>
+                            </div>
+                        </div>
+                    </li>
+                    <li onclick="window.location.href='news.php?id=50'">
+                        <a class="fLeft mr10">
+                            <img width="120" height="90" src="images/1450421045.jpg" alt="火图科技分享干货！为什么我们要建微信群？">
+                        </a>
+
+                        <div class="upJyBoxConp">
+                            <div class="ujTitle">
+                                <b>
+                                    <a target="_blank" title="" href="news.php?id=50">
+                                        火图科技分享干货！为什么我们要建微信群？
+                                    </a>
+                                </b>
+                <span class="hotSpan lv2">
+                </span>
+                            </div>
+                            <div class="mt5" style="height: 66px">
+                                <p style="height: 63px;" class="c999 mt5 ofHidden">
+                                    从根本分析为什么需要建立社群营销？如何去运营社群营销？
+                                </p>
+                            </div>
+                            <div class="mt5 c999">
+                <span class="fright">
+                <span class="ml20">
+                2015-12-22
+                </span>
+                </span>
+                            </div>
+                        </div>
+                    </li>
+                    <li onclick="window.location.href='news.php?id=49'">
+                        <a class="fLeft mr10">
+                            <img width="120" height="90" src="images/1450421045.jpg" alt="琅琊榜首，江左梅郎---移动互联网“梅长苏”">
+                        </a>
+
+                        <div class="upJyBoxConp">
+                            <div class="ujTitle">
+                                <b>
+                                    <a target="_blank" title="" href="news.php?id=49">
+                                        琅琊榜首，江左梅郎---移动互联网“梅长苏”
+                                    </a>
+                                </b>
+                <span class="hotSpan lv2">
+                </span>
+                            </div>
+                            <div class="mt5" style="height: 66px">
+                                <p style="height: 63px;" class="c999 mt5 ofHidden">
+                                    火图科技带你走进移动互联网的江湖！相见与火图，相忘于江湖！
+                                </p>
+                            </div>
+                            <div class="mt5 c999">
+                <span class="fright">
+                <span class="ml20">
+                2015-12-22
+                </span>
+                </span>
+                            </div>
+                        </div>
+                    </li>
+                    <li onclick="window.location.href='news.php?id=47'">
+                        <a class="fLeft mr10">
+                            <img width="120" height="90" src="images/1450421045.jpg" alt="火图科技与飞科集团达成战略合作！">
+                        </a>
+
+                        <div class="upJyBoxConp">
+                            <div class="ujTitle">
+                                <b>
+                                    <a target="_blank" title="" href="news.php?id=47">
+                                        火图科技与飞科集团达成战略合作！
+                                    </a>
+                                </b>
+                <span class="hotSpan lv2">
+                </span>
+                            </div>
+                            <div class="mt5" style="height: 66px">
+                                <p style="height: 63px;" class="c999 mt5 ofHidden">
+                                    “移动互联网营销专家”火图科技与全国领先的“剃须专家”飞科集团宣布达成深度战略合作
+                                </p>
+                            </div>
+                            <div class="mt5 c999">
+                <span class="fright">
+                <span class="ml20">
+                2015-12-18
+                </span>
+                </span>
+                            </div>
+                        </div>
+                    </li>
+                    <li onclick="window.location.href='news.php?id=46'">
+                        <a class="fLeft mr10">
+                            <img width="120" height="90" src="images/1450421045.jpg" alt="火图科技受邀“世界互联网大会”">
+                        </a>
+
+                        <div class="upJyBoxConp">
+                            <div class="ujTitle">
+                                <b>
+                                    <a target="_blank" title="" href="news.php?id=46">
+                                        火图科技受邀“世界互联网大会”
+                                    </a>
+                                </b>
+                <span class="hotSpan lv2">
+                </span>
+                            </div>
+                            <div class="mt5" style="height: 66px">
+                                <p style="height: 63px;" class="c999 mt5 ofHidden">
+                                    火图科技荣耀受邀参加互联网世界之巅的盛事--乌镇的世界互联网大会！
+                                </p>
+                            </div>
+                            <div class="mt5 c999">
+                <span class="fright">
+                <span class="ml20">
+                2015-12-22
+                </span>
+                </span>
+                            </div>
+                        </div>
+                    </li>
+                    <li onclick="window.location.href='news.php?id=45'">
+                        <a class="fLeft mr10">
+                            <img width="120" height="90" src="images/1450421045.jpg" alt="火图科技--带你主演移动电商的冰与火之歌">
+                        </a>
+
+                        <div class="upJyBoxConp">
+                            <div class="ujTitle">
+                                <b>
+                                    <a target="_blank" title="" href="news.php?id=45">
+                                        火图科技--带你主演移动电商的冰与火之歌
+                                    </a>
+                                </b>
+                <span class="hotSpan lv2">
+                </span>
+                            </div>
+                            <div class="mt5" style="height: 66px">
+                                <p style="height: 63px;" class="c999 mt5 ofHidden">
+                                    ​火图科技带大家走入移动电商的商场杀戮、权力划分、圈地称王的前沿资讯。
+                                </p>
+                            </div>
+                            <div class="mt5 c999">
+                <span class="fright">
+                <span class="ml20">
+                2015-12-17
+                </span>
+                </span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="page">
+            <ul >
+                <li data-th-remove="${!request.hasPrevPage} ? all">
+                    <a href="?currpage=2" ucautopagerstatus="complete" data-th-href="@{${request.prevPageHref}}">
+                        上一页
+                    </a>
+                </li>
+                <li data-th-each="page:${request.pages}">
+                    <a class="pgfocus" data-th-class="${request.currentPage==page.pageNo}?pgfocus" data-th-href="@{${page.pageHref}}" data-th-text="${page.pageNo}">
+                    1
+                    </a>
+                </li>
+                <li data-th-remove="all">
+                    <a href="?currpage=2">
+                        2
+                    </a>
+                </li>
+                <li data-th-remove="all">
+                    <a href="?currpage=3">
+                        3
+                    </a>
+                </li>
+                <li data-th-remove="all">
+                    <a href="?currpage=4">
+                        4
+                    </a>
+                </li>
+                <li data-th-remove="${!request.hasNextPage} ? all">
+                    <a href="?currpage=2" ucautopagerstatus="complete"  data-th-href="@{${request.nextPageHref}}">
+                        下一页
+                    </a>
+                </li>
+                <li class="point xinxinxin">共<span data-th-text="${request.pages.size()}">4</span>页</li>
+            </ul>
+        </div>
+    </div>
+
+    <p style="clear: both">
+    </p>
+
+
+    <!--新闻资讯列表end -->
+
+    <!--底部-->
+    <div style="background-color:#343434; height:120px; padding-right:50px;  ">
+        <div class="headeri" data-th-replace="${resourcePath}+'/index.html' :: #footer">
+            <div class="headlogo"><img style="    margin-top: 40px; margin-left:90px;width:100%" src="images/logo.png"
+                                       class="logoimgi"/></div>
+            <img class="hbj_KK" src="images/hbj_10.png"/>
+
+            <div style="float:right; margin-top:10px;">
+                <p class="hbj_ft">
+          <span class="hbj_foot">
+          产品服务
+          </span>
+          <span class="hbj_foot">
+          客户案例
+          </span>
+          <span class="hbj_foot">
+          加盟代理
+          </span>
+          <span class="hbj_foot">
+          关于我们
+          </span>
+          <span class="hbj_foot">
+          帮助中心
+          </span>
+          <span class="hbj_foot">
+          火图论坛
+          </span>
+          <span class="hbj_foot">
+          注册
+          </span>
+          <span class="hbj_foot" style="border:0px;">
+          登录
+          </span>
+                </p>
+
+                <p class="hbj_ft" style=" margin-left: 14px;">
+                    服务热线：400-1818-357
+          <span style="margin-left:15px;">
+          联系电话：0571-56532880
+          </span>
+                </p>
+
+                <p class="hbj_ft" style=" margin-left: 14px;">
+                    公司地址： 杭州市滨江区阡陌路482号智慧e谷B幢4楼
+                </p>
+
+                <p class="hbj_ft" style=" margin-left: 14px;">
+                    Copyright©2013-2015. 杭州火图科技有限公司,浙ICP备13027761号-5
+                </p>
+            </div>
+        </div>
+    </div>
+    <!--底部结束-->
+</div>
+</body>
+<script type="text/javascript" th:remove="all">
+</script>
+<script type="text/javascript">
+    jQuery(".fullSlide").slide({
+        titCell: ".hd ul",
+        mainCell: ".bd ul",
+        effect: "fold",
+        autoPlay: true,
+        autoPage: true,
+        trigger: "click"
+    });
+</script>
+</html>

@@ -44,22 +44,19 @@ define(function (require, exports, module) {
                                     }
                                     var widgetJson=JSON.stringify(widget)
                                     widgetData.saveWidget(widgetJson);
-                                    //var dom=parent.$('#js_widget_json_value');
-                                    //if(typeof dom=="undefined"||dom.length<=0){
-                                    //    parent.$("body").append("<input type='hidden' id='js_widget_json_value' value='"+widgetJson+"'/>");
-                                    //}else{
-                                    //    parent.$("#js_widget_json_value").val(widgetJson);
-                                    //}
+                                }else if(data.code==404){
+                                    widgetData.saveWidget("404");
                                 }else{
-                                    layer.msg("获得组件模版失败,请稍后再试...");
+                                    widgetData.saveWidget("500");
                                 }
                             }else{
-                                layer.msg("获得组件模版失败,请稍后再试...");
+                                widgetData.saveWidget("500");
                             }
                             parent.layer.close(index);
                         },
                         error:function(){
-                            layer.msg("获得组件模版失败,请稍后再试...");
+                            widgetData.saveWidget("500");
+                            parent.layer.close(index);
                         }
                     });
                 });

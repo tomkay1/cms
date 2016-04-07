@@ -2,20 +2,23 @@ define(function (require, exports, module) {
     require.async("widgetPageModel", function (a) {//页面对象处理->widgetPage
         var widgetPage = a.widgetPage();
         var widgetPageModel = widgetPage.getInstance();//页面持久化对象,后面根据这个对象系列化传递到后台,并创建对应的xml 配置文件
-        $.get("/assets/widget/toobar/toobar.html?t=90", function (html) {
+        var common=require("common");
+        $.get("/assets/widget/toobar/toobar.html?t=33", function (html) {
             var divObj = document.createElement("div");
             divObj.innerHTML = html;
             var first = document.body.firstChild;//得到页面的第一个元素
             document.body.insertBefore(divObj, first);//在得到的第一个元素之前插入
             page.pageTab();
             page.pagePhoto();
-            page.pageColor();
             $("#tab1").addClass("current");
             page.pageProperty(widgetPageModel);
             page.pageSave(widgetPageModel);
             page.widgetAdd();
-            page.layoutAdd(widgetPageModel);
+            page.layoutAdd();
             page.getWebRoot();
+            page.widgetEdit();
+            page.initPageObject();
+            page.pageColor();
         })
         var layer = require("layer");
         var common = require("common");
@@ -140,7 +143,6 @@ define(function (require, exports, module) {
             },
             createPage: function (widgetPage,publish) {
                 widgetPage.layout=JQueue.toLayoutList();
-                window.console.log(widgetPage);
                 $.ajax({
                     type: "post",
                     dataType: "json",
@@ -170,6 +172,7 @@ define(function (require, exports, module) {
                 })
             },
             patchPage: function (widgetPage, publish, pageId) {
+                widgetPage.layout=JQueue.toLayoutList();
                 $.ajax({
                     type: "post",
                     dataType: "json",
@@ -214,35 +217,33 @@ define(function (require, exports, module) {
                             content: "/widget/widgetList?layoutId="+layoutId+"&index="+layoutPositionIndex,
                             //btn:["确定"],
                             end: function (index, layero) {
-                                //var widgetJson=$("#js_widget_json_value").val();
-                                var widgetJson=$("#js_widget_json_value").html();
-                                //window.console.log(widgetJson);
-                                var widgetObj=JSON.parse(widgetJson);
-                                //window.console.log("-------------------------------------------")
-                                var template=decodeURI(widgetObj.template);
-                                //window.console.log(widgetObj);
-                                //window.console.log("-------------------------------------------")
-                                //window.console.log(widgetObj.template);
-                                //var template=decodeURI(widgetObj.template);
-                                //window.console.log(widgetObj.template)
-                                $(dom).before(template);
-                                delete widgetObj["template"];//对json对象进行删除template模版数据
-                                var layoutId=$(dom).data("id");//布局ID
-                                var layoutPosition=$(dom).data("index");//布局位置
-                                widgetObj.layoutId=layoutId;
-                                widgetObj.layoutPosition=layoutPosition;
-                                //window.console.log("layoutId--->"+layoutId+"  layoutPosition-->"+layoutPosition);
-                                //window.console.log(widgetObj);
-                                JQueue.putQueueLayoutWidget(layoutId,layoutPosition,widgetObj);
-                                //window.console.log(JQueue.toJson());
-                                page.widgetEdit();
-                                //window.console.log(JQueue.toJson());//测试查看数据使用
+                                var widgetJson = $("#js_widget_json_value").html();
+                                if (widgetJson == "404") {
+                                    layer.msg("控件主体没有添加预览视图");
+                                    return;
+                                } else if (widgetJson == "500") {
+                                    layer.msg("服务器错误,请稍候再试");
+                                    return;
+                                } else {
+                                    var widgetObj = JSON.parse(widgetJson);
+                                    var template = decodeURI(widgetObj.template);
+                                    $(dom).before(template);
+                                    delete widgetObj["template"];//对json对象进行删除template模版数据
+                                    var layoutId = $(dom).data("id");//布局ID
+                                    var layoutPosition = $(dom).data("index");//布局位置
+                                    widgetObj.layoutId = layoutId;
+                                    widgetObj.layoutPosition = layoutPosition;
+                                    //window.console.log("layoutId--->"+layoutId+"  layoutPosition-->"+layoutPosition);
+                                    //window.console.log(widgetObj);
+                                    JQueue.putQueueLayoutWidget(layoutId, layoutPosition, widgetObj);
+                                    page.widgetEdit();
+                                }
                             }
                         });
                     });
                 });
             },
-            layoutAdd: function (widgetPageModel) {
+            layoutAdd: function () {
                 var obj = $(".js-layout-add");
                 $.each(obj, function (item, dom) {
                     $(dom).click(function () {
@@ -330,6 +331,53 @@ define(function (require, exports, module) {
                         });
                     })
                 })
+            },
+            /**
+             * 加载页面配置数据（修改页面时有效）
+             * */
+            initPageObject:function(){
+                var widgetPageData=common.getMetaContent("widget");
+                $.ajax({
+                    type: "post",
+                    dataType: "json",
+                    url: '/common/getWidgetPageData',//组件模版编辑预览视图解析
+                    data: {
+                        widget: widgetPageData
+                    },
+                    success: function (data) {
+                        if(data!=null){
+                            if(data.code==200&&data.data!=null){
+                                var obj=JSON.parse(data.data);
+                                JQueue.putQueueList(obj.layout);//把页面中的配置信息初始化到JQueue队列中
+                                delete obj["layout"];
+                                widgetPageModel = widgetPage.setModel(obj);
+                                page.initPageProperty();
+                                //window.console.log(widgetPageModel);
+                            }else{
+                                layer.msg("加载页面配置数据失败...");
+                            }
+                        }
+                    },
+                    error:function(){
+                        layer.msg("加载页面配置数据失败...");
+                    }
+                });
+            },
+            initPageProperty:function(){
+                if(widgetPageModel!=null) {
+                    $("#pageName").val(widgetPageModel.pageName == null ? "" : widgetPageModel.pageName);
+                    $("#pageKeyWords").val(widgetPageModel.pageKeyWords == null ? "" : widgetPageModel.pageKeyWords);
+                    $("#pageDescription").val(widgetPageModel.pageDescription == null ? "" : widgetPageModel.pageDescription);
+
+                    $("#url").val(widgetPageModel.url);
+                    $("#pageBackGround").attr("data-default",(widgetPageModel.pageBackGround == null ? "#ffffff" : widgetPageModel.pageBackGround));
+
+                    $("#pageBackImage").val(widgetPageModel.pageBackImage == null ? "" : widgetPageModel.pageBackImage);
+                    $("#pageBackRepeat").find("option[text='" + (widgetPageModel.pageBackRepeat == null ? "" : widgetPageModel.pageBackRepeat) + "']").attr("selected", true);
+                    $("#pageBackAlign").find("option[text='" + (widgetPageModel.pageBackAlign == null ? "" : widgetPageModel.pageBackAlign) + "']").attr("selected", true);
+                    $("#pageBackVertical").find("option[text='" + (widgetPageModel.pageBackVertical == null ? "" : widgetPageModel.pageBackVertical) + "']").attr("selected", true);
+
+                }
             }
         };
         var widgetModule={

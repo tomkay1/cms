@@ -109,6 +109,9 @@ define(["js/jquery-1.9.1.min"],function () {
         },
         isDebug:function(){
             return 1;//调试模式
+        },
+        getMetaContent:function(name){
+            return $("meta[name=" + name + "]").attr("content");
         }
     }
 });

@@ -1,5 +1,5 @@
 <!--浏览视图-->
-<div class="fn-clear sh-head-menu-brown-624326 toolhover" th:attr="id=${id}">
+<div th:class="'fn-clear '+(${templateClass}==null?'sh-head-menu-brown-624326':${templateClass})+' toolhover'" th:attr="id=${id}">
     <div class="mc" style="overflow: visible;">
         <div class="HOT_ShopHeaderLinkWithDropdown sh-hd-wrap">
             <div class="sh-head-menu">
@@ -43,8 +43,8 @@
                 </ul>
                 <div class="s-form" th:if="${showSearch}">
                     <form class="form-body">
-                        <input type="text" class="s-inp" value="" maxlength="60" size="60"/>
-                        <input type="button" onclick="" th:value="${defaultKewWord}" class="s-submit"/>
+                        <input type="text" class="s-inp" th:value="${defaultKewWord}"  maxlength="60" size="60"/>
+                        <input type="button" onclick="" value="搜索" class="s-submit"/>
                     </form>
                 </div>
             </div>
@@ -89,9 +89,16 @@
         <ul>
             <li>
                 <label style="width: 180px;">是否在导航展示商品分类 </label>
-                <select name="showProductType" class="select-short" id="show_category">
+                <select name="showProductType" class="select-short">
                     <option value="1" selected="">是</option>
                     <option value="0">否</option>
+                </select>
+            </li>
+            <li>
+                <label style="width: 180px;">选择模版 </label>
+                <select name="templateClass" class="select-short" id="templateClass">
+                    <option value="sh-head-menu-brown-624326" selected="">模版一</option>
+                    <option value="sh-head-menu-brown-v-633584">模版二</option>
                 </select>
             </li>
         </ul>

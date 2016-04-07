@@ -219,16 +219,22 @@ define(function (require, exports, module) {
                                 //window.console.log(widgetJson);
                                 var widgetObj=JSON.parse(widgetJson);
                                 //window.console.log("-------------------------------------------")
+                                var template=decodeURI(widgetObj.template);
+                                //window.console.log(widgetObj);
+                                //window.console.log("-------------------------------------------")
                                 //window.console.log(widgetObj.template);
                                 //var template=decodeURI(widgetObj.template);
                                 //window.console.log(widgetObj.template)
-                                $(dom).before(widgetObj.template);
+                                $(dom).before(template);
                                 delete widgetObj["template"];//对json对象进行删除template模版数据
                                 var layoutId=$(dom).data("id");//布局ID
                                 var layoutPosition=$(dom).data("index");//布局位置
                                 widgetObj.layoutId=layoutId;
                                 widgetObj.layoutPosition=layoutPosition;
+                                //window.console.log("layoutId--->"+layoutId+"  layoutPosition-->"+layoutPosition);
+                                //window.console.log(widgetObj);
                                 JQueue.putQueueLayoutWidget(layoutId,layoutPosition,widgetObj);
+                                //window.console.log(JQueue.toJson());
                                 page.widgetEdit();
                                 //window.console.log(JQueue.toJson());//测试查看数据使用
                             }
@@ -250,7 +256,7 @@ define(function (require, exports, module) {
                             content: "/assets/widget/layout.html?v=1.42",
                             end: function (index, layero) {
                                 page.widgetAdd();
-                                var layoutJson=$("#js_layout_json_value").html();
+                                var layoutJson=$("#js_layout_json_value").val();
                                 var layoutObj=JSON.parse(layoutJson);
                                 JQueue.putQueue(layoutObj);
                             }
@@ -308,8 +314,8 @@ define(function (require, exports, module) {
                             end: function (index, layero) {
                                 var widgetSettingJson=$("#js_widgetSetting_json_value").val();//获得控件主体设置信息
                                 var widgetSettingObj=JSON.parse(widgetSettingJson);
-                                //window.console.log(JQueue.toJson())
-                                //window.console.log("layoutId-->"+layoutId+"  layoutPostion-->"+layoutPositionIndex+"  widgetId-->"+widgetId);
+                                window.console.log(JQueue.toJson())
+                                window.console.log("layoutId-->"+layoutId+"  layoutPostion-->"+layoutPositionIndex+"  widgetId-->"+widgetId);
                                 var widget=JQueue.findLayoutWdigetByPositionAndWidgetId(layoutId,layoutPositionIndex,widgetId);//查找队列中改布局下的控件主体对象
                                 if(widget==-1){
                                     layer.msg("没有找到控件主体信息");

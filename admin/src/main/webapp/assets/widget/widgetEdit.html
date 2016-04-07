@@ -75,6 +75,7 @@
         save: function () {
             $("#js-widget-save").click(function () {
                 var obj = $("#js-widget-form").serializeJsonListByTag();
+//                window.console.log(obj);
                 var property=JUtils.parseMap(obj);
                 var json=JSON.stringify(property)
 //                window.console.log(json);

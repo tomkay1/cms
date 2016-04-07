@@ -52,6 +52,11 @@ public class PageResourceService {
         return isWidgetTemplateCached(widgetBase) ? getCachedWidgetTemplate(widgetBase) : getWidgetTemplateFromFile(widgetBase);
     }
 
+    public String getWidgetTemplateResovleByWidgetBase(WidgetBase widgetBase) throws Exception {
+        String widgetHtml=getWidgetTemplateByWidgetBase(widgetBase);
+        widgetHtml=widgetResolveService.widgetBriefView(widgetHtml,widgetBase);
+        return widgetHtml;
+    }
 
     private String getCachedWidgetTemplate(WidgetBase widgetBase) {
         return redisService.findByWidgetId(widgetBase.getId());
@@ -66,7 +71,6 @@ public class PageResourceService {
 //        List<WidgetProperty> widgetProperties = widgetBase.getProperty();
 //        Map widgetProperties=widgetBase.getProperty();
         String widgetTemplate = HttpUtils.getHtmlByUrl(url);
-        widgetTemplate= widgetResolveService.widgetBriefView(widgetTemplate,widgetBase);
 //        if (widgetProperties != null) {
 //            for (WidgetProperty widgetProperty : widgetProperties) {
 //                if (widgetProperty != null) {
@@ -79,13 +83,15 @@ public class PageResourceService {
     }
 
 
-    public String getWidgetModuleTemplateByWidgetModule(WidgetModule widgetModule) throws Exception {
+    public String getWidgetModuleTemplateByWidgetModule(WidgetModule widgetModule,Boolean isEdit) throws Exception {
         String moduleTemplate = "";
         if (widgetModule != null) {
             List<WidgetBase> widgetBases = widgetModule.getWidget();
             for (WidgetBase widgetBase : widgetBases) {
                 if (widgetBase != null) {
-                    moduleTemplate += getWidgetTemplateByWidgetBase(widgetBase);
+                    widgetBase.setEdit(isEdit);
+                    String template=getWidgetTemplateResovleByWidgetBase(widgetBase);
+                    moduleTemplate +=template;
                 }
             }
         }
@@ -95,12 +101,12 @@ public class PageResourceService {
     /**
      * 解析模块列表下面的组件Html 模版
      */
-    public List<String> getWidgetModuleTemplateByWidgetModuleList(List<WidgetModule> widgetModules) throws Exception {
+    public List<String> getWidgetModuleTemplateByWidgetModuleList(List<WidgetModule> widgetModules,Boolean isEdit) throws Exception {
         List<String> moduleTemplateList = new ArrayList<>();
         if (widgetModules != null) {
             for (WidgetModule widgetModule : widgetModules) {
                 String moduleTemplate = "";
-                moduleTemplate += getWidgetModuleTemplateByWidgetModule(widgetModule);
+                moduleTemplate += getWidgetModuleTemplateByWidgetModule(widgetModule,isEdit);
                 moduleTemplateList.add(moduleTemplate);
             }
         }
@@ -110,7 +116,7 @@ public class PageResourceService {
     public String getWidgetLayoutTemplateByWidgetLayout(WidgetLayout widgetLayout,Boolean isEdit) throws Exception {
         String layoutTemplate = "";
         if (widgetLayout != null) {
-            List<String> moduleTemplateList = getWidgetModuleTemplateByWidgetModuleList(widgetLayout.getModule());
+            List<String> moduleTemplateList = getWidgetModuleTemplateByWidgetModuleList(widgetLayout.getModule(),isEdit);
             LayoutEnum layoutEnum=LayoutEnum.valueOf(widgetLayout.getLayoutType());
             layoutTemplate=layoutEnum.getLayoutTemplate(moduleTemplateList,isEdit,widgetLayout.getLayoutId());
         }

@@ -34,12 +34,13 @@ define(function (require, exports, module) {
                         success: function (data) {
                             if(data!=null){
                                 if(data.code==200){
+                                    var template=encodeURI(data.data);
                                     var widget={
                                         id:widgetId,
                                         widgetUri:widgetUrl,
                                         widgetEditUri:"",
                                         property:[],
-                                        template:data.data
+                                        template:template
                                     }
                                     var widgetJson=JSON.stringify(widget)
                                     widgetData.saveWidget(widgetJson);

@@ -10,7 +10,7 @@
 var JUtils = [];
 (function ($) {
     $.extend(JUtils, {
-        /*
+        /**
          *解析模版
          *@param:json json对象
          *@param:template 模版资源
@@ -44,7 +44,6 @@ var JUtils = [];
             return size;
         },
         parseMap:function(obj){
-            alert(obj);
             var property=[];
             for (key in obj) {
                 var valueJson=JSON.stringify(obj[key]);

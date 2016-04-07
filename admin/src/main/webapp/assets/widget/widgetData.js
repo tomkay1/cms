@@ -33,9 +33,10 @@ var widgetData= {
     saveWidget: function (widgetJson) {
         var dom = parent.$('#js_widget_json_value');
         if (typeof dom == "undefined" || dom.length <= 0) {
-            parent.$("body").append("<input type='hidden' id='js_widget_json_value' value='" + widgetJson + "'/>");
+            //parent.$("body").append("<input type='hidden' id='js_widget_json_value' value='" + widgetJson + "'/>");
+            parent.$("body").append("<script type='application/template' id='js_widget_json_value' >"+widgetJson+"</script>");
         } else {
-            parent.$("#js_widget_json_value").val(widgetJson);
+            parent.$("#js_widget_json_value").html(widgetJson);
         }
     },
     getWidget: function () {

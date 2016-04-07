@@ -7,25 +7,15 @@
  */
 
 package com.huotu.hotcms.service.widget.model;
-import com.alibaba.fastjson.annotation.JSONField;
+
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 数据中心响应数据接收模型
- * Created by cwb on 2016/3/23.
+ * Created by cwb on 2016/4/7.
  */
 @Getter
 @Setter
-public class JsonModel<T> {
-
-    @JSONField(name="_embedded")
-    private GoodsPage _embedded;
-
-    private T elements;
-
-    private Page page;
-
-    private Link _links;
-
+public class LinkHref {
+    String href;
 }

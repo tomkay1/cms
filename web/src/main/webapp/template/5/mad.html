@@ -37,6 +37,13 @@
         right: 0;
         top: -30px;
     }
+		.maddd ul li a{color:#000000;}
+		.maddd ul li a:hover{color:#fff;
+		-webkit-transition: all 0.20s ease-in;
+    -moz-transition: all 0.20s ease-in;
+    -ms-transition: all 0.20s ease-in;
+    -o-transition: all 0.20s ease-in;
+    transition: all 0.20s ease-in;}
 </style>
 <body>
 <div class="huobanjiagw">
@@ -204,16 +211,16 @@
                     <div class="e_pic_wrap">
                         <ul>
                             <li>
-                                <img src="images/yido01.png">
+                                <img src="images/yido01.png" th:src="@{${request.root}+'/images/yido01.png'}">
                             </li>
                             <li>
-                                <img src="images/yido02.png">
+                                <img src="images/yido02.png" th:src="@{${request.root}+'/images/yido02.png'}">
                             </li>
                             <li>
-                                <img src="images/yido03.png">
+                                <img src="images/yido03.png" th:src="@{${request.root}+'/images/yido03.png'}">
                             </li>
                             <li>
-                                <img src="images/yido04.png">
+                                <img src="images/yido04.png" th:src="@{${request.root}+'/images/yido04.png'}">
                             </li>
                         </ul>
                     </div>
@@ -280,10 +287,10 @@
                     <div class="e_pic_wrap">
                         <ul>
                             <li>
-                                <img src="images/ydl1.png">
+                                <img src="images/ydl1.png" th:src="@{${request.root}+'/images/ydl1.png'}">
                             </li>
                             <li>
-                                <img src="images/ydl2.png">
+                                <img src="images/ydl2.png" th:src="@{${request.root}+'/images/ydl2.png'}">
                             </li>
 
                         </ul>

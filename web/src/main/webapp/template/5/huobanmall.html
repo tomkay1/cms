@@ -36,6 +36,12 @@
             right: 0;
             top: -30px;
         }
+		.maller ul li a{color:#000000;}
+		.maller ul li a:hover{color:#fff;-webkit-transition: all 0.20s ease-in;
+    -moz-transition: all 0.20s ease-in;
+    -ms-transition: all 0.20s ease-in;
+    -o-transition: all 0.20s ease-in;
+    transition: all 0.20s ease-in;}
     </style>
 </head>
 <style>
@@ -153,7 +159,7 @@
     </div>
     <!--1end-->
     <!--按钮-->
-    <div class="maller" style=" margin-bottom:30px;">
+    <div class="maller " style=" margin-bottom:30px;" >
         <ul>
             <li class="on">
                 <a  href="#wechat" onclick="activeContent('wechat')" >
@@ -177,7 +183,7 @@
     <p style=" clear:both;"></p>
 
     <!--一网-->
-    <div name="yiwang" style="display: none" id="wechat">
+    <div name="yiwang" id="wechat">
         <div>
             <!--2-->
             <div class="hba huobj-bigbox-mall ">
@@ -209,7 +215,7 @@
 
             <!--6-->
 
-            <div class="hbd huobj-bigbox-mall ">
+            <div class="hbd huobj-bigbox-mall" id="apps">
                 <div class="mall-f ">
                 </div>
             </div>
@@ -230,7 +236,7 @@
     <!--一网结束-->
 
     <!--二网-->
-    <div name="erwang" id="app">
+    <div name="erwang" style="display: none" id="app">
         <div>
             <!--8-->
             <div class="hba huobj-bigbox-mall ">

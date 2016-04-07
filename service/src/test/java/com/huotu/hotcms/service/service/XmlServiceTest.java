@@ -1,7 +1,7 @@
 package com.huotu.hotcms.service.service;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.huotu.hotcms.service.config.AdminTestConfig;
+import com.huotu.hotcms.service.config.ServiceTestConfig;
 import com.huotu.hotcms.service.model.widget.TestModel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,7 +9,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.bind.JAXB;
 import javax.xml.stream.XMLInputFactory;
@@ -23,7 +22,7 @@ import java.io.StringWriter;
  */
 @ActiveProfiles("test")
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = AdminTestConfig.class)
+@ContextConfiguration(classes = ServiceTestConfig.class)
 @WebAppConfiguration
 public class XmlServiceTest {
     @Test

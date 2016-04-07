@@ -8,7 +8,7 @@
 
 package com.huotu.hotcms.service.service;
 
-import com.huotu.hotcms.service.config.AdminTestConfig;
+import com.huotu.hotcms.service.config.ServiceTestConfig;
 import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.repository.HostRepository;
@@ -33,7 +33,7 @@ import java.util.UUID;
  */
 @ActiveProfiles("test")
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = AdminTestConfig.class)
+@ContextConfiguration(classes = ServiceTestConfig.class)
 @WebAppConfiguration
 @Transactional
 public class SiteHostServiceTest {

@@ -1,457 +1,503 @@
-﻿﻿<!doctype html>
+﻿<!doctype html>
+<!--
+  ~ 版权所有:杭州火图科技有限公司
+  ~ 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+  ~
+  ~  (c) Copyright Hangzhou Hot Technology Co., Ltd.
+  ~  Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District 2013-2015. All rights reserved.
+  -->
+
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="utf-8"/>
-<meta charset="utf-8">
-<meta name="description" th:content="${site.description}"/>
-<meta name="keywords" th:content="${site.keywords}"/>
-<meta property="qc:admins" content="2336157637605721604536375" />
-<title th:text="${site.title}"></title>
-<link rel="stylesheet" type="text/css" href="css/common.css" th:href="@{${request.root}+'/css/common.css'}"/>
-<link rel="Shortcut Icon" href="/favicon.ico" th:href="@{${request.root}+'/favicon.ico'}"/>
-<link rel="stylesheet" type="text/css" href="css/gwgx.css" th:href="@{${request.root}+'/css/gwgx.css'}"/>
-<link rel="stylesheet" type="text/css" href="css/video-js.css" th:href="@{${request.root}+'/css/video-js.css'}"/>
-<script src="http://t.cn/RGSQSu4"></script>
-<script type="text/javascript" src="js/jquery1.42.min.js"
+    <meta charset="utf-8"/>
+    <meta charset="utf-8">
+    <meta name="description" th:content="${site.description}"/>
+    <meta name="keywords" th:content="${site.keywords}"/>
+    <meta property="qc:admins" content="2336157637605721604536375"/>
+    <title th:text="${site.title}"></title>
+    <link rel="stylesheet" type="text/css" href="css/common.css" th:href="@{${request.root}+'/css/common.css'}"/>
+    <link rel="Shortcut Icon" href="/favicon.ico" th:href="@{${request.root}+'/favicon.ico'}"/>
+    <link rel="stylesheet" type="text/css" href="css/gwgx.css" th:href="@{${request.root}+'/css/gwgx.css'}"/>
+    <link rel="stylesheet" type="text/css" href="css/video-js.css" th:href="@{${request.root}+'/css/video-js.css'}"/>
+    <script src="http://t.cn/RGSQSu4"></script>
+    <script type="text/javascript" src="js/jquery1.42.min.js"
             th:src="@{${request.root}+'/js/jquery1.42.min.js'}"></script>
-<script type="text/javascript" src="js/jquery.SuperSlide.2.1.1.js"
+    <script type="text/javascript" src="js/jquery.SuperSlide.2.1.1.js"
             th:src="@{${request.root}+'/js/jquery.SuperSlide.2.1.1.js'}"></script>
-<script type="text/javascript" src="js/carouFredSel.js" th:src="@{${request.root}+'/js/carouFredSel.js'}"></script>
-<script src="js/video.js"   th:src="@{${request.root}+'/js/video.js'}"></script>
+    <script type="text/javascript" src="js/carouFredSel.js" th:src="@{${request.root}+'/js/carouFredSel.js'}"></script>
+    <script src="js/video.js" th:src="@{${request.root}+'/js/video.js'}"></script>
+    <script th:inline="javascript">
+        var videoPath = /*[[@{${request.root}+'/video/video-js.swf'}]]*/ "video/video-js.swf";
+        videojs.options.flash.swf = videoPath;
+    </script>
 </head>
-<body >
+<body>
 <div class="huobanjiagw">
-  <!--导航栏-->
-  
-  <div style="background-color:#343434;">
-    <div class="headeri" id="header">
-      <div class="headlogo">
-        <a th:href="${request.rootUri}+'/'">
-        <img style="width:80%" src="images/logo.png" th:src="@{${request.root}+'/images/logo.png'}"
+    <!--导航栏-->
+
+    <div style="background-color:#343434;">
+        <div class="headeri" id="header">
+            <div class="headlogo">
+                <a th:href="${request.rootUri}+'/'">
+                    <img style="width:80%" src="images/logo.png" th:src="@{${request.root}+'/images/logo.png'}"
                          class="logoimgi"/>
-        </a>
-      </div>
-      <ul class="navi">
-        <li>
-          <a th:href="@{${request.rootUri}+'/'}" title="首页">
-          首页
-          </a>
-        </li>
-        <li class="nav_menu_li_1" style="margin-left: -12px;">
-          <a style="padding: 0px 10px;" href="#" title="产品/服务">
-          产品/服务
-          </a>
-          <div class="sub-nav">
-            <a href="" th:href="@{${request.rootUri}+'/mall'}" title="伙伴商城">
-            伙伴商城
-            </a>
-            <a href="" th:href="@{${request.rootUri}+'/operator'}" title="代运营">
-            代运营
-            </a>
-            <a href="" th:href="@{${request.rootUri}+'/mad'}" title=" 伙伴MAD">
-           移动广告
-            </a>
-            <a href="http://www.huobanj.com/pc/index" target="_blank" title="云商学院">
-            云商学院
-            </a>
-          </div>
-        </li>
-        <li style="    margin-left: 17px;">
-          <a href="" th:href="@{${request.rootUri}+'/case'}" title="客户案例">
-          客户案例
-          </a>
-        </li>
-        <li>
-          <a href="" th:href="@{${request.rootUri}+'/proxy'}" title="加盟代理">
-          加盟代理
-          </a>
-        </li>
-        <li class="nav_menu_li_1">
-          <a href="" th:href="@{${request.rootUri}+'/'}" title="关于我们">
-          关于我们
-          </a>
-          <div class="sub-nav">
-            <a href="" th:href="@{${request.rootUri}+'/news'}" title="火图新闻">
-            火图新闻
-            </a>
-            <a href="" th:href="@{${request.rootUri}+'/process'}" title="火图历程">
-            火图历程
-            </a>
-            <a href="" th:href="@{${request.rootUri}+'/job'}" title="火图招聘">
-            火图招聘
-            </a>
-          </div>
-        </li>
-        <li class="nav_menu_li_1">
-          <a th:href="@{${request.rootUri}+'/'}" title="火图招聘">
-          帮助中心
-          </a>
-          <div class="sub-nav">
-            <a href="" th:href="@{${request.rootUri}+'/questionlist'}" title="火图招聘">
-            产品问答
-            </a>
-            <a href="" th:href="@{${request.rootUri}+'/operate'}" title="操作指南">
-            操作指南
-            </a>
-            <a href="http://p.qiao.baidu.com//im/index?siteid=8042773&ucid=18719853&qq-pf-to=pcqq.c2c"
+                </a>
+            </div>
+            <ul class="navi">
+                <li>
+                    <a th:href="@{${request.rootUri}+'/'}" title="首页">
+                        首页
+                    </a>
+                </li>
+                <li class="nav_menu_li_1" style="margin-left: -12px;">
+                    <a style="padding: 0px 10px;" href="#" title="产品/服务">
+                        产品/服务
+                    </a>
+
+                    <div class="sub-nav">
+                        <a href="" th:href="@{${request.rootUri}+'/mall'}" title="伙伴商城">
+                            伙伴商城
+                        </a>
+                        <a href="" th:href="@{${request.rootUri}+'/operator'}" title="代运营">
+                            代运营
+                        </a>
+                        <a href="" th:href="@{${request.rootUri}+'/mad'}" title=" 伙伴MAD">
+                            移动广告
+                        </a>
+                        <a href="http://www.huobanj.com/pc/index" target="_blank" title="云商学院">
+                            云商学院
+                        </a>
+                    </div>
+                </li>
+                <li style="    margin-left: 17px;">
+                    <a href="" th:href="@{${request.rootUri}+'/case'}" title="客户案例">
+                        客户案例
+                    </a>
+                </li>
+                <li>
+                    <a href="" th:href="@{${request.rootUri}+'/proxy'}" title="加盟代理">
+                        加盟代理
+                    </a>
+                </li>
+                <li class="nav_menu_li_1">
+                    <a href="" th:href="@{${request.rootUri}+'/'}" title="关于我们">
+                        关于我们
+                    </a>
+
+                    <div class="sub-nav">
+                        <a href="" th:href="@{${request.rootUri}+'/news'}" title="火图新闻">
+                            火图新闻
+                        </a>
+                        <a href="" th:href="@{${request.rootUri}+'/process'}" title="火图历程">
+                            火图历程
+                        </a>
+                        <a href="" th:href="@{${request.rootUri}+'/job'}" title="火图招聘">
+                            火图招聘
+                        </a>
+                    </div>
+                </li>
+                <li class="nav_menu_li_1">
+                    <a th:href="@{${request.rootUri}+'/'}" title="火图招聘">
+                        帮助中心
+                    </a>
+
+                    <div class="sub-nav">
+                        <a href="" th:href="@{${request.rootUri}+'/questionlist'}" title="火图招聘">
+                            产品问答
+                        </a>
+                        <a href="" th:href="@{${request.rootUri}+'/operate'}" title="操作指南">
+                            操作指南
+                        </a>
+                        <a href="http://p.qiao.baidu.com//im/index?siteid=8042773&ucid=18719853&qq-pf-to=pcqq.c2c"
                            target="_blank" title="火图论坛">
-            咨询客服
-            </a>
-            <a href="" th:href="@{${request.rootUri}+'/contact'}" title="联系我们">
-            联系我们
-            </a>
-          </div>
-        </li>
-        <li>
-          <a href="http://tieba.baidu.com/f?kw=%BB%F0%CD%BC%BF%C6%BC%BC&fr=ala0&tpl=5&qq-pf-to=pcqq.c2c"
+                            咨询客服
+                        </a>
+                        <a href="" th:href="@{${request.rootUri}+'/contact'}" title="联系我们">
+                            联系我们
+                        </a>
+                    </div>
+                </li>
+                <li style="display:none">
+                    <a href="http://tieba.baidu.com/f?kw=%BB%F0%CD%BC%BF%C6%BC%BC&fr=ala0&tpl=5&qq-pf-to=pcqq.c2c"
                        target="_blank" title="火图论坛">
-          火图论坛
-          </a>
-        </li>
-        <li class="zc" style="display:none">
-          <a href="http://login.huobanplus.com/register.html?bdclick=1" target="_blank" title="注册">
-          注册
-          </a>
-        </li>
-        <li class="dl_s">
-          <a href="http://login.huobanplus.com/" target="_blank" title="登录">
-          登录
-          </a>
-        </li>
-      </ul>
-      <p style="clear:both">
-      </p>
+                        火图论坛
+                    </a>
+                </li>
+                <li class="zc" style="display:none">
+                    <a href="http://login.huobanplus.com/register.html?bdclick=1" target="_blank" title="注册">
+                        注册
+                    </a>
+                </li>
+                <li class="dl_s">
+                    <a href="http://login.huobanplus.com/" target="_blank" title="登录">
+                        登录
+                    </a>
+                </li>
+            </ul>
+            <p style="clear:both">
+            </p>
+        </div>
     </div>
-  </div>
-  <!--导航栏end-->
-  
-  <p style="clear:both">
-  </p>
-  <!--banner轮播-->
-  <div class="hb-bigbox-b">
-    <div class="fullSlide">
-      <div class="bd">
-        <ul>
-          <li style="background:url(images/banner01.jpg) 50% 0px no-repeat;  position: absolute; width: 100%; height: 100%;"
-                  th:style="'background:url('+${request.root}+'/images/banner01.jpg) 50% 0px no-repeat;  position: absolute; width: 100%; height: 100%;'">
-            <a href="" title="">
-            </a>
-          </li>
-          <li style="background:url(images/banner02.jpg) 50% 0px no-repeat;  position: absolute; width: 100%; height: 100%;"
-              th:style="'background:url('+${request.root}+'/images/banner02.jpg) 50% 0px no-repeat;  position: absolute; width: 100%; height: 100%;'">
-            <a href="" title="">
-            </a>
-          </li>
-          <li style="background:url(images/banner03.jpg) 50% 0px no-repeat;  position: absolute; width: 100%; height: 100%;"
-              th:style="'background:url('+${request.root}+'/images/banner03.jpg) 50% 0px no-repeat;  position: absolute; width: 100%; height: 100%;'">
-            <a href="" title="">
-            </a>
-          </li>
-          <li style="background:url(images/banner04.jpg) 50% 0px no-repeat;  position: absolute; width: 100%; height: 100%;"
-              th:style="'background:url('+${request.root}+'/images/banner04.jpg) 50% 0px no-repeat;  position: absolute; width: 100%; height: 100%;'">
-            <a href="" title="">
-            </a>
-          </li>
-          <li style="background:url(images/banner05.jpg) 50% 0px no-repeat;  position: absolute; width: 100%; height: 100%;"
-              th:style="'background:url('+${request.root}+'/images/banner05.jpg) 50% 0px no-repeat;  position: absolute; width: 100%; height: 100%;'">
-            <a href="" title="">
-            </a>
-          </li>
-          <li style="background:url(images/banner06.jpg) 50% 0px no-repeat;  position: absolute; width: 100%; height: 100%;"
-              th:style="'background:url('+${request.root}+'/images/banner06.jpg) 50% 0px no-repeat;  position: absolute; width: 100%; height: 100%;'">
-            <a href="" title="">
-            </a>
-          </li>
-        </ul>
-      </div>
-      <div class="hd">
-        <ul>
-        </ul>
-      </div>
+    <!--导航栏end-->
+
+    <p style="clear:both">
+    </p>
+    <!--banner轮播-->
+    <div class="hb-bigbox-b">
+        <div class="fullSlide">
+            <div class="bd">
+                <ul>
+                    <li style="background:url(images/banner01.jpg) 50% 0px no-repeat;  position: absolute; width: 100%; height: 100%;"
+                        th:style="'background:url('+${request.root}+'/images/banner01.jpg) 50% 0px no-repeat;  position: absolute; width: 100%; height: 100%;'">
+                        <a href="" title="">
+                        </a>
+                    </li>
+                    <li style="background:url(images/banner02.jpg) 50% 0px no-repeat;  position: absolute; width: 100%; height: 100%;"
+                        th:style="'background:url('+${request.root}+'/images/banner02.jpg) 50% 0px no-repeat;  position: absolute; width: 100%; height: 100%;'">
+                        <a href="" title="">
+                        </a>
+                    </li>
+                    <li style="background:url(images/banner03.jpg) 50% 0px no-repeat;  position: absolute; width: 100%; height: 100%;"
+                        th:style="'background:url('+${request.root}+'/images/banner03.jpg) 50% 0px no-repeat;  position: absolute; width: 100%; height: 100%;'">
+                        <a href="" title="">
+                        </a>
+                    </li>
+                    <li style="background:url(images/banner04.jpg) 50% 0px no-repeat;  position: absolute; width: 100%; height: 100%;"
+                        th:style="'background:url('+${request.root}+'/images/banner04.jpg) 50% 0px no-repeat;  position: absolute; width: 100%; height: 100%;'">
+                        <a href="" title="">
+                        </a>
+                    </li>
+                    <li style="background:url(images/banner05.jpg) 50% 0px no-repeat;  position: absolute; width: 100%; height: 100%;"
+                        th:style="'background:url('+${request.root}+'/images/banner05.jpg) 50% 0px no-repeat;  position: absolute; width: 100%; height: 100%;'">
+                        <a href="" title="">
+                        </a>
+                    </li>
+                    <li style="background:url(images/banner06.jpg) 50% 0px no-repeat;  position: absolute; width: 100%; height: 100%;"
+                        th:style="'background:url('+${request.root}+'/images/banner06.jpg) 50% 0px no-repeat;  position: absolute; width: 100%; height: 100%;'">
+                        <a href="" title="">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="hd">
+                <ul>
+                </ul>
+            </div>
+        </div>
     </div>
-  </div>
-  <!--banner轮播end-->
-  
-  <p style="clear:both;">
-  </p>
-  <!--新闻-->
-  <div style=" background-image:url(images/zy_bj02.jpg); position:relative; margin:0 auto; text-align:center;"
-          th:style="'background:url('+${request.root}+'/images/zy_bj02.jpg); position:relative; margin:0 auto; text-align:center;'">
-    <div class="m-slide" style="margin:0 auto; height:480px;"  >
-    <ul class="tab"  data-th-remove="all-but-first" >
-        <li data-article-foreach="article"  data-param-categoryid="37" data-param-pagesize="4">
-          <a data-th-href="${request.rootUri}+'/news/'+${article.id}+'.html'">    
-          <b></b>
+    <!--banner轮播end-->
+
+    <p style="clear:both;">
+    </p>
+    <!--新闻-->
+    <div style=" position: relative;height:600px;overflow: hidden;">
+        <div style="background: url(images/zy_bj02.jpg) 50% 0px no-repeat;position: absolute;width: 100%;height: 100%;"
+             th:style="'background:url('+${request.root}+'/images/zy_bj02.jpg) 50% 0px no-repeat;position: absolute;width: 100%;height: 100%;'">
+            <div class="m-slide" style="margin:0 auto; height:480px;">
+                <ul class="tab" data-th-remove="all-but-first">
+                    <li data-article-foreach="article" data-param-categoryid="37" data-param-pagesize="4">
+                        <a data-th-href="${request.rootUri}+'/news/'+${article.id}+'.html'">
+                            <b></b>
           <span class="title" data-th-text="${article.title}">
           代理市场火爆
           </span>
           <span class="des" data-th-text="${article.description}">
           月签十多家代理，火图产品倍受市场青睐
           </span>
-          </a>
-        </li>
-        <li>
-        <a > 
-        <b></b>     
-          <span class="title" >
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <b></b>
+          <span class="title">
           人人创业热潮
           </span>
-          <span class="des" >
+          <span class="des">
           全民开店？看火图引爆人人创业潮！
           </span>
-          </a>
-        </li>
-        <li>
-        <a>
-        <b></b>
-          <span class="title" >
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <b></b>
+          <span class="title">
           加入电商促进会
           </span>
-          <span class="des" >
+          <span class="des">
           火图科技加入“浙江省电子商务促进会”，共推互联经济
           </span>
-          </a>
-        </li>
-        <li>
-        <b></b>
-           <a >
-          <span class="title" >
+                        </a>
+                    </li>
+                    <li>
+                        <b></b>
+                        <a>
+          <span class="title">
           大品牌大红利
           </span>
-          <span class="des" >
+          <span class="des">
           修正药业牵手火图，共谋互联网红利
           </span>
-          </a>
-        </li>
-      </ul>
-      <ul class="img"  data-th-remove="all-but-first" >
-        <li>
-         <a href="#">    
-          <img src="images/xw01.png"  th:src="@{${request.root}+'/images/xw01.png'}"/>
-          </a>
-        </li>
-        <li>
-            <a href="#">    
-          <img src="images/xw01.png" th:src="@{${request.root}+'/images/xw01.png'}"/>
-          </a>
-        </li>
-        <li>
-            <a href="#">    
-          <img src="images/xw01.png" th:src="@{${request.root}+'/images/xw01.png'}"/>
-          </a>
-        </li>
-        <li>
-          <a href="#">    
-          <img src="images/xw01.png" th:src="@{${request.root}+'/images/xw01.png'}"/>
-          </a>
-        </li>
-      </ul>
-      
-      <b class="bottom-shadow">
-      </b>
-    </div>
-    <a data-th-href="${request.rootUri}+'/news'">
-    <div  class="htxwen">
-    进入火图新闻频道>>
-    </div>
-    </a>
-  </div>
-  <!--新闻结束-->
-  <p style="clear:both;">
-  </p>
-  
-  <!--热门微应用-->
-<a th:href="@{${request.rootUri}+'/mall#app'}" title="伙伴商城">
-  <div class="huobj-bigbox-aa">
-    <div class="dyy-a">
-    </div>
-  </div>
-  </a>
-  <!--热门结束-->
-  
-  <!--产品中心-->
-  <div class="hbtwo huobj-bigbox-aa">
-    <div class="dyy-a-b">
-    </div>
-  </div>
-  <!--产品中心结束-->
-  
-  <!--伙伴商城-->
-  <div class="hbfour huobj-bigbox-aa">
-    <div class="dyy-a-c">
-    </div>
-  </div>
-  <!--伙伴商城结束-->
-  
-  <!--代运营-->
-  <div class="hbfive huobj-bigbox-aa">
-    <div class="dyy-a-d">
-    </div>
-  </div>
-  <!--代运营结束-->
-  
-  <!--云商学院-->
-  <div class="hbsix huobj-bigbox-aa">
-    <div class="dyy-a-e">
-    </div>
-  </div>
-  <!--云商学院结束-->
-  
-  <!--移动广告-->
-  <div class="hbsix huobj-bigbox-aa">
-    <div class="dyy-a-f">
-    </div>
-  </div>
-  <!--移动广告结束-->
-  
-  <!--客户商城-->
-  <div class="hbseven huobj-bigbox-aa">
-    <div class="dyy-a-g">
-      <div class="list_carousel">
-        <div class="caroufredsel_wrapper list_as">
-          <ul id="foo2"  class="list_as_a" data-th-remove="all-but-first">
-            <li data-link-foreach="link" data-param-categoryid="50" data-param-size="40">
-              <a th:href="${link.linkUrl}" th:title="${link.title}">
-              <img th:src="${link.thumbUri}" src="images/dx01.png"/>
-              </a>
-            </li>
-            <li>
-              <a href="javascript:void(0);">
-              <img src="images/cy01.png"/>
-              </a>
-            </li>
-            <li>
-              <a href="javascript:void(0);">
-              <img src="images/fh01.png"/>
-              </a>
-            </li>
-            <li>
-              <a href="javascript:void(0);">
-              <img src="images/ym01.png"/>
-              </a>
-            </li>
-            <li>
-              <a href="javascript:void(0);">
-              <img src="images/cm01.png"/>
-              </a>
-            </li>
-            <li>
-              <a href="javascript:void(0);">
-              <img src="images/fj01.png"/>
-              </a>
-            </li>
-          </ul>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="img" data-th-remove="all-but-first">
+                    <li>
+                        <a href="#">
+                            <img src="images/xw01.png" th:src="@{${request.root}+'/images/xw01.png'}"/>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="images/xw01.png" th:src="@{${request.root}+'/images/xw01.png'}"/>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="images/xw01.png" th:src="@{${request.root}+'/images/xw01.png'}"/>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="images/xw01.png" th:src="@{${request.root}+'/images/xw01.png'}"/>
+                        </a>
+                    </li>
+                </ul>
+
+                <b class="bottom-shadow">
+                </b>
+            </div>
         </div>
-        <div class="clearfix"></div>
-        <a id="prev2" class="prev" href="#" style="display: block;">
+
+        <a data-th-href="${request.rootUri}+'/news'">
+            <div class="htxwen">
+                进入火图新闻频道>>
+            </div>
         </a>
-        <a id="next2" class="next" href="#" style="display: block;">
-        </a>
-      </div>
     </div>
-  </div>
-  <!--客户商城结束-->
-  
-  <!--视频-->
+    <!--新闻结束-->
+    <p style="clear:both;">
+    </p>
+
+    <!--热门微应用-->
+    <a th:href="@{${request.rootUri}+'/mall#apps'}" title="伙伴商城">
+        <div class="huobj-bigbox-aa">
+            <div class="dyy-a">
+            </div>
+        </div>
+    </a>
+    <!--热门结束-->
+
+    <!--产品中心-->
+    <div class="hbtwo huobj-bigbox-aa">
+        <div class="dyy-a-b">
+        </div>
+    </div>
+    <!--产品中心结束-->
+
+    <!--伙伴商城-->
+    <div class="hbfour huobj-bigbox-aa">
+        <div class="dyy-a-c">
+        </div>
+    </div>
+    <!--伙伴商城结束-->
+
+    <!--代运营-->
     <div class="hbfive huobj-bigbox-aa">
-    <div class="dyy-a-h">
-  <div style="width:900px; margin-left:10px;text-align:center; margin:0 auto; margin-top:400px;">
-	<video id="example_video_1" class="video-js vjs-default-skin" controls preload="none" width="880px" height="500" th:poster="@{${request.root}+'/video/oceans-clip.jpg'}" poster="video/oceans-clip.jpg" data-setup="{}">
-		<source src="video/oceans-clip.mp4" th:src="@{${request.root}+'/video/oceans-clip.mp4'}" type='video/mp4' />
-		<source src="video/oceans-clip.ogv" th:src="@{${request.root}+'/video/oceans-clip.ogv'}" type='video/ogg' />
-		<track kind="captions" src="video/demo.captions.vtt" th:src="@{${request.root}+'/video/font/demo.captions.vtt'}"  srclang="en" label="English"></video><!-- Tracks need an ending tag thanks to IE9 -->
-		<track kind="subtitles" src="video/demo.captions.vtt" th:src="@{${request.root}+'/video/font/demo.captions.vtt'}" srclang="en" label="English"></div><!-- Tracks need an ending tag thanks to IE9 -->
+        <div class="dyy-a-d">
+        </div>
+    </div>
+    <!--代运营结束-->
+
+    <!--云商学院-->
+    <div class="hbsix huobj-bigbox-aa">
+        <div class="dyy-a-e">
+        </div>
+    </div>
+    <!--云商学院结束-->
+
+    <!--移动广告-->
+    <div class="hbsix huobj-bigbox-aa">
+        <div class="dyy-a-f">
+        </div>
+    </div>
+    <!--移动广告结束-->
+
+    <!--客户商城-->
+    <div class="hbseven huobj-bigbox-aa">
+        <div class="dyy-a-g">
+            <div class="list_carousel">
+                <div class="caroufredsel_wrapper list_as">
+                    <ul id="foo2" class="list_as_a" data-th-remove="all-but-first">
+                        <li data-link-foreach="link" data-param-categoryid="50" data-param-size="40">
+                            <a th:href="${link.linkUrl}" th:title="${link.title}">
+                                <img th:src="${link.thumbUri}" src="images/dx01.png"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);">
+                                <img src="images/cy01.png"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);">
+                                <img src="images/fh01.png"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);">
+                                <img src="images/ym01.png"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);">
+                                <img src="images/cm01.png"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);">
+                                <img src="images/fj01.png"/>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="clearfix"></div>
+                <a id="prev2" class="prev" href="#" style="display: block;">
+                </a>
+                <a id="next2" class="next" href="#" style="display: block;">
+                </a>
+            </div>
+        </div>
+    </div>
+    <!--客户商城结束-->
+
+    <!--视频-->
+    <div class="hbfive huobj-bigbox-aa">
+        <div class="dyy-a-h">
+            <div style="width:900px; margin-left:10px;text-align:center; margin:0 auto; margin-top:400px;">
+                <video id="example_video_1" class="video-js vjs-default-skin vjs-big-play-centered" controls
+                       preload="none" width="880px"
+                       height="500" th:poster="@{${request.root}+'/video/oceans-clip.jpg'}"
+                       poster="video/oceans-clip.jpg" data-setup="{}">
+                    <source src="video/oceans-clip.mp4" th:src="@{${request.root}+'/video/oceans-clip.mp4'}"
+                            type='video/mp4'/>
+                </video>
+            </div>
 
 
-</div>
-</div>
+        </div>
+    </div>
     <!--视频结束-->
-  
-  <!--底部-->
-  <div style="background-color:#343434; height:140px; padding-right:50px;  ">
-    <div class="headeri" id="footer" >
-      <div class="headlogo" style="float:left"> 
-      <img style=" margin-top: 40px; margin-left:55px;width:100%"   th:src="@{${request.root}+'/images/logoh.png'}"  src="images/logoh.png" class="logoimgi"/>
-      
-      </div>
-      <p style="clear:both;"></p>
-      <div style="float:right; margin-top:-65px;">
-        <p class="hbj_ft">
-          <a th:href="@{${request.rootUri}+'/'}" title="首页">
+
+    <!--底部-->
+    <div style="background-color:#343434; height:140px; padding-right:50px;  ">
+        <div class="headeri" id="footer">
+            <div style="width:140px; background-color:#fff; height:auto; position: fixed;z-index:999;top:50%; margin-top:-191px;right:0px;">
+                <img style="width:140px; display:block;" src="images/xx01.jpg"
+                     th:src="@{${request.root}+'/images/xx01.jpg'}"/>
+                <a target="_blank"
+                   href="http://p0.qiao.baidu.com//im/index?siteid=8042773&ucid=18719853&lastsubid=&from=%E6%B5%99%E6%B1%9F%E6%9D%AD%E5%B7%9E&bid=c3113d90d898abe25455b5ba&subid=1538089&chattype=1&subname=%E5%AE%A2%E6%9C%8D001&groupid=0&groupname=%E4%B8%9A%E5%8A%A1%E5%92%A8%E8%AF%A2&ref=http%3A%2F%2Fwww.huobanplus.com%2F"
+                   title=" 业务咨询">
+                    <img id="iddd" style="width:140px;" src="images/xx02.jpg"
+                         th:src="@{${request.root}+'/images/xx02.jpg'}"/>
+                </a>
+                <a target="_blank"
+                   href="http://p9.qiao.baidu.com//im/index?siteid=8042773&ucid=18719853&lastsubid=1538089&from=%E6%B5%99%E6%B1%9F%E6%9D%AD%E5%B7%9E&bid=c3113d90d898abe25455b5ba&subid=1538092&chattype=1&subname=%E5%AE%A2%E6%9C%8D003&groupid=5&groupname=%E5%8A%A0%E7%9B%9F%E5%92%A8%E8%AF%A2&ref=http%3A%2F%2Fwww.huobanplus.com%2F"
+                   title=" 加盟咨询">
+                    <img style="width:140px;display:block;" src="images/xx03.jpg"
+                         th:src="@{${request.root}+'/images/xx03.jpg'}"/>
+                </a>
+                <img id="iidd" style="width:140px;  padding-bottom:5px;" src="images/xx04.jpg"
+                     th:src="@{${request.root}+'/images/xx04.jpg'}"/>
+                <img style="width:140px; display:block;" src="images/xx05.jpg"
+                     th:src="@{${request.root}+'/images/xx05.jpg'}"/>
+            </div>
+            <div class="headlogo" style="float:left">
+                <img style=" margin-top: 40px; margin-left:55px;width:100%"
+                     th:src="@{${request.root}+'/images/logoh.png'}" src="images/logoh.png" class="logoimgi"/>
+
+            </div>
+            <p style="clear:both;"></p>
+
+            <div style="float:right; margin-top:-65px;">
+                <p class="hbj_ft">
+                    <a th:href="@{${request.rootUri}+'/'}" title="首页">
           <span class="hbj_foot">
           首页
           </span>
-          </a>
-          <a href="" th:href="@{${request.rootUri}+'/mall'}" title=" 客户案例">
+                    </a>
+                    <a href="" th:href="@{${request.rootUri}+'/mall'}" title=" 客户案例">
           <span class="hbj_foot">
           伙伴商城
           </span>
-          </a>
-          <a href="" th:href="@{${request.rootUri}+'/operator'}" title=" 客户案例">
+                    </a>
+                    <a href="" th:href="@{${request.rootUri}+'/operator'}" title=" 客户案例">
           <span class="hbj_foot">
           代运营
           </span>
-          </a>
-          <a href="" th:href="@{${request.rootUri}+'/mad'}" title="关于我们">
+                    </a>
+                    <a href="" th:href="@{${request.rootUri}+'/mad'}" title="关于我们">
           <span class="hbj_foot">
           移动广告
           </span>
-          </a>
-          <a href="http://www.huobanj.com" target="_blank" title="云商学院">
+                    </a>
+                    <a href="http://www.huobanj.com" target="_blank" title="云商学院">
           <span class="hbj_foot">
           云商学院
           </span>
-          </a>
-          <a href="" th:href="@{${request.rootUri}+'/case'}" title=" 客户案例">
+                    </a>
+                    <a href="" th:href="@{${request.rootUri}+'/case'}" title=" 客户案例">
           <span class="hbj_foot">
           客户案例
           </span>
-          </a>
-          <a href="" th:href="@{${request.rootUri}+'/proxy'}" title="加盟代理">
+                    </a>
+                    <a href="" th:href="@{${request.rootUri}+'/proxy'}" title="加盟代理">
           <span class="hbj_foot">
           加盟代理
           </span>
-          </a>
-          <a href="http://login.huobanplus.com/register.html?bdclick=1"
+                    </a>
+                    <a href="http://login.huobanplus.com/register.html?bdclick=1"
                        target="_blank" title="注册" style="display:none;">
           <span class="hbj_foot">
           注册
           </span>
-          </a>
-          <a href="http://login.huobanplus.com/" target="_blank" title="登录">
+                    </a>
+                    <a href="http://login.huobanplus.com/" target="_blank" title="登录">
           <span class="hbj_foot">
           登录
           </span>
-          </a>
-        </p>
-        <script src="http://stat.xiaonaodai.com/stat.php?id=18719853" language="JavaScript"
+                    </a>
+                </p>
+                <script src="http://stat.xiaonaodai.com/stat.php?id=18719853" language="JavaScript"
                         type="text/javascript"></script>
-        <p class="hbj_ft hbj_ftas left-a">
-          业务热线：400-1818-357
+                <p class="hbj_ft hbj_ftas left-a">
+                    业务热线：400-1818-357
           <span>
           加盟热线：400-1008-013
           </span>
-        </p>
-        <p class="hbj_ft hbj_ftas left-a">
-          公司地址： 杭州市滨江区阡陌路482号智慧e谷B幢4楼
-        </p>
-        <p class="hbj_ft hbj_ftas left-a" th:utext="${site.copyright}">
-          Copyright©2013-2015.
-          杭州火图科技有限公司,浙ICP备13027761号-5
-        </p>
-      </div>
-      <script type="text/javascript"> var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://"); document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F617d4b7f51d60dac130b04dc98807163' type='text/javascript'%3E%3C/script%3E")) </script>
+                </p>
+
+                <p class="hbj_ft hbj_ftas left-a">
+                    公司地址： 杭州市滨江区阡陌路482号智慧e谷B幢4楼
+                </p>
+
+                <p class="hbj_ft hbj_ftas left-a" th:utext="${site.copyright}">
+                    Copyright©2013-2015.
+                    杭州火图科技有限公司,浙ICP备13027761号-5
+                </p>
+            </div>
+            <script type="text/javascript"> var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+            document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F617d4b7f51d60dac130b04dc98807163' type='text/javascript'%3E%3C/script%3E")) </script>
+        </div>
     </div>
-  </div>
-  <!--底部结束-->
+    <!--底部结束-->
 </div>
- </body>
+</body>
 <script>
     /*
      SuperSlide组合注意：
      1、内外层mainCell、targetCell、prevCell、nextCell等对象不能相同，除非特殊应用
 
-；
+     ；
      2、注意书写顺序，通常先写内层js调用，再写外层js调用
      */
 
@@ -488,10 +534,10 @@
             }
         });
     });
-	
+
 
 </script>
 <script type="text/javascript">
-		jQuery(".m-slide").slide({ titCell:".tab li", mainCell:".img",effect:"fold", autoPlay:true});
-	</script>
+    jQuery(".m-slide").slide({titCell: ".tab li", mainCell: ".img", effect: "fold", autoPlay: true});
+</script>
 </html>

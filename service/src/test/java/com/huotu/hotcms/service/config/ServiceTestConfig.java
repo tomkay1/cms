@@ -19,5 +19,5 @@ import org.springframework.context.annotation.Configuration;
         "com.huotu.hotcms.service.config",
         "com.huotu.hotcms.service.repository"
 })
-public class AdminTestConfig {
+public class ServiceTestConfig {
 }

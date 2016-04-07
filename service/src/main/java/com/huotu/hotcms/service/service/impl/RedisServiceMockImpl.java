@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
  * Created by cwb on 2016/3/31.
  */
 @Service
-@Profile("!container")
+@Profile("!prod")
 public class RedisServiceMockImpl implements RedisService {
 
     @Override

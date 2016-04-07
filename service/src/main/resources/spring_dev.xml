@@ -37,7 +37,8 @@
     </bean>
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://120.24.243.104:3307/hotcms?useUnicode=true&amp;characterEncoding=UTF8&amp;autoReconnect=true&amp;rewriteBatchedStatements=TRUE"/>
+        <!--<property name="url" value="jdbc:mysql://120.24.243.104:3307/hotcms?useUnicode=true&amp;characterEncoding=UTF8&amp;autoReconnect=true&amp;rewriteBatchedStatements=TRUE"/>-->
+        <property name="url" value="jdbc:mysql://192.168.1.254:3306/cms?useUnicode=true&amp;characterEncoding=UTF8&amp;autoReconnect=true&amp;rewriteBatchedStatements=TRUE"/>
         <property name="username" value="dbuser"/>
         <property name="password" value="ddbbuusseerr"/>
     </bean>

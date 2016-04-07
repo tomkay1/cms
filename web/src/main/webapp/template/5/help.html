@@ -1,0 +1,1041 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="description" th:content="${site.description}" />
+    <meta name="keywords" th:content="${site.keywords}" />
+    <meta property="qc:admins" content="2336157637605721604536375" />
+    <title th:text="'操作指南-'+${site.title}"></title>
+    <link rel="stylesheet" type="text/css" th:href="${request.root}+'/css/common.css'"/>
+    <link rel="stylesheet" type="text/css" href="css/huobanj.css" th:href="${request.root}+'/css/huobanj.css'"/>
+    <link rel="Shortcut Icon" href="/favicon.ico"  th:href="@{${request.root}+'/favicon.ico'}"/>
+    <script src="http://t.cn/RGSQSu4"></script>
+    <script type="text/javascript" src="js/jquery1.42.min.js" th:src="${request.root}+'/js/jquery1.42.min.js'"></script>
+    <script type="text/javascript" src="js/jquery.SuperSlide.2.1.1.js"
+            th:src="${request.root}+'/js/jquery.SuperSlide.2.1.1.js'"></script>
+    <script type="text/javascript" src="js/carouFredSel.js" th:src="${request.root}+'/js/carouFredSel.js'"></script>
+</head>
+
+<body>
+<div class="huobanjiagw">
+
+    <!--导航栏-->
+    <div style="background-color:#343434;">
+        <div class="headeri"  data-th-replace="${resourcePath}+'/index.html' :: #header">
+            <div class="headlogo"><img style="width:80%" src="images/logohh.png" class="logoimgi"/></div>
+            <ul class="navi">
+                <li>
+                    <a href=" #">
+                        首页
+                    </a>
+                </li>
+                <li class="nav_menu_li_1">
+                    <a style="padding: 0px 10px;" href="#">
+                        产品/服务
+                    </a>
+
+                    <div class="sub-nav">
+                        <a href="">
+                            伙伴商城
+                        </a>
+                        <a href="">
+                            代运营
+                        </a>
+                        <a href="">
+                            伙伴MAD
+                        </a>
+                        <a href="">
+                            云商学院
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a href=" #">
+                        客户案例
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        加盟代理
+                    </a>
+                </li>
+                <li class="nav_menu_li_1">
+                    <a style="padding: 0px 10px;" href="#">
+                        关于我们
+                    </a>
+
+                    <div class="sub-nav">
+                        <a href="">
+                            火图新闻
+                        </a>
+                        <a href="">
+                            火图历程
+                        </a>
+                        <a href="">
+                            火图招聘
+                        </a>
+                    </div>
+                </li>
+                <li class="nav_menu_li_1">
+                    <a style="padding: 0px 10px;" href="#">
+                        帮助中心
+                    </a>
+
+                    <div class="sub-nav">
+                        <a href="">
+                            产品问答
+                        </a>
+                        <a href="">
+                            操作指南
+                        </a>
+                        <a href="">
+                            咨询客服
+                        </a>
+                        <a href="">
+                            联系我们
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a href="#">
+                        火图论坛
+                    </a>
+                </li>
+                <li class="zc">
+                    <a href="#">
+                        注册
+                    </a>
+                </li>
+                <li class="dl">
+                    <a href="#">
+                        登录
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--导航栏end-->
+
+    <!--伙伴手册-->
+    <div id="content" class="clr">
+        <div id="left">
+            <div class="menu" data-th-remove="all-but-first" id="helpMenu">
+                <div data-category-foreach="category" data-param-parentid="26" data-param-routetype="5">
+                    <b class="menu-p" th:text="${category.name}" th:class="${categoryStat.count}==1 ? 'menu-p menufoucs' : 'menu-p'">
+                        1、伙伴商城
+                    </b>
+                    <div class="menu-c menu-c-current" th:class="${categoryStat.count}==1 ? 'menu-c menu-c-current' : 'menu-c'">
+                        <ul data-th-remove="all-but-first">
+                        <li data-article-foreach="article" th:attr="data-param-categoryid=${category.id}" data-param-pagesize="30">
+                            <a data-th-text="${article.title}" th:href="${request.rootUri}+${category.route.rule}+ '/'+${article.id}+'.html'">
+                                1.1 伙伴商城角色描述
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=7">
+                                1.3 伙伴商城入驻流程
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=7">
+                                1.4 建立微信公众服务号
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=7">
+                                1.5 绑定设置
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=7">
+                                1.6 首次关注回复
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=7">
+                                1.7 关键字回复程
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=7">
+                                1.8 自定义菜单
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=7">
+                                1.9 语音管理
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=7">
+                                1.10 带参数二维码扫描日志
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=4">
+                                1.11 模板消息管理
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=6">
+                                1.12 多客服模板消息
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=7">
+                                1.13 界面设置
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=7">
+                                1.14 商城基本设置
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=7">
+                                1.15 支付方式管理
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=7">
+                                1.16 配送方式管理
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=7">
+                                1.17 导出设置
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=7">
+                                1.18 管理员列表
+                            </a>
+                        </li>
+                    </ul>
+                    </div>
+                </div>
+                <b class="menu-p" javascript="document.location.href=/guidefront/index?cid=2&amp;title=">
+                    2、商品管理
+                </b>
+                <div class="menu-c">
+                    <ul>
+                        <li>
+                            <a href="/guidefront/index?id=15">
+                                2.1 商品管理
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=24">
+                                2.2 分类管理
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=25">
+                                2.3 类型管理
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=26">
+                                2.4 品牌管理
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=27">
+                                2.5 虚拟产品管理
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=28">
+                                2.6 虚拟分类管理
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=29">
+                                2.7 商品标签管理
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=30">
+                                2.8 供货商管理
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+                <b class="menu-p" javascript="document.location.href=/guidefront/index?cid=3&amp;title=">
+                    3、会员管理
+                </b>
+
+                <div class="menu-c">
+                    <ul>
+                        <li>
+                            <a href="/guidefront/index?id=32">
+                                3.1 等级设置
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=33">
+                                3.2 销售模式管理—返利设置
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=34">
+                                3.3 会员升级小伙伴配置
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=35">
+                                3.4 会员列表
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=36">
+                                3.5 会员配置
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=38">
+                                3.6 会员反馈
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=39">
+                                3.7 客服消息推送
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=40">
+                                3.8 全员开店
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=41">
+                                3.8 充值配置
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=42">
+                                3.9 卡密管理
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=43">
+                                3.10 充值流水
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=44">
+                                3.11 关于充值中心操作流程
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=45">
+                                3.12 小伙伴列表
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=46">
+                                3.13 提现申请
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=47">
+                                3.14 小伙伴邀请码管理
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=48">
+                                3.15 大伙伴列表
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=49">
+                                3.16 大伙伴等级
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+                <b class="menu-p" javascript="document.location.href=/guidefront/index?cid=4&amp;title=">
+                    4、订单管理
+                </b>
+
+                <div class="menu-c">
+                    <ul>
+                        <li>
+                            <a href="/guidefront/index?id=5">
+                                4.1 订单列表
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=8">
+                                4.2 售后申请列表
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=9">
+                                4.3 单据管理
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=10">
+                                4.4 关于申请售后
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=11">
+                                4.5 微信退款
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+
+                <b class="menu-p" javascript="document.location.href=/guidefront/index?cid=4&amp;title=">
+                    5、营销推广
+                </b>
+
+                <div class="menu-c">
+                    <ul>
+                        <li>
+                            <a href="/guidefront/index?id=5">
+                                5.1 微推广
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=8">
+                                5.2 消息通知
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=9">
+                                5.3 砍价活动
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=10">
+                                5.4 二维码分享配置
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=11">
+                                5.5 优惠券列表
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=11">
+                                5.6 活动列表
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=11">
+                                5.7 货券列表
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=11">
+                                5.8 微营销
+                            </a>
+                        </li>
+
+
+                    </ul>
+                </div>
+
+                <b class="menu-p" javascript="document.location.href=/guidefront/index?cid=5&amp;title=">
+                    6、统计报表
+                </b>
+                <div class="menu-c">
+                    <ul>
+                        <li>
+                            <a href="/guidefront/index?id=54">
+                                6.1 销售统计
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=55">
+                                6.2 会员统计
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=56">
+                                6.3 访问统计
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=57">
+                                6.4 财务统计
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/guidefront/index?id=58">
+                                6.5 积分/余额日志
+                            </a>
+                        </li>
+
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="right">
+            <div class="contbox" style="min-height: 558px;">
+                <div class="tle">
+                    <i></i>
+
+                    <h1>产品使用指南<sup>Product Use Guide</sup></h1>
+                    <a href="http://resali.huobanplus.com/cms/resources/5/download/201602030954848.doc" id="userManual" target="_blank">
+                    <span class="crumb-name">
+                        <img th:src="${request.root}+'/images/word01.png'" style="width:20px; padding:8px 0px 10px 10px;"><span style="color: blue;font-size: xx-small">点击下载</span>
+                    </span>
+                    </a>
+                    <div class="fr">
+                        <a href="javascript:;" id="playVideo">
+            <span class="video">
+            </span>
+                        </a>
+                        <!--<div class="search">
+                            <input id="search" type="text" class="input" placeholder="搜索">
+
+                            <div class="srhbtn" onclick="search();"></div>
+                        </div>-->
+                    </div>
+                </div>
+                <div class="content" style="word-break:break-all;" >
+                    <div style="margin-bottom:20px;" data-th-remove="all-but-first" id="titles" >
+                        <div class="box" data-article-foreach="article" data-param-parentid='26' data-param-pagesize="20">
+                            <h1>
+                                <a th:href="${request.rootUri}+'/operate/'+${article.id}+'.html'" th:text="${article.title}">
+                                    1.1 伙伴商城角色描述
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=6">
+                                    1.2 伙伴商城体系
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=7">
+                                    1.3 伙伴商城入驻流程
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=15">
+                                    1.4 建立微信公众服务号
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=24">
+                                    1.5 绑定设置
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=25">
+                                    1.6 首次关注回复
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=25">
+                                    1.7 关键字回复
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=25">
+                                    1.8 自定义菜单
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=25">
+                                    1.9 语音管理
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=25">
+                                    1.10 带参数二维码扫描日志
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=25">
+                                    1.11 模板消息管理
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=25">
+                                    1.12 多客服模板消息
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=25">
+                                    1.13 界面设置
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=25">
+                                    1.14 商城基本设置
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=25">
+                                    1.15 支付方式管理
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=25">
+                                    1.16 配送方式管理
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=25">
+                                    1.17 导出设置
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=25">
+                                    1.18 管理员列表
+                                </a>
+                            </h1>
+                        </div>
+
+
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=26">
+                                    2.1 商品管理
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=27">
+                                    2.2 类型管理
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=28">
+                                    2.3 品牌管理
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=29">
+                                    2.4 虚拟产品管理
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=30">
+                                    2.5 虚拟分类管理
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=31">
+                                    2.6 商品标签管理
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=31">
+                                    2.7 供货商管理
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=32">
+                                    3.1 等级设置
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=33">
+                                    3.2 销售模式管理—返利设置
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=34">
+                                    3.3 会员升级小伙伴配置
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=35">
+                                    3.4 会员列表
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=36">
+                                    3.5 会员配置
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=38">
+                                    3.6 会员反馈
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=39">
+                                    3.7 客服消息推送
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=40">
+                                    3.8 充值配置
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=40">
+                                    3.9 卡密管理
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=40">
+                                    3.10 充值流水
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=40">
+                                    3.11 关于充值中心操作流程
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=40">
+                                    3.12 小伙伴列表
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=40">
+                                    3.13 提现申请
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=40">
+                                    3.14 小伙伴邀请码管理
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=40">
+                                    3.15 大伙伴列表
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=40">
+                                    3.16 大伙伴等级
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=40">
+                                    4.1 订单列表
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=40">
+                                    4.2 售后申请列表
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=40">
+                                    4.3 单据管理
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=40">
+                                    4.4 关于申请售后
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=40">
+                                    4.5 微信退款
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=40">
+                                    5.1 微推广
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=40">
+                                    5.2 消息通知
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=40">
+                                    5.3 砍价活动
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=40">
+                                    5.4 二维码分享配置
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=40">
+                                    5.5 优惠券列表
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=40">
+                                    5.6 活动列表
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=40">
+                                    5.7 提货券列表
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=40">
+                                    5.8 微营销
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=40">
+                                    6.1 销售统计
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=40">
+                                    6.2 会员统计
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=40">
+                                    6.3 访问统计
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=40">
+                                    6.4 财务统计
+                                </a>
+                            </h1>
+                        </div>
+                        <div class="box">
+                            <h1>
+                                <a href="/guidefront/index?id=40">
+                                    6.5 积分/余额日志
+                                </a>
+                            </h1>
+                        </div>
+
+
+                    </div>
+                    <div class="page">
+                        <ul>
+                            <li data-th-remove="${!request.hasPrevPage} ? all" >
+                                <a data-th-href="@{${request.prevPageHref}}" ucautopagerstatus="complete">
+                                    上一页
+                                </a>
+                            </li>
+                            <li class="pgfocus"  data-th-each="page:${request.pages}"  data-th-class="${request.currentPage==page.pageNo}?pgfocus">
+                                <a data-th-href="@{${page.pageHref}}" data-th-text="${page.pageNo}">
+                                    3
+                                </a>
+                            </li>
+                            <li data-th-remove="all">
+                                <a href="?currpage=2">
+                                    2
+                                </a>
+                            </li>
+                            <li data-th-remove="all">
+                                <a href="?currpage=3">
+                                    3
+                                </a>
+                            </li>
+                            <li data-th-remove="all">
+                                <a href="?currpage=4">
+                                    4
+                                </a>
+                            </li>
+                            <li data-th-remove="${!request.hasNextPage} ? all" >
+                                <a data-th-href="@{${request.nextPageHref}}" ucautopagerstatus="complete">
+                                    下一页
+                                </a>
+                            </li>
+
+                            <li class="point xinxinxin" >
+                                共<span data-th-text="${request.pages.size()}">4</span>页
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p style="clear:both">
+    </p>
+    </div>
+
+    <!--伙伴手册end-->
+
+    
+    <!--底部-->
+    <div style="background-color:#343434; height:120px; padding-right:50px;  ">
+        <div class="headeri" data-th-replace="${resourcePath}+'/index.html' :: #footer">
+            <div class="headlogo"><img style="    margin-top: 40px; margin-left:90px;width:100%" src="images/logo.png"
+                                       class="logoimgi"/></div>
+            <img class="hbj_KK" src="images/hbj_10.png"/>
+
+            <div style="float:right; margin-top:10px;">
+                <p class="hbj_ft">
+          <span class="hbj_foot">
+          产品服务
+          </span>
+          <span class="hbj_foot">
+          客户案例
+          </span>
+          <span class="hbj_foot">
+          加盟代理
+          </span>
+          <span class="hbj_foot">
+          关于我们
+          </span>
+          <span class="hbj_foot">
+          帮助中心
+          </span>
+          <span class="hbj_foot">
+          火图论坛
+          </span>
+          <span class="hbj_foot">
+          注册
+          </span>
+          <span class="hbj_foot" style="border:0px;">
+          登录
+          </span>
+                </p>
+
+                <p class="hbj_ft" style=" margin-left: 14px;">
+                    服务热线：400-1818-357
+          <span style="margin-left:15px;">
+          联系电话：0571-56532880
+          </span>
+                </p>
+
+                <p class="hbj_ft" style=" margin-left: 14px;">
+                    公司地址： 杭州市滨江区阡陌路482号智慧e谷B幢4楼
+                </p>
+
+                <p class="hbj_ft" style=" margin-left: 14px;">
+                    Copyright©2013-2015. 杭州火图科技有限公司,浙ICP备13027761号-5
+                </p>
+            </div>
+        </div>
+    </div>
+    <!--底部结束-->
+
+</div>
+</body>
+<script src="http://static.dodoca.com/site/js/jquery.artDialog.min.js"></script>
+<script type="text/javascript" src="http://static.dodoca.com/js/menu.js"></script>
+<script>
+    function search() {
+        var title = $('#search').val();
+        if (title != '') {
+            document.location.href = "/guidefront/index?cid=&title=" + title;
+        }
+    }
+    function downloadManual() {
+        window.open("http://resali.huobanplus.com/cms/resources/5/download/201602030954848.doc", "伙伴商城用户手册下载", "height=100, width=400, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
+    }
+</script>

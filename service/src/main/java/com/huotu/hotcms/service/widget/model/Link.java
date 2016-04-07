@@ -18,7 +18,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Link {
-    private Self self;
-    private Profile profile;
-    private Search search;
+    private LinkHref first;
+    private LinkHref self;
+    private LinkHref next;
+    private LinkHref last;
 }

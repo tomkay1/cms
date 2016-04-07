@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Component
 public class RouteInterceptor  extends HandlerInterceptorAdapter {
+
     private static final Log log = LogFactory.getLog(RouteInterceptor.class);
 
     @Autowired

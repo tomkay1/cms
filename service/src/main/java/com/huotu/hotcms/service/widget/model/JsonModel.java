@@ -7,6 +7,7 @@
  */
 
 package com.huotu.hotcms.service.widget.model;
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,7 +19,8 @@ import lombok.Setter;
 @Setter
 public class JsonModel<T> {
 
-    private Object _embedded;
+    @JSONField(name="_embedded")
+    private GoodsPage _embedded;
 
     private T elements;
 

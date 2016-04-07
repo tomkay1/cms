@@ -10,6 +10,7 @@ package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.util.ApiResult;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 /**
@@ -18,8 +19,8 @@ import java.util.Map;
  */
 public interface HttpService {
 
-    ApiResult<String> httpGet_prod(String scheme, String host, Integer port, String path, Map<String, Object> params) throws Exception;
+    ApiResult<String> httpGet_prod(String scheme, String host, Integer port, String path, Map<String, Object> params);
 
-    String createDigest(String appId,String random,String secret);
+    String createDigest(String appId,String random,String secret) throws UnsupportedEncodingException;
 
 }

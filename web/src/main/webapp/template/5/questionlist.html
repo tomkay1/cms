@@ -1,0 +1,314 @@
+﻿<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta charset="utf-8">
+    <meta name="description" th:content="${site.description}"/>
+    <meta name="keywords" th:content="${site.keywords}"/>
+    <meta property="qc:admins" content="2336157637605721604536375" />
+    <title th:text="${site.title}"></title>
+    <link rel="stylesheet" type="text/css" href="css/common.css" th:href="@{${request.root}+'/css/common.css'}"/>
+    <link rel="stylesheet" type="text/css" href="css/huobanj.css" th:href="@{${request.root}+'/css/huobanj.css'}"/>
+<link rel="Shortcut Icon" href="/favicon.ico"  th:href="@{${request.root}+'/favicon.ico'}"/>
+    <script src="http://t.cn/RGSQSu4"></script>
+    <script type="text/javascript" src="js/jquery1.42.min.js"
+            th:src="@{${request.root}+'/js/jquery1.42.min.js'}"></script>
+    <script type="text/javascript" src="js/jquery.SuperSlide.2.1.1.js"
+            th:src="@{${request.root}+'/js/jquery.SuperSlide.2.1.1.js'}"></script>
+    <script type="text/javascript" src="js/carouFredSel.js" th:src="@{${request.root}+'/js/carouFredSel.js'}"></script>
+</head>
+<body>
+<div class="huobanjiagw">
+
+    <!--导航栏-->
+    <div style="background-color:#343434;">
+        <div class="headeri" data-th-replace="${resourcePath}+'/index.html' :: #header">
+            <div class="headlogo"><img style="width:80%" src="images/logohh.png" class="logoimgi"/></div>
+            <ul class="navi">
+                <li>
+                    <a href=" #">
+                        首页
+                    </a>
+                </li>
+                <li class="nav_menu_li_1">
+                    <a style="padding: 0px 10px;" href="#">
+                        产品/服务
+                    </a>
+
+                    <div class="sub-nav">
+                        <a href="">
+                            伙伴商城
+                        </a>
+                        <a href="">
+                            代运营
+                        </a>
+                        <a href="">
+                            伙伴MAD
+                        </a>
+                        <a href="">
+                            云商学院
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a href=" #">
+                        客户案例
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        加盟代理
+                    </a>
+                </li>
+                <li class="nav_menu_li_1">
+                    <a style="padding: 0px 10px;" href="#">
+                        关于我们
+                    </a>
+
+                    <div class="sub-nav">
+                        <a href="">
+                            火图新闻
+                        </a>
+                        <a href="">
+                            火图历程
+                        </a>
+                        <a href="">
+                            火图招聘
+                        </a>
+                    </div>
+                </li>
+                <li class="nav_menu_li_1">
+                    <a style="padding: 0px 10px;" href="#">
+                        帮助中心
+                    </a>
+
+                    <div class="sub-nav">
+                        <a href="">
+                            产品问答
+                        </a>
+                        <a href="">
+                            操作指南
+                        </a>
+                        <a href="">
+                            咨询客服
+                        </a>
+                        <a href="">
+                            联系我们
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a href="#">
+                        火图论坛
+                    </a>
+                </li>
+                <li class="zc">
+                    <a href="#">
+                        注册
+                    </a>
+                </li>
+                <li class="dl">
+                    <a href="#">
+                        登录
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--导航栏end-->
+
+    <p style="clear:both"></p>
+
+    <p style="height: 40px;"></p>
+
+
+    <!--新闻资讯列表开始 -->
+
+    <div class="hr_news">
+        <div class="searchLeftS xLeft">
+            <!-- 活动列表 -->
+            <div class="upJyBox">
+                <div class="crumb-wrapf">
+                    <div class="crumb-list"><a href="http://www.huobanplus.com">帮助中心</a><span
+                            class="crumb-step">&gt;</span><span class="crumb-name">产品问答</span>
+
+                    </div>
+                </div>
+                <ul id="newslist" data-th-remove="all-but-first">
+                    <li data-article-foreach="article">
+                        <div class="upJyBoxConp">
+                            <div class="ujTitle">
+                                <span class="spanco">Q：</span><b data-th-text="${article.title}">你们是做什么的？</b>
+                            </div>
+                            <div class="mt5">
+                                <div class="c999 mt5 ofHidden">
+                                    <span class="spanco"> A：</span>
+									<span class="questionList" data-th-utext="${article.content}">
+									我们是杭州火图科技有限公司，专业构建移动电商平台。解决传统企业线上不赚钱，线下没前途，转型没能力的困扰，主要业务包括伙伴商城、伙伴MAD、代运营跟云商学院。
+									</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li data-th-remove="all">
+                        <div class="upJyBoxConp">
+                            <div class="ujTitle"><b><a target="_blank" title="" href="news.php?id=57"><span
+                                    class="spanco">Q：</span>我们缺少运营方面的人才？</a></b> <span class="hotSpan lv2"></span></div>
+                            <div class="mt5" style="height: 66px">
+                                <p style="height: 63px;" class="c999 mt5 ofHidden">
+                                    <span class="spanco">  A：</span>
+                                    我们公司创办的云商云学院是一家移动端运营人才培训机构，专门为企业提供移动端运营人才。所有学员会进行考核，并获取有工信部认证的中级微商运营证书，为企业解决缺乏人才的关键问题。
+                                </p>
+                            </div>
+
+                        </div>
+                    </li>
+                   <li data-th-remove="all">
+                        <div class="upJyBoxConp">
+                            <div class="ujTitle"><b><a target="_blank" title="" href="news.php?id=57"> <span
+                                    class="spanco">Q：</span>伙伴商城的优点是什么？</a></b> <span class="hotSpan lv2"></span></div>
+                            <div class="mt5" style="height: 66px">
+                                <p style="height: 63px;" class="c999 mt5 ofHidden">
+                                    <span class="spanco">    A： </span>1.1人轻松管理10000人的销售团队。 2.全世界都是你的销售渠道。 3.再也不用花钱买流量。
+                                    4.销售隐身可见，销量永不下线。 5.你的销售团队最优质。 6.把买家变成铁杆粉丝。 7.线上移动商城无租金压力。8.三线登陆一体。 9.库存在手天下我有。
+                                    10.支付场景全面覆盖。
+                                </p>
+                            </div>
+
+                        </div>
+                    </li>
+                    <li data-th-remove="all"  style="padding:20px 10px;">
+                        <div class="upJyBoxConp">
+                            <div class="ujTitle"><b><a target="_blank" title="" href="news.php?id=57"> <span
+                                    class="spanco">Q：</span>对于厂家的好处？</a></b> <span class="hotSpan lv2"></span></div>
+                            <div class="mt5" style="height: 66px">
+                                <div style="height: 63px;" class="c999 mt5 ofHidden">
+                                    <p><span class="spanco">  A：</span>1.消费者忠诚度高：因为产品好又便宜，又能省钱，消费者会主动自愿去消费，这是厂家最愿意看到的一种良性消费。
+                                    </p>
+
+                                    <p> 2.由于采用的是会员制，通过口碑相传，传播速度快。正如微信一样，发信息、语音都是免费的，所以仅仅2-6个月时间就快速暴增。好东西，口碑相传速度极快。</p>
+
+                                    <p> 3.销量大：由于采用市场几何倍增学的原理，会员参与到利润分配，会员自身会积极主动、有效地去口碑相传，对于厂家来说，会不断地增加消费者，提升了销量。</p>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+                    <li data-th-remove="all" style="padding:20px 10px;">
+                        <div class="upJyBoxConp">
+                            <div class="ujTitle"><b><a target="_blank" title="" href="news.php?id=57"><p><span
+                                    class="spanco">Q：</span>对创业者的好处？</a></b> <span class="hotSpan lv2"></span></div>
+                            <div class="mt5" style="height: 66px">
+                                <div style="height: 63px;" class="c999 mt5 ofHidden">
+                                    <p><span class="spanco"> A：</span>1.创业机会：只需一次性消费一定额度的产品，即可享受一定比例的折扣，不需再投资一分钱就可以有机会参与厂家的利润分配，通俗来说就是消费的同时就有机会创业，这就是全新的“消费创业”。
+                                    </p>
+
+                                    <p> 2.低门槛、无风险、回报较高的创业机会。消费者只需一次性消费，就可以终身享有创业的机会。</p>
+
+                                    <p>
+                                        3.对于目前就业难、工作难、生意难的现状，这样的低门槛、无风险、较高回报的消费创业型来说，能给很多青年人一次较好的创业机会和实现自我的平台。也能为国家解决不少就业问题。因此也是国家大力支持和鼓励的行业！</p>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+
+        </div>
+        <div style="text-align: center; margin-top: 10px; margin-bottom: 10px; display: none;">
+            <p style="color: red;">暂无数据</p>
+        </div>
+
+        <div class="page">
+            <ul>
+                <li data-th-remove="${!request.hasPrevPage} ? all">
+                    <a href="?currpage=2" ucautopagerstatus="complete" data-th-href="@{${request.prevPageHref}}">
+                        上一页
+                    </a>
+                </li>
+                <li data-th-each="page:${request.pages}">
+                    <a class="pgfocus" data-th-class="${request.currentPage==page.pageNo}?pgfocus" data-th-href="@{${page.pageHref}}" data-th-text="${page.pageNo}">
+                        1
+                    </a>
+                </li>
+                <li data-th-remove="all">
+                    <a href="?currpage=2">
+                        2
+                    </a>
+                </li>
+                <li data-th-remove="all">
+                    <a href="?currpage=3">
+                        3
+                    </a>
+                </li>
+                <li data-th-remove="all">
+                    <a href="?currpage=4">
+                        4
+                    </a>
+                </li>
+                <li data-th-remove="${!request.hasNextPage} ? all">
+                    <a href="?currpage=2" ucautopagerstatus="complete"  data-th-href="@{${request.nextPageHref}}">
+                        下一页
+                    </a>
+                </li>
+                <li class="point xinxinxin">共<span data-th-text="${request.pages.size()}">4</span>页</li>
+            </ul>
+        </div>
+    </div>
+
+    <p style="clear: both"></p>
+
+    <p style="height: 60px"></p>
+
+
+    <!--新闻资讯列表end -->
+
+
+    <!--底部-->
+    <div style="background-color:#343434; height:120px; padding-right:50px;  ">
+        <div class="headeri" data-th-replace="${resourcePath}+'/index.html' :: #footer">
+            <div class="headlogo"><img style="    margin-top: 40px; margin-left:90px;width:100%" src="images/logo.png"
+                                       class="logoimgi"/></div>
+            <img class="hbj_KK" src="images/hbj_10.png"/>
+
+            <div style="float:right; margin-top:10px;">
+                <p class="hbj_ft">
+                    <span class="hbj_foot">产品服务</span><span class="hbj_foot">客户案例</span><span
+                        class="hbj_foot">加盟代理</span><span class="hbj_foot">关于我们</span>
+                    <span class="hbj_foot">帮助中心</span><span class="hbj_foot">火图论坛</span><span class="hbj_foot">注册</span><span
+                        class="hbj_foot" style="border:0px;">登录</span>
+
+                </p>
+
+                <p class="hbj_ft" style=" margin-left: 14px;">服务热线：400-1818-357 <span style="margin-left:15px;">  联系电话：0571-56532880</span>
+                </p>
+
+                <p class="hbj_ft" style=" margin-left: 14px;">公司地址： 杭州市滨江区阡陌路482号智慧e谷B幢4楼</p>
+
+                <p class="hbj_ft" style=" margin-left: 14px;">Copyright©2013-2015. 杭州火图科技有限公司,浙ICP备13027761号-5</p>
+
+            </div>
+        </div>
+
+    </div>
+    <!--底部结束-->
+</div>
+</body>
+
+<script type="text/javascript" th:remove="all">
+</script>
+<script type="text/javascript">
+    jQuery(".fullSlide").slide({
+        titCell: ".hd ul",
+        mainCell: ".bd ul",
+        effect: "fold",
+        autoPlay: true,
+        autoPage: true,
+        trigger: "click"
+    });
+</script>
+</html>

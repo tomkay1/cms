@@ -23,6 +23,6 @@ public interface GoodsCategoryService {
      * @param customerId 商户id
      * @return
      */
-    List<GoodsCategory> getGoodsCategories(int customerId) throws Exception;
+    List<GoodsCategory> getGoodsCategories(int customerId);
 
 }

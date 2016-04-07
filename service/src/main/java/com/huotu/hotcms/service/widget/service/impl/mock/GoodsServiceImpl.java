@@ -11,7 +11,7 @@ package com.huotu.hotcms.service.widget.service.impl.mock;
 import com.alibaba.fastjson.JSON;
 import com.huotu.hotcms.service.service.HttpService;
 import com.huotu.hotcms.service.util.ApiResult;
-import com.huotu.hotcms.service.widget.model.Goods;
+import com.huotu.hotcms.service.widget.model.GoodsModel;
 import com.huotu.hotcms.service.widget.model.GoodsSearcher;
 import com.huotu.hotcms.service.widget.model.JsonModel;
 import com.huotu.hotcms.service.widget.service.GoodsService;
@@ -47,12 +47,12 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public List<Goods> getHotGoodsList(int customerId) throws Exception{
+    public List<GoodsModel> getHotGoodsList(int customerId) throws Exception{
         ApiResult<String> apiResult = invokeHotGoodsProce(customerId);
         if(apiResult.getCode()!=200) {
             return new ArrayList<>();
         }
-        return JSON.parseArray(apiResult.getData(), Goods.class);
+        return JSON.parseArray(apiResult.getData(), GoodsModel.class);
     }
 
     private ApiResult<String> invokeGoodsSearchProce(int customerId, GoodsSearcher goodsSearcher) throws Exception{

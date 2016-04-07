@@ -8,10 +8,9 @@
 
 package com.huotu.hotcms.service.widget.service;
 
-import com.huotu.hotcms.service.widget.model.Goods;
+import com.huotu.hotcms.service.widget.model.GoodsModel;
 import com.huotu.hotcms.service.widget.model.GoodsSearcher;
 import com.huotu.hotcms.service.widget.model.JsonModel;
-import com.huotu.hotcms.service.widget.model.Page;
 
 import java.util.List;
 
@@ -36,7 +35,7 @@ public interface GoodsService {
      * @param customerId
      * @return
      */
-    List<Goods> getHotGoodsList(int customerId) throws Exception;
+    List<GoodsModel> getHotGoodsList(int customerId) throws Exception;
 
 
 }

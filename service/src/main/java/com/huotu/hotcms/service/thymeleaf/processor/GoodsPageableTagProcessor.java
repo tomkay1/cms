@@ -10,15 +10,14 @@ package com.huotu.hotcms.service.thymeleaf.processor;
 
 import com.huotu.hotcms.service.common.SysConstant;
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.model.thymeleaf.foreach.PageableForeachParam;
 import com.huotu.hotcms.service.thymeleaf.expression.DialectAttributeFactory;
 import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
 import com.huotu.hotcms.service.thymeleaf.model.RequestModel;
 import com.huotu.hotcms.service.util.PageUtils;
 import com.huotu.hotcms.service.widget.model.Goods;
+import com.huotu.hotcms.service.widget.model.GoodsModel;
 import com.huotu.hotcms.service.widget.model.GoodsSearcher;
 import com.huotu.hotcms.service.widget.model.JsonModel;
-import com.huotu.hotcms.service.widget.model.Page;
 import com.huotu.hotcms.service.widget.service.GoodsService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

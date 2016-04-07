@@ -10,6 +10,7 @@ package com.huotu.hotcms.service.widget.service;
 
 import com.huotu.hotcms.service.config.ServiceTestConfig;
 import com.huotu.hotcms.service.widget.model.Goods;
+import com.huotu.hotcms.service.widget.model.GoodsModel;
 import com.huotu.hotcms.service.widget.model.GoodsSearcher;
 import com.huotu.hotcms.service.widget.model.JsonModel;
 import org.junit.Test;
@@ -27,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration(classes = ServiceTestConfig.class)
 @WebAppConfiguration
 @Transactional
-public class GoodsServiceTest {
+public class GoodsModelServiceTest {
 
     @Autowired
     private GoodsService goodsService;

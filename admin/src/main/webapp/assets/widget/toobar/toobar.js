@@ -325,7 +325,7 @@ define(function (require, exports, module) {
                                 widget.property=widgetSettingObj;//设置该控件主体下的设置信息
                                 //window.console.log(widget);
                                 JQueue.patchQueueLayoutWidget(widget)//修改该控件主体到队列中
-                                //window.console.log(JQueue.toJson());
+                                //window.console.log(widgetSettingJson);
                                 widgetModule.getWidgetBrief(widgetId,layoutId,layoutPositionIndex,widgetSettingJson);//获得控件主体预览视图
                             }
                         });

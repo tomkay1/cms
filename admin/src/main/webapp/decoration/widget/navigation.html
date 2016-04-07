@@ -7,7 +7,7 @@
                     <li class="menu">
                         <a class="main-link" href="" target="">首页</a>
                     </li>
-                    <li class="menu all-cate" th:if="${showProductType}">
+                    <li class="menu all-cate" th:if="${showProductType==1}">
                         <a class="main-link" href="#" target="">全部分类<span class="arrow"></span></a>
                         <div class="sub-menu-wrap">
                             <dl class="sub-pannel">
@@ -41,7 +41,7 @@
                         <a class="main-link" target="" th:href="${row.url_Rows}" th:text="${row.name_Rows}">测试2</a>
                     </li>
                 </ul>
-                <div class="s-form" th:if="${showSearch}">
+                <div class="s-form" th:if="${showSearch==1}">
                     <form class="form-body">
                         <input type="text" class="s-inp" th:value="${defaultKewWord}"  maxlength="60" size="60"/>
                         <input type="button" onclick="" value="搜索" class="s-submit"/>
@@ -90,15 +90,21 @@
             <li>
                 <label style="width: 180px;">是否在导航展示商品分类 </label>
                 <select name="showProductType" class="select-short">
-                    <option value="1" selected="">是</option>
-                    <option value="0">否</option>
+                    <option value="1" th:selected="${showProductType==1}">是</option>
+                    <option value="0" selected="selected"
+                            th:selected="${showProductType==null or showProductType==0}">否
+                    </option>
                 </select>
             </li>
             <li>
                 <label style="width: 180px;">选择模版 </label>
                 <select name="templateClass" class="select-short" id="templateClass">
-                    <option value="sh-head-menu-brown-624326" selected="">模版一</option>
-                    <option value="sh-head-menu-brown-v-633584">模版二</option>
+                    <option value="sh-head-menu-brown-624326" selected="selected"
+                            th:selected="${templateClass==null or templateClass=='sh-head-menu-brown-624326'}">模版一
+                    </option>
+                    <option value="sh-head-menu-brown-v-633584"
+                            th:selected="${templateClass=='sh-head-menu-brown-v-633584'}">模版二
+                    </option>
                 </select>
             </li>
         </ul>
@@ -148,11 +154,12 @@
             <li>
                 <label>店内搜索框</label>
                 <select name="showSearch" class="select-short" id="show_search">
-                    <option value="1" selected="selected">是</option>
-                    <option value="0">否</option>
+                    <option value="1" selected="selected" th:selected="${showSearch==1}">是</option>
+                    <option value="0" th:selected="${showSearch==null or showSearch==0}">否</option>
                 </select>
                 <label>默认搜索词</label>
-                <input type="text" maxlength="10" class="text-short" name="defaultKewWord" value="保暖内衣">
+                <input type="text" maxlength="10" class="text-short" name="defaultKewWord" value="保暖内衣"
+                       th:value="${defaultKewWord}">
             </li>
         </ul>
     </div>
@@ -185,6 +192,8 @@
                         html = JUtils.resolveTemplate(obj, html);
                         $("#js-nav-box").append(html);
                         navModule.deleteNav();
+                        navModule.upNav();
+                        navModule.downNav();
                     });
                 });
             },
@@ -197,8 +206,37 @@
                         $("#" + id).remove();
                     });
                 });
+            },
+            upNav: function () {
+                var obj = $(".js-nav-up");
+                obj.unbind("click");
+                $.each(obj, function (item, dom) {
+                    $(dom).click(function () {
+                        var id = $(dom).data('id');
+                        var up = $("#" + id).prev();
+                        if (up.length > 0) {
+                            $("#" + id).insertBefore(up);
+                        }
+                    });
+                });
+            },
+            downNav: function () {
+                var obj = $(".js-nav-next");
+                obj.unbind("click");
+                $.each(obj, function (item, dom) {
+                    $(dom).click(function () {
+                        var id = $(dom).data('id');
+                        var down = $("#" + id).next();
+                        if (down.length > 0) {
+                            $("#" + id).insertAfter(down);
+                        }
+                    });
+                });
             }
         }
         navModule.addNav();
+        navModule.deleteNav();
+        navModule.upNav();
+        navModule.downNav();
     </script>
 </div>

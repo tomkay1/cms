@@ -40,7 +40,7 @@ public class TestJson {
         Goods g1 = new Goods(1,"KROP女装抓毛长裙卫衣","2016-3-22 18:34:33",45,299,145,135,"http://www.cms.com/11.jpg");
         Link link1 = new Link();
 
-        Self self = new Self();
+        LinkHref self = new LinkHref();
         self.setHref("http://www.cms.com/11.jpg");
         link1.setSelf(self);
         Goods g2 = new Goods(2,"花花公子女士牛仔裤女秋经典简约修身潮流小脚女裤牛仔长裤子","2016-3-20 18:34:33",88,399,199,179,"http://www.cms.com/12.jpg");

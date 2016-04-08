@@ -76,7 +76,11 @@ public class WidgetResolveService {
 //            }
 //            context.setVariable("categorys",categories);
             StringWriter writer = new StringWriter();
-            templateEngine.process(templateResources, context, writer);
+//            templateEngine.process(templateResources, context, writer);
+            TemplateEngine templateEngine1 = new TemplateEngine();
+            templateEngine1.addDialect(new WidgetDialect());
+
+            templateEngine1.process(templateResources,context,writer);
             return writer.toString();
         }
         return templateResources;

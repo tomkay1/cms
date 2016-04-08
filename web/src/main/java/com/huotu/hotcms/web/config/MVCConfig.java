@@ -134,25 +134,6 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         return resolver;
     }
 
-//    @Bean
-//    public ThymeleafViewResolver widgetViewResolver() {
-//        ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
-//        viewResolver.setViewNames(ArrayUtil.array("*.cshtml"));
-//        viewResolver.setCharacterEncoding(UTF8);
-//
-//        WidgetTemplateResolver templateResolver = new WidgetTemplateResolver();
-//        templateResolver.setCharacterEncoding(UTF8);
-//        templateResolver.setApplicationContext(applicationContext);
-//        templateResolver.setTemplateMode(TemplateMode.TEXT);
-//
-//        SpringTemplateEngine engine = new SpringTemplateEngine();
-//        engine.setTemplateResolver(templateResolver);
-//        List<AbstractProcessorDialect> list= CMSDialect.getDialectList();
-//        list.forEach(engine::addDialect);
-//
-//        viewResolver.setTemplateEngine(engine);
-//        return viewResolver;
-//    }
 
     private ITemplateResolver widgetTemplateResolver() {
         WidgetTemplateResolver resolver = new WidgetTemplateResolver();

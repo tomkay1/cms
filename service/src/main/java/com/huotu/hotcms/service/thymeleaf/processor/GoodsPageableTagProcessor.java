@@ -68,7 +68,7 @@ public class GoodsPageableTagProcessor extends AbstractAttributeTagProcessor {
         }catch (Exception e) {
             log.error(e.getMessage());
         }
-        return goodsPage.get_embedded();
+        return goodsPage.get_embedded().getGoodses();
     }
 
     private void putPageAttrsIntoModel(ITemplateContext context,JsonModel goodsPage) {

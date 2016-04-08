@@ -72,7 +72,7 @@ public class WidgetTemplateController {
                 widgetBase.setWidgetEditUri(widgetMains.getResourceEditUri());
                 widgetBase.setProperty(properties1);
                 widgetBase.setEdit(true);
-                String html = pageResourceService.getWidgetTemplateResolveByWidgetBase(widgetBase,widgetViewResolver.getTemplateEngine());
+                String html = pageResourceService.getWidgetTemplateResolveByWidgetBase(widgetBase);
                 resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), html);
             }else{
                 resultView = new ResultView(ResultOptionEnum.NOFIND.getCode(), ResultOptionEnum.NOFIND.getValue(), null);

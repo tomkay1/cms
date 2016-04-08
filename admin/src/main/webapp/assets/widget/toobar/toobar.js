@@ -345,15 +345,17 @@ define(function (require, exports, module) {
                         widget: widgetPageData
                     },
                     success: function (data) {
-                        if(data!=null){
-                            if(data.code==200&&data.data!=null){
-                                var obj=JSON.parse(data.data);
-                                JQueue.putQueueList(obj.layout);//把页面中的配置信息初始化到JQueue队列中
-                                delete obj["layout"];
+                        if(data!=null) {
+                            if (data.code == 200 && data.data != null) {
+                                var obj = JSON.parse(data.data);
+                                if (obj.layout != null) {
+                                    JQueue.putQueueList(obj.layout);//把页面中的配置信息初始化到JQueue队列中
+                                    delete obj["layout"];
+                                }
                                 widgetPageModel = widgetPage.setModel(obj);
                                 page.initPageProperty();
                                 //window.console.log(widgetPageModel);
-                            }else{
+                            } else {
                                 layer.msg("加载页面配置数据失败...");
                             }
                         }
@@ -408,6 +410,22 @@ define(function (require, exports, module) {
                     }
                 });
             }
-        }
+        };
+        var layoutModule={
+            deleteLayout:function(){
+                var obj=$(".js-layout-delete");
+                $.each(obj,function(item,dom){
+                    $(dom).click(function(){
+
+                    });
+                });
+            },
+            upLayout:function(){
+
+            },
+            downLayout:function(){
+
+            }
+        };
     })
 });

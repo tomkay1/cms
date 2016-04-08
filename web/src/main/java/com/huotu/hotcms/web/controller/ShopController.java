@@ -43,12 +43,6 @@ public class ShopController {
     @Autowired
     private RequestService requestService;
 
-    @Autowired
-    private GoodsCategoryService getGoodsCategories;
-
-    @Autowired
-    private ApplicationContext applicationContext;
-
     /**
      * 商城首页/shop/
      * */
@@ -59,12 +53,7 @@ public class ShopController {
             Site site = siteResolveService.getCurrentSite(request);
             CustomPages customPages=customPagesService.findHomePages();
             if(customPages!=null){
-//                List<GoodsCategory> categories = getGoodsCategories.getGoodsCategories(4471);
-//                modelAndView.addObject("categorys",categories);
                 modelAndView.setViewName(String.format("%s_%s.cshtml", site.getSiteId(),customPages.getId()));
-//                modelAndView.addObject("test","测试哦");
-//                modelAndView.setViewName("template/3447/test.html");
-//                modelAndView.setViewName("/view/index.html");
             }else{
                 modelAndView.setViewName(PageErrorType.BUDDING_500.getValue());
                 RequestModel requestModel=requestService.ConvertRequestModelByError(request);

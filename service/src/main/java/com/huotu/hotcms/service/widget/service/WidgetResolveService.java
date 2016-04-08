@@ -38,19 +38,9 @@ public class WidgetResolveService {
     @Autowired
     private RedisService redisService;
 
-    @Autowired
-    private GoodsCategoryService getGoodsCategories;
+    private TemplateEngine templateEngine =null;
 
-    private TemplateEngine templateEngine = new TemplateEngine();
-
-    public String widgetBriefView(String templateResources,Map<String,Object> map){
-        Context context = new Context(Locale.CHINA, map);
-        StringWriter writer = new StringWriter();
-        templateEngine.process(templateResources, context, writer);
-        return writer.toString();
-    }
-
-    public String widgetBriefView(String templateResources,WidgetBase widgetBase,ITemplateEngine templateEngine) throws IOException {
+    public String widgetBriefView(String templateResources,WidgetBase widgetBase) throws IOException {
         if(widgetBase!=null) {
             Map<String,Object> map =null;
             if(widgetBase.getProperty()!=null){
@@ -64,17 +54,9 @@ public class WidgetResolveService {
                     map.put(field.getName(), getFieldValueByName(field.getName(), widgetBase));
                 }
             }
-            Context context=null;
-//            Context context=new Context();
-//            List<GoodsCategory> categories = getGoodsCategories.getGoodsCategories(4471);
-//            map.put("categorys",categories);
-            context = new Context(Locale.CHINA, map);
-//            for ()
-//            context.setVariable(map);
-//            for (Map.Entry<String, Object> entry : map.entrySet()) {
-//                context.setVariable(entry.getKey(),entry.getValue());
-//            }
-//            context.setVariable("categorys",categories);
+            Context context=new Context(Locale.CHINA, map);
+            templateEngine=new TemplateEngine();
+            templateEngine.addDialect(new WidgetDialect());
             StringWriter writer = new StringWriter();
             templateEngine.process(templateResources, context, writer);
             return writer.toString();

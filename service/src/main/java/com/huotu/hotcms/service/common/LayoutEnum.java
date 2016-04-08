@@ -41,9 +41,9 @@ public enum LayoutEnum implements CommonEnum {
 
     public String MODULE_ADD = "<div class=\"layout-toolbar HOT-layout-toolbar ui-draggable v\">\n" +
             "    <span class=\"layout-extra\">\n" +
-            "        <a class=\"icon-del HOT-layout-del\" data-id=\"%s\" href=\"javascript:;\"></a>\n" +
-            "        <a class=\"icon-up HOT-layout-up\"  data-id=\"%s\" href=\"javascript:;\" style=\"display: block;\"></a>\n" +
-            "        <a class=\"icon-down HOT-layout-down\"  data-id=\"%s\" href=\"javascript:;\"></a>\n" +
+            "        <a class=\"icon-del HOT-layout-del js-layout-delete\" data-id=\"%s\" href=\"javascript:;\"></a>\n" +
+            "        <a class=\"icon-up HOT-layout-up js-layout-up\"  data-id=\"%s\" href=\"javascript:;\" style=\"display: block;\"></a>\n" +
+            "        <a class=\"icon-down HOT-layout-down js-layout-down\"  data-id=\"%s\" href=\"javascript:;\"></a>\n" +
             "    </span>\n" +
             "    <span class=\"layout-name HOT-layout-name\">%s</span>\n" +
 //            "    <a href=\"javascript:;\" class=\"HOT-layout-set\">设置</a>\n" +
@@ -106,54 +106,54 @@ public enum LayoutEnum implements CommonEnum {
 
     public String getLayoutTemplateByEdit(List<String> argument,String layoutId) {
         argument=getLayoutTemplateModuleList(argument,layoutId);
-        String layoutTemplate = "";
         String MODULE_ADD = String.format(this.MODULE_ADD, this.code, this.code, this.code, this.getValue());
         LayoutTemplate layoutTemplate1=LayoutTemplate.valueOf(this.code);
+        String layoutTemplate=layoutTemplate1.getValue().replace("{layoutId}",layoutId);
         switch (this.code) {
             case 0:
-                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), argument.get(2), MODULE_ADD);
+                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1), argument.get(2), MODULE_ADD);
                 break;
             case 1:
-                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0),MODULE_ADD);
+                layoutTemplate = String.format(layoutTemplate, argument.get(0),MODULE_ADD);
                 break;
             case 2:
-                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1),MODULE_ADD);
+                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1),MODULE_ADD);
                 break;
             case 3:
-                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), argument.get(2), MODULE_ADD);
+                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1), argument.get(2), MODULE_ADD);
                 break;
             case 4:
-                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1),MODULE_ADD);
+                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1),MODULE_ADD);
                 break;
             case 5:
-                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), argument.get(2),MODULE_ADD);
+                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1), argument.get(2),MODULE_ADD);
                 break;
             case 6:
-                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), argument.get(2),MODULE_ADD);
+                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1), argument.get(2),MODULE_ADD);
                 break;
             case 7:
-                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1),MODULE_ADD);
+                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1),MODULE_ADD);
                 break;
             case 8:
-                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), MODULE_ADD);
+                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1), MODULE_ADD);
                 break;
             case 9:
-                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1),MODULE_ADD);
+                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1),MODULE_ADD);
                 break;
             case 10:
-                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1),MODULE_ADD);
+                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1),MODULE_ADD);
                 break;
             case 11:
-                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1),MODULE_ADD);
+                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1),MODULE_ADD);
                 break;
             case 12:
-                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1),MODULE_ADD);
+                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1),MODULE_ADD);
                 break;
             case 13:
-                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), argument.get(2),MODULE_ADD);
+                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1), argument.get(2),MODULE_ADD);
                 break;
             case 14:
-                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0),MODULE_ADD);
+                layoutTemplate = String.format(layoutTemplate, argument.get(0),MODULE_ADD);
                 break;
         }
         return layoutTemplate;

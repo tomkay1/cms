@@ -23,6 +23,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.util.StringUtils;
 import org.thymeleaf.ITemplateEngine;
+import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresource.ITemplateResource;
@@ -94,6 +95,7 @@ public class WidgetTemplateResource implements ITemplateResource {
     private SiteServiceImpl siteService;
     private ThymeleafViewResolver widgetViewResolver;
     private  String URI_PREFIX;
+    private TemplateEngine templateEngine;
 
     //  private final Resource resource;
     private final String characterEncoding;
@@ -198,8 +200,8 @@ public class WidgetTemplateResource implements ITemplateResource {
         return false;
     }
 
-    private String getBrowseTemplate(WidgetPage widgetPage,ITemplateEngine templateEngine) throws Exception {
-        String htmlTemplate = pageResourceService.getHtmlTemplateByWidgetPage(widgetPage, false,templateEngine);
+    private String getBrowseTemplate(WidgetPage widgetPage) throws Exception {
+        String htmlTemplate = pageResourceService.getHtmlTemplateByWidgetPage(widgetPage,false);
         this.BROWSE_RESOURCES = this.BROWSE_RESOURCES.replace("{PREFIX}", this.URI_PREFIX);
         this.BROWSE_RESOURCES = this.BROWSE_RESOURCES.replace("{version}", this.version);
         htmlTemplate = String.format(this.BROWSE_HTML_BOX, this.WIDGET_RESOURCES + this.BROWSE_RESOURCES, htmlTemplate);
@@ -208,7 +210,7 @@ public class WidgetTemplateResource implements ITemplateResource {
 
     private String getEditTemplate(WidgetPage widgetPage, String pageConfigName,ITemplateEngine templateEngine) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        String htmlTemplate = pageResourceService.getHtmlTemplateByWidgetPage(widgetPage, true,templateEngine);
+        String htmlTemplate = pageResourceService.getHtmlTemplateByWidgetPage(widgetPage, true);
         htmlTemplate = String.format(this.EDIT_HTML_BOX, this.WIDGET_RESOURCES, htmlTemplate, EDIT_JAVASCRIPT);
         htmlTemplate = htmlTemplate.replace("{config_existsPage}", (isExists(pageConfigName) ? pageConfigName : "0"));
         String widgetJson = mapper.writeValueAsString(widgetPage);
@@ -216,11 +218,11 @@ public class WidgetTemplateResource implements ITemplateResource {
         return htmlTemplate;
     }
 
-    private String getTemplate(WidgetPage widgetPage,ITemplateEngine templateEngine) throws Exception {
+    private String getTemplate(WidgetPage widgetPage) throws Exception {
         String pageConfigName = this.getPageConfigName();
         String htmlTemplate=null;
         if (isBrowse()) {
-            htmlTemplate = getBrowseTemplate(widgetPage,templateEngine);
+            htmlTemplate = getBrowseTemplate(widgetPage);
         } else {
             htmlTemplate = getEditTemplate(widgetPage, pageConfigName,templateEngine);
         }
@@ -238,7 +240,7 @@ public class WidgetTemplateResource implements ITemplateResource {
             Site site = siteService.getSite(siteId);
             widgetPage = pageResolveService.getWidgetPageByConfig(pageConfigNameContainXml, site);
             try {
-                htmlTemplate = getTemplate(widgetPage,widgetViewResolver.getTemplateEngine());
+                htmlTemplate = getTemplate(widgetPage);
             }catch (Exception e) {
                 e.printStackTrace();
             }

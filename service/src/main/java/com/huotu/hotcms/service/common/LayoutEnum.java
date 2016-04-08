@@ -70,10 +70,10 @@ public enum LayoutEnum implements CommonEnum {
 
 
     private List<String> getLayoutTemplateModuleList(List<String> argument,String layoutId){
-        String addModeule=this.ADD_TEMPLATE.replace("{guid}",layoutId);
-        String addModuleOne=addModeule.replace("{index}","0");
-        String addModuleTwo=addModeule.replace("{index}","1");
-        String addModuleTree=addModeule.replace("{index}","2");
+        String addModule=this.ADD_TEMPLATE.replace("{guid}",layoutId);
+        String addModuleOne=addModule.replace("{index}","0");
+        String addModuleTwo=addModule.replace("{index}","1");
+        String addModuleTree=addModule.replace("{index}","2");
         if (argument == null) {
             argument = new ArrayList<>();
             argument.add(addModuleOne);
@@ -86,14 +86,14 @@ public enum LayoutEnum implements CommonEnum {
                 argument.add(addModuleTree);
             }
             if (argument.size() == 1) {
-                argument.add(addModuleOne);
-                argument.add(addModeule+addModuleTwo);
-                argument.add(addModeule+addModuleTree);
+                argument.set(0,argument.get(0)+addModuleOne);
+                argument.add(addModuleTwo);
+                argument.add(addModuleTree);
             }
             if (argument.size() == 2) {
-                argument.add(addModuleOne);
-                argument.add(addModuleTwo);
-                argument.add(addModeule+addModuleTree);
+                argument.set(0, argument.get(0) + addModuleOne);
+                argument.set(1, argument.get(1) + addModuleTwo);
+                argument.add(addModuleTree);
             }
             if(argument.size()==3){
                 argument.set(0,argument.get(0)+addModuleOne);
@@ -106,7 +106,7 @@ public enum LayoutEnum implements CommonEnum {
 
     public String getLayoutTemplateByEdit(List<String> argument,String layoutId) {
         argument=getLayoutTemplateModuleList(argument,layoutId);
-        String MODULE_ADD = String.format(this.MODULE_ADD, this.code, this.code, this.code, this.getValue());
+        String MODULE_ADD = String.format(this.MODULE_ADD, layoutId, layoutId,layoutId, this.getValue());
         LayoutTemplate layoutTemplate1=LayoutTemplate.valueOf(this.code);
         String layoutTemplate=layoutTemplate1.getValue().replace("{layoutId}",layoutId);
         switch (this.code) {

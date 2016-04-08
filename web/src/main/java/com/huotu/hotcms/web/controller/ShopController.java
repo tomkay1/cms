@@ -7,19 +7,15 @@ import com.huotu.hotcms.service.service.CustomPagesService;
 import com.huotu.hotcms.service.thymeleaf.model.RequestModel;
 import com.huotu.hotcms.service.thymeleaf.service.RequestService;
 import com.huotu.hotcms.service.thymeleaf.service.SiteResolveService;
-import com.huotu.hotcms.service.widget.model.GoodsCategory;
-import com.huotu.hotcms.service.widget.service.GoodsCategoryService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * <p>

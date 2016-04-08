@@ -34,7 +34,7 @@ public class GoodsCATGTagProcessor extends AbstractAttributeTagProcessor {
     public static final int PRECEDENCE = 1300;
 
     public GoodsCATGTagProcessor(IProcessorDialect dialect, String dialectPrefix) {
-        super(dialect, TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
+        super(dialect, TemplateMode.TEXT, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
     }
 
     @Override

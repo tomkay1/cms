@@ -7,12 +7,14 @@ import com.huotu.hotcms.service.model.widget.WidgetBase;
 import com.huotu.hotcms.service.model.widget.WidgetListProperty;
 import com.huotu.hotcms.service.model.widget.WidgetProperty;
 import com.huotu.hotcms.service.service.RedisService;
+import com.huotu.hotcms.service.thymeleaf.dialect.WidgetDialect;
 import com.huotu.hotcms.service.util.HttpUtils;
 import com.huotu.hotcms.service.widget.model.GoodsCategory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.thymeleaf.ITemplateEngine;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
@@ -48,7 +50,7 @@ public class WidgetResolveService {
         return writer.toString();
     }
 
-    public String widgetBriefView(String templateResources,WidgetBase widgetBase) throws IOException {
+    public String widgetBriefView(String templateResources,WidgetBase widgetBase,ITemplateEngine templateEngine) throws IOException {
         if(widgetBase!=null) {
             Map<String,Object> map =null;
             if(widgetBase.getProperty()!=null){

@@ -22,6 +22,9 @@ import org.apache.commons.vfs2.util.EncryptUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.util.StringUtils;
+import org.thymeleaf.ITemplateEngine;
+import org.thymeleaf.spring4.SpringTemplateEngine;
+import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresource.ITemplateResource;
 import org.thymeleaf.util.Validate;
 import sun.security.krb5.EncryptedData;
@@ -89,8 +92,8 @@ public class WidgetTemplateResource implements ITemplateResource {
     private CustomPagesServiceImpl customPagesService;
 
     private SiteServiceImpl siteService;
-
-    private String URI_PREFIX;
+    private ThymeleafViewResolver widgetViewResolver;
+    private  String URI_PREFIX;
 
     //  private final Resource resource;
     private final String characterEncoding;
@@ -103,8 +106,9 @@ public class WidgetTemplateResource implements ITemplateResource {
         pageResourceService = (PageResourceService) applicationContext.getBean("pageResourceService");
         pageResolveService = (PageResolveService) applicationContext.getBean("pageResolveService");
         siteService = (SiteServiceImpl) applicationContext.getBean("siteServiceImpl");
-        customPagesService = (CustomPagesServiceImpl) applicationContext.getBean("customPagesServiceImpl");
-        this.location = location;
+        widgetViewResolver = (ThymeleafViewResolver)applicationContext.getBean("widgetViewResolver");
+        customPagesService=(CustomPagesServiceImpl) applicationContext.getBean("customPagesServiceImpl");
+        this.location=location;
         this.characterEncoding = characterEncoding;
         this.WIDGET_RESOURCES = this.WIDGET_RESOURCES.replace("{PREFIX}", this.URI_PREFIX);
         this.WIDGET_RESOURCES = this.WIDGET_RESOURCES.replace("{version}", this.version);
@@ -194,17 +198,17 @@ public class WidgetTemplateResource implements ITemplateResource {
         return false;
     }
 
-    private String getBrowseTemplate(WidgetPage widgetPage) throws Exception {
-        String htmlTemplate = pageResourceService.getHtmlTemplateByWidgetPage(widgetPage, false);
+    private String getBrowseTemplate(WidgetPage widgetPage,ITemplateEngine templateEngine) throws Exception {
+        String htmlTemplate = pageResourceService.getHtmlTemplateByWidgetPage(widgetPage, false,templateEngine);
         this.BROWSE_RESOURCES = this.BROWSE_RESOURCES.replace("{PREFIX}", this.URI_PREFIX);
         this.BROWSE_RESOURCES = this.BROWSE_RESOURCES.replace("{version}", this.version);
         htmlTemplate = String.format(this.BROWSE_HTML_BOX, this.WIDGET_RESOURCES + this.BROWSE_RESOURCES, htmlTemplate);
         return htmlTemplate;
     }
 
-    private String getEditTemplate(WidgetPage widgetPage, String pageConfigName) throws Exception {
+    private String getEditTemplate(WidgetPage widgetPage, String pageConfigName,ITemplateEngine templateEngine) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        String htmlTemplate = pageResourceService.getHtmlTemplateByWidgetPage(widgetPage, true);
+        String htmlTemplate = pageResourceService.getHtmlTemplateByWidgetPage(widgetPage, true,templateEngine);
         htmlTemplate = String.format(this.EDIT_HTML_BOX, this.WIDGET_RESOURCES, htmlTemplate, EDIT_JAVASCRIPT);
         htmlTemplate = htmlTemplate.replace("{config_existsPage}", (isExists(pageConfigName) ? pageConfigName : "0"));
         String widgetJson = mapper.writeValueAsString(widgetPage);
@@ -212,13 +216,13 @@ public class WidgetTemplateResource implements ITemplateResource {
         return htmlTemplate;
     }
 
-    private String getTemplate(WidgetPage widgetPage) throws Exception {
+    private String getTemplate(WidgetPage widgetPage,ITemplateEngine templateEngine) throws Exception {
         String pageConfigName = this.getPageConfigName();
         String htmlTemplate=null;
         if (isBrowse()) {
-            htmlTemplate = getBrowseTemplate(widgetPage);
+            htmlTemplate = getBrowseTemplate(widgetPage,templateEngine);
         } else {
-            htmlTemplate = getEditTemplate(widgetPage, pageConfigName);
+            htmlTemplate = getEditTemplate(widgetPage, pageConfigName,templateEngine);
         }
         return htmlTemplate;
     }
@@ -234,8 +238,8 @@ public class WidgetTemplateResource implements ITemplateResource {
             Site site = siteService.getSite(siteId);
             widgetPage = pageResolveService.getWidgetPageByConfig(pageConfigNameContainXml, site);
             try {
-                htmlTemplate = getTemplate(widgetPage);
-            } catch (Exception e) {
+                htmlTemplate = getTemplate(widgetPage,widgetViewResolver.getTemplateEngine());
+            }catch (Exception e) {
                 e.printStackTrace();
             }
         }

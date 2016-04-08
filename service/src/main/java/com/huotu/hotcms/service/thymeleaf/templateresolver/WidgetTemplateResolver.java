@@ -36,7 +36,7 @@ public class WidgetTemplateResolver extends AbstractTemplateResolver{
     private String prefix = null;
     private String suffix = null;
     private String characterEncoding = null;
-    private final HashMap<String,String> templateAliases = new HashMap<String, String>(8);
+    private final HashMap<String,String> templateAliases = new HashMap<>(8);
 
     public String getPrefix() {
         return prefix;
@@ -57,6 +57,7 @@ public class WidgetTemplateResolver extends AbstractTemplateResolver{
     public String getCharacterEncoding() {
         return characterEncoding;
     }
+
     public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
     }
@@ -88,7 +89,7 @@ public class WidgetTemplateResolver extends AbstractTemplateResolver{
 
     @Override
     protected TemplateMode computeTemplateMode(IEngineConfiguration configuration, String ownerTemplate, String template, Map<String, Object> templateResolutionAttributes) {
-        return TemplateMode.HTML;
+        return this.templateMode;
     }
 
     @Override

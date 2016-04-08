@@ -33,10 +33,6 @@ public class CMSDialect {
         return dialectList;
     }
 
-    public static List<AbstractProcessorDialect> getDialectList(TemplateMode templateMode) {
-        initDialect();
-        return dialectList;
-    }
 
     /*
     * 初始化thymeleaf 扩展的标签
@@ -54,18 +50,4 @@ public class CMSDialect {
         dialectList.add(new WidgetDialect());
     }
 
-    /**
-   * 初始化thymeleaf 扩展的标签
-   * */
-    public static void initDialect(TemplateMode templateMode){
-        dialectList.add(new ArticleDialect());
-        dialectList.add(new LinkDialect());
-        dialectList.add(new CategoryDialect());
-        dialectList.add(new VideoDialect());
-        dialectList.add(new NoticeDialect());
-        dialectList.add(new GalleryDialect());
-        dialectList.add(new GalleryListDialect());
-        dialectList.add(new DownloadDialect());
-        dialectList.add(new TimeDialect());
-    }
 }

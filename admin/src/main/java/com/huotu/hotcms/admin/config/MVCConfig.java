@@ -60,6 +60,9 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
     private SiteResolver siteResolver;
     @Autowired
     private  LoginInterceptor loginInterceptor;
+    @Autowired
+    private ThymeleafViewResolver widgetViewResolver;
+
 
     /**
      * 允许访问静态资源
@@ -106,7 +109,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         registry.viewResolver(redirectViewResolver());
         registry.viewResolver(forwardViewResolver());
         registry.viewResolver(remoteHtmlViewResolver());
-        registry.viewResolver(widgetViewResolver());
+        registry.viewResolver(widgetViewResolver);
     }
 
 
@@ -122,7 +125,8 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         return resolver;
     }
 
-    public ViewResolver widgetViewResolver() {
+    @Bean
+    public ThymeleafViewResolver widgetViewResolver() {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
         resolver.setViewNames(ArrayUtil.array("*.shtml"));
         resolver.setCharacterEncoding(UTF8);
@@ -207,7 +211,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         WidgetTemplateResolver resolver = new WidgetTemplateResolver();
         resolver.setCharacterEncoding(UTF8);
         resolver.setApplicationContext(applicationContext);
-        resolver.setTemplateMode(TemplateMode.TEXT);
+        resolver.setTemplateMode(TemplateMode.HTML);
         return resolver;
     }
     private ITemplateResolver remoteHtmlTemplateResolver() {

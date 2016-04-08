@@ -60,7 +60,7 @@ public class GoodsPageableTagProcessor extends AbstractAttributeTagProcessor {
         WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
         GoodsService goodsService = (GoodsService)applicationContext.getBean("goodsServiceImpl");
         int customerId = ((Site)VariableExpression.getVariable(context, "site")).getCustomerId();
-        JsonModel<List<Goods>> goodsPage = null;
+        JsonModel goodsPage = null;
         try {
             GoodsSearcher goodsSearcher = DialectAttributeFactory.getInstance().getForeachParam(tag, GoodsSearcher.class);
             goodsPage = goodsService.searchGoods(customerId,goodsSearcher);
@@ -71,7 +71,7 @@ public class GoodsPageableTagProcessor extends AbstractAttributeTagProcessor {
         return goodsPage.get_embedded();
     }
 
-    private void putPageAttrsIntoModel(ITemplateContext context,JsonModel<List<Goods>> goodsPage) {
+    private void putPageAttrsIntoModel(ITemplateContext context,JsonModel goodsPage) {
         //分页标签处理
         RequestModel requestModel = (RequestModel)VariableExpression.getVariable(context,"request");
         int pageNo = goodsPage.getPage().getNumber()+1;

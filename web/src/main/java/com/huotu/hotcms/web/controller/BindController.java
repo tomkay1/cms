@@ -6,6 +6,8 @@ import com.huotu.hotcms.service.model.Bind.AccessToken;
 import com.huotu.hotcms.service.model.Bind.WxUser;
 import com.huotu.hotcms.service.thymeleaf.model.RequestModel;
 import com.huotu.hotcms.service.thymeleaf.service.RequestService;
+import com.huotu.hotcms.web.util.QRCodeUtil;
+import com.huotu.hotcms.web.util.web.CookieUser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -19,8 +21,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -40,6 +46,10 @@ public class BindController {
     private RequestService requestService;
 
 
+    @Autowired
+    private CookieUser cookieUser;
+
+
 
 
     @Autowired
@@ -47,24 +57,51 @@ public class BindController {
 
 
     @RequestMapping("/callback")
-    public ModelAndView callback(HttpServletRequest request){
+    public ModelAndView callback(HttpServletRequest request,HttpServletResponse response){
         ModelAndView modelAndView=new ModelAndView();
-        try{
+
+        if (cookieUser.checkLogin(request,response)) {//已登录
+
+        }
+        else {//未登录扫码登录
+            try {
 //            modelAndView.setViewName(PageErrorType.CALLBACK.getValue());
-            modelAndView.setViewName("/template/0/product_introduce-s.html");
-            RequestModel requestModel=requestService.ConvertRequestModelByError(request);
-            modelAndView.addObject("localUrl",requestModel.getRoot());
-            String code =request.getParameter("code");
-            String state =request.getParameter("state");
-            String appid = configInfo.getAppid();
-            String secret = configInfo.getAppsecret();
-            String url="https://api.weixin.qq.com/sns/oauth2/access_token?appid="+appid+"&secret="+secret+"&code="+code+"&grant_type=authorization_code"+"&state="+state;
-            WxUser wxUser =getWxUser(url);
-            modelAndView.addObject("wxUser",wxUser);
-        }catch (Exception ex){
-            log.error(ex);
+                modelAndView.setViewName("/template/0/product_introduce-s.html");
+                RequestModel requestModel = requestService.ConvertRequestModelByError(request);
+                modelAndView.addObject("localUrl", requestModel.getRoot());
+                String code = request.getParameter("code");
+                String state = request.getParameter("state");
+                String appid = configInfo.getAppid();
+                String secret = configInfo.getAppsecret();
+                String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + appid + "&secret=" + secret + "&code=" + code + "&grant_type=authorization_code" + "&state=" + state;
+                WxUser wxUser = getWxUser(url);
+                modelAndView.addObject("wxUser", wxUser);
+                cookieUser.setUnionID(response, wxUser.getUnionid());
+            } catch (Exception ex) {
+                log.error(ex);
+            }
         }
         return modelAndView;
+    }
+
+//    @RequestMapping("/QrCodeView")
+//    public ModelAndView QrCodeView(){
+//        ModelAndView modelAndView=new ModelAndView();
+//        modelAndView.setViewName("/template/0/qrcode.html");
+//        return modelAndView;
+//    }
+
+    @RequestMapping("/QrCode")
+    public void QrCode(HttpServletRequest request,HttpServletResponse response){
+        ModelAndView modelAndView=new ModelAndView();
+        try {
+            QRCodeUtil qrCodeUtil = new QRCodeUtil();
+            BufferedImage bi = qrCodeUtil.createImage("http://baidu.com");
+            OutputStream os=response.getOutputStream();
+            ImageIO.write(bi, "jpg",os);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public WxUser getWxUser(String url){

@@ -34,7 +34,7 @@ public class GoodsCATGTagProcessor extends AbstractAttributeTagProcessor {
     public static final int PRECEDENCE = 1300;
 
     public GoodsCATGTagProcessor(IProcessorDialect dialect, String dialectPrefix) {
-        super(dialect, TemplateMode.XML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
+        super(dialect, TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
     }
 
     @Override
@@ -48,7 +48,8 @@ public class GoodsCATGTagProcessor extends AbstractAttributeTagProcessor {
         WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
         GoodsCategoryService goodsCategoryService = (GoodsCategoryService)applicationContext.getBean("goodsCategoryServiceImpl");
         Site site = (Site)VariableExpression.getVariable(context,"site");
-        int customerId = site.getCustomerId();
+//        int customerId = site.getCustomerId();
+        int customerId=4471;
         List<GoodsCategory> categories = goodsCategoryService.getGoodsCategories(customerId);
         return categories;
     }

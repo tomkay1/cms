@@ -8,6 +8,7 @@ import com.huotu.hotcms.service.model.widget.WidgetListProperty;
 import com.huotu.hotcms.service.model.widget.WidgetProperty;
 import com.huotu.hotcms.service.service.RedisService;
 import com.huotu.hotcms.service.util.HttpUtils;
+import com.huotu.hotcms.service.widget.model.GoodsCategory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,9 @@ public class WidgetResolveService {
     @Autowired
     private RedisService redisService;
 
+    @Autowired
+    private GoodsCategoryService getGoodsCategories;
+
     private TemplateEngine templateEngine = new TemplateEngine();
 
     public String widgetBriefView(String templateResources,Map<String,Object> map){
@@ -46,7 +50,7 @@ public class WidgetResolveService {
 
     public String widgetBriefView(String templateResources,WidgetBase widgetBase) throws IOException {
         if(widgetBase!=null) {
-            Map map =null;
+            Map<String,Object> map =null;
             if(widgetBase.getProperty()!=null){
                 map = ConverMapByList(widgetBase.getProperty());
             }else{
@@ -59,7 +63,16 @@ public class WidgetResolveService {
                 }
             }
             Context context=null;
+//            Context context=new Context();
+//            List<GoodsCategory> categories = getGoodsCategories.getGoodsCategories(4471);
+//            map.put("categorys",categories);
             context = new Context(Locale.CHINA, map);
+//            for ()
+//            context.setVariable(map);
+//            for (Map.Entry<String, Object> entry : map.entrySet()) {
+//                context.setVariable(entry.getKey(),entry.getValue());
+//            }
+//            context.setVariable("categorys",categories);
             StringWriter writer = new StringWriter();
             templateEngine.process(templateResources, context, writer);
             return writer.toString();

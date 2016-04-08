@@ -52,7 +52,7 @@ public class PageResourceService {
         return isWidgetTemplateCached(widgetBase) ? getCachedWidgetTemplate(widgetBase) : getWidgetTemplateFromFile(widgetBase);
     }
 
-    public String getWidgetTemplateResovleByWidgetBase(WidgetBase widgetBase) throws Exception {
+    public String getWidgetTemplateResolveByWidgetBase(WidgetBase widgetBase) throws Exception {
         String widgetHtml=getWidgetTemplateByWidgetBase(widgetBase);
         widgetHtml=widgetResolveService.widgetBriefView(widgetHtml,widgetBase);
         return widgetHtml;
@@ -90,7 +90,7 @@ public class PageResourceService {
             for (WidgetBase widgetBase : widgetBases) {
                 if (widgetBase != null) {
                     widgetBase.setEdit(isEdit);
-                    String template=getWidgetTemplateResovleByWidgetBase(widgetBase);
+                    String template=getWidgetTemplateResolveByWidgetBase(widgetBase);
                     moduleTemplate +=template;
                 }
             }

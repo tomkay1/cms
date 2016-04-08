@@ -18,7 +18,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * 商城组件解析器
+ * 商城组件方言
  * Created by cwb on 2016/3/17.
  */
 public class WidgetDialect extends AbstractProcessorDialect {

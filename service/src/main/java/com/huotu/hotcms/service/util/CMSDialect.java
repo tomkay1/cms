@@ -54,7 +54,7 @@ public class CMSDialect {
         dialectList.add(new WidgetDialect());
     }
 
-    /*
+    /**
    * 初始化thymeleaf 扩展的标签
    * */
     public static void initDialect(TemplateMode templateMode){

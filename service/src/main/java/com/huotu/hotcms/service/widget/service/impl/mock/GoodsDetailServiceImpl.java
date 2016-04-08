@@ -1,6 +1,7 @@
-package com.huotu.hotcms.service.widget.service.impl.huobanplus;
 
-import com.alibaba.fastjson.JSON;
+package com.huotu.hotcms.service.widget.service.impl.mock;
+
+import com.google.gson.Gson;
 import com.huotu.hotcms.service.service.HttpService;
 import com.huotu.hotcms.service.util.ApiResult;
 import com.huotu.hotcms.service.widget.model.JsonModel;
@@ -16,7 +17,7 @@ import java.util.TreeMap;
  * 商品详情
  * Created by chendeyu on 2016/4/8.
  */
-@Profile("container")
+@Profile("!container")
 @Service
 public class GoodsDetailServiceImpl implements GoodsDetailService {
 
@@ -30,7 +31,7 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
         if(apiResult.getCode()!=200) {
             throw new Exception(apiResult.getMsg());
         }
-        return JSON.parseObject(apiResult.getData(),JsonModel.class);
+        return new Gson().fromJson(apiResult.getData(), JsonModel.class);
     }
 
 
@@ -38,7 +39,7 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
         Map<String,Object> params = new TreeMap<>();
         params.put("goodsId",goodsId);
         params.put("unionId",unionId);
-        return httpService.httpGet_prod("http", "api.open.huobanplus.com", null, "/goods/findByGoodsIdAndUnionId", params);
+        return httpService.httpGet_prod("http", "api.open.fancat.cn", 8081, "/goods/findByGoodsIdAndUnionId", params);
     }
 
 }

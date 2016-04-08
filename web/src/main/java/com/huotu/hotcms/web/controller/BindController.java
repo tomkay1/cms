@@ -1,21 +1,14 @@
 package com.huotu.hotcms.web.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.huotu.hotcms.service.common.ConfigInfo;
-import com.huotu.hotcms.service.model.Bind.AccessToken;
 import com.huotu.hotcms.service.model.Bind.WxUser;
 import com.huotu.hotcms.service.thymeleaf.model.RequestModel;
 import com.huotu.hotcms.service.thymeleaf.service.RequestService;
+import com.huotu.hotcms.service.widget.service.RegisterByWeixinService;
 import com.huotu.hotcms.web.util.QRCodeUtil;
 import com.huotu.hotcms.web.util.web.CookieUser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,10 +18,7 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 /**
  * <p>
@@ -44,6 +34,9 @@ public class BindController {
 
     @Autowired
     private RequestService requestService;
+
+    @Autowired
+    private RegisterByWeixinService registerByWeixinService;
 
 
     @Autowired
@@ -65,7 +58,6 @@ public class BindController {
         }
         else {//未登录扫码登录
             try {
-//            modelAndView.setViewName(PageErrorType.CALLBACK.getValue());
                 modelAndView.setViewName("/template/0/product_introduce-s.html");
                 RequestModel requestModel = requestService.ConvertRequestModelByError(request);
                 modelAndView.addObject("localUrl", requestModel.getRoot());
@@ -74,7 +66,7 @@ public class BindController {
                 String appid = configInfo.getAppid();
                 String secret = configInfo.getAppsecret();
                 String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + appid + "&secret=" + secret + "&code=" + code + "&grant_type=authorization_code" + "&state=" + state;
-                WxUser wxUser = getWxUser(url);
+                WxUser wxUser = registerByWeixinService.getWxUser(url);
                 modelAndView.addObject("wxUser", wxUser);
                 cookieUser.setUnionID(response, wxUser.getUnionid());
             } catch (Exception ex) {
@@ -84,12 +76,6 @@ public class BindController {
         return modelAndView;
     }
 
-//    @RequestMapping("/QrCodeView")
-//    public ModelAndView QrCodeView(){
-//        ModelAndView modelAndView=new ModelAndView();
-//        modelAndView.setViewName("/template/0/qrcode.html");
-//        return modelAndView;
-//    }
 
     @RequestMapping("/QrCode")
     public void QrCode(HttpServletRequest request,HttpServletResponse response){
@@ -104,39 +90,5 @@ public class BindController {
         }
     }
 
-    public WxUser getWxUser(String url){
-        try{
-            CloseableHttpClient httpClient = HttpClients.createDefault();
-            URI uri=new URIBuilder(url).build();
-            HttpGet httpGet = new HttpGet(uri);
-            CloseableHttpResponse response = httpClient.execute(httpGet);
-            int code = response.getStatusLine().getStatusCode();
-            if(code == 200){
-                AccessToken accessToken = JSON.parseObject(EntityUtils.toString(response.getEntity()), AccessToken.class);
-                WxUser wxUser = getUserdetail(accessToken.getAccess_token(),accessToken.getOpenid());
-               return wxUser;
-            }
-        }catch (Exception ex){
-            log.error(ex);
-        }
-        return null;
-    }
-
-    public WxUser getUserdetail(String accessToken,String openid) throws URISyntaxException, IOException {
-        String url = "https://api.weixin.qq.com/sns/userinfo?access_token="+accessToken+"&openid="+openid;
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        URI uri=new URIBuilder(url).build();
-        HttpGet httpGet = new HttpGet(uri);
-        CloseableHttpResponse response = httpClient.execute(httpGet);
-        int code = response.getStatusLine().getStatusCode();
-        if(code == 200){
-            WxUser wxUser = JSON.parseObject(EntityUtils.toString(response.getEntity()), WxUser.class);
-            return wxUser;
-        }
-        else {
-            return  null;
-        }
-
-    }
 
 }

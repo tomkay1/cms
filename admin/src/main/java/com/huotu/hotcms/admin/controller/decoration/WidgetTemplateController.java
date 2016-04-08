@@ -16,6 +16,8 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.ITemplateEngine;
+import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 
 import java.util.*;
 
@@ -40,6 +42,9 @@ public class WidgetTemplateController {
 
     @Autowired
     private WidgetResolveService widgetResolveService;
+
+    @Autowired
+    private ThymeleafViewResolver widgetViewResolver;
 
 //    @Autowired
 //    private XmlTestService xmlTestService;
@@ -67,7 +72,7 @@ public class WidgetTemplateController {
                 widgetBase.setWidgetEditUri(widgetMains.getResourceEditUri());
                 widgetBase.setProperty(properties1);
                 widgetBase.setEdit(true);
-                String html = pageResourceService.getWidgetTemplateResolveByWidgetBase(widgetBase);
+                String html = pageResourceService.getWidgetTemplateResolveByWidgetBase(widgetBase,widgetViewResolver.getTemplateEngine());
                 resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), html);
             }else{
                 resultView = new ResultView(ResultOptionEnum.NOFIND.getCode(), ResultOptionEnum.NOFIND.getValue(), null);

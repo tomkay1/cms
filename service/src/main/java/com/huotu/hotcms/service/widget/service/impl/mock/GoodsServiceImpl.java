@@ -8,7 +8,8 @@
 
 package com.huotu.hotcms.service.widget.service.impl.mock;
 
-import com.alibaba.fastjson.JSON;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 import com.huotu.hotcms.service.service.HttpService;
 import com.huotu.hotcms.service.util.ApiResult;
 import com.huotu.hotcms.service.widget.model.GoodsModel;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import javax.json.Json;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -43,7 +45,7 @@ public class GoodsServiceImpl implements GoodsService {
         if(apiResult.getCode()!=200) {
             return new JsonModel();
         }
-        return JSON.parseObject(apiResult.getData(), JsonModel.class);
+        return new Gson().fromJson(apiResult.getData(), JsonModel.class);
     }
 
     @Override
@@ -52,7 +54,7 @@ public class GoodsServiceImpl implements GoodsService {
         if(apiResult.getCode()!=200) {
             return new ArrayList<>();
         }
-        return JSON.parseArray(apiResult.getData(), GoodsModel.class);
+        return new Gson().fromJson(apiResult.getData(), new TypeToken<List<GoodsModel>>(){}.getType());
     }
 
     private ApiResult<String> invokeGoodsSearchProce(int customerId, GoodsSearcher goodsSearcher) throws Exception{

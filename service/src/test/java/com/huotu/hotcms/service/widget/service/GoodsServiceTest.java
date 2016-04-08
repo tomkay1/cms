@@ -28,14 +28,14 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration(classes = ServiceTestConfig.class)
 @WebAppConfiguration
 @Transactional
-public class GoodsModelServiceTest {
+public class GoodsServiceTest {
 
     @Autowired
     private GoodsService goodsService;
 
     @Test
     public void searchGoodsTest() throws Exception{
-        JsonModel<Goods> jsonModel = goodsService.searchGoods(4471,new GoodsSearcher());
+        JsonModel jsonModel = goodsService.searchGoods(4471,new GoodsSearcher());
         System.out.print(jsonModel);
     }
 

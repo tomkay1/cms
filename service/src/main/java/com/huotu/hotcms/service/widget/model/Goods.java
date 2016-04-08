@@ -39,7 +39,7 @@ public class Goods {
      * 商品返利是否个性化
      * null 等同于 false
      */
-    private Boolean individuation;
+    private boolean individuation;
 
     /**
      * 商品场景,按照建模分析应该是一个枚举,但为了保证这个字段拥有充分的可扩展性,只是给予文字描述约束

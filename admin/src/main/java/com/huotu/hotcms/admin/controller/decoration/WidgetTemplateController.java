@@ -43,13 +43,6 @@ public class WidgetTemplateController {
     @Autowired
     private WidgetResolveService widgetResolveService;
 
-    @Autowired
-    private ThymeleafViewResolver widgetViewResolver;
-
-//    @Autowired
-//    private XmlTestService xmlTestService;
-
-
     @RequestMapping(value = "/{id}",method = RequestMethod.POST)
     @ResponseBody
     public ResultView getWidgetTemplate(@PathVariable("id") Long id,String layoutId,String layoutPosition, String properties) {
@@ -58,9 +51,6 @@ public class WidgetTemplateController {
             List<WidgetProperty> properties1=null;
             if(null!=properties){
                 properties1=JSONArray.parseArray(properties,WidgetProperty.class);
-//                map = objectMapper.readValue(properties,Map.class);
-//                properties1=objectMapper.readValue(properties,WidgetProperty[].class);
-//                properties1=WidgetResolveService.ConvertWidgetPropertyByMap(map);
             }
             WidgetMains widgetMains=widgetMainsRepository.findOne(id);
             if(widgetMains!=null&&null!=widgetMains.getResourceUri()) {
@@ -89,13 +79,9 @@ public class WidgetTemplateController {
     public ResultView getWidgetEditTemplate(@PathVariable("id") Long id,String layoutId,String layoutPosition, String properties){
         ResultView resultView = null;
         try {
-//            WidgetListProperty<WidgetProperty> widgetPropertyWidgetListProperty=null;
             List<WidgetProperty> widgetProperties=null;
             if(!StringUtil.isEmptyStr(properties)){
-//                map = objectMapper.readValue(properties,Map.class);
                 widgetProperties=JSONArray.parseArray(properties,WidgetProperty.class);
-//                widgetPropertyWidgetListProperty=WidgetResolveService.ConvertWidgetPropertyListByMap(map);
-//                widgetProperties=WidgetResolveService.ConvertWidgetPropertyByMap(map);
             }
             WidgetMains widgetMains=widgetMainsRepository.findOne(id);
             if(widgetMains!=null) {

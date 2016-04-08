@@ -35,7 +35,7 @@ public class IndexController {
     public ModelAndView index(HttpServletRequest request)
     {
         ModelAndView modelAndView=new ModelAndView();
-//        modelAndView.addObject("customTemplateUrl","http://www.cms.com");
+        modelAndView.addObject("customTemplateUrl","http://www.cms.com");
         return modelAndView;
     }
 

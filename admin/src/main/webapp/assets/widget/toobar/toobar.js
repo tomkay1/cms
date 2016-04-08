@@ -19,6 +19,7 @@ define(function (require, exports, module) {
             page.widgetEdit();
             page.initPageObject();
             page.pageColor();
+            layoutModule.initLayoutBind();
         })
         var layer = require("layer");
         var common = require("common");
@@ -207,6 +208,7 @@ define(function (require, exports, module) {
                     var layoutId=$(dom).data('id');
                     var layoutPositionIndex=$(dom).data("index");
                     $(dom).click(function () {
+                        widgetData.clear();
                         layer.open({
                             type: 2,
                             title: "组件模块",
@@ -247,6 +249,7 @@ define(function (require, exports, module) {
                 var obj = $(".js-layout-add");
                 $.each(obj, function (item, dom) {
                     $(dom).click(function () {
+                        widgetData.clear();
                         layer.open({
                             type: 2,
                             title: "添加布局",
@@ -260,6 +263,7 @@ define(function (require, exports, module) {
                                 var layoutJson=$("#js_layout_json_value").val();
                                 var layoutObj=JSON.parse(layoutJson);
                                 JQueue.putQueue(layoutObj);
+                                layoutModule.initLayoutBind();
                             }
                         });
                     });
@@ -348,13 +352,14 @@ define(function (require, exports, module) {
                         if(data!=null) {
                             if (data.code == 200 && data.data != null) {
                                 var obj = JSON.parse(data.data);
-                                if (obj.layout != null) {
-                                    JQueue.putQueueList(obj.layout);//把页面中的配置信息初始化到JQueue队列中
-                                    delete obj["layout"];
+                                if(obj!=null){
+                                    if (obj.layout != null) {
+                                        JQueue.putQueueList(obj.layout);//把页面中的配置信息初始化到JQueue队列中
+                                        delete obj["layout"];
+                                    }
+                                    widgetPageModel = widgetPage.setModel(obj);
                                 }
-                                widgetPageModel = widgetPage.setModel(obj);
                                 page.initPageProperty();
-                                //window.console.log(widgetPageModel);
                             } else {
                                 layer.msg("加载页面配置数据失败...");
                             }
@@ -412,18 +417,51 @@ define(function (require, exports, module) {
             }
         };
         var layoutModule={
+            initLayoutBind:function(){
+                layoutModule.deleteLayout();
+                layoutModule.downLayout();
+                layoutModule.upLayout();
+            },
             deleteLayout:function(){
                 var obj=$(".js-layout-delete");
+                obj.unbind("click");
                 $.each(obj,function(item,dom){
                     $(dom).click(function(){
-
+                        var layoutId=$(dom).data('id');
+                        $("#"+layoutId).remove();
+                        JQueue.delete(layoutId);
                     });
                 });
             },
             upLayout:function(){
-
+                var obj=$(".js-layout-up");
+                obj.unbind("click");
+                $.each(obj,function(item,dom){
+                   $(dom).click(function(){
+                       var layoutId=$(dom).data('id');
+                       var $this=$("#"+layoutId);
+                       if ($this.prev() && $this.prev().length>0) {
+                           if($this.prev().hasClass('js-hot-layout')){
+                               $this.prev().before($this);
+                           }
+                       }
+                   }) ;
+                });
             },
             downLayout:function(){
+                var obj=$(".js-layout-down");
+                obj.unbind("click");
+                $.each(obj,function(item,dom){
+                   $(dom).click(function(){
+                       var layoutId=$(dom).data('id');
+                       var $this=$("#"+layoutId);
+                       if ($this.next()&&$this.next().length>0) {
+                           if($this.next().hasClass('js-hot-layout')){
+                               $this.next().after($this);
+                           }
+                       }
+                   });
+                });
 
             }
         };

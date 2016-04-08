@@ -33,7 +33,6 @@ var widgetData= {
     saveWidget: function (widgetJson) {
         var dom = parent.$('#js_widget_json_value');
         if (typeof dom == "undefined" || dom.length <= 0) {
-            //parent.$("body").append("<input type='hidden' id='js_widget_json_value' value='" + widgetJson + "'/>");
             parent.$("body").append("<script type='application/template' id='js_widget_json_value' >"+widgetJson+"</script>");
         } else {
             parent.$("#js_widget_json_value").html(widgetJson);
@@ -48,6 +47,24 @@ var widgetData= {
             parent.$("body").append("<input type='hidden' id='js_layout_json_value' value='" + layoutJson + "'/>");
         } else {
             parent.$("#js_layout_json_value").val(layoutJson);
+        }
+    },
+    clear:function(){
+        var widgetSettingDom =$('#js_widgetSetting_json_value');
+        var widgetJsonDom = $('#js_temp_widget_json_value');
+        var widgetDom = $('#js_widget_json_value');
+        var layoutJsonDom =$('#js_layout_json_value');
+        if(!(typeof widgetSettingDom=="undefined"||widgetSettingDom.length<=0)){
+            widgetSettingDom.remove();
+        }
+        if(!(typeof widgetJsonDom=="undefined"||widgetJsonDom.length<=0)){
+            widgetJsonDom.remove();
+        }
+        if(!(typeof widgetDom=="undefined"||widgetDom.length<=0)){
+            widgetDom.remove();
+        }
+        if(!(typeof layoutJsonDom=="undefined"||layoutJsonDom.length<=0)){
+            layoutJsonDom.remove();
         }
     }
 }

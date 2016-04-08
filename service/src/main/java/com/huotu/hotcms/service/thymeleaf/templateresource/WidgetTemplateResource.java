@@ -64,12 +64,12 @@ public class WidgetTemplateResource implements ITemplateResource {
             "</head>\n" +
             "<body style=\"background:#ffffff;\">" +
             "%s" +
-            "%s" +
             "<div class=\"layout-area HOT-layout-add js-layout js-layout-add\" id=\"insertToLayout\">\n" +
             "    <div class=\"layout\">\n" +
             "      <a href=\"javascript:;\" class=\"link-add-layout\" id=\"addLayout\">添加布局</a>\n" +
             "    </div>\n" +
             "  </div>" +
+            "%s" +
             "</body>" +
             "</html>";
 

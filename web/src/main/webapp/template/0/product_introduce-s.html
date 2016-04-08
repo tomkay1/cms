@@ -16,7 +16,7 @@
     <div style="background-color:#ffffff;padding:20px 0px 20px 0px;min-height:440px;">
       <div id="preview">
         <!--<div id="spec-n1" class="jqzoom" style="position:relative" >-->
-        <div id="spec-n1" class="jqzoom" style="width:450px;height:450px" >
+        <div id="spec-n1" class="jqzoom" style="width:250px;height:250px" >
           <span style="position:absolute;bottom:0px;right:0px; z-index:9999"><img src="images/sss.png" /></span>
           <!--<span style="position:absolute"><img width="100%"  src="images/1.jpg" alt="" ></span>-->
             <div id="tsImgS"><a href="images/ghi.jpg" title="Images" class="MagicZoom" id="MagicZoom"><img width="100%"  src="images/ghi.jpg" /></a></div>
@@ -143,7 +143,8 @@
               <p style=" margin-top:10px">扫一扫，进入购买</p>
             </div>
           </div>
-          <a href="#" class="tb-btn-sku" onclick="showQRCode()"><img src="images/iconfont-saoyisao.png" style="width:16px; vertical-align:middle; margin-right:6px; margin-top:-1px" />扫码购买</a>
+          <a href="#" class="tb-btn-sku" onclick="showQRCode()"><img src="images/iconfont-saoyisao.png" style="width:16px; vertical-align:middle; margin-right:6px; margin-top:-1px" />扫码登录</a>
+          <a href="#" class="tb-btn-sku" onclick="showBuyQRCode()"><img src="images/iconfont-saoyisao.png" style="width:16px; vertical-align:middle; margin-right:6px; margin-top:-1px" />扫码购买</a>
           <a href="#" class="tb-btn-sku tb-btn-basket" style="display:none"><img src="images/iconfont-gouwuche.png" style="width:16px; vertical-align:middle; margin-right:6px" />加入购物车</a>
         </div>
       </div>
@@ -180,13 +181,23 @@
       shade: 0.8,
       area: ['900px', '500px'],
       content: "https://open.weixin.qq.com/connect/qrconnect?appid=wx1dde8f55df10ccec&redirect_uri=http%3A%2F%2Fhot.huobanplus.com%3A8080%2Ffront%2Fbind%2Fcallback%2F&response_type=code&scope=snsapi_login",
+      end:function() {
+          window.console.log("!1");
+      }
+    });
+  }
+
+  function showBuyQRCode(){
+    layer.open({
+      type: 2,
+      title: "请扫码登录 ",
+      shadeClose: true,
+      shade: 0.8,
+      area: ['500px', '500px'],
+      content: "http://hot.huobanplus.com:8080/front/bind/QrCode",
       end:function(){
-        var option={
-          dataParam:{
-            customerId:customerId
-          }
-        };
-        WidgetTypeGrid.Refresh(option);
+       window.console.log("!1");
+
       }
     });
   }

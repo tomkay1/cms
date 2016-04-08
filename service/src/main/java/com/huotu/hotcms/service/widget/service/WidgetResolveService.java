@@ -38,7 +38,7 @@ public class WidgetResolveService {
     @Autowired
     private RedisService redisService;
 
-    private TemplateEngine templateEngine =null;
+    private TemplateEngine templateEngine = new TemplateEngine();
 
     public String widgetBriefView(String templateResources,WidgetBase widgetBase) throws IOException {
         if(widgetBase!=null) {
@@ -55,14 +55,9 @@ public class WidgetResolveService {
                 }
             }
             Context context=new Context(Locale.CHINA, map);
-            templateEngine=new TemplateEngine();
-            templateEngine.addDialect(new WidgetDialect());
             StringWriter writer = new StringWriter();
-//            templateEngine.process(templateResources, context, writer);
-            TemplateEngine templateEngine1 = new TemplateEngine();
-            templateEngine1.addDialect(new WidgetDialect());
-
-            templateEngine1.process(templateResources,context,writer);
+            templateEngine.addDialect(new WidgetDialect());
+            templateEngine.process(templateResources,context,writer);
             return writer.toString();
         }
         return templateResources;
@@ -85,6 +80,7 @@ public class WidgetResolveService {
             }
             Context context = new Context(Locale.CHINA, map);
             StringWriter writer = new StringWriter();
+            templateEngine.addDialect(new WidgetDialect());
             templateEngine.process(templateResources, context, writer);
             return writer.toString();
         }

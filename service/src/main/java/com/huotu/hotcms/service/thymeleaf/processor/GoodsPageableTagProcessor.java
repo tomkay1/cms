@@ -14,13 +14,13 @@ import com.huotu.hotcms.service.thymeleaf.expression.DialectAttributeFactory;
 import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
 import com.huotu.hotcms.service.thymeleaf.model.RequestModel;
 import com.huotu.hotcms.service.util.PageUtils;
-import com.huotu.hotcms.service.widget.model.Goods;
-import com.huotu.hotcms.service.widget.model.GoodsModel;
 import com.huotu.hotcms.service.widget.model.GoodsSearcher;
 import com.huotu.hotcms.service.widget.model.JsonModel;
 import com.huotu.hotcms.service.widget.service.GoodsService;
+import com.huotu.huobanplus.common.entity.Goods;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 import org.thymeleaf.context.ITemplateContext;
@@ -60,7 +60,7 @@ public class GoodsPageableTagProcessor extends AbstractAttributeTagProcessor {
         WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
         GoodsService goodsService = (GoodsService)applicationContext.getBean("goodsServiceImpl");
         int customerId = ((Site)VariableExpression.getVariable(context, "site")).getCustomerId();
-        JsonModel goodsPage = null;
+        Page<Goods> goodsPage = null;
         try {
             GoodsSearcher goodsSearcher = DialectAttributeFactory.getInstance().getForeachParam(tag, GoodsSearcher.class);
             goodsPage = goodsService.searchGoods(customerId,goodsSearcher);
@@ -68,14 +68,14 @@ public class GoodsPageableTagProcessor extends AbstractAttributeTagProcessor {
         }catch (Exception e) {
             log.error(e.getMessage());
         }
-        return goodsPage.get_embedded().getGoodses();
+        return goodsPage.getContent();
     }
 
-    private void putPageAttrsIntoModel(ITemplateContext context,JsonModel goodsPage) {
+    private void putPageAttrsIntoModel(ITemplateContext context,Page<Goods> goodsPage) {
         //分页标签处理
         RequestModel requestModel = (RequestModel)VariableExpression.getVariable(context,"request");
-        int pageNo = goodsPage.getPage().getNumber()+1;
-        int totalPages = goodsPage.getPage().getTotalPages();
+        int pageNo = goodsPage.getNumber();
+        int totalPages = goodsPage.getTotalPages();
         int pageBtnNum = totalPages > SysConstant.DEFAULT_PAGE_BUTTON_NUM ? SysConstant.DEFAULT_PAGE_BUTTON_NUM : totalPages;
         int startPageNo = PageUtils.calculateStartPageNo(pageNo, pageBtnNum, totalPages);
         List<Integer> pageNos = new ArrayList<>();
@@ -85,7 +85,7 @@ public class GoodsPageableTagProcessor extends AbstractAttributeTagProcessor {
         }
         requestModel.setCurrentPage(pageNo);
         requestModel.setTotalPages(totalPages);
-        requestModel.setTotalRecords(goodsPage.getPage().getTotalElements());
+        requestModel.setTotalRecords(goodsPage.getTotalElements());
         requestModel.setHasPrevPage(pageNo > 1);
         requestModel.setHasNextPage(pageNo < totalPages);
         requestModel.setPageNos(pageNos);

@@ -16,11 +16,21 @@ import com.huotu.hotcms.service.widget.model.GoodsModel;
 import com.huotu.hotcms.service.widget.model.GoodsSearcher;
 import com.huotu.hotcms.service.widget.model.JsonModel;
 import com.huotu.hotcms.service.widget.service.GoodsService;
+import com.huotu.huobanplus.common.entity.Goods;
+import com.huotu.huobanplus.sdk.common.repository.GoodsRestRepository;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpRequest;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.env.Environment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.json.Json;
+import java.awt.geom.Area;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -38,23 +48,40 @@ import java.util.TreeMap;
 public class GoodsServiceImpl implements GoodsService {
     @Autowired
     private HttpService httpService;
+    @Autowired
+    private GoodsRestRepository goodsRestRepository;
+    @Autowired
+    private Environment environment;
 
     @Override
-    public JsonModel searchGoods(int customerId, GoodsSearcher goodsSearcher) throws Exception{
-        ApiResult<String> apiResult = invokeGoodsSearchProce(customerId,goodsSearcher);
-        if(apiResult.getCode()!=200) {
-            return new JsonModel();
+    public Page<Goods> searchGoods(int customerId, GoodsSearcher goodsSearcher) throws Exception{
+
+//        Sort.Direction direction = getSortDirection(goodsSearcher);
+//        String[] properties = getSortProperties(goodsSearcher);
+        String hostName = environment.getProperty("com.huotu.huobanplus.open.api.root", "api.open.fancat.cn");
+        String appid = environment.getProperty("com.huotu.huobanplus.open.api.appid","_demo");
+        String appsecrect = environment.getProperty("com.huotu.huobanplus.open.api.appsecrect","1f2f3f4f5f6f7f8f");
+        try(CloseableHttpClient client = goodsRestRepository.getHttpClient()) {
+            HttpHost httpHost = new HttpHost(hostName,8081);
+
+//            client.execute(httpHost,)
         }
-        return new Gson().fromJson(apiResult.getData(), JsonModel.class);
+        Page<Goods> goodses = goodsRestRepository.search(customerId,
+                goodsSearcher.getGoodsCatId(),
+                goodsSearcher.getGoodsTypeId(),
+                goodsSearcher.getBrandId(),
+                goodsSearcher.getMinPrice(),
+                goodsSearcher.getMaxPrice(),
+                goodsSearcher.getUserId(),
+                goodsSearcher.getKeyword(),
+                new PageRequest(goodsSearcher.getPage(),20));
+        return goodses;
     }
 
     @Override
-    public List<GoodsModel> getHotGoodsList(int customerId) throws Exception{
-        ApiResult<String> apiResult = invokeHotGoodsProce(customerId);
-        if(apiResult.getCode()!=200) {
-            return new ArrayList<>();
-        }
-        return new Gson().fromJson(apiResult.getData(), new TypeToken<List<GoodsModel>>(){}.getType());
+    public List<Goods> getHotGoodsList(int customerId) throws Exception{
+        List<Goods> goodses = goodsRestRepository.searchTop10Sales(customerId);
+        return goodses;
     }
 
     private ApiResult<String> invokeGoodsSearchProce(int customerId, GoodsSearcher goodsSearcher) throws Exception{
@@ -78,6 +105,6 @@ public class GoodsServiceImpl implements GoodsService {
     private ApiResult<String> invokeHotGoodsProce(int customerId) throws Exception{
         Map<String,Object> params = new TreeMap<>();
         params.put("merchantId",customerId);
-        return httpService.httpGet_prod("http", "api.open.fancat.cn", 8081, "/goodese/search/findTop10BySales", params);
+        return httpService.httpGet_prod("http", "api.open.fancat.cn", 8081, "/goodses/search/findTop10BySales", params);
     }
 }

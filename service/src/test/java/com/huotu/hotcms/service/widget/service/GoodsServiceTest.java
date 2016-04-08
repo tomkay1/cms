@@ -9,13 +9,12 @@
 package com.huotu.hotcms.service.widget.service;
 
 import com.huotu.hotcms.service.config.ServiceTestConfig;
-import com.huotu.hotcms.service.widget.model.Goods;
-import com.huotu.hotcms.service.widget.model.GoodsModel;
 import com.huotu.hotcms.service.widget.model.GoodsSearcher;
-import com.huotu.hotcms.service.widget.model.JsonModel;
+import com.huotu.huobanplus.common.entity.Goods;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -35,7 +34,7 @@ public class GoodsServiceTest {
 
     @Test
     public void searchGoodsTest() throws Exception{
-        JsonModel jsonModel = goodsService.searchGoods(4471,new GoodsSearcher());
+        Page<Goods> jsonModel = goodsService.searchGoods(4471,new GoodsSearcher());
         System.out.print(jsonModel);
     }
 

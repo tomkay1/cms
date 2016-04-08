@@ -15,8 +15,10 @@ import com.huotu.hotcms.service.widget.model.GoodsModel;
 import com.huotu.hotcms.service.widget.model.GoodsSearcher;
 import com.huotu.hotcms.service.widget.model.JsonModel;
 import com.huotu.hotcms.service.widget.service.GoodsService;
+import com.huotu.huobanplus.common.entity.Goods;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.beans.PropertyDescriptor;
@@ -38,21 +40,13 @@ public class GoodsServiceImpl implements GoodsService {
     private HttpService httpService;
 
     @Override
-    public JsonModel searchGoods(int customerId, GoodsSearcher goodsSearcher) throws Exception{
-        ApiResult<String> apiResult = invokeGoodsSearchProce(customerId,goodsSearcher);
-        if(apiResult.getCode()!=200) {
-            throw new Exception(apiResult.getMsg());
-        }
-        return JSON.parseObject(apiResult.getData(),JsonModel.class);
+    public Page<Goods> searchGoods(int customerId, GoodsSearcher goodsSearcher) throws Exception{
+        return null;
     }
 
     @Override
-    public List<GoodsModel> getHotGoodsList(int customerId) throws Exception{
-        ApiResult<String> apiResult = invokeHotGoodsProce(customerId);
-        if(apiResult.getCode()!=200) {
-            throw new Exception(apiResult.getMsg());
-        }
-        return JSON.parseArray(apiResult.getData(), GoodsModel.class);
+    public List<Goods> getHotGoodsList(int customerId) throws Exception{
+        return null;
     }
 
     private ApiResult<String> invokeGoodsSearchProce(int customerId, GoodsSearcher goodsSearcher) throws Exception{

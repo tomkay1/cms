@@ -35,11 +35,11 @@ import java.net.URLEncoder;
  */
 public class WidgetTemplateResource implements ITemplateResource {
     private String location;//编辑格式如下{siteId}_{pageConfigName}.shtml
-    private final String EDIT_JAVASCRIPT="<script>seajs.use([\"widgetTooBar\",\"cmsQueue\",\"widgetData\"]);</script>";
-//    private final String EDIT_JAVASCRIPT="<script>seajs.use([\"widgetTooBar\",\"cmsQueue\"]);</script>";
-    private final String version="1.5";
+    private final String EDIT_JAVASCRIPT = "<script>seajs.use([\"widgetTooBar\",\"cmsQueue\",\"widgetData\"]);</script>";
+    //    private final String EDIT_JAVASCRIPT="<script>seajs.use([\"widgetTooBar\",\"cmsQueue\"]);</script>";
+    private final String version = "1.5";
 
-    private  String WIDGET_RESOURCES=" " +
+    private String WIDGET_RESOURCES = " " +
             "<link rel=\"stylesheet\" type=\"text/css\" href=\"{PREFIX}/css/mall.base.css?v={version}\"/>\n" +
             "<link rel=\"stylesheet\" type=\"text/css\" href=\"{PREFIX}/css/mall.set.css?v={version}\"/>\n" +
             "<link rel=\"stylesheet\" type=\"text/css\" href=\"{PREFIX}/css/mall.layout.css?v={version}\"/>\n" +
@@ -47,7 +47,7 @@ public class WidgetTemplateResource implements ITemplateResource {
             "<link rel=\"stylesheet\" type=\"text/css\" href=\"{PREFIX}/css/Advanced-search.css?v={version}\"/>";
 
 
-    private final String EDIT_HTML_BOX="<!DOCTYPE html><html>\n" +
+    private final String EDIT_HTML_BOX = "<!DOCTYPE html><html>\n" +
             "<head>\n" +
             "    <title>店铺装修-可视化编辑</title>\n" +
             "    <meta charset=\"UTF-8\" content=\"text/html\"/>\n" +
@@ -69,9 +69,9 @@ public class WidgetTemplateResource implements ITemplateResource {
             "</body>" +
             "</html>";
 
-    private String BROWSE_RESOURCES="<link rel=\"stylesheet\" type=\"text/css\" href=\"{PREFIX}/css/mall.global.css?v={version}\"/>";
+    private String BROWSE_RESOURCES = "<link rel=\"stylesheet\" type=\"text/css\" href=\"{PREFIX}/css/mall.global.css?v={version}\"/>";
 
-    private final String BROWSE_HTML_BOX="<!DOCTYPE html><html>\n" +
+    private final String BROWSE_HTML_BOX = "<!DOCTYPE html><html>\n" +
             "<head>\n" +
             "    <title>商城首页</title>\n" +
             "    <meta charset=\"UTF-8\" content=\"text/html\"/>\n" +
@@ -88,35 +88,37 @@ public class WidgetTemplateResource implements ITemplateResource {
 
     private CustomPagesServiceImpl customPagesService;
 
-    private SiteServiceImpl siteService ;
+    private SiteServiceImpl siteService;
 
-    private  String URI_PREFIX;
+    private String URI_PREFIX;
 
-//  private final Resource resource;
+    //  private final Resource resource;
     private final String characterEncoding;
 
     public WidgetTemplateResource(final ApplicationContext applicationContext, final String location, final String characterEncoding) {
         super();
-        URI_PREFIX= this.getURI_PREFIX(applicationContext);
+        URI_PREFIX = this.getURI_PREFIX(applicationContext);
         Validate.notNull(applicationContext, "Application Context cannot be null");
         Validate.notEmpty(location, "Resource Location cannot be null or empty");
         pageResourceService = (PageResourceService) applicationContext.getBean("pageResourceService");
         pageResolveService = (PageResolveService) applicationContext.getBean("pageResolveService");
         siteService = (SiteServiceImpl) applicationContext.getBean("siteServiceImpl");
-        customPagesService=(CustomPagesServiceImpl) applicationContext.getBean("customPagesServiceImpl");
-        this.location=location;
+        customPagesService = (CustomPagesServiceImpl) applicationContext.getBean("customPagesServiceImpl");
+        this.location = location;
         this.characterEncoding = characterEncoding;
+        this.WIDGET_RESOURCES = this.WIDGET_RESOURCES.replace("{PREFIX}", this.URI_PREFIX);
+        this.WIDGET_RESOURCES = this.WIDGET_RESOURCES.replace("{version}", this.version);
     }
 
-    private String getURI_PREFIX(ApplicationContext applicationContext){
-        String uriPrefix=applicationContext.getEnvironment().getProperty("cms.resourcesPrefix", (String) null);
-        if(uriPrefix==null){
-            uriPrefix="http://cms.huobanj.cn";
+    private String getURI_PREFIX(ApplicationContext applicationContext) {
+        String uriPrefix = applicationContext.getEnvironment().getProperty("cms.resourcesPrefix", (String) null);
+        if (uriPrefix == null) {
+            uriPrefix = "http://cms.huobanj.cn";
         }
         return uriPrefix;
     }
 
-    public WidgetTemplateResource(final Resource resource,final String characterEncoding) {
+    public WidgetTemplateResource(final Resource resource, final String characterEncoding) {
 
         super();
 
@@ -145,36 +147,36 @@ public class WidgetTemplateResource implements ITemplateResource {
         return true;
     }
 
-    private Long getSiteId(){
-        if(this.location!=null){
-            if(this.location.indexOf("_")>0){
-                return Long.valueOf(this.location.substring(0,this.location.indexOf("_")));
+    private Long getSiteId() {
+        if (this.location != null) {
+            if (this.location.indexOf("_") > 0) {
+                return Long.valueOf(this.location.substring(0, this.location.indexOf("_")));
             }
         }
         return null;
     }
 
-    private Boolean isBrowse(){
-        if(this.location!=null){
+    private Boolean isBrowse() {
+        if (this.location != null) {
             return this.location.contains(".cshtml");
         }
         return false;
     }
 
-    private String getPageConfigNameContainXml(){
-        String configName=this.getPageConfigName();
-        if(StringUtils.isEmpty(configName)){
+    private String getPageConfigNameContainXml() {
+        String configName = this.getPageConfigName();
+        if (StringUtils.isEmpty(configName)) {
             return null;
         }
-        return configName+".xml";
+        return configName + ".xml";
     }
 
     private String getPageConfigName() {
         String suffix = "";
-        if(isBrowse()){
-            suffix=".cshtml";
-        }else{
-            suffix=".shtml";
+        if (isBrowse()) {
+            suffix = ".cshtml";
+        } else {
+            suffix = ".shtml";
         }
         if (this.location.indexOf("_") > 0 && this.location.indexOf(suffix) > 0) {
             return this.location.substring(this.location.indexOf("_") + 1, this.location.indexOf(suffix));
@@ -182,46 +184,60 @@ public class WidgetTemplateResource implements ITemplateResource {
         return null;
     }
 
-    private Boolean isExists(String pageConfigName){
+    private Boolean isExists(String pageConfigName) {
         try {
             CustomPages customPages = customPagesService.getCustomPages(Long.valueOf(pageConfigName));
-            return  customPages!=null;
-        }catch (Exception ex){
+            return customPages != null;
+        } catch (Exception ex) {
             ex.getStackTrace();
         }
         return false;
     }
 
+    private String getBrowseTemplate(WidgetPage widgetPage) throws Exception {
+        String htmlTemplate = pageResourceService.getHtmlTemplateByWidgetPage(widgetPage, false);
+        this.BROWSE_RESOURCES = this.BROWSE_RESOURCES.replace("{PREFIX}", this.URI_PREFIX);
+        this.BROWSE_RESOURCES = this.BROWSE_RESOURCES.replace("{version}", this.version);
+        htmlTemplate = String.format(this.BROWSE_HTML_BOX, this.WIDGET_RESOURCES + this.BROWSE_RESOURCES, htmlTemplate);
+        return htmlTemplate;
+    }
+
+    private String getEditTemplate(WidgetPage widgetPage, String pageConfigName) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        String htmlTemplate = pageResourceService.getHtmlTemplateByWidgetPage(widgetPage, true);
+        htmlTemplate = String.format(this.EDIT_HTML_BOX, this.WIDGET_RESOURCES, htmlTemplate, EDIT_JAVASCRIPT);
+        htmlTemplate = htmlTemplate.replace("{config_existsPage}", (isExists(pageConfigName) ? pageConfigName : "0"));
+        String widgetJson = mapper.writeValueAsString(widgetPage);
+        htmlTemplate = htmlTemplate.replace("{config_widgetJson}", DesEncryption.encryptData(widgetJson));
+        return htmlTemplate;
+    }
+
+    private String getTemplate(WidgetPage widgetPage) throws Exception {
+        String pageConfigName = this.getPageConfigName();
+        String htmlTemplate=null;
+        if (isBrowse()) {
+            htmlTemplate = getBrowseTemplate(widgetPage);
+        } else {
+            htmlTemplate = getEditTemplate(widgetPage, pageConfigName);
+        }
+        return htmlTemplate;
+    }
+
     @Override
     public Reader reader() throws IOException {
-        ObjectMapper mapper=new ObjectMapper();
-        Long siteId=this.getSiteId();
+        Long siteId = this.getSiteId();
         String htmlTemplate = "";
-        WidgetPage widgetPage=null;
-        String pageConfigName=null;
-        String pageConfigNameContainXml=null;
-        if(siteId!=null) {
-            pageConfigName=this.getPageConfigName();
+        WidgetPage widgetPage = null;
+        String pageConfigNameContainXml = null;
+        if (siteId != null) {
             pageConfigNameContainXml = this.getPageConfigNameContainXml();
             Site site = siteService.getSite(siteId);
-            widgetPage= pageResolveService.getWidgetPageByConfig(pageConfigNameContainXml, site);
+            widgetPage = pageResolveService.getWidgetPageByConfig(pageConfigNameContainXml, site);
             try {
-                htmlTemplate = pageResourceService.getHtmlTemplateByWidgetPage(widgetPage,!isBrowse());
-            }catch (Exception e) {
+                htmlTemplate = getTemplate(widgetPage);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-        this.WIDGET_RESOURCES = this.WIDGET_RESOURCES.replace("{PREFIX}", this.URI_PREFIX);
-        this.WIDGET_RESOURCES = this.WIDGET_RESOURCES.replace("{version}", this.version);
-        if(isBrowse()){
-            this.BROWSE_RESOURCES = this.BROWSE_RESOURCES.replace("{PREFIX}", this.URI_PREFIX);
-            this.BROWSE_RESOURCES = this.BROWSE_RESOURCES.replace("{version}", this.version);
-            htmlTemplate = String.format(this.BROWSE_HTML_BOX, this.WIDGET_RESOURCES+this.BROWSE_RESOURCES, htmlTemplate);
-        }else {
-            htmlTemplate = String.format(this.EDIT_HTML_BOX, this.WIDGET_RESOURCES, htmlTemplate,EDIT_JAVASCRIPT);
-            htmlTemplate = htmlTemplate.replace("{config_existsPage}", (isExists(pageConfigName) ? pageConfigName : "0"));
-            String widgetJson=mapper.writeValueAsString(widgetPage);
-            htmlTemplate=htmlTemplate.replace("{config_widgetJson}", DesEncryption.encryptData(widgetJson));
         }
         return new StringReader(htmlTemplate);
     }
@@ -236,9 +252,8 @@ public class WidgetTemplateResource implements ITemplateResource {
         if (path == null) {
             return null;
         }
-
         // First remove a trailing '/' if it exists
-        final String basePath = (path.charAt(path.length() - 1) == '/'? path.substring(0,path.length() - 1) : path);
+        final String basePath = (path.charAt(path.length() - 1) == '/' ? path.substring(0, path.length() - 1) : path);
 
         final int slashPos = basePath.lastIndexOf('/');
         if (slashPos != -1) {
@@ -248,8 +263,6 @@ public class WidgetTemplateResource implements ITemplateResource {
             }
             return basePath.substring(slashPos + 1);
         }
-
         return basePath;
-
     }
 }

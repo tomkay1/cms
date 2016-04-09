@@ -15,6 +15,7 @@ import com.huotu.hotcms.service.model.widget.WidgetPage;
 import com.huotu.hotcms.service.service.impl.CustomPagesServiceImpl;
 import com.huotu.hotcms.service.service.impl.SiteServiceImpl;
 import com.huotu.hotcms.service.util.DesEncryption;
+import com.huotu.hotcms.service.util.StringUtil;
 import com.huotu.hotcms.service.widget.service.PageResolveService;
 import com.huotu.hotcms.service.widget.service.PageResourceService;
 import jdk.nashorn.internal.runtime.regexp.joni.EncodingHelper;
@@ -41,7 +42,7 @@ public class WidgetTemplateResource implements ITemplateResource {
     private String location;//编辑格式如下{siteId}_{pageConfigName}.shtml
     private final String EDIT_JAVASCRIPT = "<script>seajs.use([\"widgetTooBar\",\"cmsQueue\",\"widgetData\"]);</script>";
     //    private final String EDIT_JAVASCRIPT="<script>seajs.use([\"widgetTooBar\",\"cmsQueue\"]);</script>";
-    private final String version = "1.5";
+    private final String version = "1.1";
 
     private String WIDGET_RESOURCES = " " +
             "<link rel=\"stylesheet\" type=\"text/css\" href=\"{PREFIX}/css/mall.base.css?v={version}\"/>\n" +
@@ -200,17 +201,29 @@ public class WidgetTemplateResource implements ITemplateResource {
         return false;
     }
 
-    private String getBrowseTemplate(WidgetPage widgetPage) throws Exception {
+    private String getBrowseTemplate(WidgetPage widgetPage,Site site) throws Exception {
         String htmlTemplate = pageResourceService.getHtmlTemplateByWidgetPage(widgetPage,false);
+        if(widgetPage.getPageEnabledHead()){//取用头部
+            String commonHeader=pageResourceService.getHeaderTemplaeBySite(site);
+            if(null!=commonHeader){
+                htmlTemplate=commonHeader+htmlTemplate;
+            }
+        }
         this.BROWSE_RESOURCES = this.BROWSE_RESOURCES.replace("{PREFIX}", this.URI_PREFIX);
         this.BROWSE_RESOURCES = this.BROWSE_RESOURCES.replace("{version}", this.version);
         htmlTemplate = String.format(this.BROWSE_HTML_BOX, this.WIDGET_RESOURCES + this.BROWSE_RESOURCES, htmlTemplate);
         return htmlTemplate;
     }
 
-    private String getEditTemplate(WidgetPage widgetPage, String pageConfigName,ITemplateEngine templateEngine) throws Exception {
+    private String getEditTemplate(WidgetPage widgetPage, String pageConfigName,Site site) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         String htmlTemplate = pageResourceService.getHtmlTemplateByWidgetPage(widgetPage, true);
+//        if(widgetPage.getPageEnabledHead()){//取用头部
+//            String commonHeader=pageResourceService.getHeaderTemplaeBySite(site);
+//            if(null!=commonHeader){
+//                htmlTemplate=commonHeader+htmlTemplate;
+//            }
+//        }
         htmlTemplate = String.format(this.EDIT_HTML_BOX, this.WIDGET_RESOURCES, htmlTemplate, EDIT_JAVASCRIPT);
         htmlTemplate = htmlTemplate.replace("{config_existsPage}", (isExists(pageConfigName) ? pageConfigName : "0"));
         String widgetJson = mapper.writeValueAsString(widgetPage);
@@ -218,13 +231,13 @@ public class WidgetTemplateResource implements ITemplateResource {
         return htmlTemplate;
     }
 
-    private String getTemplate(WidgetPage widgetPage) throws Exception {
+    private String getTemplate(WidgetPage widgetPage,Site site) throws Exception {
         String pageConfigName = this.getPageConfigName();
         String htmlTemplate=null;
         if (isBrowse()) {
-            htmlTemplate = getBrowseTemplate(widgetPage);
+            htmlTemplate = getBrowseTemplate(widgetPage,site);
         } else {
-            htmlTemplate = getEditTemplate(widgetPage, pageConfigName,templateEngine);
+            htmlTemplate = getEditTemplate(widgetPage, pageConfigName,site);
         }
         return htmlTemplate;
     }
@@ -240,7 +253,7 @@ public class WidgetTemplateResource implements ITemplateResource {
             Site site = siteService.getSite(siteId);
             widgetPage = pageResolveService.getWidgetPageByConfig(pageConfigNameContainXml, site);
             try {
-                htmlTemplate = getTemplate(widgetPage);
+                htmlTemplate = getTemplate(widgetPage,site);
             }catch (Exception e) {
                 e.printStackTrace();
             }

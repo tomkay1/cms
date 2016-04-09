@@ -1,9 +1,12 @@
 package com.huotu.hotcms.service.widget.service;
 
 import com.huotu.hotcms.service.common.LayoutEnum;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.widget.*;
 import com.huotu.hotcms.service.service.RedisService;
 import com.huotu.hotcms.service.util.HttpUtils;
+import com.huotu.hotcms.service.util.ResultOptionEnum;
+import com.huotu.hotcms.service.util.ResultView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.ITemplateEngine;
@@ -26,8 +29,12 @@ import java.util.Map;
 public class PageResourceService {
     @Autowired
     private StaticResourceService resourceServer;
+
     @Autowired
     private RedisService redisService;
+
+    @Autowired
+    private PageResolveService pageResolveService;
 
     @Autowired
     private WidgetResolveService widgetResolveService;
@@ -122,5 +129,13 @@ public class PageResourceService {
             layoutTemplate=layoutEnum.getLayoutTemplate(moduleTemplateList,isEdit,widgetLayout.getLayoutId());
         }
         return layoutTemplate;
+    }
+
+    public String getHeaderTemplaeBySite(Site site) throws Exception {
+        WidgetPage widgetPage=pageResolveService.getWidgetPageByConfig("head.xml", site);
+        if(widgetPage!=null){
+           return getHtmlTemplateByWidgetPage(widgetPage, false);
+        }
+        return null;
     }
 }

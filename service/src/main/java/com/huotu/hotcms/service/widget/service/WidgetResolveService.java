@@ -9,12 +9,10 @@ import com.huotu.hotcms.service.model.widget.WidgetProperty;
 import com.huotu.hotcms.service.service.RedisService;
 import com.huotu.hotcms.service.thymeleaf.dialect.WidgetDialect;
 import com.huotu.hotcms.service.util.HttpUtils;
-import com.huotu.hotcms.service.widget.model.GoodsCategory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.thymeleaf.ITemplateEngine;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
@@ -22,7 +20,6 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
 
@@ -40,6 +37,12 @@ public class WidgetResolveService {
 
     private TemplateEngine templateEngine = new TemplateEngine();
 
+    private void addDialect(){
+       if(!templateEngine.isInitialized()){
+           templateEngine.addDialect(new WidgetDialect());
+       }
+    }
+
     public String widgetBriefView(String templateResources,WidgetBase widgetBase) throws IOException {
         if(widgetBase!=null) {
             Map<String,Object> map =null;
@@ -56,7 +59,7 @@ public class WidgetResolveService {
             }
             Context context=new Context(Locale.CHINA, map);
             StringWriter writer = new StringWriter();
-            templateEngine.addDialect(new WidgetDialect());
+            addDialect();
             templateEngine.process(templateResources,context,writer);
             return writer.toString();
         }
@@ -80,7 +83,7 @@ public class WidgetResolveService {
             }
             Context context = new Context(Locale.CHINA, map);
             StringWriter writer = new StringWriter();
-            templateEngine.addDialect(new WidgetDialect());
+            addDialect();
             templateEngine.process(templateResources, context, writer);
             return writer.toString();
         }

@@ -5,7 +5,7 @@ package com.huotu.hotcms.service.common;
  * */
 public enum LayoutTemplate implements CommonEnum {
     THREE_COLUMN_LAYOUT_190x590x190(0, "<div class=\"layout-area HOT-layout-area js-layout js-hot-layout\" id=\"{layoutId}\">\n" +
-            "    <div class=\"layout HOT-layout layout-box\" >\n" +
+            "    <div class=\"layout HOT-layout layout-box fn-clear\" >\n" +
             "      <div class=\"layout-three-left w190 bottomes\" name=\"left\">\n" +
             "       <div class=\"layout-tool HOT-tool\">%s" +
             "        </div>" +
@@ -21,7 +21,7 @@ public enum LayoutTemplate implements CommonEnum {
             "    </div>\n" +
             "  </div>"),
     WITHOUT_COLUMN_LAYOUT_990(1,"<div class=\"layout-area HOT-layout-area js-layout js-hot-layout\"  id=\"{layoutId}\">\n" +
-            "    <div class=\"layout HOT-layout layout-box\">\n" +
+            "    <div class=\"layout HOT-layout layout-box fn-clear\">\n" +
             "      <div class=\"layout-one w990 bottomes\" name=\"main\">\n" +
             "       <div class=\"layout-tool HOT-tool\">%s" +
             "        </div>" +
@@ -29,7 +29,7 @@ public enum LayoutTemplate implements CommonEnum {
             "    </div>\n" +
             "  </div>"),
     LEFT_RIGHT_COLUMN_LAYOUT_190x790(2,"<div class=\"layout-area HOT-layout-area js-layout js-hot-layout\"  id=\"{layoutId}\">\n" +
-            "    <div class=\"layout HOT-layout layout-box\" >\n" +
+            "    <div class=\"layout HOT-layout layout-box fn-clear\" >\n" +
             "      <div class=\"layout-two-left w190 bottomes\" name=\"left\">\n" +
             "       <div class=\"layout-tool HOT-tool\">%s" +
             "        </div>" +
@@ -41,7 +41,7 @@ public enum LayoutTemplate implements CommonEnum {
             "    </div>\n" +
             "  </div>"),
     RIGHT_PART_LAYOUT_190x390x390(3,"<div class=\"layout-area HOT-layout-area js-layout js-hot-layout\"  id=\"{layoutId}\">\n" +
-            "    <div class=\"layout HOT-layout layout-box\">\n" +
+            "    <div class=\"layout HOT-layout layout-box fn-clear\">\n" +
             "      <div class=\"layout-three-left w190 bottomes\" name=\"left\">\n" +
             "       <div class=\"layout-tool HOT-tool\">%s" +
             "        </div>" +
@@ -57,7 +57,7 @@ public enum LayoutTemplate implements CommonEnum {
             "    </div>\n" +
             "  </div>"),
     LEFT_RIGHT_COLUMN_LAYOUT_790x190(4,"<div class=\"layout-area HOT-layout-area js-layout js-hot-layout\"  id=\"{layoutId}\">\n" +
-            "    <div class=\"layout HOT-layout layout-box\">\n" +
+            "    <div class=\"layout HOT-layout layout-box fn-clear\">\n" +
             "      <div class=\"layout-two-left w790 bottomes\" name=\"left\">\n" +
             "       <div class=\"layout-tool HOT-tool\">%s" +
             "        </div>" +
@@ -69,7 +69,7 @@ public enum LayoutTemplate implements CommonEnum {
             "    </div>\n" +
             "  </div>"),
     LEFT_PART_LAYOUT_390x390x190(5,"<div class=\"layouttarea HOT-layout-area js-layout js-hot-layout\"  id=\"{layoutId}\">\n" +
-            "    <div class=\"layout HOT-layout layout-box\">\n" +
+            "    <div class=\"layout HOT-layout layout-box fn-clear\">\n" +
             "      <div class=\"layout-three-left w390 bottomes\" name=\"left\">\n" +
             "       <div class=\"layout-tool HOT-tool\">%s" +
             "        </div>" +
@@ -85,7 +85,7 @@ public enum LayoutTemplate implements CommonEnum {
             "    </div>\n" +
             "  </div>"),
     THREE_COLUMN_LAYOUT_254x717x239(6, "<div class=\"layout-area HOT-layout-area js-layout js-hot-layout\"  id=\"{layoutId}\">\n" +
-            "    <div class=\"layout HOT-layout layout-box\" style=\"width:1210px;\">\n" +
+            "    <div class=\"layout HOT-layout layout-box fn-clear\" style=\"width:1210px;\">\n" +
             "      <div class=\"layout-three-left bottomes\" name=\"left\" style=\"width:254px;\">\n" +
             "       <div class=\"layout-tool HOT-tool\">%s" +
             "        </div>" +
@@ -101,7 +101,7 @@ public enum LayoutTemplate implements CommonEnum {
             "    </div>\n" +
             "  </div>"),
     LEFT_RIGHT_COLUMN_LAYOUT_254x956(7,"<div class=\"layout-area HOT-layout-area js-layout js-hot-layout\"  id=\"{layoutId}\">\n" +
-            "    <div class=\"layout HOT-layout layout-box\" style=\"width:1210px;\">\n" +
+            "    <div class=\"layout HOT-layout layout-box fn-clear\" style=\"width:1210px;\">\n" +
             "      <div class=\"layout-two-left bottomes\" name=\"left\" style=\"width:254px;margin:0;\">\n" +
             "       <div class=\"layout-tool HOT-tool\">%s" +
             "        </div>" +
@@ -113,7 +113,7 @@ public enum LayoutTemplate implements CommonEnum {
             "    </div>\n" +
             "  </div>"),
     LEFT_RIGHT_COLUMN_LAYOUT_272x718(8,"<div class=\"layout-area HOT-layout-area js-layout js-hot-layout\" id=\"{layoutId}\">\n" +
-            "    <div class=\"layout HOT-layout layout-box\">\n" +
+            "    <div class=\"layout HOT-layout layout-box fn-clear\">\n" +
             "      <div class=\"layout-two-left bottomes\" name=\"left\" style=\"width:272px;margin:0;\">\n" +
             "       <div class=\"layout-tool HOT-tool\">%s" +
             "        </div>" +
@@ -125,7 +125,7 @@ public enum LayoutTemplate implements CommonEnum {
             "    </div>\n" +
             "  </div>"),
     LEFT_RIGHT_COLUMN_LAYOUT_215x765(9,"<div class=\"layout-area HOT-layout-area js-layout js-hot-layout\" id=\"{layoutId}\">\n" +
-            "    <div class=\"layout HOT-layout layout-box\">\n" +
+            "    <div class=\"layout HOT-layout layout-box fn-clear\">\n" +
             "      <div class=\"layout-two-left w215 bottomes\" name=\"left\">\n" +
             "       <div class=\"layout-tool HOT-tool\">%s" +
             "        </div>" +
@@ -137,7 +137,7 @@ public enum LayoutTemplate implements CommonEnum {
             "    </div>\n" +
             "  </div>"),
     LEFT_RIGHT_COLUMN_LAYOUT_330x650(10,"<div class=\"layout-area HOT-layout-area js-layout js-hot-layout\" id=\"{layoutId}\">\n" +
-            "    <div class=\"layout HOT-layout layout-box\">\n" +
+            "    <div class=\"layout HOT-layout layout-box fn-clear\">\n" +
             "      <div class=\"layout-two-left bottomes\" style=\"width:330px;\" name=\"left\">\n" +
             "       <div class=\"layout-tool HOT-tool\">%s" +
             "        </div>" +
@@ -149,7 +149,7 @@ public enum LayoutTemplate implements CommonEnum {
             "    </div>\n" +
             "  </div>"),
     LEFT_RIGHT_COLUMN_LAYOUT_650x330(11,"<div class=\"layout-area HOT-layout-area js-layout js-hot-layout\" id=\"{layoutId}\">\n" +
-            "    <div class=\"layout HOT-layout layout-box\">\n" +
+            "    <div class=\"layout HOT-layout layout-box fn-clear\">\n" +
             "      <div class=\"layout-two-left bottomes\" style=\"width:650px;\" name=\"left\">\n" +
             "       <div class=\"layout-tool HOT-tool\">%s" +
             "        </div>" +
@@ -161,7 +161,7 @@ public enum LayoutTemplate implements CommonEnum {
             "    </div>\n" +
             "  </div>"),
     LEFT_RIGHT_PART_LAYOUT_490x490(12,"<div class=\"layout-area HOT-layout-area js-layout js-hot-layout\" id=\"{layoutId}\">\n" +
-            "    <div class=\"layout HOT-layout layout-box\">\n" +
+            "    <div class=\"layout HOT-layout layout-box fn-clear\">\n" +
             "      <div class=\"layout-two-left w490 bottomes\" name=\"left\">\n" +
             "       <div class=\"layout-tool HOT-tool\">%s" +
             "        </div>" +
@@ -173,7 +173,7 @@ public enum LayoutTemplate implements CommonEnum {
             "    </div>\n" +
             "  </div>"),
     LEFT_CENTER_RIGHT_PART_LAYOUT_323x324x323(13,"<div class=\"layout-area HOT-layout-area js-layout js-hot-layout\" id=\"{layoutId}\">\n" +
-            "    <div class=\"layout HOT-layout layout-box\">\n" +
+            "    <div class=\"layout HOT-layout layout-box fn-clear\">\n" +
             "      <div class=\"layout-three-left w323 bottomes\" name=\"left\">\n" +
             "       <div class=\"layout-tool HOT-tool\">%s" +
             "        </div>" +
@@ -189,7 +189,7 @@ public enum LayoutTemplate implements CommonEnum {
             "    </div>\n" +
             "  </div>"),
     WITHOUT_COLUMN_LAYOUT_99999(14, "<div class=\"layout-area HOT-layout-area js-layout js-hot-layout\" id=\"{layoutId}\">\n" +
-            "    <div class=\"layout layout-auto HOT-layout layout-box\">\n" +
+            "    <div class=\"layout layout-auto HOT-layout layout-box fn-clear\">\n" +
             "      <div class=\"layout-one layout-hover bottomes\" name=\"main\">\n" +
             "       <div class=\"layout-tool HOT-tool\">%s" +
             "        </div>" +

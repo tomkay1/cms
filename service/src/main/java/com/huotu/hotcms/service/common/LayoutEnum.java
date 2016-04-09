@@ -180,53 +180,54 @@ public enum LayoutEnum implements CommonEnum {
                 argument.add(addTool);
             }
         }
-        String layoutTemplate = "";
         LayoutTemplate layoutTemplate1=LayoutTemplate.valueOf(this.code);
+        String layoutId=UUID.randomUUID().toString();
+        String layoutTemplate=layoutTemplate1.getValue().replace("{layoutId}",layoutId);
         switch (this.code) {
             case 0:
-                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), argument.get(2), "");
+                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1), argument.get(2), "");
                 break;
             case 1:
-                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), "");
+                layoutTemplate = String.format(layoutTemplate, argument.get(0), "");
                 break;
             case 2:
-                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), "");
+                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1), "");
                 break;
             case 3:
-                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), argument.get(2), "");
+                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1), argument.get(2), "");
                 break;
             case 4:
-                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), "");
+                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1), "");
                 break;
             case 5:
-                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), argument.get(2), "");
+                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1), argument.get(2), "");
                 break;
             case 6:
-                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), argument.get(2), "");
+                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1), argument.get(2), "");
                 break;
             case 7:
-                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), "");
+                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1), "");
                 break;
             case 8:
-                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), "");
+                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1), "");
                 break;
             case 9:
-                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), "");
+                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1), "");
                 break;
             case 10:
-                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), "");
+                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1), "");
                 break;
             case 11:
-                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), "");
+                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1), "");
                 break;
             case 12:
-                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), "");
+                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1), "");
                 break;
             case 13:
-                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), argument.get(1), argument.get(2), "");
+                layoutTemplate = String.format(layoutTemplate, argument.get(0), argument.get(1), argument.get(2), "");
                 break;
             case 14:
-                layoutTemplate = String.format(layoutTemplate1.getValue(), argument.get(0), "");
+                layoutTemplate = String.format(layoutTemplate, argument.get(0), "");
                 break;
         }
         return layoutTemplate;

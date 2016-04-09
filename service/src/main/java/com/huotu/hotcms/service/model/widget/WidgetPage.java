@@ -75,6 +75,12 @@ public class WidgetPage {
     private String pageBackVertical;
 
     /**
+     * 是否取用店铺头部
+     * */
+    @XmlAttribute(name="pageEnabledHead")
+    private Boolean pageEnabledHead;
+
+    /**
     * 页面中的布局列表
     * **/
     private List<WidgetLayout> layout;

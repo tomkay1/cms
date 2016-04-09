@@ -3,12 +3,17 @@ package com.huotu.hotcms.admin.controller.decoration;
 import com.alibaba.fastjson.JSONArray;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.admin.common.StringUtil;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.WidgetMains;
 import com.huotu.hotcms.service.model.widget.WidgetBase;
+import com.huotu.hotcms.service.model.widget.WidgetPage;
 import com.huotu.hotcms.service.model.widget.WidgetProperty;
 import com.huotu.hotcms.service.repository.WidgetMainsRepository;
+import com.huotu.hotcms.service.service.SiteService;
+import com.huotu.hotcms.service.thymeleaf.service.SiteResolveService;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
+import com.huotu.hotcms.service.widget.service.PageResolveService;
 import com.huotu.hotcms.service.widget.service.PageResourceService;
 import com.huotu.hotcms.service.widget.service.WidgetResolveService;
 import org.apache.commons.logging.Log;
@@ -42,6 +47,12 @@ public class WidgetTemplateController {
 
     @Autowired
     private WidgetResolveService widgetResolveService;
+
+    @Autowired
+    private PageResolveService pageResolveService;
+
+    @Autowired
+    private SiteService siteService;
 
     @RequestMapping(value = "/{id}",method = RequestMethod.POST)
     @ResponseBody
@@ -98,6 +109,26 @@ public class WidgetTemplateController {
                 resultView = new ResultView(ResultOptionEnum.NOFIND.getCode(), ResultOptionEnum.NOFIND.getValue(), null);
             }
         } catch (Exception ex) {
+            log.error(ex.getMessage());
+            resultView=new ResultView(ResultOptionEnum.SERVERFAILE.getCode(), ResultOptionEnum.SERVERFAILE.getValue(),null);
+        }
+        return resultView;
+    }
+
+    @RequestMapping("/common/head")
+    @ResponseBody
+    public ResultView getWidgetCommonHeadTemplate(Long siteId){
+        ResultView resultView=null;
+        try{
+            Site site=siteService.getSite(siteId);
+            WidgetPage widgetPage=pageResolveService.getWidgetPageByConfig("head.xml", site);
+            if(widgetPage!=null){
+                String htmlTemplate= pageResourceService.getHtmlTemplateByWidgetPage(widgetPage,false);
+                resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), htmlTemplate);
+            }else{
+                resultView = new ResultView(ResultOptionEnum.NOFIND.getCode(), ResultOptionEnum.NOFIND.getValue(), null);
+            }
+        }catch (Exception ex){
             log.error(ex.getMessage());
             resultView=new ResultView(ResultOptionEnum.SERVERFAILE.getCode(), ResultOptionEnum.SERVERFAILE.getValue(),null);
         }

@@ -2,7 +2,7 @@
 <!--浏览视图-->
 <div th:class="'fn-clear '+(${templateClass}==null?'sh-head-menu-brown-624326':${templateClass})+' toolhover'" th:attr="id=${id}">
     <div class="mc" style="overflow: visible;">
-        <div class="HOT_ShopHeaderLinkWithDropdown sh-hd-wrap">
+        <div class="HOT_ShopHeaderLinkWithDropdown sh-hd-wrap" th:style="'background:'+${widgetBackColor}">
             <div class="sh-head-menu">
                 <ul class="menu-list">
                     <li class="menu">
@@ -108,6 +108,11 @@
                     </option>
                 </select>
             </li>
+            <!--<li>-->
+                <!--<label style="width: 180px;">背景颜色 </label>-->
+                <!--<input type="text" class="js-hot-color input-normal" id="widgetBackColor" data-default="#ffffff" data-input="widgetBackColor"/>-->
+                <!--<input type="hidden" class="js-hot-properties" name="widgetBackColor" style="background:#ffffff"/>-->
+            <!--</li>-->
         </ul>
     </div>
     <div class="page-operate">
@@ -233,11 +238,15 @@
                         }
                     });
                 });
+            },
+            init:function(){
+                navModule.addNav();
+                navModule.deleteNav();
+                navModule.upNav();
+                navModule.downNav();
+                jHotColor.initColor();
             }
         }
-        navModule.addNav();
-        navModule.deleteNav();
-        navModule.upNav();
-        navModule.downNav();
+       navModule.init();
     </script>
 </div>

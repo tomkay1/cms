@@ -8,26 +8,17 @@
 
 package com.huotu.hotcms.service.widget.service.impl;
 
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
 import com.huotu.hotcms.service.service.HttpService;
 import com.huotu.hotcms.service.util.ApiResult;
-import com.huotu.hotcms.service.widget.model.GoodsModel;
 import com.huotu.hotcms.service.widget.model.GoodsSearcher;
-import com.huotu.hotcms.service.widget.model.JsonModel;
 import com.huotu.hotcms.service.widget.service.GoodsService;
 import com.huotu.huobanplus.common.entity.Goods;
 import com.huotu.huobanplus.sdk.common.repository.GoodsRestRepository;
-import org.apache.http.HttpHost;
-import org.apache.http.HttpRequest;
-import org.apache.http.impl.client.CloseableHttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
@@ -37,7 +28,11 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * 商品组件服务mock层
+ * 商品组件服务
+ * 系统属性依赖
+ * com.huotu.huobanplus.open.api.root
+ * 本地调试需配置上述属性为
+ * http://api.open.fancat.cn:8081
  * Created by cwb on 2016/3/17.
  */
 @Service

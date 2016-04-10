@@ -47,7 +47,10 @@ public class DialectAttributeFactory {
                     field.set(obj, Integer.parseInt(paramValue));
                 }else if(classType == Long.class) {
                     field.set(obj, Long.parseLong(paramValue));
-                }else if(classType == String.class) {
+                }else if(classType == Double.class) {
+                    field.set(obj,Double.parseDouble(paramValue));
+                }
+                else if(classType == String.class) {
                     field.set(obj, paramValue);
                 }else if(classType == String[].class) {
                     field.set(obj,paramValue.split(","));

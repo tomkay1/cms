@@ -6,7 +6,7 @@
  *  Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District 2013-2015. All rights reserved.
  */
 
-package com.huotu.hotcms.service.widget.service.impl.mock;
+package com.huotu.hotcms.service.widget.service.impl;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
@@ -23,18 +23,15 @@ import org.apache.http.HttpRequest;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
-import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
-import javax.json.Json;
-import java.awt.geom.Area;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -43,29 +40,21 @@ import java.util.TreeMap;
  * 商品组件服务mock层
  * Created by cwb on 2016/3/17.
  */
-@Profile("!container")
 @Service
 public class GoodsServiceImpl implements GoodsService {
     @Autowired
     private HttpService httpService;
     @Autowired
     private GoodsRestRepository goodsRestRepository;
-    @Autowired
-    private Environment environment;
 
     @Override
     public Page<Goods> searchGoods(int customerId, GoodsSearcher goodsSearcher) throws Exception{
-
-//        Sort.Direction direction = getSortDirection(goodsSearcher);
-//        String[] properties = getSortProperties(goodsSearcher);
-        String hostName = environment.getProperty("com.huotu.huobanplus.open.api.root", "api.open.fancat.cn");
-        String appid = environment.getProperty("com.huotu.huobanplus.open.api.appid","_demo");
-        String appsecrect = environment.getProperty("com.huotu.huobanplus.open.api.appsecrect","1f2f3f4f5f6f7f8f");
-        try(CloseableHttpClient client = goodsRestRepository.getHttpClient()) {
-            HttpHost httpHost = new HttpHost(hostName,8081);
-
-//            client.execute(httpHost,)
-        }
+        Sort.Direction direction = getSortDirection(goodsSearcher);
+        String[] properties = getSortProperties(goodsSearcher);
+        PageRequest pageRequest =
+            properties == null ?
+                    new PageRequest(goodsSearcher.getPage(),20,direction) :
+                    new PageRequest(goodsSearcher.getPage(), 20,direction, properties);
         Page<Goods> goodses = goodsRestRepository.search(customerId,
                 goodsSearcher.getGoodsCatId(),
                 goodsSearcher.getGoodsTypeId(),
@@ -74,8 +63,31 @@ public class GoodsServiceImpl implements GoodsService {
                 goodsSearcher.getMaxPrice(),
                 goodsSearcher.getUserId(),
                 goodsSearcher.getKeyword(),
-                new PageRequest(goodsSearcher.getPage(),20));
+                pageRequest);
         return goodses;
+    }
+
+    private String[] getSortProperties(GoodsSearcher goodsSearcher) {
+        String sortStr = goodsSearcher.getSort();
+        if(sortStr == null) {
+            return null;
+        }
+        String sortDir = sortStr.substring(sortStr.lastIndexOf(",")+1);
+        return isSpecifiedDir(sortDir) ?
+                sortStr.substring(0,sortStr.lastIndexOf(",")).split(",") :sortStr.split(",");
+    }
+
+    private boolean isSpecifiedDir(String sortDir) {
+        return "desc".equals(sortDir) || "asc".equals(sortDir);
+    }
+
+    private Sort.Direction getSortDirection(GoodsSearcher goodsSearcher) {
+        String sortStr = goodsSearcher.getSort();
+        if(sortStr == null) {
+            return null;
+        }
+        String sortDir = sortStr.substring(sortStr.lastIndexOf(",")+1);
+        return "desc".equals(sortDir) ? Sort.Direction.DESC : Sort.Direction.ASC;
     }
 
     @Override

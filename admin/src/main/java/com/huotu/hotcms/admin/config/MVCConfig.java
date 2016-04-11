@@ -207,7 +207,6 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
     }
 
     private ITemplateResolver widgetTemplateResolver() {
-        System.out.print(this.hashCode());
         WidgetTemplateResolver resolver = new WidgetTemplateResolver();
         resolver.setCharacterEncoding(UTF8);
         resolver.setApplicationContext(applicationContext);

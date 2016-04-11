@@ -6,8 +6,8 @@ var jHotColor={
             var defaultColor = $(dom).data("default");
             $(dom).spectrum({
                 allowEmpty: true,
-                chooseText: "确定",
-                cancelText: "取消",
+                chooseText: "确锟斤拷",
+                cancelText: "取锟斤拷",
                 color: defaultColor,
                 preferredFormat: "rgb",
                 showInitial: false,
@@ -26,4 +26,31 @@ var jHotColor={
             });
         });
     }
+}
+function hotColor(callback) {
+    var obj = $(".js-hot-color");
+    $.each(obj, function (item, dom) {
+        var inputValueName = $(dom).data("input");
+        var defaultColor = $(dom).data("default");
+        $(dom).spectrum({
+            allowEmpty: true,
+            chooseText: "纭畾",
+            cancelText: "鍙栨秷",
+            color: defaultColor,
+            preferredFormat: "rgb",
+            showInitial: false,
+            showButtons: true,
+            showInput: true,
+            width: "120",
+            change: function (color) {
+                if (callback != undefined && typeof callback === "function") {
+                    $("input[name='" + inputValueName + "']").val(color.toHexString());
+                    callback(color.toHexString());
+                }
+                else {
+                    $("input[name='" + inputValueName + "']").val(color.toHexString());
+                }
+            }
+        });
+    });
 }

@@ -17,6 +17,10 @@ import java.util.List;
 
 /**
  * 商品组件服务
+ * 系统属性依赖
+ * com.huotu.huobanplus.open.api.root
+ * 本地调试需配置上述属性为
+ * http://api.open.fancat.cn:8081
  * Created by cwb on 2016/3/17.
  */
 public interface GoodsService {

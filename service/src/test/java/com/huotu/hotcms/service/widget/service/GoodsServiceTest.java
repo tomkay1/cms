@@ -11,6 +11,7 @@ package com.huotu.hotcms.service.widget.service;
 import com.huotu.hotcms.service.config.ServiceTestConfig;
 import com.huotu.hotcms.service.widget.model.GoodsSearcher;
 import com.huotu.huobanplus.common.entity.Goods;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Created by cwb on 2016/4/7.
@@ -34,12 +37,13 @@ public class GoodsServiceTest {
 
     @Test
     public void searchGoodsTest() throws Exception{
-        Page<Goods> jsonModel = goodsService.searchGoods(4471,new GoodsSearcher());
-        System.out.print(jsonModel);
+        Page<Goods> goodses = goodsService.searchGoods(4471,new GoodsSearcher());
+        Assert.assertNotEquals(0, goodses.getContent());
     }
 
     @Test
-    public void getHotGoodsListTest() {
-
+    public void getHotGoodsListTest() throws Exception{
+        List<Goods> goodses = goodsService.getHotGoodsList(4471);
+        Assert.assertNotEquals(0,goodses.size());
     }
 }

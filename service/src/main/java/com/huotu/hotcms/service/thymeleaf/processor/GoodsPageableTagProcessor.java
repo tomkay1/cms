@@ -59,11 +59,11 @@ public class GoodsPageableTagProcessor extends AbstractAttributeTagProcessor {
     private Object invokeGoodsPageableService(IProcessableElementTag tag, ITemplateContext context) {
         WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
         GoodsService goodsService = (GoodsService)applicationContext.getBean("goodsServiceImpl");
-        int customerId = ((Site)VariableExpression.getVariable(context, "site")).getCustomerId();
+//        int customerId = ((Site)VariableExpression.getVariable(context, "site")).getCustomerId();
         Page<Goods> goodsPage = null;
         try {
             GoodsSearcher goodsSearcher = DialectAttributeFactory.getInstance().getForeachParam(tag, GoodsSearcher.class);
-            goodsPage = goodsService.searchGoods(customerId,goodsSearcher);
+            goodsPage = goodsService.searchGoods(4471,goodsSearcher);
             putPageAttrsIntoModel(context,goodsPage);
         }catch (Exception e) {
             log.error(e.getMessage());

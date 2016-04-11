@@ -217,7 +217,7 @@ define(function (require, exports, module) {
                             shade: 0.8,
                             closeBtn: 1,
                             area: ['700px', '580px'],
-                            content: "/widget/widgetList?layoutId="+layoutId+"&index="+layoutPositionIndex,
+                            content: "/widget/widgetList?layoutId="+layoutId+"&index="+layoutPositionIndex+"&siteId="+siteId,
                             //btn:["确定"],
                             end: function (index, layero) {
                                 var widgetJson = $("#js_widget_json_value").html();
@@ -239,8 +239,8 @@ define(function (require, exports, module) {
                                     //window.console.log("layoutId--->"+layoutId+"  layoutPosition-->"+layoutPosition);
                                     //window.console.log(widgetObj);
                                     JQueue.putQueueLayoutWidget(layoutId, layoutPosition, widgetObj);
-                                    page.widgetEdit();
                                 }
+                                page.widgetEdit();
                             }
                         });
                     });

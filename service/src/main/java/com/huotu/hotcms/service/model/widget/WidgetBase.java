@@ -20,6 +20,8 @@ import java.util.Map;
 @XmlSeeAlso({WidgetBase.class})
 @XmlAccessorType(XmlAccessType.FIELD)
 public class WidgetBase {
+    @XmlTransient
+    private String guid;
 
     @XmlAttribute(name = "id")
     private Long id;

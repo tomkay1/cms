@@ -1,6 +1,7 @@
 package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.entity.CustomPages;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.util.PageData;
 import org.springframework.data.domain.Sort;
 
@@ -13,7 +14,7 @@ public interface CustomPagesService {
     CustomPages getCustomPages(long id);
     CustomPages save(CustomPages customPages);
 
-    CustomPages findHomePages();
+    CustomPages findHomePages(Site site);
 
     Boolean setHomePages(Long id);
 }

@@ -39,14 +39,14 @@ public class PageResourceService {
     @Autowired
     private WidgetResolveService widgetResolveService;
 
-    public String getHtmlTemplateByWidgetPage(WidgetPage widgetPage,Boolean isEdit) throws Exception {
+    public String getHtmlTemplateByWidgetPage(WidgetPage widgetPage,Boolean isEdit,Site site) throws Exception {
         String htmlTemplate = "";
         if (widgetPage != null) {
             List<WidgetLayout> widgetLayouts = widgetPage.getLayout();
             if (widgetLayouts != null) {
                 for (WidgetLayout widgetLayout : widgetLayouts) {
                     if (widgetLayout != null) {
-                        htmlTemplate += getWidgetLayoutTemplateByWidgetLayout(widgetLayout,isEdit);
+                        htmlTemplate += getWidgetLayoutTemplateByWidgetLayout(widgetLayout,isEdit,site);
                     }
                 }
             }
@@ -58,9 +58,9 @@ public class PageResourceService {
         return isWidgetTemplateCached(widgetBase) ? getCachedWidgetTemplate(widgetBase) : getWidgetTemplateFromFile(widgetBase);
     }
 
-    public String getWidgetTemplateResolveByWidgetBase(WidgetBase widgetBase) throws Exception {
+    public String getWidgetTemplateResolveByWidgetBase(WidgetBase widgetBase,Site site) throws Exception {
         String widgetHtml=getWidgetTemplateByWidgetBase(widgetBase);
-        widgetHtml=widgetResolveService.widgetBriefView(widgetHtml,widgetBase);
+        widgetHtml=widgetResolveService.widgetBriefView(widgetHtml,widgetBase,site);
         return widgetHtml;
     }
 
@@ -89,14 +89,14 @@ public class PageResourceService {
     }
 
 
-    public String getWidgetModuleTemplateByWidgetModule(WidgetModule widgetModule,Boolean isEdit) throws Exception {
+    public String getWidgetModuleTemplateByWidgetModule(WidgetModule widgetModule,Boolean isEdit,Site site) throws Exception {
         String moduleTemplate = "";
         if (widgetModule != null) {
             List<WidgetBase> widgetBases = widgetModule.getWidget();
             for (WidgetBase widgetBase : widgetBases) {
                 if (widgetBase != null) {
                     widgetBase.setEdit(isEdit);
-                    String template=getWidgetTemplateResolveByWidgetBase(widgetBase);
+                    String template=getWidgetTemplateResolveByWidgetBase(widgetBase,site);
                     moduleTemplate +=template;
                 }
             }
@@ -107,13 +107,13 @@ public class PageResourceService {
     /**
      * 解析模块列表下面的组件Html 模版
      */
-    public List<String> getWidgetModuleTemplateByWidgetModuleList(List<WidgetModule> widgetModules,Boolean isEdit) throws Exception {
+    public List<String> getWidgetModuleTemplateByWidgetModuleList(List<WidgetModule> widgetModules,Boolean isEdit,Site site) throws Exception {
         List<String> moduleTemplateList = new ArrayList<>();
         if (widgetModules != null) {
             for (WidgetModule widgetModule : widgetModules) {
                 if(widgetModule.getWidget()!=null) {
                     String moduleTemplate = "";
-                    moduleTemplate += getWidgetModuleTemplateByWidgetModule(widgetModule, isEdit);
+                    moduleTemplate += getWidgetModuleTemplateByWidgetModule(widgetModule, isEdit,site);
                     moduleTemplateList.add(moduleTemplate);
                 }
             }
@@ -121,10 +121,10 @@ public class PageResourceService {
         return moduleTemplateList;
     }
 
-    public String getWidgetLayoutTemplateByWidgetLayout(WidgetLayout widgetLayout,Boolean isEdit) throws Exception {
+    public String getWidgetLayoutTemplateByWidgetLayout(WidgetLayout widgetLayout,Boolean isEdit,Site site) throws Exception {
         String layoutTemplate = "";
         if (widgetLayout != null) {
-            List<String> moduleTemplateList = getWidgetModuleTemplateByWidgetModuleList(widgetLayout.getModule(),isEdit);
+            List<String> moduleTemplateList = getWidgetModuleTemplateByWidgetModuleList(widgetLayout.getModule(),isEdit,site);
             LayoutEnum layoutEnum=LayoutEnum.valueOf(widgetLayout.getLayoutType());
             layoutTemplate=layoutEnum.getLayoutTemplate(moduleTemplateList,isEdit,widgetLayout.getLayoutId());
         }
@@ -134,7 +134,7 @@ public class PageResourceService {
     public String getHeaderTemplaeBySite(Site site) throws Exception {
         WidgetPage widgetPage=pageResolveService.getWidgetPageByConfig("head.xml", site);
         if(widgetPage!=null){
-           return getHtmlTemplateByWidgetPage(widgetPage, false);
+           return getHtmlTemplateByWidgetPage(widgetPage, false,site);
         }
         return null;
     }

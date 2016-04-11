@@ -7,9 +7,9 @@ package com.huotu.hotcms.service.common;
  * @since xhl
  */
 public enum PageErrorType  implements CommonEnum {
-    NO_FIND_404(0,"/template/0/404.html"),
-    BUDDING_500(1,"/template/0/budding.html"),
-    CALLBACK(2,"/template/0/callback.html");
+    NO_FIND_404(0,"/template/error/404.html"),
+    BUDDING_500(1,"/template/error/budding.html"),
+    CALLBACK(2,"/template/error/callback.html");
 
     private int code;
     private String value;

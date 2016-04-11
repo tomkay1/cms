@@ -45,14 +45,14 @@
         <div class="smart-action-left">
             <a class="btnShop active js-cms-defaults" th:attr="data-customerid=${user.customerId}" data-url="/customPages/0?customerid={0}&siteId={1}" href="javascript:void(0)" target="content">新增页面</a>
         </div>
-        <div class="smart-action-left" style="margin-left:10px;">
+        <div class="smart-action-left" style="margin-left:10px; width: 200px;">
             <select class="select1" id="siteType">
                 <option value="">选择站点</option>
                 <option th:each="site:${siteList}" th:value="${site.siteId}" th:text="${site.name}" th:selected="${site.siteId}==${siteList[0].siteId}?true:false"></option>//
             </select>
         </div>
         <div class="smart-action-left">
-            <div class="de-input" style="margin-top:0px;margin-left:5px;"><input class="de-btn de-btn-input" id="pageName" placeholder="输入页面名称" type="text"><a href="javascript:void(0);"  class="de-btn de-btn-search">搜索</a></div>
+            <div class="de-input" style="margin-top:0px;margin-left:5px;"><input class="de-btn de-btn-input" id="pageName" placeholder="输入页面名称" type="text"><a href="javascript:void(0);"  class="de-btn js-btn-search">搜索</a></div>
         </div>
     </div><div style="clear: both;"></div>
     </div>

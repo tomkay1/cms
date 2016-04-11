@@ -68,8 +68,8 @@ public class RouteInterceptor  extends HandlerInterceptorAdapter {
                 modelAndView.setViewName(routeResolverService.getRouteTemplate(site,RouteType.SERVER_ERROR));
             }
         }else{
+            modelAndView.addObject("site",site);
             modelAndView.addObject("request", requestService.ConvertRequestModel(request,site));
-//            modelAndView.addObject("request", requestService.ConvertRequestModelByError(request));
         }
     }
 

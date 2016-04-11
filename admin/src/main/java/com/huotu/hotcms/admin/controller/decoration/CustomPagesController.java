@@ -1,7 +1,9 @@
 package com.huotu.hotcms.admin.controller.decoration;
 
 import com.huotu.hotcms.service.entity.CustomPages;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.repository.CustomPagesRepository;
+import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.widget.service.PageResolveService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -31,9 +33,12 @@ public class CustomPagesController {
     @Autowired
     private PageResolveService pageResolveService;
 
+    @Autowired
+    private SiteService siteService;
+
     @RequestMapping("/{id}")
-    public ModelAndView widgetTypeList(
-                                       @RequestParam("siteId") String siteId,
+    public ModelAndView customPages(
+                                       @RequestParam("siteId") Long siteId,
                                        @PathVariable("id") Long id){
         ModelAndView modelAndView = new ModelAndView();
         try {
@@ -44,6 +49,7 @@ public class CustomPagesController {
             }catch (Exception ex){
                 ex.getStackTrace();
             }
+            Site site=siteService.getSite(siteId);
             modelAndView.setViewName(String.format("%s_%s.shtml", siteId, id));
             modelAndView.addObject("exists",isExists);
         }catch (Exception ex){

@@ -47,7 +47,7 @@ public class ShopController {
         ModelAndView modelAndView=new ModelAndView();
         try{
             Site site = siteResolveService.getCurrentSite(request);
-            CustomPages customPages=customPagesService.findHomePages();
+            CustomPages customPages=customPagesService.findHomePages(site);
             if(customPages!=null){
                 modelAndView.setViewName(String.format("%s_%s.cshtml", site.getSiteId(),customPages.getId()));
             }else{

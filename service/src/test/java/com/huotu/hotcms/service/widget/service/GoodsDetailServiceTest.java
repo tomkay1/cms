@@ -1,8 +1,8 @@
 package com.huotu.hotcms.service.widget.service;
 
 import com.huotu.hotcms.service.config.ServiceTestConfig;
-import com.huotu.hotcms.service.model.RegisterWeixinUserData;
-import com.huotu.hotcms.service.widget.model.JsonModel;
+import com.huotu.huobanplus.common.entity.Goods;
+import com.huotu.huobanplus.sdk.mall.model.RegisterWeixinUserData;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +29,8 @@ public class GoodsDetailServiceTest {
 
     @Test
     public void getGoodsDetailTest() throws Exception{
-        JsonModel jsonModel = goodsDetailService.getGoodsDetail(4471,"o2NXPw_LEa5Dun95lwZpyVPGCyuE");
-        System.out.println(jsonModel);
+        Goods goods = goodsDetailService.getGoodsDetail(100);
+        System.out.println(goods);
     }
 
     @Test

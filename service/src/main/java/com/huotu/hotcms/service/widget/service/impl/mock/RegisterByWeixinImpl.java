@@ -3,16 +3,16 @@ package com.huotu.hotcms.service.widget.service.impl.mock;
 import com.alibaba.fastjson.JSON;
 import com.huotu.hotcms.service.model.Bind.AccessToken;
 import com.huotu.hotcms.service.model.Bind.WxUser;
-import com.huotu.hotcms.service.model.RegisterWeixinUserData;
 import com.huotu.hotcms.service.widget.service.RegisterByWeixinService;
+import com.huotu.huobanplus.sdk.mall.model.RegisterWeixinUserData;
 import com.huotu.huobanplus.sdk.mall.service.MallInfoService;
-import com.huotu.huobanplus.sdk.mall.service.impl.MallInfoServiceImpl;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -26,16 +26,18 @@ import java.net.URISyntaxException;
 @Profile("!container")
 @Service
 public class RegisterByWeixinImpl implements RegisterByWeixinService {
+    @Autowired
+    private MallInfoService mallInfoService;
     @Override
     public RegisterWeixinUserData RegisterByWeixin(long customerId, int sex, String nickname, String openid, String city, String country, String province, String headimgurl, String unionid) {
-            MallInfoService mallInfoService = new MallInfoServiceImpl();
-            try {
-                mallInfoService.registerByWeixin(customerId,sex,nickname,openid,city,country,province,headimgurl,unionid);
+        RegisterWeixinUserData registerWeixinUserData = null;
+        try {
+                 registerWeixinUserData = mallInfoService.registerByWeixin(customerId,sex,nickname,openid,city,country,province,headimgurl,unionid);
             } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return null;
+        return registerWeixinUserData;
     }
 
     @Override

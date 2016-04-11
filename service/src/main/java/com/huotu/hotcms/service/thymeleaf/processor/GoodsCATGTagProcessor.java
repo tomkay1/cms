@@ -15,6 +15,7 @@ import com.huotu.hotcms.service.widget.service.GoodsCategoryService;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 import org.thymeleaf.context.ITemplateContext;
+import org.thymeleaf.context.IWebContext;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.engine.AttributeName;
 import org.thymeleaf.model.IProcessableElementTag;
@@ -22,6 +23,7 @@ import org.thymeleaf.processor.element.AbstractAttributeTagProcessor;
 import org.thymeleaf.processor.element.IElementTagStructureHandler;
 import org.thymeleaf.templatemode.TemplateMode;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -46,6 +48,7 @@ public class GoodsCATGTagProcessor extends AbstractAttributeTagProcessor {
 
     private Object invokeGoodsCATGService(IProcessableElementTag tag,ITemplateContext context){
         WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
+//        HttpServletRequest request = ((IWebContext)context).getRequest();
         GoodsCategoryService goodsCategoryService = (GoodsCategoryService)applicationContext.getBean("goodsCategoryServiceImpl");
         Site site = (Site)VariableExpression.getVariable(context,"site");
 //        int customerId = site.getCustomerId();

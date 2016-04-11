@@ -76,8 +76,8 @@ public class CustomPagesServiceImpl implements CustomPagesService {
     }
 
     @Override
-    public CustomPages findHomePages() {
-        List<CustomPages> customPages=customPagesRepository.findByHome(true);
+    public CustomPages findHomePages(Site site) {
+        List<CustomPages> customPages=customPagesRepository.findByHomeAndSite(true, site);
         if(customPages!=null&&customPages.size()==1){
             return  customPages.get(0);
         }
@@ -88,12 +88,14 @@ public class CustomPagesServiceImpl implements CustomPagesService {
     public Boolean setHomePages(Long id) {
         Boolean flag=false;
         try {
-            List<CustomPages> customPages = customPagesRepository.findByHome(true);
-            for (CustomPages customPages1 : customPages) {
-                customPages1.setHome(false);
-                customPagesRepository.save(customPages1);
-            }
             CustomPages customPages1 = customPagesRepository.findOne(id);
+            Site site=customPages1.getSite();
+//            customPagesRepository.updateCustomerPageHome(site);
+            List<CustomPages> customPages = customPagesRepository.findByHomeAndSite(true, site);
+            for (CustomPages customPages2 : customPages) {
+                customPages2.setHome(false);
+                customPagesRepository.save(customPages2);
+            }
             if (customPages1 != null) {
                 customPages1.setHome(true);
                 customPagesRepository.saveAndFlush(customPages1);

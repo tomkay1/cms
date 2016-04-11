@@ -3,6 +3,7 @@ define(function (require, exports, module) {
     var common=require("common");
     var layoutId=common.getQuery("layoutId");//所在布局ID
     var positionIndex=common.getQuery("index");//所在布局的位置index
+    var siteId=common.getQuery("siteId");
     var widget = {
         widgetTab: function () {
             var obj = $(".js-widget-module");
@@ -29,7 +30,8 @@ define(function (require, exports, module) {
                         url: '/widgetTemplate/'+widgetId,//组件模版编辑预览视图解析
                         data: {
                             layoutId:layoutId,
-                            layoutPosition:positionIndex
+                            layoutPosition:positionIndex,
+                            siteId:siteId
                         },
                         success: function (data) {
                             if(data!=null){

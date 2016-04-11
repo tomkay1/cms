@@ -4,7 +4,7 @@
 define(function (require, exports, module) {
     $("#usual1 ul").idTabs();
     $(".select1").uedSelect({
-        width: 150
+        width: 200
     });
 
     var commonUtil = require("common");
@@ -175,6 +175,29 @@ define(function (require, exports, module) {
                     pageList.homePage(id);
                 });
             })
+        },
+        search:function(){
+            var option = {
+                siteId: $("#siteType").val(),
+                delete: false,
+                publish: true,
+                name:$("#pageName").val()
+            }
+            var option2={
+                siteId: $("#siteType").val(),
+                delete: false,
+                publish: false,
+                name:$("#pageName").val()
+            }
+            pageGrid.reLoad(option);
+            pageGrid2.reLoad(option);
         }
     };
+
+    $("#js-btn-search").click(function(){
+        pageList.search();
+    });
+    $("#siteType").change(function(){
+        pageList.search();
+    })
 });

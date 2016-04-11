@@ -41,7 +41,7 @@ public class RequestModel{
     private String prevPageHref;
 
     private int totalPages;
-    private int totalRecords;
+    private long totalRecords;
     private List<Integer> pageNos;//页码btn集合
 
     /**
@@ -275,11 +275,11 @@ public class RequestModel{
         this.totalPages = totalPages;
     }
 
-    public int getTotalRecords() {
+    public long getTotalRecords() {
         return totalRecords;
     }
 
-    public void setTotalRecords(int totalRecords) {
+    public void setTotalRecords(long totalRecords) {
         this.totalRecords = totalRecords;
     }
 

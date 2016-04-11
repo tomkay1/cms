@@ -3,9 +3,10 @@ define(function (require, exports, module) {
         var widgetPage = a.widgetPage();
         var widgetPageModel = widgetPage.getInstance();//页面持久化对象,后面根据这个对象系列化传递到后台,并创建对应的xml 配置文件
         var common=require("common");
-        $.get("/assets/widget/toobar/toobar.html?t=33", function (html) {
+        $.get("/assets/widget/toobar/toobar.html?t=66", function (html) {
             var divObj = document.createElement("div");
             divObj.innerHTML = html;
+            divObj.id='js-page-toobar';
             var first = document.body.firstChild;//得到页面的第一个元素
             document.body.insertBefore(divObj, first);//在得到的第一个元素之前插入
             page.pageTab();
@@ -19,6 +20,7 @@ define(function (require, exports, module) {
             page.widgetEdit();
             page.initPageObject();
             page.pageColor();
+            layoutModule.initLayoutBind();
         })
         var layer = require("layer");
         var common = require("common");
@@ -207,6 +209,7 @@ define(function (require, exports, module) {
                     var layoutId=$(dom).data('id');
                     var layoutPositionIndex=$(dom).data("index");
                     $(dom).click(function () {
+                        widgetData.clear();
                         layer.open({
                             type: 2,
                             title: "组件模块",
@@ -247,6 +250,7 @@ define(function (require, exports, module) {
                 var obj = $(".js-layout-add");
                 $.each(obj, function (item, dom) {
                     $(dom).click(function () {
+                        widgetData.clear();
                         layer.open({
                             type: 2,
                             title: "添加布局",
@@ -260,6 +264,7 @@ define(function (require, exports, module) {
                                 var layoutJson=$("#js_layout_json_value").val();
                                 var layoutObj=JSON.parse(layoutJson);
                                 JQueue.putQueue(layoutObj);
+                                layoutModule.initLayoutBind();
                             }
                         });
                     });
@@ -345,15 +350,18 @@ define(function (require, exports, module) {
                         widget: widgetPageData
                     },
                     success: function (data) {
-                        if(data!=null){
-                            if(data.code==200&&data.data!=null){
-                                var obj=JSON.parse(data.data);
-                                JQueue.putQueueList(obj.layout);//把页面中的配置信息初始化到JQueue队列中
-                                delete obj["layout"];
-                                widgetPageModel = widgetPage.setModel(obj);
+                        if(data!=null) {
+                            if (data.code == 200 && data.data != null) {
+                                var obj = JSON.parse(data.data);
+                                if(obj!=null){
+                                    if (obj.layout != null) {
+                                        JQueue.putQueueList(obj.layout);//把页面中的配置信息初始化到JQueue队列中
+                                        delete obj["layout"];
+                                    }
+                                    widgetPageModel = widgetPage.setModel(obj);
+                                }
                                 page.initPageProperty();
-                                //window.console.log(widgetPageModel);
-                            }else{
+                            } else {
                                 layer.msg("加载页面配置数据失败...");
                             }
                         }
@@ -377,6 +385,56 @@ define(function (require, exports, module) {
                     $("#pageBackAlign").find("option[text='" + (widgetPageModel.pageBackAlign == null ? "" : widgetPageModel.pageBackAlign) + "']").attr("selected", true);
                     $("#pageBackVertical").find("option[text='" + (widgetPageModel.pageBackVertical == null ? "" : widgetPageModel.pageBackVertical) + "']").attr("selected", true);
 
+                    $("#pageEnableHead").attr("checked",(widgetPageModel.pageEnabledHead == null ? "false" : widgetPageModel.pageEnabledHead));
+                    if(configName!="head"){
+                        page.pageEnableHead();
+                    }else{
+                        $("#jq-page-common-no").hide();
+                    }
+                }
+            },
+            pageEnableHead:function(){
+                page.pageInitHeader();
+                $("#pageEnableHead").click(function(){
+                    var pageEnabledHead=$("#pageEnableHead").is(':checked');
+                    widgetPageModel.pageEnabledHead =pageEnabledHead;
+                    widgetPageModel= widgetPage.setModel(widgetPageModel);
+                    if(pageEnabledHead.toString()=='true'){
+                        page.pageInitHeader();
+                    }else{
+                        $(".js-layout-header").remove();
+                    }
+                });
+            },
+            pageInitHeader:function(){
+                var pageEnabledHead=$("#pageEnableHead").is(':checked');
+                if(pageEnabledHead.toString()=='true'&&configName!="head"){
+                    $.ajax({
+                        type: "post",
+                        dataType: "json",
+                        url: '/widgetTemplate/common/head',//组件模版编辑预览视图解析
+                        data: {
+                            siteId:siteId,
+                        },
+                        success: function (data) {
+                            if(data!=null){
+                                if(data.code==200){
+                                    var dom=$(data.data);
+                                    dom.removeClass("js-hot-layout");
+                                    dom.addClass("js-layout-header");
+                                    $("#js-page-toobar").after(dom);
+                                }else if(data.code==404){
+                                    layer.msg("没有设置公共头部");
+                                }else{
+                                    layer.msg("服务器繁忙,请稍后再试...");
+                                }
+                            }else{
+                                layer.msg("服务器繁忙,请稍后再试...");
+                            }
+                        },error:function(){
+                            layer.msg("服务器繁忙,请稍后再试...");
+                        }
+                    });
                 }
             }
         };
@@ -408,6 +466,54 @@ define(function (require, exports, module) {
                     }
                 });
             }
-        }
+        };
+        var layoutModule={
+            initLayoutBind:function(){
+                layoutModule.deleteLayout();
+                layoutModule.downLayout();
+                layoutModule.upLayout();
+            },
+            deleteLayout:function(){
+                var obj=$(".js-layout-delete");
+                obj.unbind("click");
+                $.each(obj,function(item,dom){
+                    $(dom).click(function(){
+                        var layoutId=$(dom).data('id');
+                        $("#"+layoutId).remove();
+                        JQueue.delete(layoutId);
+                    });
+                });
+            },
+            upLayout:function(){
+                var obj=$(".js-layout-up");
+                obj.unbind("click");
+                $.each(obj,function(item,dom){
+                   $(dom).click(function(){
+                       var layoutId=$(dom).data('id');
+                       var $this=$("#"+layoutId);
+                       if ($this.prev() && $this.prev().length>0) {
+                           if($this.prev().hasClass('js-hot-layout')){
+                               $this.prev().before($this);
+                           }
+                       }
+                   }) ;
+                });
+            },
+            downLayout:function(){
+                var obj=$(".js-layout-down");
+                obj.unbind("click");
+                $.each(obj,function(item,dom){
+                   $(dom).click(function(){
+                       var layoutId=$(dom).data('id');
+                       var $this=$("#"+layoutId);
+                       if ($this.next()&&$this.next().length>0) {
+                           if($this.next().hasClass('js-hot-layout')){
+                               $this.next().after($this);
+                           }
+                       }
+                   });
+                });
+            }
+        };
     })
 });

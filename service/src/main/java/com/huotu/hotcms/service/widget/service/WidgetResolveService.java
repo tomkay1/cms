@@ -7,6 +7,7 @@ import com.huotu.hotcms.service.model.widget.WidgetBase;
 import com.huotu.hotcms.service.model.widget.WidgetListProperty;
 import com.huotu.hotcms.service.model.widget.WidgetProperty;
 import com.huotu.hotcms.service.service.RedisService;
+import com.huotu.hotcms.service.thymeleaf.dialect.WidgetDialect;
 import com.huotu.hotcms.service.util.HttpUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -19,7 +20,6 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
 
@@ -37,16 +37,15 @@ public class WidgetResolveService {
 
     private TemplateEngine templateEngine = new TemplateEngine();
 
-    public String widgetBriefView(String templateResources,Map<String,Object> map){
-        Context context = new Context(Locale.CHINA, map);
-        StringWriter writer = new StringWriter();
-        templateEngine.process(templateResources, context, writer);
-        return writer.toString();
+    private void addDialect(){
+       if(!templateEngine.isInitialized()){
+           templateEngine.addDialect(new WidgetDialect());
+       }
     }
 
     public String widgetBriefView(String templateResources,WidgetBase widgetBase) throws IOException {
         if(widgetBase!=null) {
-            Map map =null;
+            Map<String,Object> map =null;
             if(widgetBase.getProperty()!=null){
                 map = ConverMapByList(widgetBase.getProperty());
             }else{
@@ -58,10 +57,10 @@ public class WidgetResolveService {
                     map.put(field.getName(), getFieldValueByName(field.getName(), widgetBase));
                 }
             }
-            Context context=null;
-            context = new Context(Locale.CHINA, map);
+            Context context=new Context(Locale.CHINA, map);
             StringWriter writer = new StringWriter();
-            templateEngine.process(templateResources, context, writer);
+            addDialect();
+            templateEngine.process(templateResources,context,writer);
             return writer.toString();
         }
         return templateResources;
@@ -84,6 +83,7 @@ public class WidgetResolveService {
             }
             Context context = new Context(Locale.CHINA, map);
             StringWriter writer = new StringWriter();
+            addDialect();
             templateEngine.process(templateResources, context, writer);
             return writer.toString();
         }

@@ -1,11 +1,15 @@
 package com.huotu.hotcms.service.widget.service;
 
 import com.huotu.hotcms.service.common.LayoutEnum;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.widget.*;
 import com.huotu.hotcms.service.service.RedisService;
 import com.huotu.hotcms.service.util.HttpUtils;
+import com.huotu.hotcms.service.util.ResultOptionEnum;
+import com.huotu.hotcms.service.util.ResultView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.thymeleaf.ITemplateEngine;
 import org.thymeleaf.TemplateEngine;
 
 import java.net.URL;
@@ -25,13 +29,15 @@ import java.util.Map;
 public class PageResourceService {
     @Autowired
     private StaticResourceService resourceServer;
+
     @Autowired
     private RedisService redisService;
 
     @Autowired
-    private WidgetResolveService widgetResolveService;
+    private PageResolveService pageResolveService;
 
-    private TemplateEngine templateEngine = new TemplateEngine();
+    @Autowired
+    private WidgetResolveService widgetResolveService;
 
     public String getHtmlTemplateByWidgetPage(WidgetPage widgetPage,Boolean isEdit) throws Exception {
         String htmlTemplate = "";
@@ -52,7 +58,7 @@ public class PageResourceService {
         return isWidgetTemplateCached(widgetBase) ? getCachedWidgetTemplate(widgetBase) : getWidgetTemplateFromFile(widgetBase);
     }
 
-    public String getWidgetTemplateResovleByWidgetBase(WidgetBase widgetBase) throws Exception {
+    public String getWidgetTemplateResolveByWidgetBase(WidgetBase widgetBase) throws Exception {
         String widgetHtml=getWidgetTemplateByWidgetBase(widgetBase);
         widgetHtml=widgetResolveService.widgetBriefView(widgetHtml,widgetBase);
         return widgetHtml;
@@ -90,7 +96,7 @@ public class PageResourceService {
             for (WidgetBase widgetBase : widgetBases) {
                 if (widgetBase != null) {
                     widgetBase.setEdit(isEdit);
-                    String template=getWidgetTemplateResovleByWidgetBase(widgetBase);
+                    String template=getWidgetTemplateResolveByWidgetBase(widgetBase);
                     moduleTemplate +=template;
                 }
             }
@@ -123,5 +129,13 @@ public class PageResourceService {
             layoutTemplate=layoutEnum.getLayoutTemplate(moduleTemplateList,isEdit,widgetLayout.getLayoutId());
         }
         return layoutTemplate;
+    }
+
+    public String getHeaderTemplaeBySite(Site site) throws Exception {
+        WidgetPage widgetPage=pageResolveService.getWidgetPageByConfig("head.xml", site);
+        if(widgetPage!=null){
+           return getHtmlTemplateByWidgetPage(widgetPage, false);
+        }
+        return null;
     }
 }

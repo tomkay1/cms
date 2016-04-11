@@ -26,10 +26,6 @@
             th:src="@{${request.root}+'/js/jquery.SuperSlide.2.1.1.js'}"></script>
     <script type="text/javascript" src="js/carouFredSel.js" th:src="@{${request.root}+'/js/carouFredSel.js'}"></script>
     <script src="js/video.js" th:src="@{${request.root}+'/js/video.js'}"></script>
-    <script th:inline="javascript">
-        var videoPath = /*[[@{${request.root}+'/video/video-js.swf'}]]*/ "video/video-js.swf";
-        videojs.options.flash.swf = videoPath;
-    </script>
 </head>
 <body>
 <div class="huobanjiagw">

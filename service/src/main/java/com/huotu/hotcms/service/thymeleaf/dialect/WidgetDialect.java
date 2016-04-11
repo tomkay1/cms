@@ -10,6 +10,7 @@ package com.huotu.hotcms.service.thymeleaf.dialect;
 
 import com.huotu.hotcms.service.thymeleaf.processor.GoodsCATGTagProcessor;
 import com.huotu.hotcms.service.thymeleaf.processor.GoodsPageableTagProcessor;
+import com.huotu.hotcms.service.thymeleaf.processor.HotGoodsProcessor;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.processor.IProcessor;
@@ -18,7 +19,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * 商城组件解析器
+ * 商城组件方言
  * Created by cwb on 2016/3/17.
  */
 public class WidgetDialect extends AbstractProcessorDialect {
@@ -40,6 +41,7 @@ public class WidgetDialect extends AbstractProcessorDialect {
         final Set<IProcessor> processors = new LinkedHashSet<IProcessor>();
         processors.add(new GoodsPageableTagProcessor(dialect,dialectPrefix));
         processors.add(new GoodsCATGTagProcessor(dialect,dialectPrefix));
+        processors.add(new HotGoodsProcessor(dialect,dialectPrefix));
         return processors;
     }
 

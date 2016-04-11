@@ -8,15 +8,19 @@
 
 package com.huotu.hotcms.service.widget.service;
 
-import com.huotu.hotcms.service.widget.model.GoodsModel;
 import com.huotu.hotcms.service.widget.model.GoodsSearcher;
-import com.huotu.hotcms.service.widget.model.JsonModel;
+import com.huotu.huobanplus.common.entity.Goods;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 
 /**
  * 商品组件服务
+ * 系统属性依赖
+ * com.huotu.huobanplus.open.api.root
+ * 本地调试需配置上述属性为
+ * http://api.open.fancat.cn:8081
  * Created by cwb on 2016/3/17.
  */
 public interface GoodsService {
@@ -27,7 +31,7 @@ public interface GoodsService {
      * @param goodsSearcher 检索条件
      * @return
      */
-    JsonModel searchGoods(int customerId, GoodsSearcher goodsSearcher) throws Exception;
+    Page<Goods> searchGoods(int customerId, GoodsSearcher goodsSearcher) throws Exception;
 
     /**
      * 热销产品
@@ -35,7 +39,7 @@ public interface GoodsService {
      * @param customerId
      * @return
      */
-    List<GoodsModel> getHotGoodsList(int customerId) throws Exception;
+    List<Goods> getHotGoodsList(int customerId) throws Exception;
 
 
 }

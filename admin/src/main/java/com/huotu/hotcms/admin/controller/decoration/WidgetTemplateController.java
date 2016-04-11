@@ -3,12 +3,17 @@ package com.huotu.hotcms.admin.controller.decoration;
 import com.alibaba.fastjson.JSONArray;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.admin.common.StringUtil;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.WidgetMains;
 import com.huotu.hotcms.service.model.widget.WidgetBase;
+import com.huotu.hotcms.service.model.widget.WidgetPage;
 import com.huotu.hotcms.service.model.widget.WidgetProperty;
 import com.huotu.hotcms.service.repository.WidgetMainsRepository;
+import com.huotu.hotcms.service.service.SiteService;
+import com.huotu.hotcms.service.thymeleaf.service.SiteResolveService;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
+import com.huotu.hotcms.service.widget.service.PageResolveService;
 import com.huotu.hotcms.service.widget.service.PageResourceService;
 import com.huotu.hotcms.service.widget.service.WidgetResolveService;
 import org.apache.commons.logging.Log;
@@ -16,6 +21,8 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.ITemplateEngine;
+import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 
 import java.util.*;
 
@@ -41,9 +48,11 @@ public class WidgetTemplateController {
     @Autowired
     private WidgetResolveService widgetResolveService;
 
-//    @Autowired
-//    private XmlTestService xmlTestService;
+    @Autowired
+    private PageResolveService pageResolveService;
 
+    @Autowired
+    private SiteService siteService;
 
     @RequestMapping(value = "/{id}",method = RequestMethod.POST)
     @ResponseBody
@@ -53,9 +62,6 @@ public class WidgetTemplateController {
             List<WidgetProperty> properties1=null;
             if(null!=properties){
                 properties1=JSONArray.parseArray(properties,WidgetProperty.class);
-//                map = objectMapper.readValue(properties,Map.class);
-//                properties1=objectMapper.readValue(properties,WidgetProperty[].class);
-//                properties1=WidgetResolveService.ConvertWidgetPropertyByMap(map);
             }
             WidgetMains widgetMains=widgetMainsRepository.findOne(id);
             if(widgetMains!=null&&null!=widgetMains.getResourceUri()) {
@@ -67,7 +73,7 @@ public class WidgetTemplateController {
                 widgetBase.setWidgetEditUri(widgetMains.getResourceEditUri());
                 widgetBase.setProperty(properties1);
                 widgetBase.setEdit(true);
-                String html = pageResourceService.getWidgetTemplateResovleByWidgetBase(widgetBase);
+                String html = pageResourceService.getWidgetTemplateResolveByWidgetBase(widgetBase);
                 resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), html);
             }else{
                 resultView = new ResultView(ResultOptionEnum.NOFIND.getCode(), ResultOptionEnum.NOFIND.getValue(), null);
@@ -84,13 +90,9 @@ public class WidgetTemplateController {
     public ResultView getWidgetEditTemplate(@PathVariable("id") Long id,String layoutId,String layoutPosition, String properties){
         ResultView resultView = null;
         try {
-//            WidgetListProperty<WidgetProperty> widgetPropertyWidgetListProperty=null;
             List<WidgetProperty> widgetProperties=null;
             if(!StringUtil.isEmptyStr(properties)){
-//                map = objectMapper.readValue(properties,Map.class);
                 widgetProperties=JSONArray.parseArray(properties,WidgetProperty.class);
-//                widgetPropertyWidgetListProperty=WidgetResolveService.ConvertWidgetPropertyListByMap(map);
-//                widgetProperties=WidgetResolveService.ConvertWidgetPropertyByMap(map);
             }
             WidgetMains widgetMains=widgetMainsRepository.findOne(id);
             if(widgetMains!=null) {
@@ -107,6 +109,26 @@ public class WidgetTemplateController {
                 resultView = new ResultView(ResultOptionEnum.NOFIND.getCode(), ResultOptionEnum.NOFIND.getValue(), null);
             }
         } catch (Exception ex) {
+            log.error(ex.getMessage());
+            resultView=new ResultView(ResultOptionEnum.SERVERFAILE.getCode(), ResultOptionEnum.SERVERFAILE.getValue(),null);
+        }
+        return resultView;
+    }
+
+    @RequestMapping("/common/head")
+    @ResponseBody
+    public ResultView getWidgetCommonHeadTemplate(Long siteId){
+        ResultView resultView=null;
+        try{
+            Site site=siteService.getSite(siteId);
+            WidgetPage widgetPage=pageResolveService.getWidgetPageByConfig("head.xml", site);
+            if(widgetPage!=null){
+                String htmlTemplate= pageResourceService.getHtmlTemplateByWidgetPage(widgetPage,false);
+                resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), htmlTemplate);
+            }else{
+                resultView = new ResultView(ResultOptionEnum.NOFIND.getCode(), ResultOptionEnum.NOFIND.getValue(), null);
+            }
+        }catch (Exception ex){
             log.error(ex.getMessage());
             resultView=new ResultView(ResultOptionEnum.SERVERFAILE.getCode(), ResultOptionEnum.SERVERFAILE.getValue(),null);
         }

@@ -2,6 +2,7 @@ package com.huotu.hotcms.admin.controller.decoration;
 
 import com.huotu.hotcms.admin.common.StringUtil;
 import com.huotu.hotcms.admin.util.web.CookieUser;
+import com.huotu.hotcms.service.common.ConfigInfo;
 import com.huotu.hotcms.service.entity.WidgetMains;
 import com.huotu.hotcms.service.entity.WidgetType;
 import com.huotu.hotcms.service.model.WidgetList;
@@ -42,6 +43,9 @@ public class WidgetController {
 
     @Autowired
     private StaticResourceService resourceServer;
+
+    @Autowired
+    private ConfigInfo configInfo;
 
     @Autowired
     private WidgetService widgetService;
@@ -185,16 +189,19 @@ public class WidgetController {
     public ResultView saveWidgetMains(WidgetMains widgetMains,Long widgetTypeId,String template,String editTemplate){
         ResultView result=null;
         try {
-            if(template!=null&&template!=""){
+
+            if(widgetMains.getResourceUri()!=null){
                 InputStream inputStream=StringUtil.getInputStream(template);
+                widgetMains.setResourceUri(configInfo.getResourcesWidget()+"/template_"+widgetMains.getId() + ".html");
                 resourceServer.uploadResource(widgetMains.getResourceUri(),inputStream);
             }
-            if(editTemplate!=null&&editTemplate!=""){
-                InputStream inputStream1=StringUtil.getInputStream(editTemplate);
-                resourceServer.uploadResource(widgetMains.getResourceEditUri(),inputStream1);
+            if(widgetMains.getResourceEditUri()!=null){
+                InputStream inputStream=StringUtil.getInputStream(editTemplate);
+                widgetMains.setResourceEditUri(configInfo.getResourcesWidget()+"/edit/template_"+widgetMains.getId() + ".html");
+                resourceServer.uploadResource(widgetMains.getResourceEditUri(),inputStream);
             }
             WidgetType widgetType = widgetService.findWidgetTypeById(widgetTypeId);
-            if(widgetMains.getId()==null){
+            if(widgetMains.getId()==null){//当是新增时
                 widgetMains.setCreateTime(LocalDateTime.now());
             }
             else {

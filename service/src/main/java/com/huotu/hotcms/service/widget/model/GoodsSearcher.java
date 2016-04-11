@@ -21,7 +21,7 @@ public class GoodsSearcher {
     /**
      * 商品分类主键id
      */
-    private Integer goodsCatId;
+    private Long goodsCatId;
     /**
      * 商品类型主键id
      */
@@ -29,19 +29,19 @@ public class GoodsSearcher {
     /**
      * 品牌主键id
      */
-    private Integer brandId;
+    private Long brandId;
     /**
      * 起始销售价格(闭合，如果会员是登录状态则查询的应该是会员价)
      */
-    private Integer minPrice;
+    private Double minPrice;
     /**
      * 结束销售价格(闭合，如果会员是登录状态则查询的应该是会员价)
      */
-    private Integer maxPrice;
+    private Double maxPrice;
     /**
      * 会员主键id（用于查询会员价）
      */
-    private Integer userId;
+    private Long userId;
     /**
      * 商品关键字（可模糊匹配）
      */

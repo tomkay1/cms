@@ -8,14 +8,19 @@
 
 package com.huotu.hotcms.service.widget.model;
 
+import com.fasterxml.jackson.databind.util.StdConverter;
 
-import java.util.HashMap;
+import java.util.Set;
 
 /**
- * Created by luffy on 2015/11/14.
- *
- * @author luffy luffy.ja at gmail.com
+ * @author CJ
  */
-public class LevelPrices extends HashMap<Long,LevelPrice> {
+public class SetStringWithCommaConverter extends StdConverter<Set<String>, String> {
 
+    @Override
+    public String convert(Set<String> value) {
+        if (value == null)
+            return null;
+        return String.join(",", value);
+    }
 }

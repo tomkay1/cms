@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 public class WxUser {
     private String openid;
-    private Boolean sex;
+    private int sex;
     private String nickname;
     private String city;
     private String province;

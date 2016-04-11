@@ -8,20 +8,14 @@
 
 package com.huotu.hotcms.service.widget.service.impl.huobanplus;
 
-import com.alibaba.fastjson.JSON;
-import com.huotu.hotcms.service.service.HttpService;
-import com.huotu.hotcms.service.util.ApiResult;
-import com.huotu.hotcms.service.util.HttpUtils;
-import com.huotu.hotcms.service.widget.model.GoodsCategory;
-import com.huotu.hotcms.service.widget.service.GoodsCategoryService;
+import com.huotu.hotcms.service.widget.service.impl.AbstractGoodsCategoryService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * 商品分类组件服务
@@ -29,23 +23,15 @@ import java.util.TreeMap;
  */
 @Profile("container")
 @Service
-public class GoodsCategoryServiceImpl implements GoodsCategoryService {
+public class GoodsCategoryServiceImpl extends AbstractGoodsCategoryService {
+
+    private static final Log log = LogFactory.getLog(GoodsCategoryServiceImpl.class);
 
     @Autowired
-    private HttpService httpService;
-
-    @Override
-    public List<GoodsCategory> getGoodsCategories(int customerId) {
-        ApiResult<String> apiResult = invokeGoodsCatgProce(customerId);
-        if(apiResult.getCode()!=200) {
-            return new ArrayList<>();
+    public void setEnv(Environment env) {
+        this.host = env.getProperty("com.huotu.huobanplus.open.api.root");
+        if(host==null) {
+            throw new IllegalStateException("请设置com.huotu.huobanplus.open.api.root属性");
         }
-        return JSON.parseArray(apiResult.getData(), GoodsCategory.class);
-    }
-
-    private ApiResult<String> invokeGoodsCatgProce(Integer customerId) {
-        Map<String,Object> params = new TreeMap<>();
-        params.put("merchantId",customerId);
-        return httpService.httpGet_prod("http", "api.open.huobanplus.com", null, "/categories/search/findByMerchantId", params);
     }
 }

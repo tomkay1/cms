@@ -1,7 +1,9 @@
 <div class="toolbar">
     <div class="toolbar-extra">
         <input type="hidden" id="js-web-root" />
-        <label style="color:#fff;font-size:13px;"><b>是否使用店铺公共头部</b></label><input id="use_common_head" class="forms_check" type="checkbox" checked="">
+        <span id="jq-page-common-no">
+           <label style="color:#fff;font-size:13px;"><b>是否使用店铺公共头部</b></label><input id="pageEnableHead" class="forms_check" name="pageEnableHead" type="checkbox">
+        </span>
         <a class="link-gray" href="javascript:void(0)" target="_blank" title="预览页面">预览</a>
         <a class="link-gray" href="javascript:void(0)" id="jq-web-home" target="_blank" title="进入店铺">进入店铺</a>
         <a class="link-yellow js-page-create" href="javascript:;" title="点击发布当前页面" data-publish="true">发布</a>
@@ -35,7 +37,7 @@
                         <tr>
                             <th>背景图片：</th>
                             <td>
-                                <input type="text" id="pageBackImage" name="pageBackImage" maxlength="50" class="input-normal"/><a href="javascript:void(0)" id="js-cms-selectPhoto">图片选择</a>
+                                <input type="text" id="pageBackImage"  name="pageBackImage" maxlength="50" class="input-normal"/><a href="javascript:void(0)" id="js-cms-selectPhoto">图片选择</a>
                             </td>
                         </tr>
                         <tr>

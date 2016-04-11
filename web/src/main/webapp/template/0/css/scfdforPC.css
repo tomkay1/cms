@@ -237,7 +237,7 @@
 	background-size:100px 100px
 }
 .arr_r_s, .i_cz, .icon_bao, .icon_clock, .icon_edit, .buy_area .flag, .btn_wrap .btn_cart i, .btn_wrap_fixed .btn_back i, .avatar, .discount_wrap .icon_wrap i, .shop_info_wrap .credit, .shop_info_wrap .credit span, .sku_wrap .option_selected:after, .layer_my a i, .icon_warn, .icon_zoom, .detail_standard_wx .discount_wrap .arr_discount {
-	background-image:url(../../test/js/image/detail_v1.png);
+	background-image:url(../images/detail_v1.png);
 	background-repeat:no-repeat;
 	background-size:100px 170px
 }

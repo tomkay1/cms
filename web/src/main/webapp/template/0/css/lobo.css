@@ -127,7 +127,7 @@ a:hover
   display: block;
 }
 .spec-control{
-  background-image: url(../../test/js/image/newicon20140910.png);
+  background-image: url(../images/newicon20140910.png);
   background-repeat: no-repeat;
 }
 #spec-list .spec-items img.img-hover {
@@ -218,7 +218,7 @@ a:hover
   width: 12px;
   height: 12px;
   overflow: hidden;
-  background: url(../../test/js/image/newicon20140910.png) no-repeat -202px -224px;
+  background: url(../images/newicon20140910.png) no-repeat -202px -224px;
 }
 
  .p-choose-wrap .item.selected a {

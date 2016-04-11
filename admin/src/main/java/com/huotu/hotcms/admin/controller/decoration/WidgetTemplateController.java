@@ -56,7 +56,7 @@ public class WidgetTemplateController {
 
     @RequestMapping(value = "/{id}",method = RequestMethod.POST)
     @ResponseBody
-    public ResultView getWidgetTemplate(@PathVariable("id") Long id,String layoutId,String layoutPosition, String properties) {
+    public ResultView getWidgetTemplate(@PathVariable("id") Long id,String layoutId,String layoutPosition,Long siteId, String properties) {
         ResultView resultView = null;
         try {
             List<WidgetProperty> properties1=null;
@@ -73,7 +73,8 @@ public class WidgetTemplateController {
                 widgetBase.setWidgetEditUri(widgetMains.getResourceEditUri());
                 widgetBase.setProperty(properties1);
                 widgetBase.setEdit(true);
-                String html = pageResourceService.getWidgetTemplateResolveByWidgetBase(widgetBase);
+                Site site=siteService.getSite(siteId);
+                String html = pageResourceService.getWidgetTemplateResolveByWidgetBase(widgetBase,site);
                 resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), html);
             }else{
                 resultView = new ResultView(ResultOptionEnum.NOFIND.getCode(), ResultOptionEnum.NOFIND.getValue(), null);
@@ -123,7 +124,7 @@ public class WidgetTemplateController {
             Site site=siteService.getSite(siteId);
             WidgetPage widgetPage=pageResolveService.getWidgetPageByConfig("head.xml", site);
             if(widgetPage!=null){
-                String htmlTemplate= pageResourceService.getHtmlTemplateByWidgetPage(widgetPage,false);
+                String htmlTemplate= pageResourceService.getHtmlTemplateByWidgetPage(widgetPage,false,site);
                 resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), htmlTemplate);
             }else{
                 resultView = new ResultView(ResultOptionEnum.NOFIND.getCode(), ResultOptionEnum.NOFIND.getValue(), null);

@@ -16,6 +16,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.util.StringUtils;
 import redis.clients.jedis.JedisPoolConfig;
 
 
@@ -40,23 +41,16 @@ public class RedisConfig {
     private Integer maxTotal;
     private Long maxWait;
     private Integer maxIdle;
+    private Integer dbIndex;
 
     public void init() {
-        hostName = env.getProperty("redisHost");
-        if (hostName == null) {
-            throw new IllegalStateException("请设置redisHost属性");
-        }
-        port = env.getProperty("redisPort", Integer.class);
-        if (port == null) {
-            throw new IllegalStateException("请设置redisPort属性");
-        }
+        hostName = env.getProperty("redisHost","localhost");
+        port = env.getProperty("redisPort",Integer.class,6379);
         password = env.getProperty("redisAuth");
-        if (password == null) {
-            throw new IllegalStateException("请设置redisAuth属性");
-        }
         maxTotal = env.getProperty("jedisPool.maxTotal", Integer.class, 500);
         maxWait = env.getProperty("jedisPool.maxWait", Long.class, 1000l * 3);
         maxIdle = env.getProperty("jedisPool.maxIdle", Integer.class, 200);
+        dbIndex = env.getProperty("redisDatabase",Integer.class,20);
     }
 
     @Bean
@@ -64,7 +58,10 @@ public class RedisConfig {
         init();
         JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
         jedisConnectionFactory.setHostName(hostName);
-        jedisConnectionFactory.setPassword(password);
+        if(!StringUtils.isEmpty(password)) {
+            jedisConnectionFactory.setPassword(password);
+        }
+        jedisConnectionFactory.setDatabase(dbIndex);
         jedisConnectionFactory.setPort(port);
         jedisConnectionFactory.setPoolConfig(jedisPoolConfig);
         return jedisConnectionFactory;

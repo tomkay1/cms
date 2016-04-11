@@ -40,6 +40,12 @@ public class RequestService {
         return model;
     }
 
+    public RequestModel ConvertRequestModel(){
+        RequestModel model=new RequestModel();
+        model.setRoot();
+        return model;
+    }
+
     public RequestModel ConvertRequestModelByError(HttpServletRequest request){
         RequestModel model=new RequestModel();
         String contextPath=request.getContextPath();

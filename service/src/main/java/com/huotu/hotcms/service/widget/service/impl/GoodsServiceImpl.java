@@ -28,11 +28,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * 商品组件服务
- * 系统属性依赖
- * com.huotu.huobanplus.open.api.root
- * 本地调试需配置上述属性为
- * http://api.open.fancat.cn:8081
+ * 商品组件服务具体实现
  * Created by cwb on 2016/3/17.
  */
 @Service
@@ -46,10 +42,11 @@ public class GoodsServiceImpl implements GoodsService {
     public Page<Goods> searchGoods(int customerId, GoodsSearcher goodsSearcher) throws Exception{
         Sort.Direction direction = getSortDirection(goodsSearcher);
         String[] properties = getSortProperties(goodsSearcher);
+        int page = goodsSearcher.getPage()==null ? 0 : goodsSearcher.getPage();
         PageRequest pageRequest =
             properties == null ?
-                    new PageRequest(goodsSearcher.getPage(),20,direction) :
-                    new PageRequest(goodsSearcher.getPage(), 20,direction, properties);
+                    new PageRequest(page,20,direction,"orderWeight") :
+                    new PageRequest(page, 20,direction, properties);
         Page<Goods> goodses = goodsRestRepository.search(customerId,
                 goodsSearcher.getGoodsCatId(),
                 goodsSearcher.getGoodsTypeId(),

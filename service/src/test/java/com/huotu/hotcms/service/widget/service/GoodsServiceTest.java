@@ -34,8 +34,8 @@ public class GoodsServiceTest {
 
     @Test
     public void searchGoodsTest() throws Exception{
-        Page<Goods> jsonModel = goodsService.searchGoods(4471,new GoodsSearcher());
-        System.out.print(jsonModel);
+        Page<Goods> goodses = goodsService.searchGoods(4471,new GoodsSearcher());
+        System.out.print(goodses);
     }
 
     @Test

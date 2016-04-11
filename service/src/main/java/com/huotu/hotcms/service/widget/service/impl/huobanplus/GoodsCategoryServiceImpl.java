@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
  * 商品分类组件服务
  * Created by cwb on 2016/3/21.
  */
-@Profile("container")
+@Profile("co    ntainer")
 @Service
 public class GoodsCategoryServiceImpl extends AbstractGoodsCategoryService {
 

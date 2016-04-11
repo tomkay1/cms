@@ -171,6 +171,10 @@ public class RequestModel{
         this.root = rootUrl;
     }
 
+    public void setRoot(){
+        this.root="/";
+    }
+
     public void setRoot(HttpServletRequest request){
         String rootUrl="";
         Integer port=request.getServerPort();

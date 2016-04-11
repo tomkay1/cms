@@ -9,6 +9,7 @@ import com.huotu.hotcms.service.model.widget.WidgetListProperty;
 import com.huotu.hotcms.service.model.widget.WidgetProperty;
 import com.huotu.hotcms.service.service.RedisService;
 import com.huotu.hotcms.service.thymeleaf.dialect.WidgetDialect;
+import com.huotu.hotcms.service.thymeleaf.service.RequestService;
 import com.huotu.hotcms.service.util.HttpUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import javax.swing.text.AbstractDocument;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
@@ -36,12 +38,23 @@ public class WidgetResolveService {
     @Autowired
     private RedisService redisService;
 
+    @Autowired
+    private RequestService requestService;
+
     private TemplateEngine templateEngine = new TemplateEngine();
 
     private void addDialect(){
        if(!templateEngine.isInitialized()){
            templateEngine.addDialect(new WidgetDialect());
        }
+    }
+
+    private Context setVariable(Context context,Site site){
+        if(null!=null) {
+            context.setVariable("site", site);
+        }
+        context.setVariable("request",requestService.ConvertRequestModel());
+        return context;
     }
 
     public String widgetBriefView(String templateResources,WidgetBase widgetBase,Site site) throws IOException {
@@ -59,9 +72,9 @@ public class WidgetResolveService {
                 }
             }
             Context context=new Context(Locale.CHINA, map);
-            context.setVariable("site",site);
-            StringWriter writer = new StringWriter();
+            context= setVariable(context,site);
             addDialect();
+            StringWriter writer = new StringWriter();
             templateEngine.process(templateResources,context,writer);
             return writer.toString();
         }
@@ -84,8 +97,8 @@ public class WidgetResolveService {
                 }
             }
             Context context = new Context(Locale.CHINA, map);
-            StringWriter writer = new StringWriter();
             addDialect();
+            StringWriter writer = new StringWriter();
             templateEngine.process(templateResources, context, writer);
             return writer.toString();
         }

@@ -7,8 +7,8 @@ define(function (require, exports, module) {
                 var defaultColor = $(dom).data("default");
                 $(dom).spectrum({
                     allowEmpty: true,
-                    chooseText: "确定",
-                    cancelText: "取消",
+                    chooseText: "确锟斤拷",
+                    cancelText: "取锟斤拷",
                     color: defaultColor,
                     preferredFormat: "rgb",
                     showInitial: false,

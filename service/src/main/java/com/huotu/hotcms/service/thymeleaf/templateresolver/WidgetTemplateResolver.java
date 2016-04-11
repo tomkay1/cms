@@ -11,6 +11,7 @@ package com.huotu.hotcms.service.thymeleaf.templateresolver;
 import com.huotu.hotcms.service.thymeleaf.templateresource.WidgetTemplateResource;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.thymeleaf.IEngineConfiguration;
 import org.thymeleaf.cache.ICacheEntryValidity;
 import org.thymeleaf.cache.NonCacheableCacheEntryValidity;
@@ -28,7 +29,7 @@ import java.util.Map;
  * 组件模板资源解析器
  * Created by cwb on 2016/3/16.
  */
-public class WidgetTemplateResolver extends AbstractTemplateResolver{
+public class WidgetTemplateResolver extends AbstractTemplateResolver implements ApplicationContextAware {
 
     public static final TemplateMode DEFAULT_TEMPLATE_MODE = TemplateMode.HTML;
     private ApplicationContext applicationContext = null;

@@ -58,7 +58,7 @@ public class BindController {
         }
         else {//未登录扫码登录
             try {
-                modelAndView.setViewName("/template/0/product_introduce-s.html");
+                modelAndView.setViewName("/template/0/goodsDetail.html");
                 RequestModel requestModel = requestService.ConvertRequestModelByError(request);
                 modelAndView.addObject("localUrl", requestModel.getRoot());
                 String code = request.getParameter("code");

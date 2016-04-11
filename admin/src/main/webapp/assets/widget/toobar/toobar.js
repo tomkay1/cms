@@ -447,7 +447,8 @@ define(function (require, exports, module) {
                     data: {
                         properties:settingString,
                         layoutId:layoutId,
-                        layoutPosition:positionIndex
+                        layoutPosition:positionIndex,
+                        siteId:siteId
                     },
                     success: function (data) {
                         if(data!=null){

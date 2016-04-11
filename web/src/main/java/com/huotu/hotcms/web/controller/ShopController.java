@@ -85,7 +85,7 @@ public class ShopController {
         try{
             //商品业务操作
             Site site = siteResolveService.getCurrentSite(request);
-            modelAndView.setViewName(String.format("%s_%s.cshtml", site.getSiteId(),id));
+            modelAndView.setViewName("/template/0/goodsDetail.html");
 
         }catch (Exception ex){
             log.error(ex);

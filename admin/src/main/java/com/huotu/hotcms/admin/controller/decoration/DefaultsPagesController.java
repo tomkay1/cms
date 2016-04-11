@@ -1,5 +1,7 @@
 package com.huotu.hotcms.admin.controller.decoration;
 
+import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.widget.service.PageResolveService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -28,13 +30,18 @@ public class DefaultsPagesController {
     @Autowired
     private PageResolveService pageResolveService;
 
+    @Autowired
+    private SiteService siteService;
+
     @RequestMapping("/{name}")
-    public ModelAndView widgetTypeList(@RequestParam("siteId") String siteId,
+    public ModelAndView defultsPages(@RequestParam("siteId") Long siteId,
                                        @PathVariable("name") String name){
         ModelAndView modelAndView=new ModelAndView();
         try{
-            String[] goods = {"dd","ss","zz"};
-            modelAndView.addObject("goods",goods);
+            Site site=siteService.getSite(siteId);
+            if(site!=null) {
+                modelAndView.addObject("site", site);
+            }
             modelAndView.setViewName(String.format("%s_%s.shtml",siteId,name));
         }catch (Exception ex){
             log.error(ex);

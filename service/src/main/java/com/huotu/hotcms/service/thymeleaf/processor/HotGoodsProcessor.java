@@ -8,14 +8,13 @@
 
 package com.huotu.hotcms.service.thymeleaf.processor;
 
-import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
-import com.huotu.hotcms.service.widget.model.GoodsCategory;
-import com.huotu.hotcms.service.widget.service.GoodsCategoryService;
+import com.huotu.hotcms.service.widget.service.GoodsService;
+import com.huotu.huobanplus.common.entity.Goods;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 import org.thymeleaf.context.ITemplateContext;
-import org.thymeleaf.context.IWebContext;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.engine.AttributeName;
 import org.thymeleaf.model.IProcessableElementTag;
@@ -23,37 +22,40 @@ import org.thymeleaf.processor.element.AbstractAttributeTagProcessor;
 import org.thymeleaf.processor.element.IElementTagStructureHandler;
 import org.thymeleaf.templatemode.TemplateMode;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 商品分类组件处理器
- * Created by cwb on 2016/3/17.
+ * 热销产品组件解析器
+ * Created by cwb on 2016/4/11.
  */
-public class GoodsCATGTagProcessor extends AbstractAttributeTagProcessor {
+public class HotGoodsProcessor extends AbstractAttributeTagProcessor {
 
-    public static final String ATTR_NAME = "category";
+    public static final String ATTR_NAME = "hot";
     public static final int PRECEDENCE = 1300;
 
-    public GoodsCATGTagProcessor(IProcessorDialect dialect, String dialectPrefix) {
+    private Log log = LogFactory.getLog(HotGoodsProcessor.class);
+
+    public HotGoodsProcessor(IProcessorDialect dialect, String dialectPrefix) {
         super(dialect, TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
     }
 
     @Override
     protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName, String attributeValue, String attributeTemplateName, int attributeLine, int attributeCol, IElementTagStructureHandler structureHandler) {
         final Object iteratedValue;
-        iteratedValue = invokeGoodsCATGService(tag, context);
+        iteratedValue = invokeHogGoodsService(tag, context);
         structureHandler.iterateElement(attributeValue, null, iteratedValue);
     }
 
-    private Object invokeGoodsCATGService(IProcessableElementTag tag,ITemplateContext context){
+    private Object invokeHogGoodsService(IProcessableElementTag tag, ITemplateContext context) {
         WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
-//        HttpServletRequest request = ((IWebContext)context).getRequest();
-        GoodsCategoryService goodsCategoryService = (GoodsCategoryService)applicationContext.getBean("goodsCategoryServiceImpl");
-        Site site = (Site)VariableExpression.getVariable(context,"site");
-        int customerId = site.getCustomerId();
-//        int customerId=4471;
-        List<GoodsCategory> categories = goodsCategoryService.getGoodsCategories(customerId);
-        return categories;
+        GoodsService goodsService = (GoodsService)applicationContext.getBean("goodsServiceImpl");
+        List<Goods> goodses = new ArrayList<>();
+        try {
+            goodses = goodsService.getHotGoodsList(4471);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return goodses;
     }
 }

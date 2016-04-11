@@ -3,6 +3,7 @@ package com.huotu.hotcms.service.widget.service;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.widget.WidgetBase;
 import com.huotu.hotcms.service.model.widget.WidgetListProperty;
 import com.huotu.hotcms.service.model.widget.WidgetProperty;
@@ -43,7 +44,7 @@ public class WidgetResolveService {
        }
     }
 
-    public String widgetBriefView(String templateResources,WidgetBase widgetBase) throws IOException {
+    public String widgetBriefView(String templateResources,WidgetBase widgetBase,Site site) throws IOException {
         if(widgetBase!=null) {
             Map<String,Object> map =null;
             if(widgetBase.getProperty()!=null){
@@ -58,6 +59,7 @@ public class WidgetResolveService {
                 }
             }
             Context context=new Context(Locale.CHINA, map);
+            context.setVariable("site",site);
             StringWriter writer = new StringWriter();
             addDialect();
             templateEngine.process(templateResources,context,writer);

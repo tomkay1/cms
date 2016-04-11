@@ -1,7 +1,7 @@
 package com.huotu.hotcms.service.widget.service;
 
 import com.huotu.hotcms.service.model.Bind.WxUser;
-import com.huotu.hotcms.service.model.RegisterWeixinUserData;
+import com.huotu.huobanplus.sdk.mall.model.RegisterWeixinUserData;
 
 /**
  * Created by chendeyu on 2016/4/8.

@@ -47,7 +47,7 @@ public class ShopController {
         ModelAndView modelAndView=new ModelAndView();
         try{
             Site site = siteResolveService.getCurrentSite(request);
-            CustomPages customPages=customPagesService.findHomePages();
+            CustomPages customPages=customPagesService.findHomePages(site);
             if(customPages!=null){
                 modelAndView.setViewName(String.format("%s_%s.cshtml", site.getSiteId(),customPages.getId()));
             }else{
@@ -85,7 +85,7 @@ public class ShopController {
         try{
             //商品业务操作
             Site site = siteResolveService.getCurrentSite(request);
-            modelAndView.setViewName(String.format("%s_%s.cshtml", site.getSiteId(),id));
+            modelAndView.setViewName("/template/0/goodsDetail.html");
 
         }catch (Exception ex){
             log.error(ex);

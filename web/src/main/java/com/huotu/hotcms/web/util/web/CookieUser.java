@@ -37,7 +37,7 @@ public class CookieUser {
     /**
      * 检查登录
      * */
-    public  boolean checkLogin(HttpServletRequest request,HttpServletResponse response)
+    public  boolean checkLogin(HttpServletRequest request)
     {
 
         String unionId = getUnionId(request);

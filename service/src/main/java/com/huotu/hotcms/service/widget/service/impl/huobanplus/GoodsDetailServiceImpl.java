@@ -48,8 +48,7 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
     private ApiResult<String> invokeGoodsDetailProce(int goodsId) throws Exception{
         Map<String,Object> params = new TreeMap<>();
         params.put("goodsId",goodsId);
-//        params.put("unionId",unionId);
-        return httpService.httpGet_prod("http", "api.open.huobanplus.com", null, "/goodses/goodsId", params);
+        return httpService.httpGet_prod("http", "api.open.huobanplus.com", null, "/goodses/"+goodsId, params);
     }
 
     private ApiResult<String> invokeGoodsPriceProce(int userId,int goodsId) throws Exception{

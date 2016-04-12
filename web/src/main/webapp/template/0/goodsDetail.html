@@ -99,14 +99,14 @@
             <div id="prop-list">
               <div class="sku">
                 <h3>规格1：</h3>
-                <div class="sku_list" data-propname="颜色" data-selectedprop="颜色:花色" data-selectedimg="">
-                  <span class="option option_selected current" id="specValue6342" onclick="selectSpec(1663,6342)">39</span><span class="option" id="specValue6343" onclick="selectSpec(1663,6343)">40</span><span class="option" id="specValue6344" onclick="selectSpec(1663,6344)">41</span><span class="option" id="specValue6345" onclick="selectSpec(1663,6345)">42</span><span class="option" id="specValue6346" onclick="selectSpec(1663,6346)">43</span>
+                <div class="sku_list">
+                  <span class="option " id="specValue6342">39</span><span class="option" id="specValue6343" >40</span><span class="option" id="specValue6344" >41</span><span class="option" id="specValue6345" >42</span><span class="option" id="specValue6346">43</span>
                 </div>
               </div>
               <div class="sku">
                 <h3>规格2：</h3>
                 <div class="sku_list" data-propname="颜色" data-selectedprop="颜色:花色" data-selectedimg="">
-                  <span class="option option_selected current" id="specValue6349" onclick="selectSpec(1664,6349)">浅卡其</span><span class="option" id="specValue6351" onclick="selectSpec(1664,6351)">深蓝色</span>
+                  <span class="option" id="specValue6349">浅卡其</span><span class="option" id="specValue6351" >深蓝色</span>
                 </div>
               </div>
             </div>
@@ -124,7 +124,8 @@
               <div class="stock_num">
                 <div class="inner">
                   <div id="skuStock">
-                    <span id="stock-num" style="color: rgb(153, 153, 153);">库存充足</span>
+                    <!--<span id="stock-num" style="color: rgb(153, 153, 153);" th:text="${goods.stock}">库存充足</span>-->
+                    <span id="stock-num" style="color: rgb(153, 153, 153);" th:if="${goods.stock}!=0">库存充足</span>
                   </div>
                   <div id="buyLimit">
                   </div>
@@ -136,17 +137,18 @@
           </div>
         </div>
 
-        <div class="dxbtn">
+        <div class="dxbtn" style="width: 420px;">
           <div id="mcover" onclick="document.getElementById('mcover').style.display='';" style="display: none;">
             <div class="code">
-              <p style=" text-align:right; padding-bottom:10px"><img src="images/colos.gif" style="width:18px;" /></p>
+              <!--<p style=" text-align:right; padding-bottom:10px"><img src="images/colos.gif" style="width:18px;" /></p>-->
               <!--<img class="tutu" src="images/TB1uSyHLVXXXXbbaXXXwu0bFXXX.png" />-->
               <p style=" margin-top:10px">扫一扫，进入购买</p>
             </div>
           </div>
-          <a th:if="${unlogin}==false" href="#" class="tb-btn-sku" onclick="showQRCode()"><img src="images/iconfont-saoyisao.png" th:src="@{/template/0/images/iconfont-saoyisao.png}"style="width:16px; vertical-align:middle; margin-right:6px; margin-top:-1px" />扫码登录</a>
-          <a  href="#" class="tb-btn-sku" onclick="showBuyQRCode()"><img src="images/iconfont-saoyisao.png" th:src="@{/template/0/images/iconfont-saoyisao.png}" style="width:16px; vertical-align:middle; margin-right:6px; margin-top:-1px" />扫码购买</a>
+          <a th:if="${unlogin}==false" href="#" class="tb-btn-sku tb-btn-basket" onclick="showQRCode()" style="float:left;"><img src="images/denglu2x.png" th:src="@{/template/0/images/denglu2x.png}"style="width:16px; vertical-align:middle; margin-right:6px; margin-top:-1px" />扫码登录</a>
+          <a  href="#" class="tb-btn-sku " onclick="showBuyQRCode()"  style="float:left;"><img src="images/iconfont-saoyisao.png" th:src="@{/template/0/images/iconfont-saoyisao.png}" style="width:16px; vertical-align:middle; margin-right:6px; margin-top:-1px" />扫码购买</a>
           <a href="#" class="tb-btn-sku tb-btn-basket" style="display:none"><img src="images/iconfont-gouwuche.png" th:src="@{/template/0/images/iconfont-gouwuche.png}"style="width:16px; vertical-align:middle; margin-right:6px" />加入购物车</a>
+        <p style="clear: both"></p>
         </div>
       </div>
       <p style="clear:both"></p>
@@ -176,7 +178,6 @@
 <script src="js/layer/layer.js"  th:src="@{/template/0/js/layer/layer.js}"></script>
 <script th:inline="javascript">
   function showQRCode(){
-
       var goodsId = /*[[${goods.id}]]*/"/";
 
     layer.open({
@@ -195,10 +196,10 @@
   function showBuyQRCode(){
     layer.open({
       type: 2,
-      title: "请扫码登录 ",
+      title: "请扫码购买 ",
       shadeClose: true,
       shade: 0.8,
-      area: ['500px', '500px'],
+      area: ['310px', '400px'],
       content: "http://hot.huobanplus.com:8080/front/bind/QrCode",
       end:function(){
        window.console.log("!1");
@@ -206,4 +207,8 @@
       }
     });
   }
+
+    $(".sku_list span").click(function() {
+        $(this).addClass("option_selected").siblings().removeClass("option_selected");
+    });
 </script>

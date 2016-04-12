@@ -61,8 +61,6 @@ public class ShopController {
                 modelAndView.setViewName(String.format("%s_%s.cshtml", site.getSiteId(),customPages.getId()));
             }else{
                 modelAndView.setViewName(PageErrorType.BUDDING_500.getValue());
-                RequestModel requestModel=requestService.ConvertRequestModelByError(request);
-                modelAndView.addObject("localUrl",requestModel.getRoot());
             }
         }catch (Exception ex){
             log.error(ex);

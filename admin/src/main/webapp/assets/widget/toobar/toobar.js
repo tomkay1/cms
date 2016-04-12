@@ -298,6 +298,7 @@ define(function (require, exports, module) {
                 $.each(obj,function(item,dom){
                     $(dom).click(function(){
                         var widgetId=$(dom).data("id");
+                        var widgetBoxId=$(dom).data("for");
                         var layoutId=$(dom).data("layoutid");
                         var layoutPositionIndex=$(dom).data("position");
                         if(typeof layoutId=="undefined"||typeof layoutPositionIndex=='undefined'){
@@ -320,8 +321,8 @@ define(function (require, exports, module) {
                             end: function (index, layero) {
                                 var widgetSettingJson=$("#js_widgetSetting_json_value").val();//获得控件主体设置信息
                                 var widgetSettingObj=JSON.parse(widgetSettingJson);
-                                window.console.log(JQueue.toJson())
-                                window.console.log("layoutId-->"+layoutId+"  layoutPostion-->"+layoutPositionIndex+"  widgetId-->"+widgetId);
+                                //window.console.log(JQueue.toJson())
+                                //window.console.log("layoutId-->"+layoutId+"  layoutPostion-->"+layoutPositionIndex+"  widgetId-->"+widgetId);
                                 var widget=JQueue.findLayoutWdigetByPositionAndWidgetId(layoutId,layoutPositionIndex,widgetId);//查找队列中改布局下的控件主体对象
                                 if(widget==-1){
                                     layer.msg("没有找到控件主体信息");
@@ -331,7 +332,7 @@ define(function (require, exports, module) {
                                 //window.console.log(widget);
                                 JQueue.patchQueueLayoutWidget(widget)//修改该控件主体到队列中
                                 //window.console.log(widgetSettingJson);
-                                widgetModule.getWidgetBrief(widgetId,layoutId,layoutPositionIndex,widgetSettingJson);//获得控件主体预览视图
+                                widgetModule.getWidgetBrief(widgetId,widgetBoxId,layoutId,layoutPositionIndex,widgetSettingJson);//获得控件主体预览视图
                             }
                         });
                     })
@@ -439,7 +440,7 @@ define(function (require, exports, module) {
             }
         };
         var widgetModule={
-            getWidgetBrief:function(widgetId,layoutId,positionIndex,settingString){
+            getWidgetBrief:function(widgetId,widgetBoxId,layoutId,positionIndex,settingString){
                 $.ajax({
                     type: "post",
                     dataType: "json",
@@ -447,12 +448,13 @@ define(function (require, exports, module) {
                     data: {
                         properties:settingString,
                         layoutId:layoutId,
-                        layoutPosition:positionIndex
+                        layoutPosition:positionIndex,
+                        siteId:siteId
                     },
                     success: function (data) {
                         if(data!=null){
                             if(data.code==200){
-                                $("#"+widgetId).replaceWith(data.data);
+                                $("#"+widgetBoxId).replaceWith(data.data);
                                 page.widgetEdit();
                             }else{
                                 layer.msg("解析模版错误");

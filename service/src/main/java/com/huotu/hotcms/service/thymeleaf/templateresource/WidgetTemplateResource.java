@@ -23,17 +23,21 @@ import com.huotu.hotcms.service.widget.service.PageResolveService;
 import com.huotu.hotcms.service.widget.service.PageResourceService;
 import jdk.nashorn.internal.runtime.regexp.joni.EncodingHelper;
 import org.apache.commons.vfs2.util.EncryptUtil;
+import org.apache.logging.log4j.core.jmx.Server;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.thymeleaf.ITemplateEngine;
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.IContext;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresource.ITemplateResource;
 import org.thymeleaf.util.Validate;
 import sun.security.krb5.EncryptedData;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.net.URLEncoder;
 
@@ -101,24 +105,27 @@ public class WidgetTemplateResource implements ITemplateResource {
 
     private SiteServiceImpl siteService;
     private ThymeleafViewResolver widgetViewResolver;
-    private  String URI_PREFIX;
+    private String URI_PREFIX;
     private TemplateEngine templateEngine;
 
     //  private final Resource resource;
     private final String characterEncoding;
 
+    private ApplicationContext applicationContext;
+
     public WidgetTemplateResource(final ApplicationContext applicationContext, final String location, final String characterEncoding) {
         super();
         URI_PREFIX = this.getURI_PREFIX(applicationContext);
+        this.applicationContext=applicationContext;
         Validate.notNull(applicationContext, "Application Context cannot be null");
         Validate.notEmpty(location, "Resource Location cannot be null or empty");
         pageResourceService = (PageResourceService) applicationContext.getBean("pageResourceService");
         pageResolveService = (PageResolveService) applicationContext.getBean("pageResolveService");
         siteService = (SiteServiceImpl) applicationContext.getBean("siteServiceImpl");
-        widgetViewResolver = (ThymeleafViewResolver)applicationContext.getBean("widgetViewResolver");
-        customPagesService=(CustomPagesServiceImpl) applicationContext.getBean("customPagesServiceImpl");
-        failPageService=(FailPageServiceImpl)applicationContext.getBean("failPageServiceImpl");
-        this.location=location;
+        widgetViewResolver = (ThymeleafViewResolver) applicationContext.getBean("widgetViewResolver");
+        customPagesService = (CustomPagesServiceImpl) applicationContext.getBean("customPagesServiceImpl");
+        failPageService = (FailPageServiceImpl) applicationContext.getBean("failPageServiceImpl");
+        this.location = location;
         this.characterEncoding = characterEncoding;
         this.WIDGET_RESOURCES = this.WIDGET_RESOURCES.replace("{PREFIX}", this.URI_PREFIX);
         this.WIDGET_RESOURCES = this.WIDGET_RESOURCES.replace("{version}", this.version);
@@ -208,13 +215,13 @@ public class WidgetTemplateResource implements ITemplateResource {
         return false;
     }
 
-    private String getBrowseTemplate(WidgetPage widgetPage,Site site) throws Exception {
-        String htmlTemplate = pageResourceService.getHtmlTemplateByWidgetPage(widgetPage,false,site);
-        if(widgetPage.getPageEnabledHead()!=null){
-            if(widgetPage.getPageEnabledHead()){//取用头部
-                String commonHeader=pageResourceService.getHeaderTemplaeBySite(site);
-                if(null!=commonHeader){
-                    htmlTemplate=commonHeader+htmlTemplate;
+    private String getBrowseTemplate(WidgetPage widgetPage, Site site) throws Exception {
+        String htmlTemplate = pageResourceService.getHtmlTemplateByWidgetPage(widgetPage, false, site);
+        if (widgetPage.getPageEnabledHead() != null) {
+            if (widgetPage.getPageEnabledHead()) {//取用头部
+                String commonHeader = pageResourceService.getHeaderTemplaeBySite(site);
+                if (null != commonHeader) {
+                    htmlTemplate = commonHeader + htmlTemplate;
                 }
             }
         }
@@ -224,9 +231,9 @@ public class WidgetTemplateResource implements ITemplateResource {
         return htmlTemplate;
     }
 
-    private String getEditTemplate(WidgetPage widgetPage, String pageConfigName,Site site) throws Exception {
+    private String getEditTemplate(WidgetPage widgetPage, String pageConfigName, Site site) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        String htmlTemplate = pageResourceService.getHtmlTemplateByWidgetPage(widgetPage, true,site);
+        String htmlTemplate = pageResourceService.getHtmlTemplateByWidgetPage(widgetPage, true, site);
 //        if(widgetPage.getPageEnabledHead()){//取用头部
 //            String commonHeader=pageResourceService.getHeaderTemplaeBySite(site);
 //            if(null!=commonHeader){
@@ -240,13 +247,13 @@ public class WidgetTemplateResource implements ITemplateResource {
         return htmlTemplate;
     }
 
-    private String getTemplate(WidgetPage widgetPage,Site site) throws Exception {
+    private String getTemplate(WidgetPage widgetPage, Site site) throws Exception {
         String pageConfigName = this.getPageConfigName();
-        String htmlTemplate=null;
+        String htmlTemplate = null;
         if (isBrowse()) {
-            htmlTemplate = getBrowseTemplate(widgetPage,site);
+            htmlTemplate = getBrowseTemplate(widgetPage, site);
         } else {
-            htmlTemplate = getEditTemplate(widgetPage, pageConfigName,site);
+            htmlTemplate = getEditTemplate(widgetPage, pageConfigName, site);
         }
         return htmlTemplate;
     }
@@ -262,17 +269,12 @@ public class WidgetTemplateResource implements ITemplateResource {
             Site site = siteService.getSite(siteId);
             widgetPage = pageResolveService.getWidgetPageByConfig(pageConfigNameContainXml, site);
             try {
-                if(widgetPage!=null){
-                    htmlTemplate = getTemplate(widgetPage,site);
-                }else{
-                    htmlTemplate=failPageService.getFailPageTemplate(PageErrorType.NO_FIND_404);
-                }
-            }catch (Exception e) {
+                htmlTemplate = getTemplate(widgetPage, site);
+            } catch (Exception e) {
                 e.printStackTrace();
-                htmlTemplate=failPageService.getFailPageTemplate(PageErrorType.BUDDING_500);
+                htmlTemplate = failPageService.getFailPageTemplate(applicationContext,PageErrorType.BUDDING_500);
             }
         }
-//       String htmlTemplate=failPageService.getFailPageTemplate(PageErrorType.BUDDING_500);
         return new StringReader(htmlTemplate);
     }
 

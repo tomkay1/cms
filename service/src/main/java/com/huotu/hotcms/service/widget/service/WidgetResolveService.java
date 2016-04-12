@@ -1,15 +1,15 @@
 package com.huotu.hotcms.service.widget.service;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.widget.WidgetBase;
-import com.huotu.hotcms.service.model.widget.WidgetListProperty;
 import com.huotu.hotcms.service.model.widget.WidgetProperty;
 import com.huotu.hotcms.service.service.RedisService;
 import com.huotu.hotcms.service.thymeleaf.dialect.WidgetDialect;
+import com.huotu.hotcms.service.thymeleaf.service.RequestService;
 import com.huotu.hotcms.service.util.HttpUtils;
+import com.huotu.hotcms.service.util.ReflectionUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,6 @@ import org.thymeleaf.context.Context;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.*;
 
@@ -36,12 +35,23 @@ public class WidgetResolveService {
     @Autowired
     private RedisService redisService;
 
+    @Autowired
+    private RequestService requestService;
+
     private TemplateEngine templateEngine = new TemplateEngine();
 
     private void addDialect(){
        if(!templateEngine.isInitialized()){
            templateEngine.addDialect(new WidgetDialect());
        }
+    }
+
+    private Context setVariable(Context context,Site site){
+        if(null!=null) {
+            context.setVariable("site", site);
+        }
+        context.setVariable("request",requestService.ConvertRequestModel());
+        return context;
     }
 
     public String widgetBriefView(String templateResources,WidgetBase widgetBase,Site site) throws IOException {
@@ -55,13 +65,13 @@ public class WidgetResolveService {
             Field[] fields = widgetBase.getClass().getDeclaredFields();
             for (Field field : fields) {
                 if (!map.containsKey(field.getName())) {
-                    map.put(field.getName(), getFieldValueByName(field.getName(), widgetBase));
+                    map.put(field.getName(), ReflectionUtil.getFieldValueByName(field.getName(), widgetBase));
                 }
             }
             Context context=new Context(Locale.CHINA, map);
-            context.setVariable("site",site);
-            StringWriter writer = new StringWriter();
+            context= setVariable(context,site);
             addDialect();
+            StringWriter writer = new StringWriter();
             templateEngine.process(templateResources,context,writer);
             return writer.toString();
         }
@@ -80,12 +90,12 @@ public class WidgetResolveService {
             Field[] fields = widgetBase.getClass().getDeclaredFields();
             for (Field field : fields) {
                 if (!map.containsKey(field.getName())) {
-                    map.put(field.getName(), getFieldValueByName(field.getName(), widgetBase));
+                    map.put(field.getName(), ReflectionUtil.getFieldValueByName(field.getName(), widgetBase));
                 }
             }
             Context context = new Context(Locale.CHINA, map);
-            StringWriter writer = new StringWriter();
             addDialect();
+            StringWriter writer = new StringWriter();
             templateEngine.process(templateResources, context, writer);
             return writer.toString();
         }
@@ -116,19 +126,6 @@ public class WidgetResolveService {
         }
     }
 
-    private Object getFieldValueByName(String fieldName, Object o) {
-        try {
-            String firstLetter = fieldName.substring(0, 1).toUpperCase();
-            String getter = "get" + firstLetter + fieldName.substring(1);
-            Method method = o.getClass().getMethod(getter, new Class[] {});
-            Object value = method.invoke(o, new Object[] {});
-            return value;
-        } catch (Exception e) {
-            log.error(e.getMessage(),e);
-            return null;
-        }
-    }
-
     private Map<String,Object> ConverMapByList(List<WidgetProperty> properties) throws IOException {
         Map<String,Object> objectMap=new HashMap<String,Object>();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -151,30 +148,4 @@ public class WidgetResolveService {
         }
         return list;
     }
-
-//    public static WidgetListProperty<WidgetProperty> ConvertWidgetPropertyListByMap(Map<String,Object> property) throws JsonProcessingException {
-//        WidgetListProperty<WidgetProperty> listProperty = new WidgetListProperty<WidgetProperty>();
-//        List<WidgetProperty> list = new ArrayList<WidgetProperty>();
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        for (Map.Entry<String, Object> entry : property.entrySet()) {
-//            WidgetProperty widgetProperty=new WidgetProperty();
-//            widgetProperty.setName(entry.getKey());
-//            String json=objectMapper.writeValueAsString(entry.getValue());
-//            widgetProperty.setValue(json);
-//            list.add(widgetProperty);
-//        }
-//        listProperty.setList(list);
-//        return listProperty;
-//    }
-//
-//    public Map<String,Object> ConvertMapByWidgetListProperty(WidgetListProperty<WidgetProperty> widgetListProperty) throws IOException {
-//        Map<String,Object> map=new HashMap<String,Object>();
-//        List<WidgetProperty> widgetProperties=widgetListProperty.getList();
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        for (WidgetProperty widgetProperty:widgetProperties){
-//            Object obj=objectMapper.readValue(widgetProperty.getValue(),Object.class);
-//            map.put(widgetProperty.getName(),obj);
-//        }
-//        return map;
-//    }
 }

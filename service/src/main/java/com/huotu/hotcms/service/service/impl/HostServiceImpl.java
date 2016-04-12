@@ -3,12 +3,21 @@ package com.huotu.hotcms.service.service.impl;
 import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Region;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.model.Result;
 import com.huotu.hotcms.service.repository.HostRepository;
+import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.service.HostService;
+import com.huotu.hotcms.service.util.ResultOptionEnum;
+import com.huotu.hotcms.service.util.ResultView;
+import com.huotu.hotcms.service.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -19,6 +28,9 @@ public class HostServiceImpl implements HostService {
 
     @Autowired
     private HostRepository hostRepository;
+
+    @Autowired
+    private SiteRepository siteRepository;
 
     @Override
     public Host getHost(String domain) {
@@ -136,7 +148,7 @@ public class HostServiceImpl implements HostService {
     }
 
     @Override
-    public Boolean isNotExistsByDomainsAndSite(String[] domains, Site site,Long regionId) {
+    public Boolean isExistsByDomainsAndSite(String[] domains, Site site,Long regionId) {
         boolean isExists=false;
         for(String domain:domains) {
             Host host = getHost(domain);
@@ -157,5 +169,110 @@ public class HostServiceImpl implements HostService {
             }
         }
         return isExists;
+    }
+
+
+    @Override
+    public ResultView addHost(String[] domains,String homeDomains, Site site,Long regionId) {
+        ResultView result = null;
+        if (!StringUtil.Contains(domains, homeDomains)) {//不存在主推域名则外抛出
+            return new ResultView(ResultOptionEnum.NOFIND_HOME_DEMON.getCode(), ResultOptionEnum.NOFIND_HOME_DEMON.getValue(), null);
+        }
+        Long siteId = site.getSiteId();
+        if (siteId == null) {//新增站点
+            if (isExistsByDomains(domains, regionId)) {
+                return new ResultView(ResultOptionEnum.DOMAIN_EXIST.getCode(), ResultOptionEnum.DOMAIN_EXIST.getValue(), null);
+            }
+            for (String domain : domains) {
+                Host host = getHost(domain);
+                if (host == null) {//全新域名
+                    host = new Host();
+                    host.setCustomerId(site.getCustomerId());
+                    host.setDomain(domain);
+                    host=setHome(host,homeDomains);
+                    site.addHost(host);
+                } else {
+                    if (host.getCustomerId().equals(site.getCustomerId())) {//如果是同一商户
+                        List<Site> siteList = siteRepository.findByHosts(host);
+                        List<Long> regionList = new ArrayList<>();
+                        for (Site site1 : siteList) {
+                            regionList.add(site1.getRegion().getId());//取得包含该域名下的所有地区列表
+                        }
+                        if (regionList.contains(regionId)) {
+                            return new ResultView(ResultOptionEnum.DOMAIN_EXIST.getCode(), ResultOptionEnum.DOMAIN_EXIST.getValue(), null);
+                        } else {
+                            host = setHome(host, homeDomains);
+                            site.addHost(host);
+                        }
+                    } else {//域名不是同一个商户则返回
+                        return new ResultView(ResultOptionEnum.DOMAIN_EXIST.getCode(), ResultOptionEnum.DOMAIN_EXIST.getValue(), null);
+                    }
+                }
+            }
+        }
+        return new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), site);
+    }
+
+    @Override
+    public ResultView patchHost(String[] domains, String homeDomains, Site site, Long regionId) {
+        Set<Host> hosts=new HashSet<>();
+        if (isExistsByDomainsAndSite(domains, site, regionId)) {
+            return new ResultView(ResultOptionEnum.DOMAIN_EXIST.getCode(), ResultOptionEnum.DOMAIN_EXIST.getValue(),null);
+        }
+        for (String domain : domains) {
+            if (!isExists(domain, site.getHosts())) {//不包含该域名则做下一步的判断工作
+                Host host =getHost(domain);
+                if (host == null) {//全新域名
+                    host = new Host();
+                    host.setCustomerId(site.getCustomerId());
+                    host.setDomain(domain);
+                    host=setHome(host,homeDomains);
+                    site.addHost(host);
+                } else {//不是全新域名
+                    if (host.getCustomerId().equals(site.getCustomerId())) {
+                        host=setHome(host,homeDomains);
+                        site.addHost(host);
+                    }
+                    else {
+                        return new ResultView(ResultOptionEnum.DOMAIN_EXIST.getCode(), ResultOptionEnum.DOMAIN_EXIST.getValue(), null);
+                    }
+                }
+            }else{//修改主推域名
+                Host host =getHost(domain);
+                host=setHome(host,homeDomains);
+//                hostRepository.save(host);
+                hosts.add(host);
+            }
+        }
+        site.setHosts(hosts);
+        return new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), site);
+    }
+
+    private Host setHome(Host host,String homeDomains){
+        if(homeDomains.equals(host.getDomain())){//设置为主域名
+            host.setHome(true);
+        }else{
+            host.setHome(false);
+        }
+        return host;
+    }
+
+    @Override
+    public Host getHomeHost(Site site) {
+        for (Host host:site.getHosts()){
+            if(host.getHome()){
+                return host;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String getHomeDomain(Site site) {
+       Host host=getHomeHost(site);
+        if(host!=null){
+            return host.getDomain();
+        }
+        return null;
     }
 }

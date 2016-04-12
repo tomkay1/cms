@@ -112,6 +112,28 @@ define(["js/jquery-1.9.1.min"],function () {
         },
         getMetaContent:function(name){
             return $("meta[name=" + name + "]").attr("content");
-        }
+        },
+        getWebRoot:function(siteId){
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                url: '/page/root',//提交到一般处理程序请求数据
+                data: {
+                    siteId: siteId
+                },
+                success: function (data) {
+                    if(data!=null){
+                        if(data.code==200){
+                            var urlRoot=data.data;
+                            if(common.isDebug()=="1"){//调试模式
+                                urlRoot=urlRoot+":8080/front/";
+                            }
+                            //alert(urlRoot);
+                            return urlRoot;
+                        }
+                    }
+                }
+            });
+        },
     }
 });

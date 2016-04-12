@@ -10,6 +10,7 @@ import com.huotu.hotcms.service.model.Result;
 import com.huotu.hotcms.service.model.widget.WidgetPage;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.service.CustomPagesService;
+import com.huotu.hotcms.service.service.HostService;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.util.PageData;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
@@ -59,7 +60,7 @@ public class PagesController {
     private SiteService siteService;
 
     @Autowired
-    private XmlTestService xmlTestService;
+    private HostService hostService;
 
     @RequestMapping("/list")
     public ModelAndView widgetTypeList(HttpServletRequest request, @RequestParam("customerid") Integer customerid) throws Exception {
@@ -156,9 +157,9 @@ public class PagesController {
         return resultView;
     }
 
-    @RequestMapping(value = "/delete")
+    @RequestMapping(value = "/publish")
     @ResponseBody
-    public ResultView deletePage(HttpServletRequest request,
+    public ResultView publishPage(HttpServletRequest request,
                                  @RequestParam("id") Long id,
                                  @RequestParam("publish") boolean publish) {
         ResultView resultView = null;
@@ -207,24 +208,47 @@ public class PagesController {
     @RequestMapping("/root")
     @ResponseBody
     public ResultView getWebRoot(@RequestParam("siteId") Long siteId) {
+        try {
+            String url = "http://";
+            Site site = siteService.getSite(siteId);
+            if (site != null) {
+                String domain = hostService.getHomeDomain(site);
+                if(domain!=null){
+                    url = url + domain;
+                    return new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), url);
+                }else{
+                    return new ResultView(ResultOptionEnum.NOFIND.getCode(), ResultOptionEnum.NOFIND.getValue(), url);
+                }
+            } else {
+                return new ResultView(ResultOptionEnum.NOFIND.getCode(), ResultOptionEnum.NOFIND.getValue(), url);
+            }
+        } catch (Exception ex) {
+            log.error(ex);
+            return new ResultView(ResultOptionEnum.SERVERFAILE.getCode(), ResultOptionEnum.SERVERFAILE.getValue(),null);
+        }
+    }
+
+    @RequestMapping(value = "/delete")
+    @ResponseBody
+    public ResultView deletePage(HttpServletRequest request,
+                                 @RequestParam("id") Long id) {
         ResultView resultView = null;
         try {
-            String url="http://";
-            Site site=siteService.getSite(siteId);
-            if(site!=null) {
-                Set<Host> hosts = site.getHosts();
-                for (Host host:hosts){
-                    url=url+host.getDomain();
-//                    url=url+host.getDomain()+":8080/front/";//测试时候使用
-                    resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(),url);
-                    return resultView;
+            CustomPages customPages = customPagesService.getCustomPages(id);
+            if (customPages != null) {
+                if (cookieUser.isCustomer(request, customPages.getCustomerId())) {
+                    customPagesService.delete(customPages);
+                    resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
+                } else {
+                    resultView = new ResultView(ResultOptionEnum.NO_LIMITS.getCode(), ResultOptionEnum.NO_LIMITS.getValue(), null);
                 }
-            }else{
-                resultView = new ResultView(ResultOptionEnum.NOFIND.getCode(), ResultOptionEnum.NOFIND.getValue(),url);
+            } else {
+                resultView = new ResultView(ResultOptionEnum.NOFIND.getCode(), ResultOptionEnum.NOFIND.getValue(), null);
             }
         } catch (Exception ex) {
             log.error(ex);
         }
         return resultView;
     }
+
 }

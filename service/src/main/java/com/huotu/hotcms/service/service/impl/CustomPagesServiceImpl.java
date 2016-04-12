@@ -106,4 +106,9 @@ public class CustomPagesServiceImpl implements CustomPagesService {
         }
         return false;
     }
+
+    @Override
+    public void delete(CustomPages customPages) {
+        customPagesRepository.delete(customPages);
+    }
 }

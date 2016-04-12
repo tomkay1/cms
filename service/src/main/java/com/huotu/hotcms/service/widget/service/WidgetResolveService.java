@@ -47,7 +47,7 @@ public class WidgetResolveService {
     }
 
     private Context setVariable(Context context,Site site){
-        if(null!=null) {
+        if(null!=site) {
             context.setVariable("site", site);
         }
         context.setVariable("request",requestService.ConvertRequestModel());
@@ -58,7 +58,7 @@ public class WidgetResolveService {
         if(widgetBase!=null) {
             Map<String,Object> map =null;
             if(widgetBase.getProperty()!=null){
-                map = ConverMapByList(widgetBase.getProperty());
+                map = ConvertMapByList(widgetBase.getProperty());
             }else{
                 map=new HashMap<>();
             }
@@ -83,7 +83,7 @@ public class WidgetResolveService {
         if(widgetBase!=null) {
             Map map =null;
             if(widgetBase.getProperty()!=null){
-                map = ConverMapByList(widgetBase.getProperty());
+                map = ConvertMapByList(widgetBase.getProperty());
             }else{
                 map=new HashMap<>();
             }
@@ -126,7 +126,7 @@ public class WidgetResolveService {
         }
     }
 
-    private Map<String,Object> ConverMapByList(List<WidgetProperty> properties) throws IOException {
+    private Map<String,Object> ConvertMapByList(List<WidgetProperty> properties) throws IOException {
         Map<String,Object> objectMap=new HashMap<String,Object>();
         ObjectMapper objectMapper = new ObjectMapper();
         for(WidgetProperty widgetProperty:properties){

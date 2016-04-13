@@ -70,7 +70,7 @@ public class WidgetTemplateResource implements ITemplateResource {
             "    <script src=\"/assets/seajs/sea.js\"></script>\n" +
             "    <script src=\"/assets/seajs/config.js\"></script>\n" +
             "</head>\n" +
-            "<body style=\"background:#ffffff;\">" +
+            "<body th:style=\"'background-color:'+${pageBackGround}+'; background: url('+${pageBackImage}+')'+((${pageBackRepeat}=='no-repeat')?' no-repeat':(' '+${pageHorizontalDistance}+${pageHorizontalUnit}+' '+${pageVerticalDistance}+${pageVerticalUnit}))\">" +
             "%s" +
             "<div class=\"layout-area HOT-layout-add js-layout js-layout-add\" id=\"insertToLayout\">\n" +
             "    <div class=\"layout\">\n" +
@@ -87,10 +87,13 @@ public class WidgetTemplateResource implements ITemplateResource {
             "<head>\n" +
             "    <title>商城首页</title>\n" +
             "    <meta charset=\"UTF-8\" content=\"text/html\"/>\n" +
+            "    <script th:src=\"@{/assets/seajs/sea.js}\"></script>\n" +
+            "    <script th:src=\"@{/assets/seajs/config.js}\"></script>\n" +
             "%s\n" +
             "</head>" +
-            "<body>" +
+            "<body th:style=\"'background-color:'+${pageBackGround}+'; background: url('+${pageBackImage}+')'+((${pageBackRepeat}=='no-repeat')?' no-repeat':(' '+${pageHorizontalDistance}+${pageHorizontalUnit}+' '+${pageVerticalDistance}+${pageVerticalUnit}))\">" +
             "%s" +
+            "<script>seajs.use([\"main\"]);</script>"+
             "</body>" +
             "</html>";
 
@@ -227,7 +230,8 @@ public class WidgetTemplateResource implements ITemplateResource {
         }
         this.BROWSE_RESOURCES = this.BROWSE_RESOURCES.replace("{PREFIX}", this.URI_PREFIX);
         this.BROWSE_RESOURCES = this.BROWSE_RESOURCES.replace("{version}", this.version);
-        htmlTemplate = String.format(this.BROWSE_HTML_BOX, this.WIDGET_RESOURCES + this.BROWSE_RESOURCES, htmlTemplate);
+        String browseTemplate=pageResourceService.getHeaderTemplate(this.BROWSE_HTML_BOX,widgetPage);
+        htmlTemplate = String.format(browseTemplate, this.WIDGET_RESOURCES + BROWSE_RESOURCES, htmlTemplate);
         return htmlTemplate;
     }
 
@@ -240,7 +244,8 @@ public class WidgetTemplateResource implements ITemplateResource {
 //                htmlTemplate=commonHeader+htmlTemplate;
 //            }
 //        }
-        htmlTemplate = String.format(this.EDIT_HTML_BOX, this.WIDGET_RESOURCES, htmlTemplate, EDIT_JAVASCRIPT);
+        String editTemplate=pageResourceService.getHeaderTemplate(this.EDIT_HTML_BOX,widgetPage);
+        htmlTemplate = String.format(editTemplate, this.WIDGET_RESOURCES, htmlTemplate, EDIT_JAVASCRIPT);
         htmlTemplate = htmlTemplate.replace("{config_existsPage}", (isExists(pageConfigName) ? pageConfigName : "0"));
         String widgetJson = mapper.writeValueAsString(widgetPage);
         htmlTemplate = htmlTemplate.replace("{config_widgetJson}", DesEncryption.encryptData(widgetJson));

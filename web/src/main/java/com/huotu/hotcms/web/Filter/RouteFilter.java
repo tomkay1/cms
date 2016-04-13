@@ -30,7 +30,7 @@ public class RouteFilter implements Filter {
 
     private static final String filter = "interim/join";
 
-    private static final String[] diy_filter = new String[]{"/shop","/bind", "/template/0/","/template/error/"};//DIV网站过滤规则->(PC官网装修,PC商城装修)
+    private static final String[] diy_filter = new String[]{"/shop","/bind", "/template/0/","/template/error/",".js",".css"};//DIV网站过滤规则->(PC官网装修,PC商城装修)
 
     private boolean isContains(String servletPath) {
         boolean flag = false;

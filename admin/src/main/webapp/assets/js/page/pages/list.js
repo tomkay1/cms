@@ -10,8 +10,8 @@ define(function (require, exports, module) {
     var commonUtil = require("common");
     commonUtil.setDisabled("jq-cms-Save");
     var layer = require("layer");
-    var rootUrl=commonUtil.getWebRoot($("#siteType").val());
-    //alert(rootUrl);
+    var isDebug=commonUtil.isDebug();
+    var rootUrl=commonUtil.getWebRoot($("#siteType").val(),isDebug);
     var customerId = commonUtil.getQuery("customerId");
     var pageGrid = $("#tab1").Grid({
         method: 'POST',//提交方式GET|POST
@@ -244,7 +244,7 @@ define(function (require, exports, module) {
             pageList.linkCal();
             var _defaultID = (new Date()).getTime();
             //var smartUrl = J.FormatString(apiConfig.msiteRoot+apiConfig.smartUrl, apiConfig.customid, url);
-            var smartUrl=rootUrl+"/shop/"+id;
+            var smartUrl=rootUrl+"shop/"+id;
             var _html = "<div class=\"dropdowns\" id=\"" + _defaultID + "\"><div class=\"dropdown-toggle\"  data-toggle=\"dropdowns\" aria-haspopup=\"true\" aria-expanded=\"false\"></div>" +
                 "<div class=\"dropdown-menu\" role=\"menu\" style=\"background:#F5F5F5; border:none;top:auto;left:auto; box-shadow:none;\">" +
                 "<div class=\"popover popover-link-wrap\" style=\"display: block;\">" +

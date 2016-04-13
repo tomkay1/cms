@@ -44,6 +44,12 @@ public class WidgetPage {
     private String url;
 
     /**
+     * 是否取用店铺头部
+     * */
+    @XmlAttribute(name="pageEnabledHead")
+    private Boolean pageEnabledHead;
+
+    /**
      * 页面背景颜色
      * */
     @XmlAttribute(name="pageBackGround")
@@ -75,10 +81,28 @@ public class WidgetPage {
     private String pageBackVertical;
 
     /**
-     * 是否取用店铺头部
+     * 平铺的水平距离
      * */
-    @XmlAttribute(name="pageEnabledHead")
-    private Boolean pageEnabledHead;
+    @XmlAttribute(name = "pageHorizontalDistance")
+    private Integer pageHorizontalDistance;
+
+    /**
+     * 水平距离的单位,px or 百分比
+     * */
+    @XmlAttribute(name = "pageHorizontalUnit")
+    private String pageHorizontalUnit;
+
+    /**
+     * 垂直距离
+     * */
+    @XmlAttribute(name = "pageVerticalDistance")
+    private Integer pageVerticalDistance;
+
+    /**
+     * 垂直距离的单位; px or 百分比
+     * */
+    @XmlAttribute(name = "pageVerticalUnit")
+    private String pageVerticalUnit;
 
     /**
     * 页面中的布局列表

@@ -83,4 +83,18 @@ public class BasicController {
         return  modelAndView;
     }
 
+    @RequestMapping("/test3")
+    public ModelAndView test3(){
+        ModelAndView modelAndView=new ModelAndView();
+        modelAndView.addObject("pageBackGround","red");
+        modelAndView.addObject("pageBackImage","http://img12.360buyimg.com/cms/jfs/t661/233/1242620315/188143/ed2e741b/54b86a17N9e9230df.jpg");
+        modelAndView.addObject("pageBackRepeat","no-repeat");
+        modelAndView.addObject("pageHorizontalDistance","10");
+        modelAndView.addObject("pageHorizontalUnit","px");
+        modelAndView.addObject("pageVerticalDistance","20");
+        modelAndView.addObject("pageVerticalUnit","px");
+
+        modelAndView.setViewName("/view/test2.html");
+        return modelAndView;
+    }
 }

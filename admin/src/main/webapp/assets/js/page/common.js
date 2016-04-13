@@ -113,7 +113,8 @@ define(["js/jquery-1.9.1.min"],function () {
         getMetaContent:function(name){
             return $("meta[name=" + name + "]").attr("content");
         },
-        getWebRoot:function(siteId){
+        getWebRoot:function(siteId,isDebug){
+            var urlRoot=""
             $.ajax({
                 type: "post",
                 dataType: "json",
@@ -121,19 +122,20 @@ define(["js/jquery-1.9.1.min"],function () {
                 data: {
                     siteId: siteId
                 },
+                async: false,
                 success: function (data) {
                     if(data!=null){
                         if(data.code==200){
-                            var urlRoot=data.data;
-                            if(common.isDebug()=="1"){//调试模式
+                            urlRoot=data.data;
+                            if(isDebug=="1"){//调试模式
                                 urlRoot=urlRoot+":8080/front/";
                             }
-                            //alert(urlRoot);
-                            return urlRoot;
+                            urlRoot=urlRoot;
                         }
                     }
                 }
             });
+            return urlRoot;
         },
     }
 });

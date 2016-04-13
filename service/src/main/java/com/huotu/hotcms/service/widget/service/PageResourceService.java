@@ -5,18 +5,19 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.widget.*;
 import com.huotu.hotcms.service.service.RedisService;
 import com.huotu.hotcms.service.util.HttpUtils;
+import com.huotu.hotcms.service.util.ReflectionUtil;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.ITemplateEngine;
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import java.io.StringWriter;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * <p>
@@ -39,6 +40,8 @@ public class PageResourceService {
 
     @Autowired
     private WidgetResolveService widgetResolveService;
+
+    private TemplateEngine templateEngine=new TemplateEngine();
 
     public String getHtmlTemplateByWidgetPage(WidgetPage widgetPage,Boolean isEdit,Site site) throws Exception {
         String htmlTemplate = "";
@@ -141,5 +144,16 @@ public class PageResourceService {
            return getHtmlTemplateByWidgetPage(widgetPage, false,site);
         }
         return null;
+    }
+
+    public String getHeaderTemplate(String resources,WidgetPage widgetPage){
+        try{
+            Context context=new Context(Locale.CHINA, ReflectionUtil.getFieldList(widgetPage));
+            StringWriter writer = new StringWriter();
+            templateEngine.process(resources,context,writer);
+            return writer.toString();
+        }catch (Exception ex){
+            return resources;
+        }
     }
 }

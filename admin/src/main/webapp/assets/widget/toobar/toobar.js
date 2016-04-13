@@ -3,24 +3,13 @@ define(function (require, exports, module) {
         var widgetPage = a.widgetPage();
         var widgetPageModel = widgetPage.getInstance();//页面持久化对象,后面根据这个对象系列化传递到后台,并创建对应的xml 配置文件
         var common=require("common");
-        $.get("/assets/widget/toobar/toobar.html?t=66", function (html) {
+        $.get("/assets/widget/toobar/toobar.html?v=1.2", function (html) {
             var divObj = document.createElement("div");
             divObj.innerHTML = html;
             divObj.id='js-page-toobar';
             var first = document.body.firstChild;//得到页面的第一个元素
             document.body.insertBefore(divObj, first);//在得到的第一个元素之前插入
-            page.pageTab();
-            page.pagePhoto();
-            $("#tab1").addClass("current");
-            page.pageProperty(widgetPageModel);
-            page.pageSave(widgetPageModel);
-            page.widgetAdd();
-            page.layoutAdd();
-            page.getWebRoot();
-            page.widgetEdit();
-            page.initPageObject();
-            page.pageColor();
-            layoutModule.initLayoutBind();
+            page.pageInit(widgetPageModel);
         })
         var layer = require("layer");
         var common = require("common");
@@ -392,6 +381,10 @@ define(function (require, exports, module) {
                     }else{
                         $("#jq-page-common-no").hide();
                     }
+                    $("#pageHorizontalDistance").val(widgetPageModel.pageHorizontalDistance == null ? "0" : widgetPageModel.pageHorizontalDistance);
+                    $("#pageVerticalDistance").val(widgetPageModel.pageVerticalDistance == null ? "0" : widgetPageModel.pageVerticalDistance);
+                    $("#pageHorizontalUnit").find("option[text='" + (widgetPageModel.pageHorizontalUnit == null ? "px" : widgetPageModel.pageHorizontalUnit) + "']").attr("selected", true);
+                    $("#pageVerticalUnit").find("option[text='" + (widgetPageModel.pageVerticalUnit == null ? "px" : widgetPageModel.pageVerticalUnit) + "']").attr("selected", true);
                 }
             },
             pageEnableHead:function(){
@@ -437,6 +430,31 @@ define(function (require, exports, module) {
                         }
                     });
                 }
+            },
+            pageReact:function(){
+                $("#pageBackRepeat").change(function(){
+                    var value=$(this).val();
+                    if(value=="no-repeat"){
+                        $(".js-page-react").show();
+                    }else {
+                        $(".js-page-react").hide();
+                    }
+                });
+            },
+            pageInit:function(widgetPageModel){
+                page.pageTab();
+                page.pagePhoto();
+                $("#tab1").addClass("current");
+                page.pageProperty(widgetPageModel);
+                page.pageSave(widgetPageModel);
+                page.widgetAdd();
+                page.layoutAdd();
+                page.getWebRoot();
+                page.widgetEdit();
+                page.initPageObject();
+                page.pageColor();
+                layoutModule.initLayoutBind();
+                page.pageReact();
             }
         };
         var widgetModule={

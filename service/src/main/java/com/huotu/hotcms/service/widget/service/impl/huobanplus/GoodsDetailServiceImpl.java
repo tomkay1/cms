@@ -64,7 +64,7 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
         mallGoods.setMarketable(huobanGoods.isMarketable());
         mallGoods.setMarketPrice(huobanGoods.getMarketPrice());
         mallGoods.setTypeId(huobanGoods.getTypeId());
-        mallGoods.setThumbnailPic(huobanGoods.getThumbnailPic());
+        mallGoods.setThumbnailPic(huobanGoods.getThumbnailPic().getValue());
         mallGoods.setSpec(huobanGoods.getSpec());
         mallGoods.setScenes(huobanGoods.getScenes());
         mallGoods.setCost(huobanGoods.getCost());

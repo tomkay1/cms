@@ -6,7 +6,7 @@ package com.huotu.hotcms.service.util;
  * @time 2015/15/25
  */
 public class ResultView {
-    private final   int code;
+    private final   Integer code;
     private final String msg;
     private final Object data;
 
@@ -17,7 +17,7 @@ public class ResultView {
         this.data=data;
     }
 
-    public int getCode() {
+    public Integer getCode() {
         return code;
     }
 

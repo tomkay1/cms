@@ -47,6 +47,12 @@ public class Host {
     private String remarks;
 
     /**
+     * 主推域名,一般一个网站只有一个主推域名
+     * */
+    @Column(name = "home")
+    private Boolean home;
+
+    /**
      * 对应站点
      */
     @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.REMOVE,CascadeType.REFRESH},mappedBy = "hosts")

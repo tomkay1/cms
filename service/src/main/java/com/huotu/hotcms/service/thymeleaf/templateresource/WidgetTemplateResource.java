@@ -23,9 +23,11 @@ import com.huotu.hotcms.service.widget.service.PageResolveService;
 import com.huotu.hotcms.service.widget.service.PageResourceService;
 import jdk.nashorn.internal.runtime.regexp.joni.EncodingHelper;
 import org.apache.commons.vfs2.util.EncryptUtil;
+import org.apache.logging.log4j.core.jmx.Server;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.thymeleaf.ITemplateEngine;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.IContext;
@@ -109,9 +111,12 @@ public class WidgetTemplateResource implements ITemplateResource {
     //  private final Resource resource;
     private final String characterEncoding;
 
+    private ApplicationContext applicationContext;
+
     public WidgetTemplateResource(final ApplicationContext applicationContext, final String location, final String characterEncoding) {
         super();
         URI_PREFIX = this.getURI_PREFIX(applicationContext);
+        this.applicationContext=applicationContext;
         Validate.notNull(applicationContext, "Application Context cannot be null");
         Validate.notEmpty(location, "Resource Location cannot be null or empty");
         pageResourceService = (PageResourceService) applicationContext.getBean("pageResourceService");
@@ -267,10 +272,9 @@ public class WidgetTemplateResource implements ITemplateResource {
                 htmlTemplate = getTemplate(widgetPage, site);
             } catch (Exception e) {
                 e.printStackTrace();
-                htmlTemplate = failPageService.getFailPageTemplate(PageErrorType.BUDDING_500);
+                htmlTemplate = failPageService.getFailPageTemplate(applicationContext,PageErrorType.BUDDING_500);
             }
         }
-//       String htmlTemplate=failPageService.getFailPageTemplate(PageErrorType.BUDDING_500);
         return new StringReader(htmlTemplate);
     }
 

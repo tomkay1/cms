@@ -17,4 +17,6 @@ public interface CustomPagesService {
     CustomPages findHomePages(Site site);
 
     Boolean setHomePages(Long id);
+
+    void delete(CustomPages customPages);
 }

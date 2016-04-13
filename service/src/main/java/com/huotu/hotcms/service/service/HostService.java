@@ -1,8 +1,11 @@
 package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.entity.Host;
+import com.huotu.hotcms.service.entity.Region;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.util.ResultView;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -34,7 +37,7 @@ public interface HostService {
      * @param domains 域名列表
      * @param regionId 地区ID
      * */
-    Boolean isNotExistsByDomainsAndSite(String[] domains,Site site,Long regionId);
+    Boolean isExistsByDomainsAndSite(String[] domains,Site site,Long regionId);
 
     /**
      * <p>
@@ -51,4 +54,22 @@ public interface HostService {
      * @param hostSet 要移除的Host列表
      * */
     boolean removeHost(Set<Host> hostSet);
+
+    /**
+     * <p>
+     *  * 站点新增域名
+     * </p>
+     * @param domains 要新增的域名列表
+     * @param homeDomains 主推域名
+     * @param site 站点对象
+     * @param regionId 地区ID
+     * @return ResultView 对象
+     * */
+    ResultView addHost(String[] domains,String homeDomains,Site site,Long regionId);
+
+    ResultView patchHost(String[] domains,String homeDomains,Site site,Long regionId);
+
+    Host getHomeHost(Site site);
+
+    String getHomeDomain(Site site);
 }

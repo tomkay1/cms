@@ -16,6 +16,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * <p>
@@ -96,6 +97,9 @@ public class PageResourceService {
             for (WidgetBase widgetBase : widgetBases) {
                 if (widgetBase != null) {
                     widgetBase.setEdit(isEdit);
+                    if(widgetBase.getGuid()==null){
+                        widgetBase.setGuid(UUID.randomUUID().toString());
+                    }
                     String template=getWidgetTemplateResolveByWidgetBase(widgetBase,site);
                     moduleTemplate +=template;
                 }

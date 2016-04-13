@@ -67,6 +67,7 @@ public class WidgetTemplateController {
             if(widgetMains!=null&&null!=widgetMains.getResourceUri()) {
                 WidgetBase widgetBase = new WidgetBase();
                 widgetBase.setId(id);
+                widgetBase.setGuid(UUID.randomUUID().toString());
                 widgetBase.setLayoutId(layoutId);
                 widgetBase.setLayoutPosition(layoutPosition);
                 widgetBase.setWidgetUri(widgetMains.getResourceUri());
@@ -100,6 +101,7 @@ public class WidgetTemplateController {
                 WidgetBase widgetBase = new WidgetBase();
                 widgetBase.setId(id);
                 widgetBase.setLayoutId(layoutId);
+                widgetBase.setGuid(UUID.randomUUID().toString());
                 widgetBase.setLayoutPosition(layoutPosition);
                 widgetBase.setWidgetUri(widgetMains.getResourceUri());
                 widgetBase.setWidgetEditUri(widgetMains.getResourceEditUri());

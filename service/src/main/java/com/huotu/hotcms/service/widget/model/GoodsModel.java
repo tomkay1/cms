@@ -63,6 +63,16 @@ public class GoodsModel {
      */
     private String thumbnail;
 
+    /**
+     * 小图完整url
+     */
+    private String smallPic;
+
+    /**
+     * 大图完整url
+     */
+    private String bigPic;
+
     public GoodsModel() {
     }
     public GoodsModel(int id, String title, String shelveTime, int sales, double marketPrice, double price, double vipPrice, String thumbnail) {

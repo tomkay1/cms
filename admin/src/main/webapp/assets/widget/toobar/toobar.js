@@ -29,6 +29,7 @@ define(function (require, exports, module) {
                                 $(dom).addClass("current");
                                 $("#tab-box-2").hide();
                                 $("#tab-box-3").hide();
+                                page.pageBodyStyle();
                                 break;
                             case "tab2":
                                 $(".js-page-tab").removeClass("current");
@@ -36,6 +37,7 @@ define(function (require, exports, module) {
                                 $(".js-layout").hide();
                                 $("#tab-box-3").hide();
                                 $(dom).addClass("current");
+                                $("body").attr("style","");
                                 break;
                             case "tab3":
                                 $(".js-page-tab").removeClass("current");
@@ -43,6 +45,7 @@ define(function (require, exports, module) {
                                 $(".js-layout").hide();
                                 $("#tab-box-2").hide();
                                 $(dom).addClass("current");
+                                $("body").attr("style","");
                                 break;
                         }
                     });
@@ -60,6 +63,7 @@ define(function (require, exports, module) {
                                 $(dom).addClass("current");
                                 $("#tab-box-2").hide();
                                 $("#tab-box-3").hide();
+                                page.pageBodyStyle();
                                 break;
                             case "tab2":
                                 $(".js-page-tab").removeClass("current");
@@ -67,6 +71,7 @@ define(function (require, exports, module) {
                                 $(".js-layout").hide();
                                 $("#tab-box-3").hide();
                                 $(dom).addClass("current");
+                                $("body").attr("style","");
                                 break;
                             case "tab3":
                                 $(".js-page-tab").removeClass("current");
@@ -74,6 +79,7 @@ define(function (require, exports, module) {
                                 $(".js-layout").hide();
                                 $("#tab-box-2").hide();
                                 $(dom).addClass("current");
+                                $("body").attr("style","");
                                 break;
                         }
                     }
@@ -107,11 +113,53 @@ define(function (require, exports, module) {
                     b.pageColor();
                 })
             },
+            pageBodyStyle:function(){
+                if(widgetPageModel!=null) {
+                    var pageBackRepeat=(widgetPageModel.pageBackRepeat == null ? "no-repeat" : widgetPageModel.pageBackRepeat);
+                    var pageHorizontalDistance=widgetPageModel.pageHorizontalDistance == null ? "0" : widgetPageModel.pageHorizontalDistance;
+                    var pageVerticalDistance=widgetPageModel.pageVerticalDistance == null ? "0" : widgetPageModel.pageVerticalDistance;
+                    var pageHorizontalUnit=widgetPageModel.pageHorizontalUnit == null ? "px" : widgetPageModel.pageHorizontalUnit;
+                    var pageVerticalUnit=widgetPageModel.pageVerticalUnit == null ? "px" : widgetPageModel.pageVerticalUnit;
+                    var pageBackGround=widgetPageModel.pageBackGround == null ? "#ffffff" : widgetPageModel.pageBackGround;
+                    var pageBackImage=widgetPageModel.pageBackImage == null ? "" : widgetPageModel.pageBackImage;
+                    if(pageBackRepeat=='no-repeat'){
+                        var background="";
+                        if(pageBackImage!=''){
+                            background="url("+pageBackImage+") "+pageHorizontalDistance+pageHorizontalUnit+" "+pageVerticalDistance+pageVerticalUnit+" "+pageBackRepeat;
+                        }
+                        $("body").css({"background-color":pageBackGround,"background":background});
+                    }else{
+                        var background="";
+                        if(pageBackImage!=''){
+                            background="url("+pageBackImage+") "+pageHorizontalDistance+pageHorizontalUnit+" "+pageVerticalDistance+pageVerticalUnit+" "+pageBackRepeat;
+                        }
+                        $("body").css({"background-color":pageBackGround,"background":background});
+                    }
+                }
+            },
             pageProperty: function (widgetPageModel) {
                 var obj = $('.js-cms-submit');
                 $.each(obj, function (item, dom) {
                     $(dom).click(function () {
                         var formId = $(dom).data('form');
+                        //alert($("#pageHorizontalDistance").val());
+                        if($("#pageBackRepeat").val()=="no-repeat"){
+                            if(!common.isNumber($("#pageHorizontalDistance").val())){
+                                page.pageTabNumber(1)
+                                layer.msg("水平距离请输入合格的数字");
+                                return;
+                            }
+                            if(!common.isNumber($("#pageVerticalDistance").val())){
+                                page.pageTabNumber(1)
+                                layer.msg("垂直距离请输入合格的数字");
+                                return;
+                            }
+                        }
+                        if(common.isNull($("#pageName").val())){
+                            page.pageTabNumber(2)
+                            layer.msg("页面标题不能为空");
+                            return;
+                        }
                         var json = $("#" + formId).serializeJson();
                         widgetPageModel = widgetPage.setModel(json);
                         page.pageTabNumber(0);
@@ -371,9 +419,9 @@ define(function (require, exports, module) {
                     $("#pageBackGround").attr("data-default",(widgetPageModel.pageBackGround == null ? "#ffffff" : widgetPageModel.pageBackGround));
 
                     $("#pageBackImage").val(widgetPageModel.pageBackImage == null ? "" : widgetPageModel.pageBackImage);
-                    $("#pageBackRepeat").find("option[text='" + (widgetPageModel.pageBackRepeat == null ? "" : widgetPageModel.pageBackRepeat) + "']").attr("selected", true);
-                    $("#pageBackAlign").find("option[text='" + (widgetPageModel.pageBackAlign == null ? "" : widgetPageModel.pageBackAlign) + "']").attr("selected", true);
-                    $("#pageBackVertical").find("option[text='" + (widgetPageModel.pageBackVertical == null ? "" : widgetPageModel.pageBackVertical) + "']").attr("selected", true);
+
+                    $("#pageBackAlign").find("option[value='" + (widgetPageModel.pageBackAlign == null ? "" : widgetPageModel.pageBackAlign) + "']").attr("selected", true);
+                    $("#pageBackVertical").find("option[value='" + (widgetPageModel.pageBackVertical == null ? "" : widgetPageModel.pageBackVertical) + "']").attr("selected", true);
 
                     $("#pageEnableHead").attr("checked",(widgetPageModel.pageEnabledHead == null ? "false" : widgetPageModel.pageEnabledHead));
                     if(configName!="head"){
@@ -381,10 +429,17 @@ define(function (require, exports, module) {
                     }else{
                         $("#jq-page-common-no").hide();
                     }
+                    //window.console.log(widgetPageModel.pageBackRepeat);
+                    $("#pageBackRepeat").find("option[value='" + (widgetPageModel.pageBackRepeat == null ? "" : widgetPageModel.pageBackRepeat) + "']").attr("selected", true);
                     $("#pageHorizontalDistance").val(widgetPageModel.pageHorizontalDistance == null ? "0" : widgetPageModel.pageHorizontalDistance);
                     $("#pageVerticalDistance").val(widgetPageModel.pageVerticalDistance == null ? "0" : widgetPageModel.pageVerticalDistance);
-                    $("#pageHorizontalUnit").find("option[text='" + (widgetPageModel.pageHorizontalUnit == null ? "px" : widgetPageModel.pageHorizontalUnit) + "']").attr("selected", true);
-                    $("#pageVerticalUnit").find("option[text='" + (widgetPageModel.pageVerticalUnit == null ? "px" : widgetPageModel.pageVerticalUnit) + "']").attr("selected", true);
+                    $("#pageHorizontalUnit").find("option[value='" + (widgetPageModel.pageHorizontalUnit == null ? "px" : widgetPageModel.pageHorizontalUnit) + "']").attr("selected", true);
+                    $("#pageVerticalUnit").find("option[value='" + (widgetPageModel.pageVerticalUnit == null ? "px" : widgetPageModel.pageVerticalUnit) + "']").attr("selected", true);
+                    if(widgetPageModel.pageBackRepeat=="no-repeat"){
+                        $(".js-page-react").show();
+                    }else {
+                        $(".js-page-react").hide();
+                    }
                 }
             },
             pageEnableHead:function(){

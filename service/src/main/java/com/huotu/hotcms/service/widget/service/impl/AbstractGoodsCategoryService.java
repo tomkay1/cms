@@ -7,6 +7,7 @@ import com.huotu.hotcms.service.widget.model.GoodsCategory;
 import com.huotu.hotcms.service.widget.service.GoodsCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

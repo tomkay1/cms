@@ -8,6 +8,7 @@
 
 package com.huotu.hotcms.service.widget.service;
 
+import com.huotu.hotcms.service.widget.model.GoodsModel;
 import com.huotu.hotcms.service.widget.model.GoodsPage;
 import com.huotu.hotcms.service.widget.model.GoodsSearcher;
 import com.huotu.huobanplus.common.entity.Goods;
@@ -40,7 +41,7 @@ public interface GoodsService {
      * @param customerId
      * @return
      */
-    List<Goods> getHotGoodsList(int customerId) throws Exception;
+    List<GoodsModel> getHotGoodsList(int customerId) throws Exception;
 
 
 }

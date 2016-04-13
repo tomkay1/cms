@@ -62,6 +62,7 @@ public class GoodsServiceImpl implements GoodsService {
         goodsPage.setTotalPages(goodses.getTotalPages());
         goodsPage.setTotalRecords(goodses.getTotalElements());
         List<GoodsModel> goodsModels = new ArrayList<>();
+        int iterCount = 1;
         for(Goods goods : goodses) {
             GoodsModel goodsModel = new GoodsModel();
             goodsModel.setId(goods.getId());
@@ -74,7 +75,9 @@ public class GoodsServiceImpl implements GoodsService {
             goodsModel.setThumbnail(goods.getThumbnailPic().getValue());
             goodsModel.setSmallPic(goods.getSmallPic().getValue());
             goodsModel.setBigPic(goods.getBigPic().getValue());
+            goodsModel.setIterCount(iterCount);
             goodsModels.add(goodsModel);
+            iterCount ++;
         }
         goodsPage.setGoodses(goodsModels);
         return goodsPage;
@@ -104,9 +107,27 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public List<Goods> getHotGoodsList(int customerId) throws Exception{
+    public List<GoodsModel> getHotGoodsList(int customerId) throws Exception{
         List<Goods> goodses = goodsRestRepository.searchTop10Sales(customerId);
-        return goodses;
+        List<GoodsModel> goodsModels = new ArrayList<>();
+        int iterCount = 1;
+        for(Goods goods : goodses) {
+            GoodsModel goodsModel = new GoodsModel();
+            goodsModel.setId(goods.getId());
+            goodsModel.setTitle(goods.getTitle());
+            goodsModel.setShelveTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(goods.getAutoMarketDate()));
+            goodsModel.setSales(goods.getSalesCount());
+            goodsModel.setMarketPrice(goods.getMarketPrice());
+            goodsModel.setPrice(goods.getPrice());
+            goodsModel.setVipPrice(0);//TODO 等待用户接口
+            goodsModel.setThumbnail(goods.getThumbnailPic().getValue());
+            goodsModel.setSmallPic(goods.getSmallPic().getValue());
+            goodsModel.setBigPic(goods.getBigPic().getValue());
+            goodsModel.setIterCount(iterCount);
+            goodsModels.add(goodsModel);
+            iterCount ++;
+        }
+        return goodsModels;
     }
 
     private ApiResult<String> invokeGoodsSearchProce(int customerId, GoodsSearcher goodsSearcher) throws Exception{

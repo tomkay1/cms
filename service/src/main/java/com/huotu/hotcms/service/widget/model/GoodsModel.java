@@ -73,6 +73,11 @@ public class GoodsModel {
      */
     private String bigPic;
 
+    /**
+     * 遍历序号
+     */
+    private int iterCount;
+
     public GoodsModel() {
     }
     public GoodsModel(int id, String title, String shelveTime, int sales, double marketPrice, double price, double vipPrice, String thumbnail) {

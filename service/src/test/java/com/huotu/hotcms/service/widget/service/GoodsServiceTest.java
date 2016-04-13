@@ -9,6 +9,7 @@
 package com.huotu.hotcms.service.widget.service;
 
 import com.huotu.hotcms.service.config.ServiceTestConfig;
+import com.huotu.hotcms.service.widget.model.GoodsModel;
 import com.huotu.hotcms.service.widget.model.GoodsPage;
 import com.huotu.hotcms.service.widget.model.GoodsSearcher;
 import com.huotu.huobanplus.common.entity.Goods;
@@ -44,7 +45,7 @@ public class GoodsServiceTest {
 
     @Test
     public void getHotGoodsListTest() throws Exception{
-        List<Goods> goodses = goodsService.getHotGoodsList(4471);
-        Assert.assertNotEquals(0,goodses.size());
+        List<GoodsModel> goodses = goodsService.getHotGoodsList(4471);
+        Assert.assertEquals(2,goodses.get(1).getIterCount());
     }
 }

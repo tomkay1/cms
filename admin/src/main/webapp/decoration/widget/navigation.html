@@ -3,43 +3,23 @@
 <div th:class="'fn-clear '+(${templateClass}==null?'sh-head-menu-brown-624326':${templateClass})+' toolhover'" th:attr="id=${guid}">
     <div class="mc" style="overflow: visible;">
         <div class="HOT_ShopHeaderLinkWithDropdown sh-hd-wrap" th:style="'background:'+${widgetBackColor}">
-            <div class="sh-head-menu" th:style="'background:'+${widgetBackColor}">
+            <div class="sh-head-menu">
                 <ul class="menu-list">
                     <li class="menu">
-                        <a class="main-link" href="" target="">首页</a>
+                        <a class="main-link" href="" target=""  th:style="${goods_fontColor==null?'':'color:'+goods_fontColor}">首页</a>
                     </li>
                     <li class="menu all-cate" th:if="${showProductType==1}">
-                        <a class="main-link" href="#" target="">全部分类<span class="arrow"></span></a>
-                        <div class="sub-menu-wrap" th:style="'border:1px '+${widgetBackColor}+' solid'">
+                        <a class="main-link" href="#" target=""  th:style="${goods_fontColor==null?'':'color:'+goods_fontColor}">全部分类<span class="arrow"></span></a>
+                        <div class="sub-menu-wrap">
                             <dl class="sub-pannel" widget:category="category">
                                 <dt class="sub-title">
-                                    <a href="" target="" class="sub-tit-link" th:text="${category.name}">保暖内衣 &gt;</a>
+                                    <a href="" target="" class="sub-tit-link" th:text="${category.name}"  th:style="${goods_fontColor==null?'':'color:'+goods_fontColor}">保暖内衣 &gt;</a>
                                 </dt>
                             </dl>
-                            <!--<dl class="sub-pannel">-->
-                            <!--<dt class="sub-title">-->
-                            <!--<a href="" target="" class="sub-tit-link">男士内裤 &gt;</a>-->
-                            <!--</dt>-->
-                            <!--</dl>-->
-                            <!--<dl class="sub-pannel">-->
-                            <!--<dt class="sub-title" clstag="HOTshopmall|keycount|94277|xdpdhqbfl3">-->
-                            <!--<a href="" target="" class="sub-tit-link">商务男袜 &gt;</a>-->
-                            <!--</dt>-->
-                            <!--</dl>-->
-                            <!--<dl class="sub-pannel">-->
-                            <!--<dt class="sub-title">-->
-                            <!--<a href="" target="" class="sub-tit-link">运动男袜 &gt;</a>-->
-                            <!--</dt>-->
-                            <!--</dl>-->
-                            <!--<dl class="sub-pannel">-->
-                            <!--<dt class="sub-title">-->
-                            <!--<a href="" target="" class="sub-tit-link">T恤背心 &gt;</a>-->
-                            <!--</dt>-->
-                            <!--</dl>-->
                         </div>
                     </li>
                     <li class="menu" th:each="row:${Rows}">
-                        <a class="main-link" target="" th:href="${row.url_Rows}" th:text="${row.name_Rows}">测试2</a>
+                        <a class="main-link" target="" th:href="${row.url_Rows}" th:text="${row.name_Rows}"  th:style="${goods_fontColor==null?'':'color:'+goods_fontColor}">测试2</a>
                     </li>
                 </ul>
                 <div class="s-form" th:if="${showSearch==1}">
@@ -56,12 +36,9 @@
         <div class="module-toolbar HOT-module-toolbar" style="height:50px; width:100%;">
             <h4 style="cursor: move;">
         <span class="module-extra">
-        <a class="icon-del HOT-module-delete" href="">
-        </a>
-        <a class="icon-up HOT-module-up" href="">
-        </a>
-        <a class="icon-down HOT-module-down" href="">
-        </a>
+        <a class="icon-del HOT-module-delete" href=""></a>
+        <a class="icon-up HOT-module-up" href=""></a>
+        <a class="icon-down HOT-module-down" href=""></a>
         </span>
                 <span class="module-name HOT-module-name">店铺导航</span>
         <span class="HOT-module-set">
@@ -85,14 +62,28 @@
             text-align: left;
         }
     </style>
+
+
     <div class="forms">
         <ul>
             <li>
+                <label style="width: 180px;">背景颜色 </label>
+                <input type="text" class="js-hot-color input-normal" id="goods_pageBackGround"
+                       th:attr="data-default=${bgcolor==null?'#73583e':bgcolor}" data-default="#73583e" data-input="bgcolor"/>
+                <input type="hidden" class="js-hot-properties" th:value="${bgcolor}" name="bgcolor" style="background:#73583e"/>
+            </li>
+            <li>
+                <label style="width: 116px;">字体颜色 </label>
+                <input type="text" class="js-hot-color text-normal goodsInput" id="goods_fontColor"
+                       data-default="" data-input="goods_fontColor" th:attr="data-default=${goods_fontColor==null?'#666666':goods_fontColor}"/>
+                <input type="hidden" class="js-hot-properties" th:value="${goods_fontColor}" name="goods_fontColor" style="background:#666666"/>
+            </li>
+            <li>
                 <label style="width: 180px;">是否在导航展示商品分类 </label>
                 <select name="showProductType" class="select-short">
-                    <option value="1" th:selected="${showProductType==1}">是</option>
+                    <option value="1" th:selected="(${showProductType==1}?selected)">是</option>
                     <option value="0" selected="selected"
-                            th:selected="${showProductType==null or showProductType==0}">否
+                            th:selected="(${showProductType==null or showProductType==0}?selected)">否
                     </option>
                 </select>
             </li>
@@ -107,11 +98,6 @@
                     </option>
                 </select>
             </li>
-            <!--<li>-->
-                <!--<label style="width: 180px;">背景颜色 </label>-->
-                <!--<input type="text" class="js-hot-color input-normal" id="widgetBackColor" data-default="#ffffff" data-input="widgetBackColor"/>-->
-                <!--<input type="hidden" class="js-hot-properties" name="widgetBackColor" style="background:#ffffff"/>-->
-            <!--</li>-->
         </ul>
     </div>
     <div class="page-operate">
@@ -185,6 +171,8 @@
             </td>
         </tr>
     </script>
+    <script src="../libs/JColor/spectrum.js" type="application/javascript"></script>
+    <link href="../libs/JColor/spectrum.css" rel="stylesheet"/>
     <script type="application/javascript">
         var navModule = {
             addNav: function () {
@@ -237,15 +225,36 @@
                         }
                     });
                 });
-            },
-            init:function(){
-                navModule.addNav();
-                navModule.deleteNav();
-                navModule.upNav();
-                navModule.downNav();
-                jHotColor.initColor();
             }
         }
-       navModule.init();
+        var colorModule = {
+            color: function(){
+                var obj = $(".js-hot-color");
+                $.each(obj, function (item, dom) {
+                    var inputValueName = $(dom).data("input");
+                    var defaultColor = $(dom).data("default");
+                    $(dom).spectrum({
+                        allowEmpty: true,
+                        chooseText: "ȷ��",
+                        cancelText: "ȡ��",
+                        color: defaultColor,
+                        preferredFormat: "rgb",
+                        showInitial: false,
+                        showButtons: false,
+                        showInput: true,
+                        width: "120",
+                        change: function (color) {
+                            console.log(color.toHexString());
+                            $("input[name='" + inputValueName + "']").val(color.toHexString());
+                        }
+                    });
+                });
+            }
+        }
+        navModule.addNav();
+        navModule.deleteNav();
+        navModule.upNav();
+        navModule.downNav();
+        colorModule.color();
     </script>
 </div>

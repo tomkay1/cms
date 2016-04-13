@@ -1,0 +1,159 @@
+<!--浏览视图-->
+<div th:class="'fn-clear '+(${templateClass==null}?'sh-brand-wrap-630128':${templateClass})+' toolhover'" th:attr="id=${guid}">
+    <div class="mc" style="overflow: visible;" >
+        <div class="sh-brand-wrap">
+            <div class="sh-brand" style="height:60px;">
+                <a href="" class="brand-link">
+                    <img th:src="${pageBackImage==null or pageBackImage == ''}?'/assets/img/widget/shop_brand.jpg':${pageBackImage}"/>
+                </a>
+                <div class="shop-logo-box">
+                    <a href="" class="shop-logo-link">
+                        <img th:src="${shopLogoImage==null or shopLogoImage == ''}?'/assets/img/widget/shop_logo.png':${shopLogoImage}"/>
+                    </a>
+                    <a href="" class="follow-me for-light-bg">关注我</a>
+                </div>
+                <div class="m-search for-black-bg">
+                    <form action="false" class="m-form">
+                        <input type="text" class="m-kw" value="" maxlength="50" size="50" th:value="${defaultKewWord}"/>
+                        <input type="button" value="搜索" class="m-submit"
+                               id="in-shop-search"/>
+                    </form>
+                    <div class="m-hw" th:if="${templateClass == null or templateClass == 'sh-brand-wrap-630128'}" th:attr="templateClass=${templateClass}">
+                        <a href="" target="" class="hw-link">1</a>
+                        <a href="" onclick="" target="" class="hw-link">2</a>
+                        <a href="" onclick="" target="" class="hw-link">3</a>
+                        <a href="" onclick="" target="" class="hw-link">4</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="module-toolbal-container ui-draggable"  th:if="${edit}">
+        <div class="module-assist" style="padding-top: 32px;"></div>
+        <div class="module-toolbar HOT-module-toolbar" style="height:20px; width:100%;">
+            <h4 style="cursor: move;">
+        <span class="module-extra">
+        <a class="icon-del HOT-module-delete" href="">
+        </a>
+        <a class="icon-up HOT-module-up" href="">
+        </a>
+        <a class="icon-down HOT-module-down" href="">
+        </a>
+        </span>
+                <span class="module-name HOT-module-name">店铺页头</span>
+        <span class="HOT-module-set">
+        <a href="javascript:void(0)" class="HOT-module-set-data js-widget-edit"
+           th:attr="data-editurl=${widgetEditUri},data-id=${id},data-for=${guid},data-url=${widgetUri},data-layoutid=${layoutId},data-position=${layoutPosition}">编辑</a>
+        <a href="" class="HOT-module-set-template">
+            模板
+        </a>
+        </span>
+            </h4>
+        </div>
+    </div>
+</div>
+
+<!--编辑视图-->
+<div id="module_area">
+    <style>
+        .forms label {
+            text-align: left;
+        }
+    </style>
+    <div class="forms">
+        <ul>
+            <li>
+                <label style="width: 180px;">选择模版 </label>
+                <select name="templateClass" class="select-short" id="templateClass">
+                    <option value="sh-brand-wrap-630128" th:selected="${templateClass== null or templateClass=='sh-brand-wrap-630128'}">模版一</option>
+                    <option value="sh-brand-wrap-633464" th:selected="${templateClass=='sh-brand-wrap-633464'}">模版二</option>
+                </select>
+            </li>
+            <li>
+                <label style="width: 180px;">背景图片 </label>
+                <input type="text" id="pageBackImage" name="pageBackImage" th:value="${pageBackImage}" maxlength="50" class="input-normal"/>
+                <a href="javascript:void(0)" id="js-cms-selectPageBackImage">图片选择</a>
+            </li>
+            <li>
+                <label style="width: 180px;">店铺LOGO </label>
+                <input type="text" id="shopLogoImage" name="shopLogoImage" th:value="${shopLogoImage}" maxlength="50" class="input-normal"/>
+                <a href="javascript:void(0)" id="js-cms-selectLogoImage" >图片选择</a>
+            </li>
+            <li>
+                <label>默认搜索词</label>
+                <input type="text" maxlength="10" class="text-short" name="defaultKewWord" value="保暖内衣"
+                       th:value="${defaultKewWord}"/>
+            </li>
+            <li>
+                <label>最长搜索字数</label>
+                <input type="number" class="text-short" name="maxlength" th:value="${maxlength==null}?'20':${maxlength}"/>
+            </li>
+        </ul>
+    </div>
+    <script src="../libs/layer/layer.js" type="application/javascript"></script>
+    <script type="application/javascript">
+        /**
+         * @brief 获得页面参数
+         * @param 参数名
+         * */
+        function getQuery(name) {
+            var strHref = window.parent.document.location.href;
+            var intPos = strHref.indexOf("?");
+            var strRight = strHref.substr(intPos + 1);
+            var arrTmp = strRight.split("&");
+            for (var i = 0; i < arrTmp.length; i++) {
+                var arrTemp = arrTmp[i].split("=");
+                if (arrTemp[0].toUpperCase() == name.toUpperCase()) return arrTemp[1];
+            }
+            if (arguments.length == 1)
+                return "";
+            if (arguments.length == 2)
+                return arguments[1];
+        }
+        ;
+        var customerId = getQuery("customerid");
+        $("#js-cms-selectPageBackImage").click(function () {
+            parent.layer.open({
+                type: 2,
+                title: "图片库",
+                shadeClose: true,
+                shade: 0.8,
+                closeBtn: 1,
+                area: ['700px', '580px'],
+                content: "/assets/js/jPicture/photo.html?customerId=" + customerId + "&isMult=false&v=1.2",
+                //btn:["确定"],
+                end: function (index, layero) {
+                    var jsonStr = parent.$("#js_cms_picture_value").val();
+                    var obj = JSON.parse(jsonStr);
+                    if (typeof obj !== "undefined") {
+                        for (var i = 0; i < obj.length; i++) {
+                            $("#pageBackImage").val(obj[i].localUri);
+                        }
+                    }
+                }
+            });
+        });
+        $("#js-cms-selectLogoImage").click(function () {
+            parent.layer.open({
+                type: 2,
+                title: "图片库",
+                shadeClose: true,
+                shade: 0.8,
+                closeBtn: 1,
+                area: ['700px', '580px'],
+                content: "/assets/js/jPicture/photo.html?customerId=" + customerId + "&isMult=false&v=1.2",
+                //btn:["确定"],
+                end: function (index, layero) {
+                    var jsonStr = parent.$("#js_cms_picture_value").val();
+                    var obj = JSON.parse(jsonStr);
+                    if (typeof obj !== "undefined") {
+                        for (var i = 0; i < obj.length; i++) {
+                            $("#shopLogoImage").val(obj[i].localUri);
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</div>

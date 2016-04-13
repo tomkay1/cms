@@ -10,6 +10,8 @@ package com.huotu.hotcms.service.widget.service.impl;
 
 import com.huotu.hotcms.service.service.HttpService;
 import com.huotu.hotcms.service.util.ApiResult;
+import com.huotu.hotcms.service.widget.model.GoodsModel;
+import com.huotu.hotcms.service.widget.model.GoodsPage;
 import com.huotu.hotcms.service.widget.model.GoodsSearcher;
 import com.huotu.hotcms.service.widget.service.GoodsService;
 import com.huotu.huobanplus.common.entity.Goods;
@@ -23,9 +25,8 @@ import org.springframework.stereotype.Service;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 商品组件服务具体实现
@@ -39,7 +40,7 @@ public class GoodsServiceImpl implements GoodsService {
     private GoodsRestRepository goodsRestRepository;
 
     @Override
-    public Page<Goods> searchGoods(int customerId, GoodsSearcher goodsSearcher) throws Exception{
+    public GoodsPage searchGoods(int customerId, GoodsSearcher goodsSearcher) throws Exception{
         Sort.Direction direction = getSortDirection(goodsSearcher);
         String[] properties = getSortProperties(goodsSearcher);
         int page = goodsSearcher.getPage()==null ? 0 : goodsSearcher.getPage();
@@ -56,7 +57,27 @@ public class GoodsServiceImpl implements GoodsService {
                 goodsSearcher.getUserId(),
                 goodsSearcher.getKeyword(),
                 pageRequest);
-        return goodses;
+        GoodsPage goodsPage = new GoodsPage();
+        goodsPage.setPageNo(goodses.getNumber());
+        goodsPage.setTotalPages(goodses.getTotalPages());
+        goodsPage.setTotalRecords(goodses.getTotalElements());
+        List<GoodsModel> goodsModels = new ArrayList<>();
+        for(Goods goods : goodses) {
+            GoodsModel goodsModel = new GoodsModel();
+            goodsModel.setId(goods.getId());
+            goodsModel.setTitle(goods.getTitle());
+            goodsModel.setShelveTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(goods.getAutoMarketDate()));
+            goodsModel.setSales(goods.getSalesCount());
+            goodsModel.setMarketPrice(goods.getMarketPrice());
+            goodsModel.setPrice(goods.getPrice());
+            goodsModel.setVipPrice(0);//TODO 等待用户接口
+            goodsModel.setThumbnail(goods.getThumbnailPic().getValue());
+            goodsModel.setSmallPic(goods.getSmallPic().getValue());
+            goodsModel.setBigPic(goods.getBigPic().getValue());
+            goodsModels.add(goodsModel);
+        }
+        goodsPage.setGoodses(goodsModels);
+        return goodsPage;
     }
 
     private String[] getSortProperties(GoodsSearcher goodsSearcher) {

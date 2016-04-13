@@ -25,7 +25,7 @@ public class GoodsModel {
     /**
      * 商品主键id
      */
-    private int id;
+    private long id;
 
     /**
      * 商品名称

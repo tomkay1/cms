@@ -14,6 +14,7 @@ import com.huotu.hotcms.service.thymeleaf.expression.DialectAttributeFactory;
 import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
 import com.huotu.hotcms.service.thymeleaf.model.RequestModel;
 import com.huotu.hotcms.service.util.PageUtils;
+import com.huotu.hotcms.service.widget.model.GoodsPage;
 import com.huotu.hotcms.service.widget.model.GoodsSearcher;
 import com.huotu.hotcms.service.widget.model.JsonModel;
 import com.huotu.hotcms.service.widget.service.GoodsService;
@@ -60,7 +61,7 @@ public class GoodsPageableTagProcessor extends AbstractAttributeTagProcessor {
         WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
         GoodsService goodsService = (GoodsService)applicationContext.getBean("goodsServiceImpl");
         int customerId = ((Site)VariableExpression.getVariable(context, "site")).getCustomerId();
-        Page<Goods> goodsPage = null;
+        GoodsPage goodsPage = null;
         try {
             GoodsSearcher goodsSearcher = DialectAttributeFactory.getInstance().getForeachParam(tag, GoodsSearcher.class);
             goodsPage = goodsService.searchGoods(customerId,goodsSearcher);
@@ -68,13 +69,13 @@ public class GoodsPageableTagProcessor extends AbstractAttributeTagProcessor {
         }catch (Exception e) {
             log.error(e.getMessage());
         }
-        return goodsPage.getContent();
+        return goodsPage.getGoodses();
     }
 
-    private void putPageAttrsIntoModel(ITemplateContext context,Page<Goods> goodsPage) {
+    private void putPageAttrsIntoModel(ITemplateContext context,GoodsPage goodsPage) {
         //分页标签处理
         RequestModel requestModel = (RequestModel)VariableExpression.getVariable(context,"request");
-        int pageNo = goodsPage.getNumber();
+        int pageNo = goodsPage.getPageNo();
         int totalPages = goodsPage.getTotalPages();
         int pageBtnNum = totalPages > SysConstant.DEFAULT_PAGE_BUTTON_NUM ? SysConstant.DEFAULT_PAGE_BUTTON_NUM : totalPages;
         int startPageNo = PageUtils.calculateStartPageNo(pageNo, pageBtnNum, totalPages);
@@ -85,7 +86,7 @@ public class GoodsPageableTagProcessor extends AbstractAttributeTagProcessor {
         }
         requestModel.setCurrentPage(pageNo);
         requestModel.setTotalPages(totalPages);
-        requestModel.setTotalRecords(goodsPage.getTotalElements());
+        requestModel.setTotalRecords(goodsPage.getTotalRecords());
         requestModel.setHasPrevPage(pageNo > 1);
         requestModel.setHasNextPage(pageNo < totalPages);
         requestModel.setPageNos(pageNos);

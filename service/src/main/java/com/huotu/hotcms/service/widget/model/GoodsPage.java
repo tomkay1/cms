@@ -21,6 +21,12 @@ import java.util.List;
 @Setter
 public class GoodsPage {
 
-    List<Goods> goodses;
+    List<GoodsModel> goodses;
+
+    private int pageNo;
+
+    private int totalPages;
+
+    private long totalRecords;
 
 }

@@ -8,6 +8,7 @@
 
 package com.huotu.hotcms.service.widget.service;
 
+import com.huotu.hotcms.service.widget.model.GoodsPage;
 import com.huotu.hotcms.service.widget.model.GoodsSearcher;
 import com.huotu.huobanplus.common.entity.Goods;
 import org.springframework.data.domain.Page;
@@ -31,7 +32,7 @@ public interface GoodsService {
      * @param goodsSearcher 检索条件
      * @return
      */
-    Page<Goods> searchGoods(int customerId, GoodsSearcher goodsSearcher) throws Exception;
+    GoodsPage searchGoods(int customerId, GoodsSearcher goodsSearcher) throws Exception;
 
     /**
      * 热销产品

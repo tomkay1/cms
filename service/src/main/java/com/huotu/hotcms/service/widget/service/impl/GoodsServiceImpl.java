@@ -16,6 +16,7 @@ import com.huotu.hotcms.service.widget.model.GoodsSearcher;
 import com.huotu.hotcms.service.widget.service.GoodsService;
 import com.huotu.huobanplus.common.entity.Goods;
 import com.huotu.huobanplus.sdk.common.repository.GoodsRestRepository;
+import com.huotu.huobanplus.sdk.common.repository.UserRestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -39,6 +40,9 @@ public class GoodsServiceImpl implements GoodsService {
     @Autowired
     private GoodsRestRepository goodsRestRepository;
 
+    @Autowired
+    private UserRestRepository userRestRepository;
+
     @Override
     public GoodsPage searchGoods(int customerId, GoodsSearcher goodsSearcher) throws Exception{
         Sort.Direction direction = getSortDirection(goodsSearcher);
@@ -61,24 +65,7 @@ public class GoodsServiceImpl implements GoodsService {
         goodsPage.setPageNo(goodses.getNumber());
         goodsPage.setTotalPages(goodses.getTotalPages());
         goodsPage.setTotalRecords(goodses.getTotalElements());
-        List<GoodsModel> goodsModels = new ArrayList<>();
-        int iterCount = 1;
-        for(Goods goods : goodses) {
-            GoodsModel goodsModel = new GoodsModel();
-            goodsModel.setId(goods.getId());
-            goodsModel.setTitle(goods.getTitle());
-            goodsModel.setShelveTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(goods.getAutoMarketDate()));
-            goodsModel.setSales(goods.getSalesCount());
-            goodsModel.setMarketPrice(goods.getMarketPrice());
-            goodsModel.setPrice(goods.getPrice());
-            goodsModel.setVipPrice(0);//TODO 等待用户接口
-            goodsModel.setThumbnail(goods.getThumbnailPic().getValue());
-            goodsModel.setSmallPic(goods.getSmallPic().getValue());
-            goodsModel.setBigPic(goods.getBigPic().getValue());
-            goodsModel.setIterCount(iterCount);
-            goodsModels.add(goodsModel);
-            iterCount ++;
-        }
+        List<GoodsModel> goodsModels = transGoodsData(goodses);
         goodsPage.setGoodses(goodsModels);
         return goodsPage;
     }
@@ -109,24 +96,7 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public List<GoodsModel> getHotGoodsList(int customerId) throws Exception{
         List<Goods> goodses = goodsRestRepository.searchTop10Sales(customerId);
-        List<GoodsModel> goodsModels = new ArrayList<>();
-        int iterCount = 1;
-        for(Goods goods : goodses) {
-            GoodsModel goodsModel = new GoodsModel();
-            goodsModel.setId(goods.getId());
-            goodsModel.setTitle(goods.getTitle());
-            goodsModel.setShelveTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(goods.getAutoMarketDate()));
-            goodsModel.setSales(goods.getSalesCount());
-            goodsModel.setMarketPrice(goods.getMarketPrice());
-            goodsModel.setPrice(goods.getPrice());
-            goodsModel.setVipPrice(0);//TODO 等待用户接口
-            goodsModel.setThumbnail(goods.getThumbnailPic().getValue());
-            goodsModel.setSmallPic(goods.getSmallPic().getValue());
-            goodsModel.setBigPic(goods.getBigPic().getValue());
-            goodsModel.setIterCount(iterCount);
-            goodsModels.add(goodsModel);
-            iterCount ++;
-        }
+        List<GoodsModel> goodsModels = transGoodsData(goodses);
         return goodsModels;
     }
 
@@ -146,6 +116,28 @@ public class GoodsServiceImpl implements GoodsService {
             params.put(field.getName(),method.invoke(goodsSearcher));
         }
         return params;
+    }
+
+    private List<GoodsModel> transGoodsData(Iterable<Goods> goodses) {
+        List<GoodsModel> goodsModels = new ArrayList<>();
+        int iterCount = 1;
+        for(Goods goods : goodses) {
+            GoodsModel goodsModel = new GoodsModel();
+            goodsModel.setId(goods.getId());
+            goodsModel.setTitle(goods.getTitle());
+            goodsModel.setShelveTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(goods.getAutoMarketDate()));
+            goodsModel.setSales(goods.getSalesCount());
+            goodsModel.setMarketPrice(goods.getMarketPrice());
+            goodsModel.setPrice(goods.getPrice());
+            goodsModel.setVipPrice(0);//TODO 等待用户接口
+            goodsModel.setThumbnail(goods.getThumbnailPic().getValue());
+            goodsModel.setSmallPic(goods.getSmallPic().getValue());
+            goodsModel.setBigPic(goods.getBigPic().getValue());
+            goodsModel.setIterCount(iterCount);
+            goodsModels.add(goodsModel);
+            iterCount ++;
+        }
+        return goodsModels;
     }
 
     private ApiResult<String> invokeHotGoodsProce(int customerId) throws Exception{

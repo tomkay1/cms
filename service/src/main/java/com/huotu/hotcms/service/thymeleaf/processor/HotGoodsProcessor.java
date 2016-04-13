@@ -10,6 +10,7 @@ package com.huotu.hotcms.service.thymeleaf.processor;
 
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
+import com.huotu.hotcms.service.widget.model.GoodsModel;
 import com.huotu.hotcms.service.widget.service.GoodsService;
 import com.huotu.huobanplus.common.entity.Goods;
 import org.apache.commons.logging.Log;
@@ -52,9 +53,9 @@ public class HotGoodsProcessor extends AbstractAttributeTagProcessor {
     private Object invokeHogGoodsService(IProcessableElementTag tag, ITemplateContext context) {
         WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
         GoodsService goodsService = (GoodsService)applicationContext.getBean("goodsServiceImpl");
-        int customerId = ((Site) VariableExpression.getVariable(context, "site")).getCustomerId();
-        List<Goods> goodses = new ArrayList<>();
+        List<GoodsModel> goodses = new ArrayList<>();
         try {
+            int customerId = ((Site) VariableExpression.getVariable(context, "site")).getCustomerId();
             goodses = goodsService.getHotGoodsList(customerId);
         } catch (Exception e) {
             log.error(e.getMessage());

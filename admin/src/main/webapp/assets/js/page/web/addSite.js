@@ -31,6 +31,9 @@ define(function (require, exports, module) {
                 //    }
                 //},
             },
+            homeDomain:{
+                required:true,
+            },
             copyright:{
                 required: true,
             },
@@ -49,8 +52,11 @@ define(function (require, exports, module) {
                 required:"标题为必输项"
             },
             domains:{
-                required:"域名为必输项"
+                required:"请输入域名"
                 //remote:"存在相同的域名"
+            },
+            homeDomain:{
+                required:"必须存在一个主推域名"
             },
             description:{
                 maxlength:"站点描述不能超过200个字符"
@@ -109,6 +115,7 @@ define(function (require, exports, module) {
                     personalise:isPersonalise,
                     customTemplateUrl: $("#customTemplateUrl").val(),
                     domains: $("#domains").val(),
+                    homeDomains:$("#homeDomain").val(),
                     regionId: $("#regionId").val(),
                     description: $("#description").val()
                 },
@@ -130,6 +137,7 @@ define(function (require, exports, module) {
                             $("#resourceUrl").val("");
                             $("#logoUri").val("");
                             $("#custom_0").val("1");
+                            $("#homeDomain").val(""),
                             $("#uploadLogoUri").attr("src","");
                             document.getElementById('custom_0').checked = true;
                             document.getElementById("cUrl").style.display="";
@@ -139,9 +147,11 @@ define(function (require, exports, module) {
                             $("#description").val("");
                         }
                         if(index==500){layer.msg("操作失败",{time: 2000})}
-
                         if(index==203){
                             layer.msg("域名已被占用，请修改域名",{time: 2000})
+                        }
+                        if(index==406){
+                            layer.msg("请添加主推域名",{time: 2000})
                         }
                     }
                     commonUtil.cancelDisabled("jq-cms-Save");

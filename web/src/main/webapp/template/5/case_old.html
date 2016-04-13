@@ -1,0 +1,1197 @@
+﻿﻿<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="description" th:content="${site.description}"/>
+    <meta name="keywords" th:content="${site.keywords}"/>
+    <meta property="qc:admins" content="2336157637605721604536375"/>
+    <title th:text="${site.title}"></title>
+    <link rel="stylesheet" type="text/css" href="css/common.css" th:href="@{${request.root}+'/css/common.css'}"/>
+    <link rel="stylesheet" type="text/css" href="css/huobanj.css" th:href="@{${request.root}+'/css/huobanj.css'}"/>
+    <link rel="Shortcut Icon" href="/favicon.ico" th:href="@{${request.root}+'/favicon.ico'}"/>
+    <script src="http://t.cn/RGSQSu4"></script>
+    <script type="text/javascript" src="js/jquery1.42.min.js"
+            th:src="@{${request.root}+'/js/jquery1.42.min.js'}"></script>
+    <script type="text/javascript" src="js/jquery.SuperSlide.2.1.1.js"
+            th:src="@{${request.root}+'/js/jquery.SuperSlide.2.1.1.js'}"></script>
+    <script type="text/javascript" src="js/carouFredSel.js" th:src="@{${request.root}+'/js/carouFredSel.js'}"></script>
+</head>
+<body>
+<div class="huobanjiagw">
+
+    <!--导航栏-->
+    <div style="background-color:#343434;">
+        <div class="headeri" data-th-replace="${resourcePath}+'/index.html' :: #header">
+            <div class="headlogo"><img style="width:80%" src="images/logohh.png" class="logoimgi"/></div>
+            <ul class="navi">
+                <li>
+                    <a href=" #">
+                        首页
+                    </a>
+                </li>
+                <li class="nav_menu_li_1">
+                    <a style="padding: 0px 10px;" href="#">
+                        产品/服务
+                    </a>
+
+                    <div class="sub-nav">
+                        <a href="">
+                            伙伴商城
+                        </a>
+                        <a href="">
+                            代运营
+                        </a>
+                        <a href="">
+                            伙伴MAD
+                        </a>
+                        <a href="">
+                            云商学院
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a href=" #">
+                        客户案例
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        加盟代理
+                    </a>
+                </li>
+                <li class="nav_menu_li_1">
+                    <a style="padding: 0px 10px;" href="#">
+                        关于我们
+                    </a>
+
+                    <div class="sub-nav">
+                        <a href="">
+                            火图新闻
+                        </a>
+                        <a href="">
+                            火图历程
+                        </a>
+                        <a href="">
+                            火图招聘
+                        </a>
+                    </div>
+                </li>
+                <li class="nav_menu_li_1">
+                    <a style="padding: 0px 10px;" href="#">
+                        帮助中心
+                    </a>
+
+                    <div class="sub-nav">
+                        <a href="">
+                            产品问答
+                        </a>
+                        <a href="">
+                            操作指南
+                        </a>
+                        <a href="">
+                            咨询客服
+                        </a>
+                        <a href="">
+                            联系我们
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a href="#">
+                        火图论坛
+                    </a>
+                </li>
+                <li class="zc">
+                    <a href="#">
+                        注册
+                    </a>
+                </li>
+                <li class="dl">
+                    <a href="#">
+                        登录
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--导航栏end-->
+
+    <!----客户案例---->
+    <div style="margin:0 auto; padding:25px 0px;; width:1000px; height:900px;">
+        <p style="font-size:30px; margin:10px 0px 15px 0px;">
+            客户案例
+        </p>
+        <!----左侧导航客户分类---->
+        <div class="leftlq">
+            <p class="on" onclick="activeLabel('helth',this)">
+                保健养生
+            </p>
+            <!---1--->
+            <p onclick="activeLabel('tour',this)">
+                房产旅游
+            </p>
+
+            <p onclick="activeLabel('clothes',this)">
+                服饰鞋袜
+            </p>
+
+            <p onclick="activeLabel('supermaket',this)">
+                家居商超
+            </p>
+
+            <p onclick="activeLabel('beauty',this)">
+                美妆护肤
+            </p>
+
+            <p onclick="activeLabel('food',this)">
+                食品饮料
+            </p>
+        </div>
+
+        <!----右侧侧导航客户案例---->
+
+        <div style="float:left; width:875px; height:800px; background-color:#e8e8e8;" id="customer">
+
+            <!----  保健养生第一个---->
+
+            <div style="display:block" id="helth">
+                <div class="slideGroup" style="">
+                    <div class="parBd">
+                        <div class=" df slideBox ">
+                            <a class="sPrev" href="javascript:void(0)">
+                            </a>
+                            <ul class="gg">
+                                <li class="" onclick="activeContent('bys',this)">
+                                    <div class="pic"><img src="images/a01.jpg"
+                                                          th:src="${request.root}+'/images/a01.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title">白云山</div>
+                                </li>
+                                <li class="on" onclick="activeContent('cyjd',this)">
+                                    <div class="pic "><img src="images/a02.jpg"
+                                                           th:src="${request.root}+'/images/a02.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title">采逸灸道</div>
+                                </li>
+                                <li class="" onclick="activeContent('fhcss',this)">
+                                    <div class="pic"><img src="images/a03.jpg"
+                                                          th:src="${request.root}+'/images/a03.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title">凤凰肠爽爽</div>
+                                </li>
+                                <li class="" onclick="activeContent('hqyt',this)">
+                                    <div class="pic"><img src="images/a04.jpg"
+                                                          th:src="${request.root}+'/images/a04.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> 胡庆余堂</div>
+                                </li>
+                                <li class="" onclick="activeContent('jzt',this)">
+                                    <div class="pic"><img src="images/a05.jpg"
+                                                          th:src="${request.root}+'/images/a05.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title">极珍堂</div>
+                                </li>
+                                <li class="" onclick="activeContent('lsmjt',this)">
+                                    <div class="pic"><img src="images/a06.jpg"
+                                                          th:src="${request.root}+'/images/a06.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title">俐生美集团</div>
+                                </li>
+                                <li class="" onclick="activeContent('sxtncg',this)">
+                                    <div class="pic"><img src="images/a07.jpg"
+                                                          th:src="${request.root}+'/images/a07.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title">三溪堂南昌馆</div>
+                                </li>
+                            </ul>
+                            <a class="sNext" href="javascript:void(0)">
+                            </a>
+                        </div>
+                        <!-- slideBox End -->
+
+                    </div>
+                    <!-- parBd End -->
+                </div>
+                <div class="df">
+                    <ul class="ggs"
+                        style="height:500px; width:820px; border:1px solid #f7f7f7; background-color: #f7f7f7; margin-left: 25px;  border-radius: 8px; ">
+                        <li style="display:none;" id="bys">
+                            <img src="images/jd01.png" th:src="${request.root}+'/images/jd01.png'"/>
+                            <img src="images/jd02.png" th:src="${request.root}+'/images/jd02.png'"/>
+                            <img src="images/aer01.png" th:src="${request.root}+'/images/aer01.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--白云山-->
+                        <li style="display:block;" id="cyjd">
+                            <img src="images/cy01.png" th:src="${request.root}+'/images/cy01.png'"/>
+                            <img src="images/cy02.png" th:src="${request.root}+'/images/cy02.png'"/>
+                            <img src="images/aer02.png" th:src="${request.root}+'/images/aer02.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--采逸灸道-->
+                        <li style="display:none;" id="fhcss">
+                            <img src="images/fh01.png" th:src="${request.root}+'/images/fh01.png'"/>
+                            <img src="images/fh02.png" th:src="${request.root}+'/images/fh02.png'"/>
+                            <img src="images/aer03.png" th:src="${request.root}+'/images/aer03.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--凤凰肠爽爽-->
+                        <li style="display:none;" id="hqyt">
+                            <img src="images/hq01.png" th:src="${request.root}+'/images/hq01.png'"/>
+                            <img src="images/hq02.png" th:src="${request.root}+'/images/hq02.png'"/>
+                            <img src="images/aer04.png" th:src="${request.root}+'/images/aer04.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--胡庆余堂-->
+                        <li style="display:none;" id="jzt">
+                            <img src="images/jz01.png" th:src="${request.root}+'/images/jz01.png'"/>
+                            <img src="images/jz02.png" th:src="${request.root}+'/images/jz02.png'"/>
+                            <img src="images/aer05.png" th:src="${request.root}+'/images/aer05.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--极珍堂-->
+                        <li style="display:none;" id="lsmjt">
+                            <img src="images/ls01.png" th:src="${request.root}+'/images/ls01.png'"/>
+                            <img src="images/ls02.png" th:src="${request.root}+'/images/ls02.png'">
+                            <img src="images/aer06.png" th:src="${request.root}+'/images/aer06.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--俐生美集团-->
+                        <li style="display:none;" id="sxtncg">
+                            <img src="images/sx01.png" th:src="${request.root}+'/images/sx01.png'"/>
+                            <img src="images/sx02.png" th:src="${request.root}+'/images/sx02.png'"/>
+                            <img src="images/aer07.png" th:src="${request.root}+'/images/aer07.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--三溪堂南昌馆-->
+                    </ul>
+                    <p style="clean:both;">
+                    </p>
+                </div>
+            </div>
+            <!----  保健养生第一个over---->
+
+            <!----房产旅游第二个---->
+
+            <div style="display:none;" id="tour">
+                <div class="slideGroup" style="">
+                    <div class="parBd">
+                        <div class=" df slideBox ">
+                            <a class="sPrev" href="javascript:void(0)">
+                            </a>
+                            <ul class="gg">
+                                <li class="" onclick="activeContent('93gs',this)">
+                                    <div class="pic"><img src="images/b01.jpg"
+                                                          th:src="${request.root}+'/images/b01.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> 93公社羽毛球村</div>
+                                </li>
+                                <li class="" onclick="activeContent('cmxx',this)">
+                                    <div class="pic "><img src="images/b02.jpg"
+                                                           th:src="${request.root}+'/images/b02.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title">1001潮漫星系</div>
+                                </li>
+                                <li class="" onclick="activeContent('fjhw',this)">
+                                    <div class="pic"><img src="images/b03.jpg"
+                                                          th:src="${request.root}+'/images/b03.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> 富杰户外</div>
+                                </li>
+                                <li class="on" onclick="activeContent('tms',this)">
+                                    <div class="pic"><img src="images/b04.jpg"
+                                                          th:src="${request.root}+'/images/b04.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> 天目山</div>
+                                </li>
+                                <li class="" onclick="activeContent('xhgl',this)">
+                                    <div class="pic"><img src="images/b05.jpg"
+                                                          th:src="${request.root}+'/images/b05.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> 新湖果岭</div>
+                                </li>
+                                <li class="" onclick="activeContent('ygjwsc',this)">
+                                    <div class="pic"><img src="images/b06.jpg"
+                                                          th:src="${request.root}+'/images/b06.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> 阳光郡微商城</div>
+                                </li>
+                                <li class="" onclick="activeContent('xz',this)">
+                                    <div class="pic"><img src="images/b07.jpg"
+                                                          th:src="${request.root}+'/images/b07.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> 行装</div>
+                                </li>
+                                <li class="" onclick="activeContent('yyjd',this)">
+                                    <div class="pic"><img src="images/b08.jpg"
+                                                          th:src="${request.root}+'/images/b08.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> 隐域酒店</div>
+                                </li>
+                            </ul>
+                            <a class="sNext" href="javascript:void(0)">
+                            </a>
+                        </div>
+                        <!-- slideBox End -->
+
+                    </div>
+                    <!-- parBd End -->
+                </div>
+                <div class="df" style="display:block;">
+                    <ul class="ggs"
+                        style="height:500px; width:820px; border:1px solid #f7f7f7; background-color: #f7f7f7; margin-left: 25px; ">
+                        <li style="display:none;" id="93gs">
+                            <img src="images/ym01.png" th:src="${request.root}+'/images/ym01.png'"/>
+                            <img src="images/ym02.png" th:src="${request.root}+'/images/ym02.png'"/>
+                            <img src="images/ber01.png" th:src="${request.root}+'/images/ber01.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--93公社羽毛球村-->
+                        <li style="display:block;" id="cmxx">
+                            <img src="images/cm01.png" th:src="${request.root}+'/images/cm01.png'"/>
+                            <img src="images/cm02.png" th:src="${request.root}+'/images/cm02.png'"/>
+                            <img src="images/ber02.png" th:src="${request.root}+'/images/ber02.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--1001潮漫星系-->
+                        <li style="display:none;" id="fjhw">
+                            <img src="images/fj01.png" th:src="${request.root}+'/images/fj01.png'"/>
+                            <img src="images/fj02.png" th:src="${request.root}+'/images/fj02.png'"/>
+                            <img src="images/ber03.png" th:src="${request.root}+'/images/ber03.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--富杰户外-->
+                        <li style="display:none;" id="tms">
+                            <img src="images/tm01.png" th:src="${request.root}+'/images/tm01.png'"/>
+                            <img src="images/tm02.png" th:src="${request.root}+'/images/tm02.png'"/>
+                            <img src="images/ber04.png" th:src="${request.root}+'/images/ber04.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--天目山-->
+                        <li style="display:none;" id="xhgl">
+                            <img src="images/xh01.png" th:src="${request.root}+'/images/xh01.png'"/>
+                            <img src="images/xh02.png" th:src="${request.root}+'/images/xh02.png'"/>
+                            <img src="images/ber05.png" th:src="${request.root}+'/images/ber05.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--新湖果岭-->
+                        <li style="display:none;" id="ygjwsc">
+                            <img src="images/yg01.png" th:src="${request.root}+'/images/yg01.png'"/>
+                            <img src="images/yg02.png" th:src="${request.root}+'/images/yg02.png'"/>
+                            <img src="images/ber06.png" th:src="${request.root}+'/images/ber06.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--阳光郡微商城团-->
+                        <li style="display:none;" id="xz">
+                            <img src="images/xz01.png" th:src="${request.root}+'/images/xz01.png'"/>
+                            <img src="images/xz02.png" th:src="${request.root}+'/images/xz02.png'"/>
+                            <img src="images/ber07.png" th:src="${request.root}+'/images/ber07.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--行装-->
+                        <li style="display:none;" id="yyjd">
+                            <img src="images/yy01.png" th:src="${request.root}+'/images/yy01.png'"/>
+                            <img src="images/yy02.png" th:src="${request.root}+'/images/yy02.png'"/>
+                            <img src="images/ber08.png" th:src="${request.root}+'/images/ber08.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--隐域酒店-->
+                    </ul>
+                    <p style="clean:both;">
+                    </p>
+                </div>
+            </div>
+            <!----房产旅游二个over---->
+
+            <!---- 服饰鞋袜第三个---->
+
+            <div style="display:none" id="clothes">
+                <div class="slideGroup" style="">
+                    <div class="parBd">
+                        <div class=" df slideBox ">
+                            <a class="sPrev" href="javascript:void(0)">
+                            </a>
+                            <ul class="gg">
+                                <li class="" onclick="activeContent('jumbougg',this)">
+                                    <div class="pic"><img src="images/c01.jpg"
+                                                          th:src="${request.root}+'/images/c01.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> JUMBOUGG</div>
+                                </li>
+                                <li class="on" onclick="activeContent('fc',this)">
+                                    <div class="pic "><img src="images/c02.jpg"
+                                                           th:src="${request.root}+'/images/c02.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title">梵初</div>
+                                </li>
+                                <li class="" onclick="activeContent('rbfs',this)">
+                                    <div class="pic"><img src="images/c03.jpg"
+                                                          th:src="${request.root}+'/images/c03.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> 如缤服饰</div>
+                                </li>
+                                <li class="" onclick="activeContent('wsl',this)">
+                                    <div class="pic"><img src="images/c04.jpg"
+                                                          th:src="${request.root}+'/images/c04.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> 万事利</div>
+                                </li>
+                                <li class="" onclick="activeContent('ycsl',this)">
+                                    <div class="pic"><img src="images/c06.jpg"
+                                                          th:src="${request.root}+'/images/c06.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> 永春丝路</div>
+                                </li>
+                                <li class="" onclick="activeContent('zcdd',this)">
+                                    <div class="pic"><img src="images/c07.jpg"
+                                                          th:src="${request.root}+'/images/c07.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> 职场点点</div>
+                                </li>
+                            </ul>
+                            <a class="sNext" href="javascript:void(0)">
+                            </a>
+                        </div>
+                        <!-- slideBox End -->
+
+                    </div>
+                    <!-- parBd End -->
+                </div>
+                <div class="df" style="display:block;">
+                    <ul class="ggs"
+                        style="height:500px; width:820px; border:1px solid #f7f7f7; background-color: #f7f7f7; margin-left: 25px; ">
+                        <li style="display:none;" id="jumbougg">
+                            <img src="images/ju01.png" th:src="${request.root}+'/images/ju01.png'"/>
+                            <img src="images/ju02.png" th:src="${request.root}+'/images/ju02.png'"/>
+                            <img src="images/cer01.png" th:src="${request.root}+'/images/cer01.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--JUMBOUGG-->
+                        <li style="display:block;" id="fc">
+                            <img src="images/fc01.png" th:src="${request.root}+'/images/fc01.png'"/>
+                            <img src="images/fc02.png" th:src="${request.root}+'/images/fc02.png'"/>
+                            <img src="images/cer02.png" th:src="${request.root}+'/images/cer02.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--梵初-->
+                        <li style="display:none;" id="rbfs">
+                            <img src="images/rb01.png" th:src="${request.root}+'/images/rb01.png'"/>
+                            <img src="images/rb02.png" th:src="${request.root}+'/images/rb02.png'"/>
+                            <img src="images/cer03.png" th:src="${request.root}+'/images/cer03.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--如缤服饰-->
+                        <li style="display:none;" id="wsl">
+                            <img src="images/ws01.png" th:src="${request.root}+'/images/ws01.png'"/>
+                            <img src="images/ws02.png" th:src="${request.root}+'/images/ws02.png'"/>
+                            <img src="images/cer04.png" th:src="${request.root}+'/images/cer04.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--万事利-->
+                        <li style="display:none;" id="ycsl">
+                            <img src="images/yc01.png" th:src="${request.root}+'/images/yc01.png'"/>
+                            <img src="images/yc02.png" th:src="${request.root}+'/images/yc02.png'"/>
+                            <img src="images/cer06.png" th:src="${request.root}+'/images/cer06.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--永春丝路-->
+                        <li style="display:none;" id="zcdd">
+                            <img src="images/zc01.png" th:src="${request.root}+'/images/zc01.png'"/>
+                            <img src="images/zc02.png" th:src="${request.root}+'/images/zc02.png'"/>
+                            <img src="images/cer07.png" th:src="${request.root}+'/images/cer07.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--职场点点-->
+                    </ul>
+                    <p style="clean:both;">
+                    </p>
+                </div>
+            </div>
+            <!---- 服饰鞋袜第三个over---->
+
+            <!----家居商超边第四个---->
+
+            <div style="display:none;" id="supermaket">
+                <div class="slideGroup" style="">
+                    <div class="parBd">
+                        <div class=" df slideBox ">
+                            <a class="sPrev" href="javascript:void(0)">
+                            </a>
+                            <ul class="gg">
+                                <li class="" onclick="activeContent('olq',this)">
+                                    <div class="pic"><img src="images/d01.jpg"
+                                                          th:src="${request.root}+'/images/d01.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> OL圈</div>
+                                </li>
+                                <li class="on" onclick="activeContent('blqj',this)">
+                                    <div class="pic "><img src="images/d02.jpg"
+                                                           th:src="${request.root}+'/images/d02.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> 璧丽Belli旗舰</div>
+                                </li>
+                                <li class="" onclick="activeContent('ddsg',this)">
+                                    <div class="pic"><img src="images/d03.jpg"
+                                                          th:src="${request.root}+'/images/d03.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> 叮咚速购</div>
+                                </li>
+                                <li class="" onclick="activeContent('hgsc',this)">
+                                    <div class="pic"><img src="images/d04.jpg"
+                                                          th:src="${request.root}+'/images/d04.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> 汇购商城</div>
+                                </li>
+                                <li class="" onclick="activeContent('klgj',this)">
+                                    <div class="pic"><img src="images/d05.jpg"
+                                                          th:src="${request.root}+'/images/d05.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> 卡罗国际</div>
+                                </li>
+                                <li class="" onclick="activeContent('kebdbz',this)">
+                                    <div class="pic"><img src="images/d06.jpg"
+                                                          th:src="${request.root}+'/images/d06.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> 库尔班大巴扎</div>
+                                </li>
+                                <li class="" onclick="activeContent('lpagg',this)">
+                                    <div class="pic"><img src="images/d07.jpg"
+                                                          th:src="${request.root}+'/images/d07.jpg'"/></div>
+                                    <div class="title"> 老婆爱逛逛</div>
+                                </li>
+                                <li class="" onclick="activeContent('lgjp',this)">
+                                    <div class="pic"><img src="images/d08.jpg"
+                                                          th:src="${request.root}+'/images/d08.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> 丽购家品</div>
+                                </li>
+                                <li class="" onclick="activeContent('qglshj',this)">
+                                    <div class="pic"><img src="images/d09.jpg"
+                                                          th:src="${request.root}+'/images/d09.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> 乔戈里生活家</div>
+                                </li>
+                                <li class="" onclick="activeContent('reyyj',this)">
+                                    <div class="pic"><img src="images/d10.jpg"
+                                                          th:src="${request.root}+'/images/d10.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> 睿儿园艺家</div>
+                                </li>
+                                <li class="" onclick="activeContent('sjty',this)">
+                                    <div class="pic"><img src="images/d11.jpg"
+                                                          th:src="${request.root}+'/images/d11.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> 私家淘源</div>
+                                </li>
+                                <li class="" onclick="activeContent('ysbz',this)">
+                                    <div class="pic"><img src="images/d12.jpg"
+                                                          th:src="${request.root}+'/images/d12.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> 钰尚壁纸</div>
+                                </li>
+                                <li class="" onclick="activeContent('zbpznmtg',this)">
+                                    <div class="pic"><img src="images/d13.jpg"
+                                                          th:src="${request.root}+'/images/d13.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> 智便牌智能马桶盖</div>
+                                </li>
+                            </ul>
+                            <a class="sNext" href="javascript:void(0)">
+                            </a>
+                        </div>
+                        <!-- slideBox End -->
+
+                    </div>
+                    <!-- parBd End -->
+                </div>
+                <div class="df" style="display:block;">
+                    <ul class="ggs"
+                        style="height:500px; width:820px; border:1px solid #f7f7f7; background-color: #f7f7f7; margin-left: 25px; ">
+                        <li style="display:none;" id="olq">
+                            <img src="images/ol01.png" th:src="${request.root}+'/images/ol01.png'"/>
+                            <img src="images/ol02.png" th:src="${request.root}+'/images/ol02.png'"/>
+                            <img src="images/der01.png" th:src="${request.root}+'/images/der01.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--OL圈-->
+                        <li style="display:block;" id="blqj">
+                            <img src="images/blc01.png" th:src="${request.root}+'/images/blc01.png'"/>
+                            <img src="images/blc02.png" th:src="${request.root}+'/images/blc02.png'"/>
+                            <img src="images/der02.png" th:src="${request.root}+'/images/der02.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--璧丽Belli旗舰-->
+                        <li style="display:none;" id="ddsg">
+                            <img src="images/dd01.png" th:src="${request.root}+'/images/dd01.png'"/>
+                            <img src="images/dd02.png" th:src="${request.root}+'/images/dd02.png'"/>
+                            <img src="images/der03.png" th:src="${request.root}+'/images/der03.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--叮咚速购-->
+                        <li style="display:none;" id="hgsc">
+                            <img src="images/hg01.png" th:src="${request.root}+'/images/hg01.png'"/>
+                            <img src="images/hg02.png" th:src="${request.root}+'/images/hg02.png'"/>
+                            <img src="images/der04.png" th:src="${request.root}+'/images/der04.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--汇购-->
+                        <li style="display:none;" id="klgj">
+                            <img src="images/kl01.png" th:src="${request.root}+'/images/kl01.png'"/>
+                            <img src="images/kl02.png" th:src="${request.root}+'/images/kl02.png'"/>
+                            <img src="images/der05.png" th:src="${request.root}+'/images/der05.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--卡罗国际尼-->
+                        <li style="display:none;" id="kebdbz">
+                            <img src="images/ke01.png" th:src="${request.root}+'/images/ke01.png'"/>
+                            <img src="images/ke02.png" th:src="${request.root}+'/images/ke02.png'"/>
+                            <img src="images/der06.png" th:src="${request.root}+'/images/der06.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--库尔班大巴扎-->
+                        <li style="display:none;" id="lpagg">
+                            <img src="images/lp01.png" th:src="${request.root}+'/images/lp01.png'"/>
+                            <img src="images/lp02.png" th:src="${request.root}+'/images/lp02.png'"/>
+                            <img src="images/der07.png" th:src="${request.root}+'/images/der07.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--老婆爱逛逛-->
+                        <li style="display:none;" id="lgjp">
+                            <img src="images/lg01.png" th:src="${request.root}+'/images/lg01.png'"/>
+                            <img src="images/lg02.png" th:src="${request.root}+'/images/lg02.png'"/>
+                            <img src="images/der08.png" th:src="${request.root}+'/images/der08.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--丽购家品-->
+                        <li style="display:none;" id="qglshj">
+                            <img src="images/qg01.png" th:src="${request.root}+'/images/qg01.png'"/>
+                            <img src="images/qg02.png" th:src="${request.root}+'/images/qg02.png'"/>
+                            <img src="images/der09.png" th:src="${request.root}+'/images/der09.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--乔戈里生活家-->
+                        <li style="display:none;" id="reyyj">
+                            <img src="images/re01.png" th:src="${request.root}+'/images/re01.png'"/>
+                            <img src="images/re02.png" th:src="${request.root}+'/images/re02.png'"/>
+                            <img src="images/der10.png" th:src="${request.root}+'/images/der10.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--睿儿园艺家-->
+                        <li style="display:none;" id="sjty">
+                            <img src="images/sj01.png" th:src="${request.root}+'/images/sj01.png'"/>
+                            <img src="images/sj02.png" th:src="${request.root}+'/images/sj02.png'"/>
+                            <img src="images/der11.png" th:src="${request.root}+'/images/der11.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--私家淘源-->
+                        <li style="display:none;" id="ysbz">
+                            <img src="images/ys01.png" th:src="${request.root}+'/images/ys01.png'"/>
+                            <img src="images/ys02.png" th:src="${request.root}+'/images/ys02.png'"/>
+                            <img src="images/der12.png" th:src="${request.root}+'/images/der12.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--钰尚壁纸-->
+                        <li style="display:none;" id="zbpznmtg">
+                            <img src="images/mt01.png" th:src="${request.root}+'/images/mt01.png'"/>
+                            <img src="images/mt02.png" th:src="${request.root}+'/images/mt02.png'"/>
+                            <img src="images/der13.png" th:src="${request.root}+'/images/der13.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--智便牌智能马桶盖-->
+                    </ul>
+                    <p style="clean:both;">
+                    </p>
+                </div>
+            </div>
+
+            <!----家居商超第四个over---->
+
+            <!----美妆护肤第五个---->
+
+            <div style="display:none;" id="beauty">
+                <div class="slideGroup" style="">
+                    <div class="parBd">
+                        <div class=" df slideBox ">
+                            <a class="sPrev" href="javascript:void(0)">
+                            </a>
+                            <ul class="gg">
+                                <li onclick="activeContent('dxswkj',this)">
+                                    <div class="pic "><img src="images/e02.jpg"
+                                                           th:src="${request.root}+'/images/e02.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> 鼎讯生物科技</div>
+                                </li>
+                                <li class="on" onclick="activeContent('hczx',this)">
+                                    <div class="pic"><img src="images/e03.jpg"
+                                                          th:src="${request.root}+'/images/e03.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> 焕彩之昕</div>
+                                </li>
+                                <li class="" onclick="activeContent('jym',this)">
+                                    <div class="pic"><img src="images/e04.jpg"
+                                                          th:src="${request.root}+'/images/e04.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> 金因美</div>
+                                </li>
+                                <li class="" onclick="activeContent('ktm',this)">
+                                    <div class="pic"><img src="images/e05.jpg"
+                                                          th:src="${request.root}+'/images/e05.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> 卡汀猫</div>
+                                </li>
+                                <li class="" onclick="activeContent('lrgj',this)">
+                                    <div class="pic"><img src="images/e06.jpg"
+                                                          th:src="${request.root}+'/images/e06.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> 岚润国际</div>
+                                </li>
+                                <li class="" onclick="activeContent('osm',this)">
+                                    <div class="pic"><img src="images/e07.jpg"
+                                                          th:src="${request.root}+'/images/e07.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> 欧诗漫</div>
+                                </li>
+                                <li class="" onclick="activeContent('yzl',this)">
+                                    <div class="pic"><img src="images/e08.jpg"
+                                                          th:src="${request.root}+'/images/e08.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> 雅姿莱</div>
+                                </li>
+                                <li class="" onclick="activeContent('ymgj',this)">
+                                    <div class="pic"><img src="images/e09.jpg"
+                                                          th:src="${request.root}+'/images/e09.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> 一墨国际</div>
+                                </li>
+                                <li class="" onclick="activeContent('ydc',this)">
+                                    <div class="pic"><img src="images/e10.jpg"
+                                                          th:src="${request.root}+'/images/e10.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title"> 羽蝶草</div>
+                                </li>
+                            </ul>
+                            <a class="sNext" href="javascript:void(0)">
+                            </a>
+                        </div>
+                        <!-- slideBox End -->
+
+                    </div>
+                    <!-- parBd End -->
+                </div>
+                <div class="df" style="display:block;">
+                    <ul class="ggs"
+                        style="height:500px; width:820px; border:1px solid #f7f7f7; background-color: #f7f7f7; margin-left: 25px; ">
+                        <li style="display:none;" id="blf">
+                            <img src="images/bl01.png" th:src="${request.root}+'/images/bl01.png'"/>
+                            <img src="images/bl02.png" th:src="${request.root}+'/images/bl02.png'"/>
+                            <img src="images/eer01.png" th:src="${request.root}+'/images/eer01.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--缤丽纷-->
+                        <li style="display:block;" id="dxswkj">
+                            <img src="images/dx01.png" th:src="${request.root}+'/images/dx01.png'"/>
+                            <img src="images/dx02.png" th:src="${request.root}+'/images/dx02.png'"/>
+                            <img src="images/eer02.png" th:src="${request.root}+'/images/eer02.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--鼎讯生物科技-->
+                        <li style="display:none;" id="hczx">
+                            <img src="images/hc01.png" th:src="${request.root}+'/images/hc01.png'"/>
+                            <img src="images/hc02.jpg" th:src="${request.root}+'/images/hc02.jpg'"/>
+                            <img src="images/eer03.png" th:src="${request.root}+'/images/eer03.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--焕彩之昕-->
+                        <li style="display:none;" id="jym">
+                            <img src="images/jjm01.jpg" th:src="${request.root}+'/images/jjm01.jpg'"/>
+                            <img src="images/jjm02.png" th:src="${request.root}+'/images/jjm02.png'"/>
+                            <img src="images/eer04.png" th:src="${request.root}+'/images/eer04.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--金因美-->
+                        <li style="display:none;" id="ktm">
+                            <img src="images/ky01.png" th:src="${request.root}+'/images/ky01.png'"/>
+                            <img src="images/ky02.png" th:src="${request.root}+'/images/ky02.png'"/>
+                            <img src="images/eer05.png" th:src="${request.root}+'/images/eer05.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--卡汀猫-->
+                        <li style="display:none;" id="lrgj">
+                            <img src="images/lr01.png" th:src="${request.root}+'/images/lr01.png'"/>
+                            <img src="images/lr02.png" th:src="${request.root}+'/images/lr02.png'"/>
+                            <img src="images/eer06.png" th:src="${request.root}+'/images/eer06.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--岚润国际-->
+                        <li style="display:none;" id="osm">
+                            <img src="images/osm01.png" th:src="${request.root}+'/images/osm01.png'"/>
+                            <img src="images/osm02.png" th:src="${request.root}+'/images/osm02.png'"/>
+                            <img src="images/eer07.png" th:src="${request.root}+'/images/eer07.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--欧诗漫-->
+                        <li style="display:none;" id="yzl">
+                            <img src="images/yz01.png" th:src="${request.root}+'/images/yz01.png'"/>
+                            <img src="images/yz02.png" th:src="${request.root}+'/images/yz02.png'"/>
+                            <img src="images/eer08.png" th:src="${request.root}+'/images/eer08.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--雅姿莱-->
+                        <li style="display:none;" id="ymgj">
+                            <img src="images/ymg01.png" th:src="${request.root}+'/images/ymg01.png'"/>
+                            <img src="images/ymg02.png" th:src="${request.root}+'/images/ymg02.png'"/>
+                            <img src="images/eer09.png" th:src="${request.root}+'/images/eer09.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--一墨国际-->
+                        <li style="display:none;" id="ydc">
+                            <img src="images/ydc01.jpg" th:src="${request.root}+'/images/ydc01.jpg'"/>
+                            <img src="images/ydc02.jpg" th:src="${request.root}+'/images/ydc02.jpg'"/>
+                            <img src="images/ydew.png" th:src="${request.root}+'/images/ydew.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--羽蝶草-->
+                    </ul>
+                    <p style="clean:both;">
+                    </p>
+                </div>
+            </div>
+
+            <!----美妆护肤第五个over---->
+
+            <!----食品饮料第六个---->
+            <div style="display:none" id="food">
+                <div class="slideGroup">
+                    <div class="parBd">
+                        <div class=" df slideBox ">
+                            <a class="sPrev" href="javascript:void(0)">
+                            </a>
+                            <ul class="gg">
+                                <li class="" onclick="activeContent('bsc',this)">
+                                    <div class="pic"><img src="images/f01.jpg"
+                                                          th:src="${request.root}+'/images/f01.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title">百岁草</div>
+                                </li>
+                                <li class="on" onclick="activeContent('dhjy',this)">
+                                    <div class="pic "><img src="images/f02.jpg"
+                                                           th:src="${request.root}+'/images/f02.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title">大合酒业</div>
+                                </li>
+                                <li class="" onclick="activeContent('dgjz',this)">
+                                    <div class="pic"><img src="images/f03.jpg"
+                                                          th:src="${request.root}+'/images/f03.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title">丹歌酒庄</div>
+                                </li>
+                                <li class="" onclick="activeContent('hww',this)">
+                                    <div class="pic"><img src="images/f04.jpg"
+                                                          th:src="${request.root}+'/images/f04.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title">幻味湾</div>
+                                </li>
+                                <li class="" onclick="activeContent('jyfx',this)">
+                                    <div class="pic"><img src="images/f05.jpg"
+                                                          th:src="${request.root}+'/images/f05.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title">加优枫享</div>
+                                </li>
+                                <li class="" onclick="activeContent('jjjjbh',this)">
+                                    <div class="pic"><img src="images/f06.jpg"
+                                                          th:src="${request.root}+'/images/f06.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title">久加久酒博汇</div>
+                                </li>
+                                <li class="" onclick="activeContent('mmhmsc',this)">
+                                    <div class="pic"><img src="images/f07.jpg"
+                                                          th:src="${request.root}+'/images/f07.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title">妈妈很忙商城</div>
+                                </li>
+                                <li class="" onclick="activeContent('ndsp',this)">
+                                    <div class="pic"><img src="images/f08.jpg"
+                                                          th:src="${request.root}+'/images/f08.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title">诺丁食品</div>
+                                </li>
+                                <li class="" onclick="activeContent('qjhgq',this)">
+                                    <div class="pic"><img src="images/f09.jpg"
+                                                          th:src="${request.root}+'/images/f09.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title">杞姬黑枸杞</div>
+                                </li>
+                                <li class="" onclick="activeContent('qhyg',this)">
+                                    <div class="pic"><img src="images/f10.jpg"
+                                                          th:src="${request.root}+'/images/f10.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title">前海易购</div>
+                                </li>
+                                <li class="" onclick="activeContent('rsg',this)">
+                                    <div class="pic"><img src="images/f11.jpg"
+                                                          th:src="${request.root}+'/images/f11.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title">仁生观</div>
+                                </li>
+                                <li class="" onclick="activeContent('tgny',this)">
+                                    <div class="pic"><img src="images/f12.jpg"
+                                                          th:src="${request.root}+'/images/f12.jpg'"/></div>
+                                    <i></i>
+
+                                    <div class="title">泰谷农业</div>
+                                </li>
+                            </ul>
+                            <a class="sNext" href="javascript:void(0)">
+                            </a>
+                        </div>
+                        <!-- slideBox End -->
+
+                    </div>
+                    <!-- parBd End -->
+                </div>
+                <div class="df" style="display:block;">
+                    <ul class="ggs"
+                        style="height:500px; width:820px; border:1px solid #f7f7f7; background-color: #f7f7f7; margin-left: 25px; ">
+                        <li style="display:none;" id="bsc">
+                            <img src="images/bs01.png" th:src="${request.root}+'/images/bs01.png'"/>
+                            <img src="images/bs02.png" th:src="${request.root}+'/images/bs02.png'"/>
+                            <img src="images/fer01.png" th:src="${request.root}+'/images/fer01.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--百岁草-->
+                        <li style="display:block;" id="dhjy">
+                            <img src="images/dh01.png" th:src="${request.root}+'/images/dh01.png'"/>
+                            <img src="images/dh02.png" th:src="${request.root}+'/images/dh02.png'"/>
+                            <img src="images/fer02.png" th:src="${request.root}+'/images/fer02.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--大合酒业-->
+                        <li style="display:none;" id="dgjz">
+                            <img src="images/dg01.png" th:src="${request.root}+'/images/dg01.png'"/>
+                            <img src="images/dg02.png" th:src="${request.root}+'/images/dg02.png'"/>
+                            <img src="images/fer03.png" th:src="${request.root}+'/images/fer03.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--丹歌酒庄-->
+                        <li style="display:none;" id="hww">
+                            <img src="images/hw01.png" th:src="${request.root}+'/images/hw01.png'"/>
+                            <img src="images/hw02.png" th:src="${request.root}+'/images/hw02.png'"/>
+                            <img src="images/fer04.png" th:src="${request.root}+'/images/fer04.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--幻味湾-->
+                        <li style="display:none;" id="jyfx">
+                            <img src="images/jf01.png" th:src="${request.root}+'/images/jf01.png'"/>
+                            <img src="images/jy02.png" th:src="${request.root}+'/images/jy02.png'"/>
+                            <img src="images/fer05.png" th:src="${request.root}+'/images/fer05.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--加优枫享-->
+                        <li style="display:none;" id="jjjjbh">
+                            <img src="images/jjj01.png" th:src="${request.root}+'/images/jjj01.png'"/>
+                            <img src="images/jjj02.png" th:src="${request.root}+'/images/jjj02.png'"/>
+                            <img src="images/fer06.png" th:src="${request.root}+'/images/fer06.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--久加久酒博汇-->
+                        <li style="display:none;" id="mmhmsc">
+                            <img src="images/mm01.png" th:src="${request.root}+'/images/mm01.png'"/>
+                            <img src="images/mm02.png" th:src="${request.root}+'/images/mm02.png'"/>
+                            <img src="images/fer07.png" th:src="${request.root}+'/images/fer07.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--妈妈很忙商城-->
+                        <li style="display:none;" id="ndsp">
+                            <img src="images/nd01.png" th:src="${request.root}+'/images/nd01.png'"/>
+                            <img src="images/nd02.png" th:src="${request.root}+'/images/nd02.png'"/>
+                            <img src="images/fer08.png" th:src="${request.root}+'/images/fer08.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--诺丁食品-->
+                        <li style="display:none;" id="qjhgq">
+                            <img src="images/gq01.png" th:src="${request.root}+'/images/gq01.png'"/>
+                            <img src="images/gq02.png" th:src="${request.root}+'/images/gq02.png'"/>
+                            <img src="images/fer09.png" th:src="${request.root}+'/images/fer09.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--杞姬黑枸杞-->
+                        <li style="display:none;" id="qhyg">
+                            <img src="images/qh01.png" th:src="${request.root}+'/images/qh01.png'"/>
+                            <img src="images/qh02.png" th:src="${request.root}+'/images/qh02.png'"/>
+                            <img src="images/fer10.png" th:src="${request.root}+'/images/fer10.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--前海易购-->
+                        <li style="display:none;" id="rsg">
+                            <img src="images/rs01.png" th:src="${request.root}+'/images/rs01.png'"/>
+                            <img src="images/rs02.png" th:src="${request.root}+'/images/rs02.png'"/>
+                            <img src="images/fer11.png" th:src="${request.root}+'/images/fer11.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--仁生观-->
+                        <li style="display:none;" id="tgny">
+                            <img src="images/tg01.png" th:src="${request.root}+'/images/tg01.png'"/>
+                            <img src="images/tg02.png" th:src="${request.root}+'/images/tg02.png'"/>
+                            <img src="images/fer12.png" th:src="${request.root}+'/images/fer12.png'"
+                                 style="width:180px; margin:20px 20px 140px 31px;"/>
+                        </li>
+                        <!--泰谷农业-->
+                    </ul>
+                    <p style="clean:both;">
+                    </p>
+                </div>
+            </div>
+            <!----食品饮料第六个over---->
+
+            <p style="clean:both;">
+            </p>
+        </div>
+    </div>
+    <p style="clean:both;">
+    </p>
+    <!----客户案例end---->
+
+    <!--底部-->
+    <div style="background-color:#343434; height:120px; padding-right:50px;  ">
+        <div class="headeri" data-th-replace="${resourcePath}+'/index.html' :: #footer">
+            <div class="headlogo"><img style="    margin-top: 40px; margin-left:90px;width:100%" src="images/logo.png"
+                                       class="logoimgi"/></div>
+            <img class="hbj_KK" src="images/hbj_10.png"/>
+
+            <div style="float:right; margin-top:10px;">
+                <p class="hbj_ft">
+          <span class="hbj_foot">
+          产品服务
+          </span>
+          <span class="hbj_foot">
+          客户案例
+          </span>
+          <span class="hbj_foot">
+          加盟代理
+          </span>
+          <span class="hbj_foot">
+          关于我们
+          </span>
+          <span class="hbj_foot">
+          帮助中心
+          </span>
+          <span class="hbj_foot">
+          火图论坛
+          </span>
+          <span class="hbj_foot">
+          注册
+          </span>
+          <span class="hbj_foot" style="border:0px;">
+          登录
+          </span>
+                </p>
+
+                <p class="hbj_ft" style=" margin-left: 14px;">
+                    服务热线：400-1818-357
+          <span style="margin-left:15px;">
+          联系电话：0571-56532880
+          </span>
+                </p>
+
+                <p class="hbj_ft" style=" margin-left: 14px;">
+                    公司地址： 杭州市滨江区阡陌路482号智慧e谷B幢4楼
+                </p>
+
+                <p class="hbj_ft" style=" margin-left: 14px;">
+                    Copyright©2013-2015. 杭州火图科技有限公司,浙ICP备13027761号-5
+                </p>
+            </div>
+        </div>
+    </div>
+    <!--底部结束-->
+
+</div>
+<script>
+    function activeLabel(id, obj) {
+        $(".leftlq > p").attr("class", "");
+        $(obj).attr("class", "on");
+        $("#customer > div").attr("style", "display:none;");
+        $("#" + id).attr("style", "display:block;");
+        slider(id);
+    }
+    function activeContent(id, obj) {
+        $(".gg > li").attr("class", "");
+        $(obj).attr("class", "on");
+        $(".ggs > li").hide();
+        $("#" + id).show();
+    }
+    function slider(id) {
+        /*
+         SuperSlide组合注意：
+         1、内外层mainCell、targetCell、prevCell、nextCell等对象不能相同，除非特殊应用；
+         2、注意书写顺序，通常先写内层js调用，再写外层js调用
+         */
+
+        /* 内层图片滚动切换 */
+        $("#" + id + " .slideBox").slide({
+            mainCell: "ul",
+            vis: 6,
+            prevCell: ".sPrev",
+            nextCell: ".sNext",
+            effect: "leftLoop"
+        });
+    }
+    $(function () {
+        slider("helth");
+    })
+</script>
+</body>
+</html>

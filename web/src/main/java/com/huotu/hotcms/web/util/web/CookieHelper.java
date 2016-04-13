@@ -57,7 +57,7 @@ public class CookieHelper {
      */
     public static void setCookie(HttpServletResponse response, String key, String value) {
         Cookie cookie = new Cookie(key, value);
-        cookie.setMaxAge(1209600);
+        cookie.setMaxAge(3600);
         cookie.setPath("/");
         response.addCookie(cookie);
     }

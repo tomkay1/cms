@@ -2,7 +2,7 @@
 
 /* CSS class for zoomed area */
 .MagicZoomBigImageCont {
-	border:1px solid #91b817;
+	/*border:1px solid #91b817;*/
 	background:#FFF;
 }
 
@@ -44,5 +44,5 @@
 
 /* CSS style for gif image in the loading animation box */
 .MagicZoomLoading img {
-	padding-top:	3px !important;
+	padding-top:	200px !important;
 }

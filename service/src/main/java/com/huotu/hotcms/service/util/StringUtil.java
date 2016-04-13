@@ -93,4 +93,14 @@ public class StringUtil {
     }
 
 
+    public static Boolean Contains(String[] originalStr,String targetStr){
+        if(originalStr!=null){
+            for(String str:originalStr){
+                if(str.equals(targetStr)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

@@ -27,13 +27,33 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
     private HttpService httpService;
 
     @Override
-    public Goods getGoodsDetail(int goodsId) throws Exception {
+    public com.huotu.hotcms.service.widget.model.Goods setGoodsDetail(int goodsId) throws Exception {
 
         ApiResult<String> apiResult = invokeGoodsDetailProce(goodsId);
         if(apiResult.getCode()!=200) {
             throw new Exception(apiResult.getMsg());
         }
-        return new Gson().fromJson(apiResult.getData(), (Type) Goods.class);
+        Goods huobanGoods = new Gson().fromJson(apiResult.getData(), (Type) Goods.class);//通过接口获取goods
+        com.huotu.hotcms.service.widget.model.Goods mallGoods = new com.huotu.hotcms.service.widget.model.Goods();
+        mallGoods.setId(Long.valueOf(goodsId));
+        mallGoods.setCode(huobanGoods.getCode());
+        mallGoods.setTitle(huobanGoods.getTitle());
+        mallGoods.setBrief(huobanGoods.getBrief());
+        mallGoods.setCost(huobanGoods.getCost());
+        mallGoods.setDisabled(huobanGoods.isDisabled());
+        mallGoods.setGoodsType(huobanGoods.getGoodsType());
+        mallGoods.setIntro(huobanGoods.getIntro());
+        mallGoods.setMarketable(huobanGoods.isMarketable());
+        mallGoods.setMarketPrice(huobanGoods.getMarketPrice());
+        mallGoods.setTypeId(huobanGoods.getTypeId());
+        mallGoods.setThumbnailPic(huobanGoods.getThumbnailPic().getValue());
+        mallGoods.setSpec(huobanGoods.getSpec());
+        mallGoods.setScenes(huobanGoods.getScenes());
+        mallGoods.setCost(huobanGoods.getCost());
+        mallGoods.setSalesCount(huobanGoods.getSalesCount());
+        mallGoods.setPrice(huobanGoods.getPrice());
+        mallGoods.setStock(huobanGoods.getStock());
+        return mallGoods;
     }
 
     @Override

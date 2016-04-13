@@ -1,7 +1,7 @@
 package com.huotu.hotcms.service.widget.service;
 
 import com.huotu.hotcms.service.config.ServiceTestConfig;
-import com.huotu.huobanplus.common.entity.Goods;
+import com.huotu.hotcms.service.widget.model.Goods;
 import com.huotu.huobanplus.sdk.mall.model.RegisterWeixinUserData;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,7 +29,7 @@ public class GoodsDetailServiceTest {
 
     @Test
     public void getGoodsDetailTest() throws Exception{
-        Goods goods = goodsDetailService.getGoodsDetail(100);
+        Goods goods = goodsDetailService.setGoodsDetail(100);
         System.out.println(goods);
     }
 

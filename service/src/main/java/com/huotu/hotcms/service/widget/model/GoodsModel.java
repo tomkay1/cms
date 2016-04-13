@@ -25,7 +25,7 @@ public class GoodsModel {
     /**
      * 商品主键id
      */
-    private int id;
+    private long id;
 
     /**
      * 商品名称
@@ -62,6 +62,16 @@ public class GoodsModel {
      * 缩略图完整url
      */
     private String thumbnail;
+
+    /**
+     * 小图完整url
+     */
+    private String smallPic;
+
+    /**
+     * 大图完整url
+     */
+    private String bigPic;
 
     public GoodsModel() {
     }

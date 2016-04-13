@@ -4,9 +4,11 @@ import com.huotu.hotcms.service.common.PageErrorType;
 import com.huotu.hotcms.service.entity.CustomPages;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.service.CustomPagesService;
-import com.huotu.hotcms.service.thymeleaf.model.RequestModel;
 import com.huotu.hotcms.service.thymeleaf.service.RequestService;
 import com.huotu.hotcms.service.thymeleaf.service.SiteResolveService;
+import com.huotu.hotcms.service.widget.model.Goods;
+import com.huotu.hotcms.service.widget.service.GoodsDetailService;
+import com.huotu.hotcms.web.util.web.CookieUser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +34,15 @@ public class ShopController {
     @Autowired
     private CustomPagesService customPagesService;
 
-
+    @Autowired
+    private GoodsDetailService goodsDetailService;
     @Autowired
     SiteResolveService siteResolveService;
+
+
+    @Autowired
+    private CookieUser cookieUser;
+
 
     @Autowired
     private RequestService requestService;
@@ -81,9 +89,10 @@ public class ShopController {
     public ModelAndView defaultsPage(HttpServletRequest request, @PathVariable("id") String id){
         ModelAndView modelAndView = new ModelAndView();
         try{
-            //商品业务操作
-            Site site = siteResolveService.getCurrentSite(request);
+            modelAndView.addObject("unlogin", cookieUser.checkLogin(request));//未登录为false，登录了则为true
+            Goods goods = goodsDetailService.setGoodsDetail(Integer.valueOf(id));
             modelAndView.setViewName("/template/0/goodsDetail.html");
+            modelAndView.addObject("goods",goods);
 
         }catch (Exception ex){
             log.error(ex);

@@ -86,6 +86,8 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         registry.viewResolver(javascriptViewResolver());
         registry.viewResolver(cssViewResolver());
         registry.viewResolver(widgetViewResolver);
+        registry.viewResolver(redirectViewResolver());
+        registry.viewResolver(forwardViewResolver());
     }
 
     @Override
@@ -183,5 +185,18 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         resolver.setTemplateMode(TemplateMode.CSS);
         return resolver;
     }
+
+    public ViewResolver redirectViewResolver() {
+        ThymeleafViewResolver resolver = new ThymeleafViewResolver();
+        resolver.setViewNames(ArrayUtil.array("redirect:*"));
+        return resolver;
+    }
+
+    public ViewResolver forwardViewResolver() {
+        ThymeleafViewResolver resolver = new ThymeleafViewResolver();
+        resolver.setViewNames(ArrayUtil.array("forward:*"));
+        return resolver;
+    }
+
 
 }

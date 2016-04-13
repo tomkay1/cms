@@ -8,6 +8,8 @@
 
 package com.huotu.hotcms.service.config;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +29,8 @@ import redis.clients.jedis.JedisPoolConfig;
 @Configuration
 @Profile("prod")
 public class RedisConfig {
+
+    private Log log = LogFactory.getLog(getClass());
 
     @Autowired
     private Environment env;
@@ -49,8 +53,10 @@ public class RedisConfig {
         password = env.getProperty("redisAuth");
         maxTotal = env.getProperty("jedisPool.maxTotal", Integer.class, 500);
         maxWait = env.getProperty("jedisPool.maxWait", Long.class, 1000l * 3);
-        maxIdle = env.getProperty("jedisPool.maxIdle", Integer.class, 200);
+        maxIdle = env.getProperty("jedisPool.maxIdle", Integer.class, 100);
         dbIndex = env.getProperty("redisDatabase",Integer.class,20);
+        log.info("use redis : /n host:"+hostName+" port:"+port+" password:"+password+"/n " +
+                "jedisPool: /n databaseIndex:"+dbIndex+" maxTotal:"+maxTotal+" maxIdle:"+maxIdle+" maxWait:"+maxWait);
     }
 
     @Bean

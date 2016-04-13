@@ -230,12 +230,12 @@ a:hover
   border: 1px solid #ccc;
   background: #fff;
 }
- #fitting-suit{
-  overflow: visible;
-  padding-top: 2px;
-  background: url(../images/tab.png) 0 -41px repeat-x;
+ /*#fitting-suit{*/
+  /*overflow: visible;*/
+  /*padding-top: 2px;*/
+  /*background: url(../images/tab.png) 0 -41px repeat-x;*/
 
-}
+/*}*/
 .m{
   margin-bottom: 10px;
 }

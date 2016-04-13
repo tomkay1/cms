@@ -9,6 +9,7 @@
 package com.huotu.hotcms.service.widget.service;
 
 import com.huotu.hotcms.service.config.ServiceTestConfig;
+import com.huotu.hotcms.service.widget.model.GoodsPage;
 import com.huotu.hotcms.service.widget.model.GoodsSearcher;
 import com.huotu.huobanplus.common.entity.Goods;
 import org.junit.Assert;
@@ -37,8 +38,8 @@ public class GoodsServiceTest {
 
     @Test
     public void searchGoodsTest() throws Exception{
-        Page<Goods> goodses = goodsService.searchGoods(4471,new GoodsSearcher());
-        Assert.assertNotEquals(0, goodses.getContent());
+        GoodsPage goodses = goodsService.searchGoods(4471,new GoodsSearcher());
+        Assert.assertNotEquals(0, goodses.getGoodses());
     }
 
     @Test

@@ -3,14 +3,14 @@
 <div th:class="'fn-clear '+(${templateClass}==null?'sh-head-menu-brown-624326':${templateClass})+' toolhover'" th:attr="id=${guid}">
     <div class="mc" style="overflow: visible;">
         <div class="HOT_ShopHeaderLinkWithDropdown sh-hd-wrap" th:style="'background:'+${widgetBackColor}">
-            <div class="sh-head-menu">
+            <div class="sh-head-menu" th:style="'background:'+${widgetBackColor}">
                 <ul class="menu-list">
                     <li class="menu">
                         <a class="main-link" href="" target="">首页</a>
                     </li>
                     <li class="menu all-cate" th:if="${showProductType==1}">
                         <a class="main-link" href="#" target="">全部分类<span class="arrow"></span></a>
-                        <div class="sub-menu-wrap">
+                        <div class="sub-menu-wrap" th:style="'border:1px '+${widgetBackColor}+' solid'">
                             <dl class="sub-pannel" widget:category="category">
                                 <dt class="sub-title">
                                     <a href="" target="" class="sub-tit-link" th:text="${category.name}">保暖内衣 &gt;</a>

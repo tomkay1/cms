@@ -16,10 +16,11 @@ public enum ResultOptionEnum implements CommonEnum {
     EXISTS_RELATION(205,"存在关联信息"),
     SYSTEM_ARTICLE(206,"系统文章不可做删除操作"),
 
-
     FILE_FORMATTER_ERROR(403,"文件格式错误"),
     NOFIND(404,"没有信息"),
     SITE_NOFIND(405,"站点不存在"),
+    NOFIND_HOME_DEMON(406,"没有主推域名"),
+
     FAILE(500,"失败"),
     PARAMERROR(501,"参数错误"),
     SERVERFAILE(502,"服务器错误"), ;

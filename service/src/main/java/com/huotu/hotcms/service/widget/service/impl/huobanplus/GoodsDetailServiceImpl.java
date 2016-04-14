@@ -7,10 +7,13 @@ import com.huotu.hotcms.service.widget.model.GoodsDetail;
 import com.huotu.hotcms.service.widget.service.GoodsDetailService;
 import com.huotu.huobanplus.sdk.common.repository.GoodsRestRepository;
 import com.huotu.huobanplus.sdk.common.repository.UserRestRepository;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -25,12 +28,15 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
     @Autowired
     private HttpService httpService;
 
+    private static final Log log = LogFactory.getLog(GoodsDetailServiceImpl.class);
+
     @Autowired
     private GoodsRestRepository goodsRestRepository;
 
     @Autowired
     private UserRestRepository userRestRepository;
 //
+
 //    @Override
 //    public Goods getGoodsDetail(int goodsId) throws Exception {
 //
@@ -46,11 +52,24 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
     @Override
     public GoodsDetail getGoodsDetail(int goodsId,int userId) throws Exception {
 
-        com.huotu.huobanplus.common.entity.Goods huobanGoods = goodsRestRepository.getOneByPK(goodsId);
+        com.huotu.huobanplus.common.entity.Goods huobanGoods = null;
+        try{
+         huobanGoods = goodsRestRepository.getOneByPK(goodsId);
+        }
+        catch (IOException e) {
+            System.out.println("接口服务不可用");
+            log.error("接口服务不可用");
+        }
         GoodsDetail mallGoods = new GoodsDetail();
         if (userId!=0) {
-            Double[] userPrice = userRestRepository.goodPrice(userId, goodsId);
-            mallGoods.setUserPrice(userPrice);
+            try{
+                Double[] userPrice = userRestRepository.goodPrice(userId, goodsId);
+                mallGoods.setUserPrice(userPrice);
+            }
+            catch (IOException e) {
+                System.out.println("接口服务不可用");
+                log.error("接口服务不可用");
+            }
         }
         huobanGoods.setSpec(JSON.parse(huobanGoods.getSpec()).toString());
         mallGoods.setId(Long.valueOf(goodsId));

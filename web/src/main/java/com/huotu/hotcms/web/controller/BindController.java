@@ -25,7 +25,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * <p>
@@ -91,8 +90,9 @@ public class BindController {
      * 二维码购买
      */
     @RequestMapping(value = "/qrCode", method = { RequestMethod.POST, RequestMethod.GET })
-    public void qrCode(HttpServletResponse resp, String id) throws IOException {
-        String url = "要生成二维码的地址"+id;
+    public void qrCode(HttpServletRequest request,HttpServletResponse resp, String goodsId) throws Exception {
+        int customerId = siteResolveService.getCurrentSite(request).getCustomerId();
+        String url = "/Mall/View.aspx?customerid="+customerId+"&goodsid="+goodsId;
         if (url != null && !"".equals(url)) {
             ServletOutputStream stream = null;
             try {

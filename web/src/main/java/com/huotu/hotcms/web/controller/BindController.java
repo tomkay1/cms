@@ -90,8 +90,8 @@ public class BindController {
      *
      * 二维码购买
      */
-    @RequestMapping(value = "/QrCode", method = { RequestMethod.POST, RequestMethod.GET })
-    public void QrCode(HttpServletResponse resp, String id) throws IOException {
+    @RequestMapping(value = "/qrCode", method = { RequestMethod.POST, RequestMethod.GET })
+    public void qrCode(HttpServletResponse resp, String id) throws IOException {
         String url = "要生成二维码的地址"+id;
         if (url != null && !"".equals(url)) {
             ServletOutputStream stream = null;

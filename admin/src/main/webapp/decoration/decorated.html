@@ -61,33 +61,33 @@
                         <!--</li>-->
                     <!--</ul>-->
                 </li>
-                <li class="nav-parent nav-active js-cms-menus nav-app" id="menus03" style="cursor: pointer;">
-                    <a class="aparent">
-                        <i class="icon add"></i>
-                        <!--<i class="fa fa-chevron-circle-right"></i>-->
-                        <span>备份管理</span></a>
-                    <ul class="children">
-                        <li class="childMenus js-cms-submunes" data-id="menus03" style="cursor: pointer;">
-                            <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
-                            <a th:href="@{/site/siteList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>备份列表<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
-                                </span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-parent nav-active js-cms-menus nav-app" id="menus04" style="cursor: pointer;" th:if="${user.isSuperManage}">
+                <!--<li class="nav-parent nav-active js-cms-menus nav-app" id="menus03" style="cursor: pointer;">-->
+                    <!--<a class="aparent">-->
+                        <!--<i class="icon add"></i>-->
+                        <!--&lt;!&ndash;<i class="fa fa-chevron-circle-right"></i>&ndash;&gt;-->
+                        <!--<span>备份管理</span></a>-->
+                    <!--<ul class="children">-->
+                        <!--<li class="childMenus js-cms-submunes" data-id="menus03" style="cursor: pointer;">-->
+                            <!--<div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>-->
+                            <!--<a th:href="@{/site/siteList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>备份列表<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!-->
+                                <!--</span>-->
+                            <!--</a>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                <!--</li>-->
+                <li class="nav-parent nav-active js-cms-menus nav-app" id="menus03" style="cursor: pointer;" th:if="${user.isSuperManage}">
                     <a class="aparent">
                         <i class="icon add"></i>
                         <!--<i class="fa fa-chevron-circle-right"></i>-->
                         <span>控件主体管理</span></a>
                     <ul class="children">
-                        <li class="childMenus js-cms-submunes" data-id="menus04"  style="cursor: pointer;">
+                        <li class="childMenus js-cms-submunes" data-id="menus03"  style="cursor: pointer;">
                             <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
                             <a th:href="@{/widget/widgetTypeList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>控件类型<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
                                 </span>
                             </a>
                         </li>
-                        <li class="childMenus js-cms-submunes" data-id="menus04" style="cursor: pointer;">
+                        <li class="childMenus js-cms-submunes" data-id="menus03" style="cursor: pointer;">
                             <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
                             <a th:href="@{/widget/widgetMainsList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>控件主体<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
                                 </span>

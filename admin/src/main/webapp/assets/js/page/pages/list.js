@@ -93,7 +93,7 @@ define(function (require, exports, module) {
                 formatter: function (value, rowData) {
                     return "<a href='/customPages/" + rowData.id + "?customerid=" + rowData.customerId + "&siteId=" + $("#siteType").val() + "' target='content'' style='color:#07d;margin-right:5px;margin-left:5px;' title='编辑'>编辑</a>|" +
                         "<a href='javascript:void(0)' class='js-pages-publish'  data-id='"+rowData.id+"' data-publish='true' style='color:#07d;margin-right:5px;margin-left:5px;' title='发布'>发布</a>|" +
-                        "<a href='javascript:void(0)' class='js-pages-remove'  style='color:#07d !important;margin-right:5px;margin-left:5px;' title='删除'>删除</a>"+
+                        "<a href='javascript:void(0)' class='js-pages-delete' data-id='"+rowData.id+"'  style='color:#07d !important;margin-right:5px;margin-left:5px;' title='删除'>删除</a>"+
                         "<a href='javascript:void(0)' class='js-link-open' id='"+rowData.id+"' style='color:#07d !important;margin-right:5px;margin-left:5px;' title='链接'>链接</a>";
                 }
             }

@@ -105,7 +105,7 @@ public class CMSEnums {
         /*
         * 用户ID
         * */
-        UnionID,
+        UserId,
 
         /*
         * 登录用户名

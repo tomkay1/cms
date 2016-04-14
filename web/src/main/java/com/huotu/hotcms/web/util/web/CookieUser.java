@@ -18,20 +18,29 @@ public class CookieUser {
 
 
     /**
-     * * Cookie中读取UnionID
+     * * Cookie中读取UserId
      *
      * */
-    public  String getUnionId(HttpServletRequest request){
-        return  CookieHelper.getCookieVal(request, CMSEnums.MallCookieKeyValue.UnionID.toString());
+    public  String getUserId(HttpServletRequest request){
+        return  CookieHelper.getCookieVal(request, CMSEnums.MallCookieKeyValue.UserId.toString());
     }
 
     /**
-     * 把UnionID放到Cookie中
+     * 把UserId放到Cookie中
      * */
-    public void setUnionID(HttpServletResponse response, String UnionId)
+    public void setUserID(HttpServletResponse response, String UnionId)
     {
-        CookieHelper.setCookie(response,CMSEnums.MallCookieKeyValue.UnionID.toString(),UnionId);
+        CookieHelper.setCookie(response,CMSEnums.MallCookieKeyValue.UserId.toString(),UnionId);
     }
+
+//    /**
+//     * 把userID放到Cookie中
+//     * */
+//    public void userID(HttpServletResponse response, String UnionId)
+//    {
+//        CookieHelper.setCookie(response,CMSEnums.MallCookieKeyValue.UserId.toString(),UnionId);
+//    }
+
 
 
     /**
@@ -40,9 +49,9 @@ public class CookieUser {
     public  boolean checkLogin(HttpServletRequest request)
     {
 
-        String unionId = getUnionId(request);
+        String useId = getUserId(request);
         boolean loginIndex=false;
-        if(unionId!=null&&!"".equals(unionId))
+        if(useId!=null&&!"".equals(useId))
         {
           loginIndex=true;
         }

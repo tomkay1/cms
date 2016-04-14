@@ -1,12 +1,13 @@
 package com.huotu.hotcms.web.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.huotu.hotcms.service.common.PageErrorType;
 import com.huotu.hotcms.service.entity.CustomPages;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.service.CustomPagesService;
 import com.huotu.hotcms.service.thymeleaf.service.RequestService;
 import com.huotu.hotcms.service.thymeleaf.service.SiteResolveService;
-import com.huotu.hotcms.service.widget.model.Goods;
+import com.huotu.hotcms.service.widget.model.GoodsDetail;
 import com.huotu.hotcms.service.widget.service.GoodsDetailService;
 import com.huotu.hotcms.web.util.web.CookieUser;
 import org.apache.commons.logging.Log;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * <p>
@@ -90,9 +92,15 @@ public class ShopController {
         ModelAndView modelAndView = new ModelAndView();
         try{
             modelAndView.addObject("unlogin", cookieUser.checkLogin(request));//未登录为false，登录了则为true
-            Goods goods = goodsDetailService.setGoodsDetail(Integer.valueOf(id));
+            int userId = 0;
+            if(cookieUser.checkLogin(request)){
+                 userId = Integer.valueOf(cookieUser.getUserId(request));
+            }
+            GoodsDetail goods = goodsDetailService.getGoodsDetail(Integer.valueOf(id),userId);
+            Map spec = JSON.parseObject(goods.getSpec(), Map.class);
             modelAndView.setViewName("/template/0/goodsDetail.html");
             modelAndView.addObject("goods",goods);
+            modelAndView.addObject("spec",spec);
 
         }catch (Exception ex){
             log.error(ex);

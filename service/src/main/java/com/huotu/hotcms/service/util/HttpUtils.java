@@ -11,11 +11,14 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.core.convert.Property;
 
 import javax.activation.UnsupportedDataTypeException;
 import javax.servlet.http.HttpServletRequest;
 import java.beans.PropertyDescriptor;
+import java.beans.PropertyEditor;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -129,7 +132,8 @@ public class HttpUtils {
 
     public static <T>T getRequestParam(HttpServletRequest request, Class<T> t) throws Exception{
         T obj = t.newInstance();
-        PropertyDescriptor[] propertyDescriptors = BeanUtils.getPropertyDescriptors(t);
+        BeanWrapper beanWrapper = new BeanWrapperImpl(obj);
+        PropertyDescriptor[] propertyDescriptors = beanWrapper.getPropertyDescriptors();
         for(PropertyDescriptor descriptor : propertyDescriptors) {
             String propertyName = descriptor.getName();
             String paramValue = request.getParameter(propertyName);
@@ -138,13 +142,13 @@ public class HttpUtils {
             }
             Class<?> propertyType = descriptor.getPropertyType();
             if(Double.class == propertyType) {
-                descriptor.setValue(propertyName, Double.parseDouble(paramValue));
+                beanWrapper.setPropertyValue(propertyName,Double.parseDouble(paramValue));
             }else if(Integer.class == propertyType) {
-                descriptor.setValue(propertyName,Integer.parseInt(paramValue));
+                beanWrapper.setPropertyValue(propertyName,Integer.parseInt(paramValue));
             }else if(Long.class == propertyType) {
-                descriptor.setValue(propertyName,Long.parseLong(paramValue));
+                beanWrapper.setPropertyValue(propertyName,Long.parseLong(paramValue));
             }else if(String.class == propertyType) {
-                descriptor.setValue(propertyName,paramValue);
+                beanWrapper.setPropertyValue(propertyName, paramValue);
             }else {
                 throw new UnsupportedDataTypeException("不支持的字段类型");
             }

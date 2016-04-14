@@ -5,9 +5,10 @@
         <dl>
             <dt>品牌公告：</dt>
             <dd class="HOTAnnounceArea">
-                <marquee height="75" style="height: 50px;">
+                <marquee height="75" style="height: 50px;"
+                         th:attr="direction = ${direction==null?'right':direction},scrollamount=${scrollamount==null?5:scrollamount},bgcolor=${bgcolor==null?'#FFFFFF':bgcolor}">
                     <ul>
-                        <li th:utext="${announce==null?'品牌公告':announce}"></li>
+                        <li th:style="'color:' + ${fontColor==null?'#000000':fontColor} + ';font-size:' + ${fontSize==null?'12':fontSize} + 'px;'" th:utext="${announce==null?'品牌公告':announce}"></li>
                     </ul>
                 </marquee>
             </dd>
@@ -50,9 +51,67 @@
     <div class="forms">
         <ul>
             <li>
-                <label style="width: 180px;">公告内容 </label>
+                <label style="width: 110px;">公告内容</label>
                 <textarea rows="3" cols="50" name="announce">[[${announce == null ? '品牌公告':announce}]]</textarea>
+            </li>
+            <li>
+                <label style="width: 110px;">滚动方向</label>
+                <select name="direction" class="select-short" id="direction">
+                    <option value="right" th:selected="${direction== null or direction=='right'}">从左往右</option>
+                    <option value="left" th:selected="${direction=='left'}">从右往左</option>
+                    <option value="up" th:selected="${direction=='up'}">从下往上</option>
+                    <option value="down" th:selected="${direction=='down'}">从上往下</option>
+                </select>
+            </li>
+            <li>
+                <label style="width: 110px;">滚动速度</label>
+                <input type="number" class="text-short" name="scrollamount"
+                       th:value="${scrollamount==null?5:scrollamount}">
+            </li>
+            <li>
+                <label style="width: 110px;">字体大小</label>
+                <input type="number" class="text-short" name="fontSize"
+                       th:value="${fontSize==null?12:fontSize}">
+            </li>
+            <li>
+                <label style="width: 110px;">背景颜色 </label>
+                <input type="text" class="js-hot-color input-normal" id="bgcolor"
+                       th:attr="data-default=${bgcolor==null?'#FFFFFF':bgcolor}" data-default="#FFFFFF" data-input="bgcolor"/>
+                <input type="hidden" class="js-hot-properties" th:value="${bgcolor}" name="bgcolor" style="background: #ffffff;"/>
+            </li>
+            <li>
+                <label style="width: 110px;">字体颜色</label>
+                <input type="text" class="js-hot-color text-normal goodsInput" id="fontColor"
+                       data-default="" data-input="fontColor" th:attr="data-default=${fontColor==null?'#000000':fontColor}"/>
+                <input type="hidden" class="js-hot-properties" th:value="${fontColor}" name="fontColor" style="background: #ffffff;"/>
             </li>
         </ul>
     </div>
+    <script type="application/javascript">
+        var colorModule = {
+            color: function(){
+                var obj = $(".js-hot-color");
+                $.each(obj, function (item, dom) {
+                    var inputValueName = $(dom).data("input");
+                    var defaultColor = $(dom).data("default");
+                    $(dom).spectrum({
+                        allowEmpty: true,
+                        chooseText: "ȷ��",
+                        cancelText: "ȡ��",
+                        color: defaultColor,
+                        preferredFormat: "rgb",
+                        showInitial: false,
+                        showButtons: false,
+                        showInput: true,
+                        width: "120",
+                        change: function (color) {
+                            console.log(color.toHexString());
+                            $("input[name='" + inputValueName + "']").val(color.toHexString());
+                        }
+                    });
+                });
+            }
+        }
+        colorModule.color();
+    </script>
 </div>

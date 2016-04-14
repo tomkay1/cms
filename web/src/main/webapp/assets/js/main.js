@@ -6,8 +6,16 @@ define(function (require, exports, module) {
         widgetTest:function(){
             window.console.log("测试");
         },
+        classification:function(){
+            var obj=$(".js-top-category");
+            if(obj.length > 0){
+                var widget=require("classification");
+                widget.topClassClick();
+            }
+        },
         widgetInit:function(){
             widgetEffect.widgetTest();
+            widgetEffect.classification();
         }
     }
 

@@ -12,6 +12,8 @@ import com.huotu.hotcms.service.thymeleaf.templateresource.WidgetTemplateResourc
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.thymeleaf.IEngineConfiguration;
 import org.thymeleaf.cache.ICacheEntryValidity;
 import org.thymeleaf.cache.NonCacheableCacheEntryValidity;
@@ -21,6 +23,7 @@ import org.thymeleaf.templateresource.ITemplateResource;
 import org.thymeleaf.util.StringUtils;
 import org.thymeleaf.util.Validate;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;

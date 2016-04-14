@@ -76,7 +76,8 @@ public class WidgetTemplateController {
                 widgetBase.setEdit(true);
                 Site site=siteService.getSite(siteId);
                 String html = pageResourceService.getWidgetTemplateResolveByWidgetBase(widgetBase,site);
-                resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), html);
+                widgetBase.setHtml(html);
+                resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), widgetBase);
             }else{
                 resultView = new ResultView(ResultOptionEnum.NOFIND.getCode(), ResultOptionEnum.NOFIND.getValue(), null);
             }

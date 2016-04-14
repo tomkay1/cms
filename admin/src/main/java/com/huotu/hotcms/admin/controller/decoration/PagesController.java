@@ -2,6 +2,7 @@ package com.huotu.hotcms.admin.controller.decoration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.admin.util.web.CookieUser;
+import com.huotu.hotcms.service.common.SiteType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.CustomPages;
 import com.huotu.hotcms.service.entity.Host;
@@ -63,10 +64,15 @@ public class PagesController {
     private HostService hostService;
 
     @RequestMapping("/list")
-    public ModelAndView widgetTypeList(HttpServletRequest request, @RequestParam("customerid") Integer customerid) throws Exception {
+    public ModelAndView pageList(HttpServletRequest request, @RequestParam("customerid") Integer customerid,String scope) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         try {
-            List<Site> siteList = siteRepository.findByCustomerIdAndDeletedAndPersonaliseOrderBySiteIdDesc(customerid, false, true);
+            List<Site> siteList=null;
+            if(scope.equals("shop")){
+                siteList = siteRepository.findByCustomerIdAndDeletedAndPersonaliseAndSiteTypeOrderBySiteIdDesc(customerid, false, true,SiteType.SITE_PC_SHOP);
+            }else{
+                siteList = siteRepository.findByCustomerIdAndDeletedAndPersonaliseAndSiteTypeOrderBySiteIdDesc(customerid, false, true,SiteType.SITE_PC_WEBSITE);
+            }
             modelAndView.addObject("siteList", siteList);
             modelAndView.setViewName("/decoration/pages/list.html");
         } catch (Exception ex) {

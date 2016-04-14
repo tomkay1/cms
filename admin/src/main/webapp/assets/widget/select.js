@@ -36,15 +36,19 @@ define(function (require, exports, module) {
                         success: function (data) {
                             if(data!=null){
                                 if(data.code==200){
-                                    var template=encodeURI(data.data);
+                                    var widgetGuid=data.data.guid;
+                                    var template=encodeURI(data.data.html);
+                                    window.console.log(template);
                                     var widget={
-                                        id:widgetId,
+                                        guid:widgetGuid,//用做唯一标识
+                                        id:widgetId,//控件主体ID跟数据库对应,不能确定唯一
                                         widgetUri:widgetUrl,
                                         widgetEditUri:"",
                                         property:[],
                                         template:template
                                     }
                                     var widgetJson=JSON.stringify(widget)
+                                    window.console.log(widget);
                                     widgetData.saveWidget(widgetJson);
                                 }else if(data.code==404){
                                     widgetData.saveWidget("404");

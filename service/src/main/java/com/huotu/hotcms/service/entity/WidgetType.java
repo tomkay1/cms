@@ -1,5 +1,6 @@
 package com.huotu.hotcms.service.entity;
 
+import com.huotu.hotcms.service.common.ScopesType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,4 +34,10 @@ public class WidgetType {
      */
     @Column(name = "createTime")
     private LocalDateTime createTime;
+
+    /**
+     * 所属场景类型
+     */
+    @Column(name = "scenes")
+    private ScopesType scenes;
 }

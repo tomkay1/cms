@@ -118,7 +118,8 @@ define(function (require, exports, module) {
                             customTemplateUrl: $("#customTemplateUrl").val(),
                             domains: $("#domains").val(),
                             regionId: $("#regionId").val(),
-                            description: $("#description").val()
+                            description: $("#description").val(),
+                            siteType:$("#siteType").val()
                         },
                         type: "POST",
                         dataType: 'json',
@@ -159,6 +160,49 @@ define(function (require, exports, module) {
         },
 
     });
+
+    function selectPersoines(){
+        var obj=$(".js-select-personalise");
+        $.each(obj,function(item,dom){
+            $(dom).change(function(){
+                var id=$(dom).attr("id");
+                if($(dom).is(':checked')){
+                    if(id=="isPersonalise_1"){
+                        $(".js-custome-template").hide();
+                    }else{
+                        $(".js-custome-template").show();
+                        if($("#custom_0").is(':checked')){
+                            changeradio(1)
+                        }else{
+                            changeradio(2);
+                        }
+                    }
+                }
+            })
+        })
+    }
+    function selectTemplateType(){
+        var obj=$(".js-template");
+        $.each(obj,function(item,dom){
+            $(dom).click(function(){
+                var type=$(dom).data('type');
+                changeradio(type);
+            });
+        })
+    }
+    function changeradio(t) {
+        if (t == 1) {//选择是
+            $("#customTemplateUrl").val("");
+            $("#custom_0").val("1");
+            document.getElementById("cUrl").style.display = "";
+        }
+        else {//选择否
+            $("#custom_0").val("0");
+            document.getElementById("cUrl").style.display = "none";
+        }
+    }
+    selectPersoines();
+    selectTemplateType();
 
     //上传图片模块
     var uploadModule = {
@@ -201,15 +245,3 @@ define(function (require, exports, module) {
 
     uploadModule.uploadImg();
 });
-function changeradio(t) {
-    if (t == 1) {//选择是
-        $("#customTemplateUrl").val("");
-        $("#custom_0").val("1");
-        document.getElementById("cUrl").style.display = "";
-    }
-    else {//选择否
-        $("#custom_0").val("0");
-        document.getElementById("cUrl").style.display = "none";
-    }
-
-}

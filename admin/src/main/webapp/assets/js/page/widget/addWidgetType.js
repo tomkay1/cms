@@ -25,7 +25,8 @@ define(function (require, exports, module) {
                 data: {
                     id:$("#hidWidgetTypeID").val(),
                     name: $("#name").val(),
-                    orderWeight: $("#txtOrderWeight").val()
+                    orderWeight: $("#txtOrderWeight").val(),
+                    widgetScopes:$("#widgetScopes").val()
                 },
                 type: "POST",
                 dataType: 'json',
@@ -36,7 +37,6 @@ define(function (require, exports, module) {
                         var index=parseInt(data.code);
                         if(index==200)
                         {
-                            var layer=require("layer");
                             layer.msg("操作成功", {
                                 icon: 1,
                                 time: 2000 //2秒关闭（如果不配置，默认是3秒）

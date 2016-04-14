@@ -1,5 +1,6 @@
 package com.huotu.hotcms.service.repository;
 
+import com.huotu.hotcms.service.common.SiteType;
 import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Site;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -28,4 +29,5 @@ public interface SiteRepository  extends JpaRepository<Site, Long>,JpaSpecificat
 
     List<Site> findByCustomerIdAndDeletedAndPersonaliseOrderBySiteIdDesc(int customerId,Boolean deleted,Boolean Personalise);
 
+    List<Site> findByCustomerIdAndDeletedAndPersonaliseAndSiteTypeOrderBySiteIdDesc(int customerId,Boolean deleted,Boolean Personalise,SiteType siteType);
 }

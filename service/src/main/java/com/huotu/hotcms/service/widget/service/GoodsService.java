@@ -14,6 +14,7 @@ import com.huotu.hotcms.service.widget.model.GoodsSearcher;
 import com.huotu.huobanplus.common.entity.Goods;
 import org.springframework.data.domain.Page;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 
@@ -33,7 +34,7 @@ public interface GoodsService {
      * @param goodsSearcher 检索条件
      * @return
      */
-    GoodsPage searchGoods(int customerId, GoodsSearcher goodsSearcher) throws Exception;
+    GoodsPage searchGoods(HttpServletRequest request,int customerId, GoodsSearcher goodsSearcher) throws Exception;
 
     /**
      * 热销产品
@@ -41,7 +42,7 @@ public interface GoodsService {
      * @param customerId
      * @return
      */
-    List<GoodsModel> getHotGoodsList(int customerId) throws Exception;
+    List<GoodsModel> getHotGoodsList(HttpServletRequest request,int customerId) throws Exception;
 
 
 }

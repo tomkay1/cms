@@ -8,8 +8,10 @@
 
 package com.huotu.hotcms.service.widget.service.impl;
 
+import com.huotu.hotcms.service.common.CMSEnums;
 import com.huotu.hotcms.service.service.HttpService;
 import com.huotu.hotcms.service.util.ApiResult;
+import com.huotu.hotcms.service.util.CookieHelper;
 import com.huotu.hotcms.service.widget.model.GoodsModel;
 import com.huotu.hotcms.service.widget.model.GoodsPage;
 import com.huotu.hotcms.service.widget.model.GoodsSearcher;
@@ -22,7 +24,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.thymeleaf.expression.*;
+import org.thymeleaf.util.ArrayUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -39,12 +45,11 @@ public class GoodsServiceImpl implements GoodsService {
     private HttpService httpService;
     @Autowired
     private GoodsRestRepository goodsRestRepository;
-
     @Autowired
     private UserRestRepository userRestRepository;
 
     @Override
-    public GoodsPage searchGoods(int customerId, GoodsSearcher goodsSearcher) throws Exception{
+    public GoodsPage searchGoods(HttpServletRequest request, int customerId, GoodsSearcher goodsSearcher) throws Exception{
         Sort.Direction direction = getSortDirection(goodsSearcher);
         String[] properties = getSortProperties(goodsSearcher);
         int page = goodsSearcher.getPage()==null ? 0 : goodsSearcher.getPage();
@@ -65,7 +70,7 @@ public class GoodsServiceImpl implements GoodsService {
         goodsPage.setPageNo(goodses.getNumber());
         goodsPage.setTotalPages(goodses.getTotalPages());
         goodsPage.setTotalRecords(goodses.getTotalElements());
-        List<GoodsModel> goodsModels = transGoodsData(goodses);
+        List<GoodsModel> goodsModels = transGoodsData(request,goodses);
         goodsPage.setGoodses(goodsModels);
         return goodsPage;
     }
@@ -94,9 +99,9 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public List<GoodsModel> getHotGoodsList(int customerId) throws Exception{
+    public List<GoodsModel> getHotGoodsList(HttpServletRequest request,int customerId) throws Exception{
         List<Goods> goodses = goodsRestRepository.searchTop10Sales(customerId);
-        List<GoodsModel> goodsModels = transGoodsData(goodses);
+        List<GoodsModel> goodsModels = transGoodsData(request,goodses);
         return goodsModels;
     }
 
@@ -118,10 +123,11 @@ public class GoodsServiceImpl implements GoodsService {
         return params;
     }
 
-    private List<GoodsModel> transGoodsData(Iterable<Goods> goodses) {
+    private List<GoodsModel> transGoodsData(HttpServletRequest request, Iterable<Goods> goodses) throws Exception {
         List<GoodsModel> goodsModels = new ArrayList<>();
         int iterCount = 1;
-        for(Goods goods : goodses) {
+        List<Long> goodsIds = new ArrayList<>();
+        for (Goods goods : goodses) {
             GoodsModel goodsModel = new GoodsModel();
             goodsModel.setId(goods.getId());
             goodsModel.setTitle(goods.getTitle());
@@ -129,20 +135,39 @@ public class GoodsServiceImpl implements GoodsService {
             goodsModel.setSales(goods.getSalesCount());
             goodsModel.setMarketPrice(goods.getMarketPrice());
             goodsModel.setPrice(goods.getPrice());
-            goodsModel.setVipPrice(0);//TODO 等待用户接口
             goodsModel.setThumbnail(goods.getThumbnailPic().getValue());
             goodsModel.setSmallPic(goods.getSmallPic().getValue());
             goodsModel.setBigPic(goods.getBigPic().getValue());
             goodsModel.setIterCount(iterCount);
             goodsModels.add(goodsModel);
-            iterCount ++;
+            goodsIds.add(goods.getId());
+            iterCount++;
+        }
+        if (userLogged(request)) {
+            List<Double[]> vipPrices = getVipPrices(request,goodsIds);
+            setVipPrices(vipPrices,goodsModels);
         }
         return goodsModels;
+    }
+
+    private List<Double[]> getVipPrices(HttpServletRequest request,List<Long> goodsIds) throws Exception{
+        String userId = CookieHelper.getCookieVal(request,CMSEnums.MallCookieKeyValue.UserId.toString());
+        return userRestRepository.goodPrice(Integer.parseInt(userId), goodsIds.toArray(new Long[goodsIds.size()]));
+    }
+
+    private boolean userLogged(HttpServletRequest request) {
+        return !StringUtils.isEmpty(CookieHelper.getCookieVal(request, CMSEnums.MallCookieKeyValue.UserId.toString()));
     }
 
     private ApiResult<String> invokeHotGoodsProce(int customerId) throws Exception{
         Map<String,Object> params = new TreeMap<>();
         params.put("merchantId",customerId);
         return httpService.httpGet_prod("http", "api.open.fancat.cn", 8081, "/goodses/search/findTop10BySales", params);
+    }
+
+    public void setVipPrices(List<Double[]> prices,List<GoodsModel> goodsModels) {
+        for (int i = 0; i < goodsModels.size(); i++) {
+            goodsModels.get(i).setVipPrice(prices.get(i)[0]);
+        }
     }
 }

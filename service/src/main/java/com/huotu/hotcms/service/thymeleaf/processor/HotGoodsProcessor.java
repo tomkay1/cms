@@ -17,6 +17,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.engine.AttributeName;
@@ -25,6 +27,7 @@ import org.thymeleaf.processor.element.AbstractAttributeTagProcessor;
 import org.thymeleaf.processor.element.IElementTagStructureHandler;
 import org.thymeleaf.templatemode.TemplateMode;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +59,8 @@ public class HotGoodsProcessor extends AbstractAttributeTagProcessor {
         List<GoodsModel> goodses = new ArrayList<>();
         try {
             int customerId = ((Site) VariableExpression.getVariable(context, "site")).getCustomerId();
-            goodses = goodsService.getHotGoodsList(customerId);
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+            goodses = goodsService.getHotGoodsList(request,customerId);
         } catch (Exception e) {
             log.error(e.getMessage());
         }

@@ -1,4 +1,4 @@
-package com.huotu.hotcms.web.util.web;
+package com.huotu.hotcms.service.util;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;

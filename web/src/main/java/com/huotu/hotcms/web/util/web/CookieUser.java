@@ -1,6 +1,7 @@
 package com.huotu.hotcms.web.util.web;
 
 import com.huotu.hotcms.service.common.CMSEnums;
+import com.huotu.hotcms.service.util.CookieHelper;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;

@@ -21,6 +21,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.context.IWebContext;
 import org.thymeleaf.dialect.IProcessorDialect;
@@ -62,9 +64,9 @@ public class GoodsPageableTagProcessor extends AbstractAttributeTagProcessor {
         int customerId = ((Site)VariableExpression.getVariable(context, "site")).getCustomerId();
         GoodsPage goodsPage = null;
         try {
-            HttpServletRequest request = ((IWebContext)context).getRequest();
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
             GoodsSearcher goodsSearcher = HttpUtils.getRequestParam(request, GoodsSearcher.class);
-            goodsPage = goodsService.searchGoods(customerId,goodsSearcher);
+            goodsPage = goodsService.searchGoods(request,customerId,goodsSearcher);
             putPageAttrsIntoModel(context,goodsPage);
         }catch (Exception e) {
             log.error(e.getMessage());

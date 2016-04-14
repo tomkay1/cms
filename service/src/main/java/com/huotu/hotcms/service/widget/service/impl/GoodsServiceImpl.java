@@ -19,6 +19,8 @@ import com.huotu.hotcms.service.widget.service.GoodsService;
 import com.huotu.huobanplus.common.entity.Goods;
 import com.huotu.huobanplus.sdk.common.repository.GoodsRestRepository;
 import com.huotu.huobanplus.sdk.common.repository.UserRestRepository;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,6 +32,7 @@ import org.thymeleaf.util.ArrayUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.beans.PropertyDescriptor;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
@@ -48,8 +51,10 @@ public class GoodsServiceImpl implements GoodsService {
     @Autowired
     private UserRestRepository userRestRepository;
 
+    private Log log = LogFactory.getLog(getClass());
+
     @Override
-    public GoodsPage searchGoods(HttpServletRequest request, int customerId, GoodsSearcher goodsSearcher) throws Exception{
+    public GoodsPage searchGoods(HttpServletRequest request, int customerId, GoodsSearcher goodsSearcher){
         Sort.Direction direction = getSortDirection(goodsSearcher);
         String[] properties = getSortProperties(goodsSearcher);
         int page = goodsSearcher.getPage()==null ? 0 : goodsSearcher.getPage();
@@ -57,15 +62,21 @@ public class GoodsServiceImpl implements GoodsService {
             properties == null ?
                     new PageRequest(page,20,direction,"orderWeight") :
                     new PageRequest(page, 20,direction, properties);
-        Page<Goods> goodses = goodsRestRepository.search(customerId,
-                goodsSearcher.getGoodsCatId(),
-                goodsSearcher.getGoodsTypeId(),
-                goodsSearcher.getBrandId(),
-                goodsSearcher.getMinPrice(),
-                goodsSearcher.getMaxPrice(),
-                goodsSearcher.getUserId(),
-                goodsSearcher.getKeyword(),
-                pageRequest);
+        Page<Goods> goodses = null;
+        try {
+            goodses = goodsRestRepository.search(customerId,
+                    goodsSearcher.getGoodsCatId(),
+                    goodsSearcher.getGoodsTypeId(),
+                    goodsSearcher.getBrandId(),
+                    goodsSearcher.getMinPrice(),
+                    goodsSearcher.getMaxPrice(),
+                    goodsSearcher.getUserId(),
+                    goodsSearcher.getKeyword(),
+                    pageRequest);
+        } catch (IOException e) {
+            System.out.println("接口服务不可用");
+            log.error("接口服务不可用");
+        }
         GoodsPage goodsPage = new GoodsPage();
         goodsPage.setPageNo(goodses.getNumber());
         goodsPage.setTotalPages(goodses.getTotalPages());
@@ -123,7 +134,7 @@ public class GoodsServiceImpl implements GoodsService {
         return params;
     }
 
-    private List<GoodsModel> transGoodsData(HttpServletRequest request, Iterable<Goods> goodses) throws Exception {
+    private List<GoodsModel> transGoodsData(HttpServletRequest request, Iterable<Goods> goodses) {
         List<GoodsModel> goodsModels = new ArrayList<>();
         int iterCount = 1;
         List<Long> goodsIds = new ArrayList<>();
@@ -150,9 +161,15 @@ public class GoodsServiceImpl implements GoodsService {
         return goodsModels;
     }
 
-    private List<Double[]> getVipPrices(HttpServletRequest request,List<Long> goodsIds) throws Exception{
+    private List<Double[]> getVipPrices(HttpServletRequest request,List<Long> goodsIds){
         String userId = CookieHelper.getCookieVal(request,CMSEnums.MallCookieKeyValue.UserId.toString());
-        return userRestRepository.goodPrice(Integer.parseInt(userId), goodsIds.toArray(new Long[goodsIds.size()]));
+        try {
+            return userRestRepository.goodPrice(Integer.parseInt(userId), goodsIds.toArray(new Long[goodsIds.size()]));
+        } catch (IOException e) {
+            System.out.println("接口服务不可用");
+            log.error("接口服务不可用");
+        }
+        return null;
     }
 
     private boolean userLogged(HttpServletRequest request) {

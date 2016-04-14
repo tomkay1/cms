@@ -28,11 +28,12 @@ import java.net.URISyntaxException;
 public class RegisterByWeixinImpl implements RegisterByWeixinService {
     @Autowired
     private MallInfoService mallInfoService;
+
     @Override
-    public RegisterWeixinUserData RegisterByWeixin(long customerId, int sex, String nickname, String openid, String city, String country, String province, String headimgurl, String unionid) {
+    public RegisterWeixinUserData RegisterByWeixin(int customerId,WxUser wxUser) {
         RegisterWeixinUserData registerWeixinUserData = null;
         try {
-                 registerWeixinUserData = mallInfoService.registerByWeixin(customerId,sex,nickname,openid,city,country,province,headimgurl,unionid);
+                 registerWeixinUserData = mallInfoService.registerByWeixin(customerId,wxUser.getSex(),wxUser.getNickname(),wxUser.getOpenid(),wxUser.getCity(),wxUser.getCity(),wxUser.getProvince(),wxUser.getHeadimgurl(),wxUser.getUnionid());
             } catch (IOException e) {
             e.printStackTrace();
         }

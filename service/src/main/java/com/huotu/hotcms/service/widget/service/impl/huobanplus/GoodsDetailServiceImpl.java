@@ -1,16 +1,16 @@
 package com.huotu.hotcms.service.widget.service.impl.huobanplus;
 
-import com.google.gson.Gson;
+import com.alibaba.fastjson.JSON;
 import com.huotu.hotcms.service.service.HttpService;
 import com.huotu.hotcms.service.util.ApiResult;
-import com.huotu.hotcms.service.widget.model.JsonModel;
+import com.huotu.hotcms.service.widget.model.GoodsDetail;
 import com.huotu.hotcms.service.widget.service.GoodsDetailService;
-import com.huotu.huobanplus.common.entity.Goods;
+import com.huotu.huobanplus.sdk.common.repository.GoodsRestRepository;
+import com.huotu.huobanplus.sdk.common.repository.UserRestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -24,6 +24,12 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
 
     @Autowired
     private HttpService httpService;
+
+    @Autowired
+    private GoodsRestRepository goodsRestRepository;
+
+    @Autowired
+    private UserRestRepository userRestRepository;
 //
 //    @Override
 //    public Goods getGoodsDetail(int goodsId) throws Exception {
@@ -35,27 +41,22 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
 //        return JSON.parseObject(apiResult.getData(),Goods.class);
 //    }
 
-    @Override
-    public JsonModel getGoodsPrice(int userId, int goodsId) throws Exception {
-        ApiResult<String> apiResult = invokeGoodsPriceProce(userId,goodsId);
-        if(apiResult.getCode()!=200) {
-            throw new Exception(apiResult.getMsg());
-        }
-        return new Gson().fromJson(apiResult.getData(), JsonModel.class);
-    }
+
 
     @Override
-    public com.huotu.hotcms.service.widget.model.Goods setGoodsDetail(int goodsId) throws Exception {
+    public GoodsDetail getGoodsDetail(int goodsId,int userId) throws Exception {
 
-        ApiResult<String> apiResult = invokeGoodsDetailProce(goodsId);
-        if(apiResult.getCode()!=200) {
-            throw new Exception(apiResult.getMsg());
+        com.huotu.huobanplus.common.entity.Goods huobanGoods = goodsRestRepository.getOneByPK(goodsId);
+        GoodsDetail mallGoods = new GoodsDetail();
+        if (userId!=0) {
+            Double[] userPrice = userRestRepository.goodPrice(userId, goodsId);
+            mallGoods.setUserPrice(userPrice);
         }
-        Goods huobanGoods = new Gson().fromJson(apiResult.getData(), (Type) Goods.class);//通过接口获取goods
-        com.huotu.hotcms.service.widget.model.Goods mallGoods = new com.huotu.hotcms.service.widget.model.Goods();
+        huobanGoods.setSpec(JSON.parse(huobanGoods.getSpec()).toString());
         mallGoods.setId(Long.valueOf(goodsId));
-        mallGoods.setTitle(huobanGoods.getTitle());
+        mallGoods.setSpecDescriptions(huobanGoods.getSpecDescriptions());
         mallGoods.setCode(huobanGoods.getCode());
+        mallGoods.setTitle(huobanGoods.getTitle());
         mallGoods.setBrief(huobanGoods.getBrief());
         mallGoods.setCost(huobanGoods.getCost());
         mallGoods.setDisabled(huobanGoods.isDisabled());
@@ -64,6 +65,15 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
         mallGoods.setMarketable(huobanGoods.isMarketable());
         mallGoods.setMarketPrice(huobanGoods.getMarketPrice());
         mallGoods.setTypeId(huobanGoods.getTypeId());
+        if (huobanGoods.getSmallPic() != null) {
+            mallGoods.setSmallPic(huobanGoods.getSmallPic().getValue());
+        }
+        if (huobanGoods.getThumbnailPic() != null) {
+            mallGoods.setThumbnailPic(huobanGoods.getThumbnailPic().getValue());
+        }
+        if (huobanGoods.getBigPic() != null) {
+            mallGoods.setBigPic(huobanGoods.getBigPic().getValue());
+        }
         mallGoods.setThumbnailPic(huobanGoods.getThumbnailPic().getValue());
         mallGoods.setSpec(huobanGoods.getSpec());
         mallGoods.setScenes(huobanGoods.getScenes());
@@ -82,11 +92,10 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
         return httpService.httpGet_prod("http", "api.open.huobanplus.com", null, "/goodses/"+goodsId, params);
     }
 
-    private ApiResult<String> invokeGoodsPriceProce(int userId,int goodsId) throws Exception{
+    private ApiResult<String> invokeGoodsPriceProce(int goodsId,String unionId) throws Exception{
         Map<String,Object> params = new TreeMap<>();
-        params.put("userId",userId);
         params.put("goodsId",goodsId);
-        return httpService.httpGet_prod("http", "api.open.huobanplus.com", null, "/users/[userid]/goodsPrices?goods=1,2,3", params);
+        return httpService.httpGet_prod("http", "api.open.huobanplus.com", null, "/users/"+unionId+"/goodsPrices", params);
     }
 
 }

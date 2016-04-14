@@ -73,7 +73,7 @@ public class WidgetTemplateResource implements ITemplateResource {
             "    <script src=\"/assets/seajs/sea.js\"></script>\n" +
             "    <script src=\"/assets/seajs/config.js\"></script>\n" +
             "</head>\n" +
-            "<body th:style=\"'background-color:'+${pageBackGround}+'; background: url('+${pageBackImage}+')'+((${pageBackRepeat}=='no-repeat')?' no-repeat':(' '+${pageHorizontalDistance}+${pageHorizontalUnit}+' '+${pageVerticalDistance}+${pageVerticalUnit}))\">" +
+            "<body th:style=\"'background-color:'+${pageBackGround}+'; background: url('+${pageBackImage}+')'+((${pageBackRepeat}=='no-repeat')?' no-repeat':(' '+${pageHorizontalDistance}+${pageHorizontalUnit}+' '+${pageVerticalDistance}+${pageVerticalUnit}+' '+${pageBackRepeat}))\">" +
             "%s" +
             "<div class=\"layout-area HOT-layout-add js-layout js-layout-add\" id=\"insertToLayout\">\n" +
             "    <div class=\"layout\">\n" +
@@ -90,11 +90,11 @@ public class WidgetTemplateResource implements ITemplateResource {
             "<head>\n" +
             "    <title>商城首页</title>\n" +
             "    <meta charset=\"UTF-8\" content=\"text/html\"/>\n" +
-            "    <script th:src=\"@{/assets/seajs/sea.js}\"></script>\n" +
-            "    <script th:src=\"@{/assets/seajs/config.js}\"></script>\n" +
+            "    <script th:src=\"@{assets/seajs/sea.js}\"></script>\n" +
+            "    <script th:src=\"@{assets/seajs/config.js}\"></script>\n" +
             "%s\n" +
             "</head>" +
-            "<body th:style=\"'background-color:'+${pageBackGround}+'; background: url('+${pageBackImage}+')'+((${pageBackRepeat}=='no-repeat')?' no-repeat':(' '+${pageHorizontalDistance}+${pageHorizontalUnit}+' '+${pageVerticalDistance}+${pageVerticalUnit}))\">" +
+            "<body th:style=\"'background-color:'+${pageBackGround}+'; background: url('+${pageBackImage}+')'+((${pageBackRepeat}=='no-repeat')?' no-repeat':(' '+${pageHorizontalDistance}+${pageHorizontalUnit}+' '+${pageVerticalDistance}+${pageVerticalUnit}+' '+${pageBackRepeat}))\">" +
             "%s" +
             "<script>seajs.use([\"main\"]);</script>"+
             "</body>" +

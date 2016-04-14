@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class WxUser {
+    private int userId;
     private String openid;
     private int sex;
     private String nickname;

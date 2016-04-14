@@ -9,15 +9,7 @@ import com.huotu.huobanplus.sdk.mall.model.RegisterWeixinUserData;
  */
 
 public interface RegisterByWeixinService {
-    RegisterWeixinUserData RegisterByWeixin(long customerId,
-                                            int sex,
-                                            String nickname,
-                                            String openid,
-                                            String city,
-                                            String country,
-                                            String province,
-                                            String headimgurl,
-                                            String unionid);
+    RegisterWeixinUserData RegisterByWeixin(int customerId,WxUser wxUser);
 
 
     WxUser getWxUser(String url);

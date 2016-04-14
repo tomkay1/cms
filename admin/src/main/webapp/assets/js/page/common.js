@@ -137,5 +137,18 @@ define(["js/jquery-1.9.1.min"],function () {
             });
             return urlRoot;
         },
+        isNumber:function(input) {
+            var re = /^[0-9]+[0-9]*]*$/;
+            if (!re.test(input)) {
+                return false;
+            }
+            return true;
+        },
+        isNull:function(input){
+            if(input==null||input==''){
+                return true;
+            }
+            return false;
+        }
     }
 });

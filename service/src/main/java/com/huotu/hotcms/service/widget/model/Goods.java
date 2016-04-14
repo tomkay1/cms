@@ -9,6 +9,7 @@
 package com.huotu.hotcms.service.widget.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.huotu.huobanplus.common.entity.support.SpecDescriptions;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.rest.core.annotation.Description;

@@ -10,14 +10,21 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.core.convert.Property;
 
+import javax.activation.UnsupportedDataTypeException;
+import javax.servlet.http.HttpServletRequest;
+import java.beans.PropertyDescriptor;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -119,4 +126,31 @@ public class HttpUtils {
         apiResult.setData(EntityUtils.toString(response.getEntity()));
         return apiResult;
     }
+
+    public static <T>T getRequestParam(HttpServletRequest request, Class<T> t) throws Exception{
+        T obj = t.newInstance();
+        PropertyDescriptor[] propertyDescriptors = BeanUtils.getPropertyDescriptors(t);
+        for(PropertyDescriptor descriptor : propertyDescriptors) {
+            String propertyName = descriptor.getName();
+            String paramValue = request.getParameter(propertyName);
+            if(paramValue == null) {
+                continue;
+            }
+            Class<?> propertyType = descriptor.getPropertyType();
+            if(Double.class == propertyType) {
+                descriptor.setValue(propertyName, Double.parseDouble(paramValue));
+            }else if(Integer.class == propertyType) {
+                descriptor.setValue(propertyName,Integer.parseInt(paramValue));
+            }else if(Long.class == propertyType) {
+                descriptor.setValue(propertyName,Long.parseLong(paramValue));
+            }else if(String.class == propertyType) {
+                descriptor.setValue(propertyName,paramValue);
+            }else {
+                throw new UnsupportedDataTypeException("不支持的字段类型");
+            }
+        }
+        return obj;
+    }
+
+
 }

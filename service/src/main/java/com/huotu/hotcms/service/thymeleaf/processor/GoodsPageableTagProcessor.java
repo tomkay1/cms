@@ -10,21 +10,19 @@ package com.huotu.hotcms.service.thymeleaf.processor;
 
 import com.huotu.hotcms.service.common.SysConstant;
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.thymeleaf.expression.DialectAttributeFactory;
 import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
 import com.huotu.hotcms.service.thymeleaf.model.RequestModel;
+import com.huotu.hotcms.service.util.HttpUtils;
 import com.huotu.hotcms.service.util.PageUtils;
 import com.huotu.hotcms.service.widget.model.GoodsPage;
 import com.huotu.hotcms.service.widget.model.GoodsSearcher;
-import com.huotu.hotcms.service.widget.model.JsonModel;
 import com.huotu.hotcms.service.widget.service.GoodsService;
-import com.huotu.huobanplus.common.entity.Goods;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.data.domain.Page;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 import org.thymeleaf.context.ITemplateContext;
+import org.thymeleaf.context.IWebContext;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.engine.AttributeName;
 import org.thymeleaf.model.IProcessableElementTag;
@@ -32,6 +30,7 @@ import org.thymeleaf.processor.element.AbstractAttributeTagProcessor;
 import org.thymeleaf.processor.element.IElementTagStructureHandler;
 import org.thymeleaf.templatemode.TemplateMode;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,7 +62,8 @@ public class GoodsPageableTagProcessor extends AbstractAttributeTagProcessor {
         int customerId = ((Site)VariableExpression.getVariable(context, "site")).getCustomerId();
         GoodsPage goodsPage = null;
         try {
-            GoodsSearcher goodsSearcher = DialectAttributeFactory.getInstance().getForeachParam(tag, GoodsSearcher.class);
+            HttpServletRequest request = ((IWebContext)context).getRequest();
+            GoodsSearcher goodsSearcher = HttpUtils.getRequestParam(request, GoodsSearcher.class);
             goodsPage = goodsService.searchGoods(customerId,goodsSearcher);
             putPageAttrsIntoModel(context,goodsPage);
         }catch (Exception e) {

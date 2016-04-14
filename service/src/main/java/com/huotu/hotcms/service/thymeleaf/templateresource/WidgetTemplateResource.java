@@ -24,10 +24,14 @@ import com.huotu.hotcms.service.widget.service.PageResourceService;
 import jdk.nashorn.internal.runtime.regexp.joni.EncodingHelper;
 import org.apache.commons.vfs2.util.EncryptUtil;
 import org.apache.logging.log4j.core.jmx.Server;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter;
 import org.thymeleaf.ITemplateEngine;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.IContext;
@@ -46,10 +50,13 @@ import java.net.URLEncoder;
  * Created by cwb on 2016/3/16.
  */
 public class WidgetTemplateResource implements ITemplateResource {
+
     private String location;//编辑格式如下{siteId}_{pageConfigName}.shtml
     private final String EDIT_JAVASCRIPT = "<script>seajs.use([\"widgetTooBar\",\"cmsQueue\",\"widgetData\"]);</script>";
     //    private final String EDIT_JAVASCRIPT="<script>seajs.use([\"widgetTooBar\",\"cmsQueue\"]);</script>";
     private final String version = "1.1";
+
+    private HttpServletRequest request;
 
     private String WIDGET_RESOURCES = " " +
             "<link rel=\"stylesheet\" type=\"text/css\" href=\"{PREFIX}/css/mall.base.css?v={version}\"/>\n" +
@@ -83,12 +90,12 @@ public class WidgetTemplateResource implements ITemplateResource {
 
     private String BROWSE_RESOURCES = "<link rel=\"stylesheet\" type=\"text/css\" href=\"{PREFIX}/css/mall.global.css?v={version}\"/>";
 
-    private final String BROWSE_HTML_BOX = "<!DOCTYPE html><html>\n" +
+    private String BROWSE_HTML_BOX = "<!DOCTYPE html><html>\n" +
             "<head>\n" +
             "    <title>商城首页</title>\n" +
             "    <meta charset=\"UTF-8\" content=\"text/html\"/>\n" +
-            "    <script th:src=\"@{assets/seajs/sea.js}\"></script>\n" +
-            "    <script th:src=\"@{assets/seajs/config.js}\"></script>\n" +
+            "    <script src=\"{contentPath}/assets/seajs/sea.js\"></script>\n" +
+            "    <script src=\"{contentPath}/assets/seajs/config.js\"></script>\n" +
             "%s\n" +
             "</head>" +
             "<body th:style=\"'background-color:'+${pageBackGround}+'; background: url('+${pageBackImage}+')'+((${pageBackRepeat}=='no-repeat')?' no-repeat':(' '+${pageHorizontalDistance}+${pageHorizontalUnit}+' '+${pageVerticalDistance}+${pageVerticalUnit}+' '+${pageBackRepeat}))\">" +
@@ -118,6 +125,8 @@ public class WidgetTemplateResource implements ITemplateResource {
 
     public WidgetTemplateResource(final ApplicationContext applicationContext, final String location, final String characterEncoding) {
         super();
+        request=((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        this.BROWSE_HTML_BOX=this.BROWSE_HTML_BOX.replace("{contentPath}",request.getContextPath());
         URI_PREFIX = this.getURI_PREFIX(applicationContext);
         this.applicationContext=applicationContext;
         Validate.notNull(applicationContext, "Application Context cannot be null");

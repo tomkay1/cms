@@ -23,8 +23,8 @@
                     </li>
                 </ul>
                 <div class="s-form" th:if="${showSearch==1}">
-                    <form class="form-body">
-                        <input type="text" class="s-inp" th:value="${defaultKewWord}"  maxlength="60" size="60"/>
+                    <form class="form-body" action="/search">
+                        <input type="text" name="" class="s-inp" th:value="${defaultKewWord}"  maxlength="60" size="60"/>
                         <input type="button" onclick="" value="搜索" class="s-submit"/>
                     </form>
                 </div>

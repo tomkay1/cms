@@ -1,3 +1,4 @@
+<!--classification.html-->
 <!--浏览视图-->
 <div th:class="'fn-clear '+(${templateClass}==null?'jGoodsSort-500284':${templateClass})+' toolhover'"
      th:attr="id=${guid}">
@@ -7,13 +8,13 @@
                 <h2 style="font-weight:normal;font-size:14px;"><span>所有分类</span></h2>
             </div>
             <div class="jOneLevelarea" data-widget-category="category">
-                <div class="jTwoLevel jNoBorderBottm">
-                    <span class="jIconArrow"></span>
-                    <a href="" data-th-text="${category.name}" data-th-attr="title=${category.name}">
+                <div class="jTwoLevel jNoBorderBottm current">
+                    <span class="jIconArrow js-top-category"></span>
+                    <a data-th-text="${category.name}" data-th-attr="title=${category.name}">
                         [[${category.name}]]
                     </a>
                 </div>
-                <div style="display:block" th:attr="bgColor=${bgColor}" th:if="${category.children!=null and category.children.size>0}">
+                <div style="display:none" th:attr="bgColor=${bgColor}" th:if="${category.children!=null and category.children.size>0}" class="js-sub-category">
                     <div th:style="'background-color: '+${bgColor==null?'#ddd':bgColor} + ';'"
                          class="jTwoLevel jNoBorderBottm" data-th-each="child:${category.children}">
                         <a href="" data-th-attr="title=${child.name}">

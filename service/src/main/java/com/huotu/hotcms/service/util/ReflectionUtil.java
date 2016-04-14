@@ -26,9 +26,11 @@ public  class ReflectionUtil {
     public static Map<String,Object> getFieldList(Object o){
         Map<String,Object> map=new HashMap<>();
         try {
-            Field[] fields = o.getClass().getDeclaredFields();
-            for (Field field : fields) {
-                map.put(field.getName(),getFieldValueByName(field.getName(),o));
+            if(o!=null){
+                Field[] fields = o.getClass().getDeclaredFields();
+                for (Field field : fields) {
+                    map.put(field.getName(),getFieldValueByName(field.getName(),o));
+                }
             }
         } catch (Exception e) {
             throw new ExceptionInInitializerError("映射获得失败");

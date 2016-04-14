@@ -24,10 +24,12 @@ import com.huotu.hotcms.service.widget.service.PageResourceService;
 import jdk.nashorn.internal.runtime.regexp.joni.EncodingHelper;
 import org.apache.commons.vfs2.util.EncryptUtil;
 import org.apache.logging.log4j.core.jmx.Server;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter;
 import org.thymeleaf.ITemplateEngine;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.IContext;
@@ -46,6 +48,7 @@ import java.net.URLEncoder;
  * Created by cwb on 2016/3/16.
  */
 public class WidgetTemplateResource implements ITemplateResource {
+
     private String location;//编辑格式如下{siteId}_{pageConfigName}.shtml
     private final String EDIT_JAVASCRIPT = "<script>seajs.use([\"widgetTooBar\",\"cmsQueue\",\"widgetData\"]);</script>";
     //    private final String EDIT_JAVASCRIPT="<script>seajs.use([\"widgetTooBar\",\"cmsQueue\"]);</script>";
@@ -118,6 +121,7 @@ public class WidgetTemplateResource implements ITemplateResource {
 
     public WidgetTemplateResource(final ApplicationContext applicationContext, final String location, final String characterEncoding) {
         super();
+
         URI_PREFIX = this.getURI_PREFIX(applicationContext);
         this.applicationContext=applicationContext;
         Validate.notNull(applicationContext, "Application Context cannot be null");

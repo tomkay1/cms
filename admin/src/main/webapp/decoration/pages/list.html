@@ -18,7 +18,7 @@
 <body>
 <div class="header-app">
     <p class="app-title">
-        <a th:href="@{/page/list?customerid={customerid}(customerid=${user.customerId})}">首页</a><span>&gt;</span><span>页面管理</span>
+        <a th:href="@{/page/list?customerid={customerid}(customerid=${user.customerId},scope=${scope})}">首页</a><span>&gt;</span><span>页面管理</span>
     </p>
 </div>
 <div id="usual1" class="usual" style="margin:10px; padding-top:5px; background: #ffffff;">

@@ -69,31 +69,30 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>是否自定义模板：</th>
-                            <td>
-                                <table id="custom">
-                                    <tbody>
-                                    <tr>
-                                        <td><input id="custom_0" type="radio" name="custom" th:value="${site.custom==true?1:0}" th:checked="${site.custom==true?true:false}" onclick="javascript:changeradio(1)"><label for="custom_0">是</label></td>
-                                        <td><input id="custom_1" type="radio" name="custom" value="0" th:checked="${site.custom==false?true:false}" onclick="javascript:changeradio(2)"><label for="custom_1">否</label></td>
-                                    </tr>
-                                    </tbody></table>
-                            </td>
-                        </tr>
-                        <tr>
                             <th>是否个性化：</th>
                             <td>
                                 <table id="isPersonalise">
                                     <tbody>
                                     <tr>
-                                        <td><input id="isPersonalise_1" type="radio" name="isPersonalise"  th:checked="${site.Personalise==true?true:false}" ><label for="isPersonalise_1">是</label></td>
-                                        <td><input id="isPersonalise_2" type="radio" name="isPersonalise" th:checked="${site.Personalise==false?true:false}" ><label for="isPersonalise_2">否</label></td>
+                                        <td><input id="isPersonalise_1" type="radio" name="isPersonalise" class="js-select-personalise" th:checked="${site.Personalise==true?true:false}" ><label for="isPersonalise_1">是</label></td>
+                                        <td><input id="isPersonalise_2" type="radio" name="isPersonalise" class="js-select-personalise" th:checked="${site.Personalise==false?true:false}" ><label for="isPersonalise_2">否</label></td>
                                     </tr>
                                     </tbody></table>
                             </td>
                         </tr>
-
-                        <tr id ="cUrl" th:style="${site.custom}?'display:':'display:none'">
+                        <tr class="js-custome-template">
+                            <th>是否自定义模板：</th>
+                            <td>
+                                <table id="custom">
+                                    <tbody>
+                                    <tr>
+                                        <td><input id="custom_0" type="radio" class="js-template" name="custom" th:value="${site.custom==true?1:0}" th:checked="${site.custom==true?true:false}" data-type="1"><label for="custom_0">是</label></td>
+                                        <td><input id="custom_1" type="radio"  class="js-template" name="custom" value="0" th:checked="${site.custom==false?true:false}" data-type="2" ><label for="custom_1">否</label></td>
+                                    </tr>
+                                    </tbody></table>
+                            </td>
+                        </tr>
+                        <tr class="js-custome-template" id ="cUrl" th:style="${site.custom}?'display:':'display:none'">
                             <th>自定义模板根路径：</th>
                             <td>
                                 <input name="customTemplateUrl"  id="customTemplateUrl" th:value="${site.customTemplateUrl}" type="text" class="input-normal" placeholder="">
@@ -103,18 +102,29 @@
                             <th>资源根路径：</th>
                             <td>
                                 <input name="resourceUrl"  id="resourceUrl" type="text" class="input-normal" placeholder="" th:value="${site.resourceUrl}">
+                                <span style="color: #CCCCCC">系统中使用到动态数据的资源地址,一般为图片资源,可以不配置,配置一般配置为远程CDN加速服务地址</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>站点类型：</th>
+                            <td>
+                                <select name="siteType" class="input-normal" id="siteType">
+                                    <option value="0" th:each="siteType:${siteTypes}" th:value="${siteType.getCode()}"  th:selected="${site.siteType}!=null?${site.siteType.getCode().toString()}==${siteType.getCode().toString()}" th:text="${siteType.getValue().toString()}"></option>
+                                </select>
                             </td>
                         </tr>
                         <tr>
                             <th>域名：</th>
                             <td>
                                 <input name="domains"  id="domains" type="text" class="input-normal" th:value="${domains}" placeholder="">
+                                <span style="color: #CCCCCC">可以使用多个域名,多个域名请使用","号隔开,并且域名不包含"/"结尾,例如huobanplus.com,www.huobanplus.com</span>
                             </td>
                         </tr>
                         <tr>
                             <th>主推域名：</th>
                             <td>
                                 <input name="homeDomain" th:value="${homeDomain}" id="homeDomain" type="text" class="input-normal" placeholder="">
+                                <span style="color: #CCCCCC">主推域名必须为域名里面的某一个,并且只能设置一个主推域名</span>
                             </td>
                         </tr>
                         <tr>

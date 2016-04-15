@@ -56,4 +56,7 @@ public class WidgetBase {
     private List<WidgetProperty> property;
 
     private Boolean edit;
+
+    @XmlTransient
+    private String html;
 }

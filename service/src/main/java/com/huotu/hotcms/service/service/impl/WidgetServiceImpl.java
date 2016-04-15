@@ -1,5 +1,6 @@
 package com.huotu.hotcms.service.service.impl;
 
+import com.huotu.hotcms.service.common.ScopesType;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.WidgetMains;
 import com.huotu.hotcms.service.entity.WidgetType;
@@ -71,6 +72,11 @@ public class WidgetServiceImpl implements WidgetService {
         return widgetTypes;
     }
 
+    @Override
+    public List<WidgetType> findAllWidgetTypeByNoScopesType(ScopesType scopesType) {
+        List<WidgetType> widgetTypes=widgetTypeRepository.findAllByScopesTypeNot(scopesType.getCode());
+        return widgetTypes;
+    }
 
     @Override
     public void delWidgetType(Long id) {
@@ -117,6 +123,24 @@ public class WidgetServiceImpl implements WidgetService {
         List<WidgetList> widgetList=new ArrayList<>();
         try{
             List<WidgetType> widgetTypeList=findAllWidgetType();
+            for (WidgetType widgetType:widgetTypeList){
+                WidgetList widget=new WidgetList();
+                widget.setName(widgetType.getName());
+                widget.setTypeId(widgetType.getId());
+                widget.setWidgetMainsList(findWidgetMainsByWidgetTypeId(widgetType.getId()));
+                widgetList.add(widget);
+            }
+        }catch (Exception ex){
+            log.error(ex);
+        }
+        return widgetList;
+    }
+
+    @Override
+    public List<WidgetList> findListByNoScopesType(ScopesType scopesType) {
+        List<WidgetList> widgetList=new ArrayList<>();
+        try{
+            List<WidgetType> widgetTypeList=findAllWidgetTypeByNoScopesType(scopesType);
             for (WidgetType widgetType:widgetTypeList){
                 WidgetList widget=new WidgetList();
                 widget.setName(widgetType.getName());

@@ -40,8 +40,9 @@ public class MainController {
     }
 
     @RequestMapping( value = "/decorated")
-    public ModelAndView decorated( @RequestParam("customerid") Integer customerid) throws Exception{
+    public ModelAndView decorated( @RequestParam("customerid") Integer customerid,String scope) throws Exception{
         ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("scope",scope);
         modelAndView.setViewName("/decoration/decorated.html");
         return modelAndView;
     }

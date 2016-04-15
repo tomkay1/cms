@@ -130,7 +130,7 @@ var aElement = new Array();
                         if(layout.module[i].position==widget.layoutPosition){
                             if(layout.module[i].widget!=null&&layout.module[i].widget.length>0){
                                 for(var j=0;j<layout.module[i].widget.length;j++){
-                                    if(layout.module[i].widget[j].id==widget.id){
+                                    if(layout.module[i].widget[j].guid==widget.guid){
                                         layout.module[i].widget[j]=widget;
                                     }
                                 }
@@ -143,10 +143,12 @@ var aElement = new Array();
         },
         /**
          * @breaf 查找布局下面的控件主体是否存在
-         * @param widget
+         * @param layoutId 布局ID
+         * @param position 布局位置
+         * @param widgetGuid 控件主体唯一标识
          * @return widget|-1
          * */
-        findLayoutWdigetByPositionAndWidgetId:function(layoutId,position,widgetId){
+        findLayoutWdigetByPositionAndWidgetId:function(layoutId,position,widgetGuid){
             var layout=JQueue.find(layoutId);
             if(layout!=null&&layout.module!=null){
                 if(layout.module.length>0){
@@ -154,7 +156,7 @@ var aElement = new Array();
                         if(layout.module[i].position==position){
                             if(layout.module[i].widget!=null&&layout.module[i].widget.length>0){
                                 for(var j=0;j<layout.module[i].widget.length;j++){
-                                    if(layout.module[i].widget[j].id==widgetId){
+                                    if(layout.module[i].widget[j].guid==widgetGuid){
                                         return layout.module[i].widget[j];
                                     }
                                 }
@@ -268,6 +270,7 @@ var aElement = new Array();
         },
         /**
          *@brief 队列物理删除
+         * @param id 布局ID
          */
         delete: function (id) {
             for (var i = 0; i < aElement.length; i++) {
@@ -276,6 +279,40 @@ var aElement = new Array();
                         aElement.splice(i, 1);
                     }
                 }
+            }
+        },
+        /**
+         * @brief 删除控件主体信息
+         * @param widget 要删除的控件主体列表
+         * @param widgetGuid 控件主体ID
+         * */
+        deleteWidget:function(widget,widgetGuid){
+            for (var i = 0; i < widget.length; i++) {
+                if (widget[i] != null && widget[i].length != 0 && widget[i].id.length != 0) {
+                    if (widget[i].guid == widgetGuid) {
+                        widget.splice(i, 1);
+                    }
+                }
+            }
+            return widget;
+        },
+        /**
+         * @brief 删除指定的布局对象中的控件主体ID
+         * @param layoutId 布局ID
+         * @param widgetGuid 控件主体唯一标识ID
+         * @param position 控件主体所在的模块位置
+         * */
+        deleteWidgetByLayout:function(layoutId,widgetGuid,position) {
+            var layout = JQueue.find(layoutId);
+            if(layout!=null&&layout.module!=null){
+                if(layout.module.length>0){
+                    for(var i=0;i<layout.module.length;i++){
+                        if(layout.module[i].position==position){
+                            layout.module[i].widget=JQueue.deleteWidget(layout.module[i].widget,widgetGuid);
+                        }
+                    }
+                }
+                JQueue.patchQueue(layout);
             }
         },
         /**

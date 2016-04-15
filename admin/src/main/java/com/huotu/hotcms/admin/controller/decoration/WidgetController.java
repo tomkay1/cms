@@ -3,9 +3,13 @@ package com.huotu.hotcms.admin.controller.decoration;
 import com.huotu.hotcms.admin.common.StringUtil;
 import com.huotu.hotcms.admin.util.web.CookieUser;
 import com.huotu.hotcms.service.common.ConfigInfo;
+import com.huotu.hotcms.service.common.ScopesType;
+import com.huotu.hotcms.service.common.SiteType;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.WidgetMains;
 import com.huotu.hotcms.service.entity.WidgetType;
 import com.huotu.hotcms.service.model.WidgetList;
+import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.service.WidgetService;
 import com.huotu.hotcms.service.util.HttpUtils;
 import com.huotu.hotcms.service.util.PageData;
@@ -50,7 +54,8 @@ public class WidgetController {
     @Autowired
     private WidgetService widgetService;
 
-
+    @Autowired
+    private SiteService siteService;
 
     @RequestMapping("/widgetTypeList")
     public ModelAndView widgetTypeList() throws Exception{
@@ -70,6 +75,7 @@ public class WidgetController {
     @RequestMapping(value = "/addWidgetType")
     public ModelAndView addWidgetType() throws Exception{
         ModelAndView modelAndView=new ModelAndView();
+        modelAndView.addObject("scopeTypes", ScopesType.ConvertMapToEnum());
         modelAndView.setViewName("/decoration/control/addWidgetType.html");
         return  modelAndView;
     }
@@ -140,6 +146,7 @@ public class WidgetController {
         try{
             modelAndView.setViewName("/decoration/control/updateWidgetType.html");
             WidgetType widgetType= widgetService.findWidgetTypeById(id);
+            modelAndView.addObject("scopeTypes", ScopesType.ConvertMapToEnum());
             modelAndView.addObject("widgetType",widgetType);
         }catch (Exception ex){
             log.error(ex.getMessage());
@@ -148,11 +155,19 @@ public class WidgetController {
     }
 
     @RequestMapping("/widgetList")
-    public ModelAndView getWidgetList(){
+    public ModelAndView getWidgetList(Long siteId){
         ModelAndView modelAndView=new ModelAndView();
         try{
+            Site site=siteService.getSite(siteId);
+            List<WidgetList> widgetLists=null;
+            if(site!=null){
+                if(site.getSiteType().equals(SiteType.SITE_PC_SHOP)){
+                    widgetLists= widgetService.findListByNoScopesType(ScopesType.PC_WEBSITE);
+                }else if(site.getSiteType().equals(SiteType.SITE_PC_WEBSITE)){
+                    widgetLists= widgetService.findListByNoScopesType(ScopesType.PC_SHOP);
+                }
+            }
             modelAndView.setViewName("/assets/widget/select.html");
-            List<WidgetList> widgetLists= widgetService.findList();
             modelAndView.addObject("widgetList",widgetLists);
         }catch (Exception ex){
             log.error(ex.getMessage());
@@ -163,9 +178,10 @@ public class WidgetController {
     @RequestMapping(value = "/saveWidgetType",method = RequestMethod.POST)
     @Transactional(value = "transactionManager")
     @ResponseBody
-    public ResultView saveWidgetType(WidgetType widgetType){
+    public ResultView saveWidgetType(WidgetType widgetType,Integer widgetScopes){
         ResultView result=null;
         try {
+            widgetType.setScenes(ScopesType.valueOf(widgetScopes));
             if(widgetType.getId()==null){
                 widgetType.setCreateTime(LocalDateTime.now());
             }

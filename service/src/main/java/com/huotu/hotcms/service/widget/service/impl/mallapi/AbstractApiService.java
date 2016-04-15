@@ -19,6 +19,8 @@ public  abstract class AbstractApiService implements MallApiEnvironmentService {
 
     public String scheme;
 
+    protected String mallHost;
+
     @Override
     public ApiResult<String> HttpGet(String path,Map<String, Object> params) {
         try {
@@ -49,5 +51,10 @@ public  abstract class AbstractApiService implements MallApiEnvironmentService {
             log.error("请求接口失败", e);
             throw new InternalError("请求接口失败");
         }
+    }
+
+    @Override
+    public String getCustomerUri(String domain) {
+        return "http://"+this.mallHost+"."+domain;
     }
 }

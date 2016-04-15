@@ -12,25 +12,32 @@
 </head>
 <body>
 <div class="block">
-    <div class="h">
-        <span class="icon-sprite icon-list"></span>
-        <h3>添加控件类型</h3>
-        <!--<div class="bar">-->
-            <!--<a class="btn-lit" th:href="@{/widget/widgetTypeList?customerid={customerid}(customerid=${user.customerId})}" target="content">-->
-                <!--<span>返回控件类型管理列表</span></a>-->
-        <!--</div>-->
-    </div>
-    <div class="cnt-wp">
+    <!--<div class="h">-->
+        <!--<span class="icon-sprite icon-list"></span>-->
+        <!--<h3>添加控件类型</h3>-->
+        <!--&lt;!&ndash;<div class="bar">&ndash;&gt;-->
+            <!--&lt;!&ndash;<a class="btn-lit" th:href="@{/widget/widgetTypeList?customerid={customerid}(customerid=${user.customerId})}" target="content">&ndash;&gt;-->
+                <!--&lt;!&ndash;<span>返回控件类型管理列表</span></a>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--</div>-->
+    <div class="cnt-wp" style="padding: 10px;">
         <form method="post" id="addWidgetTypeForm">
             <div class="cnt form">
                 <div class="division">
                     <table width="100%" border="0" cellpadding="0" cellspacing="0">
                         <tbody>
-
                         <tr>
                             <th>控件类型名称：</th>
                             <td>
                                 <input name="name" type="text" id="name" maxlength="50" class="input-normal" >
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>选择范畴：</th>
+                            <td>
+                                <select class="input-small" id="widgetScopes" name="widgetScopes">
+                                    <option value="0" th:each="scopeType:${scopeTypes}" th:value="${scopeType.getCode()}" th:text="${scopeType.getValue().toString()}">文章模型</option>
+                                </select>
                             </td>
                         </tr>
                         <tr>

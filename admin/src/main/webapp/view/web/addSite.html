@@ -70,31 +70,30 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>是否自定义模板：</th>
-                        <td>
-                            <table id="custom">
-                                <tbody>
-                                <tr>
-                                    <td><input id="custom_0" type="radio" name="custom" value="1" checked="checked" onclick="javascript:changeradio(1)"><label for="custom_0">是</label></td>
-                                    <td><input id="custom_1" type="radio" name="custom" value="0" onclick="javascript:changeradio(2)"><label for="custom_1">否</label></td>
-                                </tr>
-                                </tbody></table>
-                        </td>
-                    </tr>
-
-                    <tr>
                         <th>是否个性化：</th>
                         <td>
                             <table id="isPersonalise">
                                 <tbody>
                                 <tr>
-                                    <td><input id="isPersonalise_1" type="radio" name="isPersonalise" checked="checked" ><label for="isPersonalise_1">是</label></td>
-                                    <td><input id="isPersonalise_2" type="radio" name="isPersonalise"  ><label for="isPersonalise_2">否</label></td>
+                                    <td><input id="isPersonalise_1" type="radio" class="js-select-personalise" name="isPersonalise" checked="checked" ><label for="isPersonalise_1">是</label></td>
+                                    <td><input id="isPersonalise_2" type="radio"  class="js-select-personalise" name="isPersonalise"  ><label for="isPersonalise_2">否</label></td>
                                 </tr>
                                 </tbody></table>
                         </td>
                     </tr>
-                    <tr id ="cUrl">
+                    <tr class="js-custome-template">
+                        <th>是否自定义模板：</th>
+                        <td>
+                            <table id="custom">
+                                <tbody>
+                                <tr>
+                                    <td><input id="custom_0" class="js-template" data-type="1" type="radio" name="custom" value="1" ><label for="custom_0">是</label></td>
+                                    <td><input id="custom_1" class="js-template" data-type="2" type="radio" name="custom" value="0" checked="checked"  ><label for="custom_1">否</label></td>
+                                </tr>
+                                </tbody></table>
+                        </td>
+                    </tr>
+                    <tr id ="cUrl" class="js-custome-template">
                         <th>自定义模板根路径：</th>
                         <td>
                             <input name="customTemplateUrl"  id="customTemplateUrl" type="text" class="input-normal" placeholder="">
@@ -109,15 +108,25 @@
                         </td>
                     </tr>
                     <tr>
+                        <th>站点类型：</th>
+                        <td>
+                            <select name="siteType" class="input-normal" id="siteType">
+                                <option value="0" th:each="siteType:${siteTypes}" th:value="${siteType.getCode()}" th:text="${siteType.getValue().toString()}"></option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
                         <th>域名：</th>
                         <td>
                             <input name="domains"  id="domains" type="text" class="input-normal" placeholder="">
+                            <span style="color: #CCCCCC">可以使用多个域名,多个域名请使用","号隔开,并且域名不包含"/"结尾,例如huobanplus.com,www.huobanplus.com</span>
                         </td>
                     </tr>
                     <tr>
                         <th>主推域名：</th>
                         <td>
                             <input name="homeDomain"  id="homeDomain" type="text" class="input-normal" placeholder="">
+                            <span style="color: #CCCCCC">主推域名必须为域名里面的某一个,并且只能设置一个主推域名</span>
                         </td>
                     </tr>
                     <tr>

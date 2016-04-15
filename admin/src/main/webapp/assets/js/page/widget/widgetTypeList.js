@@ -20,6 +20,17 @@ define(function (require, exports, module) {
         url: '/widget/getWidgetTypeList',//数据来源Url|通过mobel自定义属性配置
         rows: [
             {width: '30%', field: 'name', title: '类型名称', align: 'center'},
+            {width: '30%', field: 'scenes', title: '范畴类型', align: 'center',
+                formatter:function(value,rowData){
+                    if(value=="COMMON"){
+                        return "公共";
+                    }else if(value=="PC_WEBSITE"){
+                        return "PC官网";
+                    }else if(value=="PC_SHOP"){
+                        return "PC商城"
+                    }
+                }
+            },
             {
                 width: '20%', field: 'createTime', title: '创建时间', align: 'center',
                 formatter: function (value, rowData) {
@@ -77,7 +88,7 @@ define(function (require, exports, module) {
             title: "新增控件类型",
             shadeClose: true,
             shade: 0.8,
-            area: ['900px', '500px'],
+            area: ['600px', '400px'],
             content: "/widget/addWidgetType",
             end:function(){
                 var option={
@@ -101,7 +112,7 @@ define(function (require, exports, module) {
                     title: "修改控件类型",
                     shadeClose: true,
                     shade: 0.8,
-                    area: ['900px', '500px'],
+                    area: ['600px', '400px'],
                     content: "/widget/updateWidgetType?id="+id,
                     end:function(){
                         var option={

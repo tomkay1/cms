@@ -1,6 +1,7 @@
 package com.huotu.hotcms.admin.controller;
 
 import com.huotu.hotcms.admin.util.web.CookieUser;
+import com.huotu.hotcms.service.common.SiteType;
 import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Region;
 import com.huotu.hotcms.service.entity.Site;
@@ -73,6 +74,7 @@ public class SiteController {
         modelAndView.setViewName("/view/web/addSite.html");
         List<Region> regions = regionRepository.findAll();
         modelAndView.addObject("regions", regions);
+        modelAndView.addObject("siteTypes", SiteType.values());
         return modelAndView;
     }
 
@@ -82,11 +84,12 @@ public class SiteController {
     @RequestMapping(value = "/saveSite", method = RequestMethod.POST)
     @Transactional(value = "transactionManager")
     @ResponseBody
-    public ResultView updateSite(Site site, Long regionId, Boolean personalise, String homeDomains, String... domains) {
+    public ResultView updateSite(Site site, Long regionId,Integer siteType, Boolean personalise, String homeDomains, String... domains) {
         ResultView result = null;
         Set<Host> hosts = new HashSet<>();
         site.setPersonalise(personalise);
         Region region = regionRepository.findOne(regionId);
+        site.setSiteType(SiteType.valueOf(siteType));
         Site site2 = null;
         try {
             Long siteId = site.getSiteId();
@@ -149,6 +152,7 @@ public class SiteController {
                         domains = domains + domain + ",";
                     }
                     Region region = site.getRegion();
+                    modelAndView.addObject("siteTypes", SiteType.values());
                     modelAndView.addObject("region", region);
                     modelAndView.addObject("homeDomain",hostService.getHomeDomain(site));
                     modelAndView.addObject("domains", domains.substring(0, domains.length() - 1));

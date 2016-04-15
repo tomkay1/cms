@@ -25,7 +25,8 @@ define(function (require, exports, module) {
                 data: {
                     name: $("#name").val(),
                     id: $("#hidWidgetTypeID").val(),
-                    orderWeight: $("#txtOrderWeight").val()
+                    orderWeight: $("#txtOrderWeight").val(),
+                    widgetScopes:$("#widgetScopes").val()
                 },
                 type: "POST",
                 dataType: 'json',

@@ -276,6 +276,7 @@ define(function (require, exports, module) {
                                     //window.console.log("layoutId--->"+layoutId+"  layoutPosition-->"+layoutPosition);
                                     //window.console.log(widgetObj);
                                     JQueue.putQueueLayoutWidget(layoutId, layoutPosition, widgetObj);
+                                    widgetModule.init();
                                 }
                                 page.widgetEdit();
                             }
@@ -335,16 +336,17 @@ define(function (require, exports, module) {
                 $.each(obj,function(item,dom){
                     $(dom).click(function(){
                         var widgetId=$(dom).data("id");
-                        var widgetBoxId=$(dom).data("for");
+                        var widgetGuid=$(dom).data("for");
                         var layoutId=$(dom).data("layoutid");
                         var layoutPositionIndex=$(dom).data("position");
                         if(typeof layoutId=="undefined"||typeof layoutPositionIndex=='undefined'){
                             layer.msg("控件主体没有具备的布局信息标签[data-layoutid][data-position]");
                             return;
                         }
-                        //window.console.log("layoutId-->"+layoutId+" layoutPositionIndex-->"+layoutPositionIndex+" widgetId-->"+widgetId);
-                        var widget=JQueue.findLayoutWdigetByPositionAndWidgetId(layoutId,layoutPositionIndex,widgetId);//查找队列中改布局下的控件主体对象
-                        //window.console.log(widget);
+                        window.console.log(JQueue.toJson());
+                        window.console.log("layoutId-->"+layoutId+" layoutPositionIndex-->"+layoutPositionIndex+" widgetId-->"+widgetGuid);
+                        var widget=JQueue.findLayoutWdigetByPositionAndWidgetId(layoutId,layoutPositionIndex,widgetGuid);//查找队列中改布局下的控件主体对象
+                        window.console.log(widget);
                         var json=JSON.stringify(widget);
                         widgetData.saveTempWidget(json);//把当前的控件主体的配置信息保存到临时隐藏域中
                         layer.open({
@@ -360,7 +362,7 @@ define(function (require, exports, module) {
                                 var widgetSettingObj=JSON.parse(widgetSettingJson);
                                 //window.console.log(JQueue.toJson())
                                 //window.console.log("layoutId-->"+layoutId+"  layoutPostion-->"+layoutPositionIndex+"  widgetId-->"+widgetId);
-                                var widget=JQueue.findLayoutWdigetByPositionAndWidgetId(layoutId,layoutPositionIndex,widgetId);//查找队列中改布局下的控件主体对象
+                                var widget=JQueue.findLayoutWdigetByPositionAndWidgetId(layoutId,layoutPositionIndex,widgetGuid);//查找队列中改布局下的控件主体对象
                                 if(widget==-1){
                                     layer.msg("没有找到控件主体信息");
                                     return;
@@ -369,7 +371,7 @@ define(function (require, exports, module) {
                                 //window.console.log(widget);
                                 JQueue.patchQueueLayoutWidget(widget)//修改该控件主体到队列中
                                 //window.console.log(widgetSettingJson);
-                                widgetModule.getWidgetBrief(widgetId,widgetBoxId,layoutId,layoutPositionIndex,widgetSettingJson);//获得控件主体预览视图
+                                widgetModule.getWidgetBrief(widgetId,widgetGuid,layoutId,layoutPositionIndex,widgetSettingJson);//获得控件主体预览视图
                             }
                         });
                     })
@@ -411,7 +413,7 @@ define(function (require, exports, module) {
             },
             initPageProperty:function(){
                 if(widgetPageModel!=null) {
-                    $("#pageName").val(widgetPageModel.pageName == null ? "" : widgetPageModel.pageName);
+                    $("#pageName").val(widgetPageModel.pageName == null ? "页面标题" : widgetPageModel.pageName);
                     $("#pageKeyWords").val(widgetPageModel.pageKeyWords == null ? "" : widgetPageModel.pageKeyWords);
                     $("#pageDescription").val(widgetPageModel.pageDescription == null ? "" : widgetPageModel.pageDescription);
 
@@ -510,10 +512,11 @@ define(function (require, exports, module) {
                 page.pageColor();
                 layoutModule.initLayoutBind();
                 page.pageReact();
+                widgetModule.init();
             }
         };
         var widgetModule={
-            getWidgetBrief:function(widgetId,widgetBoxId,layoutId,positionIndex,settingString){
+            getWidgetBrief:function(widgetId,widgetGuid,layoutId,positionIndex,settingString){
                 $.ajax({
                     type: "post",
                     dataType: "json",
@@ -522,13 +525,15 @@ define(function (require, exports, module) {
                         properties:settingString,
                         layoutId:layoutId,
                         layoutPosition:positionIndex,
-                        siteId:siteId
+                        siteId:siteId,
+                        guid:widgetGuid
                     },
                     success: function (data) {
                         if(data!=null){
                             if(data.code==200){
-                                $("#"+widgetBoxId).replaceWith(data.data);
+                                $("#"+widgetGuid).replaceWith(data.data.html);
                                 page.widgetEdit();
+                                widgetModule.init();
                             }else{
                                 layer.msg("解析模版错误");
                             }
@@ -540,6 +545,58 @@ define(function (require, exports, module) {
                         layer.msg("系统或者网络繁忙,请稍候再试...");
                     }
                 });
+            },
+            deleteModule:function(){
+                var obj=$(".js-module-delete");
+                obj.unbind("click");
+                $.each(obj,function(item,dom){
+                    $(dom).click(function(){
+                        var moduleId=$(dom).data('id');
+                        var layoutId=$(dom).data('layoutid');
+                        var layoutPosition=$(dom).data('position');
+                        $("#"+moduleId).remove();
+                        JQueue.deleteWidgetByLayout(layoutId,widgetGuid,layoutPosition);
+                    });
+                });
+            },
+            upModule:function(){
+                var obj=$(".js-module-up");
+                obj.unbind("click");
+                $.each(obj,function(item,dom){
+                    $(dom).click(function(){
+                        var moduleId=$(dom).data('id');
+                        var $this=$("#"+moduleId);
+                        var layoutId=$(dom).data('layoutid');
+                        var layoutPosition=$(dom).data('position');
+                        if ($this.prev() && $this.prev().length>0) {
+                            if($this.prev().hasClass('js-hot-module')){
+                                $this.prev().before($this);
+                            }
+                        }
+                    }) ;
+                });
+            },
+            downModule:function(){
+                var obj=$(".js-module-down");
+                obj.unbind("click");
+                $.each(obj,function(item,dom){
+                    $(dom).click(function(){
+                        var moduleId=$(dom).data('id');
+                        var $this=$("#"+moduleId);
+                        var layoutId=$(dom).data('layoutid');
+                        var layoutPosition=$(dom).data('position');
+                        if ($this.next()&&$this.next().length>0) {
+                            if($this.next().hasClass('js-hot-module')){
+                                $this.next().after($this);
+                            }
+                        }
+                    });
+                });
+            },
+            init:function(){
+                widgetModule.deleteModule();
+                widgetModule.upModule();
+                widgetModule.downModule();
             }
         };
         var layoutModule={

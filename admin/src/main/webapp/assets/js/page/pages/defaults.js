@@ -8,13 +8,14 @@ define(function (require, exports, module) {
 
     var commonUtil = require("common");
     commonUtil.setDisabled("jq-cms-Save");
+    var scope=commonUtil.getQuery("scope");
     var customerId =commonUtil.getQuery("customerId");
 
     var obj=$(".js-cms-defaults");
     $.each(obj,function(item,dom){
         $(dom).click(function(){
             var customerId=$(dom).data("customerid");
-            var urlFormatter=$(dom).data("url");
+            var urlFormatter=$(dom).data("url")+"&scope="+scope;
             var siteId=$("#siteId").val();
             var url=commonUtil.formatString(urlFormatter,customerId,siteId);
             window.location.href=url;

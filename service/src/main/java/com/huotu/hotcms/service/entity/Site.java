@@ -1,5 +1,6 @@
 package com.huotu.hotcms.service.entity;
 
+import com.huotu.hotcms.service.common.SiteType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -118,6 +119,12 @@ public class Site {
      */
     @Column(name = "resourceUrl")
     private String resourceUrl;
+
+    /**
+     * 网站类型(pc 商城or pc shop)
+     * */
+    @Column(name = "siteType")
+    private SiteType siteType;
 
     /**
      * 所属地区

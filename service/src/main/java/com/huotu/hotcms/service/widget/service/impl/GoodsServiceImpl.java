@@ -27,8 +27,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.thymeleaf.expression.*;
-import org.thymeleaf.util.ArrayUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.beans.PropertyDescriptor;
@@ -55,13 +53,9 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public GoodsPage searchGoods(HttpServletRequest request, int customerId, GoodsSearcher goodsSearcher){
-        Sort.Direction direction = getSortDirection(goodsSearcher);
-        String[] properties = getSortProperties(goodsSearcher);
+        Sort sort = getSort(goodsSearcher);
         int page = goodsSearcher.getPage()==null ? 0 : goodsSearcher.getPage();
-        PageRequest pageRequest =
-            properties == null ?
-                    new PageRequest(page,20,direction,"orderWeight") :
-                    new PageRequest(page, 20,direction, properties);
+        PageRequest pageRequest = new PageRequest(page,20,sort);
         Page<Goods> goodses = null;
         try {
             goodses = goodsRestRepository.search(customerId,
@@ -86,28 +80,43 @@ public class GoodsServiceImpl implements GoodsService {
         return goodsPage;
     }
 
-    private String[] getSortProperties(GoodsSearcher goodsSearcher) {
-        String sortStr = goodsSearcher.getSort();
-        if(sortStr == null) {
-            return null;
+    private Sort getSort(GoodsSearcher goodsSearcher) {
+        String[] sortStrArray = goodsSearcher.getSort();
+        if(sortStrArray==null) {
+            new Sort(Sort.Direction.DESC,"orderWeight");
         }
-        String sortDir = sortStr.substring(sortStr.lastIndexOf(",")+1);
-        return isSpecifiedDir(sortDir) ?
-                sortStr.substring(0,sortStr.lastIndexOf(",")).split(",") :sortStr.split(",");
+        List<Sort> sorts = transformSortStrArrayIntoSortList(sortStrArray);
+        return combineSort(sorts);
     }
 
-    private boolean isSpecifiedDir(String sortDir) {
-        return "desc".equals(sortDir) || "asc".equals(sortDir);
+    private List<Sort> transformSortStrArrayIntoSortList(String[] sortStrArray) {
+        List<Sort> sorts = new ArrayList<>();
+        for(String s : sortStrArray) {
+            Sort sort = transformSortStrIntoSort(s);
+            sorts.add(sort);
+        }
+        return sorts;
     }
 
-    private Sort.Direction getSortDirection(GoodsSearcher goodsSearcher) {
-        String sortStr = goodsSearcher.getSort();
-        if(sortStr == null) {
-            return null;
+    private Sort transformSortStrIntoSort(String sortStr) {
+        String[] str = sortStr.split(",");
+        String propertyStr = str[0];
+        String directionStr= str[1];
+        if("desc".endsWith(directionStr)) {
+            return new Sort(Sort.Direction.DESC,propertyStr);
         }
-        String sortDir = sortStr.substring(sortStr.lastIndexOf(",")+1);
-        return "desc".equals(sortDir) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        return new Sort(Sort.Direction.ASC,propertyStr);
     }
+
+    private Sort combineSort(List<Sort> sorts) {
+        Sort sort = sorts.get(0);
+        for(int i=1;i<sorts.size();i++) {
+            sort.and(sorts.get(i));
+        }
+        return sort;
+    }
+
+
 
     @Override
     public List<GoodsModel> getHotGoodsList(HttpServletRequest request,int customerId) throws Exception{

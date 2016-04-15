@@ -81,24 +81,24 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     private Sort getSort(GoodsSearcher goodsSearcher) {
-        String[] sort = goodsSearcher.getSort();
-        if(sort==null) {
+        String[] sortStrArray = goodsSearcher.getSort();
+        if(sortStrArray==null) {
             new Sort(Sort.Direction.DESC,"orderWeight");
         }
-        List<Sort> sorts = transformSortStrArrayIntoSortList(sort);
-        return generateSort(sorts);
+        List<Sort> sorts = transformSortStrArrayIntoSortList(sortStrArray);
+        return combineSort(sorts);
     }
 
     private List<Sort> transformSortStrArrayIntoSortList(String[] sortStrArray) {
         List<Sort> sorts = new ArrayList<>();
         for(String s : sortStrArray) {
-            Sort sort = createSort(s);
+            Sort sort = transformSortStrIntoSort(s);
             sorts.add(sort);
         }
         return sorts;
     }
 
-    private Sort createSort(String sortStr) {
+    private Sort transformSortStrIntoSort(String sortStr) {
         String[] str = sortStr.split(",");
         String propertyStr = str[0];
         String directionStr= str[1];
@@ -108,7 +108,7 @@ public class GoodsServiceImpl implements GoodsService {
         return new Sort(Sort.Direction.ASC,propertyStr);
     }
 
-    private Sort generateSort(List<Sort> sorts) {
+    private Sort combineSort(List<Sort> sorts) {
         Sort sort = sorts.get(0);
         for(int i=1;i<sorts.size();i++) {
             sort.and(sorts.get(i));

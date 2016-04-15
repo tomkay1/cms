@@ -168,6 +168,24 @@ var aElement = new Array();
             return -1;
         },
         /**
+         * @breaf 布局排序,上移
+         * @param currentLayoutId 当前布局ID
+         * @param prevLayoutId 上一个布局ID
+         * */
+        layoutUp:function(currentLayoutId,prevLayoutId){
+            //window.console.log(aElement);
+            //window.console.log("------------------currentLayoutId-->"+currentLayoutId+"  prevLayoutId-->"+prevLayoutId);
+            var currentLayoutIndex=JQueue.findIndex(currentLayoutId);
+            var prevLayoutIdIndex=JQueue.findIndex(prevLayoutId);
+            var currentLayout=JQueue.find(currentLayoutId);
+            var prevLayout=JQueue.find(prevLayoutId);
+            if(currentLayoutIndex!=-1&&prevLayoutIdIndex!=-1){
+                aElement[currentLayoutIndex]=prevLayout;
+                aElement[prevLayoutIdIndex]=currentLayout;
+            }
+            //window.console.log(aElement);
+        },
+        /**
          * @brief: 将队列元素转化为字符串
          * @return: 队列元素字符串
          */
@@ -315,6 +333,90 @@ var aElement = new Array();
                 JQueue.patchQueue(layout);
             }
         },
+        findIndexByWidget:function(widget,widgetGuid){
+            for (var i = 0; i < widget.length; i++) {
+                if (widget[i] != null && widget[i].length != 0 && widget[i].guid.length != 0) {
+                    if (widget[i].guid == widgetGuid) {
+                        return i;
+                    }
+                }
+            }
+            return -1;
+        },
+        findByWidget:function(widget,widgetGuid){
+            for (var i = 0; i < widget.length; i++) {
+                if (widget[i] != null && widget[i].length != 0 && widget[i].guid.length != 0) {
+                    if (widget[i].guid == widgetGuid) {
+                        return widget[i];
+                    }
+                }
+            }
+            return null;
+        },
+        findIndexByWidgetAndLayout:function(layoutId,position,widgetGuid){
+            var layout = JQueue.find(layoutId);
+            if(layout!=null&&layout.module!=null){
+                if(layout.module.length>0){
+                    for(var i=0;i<layout.module.length;i++){
+                        if(layout.module[i].position==position){
+                            var widget=layout.module[i].widget;
+                            return JQueue.findIndexByWidget(widget,widgetGuid);
+                        }
+                    }
+                }
+            }
+            return -1;
+        },
+        /**
+         * @brief 获得控件主体
+         * @param layoutId 布局ID
+         * @param position 所在布局的位置索引
+         * @param widgetGuid 要查找的控件主体唯一标识ID
+         * @return widget对象
+         * */
+        findByWidgetAndLayout:function(layoutId,position,widgetGuid){
+            var layout = JQueue.find(layoutId);
+            if(layout!=null&&layout.module!=null){
+                if(layout.module.length>0){
+                    for(var i=0;i<layout.module.length;i++){
+                        if(layout.module[i].position==position){
+                            var widget=layout.module[i].widget;
+                            return JQueue.findByWidget(widget,widgetGuid);
+                        }
+                    }
+                }
+            }
+            return null;
+        },
+        /**
+         * @brief 布局里面的控件主体排序
+         * @param layoutId 布局ID
+         * @param position 所在布局中的位置索引
+         * @param currentWidgetGuid 当前的控件主体唯一标识ID
+         * @param prevWidgetGuid 要调换位置的控件主体唯一标识ID
+         * */
+        widgetExChangeByLayout:function(layoutId,position,currentWidgetGuid,prevWidgetGuid){
+            var layout = JQueue.find(layoutId);
+            if(layout!=null&&layout.module!=null){
+                if(layout.module.length>0){
+                    for(var i=0;i<layout.module.length;i++){
+                        if(layout.module[i].position==position){
+                            var widget=layout.module[i].widget;
+                            var currentWidgetIndex=JQueue.findIndexByWidgetAndLayout(layoutId,position,currentWidgetGuid);
+                            var prevWidgetIdIndex=JQueue.findIndexByWidgetAndLayout(layoutId,position,prevWidgetGuid);
+                            var currentWidget=JQueue.findByWidgetAndLayout(layoutId,position,currentWidgetGuid);
+                            var prevWidget=JQueue.findByWidgetAndLayout(layoutId,position,prevWidgetGuid);
+                            if(currentWidgetIndex!=-1&&prevWidgetIdIndex!=-1){
+                                widget[currentWidgetIndex]=prevWidget;
+                                widget[prevWidgetIdIndex]=currentWidget;
+                                layout.module[i].widget=widget;
+                            }
+                        }
+                    }
+                }
+            }
+            JQueue.patchQueue(layout);
+        },
         /**
          *@brief 队列假删除,标准删除状态
          */
@@ -344,138 +446,3 @@ var aElement = new Array();
         }
     })
 })(jQuery);
-
-///*
-//* @brief: 定义队列类
-//* @remark:实现队列基本功能
-//*/
-//function Queue() {   //存储元素数组
-//    var aElement = new Array();
-//    /*
-//    * @brief: 元素入队
-//    * @param: vElement元素列表,每个元素(必须包含ID唯一属性)
-//    * @return: 返回当前队列元素个数
-//    * @remark: 1.EnQueue方法参数可以多个
-//    * 2.参数为空时返回-1
-//    */
-//    Queue.prototype.EnQueue = function (vElement)  {
-//        if (arguments.length == 0)
-//            return -1; //元素入队
-//        for (var i = 0; i < arguments.length; i++) {
-//            aElement.push(arguments[i]);
-//        }
-//        return aElement.length;
-//    }
-//    /*
-//    * @brief: 元素出队
-//    * @return: vElement
-//    * @remark: 当队列元素为空时,返回null
-//    */
-//    Queue.prototype.DeQueue = function ()  {
-//        if (aElement.length == 0)
-//            return null;
-//        else
-//            return aElement.shift();
-//    }
-//    /*
-//    * @brief: 获取队列元素个数
-//    * @return: 元素个数
-//    */
-//    Queue.prototype.GetSize = function () {
-//        return aElement.length;
-//    }
-//    /*
-//    * @brief: 返回队头素值
-//    * @return: vElement
-//    * @remark: 若队列为空则返回null
-//    */
-//    Queue.prototype.GetHead = function ()  {
-//        if (aElement.length == 0)
-//            return null;
-//        else
-//            return aElement[0];
-//    }
-//    /*
-//    * @brief: 返回队尾素值
-//    * @return: vElement
-//    * @remark: 若队列为空则返回null
-//    */
-//    Queue.prototype.GetEnd = function ()  {
-//        if (aElement.length == 0)
-//            return null;
-//        else
-//            return aElement[aElement.length - 1];
-//    }
-//    /*
-//    * @brief: 将队列置空
-//    */
-//    Queue.prototype.MakeEmpty = function()  {
-//        aElement.length = 0;
-//    }
-//    /*
-//    * @brief: 判断队列是否为空
-//    * @return: 队列为空返回true,否则返回false
-//    */
-//    Queue.prototype.IsEmpty = function ()  {
-//        if (aElement.length == 0)
-//            return true;
-//        else
-//            return false;
-//    }
-//    /*
-//    * @brief: 将队列元素转化为字符串
-//    * @return: 队列元素字符串
-//    */
-//    Queue.prototype.toString = function ()  {
-//        var sResult = (aElement.reverse()).toString();
-//        aElement.reverse()
-//        return sResult;
-//    }
-//    /*
-//   *@brief:根据队列唯一ID来修改该队列元素信息
-//   *@param: id(队列元素的唯一标识)
-//   *@return:返回队列修改后的元素
-//   */
-//    Queue.prototype.FindIndex = function (id) {
-//        for (var i = 0; i < aElement.length; i++)
-//        {
-//            if (aElement[i].length != 0 && aElement[i].ID.length != 0)
-//            {
-//                if (aElement[i].ID == id)
-//                {
-//                    return i;
-//                }
-//            }
-//        }
-//        return -1;
-//    }
-//    /*
-//      *@brief:根据队列唯一ID来修改该队列元素信息
-//      *@param: id(队列元素的唯一标识)
-//      *@return:返回队列修改后的元素
-//      */
-//    Queue.prototype.Find= function (id) {
-//        for (var i = 0; i < aElement.length; i++) {
-//            if (aElement[i].length != 0 && aElement[i].ID.length != 0) {
-//                if (aElement[i].ID == id) {
-//                    return aElement[i];
-//                }
-//            }
-//        }
-//        return null;
-//    }
-//    /*
-//    *@brief:根据队列唯一ID来修改该队列元素信息
-//    *@param: vElement元素(必须包含ID唯一属性)
-//    *@return:返回队列修改后的元素
-//    */
-//    Queue.prototype.PatchQueue = function (vElement) {
-//        if (vElement.length == 0 || vElement.ID.length)
-//            return null;
-//        else {
-//            var Index = this.FindIndex(vElement.ID);
-//            aElement[Index] = vElement;
-//            return aElement[Index];
-//        }
-//    }
-//}

@@ -458,6 +458,7 @@ define(function (require, exports, module) {
                 });
             },
             pageInitHeader:function(){
+                var index = layer.load(1, {shade: false}); //0代表加载的风格，支持0-2
                 var pageEnabledHead=$("#pageEnableHead").is(':checked');
                 if(pageEnabledHead.toString()=='true'&&configName!="head"){
                     $.ajax({
@@ -482,8 +483,10 @@ define(function (require, exports, module) {
                             }else{
                                 layer.msg("服务器繁忙,请稍后再试...");
                             }
+                            layer.close(index);
                         },error:function(){
                             layer.msg("服务器繁忙,请稍后再试...");
+                            layer.close(index);
                         }
                     });
                 }
@@ -551,11 +554,11 @@ define(function (require, exports, module) {
                 obj.unbind("click");
                 $.each(obj,function(item,dom){
                     $(dom).click(function(){
-                        var moduleId=$(dom).data('id');
-                        var layoutId=$(dom).data('layoutid');
-                        var layoutPosition=$(dom).data('position');
-                        $("#"+moduleId).remove();
-                        JQueue.deleteWidgetByLayout(layoutId,widgetGuid,layoutPosition);
+                        var moduleGuid=$(dom).data('id');//控件主体唯一标识ID
+                        var layoutId=$(dom).data('layoutid');//布局唯一ID
+                        var layoutPosition=$(dom).data('position');//控件主体所在布局的位置信息
+                        $("#"+moduleGuid).remove();
+                        JQueue.deleteWidgetByLayout(layoutId,moduleGuid,layoutPosition);
                     });
                 });
             },
@@ -570,7 +573,11 @@ define(function (require, exports, module) {
                         var layoutPosition=$(dom).data('position');
                         if ($this.prev() && $this.prev().length>0) {
                             if($this.prev().hasClass('js-hot-module')){
+                                //window.console.log("prevId-->"+$this.prev().attr('id')+"  localId-->"+$this.attr("id"));
+                                var currentWidgetId = $this.attr("id"),
+                                    prevWidgetId = $this.prev().attr("id");
                                 $this.prev().before($this);
+                                JQueue.widgetExChangeByLayout(layoutId,layoutPosition,currentWidgetId, prevWidgetId);
                             }
                         }
                     }) ;
@@ -587,7 +594,10 @@ define(function (require, exports, module) {
                         var layoutPosition=$(dom).data('position');
                         if ($this.next()&&$this.next().length>0) {
                             if($this.next().hasClass('js-hot-module')){
+                                var currentWidgetId = $this.attr("id"),
+                                    prevWidgetId = $this.next().attr("id");
                                 $this.next().after($this);
+                                JQueue.widgetExChangeByLayout(layoutId,layoutPosition,currentWidgetId, prevWidgetId);
                             }
                         }
                     });
@@ -624,8 +634,11 @@ define(function (require, exports, module) {
                        var layoutId=$(dom).data('id');
                        var $this=$("#"+layoutId);
                        if ($this.prev() && $this.prev().length>0) {
-                           if($this.prev().hasClass('js-hot-layout')){
+                           if($this.prev().hasClass('js-hot-layout')) {
+                               var currentLayoutId = $this.attr("id"),
+                                   prevLayoutId = $this.prev().attr("id");
                                $this.prev().before($this);
+                               JQueue.layoutUp(currentLayoutId, prevLayoutId);
                            }
                        }
                    }) ;
@@ -641,6 +654,9 @@ define(function (require, exports, module) {
                        if ($this.next()&&$this.next().length>0) {
                            if($this.next().hasClass('js-hot-layout')){
                                $this.next().after($this);
+                               var currentLayoutId = $this.attr("id"),
+                                   prevLayoutId = $this.prev().attr("id");
+                               JQueue.layoutUp(currentLayoutId, prevLayoutId);
                            }
                        }
                    });

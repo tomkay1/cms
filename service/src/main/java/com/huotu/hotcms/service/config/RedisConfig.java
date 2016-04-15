@@ -13,8 +13,10 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -27,17 +29,13 @@ import redis.clients.jedis.JedisPoolConfig;
  * Created by cwb on 2016/3/30.
  */
 @Configuration
-@Profile("prod")
+@Profile("container")
 public class RedisConfig {
 
     private Log log = LogFactory.getLog(getClass());
 
     @Autowired
     private Environment env;
-    @Autowired
-    private JedisConnectionFactory jedisConnectionFactory;
-    @Autowired
-    private JedisPoolConfig jedisPoolConfig;
 
     private String hostName;
     private String password;
@@ -59,9 +57,16 @@ public class RedisConfig {
                 "jedisPool: /n databaseIndex:"+dbIndex+" maxTotal:"+maxTotal+" maxIdle:"+maxIdle+" maxWait:"+maxWait);
     }
 
+
     @Bean
-    public JedisConnectionFactory jedisConnectionFactory() {
-        init();
+    public RedisTemplate<String, Object> redisTemplate() {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(createJedisConnectionFactory());
+        redisTemplate.setDefaultSerializer(new StringRedisSerializer());
+        return redisTemplate;
+    }
+
+    private RedisConnectionFactory createJedisConnectionFactory() {
         JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
         jedisConnectionFactory.setHostName(hostName);
         if(!StringUtils.isEmpty(password)) {
@@ -69,25 +74,18 @@ public class RedisConfig {
         }
         jedisConnectionFactory.setDatabase(dbIndex);
         jedisConnectionFactory.setPort(port);
-        jedisConnectionFactory.setPoolConfig(jedisPoolConfig);
+
+        jedisConnectionFactory.setPoolConfig(setJedisPoolConfig());
         return jedisConnectionFactory;
     }
 
-    @Bean
-    public JedisPoolConfig jedisPoolConfig() {
+    private JedisPoolConfig setJedisPoolConfig() {
+        init();
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         jedisPoolConfig.setMaxTotal(maxTotal);
         jedisPoolConfig.setMaxWaitMillis(maxWait);
         jedisPoolConfig.setMaxIdle(maxIdle);
         return jedisPoolConfig;
-    }
-
-    @Bean
-    public RedisTemplate<String, Object> redisTemplate() {
-        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(jedisConnectionFactory);
-        redisTemplate.setDefaultSerializer(new StringRedisSerializer());
-        return redisTemplate;
     }
 
 }

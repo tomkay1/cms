@@ -343,9 +343,10 @@ define(function (require, exports, module) {
                             layer.msg("控件主体没有具备的布局信息标签[data-layoutid][data-position]");
                             return;
                         }
-                        //window.console.log("layoutId-->"+layoutId+" layoutPositionIndex-->"+layoutPositionIndex+" widgetId-->"+widgetId);
+                        window.console.log(JQueue.toJson());
+                        window.console.log("layoutId-->"+layoutId+" layoutPositionIndex-->"+layoutPositionIndex+" widgetId-->"+widgetGuid);
                         var widget=JQueue.findLayoutWdigetByPositionAndWidgetId(layoutId,layoutPositionIndex,widgetGuid);//查找队列中改布局下的控件主体对象
-                        //window.console.log(widget);
+                        window.console.log(widget);
                         var json=JSON.stringify(widget);
                         widgetData.saveTempWidget(json);//把当前的控件主体的配置信息保存到临时隐藏域中
                         layer.open({
@@ -412,7 +413,7 @@ define(function (require, exports, module) {
             },
             initPageProperty:function(){
                 if(widgetPageModel!=null) {
-                    $("#pageName").val(widgetPageModel.pageName == null ? "" : widgetPageModel.pageName);
+                    $("#pageName").val(widgetPageModel.pageName == null ? "页面标题" : widgetPageModel.pageName);
                     $("#pageKeyWords").val(widgetPageModel.pageKeyWords == null ? "" : widgetPageModel.pageKeyWords);
                     $("#pageDescription").val(widgetPageModel.pageDescription == null ? "" : widgetPageModel.pageDescription);
 
@@ -524,7 +525,8 @@ define(function (require, exports, module) {
                         properties:settingString,
                         layoutId:layoutId,
                         layoutPosition:positionIndex,
-                        siteId:siteId
+                        siteId:siteId,
+                        guid:widgetGuid
                     },
                     success: function (data) {
                         if(data!=null){
@@ -553,7 +555,7 @@ define(function (require, exports, module) {
                         var layoutId=$(dom).data('layoutid');
                         var layoutPosition=$(dom).data('position');
                         $("#"+moduleId).remove();
-                        JQueue.delete(moduleId);
+                        JQueue.deleteWidgetByLayout(layoutId,widgetGuid,layoutPosition);
                     });
                 });
             },

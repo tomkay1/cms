@@ -302,7 +302,7 @@ var aElement = new Array();
          * @param widgetGuid 控件主体唯一标识ID
          * @param position 控件主体所在的模块位置
          * */
-        deleteWidget:function(layoutId,widgetGuid,position) {
+        deleteWidgetByLayout:function(layoutId,widgetGuid,position) {
             var layout = JQueue.find(layoutId);
             if(layout!=null&&layout.module!=null){
                 if(layout.module.length>0){

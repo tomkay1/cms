@@ -21,5 +21,6 @@ public class LocalApiService extends  AbstractApiService  {
     public void setWebApplicationContext(WebApplicationContext context){
         this.serviceHost="devmallapi.huobanj.cn/";
         this.scheme="http";
+        this.mallHost="huobanj.cn";
     }
 }

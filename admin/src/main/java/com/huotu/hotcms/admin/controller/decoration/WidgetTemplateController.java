@@ -56,7 +56,7 @@ public class WidgetTemplateController {
 
     @RequestMapping(value = "/{id}",method = RequestMethod.POST)
     @ResponseBody
-    public ResultView getWidgetTemplate(@PathVariable("id") Long id,String layoutId,String layoutPosition,Long siteId, String properties) {
+    public ResultView getWidgetTemplate(@PathVariable("id") Long id,String layoutId,String guid,String layoutPosition,Long siteId, String properties) {
         ResultView resultView = null;
         try {
             List<WidgetProperty> properties1=null;
@@ -67,7 +67,11 @@ public class WidgetTemplateController {
             if(widgetMains!=null&&null!=widgetMains.getResourceUri()) {
                 WidgetBase widgetBase = new WidgetBase();
                 widgetBase.setId(id);
-                widgetBase.setGuid(UUID.randomUUID().toString());
+                if(guid==null||guid==""){
+                    widgetBase.setGuid(UUID.randomUUID().toString());
+                }else {
+                    widgetBase.setGuid(guid);
+                }
                 widgetBase.setLayoutId(layoutId);
                 widgetBase.setLayoutPosition(layoutPosition);
                 widgetBase.setWidgetUri(widgetMains.getResourceUri());
@@ -90,7 +94,7 @@ public class WidgetTemplateController {
 
     @RequestMapping("/edit/{id}")
     @ResponseBody
-    public ResultView getWidgetEditTemplate(@PathVariable("id") Long id,String layoutId,String layoutPosition, String properties){
+    public ResultView getWidgetEditTemplate(@PathVariable("id") Long id,String layoutId,String guid,String layoutPosition, String properties){
         ResultView resultView = null;
         try {
             List<WidgetProperty> widgetProperties=null;
@@ -102,6 +106,7 @@ public class WidgetTemplateController {
                 WidgetBase widgetBase = new WidgetBase();
                 widgetBase.setId(id);
                 widgetBase.setLayoutId(layoutId);
+
                 widgetBase.setGuid(UUID.randomUUID().toString());
                 widgetBase.setLayoutPosition(layoutPosition);
                 widgetBase.setWidgetUri(widgetMains.getResourceUri());

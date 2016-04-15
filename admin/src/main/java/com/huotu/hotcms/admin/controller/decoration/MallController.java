@@ -1,7 +1,6 @@
 package com.huotu.hotcms.admin.controller.decoration;
 
 import com.huotu.hotcms.service.util.ApiResult;
-import com.huotu.hotcms.service.util.ResultView;
 import com.huotu.hotcms.service.widget.service.MallApiEnvironmentService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

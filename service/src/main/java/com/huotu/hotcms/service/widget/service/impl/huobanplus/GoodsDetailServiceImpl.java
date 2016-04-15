@@ -1,8 +1,8 @@
 package com.huotu.hotcms.service.widget.service.impl.huobanplus;
 
 import com.alibaba.fastjson.JSON;
+import com.huotu.hotcms.service.common.ConfigInfo;
 import com.huotu.hotcms.service.service.HttpService;
-import com.huotu.hotcms.service.util.ApiResult;
 import com.huotu.hotcms.service.widget.model.GoodsDetail;
 import com.huotu.hotcms.service.widget.service.GoodsDetailService;
 import com.huotu.huobanplus.sdk.common.repository.GoodsRestRepository;
@@ -13,9 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * 商品详情
@@ -35,17 +34,9 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
 
     @Autowired
     private UserRestRepository userRestRepository;
-//
+    @Autowired
+    private ConfigInfo configInfo;
 
-//    @Override
-//    public Goods getGoodsDetail(int goodsId) throws Exception {
-//
-//        ApiResult<String> apiResult = invokeGoodsDetailProce(goodsId);
-//        if(apiResult.getCode()!=200) {
-//            throw new Exception(apiResult.getMsg());
-//        }
-//        return JSON.parseObject(apiResult.getData(),Goods.class);
-//    }
 
 
 
@@ -103,18 +94,17 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
         return mallGoods;
     }
 
+    @Override
+    public String getGoodsWxUrl(HttpServletRequest request, Long goodsId) {
+        String remotePort = "";
+        if(request.getLocalPort()!=80){
+            remotePort = "%3A"+request.getLocalPort() ;//获取端口号
+        }
 
-
-    private ApiResult<String> invokeGoodsDetailProce(int goodsId) throws Exception{
-        Map<String,Object> params = new TreeMap<>();
-        params.put("goodsId",goodsId);
-        return httpService.httpGet_prod("http", "api.open.huobanplus.com", null, "/goodses/"+goodsId, params);
+        String appid = configInfo.getAppid();
+        String url = "https://open.weixin.qq.com/connect/qrconnect?appid="+appid+"&redirect_uri=http%3A%2F%2F"+request.getServerName()+remotePort+"%2Ffront%2Fbind%2Fcallback%2F&response_type=code&scope=snsapi_login&state=" + goodsId;
+        return url;
     }
 
-    private ApiResult<String> invokeGoodsPriceProce(int goodsId,String unionId) throws Exception{
-        Map<String,Object> params = new TreeMap<>();
-        params.put("goodsId",goodsId);
-        return httpService.httpGet_prod("http", "api.open.huobanplus.com", null, "/users/"+unionId+"/goodsPrices", params);
-    }
 
 }

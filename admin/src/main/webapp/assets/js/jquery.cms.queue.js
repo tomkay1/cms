@@ -168,6 +168,24 @@ var aElement = new Array();
             return -1;
         },
         /**
+         * @breaf 布局排序,上移
+         * @param currentLayoutId 当前布局ID
+         * @param prevLayoutId 上一个布局ID
+         * */
+        layoutUp:function(currentLayoutId,prevLayoutId){
+            //window.console.log(aElement);
+            //window.console.log("------------------currentLayoutId-->"+currentLayoutId+"  prevLayoutId-->"+prevLayoutId);
+            var currentLayoutIndex=JQueue.findIndex(currentLayoutId);
+            var prevLayoutIdIndex=JQueue.findIndex(prevLayoutId);
+            var currentLayout=JQueue.find(currentLayoutId);
+            var prevLayout=JQueue.find(prevLayoutId);
+            if(currentLayoutIndex!=-1&&prevLayoutIdIndex!=-1){
+                aElement[currentLayoutIndex]=prevLayout;
+                aElement[prevLayoutIdIndex]=currentLayout;
+            }
+            //window.console.log(aElement);
+        },
+        /**
          * @brief: 将队列元素转化为字符串
          * @return: 队列元素字符串
          */
@@ -314,6 +332,94 @@ var aElement = new Array();
                 }
                 JQueue.patchQueue(layout);
             }
+        },
+        findIndexByWidget:function(widget,widgetGuid){
+            for (var i = 0; i < widget.length; i++) {
+                if (widget[i] != null && widget[i].length != 0 && widget[i].guid.length != 0) {
+                    if (widget[i].guid == widgetGuid) {
+                        return i;
+                    }
+                }
+            }
+            return -1;
+        },
+        findByWidget:function(widget,widgetGuid){
+            for (var i = 0; i < widget.length; i++) {
+                if (widget[i] != null && widget[i].length != 0 && widget[i].guid.length != 0) {
+                    if (widget[i].guid == widgetGuid) {
+                        return widget[i];
+                    }
+                }
+            }
+            return null;
+        },
+        findIndexByWidgetAndLayout:function(layoutId,position,widgetGuid){
+            var layout = JQueue.find(layoutId);
+            if(layout!=null&&layout.module!=null){
+                if(layout.module.length>0){
+                    for(var i=0;i<layout.module.length;i++){
+                        if(layout.module[i].position==position){
+                            var widget=layout.module[i].widget;
+                            return JQueue.findIndexByWidget(widget,widgetGuid);
+                        }
+                    }
+                }
+            }
+            return -1;
+        },
+        /**
+         * @brief 获得控件主体
+         * @param layoutId 布局ID
+         * @param position 所在布局的位置索引
+         * @param widgetGuid 要查找的控件主体唯一标识ID
+         * @return widget对象
+         * */
+        findByWidgetAndLayout:function(layoutId,position,widgetGuid){
+            var layout = JQueue.find(layoutId);
+            if(layout!=null&&layout.module!=null){
+                if(layout.module.length>0){
+                    for(var i=0;i<layout.module.length;i++){
+                        if(layout.module[i].position==position){
+                            var widget=layout.module[i].widget;
+                            return JQueue.findByWidget(widget,widgetGuid);
+                        }
+                    }
+                }
+            }
+            return null;
+        },
+        /**
+         * @brief 布局里面的控件主体排序
+         * @param layoutId 布局ID
+         * @param position 所在布局中的位置索引
+         * @param currentWidgetGuid 当前的控件主体唯一标识ID
+         * @param prevWidgetGuid 要调换位置的控件主体唯一标识ID
+         * */
+        widgetExChangeByLayout:function(layoutId,position,currentWidgetGuid,prevWidgetGuid){
+            //window.console.log("layoutId-->"+layoutId+" position-->"+position+" currentWidgetGuid-->"+currentWidgetGuid+" preWigetGuid-->"+prevWidgetGuid);
+            var layout = JQueue.find(layoutId);
+            window.console.log(layout);
+            if(layout!=null&&layout.module!=null){
+                if(layout.module.length>0){
+                    for(var i=0;i<layout.module.length;i++){
+                        if(layout.module[i].position==position){
+                            var widget=layout.module[i].widget;
+                            var currentWidgetIndex=JQueue.findIndexByWidgetAndLayout(layoutId,position,currentWidgetGuid);
+                            var prevWidgetIdIndex=JQueue.findIndexByWidgetAndLayout(layoutId,position,prevWidgetGuid);
+                            var currentWidget=JQueue.findByWidgetAndLayout(layoutId,position,currentWidgetGuid);
+                            var prevWidget=JQueue.findByWidgetAndLayout(layoutId,position,prevWidgetGuid);
+                            //window.console.log("currentWidgetGuid-->"+currentWidgetGuid+" prevWidgetGuid-->"+prevWidgetGuid);
+                            //window.console.log("currentWidgetIndex-->"+currentWidgetIndex+" preWidgetIdIndex-->"+prevWidgetIdIndex);
+                            if(currentWidgetIndex!=-1&&prevWidgetIdIndex!=-1){
+                                widget[currentWidgetIndex]=prevWidget;
+                                widget[prevWidgetIdIndex]=currentWidget;
+                                layout.module[i].widget=widget;
+                            }
+                        }
+                    }
+                }
+            }
+            JQueue.patchQueue(layout);
         },
         /**
          *@brief 队列假删除,标准删除状态

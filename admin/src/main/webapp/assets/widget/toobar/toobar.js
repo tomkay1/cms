@@ -458,6 +458,7 @@ define(function (require, exports, module) {
                 });
             },
             pageInitHeader:function(){
+                var index = layer.load(1, {shade: false}); //0代表加载的风格，支持0-2
                 var pageEnabledHead=$("#pageEnableHead").is(':checked');
                 if(pageEnabledHead.toString()=='true'&&configName!="head"){
                     $.ajax({
@@ -482,8 +483,10 @@ define(function (require, exports, module) {
                             }else{
                                 layer.msg("服务器繁忙,请稍后再试...");
                             }
+                            layer.close(index);
                         },error:function(){
                             layer.msg("服务器繁忙,请稍后再试...");
+                            layer.close(index);
                         }
                     });
                 }

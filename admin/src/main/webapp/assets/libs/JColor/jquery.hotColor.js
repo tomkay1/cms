@@ -6,8 +6,8 @@ var jHotColor={
             var defaultColor = $(dom).data("default");
             $(dom).spectrum({
                 allowEmpty: true,
-                chooseText: "ȷ��",
-                cancelText: "ȡ��",
+                chooseText: "确定",
+                cancelText: "取消",
                 color: defaultColor,
                 preferredFormat: "rgb",
                 showInitial: false,

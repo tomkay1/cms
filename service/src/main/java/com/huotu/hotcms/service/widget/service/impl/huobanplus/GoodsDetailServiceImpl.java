@@ -1,6 +1,7 @@
 package com.huotu.hotcms.service.widget.service.impl.huobanplus;
 
 import com.alibaba.fastjson.JSON;
+import com.huotu.hotcms.service.common.ConfigInfo;
 import com.huotu.hotcms.service.service.HttpService;
 import com.huotu.hotcms.service.widget.model.GoodsDetail;
 import com.huotu.hotcms.service.widget.service.GoodsDetailService;
@@ -33,17 +34,9 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
 
     @Autowired
     private UserRestRepository userRestRepository;
-//
+    @Autowired
+    private ConfigInfo configInfo;
 
-//    @Override
-//    public Goods getGoodsDetail(int goodsId) throws Exception {
-//
-//        ApiResult<String> apiResult = invokeGoodsDetailProce(goodsId);
-//        if(apiResult.getCode()!=200) {
-//            throw new Exception(apiResult.getMsg());
-//        }
-//        return JSON.parseObject(apiResult.getData(),Goods.class);
-//    }
 
 
 
@@ -103,12 +96,13 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
 
     @Override
     public String getGoodsWxUrl(HttpServletRequest request, Long goodsId) {
-        String remotePort = null;
+        String remotePort = "";
         if(request.getLocalPort()!=80){
             remotePort = "%3A"+request.getLocalPort() ;//获取端口号
         }
 
-        String url = "https://open.weixin.qq.com/connect/qrconnect?appid=wx1dde8f55df10ccec&redirect_uri=http%3A%2F%2F"+request.getServerName()+remotePort+"%2Ffront%2Fbind%2Fcallback%2F&response_type=code&scope=snsapi_login&state=" + goodsId;
+        String appid = configInfo.getAppid();
+        String url = "https://open.weixin.qq.com/connect/qrconnect?appid="+appid+"&redirect_uri=http%3A%2F%2F"+request.getServerName()+remotePort+"%2Ffront%2Fbind%2Fcallback%2F&response_type=code&scope=snsapi_login&state=" + goodsId;
         return url;
     }
 

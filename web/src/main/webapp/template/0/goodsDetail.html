@@ -77,17 +77,16 @@
                     <!--会员价格BEGIN-->
                     <div id="userPriceDiv" style=" display: " th:if="${unlogin}==true">
                         <div class="price_wrap" style="position:relative; height:28px">
-                            <span class="price">￥<span id="userPrice">69</span></span>
+                            <span class="price">￥<span id="userPrice" th:text="${goods.userPrice[0]}">69</span></span>
               <span class="flag" id="priceDis" style="display: ;overflow: hidden;
     width: 12px; margin-top:8px;">5.8折</span>
-                            <span class="lsls" style="display:">立省293元</span>
-
+                            <span class="lsls" style="display:" th:text="立省+${goods.marketPrice-goods.userPrice[0]}+元">立省293元</span>
                             <!--20151103-add-gmw-->
 
                         </div>
                         <div class="old_price_wrap">
                             <span>专柜价：<b id="price" class="dlejiage">￥<span class="normalPrice" style="float: none;"
-                                                                            th:value="${goods.price}">120</span></b></span>
+                                                                            th:text="${goods.marketPrice}">120</span></b></span>
                         </div>
                         <div class="old_price_wrap salesshow"
                              style="line-height: 0px; border: none; height: 0px; padding-top: 10px; display: none;">
@@ -110,7 +109,7 @@
                     <div id="" style=" display:" th:if="${unlogin}==false">
                         <div class="price_wrap">
                             <span class="tit"></span>
-                            <span class="price">￥<span class="normalPrice" th:value="${marketPrice}">629</span></span>
+                            <span class="price">￥<span class="normalPrice" th:value="${goods.marketPrice}">629</span></span>
                             <span style="font-size: 12px; color: #999999; display: block; line-height:28px">登录查看会员价</span>
                             &nbsp;<span class="flag_kj helpbuyDis_kj" style="display: none;"> 下单发起众筹活动吧</span>
                         </div>
@@ -243,13 +242,14 @@
     }
 
     function showBuyQRCode() {
+        var goodsId = /*[[${goods.id}]]*/"/";
         layer.open({
             type: 2,
             title: "请扫码购买 ",
             shadeClose: true,
             shade: 0.8,
             area: ['410px', '450px'],
-            content: "http://hot.huobanplus.com:8080/front/bind/qrCode?goodsId="+goodsId,
+            content: "http://hot.huobanplus.com:8080/front/bind/qrCode?goodsId="+ goodsId,
             end: function () {
 //                window.console.log("!1");
             }

@@ -49,11 +49,11 @@ public class HttpServiceImpl implements HttpService {
     @Override
     public ApiResult<String> httpGet_prod(String scheme, String host, Integer port, String path, Map<String, Object> params) {
         String appKey = environment.getProperty("appKey","_demo");
-        if(environment.acceptsProfiles("container") && "123".equals(appKey)) {
+        if(environment.acceptsProfiles("container") && "_demo".equals(appKey)) {
             throw new IllegalStateException("请设置appKey属性");
         }
         String appSecret = environment.getProperty("appSecret","1f2f3f4f5f6f7f8f");
-        if(environment.acceptsProfiles("container") && "456".equals(appSecret)) {
+        if(environment.acceptsProfiles("container") && "1f2f3f4f5f6f7f8f".equals(appSecret)) {
             throw new IllegalStateException("请设置appSecret属性");
         }
         CloseableHttpClient httpClient = HttpClients.createDefault();

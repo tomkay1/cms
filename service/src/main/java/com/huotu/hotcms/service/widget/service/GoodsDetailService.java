@@ -3,6 +3,8 @@ package com.huotu.hotcms.service.widget.service;
 
 import com.huotu.hotcms.service.widget.model.GoodsDetail;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Created by chendeyu on 2016/4/8.
  */
@@ -17,4 +19,6 @@ public interface GoodsDetailService {
 
 
     GoodsDetail getGoodsDetail(int goodsId, int userId) throws Exception;
+
+    String getGoodsWxUrl(HttpServletRequest request,Long goodsId);
 }

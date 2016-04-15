@@ -2,7 +2,6 @@ package com.huotu.hotcms.service.widget.service.impl.huobanplus;
 
 import com.alibaba.fastjson.JSON;
 import com.huotu.hotcms.service.service.HttpService;
-import com.huotu.hotcms.service.util.ApiResult;
 import com.huotu.hotcms.service.widget.model.GoodsDetail;
 import com.huotu.hotcms.service.widget.service.GoodsDetailService;
 import com.huotu.huobanplus.sdk.common.repository.GoodsRestRepository;
@@ -13,9 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * 商品详情
@@ -103,18 +101,16 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
         return mallGoods;
     }
 
+    @Override
+    public String getGoodsWxUrl(HttpServletRequest request, Long goodsId) {
+        String remotePort = null;
+        if(request.getLocalPort()!=80){
+            remotePort = "%3A"+request.getLocalPort() ;//获取端口号
+        }
 
-
-    private ApiResult<String> invokeGoodsDetailProce(int goodsId) throws Exception{
-        Map<String,Object> params = new TreeMap<>();
-        params.put("goodsId",goodsId);
-        return httpService.httpGet_prod("http", "api.open.huobanplus.com", null, "/goodses/"+goodsId, params);
+        String url = "https://open.weixin.qq.com/connect/qrconnect?appid=wx1dde8f55df10ccec&redirect_uri=http%3A%2F%2F"+request.getServerName()+remotePort+"%2Ffront%2Fbind%2Fcallback%2F&response_type=code&scope=snsapi_login&state=" + goodsId;
+        return url;
     }
 
-    private ApiResult<String> invokeGoodsPriceProce(int goodsId,String unionId) throws Exception{
-        Map<String,Object> params = new TreeMap<>();
-        params.put("goodsId",goodsId);
-        return httpService.httpGet_prod("http", "api.open.huobanplus.com", null, "/users/"+unionId+"/goodsPrices", params);
-    }
 
 }

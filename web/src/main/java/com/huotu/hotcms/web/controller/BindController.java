@@ -7,7 +7,6 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.huotu.hotcms.service.common.ConfigInfo;
 import com.huotu.hotcms.service.model.Bind.WxUser;
-import com.huotu.hotcms.service.thymeleaf.service.RequestService;
 import com.huotu.hotcms.service.thymeleaf.service.SiteResolveService;
 import com.huotu.hotcms.service.widget.service.MallApiEnvironmentService;
 import com.huotu.hotcms.service.widget.service.RegisterByWeixinService;
@@ -40,9 +39,6 @@ import java.io.IOException;
 @RequestMapping(value = "/bind")
 public class BindController {
     private static final Log log = LogFactory.getLog(ShopController.class);
-
-    @Autowired
-    private RequestService requestService;
 
     @Autowired
     private RegisterByWeixinService registerByWeixinService;
@@ -105,6 +101,7 @@ public class BindController {
             subDomain = merchant.getSubDomain();
         } catch (IOException e) {
             e.printStackTrace();
+            log.error("接口服务不可用");
         }
         String url = mallApiEnvironmentService.getCustomerUri(subDomain)+".aspx?customerid="+customerId+"&goodsid="+goodsId;
         if (url != null && !"".equals(url)) {
@@ -117,7 +114,7 @@ public class BindController {
                 BitMatrix m = writer.encode(url, BarcodeFormat.QR_CODE, height, width);
                 MatrixToImageWriter.writeToStream(m, "png", stream);
             } catch (WriterException e) {
-                e.printStackTrace();
+                log.error(e);
             } finally {
                 if (stream != null) {
                     stream.flush();

@@ -109,7 +109,7 @@
                     <div id="" style=" display:" th:if="${unlogin}==false">
                         <div class="price_wrap">
                             <span class="tit"></span>
-                            <span class="price">￥<span class="normalPrice" th:value="${goods.marketPrice}">629</span></span>
+                            <span class="price">￥<span class="normalPrice" th:text="${goods.marketPrice}">629</span></span>
                             <span style="font-size: 12px; color: #999999; display: block; line-height:28px">登录查看会员价</span>
                             &nbsp;<span class="flag_kj helpbuyDis_kj" style="display: none;"> 下单发起众筹活动吧</span>
                         </div>
@@ -226,7 +226,7 @@
 <script src="js/layer/layer.js" th:src="@{/template/0/js/layer/layer.js}"></script>
 <script th:inline="javascript">
     function showQRCode() {
-        var goodsId = /*[[${goods.id}]]*/"/";
+        var url = /*[[${url}]]*/"/";
 
         layer.open({
             type: 2,
@@ -234,7 +234,7 @@
             shadeClose: true,
             shade: 0.8,
             area: ['900px', '500px'],
-            content: "https://open.weixin.qq.com/connect/qrconnect?appid=wx1dde8f55df10ccec&redirect_uri=http%3A%2F%2Fhot.huobanplus.com%3A8080%2Ffront%2Fbind%2Fcallback%2F&response_type=code&scope=snsapi_login&state=" + goodsId,
+            content: url,
             end: function () {
 //                window.console.log("!1");
             }
@@ -249,7 +249,7 @@
             shadeClose: true,
             shade: 0.8,
             area: ['410px', '450px'],
-            content: "http://hot.huobanplus.com:8080/front/bind/qrCode?goodsId="+ goodsId,
+            content: "/front/bind/qrCode?goodsId="+ goodsId,
             end: function () {
 //                window.console.log("!1");
             }

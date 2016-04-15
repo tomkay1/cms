@@ -5,7 +5,6 @@ import com.huotu.hotcms.service.common.PageErrorType;
 import com.huotu.hotcms.service.entity.CustomPages;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.service.CustomPagesService;
-import com.huotu.hotcms.service.thymeleaf.service.RequestService;
 import com.huotu.hotcms.service.thymeleaf.service.SiteResolveService;
 import com.huotu.hotcms.service.widget.model.GoodsDetail;
 import com.huotu.hotcms.service.widget.service.GoodsDetailService;
@@ -45,9 +44,6 @@ public class ShopController {
     @Autowired
     private CookieUser cookieUser;
 
-
-    @Autowired
-    private RequestService requestService;
 
     /**
      * 商城首页/shop/
@@ -97,9 +93,11 @@ public class ShopController {
                  userId = Integer.valueOf(cookieUser.getUserId(request));
             }
             GoodsDetail goods = goodsDetailService.getGoodsDetail(Integer.valueOf(id),userId);
-            Map spec = JSON.parseObject(goods.getSpec(), Map.class);
+            String url = goodsDetailService.getGoodsWxUrl(request,goods.getId());//微信登录跳转链接
+            Map spec = JSON.parseObject(goods.getSpec(), Map.class);//规格格式化
             modelAndView.setViewName("/template/0/goodsDetail.html");
             modelAndView.addObject("goods",goods);
+            modelAndView.addObject("url",url);//获取域名
             modelAndView.addObject("spec",spec);
 
         }catch (Exception ex){

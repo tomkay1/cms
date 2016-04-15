@@ -149,7 +149,9 @@ public class HttpUtils {
                 beanWrapper.setPropertyValue(propertyName,Long.parseLong(paramValue));
             }else if(String.class == propertyType) {
                 beanWrapper.setPropertyValue(propertyName, paramValue);
-            }else {
+            }else if(String[].class == propertyType) {
+                beanWrapper.setPropertyValue(propertyName,request.getParameterValues(propertyName));
+            } else {
                 throw new UnsupportedDataTypeException("不支持的字段类型");
             }
         }

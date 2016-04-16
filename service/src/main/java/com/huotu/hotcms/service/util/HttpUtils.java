@@ -137,7 +137,7 @@ public class HttpUtils {
         for(PropertyDescriptor descriptor : propertyDescriptors) {
             String propertyName = descriptor.getName();
             String paramValue = request.getParameter(propertyName);
-            if(paramValue == null) {
+            if(paramValue == null || paramValue.length() == 0) {
                 continue;
             }
             Class<?> propertyType = descriptor.getPropertyType();

@@ -6,84 +6,18 @@
         <div class="user">
             <div class="j-module">
                 <ul class="HOTBoxUl" id="wy_floor7">
-                    <li>
-                        <a class="jPic" target="" href="">
-                            <img src="images/55404da4Nb4c62bb3.jpg">
-              <span class="pic_icon">
-              <img src="images/55404da4Nb4c62bb3.jpg">
-              </span>
+                    <li data-widget-hot="goods">
+                        <a class="jPic" target="" th:href="'/front/shop/product/'+${goods.id}">
+                            <img th:src="${goods.smallPic}">
                         </a>
-                        <a class="HOTesc" title="意大利袋鼠保暖内衣 大红色本命年 纯色男士基础保暖内衣套装男秋衣秋裤 XL" target="_blank" href="">
-                            意大利袋鼠保暖内衣 大红色本命年 纯色男士基础保暖内衣套装男秋衣秋裤 XL
+                        <a class="HOTesc" th:title="${goods.title}" target="_blank" th:href="'/front/shop/product/'+${goods.id}">
+                            [[${goods.title}]]
                         </a>
                         <div class="HOTPrice">
-                            <span>京东价:￥ </span>
-                            <span class="HOTNum" jshop="price" HOTprice="1309062513">399.00</span>
+                            <span>￥ </span>
+                            <span class="HOTNum" jshop="price">[[${goods.price}]]</span>
                         </div>
-                        <div class="HOTPriced12">
-                            <span>3.8生日价:￥ </span>
-                        </div>
-                        <a class="jBtnArea" href="" target="">
-                        </a>
-                    </li>
-                    <li>
-                        <a class="jPic" target="" href="">
-                            <img src="images/55404da4Nb4c62bb3.jpg">
-              <span class="pic_icon">
-              <img src="images/55404da4Nb4c62bb3.jpg">
-              </span>
-                        </a>
-                        <a class="HOTesc" title="意大利袋鼠保暖内衣 大红色本命年 纯色男士基础保暖内衣套装男秋衣秋裤 XL" target="_blank" href="">
-                            意大利袋鼠保暖内衣 大红色本命年 纯色男士基础保暖内衣套装男秋衣秋裤 XL
-                        </a>
-                        <div class="HOTPrice">
-                            <span>京东价:￥ </span>
-                            <span class="HOTNum" jshop="price" HOTprice="1309062513">399.00</span>
-                        </div>
-                        <div class="HOTPriced12">
-                            <span>3.8生日价:￥ </span>
-                        </div>
-                        <a class="jBtnArea" href="" target="">
-                        </a>
-                    </li>
-                    <li>
-                        <a class="jPic" target="" href="">
-                            <img src="images/55404da4Nb4c62bb3.jpg">
-              <span class="pic_icon">
-              <img src="images/55404da4Nb4c62bb3.jpg">
-              </span>
-                        </a>
-                        <a class="HOTesc" title="意大利袋鼠保暖内衣 大红色本命年 纯色男士基础保暖内衣套装男秋衣秋裤 XL" target="_blank" href="">
-                            意大利袋鼠保暖内衣 大红色本命年 纯色男士基础保暖内衣套装男秋衣秋裤 XL
-                        </a>
-                        <div class="HOTPrice">
-                            <span>京东价:￥ </span>
-                            <span class="HOTNum" jshop="price" HOTprice="1309062513">399.00</span>
-                        </div>
-                        <div class="HOTPriced12">
-                            <span>3.8生日价:￥ </span>
-                        </div>
-                        <a class="jBtnArea" href="" target="">
-                        </a>
-                    </li>
-                    <li>
-                        <a class="jPic" target="" href="">
-                            <img src="images/55404da4Nb4c62bb3.jpg">
-              <span class="pic_icon">
-              <img src="images/55404da4Nb4c62bb3.jpg">
-              </span>
-                        </a>
-                        <a class="HOTesc" title="意大利袋鼠保暖内衣 大红色本命年 纯色男士基础保暖内衣套装男秋衣秋裤 XL" target="_blank" href="">
-                            意大利袋鼠保暖内衣 大红色本命年 纯色男士基础保暖内衣套装男秋衣秋裤 XL
-                        </a>
-                        <div class="HOTPrice">
-                            <span>京东价:￥ </span>
-                            <span class="HOTNum" jshop="price" HOTprice="1309062513">399.00</span>
-                        </div>
-                        <div class="HOTPriced12">
-                            <span>3.8生日价:￥ </span>
-                        </div>
-                        <a class="jBtnArea" href="" target="">
+                        <a class="jBtnArea" th:href="'/front/shop/product/'+${goods.id}" target="">
                         </a>
                     </li>
                 </ul>
@@ -94,152 +28,27 @@
         <div class="j-module School_season">
             <div class="mod-990">
                 <ul class="clearfloat">
-                    <li class="item item-1 ">
+                    <li class="item item-1 " data-widget-hot="goods">
                         <div class="jPic">
-                            <a href="" target="">
-                                <img src="images/55404da4Nb4c62bb3.jpg">
+                            <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                                <img th:src="${goods.smallPic}">
                             </a>
                         </div>
                         <div class="jGoodsInfo">
                             <div class="HOTesc">
-                                <a href="" target="">
-                                    意大利袋鼠保暖内衣 大红色本命年 纯色男士基础保暖内衣套装男秋衣秋裤 XL
+                                <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                                    [[${goods.title}]]
                                 </a>
                             </div>
                             <div class="jPrice">
                                 <span class="jRmb">￥</span>
-                                <span class="HOTNum">399.00</span>
+                                <span class="HOTNum">[[${goods.price}]]</span>
                             </div>
                         </div>
                         <div class="jBtn">
                             <div class="jBtntxt">
-                                <a href="" target="">
+                                <a th:href="'/front/shop/product/'+${goods.id}" target="">
                                     <span>立即购买 &gt;</span>
-                                </a>
-                            </div>
-                            <div class="jBtnArea">
-                                <a href="">
-                                    <span>加入购物车</span>
-                                </a>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="item item-2 ">
-                        <div class="jPic">
-                            <a href="" target="">
-                                <img src="images/55404da4Nb4c62bb3.jpg">
-                            </a>
-                        </div>
-                        <div class="jGoodsInfo">
-                            <div class="HOTesc">
-                                <a href="" target="">
-                                    意大利袋鼠保暖内衣 大红色本命年 纯色男士基础保暖内衣套装男秋衣秋裤 XL
-                                </a>
-                            </div>
-                            <div class="jPrice">
-                                <span class="jRmb">￥</span>
-                                <span class="HOTNum">399.00</span>
-                            </div>
-                        </div>
-                        <div class="jBtn">
-                            <div class="jBtntxt">
-                                <a href="" target="">
-                                    <span>立即购买 &gt;</span>
-                                </a>
-                            </div>
-                            <div class="jBtnArea">
-                                <a href="">
-                                    <span>加入购物车</span>
-                                </a>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="item item-3 ">
-                        <div class="jPic">
-                            <a href="" target="">
-                                <img src="images/55404da4Nb4c62bb3.jpg">
-                            </a>
-                        </div>
-                        <div class="jGoodsInfo">
-                            <div class="HOTesc">
-                                <a href="" target="">
-                                    意大利袋鼠保暖内衣 大红色本命年 纯色男士基础保暖内衣套装男秋衣秋裤 XL
-                                </a>
-                            </div>
-                            <div class="jPrice">
-                                <span class="jRmb">￥</span>
-                                <span class="HOTNum">399.00</span>
-                            </div>
-                        </div>
-                        <div class="jBtn">
-                            <div class="jBtntxt">
-                                <a href="" target="">
-                                    <span>立即购买 &gt;</span>
-                                </a>
-                            </div>
-                            <div class="jBtnArea">
-                                <a href="">
-                                    <span>加入购物车</span>
-                                </a>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="item item-4 ">
-                        <div class="jPic">
-                            <a href="" target="">
-                                <img src="images/55404da4Nb4c62bb3.jpg">
-                            </a>
-                        </div>
-                        <div class="jGoodsInfo">
-                            <div class="HOTesc">
-                                <a href="" target="">
-                                    意大利袋鼠保暖内衣 大红色本命年 纯色男士基础保暖内衣套装男秋衣秋裤 XL
-                                </a>
-                            </div>
-                            <div class="jPrice">
-                                <span class="jRmb">￥</span>
-                                <span class="HOTNum">399.00</span>
-                            </div>
-                        </div>
-                        <div class="jBtn">
-                            <div class="jBtntxt">
-                                <a href="" target="">
-                                    <span>立即购买 &gt;</span>
-                                </a>
-                            </div>
-                            <div class="jBtnArea">
-                                <a href="">
-                                    <span>加入购物车</span>
-                                </a>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="item item-5  item-last ">
-                        <div class="jPic">
-                            <a href="" target="">
-                                <img src="images/55404da4Nb4c62bb3.jpg">
-                            </a>
-                        </div>
-                        <div class="jGoodsInfo">
-                            <div class="HOTesc">
-                                <a href="" target="">
-                                    意大利袋鼠保暖内衣 大红色本命年 纯色男士基础保暖内衣套装男秋衣秋裤 XL
-                                </a>
-                            </div>
-                            <div class="jPrice">
-                                <span class="jRmb">￥</span>
-                                <span class="HOTNum">399.00</span>
-                            </div>
-                        </div>
-                        <div class="jBtn">
-                            <div class="jBtntxt">
-                                <a href="" target="">
-                                    <span>立即购买 &gt;</span>
-                                </a>
-                            </div>
-                            <div class="jBtnArea">
-                                <a href="">
-                                    <span>加入购物车</span>
                                 </a>
                             </div>
                         </div>
@@ -251,110 +60,29 @@
     <div class="mc"  style="overflow: visible;" th:if="${templateClass == 'userjGoodsRecommend-400154'}">
         <div class="j-module">
             <ul>
-                <li class="qFourOneHalf mOneHalf">
+                <li class="qFourOneHalf mOneHalf" data-widget-hot="goods">
                     <div class="jItem">
                         <div class="jPic">
-                            <a href="" target="">
-                                <img src="images/54853d49N92de62bb.jpg">
+                            <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                                <img th:src="${goods.smallPic}">
                             </a>
                         </div>
                         <div class="jGoodsInfo">
-                            <div class="HOTesc" title="意大利袋鼠保暖内衣 大红色本命年 纯色男士基础保暖内衣套装男秋衣秋裤 XL ">
-                                <a href="" target="">意大利袋鼠保暖内衣 大红色本命年 纯色男士基础保暖内衣套装男秋衣秋裤 XL</a>
+                            <div class="HOTesc" th:title="${goods.title}">
+                                <a th:href="'/front/shop/product/'+${goods.id}" target="">[[${goods.title}]]</a>
                                 <span class="jSlogan"></span>
                             </div>
                             <div class="user jPrice">
                                 <div class="jSalePrice">
                                     <span class="jText">参考价：</span>
                                     <span class="jRmb">¥</span>
-                                    <span class="jsNum">399.00</span>
+                                    <span class="jsNum">[[${goods.price}]]</span>
                                 </div>
                                 <span class="jRmb">¥</span>
-                                <span class="HOTNum">399.00</span>
+                                <span class="HOTNum">[[${goods.price}]]</span>
                             </div>
                             <div class="jBtnArea">
-                                <a target="" href="" rel="">放入购物车</a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="qFourOneHalf mOneHalf">
-                    <div class="jItem">
-                        <div class="jPic">
-                            <a href="" target="">
-                                <img src="images/54853d49N92de62bb.jpg">
-                            </a>
-                        </div>
-                        <div class="jGoodsInfo">
-                            <div class="HOTesc" title="意大利袋鼠保暖内衣 大红色本命年 纯色男士基础保暖内衣套装男秋衣秋裤 XL ">
-                                <a href="" target="">意大利袋鼠保暖内衣 大红色本命年 纯色男士基础保暖内衣套装男秋衣秋裤 XL</a>
-                                <span class="jSlogan"></span>
-                            </div>
-                            <div class="user jPrice">
-                                <div class="jSalePrice">
-                                    <span class="jText">参考价：</span>
-                                    <span class="jRmb">¥</span>
-                                    <span class="jsNum">399.00</span>
-                                </div>
-                                <span class="jRmb">¥</span>
-                                <span class="HOTNum">399.00</span>
-                            </div>
-                            <div class="jBtnArea">
-                                <a target="" href="" rel="">放入购物车</a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="qFourOneHalf mOneHalf">
-                    <div class="jItem">
-                        <div class="jPic">
-                            <a href="" target="">
-                                <img src="images/54853d49N92de62bb.jpg">
-                            </a>
-                        </div>
-                        <div class="jGoodsInfo">
-                            <div class="HOTesc" title="意大利袋鼠保暖内衣 大红色本命年 纯色男士基础保暖内衣套装男秋衣秋裤 XL ">
-                                <a href="" target="">意大利袋鼠保暖内衣 大红色本命年 纯色男士基础保暖内衣套装男秋衣秋裤 XL</a>
-                                <span class="jSlogan"></span>
-                            </div>
-                            <div class="user jPrice">
-                                <div class="jSalePrice">
-                                    <span class="jText">参考价：</span>
-                                    <span class="jRmb">¥</span>
-                                    <span class="jsNum">399.00</span>
-                                </div>
-                                <span class="jRmb">¥</span>
-                                <span class="HOTNum">399.00</span>
-                            </div>
-                            <div class="jBtnArea">
-                                <a target="" href="" rel="">放入购物车</a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="qFourOneHalf mOneHalf">
-                    <div class="jItem">
-                        <div class="jPic">
-                            <a href="" target="">
-                                <img src="images/54853d49N92de62bb.jpg">
-                            </a>
-                        </div>
-                        <div class="jGoodsInfo">
-                            <div class="HOTesc" title="意大利袋鼠保暖内衣 大红色本命年 纯色男士基础保暖内衣套装男秋衣秋裤 XL ">
-                                <a href="" target="">意大利袋鼠保暖内衣 大红色本命年 纯色男士基础保暖内衣套装男秋衣秋裤 XL</a>
-                                <span class="jSlogan"></span>
-                            </div>
-                            <div class="user jPrice">
-                                <div class="jSalePrice">
-                                    <span class="jText">参考价：</span>
-                                    <span class="jRmb">¥</span>
-                                    <span class="jsNum">399.00</span>
-                                </div>
-                                <span class="jRmb">¥</span>
-                                <span class="HOTNum">399.00</span>
-                            </div>
-                            <div class="jBtnArea">
-                                <a target="" href="" rel="">放入购物车</a>
+                                <a target="" th:href="'/front/shop/product/'+${goods.id}" rel="">立即购买</a>
                             </div>
                         </div>
                     </div>
@@ -366,104 +94,23 @@
         <div class="j-module School_season">
             <div class="mod-990">
                 <ul class="clearfloat">
-                    <li class="item item-1 ">
+                    <li class="item item-1 " data-widget-hot="goods">
                         <div class="jPic">
-                            <img src="images/54853d49N92de62bb.jpg">
+                            <img th:src="${goods.smallPic}">
                         </div>
                         <div class="jGoodsInfo">
                             <div class="HOTesc">
-                                <span>意大利袋鼠保暖内衣 大红色本命年 纯色男士基础保暖内衣套装男秋衣秋裤 XL</span>
+                                <span>[[${goods.title}]]</span>
                             </div>
                             <div class="jPrice">
                                 <span class="jRmb">￥</span>
-                                <span class="HOTNum">399.00</span>
+                                <span class="HOTNum">[[${goods.price}]]</span>
                             </div>
                             <div class="jBtnArea">
                                 <span>立即抢购</span>
                             </div>
                         </div>
-                        <a href="" target="">
-                            <span class="border3"></span>
-                        </a>
-                    </li>
-                    <li class="item item-2 ">
-                        <div class="jPic">
-                            <img src="images/54853d49N92de62bb.jpg">
-                        </div>
-                        <div class="jGoodsInfo">
-                            <div class="HOTesc">
-                                <span>意大利袋鼠保暖内衣 大红色本命年 纯色男士基础保暖内衣套装男秋衣秋裤 XL</span>
-                            </div>
-                            <div class="jPrice">
-                                <span class="jRmb">￥</span>
-                                <span class="HOTNum">399.00</span>
-                            </div>
-                            <div class="jBtnArea">
-                                <span>立即抢购</span>
-                            </div>
-                        </div>
-                        <a href="" target="">
-                            <span class="border3"></span>
-                        </a>
-                    </li>
-                    <li class="item item-3 ">
-                        <div class="jPic">
-                            <img src="images/54853d49N92de62bb.jpg">
-                        </div>
-                        <div class="jGoodsInfo">
-                            <div class="HOTesc">
-                                <span>意大利袋鼠保暖内衣 大红色本命年 纯色男士基础保暖内衣套装男秋衣秋裤 XL</span>
-                            </div>
-                            <div class="jPrice">
-                                <span class="jRmb">￥</span>
-                                <span class="HOTNum">399.00</span>
-                            </div>
-                            <div class="jBtnArea">
-                                <span>立即抢购</span>
-                            </div>
-                        </div>
-                        <a href="" target="">
-                            <span class="border3"></span>
-                        </a>
-                        </a>
-                    </li>
-                    <li class="item item-4 ">
-                        <div class="jPic">
-                            <img src="images/54853d49N92de62bb.jpg">
-                        </div>
-                        <div class="jGoodsInfo">
-                            <div class="HOTesc">
-                                <span>意大利袋鼠保暖内衣 大红色本命年 纯色男士基础保暖内衣套装男秋衣秋裤 XL</span>
-                            </div>
-                            <div class="jPrice">
-                                <span class="jRmb">￥</span>
-                                <span class="HOTNum">399.00</span>
-                            </div>
-                            <div class="jBtnArea">
-                                <span>立即抢购</span>
-                            </div>
-                        </div>
-                        <a href="" target="">
-                            <span class="border3"></span>
-                        </a>
-                    </li>
-                    <li class="item item-5  item-last ">
-                        <div class="jPic">
-                            <img src="images/54853d49N92de62bb.jpg">
-                        </div>
-                        <div class="jGoodsInfo">
-                            <div class="HOTesc">
-                                <span>意大利袋鼠保暖内衣 大红色本命年 纯色男士基础保暖内衣套装男秋衣秋裤 XL</span>
-                            </div>
-                            <div class="jPrice">
-                                <span class="jRmb">￥</span>
-                                <span class="HOTNum">399.00</span>
-                            </div>
-                            <div class="jBtnArea">
-                                <span>立即抢购</span>
-                            </div>
-                        </div>
-                        <a href="" target="">
+                        <a th:href="'/front/shop/product/'+${goods.id}" target="">
                             <span class="border3"></span>
                         </a>
                     </li>
@@ -475,100 +122,24 @@
         <div class="j-module School_season">
             <div class="mod-990">
                 <ul class="clearfloat">
-                    <li class="item item-8 ">
+                    <li class="item item-8 " data-widget-hot="goods">
                         <div class="jPic">
-                            <img src="images/54853d49N92de62bb.jpg">
-                            <span class="pic_icon"><img src="images/5655686cN66a13b83.png"></span>
+                            <img th:src="${goods.smallPic}">
+                            <span class="pic_icon"><img th:src="${goods.smallPic}"></span>
                         </div>
                         <div class="jGoodsInfo">
                             <div class="HOTesc">
-                                <span>意大利袋鼠保暖内衣 大红色本命年 纯色男士基础保暖内衣套装男秋衣秋裤 XL</span>
+                                <span>[[${goods.title}]]</span>
                             </div>
                             <div class="jPrice">
                                 <span class="jRmb">￥</span>
-                                <span class="HOTNum">399.00</span>
+                                <span class="HOTNum">[[${goods.price}]]</span>
                             </div>
                             <div class="jBtnArea">
                                 <span>立即抢购</span>
                             </div>
                         </div>
-                        <a href="" target=""><span class="border3"></span></a>
-                    </li>
-                    <li class="item item-9 ">
-                        <div class="jPic">
-                            <img src="images/54853d49N92de62bb.jpg">
-                            <span class="pic_icon"><img src="images/5655686cN66a13b83.png"></span>
-                        </div>
-                        <div class="jGoodsInfo">
-                            <div class="HOTesc">
-                                <span>意大利袋鼠保暖内衣 大红色本命年 纯色男士基础保暖内衣套装男秋衣秋裤 XL</span>
-                            </div>
-                            <div class="jPrice">
-                                <span class="jRmb">￥</span>
-                                <span class="HOTNum">399.00</span>
-                            </div>
-                            <div class="jBtnArea">
-                                <span>立即抢购</span>
-                            </div>
-                        </div>
-                        <a href="" target=""><span class="border3"></span></a>
-                    </li>
-                    <li class="item item-10  item-last ">
-                        <div class="jPic">
-                            <img src="images/54853d49N92de62bb.jpg">
-                            <span class="pic_icon"><img src="images/5655686cN66a13b83.png"></span>
-                        </div>
-                        <div class="jGoodsInfo">
-                            <div class="HOTesc">
-                                <span>意大利袋鼠保暖内衣 大红色本命年 纯色男士基础保暖内衣套装男秋衣秋裤 XL</span>
-                            </div>
-                            <div class="jPrice">
-                                <span class="jRmb">￥</span>
-                                <span class="HOTNum">399.00</span>
-                            </div>
-                            <div class="jBtnArea">
-                                <span>立即抢购</span>
-                            </div>
-                        </div>
-                        <a href="" target=""><span class="border3"></span></a>
-                    </li>
-                    <li class="item item-11 ">
-                        <div class="jPic">
-                            <img src="images/54853d49N92de62bb.jpg">
-                            <span class="pic_icon"><img src="images/5655686cN66a13b83.png"></span>
-                        </div>
-                        <div class="jGoodsInfo">
-                            <div class="HOTesc">
-                                <span>意大利袋鼠保暖内衣 大红色本命年 纯色男士基础保暖内衣套装男秋衣秋裤 XL</span>
-                            </div>
-                            <div class="jPrice">
-                                <span class="jRmb">￥</span>
-                                <span class="HOTNum">399.00</span>
-                            </div>
-                            <div class="jBtnArea">
-                                <span>立即抢购</span>
-                            </div>
-                        </div>
-                        <a href="" target=""><span class="border3"></span></a>
-                    </li>
-                    <li class="item item-12 ">
-                        <div class="jPic">
-                            <img src="images/54853d49N92de62bb.jpg">
-                            <span class="pic_icon"><img src="images/5655686cN66a13b83.png"></span>
-                        </div>
-                        <div class="jGoodsInfo">
-                            <div class="HOTesc">
-                                <span>意大利袋鼠保暖内衣 大红色本命年 纯色男士基础保暖内衣套装男秋衣秋裤 XL</span>
-                            </div>
-                            <div class="jPrice">
-                                <span class="jRmb">￥</span>
-                                <span class="HOTNum">399.00</span>
-                            </div>
-                            <div class="jBtnArea">
-                                <span>立即抢购</span>
-                            </div>
-                        </div>
-                        <a href="" target=""><span class="border3"></span></a>
+                        <a th:href="'/front/shop/product/'+${goods.id}" target=""><span class="border3"></span></a>
                     </li>
                 </ul>
             </div>
@@ -577,94 +148,16 @@
     <div class="mc" style="overflow: visible;" th:if="${templateClass == 'goodsRec9-672540'}">
         <div class="j-module" style="overflow: hidden; padding-bottom: 0px;">
             <ul>
-                <li style="margin-left: 0px; margin-right: 0px; margin-top: 0px; width: 256.667px;">
+                <li style="margin-left: 0px; margin-right: 0px; margin-top: 0px; width: 256.667px;" data-widget-hot="goods">
                     <div class="jItem">
                         <div class="jPic">
-                            <a href="" target="">
-                                <img src="images/54853d49N92de62bb.jpg" width="240px" height="240px"/>
+                            <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                                <img th:src="${goods.smallPic}" width="240px" height="240px"/>
                             </a>
                         </div>
                         <div class="HOTesc" style="padding-left: 1px;">
-                            <p class="goods-price">￥<span class="HOTNum">399.00</span></p>
-                            <p class="goods-btn"><a href="" target="">立即抢购<i></i></a></p>
-                        </div>
-                    </div>
-                </li>
-                <li style="margin-left: 0px; margin-right: 0px; margin-top: 0px; width: 256.667px;">
-                    <div class="jItem">
-                        <div class="jPic">
-                            <a href="" target="">
-                                <img src="images/54853d49N92de62bb.jpg" width="240px" height="240px"/>
-                            </a>
-                        </div>
-                        <div class="HOTesc" style="padding-left: 1px;">
-                            <p class="goods-price">￥<span class="HOTNum">399.00</span></p>
-                            <p class="goods-btn"><a href="" target="">立即抢购<i></i></a></p>
-                        </div>
-                    </div>
-                </li>
-                <li style="margin-left: 0px; margin-right: 0px; margin-top: 0px; width: 256.667px;">
-                    <div class="jItem">
-                        <div class="jPic">
-                            <a href="" target="">
-                                <img src="images/54853d49N92de62bb.jpg" width="240px" height="240px"/>
-                            </a>
-                        </div>
-                        <div class="HOTesc" style="padding-left: 1px;">
-                            <p class="goods-price">￥<span class="HOTNum">399.00</span></p>
-                            <p class="goods-btn"><a href="" target="">立即抢购<i></i></a></p>
-                        </div>
-                    </div>
-                </li>
-                <li style="margin-left: 0px; margin-right: 0px; margin-top: 0px; width: 256.667px;">
-                    <div class="jItem">
-                        <div class="jPic">
-                            <a href="" target="">
-                                <img src="images/54853d49N92de62bb.jpg" width="240px" height="240px"/>
-                            </a>
-                        </div>
-                        <div class="HOTesc" style="padding-left: 1px;">
-                            <p class="goods-price">￥<span class="HOTNum">399.00</span></p>
-                            <p class="goods-btn"><a href="" target="">立即抢购<i></i></a></p>
-                        </div>
-                    </div>
-                </li>
-                <li style="margin-left: 0px; margin-right: 0px; margin-top: 0px; width: 256.667px;">
-                    <div class="jItem">
-                        <div class="jPic">
-                            <a href="" target="">
-                                <img src="images/54853d49N92de62bb.jpg" width="240px" height="240px"/>
-                            </a>
-                        </div>
-                        <div class="HOTesc" style="padding-left: 1px;">
-                            <p class="goods-price">￥<span class="HOTNum">399.00</span></p>
-                            <p class="goods-btn"><a href="" target="">立即抢购<i></i></a></p>
-                        </div>
-                    </div>
-                </li>
-                <li style="margin-left: 0px; margin-right: 0px; margin-top: 0px; width: 256.667px;">
-                    <div class="jItem">
-                        <div class="jPic">
-                            <a href="" target="">
-                                <img src="images/54853d49N92de62bb.jpg" width="240px" height="240px"/>
-                            </a>
-                        </div>
-                        <div class="HOTesc" style="padding-left: 1px;">
-                            <p class="goods-price">￥<span class="HOTNum">399.00</span></p>
-                            <p class="goods-btn"><a href="" target="">立即抢购<i></i></a></p>
-                        </div>
-                    </div>
-                </li>
-                <li style="margin-left: 0px; margin-right: 0px; margin-top: 0px; width: 256.667px;">
-                    <div class="jItem">
-                        <div class="jPic">
-                            <a href="" target="">
-                                <img src="images/54853d49N92de62bb.jpg" width="240px" height="240px"/>
-                            </a>
-                        </div>
-                        <div class="HOTesc" style="padding-left: 1px;">
-                            <p class="goods-price">￥<span class="HOTNum">399.00</span></p>
-                            <p class="goods-btn"><a href="" target="">立即抢购<i></i></a></p>
+                            <p class="goods-price">￥<span class="HOTNum">[[${goods.price}]]</span></p>
+                            <p class="goods-btn"><a th:href="'/front/shop/product/'+${goods.id}" target="">立即抢购<i></i></a></p>
                         </div>
                     </div>
                 </li>
@@ -676,85 +169,19 @@
     <div class="mc" style="overflow: visible;" th:if="${templateClass == 'goodsRec8-672537'}">
         <div class="j-module"  style="overflow: hidden; padding-bottom: 0px;">
             <ul>
-                <li style="margin-left: 0px; margin-right: 0px; margin-top: 0px; width: 256.667px;">
+                <li style="margin-left: 0px; margin-right: 0px; margin-top: 0px; width: 256.667px;" data-widget-hot="goods">
                     <div class="jItem">
                         <div class="jPic">
-                            <a href="" target="">
-                                <img width="240" height="240" src="images/54853d49N92de62bb.jpg"/>
+                            <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                                <img width="240" height="240" th:src="${goods.smallPic}"/>
                             </a>
                         </div>
                         <div class="HOTesc" style="padding-left: 5px;">
-                            <p class="goods-price">￥<span class="HOTNum" >399.00</span></p>
-                            <p class="goods-btn"><a href="" target="">立即抢购<i></i></a></p>
+                            <p class="goods-price">￥<span class="HOTNum" >[[${goods.price}]]</span></p>
+                            <p class="goods-btn"><a th:href="'/front/shop/product/'+${goods.id}" target="">立即抢购<i></i></a></p>
                         </div>
                     </div>
                 </li>
-                <li style="margin-left: 10px; margin-right: 0px; margin-top: 0px; width: 256.667px;">
-                    <div class="jItem">
-                        <div class="jPic">
-                            <a href="" target="_blank">
-                                <img width="240" height="240" src="images/54853d49N92de62bb.jpg"/>
-                            </a>
-                        </div>
-                        <div class="HOTesc" style="padding-left: 5px;">
-                            <p class="goods-price">￥<span class="HOTNum" jshop="price" HOTprice="1309062513">399.00</span></p>
-                            <p class="goods-btn"><a href="" target="_blank">立即抢购<i></i></a></p>
-                        </div>
-                    </div>
-                </li>
-                <li style="margin-left: 10px; margin-right: 0px; margin-top: 0px; width: 256.667px;">
-                    <div class="jItem">
-                        <div class="jPic">
-                            <a href="" target="_blank">
-                                <img width="240" height="240" src="images/54853d49N92de62bb.jpg"/>
-                            </a>
-                        </div>
-                        <div class="HOTesc" style="padding-left: 5px;">
-                            <p class="goods-price">￥<span class="HOTNum" jshop="price" HOTprice="1309062513">399.00</span></p>
-                            <p class="goods-btn"><a href="" target="_blank">立即抢购<i></i></a></p>
-                        </div>
-                    </div>
-                </li>
-                <li style="margin-left: 10px; margin-right: 0px; margin-top: 0px; width: 256.667px;">
-                    <div class="jItem">
-                        <div class="jPic">
-                            <a href="" target="_blank">
-                                <img width="240" height="240" src="images/54853d49N92de62bb.jpg"/>
-                            </a>
-                        </div>
-                        <div class="HOTesc" style="padding-left: 5px;">
-                            <p class="goods-price">￥<span class="HOTNum" jshop="price" HOTprice="1309062513">399.00</span></p>
-                            <p class="goods-btn"><a href="" target="_blank">立即抢购<i></i></a></p>
-                        </div>
-                    </div>
-                </li>
-                <li style="margin-left: 10px; margin-right: 0px; margin-top: 0px; width: 256.667px;">
-                    <div class="jItem">
-                        <div class="jPic">
-                            <a href="" target="_blank">
-                                <img width="240" height="240" src="images/54853d49N92de62bb.jpg"/>
-                            </a>
-                        </div>
-                        <div class="HOTesc" style="padding-left: 5px;">
-                            <p class="goods-price">￥<span class="HOTNum" jshop="price" HOTprice="1309062513">399.00</span></p>
-                            <p class="goods-btn"><a href="" target="_blank">立即抢购<i></i></a></p>
-                        </div>
-                    </div>
-                </li>
-                <li style="margin-left: 10px; margin-right: 0px; margin-top: 0px; width: 256.667px;">
-                    <div class="jItem">
-                        <div class="jPic">
-                            <a href="" target="_blank">
-                                <img width="240" height="240" src="images/54853d49N92de62bb.jpg"/>
-                            </a>
-                        </div>
-                        <div class="HOTesc" style="padding-left: 5px;">
-                            <p class="goods-price">￥<span class="HOTNum" jshop="price" HOTprice="1309062513">399.00</span></p>
-                            <p class="goods-btn"><a href="" target="_blank">立即抢购<i></i></a></p>
-                        </div>
-                    </div>
-                </li>
-
             </ul>
         </div>
 
@@ -762,94 +189,16 @@
     <div class="mc" style="overflow: visible;" th:if="${templateClass == 'goodsRec7-672533'}">
         <div class="j-module" style="overflow: hidden; padding-bottom: 0px;">
             <ul>
-                <li style="margin-left: 10px; margin-right: 0px; margin-top: 0px; width: 256.667px;">
+                <li style="margin-left: 10px; margin-right: 0px; margin-top: 0px; width: 256.667px;" data-widget-hot="goods">
                     <div class="jItem">
                         <div class="jPic">
-                            <a href="" target="">
-                                <img width="240" height="240" src="images/54853d49N92de62bb.jpg"/>
+                            <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                                <img width="240" height="240" th:src="${goods.smallPic}"/>
                             </a>
                         </div>
                         <div class="HOTesc">
-                            <p class="goods-price">￥<span class="HOTNum" jshop="price" HOTprice="1309062513">399.00</span></p>
-                            <p class="goods-btn"><a href="" target="">立即抢购<i></i></a></p>
-                        </div>
-                    </div>
-                </li>
-                <li style="margin-left: 0px; margin-right: 0px; margin-top: 0px; width: 256.667px;">
-                    <div class="jItem">
-                        <div class="jPic">
-                            <a href="" target="">
-                                <img width="240" height="240" src="images/54853d49N92de62bb.jpg"/>
-                            </a>
-                        </div>
-                        <div class="HOTesc">
-                            <p class="goods-price">￥<span class="HOTNum" jshop="price" HOTprice="1309062513">399.00</span></p>
-                            <p class="goods-btn"><a href="" target="">立即抢购<i></i></a></p>
-                        </div>
-                    </div>
-                </li>
-                <li style="margin-left: 10px; margin-right: 0px; margin-top: 0px; width: 256.667px;">
-                    <div class="jItem">
-                        <div class="jPic">
-                            <a href="" target="">
-                                <img width="240" height="240" src="images/54853d49N92de62bb.jpg"/>
-                            </a>
-                        </div>
-                        <div class="HOTesc">
-                            <p class="goods-price">￥<span class="HOTNum" jshop="price" HOTprice="1309062513">399.00</span></p>
-                            <p class="goods-btn"><a href="" target="">立即抢购<i></i></a></p>
-                        </div>
-                    </div>
-                </li>
-                <li style="margin-left: 10px; margin-right: 0px; margin-top: 0px; width: 256.667px;">
-                    <div class="jItem">
-                        <div class="jPic">
-                            <a href="" target="">
-                                <img width="240" height="240" src="images/54853d49N92de62bb.jpg"/>
-                            </a>
-                        </div>
-                        <div class="HOTesc">
-                            <p class="goods-price">￥<span class="HOTNum" jshop="price" HOTprice="1309062513">399.00</span></p>
-                            <p class="goods-btn"><a href="" target="">立即抢购<i></i></a></p>
-                        </div>
-                    </div>
-                </li>
-                <li style="margin-left: 0px; margin-right: 0px; margin-top: 0px; width: 256.667px;">
-                    <div class="jItem">
-                        <div class="jPic">
-                            <a href="" target="">
-                                <img width="240" height="240" src="images/54853d49N92de62bb.jpg"/>
-                            </a>
-                        </div>
-                        <div class="HOTesc">
-                            <p class="goods-price">￥<span class="HOTNum" jshop="price" HOTprice="1309062513">399.00</span></p>
-                            <p class="goods-btn"><a href="" target="">立即抢购<i></i></a></p>
-                        </div>
-                    </div>
-                </li>
-                <li style="margin-left: 10px; margin-right: 0px; margin-top: 0px; width: 256.667px;">
-                    <div class="jItem">
-                        <div class="jPic">
-                            <a href="" target="">
-                                <img width="240" height="240" src="images/54853d49N92de62bb.jpg"/>
-                            </a>
-                        </div>
-                        <div class="HOTesc">
-                            <p class="goods-price">￥<span class="HOTNum" jshop="price" HOTprice="1309062513">399.00</span></p>
-                            <p class="goods-btn"><a href="" target="">立即抢购<i></i></a></p>
-                        </div>
-                    </div>
-                </li>
-                <li style="margin-left: 10px; margin-right: 0px; margin-top: 0px; width: 256.667px;">
-                    <div class="jItem">
-                        <div class="jPic">
-                            <a href="" target="">
-                                <img width="240" height="240" src="images/54853d49N92de62bb.jpg"/>
-                            </a>
-                        </div>
-                        <div class="HOTesc">
-                            <p class="goods-price">￥<span class="HOTNum" jshop="price" HOTprice="1309062513">399.00</span></p>
-                            <p class="goods-btn"><a href="" target="">立即抢购<i></i></a></p>
+                            <p class="goods-price">￥<span class="HOTNum" jshop="price" HOTprice="1309062513">[[${goods.price}]]</span></p>
+                            <p class="goods-btn"><a th:href="'/front/shop/product/'+${goods.id}" target="">立即抢购<i></i></a></p>
                         </div>
                     </div>
                 </li>
@@ -860,74 +209,28 @@
     <div class="mc" style="overflow: visible;" th:if="${templateClass == 'jGoodsRecommend-400156'}">
         <div class="j-module" module-function="autoLayout" module-param="{node:'li', spacingType:'margin', size:0.5}">
             <ul>
-                <li class="qThreeOneHalf mOneHalf">
+                <li class="qThreeOneHalf mOneHalf" data-widget-hot="goods">
                     <div class="jItem">
                         <div class="jPic">
-                            <a href="" target="_blank">
-                                <img src="images/54853d49N92de62bb.jpg" height="240" width="240">
+                            <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">
+                                <img th:src="${goods.smallPic}" height="240" width="240">
                             </a>
                         </div>
                         <div class="jGoodsInfo">
-                            <div class="HOTesc" title="意大利袋鼠 男士 袜子  时尚商务男袜 男士舒适透气棉袜 （L'ALPINA） 均码 31161五双装 均码">
-                                <a href="" target="_blank">意大利袋鼠 男士 袜子  时尚商务男袜 男士舒适透气棉袜 （L'ALPINA） 均码 31161五双装 均码</a>
+                            <div class="HOTesc" th:title="${goods.title}">
+                                <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">
+                                    [[${goods.title}]]
+                                </a>
                                 <span class="jSlogan"></span>
                             </div>
                             <div class="jPrice">
                                 <div class="jSalePrice">
-                                    <span class="jText">参考价：</span><span class="jsNum">179.00</span>
+                                    <span class="jText">￥</span><span class="jsNum">[[${goods.price}]]</span>
                                 </div>
-                                <span class="jText">京东价：</span><span class="HOTNum">69.00</span>
+                                <span class="jText">￥</span><span class="HOTNum">[[${goods.price}]]</span>
                             </div>
                             <div class="jBtnArea">
-                                <a target="_blank" href="" rel="nofollow">放入购物车</a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="qThreeOneHalf mOneHalf">
-                    <div class="jItem">
-                        <div class="jPic">
-                            <a href="" target="_blank">
-                                <img src="images/54853d49N92de62bb.jpg" height="240" width="240">
-                            </a>
-                        </div>
-                        <div class="jGoodsInfo">
-                            <div class="HOTesc" title="意大利袋鼠 男士 袜子  时尚商务男袜 男士舒适透气棉袜 （L'ALPINA） 均码 31161五双装 均码">
-                                <a href="" target="_blank">意大利袋鼠 男士 袜子  时尚商务男袜 男士舒适透气棉袜 （L'ALPINA） 均码 31161五双装 均码</a>
-                                <span class="jSlogan"></span>
-                            </div>
-                            <div class="jPrice">
-                                <div class="jSalePrice">
-                                    <span class="jText">参考价：</span><span class="jsNum">179.00</span>
-                                </div>
-                                <span class="jText">京东价：</span><span class="HOTNum">69.00</span>
-                            </div>
-                            <div class="jBtnArea">
-                                <a target="_blank" href="" rel="nofollow">放入购物车</a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="qThreeOneHalf mOneHalf">
-                    <div class="jItem">
-                        <div class="jPic">
-                            <a href="" target="_blank">
-                                <img src="images/54853d49N92de62bb.jpg" height="240" width="240">
-                            </a>
-                        </div>
-                        <div class="jGoodsInfo">
-                            <div class="HOTesc" title="意大利袋鼠 男士 袜子  时尚商务男袜 男士舒适透气棉袜 （L'ALPINA） 均码 31161五双装 均码">
-                                <a href="" target="_blank">意大利袋鼠 男士 袜子  时尚商务男袜 男士舒适透气棉袜 （L'ALPINA） 均码 31161五双装 均码</a>
-                                <span class="jSlogan"></span>
-                            </div>
-                            <div class="jPrice">
-                                <div class="jSalePrice">
-                                    <span class="jText">参考价：</span><span class="jsNum">179.00</span>
-                                </div>
-                                <span class="jText">京东价：</span><span class="HOTNum">69.00</span>
-                            </div>
-                            <div class="jBtnArea">
-                                <a target="_blank" href="" rel="nofollow">放入购物车</a>
+                                <a target="_blank" th:href="'/front/shop/product/'+${goods.id}" rel="nofollow">立即购买</a>
                             </div>
                         </div>
                     </div>
@@ -938,110 +241,31 @@
     <div class="mc" style="overflow: visible;" th:if="${templateClass == 'jGoodsRecommend-400210'}">
         <div class="j-module">
             <ul>
-                <li class="qFourOneHalf mOneHalf">
+                <li class="qFourOneHalf mOneHalf" data-widget-hot="goods">
                     <div class="jItem">
                         <div class="jPic">
-                            <a href="" target="_blank">
-                                <img src="images/54853d49N92de62bb.jpg" alt="意大利袋鼠 男士 袜子  时尚商务男袜 男士舒适透气棉袜 （L'ALPINA） 均码 31161五双装 均码" height="160" width="160">
+                            <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">
+                                <img th:src="${goods.smallPic}" th:attr="alt=${goods.title}" height="160" width="160">
                             </a>
                         </div>
                         <div class="jGoodsInfo">
-                            <div class="HOTesc" title="意大利袋鼠 男士 袜子  时尚商务男袜 男士舒适透气棉袜 （L'ALPINA） 均码 31161五双装 均码 ">
-                                <a href="" target="">意大利袋鼠 男士 袜子  时尚商务男袜 男士舒适透气棉袜 （L'ALPINA） 均码 31161五双装 均码</a>
+                            <div class="HOTesc" th:title="${goods.title}">
+                                <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                                    [[${goods.title}]]
+                                </a>
                                 <span class="jSlogan"></span>
                             </div>
                             <div class="jPrice">
                                 <div class="jSalePrice">
-                                    <span class="jText">参考价：</span>
+                                    <!--<span class="jText">参考价：</span>-->
                                     <span class="jRmb">¥</span>
-                                    <span class="jsNum">179.00</span>
+                                    <span class="jsNum">[[${goods.price}]]</span>
                                 </div>
                                 <span class="jRmb">¥</span>
-                                <span class="HOTNum">69.00</span>
+                                <span class="HOTNum">[[${goods.price}]]</span>
                             </div>
                             <div class="jBtnArea">
-                                <a target="_blank" href="" rel="">放入购物车</a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="qFourOneHalf mOneHalf">
-                    <div class="jItem">
-                        <div class="jPic">
-                            <a href="" target="_blank">
-                                <img src="images/54853d49N92de62bb.jpg" alt="意大利袋鼠 男士 袜子  时尚商务男袜 男士舒适透气棉袜 （L'ALPINA） 均码 31161五双装 均码" height="160" width="160">
-                            </a>
-                        </div>
-                        <div class="jGoodsInfo">
-                            <div class="HOTesc" title="意大利袋鼠 男士 袜子  时尚商务男袜 男士舒适透气棉袜 （L'ALPINA） 均码 31161五双装 均码 ">
-                                <a href="" target="">意大利袋鼠 男士 袜子  时尚商务男袜 男士舒适透气棉袜 （L'ALPINA） 均码 31161五双装 均码</a>
-                                <span class="jSlogan"></span>
-                            </div>
-                            <div class="jPrice">
-                                <div class="jSalePrice">
-                                    <span class="jText">参考价：</span>
-                                    <span class="jRmb">¥</span>
-                                    <span class="jsNum">179.00</span>
-                                </div>
-                                <span class="jRmb">¥</span>
-                                <span class="HOTNum">69.00</span>
-                            </div>
-                            <div class="jBtnArea">
-                                <a target="_blank" href="" rel="">放入购物车</a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="qFourOneHalf mOneHalf">
-                    <div class="jItem">
-                        <div class="jPic">
-                            <a href="" target="_blank">
-                                <img src="images/54853d49N92de62bb.jpg" alt="意大利袋鼠 男士 袜子  时尚商务男袜 男士舒适透气棉袜 （L'ALPINA） 均码 31161五双装 均码" height="160" width="160">
-                            </a>
-                        </div>
-                        <div class="jGoodsInfo">
-                            <div class="HOTesc" title="意大利袋鼠 男士 袜子  时尚商务男袜 男士舒适透气棉袜 （L'ALPINA） 均码 31161五双装 均码 ">
-                                <a href="" target="">意大利袋鼠 男士 袜子  时尚商务男袜 男士舒适透气棉袜 （L'ALPINA） 均码 31161五双装 均码</a>
-                                <span class="jSlogan"></span>
-                            </div>
-                            <div class="jPrice">
-                                <div class="jSalePrice">
-                                    <span class="jText">参考价：</span>
-                                    <span class="jRmb">¥</span>
-                                    <span class="jsNum">179.00</span>
-                                </div>
-                                <span class="jRmb">¥</span>
-                                <span class="HOTNum">69.00</span>
-                            </div>
-                            <div class="jBtnArea">
-                                <a target="_blank" href="" rel="">放入购物车</a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="qFourOneHalf mOneHalf">
-                    <div class="jItem">
-                        <div class="jPic">
-                            <a href="" target="_blank">
-                                <img src="images/54853d49N92de62bb.jpg" alt="意大利袋鼠 男士 袜子  时尚商务男袜 男士舒适透气棉袜 （L'ALPINA） 均码 31161五双装 均码" height="160" width="160">
-                            </a>
-                        </div>
-                        <div class="jGoodsInfo">
-                            <div class="HOTesc" title="意大利袋鼠 男士 袜子  时尚商务男袜 男士舒适透气棉袜 （L'ALPINA） 均码 31161五双装 均码 ">
-                                <a href="" target="">意大利袋鼠 男士 袜子  时尚商务男袜 男士舒适透气棉袜 （L'ALPINA） 均码 31161五双装 均码</a>
-                                <span class="jSlogan"></span>
-                            </div>
-                            <div class="jPrice">
-                                <div class="jSalePrice">
-                                    <span class="jText">参考价：</span>
-                                    <span class="jRmb">¥</span>
-                                    <span class="jsNum">179.00</span>
-                                </div>
-                                <span class="jRmb">¥</span>
-                                <span class="HOTNum">69.00</span>
-                            </div>
-                            <div class="jBtnArea">
-                                <a target="_blank" href="" rel="">放入购物车</a>
+                                <a target="_blank" th:href="'/front/shop/product/'+${goods.id}" rel="">立即购买</a>
                             </div>
                         </div>
                     </div>
@@ -1052,68 +276,24 @@
     <div class="mc" style="overflow: visible;" th:if="${templateClass == 'jGoodsRecommend-400211'}">
         <div class="j-module">
             <ul>
-                <li class="qThreeOneHalf mOneHalf">
+                <li class="qThreeOneHalf mOneHalf" data-widget-hot="goods">
                     <div class="jItem">
                         <div class="jPic">
-                            <a href="" target="_blank">
-                                <img src="images/54853d49N92de62bb.jpg" alt="意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码" height="225" width="225">
+                            <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">
+                                <img th:src="${goods.smallPic}" th:attr="alt=${goods.title}" height="225" width="225">
                             </a>
                         </div>
                         <div class="jGoodsInfo">
                             <div class="jPrice">
                                 <div class="HOTPrice">
-                                    <span class="jText">京东价：</span><span class="jRmb">¥</span><span class="HOTNum"><span class="HOTNum" jshop="price" HOTprice="1506149797">129.00</span></span>
+                                    <!--<span class="jText">京东价：</span>--><span class="jRmb">¥</span><span class="HOTNum"><span class="HOTNum" jshop="price" HOTprice="1506149797">[[${goods.price}]]</span></span>
                                 </div>
                                 <div class="jSalePrice">
-                                    <span class="jText">参考价：</span><span class="jsNum">129.00</span>
-                                    <div class="HOTesc" title="意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码">
-                                        <a href="" target="_blank">意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码</a>
-                                        <span class="jSlogan"></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="qThreeOneHalf mOneHalf">
-                    <div class="jItem">
-                        <div class="jPic">
-                            <a href="" target="_blank">
-                                <img src="images/54853d49N92de62bb.jpg" alt="意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码" height="225" width="225">
-                            </a>
-                        </div>
-                        <div class="jGoodsInfo">
-                            <div class="jPrice">
-                                <div class="HOTPrice">
-                                    <span class="jText">京东价：</span><span class="jRmb">¥</span><span class="HOTNum"><span class="HOTNum" jshop="price" HOTprice="1506149797">129.00</span></span>
-                                </div>
-                                <div class="jSalePrice">
-                                    <span class="jText">参考价：</span><span class="jsNum">129.00</span>
-                                    <div class="HOTesc" title="意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码">
-                                        <a href="" target="_blank">意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码</a>
-                                        <span class="jSlogan"></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="qThreeOneHalf mOneHalf">
-                    <div class="jItem">
-                        <div class="jPic">
-                            <a href="" target="_blank">
-                                <img src="images/54853d49N92de62bb.jpg" alt="意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码" height="225" width="225">
-                            </a>
-                        </div>
-                        <div class="jGoodsInfo">
-                            <div class="jPrice">
-                                <div class="HOTPrice">
-                                    <span class="jText">京东价：</span><span class="jRmb">¥</span><span class="HOTNum"><span class="HOTNum" jshop="price" HOTprice="1506149797">129.00</span></span>
-                                </div>
-                                <div class="jSalePrice">
-                                    <span class="jText">参考价：</span><span class="jsNum">129.00</span>
-                                    <div class="HOTesc" title="意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码">
-                                        <a href="" target="_blank">意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码</a>
+                                    <span class="jText">¥</span><span class="jsNum">[[${goods.price}]]</span>
+                                    <div class="HOTesc" th:title="${goods.title}">
+                                        <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">
+                                            [[${goods.title}]]
+                                        </a>
                                         <span class="jSlogan"></span>
                                     </div>
                                 </div>
@@ -1127,80 +307,30 @@
     <div class="mc" style="overflow: visible;" th:if="${templateClass == 'jGoodsRecommend-400214'}">
         <div class="j-module" >
             <ul>
-                <li class="qThreeOne mOne">
+                <li class="qThreeOne mOne" data-widget-hot="goods">
                     <div class="jItem" >
                         <div class="jPic">
-                            <a href=" " target="_blank">
-                                <img src="images/54853d49N92de62bb.jpg" alt="意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码" height="200" width="200">
+                            <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">
+                                <img th:src="${goods.smallPic}" th:attr="alt=${goods.title}" height="200" width="200">
                             </a>
                         </div>
                         <div class="jGoodsInfo">
-                            <div class="HOTesc" title="意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码">
-                                <a href=" " target="_blank">意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码</a>
+                            <div class="HOTesc" th:title="${goods.title}">
+                                <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">
+                                    [[${goods.title}]]
+                                </a>
                                 <span class="jSlogan"></span>
                             </div>
                             <div class="jPrice">
                                 <div class="jSalePrice">
-                                    <span class="jText">参考价：</span><span class="jsNum" >129.00</span>
+                                    <span class="jText">¥</span><span class="jsNum" >[[${goods.price}]]</span>
                                 </div>
                                 <div class="HOTPrice">
-                                    <span class="jText">促销价：</span><span class="jRmb">¥</span><span class="HOTNum"><span class="HOTNum">129.00</span></span>
+                                    <span class="jText">促销价：</span><span class="jRmb">¥</span><span class="HOTNum"><span class="HOTNum">[[${goods.price}]]</span></span>
                                 </div>
                             </div>
                             <div class="jBtnArea">
-                                <a target="_blank" href="" rel="">放入购物车</a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="qThreeOne mOne">
-                    <div class="jItem" >
-                        <div class="jPic">
-                            <a href=" " target="_blank">
-                                <img src="images/54853d49N92de62bb.jpg" alt="意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码" height="200" width="200">
-                            </a>
-                        </div>
-                        <div class="jGoodsInfo">
-                            <div class="HOTesc" title="意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码">
-                                <a href=" " target="_blank">意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码</a>
-                                <span class="jSlogan"></span>
-                            </div>
-                            <div class="jPrice">
-                                <div class="jSalePrice">
-                                    <span class="jText">参考价：</span><span class="jsNum" >129.00</span>
-                                </div>
-                                <div class="HOTPrice">
-                                    <span class="jText">促销价：</span><span class="jRmb">¥</span><span class="HOTNum"><span class="HOTNum">129.00</span></span>
-                                </div>
-                            </div>
-                            <div class="jBtnArea">
-                                <a target="_blank" href="" rel="">放入购物车</a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="qThreeOne mOne">
-                    <div class="jItem" >
-                        <div class="jPic">
-                            <a href=" " target="_blank">
-                                <img src="images/54853d49N92de62bb.jpg" alt="意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码" height="200" width="200">
-                            </a>
-                        </div>
-                        <div class="jGoodsInfo">
-                            <div class="HOTesc" title="意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码">
-                                <a href=" " target="_blank">意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码</a>
-                                <span class="jSlogan"></span>
-                            </div>
-                            <div class="jPrice">
-                                <div class="jSalePrice">
-                                    <span class="jText">参考价：</span><span class="jsNum" >129.00</span>
-                                </div>
-                                <div class="HOTPrice">
-                                    <span class="jText">促销价：</span><span class="jRmb">¥</span><span class="HOTNum"><span class="HOTNum">129.00</span></span>
-                                </div>
-                            </div>
-                            <div class="jBtnArea">
-                                <a target="_blank" href="" rel="">放入购物车</a>
+                                <a target="_blank" th:href="'/front/shop/product/'+${goods.id}" rel="">立即购买</a>
                             </div>
                         </div>
                     </div>
@@ -1211,67 +341,25 @@
     <div class="mc" style="overflow: visible;" th:if="${templateClass == 'jGoodsRecommend-400215'}">
         <div class="j-module" >
             <ul>
-                <li class="qThreeOneHalf mOneHalf">
+                <li class="qThreeOneHalf mOneHalf" data-widget-hot="goods">
                     <div class="jItem" >
                         <div class="jPic">
-                            <a href=" " target="">
-                                <img src="images/54853d49N92de62bb.jpg" alt="意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码" height="200" width="200">
+                            <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                                <img th:src="${goods.smallPic}" th:attr="alt=${goods.title}" height="200" width="200">
                             </a>
                         </div>
                         <div class="jGoodsInfo">
-                            <div class="HOTesc" title="意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码">
-                                <a href="" target="_blank">意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码</a>
+                            <div class="HOTesc" th:title="${goods.title}">
+                                <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">
+                                    [[${goods.title}]]
+                                </a>
                             </div>
                             <div class="jPrice">
-                                <div class="HOTPrice">
+                                <!--<div class="HOTPrice">
                                     <span class="jsTag">京东价：</span><span class="HOTNum">129.00</span>
-                                </div>
+                                </div>-->
                                 <div class="jSalePrice">
-                                    <span class="jText">参考价：</span><span class="jRmb">¥</span><span class="jsNum">129.00</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="qThreeOneHalf mOneHalf">
-                    <div class="jItem" >
-                        <div class="jPic">
-                            <a href=" " target="">
-                                <img src="images/54853d49N92de62bb.jpg" alt="意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码" height="200" width="200">
-                            </a>
-                        </div>
-                        <div class="jGoodsInfo">
-                            <div class="HOTesc" title="意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码">
-                                <a href="" target="_blank">意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码</a>
-                            </div>
-                            <div class="jPrice">
-                                <div class="HOTPrice">
-                                    <span class="jsTag">京东价：</span><span class="HOTNum">129.00</span>
-                                </div>
-                                <div class="jSalePrice">
-                                    <span class="jText">参考价：</span><span class="jRmb">¥</span><span class="jsNum">129.00</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="qThreeOneHalf mOneHalf">
-                    <div class="jItem" >
-                        <div class="jPic">
-                            <a href=" " target="">
-                                <img src="images/54853d49N92de62bb.jpg" alt="意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码" height="200" width="200">
-                            </a>
-                        </div>
-                        <div class="jGoodsInfo">
-                            <div class="HOTesc" title="意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码">
-                                <a href="" target="">意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码</a>
-                            </div>
-                            <div class="jPrice">
-                                <div class="HOTPrice">
-                                    <span class="jsTag">京东价：</span><span class="HOTNum">129.00</span>
-                                </div>
-                                <div class="jSalePrice">
-                                    <span class="jText">参考价：</span><span class="jRmb">¥</span><span class="jsNum">129.00</span>
+                                    <!--<span class="jText">参考价：</span>--><span class="jRmb">¥</span><span class="jsNum">[[${goods.price}]]</span>
                                 </div>
                             </div>
                         </div>
@@ -1283,110 +371,40 @@
     <div class="mc" style="overflow: visible;" th:if="${templateClass == 'jGoodsRecommend-412502'}">
         <div class="j-module">
             <ul>
-                <li class="qThreeOneHalf mOneHalf">
+                <li class="qThreeOneHalf mOneHalf" data-widget-hot="goods">
                     <div class="jItem">
                         <div class="jPic">
-                            <a href="" target="">
-                                <img src="images/54853d49N92de62bb.jpg" alt="意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码" height="240" width="240">
+                            <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                                <img th:src="${goods.smallPic}" th:attr="alt=${goods.title}" height="240" width="240">
                             </a>
                             <div class="jPromotionLabel">
                                 <div class="jPromotionTextArea">
-                                    <span class="jPromotionText1">1111抢购价</span>
-                                    <span class="jPromotionNum">¥</span>
+                                    <span class="jPromotionText1">抢购价</span>
+                                    <span class="jPromotionNum">¥[[${goods.price}]]</span>
                                 </div>
                             </div>
                         </div>
                         <div class="jGoodsInfo">
-                            <div class="HOTesc" title="意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码">
-                                <a href="" target="">意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码</a>
+                            <div class="HOTesc" th:title="${goods.title}">
+                                <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                                    [[${goods.title}]]
+                                </a>
                                 <span class="jSlogan"></span>
                             </div>
                             <div class="jPrice">
                                 <div class="jSalePrice">
                                     <span class="jText">参考价:</span>
                                     <span class="jRmb">¥</span>
-                                    <span class="jsNum" jshop="price" jsprice="1506149797">129.00</span>
+                                    <span class="jsNum" jshop="price" jsprice="1506149797">[[${goods.price}]]</span>
                                 </div>
                                 <div class="HOTPrice">
                                     <span class="jText">现价:</span>
                                     <span class="jRmb">¥</span>
-                                    <span class="HOTNum" jshop="price" HOTprice="1506149797">129.00</span>
+                                    <span class="HOTNum" jshop="price" HOTprice="1506149797">[[${goods.price}]]</span>
                                 </div>
                             </div>
                             <div class="jBtnArea">
-                                <a target="" href="" rel="">放入购物车</a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="qThreeOneHalf mOneHalf">
-                    <div class="jItem">
-                        <div class="jPic">
-                            <a href="" target="">
-                                <img src="images/54853d49N92de62bb.jpg" alt="意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码" height="240" width="240">
-                            </a>
-                            <div class="jPromotionLabel">
-                                <div class="jPromotionTextArea">
-                                    <span class="jPromotionText1">1111抢购价</span>
-                                    <span class="jPromotionNum">¥</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="jGoodsInfo">
-                            <div class="HOTesc" title="意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码">
-                                <a href="" target="">意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码</a>
-                                <span class="jSlogan"></span>
-                            </div>
-                            <div class="jPrice">
-                                <div class="jSalePrice">
-                                    <span class="jText">参考价:</span>
-                                    <span class="jRmb">¥</span>
-                                    <span class="jsNum" jshop="price" jsprice="1506149797">129.00</span>
-                                </div>
-                                <div class="HOTPrice">
-                                    <span class="jText">现价:</span>
-                                    <span class="jRmb">¥</span>
-                                    <span class="HOTNum" jshop="price" HOTprice="1506149797">129.00</span>
-                                </div>
-                            </div>
-                            <div class="jBtnArea">
-                                <a target="" href="" rel="">放入购物车</a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="qThreeOneHalf mOneHalf">
-                    <div class="jItem">
-                        <div class="jPic">
-                            <a href="" target="">
-                                <img src="images/54853d49N92de62bb.jpg" alt="意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码" height="240" width="240">
-                            </a>
-                            <div class="jPromotionLabel">
-                                <div class="jPromotionTextArea">
-                                    <span class="jPromotionText1">1111抢购价</span>
-                                    <span class="jPromotionNum">¥</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="jGoodsInfo">
-                            <div class="HOTesc" title="意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码">
-                                <a href="" target="">意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码</a>
-                                <span class="jSlogan"></span>
-                            </div>
-                            <div class="jPrice">
-                                <div class="jSalePrice">
-                                    <span class="jText">参考价:</span>
-                                    <span class="jRmb">¥</span>
-                                    <span class="jsNum" jshop="price" jsprice="1506149797">129.00</span>
-                                </div>
-                                <div class="HOTPrice">
-                                    <span class="jText">现价:</span>
-                                    <span class="jRmb">¥</span>
-                                    <span class="HOTNum" jshop="price" HOTprice="1506149797">129.00</span>
-                                </div>
-                            </div>
-                            <div class="jBtnArea">
-                                <a target="" href="" rel="">放入购物车</a>
+                                <a target="" th:href="'/front/shop/product/'+${goods.id}" rel="">放入购物车</a>
                             </div>
                         </div>
                     </div>
@@ -1396,92 +414,34 @@
     </div>
     <div class="mc" style="overflow: visible;" th:if="${templateClass == 'jGoodsRecommend-400376'}">
         <ul>
-            <li>
+            <li data-widget-hot="goods">
                 <div class="jItem">
                     <div class="jIcon">1</div>
                     <div class="jPic">
-                        <a href="" target="_blank">
-                            <img src="images/54853d49N92de62bb.jpg" alt="意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码" height="90" width="90">
+                        <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">
+                            <img th:src="${goods.smallPic}" th:attr="alt=${goods.title}" height="90" width="90">
                         </a>
                     </div>
                     <div class="jGoodsInfo">
-                        <div class="HOTesc" title="意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码 ">
-                            <a href="" target="_blank">意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码</a>
+                        <div class="HOTesc" th:title="${goods.title}">
+                            <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">
+                                [[${goods.title}]]
+                            </a>
                             <span class="jSlogan"></span>
                         </div>
                         <div class="jPrice">
                             <div class="jSalePrice">
                                 <span class="jText">原价：</span>
                                 <span class="jRmb">¥</span>
-                                <span class="jsNum">129.00</span>
+                                <span class="jsNum">[[${goods.price}]]</span>
                             </div>
                             <div class="HOTPrice">
                                 <span class="jRmb">¥</span>
-                                <span class="HOTNum">129.00</span>
+                                <span class="HOTNum">[[${goods.price}]]</span>
                             </div>
                         </div>
                         <div class="jBtnArea">
-                            <a target="" href="" rel="nofollow">放入购物车</a>
-                        </div>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <div class="jItem">
-                    <div class="jIcon">1</div>
-                    <div class="jPic">
-                        <a href="" target="_blank">
-                            <img src="images/54853d49N92de62bb.jpg" alt="意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码" height="90" width="90">
-                        </a>
-                    </div>
-                    <div class="jGoodsInfo">
-                        <div class="HOTesc" title="意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码 ">
-                            <a href="" target="_blank">意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码</a>
-                            <span class="jSlogan"></span>
-                        </div>
-                        <div class="jPrice">
-                            <div class="jSalePrice">
-                                <span class="jText">原价：</span>
-                                <span class="jRmb">¥</span>
-                                <span class="jsNum">129.00</span>
-                            </div>
-                            <div class="HOTPrice">
-                                <span class="jRmb">¥</span>
-                                <span class="HOTNum">129.00</span>
-                            </div>
-                        </div>
-                        <div class="jBtnArea">
-                            <a target="" href="" rel="nofollow">放入购物车</a>
-                        </div>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <div class="jItem">
-                    <div class="jIcon">1</div>
-                    <div class="jPic">
-                        <a href="" target="_blank">
-                            <img src="images/54853d49N92de62bb.jpg" alt="意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码" height="90" width="90">
-                        </a>
-                    </div>
-                    <div class="jGoodsInfo">
-                        <div class="HOTesc" title="意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码 ">
-                            <a href="" target="_blank">意大利袋鼠 男士 袜子男 中筒纯棉时尚短袜5双装 墨绿1黄色1橘色1白色1草绿 均码 31170款5双装 均码</a>
-                            <span class="jSlogan"></span>
-                        </div>
-                        <div class="jPrice">
-                            <div class="jSalePrice">
-                                <span class="jText">原价：</span>
-                                <span class="jRmb">¥</span>
-                                <span class="jsNum">129.00</span>
-                            </div>
-                            <div class="HOTPrice">
-                                <span class="jRmb">¥</span>
-                                <span class="HOTNum">129.00</span>
-                            </div>
-                        </div>
-                        <div class="jBtnArea">
-                            <a target="" href="" rel="nofollow">放入购物车</a>
+                            <a target="" th:href="'/front/shop/product/'+${goods.id}" rel="nofollow">立即购买</a>
                         </div>
                     </div>
                 </div>
@@ -1493,12 +453,12 @@
         <div class="module-toolbar J-module-toolbar" style="height:350px; width:100%;">
             <h4 style="cursor: move;">
         <span class="module-extra">
-        <a class="icon-del J-module-delete" href="">
-        </a>
-        <a class="icon-up J-module-up" href="">
-        </a>
-        <a class="icon-down J-module-down" href="">
-        </a>
+        <a class="icon-del js-module-delete" href="javascript:void(0)"
+           th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+                    <a class="icon-up js-module-up" href="javascript:void(0)"
+                       th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+                    <a class="icon-down js-module-down" href="javascript:void(0)"
+                       th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
         </span>
                 <span class="module-name J-module-name">推荐商品</span>
         <span class="J-module-set">

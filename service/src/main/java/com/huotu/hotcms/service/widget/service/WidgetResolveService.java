@@ -14,9 +14,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
@@ -40,6 +43,8 @@ public class WidgetResolveService {
 
     private TemplateEngine templateEngine = new TemplateEngine();
 
+    private HttpServletRequest request=null;
+
     private void addDialect(){
        if(!templateEngine.isInitialized()){
            templateEngine.addDialect(new WidgetDialect());
@@ -50,11 +55,12 @@ public class WidgetResolveService {
         if(null!=site) {
             context.setVariable("site", site);
         }
-        context.setVariable("request",requestService.ConvertRequestModel());
+        context.setVariable("request",requestService.ConvertRequestModel(this.request));
         return context;
     }
 
     public String widgetBriefView(String templateResources,WidgetBase widgetBase,Site site) throws IOException {
+        request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         if(widgetBase!=null) {
             Map<String,Object> map =null;
             if(widgetBase.getProperty()!=null){

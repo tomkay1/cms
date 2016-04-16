@@ -19,12 +19,12 @@
         <div class="module-toolbar HOT-module-toolbar" style="height:120px; width:100%;">
             <h4 style="cursor: move;">
         <span class="module-extra">
-        <a class="icon-del HOT-module-delete" href="">
-        </a>
-        <a class="icon-up HOT-module-up" href="">
-        </a>
-        <a class="icon-down HOT-module-down" href="">
-        </a>
+        <a class="icon-del js-module-delete" href="javascript:void(0)"
+           th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+                    <a class="icon-up js-module-up" href="javascript:void(0)"
+                       th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+                    <a class="icon-down js-module-down" href="javascript:void(0)"
+                       th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
         </span>
                 <span class="module-name HOT-module-name">品牌公告</span>
         <span class="HOT-module-set">

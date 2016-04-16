@@ -60,24 +60,25 @@ public class GoodsPageableTagProcessor extends AbstractAttributeTagProcessor {
 
     private Object invokeGoodsPageableService(IProcessableElementTag tag, ITemplateContext context) {
         WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
-        GoodsService goodsService = (GoodsService)applicationContext.getBean("goodsServiceImpl");
-        int customerId = ((Site)VariableExpression.getVariable(context, "site")).getCustomerId();
+        GoodsService goodsService = (GoodsService) applicationContext.getBean("goodsServiceImpl");
+        int customerId = ((Site) VariableExpression.getVariable(context, "site")).getCustomerId();
         GoodsPage goodsPage = null;
         try {
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
             GoodsSearcher goodsSearcher = HttpUtils.getRequestParam(request, GoodsSearcher.class);
-            goodsPage = goodsService.searchGoods(request,customerId,goodsSearcher);
-            putPageAttrsIntoModel(context,goodsPage);
-        }catch (Exception e) {
+            goodsSearcher.init(goodsSearcher);
+            goodsPage = goodsService.searchGoods(request, customerId, goodsSearcher);
+            putPageAttrsIntoModel(context, goodsPage);
+        } catch (Exception e) {
             log.error(e.getMessage());
         }
-        return goodsPage.getGoodses();
+        return goodsPage == null ? null : goodsPage.getGoodses();
     }
 
-    private void putPageAttrsIntoModel(ITemplateContext context,GoodsPage goodsPage) {
+    private void putPageAttrsIntoModel(ITemplateContext context, GoodsPage goodsPage) {
         //分页标签处理
-        RequestModel requestModel = (RequestModel)VariableExpression.getVariable(context,"request");
-        int pageNo = goodsPage.getPageNo();
+        RequestModel requestModel = (RequestModel) VariableExpression.getVariable(context, "request");
+        int pageNo = goodsPage.getPageNo() + 1;
         int totalPages = goodsPage.getTotalPages();
         int pageBtnNum = totalPages > SysConstant.DEFAULT_PAGE_BUTTON_NUM ? SysConstant.DEFAULT_PAGE_BUTTON_NUM : totalPages;
         int startPageNo = PageUtils.calculateStartPageNo(pageNo, pageBtnNum, totalPages);

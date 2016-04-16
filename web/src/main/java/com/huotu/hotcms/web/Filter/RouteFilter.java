@@ -62,6 +62,7 @@ public class RouteFilter implements Filter {
         if (!isContains(servletPath)) {
             if (servletPath.equals("/")) {
                 request.getRequestDispatcher("/shop" + servletPath).forward(request, response);
+                return  false;
             }
 //            else if(servletPath.contains("/shop/")){
 //                request.getRequestDispatcher(servletPath).forward(request, response);

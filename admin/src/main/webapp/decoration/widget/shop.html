@@ -1,5 +1,6 @@
+<!--shop.html-->
 <!--浏览视图-->
-<div th:class="'fn-clear '+(${templateClass==null}?'sh-brand-wrap-630128':${templateClass})+' toolhover'" th:attr="id=${guid}">
+<div th:class="'fn-clear js-hot-module  '+(${templateClass==null}?'sh-brand-wrap-630128':${templateClass})+' toolhover'" th:attr="id=${guid}">
     <div class="mc" style="overflow: visible;" >
         <div class="sh-brand-wrap">
             <div class="sh-brand" style="height:60px;">
@@ -13,17 +14,17 @@
                     <a href="" class="follow-me for-light-bg">关注我</a>
                 </div>
                 <div class="m-search for-black-bg">
-                    <form action="false" class="m-form">
-                        <input type="text" class="m-kw" value="" maxlength="50" size="50" th:value="${defaultKewWord}"/>
-                        <input type="button" value="搜索" class="m-submit"
+                    <form action="false" class="m-form" action="/front/shop/search">
+                        <input type="text" class="m-kw" value="" maxlength="50" size="50" th:value="${request.get('keyword')}!=null?${request.get('keyword')}:${defaultKewWord}" name="keyword"/>
+                        <input type="submit" value="搜索" class="m-submit"
                                id="in-shop-search"/>
                     </form>
-                    <div class="m-hw" th:if="${templateClass == null or templateClass == 'sh-brand-wrap-630128'}" th:attr="templateClass=${templateClass}">
+                    <!--<div class="m-hw" th:if="${templateClass == null or templateClass == 'sh-brand-wrap-630128'}" th:attr="templateClass=${templateClass}">
                         <a href="" target="" class="hw-link">1</a>
                         <a href="" onclick="" target="" class="hw-link">2</a>
                         <a href="" onclick="" target="" class="hw-link">3</a>
                         <a href="" onclick="" target="" class="hw-link">4</a>
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </div>
@@ -34,12 +35,9 @@
         <div class="module-toolbar HOT-module-toolbar" style="height:20px; width:100%;">
             <h4 style="cursor: move;">
         <span class="module-extra">
-        <a class="icon-del HOT-module-delete" href="">
-        </a>
-        <a class="icon-up HOT-module-up" href="">
-        </a>
-        <a class="icon-down HOT-module-down" href="">
-        </a>
+            <a class="icon-del js-module-delete" href="javascript:void(0)" th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+            <a class="icon-up js-module-up" href="javascript:void(0)" th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+            <a class="icon-down js-module-down" href="javascript:void(0)" th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
         </span>
                 <span class="module-name HOT-module-name">店铺页头</span>
         <span class="HOT-module-set">

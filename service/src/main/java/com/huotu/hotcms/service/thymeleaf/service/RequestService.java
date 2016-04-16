@@ -40,8 +40,9 @@ public class RequestService {
         return model;
     }
 
-    public RequestModel ConvertRequestModel(){
+    public RequestModel ConvertRequestModel(HttpServletRequest request){
         RequestModel model=new RequestModel();
+        model.setRequest(request);
         model.setRoot();
         return model;
     }

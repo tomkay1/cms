@@ -1,278 +1,66 @@
 <!--浏览试图-->
 <!--400152-->
-<div th:attr="id=${guid}">
-    <div th:if="${list_template}==null or ${list_template=='goods_style1'}"
-         class="fn-clear jGoodsList-400152 toolhover">
-        <div class="mc" style="">
-            <div class="jTab">
-                <a th:class="${defaultOrder==0 or defaultOrder==null}?'current':''" href="">
-                    销量
-                </a>
-                <a th:class="${defaultOrder==1}?'current':''" href="">
-                    价格
-                </a>
-                <a th:class="${defaultOrder==2}?'current':''" href="">
-                    上架时间
-                </a>
-            </div>
-            <ul th:style="'background:'+${goods_pageBackGround}">
-                <li data-widget-page="goods">
-                    <div class="jItem">
-                        <div class="jPic">
-                            <a href="">
-                                <img data-th-src="${goods.smallPic}" width="160" height="160"
-                                     data-th-attr="alt=${goods.title}">
-                            </a>
-                        </div>
-                        <div class="jGoodsInfo">
-                            <div class="HOTesc">
-                                <a href="" th:style="${goods_fontColor==null?'':'color:'+goods_fontColor}">
-                                    [[${goods.title}]]
-                                </a>
-                                <span class="jSlogan"></span>
-                            </div>
-                            <div class="jPrice">
-                                <span class="jRmb">￥</span>
-                                <span class="HOTNum">[[${goods.price}]]</span>
-                            </div>
-                            <div th:if="${showIntegral==null} or ${showIntegral==0}" class="extra">
-                                <!--<span class="evaluate">-->
-                                <!--<a href="">-->
-                                <!--已有64人评价-->
-                                <!--</a>-->
-                                <!--</span>-->
-                                <span class="evaluate">
-                  <a href="">
-                      可获积分：<i style="color: #FF1414;">199</i>
-                  </a>
-                  </span>
-                            </div>
-                            <p style="height: 7px;"></p>
-
-                            <div class="jBtnArea">
-                                <a target="" href="" rel="">
-                                    购买
-                                </a>
-
-                            </div>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-            <div class="jPage">
-                <em>共[[${request.totalRecords}]]条记录</em><span>上一页</span>
-                <a class="current">
-                    1
-                </a>
-                <a href="">
-                    2
-                </a>
-                <a href="">
-                    3
-                </a>
-                <span>...</span>
-                <a href="">
-                    6
-                </a>
-                <a href="">
-                    下一页
-                </a>
-            </div>
-        </div>
-        <div class="module-toolbal-container ui-draggable" th:if="${edit}">
-            <div class="module-assist" style="padding-top: 32px;"></div>
-            <div class="module-toolbar J-module-toolbar" style="height:360px; width:100%;">
-                <h4 style="cursor: move;">
-      <span class="module-extra">
-      <a class="icon-del J-module-delete" href="">
-      </a>
-      <a class="icon-up J-module-up" href="">
-      </a>
-      <a class="icon-down J-module-down" href="">
-      </a>
-      </span>
-                    <span class="module-name J-module-name">分页显示商品</span>
-      <span class="J-module-set">
-      <a href="javascript:void(0)" class="HOT-module-set-data js-widget-edit"
-         th:attr="data-editurl=${widgetEditUri},data-id=${id},data-for=${guid},data-url=${widgetUri},data-layoutid=${layoutId},data-position=${layoutPosition}">
-          编辑
-      </a>
-        <a href="" class="HOT-module-set-template">
-            模板
-        </a>
-      </span>
-                </h4>
-            </div>
-        </div>
-    </div>
-
-    <!--400221-->
-    <div th:if="${list_template=='goods_style2'}" class="fn-clear jGoodsPage-400221 toolhover">
-        <div class="mc" style="">
-            <div class="jTab">
-                <a href="">
-                    销量
-                </a>
-                <a href="">
-                    价格
-                </a>
-                <a href="">
-                    上架时间
-                </a>
-            </div>
-            <ul th:style="'background:'+${goods_pageBackGround}">
-                <li data-widget-page="goods">
-                    <div class="jItem">
-                        <div class="jPic">
-                            <a href="" target="">
-                                <img data-th-src="${goods.smallPic}" data-th-attr="alt=${goods.title}">
-                            </a>
-
-                            <div class="jToolBar">
-                                <input value="关注" class="btn-coll" type="button">
-                                <input type="button" onclick="" value="">
-                            </div>
-                        </div>
-                        <div class="jGoodsInfo">
-                            <div class="HOTesc" data-th-attr="alt=${goods.title}">
-                                <a href=" ">
-                                    [[${goods.title}]]
-                                </a>
-                                <span class="jSlogan"></span>
-                            </div>
-                            <div th:if="${showIntegral==null} or ${showIntegral==0}" class="jExtra">
-                                <!--<span class="jEvaluate">-->
-                                <!--<a href=" ">-->
-                                <!--已有64人评价-->
-                                <!--</a>-->
-                                <!--</span>-->
-                                <span class="evaluate">
-                  <a href="">
-                      可获积分：<i style="color: #FF1414;">199</i>
-                  </a>
-                  </span>
-                                <span></span>
-                            </div>
-                            <div class="jPrice">
-                                <div class="HOTPrice">
-                                    <span class="jRmb">￥</span>
-                                    <span class="HOTNum">[[${goods.price}]]</span>
-                                </div>
-                            </div>
-                            <p style="height: 7px;"></p>
-
-                            <div class="jBtnArea">
-                                <a target="" href="" rel="">
-                                    购买
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-            <div class="jPage">
-                <em>共[[${request.totalRecords}]]条记录</em><span>上一页</span>
-                <a class="current">
-                    1
-                </a>
-                <a href="">
-                    2
-                </a>
-                <a href="">
-                    3
-                </a>
-                <span>...</span>
-                <a href="">
-                    6
-                </a>
-                <a href="">
-                    下一页
-                </a>
-            </div>
-        </div>
-        <div class="module-toolbal-container ui-draggable"  th:if="${edit}">
-            <div class="module-assist" style="padding-top: 32px;"></div>
-            <div class="module-toolbar J-module-toolbar" style="height:360px; width:100%;">
-                <h4 style="cursor: move;">
-      <span class="module-extra">
-      <a class="icon-del J-module-delete" href="">
-      </a>
-      <a class="icon-up J-module-up" href="">
-      </a>
-      <a class="icon-down J-module-down" href="">
-      </a>
-      </span>
-                    <span class="module-name J-module-name">分页显示商品</span>
-      <span class="J-module-set">
-      <a href="javascript:void(0)" class="HOT-module-set-data js-widget-edit"
-         th:attr="data-editurl=${widgetEditUri},data-id=${id},data-for=${guid},data-url=${widgetUri},data-layoutid=${layoutId},data-position=${layoutPosition}">
-          编辑
-      </a>
-        <a href="" class="HOT-module-set-template">
-            模板
-        </a>
-      </span>
-                </h4>
-            </div>
-        </div>
-    </div>
-
-    <!--402643-->
-    <div th:if="${list_template=='goods_style3'}" class="fn-clear jGoodsPage-402643 toolhover">
-        <div class="mc" style="">
-            <div class="j-module">
-                <div class="jTitle">
-                    <div class="jTab">
-                        <a href="">
-                            销量
-                        </a>
-                        <a href="">
-                            价格
-                        </a>
-                        <a href="">
-                            上架时间
-                        </a>
-                    </div>
-                    <span class="jTitleName">产品列表</span>
+<form id="form">
+    <input type="hidden" name="sort" th:value="${request.get('sort')} != null?${request.get('sort')}:'salesCount,desc'"
+           sortColumn="" id="sort">
+    <div th:attr="id=${guid}" class="js-good-list">
+        <div th:if="${list_template}==null or ${list_template=='goods_style1'}"
+             class="fn-clear js-hot-module jGoodsList-400152 toolhover">
+            <div class="mc" style="">
+                <div class="jTab">
+                    <a th:class="${request.get('sort')} == null or ${#strings.indexOf(request.get('sort'),'salesCount')} > -1?'current':''"
+                       href="javascript:void(0)" sortColumn="salesCount"
+                       th:attr="sortDirect=(${request.get('sort')} == null?'desc':(${#strings.indexOf(request.get('sort'),'salesCount')}>-1?${#strings.substringAfter(request.get('sort'),'salesCount,')}))">
+                        销量
+                    </a>
+                    <a th:class="${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'price')} > -1?'current':''"
+                       href="javascript:void(0)" sortColumn="price"
+                       th:attr="sortDirect=(${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'price')} > -1?${#strings.substringAfter(request.get('sort'),'price,')})">
+                        价格
+                    </a>
+                    <a th:class="${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'autoMarketDate')} > -1?'current':''"
+                       href="javascript:void(0)" sortColumn="autoMarketDate"
+                       th:attr="sortDirect=(${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'autoMarketDate')} > -1?${#strings.substringAfter(request.get('sort'),'autoMarketDate,')})">
+                        上架时间
+                    </a>
                 </div>
                 <ul th:style="'background:'+${goods_pageBackGround}">
-                    <li  data-widget-page="goods">
+                    <li data-widget-page="goods">
                         <div class="jItem">
                             <div class="jPic">
-                                <a href="">
-                                    <img data-th-src="${goods.smallPic}"  data-th-attr="alt=${goods.title}">
+                                <a th:href="'/front/shop/product/'+${goods.id}">
+                                    <img data-th-src="${goods.smallPic}" width="160" height="160"
+                                         data-th-attr="alt=${goods.title}">
                                 </a>
                             </div>
                             <div class="jGoodsInfo">
                                 <div class="HOTesc">
-                                    <a href="">
+                                    <a th:href="'/front/shop/product/'+${goods.id}"
+                                       th:style="${goods_fontColor==null?'':'color:'+goods_fontColor}">
                                         [[${goods.title}]]
                                     </a>
                                     <span class="jSlogan"></span>
                                 </div>
                                 <div class="jPrice">
-                                    <div class="HOTPrice">
-                                        <span class="jRmb">¥</span>
-                                        <span class="HOTNum">[[${goods.price}]]</span>
-                                    </div>
+                                    <span class="jRmb">￥</span>
+                                    <span class="HOTNum">[[${goods.price}]]</span>
                                 </div>
-                                <div th:if="${showIntegral==null} or ${showIntegral==0}" class="jExtra">
-                                    <!--<span class="jEvaluate">-->
-                                    <!--<a href="">-->
-                                    <!--已有<em> 64 </em>人评价-->
-                                    <!--</a>-->
-                                    <!--</span>-->
-                                    <span class="evaluate">
-                  <a href="">
-                      可获积分：<i style="color: #FF1414;">199</i>
+                                <div th:if="${showIntegral==null} or ${showIntegral==0}" class="extra">
+                                <span class="evaluate">
+                                    <a th:href="'/front/shop/product/'+${goods.id}">
+                                        销量[[${goods.sales}]]
+                                    </a>
+                                </span>
+                                <span class="evaluate">
+                  <a href="" th:if="${goods.vipPrice!=null and goods.vipPrice > 0}">
+                      会员价：<i style="color: #FF1414;">[[${goods.vipPrice}]]</i>
                   </a>
                   </span>
-                                    <span></span>
                                 </div>
                                 <p style="height: 7px;"></p>
 
                                 <div class="jBtnArea">
-                                    <a href="" class="addToCart" rel="nofollow">
+                                    <a target="" href="" rel="">
                                         购买
                                     </a>
 
@@ -282,55 +70,283 @@
                     </li>
                 </ul>
                 <div class="jPage">
-                    <em>共[[${request.totalRecords}]]条记录</em><span>上一页</span>
-                    <a class="current">
-                        1
-                    </a>
-                    <a href="l">
-                        2
-                    </a>
-                    <a href="">
-                        3
-                    </a>
-                    <span>...</span>
-                    <a href="">
-                        6
-                    </a>
-                    <a href="">
-                        下一页
-                    </a>
+                    <em>共[[${request.totalRecords}]]条记录 当前[[${request.currentPage}]]/[[${request.totalPages}]]页</em>
+                    <a th:if="${request.hasPrevPage}" th:attr="pageNo=${request.currentPage-1}"
+                       href="javascript:void(0)">上一页</a>
+                    <a href="javascript:void(0)" th:each="pageNo:${request.pageNos}"
+                       th:class="${request.currentPage}==*{pageNo}?'current'" th:text="*{pageNo}"
+                       th:attr="pageNo=*{pageNo}"
+                    ></a>
+                    <a th:if="${request.hasNextPage}" href="javascript:void(0)"
+                       th:attr="pageNo=${request.currentPage+1}">下一页</a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第
+                    <input id="current-index" name="page" class="input-small"
+                           style="text-align:center;width: 50px;margin: 0px 4px;" type="number"
+                           th:value="${request.currentPage}">
+                    页&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="javascript:void(0)">跳转</a>
+                </div>
+            </div>
+            <div class="module-toolbal-container ui-draggable" th:if="${edit}">
+                <div class="module-assist" style="padding-top: 32px;"></div>
+                <div class="module-toolbar J-module-toolbar" style="height:360px; width:100%;">
+                    <h4 style="cursor: move;">
+                    <span class="module-extra">
+                        <a class="icon-del js-module-delete" href="javascript:void(0)"
+                           th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+            <a class="icon-up js-module-up" href="javascript:void(0)"
+               th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+            <a class="icon-down js-module-down" href="javascript:void(0)"
+               th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+                    </span>
+                        <span class="module-name J-module-name">商品搜索结果</span>
+                    <span class="J-module-set">
+                        <a href="javascript:void(0)" class="HOT-module-set-data js-widget-edit"
+                           th:attr="data-editurl=${widgetEditUri},data-id=${id},data-for=${guid},data-url=${widgetUri},data-layoutid=${layoutId},data-position=${layoutPosition}">
+                            编辑
+                        </a>
+                        <a href="" class="HOT-module-set-template">
+                            模板
+                        </a>
+                    </span>
+                    </h4>
                 </div>
             </div>
         </div>
-        <div class="module-toolbal-container ui-draggable"   th:if="${edit}">
-            <div class="module-assist" style="padding-top: 32px;"></div>
-            <div class="module-toolbar J-module-toolbar" style="height:360px; width:100%;">
-                <h4 style="cursor: move;">
-      <span class="module-extra">
-      <a class="icon-del J-module-delete" href="">
-      </a>
-      <a class="icon-up J-module-up" href="">
-      </a>
-      <a class="icon-down J-module-down" href="">
-      </a>
-      </span>
-                    <span class="module-name J-module-name">分页显示商品</span>
-      <span class="J-module-set">
-      <a href="javascript:void(0)" class="HOT-module-set-data js-widget-edit"
-         th:attr="data-editurl=${widgetEditUri},data-id=${id},data-for=${guid},data-url=${widgetUri},data-layoutid=${layoutId},data-position=${layoutPosition}">
-          编辑
-      </a>
-        <a href="" class="HOT-module-set-template">
-            模板
-        </a>
-      </span>
-                </h4>
 
+        <!--400221-->
+        <div th:if="${list_template=='goods_style2'}" class="fn-clear js-hot-module jGoodsPage-400221 toolhover">
+            <div class="mc" style="">
+                <div class="jTab">
+                    <a th:class="${request.get('sort')} == null or ${#strings.indexOf(request.get('sort'),'salesCount')} > -1?'current':''"
+                       href="javascript:void(0)" sortColumn="salesCount"
+                       th:attr="sortDirect=(${request.get('sort')} == null?'desc':(${#strings.indexOf(request.get('sort'),'salesCount')}>-1?${#strings.substringAfter(request.get('sort'),'salesCount,')}))">
+                        销量
+                    </a>
+                    <a th:class="${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'price')} > -1?'current':''"
+                       href="javascript:void(0)" sortColumn="price"
+                       th:attr="sortDirect=(${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'price')} > -1?${#strings.substringAfter(request.get('sort'),'price,')})">
+                        价格
+                    </a>
+                    <a th:class="${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'autoMarketDate')} > -1?'current':''"
+                       href="javascript:void(0)" sortColumn="autoMarketDate"
+                       th:attr="sortDirect=(${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'autoMarketDate')} > -1?${#strings.substringAfter(request.get('sort'),'autoMarketDate,')})">
+                        上架时间
+                    </a>
+                </div>
+                <ul th:style="'background:'+${goods_pageBackGround}">
+                    <li data-widget-page="goods">
+                        <div class="jItem">
+                            <div class="jPic">
+                                <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                                    <img data-th-src="${goods.smallPic}" data-th-attr="alt=${goods.title}">
+                                </a>
 
+                                <div class="jToolBar">
+                                    <input value="关注" class="btn-coll" type="button">
+                                    <input type="button" onclick="" value="">
+                                </div>
+                            </div>
+                            <div class="jGoodsInfo">
+                                <div class="HOTesc" data-th-attr="alt=${goods.title}">
+                                    <a th:href="'/front/shop/product/'+${goods.id}">
+                                        [[${goods.title}]]
+                                    </a>
+                                    <span class="jSlogan"></span>
+                                </div>
+                                <div th:if="${showIntegral==null} or ${showIntegral==0}" class="jExtra">
+                                    <!--<span class="jEvaluate">-->
+                                    <!--<a href=" ">-->
+                                    <!--已有64人评价-->
+                                    <!--</a>-->
+                                    <!--</span>-->
+                                <span class="evaluate">
+                  <a href="" th:if="${goods.vipPrice!=null and goods.vipPrice>0}">
+                      会员价：<i style="color: #FF1414;">[[${goods.vipPrice}]]</i>
+                  </a>
+                  </span>
+                                    <span></span>
+                                </div>
+                                <div class="jPrice">
+                                    <div class="HOTPrice">
+                                        <span class="jRmb">￥</span>
+                                        <span class="HOTNum">[[${goods.price}]]</span>
+                                    </div>
+                                </div>
+                                <p style="height: 7px;"></p>
+
+                                <div class="jBtnArea">
+                                    <a target="" th:href="'/front/shop/product/'+${goods.id}" rel="">
+                                        购买
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="jPage">
+                    <em>共[[${request.totalRecords}]]条记录 当前[[${request.currentPage}]]/[[${request.totalPages}]]页</em>
+                    <a th:if="${request.hasPrevPage}" th:attr="pageNo=${request.currentPage-1}"
+                       href="javascript:void(0)">上一页</a>
+                    <a href="javascript:void(0)" th:each="pageNo:${request.pageNos}"
+                       th:class="${request.currentPage}==*{pageNo}?'current'" th:text="*{pageNo}"
+                       th:attr="pageNo=*{pageNo}"
+                    ></a>
+                    <a th:if="${request.hasNextPage}" href="javascript:void(0)"
+                       th:attr="pageNo=${request.currentPage+1}">下一页</a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第
+                    <input id="current-index" name="page" class="input-small"
+                           style="text-align:center;width: 50px;margin: 0px 4px;" type="number"
+                           th:value="${request.currentPage}">
+                    页&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="javascript:void(0)">跳转</a>
+                </div>
+            </div>
+            <div class="module-toolbal-container ui-draggable" th:if="${edit}">
+                <div class="module-assist" style="padding-top: 32px;"></div>
+                <div class="module-toolbar J-module-toolbar" style="height:360px; width:100%;">
+                    <h4 style="cursor: move;">
+                    <span class="module-extra">
+                        <a class="icon-del js-module-delete" href="javascript:void(0)"
+                           th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+            <a class="icon-up js-module-up" href="javascript:void(0)"
+               th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+            <a class="icon-down js-module-down" href="javascript:void(0)"
+               th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+                    </span>
+                        <span class="module-name J-module-name">分页显示商品</span>
+                    <span class="J-module-set">
+                        <a href="javascript:void(0)" class="HOT-module-set-data js-widget-edit"
+                           th:attr="data-editurl=${widgetEditUri},data-id=${id},data-for=${guid},data-url=${widgetUri},data-layoutid=${layoutId},data-position=${layoutPosition}">
+                            编辑
+                        </a>
+                        <a href="" class="HOT-module-set-template">
+                            模板
+                        </a>
+                    </span>
+                    </h4>
+                </div>
+            </div>
+        </div>
+
+        <!--402643-->
+        <div th:if="${list_template=='goods_style3'}" class="fn-clear js-hot-module jGoodsPage-402643 toolhover">
+            <div class="mc" style="">
+                <div class="j-module">
+                    <div class="jTitle">
+                        <div class="jTab">
+                            <a th:class="${request.get('sort')} == null or ${#strings.indexOf(request.get('sort'),'salesCount')} > -1?'current':''"
+                               href="javascript:void(0)" sortColumn="salesCount"
+                               th:attr="sortDirect=(${request.get('sort')} == null?'desc':(${#strings.indexOf(request.get('sort'),'salesCount')}>-1?${#strings.substringAfter(request.get('sort'),'salesCount,')}))">
+                                销量
+                            </a>
+                            <a th:class="${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'price')} > -1?'current':''"
+                               href="javascript:void(0)" sortColumn="price"
+                               th:attr="sortDirect=(${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'price')} > -1?${#strings.substringAfter(request.get('sort'),'price,')})">
+                                价格
+                            </a>
+                            <a th:class="${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'autoMarketDate')} > -1?'current':''"
+                               href="javascript:void(0)" sortColumn="autoMarketDate"
+                               th:attr="sortDirect=(${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'autoMarketDate')} > -1?${#strings.substringAfter(request.get('sort'),'autoMarketDate,')})">
+                                上架时间
+                            </a>
+                        </div>
+                        <span class="jTitleName">产品列表</span>
+                    </div>
+                    <ul th:style="'background:'+${goods_pageBackGround}">
+                        <li data-widget-page="goods">
+                            <div class="jItem">
+                                <div class="jPic">
+                                    <a th:href="'/front/shop/product/'+${goods.id}">
+                                        <img data-th-src="${goods.smallPic}" data-th-attr="alt=${goods.title}">
+                                    </a>
+                                </div>
+                                <div class="jGoodsInfo">
+                                    <div class="HOTesc">
+                                        <a th:href="'/front/shop/product/'+${goods.id}">
+                                            [[${goods.title}]]
+                                        </a>
+                                        <span class="jSlogan"></span>
+                                    </div>
+                                    <div class="jPrice">
+                                        <div class="HOTPrice">
+                                            <span class="jRmb">¥</span>
+                                            <span class="HOTNum">[[${goods.price}]]</span>
+                                        </div>
+                                    </div>
+                                    <div th:if="${showIntegral==null} or ${showIntegral==0}" class="jExtra">
+                                        <!--<span class="jEvaluate">-->
+                                        <!--<a href="">-->
+                                        <!--已有<em> 64 </em>人评价-->
+                                        <!--</a>-->
+                                        <!--</span>-->
+                                    <span class="evaluate">
+                  <a href="" th:if="${goods.vipPrice!=null and goods.vipPrice > 0}">
+                      会员价：<i style="color: #FF1414;">[[${goods.vipPrice}]]</i>
+                  </a>
+                  </span>
+                                        <span></span>
+                                    </div>
+                                    <p style="height: 7px;"></p>
+
+                                    <div class="jBtnArea">
+                                        <a th:href="'/front/shop/product/'+${goods.id}" class="addToCart"
+                                           rel="nofollow">
+                                            购买
+                                        </a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="jPage">
+                        <em>共[[${request.totalRecords}]]条记录 当前[[${request.currentPage}]]/[[${request.totalPages}]]页</em>
+                        <a th:if="${request.hasPrevPage}" th:attr="pageNo=${request.currentPage-1}"
+                           href="javascript:void(0)">上一页</a>
+                        <a href="javascript:void(0)" th:each="pageNo:${request.pageNos}"
+                           th:class="${request.currentPage}==*{pageNo}?'current'" th:text="*{pageNo}"
+                           th:attr="pageNo=*{pageNo}"
+                        ></a>
+                        <a th:if="${request.hasNextPage}" href="javascript:void(0)"
+                           th:attr="pageNo=${request.currentPage+1}">下一页</a>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第
+                        <input id="current-index" name="page" class="input-small"
+                               style="text-align:center;width: 50px;margin: 0px 4px;" type="number"
+                               th:value="${request.currentPage}">
+                        页&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="javascript:void(0)">跳转</a>
+                    </div>
+                </div>
+            </div>
+            <div class="module-toolbal-container ui-draggable" th:if="${edit}">
+                <div class="module-assist" style="padding-top: 32px;"></div>
+                <div class="module-toolbar J-module-toolbar" style="height:360px; width:100%;">
+                    <h4 style="cursor: move;">
+                    <span class="module-extra">
+                        <a class="icon-del js-module-delete" href="javascript:void(0)"
+                           th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+            <a class="icon-up js-module-up" href="javascript:void(0)"
+               th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+            <a class="icon-down js-module-down" href="javascript:void(0)"
+               th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+                    </span>
+                        <span class="module-name J-module-name">分页显示商品</span>
+                    <span class="J-module-set">
+                        <a href="javascript:void(0)" class="HOT-module-set-data js-widget-edit"
+                           th:attr="data-editurl=${widgetEditUri},data-id=${id},data-for=${guid},data-url=${widgetUri},data-layoutid=${layoutId},data-position=${layoutPosition}">
+                            编辑
+                        </a>
+                        <a href="" class="HOT-module-set-template">
+                            模板
+                        </a>
+                    </span>
+                    </h4>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</form>
 
 
 <!--编辑试图-->
@@ -348,12 +364,12 @@
     <div class="forms">
         <ul>
             <li>
-                <label style="width: 116px;">默认排序 </label>
+                <!--<label style="width: 116px;">默认排序 </label>
                 <select name="defaultOrder" class="select-short" id="default_order">
                     <option value="0" th:selected="${defaultOrder==null} or ${defaultOrder==0}" selected="selected">销量</option>
                     <option value="1" th:selected="${defaultOrder==1}">价格</option>
                     <option value="2" th:selected="${defaultOrder==2}">上架时间</option>
-                </select>
+                </select>-->
                 <label style="width: 116px;margin-left: 20px;">是否显示可用积分 </label>
                 <select class="select-short" name="showIntegral">
                     <option value="0" th:selected="${showIntegral==null} or ${showIntegral==0}">是</option>
@@ -433,4 +449,6 @@
         }
     })
 </script>
+
+
 

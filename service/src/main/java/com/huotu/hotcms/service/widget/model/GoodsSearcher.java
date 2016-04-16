@@ -56,4 +56,14 @@ public class GoodsSearcher {
      */
     private String[] sort;
 
+    public GoodsSearcher init(GoodsSearcher goodsSearcher){
+        if(goodsSearcher.getSort() == null){
+            goodsSearcher.setSort(new String[]{"salesCount,desc"});
+        }
+        if(goodsSearcher.getPage() == null || goodsSearcher.getPage() <= 1){
+            goodsSearcher.setPage(1);
+        }
+        return goodsSearcher;
+    }
+
 }

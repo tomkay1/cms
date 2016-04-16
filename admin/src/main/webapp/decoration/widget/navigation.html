@@ -1,16 +1,15 @@
-
 <!--浏览视图-->
 <div th:class="'fn-clear js-hot-module '+(${templateClass}==null?'sh-head-menu-brown-624326':${templateClass})+' toolhover'" th:attr="id=${guid}">
     <div class="mc" style="overflow: visible;">
         <div class="HOT_ShopHeaderLinkWithDropdown sh-hd-wrap" th:style="'background:'+${widgetBackColor}">
-            <div class="sh-head-menu" th:style="'background:'+${widgetBackColor}">
+            <div class="sh-head-menu">
                 <ul class="menu-list">
                     <li class="menu">
                         <a class="main-link" href="" target=""  th:style="${goods_fontColor==null?'':'color:'+goods_fontColor}">首页</a>
                     </li>
                     <li class="menu all-cate" th:if="${showProductType==1}">
                         <a class="main-link" href="#" target=""  th:style="${goods_fontColor==null?'':'color:'+goods_fontColor}">全部分类<span class="arrow"></span></a>
-                        <div class="sub-menu-wrap" th:style="'border:1px '+${widgetBackColor}+' solid'">
+                        <div class="sub-menu-wrap">
                             <dl class="sub-pannel" widget:category="category">
                                 <dt class="sub-title">
                                     <a href="" target="" class="sub-tit-link" th:text="${category.name}"  th:style="${goods_fontColor==null?'':'color:'+goods_fontColor}">保暖内衣 &gt;</a>
@@ -23,9 +22,9 @@
                     </li>
                 </ul>
                 <div class="s-form" th:if="${showSearch==1}">
-                    <form class="form-body" action="/search">
-                        <input type="text" name="" class="s-inp" th:value="${defaultKewWord}"  maxlength="60" size="60"/>
-                        <input type="button" onclick="" value="搜索" class="s-submit"/>
+                    <form class="form-body" action="/front/shop/search">
+                        <input type="text" name="keyword" class="s-inp" th:value="${request.get('keyword')}!=null?${request.get('keyword')}:${defaultKewWord}"  maxlength="60" size="60"/>
+                        <input type="submit" onclick="" value="搜索" class="s-submit"/>
                     </form>
                 </div>
             </div>
@@ -36,7 +35,7 @@
         <div class="module-toolbar HOT-module-toolbar" style="height:50px; width:100%;">
             <h4 style="cursor: move;">
         <span class="module-extra">
-        <a class="icon-del js-module-delete" href="javascript:void(0)" th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+             <a class="icon-del js-module-delete" href="javascript:void(0)" th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
         <a class="icon-up js-module-up" href="javascript:void(0)" th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
         <a class="icon-down js-module-down" href="javascript:void(0)" th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
         </span>

@@ -54,7 +54,7 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public GoodsPage searchGoods(HttpServletRequest request, int customerId, GoodsSearcher goodsSearcher){
         Sort sort = getSort(goodsSearcher);
-        int page = goodsSearcher.getPage()==null ? 0 : goodsSearcher.getPage();
+        int page = goodsSearcher.getPage()==null ? 0 : goodsSearcher.getPage()-1;
         PageRequest pageRequest = new PageRequest(page,20,sort);
         Page<Goods> goodses = null;
         try {
@@ -72,11 +72,13 @@ public class GoodsServiceImpl implements GoodsService {
             log.error("接口服务不可用");
         }
         GoodsPage goodsPage = new GoodsPage();
-        goodsPage.setPageNo(goodses.getNumber());
-        goodsPage.setTotalPages(goodses.getTotalPages());
-        goodsPage.setTotalRecords(goodses.getTotalElements());
-        List<GoodsModel> goodsModels = transGoodsData(request,goodses);
-        goodsPage.setGoodses(goodsModels);
+        if(goodses != null){
+            goodsPage.setPageNo(goodses.getNumber());
+            goodsPage.setTotalPages(goodses.getTotalPages());
+            goodsPage.setTotalRecords(goodses.getTotalElements());
+            List<GoodsModel> goodsModels = transGoodsData(request,goodses);
+            goodsPage.setGoodses(goodsModels);
+        }
         return goodsPage;
     }
 

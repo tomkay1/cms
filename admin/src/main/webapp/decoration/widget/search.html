@@ -1,12 +1,17 @@
+<!--search.html-->
 <!--浏览视图-->
-<div th:class="'fn-clear '+(${templateClass}==null?'HOTSearch-43971':${templateClass})+' toolhover'"  th:attr="id=${guid}">
+<!--43971-->
+<div th:class="'fn-clear js-hot-module '+(${templateClass}==null?'HOTSearch-43971':${templateClass})+' toolhover'"  th:attr="id=${guid}">
     <div class="mc" style="overflow: visible;">
         <div class="searchArea">
             <div class="HOTSearchArea">
                 <div class="HOTSearchInput">
-                    <input type="text" id="" name="" onkeydown="" onfocus="" d="请输入关键词" class="inputMiddle" th:value="${defaultKewWord}"
-                           maxlength="20" size="20" th:attr="maxlength=(${maxlength}==null?20:${maxlength})"/>
-                    <button type="button" onclick="" d="" clstag="">搜索<s></s></button>
+                    <form action="/front/shop/search">
+                        <input type="text" id="" onkeydown="" onfocus="" d="请输入关键词" class="inputMiddle"
+                               th:value="${request.get('keyword')}!=null?${request.get('keyword')}:${defaultKewWord}" name="keyword"
+                               maxlength="20" size="20" th:attr="maxlength=(${maxlength}==null?20:${maxlength})"/>
+                        <button type="submit" onclick="" d="" clstag="">搜索<s></s></button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -16,9 +21,9 @@
         <div class="module-toolbar HOT-module-toolbar" style="height:95px; width:100%;">
             <h4 style="cursor: move;">
         <span class="module-extra">
-            <a class="icon-del HOT-module-delete" href=""></a>
-			<a class="icon-up HOT-module-up" href="" ></a>
-			<a class="icon-down HOT-module-down" href=""></a>
+            <a class="icon-del js-module-delete" href="javascript:void(0)" th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+            <a class="icon-up js-module-up" href="javascript:void(0)" th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+            <a class="icon-down js-module-down" href="javascript:void(0)" th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
         </span>
                 <span class="module-name HOT-module-name">店内搜索</span>
         <span class="HOT-module-set">

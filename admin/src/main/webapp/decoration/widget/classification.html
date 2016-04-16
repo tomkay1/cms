@@ -1,23 +1,26 @@
 <!--classification.html-->
 <!--浏览视图-->
-<div th:class="'fn-clear '+(${templateClass}==null?'jGoodsSort-500284':${templateClass})+' toolhover'"
+<div th:class="'fn-clear js-hot-module js-classification '+(${templateClass}==null?'jGoodsSort-500284':${templateClass})+' toolhover'"
      th:attr="id=${guid}">
     <div class="mc" style="overflow: visible;">
         <div class="j-module">
             <div class="jOneLevel">
+                <a th:href="'/front/shop/search'">
+                    <h2 style="font-weight:normal;font-size:14px;"><span>所有分类</span></h2>
+                </a>
                 <h2 style="font-weight:normal;font-size:14px;"><span>所有分类</span></h2>
             </div>
-            <div class="jOneLevelarea" data-widget-category="category">
-                <div class="jTwoLevel jNoBorderBottm current">
-                    <span class="jIconArrow js-top-category"></span>
-                    <a data-th-text="${category.name}" data-th-attr="title=${category.name}">
+            <div class="jOneLevelarea" data-widget-category="category" th:attr="guid=${guid}">
+                <div class="jTwoLevel jNoBorderBottm js-top-category current" th:attr="catId=${category.id}">
+                    <span class="jIconArrow"></span>
+                    <a href="javascript:void(0)" data-th-text="${category.name}" data-th-attr="title=${category.name},catId=${category.id}">
                         [[${category.name}]]
                     </a>
                 </div>
                 <div style="display:none" th:attr="bgColor=${bgColor}" th:if="${category.children!=null and category.children.size>0}" class="js-sub-category">
                     <div th:style="'background-color: '+${bgColor==null?'#ddd':bgColor} + ';'"
-                         class="jTwoLevel jNoBorderBottm" data-th-each="child:${category.children}">
-                        <a href="" data-th-attr="title=${child.name}">
+                         th:class="'jTwoLevel jNoBorderBottm js-'+${child.id}" data-th-each="child:${category.children}" >
+                        <a th:href="'/front/shop/search?goodsCatId='+${child.id}" data-th-attr="title=${child.name}">
                             <i style="color:#ddd;" th:if="${templateClass=='jGoodsSort-400222'}">>&nbsp;&nbsp;</i>[[${child.name}]]
                         </a>
                     </div>
@@ -31,12 +34,9 @@
         <div class="module-toolbar J-module-toolbar" style="height: 191px; width:100%;">
             <h4 style="cursor: move;">
       <span class="module-extra">
-      <a class="icon-del J-module-delete" href="">
-      </a>
-      <a class="icon-up J-module-up" href="">
-      </a>
-      <a class="icon-down J-module-down" href="">
-      </a>
+          <a class="icon-del js-module-delete" href="javascript:void(0)" th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+            <a class="icon-up js-module-up" href="javascript:void(0)" th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+            <a class="icon-down js-module-down" href="javascript:void(0)" th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
       </span>
                 <span class="module-name J-module-name">店铺页头</span>
       <span class="J-module-set">

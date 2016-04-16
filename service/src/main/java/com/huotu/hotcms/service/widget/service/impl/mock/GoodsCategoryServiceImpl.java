@@ -8,23 +8,11 @@
 
 package com.huotu.hotcms.service.widget.service.impl.mock;
 
-import com.alibaba.fastjson.JSON;
-import com.huotu.hotcms.service.service.HttpService;
-import com.huotu.hotcms.service.util.ApiResult;
-import com.huotu.hotcms.service.widget.model.GoodsCategory;
-import com.huotu.hotcms.service.widget.service.GoodsCategoryService;
 import com.huotu.hotcms.service.widget.service.impl.AbstractGoodsCategoryService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * 商品分类组件服务mock层

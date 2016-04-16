@@ -7,11 +7,12 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.huotu.hotcms.service.common.ConfigInfo;
 import com.huotu.hotcms.service.model.Bind.WxUser;
-import com.huotu.hotcms.service.thymeleaf.service.RequestService;
 import com.huotu.hotcms.service.thymeleaf.service.SiteResolveService;
-import com.huotu.hotcms.service.widget.service.GoodsDetailService;
+import com.huotu.hotcms.service.widget.service.MallApiEnvironmentService;
 import com.huotu.hotcms.service.widget.service.RegisterByWeixinService;
 import com.huotu.hotcms.web.util.web.CookieUser;
+import com.huotu.huobanplus.common.entity.Merchant;
+import com.huotu.huobanplus.sdk.common.repository.MerchantRestRepository;
 import com.huotu.huobanplus.sdk.mall.model.RegisterWeixinUserData;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * <p>
@@ -39,13 +41,13 @@ public class BindController {
     private static final Log log = LogFactory.getLog(ShopController.class);
 
     @Autowired
-    private RequestService requestService;
-
-    @Autowired
     private RegisterByWeixinService registerByWeixinService;
 
     @Autowired
-    private GoodsDetailService goodsDetailService;
+    private MallApiEnvironmentService mallApiEnvironmentService;
+
+    @Autowired
+    private MerchantRestRepository merchantRestRepository;
 
     @Autowired
     private SiteResolveService siteResolveService;
@@ -92,7 +94,16 @@ public class BindController {
     @RequestMapping(value = "/qrCode", method = { RequestMethod.POST, RequestMethod.GET })
     public void qrCode(HttpServletRequest request,HttpServletResponse resp, String goodsId) throws Exception {
         int customerId = siteResolveService.getCurrentSite(request).getCustomerId();
-        String url = "/Mall/View.aspx?customerid="+customerId+"&goodsid="+goodsId;
+        Merchant merchant = null;
+        String subDomain = "";
+        try {
+            merchant = merchantRestRepository.getOneByPK(customerId);
+            subDomain = merchant.getSubDomain();
+        } catch (IOException e) {
+            e.printStackTrace();
+            log.error("接口服务不可用");
+        }
+        String url = mallApiEnvironmentService.getCustomerUri(subDomain)+".aspx?customerid="+customerId+"&goodsid="+goodsId;
         if (url != null && !"".equals(url)) {
             ServletOutputStream stream = null;
             try {
@@ -103,7 +114,7 @@ public class BindController {
                 BitMatrix m = writer.encode(url, BarcodeFormat.QR_CODE, height, width);
                 MatrixToImageWriter.writeToStream(m, "png", stream);
             } catch (WriterException e) {
-                e.printStackTrace();
+                log.error(e);
             } finally {
                 if (stream != null) {
                     stream.flush();

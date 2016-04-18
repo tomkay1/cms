@@ -34,7 +34,7 @@ define(function (require, exports, module) {
             var goodsCatId = common.getQuery("goodsCatId");
             if (goodsCatId.length > 0) {
                 $(".js-classification .js-" + goodsCatId).parent().attr("style", "display:block");
-                $(".js-classification .js-" + goodsCatId).parent().prev().addClass("current");
+                $(".js-classification .js-" + goodsCatId).parent().prev().removeClass("current");
                 $(".js-classification .js-" + goodsCatId).find("a").addClass("on");
             }
         },

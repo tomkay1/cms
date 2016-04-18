@@ -1,7 +1,7 @@
 <!--recommendation.html-->
 <!--浏览试图-->
 <!--723944-->
-<div th:class="'fn-clear '+ ${templateClass == null ?'HOTBox-723944':templateClass} +' toolhover'"  th:attr="id=${guid}">
+<div th:class="'fn-clear js-hot-module '+ ${templateClass == null ?'HOTBox-723944':templateClass} +' toolhover'"  th:attr="id=${guid}">
     <div class="mc" style="overflow: visible;" th:if="${templateClass==null or templateClass == 'HOTBox-723944'}">
         <div class="user">
             <div class="j-module">
@@ -466,7 +466,7 @@
            th:attr="data-editurl=${widgetEditUri},data-id=${id},data-for=${guid},data-url=${widgetUri},data-layoutid=${layoutId},data-position=${layoutPosition}">
             编辑
         </a>
-        <a href="" class="J-module-set-template">
+        <a href="javascript:void(0)" class="J-module-set-template">
             模板
         </a>
         </span>

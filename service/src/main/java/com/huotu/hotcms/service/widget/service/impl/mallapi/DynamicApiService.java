@@ -21,6 +21,7 @@ public class DynamicApiService extends  AbstractApiService {
     private void setEnv(Environment env) {
         String uri = env.getProperty("huotu.mallApi", (String) null);
         this.mallHost=env.getProperty("mall.domain",(String) null);
+        this.mallResources=env.getProperty("mall.resources","res.51flashmall.com");
         if (uri == null) {
             throw new IllegalStateException("请设置huotu.mallApi");
         }

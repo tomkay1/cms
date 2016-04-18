@@ -19,6 +19,11 @@ public class GoodsDetail {
     @Description("商品编号")
     private String code;
 
+    /**
+     * 所属品牌
+     */
+    private String brandName;
+
 
     /**
      * 商品场景,按照建模分析应该是一个枚举,但为了保证这个字段拥有充分的可扩展性,只是给予文字描述约束

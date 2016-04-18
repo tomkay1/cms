@@ -21,6 +21,8 @@ public  abstract class AbstractApiService implements MallApiEnvironmentService {
 
     protected String mallHost;
 
+    protected String mallResources;
+
     @Override
     public ApiResult<String> HttpGet(String path,Map<String, Object> params) {
         try {
@@ -56,5 +58,10 @@ public  abstract class AbstractApiService implements MallApiEnvironmentService {
     @Override
     public String getCustomerUri(String domain) {
         return "http://"+this.mallHost+"."+domain;
+    }
+
+    @Override
+    public String getImgUri(String domain) {
+        return "http://"+this.mallResources;
     }
 }

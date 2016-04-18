@@ -22,5 +22,6 @@ public class LocalApiService extends  AbstractApiService  {
         this.serviceHost="devmallapi.huobanj.cn/";
         this.scheme="http";
         this.mallHost="huobanj.cn";
+        this.mallResources="res.51flashmall.com";
     }
 }

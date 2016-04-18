@@ -15,4 +15,6 @@ public interface MallApiEnvironmentService {
     ApiResult<String> HttpPost(String path, Map<String, Object> params);
 
     String getCustomerUri(String domain);
+
+    String getImgUri(String domain);
 }

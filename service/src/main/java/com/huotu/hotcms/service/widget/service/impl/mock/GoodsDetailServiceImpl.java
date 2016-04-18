@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.huotu.hotcms.service.common.ConfigInfo;
 import com.huotu.hotcms.service.widget.model.GoodsDetail;
 import com.huotu.hotcms.service.widget.service.GoodsDetailService;
+import com.huotu.hotcms.service.widget.service.MallApiEnvironmentService;
 import com.huotu.huobanplus.sdk.common.repository.GoodsRestRepository;
 import com.huotu.huobanplus.sdk.common.repository.UserRestRepository;
 import org.apache.commons.logging.Log;
@@ -37,6 +38,9 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
     @Autowired
     private UserRestRepository userRestRepository;
 
+    @Autowired
+    private MallApiEnvironmentService mallApiEnvironmentService;
+
     @Override
     public GoodsDetail getGoodsDetail(int goodsId, int userId) throws Exception {
         com.huotu.huobanplus.common.entity.Goods huobanGoods = null;
@@ -60,6 +64,9 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
         }
         huobanGoods.setSpec(JSON.parse(huobanGoods.getSpec()).toString());
         mallGoods.setId(Long.valueOf(goodsId));
+        if(mallGoods.getBrandName()!=null){
+            mallGoods.setBrandName(huobanGoods.getBrand().getBrandName());
+        }
         mallGoods.setSpecDescriptions(huobanGoods.getSpecDescriptions());
         mallGoods.setCode(huobanGoods.getCode());
         mallGoods.setTitle(huobanGoods.getTitle());
@@ -67,7 +74,7 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
         mallGoods.setCost(huobanGoods.getCost());
         mallGoods.setDisabled(huobanGoods.isDisabled());
         mallGoods.setGoodsType(huobanGoods.getGoodsType());
-        mallGoods.setIntro(huobanGoods.getIntro());
+        mallGoods.setIntro(huobanGoods.getIntro().replace("img src=\"/", "img src=\""+mallApiEnvironmentService.getImgUri("")+"/"));
         mallGoods.setMarketable(huobanGoods.isMarketable());
         mallGoods.setMarketPrice(huobanGoods.getMarketPrice());
         mallGoods.setTypeId(huobanGoods.getTypeId());

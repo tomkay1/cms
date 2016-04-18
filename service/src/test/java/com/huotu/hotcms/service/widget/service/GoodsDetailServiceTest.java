@@ -91,4 +91,12 @@ public class GoodsDetailServiceTest {
     }
 
 
+    @Test
+    public void test2() {
+        String info  = "<ul class=\"attributes-list list-paddingleft-2\" style=\"list-style-type: none;\"><li><p>产品名称：AVENT/新安怡 SCF660/17</p></li><li><p>品牌: AVENT/新安怡</p></li><li><p>货号: SCF660/17</p></li><li><p>容量: 125ML</p></li><li><p>奶瓶是否带柄: 不带柄</p></li><li><p>材质: 其他</p></li><li><p>商品条形码: 198800</p></li><li><p>口径大小: 宽口径</p></li><li><p>形状: 弧形</p></li></ul><p><img src=\"/resource/content/html/images/20140419130611.jpg\" title=\"1.jpg\"/></p><p><img src=\"/resource/content/html/images/20140419130642.jpg\" style=\"float:none;\" title=\"2.jpg\"/></p><p><img src=\"/resource/content/html/images/20140419130729.jpg\" title=\"1.jpg\"/></p><p><img src=\"/resource/content/html/images/20140419130843.jpg\" style=\"float:none;\" title=\"2.jpg\"/></p><p><img src=\"/resource/content/html/images/20140419130844.jpg\" style=\"float:none;\" title=\"3.jpg\"/></p><p><img src=\"/resource/content/html/images/20140419130845.jpg\" style=\"float:none;\" title=\"4.jpg\"/></p><p><img src=\"/resource/content/html/images/20140419130846.jpg\" style=\"float:none;\" title=\"5.jpg\"/></p><p><img src=\"/resource/content/html/images/20140419130847.jpg\" style=\"float:none;\" title=\"6.jpg\"/></p><p><img src=\"/resource/content/html/images/20140419130848.jpg\" style=\"float:none;\" title=\"7.jpg\"/></p><p><img src=\"/resource/content/html/images/20140419130849.jpg\" style=\"float:none;\" title=\"8.jpg\"/></p><p><img src=\"/resource/content/html/images/20140419130851.jpg\" style=\"float:none;\" title=\"9.jpg\"/></p><p><img src=\"/resource/content/html/images/20140419130852.jpg\" style=\"float:none;\" title=\"10.jpg\"/></p><p><img src=\"/resource/content/html/images/20140419130853.jpg\" style=\"float:none;\" title=\"11.jpg\"/></p><p><br/></p>";
+        String info1 =info.replace("img src=\"/", "img src=\""+mallApiEnvironmentService.getImgUri("")+"/");
+        System.out.print(info);
+    }
+
+
 }

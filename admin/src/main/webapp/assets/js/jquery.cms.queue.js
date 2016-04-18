@@ -112,6 +112,9 @@ var aElement = new Array();
                 if(layout.module.length>0){
                     for(var i=0;i<layout.module.length;i++){
                         if(layout.module[i].position==position){
+                            if(layout.module[i].widget==null){
+                                layout.module[i].widget=new Array();
+                            }
                             layout.module[i].widget.push(widget);
                         }
                     }

@@ -47,32 +47,37 @@ public class RedisServiceImpl implements RedisService {
 
     @Override
     public String findByWidgetId(Long widgetId) {
-        return operations.get(CMS_WIDGET_KEY,widgetId);
+        return operations.get(CMS_WIDGET_KEY,widgetId.toString());
     }
 
     @Override
     public Boolean isWidgetExists(Long widgetId) {
-        return operations.hasKey(CMS_WIDGET_KEY,widgetId);
+        return operations.hasKey(CMS_WIDGET_KEY,widgetId.toString());
     }
 
 
     @Override
     public void saveWidget(Long widgetId,String content) {
-        operations.put(CMS_WIDGET_KEY,widgetId,content);
+        operations.put(CMS_WIDGET_KEY,widgetId.toString(),content);
     }
 
     @Override
     public String findByWidgetEditId(Long widgetId) {
-        return operations.get(CMS_WIDGET_EDIT_KEY,widgetId);
+        return operations.get(CMS_WIDGET_EDIT_KEY,widgetId.toString());
     }
 
     @Override
     public boolean isWidgetEditExists(Long widgetId) {
-        return operations.hasKey(CMS_WIDGET_EDIT_KEY, widgetId);
+        return operations.hasKey(CMS_WIDGET_EDIT_KEY, widgetId.toString());
     }
 
     @Override
     public void saveWidgetEdit(Long widgetId, String content) {
-        operations.put(CMS_WIDGET_EDIT_KEY,widgetId,content);
+        operations.put(CMS_WIDGET_EDIT_KEY,widgetId.toString(),content);
+    }
+
+    @Override
+    public Boolean isContent() {
+        return redisTemplate.isExposeConnection();
     }
 }

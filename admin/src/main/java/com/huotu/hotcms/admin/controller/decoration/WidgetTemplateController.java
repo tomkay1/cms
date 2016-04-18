@@ -87,7 +87,7 @@ public class WidgetTemplateController {
             }
         } catch (Exception ex) {
             log.error(ex.getMessage());
-            resultView=new ResultView(ResultOptionEnum.SERVERFAILE.getCode(), ResultOptionEnum.SERVERFAILE.getValue(),null);
+            resultView=new ResultView(ResultOptionEnum.SERVERFAILE.getCode(), ResultOptionEnum.SERVERFAILE.getValue(),ex.getMessage());
         }
         return resultView;
     }

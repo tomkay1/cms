@@ -34,8 +34,8 @@ public class RedisConfig {
 
     private Log log = LogFactory.getLog(getClass());
 
-    @Autowired
-    private Environment env;
+//    @Autowired
+//    private Environment env;
 
     private String hostName;
     private String password;
@@ -45,7 +45,20 @@ public class RedisConfig {
     private Integer maxIdle;
     private Integer dbIndex;
 
-    public void init() {
+//    public void init() {
+//        hostName = env.getProperty("redisHost","localhost");
+//        port = env.getProperty("redisPort",Integer.class,6379);
+//        password = env.getProperty("redisAuth");
+//        maxTotal = env.getProperty("jedisPool.maxTotal", Integer.class, 500);
+//        maxWait = env.getProperty("jedisPool.maxWait", Long.class, 1000l * 3);
+//        maxIdle = env.getProperty("jedisPool.maxIdle", Integer.class, 100);
+//        dbIndex = env.getProperty("redisDatabase",Integer.class,20);
+//        log.info("use redis : /n host:"+hostName+" port:"+port+" password:"+password+"/n " +
+//                "jedisPool: /n databaseIndex:"+dbIndex+" maxTotal:"+maxTotal+" maxIdle:"+maxIdle+" maxWait:"+maxWait);
+//    }
+
+    @Autowired
+    public void setEnv(Environment env){
         hostName = env.getProperty("redisHost","localhost");
         port = env.getProperty("redisPort",Integer.class,6379);
         password = env.getProperty("redisAuth");
@@ -53,8 +66,8 @@ public class RedisConfig {
         maxWait = env.getProperty("jedisPool.maxWait", Long.class, 1000l * 3);
         maxIdle = env.getProperty("jedisPool.maxIdle", Integer.class, 100);
         dbIndex = env.getProperty("redisDatabase",Integer.class,20);
-        log.info("use redis : /n host:"+hostName+" port:"+port+" password:"+password+"/n " +
-                "jedisPool: /n databaseIndex:"+dbIndex+" maxTotal:"+maxTotal+" maxIdle:"+maxIdle+" maxWait:"+maxWait);
+//        log.info("use redis : /n host:"+hostName+" port:"+port+" password:"+password+"/n " +
+//                "jedisPool: /n databaseIndex:"+dbIndex+" maxTotal:"+maxTotal+" maxIdle:"+maxIdle+" maxWait:"+maxWait);
     }
 
 
@@ -80,7 +93,7 @@ public class RedisConfig {
     }
 
     private JedisPoolConfig setJedisPoolConfig() {
-        init();
+//        init();
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         jedisPoolConfig.setMaxTotal(maxTotal);
         jedisPoolConfig.setMaxWaitMillis(maxWait);

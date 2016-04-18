@@ -22,6 +22,8 @@ import com.huotu.hotcms.service.util.StringUtil;
 import com.huotu.hotcms.service.widget.service.PageResolveService;
 import com.huotu.hotcms.service.widget.service.PageResourceService;
 import jdk.nashorn.internal.runtime.regexp.joni.EncodingHelper;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.commons.vfs2.util.EncryptUtil;
 import org.apache.logging.log4j.core.jmx.Server;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +52,7 @@ import java.net.URLEncoder;
  * Created by cwb on 2016/3/16.
  */
 public class WidgetTemplateResource implements ITemplateResource {
-
+    private static final Log log = LogFactory.getLog(WidgetTemplateResource.class);
     private String location;//编辑格式如下{siteId}_{pageConfigName}.shtml
     private final String EDIT_JAVASCRIPT = "<script>seajs.use([\"widgetTooBar\",\"cmsQueue\",\"widgetData\"]);</script>";
     //    private final String EDIT_JAVASCRIPT="<script>seajs.use([\"widgetTooBar\",\"cmsQueue\"]);</script>";
@@ -285,8 +287,11 @@ public class WidgetTemplateResource implements ITemplateResource {
             try {
                 htmlTemplate = getTemplate(widgetPage, site);
             } catch (Exception e) {
-                e.printStackTrace();
-                htmlTemplate = failPageService.getFailPageTemplate(applicationContext,PageErrorType.BUDDING_500);
+                if(isBrowse()){
+                    htmlTemplate = failPageService.getFailPageTemplate(applicationContext,PageErrorType.BUDDING_500);
+                }else{
+                    log.error(e.getMessage());
+                }
             }
         }
         return new StringReader(htmlTemplate);

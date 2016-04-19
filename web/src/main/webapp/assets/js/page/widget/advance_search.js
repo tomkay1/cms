@@ -85,11 +85,16 @@ define(function (require, exports, module) {
                 })
             });
         },
+        showTotalRecords:function(){
+            var totalRecords = $("#totalRecords").text();
+            $(".HOTimension .HOTModulesTitle em").text(totalRecords);
+        },
         init: function () {
             this.tabClick();
             this.pageNoClick();
             this.topClassClick();
             this.priceClassClick();
+            this.showTotalRecords();
         }
     }
 });

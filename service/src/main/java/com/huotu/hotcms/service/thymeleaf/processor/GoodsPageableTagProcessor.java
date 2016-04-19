@@ -89,7 +89,8 @@ public class GoodsPageableTagProcessor extends AbstractAttributeTagProcessor {
         }
         requestModel.setCurrentPage(pageNo);
         requestModel.setTotalPages(totalPages);
-        requestModel.setTotalRecords(goodsPage.getTotalRecords());
+        //没有数据时前台页面显示 第1页/共1页
+        requestModel.setTotalRecords(goodsPage.getTotalRecords() == 0 ? 1 : goodsPage.getTotalRecords());
         requestModel.setHasPrevPage(pageNo > 1);
         requestModel.setHasNextPage(pageNo < totalPages);
         requestModel.setPageNos(pageNos);

@@ -38,7 +38,8 @@ public abstract class AbstractGoodsCategoryService implements GoodsCategoryServi
     private ApiResult<String> invokeGoodsCatgProce(Integer customerId) {
         Map<String,Object> params = new TreeMap<>();
         params.put("merchantId", customerId);
-        return httpService.httpGet_prod("http", host, port, REQUEST_URI, params);
+//        return httpService.httpGet_prod("http", host, port, REQUEST_URI, params);
+        return httpService.httpGet_prod(REQUEST_URI,params);
     }
 
 }

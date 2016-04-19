@@ -21,8 +21,6 @@ import org.springframework.stereotype.Service;
 @Profile("!container")
 @Service
 public class GoodsCategoryServiceImpl extends AbstractGoodsCategoryService {
-
-
     @Autowired
     public void setEnv(Environment env) {
         this.host = "api.open.fancat.cn";

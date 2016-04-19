@@ -21,6 +21,8 @@ public interface HttpService {
 
     ApiResult<String> httpGet_prod(String scheme, String host, Integer port, String path, Map<String, Object> params);
 
+    ApiResult<String> httpGet_prod(String path, Map<String, Object> params);
+
     String createDigest(String appId,String random,String secret) throws UnsupportedEncodingException;
 
 }

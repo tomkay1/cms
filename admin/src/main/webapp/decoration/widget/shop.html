@@ -3,18 +3,18 @@
 <div th:class="'fn-clear js-hot-module  '+(${templateClass==null}?'sh-brand-wrap-630128':${templateClass})+' toolhover'" th:attr="id=${guid}">
     <div class="mc" style="overflow: visible;" >
         <div class="sh-brand-wrap">
-            <div class="sh-brand" style="height:60px;">
-                <a href="" class="brand-link">
+            <div class="sh-brand">
+                <a href="/front" class="brand-link">
                     <img th:src="${pageBackImage==null or pageBackImage == ''}?'/assets/img/widget/shop_brand.jpg':${pageBackImage}"/>
                 </a>
                 <div class="shop-logo-box">
-                    <a href="" class="shop-logo-link">
+                    <a href="/front" class="shop-logo-link">
                         <img th:src="${shopLogoImage==null or shopLogoImage == ''}?'/assets/img/widget/shop_logo.png':${shopLogoImage}"/>
                     </a>
-                    <a href="" class="follow-me for-light-bg">关注我</a>
+                    <a href="/front" class="follow-me for-light-bg">关注我</a>
                 </div>
                 <div class="m-search for-black-bg">
-                    <form action="false" class="m-form" action="/front/shop/search">
+                    <form class="m-form" action="/front/shop/search">
                         <input type="text" class="m-kw" value="" maxlength="50" size="50" th:value="${request.get('keyword')}!=null?${request.get('keyword')}:${defaultKewWord}" name="keyword"/>
                         <input type="submit" value="搜索" class="m-submit"
                                id="in-shop-search"/>
@@ -43,7 +43,7 @@
         <span class="HOT-module-set">
         <a href="javascript:void(0)" class="HOT-module-set-data js-widget-edit"
            th:attr="data-editurl=${widgetEditUri},data-id=${id},data-for=${guid},data-url=${widgetUri},data-layoutid=${layoutId},data-position=${layoutPosition}">编辑</a>
-        <a href="" class="HOT-module-set-template">
+        <a href="javascript:void(0)" class="HOT-module-set-template">
             模板
         </a>
         </span>

@@ -28,11 +28,11 @@ public class DynamicStaticResourceService extends AbstractStaticResourceService 
 
     @Autowired
     private void setEnv(Environment env) {
-        String uri = env.getProperty("huotu.resourcesUri", (String) null);
+        String uri = env.getProperty("huotu.resourcesUri", (String)null);
         if (uri == null) {
             throw new IllegalStateException("请设置huotu.resourcesUri和huotu.resourcesHome属性");
         }
-        String home = env.getProperty("huotu.resourcesHome", (String) null);
+        String home = env.getProperty("huotu.resourcesHome",(String)null);
         if (home == null) {
             throw new IllegalStateException("请设置huotu.resourcesUri和huotu.resourcesHome属性");
         }

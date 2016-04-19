@@ -11,7 +11,7 @@ define(function(require, exports, module){
                     var guid = $(dom).parent().attr("guid");
                     if(typeof (guid) != 'undefined'){
                         var sortColumn = $(dom).attr("sortColumn");
-                        var sort = $("input[class~=js-sort]");
+                        var sort = $("div[id="+guid+"] input[class~=js-sort]");
                         if(sort.val().indexOf(sortColumn) <= -1){
                             obj.removeAttr("sortDirect");
                             obj.removeClass("current");

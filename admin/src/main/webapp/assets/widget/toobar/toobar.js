@@ -258,6 +258,7 @@ define(function (require, exports, module) {
                             //btn:["确定"],
                             end: function (index, layero) {
                                 var widgetJson = $("#js_widget_json_value").html();
+                                window.console.log(widgetJson);
                                 if (widgetJson == "404") {
                                     layer.msg("控件主体没有添加预览视图");
                                     return;
@@ -273,9 +274,12 @@ define(function (require, exports, module) {
                                     var layoutPosition = $(dom).data("index");//布局位置
                                     widgetObj.layoutId = layoutId;
                                     widgetObj.layoutPosition = layoutPosition;
+                                    window.console.log("----------s1-----");
+                                    window.console.log(widgetObj);
                                     //window.console.log("layoutId--->"+layoutId+"  layoutPosition-->"+layoutPosition);
                                     //window.console.log(widgetObj);
                                     JQueue.putQueueLayoutWidget(layoutId, layoutPosition, widgetObj);
+                                    window.console.log("----------s2-----");
                                     widgetModule.init();
                                 }
                                 page.widgetEdit();
@@ -343,10 +347,10 @@ define(function (require, exports, module) {
                             layer.msg("控件主体没有具备的布局信息标签[data-layoutid][data-position]");
                             return;
                         }
-                        window.console.log(JQueue.toJson());
-                        window.console.log("layoutId-->"+layoutId+" layoutPositionIndex-->"+layoutPositionIndex+" widgetId-->"+widgetGuid);
+                        //window.console.log(JQueue.toJson());
+                        //window.console.log("layoutId-->"+layoutId+" layoutPositionIndex-->"+layoutPositionIndex+" widgetId-->"+widgetGuid);
                         var widget=JQueue.findLayoutWdigetByPositionAndWidgetId(layoutId,layoutPositionIndex,widgetGuid);//查找队列中改布局下的控件主体对象
-                        window.console.log(widget);
+                        //window.console.log(widget);
                         var json=JSON.stringify(widget);
                         widgetData.saveTempWidget(json);//把当前的控件主体的配置信息保存到临时隐藏域中
                         layer.open({

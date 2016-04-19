@@ -48,4 +48,9 @@ public class RedisServiceMockImpl implements RedisService {
     public void saveWidgetEdit(Long widgetId, String content) {
 
     }
+
+    @Override
+    public Boolean isContent() {
+        return false;
+    }
 }

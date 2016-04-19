@@ -59,7 +59,10 @@ public class PageResourceService {
     }
 
     public String getWidgetTemplateByWidgetBase(WidgetBase widgetBase) throws Exception {
-        return isWidgetTemplateCached(widgetBase) ? getCachedWidgetTemplate(widgetBase) : getWidgetTemplateFromFile(widgetBase);
+        if (redisService.isContent())
+            return isWidgetTemplateCached(widgetBase) ? getCachedWidgetTemplate(widgetBase) : getWidgetTemplateFromFile(widgetBase);
+        else
+            return getWidgetTemplateFromFile(widgetBase);
     }
 
     public String getWidgetTemplateResolveByWidgetBase(WidgetBase widgetBase,Site site) throws Exception {
@@ -88,7 +91,9 @@ public class PageResourceService {
 //                }
 //            }
 //        }
-        redisService.saveWidget(widgetBase.getId(),widgetTemplate);
+        if(redisService.isContent()) {
+            redisService.saveWidget(widgetBase.getId(), widgetTemplate);
+        }
         return widgetTemplate;
     }
 

@@ -55,18 +55,19 @@ public class PageResolveService {
     public WidgetPage getWidgetPageByConfig(BasicPageType basicPageType,Site site){
         WidgetPage widgetPage=null;
         String path=configInfo.getResourcesConfig(site.getCustomerId(),site.getSiteId())+"/"+basicPageType.getValue();
+        URI url=null;
         try {
-            URI url=resourceServer.getResource(path);
+            url=resourceServer.getResource(path);
             if(url!=null) {
                 InputStream inputStream = HttpUtils.getInputStreamByUrl(url.toURL());
                 widgetPage = JAXB.unmarshal(inputStream, WidgetPage.class);
             }
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            log.error("URISyntaxException 异常-->URI-->" + url.toString() +"path-->"+path+ " message-->" + e.getMessage());
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            log.error("MalformedURL 异常-->"+url.toString()+"path-->"+path+" message-->"+e.getMessage());
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("IO异常-->URI-->" + url.toString() +"path-->"+path+" message-->" + e.getMessage());
         }
         return widgetPage;
     }
@@ -80,19 +81,19 @@ public class PageResolveService {
     public WidgetPage getWidgetPageByConfig(String pageConfigName,Site site){
         WidgetPage widgetPage=null;
         String path=configInfo.getResourcesConfig(site.getCustomerId(),site.getSiteId())+"/"+pageConfigName;
+        URI url=null;
         try {
-            URI url=resourceServer.getResource(path);
+            url=resourceServer.getResource(path);
             if(url!=null) {
                 InputStream inputStream = HttpUtils.getInputStreamByUrl(url.toURL());
                 widgetPage = JAXB.unmarshal(inputStream, WidgetPage.class);
             }
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            log.error("URISyntaxException 异常-->URI-->" + url.toString() + "path-->" + path + " message-->" + e.getMessage());
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            log.error("MalformedURL 异常-->" + url.toString() + "path-->" + path + " message-->" + e.getMessage());
         } catch (IOException e) {
-//            log.error("页面配置文件不存在");
-            e.printStackTrace();
+            log.error("IO异常-->URI-->" + url.toString() + "path-->" + path + " message-->" + e.getMessage());
         }
         return widgetPage;
     }

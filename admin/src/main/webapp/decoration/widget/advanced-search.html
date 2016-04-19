@@ -1,8 +1,9 @@
 <!--advanced-search.html-->
 <!--浏览试图-->
-<form th:class="'js-advance-search js-form-' + ${guid}">
-    <div th:class="'fn-clear js-hot-module js-advance-search ' + ${templateClass==null?'HOTSearchList-414060':templateClass} + ' toolhover'" th:attr="id=${guid}">
-        <div class="mc"  style="overflow: visible;">
+<div th:class="'fn-clear js-hot-module js-advance-search ' + ${templateClass==null?'HOTSearchList-414060':templateClass} + ' toolhover'"
+     th:attr="id=${guid}">
+    <form th:class="'js-advance-search js-form-' + ${guid}">
+        <div class="mc" style="overflow: visible;">
             <div class="HOT-module">
                 <div class="HOTimension">
                     <div class="HOTModulesTitle">
@@ -42,17 +43,21 @@
                                 </a>
                             </dd>
                             <dd class="sl-price">
-                                <input class="js-minPrice input-txt" name="minPrice" th:value="${request.get('minPrice')}!=null?${request.get('minPrice')}">
+                                <input class="js-minPrice input-txt" name="minPrice"
+                                       th:value="${request.get('minPrice')}!=null?${request.get('minPrice')}">
                                 <em>-</em>
-                                <input class="js-maxPrice input-txt" name="maxPrice" th:value="${request.get('maxPrice')}!=null?${request.get('maxPrice')}">
-                                <input type="submit"  class="btn btn-default" value="确定" id="price-search"/>
+                                <input class="js-maxPrice input-txt" name="maxPrice"
+                                       th:value="${request.get('maxPrice')}!=null?${request.get('maxPrice')}">
+                                <input type="submit" class="btn btn-default" value="确定" id="price-search"/>
                             </dd>
                         </dl>
                         <dl class="js-top-category">
                             <dt>分类：</dt>
                             <dd th:attr="guid=${guid}">
-                                <input class="js-goodsCatId" type="hidden" name="goodsCatId" th:value="${request.get('goodsCatId')}!=null?${request.get('goodsCatId')}"/>
-                                <a href="javascript:void(0)"  widget:category="category" th:text="${category.name}" th:attr="catId=${category.id}"
+                                <input class="js-goodsCatId" type="hidden" name="goodsCatId"
+                                       th:value="${request.get('goodsCatId')}!=null?${request.get('goodsCatId')}"/>
+                                <a href="javascript:void(0)" widget:category="category"
+                                   th:utext="${category.name}+'<i></i>'" th:attr="catId=${category.id}"
                                    th:class="'js-'+${category.id}+' '+((${request.get('goodsCatId')}!=null and ${request.get('goodsCatId')}==${category.id})?'on':'')"><i></i>
                                 </a>
                             </dd>
@@ -66,24 +71,29 @@
                 </div>-->
                 <div class="HOTSearchListArea">
                     <div class="HOTTab" th:attr="guid=${guid}">
-                        <input type="hidden" name="sort" class="js-sort" th:value="${request.get('sort')} != null?${request.get('sort')}:'salesCount,desc'" sortColumn = "">
-                        <a th:class="${request.get('sort')} == null or ${#strings.indexOf(request.get('sort'),'salesCount')} > -1?'current':''" href="javascript:void(0)" sortColumn="salesCount"
-                           th:attr="sortDirect=(${request.get('sort')} == null?'desc':(${#strings.indexOf(request.get('sort'),'salesCount')}>-1?${#strings.substringAfter(request.get('sort'),'salesCount,')}))" >
+                        <input type="hidden" name="sort" class="js-sort"
+                               th:value="${request.get('sort')} != null?${request.get('sort')}:'salesCount,desc'"
+                               sortColumn="">
+                        <a th:class="${request.get('sort')} == null or ${#strings.indexOf(request.get('sort'),'salesCount')} > -1?'current':''"
+                           href="javascript:void(0)" sortColumn="salesCount"
+                           th:attr="sortDirect=(${request.get('sort')} == null?'desc':(${#strings.indexOf(request.get('sort'),'salesCount')}>-1?${#strings.substringAfter(request.get('sort'),'salesCount,')}))">
                             销量
                         </a>
-                        <a th:class="${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'price')} > -1?'current':''" href="javascript:void(0)" sortColumn="price"
-                           th:attr="sortDirect=(${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'price')} > -1?${#strings.substringAfter(request.get('sort'),'price,')})" >
+                        <a th:class="${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'price')} > -1?'current':''"
+                           href="javascript:void(0)" sortColumn="price"
+                           th:attr="sortDirect=(${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'price')} > -1?${#strings.substringAfter(request.get('sort'),'price,')})">
                             价格
                         </a>
-                        <a th:class="${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'autoMarketDate')} > -1?'current':''" href="javascript:void(0)" sortColumn="autoMarketDate"
-                           th:attr="sortDirect=(${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'autoMarketDate')} > -1?${#strings.substringAfter(request.get('sort'),'autoMarketDate,')})" >
+                        <a th:class="${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'autoMarketDate')} > -1?'current':''"
+                           href="javascript:void(0)" sortColumn="autoMarketDate"
+                           th:attr="sortDirect=(${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'autoMarketDate')} > -1?${#strings.substringAfter(request.get('sort'),'autoMarketDate,')})">
                             上架时间
                         </a>
                     </div>
                     <div class="HOTModulesTitle">商品列表</div>
                     <ul>
-                        <li class="HOTSubObHOTect"  data-widget-page="goods">
-                            <a class="HOTBtnAttention" href="#">
+                        <li class="HOTSubObHOTect" data-widget-page="goods">
+                            <a class="HOTBtnAttention" href="javascript:void(0)">
                                 + 加关注
                             </a>
                             <input value="关注" class="btn-coll" type="button">
@@ -116,7 +126,8 @@
                                         </a>
                                     </div>
                                     <div class="HOTesc">
-                                        <a th:href="'/front/shop/product/'+${goods.id}" target="" th:text="${goods.title}">
+                                        <a th:href="'/front/shop/product/'+${goods.id}" target=""
+                                           th:text="${goods.title}">
                                             意大利袋鼠男士内裤 男 经典款棉平角裤内裤男 4条礼盒装（L'ALPINA） XXXL
                                         </a>
                                     </div>
@@ -128,7 +139,7 @@
                                     </div>
                                     <div class="HOTExtra">
                                         <!--<span class="star"><span class="star-white"><span class="star-yellow h5"></span></span></span>-->
-                                        <a href="" target="">
+                                        <a th:href="'/front/shop/product/'+${goods.id}" target="">
                                             销量<em>[[${goods.sales}]]</em>
                                         </a>
                                     </div>
@@ -138,14 +149,20 @@
                     </ul>
                     <div class="HOTPage" th:attr="guid=${guid}">
                         <em>共[[${request.totalRecords}]]条记录 当前[[${request.currentPage}]]/[[${request.totalPages}]]页</em>
-                        <a th:if="${request.hasPrevPage}" th:attr="pageNo=${request.currentPage-1}" href = "javascript:void(0)">上一页</a>
-                        <a href = "javascript:void(0)" th:each="pageNo:${request.pageNos}" th:class="${request.currentPage}==*{pageNo}?'current'" th:text="*{pageNo}" th:attr="pageNo=*{pageNo}"
+                        <a th:if="${request.hasPrevPage}" th:attr="pageNo=${request.currentPage-1}"
+                           href="javascript:void(0)">上一页</a>
+                        <a href="javascript:void(0)" th:each="pageNo:${request.pageNos}"
+                           th:class="${request.currentPage}==*{pageNo}?'current'" th:text="*{pageNo}"
+                           th:attr="pageNo=*{pageNo}"
                         ></a>
-                        <a th:if="${request.hasNextPage}" href="javascript:void(0)" th:attr="pageNo=${request.currentPage+1}">下一页</a>
+                        <a th:if="${request.hasNextPage}" href="javascript:void(0)"
+                           th:attr="pageNo=${request.currentPage+1}">下一页</a>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第
-                        <input name="page" class="current-index input-small" style="text-align:center;width: 50px;margin: 0px 4px;" type="number" th:value="${request.currentPage}">
+                        <input name="page" class="current-index input-small"
+                               style="text-align:center;width: 50px;margin: 0px 4px;" type="number"
+                               th:value="${request.currentPage}">
                         页&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href = "javascript:void(0)">跳转</a>
+                        <a href="javascript:void(0)">跳转</a>
                     </div>
                 </div>
             </div>
@@ -170,7 +187,7 @@
                            th:attr="data-editurl=${widgetEditUri},data-id=${id},data-for=${guid},data-url=${widgetUri},data-layoutid=${layoutId},data-position=${layoutPosition}">
                             编辑
                         </a>
-                        <a href="" class="HOT-module-set-template">
+                        <a href="javascript:void(0)" class="HOT-module-set-template">
                             模板
                         </a>
                     </span>
@@ -178,8 +195,8 @@
                 </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
+</div>
 <!--advanced-search.html-->
 <!--编辑视图-->
 <div id="module_area">

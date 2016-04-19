@@ -38,7 +38,7 @@ define(function (require, exports, module) {
                                 if(data.code==200){
                                     var widgetGuid=data.data.guid;
                                     var template=encodeURI(data.data.html);
-                                    window.console.log(template);
+                                    //window.console.log(template);
                                     var widget={
                                         guid:widgetGuid,//用做唯一标识
                                         id:widgetId,//控件主体ID跟数据库对应,不能确定唯一
@@ -48,7 +48,7 @@ define(function (require, exports, module) {
                                         template:template
                                     }
                                     var widgetJson=JSON.stringify(widget)
-                                    window.console.log(widget);
+                                    //window.console.log(widget);
                                     widgetData.saveWidget(widgetJson);
                                 }else if(data.code==404){
                                     widgetData.saveWidget("404");

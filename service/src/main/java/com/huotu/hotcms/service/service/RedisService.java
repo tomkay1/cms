@@ -27,4 +27,6 @@ public interface RedisService {
 
     void saveWidgetEdit(Long widgetId,String content);
 
+    Boolean isContent();
+
 }

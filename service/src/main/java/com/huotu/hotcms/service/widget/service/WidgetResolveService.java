@@ -43,30 +43,30 @@ public class WidgetResolveService {
 
     private TemplateEngine templateEngine = new TemplateEngine();
 
-    private HttpServletRequest request=null;
+    private HttpServletRequest request = null;
 
-    private void addDialect(){
-       if(!templateEngine.isInitialized()){
-           templateEngine.addDialect(new WidgetDialect());
-       }
+    private void addDialect() {
+        if (!templateEngine.isInitialized()) {
+            templateEngine.addDialect(new WidgetDialect());
+        }
     }
 
-    private Context setVariable(Context context,Site site){
-        if(null!=site) {
+    private Context setVariable(Context context, Site site) {
+        if (null != site) {
             context.setVariable("site", site);
         }
-        context.setVariable("request",requestService.ConvertRequestModel(this.request));
+        context.setVariable("request", requestService.ConvertRequestModel(this.request));
         return context;
     }
 
-    public String widgetBriefView(String templateResources,WidgetBase widgetBase,Site site) throws IOException {
+    public String widgetBriefView(String templateResources, WidgetBase widgetBase, Site site) throws IOException {
         request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        if(widgetBase!=null) {
-            Map<String,Object> map =null;
-            if(widgetBase.getProperty()!=null){
+        if (widgetBase != null) {
+            Map<String, Object> map = null;
+            if (widgetBase.getProperty() != null) {
                 map = ConvertMapByList(widgetBase.getProperty());
-            }else{
-                map=new HashMap<>();
+            } else {
+                map = new HashMap<>();
             }
             Field[] fields = widgetBase.getClass().getDeclaredFields();
             for (Field field : fields) {
@@ -74,24 +74,24 @@ public class WidgetResolveService {
                     map.put(field.getName(), ReflectionUtil.getFieldValueByName(field.getName(), widgetBase));
                 }
             }
-            Context context=new Context(Locale.CHINA, map);
-            context= setVariable(context,site);
+            Context context = new Context(Locale.CHINA, map);
+            context = setVariable(context, site);
             addDialect();
             StringWriter writer = new StringWriter();
-            templateEngine.process(templateResources,context,writer);
+            templateEngine.process(templateResources, context, writer);
             return writer.toString();
         }
         return templateResources;
     }
 
     public String widgetEditView(WidgetBase widgetBase) throws IOException {
-        String templateResources=getWidgetEditTemplate(widgetBase);
-        if(widgetBase!=null) {
-            Map map =null;
-            if(widgetBase.getProperty()!=null){
+        String templateResources = getWidgetEditTemplate(widgetBase);
+        if (widgetBase != null) {
+            Map map = null;
+            if (widgetBase.getProperty() != null) {
                 map = ConvertMapByList(widgetBase.getProperty());
-            }else{
-                map=new HashMap<>();
+            } else {
+                map = new HashMap<>();
             }
             Field[] fields = widgetBase.getClass().getDeclaredFields();
             for (Field field : fields) {
@@ -108,47 +108,52 @@ public class WidgetResolveService {
         return templateResources;
     }
 
-    public String getWidgetEditTemplate(WidgetBase widgetBase){
-        return isWidgetEditTemplateCached(widgetBase) ? getCachedWidgetEditTemplate(widgetBase) : getWidgetEditTemplateFromFile(widgetBase);
+    public String getWidgetEditTemplate(WidgetBase widgetBase) {
+        if (redisService.isContent())
+            return isWidgetEditTemplateCached(widgetBase) ? getCachedWidgetEditTemplate(widgetBase) : getWidgetEditTemplateFromFile(widgetBase);
+        else
+            return getWidgetEditTemplateFromFile(widgetBase);
     }
 
     private boolean isWidgetEditTemplateCached(WidgetBase widgetBase) {
         return redisService.isWidgetEditExists(widgetBase.getId());
     }
 
-    private String getCachedWidgetEditTemplate(WidgetBase widgetBase){
+    private String getCachedWidgetEditTemplate(WidgetBase widgetBase) {
         return redisService.findByWidgetEditId(widgetBase.getId());
     }
 
-    private String getWidgetEditTemplateFromFile(WidgetBase widgetBase){
+    private String getWidgetEditTemplateFromFile(WidgetBase widgetBase) {
         try {
             URL url = resourceServer.getResource(widgetBase.getWidgetEditUri()).toURL();
             String widgetTemplate = HttpUtils.getHtmlByUrl(url);
-            redisService.saveWidgetEdit(widgetBase.getId(), widgetTemplate);
+            if(redisService.isContent()){
+                redisService.saveWidgetEdit(widgetBase.getId(), widgetTemplate);
+            }
             return widgetTemplate;
-        }catch(Exception ex){
+        } catch (Exception ex) {
             log.error("获得控件主体编辑视图失败");
             throw new ExceptionInInitializerError("获得控件主体编辑视图异常");
         }
     }
 
-    private Map<String,Object> ConvertMapByList(List<WidgetProperty> properties) throws IOException {
-        Map<String,Object> objectMap=new HashMap<String,Object>();
+    private Map<String, Object> ConvertMapByList(List<WidgetProperty> properties) throws IOException {
+        Map<String, Object> objectMap = new HashMap<String, Object>();
         ObjectMapper objectMapper = new ObjectMapper();
-        for(WidgetProperty widgetProperty:properties){
-            Object obj=objectMapper.readValue(widgetProperty.getValue(),Object.class);
-            objectMap.put(widgetProperty.getName(),obj);
+        for (WidgetProperty widgetProperty : properties) {
+            Object obj = objectMapper.readValue(widgetProperty.getValue(), Object.class);
+            objectMap.put(widgetProperty.getName(), obj);
         }
         return objectMap;
     }
 
-    public static List<WidgetProperty> ConvertWidgetPropertyByMap(Map<String,Object> property) throws JsonProcessingException {
+    public static List<WidgetProperty> ConvertWidgetPropertyByMap(Map<String, Object> property) throws JsonProcessingException {
         List<WidgetProperty> list = new ArrayList<WidgetProperty>();
         ObjectMapper objectMapper = new ObjectMapper();
         for (Map.Entry<String, Object> entry : property.entrySet()) {
-            WidgetProperty widgetProperty=new WidgetProperty();
+            WidgetProperty widgetProperty = new WidgetProperty();
             widgetProperty.setName(entry.getKey());
-            String json=objectMapper.writeValueAsString(entry.getValue());
+            String json = objectMapper.writeValueAsString(entry.getValue());
             widgetProperty.setValue(json);
             list.add(widgetProperty);
         }

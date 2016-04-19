@@ -9,7 +9,8 @@ import com.huotu.hotcms.service.common.ConfigInfo;
 import com.huotu.hotcms.service.model.Bind.WxUser;
 import com.huotu.hotcms.service.thymeleaf.service.SiteResolveService;
 import com.huotu.hotcms.service.widget.service.MallApiEnvironmentService;
-import com.huotu.hotcms.service.widget.service.RegisterByWeixinService;
+import com.huotu.hotcms.web.service.ConfigService;
+import com.huotu.hotcms.web.service.RegisterByWeixinService;
 import com.huotu.hotcms.web.util.web.CookieUser;
 import com.huotu.huobanplus.common.entity.Merchant;
 import com.huotu.huobanplus.sdk.common.repository.MerchantRestRepository;
@@ -44,7 +45,7 @@ public class BindController {
     private RegisterByWeixinService registerByWeixinService;
 
     @Autowired
-    private MallApiEnvironmentService mallApiEnvironmentService;
+    private ConfigService configService;
 
     @Autowired
     private MerchantRestRepository merchantRestRepository;
@@ -103,7 +104,7 @@ public class BindController {
             e.printStackTrace();
             log.error("接口服务不可用");
         }
-        String url = mallApiEnvironmentService.getCustomerUri(subDomain)+".aspx?customerid="+customerId+"&goodsid="+goodsId;
+        String url = configService.getCustomerUri(subDomain)+".aspx?customerid="+customerId+"&goodsid="+goodsId;
         if (url != null && !"".equals(url)) {
             ServletOutputStream stream = null;
             try {

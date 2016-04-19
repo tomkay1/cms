@@ -1,11 +1,10 @@
-package com.huotu.hotcms.service.widget.service.impl.mallapi;
+package com.huotu.hotcms.service.widget.service.impl.mallApi;
 
 import com.huotu.hotcms.service.util.ApiResult;
 import com.huotu.hotcms.service.util.HttpUtils;
 import com.huotu.hotcms.service.widget.service.MallApiEnvironmentService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.util.StringUtils;
 
 import java.util.Map;
 
@@ -15,23 +14,12 @@ import java.util.Map;
 public  abstract class AbstractApiService implements MallApiEnvironmentService {
     private static final Log log = LogFactory.getLog(AbstractApiService.class);
 
-    protected  String serviceHost;
-
-    public String scheme;
-
-    protected String mallHost;
-
-    protected String mallResources;
+    protected  String serviceRoot;
 
     @Override
     public ApiResult<String> HttpGet(String path,Map<String, Object> params) {
         try {
-            String url="";
-            if(StringUtils.isEmpty(this.scheme)){
-                url="http://"+this.serviceHost+path;
-            }else{
-                url=this.scheme+"://"+this.serviceHost+path;
-            }
+            String url=this.serviceRoot+path;
             return HttpUtils.httpGet(url,params);
         } catch (Exception e) {
             log.error("请求接口失败", e);
@@ -43,25 +31,11 @@ public  abstract class AbstractApiService implements MallApiEnvironmentService {
     public ApiResult<String> HttpPost(String path, Map<String, Object> params) {
         try {
             String url="";
-            if(StringUtils.isEmpty(this.scheme)){
-                url="http://"+this.serviceHost+path;
-            }else{
-                url=this.scheme+"://"+this.serviceHost+path;
-            }
+            url=this.serviceRoot+path;
             return HttpUtils.httpPost(url,params);
         } catch (Exception e) {
             log.error("请求接口失败", e);
             throw new InternalError("请求接口失败");
         }
-    }
-
-    @Override
-    public String getCustomerUri(String domain) {
-        return "http://"+this.mallHost+"."+domain;
-    }
-
-    @Override
-    public String getImgUri(String domain) {
-        return "http://"+this.mallResources;
     }
 }

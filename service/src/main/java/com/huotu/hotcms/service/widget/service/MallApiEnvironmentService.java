@@ -9,12 +9,8 @@ import java.util.Map;
  */
 public interface MallApiEnvironmentService {
 
-    //    String uploadPhoto(Integer customerId,String base64Image,String size,String extendName);
     ApiResult<String> HttpGet(String path, Map<String, Object> params);
 
     ApiResult<String> HttpPost(String path, Map<String, Object> params);
 
-    String getCustomerUri(String domain);
-
-    String getImgUri(String domain);
 }

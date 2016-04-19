@@ -7,7 +7,7 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.service.CustomPagesService;
 import com.huotu.hotcms.service.thymeleaf.service.SiteResolveService;
 import com.huotu.hotcms.service.widget.model.GoodsDetail;
-import com.huotu.hotcms.service.widget.service.GoodsDetailService;
+import com.huotu.hotcms.web.service.GoodsDetailService;
 import com.huotu.hotcms.web.util.web.CookieUser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

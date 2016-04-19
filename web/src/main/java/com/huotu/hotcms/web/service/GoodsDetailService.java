@@ -1,4 +1,4 @@
-package com.huotu.hotcms.service.widget.service;
+package com.huotu.hotcms.web.service;
 
 
 import com.huotu.hotcms.service.widget.model.GoodsDetail;

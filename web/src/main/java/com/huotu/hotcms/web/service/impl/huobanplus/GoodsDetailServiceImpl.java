@@ -1,11 +1,11 @@
-package com.huotu.hotcms.service.widget.service.impl.huobanplus;
+package com.huotu.hotcms.web.service.impl.huobanplus;
 
 import com.alibaba.fastjson.JSON;
 import com.huotu.hotcms.service.common.ConfigInfo;
 import com.huotu.hotcms.service.service.HttpService;
 import com.huotu.hotcms.service.widget.model.GoodsDetail;
-import com.huotu.hotcms.service.widget.service.GoodsDetailService;
-import com.huotu.hotcms.service.widget.service.MallApiEnvironmentService;
+import com.huotu.hotcms.web.service.ConfigService;
+import com.huotu.hotcms.web.service.GoodsDetailService;
 import com.huotu.huobanplus.sdk.common.repository.GoodsRestRepository;
 import com.huotu.huobanplus.sdk.common.repository.UserRestRepository;
 import org.apache.commons.logging.Log;
@@ -39,10 +39,7 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
     private ConfigInfo configInfo;
 
     @Autowired
-    private MallApiEnvironmentService mallApiEnvironmentService;
-
-
-
+    private ConfigService configService;
 
     @Override
     public GoodsDetail getGoodsDetail(int goodsId,int userId) throws Exception {
@@ -78,7 +75,7 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
         mallGoods.setCost(huobanGoods.getCost());
         mallGoods.setDisabled(huobanGoods.isDisabled());
         mallGoods.setGoodsType(huobanGoods.getGoodsType());
-        mallGoods.setIntro(huobanGoods.getIntro().replace("img src=\"/", "img src=\""+mallApiEnvironmentService.getImgUri("")+"/"));
+        mallGoods.setIntro(huobanGoods.getIntro().replace("img src=\"/", "img src=\""+configService.getImgUri("")+"/"));
         mallGoods.setMarketable(huobanGoods.isMarketable());
         mallGoods.setMarketPrice(huobanGoods.getMarketPrice());
         mallGoods.setTypeId(huobanGoods.getTypeId());

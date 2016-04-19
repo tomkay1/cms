@@ -11,7 +11,7 @@
 
     <artifactId>service</artifactId>
     <description>
-        核心服务
+        service层
     </description>
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>

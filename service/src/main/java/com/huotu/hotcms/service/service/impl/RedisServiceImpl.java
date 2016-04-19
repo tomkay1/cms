@@ -34,7 +34,6 @@ public class RedisServiceImpl implements RedisService {
 
     private static final String CMS_WIDGET_EDIT_KEY="cms_widget_edit";
 
-
     @Autowired
     private RedisTemplate<String,Object> redisTemplate;
 
@@ -52,7 +51,11 @@ public class RedisServiceImpl implements RedisService {
 
     @Override
     public Boolean isWidgetExists(Long widgetId) {
-        return operations.hasKey(CMS_WIDGET_KEY,widgetId.toString());
+        try{
+            return operations.hasKey(CMS_WIDGET_KEY,widgetId.toString());
+        }catch (Exception ex){
+            return false;
+        }
     }
 
 

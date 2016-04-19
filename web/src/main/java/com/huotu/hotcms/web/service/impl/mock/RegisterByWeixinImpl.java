@@ -1,9 +1,9 @@
-package com.huotu.hotcms.service.widget.service.impl.huobanplus;
+package com.huotu.hotcms.web.service.impl.mock;
 
 import com.alibaba.fastjson.JSON;
 import com.huotu.hotcms.service.model.Bind.AccessToken;
 import com.huotu.hotcms.service.model.Bind.WxUser;
-import com.huotu.hotcms.service.widget.service.RegisterByWeixinService;
+import com.huotu.hotcms.web.service.RegisterByWeixinService;
 import com.huotu.huobanplus.sdk.mall.model.RegisterWeixinUserData;
 import com.huotu.huobanplus.sdk.mall.service.MallInfoService;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -23,7 +23,7 @@ import java.net.URISyntaxException;
 /**
  * Created by chendeyu on 2016/4/8.
  */
-@Profile("container")
+@Profile("!container")
 @Service
 public class RegisterByWeixinImpl implements RegisterByWeixinService {
     @Autowired

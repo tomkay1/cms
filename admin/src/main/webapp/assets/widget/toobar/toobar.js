@@ -487,6 +487,7 @@ define(function (require, exports, module) {
                             }else{
                                 layer.msg("服务器繁忙,请稍后再试...");
                             }
+                            page.clearHref();
                             layer.close(index);
                         },error:function(){
                             layer.msg("服务器繁忙,请稍后再试...");
@@ -505,6 +506,17 @@ define(function (require, exports, module) {
                     }
                 });
             },
+            clearHref:function(){
+                var obj=$(".js-layout-header a");
+                var layoutBox=$(".js-hot-layout a");
+                $.each(obj,function(item,dom){
+                    window.console.log($(dom));
+                    $(dom).attr('href',"javascript:void(0)");
+                });
+                $.each(layoutBox,function(item,dom){
+                    $(dom).attr('href',"javascript:void(0)");
+                });
+            },
             pageInit:function(widgetPageModel){
                 page.pageTab();
                 page.pagePhoto();
@@ -520,6 +532,7 @@ define(function (require, exports, module) {
                 layoutModule.initLayoutBind();
                 page.pageReact();
                 widgetModule.init();
+                page.clearHref();
             }
         };
         var widgetModule={

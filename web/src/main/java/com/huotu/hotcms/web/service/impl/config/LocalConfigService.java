@@ -1,4 +1,4 @@
-package com.huotu.hotcms.service.widget.service.impl.mallapi;
+package com.huotu.hotcms.web.service.impl.config;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -14,14 +14,12 @@ import org.springframework.web.context.WebApplicationContext;
  */
 @Service
 @Profile("!container")
-public class LocalApiService extends  AbstractApiService  {
-    private static final Log log = LogFactory.getLog(DynamicApiService.class);
+public class LocalConfigService extends AbstractConfigService {
+    private static final Log log = LogFactory.getLog(DynamicConfigService.class);
 
     @Autowired
     public void setWebApplicationContext(WebApplicationContext context){
-        this.serviceHost="devmallapi.huobanj.cn/";
-        this.scheme="http";
-        this.mallHost="huobanj.cn";
-        this.mallResources="res.51flashmall.com";
+        this.mallDomain="huobanj.cn";
+        this.mallResources="http://res.51flashmall.com";
     }
 }

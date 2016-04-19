@@ -19,6 +19,7 @@ public class DynamicApiService extends  AbstractApiService {
 
     @Autowired
     private void setEnv(Environment env) {
+
         this.serviceRoot= env.getProperty("huotu.mallApi", (String)null);
         if (this.serviceRoot == null) {
             throw new IllegalStateException("请设置huotu.mallApi");

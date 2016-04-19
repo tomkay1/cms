@@ -20,5 +20,6 @@ public class LocalApiService extends  AbstractApiService  {
     @Autowired
     public void setWebApplicationContext(WebApplicationContext context){
         this.serviceRoot="http://devmallapi.huobanj.cn";
+
     }
 }

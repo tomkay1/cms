@@ -22,7 +22,9 @@
     <packaging>war</packaging>
 
     <name>admin</name>
-
+    <description>
+        负责整个cms系统后台管理模块
+    </description>
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

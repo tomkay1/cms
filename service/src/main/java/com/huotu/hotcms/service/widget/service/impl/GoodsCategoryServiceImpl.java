@@ -6,6 +6,7 @@ import com.huotu.hotcms.service.util.ApiResult;
 import com.huotu.hotcms.service.widget.model.GoodsCategory;
 import com.huotu.hotcms.service.widget.service.GoodsCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -17,7 +18,8 @@ import java.util.TreeMap;
  *
  * Created by cwb on 2016/4/10.
  */
-public abstract class GoodsCategoryServiceImpl implements GoodsCategoryService {
+@Service
+public class GoodsCategoryServiceImpl implements GoodsCategoryService {
 
     public static final String REQUEST_URI = "/categories/search/dataByMerchantId";
 

@@ -29,16 +29,7 @@ public enum LayoutEnum implements CommonEnum {
     LEFT_CENTER_RIGHT_PART_LAYOUT_323x324x323(13, "左中右等分布局（323x324x323）"),
     WITHOUT_COLUMN_LAYOUT_99999(14, "通栏布局（100%）");
 
-    LayoutEnum(int code, String value) {
-        this.code = code;
-        this.value = value;
-    }
-
-    private int code;
-    private String value;
-
     public final String ADD_TEMPLATE = "<a href=\"javascript:;\" data-id=\"{guid}\" data-index=\"{index}\" class=\"link-add HOT-module-add js-module-add\">添加模块</a>";
-
     public String MODULE_ADD = "<div class=\"layout-toolbar HOT-layout-toolbar ui-draggable v\">\n" +
             "    <span class=\"layout-extra\">\n" +
             "        <a class=\"icon-del HOT-layout-del js-layout-delete\" data-id=\"%s\" href=\"javascript:;\"></a>\n" +
@@ -48,6 +39,13 @@ public enum LayoutEnum implements CommonEnum {
             "    <span class=\"layout-name HOT-layout-name\">%s</span>\n" +
 //            "    <a href=\"javascript:;\" class=\"HOT-layout-set\">设置</a>\n" +
             "</div>";
+    private int code;
+    private String value;
+
+    LayoutEnum(int code, String value) {
+        this.code = code;
+        this.value = value;
+    }
 
     @Override
     public final Integer getCode() {
@@ -107,7 +105,7 @@ public enum LayoutEnum implements CommonEnum {
     public String getLayoutTemplateByEdit(List<String> argument,String layoutId) {
         argument=getLayoutTemplateModuleList(argument,layoutId);
         String MODULE_ADD = String.format(this.MODULE_ADD, layoutId, layoutId,layoutId, this.getValue());
-        LayoutTemplate layoutTemplate1=LayoutTemplate.valueOf(this.code);
+        LayoutTemplate layoutTemplate1 = EnumUtils.valueOf(LayoutTemplate.class, this.code);
         String layoutTemplate=layoutTemplate1.getValue().replace("{layoutId}",layoutId);
         switch (this.code) {
             case 0:
@@ -180,7 +178,7 @@ public enum LayoutEnum implements CommonEnum {
                 argument.add(addTool);
             }
         }
-        LayoutTemplate layoutTemplate1=LayoutTemplate.valueOf(this.code);
+        LayoutTemplate layoutTemplate1 = EnumUtils.valueOf(LayoutTemplate.class, this.code);
         String layoutId=UUID.randomUUID().toString();
         String layoutTemplate=layoutTemplate1.getValue().replace("{layoutId}",layoutId);
         switch (this.code) {
@@ -231,43 +229,6 @@ public enum LayoutEnum implements CommonEnum {
                 break;
         }
         return layoutTemplate;
-    }
-
-    public static LayoutEnum valueOf(int id) {
-        switch (id) {
-            case 0:
-                return THREE_COLUMN_LAYOUT_190x590x190;
-            case 1:
-                return WITHOUT_COLUMN_LAYOUT_990;
-            case 2:
-                return LEFT_RIGHT_COLUMN_LAYOUT_190x790;
-            case 3:
-                return RIGHT_PART_LAYOUT_190x390x390;
-            case 4:
-                return LEFT_RIGHT_COLUMN_LAYOUT_790x190;
-            case 5:
-                return LEFT_PART_LAYOUT_390x390x190;
-            case 6:
-                return THREE_COLUMN_LAYOUT_254x717x239;
-            case 7:
-                return LEFT_RIGHT_COLUMN_LAYOUT_254x956;
-            case 8:
-                return LEFT_RIGHT_COLUMN_LAYOUT_272x718;
-            case 9:
-                return LEFT_RIGHT_COLUMN_LAYOUT_215x765;
-            case 10:
-                return LEFT_RIGHT_COLUMN_LAYOUT_330x650;
-            case 11:
-                return LEFT_RIGHT_COLUMN_LAYOUT_650x330;
-            case 12:
-                return LEFT_RIGHT_PART_LAYOUT_490x490;
-            case 13:
-                return LEFT_CENTER_RIGHT_PART_LAYOUT_323x324x323;
-            case 14:
-                return WITHOUT_COLUMN_LAYOUT_99999;
-            default:
-                return null;
-        }
     }
 
     public  Integer getModuleCount(){

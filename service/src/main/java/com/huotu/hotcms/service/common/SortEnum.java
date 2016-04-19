@@ -15,12 +15,12 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * 排序依据
  * Created by cwb on 2016/3/17.
  */
-public enum SortEnum implements CommonEnum{
-    SALES(0,"销量"),
-    PRICE(1,"价格"),
-    SHELVE_TIME(2,"上架时间");
-    private int code;
-    private String value;
+public enum SortEnum implements CommonEnum {
+    SALES(0, "销量"),
+    PRICE(1, "价格"),
+    SHELVE_TIME(2, "上架时间");
+    private final int code;
+    private final String value;
 
     SortEnum(int code, String value) {
         this.code = code;
@@ -37,14 +37,5 @@ public enum SortEnum implements CommonEnum{
     public Object getValue() {
         return value;
     }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
 
 }

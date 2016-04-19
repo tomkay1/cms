@@ -3,6 +3,7 @@ package com.huotu.hotcms.admin.controller.decoration;
 import com.huotu.hotcms.admin.common.StringUtil;
 import com.huotu.hotcms.admin.util.web.CookieUser;
 import com.huotu.hotcms.service.common.ConfigInfo;
+import com.huotu.hotcms.service.common.EnumUtils;
 import com.huotu.hotcms.service.common.ScopesType;
 import com.huotu.hotcms.service.common.SiteType;
 import com.huotu.hotcms.service.entity.Site;
@@ -58,189 +59,183 @@ public class WidgetController {
     private SiteService siteService;
 
     @RequestMapping("/widgetTypeList")
-    public ModelAndView widgetTypeList() throws Exception{
-        ModelAndView modelAndView=new ModelAndView();
+    public ModelAndView widgetTypeList() throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/decoration/control/widgetTypeList.html");
-        return  modelAndView;
+        return modelAndView;
     }
 
     @RequestMapping("/widgetMainsList")
-    public ModelAndView widgetMainsList() throws Exception{
-        ModelAndView modelAndView=new ModelAndView();
+    public ModelAndView widgetMainsList() throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/decoration/control/widgetMainsList.html");
-        return  modelAndView;
+        return modelAndView;
     }
 
 
     @RequestMapping(value = "/addWidgetType")
-    public ModelAndView addWidgetType() throws Exception{
-        ModelAndView modelAndView=new ModelAndView();
-        modelAndView.addObject("scopeTypes", ScopesType.ConvertMapToEnum());
+    public ModelAndView addWidgetType() throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("scopeTypes", ScopesType.values());
         modelAndView.setViewName("/decoration/control/addWidgetType.html");
-        return  modelAndView;
+        return modelAndView;
     }
 
     @RequestMapping(value = "/addWidgetMains")
-    public ModelAndView addWidgetMains() throws Exception{
-        ModelAndView modelAndView=new ModelAndView();
+    public ModelAndView addWidgetMains() throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
         List<WidgetType> widgetTypes = widgetService.findAllWidgetType();
         modelAndView.setViewName("/decoration/control/addWidgetMains.html");
-        modelAndView.addObject("widgetTypes",widgetTypes);
-        return  modelAndView;
+        modelAndView.addObject("widgetTypes", widgetTypes);
+        return modelAndView;
     }
 
     @RequestMapping(value = "/widgetUpLoadRead")
-    public ModelAndView widgetUpLoadRead(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception{
-        ModelAndView modelAndView=new ModelAndView();
+    public ModelAndView widgetUpLoadRead(@RequestParam(value = "id", defaultValue = "0") Long id) throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/decoration/control/widgetRead.html");
-        modelAndView.addObject("id",id);
-        return  modelAndView;
+        modelAndView.addObject("id", id);
+        return modelAndView;
     }
+
     @RequestMapping(value = "/widgetUpLoadEdit")
-    public ModelAndView widgetUpLoadEdit(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception{
-        ModelAndView modelAndView=new ModelAndView();
+    public ModelAndView widgetUpLoadEdit(@RequestParam(value = "id", defaultValue = "0") Long id) throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/decoration/control/widgetEdit.html");
-        modelAndView.addObject("id",id);
-        return  modelAndView;
+        modelAndView.addObject("id", id);
+        return modelAndView;
     }
 
 
     @RequestMapping("/updateWidgetMains")
-    public ModelAndView updateWidgetMains(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception{
-        ModelAndView modelAndView=new ModelAndView();
-        String logo_uri =null;
-        String content ="";
-        String editContent ="";
-        try{
+    public ModelAndView updateWidgetMains(@RequestParam(value = "id", defaultValue = "0") Long id) throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
+        String logo_uri = null;
+        String content = "";
+        String editContent = "";
+        try {
             modelAndView.setViewName("/decoration/control/updateWidgetMains.html");
-            WidgetMains widgetMains= widgetService.findWidgetMainsById(id);
-            if(!StringUtils.isEmpty(widgetMains.getImageUri())) {
+            WidgetMains widgetMains = widgetService.findWidgetMainsById(id);
+            if (!StringUtils.isEmpty(widgetMains.getImageUri())) {
                 logo_uri = resourceServer.getResource(widgetMains.getImageUri()).toString();
             }
-            if(!StringUtils.isEmpty(widgetMains.getResourceUri())) {
-                    content = HttpUtils.getHtmlByUrl(resourceServer.getResource(widgetMains.getResourceUri()).toURL());
+            if (!StringUtils.isEmpty(widgetMains.getResourceUri())) {
+                content = HttpUtils.getHtmlByUrl(resourceServer.getResource(widgetMains.getResourceUri()).toURL());
             }
-            if(!StringUtils.isEmpty(widgetMains.getResourceEditUri())) {
+            if (!StringUtils.isEmpty(widgetMains.getResourceEditUri())) {
                 editContent = HttpUtils.getHtmlByUrl(resourceServer.getResource(widgetMains.getResourceEditUri()).toURL());
             }
 
 
-        }catch (Exception ex){
+        } catch (Exception ex) {
             log.error(ex.getMessage());
-        }
-        finally {
-            WidgetMains widgetMains= widgetService.findWidgetMainsById(id);
+        } finally {
+            WidgetMains widgetMains = widgetService.findWidgetMainsById(id);
             List<WidgetType> widgetTypes = widgetService.findAllWidgetType();
-            modelAndView.addObject("widgetMains",widgetMains);
-            modelAndView.addObject("logo_uri",logo_uri);
-            modelAndView.addObject("content",content);
-            modelAndView.addObject("editContent",editContent);
-            modelAndView.addObject("widgetTypes",widgetTypes);
+            modelAndView.addObject("widgetMains", widgetMains);
+            modelAndView.addObject("logo_uri", logo_uri);
+            modelAndView.addObject("content", content);
+            modelAndView.addObject("editContent", editContent);
+            modelAndView.addObject("widgetTypes", widgetTypes);
         }
         return modelAndView;
     }
 
     @RequestMapping("/updateWidgetType")
-    public ModelAndView updateWidgetType(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception{
-        ModelAndView modelAndView=new ModelAndView();
-        try{
+    public ModelAndView updateWidgetType(@RequestParam(value = "id", defaultValue = "0") Long id) throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
+        try {
             modelAndView.setViewName("/decoration/control/updateWidgetType.html");
-            WidgetType widgetType= widgetService.findWidgetTypeById(id);
-            modelAndView.addObject("scopeTypes", ScopesType.ConvertMapToEnum());
-            modelAndView.addObject("widgetType",widgetType);
-        }catch (Exception ex){
+            WidgetType widgetType = widgetService.findWidgetTypeById(id);
+            modelAndView.addObject("scopeTypes", ScopesType.values());
+            modelAndView.addObject("widgetType", widgetType);
+        } catch (Exception ex) {
             log.error(ex.getMessage());
         }
         return modelAndView;
     }
 
     @RequestMapping("/widgetList")
-    public ModelAndView getWidgetList(Long siteId){
-        ModelAndView modelAndView=new ModelAndView();
-        try{
-            Site site=siteService.getSite(siteId);
-            List<WidgetList> widgetLists=null;
-            if(site!=null){
-                if(site.getSiteType().equals(SiteType.SITE_PC_SHOP)){
-                    widgetLists= widgetService.findListByNoScopesType(ScopesType.PC_WEBSITE);
-                }else if(site.getSiteType().equals(SiteType.SITE_PC_WEBSITE)){
-                    widgetLists= widgetService.findListByNoScopesType(ScopesType.PC_SHOP);
+    public ModelAndView getWidgetList(Long siteId) {
+        ModelAndView modelAndView = new ModelAndView();
+        try {
+            Site site = siteService.getSite(siteId);
+            List<WidgetList> widgetLists = null;
+            if (site != null) {
+                if (site.getSiteType().equals(SiteType.SITE_PC_SHOP)) {
+                    widgetLists = widgetService.findListByNoScopesType(ScopesType.PC_WEBSITE);
+                } else if (site.getSiteType().equals(SiteType.SITE_PC_WEBSITE)) {
+                    widgetLists = widgetService.findListByNoScopesType(ScopesType.PC_SHOP);
                 }
             }
             modelAndView.setViewName("/assets/widget/select.html");
-            modelAndView.addObject("widgetList",widgetLists);
-        }catch (Exception ex){
+            modelAndView.addObject("widgetList", widgetLists);
+        } catch (Exception ex) {
             log.error(ex.getMessage());
         }
         return modelAndView;
     }
 
-    @RequestMapping(value = "/saveWidgetType",method = RequestMethod.POST)
+    @RequestMapping(value = "/saveWidgetType", method = RequestMethod.POST)
     @Transactional(value = "transactionManager")
     @ResponseBody
-    public ResultView saveWidgetType(WidgetType widgetType,Integer widgetScopes){
-        ResultView result=null;
+    public ResultView saveWidgetType(WidgetType widgetType, Integer widgetScopes) {
+        ResultView result = null;
         try {
-            widgetType.setScenes(ScopesType.valueOf(widgetScopes));
-            if(widgetType.getId()==null){
+            widgetType.setScenes(EnumUtils.valueOf(ScopesType.class, widgetScopes));
+            if (widgetType.getId() == null) {
                 widgetType.setCreateTime(LocalDateTime.now());
-            }
-            else {
+            } else {
                 widgetType.setCreateTime(widgetService.findWidgetTypeById(widgetType.getId()).getCreateTime());
             }
             widgetService.saveWidgetType(widgetType);
             result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             log.error(ex.getMessage());
-            result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
+            result = new ResultView(ResultOptionEnum.FAILE.getCode(), ResultOptionEnum.FAILE.getValue(), null);
         }
-        return  result;
+        return result;
     }
 
-    @RequestMapping(value = "/saveWidgetMains",method = RequestMethod.POST)
+    @RequestMapping(value = "/saveWidgetMains", method = RequestMethod.POST)
     @Transactional(value = "transactionManager")
     @ResponseBody
-    public ResultView saveWidgetMains(WidgetMains widgetMains,Long widgetTypeId,String template,String editTemplate){
-        ResultView result=null;
+    public ResultView saveWidgetMains(WidgetMains widgetMains, Long widgetTypeId, String template, String editTemplate) {
+        ResultView result = null;
         try {
 
-            if(widgetMains.getResourceUri()!=null){
-                InputStream inputStream=StringUtil.getInputStream(template);
-                widgetMains.setResourceUri(configInfo.getResourcesWidget()+"/template_"+widgetMains.getId() + ".html");
-                resourceServer.uploadResource(widgetMains.getResourceUri(),inputStream);
+            if (widgetMains.getResourceUri() != null) {
+                InputStream inputStream = StringUtil.getInputStream(template);
+                widgetMains.setResourceUri(configInfo.getResourcesWidget() + "/template_" + widgetMains.getId() + ".html");
+                resourceServer.uploadResource(widgetMains.getResourceUri(), inputStream);
             }
-            if(widgetMains.getResourceEditUri()!=null){
-                InputStream inputStream=StringUtil.getInputStream(editTemplate);
-                widgetMains.setResourceEditUri(configInfo.getResourcesWidget()+"/edit/template_"+widgetMains.getId() + ".html");
-                resourceServer.uploadResource(widgetMains.getResourceEditUri(),inputStream);
+            if (widgetMains.getResourceEditUri() != null) {
+                InputStream inputStream = StringUtil.getInputStream(editTemplate);
+                widgetMains.setResourceEditUri(configInfo.getResourcesWidget() + "/edit/template_" + widgetMains.getId() + ".html");
+                resourceServer.uploadResource(widgetMains.getResourceEditUri(), inputStream);
             }
             WidgetType widgetType = widgetService.findWidgetTypeById(widgetTypeId);
-            if(widgetMains.getId()==null){//当是新增时
+            if (widgetMains.getId() == null) {//当是新增时
                 widgetMains.setCreateTime(LocalDateTime.now());
-            }
-            else {
+            } else {
                 widgetMains.setCreateTime(widgetService.findWidgetMainsById(widgetMains.getId()).getCreateTime());
             }
             widgetMains.setWidgetType(widgetType);
             widgetMains.setCreateTime(LocalDateTime.now());
             widgetService.saveWidgetMains(widgetMains);
             result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             log.error(ex.getMessage());
-            result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
+            result = new ResultView(ResultOptionEnum.FAILE.getCode(), ResultOptionEnum.FAILE.getValue(), null);
         }
-        return  result;
+        return result;
     }
 
-    @RequestMapping(value = "/getWidgetTypeList",method = RequestMethod.POST)
+    @RequestMapping(value = "/getWidgetTypeList", method = RequestMethod.POST)
     @ResponseBody
-    public PageData<WidgetType> getWidgetTypeList(@RequestParam(name="name",required = false) String name,
-                                            @RequestParam(name = "page",required = true,defaultValue = "1") Integer page,
-                                            @RequestParam(name = "pagesize",required = true,defaultValue = "20") Integer pageSize) {
+    public PageData<WidgetType> getWidgetTypeList(@RequestParam(name = "name", required = false) String name,
+                                                  @RequestParam(name = "page", required = true, defaultValue = "1") Integer page,
+                                                  @RequestParam(name = "pagesize", required = true, defaultValue = "20") Integer pageSize) {
         PageData<WidgetType> pageModel = null;
         try {
             pageModel = widgetService.getWidgetTypePage(name, page, pageSize);
@@ -250,11 +245,11 @@ public class WidgetController {
         return pageModel;
     }
 
-    @RequestMapping(value = "/getWidgetMainsList",method = RequestMethod.POST)
+    @RequestMapping(value = "/getWidgetMainsList", method = RequestMethod.POST)
     @ResponseBody
-    public PageData<WidgetMains> getWidgetMainsList(@RequestParam(name="name",required = false) String name,
-                                                  @RequestParam(name = "page",required = true,defaultValue = "1") Integer page,
-                                                  @RequestParam(name = "pagesize",required = true,defaultValue = "20") Integer pageSize) {
+    public PageData<WidgetMains> getWidgetMainsList(@RequestParam(name = "name", required = false) String name,
+                                                    @RequestParam(name = "page", required = true, defaultValue = "1") Integer page,
+                                                    @RequestParam(name = "pagesize", required = true, defaultValue = "20") Integer pageSize) {
         PageData<WidgetMains> pageModel = null;
         try {
             pageModel = widgetService.getWidgetMainsPage(name, page, pageSize);
@@ -264,46 +259,40 @@ public class WidgetController {
         return pageModel;
     }
 
-    @RequestMapping(value = "/deleteWidgetType",method = RequestMethod.POST)
+    @RequestMapping(value = "/deleteWidgetType", method = RequestMethod.POST)
     @ResponseBody
-    public ResultView deleteWidgetType(@RequestParam(name = "id",required = true,defaultValue = "0") Long id,HttpServletRequest request) {
-        ResultView result=null;
-        try{
-            if(cookieUser.isSupper(request)) {
+    public ResultView deleteWidgetType(@RequestParam(name = "id", required = true, defaultValue = "0") Long id, HttpServletRequest request) {
+        ResultView result = null;
+        try {
+            if (cookieUser.isSupper(request)) {
                 widgetService.delWidgetType(id);
-                result=new ResultView(ResultOptionEnum.OK.getCode(),ResultOptionEnum.OK.getValue(),null);
+                result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
+            } else {
+                result = new ResultView(ResultOptionEnum.NO_LIMITS.getCode(), ResultOptionEnum.NO_LIMITS.getValue(), null);
             }
-            else {
-                result=new ResultView(ResultOptionEnum.NO_LIMITS.getCode(),ResultOptionEnum.NO_LIMITS.getValue(),null);
-            }
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             log.error(ex.getMessage());
-            result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
+            result = new ResultView(ResultOptionEnum.FAILE.getCode(), ResultOptionEnum.FAILE.getValue(), null);
         }
-        return  result;
+        return result;
     }
 
-    @RequestMapping(value = "/deleteWidgetMains",method = RequestMethod.POST)
+    @RequestMapping(value = "/deleteWidgetMains", method = RequestMethod.POST)
     @ResponseBody
-    public ResultView deleteWidgetMains(@RequestParam(name = "id",required = true,defaultValue = "0") Long id,HttpServletRequest request) {
-        ResultView result=null;
-        try{
-            if(cookieUser.isSupper(request)) {
+    public ResultView deleteWidgetMains(@RequestParam(name = "id", required = true, defaultValue = "0") Long id, HttpServletRequest request) {
+        ResultView result = null;
+        try {
+            if (cookieUser.isSupper(request)) {
                 widgetService.delWidgetMains(id);
-                result=new ResultView(ResultOptionEnum.OK.getCode(),ResultOptionEnum.OK.getValue(),null);
+                result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
+            } else {
+                result = new ResultView(ResultOptionEnum.NO_LIMITS.getCode(), ResultOptionEnum.NO_LIMITS.getValue(), null);
             }
-            else {
-                result=new ResultView(ResultOptionEnum.NO_LIMITS.getCode(),ResultOptionEnum.NO_LIMITS.getValue(),null);
-            }
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             log.error(ex.getMessage());
-            result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
+            result = new ResultView(ResultOptionEnum.FAILE.getCode(), ResultOptionEnum.FAILE.getValue(), null);
         }
-        return  result;
+        return result;
     }
 
 }

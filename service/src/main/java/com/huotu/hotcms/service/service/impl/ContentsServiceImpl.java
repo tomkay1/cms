@@ -1,5 +1,6 @@
 package com.huotu.hotcms.service.service.impl;
 
+import com.huotu.hotcms.service.common.EnumUtils;
 import com.huotu.hotcms.service.common.ModelType;
 import com.huotu.hotcms.service.model.Contents;
 import com.huotu.hotcms.service.repository.BaseEntityRepository;
@@ -7,8 +8,6 @@ import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.service.ContentsService;
 import com.huotu.hotcms.service.util.PageData;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -61,8 +60,8 @@ public class ContentsServiceImpl implements ContentsService {
             Integer modelId=(Integer) o[4];
             if(modelId!=null) {
                 contents.setModelId(modelId);
-                contents.setModel(ModelType.valueOf(modelId).toString().toLowerCase());
-                contents.setModelname(ModelType.valueOf(modelId).getValue().toString());
+                contents.setModel(EnumUtils.valueOf(ModelType.class, modelId).toString().toLowerCase());
+                contents.setModelname(EnumUtils.valueOf(ModelType.class, modelId).getValue().toString());
             }
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//定义格式，不显示毫秒
             String str = df.format(o[5]);

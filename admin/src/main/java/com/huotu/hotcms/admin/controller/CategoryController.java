@@ -1,6 +1,7 @@
 package com.huotu.hotcms.admin.controller;
 
 import com.huotu.hotcms.admin.util.web.CookieUser;
+import com.huotu.hotcms.service.common.EnumUtils;
 import com.huotu.hotcms.service.common.ModelType;
 import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.Category;
@@ -35,21 +36,16 @@ import java.util.Set;
 @RequestMapping("/category")
 public class CategoryController {
     private static final Log log = LogFactory.getLog(CategoryController.class);
-
-    @Autowired
-    private CookieUser cookieUser;
-
     @Autowired
     CategoryService categoryService;
-
     @Autowired
     SiteRepository siteRepository;
-
     @Autowired
     SiteServiceImpl siteService;
-
     @Autowired
     RouteService routeService;
+    @Autowired
+    private CookieUser cookieUser;
 
     /**
      * 栏目列表视图
@@ -121,8 +117,8 @@ public class CategoryController {
             }else{
                 modelAndView.addObject("site", category.getSite());
             }
-            modelAndView.addObject("modelTypes", ModelType.ConvertMapToEnum());
-            modelAndView.addObject("routeTypes", RouteType.ConvertMapToEnum());
+            modelAndView.addObject("modelTypes", ModelType.values());
+            modelAndView.addObject("routeTypes", RouteType.values());
             modelAndView.addObject("category", category);
         }catch (Exception ex){
             log.error(ex.getMessage());
@@ -139,8 +135,8 @@ public class CategoryController {
         modelAndView.setViewName("/view/section/updateCategory.html");
         Category category =categoryService.getCategoryById(id);
         modelAndView.addObject("category",category);
-        modelAndView.addObject("modelTypes", ModelType.ConvertMapToEnum());
-        modelAndView.addObject("routeTypes", RouteType.ConvertMapToEnum());
+        modelAndView.addObject("modelTypes", ModelType.values());
+        modelAndView.addObject("routeTypes", RouteType.values());
         Route route=category.getRoute();
         modelAndView.addObject("routes",route!=null?route.getRouteType():null);
         return modelAndView;
@@ -171,18 +167,20 @@ public class CategoryController {
                 category.setCreateTime(LocalDateTime.now());
                 category.setUpdateTime(LocalDateTime.now());
                 log.error("site2-->"+site.hashCode());
-                if (categoryService.saveCategoryAndRoute(category, rule, template, RouteType.valueOf(routeType))) {
+                if (categoryService.saveCategoryAndRoute(category, rule, template
+                        , EnumUtils.valueOf(RouteType.class, routeType))) {
                     result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
                 } else {
                     result = new ResultView(ResultOptionEnum.FAILE.getCode(), ResultOptionEnum.FAILE.getValue(), null);
                 }
             } else {
-                result = new ResultView(ResultOptionEnum.ROUTE_EXISTS.getCode(), ResultOptionEnum.ROUTE_EXISTS.getValue(), null);
+                result = new ResultView(ResultOptionEnum.ROUTE_EXISTS.getCode()
+                        , ResultOptionEnum.ROUTE_EXISTS.getValue(), null);
             }
         }
         catch (Exception ex)
         {
-            log.error(String.format("saveCategory error-->%s ,Message-->%s",ex.getStackTrace(),ex.getLocalizedMessage()));
+            log.error("saveCategory error", ex);
             result=new ResultView(ResultOptionEnum.SERVERFAILE.getCode(),ResultOptionEnum.SERVERFAILE.getValue(),null);
         }
         return  result;
@@ -249,7 +247,8 @@ public class CategoryController {
                     category.setOrderWeight(orderWeight);
                     category.setCustomerId(site.getCustomerId());
                     category.setUpdateTime(LocalDateTime.now());
-                    categoryService.updateCategoryAndRoute(category,rule,template,noRule,RouteType.valueOf(routeType));
+                    categoryService.updateCategoryAndRoute(category, rule, template, noRule
+                            , EnumUtils.valueOf(RouteType.class, routeType));
                     result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
                 }
             }else{

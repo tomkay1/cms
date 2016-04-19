@@ -197,13 +197,12 @@ public enum LayoutTemplate implements CommonEnum {
             "    </div>\n" +
             "  </div>");
 
+    private int code;
+    private String value;
     LayoutTemplate(int code, String value) {
         this.code = code;
         this.value = value;
     }
-
-    private int code;
-    private String value;
 
     @Override
     public final Integer getCode() {
@@ -215,40 +214,4 @@ public enum LayoutTemplate implements CommonEnum {
         return this.value;
     }
 
-    public static LayoutTemplate valueOf(int id) {
-        switch (id) {
-            case 0:
-                return THREE_COLUMN_LAYOUT_190x590x190;
-            case 1:
-                return WITHOUT_COLUMN_LAYOUT_990;
-            case 2:
-                return LEFT_RIGHT_COLUMN_LAYOUT_190x790;
-            case 3:
-                return RIGHT_PART_LAYOUT_190x390x390;
-            case 4:
-                return LEFT_RIGHT_COLUMN_LAYOUT_790x190;
-            case 5:
-                return LEFT_PART_LAYOUT_390x390x190;
-            case 6:
-                return THREE_COLUMN_LAYOUT_254x717x239;
-            case 7:
-                return LEFT_RIGHT_COLUMN_LAYOUT_254x956;
-            case 8:
-                return LEFT_RIGHT_COLUMN_LAYOUT_272x718;
-            case 9:
-                return LEFT_RIGHT_COLUMN_LAYOUT_215x765;
-            case 10:
-                return LEFT_RIGHT_COLUMN_LAYOUT_330x650;
-            case 11:
-                return LEFT_RIGHT_COLUMN_LAYOUT_650x330;
-            case 12:
-                return LEFT_RIGHT_PART_LAYOUT_490x490;
-            case 13:
-                return LEFT_CENTER_RIGHT_PART_LAYOUT_323x324x323;
-            case 14:
-                return WITHOUT_COLUMN_LAYOUT_99999;
-            default:
-                return null;
-        }
-    }
 }

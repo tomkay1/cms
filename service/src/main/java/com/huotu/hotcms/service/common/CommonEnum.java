@@ -8,12 +8,17 @@
 
 package com.huotu.hotcms.service.common;
 
-import java.util.Map;
-
 /**
  * Created by cwb on 2015/12/21.
  */
 public interface CommonEnum {
+    /**
+     * @return 编码
+     */
     Object getCode();
+
+    /**
+     * @return 用于显示的值
+     */
     Object getValue();
 }

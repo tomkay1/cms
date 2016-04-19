@@ -1,23 +1,26 @@
 package com.huotu.hotcms.service.widget.service;
 
+import com.huotu.hotcms.service.common.EnumUtils;
 import com.huotu.hotcms.service.common.LayoutEnum;
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.model.widget.*;
+import com.huotu.hotcms.service.model.widget.WidgetBase;
+import com.huotu.hotcms.service.model.widget.WidgetLayout;
+import com.huotu.hotcms.service.model.widget.WidgetModule;
+import com.huotu.hotcms.service.model.widget.WidgetPage;
 import com.huotu.hotcms.service.service.RedisService;
 import com.huotu.hotcms.service.util.HttpUtils;
 import com.huotu.hotcms.service.util.ReflectionUtil;
-import com.huotu.hotcms.service.util.ResultOptionEnum;
-import com.huotu.hotcms.service.util.ResultView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.thymeleaf.ITemplateEngine;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import javax.xml.bind.annotation.XmlAttribute;
 import java.io.StringWriter;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
 
 /**
  * <p>
@@ -137,7 +140,7 @@ public class PageResourceService {
         String layoutTemplate = "";
         if (widgetLayout != null) {
             List<String> moduleTemplateList = getWidgetModuleTemplateByWidgetModuleList(widgetLayout.getModule(),isEdit,site);
-            LayoutEnum layoutEnum=LayoutEnum.valueOf(widgetLayout.getLayoutType());
+            LayoutEnum layoutEnum = EnumUtils.valueOf(LayoutEnum.class, widgetLayout.getLayoutType());
             layoutTemplate=layoutEnum.getLayoutTemplate(moduleTemplateList,isEdit,widgetLayout.getLayoutId());
         }
         return layoutTemplate;

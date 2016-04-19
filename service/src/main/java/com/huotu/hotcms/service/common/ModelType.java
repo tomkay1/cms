@@ -19,14 +19,12 @@ public enum ModelType implements CommonEnum {
     DOWNLOAD(4,"下载模型"),
     LINK(5,"链接模型");
 
+    private int code;
+    private String value;
     ModelType(int code, String value) {
         this.code = code;
         this.value = value;
     }
-
-    private int code;
-    private String value;
-
 
     @Override
     public Object getCode() {
@@ -38,27 +36,4 @@ public enum ModelType implements CommonEnum {
         return value;
     }
 
-    public static ModelType valueOf(int value)
-    {
-        switch (value){
-            case 0:
-                return ARTICLE;
-            case 1:
-                return NOTICE;
-            case 2:
-                return  VIDEO;
-            case 3:
-                return GALLERY;
-            case 4:
-                return  DOWNLOAD;
-            case 5:
-                return LINK;
-            default:
-                return null;
-        }
-    }
-    public static ModelType[] ConvertMapToEnum(){
-        ModelType[] routeTypes=ModelType.values();
-        return routeTypes;
-    }
 }

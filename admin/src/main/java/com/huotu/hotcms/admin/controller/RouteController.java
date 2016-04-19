@@ -1,9 +1,9 @@
 package com.huotu.hotcms.admin.controller;
 
 import com.huotu.hotcms.admin.util.web.CookieUser;
+import com.huotu.hotcms.service.common.EnumUtils;
 import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.Category;
-import com.huotu.hotcms.service.entity.DataModel;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.service.CategoryService;
@@ -60,7 +60,7 @@ public class RouteController {
             modelAndView.setViewName("/view/web/addRoute.html");
             Site site=siteService.getSite(siteId);
             modelAndView.addObject("site",site);
-            modelAndView.addObject("routeTypes",RouteType.ConvertMapToEnum());
+            modelAndView.addObject("routeTypes", RouteType.values());
         }catch (Exception ex){
             log.error(ex.getMessage());
         }
@@ -75,7 +75,7 @@ public class RouteController {
             Route route=routeService.getRoute(routeId);
             modelAndView.addObject("site",route.getSite());
             modelAndView.addObject("route",route);
-            modelAndView.addObject("routeTypes",RouteType.ConvertMapToEnum());
+            modelAndView.addObject("routeTypes", RouteType.values());
         }catch (Exception ex){
             log.error(ex.getMessage());
         }
@@ -152,7 +152,7 @@ public class RouteController {
                     route.setSite(site);
                     route.setDescription(description);
                     if (routeType >= 0) {
-                        route.setRouteType(RouteType.valueOf(routeType));
+                        route.setRouteType(EnumUtils.valueOf(RouteType.class, routeType));
                     }
                     route.setTemplate(template);
                     route.setRule(routeRule);
@@ -192,7 +192,7 @@ public class RouteController {
             if(route!=null){
                 route.setDescription(description);
                 if (routeType >= 0) {
-                    route.setRouteType(RouteType.valueOf(routeType));
+                    route.setRouteType(EnumUtils.valueOf(RouteType.class, routeType));
                 }
                 route.setTemplate(template);
                 route.setRule(routeRule);

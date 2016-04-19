@@ -1,5 +1,6 @@
 package com.huotu.hotcms.admin.controller.decoration;
 
+import com.huotu.hotcms.service.common.EnumUtils;
 import com.huotu.hotcms.service.common.LayoutEnum;
 import com.huotu.hotcms.service.model.widget.WidgetResult;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
@@ -31,7 +32,7 @@ public class LayoutController {
     public ResultView widgetTypeList(@PathVariable("id") Integer id) {
         ResultView resultView = null;
         try {
-            LayoutEnum layoutEnum = LayoutEnum.valueOf(id);
+            LayoutEnum layoutEnum = EnumUtils.valueOf(LayoutEnum.class, id);
             String layoutId=UUID.randomUUID().toString();
             if (layoutEnum == null) {
                 resultView = new ResultView(ResultOptionEnum.NOFIND.getCode(), ResultOptionEnum.NOFIND.getValue(), null);

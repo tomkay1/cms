@@ -1,6 +1,7 @@
 package com.huotu.hotcms.admin.controller;
 
 import com.huotu.hotcms.admin.util.web.CookieUser;
+import com.huotu.hotcms.service.common.EnumUtils;
 import com.huotu.hotcms.service.common.SiteType;
 import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Region;
@@ -12,7 +13,6 @@ import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.util.PageData;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
-import com.huotu.hotcms.service.util.StringUtil;
 import com.huotu.hotcms.service.widget.service.StaticResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -28,7 +28,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -89,7 +88,7 @@ public class SiteController {
         Set<Host> hosts = new HashSet<>();
         site.setPersonalise(personalise);
         Region region = regionRepository.findOne(regionId);
-        site.setSiteType(SiteType.valueOf(siteType));
+        site.setSiteType(EnumUtils.valueOf(SiteType.class, siteType));
         Site site2 = null;
         try {
             Long siteId = site.getSiteId();

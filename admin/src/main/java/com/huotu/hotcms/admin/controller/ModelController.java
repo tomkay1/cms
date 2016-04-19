@@ -1,13 +1,14 @@
 package com.huotu.hotcms.admin.controller;
 
 import com.huotu.hotcms.admin.util.web.CookieUser;
+import com.huotu.hotcms.service.common.EnumUtils;
 import com.huotu.hotcms.service.common.ModelType;
 import com.huotu.hotcms.service.entity.DataModel;
 import com.huotu.hotcms.service.repository.ModelRepository;
 import com.huotu.hotcms.service.service.impl.ModelServiceImpl;
+import com.huotu.hotcms.service.util.PageData;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
-import com.huotu.hotcms.service.util.PageData;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,7 +95,7 @@ public class ModelController {
                     dataModel.setDescription(description);
                     dataModel.setName(name);
                     dataModel.setOrderWeight(orderWeight);
-                    dataModel.setType(ModelType.valueOf(type));
+                    dataModel.setType(EnumUtils.valueOf(ModelType.class, type));
                     dataModel.setUpdateTime(LocalDateTime.now());
                     modelRepository.save(dataModel);
                 }
@@ -103,7 +104,7 @@ public class ModelController {
                 dataModel.setDescription(description);
                 dataModel.setName(name);
                 dataModel.setOrderWeight(orderWeight);
-                dataModel.setType(ModelType.valueOf(type));
+                dataModel.setType(EnumUtils.valueOf(ModelType.class, type));
                 dataModel.setCreateTime(LocalDateTime.now());
                 modelRepository.save(dataModel);
             }

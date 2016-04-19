@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.Query;
  */
 public interface ArticleRepository extends JpaRepository<Article,Long>,JpaSpecificationExecutor {
 
-    Article findById(Long id);
+//    Article findOneByIdGreatThanOrderByIdAsc(Long id);
 
     @Query(value = "select * from cms_article  where id >?1 order BY id asc LIMIT 1",nativeQuery = true)
     Article findAllByIdAndNext(Long id);

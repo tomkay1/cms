@@ -51,12 +51,11 @@
                                         销量[[${goods.sales}]]
                                     </a>
                                 </span>
-                                <span class="evaluate">
-                  <a th:href="'/front/shop/product/'+${goods.id}"
-                     th:if="${goods.vipPrice!=null and goods.vipPrice > 0}">
-                      会员价：<i style="color: #FF1414;">[[${goods.vipPrice}]]</i>
-                  </a>
-                  </span>
+                                <span class="evaluate" th:if="${goods.vipPrice!=null and goods.vipPrice > 0}">
+                                    <a th:href="'/front/shop/product/'+${goods.id}">
+                                        会员价：<i style="color: #FF1414;">[[${goods.vipPrice}]]</i>
+                                    </a>
+                                </span>
                             </div>
                             <p style="height: 7px;"></p>
 
@@ -64,7 +63,6 @@
                                 <a target="" th:href="'/front/shop/product/'+${goods.id}" rel="">
                                     购买
                                 </a>
-
                             </div>
                         </div>
                     </div>
@@ -146,7 +144,7 @@
                     <div class="jItem">
                         <div class="jPic">
                             <a th:href="'/front/shop/product/'+${goods.id}" target="">
-                                <img data-th-src="${goods.smallPic}" data-th-attr="alt=${goods.title}">
+                                <img data-th-src="${goods.smallPic}" data-th-attr="alt=${goods.title}"  width="160" height="160">
                             </a>
 
                             <div class="jToolBar">
@@ -167,12 +165,11 @@
                                 <!--已有64人评价-->
                                 <!--</a>-->
                                 <!--</span>-->
-                                <span class="evaluate">
-                  <a th:href="'/front/shop/product/'+${goods.id}" th:if="${goods.vipPrice!=null and goods.vipPrice>0}">
-                      会员价：<i style="color: #FF1414;">[[${goods.vipPrice}]]</i>
-                  </a>
-                  </span>
-                                <span></span>
+                                <span class="evaluate" th:if="${goods.vipPrice!=null and goods.vipPrice>0}">
+                                    <a th:href="'/front/shop/product/'+${goods.id}">
+                                        会员价：<i style="color: #FF1414;">[[${goods.vipPrice}]]</i>
+                                    </a>
+                                </span>
                             </div>
                             <div class="jPrice">
                                 <div class="HOTPrice">
@@ -271,7 +268,7 @@
                         <div class="jItem">
                             <div class="jPic">
                                 <a th:href="'/front/shop/product/'+${goods.id}">
-                                    <img data-th-src="${goods.smallPic}" data-th-attr="alt=${goods.title}">
+                                    <img data-th-src="${goods.smallPic}" data-th-attr="alt=${goods.title}"  width="160" height="160">
                                 </a>
                             </div>
                             <div class="jGoodsInfo">
@@ -293,12 +290,11 @@
                                     <!--已有<em> 64 </em>人评价-->
                                     <!--</a>-->
                                     <!--</span>-->
-                                    <span class="evaluate">
-                  <a href="javascript:void(0)" th:if="${goods.vipPrice!=null and goods.vipPrice > 0}">
-                      会员价：<i style="color: #FF1414;">[[${goods.vipPrice}]]</i>
-                  </a>
-                  </span>
-                                    <span></span>
+                                    <span class="evaluate" th:if="${goods.vipPrice!=null and goods.vipPrice > 0}">
+                                        <a href="javascript:void(0)">
+                                            会员价：<i style="color: #FF1414;">[[${goods.vipPrice}]]</i>
+                                        </a>
+                                    </span>
                                 </div>
                                 <p style="height: 7px;"></p>
 

@@ -15,13 +15,12 @@ public enum ArticleSource implements CommonEnum {
     REPRINT(0,"转载"),
     ORIGINAL(1,"原创");
 
+    private int code;
+    private String value;
     ArticleSource(int code, String value) {
         this.code = code;
         this.value = value;
     }
-
-    private int code;
-    private String value;
 
     @Override
     public Object getCode() {
@@ -33,15 +32,4 @@ public enum ArticleSource implements CommonEnum {
         return value;
     }
 
-    public static ArticleSource valueOf(int value)
-    {
-        switch (value){
-            case 0:
-                return REPRINT;
-            case 1:
-                return ORIGINAL;
-            default:
-                return null;
-        }
-    }
 }

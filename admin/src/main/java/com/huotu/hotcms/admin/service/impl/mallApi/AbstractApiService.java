@@ -1,8 +1,8 @@
-package com.huotu.hotcms.service.widget.service.impl.mallApi;
+package com.huotu.hotcms.admin.service.impl.mallApi;
 
+import com.huotu.hotcms.admin.service.impl.MallApiService;
 import com.huotu.hotcms.service.util.ApiResult;
 import com.huotu.hotcms.service.util.HttpUtils;
-import com.huotu.hotcms.service.widget.service.MallApiEnvironmentService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Created by Administrator on 2016/3/23.
  */
-public  abstract class AbstractApiService implements MallApiEnvironmentService {
+public  abstract class AbstractApiService implements MallApiService {
     private static final Log log = LogFactory.getLog(AbstractApiService.class);
 
     protected  String serviceRoot;

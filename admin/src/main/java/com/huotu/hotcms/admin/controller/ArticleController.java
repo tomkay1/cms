@@ -2,6 +2,7 @@ package com.huotu.hotcms.admin.controller;
 
 import com.huotu.hotcms.admin.util.web.CookieUser;
 import com.huotu.hotcms.service.common.ArticleSource;
+import com.huotu.hotcms.service.common.EnumUtils;
 import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.model.ArticleCategory;
@@ -111,7 +112,7 @@ public class ArticleController {
         try {
             Long id = article.getId();
             Category category = categoryRepository.getOne(categoryId);
-            ArticleSource articleSource=ArticleSource.valueOf(articleSourceId);
+            ArticleSource articleSource = EnumUtils.valueOf(ArticleSource.class, articleSourceId);
             if(id!=null)
             {
                 Article articleOld = articleService.findById(article.getId());

@@ -16,6 +16,7 @@ public  abstract class AbstractApiService implements MallApiEnvironmentService {
 
     protected  String serviceRoot;
 
+
     @Override
     public ApiResult<String> HttpGet(String path,Map<String, Object> params) {
         try {

@@ -28,7 +28,7 @@ import java.util.Map;
  */
 public abstract class AbstractHttpServiceImpl implements HttpService {
     private Log log = LogFactory.getLog(getClass());
-    protected String appRoot="com.huotu.huobanplus.open.api.root";
+    protected String appRoot="http://test.api.open.huobanplus.com:8081";
     protected String appKey="_demo";
     protected String appSecret="1f2f3f4f5f6f7f8f";
 
@@ -83,14 +83,16 @@ public abstract class AbstractHttpServiceImpl implements HttpService {
         ApiResult<String> apiResult = new ApiResult<>();
         URI uri;
         try {
-            uri=new URIBuilder(this.appRoot).setParameters(nameValuePairs).setPath(path).build();
+            uri = new URIBuilder(this.appRoot)
+                    .setParameters(nameValuePairs)
+                    .setPath(path)
+                    .build();
             HttpGet httpGet = new HttpGet(uri);
             String random = String.valueOf(System.currentTimeMillis());
             httpGet.setHeader("_user_key", appKey);
             httpGet.setHeader("_user_random", random);
             httpGet.setHeader("_user_secure", createDigest(appKey, random, appSecret));
-            CloseableHttpResponse response = null;
-            response = httpClient.execute(httpGet);
+            CloseableHttpResponse response = httpClient.execute(httpGet);
             apiResult.setCode(response.getStatusLine().getStatusCode());
             apiResult.setMsg(response.getStatusLine().getReasonPhrase());
             apiResult.setData(EntityUtils.toString(response.getEntity()));

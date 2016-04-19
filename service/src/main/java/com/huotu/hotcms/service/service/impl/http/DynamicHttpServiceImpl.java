@@ -13,20 +13,24 @@ import org.springframework.stereotype.Service;
 @Service
 @Profile("container")
 public class DynamicHttpServiceImpl extends AbstractHttpServiceImpl {
-    private static final Log log = LogFactory.getLog(DynamicHttpServiceImpl.class);
+
+    private  Log log = LogFactory.getLog(getClass());
 
     @Autowired
     private void setEnv(Environment env) {
-        this.appKey= env.getProperty("com.huotu.huobanplus.open.api.appid",(String)null);
-        this.appSecret = env.getProperty("com.huotu.huobanplus.open.api.appsecrect",(String)null);
-        this.appRoot=env.getProperty("com.huotu.huobanplus.open.api.root",(String)null);
-        if(this.appKey==null) {
+        appKey= env.getProperty("com.huotu.huobanplus.open.api.appid");
+        appSecret = env.getProperty("com.huotu.huobanplus.open.api.appsecrect");
+        appRoot=env.getProperty("com.huotu.huobanplus.open.api.root");
+        if(appKey==null) {
+            log.error("请设置com.huotu.huobanplus.open.api.appid属性");
             throw new IllegalStateException("请设置com.huotu.huobanplus.open.api.appid属性");
         }
-        if(this.appSecret==null) {
+        if(appSecret==null) {
+            log.error("请设置com.huotu.huobanplus.open.api.appsecrect属性");
             throw new IllegalStateException("请设置com.huotu.huobanplus.open.api.appsecrect属性");
         }
-        if(this.appRoot==null){
+        if(appRoot==null){
+            log.error("请设置com.huotu.huobanplus.open.api.root属性");
            throw new IllegalStateException("请设置com.huotu.huobanplus.open.api.root属性");
         }
     }

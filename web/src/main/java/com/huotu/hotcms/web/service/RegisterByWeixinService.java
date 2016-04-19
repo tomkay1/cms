@@ -1,4 +1,4 @@
-package com.huotu.hotcms.service.widget.service;
+package com.huotu.hotcms.web.service;
 
 import com.huotu.hotcms.service.model.Bind.WxUser;
 import com.huotu.huobanplus.sdk.mall.model.RegisterWeixinUserData;
@@ -9,6 +9,7 @@ import com.huotu.huobanplus.sdk.mall.model.RegisterWeixinUserData;
  */
 
 public interface RegisterByWeixinService {
+
     RegisterWeixinUserData RegisterByWeixin(int customerId,WxUser wxUser);
 
 

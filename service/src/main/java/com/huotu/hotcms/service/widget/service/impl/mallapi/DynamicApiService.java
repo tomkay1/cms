@@ -1,4 +1,4 @@
-package com.huotu.hotcms.service.widget.service.impl.mallapi;
+package com.huotu.hotcms.service.widget.service.impl.mallApi;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -19,18 +19,9 @@ public class DynamicApiService extends  AbstractApiService {
 
     @Autowired
     private void setEnv(Environment env) {
-        String uri = env.getProperty("huotu.mallApi", "devmallapi.huobanj.cn/");
-        this.mallHost=env.getProperty("mall.domain",(String) null);
-        this.mallResources=env.getProperty("mall.resources","res.51flashmall.com");
-        if (uri == null) {
+        this.serviceRoot= env.getProperty("huotu.mallApi", (String)null);
+        if (this.serviceRoot == null) {
             throw new IllegalStateException("请设置huotu.mallApi");
-        }
-        try {
-            this.serviceHost =uri;
-            this.scheme="http";
-        } catch (Exception e) {
-            log.error("MallApi环境获取失败", e);
-            throw new InternalError("MallApi环境获取失败");
         }
     }
 }

@@ -51,7 +51,7 @@ public class MallController {
                 map.put("size",size);
                 map.put("extenName","."+suffix);
                 map.put("fileid",fileId);
-                String path="gallery/uploadPhoto";
+                String path="/gallery/uploadPhoto";
                 apiResult= mallApiEnvironmentService.HttpPost(path,map);
             }
         }catch (Exception ex){

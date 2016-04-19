@@ -44,6 +44,7 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -95,6 +96,14 @@
         </dependency>
     </dependencies>
 
+    <repositories>
+        <repository>
+            <id>repo-huotu</id>
+            <name>huotu Repository</name>
+            <url>http://repo.51flashmall.com:8081/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
+
     <build>
         <plugins>
             <plugin>
@@ -107,12 +116,6 @@
             </plugin>
         </plugins>
     </build>
-    <repositories>
-        <repository>
-            <id>repo-huotu</id>
-            <name>huotu Repository</name>
-            <url>http://repo.51flashmall.com:8081/nexus/content/groups/public/</url>
-        </repository>
-    </repositories>
+
 </project>
 

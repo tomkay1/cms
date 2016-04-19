@@ -1,4 +1,4 @@
-package com.huotu.hotcms.service.widget.service.impl.mallApi;
+package com.huotu.hotcms.admin.service.impl.mallApi;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -19,7 +19,6 @@ public class DynamicApiService extends  AbstractApiService {
 
     @Autowired
     private void setEnv(Environment env) {
-
         this.serviceRoot= env.getProperty("huotu.mallApi", (String)null);
         if (this.serviceRoot == null) {
             throw new IllegalStateException("请设置huotu.mallApi");

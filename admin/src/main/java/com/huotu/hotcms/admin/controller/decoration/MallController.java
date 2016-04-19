@@ -1,7 +1,7 @@
 package com.huotu.hotcms.admin.controller.decoration;
 
+import com.huotu.hotcms.admin.service.impl.MallApiService;
 import com.huotu.hotcms.service.util.ApiResult;
-import com.huotu.hotcms.service.widget.service.MallApiEnvironmentService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class MallController {
     private static final Log log = LogFactory.getLog(MallController.class);
 
     @Autowired
-    private MallApiEnvironmentService mallApiEnvironmentService;
+    private MallApiService mallApiService;
 
     @RequestMapping(value = "/uploadPhoto",method = RequestMethod.POST)
     @ResponseBody
@@ -52,7 +52,7 @@ public class MallController {
                 map.put("extenName","."+suffix);
                 map.put("fileid",fileId);
                 String path="/gallery/uploadPhoto";
-                apiResult= mallApiEnvironmentService.HttpPost(path,map);
+                apiResult= mallApiService.HttpPost(path,map);
             }
         }catch (Exception ex){
             log.error(ex);

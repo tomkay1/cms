@@ -1,0 +1,510 @@
+<!--recommendation.html-->
+<!--浏览试图-->
+<!--723944-->
+<div th:class="'fn-clear js-hot-module '+ ${templateClass == null ?'HOTBox-723944':templateClass} +' toolhover'"  th:attr="id=${guid}">
+    <div class="mc" style="overflow: visible;" th:if="${templateClass==null or templateClass == 'HOTBox-723944'}">
+        <div class="user">
+            <div class="j-module">
+                <ul class="HOTBoxUl" id="wy_floor7">
+                    <li data-widget-hot="goods">
+                        <a class="jPic" target="" th:href="'/front/shop/product/'+${goods.id}">
+                            <img th:src="${goods.smallPic}">
+                        </a>
+                        <a class="HOTesc" th:title="${goods.title}" target="_blank" th:href="'/front/shop/product/'+${goods.id}">
+                            [[${goods.title}]]
+                        </a>
+                        <div class="HOTPrice">
+                            <span>￥ </span>
+                            <span class="HOTNum" jshop="price">[[${goods.price}]]</span>
+                        </div>
+                        <a class="jBtnArea" th:href="'/front/shop/product/'+${goods.id}" target="">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="mc" style="overflow: visible;" th:if="${templateClass == 'HOT_woman-768144'}">
+        <div class="j-module School_season">
+            <div class="mod-990">
+                <ul class="clearfloat">
+                    <li class="item item-1 " data-widget-hot="goods">
+                        <div class="jPic">
+                            <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                                <img th:src="${goods.smallPic}">
+                            </a>
+                        </div>
+                        <div class="jGoodsInfo">
+                            <div class="HOTesc">
+                                <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                                    [[${goods.title}]]
+                                </a>
+                            </div>
+                            <div class="jPrice">
+                                <span class="jRmb">￥</span>
+                                <span class="HOTNum">[[${goods.price}]]</span>
+                            </div>
+                        </div>
+                        <div class="jBtn">
+                            <div class="jBtntxt">
+                                <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                                    <span>立即购买 &gt;</span>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="mc"  style="overflow: visible;" th:if="${templateClass == 'userjGoodsRecommend-400154'}">
+        <div class="j-module">
+            <ul>
+                <li class="qFourOneHalf mOneHalf" data-widget-hot="goods">
+                    <div class="jItem">
+                        <div class="jPic">
+                            <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                                <img th:src="${goods.smallPic}">
+                            </a>
+                        </div>
+                        <div class="jGoodsInfo">
+                            <div class="HOTesc" th:title="${goods.title}">
+                                <a th:href="'/front/shop/product/'+${goods.id}" target="">[[${goods.title}]]</a>
+                                <span class="jSlogan"></span>
+                            </div>
+                            <div class="user jPrice">
+                                <div class="jSalePrice">
+                                    <span class="jText">参考价：</span>
+                                    <span class="jRmb">¥</span>
+                                    <span class="jsNum">[[${goods.price}]]</span>
+                                </div>
+                                <span class="jRmb">¥</span>
+                                <span class="HOTNum">[[${goods.price}]]</span>
+                            </div>
+                            <div class="jBtnArea">
+                                <a target="" th:href="'/front/shop/product/'+${goods.id}" rel="">立即购买</a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="mc"  style="overflow: visible;" th:if="${templateClass == 'double12-724042'}">
+        <div class="j-module School_season">
+            <div class="mod-990">
+                <ul class="clearfloat">
+                    <li class="item item-1 " data-widget-hot="goods">
+                        <div class="jPic">
+                            <img th:src="${goods.smallPic}">
+                        </div>
+                        <div class="jGoodsInfo">
+                            <div class="HOTesc">
+                                <span>[[${goods.title}]]</span>
+                            </div>
+                            <div class="jPrice">
+                                <span class="jRmb">￥</span>
+                                <span class="HOTNum">[[${goods.price}]]</span>
+                            </div>
+                            <div class="jBtnArea">
+                                <span>立即抢购</span>
+                            </div>
+                        </div>
+                        <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                            <span class="border3"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="mc"  style="overflow: visible;" th:if="${templateClass == 'double12-723938'}">
+        <div class="j-module School_season">
+            <div class="mod-990">
+                <ul class="clearfloat">
+                    <li class="item item-8 " data-widget-hot="goods">
+                        <div class="jPic">
+                            <img th:src="${goods.smallPic}">
+                            <span class="pic_icon"><img th:src="${goods.smallPic}"></span>
+                        </div>
+                        <div class="jGoodsInfo">
+                            <div class="HOTesc">
+                                <span>[[${goods.title}]]</span>
+                            </div>
+                            <div class="jPrice">
+                                <span class="jRmb">￥</span>
+                                <span class="HOTNum">[[${goods.price}]]</span>
+                            </div>
+                            <div class="jBtnArea">
+                                <span>立即抢购</span>
+                            </div>
+                        </div>
+                        <a th:href="'/front/shop/product/'+${goods.id}" target=""><span class="border3"></span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="mc" style="overflow: visible;" th:if="${templateClass == 'goodsRec9-672540'}">
+        <div class="j-module" style="overflow: hidden; padding-bottom: 0px;">
+            <ul>
+                <li style="margin-left: 0px; margin-right: 0px; margin-top: 0px; width: 256.667px;" data-widget-hot="goods">
+                    <div class="jItem">
+                        <div class="jPic">
+                            <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                                <img th:src="${goods.smallPic}" width="240px" height="240px"/>
+                            </a>
+                        </div>
+                        <div class="HOTesc" style="padding-left: 1px;">
+                            <p class="goods-price">￥<span class="HOTNum">[[${goods.price}]]</span></p>
+                            <p class="goods-btn"><a th:href="'/front/shop/product/'+${goods.id}" target="">立即抢购<i></i></a></p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+
+    </div>
+    <div class="mc" style="overflow: visible;" th:if="${templateClass == 'goodsRec8-672537'}">
+        <div class="j-module"  style="overflow: hidden; padding-bottom: 0px;">
+            <ul>
+                <li style="margin-left: 0px; margin-right: 0px; margin-top: 0px; width: 256.667px;" data-widget-hot="goods">
+                    <div class="jItem">
+                        <div class="jPic">
+                            <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                                <img width="240" height="240" th:src="${goods.smallPic}"/>
+                            </a>
+                        </div>
+                        <div class="HOTesc" style="padding-left: 5px;">
+                            <p class="goods-price">￥<span class="HOTNum" >[[${goods.price}]]</span></p>
+                            <p class="goods-btn"><a th:href="'/front/shop/product/'+${goods.id}" target="">立即抢购<i></i></a></p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+    <div class="mc" style="overflow: visible;" th:if="${templateClass == 'goodsRec7-672533'}">
+        <div class="j-module" style="overflow: hidden; padding-bottom: 0px;">
+            <ul>
+                <li style="margin-left: 10px; margin-right: 0px; margin-top: 0px; width: 256.667px;" data-widget-hot="goods">
+                    <div class="jItem">
+                        <div class="jPic">
+                            <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                                <img width="240" height="240" th:src="${goods.smallPic}"/>
+                            </a>
+                        </div>
+                        <div class="HOTesc">
+                            <p class="goods-price">￥<span class="HOTNum" jshop="price" HOTprice="1309062513">[[${goods.price}]]</span></p>
+                            <p class="goods-btn"><a th:href="'/front/shop/product/'+${goods.id}" target="">立即抢购<i></i></a></p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+    <div class="mc" style="overflow: visible;" th:if="${templateClass == 'jGoodsRecommend-400156'}">
+        <div class="j-module" module-function="autoLayout" module-param="{node:'li', spacingType:'margin', size:0.5}">
+            <ul>
+                <li class="qThreeOneHalf mOneHalf" data-widget-hot="goods">
+                    <div class="jItem">
+                        <div class="jPic">
+                            <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">
+                                <img th:src="${goods.smallPic}" height="240" width="240">
+                            </a>
+                        </div>
+                        <div class="jGoodsInfo">
+                            <div class="HOTesc" th:title="${goods.title}">
+                                <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">
+                                    [[${goods.title}]]
+                                </a>
+                                <span class="jSlogan"></span>
+                            </div>
+                            <div class="jPrice">
+                                <div class="jSalePrice">
+                                    <span class="jText">￥</span><span class="jsNum">[[${goods.price}]]</span>
+                                </div>
+                                <span class="jText">￥</span><span class="HOTNum">[[${goods.price}]]</span>
+                            </div>
+                            <div class="jBtnArea">
+                                <a target="_blank" th:href="'/front/shop/product/'+${goods.id}" rel="nofollow">立即购买</a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="mc" style="overflow: visible;" th:if="${templateClass == 'jGoodsRecommend-400210'}">
+        <div class="j-module">
+            <ul>
+                <li class="qFourOneHalf mOneHalf" data-widget-hot="goods">
+                    <div class="jItem">
+                        <div class="jPic">
+                            <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">
+                                <img th:src="${goods.smallPic}" th:attr="alt=${goods.title}" height="160" width="160">
+                            </a>
+                        </div>
+                        <div class="jGoodsInfo">
+                            <div class="HOTesc" th:title="${goods.title}">
+                                <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                                    [[${goods.title}]]
+                                </a>
+                                <span class="jSlogan"></span>
+                            </div>
+                            <div class="jPrice">
+                                <div class="jSalePrice">
+                                    <!--<span class="jText">参考价：</span>-->
+                                    <span class="jRmb">¥</span>
+                                    <span class="jsNum">[[${goods.price}]]</span>
+                                </div>
+                                <span class="jRmb">¥</span>
+                                <span class="HOTNum">[[${goods.price}]]</span>
+                            </div>
+                            <div class="jBtnArea">
+                                <a target="_blank" th:href="'/front/shop/product/'+${goods.id}" rel="">立即购买</a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="mc" style="overflow: visible;" th:if="${templateClass == 'jGoodsRecommend-400211'}">
+        <div class="j-module">
+            <ul>
+                <li class="qThreeOneHalf mOneHalf" data-widget-hot="goods">
+                    <div class="jItem">
+                        <div class="jPic">
+                            <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">
+                                <img th:src="${goods.smallPic}" th:attr="alt=${goods.title}" height="225" width="225">
+                            </a>
+                        </div>
+                        <div class="jGoodsInfo">
+                            <div class="jPrice">
+                                <div class="HOTPrice">
+                                    <!--<span class="jText">京东价：</span>--><span class="jRmb">¥</span><span class="HOTNum"><span class="HOTNum" jshop="price" HOTprice="1506149797">[[${goods.price}]]</span></span>
+                                </div>
+                                <div class="jSalePrice">
+                                    <span class="jText">¥</span><span class="jsNum">[[${goods.price}]]</span>
+                                    <div class="HOTesc" th:title="${goods.title}">
+                                        <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">
+                                            [[${goods.title}]]
+                                        </a>
+                                        <span class="jSlogan"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="mc" style="overflow: visible;" th:if="${templateClass == 'jGoodsRecommend-400214'}">
+        <div class="j-module" >
+            <ul>
+                <li class="qThreeOne mOne" data-widget-hot="goods">
+                    <div class="jItem" >
+                        <div class="jPic">
+                            <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">
+                                <img th:src="${goods.smallPic}" th:attr="alt=${goods.title}" height="200" width="200">
+                            </a>
+                        </div>
+                        <div class="jGoodsInfo">
+                            <div class="HOTesc" th:title="${goods.title}">
+                                <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">
+                                    [[${goods.title}]]
+                                </a>
+                                <span class="jSlogan"></span>
+                            </div>
+                            <div class="jPrice">
+                                <div class="jSalePrice">
+                                    <span class="jText">¥</span><span class="jsNum" >[[${goods.price}]]</span>
+                                </div>
+                                <div class="HOTPrice">
+                                    <span class="jText">促销价：</span><span class="jRmb">¥</span><span class="HOTNum"><span class="HOTNum">[[${goods.price}]]</span></span>
+                                </div>
+                            </div>
+                            <div class="jBtnArea">
+                                <a target="_blank" th:href="'/front/shop/product/'+${goods.id}" rel="">立即购买</a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="mc" style="overflow: visible;" th:if="${templateClass == 'jGoodsRecommend-400215'}">
+        <div class="j-module" >
+            <ul>
+                <li class="qThreeOneHalf mOneHalf" data-widget-hot="goods">
+                    <div class="jItem" >
+                        <div class="jPic">
+                            <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                                <img th:src="${goods.smallPic}" th:attr="alt=${goods.title}" height="200" width="200">
+                            </a>
+                        </div>
+                        <div class="jGoodsInfo">
+                            <div class="HOTesc" th:title="${goods.title}">
+                                <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">
+                                    [[${goods.title}]]
+                                </a>
+                            </div>
+                            <div class="jPrice">
+                                <!--<div class="HOTPrice">
+                                    <span class="jsTag">京东价：</span><span class="HOTNum">129.00</span>
+                                </div>-->
+                                <div class="jSalePrice">
+                                    <!--<span class="jText">参考价：</span>--><span class="jRmb">¥</span><span class="jsNum">[[${goods.price}]]</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="mc" style="overflow: visible;" th:if="${templateClass == 'jGoodsRecommend-412502'}">
+        <div class="j-module">
+            <ul>
+                <li class="qThreeOneHalf mOneHalf" data-widget-hot="goods">
+                    <div class="jItem">
+                        <div class="jPic">
+                            <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                                <img th:src="${goods.smallPic}" th:attr="alt=${goods.title}" height="240" width="240">
+                            </a>
+                            <div class="jPromotionLabel">
+                                <div class="jPromotionTextArea">
+                                    <span class="jPromotionText1">抢购价</span>
+                                    <span class="jPromotionNum">¥[[${goods.price}]]</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="jGoodsInfo">
+                            <div class="HOTesc" th:title="${goods.title}">
+                                <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                                    [[${goods.title}]]
+                                </a>
+                                <span class="jSlogan"></span>
+                            </div>
+                            <div class="jPrice">
+                                <div class="jSalePrice">
+                                    <span class="jText">参考价:</span>
+                                    <span class="jRmb">¥</span>
+                                    <span class="jsNum" jshop="price" jsprice="1506149797">[[${goods.price}]]</span>
+                                </div>
+                                <div class="HOTPrice">
+                                    <span class="jText">现价:</span>
+                                    <span class="jRmb">¥</span>
+                                    <span class="HOTNum" jshop="price" HOTprice="1506149797">[[${goods.price}]]</span>
+                                </div>
+                            </div>
+                            <div class="jBtnArea">
+                                <a target="" th:href="'/front/shop/product/'+${goods.id}" rel="">放入购物车</a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="mc" style="overflow: visible;" th:if="${templateClass == 'jGoodsRecommend-400376'}">
+        <ul>
+            <li data-widget-hot="goods">
+                <div class="jItem">
+                    <div class="jIcon">1</div>
+                    <div class="jPic">
+                        <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">
+                            <img th:src="${goods.smallPic}" th:attr="alt=${goods.title}" height="90" width="90">
+                        </a>
+                    </div>
+                    <div class="jGoodsInfo">
+                        <div class="HOTesc" th:title="${goods.title}">
+                            <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">
+                                [[${goods.title}]]
+                            </a>
+                            <span class="jSlogan"></span>
+                        </div>
+                        <div class="jPrice">
+                            <div class="jSalePrice">
+                                <span class="jText">原价：</span>
+                                <span class="jRmb">¥</span>
+                                <span class="jsNum">[[${goods.price}]]</span>
+                            </div>
+                            <div class="HOTPrice">
+                                <span class="jRmb">¥</span>
+                                <span class="HOTNum">[[${goods.price}]]</span>
+                            </div>
+                        </div>
+                        <div class="jBtnArea">
+                            <a target="" th:href="'/front/shop/product/'+${goods.id}" rel="nofollow">立即购买</a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="module-toolbal-container ui-draggable" th:if="${edit}">
+        <div class="module-assist" style="padding-top: 32px;"></div>
+        <div class="module-toolbar J-module-toolbar" style="height:350px; width:100%;">
+            <h4 style="cursor: move;">
+        <span class="module-extra">
+        <a class="icon-del js-module-delete" href="javascript:void(0)"
+           th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+                    <a class="icon-up js-module-up" href="javascript:void(0)"
+                       th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+                    <a class="icon-down js-module-down" href="javascript:void(0)"
+                       th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+        </span>
+                <span class="module-name J-module-name">推荐商品</span>
+        <span class="J-module-set">
+        <a href="javascript:void(0)" class="HOT-module-set-data js-widget-edit"
+           th:attr="data-editurl=${widgetEditUri},data-id=${id},data-for=${guid},data-url=${widgetUri},data-layoutid=${layoutId},data-position=${layoutPosition}">
+            编辑
+        </a>
+        <a href="javascript:void(0)" class="J-module-set-template">
+            模板
+        </a>
+        </span>
+            </h4>
+        </div>
+    </div>
+</div>
+
+<!--recommendation.html-->
+<!--编辑视图-->
+<div id="module_area">
+    <style>
+        .forms label {
+            text-align: left;
+        }
+    </style>
+    <div class="forms">
+        <ul>
+            <li>
+                <label style="width: 180px;">选择模版 </label>
+                <select name="templateClass" class="select-short" id="templateClass">
+                    <option value="HOTBox-723944" th:selected="${templateClass== null or templateClass=='HOTBox-723944'}">模版一</option>
+                    <option value="HOT_woman-768144" th:selected="${templateClass=='HOT_woman-768144'}">模版二</option>
+                    <option value="userjGoodsRecommend-400154" th:selected="${templateClass=='userjGoodsRecommend-400154'}">模版三</option>
+                    <option value="double12-724042" th:selected="${templateClass=='double12-724042'}">模版四</option>
+                    <option value="double12-723938" th:selected="${templateClass=='double12-723938'}">模版五</option>
+                    <option value="goodsRec9-672540" th:selected="${templateClass=='goodsRec9-672540'}">模版六</option>
+                    <option value="goodsRec8-672537" th:selected="${templateClass=='goodsRec8-672537'}">模版七</option>
+                    <option value="goodsRec7-672533" th:selected="${templateClass=='goodsRec7-672533'}">模版八</option>
+                    <option value="jGoodsRecommend-400156" th:selected="${templateClass=='jGoodsRecommend-400156'}">模版九</option>
+                    <option value="jGoodsRecommend-400210" th:selected="${templateClass=='jGoodsRecommend-400210'}">模版十</option>
+                    <option value="jGoodsRecommend-400211" th:selected="${templateClass=='jGoodsRecommend-400211'}">模版十一</option>
+                    <option value="jGoodsRecommend-400214" th:selected="${templateClass=='jGoodsRecommend-400214'}">模版十二</option>
+                    <option value="jGoodsRecommend-400215" th:selected="${templateClass=='jGoodsRecommend-400215'}">模版十三</option>
+                    <option value="jGoodsRecommend-412502" th:selected="${templateClass=='jGoodsRecommend-412502'}">模版十四</option>
+                    <option value="jGoodsRecommend-400376" th:selected="${templateClass=='jGoodsRecommend-400376'}">模版十五</option>
+                </select>
+            </li>
+        </ul>
+    </div>
+</div>

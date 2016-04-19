@@ -1,0 +1,141 @@
+@charset "utf-8";
+/* CSS Document */
+a, a:hover, a:visited, a:link, ins {
+    outline: 0;
+    text-decoration: none;
+}
+a {
+    font-size: 12px;
+    text-decoration: none;
+    color: #666666;
+}
+body{
+    font-size: 12px;
+    margin: 0px;
+}
+a img {
+    border: 0;
+}
+img {
+    vertical-align: bottom;
+    -ms-interpolation-mode: bicubic;
+}
+ul, ol, dl, li, dt, dd {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.add-modules {
+    background: #FFF;
+    height: 520px;
+    overflow: hidden;
+}
+.modules-left {
+    float: left;
+    width: 20%;
+    background: #EEE;
+    height: 100%;
+    overflow: auto;
+}
+.modules-left ul li {
+    padding: 0 10px;
+    height: 45px;
+    line-height: 45px;
+    border-right: solid 1px #d9d9d9;
+    border-bottom: solid 1px #dbdbdb;
+    border-top: solid 1px #FFF;
+    cursor: pointer;
+}
+.modules-left .show {
+    background: #FFF;
+    border-right: none;
+    color: #333;
+    border-bottom: solid 1px #d9d9d9;
+    font-weight: bold;
+}
+
+.modules-right {
+    float: left;
+    width: 80%;
+}
+.modules-right ul {
+    display: none;
+    height:520px;
+    overflow-y: auto;
+}
+.modules-right ul li {
+    padding: 15px 0;
+    margin: 0 25px;
+    overflow: hidden;
+    clear: both;
+    border-bottom: dashed 1px #c4c4c4;
+}
+.modules-right .show {
+    display: block;
+}
+.modules-right .thumbnail {
+    width: 48px;
+    background: #EEE;
+    margin-right: 15px;
+    vertical-align: top;
+}
+.modules-right .thumbnail, .modules-right .summary, .modules-right .operate {
+    display: inline-block;
+    vertical-align: middle;
+    zoom: 1;
+}
+.modules-right .summary {
+    font-weight: normal;
+    line-height: 18px;
+    width: 325px;
+    height: 54px;
+    overflow: hidden;
+    margin-right: 18px;
+    color: #999;
+}
+.modules-right .thumbnail, .modules-right .summary, .modules-right .operate {
+    display: inline-block;
+    vertical-align: middle;
+    zoom: 1;
+}
+.modules-right .thumbnail, .modules-right .summary, .modules-right .operate {
+    display: inline-block;
+    vertical-align: middle;
+    zoom: 1;
+}
+.modules-right .operate {
+}
+.modules-right .thumbnail, .modules-right .summary, .modules-right .operate {
+    display: inline-block;
+    vertical-align: middle;
+    zoom: 1;
+}
+.modules-right .summary b {
+    display: block;
+    color: #333;
+}
+.link-add {
+    background: #960000;
+    background: -moz-linear-gradient(top, #c00707, #960000);
+    background: -webkit-gradient(linear, 0 0, 0 bottom, from(#c00707), to(#960000));
+    background: -o-linear-gradient(top, #c00707, #960000);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c00707', endColorstr='#960000');
+}
+.link-add {
+    padding: 5px 10px;
+    height: 22px;
+    line-height: 22px;
+    color: #fadddd;
+    font-size: 12px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    border: solid 1px #960000;
+}
+.add-modules .link-add {
+    position: static;
+}
+.modules-right .thumbnail img {
+    width: 48px;
+    height: 48px;
+}

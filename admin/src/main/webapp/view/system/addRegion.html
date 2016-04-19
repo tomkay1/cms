@@ -17,7 +17,7 @@
         <h3>添加地区</h3>
         <div class="bar">
             <a class="btn-lit" th:href="@{/region/regionList?customerid={customerid}(customerid=${user.customerId})}" target="content">
-                <span>返回模型管理列表</span></a>
+                <span>返回地区管理列表</span></a>
         </div>
     </div>
     <div class="cnt-wp">
@@ -55,13 +55,6 @@
                             <th>地区代码：</th>
                             <td>
                                 <input name="langTag" type="text" id="langTag" maxlength="50" class="input-normal" >
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>排序权重：</th>
-                            <td>
-                                <input name="txtOrderWeight" type="text" id="txtOrderWeight" value="50" class="input-normal" placeholder="请输入排序权重">
-                                <span style="color:#ccc;">数字越大排越前面</span>
                             </td>
                         </tr>
                         </tbody>

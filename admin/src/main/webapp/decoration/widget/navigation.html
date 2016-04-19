@@ -1,0 +1,261 @@
+<!--浏览视图-->
+<div th:class="'fn-clear js-hot-module '+(${templateClass}==null?'sh-head-menu-brown-624326':${templateClass})+' toolhover'" th:attr="id=${guid}">
+    <div class="mc" style="overflow: visible;">
+        <div class="HOT_ShopHeaderLinkWithDropdown sh-hd-wrap" th:style="'background:'+${widgetBackColor}">
+            <div class="sh-head-menu">
+                <ul class="menu-list">
+                    <li class="menu">
+                        <a class="main-link" href="/front" target=""  th:style="${goods_fontColor==null?'':'color:'+goods_fontColor}">首页</a>
+                    </li>
+                    <li class="menu all-cate" th:if="${showProductType==1}">
+                        <a class="main-link" href="javascript:void(0)" target=""  th:style="${goods_fontColor==null?'':'color:'+goods_fontColor}">全部分类<span class="arrow"></span></a>
+                        <div class="sub-menu-wrap">
+                            <dl class="sub-pannel" widget:category="category">
+                                <dt class="sub-title">
+                                    <a th:href="'/front/shop/search?goodsCatId='+${category.id}" target="" class="sub-tit-link" th:text="${category.name}"  th:style="${goods_fontColor==null?'':'color:'+goods_fontColor}">保暖内衣 &gt;</a>
+                                </dt>
+                            </dl>
+                        </div>
+                    </li>
+                    <li class="menu" th:each="row:${Rows}">
+                        <a class="main-link" target="" th:href="${row.url_Rows}" th:text="${row.name_Rows}"  th:style="${goods_fontColor==null?'':'color:'+goods_fontColor}">测试2</a>
+                    </li>
+                </ul>
+                <div class="s-form" th:if="${showSearch==1}">
+                    <form class="form-body" action="/front/shop/search">
+                        <input type="text" name="keyword" class="s-inp" th:value="${request.get('keyword')}!=null?${request.get('keyword')}:${defaultKewWord}"  maxlength="60" size="60"/>
+                        <input type="submit" onclick="" value="搜索" class="s-submit"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="module-toolbal-container ui-draggable" th:if="${edit}">
+        <div class="module-assist" style="padding-top: 32px;"></div>
+        <div class="module-toolbar HOT-module-toolbar" style="height:50px; width:100%;">
+            <h4 style="cursor: move;">
+        <span class="module-extra">
+            <a class="icon-del js-module-delete" href="javascript:void(0)" th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+            <a class="icon-up js-module-up" href="javascript:void(0)" th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+            <a class="icon-down js-module-down" href="javascript:void(0)" th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+        </span>
+                <span class="module-name HOT-module-name">店铺导航</span>
+        <span class="HOT-module-set">
+        <a href="javascript:void(0)" class="HOT-module-set-data js-widget-edit"
+           th:attr="data-editurl=${widgetEditUri},data-id=${id},data-for=${guid},data-url=${widgetUri},data-layoutid=${layoutId},data-position=${layoutPosition}">
+            编辑
+        </a>
+        <a href="javascript:void(0)" class="HOT-module-set-template">
+            模板
+        </a>
+        </span>
+            </h4>
+        </div>
+    </div>
+</div>
+
+<!--编辑视图-->
+<!--navigation.html-->
+<!--编辑视图-->
+<div id="module_area">
+    <style>
+        .forms label {
+            text-align: left;
+        }
+    </style>
+
+
+    <div class="forms">
+        <ul>
+            <li>
+                <label style="width: 150px;">背景颜色 </label>
+                <input type="text" class="js-hot-color input-normal" id="goods_pageBackGround"
+                       th:attr="data-default=${bgcolor==null?'#73583e':bgcolor}" data-default="#73583e" data-input="bgcolor"/>
+                <input type="hidden" class="js-hot-properties" th:value="${bgcolor}" name="bgcolor" style="background:#73583e"/>
+            </li>
+            <li>
+                <label style="width: 150px;">字体颜色 </label>
+                <input type="text" class="js-hot-color text-normal goodsInput" id="goods_fontColor"
+                       data-default="" data-input="goods_fontColor" th:attr="data-default=${goods_fontColor==null?'#666666':goods_fontColor}"/>
+                <input type="hidden" class="js-hot-properties" th:value="${goods_fontColor}" name="goods_fontColor" style="background:#666666"/>
+            </li>
+            <li>
+                <label style="width: 150px;">是否在导航展示商品分类 </label>
+                <select name="showProductType" class="select-short">
+                    <option value="1" th:selected="(${showProductType==1}?selected)">是</option>
+                    <option value="0" selected="selected"
+                            th:selected="(${showProductType==null or showProductType==0}?selected)">否
+                    </option>
+                </select>
+            </li>
+            <li>
+                <label style="width: 150px;">选择模版 </label>
+                <select name="templateClass" class="select-short" id="templateClass">
+                    <option value="sh-head-menu-brown-624326" selected="selected"
+                            th:selected="${templateClass==null or templateClass=='sh-head-menu-brown-624326'}">模版一
+                    </option>
+                    <option value="sh-head-menu-brown-v-633584"
+                            th:selected="${templateClass=='sh-head-menu-brown-v-633584'}">模版二
+                    </option>
+                </select>
+            </li>
+        </ul>
+    </div>
+    <div class="page-operate">
+        <a class="btn-green" href="javascript:void(0)" id="js-nav-add">增加导航</a>
+    </div>
+    <div class="data-table">
+        <div class="table-thead">
+            <table cellspacing="0" cellpadding="0" border="0">
+                <thead>
+                <tr>
+                    <th width="137">名称<em>*</em></th>
+                    <th width="336">链接地址<em>*</em></th>
+                    <th width="134">打开方式<em>*</em></th>
+                    <th class="operate" width="96">操作</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="table-tbody" id="links-form" style="max-height:255px;">
+            <table id="linkTable" cellspacing="0" cellpadding="0" border="0">
+                <tbody id="js-nav-box">
+                <tr th:each="row,iterStat:${Rows}" th:id="${iterStat.index}">
+                    <td><input type="text" class="text-short" name="name_Rows" maxlength="32"
+                               th:value="${row.name_Rows}"></td>
+                    <td><input type="text" class="text-normal" name="url_Rows" th:value="${row.url_Rows}"
+                               maxlength="256"></td>
+                    <td>
+                        <select name="type_Rows" class="select-short">
+                            <option value="0" th:selected="(${row.type_Rows}=='0'?selected)">当前窗口打开</option>
+                            <option value="1" th:selected="(${row.type_Rows}=='1'?selected)">新窗口打开</option>
+                        </select>
+                    </td>
+                    <td class="operate">
+                        <span class="icon-up js-nav-up" title="上移" th:attr="data-id=${iterStat.index}"></span>
+                        <span class="icon-down js-nav-next" title="下移" th:attr="data-id=${iterStat.index}"></span>
+                        <span class="icon-del js-nav-delete" title="删除" th:attr="data-id=${iterStat.index}"></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="forms">
+        <ul>
+            <li>
+                <label>店内搜索框</label>
+                <select name="showSearch" class="select-short" id="show_search">
+                    <option value="1" selected="selected" th:selected="${showSearch==1}">是</option>
+                    <option value="0" th:selected="${showSearch==null or showSearch==0}">否</option>
+                </select>
+                <label>默认搜索词</label>
+                <input type="text" maxlength="10" class="text-short" name="defaultKewWord" value="保暖内衣"
+                       th:value="${defaultKewWord}">
+            </li>
+        </ul>
+    </div>
+    <script type="application/template" id="js-nav-template">
+        <tr id="{id}">
+            <td><input type="text" class="text-short" name="name_Rows" maxlength="32" value=""></td>
+            <td><input type="text" class="text-normal" name="url_Rows" maxlength="256"></td>
+            <td>
+                <select name="type_Rows" class="select-short">
+                    <option value="0">当前窗口打开</option>
+                    <option value="1" selected="selected">新窗口打开</option>
+                </select>
+            </td>
+            <td class="operate">
+                <span class="icon-up js-nav-up" title="上移" data-id="{id}"></span>
+                <span class="icon-down js-nav-next" title="下移" data-id="{id}"></span>
+                <span class="icon-del js-nav-delete" title="删除" data-id="{id}"></span>
+            </td>
+        </tr>
+    </script>
+    <script src="../libs/JColor/spectrum.js" type="application/javascript"></script>
+    <link href="../libs/JColor/spectrum.css" rel="stylesheet"/>
+    <script type="application/javascript">
+        var navModule = {
+            addNav: function () {
+                var obj = $("#js-nav-add");
+                $.each(obj, function (item, dom) {
+                    $(dom).click(function () {
+                        var html = $("#js-nav-template").html();
+                        var defaultID = new Date().getTime();
+                        var obj = {id: defaultID};
+                        html = JUtils.resolveTemplate(obj, html);
+                        $("#js-nav-box").append(html);
+                        navModule.deleteNav();
+                        navModule.upNav();
+                        navModule.downNav();
+                    });
+                });
+            },
+            deleteNav: function () {
+                var obj = $(".js-nav-delete");
+                obj.unbind("click");
+                $.each(obj, function (item, dom) {
+                    $(dom).click(function () {
+                        var id = $(dom).data('id');
+                        $("#" + id).remove();
+                    });
+                });
+            },
+            upNav: function () {
+                var obj = $(".js-nav-up");
+                obj.unbind("click");
+                $.each(obj, function (item, dom) {
+                    $(dom).click(function () {
+                        var id = $(dom).data('id');
+                        var up = $("#" + id).prev();
+                        if (up.length > 0) {
+                            $("#" + id).insertBefore(up);
+                        }
+                    });
+                });
+            },
+            downNav: function () {
+                var obj = $(".js-nav-next");
+                obj.unbind("click");
+                $.each(obj, function (item, dom) {
+                    $(dom).click(function () {
+                        var id = $(dom).data('id');
+                        var down = $("#" + id).next();
+                        if (down.length > 0) {
+                            $("#" + id).insertAfter(down);
+                        }
+                    });
+                });
+            }
+        }
+        var colorModule = {
+            color: function(){
+                var obj = $(".js-hot-color");
+                $.each(obj, function (item, dom) {
+                    var inputValueName = $(dom).data("input");
+                    var defaultColor = $(dom).data("default");
+                    $(dom).spectrum({
+                        allowEmpty: true,
+                        chooseText: "ȷ��",
+                        cancelText: "ȡ��",
+                        color: defaultColor,
+                        preferredFormat: "rgb",
+                        showInitial: false,
+                        showButtons: false,
+                        showInput: true,
+                        width: "120",
+                        change: function (color) {
+                            console.log(color.toHexString());
+                            $("input[name='" + inputValueName + "']").val(color.toHexString());
+                        }
+                    });
+                });
+            }
+        }
+        navModule.addNav();
+        navModule.deleteNav();
+        navModule.upNav();
+        navModule.downNav();
+        colorModule.color();
+    </script>
+</div>

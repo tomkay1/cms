@@ -1,6 +1,5 @@
 package com.huotu.hotcms.admin.controller;
 
-import com.huotu.hotcms.admin.service.StaticResourceService;
 import com.huotu.hotcms.admin.util.web.CookieUser;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
@@ -10,6 +9,7 @@ import com.huotu.hotcms.service.service.LinkService;
 import com.huotu.hotcms.service.util.PageData;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
+import com.huotu.hotcms.service.widget.service.StaticResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -150,7 +150,7 @@ public class LinkController {
     public ResultView deleteLink(@RequestParam(name = "id",required = true,defaultValue = "0") Long id,int customerId,HttpServletRequest request) {
         ResultView result=null;
         try{
-            if(cookieUser.isSupper(request)) {
+            if(cookieUser.getCustomerId(request) == customerId) {
                 Link link = linkService.findById(id);
                 link.setDeleted(true);
                 linkService.saveLink(link);

@@ -1,0 +1,67 @@
+<!--search.html-->
+<!--浏览视图-->
+<!--43971-->
+<div th:class="'fn-clear js-hot-module '+(${templateClass}==null?'HOTSearch-43971':${templateClass})+' toolhover'"  th:attr="id=${guid}">
+    <div class="mc" style="overflow: visible;">
+        <div class="searchArea">
+            <div class="HOTSearchArea">
+                <div class="HOTSearchInput">
+                    <form action="/front/shop/search">
+                        <input type="text" id="" onkeydown="" onfocus="" d="请输入关键词" class="inputMiddle"
+                               th:value="${request.get('keyword')}!=null?${request.get('keyword')}:${defaultKewWord}" name="keyword"
+                               maxlength="20" size="20" th:attr="maxlength=(${maxlength}==null?20:${maxlength})"/>
+                        <button type="submit" onclick="" d="" clstag="">搜索<s></s></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="module-toolbal-container ui-draggable" th:if="${edit}">
+        <div class="module-assist" style="padding-top: 32px;"></div>
+        <div class="module-toolbar HOT-module-toolbar" style="height:95px; width:100%;">
+            <h4 style="cursor: move;">
+        <span class="module-extra">
+            <a class="icon-del js-module-delete" href="javascript:void(0)" th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+            <a class="icon-up js-module-up" href="javascript:void(0)" th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+            <a class="icon-down js-module-down" href="javascript:void(0)" th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+        </span>
+                <span class="module-name HOT-module-name">店内搜索</span>
+        <span class="HOT-module-set">
+          <a href="javascript:void(0)" class="HOT-module-set-data js-widget-edit"
+             th:attr="data-editurl=${widgetEditUri},data-id=${id},data-for=${guid},data-url=${widgetUri},data-layoutid=${layoutId},data-position=${layoutPosition}">编辑</a>
+			<a href="javascript:void(0)" class="HOT-module-set-template">模板</a>
+		</span>
+            </h4>
+        </div>
+    </div>
+</div>
+
+<!--编辑视图-->
+<div id="module_area">
+    <style>
+        .forms label {
+            text-align: left;
+        }
+    </style>
+    <div class="forms">
+        <ul>
+            <li>
+                <label style="width: 180px;">选择模版 </label>
+                <select name="templateClass" class="select-short" id="templateClass">
+                    <option value="HOTSearch-43971" th:selected="${templateClass== null or templateClass=='HOTSearch-43971'}">模版一</option>
+                    <option value="HOTSearch-400300" th:selected="${templateClass=='HOTSearch-400300'}">模版二</option>
+                    <option value="HOTSearch-400301" th:selected="${templateClass=='HOTSearch-400301'}">模版三</option>
+                </select>
+            </li>
+            <li>
+                <label>默认搜索词</label>
+                <input type="text" maxlength="10" class="text-short" name="defaultKewWord" value="保暖内衣"
+                       th:value="${defaultKewWord}"/>
+            </li>
+            <li>
+                <label>最长搜索字数</label>
+                <input type="number" class="text-short" name="maxlength" th:value="${maxlength==null}?'20':${maxlength}"/>
+            </li>
+        </ul>
+    </div>
+</div>

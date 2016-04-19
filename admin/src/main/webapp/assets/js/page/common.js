@@ -37,10 +37,8 @@ define(["js/jquery-1.9.1.min"],function () {
         },
         redirectUrl:function(url){
             parent.frames["content"].src=url;
-            //alert("fff");
-            //parent.frames["content"].window.href=url;
         },
-        /*
+        /**
         * @brief 获得页面参数
         * @param 参数名
         * */
@@ -93,6 +91,64 @@ define(["js/jquery-1.9.1.min"],function () {
                     }
                 }
             });
+        },
+        formatString: function () {
+            if (arguments.length == 0) return '';
+            if (arguments.length == 1) return arguments[0];
+            var args =cloneArray(arguments);
+            args.splice(0, 1);
+            return arguments[0].replace(/{(\d+)?}/g,
+                function ($0, $1) { return args[parseInt($1)]; });
+            function cloneArray (arr) {
+                var cloned = [];
+                for (var i = 0, j = arr.length; i < j; i++) {
+                    cloned[i] = arr[i];
+                }
+                return cloned;
+            }
+        },
+        isDebug:function(){
+            return 1;//调试模式
+        },
+        getMetaContent:function(name){
+            return $("meta[name=" + name + "]").attr("content");
+        },
+        getWebRoot:function(siteId,isDebug){
+            var urlRoot=""
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                url: '/page/root',//提交到一般处理程序请求数据
+                data: {
+                    siteId: siteId
+                },
+                async: false,
+                success: function (data) {
+                    if(data!=null){
+                        if(data.code==200){
+                            urlRoot=data.data;
+                            if(isDebug=="1"){//调试模式
+                                urlRoot=urlRoot+":8080/front/";
+                            }
+                            urlRoot=urlRoot;
+                        }
+                    }
+                }
+            });
+            return urlRoot;
+        },
+        isNumber:function(input) {
+            var re = /^[0-9]+[0-9]*]*$/;
+            if (!re.test(input)) {
+                return false;
+            }
+            return true;
+        },
+        isNull:function(input){
+            if(input==null||input==''){
+                return true;
+            }
+            return false;
         }
     }
 });

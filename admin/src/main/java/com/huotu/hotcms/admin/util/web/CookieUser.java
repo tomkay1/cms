@@ -26,12 +26,7 @@ public class CookieUser {
 
     }
 
-    /*
-    * Cookie中读取customerID
-    * */
-    public  int getCustomerId(HttpServletRequest request, int customerId){
-        return  CookieHelper.getCookieValInteger(request, CMSEnums.CookieKeyValue.CustomerID.toString());
-    }
+
 
     /**
      * * Cookie中读取customerID
@@ -41,7 +36,7 @@ public class CookieUser {
         return  CookieHelper.getCookieValInteger(request, CMSEnums.CookieKeyValue.CustomerID.toString());
     }
 
-    /*
+    /**
     * 获得用户ID
     * */
     public  int getUserId(HttpServletRequest request)
@@ -49,7 +44,7 @@ public class CookieUser {
         return  CookieHelper.getCookieValInteger(request,CMSEnums.CookieKeyValue.UserID.toString());
     }
 
-    /*
+    /**
     * 把商户ID放到Cookie中
     * */
     public void setCustomerId(HttpServletResponse response,int customerId)
@@ -57,7 +52,7 @@ public class CookieUser {
         CookieHelper.setCookie(response,CMSEnums.CookieKeyValue.CustomerID.toString(),String.valueOf(customerId));
     }
 
-    /*
+    /**
     * 获得角色id,-1为超级管理员
     * */
     public int getRoleId(HttpServletRequest request)
@@ -65,7 +60,7 @@ public class CookieUser {
         return  CookieHelper.getCookieValInteger(request,CMSEnums.CookieKeyValue.RoleID.toString());
     }
 
-    /*
+    /**
     * 判断是否是超级管理员
     * */
     public boolean isSupper(HttpServletRequest request)
@@ -73,7 +68,14 @@ public class CookieUser {
         return getRoleId(request)==-1;
     }
 
-    /*
+    /**
+     * 判断是否是该商户,一般删除用该方法做商户权限判断,删除操作一般比较严重,所以需要做严格的权限匹配
+     * */
+    public boolean isCustomer(HttpServletRequest request,Integer customerId){
+        return customerId.equals(this.getCustomerId(request));
+    }
+
+    /**
     * 检查登录
     * */
     public  boolean checkLogin(HttpServletRequest request,HttpServletResponse response,int customerId)

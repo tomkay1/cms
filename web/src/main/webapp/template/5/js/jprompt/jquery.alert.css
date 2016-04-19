@@ -1,0 +1,116 @@
+﻿/*#region 弹窗*/
+.disappearDialog,
+.alertDialog{
+    background-color:rgba(0, 0, 0, 0.8);
+    color:#fff;
+    text-align:center;
+    font-size:1.2rem;
+    padding:0;
+    min-width:8rem;
+    border-radius:0.5rem;
+    border:none;
+}
+.disappearDialog{
+    z-index:10000;
+    position:fixed;
+    display:inline-block;
+    padding:1.2rem;
+    visibility:hidden;
+    margin:0 1rem;
+    background:rgba(0, 0, 0, 0.8);
+}
+.MaskDialog {
+    background-color:rgba(0, 0, 0, 0.8);
+    color:#fff;
+    font-size:1.2rem;
+    padding:0;
+    min-width:8rem;
+    border-radius:0.5rem;
+    border:none;
+    z-index:10000;
+    position:fixed;
+    display:inline-block;
+    padding:1.2rem;
+    visibility:hidden;
+    margin:0 1rem;
+    margin-left:20px;
+    margin-right:20px;
+    color:#fff;
+    background:rgba(0, 0, 0, 0.8);
+}
+.MaskDialog-Content {
+    height:100%;
+    overflow-y:auto;
+}
+.MaskDialog-Content img {
+width:100%;
+}
+.Mask-close { text-align:right; margin-top:-20px; margin-right:-20px; cursor:pointer;}
+.alertDialog-content{
+    padding:1.5em 1em;
+}
+.alertDialog-btns{
+    background-color:rgba(255, 255, 255, 0.8);
+    border-bottom-left-radius:inherit;
+    border-bottom-right-radius:inherit;
+    padding:0.4em 0.7em;
+}
+
+.alertDialog-btns .ui-btn,
+.alertDialog-btns .ui-btn:visited{
+    margin:0;
+    padding:0.5em 1em;
+    color:#f60;
+    font-size:1em;
+    display:block;
+    border:none;
+    font-weight:bold;
+}
+.ui-popup.dialogFrame{
+    border:0;
+}
+.confirmDialog{
+    background-color:#f5f5f5;
+    padding:0;
+    min-width:8rem;
+    border-radius:0.5rem;
+    left:50%;
+    top:50%;
+    position:fixed;
+    border:none;
+    z-index:10000;
+}
+.confirmDialog-content{
+    min-width:13rem;
+    padding:1.5rem 1rem;
+    background-color:#000;
+    color:#fff;
+    line-height:1.5;
+    font-size:1.2rem;
+    border-top-left-radius:inherit;
+    border-top-right-radius:inherit;
+    text-align:center;
+}
+.confirmDialog-btns{
+    background-color:#F5F5F5;
+}
+.confirmDialog-btns li{
+    float:left;
+    width:50%;
+    height: 4rem;
+    line-height: 4rem;
+    text-align: center;
+    font-size: 1.2rem;
+    margin: 0px;
+    padding: 0px;
+}
+.confirmDialog-btns .ui-btn{
+    margin:0;
+    display:inline-block;
+    width: 100%;
+    background-color:transparent;
+    color:#333;
+    border-radius:inherit;
+}
+
+/*#endregion*/

@@ -1,0 +1,115 @@
+<!--classification.html-->
+<!--浏览视图-->
+<div th:class="'fn-clear js-hot-module js-classification '+(${templateClass}==null?'jGoodsSort-500284':${templateClass})+' toolhover'"
+     th:attr="id=${guid}">
+    <div class="mc" style="overflow: visible;">
+        <div class="j-module">
+            <div class="jOneLevel">
+                <a th:href="'/front/shop/search'">
+                    <h2 style="font-weight:normal;font-size:14px;"><span>所有分类</span></h2>
+                </a>
+                <h2 style="font-weight:normal;font-size:14px;"><span>所有分类</span></h2>
+            </div>
+            <div class="jOneLevelarea" data-widget-category="category" th:attr="guid=${guid}">
+                <div class="jTwoLevel jNoBorderBottm js-top-category current" th:attr="catId=${category.id}">
+                    <span class="jIconArrow"></span>
+                    <a href="javascript:void(0)" data-th-text="${category.name}" data-th-attr="title=${category.name},catId=${category.id}">
+                        [[${category.name}]]
+                    </a>
+                </div>
+                <div style="display:none" th:attr="bgColor=${bgColor}" th:if="${category.children!=null and category.children.size>0}" class="js-sub-category">
+                    <div th:style="'background-color: '+${bgColor==null?'#ddd':bgColor} + ';'"
+                         th:class="'jTwoLevel jNoBorderBottm js-'+${child.id}" data-th-each="child:${category.children}" >
+                        <a th:href="'/front/shop/search?goodsCatId='+${child.id}" data-th-attr="title=${child.name}">
+                            <i style="color:#ddd;" th:if="${templateClass=='jGoodsSort-400222'}">>&nbsp;&nbsp;</i>[[${child.name}]]
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--ends-->
+    </div>
+    <div class="module-toolbal-container ui-draggable" th:if="${edit}">
+        <div class="module-assist" style="padding-top: 32px;"></div>
+        <div class="module-toolbar J-module-toolbar" style="height: 191px; width:100%;">
+            <h4 style="cursor: move;">
+      <span class="module-extra">
+          <a class="icon-del js-module-delete" href="javascript:void(0)" th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+            <a class="icon-up js-module-up" href="javascript:void(0)" th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+            <a class="icon-down js-module-down" href="javascript:void(0)" th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+      </span>
+                <span class="module-name J-module-name">店铺页头</span>
+      <span class="J-module-set">
+      <a href="javascript:void(0)" class="HOT-module-set-data js-widget-edit"
+         th:attr="data-editurl=${widgetEditUri},data-id=${id},data-for=${guid},data-url=${widgetUri},data-layoutid=${layoutId},data-position=${layoutPosition}">编辑</a>
+      <a href="javascript:void(0)" class="HOT-module-set-template">
+          模板
+      </a>
+      </span>
+            </h4>
+        </div>
+    </div>
+</div>
+
+<!--编辑视图-->
+<div id="module_area">
+    <style>
+        .forms label {
+            text-align: left;
+        }
+    </style>
+    <div class="forms">
+        <ul>
+            <li>
+                <label style="width: 180px;">选择模版 </label>
+                <select name="templateClass" class="select-short" id="templateClass">
+                    <option value="jGoodsSort-500284" th:selected="${templateClass==null or templateClass=='jGoodsSort-500284'}">模版一</option>
+                    <option value="jGoodsSort-400222" th:selected="${templateClass=='jGoodsSort-400222'}">模版二</option>
+                </select>
+            </li>
+            <li id="choiceColor" th:style="${templateClass=='jGoodsSort-400222'}?'display:none;'">
+                <label style="width: 180px;">子分类背景颜色</label>
+                <input type="text" class="js-hot-color input-normal" id="goods_pageBackGround"
+                       th:attr="data-default=${bgColor==null?'#ddd':bgColor}" data-input="bgColor"/>
+                <input type="hidden" class="js-hot-properties" th:value="${bgColor}" name="bgColor"
+                       th:style="'background-color: '+${bgColor==null?'#ddd':bgColor} + ';'"/>
+            </li>
+        </ul>
+    </div>
+    <script src="../libs/JColor/spectrum.js" type="application/javascript"></script>
+    <link href="../libs/JColor/spectrum.css" rel="stylesheet"/>
+    <script type="application/javascript">
+        var colorModule = {
+            color: function(){
+                var obj = $(".js-hot-color");
+                $.each(obj, function (item, dom) {
+                    var inputValueName = $(dom).data("input");
+                    var defaultColor = $(dom).data("default");
+                    $(dom).spectrum({
+                        allowEmpty: true,
+                        chooseText: "ȷ��",
+                        cancelText: "ȡ��",
+                        color: defaultColor,
+                        preferredFormat: "rgb",
+                        showInitial: false,
+                        showButtons: false,
+                        showInput: true,
+                        width: "120",
+                        change: function (color) {
+                            console.log(color.toHexString());
+                            $("input[name='" + inputValueName + "']").val(color.toHexString());
+                        }
+                    });
+                });
+            }
+        }
+        $("#templateClass").change(function(){
+            if($("#templateClass").val() == 'jGoodsSort-400222'){
+                $("#choiceColor").hide();
+            } else{
+                $("#choiceColor").show();
+            }
+        });
+        colorModule.color();
+    </script>
+</div>

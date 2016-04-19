@@ -3,6 +3,8 @@ package com.huotu.hotcms.service.util;
 import org.codehaus.plexus.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.Stack;
 
 /**
@@ -88,5 +90,17 @@ public class StringUtil {
             }
         }
         return param;
+    }
+
+
+    public static Boolean Contains(String[] originalStr,String targetStr){
+        if(originalStr!=null){
+            for(String str:originalStr){
+                if(str.equals(targetStr)){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

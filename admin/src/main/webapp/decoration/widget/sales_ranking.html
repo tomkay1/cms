@@ -1,0 +1,147 @@
+<!--sales-ranking.html-->
+<!--浏览试图-->
+<div class="fn-clear js-hot-module jSaleRank-401642 toolhover" th:if="${templateClass == null or templateClass == 'jSaleRank-401642'}" data-th-attr="id=${guid}">
+    <div class="mc">
+        <div class="j-module">
+            <div class="jTitle">
+                <span class="jTitleName">销售排行</span>
+            </div>
+            <ul>
+                <li data-widget-hot="goods" th:class="${goods.iterCount<=3?'current':''}">
+                    <div class="jItem">
+                        <span class="jNum">[[${goods.iterCount}]]</span>
+                        <div class="jPic">
+                            <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">
+                                <img th:src="${goods.smallPic}" th:attr="alt=${goods.title}" class="err-product" width="50"
+                                     height="50">
+                            </a>
+                        </div>
+                        <div class="jGoodsInfo">
+                            <div class="HOTesc" th:attr="title=${goods.title}">
+                                <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">[[${goods.title}]]</a>
+                            </div>
+                            <div class="jPrice">
+                                <div class="HOTPrice">
+                                    <span class="jRmb">¥</span>
+                                    <span class="HOTNum" jshop="price" HOTprice="1309030925">[[${goods.price}]]</span>
+                                    <!-- 商品价格 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="module-toolbal-container ui-draggable" th:if="${edit}">
+        <div class="module-assist" style="padding-top: 32px;"></div>
+        <div class="module-toolbar J-module-toolbar" style="height:360px; width:100%;">
+            <h4 style="cursor: move;">
+                    <span class="module-extra">
+                        <a class="icon-del js-module-delete" href="javascript:void(0)"
+                           th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+                    <a class="icon-up js-module-up" href="javascript:void(0)"
+                       th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+                    <a class="icon-down js-module-down" href="javascript:void(0)"
+                       th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+                    </span>
+                <span class="module-name J-module-name">销售排序</span>
+                    <span class="J-module-set">
+                        <a href="javascript:void(0)" class="HOT-module-set-data js-widget-edit"
+                           th:attr="data-editurl=${widgetEditUri},data-id=${id},data-for=${guid},data-url=${widgetUri},data-layoutid=${layoutId},data-position=${layoutPosition}">
+                            编辑
+                        </a>
+                        <a href="javascript:void(0)" class="HOT-module-set-template">
+                            模板
+                        </a>
+                    </span>
+            </h4>
+        </div>
+    </div>
+</div>
+
+<!--402523-->
+<div class="fn-clear js-hot-module jSaleRank-402523 toolhover" th:if="${templateClass == 'jSaleRank-402523'}"  th:attr="id=${guid}">
+    <div class="mc">
+        <div class="j-module">
+            <div class="jTitle">
+                <span class="jTitleName">销售排行TOP10</span>
+            </div>
+
+            <ul>
+                <!-- 遍历新版销售排行的List -->
+                <li style="width: 100%;" data-widget-hot="goods">
+                    <div class="jItem">
+                        <div class="jPic">
+                            <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                                <img th:src="${goods.smallPic}" th:attr="alt=${goods.title}" class="err-product">
+                            </a>
+                            <div class="HOTesc" th:attr="title=${goods.title}">
+                                <a th:href="'/front/shop/product/'+${goods.id}" target="">[[${goods.title}]]</a>
+                            </div>
+                        </div>
+                        <div class="jGoodsInfo">
+                            <div class="jPrice">
+                                <div class="HOTPrice">
+                                    <span class="jRmb">¥</span>
+                                    <span class="HOTNum">[[${goods.price}]]</span><!-- 商品价格 -->
+                                </div>
+                            </div>
+                            <div class="jBtnArea">
+                                <a target="" rel="" th:href="'/front/shop/product/'+${goods.id}" title="立即购买"><em></em>立即购买</a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul><!-- end -->
+        </div>
+    </div>
+    <div class="module-toolbal-container ui-draggable" th:if="${edit}">
+        <div class="module-assist" style="padding-top: 32px;"></div>
+        <div class="module-toolbar J-module-toolbar" style="height:360px; width:100%;">
+            <h4 style="cursor: move;">
+                <span class="module-extra">
+                    <a class="icon-del js-module-delete" href="javascript:void(0)"
+                       th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+                    <a class="icon-up js-module-up" href="javascript:void(0)"
+                       th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+                    <a class="icon-down js-module-down" href="javascript:void(0)"
+                       th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+                </span>
+                <span class="module-name J-module-name">商品搜索结果</span>
+                    <span class="J-module-set">
+                        <a href="javascript:void(0)" class="HOT-module-set-data js-widget-edit"
+                           th:attr="data-editurl=${widgetEditUri},data-id=${id},data-for=${guid},data-url=${widgetUri},data-layoutid=${layoutId},data-position=${layoutPosition}">
+                            编辑
+                        </a>
+                        <a href="javascript:void(0)" class="HOT-module-set-template">
+                            模板
+                        </a>
+                    </span>
+            </h4>
+        </div>
+    </div>
+</div>
+
+
+
+<!--sales-ranking-->
+<!--编辑视图-->
+<div id="module_area">
+    <style>
+        .forms label {
+            text-align: left;
+        }
+    </style>
+    <div class="forms">
+        <ul>
+            <li>
+                <label style="width: 180px;">选择模版 </label>
+                <select name="templateClass" class="select-short" id="templateClass">
+                    <option value="jSaleRank-401642" th:selected="${templateClass== null or templateClass=='jSaleRank-401642'}">模版一</option>
+                    <option value="jSaleRank-402523" th:selected="${templateClass=='jSaleRank-402523'}">模版二</option>
+                </select>
+            </li>
+        </ul>
+    </div>
+</div>

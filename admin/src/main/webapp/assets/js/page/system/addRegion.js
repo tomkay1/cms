@@ -20,6 +20,7 @@ define(function (require, exports, module) {
                 selrequired: "-1"
             },
             txtOrderWeight:{
+                required: true,
                 digits:true,
             }
         },
@@ -51,7 +52,8 @@ define(function (require, exports, module) {
                     regionName: $("#regionName").val(),
                     langCode: $("#langCode").val(),
                     langTag: $("#langTag").val(),
-                    langName: $("#langName").val()
+                    langName: $("#langName").val(),
+                    orderWeight: $("#txtOrderWeight").val()
                 },
                 type: "POST",
                 dataType: 'json',
@@ -62,18 +64,27 @@ define(function (require, exports, module) {
                         var index=parseInt(data.code);
                         if(index==200)
                         {
-                            var layer=require("layer");
-                            layer.msg("操作成功",{time: 2000});
-                            $("#regionCode").val("");
-                            $("#regionName").val("");
-                            $("#langCode").val("");
-                            $("#langTag").val("");
-                            $("#langName").val("");
+                            layer.msg("操作成功", {
+                                icon: 1,
+                                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                            }, function(){
+                                $("#regionCode").val("");
+                                $("#regionName").val("");
+                                $("#langCode").val("");
+                                $("#langTag").val("");
+                                $("#langName").val("");
+                                commonUtil.cancelDisabled("jq-cms-Save");
+                            });
+
                         }
                         if(index==500)
-                            layer.msg("操作失败",{time: 2000})
+                            layer.msg("操作失败", {
+                                icon: 2,
+                                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                            }, function(){
+                                commonUtil.cancelDisabled("jq-cms-Save");
+                            });
                     }
-                    commonUtil.cancelDisabled("jq-cms-Save");
                 },
                 error: function () {
                     commonUtil.cancelDisabled("jq-cms-Save");

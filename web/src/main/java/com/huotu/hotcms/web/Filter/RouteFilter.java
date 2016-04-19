@@ -2,10 +2,10 @@ package com.huotu.hotcms.web.Filter;
 
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.thymeleaf.service.RouteResolverService;
+import com.huotu.hotcms.service.thymeleaf.service.SiteResolveService;
 import com.huotu.hotcms.service.util.CheckMobile;
-import com.huotu.hotcms.web.service.RouteResolverService;
-import com.huotu.hotcms.web.service.SiteResolveService;
-import com.huotu.hotcms.web.util.PatternMatchUtil;
+import com.huotu.hotcms.service.util.PatternMatchUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.util.StringUtils;
@@ -19,21 +19,104 @@ import java.io.IOException;
 
 /**
  * <p>
- *     解析过滤器过滤器
+ * 解析过滤器
  * </p>
  *
  * @author xhl
- *
  * @since 1.0.0
- *
  */
 public class RouteFilter implements Filter {
     private static final Log log = LogFactory.getLog(RouteFilter.class);
 
-    private static final String filter="interim/join";
+    private static final String filter = "interim/join";
+
+    private static final String[] diy_filter = new String[]{"/shop", "/bind", "/template/0/", "/template/error/", ".js", ".css"};//DIY网站过滤规则->(PC官网装修,PC商城装修)
+
+//    private static final String[] static_filter=new String[]{".js",".css",".png",".jpeg",".gif"};
+
+    private boolean isContains(String servletPath) {
+        boolean flag = false;
+        for (String str : diy_filter) {
+            if (servletPath.contains(str)) {
+                return true;
+            }
+        }
+        return flag;
+    }
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
+    }
+
+    /**
+     * DIY网站过滤拦截方法,个性化装修(官网装修、商城装修)
+     */
+    private boolean personaliseFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws Exception {
+        HttpServletRequest request1 = ((HttpServletRequest) request);
+
+        WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
+//        SiteResolveService siteResolveService = (SiteResolveService) applicationContext.getBean("siteResolveService");
+//        Site site = siteResolveService.getCurrentSite(request1);
+//        String servletPath = PatternMatchUtil.getServletPath(site, request1);
+        String servletPath = request1.getServletPath();
+        if (!isContains(servletPath)) {
+            if (servletPath.equals("/")) {
+                request.getRequestDispatcher("/shop" + servletPath).forward(request, response);
+                return  false;
+            }
+//            else if(servletPath.contains("/shop/")){
+//                request.getRequestDispatcher(servletPath).forward(request, response);
+//            }
+//            else{
+//                request.getRequestDispatcher(servletPath).forward(request, response);
+//            }
+//            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 定制网站过滤拦截方法
+     */
+    private boolean customizeFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws Exception {
+        HttpServletRequest request1 = ((HttpServletRequest) request);
+
+        WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
+        SiteResolveService siteResolveService = (SiteResolveService) applicationContext.getBean("siteResolveService");
+        Site site = siteResolveService.getCurrentSite(request1);
+        //目前为了兼容我们公司自己的官网，暂时先这样处理兼容,后面考虑在网站配置中新增一个字段(是否有手机官网，如果有则做该业务判断),统一使用m.xxx.com为手机官网地址
+        if (site.getCustomerId().equals(5)) {
+            boolean isMobile = CheckMobile.check(request1);
+            if (isMobile) {
+                String mobileUrl = CheckMobile.getMobileUrl(request1);
+                ((HttpServletResponse) response).sendRedirect(mobileUrl);
+                return false;
+            }
+        }
+
+        String servletPath = PatternMatchUtil.getServletPath(site, request1);//获得ServletPath 国际化带语言参数经一步处理(移除国际化参数信息)得到的跟配置的路由一致
+        String langParam = PatternMatchUtil.getEffecterLangParam(request1, site);//获得国际化参数(url上带上的语言地区参数信息)
+        if (!servletPath.contains(filter)) {
+            if (PatternMatchUtil.isMatchFilter(servletPath)) {
+                RouteResolverService routeResolverService = (RouteResolverService) applicationContext.getBean("routeResolverService");
+                if (site != null) {
+                    Route route = routeResolverService.getRoute(site, servletPath);
+                    if (route == null && !site.isCustom()) {
+                        request.getRequestDispatcher("/template/" + site.getCustomerId() + servletPath).forward(request, response);
+                    } else {
+                        if (!StringUtils.isEmpty(langParam)) {//语言参数不为空追加上语言参数并做服务端forward
+                            request.getRequestDispatcher("/web/" + langParam + servletPath).forward(request, response);
+                        } else {
+                            request.getRequestDispatcher("/web" + servletPath).forward(request, response);
+                        }
+                    }
+                    return false;
+                } else {
+                    chain.doFilter(request, response);
+                }
+            }
+        }
+        return true;
     }
 
     @Override
@@ -44,45 +127,13 @@ public class RouteFilter implements Filter {
             WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
             SiteResolveService siteResolveService = (SiteResolveService) applicationContext.getBean("siteResolveService");
             Site site = siteResolveService.getCurrentSite(request1);
-
-            //目前为了兼容我们公司自己的官网，暂时先这样处理兼容,后面考虑在网站配置中新增一个字段(是否有手机官网，如果有则做该业务判断),统一使用m.xxx.com为手机官网地址
-            if(site.getCustomerId().equals(5)) {
-                boolean isMobile = CheckMobile.check(request1);
-                if (isMobile) {
-                    String mobileUrl=CheckMobile.getMobileUrl(request1);
-                    ((HttpServletResponse) response).sendRedirect(mobileUrl);
-                    return;
-                }
-            }
-
-            String servletPath=PatternMatchUtil.getServletPath(site,request1);//获得ServletPath 国际化带语言参数经一步处理(移除国际化参数信息)得到的跟配置的路由一致
-            String langParam=PatternMatchUtil.getEffecterLangParam(request1, site);//获得国际化参数(url上带上的语言地区参数信息)
-            if(!servletPath.contains(filter)) {
-                if (PatternMatchUtil.isMatchFilter(servletPath)) {
-                    RouteResolverService routeResolverService = (RouteResolverService) applicationContext.getBean("routeResolverService");
-                    if (site != null) {
-                        Route route = routeResolverService.getRoute(site, servletPath);
-//                    log.error("customerId:"+site.getCustomerId()+" siteName-->"+site.getTitle()+" siteId-->"+site.getSiteId()+" route-->");
-                        if (route == null && !site.isCustom()) {
-                            request.getRequestDispatcher("/template/" + site.getCustomerId() + servletPath).forward(request, response);
-                        } else {
-//                        log.error("customerId:"+site.getCustomerId()+" siteName-->"+site.getTitle()+" siteId-->"+site.getSiteId()+" route-->"+route.getRouteType().getCode());
-                            if (!StringUtils.isEmpty(langParam)) {//语言参数不为空追加上语言参数并做服务端forward
-                                request.getRequestDispatcher("/web/" + langParam + servletPath).forward(request, response);
-                            } else {
-                                request.getRequestDispatcher("/web" + servletPath).forward(request, response);
-                            }
-                        }
-                        return;
-                    } else {
-                        chain.doFilter(request, response);
-                    }
-                }
-            }
-        }catch (Exception ex){
-            log.error(String.format("doFilter error-->%s ,Message-->%s",ex.getStackTrace(),ex.getLocalizedMessage()));
+            boolean Flag = site.isPersonalise() ? personaliseFilter(request, response, chain) : customizeFilter(request, response, chain);
+            if (!Flag)
+                return;
+        } catch (Exception ex) {
+            log.error(String.format("doFilter error-->%s ,Message-->%s", ex.getStackTrace(), ex.getLocalizedMessage()));
         }
-        chain.doFilter(request,response);
+        chain.doFilter(request, response);
     }
 
     @Override

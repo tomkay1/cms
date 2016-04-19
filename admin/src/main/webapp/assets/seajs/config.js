@@ -1,4 +1,4 @@
-var version="1.0.2";
+var version="1.0.1";
 seajs.config({
 	alias: {
 		"jquery": "js/jquery-1.9.1.min.js",
@@ -32,8 +32,10 @@ seajs.config({
 		"addDownload":"js/page/contents/addDownload.js?v="+version,
 		"updateDownload":"js/page/contents/updateDownload.js?v="+version,
 		"addGallery":"js/page/contents/addGallery.js?v="+version,
+		"addGalleryList":"js/page/contents/addGalleryList.js?v="+version,
 		"galleryList":"js/page/contents/galleryList.js?v="+version,
 		"updateGallery":"js/page/contents/updateGallery.js?v="+version,
+		"updateGalleryList":"js/page/contents/updateGalleryList.js?v="+version,
 		"addContents":"js/page/contents/addContents.js?v="+version,
 		"siteList":"js/page/web/siteList.js?v="+version,
 		"routeList":"js/page/web/routeList.js?v="+version,
@@ -45,6 +47,14 @@ seajs.config({
 		"categoryList":"js/page/section/categoryList.js?v="+version,
 		"updateCategory":"js/page/section/updateCategory.js??v="+version,
 		"contentsList":"js/page/contents/contentsList.js?v="+version,
+		"widgetTypeList":"js/page/widget/widgetTypeList.js?v="+version,
+		"addWidgetType":"js/page/widget/addWidgetType.js?v="+version,
+		"updateWidgetType":"js/page/widget/updateWidgetType.js?v="+version,
+		"widgetMainsList":"js/page/widget/widgetMainsList.js?v="+version,
+		"addWidgetMains":"js/page/widget/addWidgetMains.js?v="+version,
+		"updateWidgetMains":"js/page/widget/updateWidgetMains.js?v="+version,
+		"widgetUploadRead":"js/page/widget/widgetUploadRead.js?v="+version,
+		"widgetUploadEdit":"js/page/widget/widgetUploadEdit.js?v="+version,
 
 		"ajaxfileupload":"libs/ajaxfileupload.js?v="+version,
 		"jupload":"libs/upload/jackson-upload.js?v="+version,
@@ -62,7 +72,26 @@ seajs.config({
 		"jqxtreegrid":"libs/jqwidgets/jqxtreegrid.js?v="+version,
 		"jqxlistbox":"libs/jqwidgets/jqxlistbox.js?v="+version,
 		"jqxdropdownlist":"libs/jqwidgets/jqxdropdownlist.js?v="+version,
-		"categoryCommon":"js/page/categoryCommon.js?v="+version
+		"categoryCommon":"js/page/categoryCommon.js?v="+version,
+
+		"selectPlug":"libs/select/jackson-select-ui.min.js",
+        "tabPlug":"libs/tab/jackson.tabs.min.js",
+
+		"pagesList":"js/page/pages/list.js?v="+version,
+		"pagesDefaults":"js/page/pages/defaults.js?v="+version,
+		"pagesEditMain":"js/page/edit/main.js?v="+version,
+
+		"widgetTooBar":"widget/toobar/toobar.js?v="+version,
+		"widgetPageBack":"widget/toobar/pageBack.js?v="+version,
+
+		"spectrumColor":"libs/JColor/spectrum.js?v="+version,
+		"widgetColor":"libs/JColor/hotColor.js?v="+version,
+
+		"widgetPageModel":"js/widgetPageModel.js?v="+version,
+
+		"widgetSelect":"widget/select.js?v="+version,
+		"cmsQueue":"js/jquery.cms.queue.js?v="+version,
+		"widgetData":"widget/widgetData.js?v="+version,
 	},
 	preload: ['jquery']
 });

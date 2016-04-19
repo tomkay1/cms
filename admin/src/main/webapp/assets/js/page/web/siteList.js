@@ -21,7 +21,6 @@ define(function (require, exports, module) {
         rows: [
             {width: '30%', field: 'name', title: '站点名称', align: 'center'},
             {width: '30%', field: 'title', title: '站点标题', align: 'center'},
-            {width: '30%', field: 'description', title: '站点描述', align: 'center'},
             {
                 width: '20%', field: 'createTime', title: '创建时间', align: 'center',
                 formatter: function (value, rowData) {
@@ -32,7 +31,7 @@ define(function (require, exports, module) {
                     return "";
                 }
             },
-            {width: '10%', field: 'title', title: '操作', align: 'center',
+            {width: '20%', field: 'title', title: '操作', align: 'center',
                 formatter: function (value, rowData) {
                     return "<a href='javascript:' class='js-hot-siteDelete' data-id='"+rowData.siteId+"' style='margin-right:10px; color:blue;'>删除</a>" +
                         "<a href='javascript:' class='js-hot-siteUpdate' data-id='"+rowData.siteId+"' style='margin-right:10px; color: blue'>修改</a>"

@@ -12,6 +12,8 @@ package com.huotu.hotcms.admin.common;
 //import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.util.StringUtils;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.text.ParseException;
@@ -39,6 +41,11 @@ public class StringUtil {
             }
         }
         return false;
+    }
+
+    public static InputStream getInputStream(String text) throws UnsupportedEncodingException {
+        InputStream inputStream = new ByteArrayInputStream(text.getBytes("utf-8"));
+        return inputStream;
     }
 
     public static boolean isNotNull(Object pobjObject) {

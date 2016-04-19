@@ -1,6 +1,5 @@
 package com.huotu.hotcms.service.model;
 
-import com.huotu.hotcms.service.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 

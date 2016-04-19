@@ -2,15 +2,14 @@ package com.huotu.hotcms.web.interceptor;
 
 import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.Article;
-import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.web.common.ConfigInfo;
-import com.huotu.hotcms.web.service.ArticleResolveService;
-import com.huotu.hotcms.web.service.RequestService;
-import com.huotu.hotcms.web.service.RouteResolverService;
-import com.huotu.hotcms.web.service.SiteResolveService;
-import com.huotu.hotcms.web.util.PatternMatchUtil;
+import com.huotu.hotcms.service.thymeleaf.common.ConfigInfo;
+import com.huotu.hotcms.service.thymeleaf.service.ArticleResolveService;
+import com.huotu.hotcms.service.thymeleaf.service.RequestService;
+import com.huotu.hotcms.service.thymeleaf.service.RouteResolverService;
+import com.huotu.hotcms.service.thymeleaf.service.SiteResolveService;
+import com.huotu.hotcms.service.util.PatternMatchUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +19,10 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Vector;
 
 /**
  * <p>
- *     路由规则拦截器
+ *     路由器拦截器
  * </p>
  * @author xhl
  *
@@ -32,6 +30,7 @@ import java.util.Vector;
  */
 @Component
 public class RouteInterceptor  extends HandlerInterceptorAdapter {
+
     private static final Log log = LogFactory.getLog(RouteInterceptor.class);
 
     @Autowired
@@ -54,18 +53,23 @@ public class RouteInterceptor  extends HandlerInterceptorAdapter {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         Site site=siteResolveService.getCurrentSite(request);
-        String servletPath= PatternMatchUtil.getServletPath(site,request);
-        if(site!=null){
-            Route route=routeResolverService.getRoute(site,servletPath);
-            if(modelAndView==null){
-                modelAndView=new ModelAndView();
+        if(!site.isPersonalise()){
+            String servletPath= PatternMatchUtil.getServletPath(site, request);
+            if(site!=null){
+                Route route=routeResolverService.getRoute(site,servletPath);
+                if(modelAndView==null){
+                    modelAndView=new ModelAndView();
+                }
+                if(route==null){
+                    modelAndView.setViewName(routeResolverService.getRouteTemplate(site,RouteType.NOT_FOUND));
+                }
+                initModelAndView(modelAndView, site, route, request,response);
+            }else {
+                modelAndView.setViewName(routeResolverService.getRouteTemplate(site,RouteType.SERVER_ERROR));
             }
-            if(route==null){
-                modelAndView.setViewName(routeResolverService.getRouteTemplate(site,RouteType.NOT_FOUND));//请求路径错误给出404容错页面
-            }
-            initModelAndView(modelAndView, site, route, request,response);
-        }else {
-            modelAndView.setViewName(routeResolverService.getRouteTemplate(site,RouteType.SERVER_ERROR));//解析站点错误给出容错页面
+        }else{
+            modelAndView.addObject("site",site);
+            modelAndView.addObject("request", requestService.ConvertRequestModel(request,site));
         }
     }
 

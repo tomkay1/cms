@@ -77,7 +77,7 @@ public class PageData<T> {
             data.setPageIndex(pageData.getNumber());
             data.setPageSize(pageData.getSize());
             data.setTotal(pageData.getTotalElements());
-            data.setRows((T[])pageData.getContent().toArray(newList));
+            data.setRows(pageData.getContent().toArray(newList));
         }
         return  data;
     }

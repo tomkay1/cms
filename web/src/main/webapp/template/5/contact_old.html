@@ -1,0 +1,183 @@
+﻿<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8"/>
+ <meta charset="utf-8">
+ <meta name="description" th:content="${site.description}" />
+ <meta name="keywords" th:content="${site.keywords}" />
+    <meta property="qc:admins" content="2336157637605721604536375" />
+ <title th:text="${site.title}"></title>
+<link rel="stylesheet" type="text/css" th:href="@{${request.root}+'/css/common.css'}"/>
+<link rel="stylesheet" type="text/css" href="css/huobanj.css" th:href="@{${request.root}+'/css/huobanj.css'}"/>
+<link rel="Shortcut Icon" href="/favicon.ico"  th:href="@{${request.root}+'/favicon.ico'}"/>
+    <script src="http://t.cn/RGSQSu4"></script>
+<script type="text/javascript" src="js/jquery1.42.min.js" th:src="@{request.root}+'/js/jquery1.42.min.js'"></script>
+<script type="text/javascript" src="js/jquery.SuperSlide.2.1.1.js" th:src="@{${request.root}+'/js/jquery.SuperSlide.2.1.1.js'}"></script>
+<script type="text/javascript" src="js/carouFredSel.js" th:src="@{${request.root}+'/js/carouFredSel.js'}"></script>
+</head>
+<body>
+<div class="huobanjiagw">
+
+<!--导航栏-->
+<div style="background-color:#343434;">
+ <div class="headeri" data-th-replace="${resourcePath}+'/index.html' :: #header">
+    <div class="headlogo"><img style="width:80%" src="images/logohh.png"  class="logoimgi"/></div>
+    <ul class="navi">
+      <li>
+        <a href=" #">
+        首页
+        </a>
+      </li>
+      <li class="nav_menu_li_1">
+        <a style="padding: 0px 10px;" href="#">
+        产品/服务
+        </a>
+        <div class="sub-nav">
+          <a href="">
+          伙伴商城
+          </a>
+          <a href="">
+          代运营
+          </a>
+          <a href="">
+          伙伴MAD
+          </a>
+          <a href="">
+          云商学院
+          </a>
+        </div>
+      </li>
+      <li>
+        <a href=" #" >
+        客户案例
+        </a>
+      </li>
+      <li>
+        <a href="#">
+        加盟代理
+        </a>
+      </li>
+      <li class="nav_menu_li_1">
+        <a style="padding: 0px 10px;" href="#">
+        关于我们
+        </a>
+        <div class="sub-nav">
+          <a href="" >
+          火图新闻
+          </a>
+          <a href="">
+          火图历程
+          </a>
+          <a href="">
+          火图招聘
+          </a>
+        </div>
+      </li>
+      <li class="nav_menu_li_1">
+        <a style="padding: 0px 10px;" href="#">
+        帮助中心
+        </a>
+        <div class="sub-nav">
+          <a href="">
+          产品问答
+          </a>
+          <a href="">
+          操作指南
+          </a>
+          <a href="">
+          咨询客服
+          </a>
+          <a href="">
+          联系我们
+          </a>
+        </div>
+      </li>
+      <li>
+        <a href="#">
+        火图论坛
+        </a>
+      </li>
+      <li class="zc">
+        <a href="#">
+        注册
+        </a>
+      </li>
+      <li class="dl">
+        <a href="#">
+        登录
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+<!--导航栏end-->
+  <p style="clear:both">  </p>
+ <!--联系我们-->
+ <div style="margin:0 auto; width:1000px;  padding:0px 0px 60px 0px; height:766px;">
+
+ <div style="float:left; width:500px; margin:60px 0px 10px 0px ; "><img style="width:450px; margin-top:16px;" src="images/lx01_03.png" th:src="${request.root}+'/images/lx01_03.png'"></div>
+
+ <div class="lx" style="height:700px; overflow:auto;">
+<ul>
+<li style="height:200px;padding-top:200px; ">
+
+<div class="hz_a" style="    padding-bottom: 70px;">
+
+<div class="ininin">
+<p style="font-size:26px; padding-bottom: 10px; color:#1387DB;">业务热线：</p>
+<p style=" font-size:26px; color:#565656;">400-1818-357
+</p>
+</div>
+
+
+
+</div>
+<div class="hz_a">
+
+
+<div >
+<p style="font-size:26px; padding-bottom: 10px; color:#1387DB;">加盟热线：</p>
+<p style=" font-size:26px; color:#565656;">400-1008-013</p>
+</div>
+
+
+</div>
+</ul>
+
+</div>
+</div>
+
+
+
+
+   <!--底部-->
+<div style="background-color:#343434; height:120px; padding-right:50px;  ">
+    <div class="headeri"  data-th-replace="${resourcePath}+'/index.html' :: #footer">
+      <div class="headlogo"><img style="    margin-top: 40px; margin-left:90px;width:100%" src="images/logo.png"  class="logoimgi" /></div>
+      <img class="hbj_KK" src="images/hbj_10.png"/>
+    <div style="float:right; margin-top:10px;" >
+     <p class="hbj_ft">
+    <span class="hbj_foot">产品服务</span><span class="hbj_foot">客户案例</span><span class="hbj_foot">加盟代理</span><span class="hbj_foot">关于我们</span>
+     <span class="hbj_foot">帮助中心</span><span class="hbj_foot">火图论坛</span><span class="hbj_foot">注册</span><span class="hbj_foot" style="border:0px;">登录</span>
+    
+    </p>
+    <p class="hbj_ft" style=" margin-left: 14px;">服务热线：400-1818-357 <span style="margin-left:15px;">  联系电话：0571-56532880</span> </p>
+    <p class="hbj_ft" style=" margin-left: 14px;" >公司地址： 杭州市滨江区阡陌路482号智慧e谷B幢4楼</p>
+   <p class="hbj_ft" style=" margin-left: 14px;" >Copyright©2013-2015. 杭州火图科技有限公司,浙ICP备13027761号-5</p>
+     
+    </div>
+  </div>
+
+</div>       
+   <!--底部结束-->
+ </div>
+
+
+
+  <!--联系我们end-->
+
+
+
+</div>
+</body>
+</html>

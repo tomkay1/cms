@@ -56,8 +56,7 @@ public abstract class AbstractHttpServiceImpl implements HttpService {
             httpGet.setHeader("_user_key", appKey);
             httpGet.setHeader("_user_random", random);
             httpGet.setHeader("_user_secure", createDigest(appKey, random, appSecret));
-            CloseableHttpResponse response = null;
-            response = httpClient.execute(httpGet);
+            CloseableHttpResponse response = httpClient.execute(httpGet);
             apiResult.setCode(response.getStatusLine().getStatusCode());
             apiResult.setMsg(response.getStatusLine().getReasonPhrase());
             apiResult.setData(EntityUtils.toString(response.getEntity()));

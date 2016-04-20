@@ -16,7 +16,6 @@
 </head>
 <body>
 <div th:utext="${head}"></div>
-
 <div>
     <div class="prointroduce" style="width:1000px;margin:0 auto;">
         <div style="background-color:#ffffff;padding:20px 0px 20px 0px;min-height:440px;">
@@ -251,7 +250,7 @@
             shadeClose: true,
             shade: 0.8,
             area: ['410px', '450px'],
-            content: "/front/bind/qrCode?goodsId=" + goodsId,
+            content: "/bind/qrCode?goodsId=" + goodsId,
             end: function () {
 //                window.console.log("!1");
             }

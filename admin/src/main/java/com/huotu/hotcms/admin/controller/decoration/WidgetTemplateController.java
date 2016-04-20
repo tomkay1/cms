@@ -16,6 +16,7 @@ import com.huotu.hotcms.service.util.ResultView;
 import com.huotu.hotcms.service.widget.service.PageResolveService;
 import com.huotu.hotcms.service.widget.service.PageResourceService;
 import com.huotu.hotcms.service.widget.service.WidgetResolveService;
+import com.huotu.hotcms.service.widget.service.WidgetResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,9 @@ public class WidgetTemplateController {
     private WidgetResolveService widgetResolveService;
 
     @Autowired
+    private WidgetResourceService widgetResourceService;
+
+    @Autowired
     private PageResolveService pageResolveService;
 
     @Autowired
@@ -79,7 +83,7 @@ public class WidgetTemplateController {
                 widgetBase.setProperty(properties1);
                 widgetBase.setEdit(true);
                 Site site=siteService.getSite(siteId);
-                String html = pageResourceService.getWidgetTemplateResolveByWidgetBase(widgetBase,site);
+                String html = widgetResourceService.getWidgetTemplateResolveByWidgetBase(widgetBase,site);
                 widgetBase.setHtml(html);
                 resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), widgetBase);
             }else{

@@ -27,31 +27,40 @@ import java.net.URL;
 import java.util.*;
 
 /**
- * Created by Administrator on 2016/4/1.
+ * <p>
+ *     组件解析服务
+ * </p>
+ * @since 1.2
+ *
+ * @author xhl
  */
 @Component
 public class WidgetResolveService {
     private static final Log log = LogFactory.getLog(WidgetResolveService.class);
 
     @Autowired
-    private StaticResourceService resourceServer;
-    @Autowired
-    private RedisService redisService;
+    private RequestService requestService;
 
     @Autowired
-    private RequestService requestService;
+    private WidgetResourceService widgetResourceService;
 
     private TemplateEngine templateEngine = new TemplateEngine();
 
     private HttpServletRequest request = null;
 
+    /**
+     * <p>添加方言</p>
+     * */
     private void addDialect() {
         if (!templateEngine.isInitialized()) {
             templateEngine.addDialect(new WidgetDialect());
         }
     }
 
-    private Context setVariable(Context context, Site site) {
+    /**
+     * <p>设置Context所需要的扩展内置对象</p>
+     * */
+    public Context setVariable(Context context, Site site) {
         if (null != site) {
             context.setVariable("site", site);
         }
@@ -59,6 +68,13 @@ public class WidgetResolveService {
         return context;
     }
 
+    /**
+     * <p>获得控件主体预览视图</p>
+     * @param templateResources 模版资源
+     * @param widgetBase 控件主体对象
+     * @param site 站点信息
+     * @return 返回控件主体预览视图
+     * */
     public String widgetBriefView(String templateResources, WidgetBase widgetBase, Site site) throws IOException {
         request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         if (widgetBase != null) {
@@ -84,8 +100,15 @@ public class WidgetResolveService {
         return templateResources;
     }
 
+    /**
+     * <p>
+     *     获得控件主体编辑视图
+     * </p>
+     * @param widgetBase 控件主体对象
+     * @return 返回控件主体编辑视图
+     * */
     public String widgetEditView(WidgetBase widgetBase) throws IOException {
-        String templateResources = getWidgetEditTemplate(widgetBase);
+        String templateResources = widgetResourceService.getWidgetEditTemplate(widgetBase);
         if (widgetBase != null) {
             Map map = null;
             if (widgetBase.getProperty() != null) {
@@ -106,35 +129,6 @@ public class WidgetResolveService {
             return writer.toString();
         }
         return templateResources;
-    }
-
-    public String getWidgetEditTemplate(WidgetBase widgetBase) {
-        if (redisService.isContent())
-            return isWidgetEditTemplateCached(widgetBase) ? getCachedWidgetEditTemplate(widgetBase) : getWidgetEditTemplateFromFile(widgetBase);
-        else
-            return getWidgetEditTemplateFromFile(widgetBase);
-    }
-
-    private boolean isWidgetEditTemplateCached(WidgetBase widgetBase) {
-        return redisService.isWidgetEditExists(widgetBase.getId());
-    }
-
-    private String getCachedWidgetEditTemplate(WidgetBase widgetBase) {
-        return redisService.findByWidgetEditId(widgetBase.getId());
-    }
-
-    private String getWidgetEditTemplateFromFile(WidgetBase widgetBase) {
-        try {
-            URL url = resourceServer.getResource(widgetBase.getWidgetEditUri()).toURL();
-            String widgetTemplate = HttpUtils.getHtmlByUrl(url);
-            if(redisService.isContent()){
-                redisService.saveWidgetEdit(widgetBase.getId(), widgetTemplate);
-            }
-            return widgetTemplate;
-        } catch (Exception ex) {
-            log.error("获得控件主体编辑视图失败");
-            throw new ExceptionInInitializerError("获得控件主体编辑视图异常");
-        }
     }
 
     private Map<String, Object> ConvertMapByList(List<WidgetProperty> properties) throws IOException {

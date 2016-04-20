@@ -5,7 +5,7 @@
             <div class="sh-head-menu" th:style="'background:'+${bgcolor}">
                 <ul class="menu-list">
                     <li class="menu">
-                        <a class="main-link" href="${request.rootUri}" target=""  th:style="${goods_fontColor==null?'':'color:'+goods_fontColor}">首页</a>
+                        <a class="main-link" th:href="${request.rootUri}" target=""  th:style="${goods_fontColor==null?'':'color:'+goods_fontColor}">首页</a>
                     </li>
                     <li class="menu all-cate" th:if="${showProductType==1}">
                         <a class="main-link" href="javascript:void(0)" target=""  th:style="${goods_fontColor==null?'':'color:'+goods_fontColor}">全部分类<span class="arrow"></span></a>

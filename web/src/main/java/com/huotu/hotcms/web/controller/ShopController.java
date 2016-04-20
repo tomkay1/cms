@@ -38,6 +38,7 @@ public class ShopController {
 
     @Autowired
     private GoodsDetailService goodsDetailService;
+
     @Autowired
     SiteResolveService siteResolveService;
 

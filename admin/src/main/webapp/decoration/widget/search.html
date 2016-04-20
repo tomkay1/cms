@@ -6,7 +6,7 @@
         <div class="searchArea">
             <div class="HOTSearchArea">
                 <div class="HOTSearchInput">
-                    <form action="/front/shop/search">
+                    <form th:action="${request.rootUri}+'/shop/search'">
                         <input type="text" id="" onkeydown="" onfocus="" d="请输入关键词" class="inputMiddle"
                                th:value="${request.get('keyword')}!=null?${request.get('keyword')}:${defaultKewWord}" name="keyword"
                                maxlength="20" size="20" th:attr="maxlength=(${maxlength}==null?20:${maxlength})"/>

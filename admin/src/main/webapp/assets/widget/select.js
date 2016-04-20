@@ -22,6 +22,9 @@ define(function (require, exports, module) {
             var obj = $(".js-widget-add");
             $.each(obj, function (item, dom) {
                 $(dom).click(function () {
+                    var indexLoad = parent.layer.load(1, {
+                        shade: [0.6,'#000000'] //0.1透明度的白色背景
+                    });
                     var widgetUrl = $(dom).data("url");
                     var widgetId=$(dom).data("id");
                     $.ajax({
@@ -58,10 +61,12 @@ define(function (require, exports, module) {
                             }else{
                                 widgetData.saveWidget("500");
                             }
+                            parent.layer.close(indexLoad);
                             parent.layer.close(index);
                         },
                         error:function(){
                             widgetData.saveWidget("500");
+                            parent.layer.close(indexLoad);
                             parent.layer.close(index);
                         }
                     });

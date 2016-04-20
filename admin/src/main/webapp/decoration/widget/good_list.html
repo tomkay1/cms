@@ -28,14 +28,14 @@
                 <li data-widget-page="goods">
                     <div class="jItem">
                         <div class="jPic">
-                            <a th:href="'/front/shop/product/'+${goods.id}">
+                            <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}">
                                 <img data-th-src="${goods.smallPic}" width="160" height="160"
                                      data-th-attr="alt=${goods.title}">
                             </a>
                         </div>
                         <div class="jGoodsInfo">
                             <div class="HOTesc">
-                                <a th:href="'/front/shop/product/'+${goods.id}"
+                                <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}"
                                    th:style="${goods_fontColor==null?'':'color:'+goods_fontColor}">
                                     [[${goods.title}]]
                                 </a>
@@ -47,12 +47,12 @@
                             </div>
                             <div th:if="${showIntegral==null} or ${showIntegral==0}" class="extra">
                                 <span class="evaluate">
-                                    <a th:href="'/front/shop/product/'+${goods.id}">
+                                    <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}">
                                         销量[[${goods.sales}]]
                                     </a>
                                 </span>
                                 <span class="evaluate" th:if="${goods.vipPrice!=null and goods.vipPrice > 0}">
-                                    <a th:href="'/front/shop/product/'+${goods.id}">
+                                    <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}">
                                         会员价：<i style="color: #FF1414;">[[${goods.vipPrice}]]</i>
                                     </a>
                                 </span>
@@ -60,7 +60,7 @@
                             <p style="height: 7px;"></p>
 
                             <div class="jBtnArea">
-                                <a target="" th:href="'/front/shop/product/'+${goods.id}" rel="">
+                                <a target="" th:href="${request.rootUri}+'/shop/product/'+${goods.id}" rel="">
                                     购买
                                 </a>
                             </div>
@@ -267,13 +267,13 @@
                     <li data-widget-page="goods">
                         <div class="jItem">
                             <div class="jPic">
-                                <a th:href="'/front/shop/product/'+${goods.id}">
+                                <a th:href="${request.rootUrl}+'/shop/product/'+${goods.id}">
                                     <img data-th-src="${goods.smallPic}" data-th-attr="alt=${goods.title}"  width="160" height="160">
                                 </a>
                             </div>
                             <div class="jGoodsInfo">
                                 <div class="HOTesc">
-                                    <a th:href="'/front/shop/product/'+${goods.id}">
+                                    <a th:href="${request.rootUrl}+'/shop/product/'+${goods.id}">
                                         [[${goods.title}]]
                                     </a>
                                     <span class="jSlogan"></span>
@@ -299,7 +299,7 @@
                                 <p style="height: 7px;"></p>
 
                                 <div class="jBtnArea">
-                                    <a th:href="'/front/shop/product/'+${goods.id}" class="addToCart"
+                                    <a th:href="${request.rootUrl}+'/shop/product/'+${goods.id}" class="addToCart"
                                        rel="nofollow">
                                         购买
                                     </a>

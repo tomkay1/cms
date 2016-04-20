@@ -99,34 +99,34 @@
                             <input value="关注" class="btn-coll" type="button">
                             <div class="HOTItem">
                                 <div class="HOTPic">
-                                    <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                                    <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="">
                                         <img data-th-src="${goods.smallPic}" class="err-product"  width="220" height="220">
                                     </a>
                                 </div>
                                 <div class="HOTScroll">
-                                    <a class="HOTScrollBtn HOTScrollPrev" th:href="'/front/shop/product/'+${goods.id}">
+                                    <a class="HOTScrollBtn HOTScrollPrev" th:href="${request.rootUri}+'/shop/product/'+${goods.id}">
                                     </a>
                                     <div class="HOTScrollWrap">
                                         <ul>
                                             <li class="HOTCurrent">
-                                                <a title="" class="" th:href="'/front/shop/product/'+${goods.id}">
+                                                <a title="" class="" th:href="${request.rootUri}+'/shop/product/'+${goods.id}">
                                                     <img data-th-src="${goods.smallPic}" class="err-product">
                                                 </a>
                                             </li>
                                         </ul>
                                     </div>
-                                    <a class="HOTScrollBtn HOTScrollNext" th:href="'/front/shop/product/'+${goods.id}">
+                                    <a class="HOTScrollBtn HOTScrollNext" th:href="${request.rootUri}+'shop/product/'+${goods.id}">
                                         &gt;
                                     </a>
                                 </div>
                                 <div class="HOTGoodsInfo">
                                     <div class="HOTBtnArea" th:if="${templateClass=='HOTSearchList-432763'}">
-                                        <a th:href="'/front/shop/product/'+${goods.id}" class="HOT-cart">
+                                        <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" class="HOT-cart">
                                             立即购买
                                         </a>
                                     </div>
                                     <div class="HOTesc">
-                                        <a th:href="'/front/shop/product/'+${goods.id}" target=""
+                                        <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target=""
                                            th:text="${goods.title}">
                                             意大利袋鼠男士内裤 男 经典款棉平角裤内裤男 4条礼盒装（L'ALPINA） XXXL
                                         </a>
@@ -139,7 +139,7 @@
                                     </div>
                                     <div class="HOTExtra">
                                         <!--<span class="star"><span class="star-white"><span class="star-yellow h5"></span></span></span>-->
-                                        <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                                        <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="">
                                             销量<em>[[${goods.sales}]]</em>
                                         </a>
                                     </div>

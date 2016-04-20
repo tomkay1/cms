@@ -14,6 +14,14 @@ import java.util.List;
  */
 @Repository
 public interface WidgetTypeRepository extends JpaRepository<WidgetType, Long>,JpaSpecificationExecutor {
+
+    /**
+     * <p>
+     *     查找非指定范畴的控件主体类型列表
+     * </p>
+     * @param scopesType 控件主体范围类型
+     * @return WidgetType列表对象
+     * */
     @Query(value = "select * from cms_widgetType u where u.scenes<>?1",nativeQuery = true)
     List<WidgetType> findAllByScopesTypeNot(Integer scopesType);
 

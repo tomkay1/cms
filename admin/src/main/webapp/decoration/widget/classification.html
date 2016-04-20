@@ -5,7 +5,7 @@
     <div class="mc" style="overflow: visible;">
         <div class="j-module">
             <div class="jOneLevel">
-                <a th:href="'/front/shop/search'">
+                <a th:href="${request.rootUri}+'/shop/search'">
                     <h2 style="font-weight:normal;font-size:14px;"><span>所有分类</span></h2>
                 </a>
                 <h2 style="font-weight:normal;font-size:14px;"><span>所有分类</span></h2>
@@ -20,7 +20,7 @@
                 <div style="display:none" th:attr="bgColor=${bgColor}" th:if="${category.children!=null and category.children.size>0}" class="js-sub-category">
                     <div th:style="'background-color: '+${bgColor==null?'#ddd':bgColor} + ';'"
                          th:class="'jTwoLevel jNoBorderBottm js-'+${child.id}" data-th-each="child:${category.children}" >
-                        <a th:href="'/front/shop/search?goodsCatId='+${child.id}" data-th-attr="title=${child.name}">
+                        <a th:href="${request.rootUri}+'/shop/search?goodsCatId='+${child.id}" data-th-attr="title=${child.name}">
                             <i style="color:#ddd;" th:if="${templateClass=='jGoodsSort-400222'}">>&nbsp;&nbsp;</i>[[${child.name}]]
                         </a>
                     </div>

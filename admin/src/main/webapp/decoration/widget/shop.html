@@ -4,17 +4,17 @@
     <div class="mc" style="overflow: visible;" >
         <div class="sh-brand-wrap">
             <div class="sh-brand">
-                <a href="/front" class="brand-link">
+                <a th:href="${request.rootUri}" class="brand-link">
                     <img th:src="${pageBackImage==null or pageBackImage == ''}?'/assets/img/widget/shop_brand.jpg':${pageBackImage}"/>
                 </a>
                 <div class="shop-logo-box">
-                    <a href="/front" class="shop-logo-link">
+                    <a th:href="${request.rootUri}" class="shop-logo-link">
                         <img th:src="${shopLogoImage==null or shopLogoImage == ''}?'/assets/img/widget/shop_logo.png':${shopLogoImage}"/>
                     </a>
-                    <a href="/front" class="follow-me for-light-bg">关注我</a>
+                    <a th:href="${request.rootUri}" class="follow-me for-light-bg">关注我</a>
                 </div>
                 <div class="m-search for-black-bg">
-                    <form class="m-form" action="/front/shop/search">
+                    <form class="m-form" th:action="${request.rootUri}+'/shop/search'">
                         <input type="text" class="m-kw" value="" maxlength="50" size="50" th:value="${request.get('keyword')}!=null?${request.get('keyword')}:${defaultKewWord}" name="keyword"/>
                         <input type="submit" value="搜索" class="m-submit"
                                id="in-shop-search"/>

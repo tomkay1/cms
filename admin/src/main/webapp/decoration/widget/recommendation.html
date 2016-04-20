@@ -7,17 +7,17 @@
             <div class="j-module">
                 <ul class="HOTBoxUl" id="wy_floor7">
                     <li data-widget-hot="goods">
-                        <a class="jPic" target="" th:href="'/front/shop/product/'+${goods.id}">
+                        <a class="jPic" target="" th:href="${request.rootUri}+'/shop/product/'+${goods.id}">
                             <img th:src="${goods.smallPic}">
                         </a>
-                        <a class="HOTesc" th:title="${goods.title}" target="_blank" th:href="'/front/shop/product/'+${goods.id}">
+                        <a class="HOTesc" th:title="${goods.title}" target="_blank" th:href="${request.rootUri}+'/shop/product/'+${goods.id}">
                             [[${goods.title}]]
                         </a>
                         <div class="HOTPrice">
                             <span>￥ </span>
                             <span class="HOTNum" jshop="price">[[${goods.price}]]</span>
                         </div>
-                        <a class="jBtnArea" th:href="'/front/shop/product/'+${goods.id}" target="">
+                        <a class="jBtnArea" th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="">
                         </a>
                     </li>
                 </ul>
@@ -30,13 +30,13 @@
                 <ul class="clearfloat">
                     <li class="item item-1 " data-widget-hot="goods">
                         <div class="jPic">
-                            <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                            <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="">
                                 <img th:src="${goods.smallPic}">
                             </a>
                         </div>
                         <div class="jGoodsInfo">
                             <div class="HOTesc">
-                                <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                                <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="">
                                     [[${goods.title}]]
                                 </a>
                             </div>
@@ -47,7 +47,7 @@
                         </div>
                         <div class="jBtn">
                             <div class="jBtntxt">
-                                <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                                <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="">
                                     <span>立即购买 &gt;</span>
                                 </a>
                             </div>
@@ -63,13 +63,13 @@
                 <li class="qFourOneHalf mOneHalf" data-widget-hot="goods">
                     <div class="jItem">
                         <div class="jPic">
-                            <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                            <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="">
                                 <img th:src="${goods.smallPic}">
                             </a>
                         </div>
                         <div class="jGoodsInfo">
                             <div class="HOTesc" th:title="${goods.title}">
-                                <a th:href="'/front/shop/product/'+${goods.id}" target="">[[${goods.title}]]</a>
+                                <a th:href="'${request.rootUri}+'/shop/product/'+${goods.id}" target="">[[${goods.title}]]</a>
                                 <span class="jSlogan"></span>
                             </div>
                             <div class="user jPrice">
@@ -82,7 +82,7 @@
                                 <span class="HOTNum">[[${goods.price}]]</span>
                             </div>
                             <div class="jBtnArea">
-                                <a target="" th:href="'/front/shop/product/'+${goods.id}" rel="">立即购买</a>
+                                <a target="" th:href="'${request.rootUri}+'/shop/product/'+${goods.id}" rel="">立即购买</a>
                             </div>
                         </div>
                     </div>
@@ -110,7 +110,7 @@
                                 <span>立即抢购</span>
                             </div>
                         </div>
-                        <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                        <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="">
                             <span class="border3"></span>
                         </a>
                     </li>
@@ -139,7 +139,7 @@
                                 <span>立即抢购</span>
                             </div>
                         </div>
-                        <a th:href="'/front/shop/product/'+${goods.id}" target=""><span class="border3"></span></a>
+                        <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target=""><span class="border3"></span></a>
                     </li>
                 </ul>
             </div>
@@ -151,13 +151,13 @@
                 <li style="margin-left: 0px; margin-right: 0px; margin-top: 0px; width: 256.667px;" data-widget-hot="goods">
                     <div class="jItem">
                         <div class="jPic">
-                            <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                            <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="">
                                 <img th:src="${goods.smallPic}" width="240px" height="240px"/>
                             </a>
                         </div>
                         <div class="HOTesc" style="padding-left: 1px;">
                             <p class="goods-price">￥<span class="HOTNum">[[${goods.price}]]</span></p>
-                            <p class="goods-btn"><a th:href="'/front/shop/product/'+${goods.id}" target="">立即抢购<i></i></a></p>
+                            <p class="goods-btn"><a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="">立即抢购<i></i></a></p>
                         </div>
                     </div>
                 </li>
@@ -172,13 +172,13 @@
                 <li style="margin-left: 0px; margin-right: 0px; margin-top: 0px; width: 256.667px;" data-widget-hot="goods">
                     <div class="jItem">
                         <div class="jPic">
-                            <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                            <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="">
                                 <img width="240" height="240" th:src="${goods.smallPic}"/>
                             </a>
                         </div>
                         <div class="HOTesc" style="padding-left: 5px;">
                             <p class="goods-price">￥<span class="HOTNum" >[[${goods.price}]]</span></p>
-                            <p class="goods-btn"><a th:href="'/front/shop/product/'+${goods.id}" target="">立即抢购<i></i></a></p>
+                            <p class="goods-btn"><a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="">立即抢购<i></i></a></p>
                         </div>
                     </div>
                 </li>
@@ -192,13 +192,13 @@
                 <li style="margin-left: 10px; margin-right: 0px; margin-top: 0px; width: 256.667px;" data-widget-hot="goods">
                     <div class="jItem">
                         <div class="jPic">
-                            <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                            <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="">
                                 <img width="240" height="240" th:src="${goods.smallPic}"/>
                             </a>
                         </div>
                         <div class="HOTesc">
                             <p class="goods-price">￥<span class="HOTNum" jshop="price" HOTprice="1309062513">[[${goods.price}]]</span></p>
-                            <p class="goods-btn"><a th:href="'/front/shop/product/'+${goods.id}" target="">立即抢购<i></i></a></p>
+                            <p class="goods-btn"><a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="">立即抢购<i></i></a></p>
                         </div>
                     </div>
                 </li>
@@ -212,13 +212,13 @@
                 <li class="qThreeOneHalf mOneHalf" data-widget-hot="goods">
                     <div class="jItem">
                         <div class="jPic">
-                            <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">
+                            <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="_blank">
                                 <img th:src="${goods.smallPic}" height="240" width="240">
                             </a>
                         </div>
                         <div class="jGoodsInfo">
                             <div class="HOTesc" th:title="${goods.title}">
-                                <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">
+                                <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="_blank">
                                     [[${goods.title}]]
                                 </a>
                                 <span class="jSlogan"></span>
@@ -230,7 +230,7 @@
                                 <span class="jText">￥</span><span class="HOTNum">[[${goods.price}]]</span>
                             </div>
                             <div class="jBtnArea">
-                                <a target="_blank" th:href="'/front/shop/product/'+${goods.id}" rel="nofollow">立即购买</a>
+                                <a target="_blank" th:href="${request.rootUri}+'/shop/product/'+${goods.id}" rel="nofollow">立即购买</a>
                             </div>
                         </div>
                     </div>
@@ -244,13 +244,13 @@
                 <li class="qFourOneHalf mOneHalf" data-widget-hot="goods">
                     <div class="jItem">
                         <div class="jPic">
-                            <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">
+                            <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="_blank">
                                 <img th:src="${goods.smallPic}" th:attr="alt=${goods.title}" height="160" width="160">
                             </a>
                         </div>
                         <div class="jGoodsInfo">
                             <div class="HOTesc" th:title="${goods.title}">
-                                <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                                <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="">
                                     [[${goods.title}]]
                                 </a>
                                 <span class="jSlogan"></span>
@@ -265,7 +265,7 @@
                                 <span class="HOTNum">[[${goods.price}]]</span>
                             </div>
                             <div class="jBtnArea">
-                                <a target="_blank" th:href="'/front/shop/product/'+${goods.id}" rel="">立即购买</a>
+                                <a target="_blank" th:href="${request.rootUri}+'/shop/product/'+${goods.id}" rel="">立即购买</a>
                             </div>
                         </div>
                     </div>
@@ -279,7 +279,7 @@
                 <li class="qThreeOneHalf mOneHalf" data-widget-hot="goods">
                     <div class="jItem">
                         <div class="jPic">
-                            <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">
+                            <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="_blank">
                                 <img th:src="${goods.smallPic}" th:attr="alt=${goods.title}" height="225" width="225">
                             </a>
                         </div>
@@ -291,7 +291,7 @@
                                 <div class="jSalePrice">
                                     <span class="jText">¥</span><span class="jsNum">[[${goods.price}]]</span>
                                     <div class="HOTesc" th:title="${goods.title}">
-                                        <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">
+                                        <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="_blank">
                                             [[${goods.title}]]
                                         </a>
                                         <span class="jSlogan"></span>
@@ -310,13 +310,13 @@
                 <li class="qThreeOne mOne" data-widget-hot="goods">
                     <div class="jItem" >
                         <div class="jPic">
-                            <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">
+                            <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="_blank">
                                 <img th:src="${goods.smallPic}" th:attr="alt=${goods.title}" height="200" width="200">
                             </a>
                         </div>
                         <div class="jGoodsInfo">
                             <div class="HOTesc" th:title="${goods.title}">
-                                <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">
+                                <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="_blank">
                                     [[${goods.title}]]
                                 </a>
                                 <span class="jSlogan"></span>
@@ -330,7 +330,7 @@
                                 </div>
                             </div>
                             <div class="jBtnArea">
-                                <a target="_blank" th:href="'/front/shop/product/'+${goods.id}" rel="">立即购买</a>
+                                <a target="_blank" th:href="${request.rootUri}+'/shop/product/'+${goods.id}" rel="">立即购买</a>
                             </div>
                         </div>
                     </div>
@@ -344,13 +344,13 @@
                 <li class="qThreeOneHalf mOneHalf" data-widget-hot="goods">
                     <div class="jItem" >
                         <div class="jPic">
-                            <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                            <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="">
                                 <img th:src="${goods.smallPic}" th:attr="alt=${goods.title}" height="200" width="200">
                             </a>
                         </div>
                         <div class="jGoodsInfo">
                             <div class="HOTesc" th:title="${goods.title}">
-                                <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">
+                                <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="_blank">
                                     [[${goods.title}]]
                                 </a>
                             </div>
@@ -374,7 +374,7 @@
                 <li class="qThreeOneHalf mOneHalf" data-widget-hot="goods">
                     <div class="jItem">
                         <div class="jPic">
-                            <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                            <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="">
                                 <img th:src="${goods.smallPic}" th:attr="alt=${goods.title}" height="240" width="240">
                             </a>
                             <div class="jPromotionLabel">
@@ -386,7 +386,7 @@
                         </div>
                         <div class="jGoodsInfo">
                             <div class="HOTesc" th:title="${goods.title}">
-                                <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                                <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="">
                                     [[${goods.title}]]
                                 </a>
                                 <span class="jSlogan"></span>
@@ -404,7 +404,7 @@
                                 </div>
                             </div>
                             <div class="jBtnArea">
-                                <a target="" th:href="'/front/shop/product/'+${goods.id}" rel="">放入购物车</a>
+                                <a target="" th:href="${request.rootUri}+'/shop/product/'+${goods.id}" rel="">放入购物车</a>
                             </div>
                         </div>
                     </div>
@@ -418,13 +418,13 @@
                 <div class="jItem">
                     <div class="jIcon">1</div>
                     <div class="jPic">
-                        <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">
+                        <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="_blank">
                             <img th:src="${goods.smallPic}" th:attr="alt=${goods.title}" height="90" width="90">
                         </a>
                     </div>
                     <div class="jGoodsInfo">
                         <div class="HOTesc" th:title="${goods.title}">
-                            <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">
+                            <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="_blank">
                                 [[${goods.title}]]
                             </a>
                             <span class="jSlogan"></span>
@@ -441,7 +441,7 @@
                             </div>
                         </div>
                         <div class="jBtnArea">
-                            <a target="" th:href="'/front/shop/product/'+${goods.id}" rel="nofollow">立即购买</a>
+                            <a target="" th:href="${request.rootUri}+'/shop/product/'+${goods.id}" rel="nofollow">立即购买</a>
                         </div>
                     </div>
                 </div>

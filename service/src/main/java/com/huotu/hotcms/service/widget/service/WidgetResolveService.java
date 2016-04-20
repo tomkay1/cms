@@ -55,7 +55,7 @@ public class WidgetResolveService {
         if (null != site) {
             context.setVariable("site", site);
         }
-        context.setVariable("request", requestService.ConvertRequestModel(this.request));
+        context.setVariable("request", requestService.ConvertRequestModel(this.request,site));
         return context;
     }
 

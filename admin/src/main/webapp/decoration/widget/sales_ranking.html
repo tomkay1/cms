@@ -11,14 +11,14 @@
                     <div class="jItem">
                         <span class="jNum">[[${goods.iterCount}]]</span>
                         <div class="jPic">
-                            <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">
+                            <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="_blank">
                                 <img th:src="${goods.smallPic}" th:attr="alt=${goods.title}" class="err-product" width="50"
                                      height="50">
                             </a>
                         </div>
                         <div class="jGoodsInfo">
                             <div class="HOTesc" th:attr="title=${goods.title}">
-                                <a th:href="'/front/shop/product/'+${goods.id}" target="_blank">[[${goods.title}]]</a>
+                                <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="_blank">[[${goods.title}]]</a>
                             </div>
                             <div class="jPrice">
                                 <div class="HOTPrice">
@@ -73,11 +73,11 @@
                 <li style="width: 100%;" data-widget-hot="goods">
                     <div class="jItem">
                         <div class="jPic">
-                            <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                            <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="">
                                 <img th:src="${goods.smallPic}" th:attr="alt=${goods.title}" class="err-product">
                             </a>
                             <div class="HOTesc" th:attr="title=${goods.title}">
-                                <a th:href="'/front/shop/product/'+${goods.id}" target="">[[${goods.title}]]</a>
+                                <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="">[[${goods.title}]]</a>
                             </div>
                         </div>
                         <div class="jGoodsInfo">
@@ -88,7 +88,7 @@
                                 </div>
                             </div>
                             <div class="jBtnArea">
-                                <a target="" rel="" th:href="'/front/shop/product/'+${goods.id}" title="立即购买"><em></em>立即购买</a>
+                                <a target="" rel="" th:href="${request.rootUri}+'/shop/product/'+${goods.id}" title="立即购买"><em></em>立即购买</a>
                             </div>
                         </div>
                     </div>

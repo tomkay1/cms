@@ -88,6 +88,9 @@
     var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
     $.each(obj,function(item,dom){
         $(dom).click(function(){
+            var indexLoad = layer.load(1, {
+                shade: [0.6,'#000000'] //0.1透明度的白色背景
+            });
             var typeId=$(dom).data('typeid');
             var url="/layout/"+typeId;
             $.ajax({
@@ -120,6 +123,10 @@
                             time: 2000 //2秒关闭（如果不配置，默认是3秒）
                         });
                     }
+                    layer.close(indexLoad);
+                    parent.layer.close(index);
+                },error:function(){
+                    layer.close(indexLoad);
                     parent.layer.close(index);
                 }
             });

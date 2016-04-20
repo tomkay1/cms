@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>hotcms</artifactId>
+        <groupId>com.huotu.hotcms</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <packaging>jar</packaging>
+    <artifactId>widget-skeleton</artifactId>
+
+    <name>Widget Archetype</name>
+    <description>
+        控件的Maven原型
+        &lt;br /&gt;
+        在本原型已install的maven环境中 可直接执行:
+        &lt;br /&gt;
+        mvn archetype:generate -DarchetypeGroupId=com.huotu.hotcms -DarchetypeArtifactId=widget-skeleton
+        -DarchetypeVersion=1.0-SNAPSHOT -DgroupId=your group -DartifactId=your artifactId
+        &lt;br /&gt;
+        即可获得一个控件的原型maven项目
+        &lt;br /&gt;
+        请参考
+        https://maven.apache.org/guides/mini/guide-creating-archetypes.html
+    </description>
+
+
+</project>

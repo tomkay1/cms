@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -23,6 +23,7 @@
         <module>admin</module>
         <module>service</module>
         <module>web</module>
+        <module>widget-skeleton</module>
     </modules>
 
     <!--distributionManagement-->
@@ -31,7 +32,7 @@
         <jdk.version>1.8</jdk.version>
         <javaee.version>7.0</javaee.version>
         <spring.version>4.2.5.RELEASE</spring.version>
-        <luffy.version>2.0-SNAPSHOT</luffy.version>
+        <luffy.version>2.0</luffy.version>
         <thymeleaf.version>3.0.0.BETA01</thymeleaf.version>
         <huobanplus.version>1.4.2-SNAPSHOT</huobanplus.version>
         <slf4j.version>1.7.19</slf4j.version>

@@ -7,6 +7,7 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.service.CustomPagesService;
 import com.huotu.hotcms.service.thymeleaf.service.SiteResolveService;
 import com.huotu.hotcms.service.widget.model.GoodsDetail;
+import com.huotu.hotcms.service.widget.service.PageResourceService;
 import com.huotu.hotcms.web.service.GoodsDetailService;
 import com.huotu.hotcms.web.util.web.CookieUser;
 import org.apache.commons.logging.Log;
@@ -37,8 +38,12 @@ public class ShopController {
 
     @Autowired
     private GoodsDetailService goodsDetailService;
+
     @Autowired
     SiteResolveService siteResolveService;
+
+    @Autowired
+    private PageResourceService pageResourceService;
 
 
     @Autowired
@@ -92,14 +97,20 @@ public class ShopController {
             if(cookieUser.checkLogin(request)){
                  userId = Integer.valueOf(cookieUser.getUserId(request));
             }
+            Site site = siteResolveService.getCurrentSite(request);
+            String head = pageResourceService.getHeaderTemplaeBySite(site);
+            if(head == null) {
+                head = "";
+            }
             GoodsDetail goods = goodsDetailService.getGoodsDetail(Integer.valueOf(id),userId);
             String url = goodsDetailService.getGoodsWxUrl(request,goods.getId());//微信登录跳转链接
             Map spec = JSON.parseObject(goods.getSpec(), Map.class);//规格格式化
+
             modelAndView.setViewName("/template/0/goodsDetail.html");
             modelAndView.addObject("goods",goods);
             modelAndView.addObject("url",url);//获取域名
             modelAndView.addObject("spec",spec);
-
+            modelAndView.addObject("head",head);
         }catch (Exception ex){
             log.error(ex);
         }

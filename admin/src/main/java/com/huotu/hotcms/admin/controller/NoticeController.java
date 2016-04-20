@@ -40,6 +40,13 @@ public class NoticeController {
     @Autowired
     private CookieUser cookieUser;
 
+    /**
+     * 公告列表页面
+     *
+     * @param id
+     * @return
+     * @throws Exception
+     */
     @RequestMapping("/noticeList")
     public ModelAndView noticeList(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception
     {
@@ -54,6 +61,12 @@ public class NoticeController {
         return  modelAndView;
     }
 
+    /**
+     * 添加公告
+     * @param customerId
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/addNotice")
     public ModelAndView addNotice(Integer customerId) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
@@ -61,9 +74,14 @@ public class NoticeController {
         return  modelAndView;
     }
 
-    /*
-  * 修改栏目
-  * */
+    /**
+     *
+     * 修改公告
+     * @param id
+     * @param customerId
+     * @return
+     * @throws Exception
+     */
     @RequestMapping("/updateNotice")
     public ModelAndView updateNotice(@RequestParam(value = "id",defaultValue = "0") Long id,Integer customerId) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
@@ -82,9 +100,13 @@ public class NoticeController {
     }
 
 
-    /*
-      * 更新公告
-      * */
+    /**
+     *
+     * 保存公告
+     * @param notice
+     * @param categoryId
+     * @return
+     */
     @RequestMapping(value = "/saveNotice",method = RequestMethod.POST)
     @Transactional(value = "transactionManager")
     @ResponseBody
@@ -117,6 +139,14 @@ public class NoticeController {
     }
 
 
+    /**
+     * 获取公告列表
+     * @param customerId
+     * @param title
+     * @param page
+     * @param pageSize
+     * @return
+     */
     @RequestMapping(value = "/getNoticeList")
     @ResponseBody
     public PageData<NoticeCategory> getNoticeList(@RequestParam(name="customerId",required = false) Integer customerId,
@@ -132,6 +162,13 @@ public class NoticeController {
         return pageModel;
     }
 
+    /**
+     * 删除(管理员权限)
+     * @param id
+     * @param customerId
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/deleteNotice",method = RequestMethod.POST)
     @ResponseBody
     public ResultView deleteNotice(@RequestParam(name = "id",required = true,defaultValue = "0") Long id,int customerId,HttpServletRequest request) {

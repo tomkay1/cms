@@ -29,6 +29,12 @@ public interface ArticleService {
 
     /**
      * 获取所有article 分页信息
+     *
+     * @param customerId
+     * @param title
+     * @param page
+     * @param pageSize
+     * @return
      */
     PageData<ArticleCategory> getPage(Integer customerId, String title, int page, int pageSize);
 

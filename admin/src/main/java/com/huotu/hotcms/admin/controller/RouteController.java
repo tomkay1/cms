@@ -67,6 +67,11 @@ public class RouteController {
         return  modelAndView;
     }
 
+    /**
+     * 修改路由
+     * @param routeId
+     * @return
+     */
     @RequestMapping(value = "/updateRoute")
     public ModelAndView updateRoute(@RequestParam( value = "id") Long routeId){
         ModelAndView modelAndView=new ModelAndView();
@@ -83,7 +88,7 @@ public class RouteController {
     }
 
     /**
-     * 获得模型列表
+     * 获得路由列表
      * */
     @RequestMapping(value = "/getRouteList",method = RequestMethod.POST)
     @ResponseBody

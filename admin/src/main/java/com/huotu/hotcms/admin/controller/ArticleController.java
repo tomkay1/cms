@@ -46,6 +46,13 @@ public class ArticleController {
     @Autowired
     private CookieUser cookieUser;
 
+    /**
+     *
+     * 文章分页
+     * @param id
+     * @return
+     * @throws Exception
+     */
     @RequestMapping("/articleList")
     public ModelAndView articleList(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception
     {
@@ -66,8 +73,13 @@ public class ArticleController {
     }
 
 
-
-
+    /**
+     * 添加文章
+     *
+     * @param customerId
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/addArticle")
     public ModelAndView addArticle(Integer customerId) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
@@ -75,9 +87,14 @@ public class ArticleController {
         return  modelAndView;
     }
 
-    /*
-  * 修改栏目
-  * */
+    /**
+     *
+     * 修改文章
+     * @param id
+     * @param customerId
+     * @return
+     * @throws Exception
+     */
     @RequestMapping("/updateArticle")
     public ModelAndView updateArticle(@RequestParam(value = "id",defaultValue = "0") Long id,Integer customerId) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
@@ -101,9 +118,15 @@ public class ArticleController {
     }
 
 
-    /*
-      * 更新公告
-      * */
+    /**
+     *
+     * 保存文章
+     * @param article
+     * @param isSystem
+     * @param categoryId
+     * @param articleSourceId
+     * @return
+     */
     @RequestMapping(value = "/saveArticle",method = RequestMethod.POST)
     @Transactional(value = "transactionManager")
     @ResponseBody
@@ -141,6 +164,15 @@ public class ArticleController {
     }
 
 
+    /**
+     *
+     * 文章分页
+     * @param customerId
+     * @param title
+     * @param page
+     * @param pageSize
+     * @return
+     */
     @RequestMapping(value = "/getArticleList")
     @ResponseBody
     public PageData<ArticleCategory> getArticleList(@RequestParam(name="customerId",required = false) Integer customerId,
@@ -156,6 +188,13 @@ public class ArticleController {
         return pageModel;
     }
 
+    /**
+     * 删除文章,只有管理员才可做删除操作
+     * @param id
+     * @param customerId
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/deleteArticle",method = RequestMethod.POST)
     @ResponseBody
     public ResultView deleteArticle(@RequestParam(name = "id",required = true,defaultValue = "0") Long id,int customerId,HttpServletRequest request) {

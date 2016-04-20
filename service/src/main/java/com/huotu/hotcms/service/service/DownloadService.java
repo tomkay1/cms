@@ -14,7 +14,7 @@ public interface DownloadService {
     Download findById(Long id);
 
     /**
-     * 标签解析时,获取信息
+     * 标签解析时,获取download信息
      */
     List<Download> getSpecifyDownloads(String[] specifyIds);
 

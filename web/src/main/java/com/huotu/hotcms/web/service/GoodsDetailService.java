@@ -18,7 +18,22 @@ public interface GoodsDetailService {
 //    Goods getGoodsDetail(int goodsId) throws Exception;
 
 
+    /**
+     * 商品详情接口
+     *
+     * @param goodsId
+     * @param userId
+     * @return
+     * 如商户未登录,返回市场价
+     * @throws Exception
+     */
     GoodsDetail getGoodsDetail(int goodsId, int userId) throws Exception;
 
+    /**
+     * 获取微信登录二维码地址
+     * @param request
+     * @param goodsId
+     * @return
+     */
     String getGoodsWxUrl(HttpServletRequest request,Long goodsId);
 }

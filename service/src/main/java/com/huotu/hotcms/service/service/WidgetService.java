@@ -15,13 +15,34 @@ import java.util.List;
 
 @Service
 public  interface WidgetService {
-
+    /**
+     *
+     * 获取控件分类分页信息
+     * @param name
+     * @param page
+     * @param pageSize
+     * @return
+     */
     PageData<WidgetType> getWidgetTypePage(String name,int page,int pageSize);
 
+    /**
+     *
+     * 获取控件主体分页信息
+     * @param name
+     * @param page
+     * @param pageSize
+     * @return
+     */
     PageData<WidgetMains> getWidgetMainsPage(String name,int page,int pageSize);
 
     List<WidgetType> findAllWidgetType();
 
+    /**
+     *
+     * 根据控件适用类型查找控件
+     * @param scopesType
+     * @return
+     */
     List<WidgetType> findAllWidgetTypeByNoScopesType(ScopesType scopesType);
 
     Boolean saveWidgetType(WidgetType widgetType);
@@ -37,6 +58,12 @@ public  interface WidgetService {
 
     WidgetMains findWidgetMainsById(Long id);
 
+    /**
+     * 根据控件类型查找控件主体
+     *
+     * @param id
+     * @return
+     */
     List<WidgetMains> findWidgetMainsByWidgetTypeId(Long id);
 
     List<WidgetList> findList();

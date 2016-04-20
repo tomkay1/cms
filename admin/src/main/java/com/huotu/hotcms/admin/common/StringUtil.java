@@ -25,6 +25,7 @@ public class StringUtil {
     public static String TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
     public static String UTF8 = "utf-8";
 
+
     public static final String NETSHOP_SECRET = "123456";
 
     public StringUtil() {

@@ -15,45 +15,45 @@
     <!--<script src="js/ShopShow.js" th:src="@{/template/0/js/shopShow.js}"></script>-->
 </head>
 <body>
+<div th:utext="${head}"></div>
+
 <div>
     <div class="prointroduce" style="width:1000px;margin:0 auto;">
         <div style="background-color:#ffffff;padding:20px 0px 20px 0px;min-height:440px;">
             <div id="preview">
                 <!--<div id="spec-n1" class="jqzoom" style="position:relative" >-->
                 <div id="spec-n1" class="jqzoom" style="width:450px;height:450px">
-                    <span style="position:absolute;bottom:0px;right:0px; z-index:9999"><img src="images/sss.png"
-                                                                                            th:src="@{/template/0/images/sss.png}"/></span>
+                    <span style="position:absolute;bottom:0px;right:0px; z-index:9999"><img src="images/sss.png" th:src="@{/template/0/images/sss.png}"/></span>
                     <!--<span style="position:absolute"><img width="100%"  src="images/1.jpg" alt="" ></span>-->
-                    <div id="tsImgS"><a href="/template/0/images/ghi.jpg" th:href="@{/template/0/images/ghi.jpg}"
-                                        title="Images" class="MagicZoom" id="MagicZoom"><img width="100%"
-                                                                                             src="/template/0/images/ghi.jpg"
-                                                                                             th:src="@{/template/0/images/ghi.jpg}"/></a>
+                    <div id="tsImgS">
+                        <a href="/template/0/images/ghi.jpg" th:href="${goods.bigPic}" title="Images" class="MagicZoom" id="MagicZoom">
+                        <img width="100%" src="/template/0/images/ghi.jpg" th:src="${goods.bigPic}"/></a>
                     </div>
                 </div>
                 <div id="spec-list">
                     <div class="spec-items">
                         <ul class="lh">
                             <li rel="MagicZoom"><img alt="NICE CLAUP2015夏商场同款日系女装甜美高腰蝴蝶结直筒九分裤111510450A 青色 均码"
-                                                     th:src="@{/template/0/images/TB2OW1KgVXXXXaYXXXXXXXXXXXX_!!1650972991.jpg}"
-                                                     th:attr="tsImgS=@{/template/0/images/TB2OW1KgVXXXXaYXXXXXXXXXXXX_!!1650972991.jpg}"
+                                                     th:src="${goods.bigPic}"
+                                                     th:attr="tsImgS=${goods.bigPic}"
                                                      data-url="" data-img="1" width="50" height="50" ks_mark="y"
-                                                     class=""></li>
+                                                     class="img-hover"></li>
                             <li rel="MagicZoom"><img alt="NICE CLAUP2015夏商场同款日系女装甜美高腰蝴蝶结直筒九分裤111510450A 青色 均码"
                                                      th:src="${goods.bigPic}"
-                                                     th:attr="tsImgS=@{/template/0/images/ghi.jpg}" data-url=""
-                                                     data-img="1" width="50" height="50" ks_mark="y" class="img-hover">
+                                                     th:attr="tsImgS=${goods.bigPic}" data-url=""
+                                                     data-img="1" width="50" height="50" ks_mark="y" class="">
                             </li>
                             <li rel="MagicZoom"><img alt="NICE CLAUP2015夏商场同款日系女装甜美高腰蝴蝶结直筒九分裤111510450A 青色 均码"
-                                                     th:src="@{/template/0/images/ghi.jpg}"
-                                                     th:attr="tsImgS=@{/template/0/images/ghi.jpg}" data-url=""
+                                                     th:src="${goods.bigPic}"
+                                                     th:attr="tsImgS=${goods.bigPic}" data-url=""
                                                      data-img="1" width="50" height="50" ks_mark="y" class=""></li>
                             <li rel="MagicZoom"><img alt="NICE CLAUP2015夏商场同款日系女装甜美高腰蝴蝶结直筒九分裤111510450A 青色 均码"
-                                                     th:src="@{/template/0/images/ghi.jpg}"
-                                                     th:attr="tsImgS=@{/template/0/images/ghi.jpg}" data-url=""
+                                                     th:src="${goods.bigPic}"
+                                                     th:attr="tsImgS=${goods.bigPic}" data-url=""
                                                      data-img="1" width="50" height="50" ks_mark="y" class=""></li>
                             <li rel="MagicZoom"><img alt="NICE CLAUP2015夏商场同款日系女装甜美高腰蝴蝶结直筒九分裤111510450A 青色 均码"
-                                                     th:src="@{/template/0/images/ghi.jpg}"
-                                                     th:attr="tsImgS=@{/template/0/images/ghi.jpg}" data-url=""
+                                                     th:src="${goods.bigPic}"
+                                                     th:attr="tsImgS=${goods.bigPic}" data-url=""
                                                      data-img="1" width="50" height="50" ks_mark="y" class=""></li>
                         </ul>
                     </div>
@@ -66,11 +66,13 @@
                             <h1 th:text="${goods.title}">NICE CLAUP2015夏商场同款日系女装甜美高腰蝴蝶结直筒九分裤111510450A 青色 均码</h1>
                         </div>
                     </div>
-                    <h1 id="proSubTitle" style="color: #f63a3a; font-size: 12px;">即日起购买一箱罐头就送一只不锈钢水果叉！由于发货成本 新疆 西藏 青海 内蒙
-                        宁夏 海南 贵州 广西 云南 黑龙江 甘肃不发货</h1>
-                    <h1 id="brand" style="line-height: 31px; height: 31px; font-size:12px; padding-top:6px" th:if="${goods.brandName!=null}">
+                    <!--<h1 id="proSubTitle" style="color: #f63a3a; font-size: 12px;">即日起购买一箱罐头就送一只不锈钢水果叉！由于发货成本 新疆 西藏 青海 内蒙-->
+                        <!--宁夏 海南 贵州 广西 云南 黑龙江 甘肃不发货</h1>-->
+                    <h1 id="brand" style="line-height: 31px; height: 31px; font-size:12px; padding-top:6px"
+                        th:if="${goods.brandName!=null}">
                         <a id="brandName"
-                           style="border: 1px solid #ccc; padding: 3px; border-radius: 4px;" th:text="${goods.brandName}">林家铺子-果锦系列</a>
+                           style="border: 1px solid #ccc; padding: 3px; border-radius: 4px;"
+                           th:text="${goods.brandName}">林家铺子-果锦系列</a>
                     </h1>
                 </div>
                 <div style="" id="divPriceShow">
@@ -109,7 +111,8 @@
                     <div id="" style=" display:" th:if="${unlogin}==false">
                         <div class="price_wrap">
                             <span class="tit"></span>
-                            <span class="price">￥<span class="normalPrice" th:text="${goods.marketPrice}">629</span></span>
+                            <span class="price">￥<span class="normalPrice"
+                                                       th:text="${goods.marketPrice}">629</span></span>
                             <span style="font-size: 12px; color: #999999; display: block; line-height:28px">登录查看会员价</span>
                             &nbsp;<span class="flag_kj helpbuyDis_kj" style="display: none;"> 下单发起众筹活动吧</span>
                         </div>
@@ -136,18 +139,20 @@
                 <div class="sku_container sku_container_on detail_standard_wx">
                     <div class="sku_wrap" style="margin-top: 10px;">
                         <div id="prop-list">
-                            <div class="sku" th:each="spec:${spec}" >
+                            <div class="sku" th:each="spec:${spec}">
                                 <h3 th:text="${spec.value}+': '">规格1：</h3>
-                                <div class="sku_list" th:each="specDescriptions:${goods.specDescriptions}" th:if="${spec.key}==${specDescriptions.key}" th:value="${specDescriptions.key}">
-                                    <span class="option" id="specValue6342" th:each="specDes:${specDescriptions.value}" th:text="${specDes.specValue}">39</span>
+                                <div class="sku_list" th:each="specDescriptions:${goods.specDescriptions}"
+                                     th:if="${spec.key}==${specDescriptions.key}" th:value="${specDescriptions.key}">
+                                    <span class="option" id="specValue6342" th:each="specDes:${specDescriptions.value}"
+                                          th:text="${specDes.specValue}">39</span>
                                 </div>
                             </div>
                             <!--<div class="sku">-->
-                                <!--<h3>规格2：</h3>-->
-                                <!--<div class="sku_list">-->
-                                    <!--<span class="option"    id="specValue6349">浅卡其</span>-->
-                                    <!--<span class="option" id="specValue6351">深蓝色</span>-->
-                                <!--</div>-->
+                            <!--<h3>规格2：</h3>-->
+                            <!--<div class="sku_list">-->
+                            <!--<span class="option"    id="specValue6349">浅卡其</span>-->
+                            <!--<span class="option" id="specValue6351">深蓝色</span>-->
+                            <!--</div>-->
                             <!--</div>-->
                         </div>
                         <div class="sku sku_num">
@@ -213,9 +218,6 @@
             </div>
             <div style="width:1000px;margin:0 auto;text-align:center;">
                 <div th:utext="${goods.intro}"></div>
-                <img src="images/ghi.jpg" th:src="@{/template/0/images/ghi.jpg}" style="width:100%"/>
-                <img src="images/frd.jpg" th:src="@{/template/0/images/frd.jpg}" style="width:100%"/>
-                <img src="images/jumpimg.png" th:src="@{/template/0/images/jumpimg.png}" style="width:100%"/>
             </div>
         </div>
     </div>
@@ -249,7 +251,7 @@
             shadeClose: true,
             shade: 0.8,
             area: ['410px', '450px'],
-            content: "/front/bind/qrCode?goodsId="+ goodsId,
+            content: "/front/bind/qrCode?goodsId=" + goodsId,
             end: function () {
 //                window.console.log("!1");
             }

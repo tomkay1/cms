@@ -104,7 +104,7 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
         }
 
         String appid = configInfo.getAppid();
-        String url = "https://open.weixin.qq.com/connect/qrconnect?appid="+appid+"&redirect_uri=http%3A%2F%2F"+request.getServerName()+remotePort+"%2Ffront%2Fbind%2Fcallback%2F&response_type=code&scope=snsapi_login&state=" + goodsId;
+        String url = "https://open.weixin.qq.com/connect/qrconnect?appid="+appid+"&redirect_uri=http%3A%2F%2F"+request.getServerName()+remotePort+"%2Fbind%2Fcallback%2F&response_type=code&scope=snsapi_login&state=" + goodsId;
         return url;
     }
 

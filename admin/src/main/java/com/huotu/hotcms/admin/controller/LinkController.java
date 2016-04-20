@@ -45,7 +45,13 @@ public class LinkController {
     @Autowired
     private CookieUser cookieUser;
 
-
+    /**
+     *
+     * 链接列表页面
+     * @param id
+     * @return
+     * @throws Exception
+     */
     @RequestMapping("/linkList")
     public ModelAndView linkList(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception
     {
@@ -66,8 +72,12 @@ public class LinkController {
     }
 
 
-
-
+    /**
+     * 添加链接
+     * @param customerId
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/addLink")
     public ModelAndView addLink(Integer customerId) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
@@ -75,9 +85,14 @@ public class LinkController {
         return  modelAndView;
     }
 
-    /*
-  * 修改链接
-  * */
+    /**
+     *
+     * 修改链接
+     * @param id
+     * @param customerId
+     * @return
+     * @throws Exception
+     */
     @RequestMapping("/updateLink")
     public ModelAndView updateLink(@RequestParam(value = "id",defaultValue = "0") Long id,Integer customerId) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
@@ -101,9 +116,13 @@ public class LinkController {
     }
 
 
-    /*
-      * 更新链接
-      * */
+    /**
+     *
+     * 保存链接
+     * @param link
+     * @param categoryId
+     * @return
+     */
     @RequestMapping(value = "/saveLink",method = RequestMethod.POST)
     @Transactional(value = "transactionManager")
     @ResponseBody
@@ -135,6 +154,14 @@ public class LinkController {
     }
 
 
+    /**
+     * 获取链接链表页内容
+     * @param customerId
+     * @param title
+     * @param page
+     * @param pageSize
+     * @return
+     */
     @RequestMapping(value = "/getLinkList")
     @ResponseBody
     public PageData<LinkCategory> getLinkList(@RequestParam(name="customerId",required = false) Integer customerId,
@@ -145,6 +172,14 @@ public class LinkController {
         return pageModel;
     }
 
+    /**
+     *
+     * 删除(管理员权限)
+     * @param id
+     * @param customerId
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/deleteLink",method = RequestMethod.POST)
     @ResponseBody
     public ResultView deleteLink(@RequestParam(name = "id",required = true,defaultValue = "0") Long id,int customerId,HttpServletRequest request) {

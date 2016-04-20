@@ -55,8 +55,7 @@ public class CategoryTreeModel extends Category {
 //            String time=category.getCreateTime().getYear()+"-"+category.getCreateTime().getMonthValue()+"-"+category.getCreateTime().getDayOfMonth();
             categoryTreeModel.setTime(category.getCreateTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
             this.children.add(categoryTreeModel);
-        };
-        return;
+        }
     }
 
     public static CategoryTreeModel ConvertToCategoryTreeModel(Category category){

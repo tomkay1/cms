@@ -41,6 +41,12 @@ public class VideoController {
     @Autowired
     private CookieUser cookieUser;
 
+    /**
+     * 视频列表
+     * @param id
+     * @return
+     * @throws Exception
+     */
     @RequestMapping("/videoList")
     public ModelAndView videoList(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception
     {
@@ -61,8 +67,12 @@ public class VideoController {
     }
 
 
-
-
+    /**
+     * 添加视频信息页面
+     * @param customerId
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/addVideo")
     public ModelAndView addVideo(Integer customerId) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
@@ -70,9 +80,14 @@ public class VideoController {
         return  modelAndView;
     }
 
-    /*
-  * 修改VIdeo
-  * */
+    /**
+     *
+     * 修改视频
+     * @param id
+     * @param customerId
+     * @return
+     * @throws Exception
+     */
     @RequestMapping("/updateVideo")
     public ModelAndView updateVideo(@RequestParam(value = "id",defaultValue = "0") Long id,Integer customerId) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
@@ -96,9 +111,12 @@ public class VideoController {
     }
 
 
-    /*
-      * 保存video
-      * */
+    /**
+     * 保存video
+     * @param video
+     * @param categoryId
+     * @return
+     */
     @RequestMapping(value = "/saveVideo",method = RequestMethod.POST)
     @Transactional(value = "transactionManager")
     @ResponseBody
@@ -130,7 +148,13 @@ public class VideoController {
     }
 
 
-
+    /**
+     * 删除video
+     * @param id
+     * @param customerId
+     * @param request
+     * @return
+     */
 
     @RequestMapping(value = "/deleteVideo",method = RequestMethod.POST)
     @ResponseBody

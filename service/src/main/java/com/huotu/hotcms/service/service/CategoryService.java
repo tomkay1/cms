@@ -14,9 +14,14 @@ import java.util.List;
  */
 public interface CategoryService {
     Category getCategoryById(Long id);
+
     Boolean save(Category category);
+
     List<Category>  getCategoryBySiteAndDeletedAndNameContainingOrderByOrderWeightDesc(Site site,Boolean deleted,String name);
 
+    /**
+     * 根据栏目获取栏目树
+     */
     List<CategoryTreeModel> ConvertCategoryTreeByCategory(List<Category> categories);
 
     Boolean saveCategoryAndRoute(Category category,String route,String template,RouteType routeType) throws Exception;

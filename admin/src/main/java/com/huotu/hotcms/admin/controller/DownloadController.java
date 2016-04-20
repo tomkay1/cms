@@ -43,7 +43,13 @@ public class DownloadController {
     @Autowired
     private CookieUser cookieUser;
 
-
+    /**
+     * 下载模型列表页
+     *
+     * @param id
+     * @return
+     * @throws Exception
+     */
         @RequestMapping("/downloadList")
         public ModelAndView downloadList(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception
         {
@@ -61,9 +67,13 @@ public class DownloadController {
         }
 
 
-
-
-
+    /**
+     *
+     * 添加下载
+     * @param customerId
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/addDownload")
     public ModelAndView addDownload(Integer customerId) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
@@ -71,9 +81,14 @@ public class DownloadController {
         return  modelAndView;
     }
 
-    /*
-  * 修改图库
-  * */
+    /**
+     *
+     *修改下载
+     * @param id
+     * @param customerId
+     * @return
+     * @throws Exception
+     */
     @RequestMapping("/updateDownload")
     public ModelAndView updateDownload(@RequestParam(value = "id",defaultValue = "0") Long id,Integer customerId) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
@@ -96,9 +111,13 @@ public class DownloadController {
         return modelAndView;
     }
 
-    /*
-      * 更新下载
-      * */
+    /**
+     *
+     * 保存下载模型
+     * @param download
+     * @param categoryId
+     * @return
+     */
     @RequestMapping(value = "/saveDownload",method = RequestMethod.POST)
     @Transactional(value = "transactionManager")
     @ResponseBody
@@ -130,8 +149,14 @@ public class DownloadController {
     }
 
 
-
-
+    /**
+     *
+     * 删除(管理员权限)
+     * @param id
+     * @param customerId
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/deleteDownload",method = RequestMethod.POST)
     @ResponseBody
     public ResultView deleteDownload(@RequestParam(name = "id",required = true,defaultValue = "0") Long id,int customerId,HttpServletRequest request) {

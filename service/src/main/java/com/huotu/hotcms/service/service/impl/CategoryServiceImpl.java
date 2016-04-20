@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Created by chendeyu on 2015/12/31.
+ * Created by xhl on 2015/12/31.
  */
 @Service
 public class CategoryServiceImpl implements CategoryService {

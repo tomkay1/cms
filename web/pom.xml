@@ -22,7 +22,9 @@
     <packaging>war</packaging>
 
     <name>web</name>
-
+    <description>
+        cms系统前端页面
+    </description>
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

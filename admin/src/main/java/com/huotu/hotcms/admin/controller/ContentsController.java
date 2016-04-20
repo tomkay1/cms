@@ -49,6 +49,14 @@ public class ContentsController {
     @Autowired
     CategoryRepository categoryRepository;
 
+    /**
+     *
+     * 内容列表页面
+     * @param request
+     * @param siteId
+     * @return
+     * @throws Exception
+     */
     @RequestMapping("/contentsList")
     public ModelAndView contentsList(HttpServletRequest request,
                                      @RequestParam(name = "siteId",required = false,defaultValue = "0")Long siteId) throws Exception {
@@ -72,6 +80,15 @@ public class ContentsController {
         return modelAndView;
         }
 
+    /**
+     *
+     * 添加cms内容
+     * @param customerId
+     * @param siteId
+     * @param category
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/addContents")
     public ModelAndView addContents(Integer customerId,Long siteId,Long category) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
@@ -95,7 +112,14 @@ public class ContentsController {
             return modelAndView;
         }
 
-    //���ı�վ��ʱ����Ŀ�Զ��仯
+    /**
+     *
+     * 内容页面条件选择框
+     * @param request
+     * @param siteId
+     * @return
+     * @throws Exception
+     */
     @RequestMapping("/contentsSelect")
     @ResponseBody
     public List<SiteCategory> contentsSelect(HttpServletRequest request,
@@ -114,6 +138,17 @@ public class ContentsController {
         return  siteCategoryList;
     }
 
+
+    /**
+     *
+     * 获取内容列表详细信息
+     * @param title
+     * @param siteId
+     * @param category
+     * @param page
+     * @param pageSize
+     * @return
+     */
     @RequestMapping(value = "/getContentsList")
     @ResponseBody
     public PageData<Contents> getContentsList(

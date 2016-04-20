@@ -13,21 +13,29 @@ import java.util.Set;
  * Created by chendeyu on 2015/12/24.
  */
 public interface SiteRepository  extends JpaRepository<Site, Long>,JpaSpecificationExecutor {
-    Site findByCustomerIdAndName(Integer customId,String name);
+
 
     List<Site> findByHosts(Host host);
 
-    Set<Site> findByCustomerId(int customerId);
-
+    /**
+     * 根据商户查询所有站点
+     */
     List<Site> findByCustomerIdAndDeletedOrderBySiteIdDesc(int customerId,Boolean deleted);
 
     Set<Site> findByCustomerIdAndDeleted(int customerId,Boolean deleted);
 
+    /**
+     * 根据商户,和站点查询所有站点
+     */
     Site findBySiteIdAndCustomerId(Long siteId,int customerId);
 
-    Site findByTitle(String title);
-
+    /**
+     * 根据商户和个性化查询站点
+     */
     List<Site> findByCustomerIdAndDeletedAndPersonaliseOrderBySiteIdDesc(int customerId,Boolean deleted,Boolean Personalise);
 
+    /**
+     * 根据商户和个性化,以及站点类型(Pc官网或者pc商城)查询站点
+     */
     List<Site> findByCustomerIdAndDeletedAndPersonaliseAndSiteTypeOrderBySiteIdDesc(int customerId,Boolean deleted,Boolean Personalise,SiteType siteType);
 }

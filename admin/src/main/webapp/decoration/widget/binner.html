@@ -1,0 +1,267 @@
+<!--banner.html-->
+<!--浏览试图-->
+<div class="fn-clear js-hot-module js-binner HOTAnnounce-6915 toolhover" th:attr="id=${guid}">
+    <div class="mc" style="overflow: visible;">
+        <div style=" height:460px;" class="fullSlide">
+            <div class="bd">
+                <ul>
+                    <li th:each="row:${Rows}"
+                        th:style="|background:url(${row.bgImg_Rows}) ${row.bgColor_Rows} center 0 no-repeat;|">
+                        <a style="height:460px" target="" th:href="${request.rootUri} + ${row.url_Rows}"></a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="hd">
+                <ul></ul>
+            </div>
+        </div>
+    </div>
+    <div class="module-toolbal-container ui-draggable" th:if="${edit}">
+        <div class="module-assist" style="padding-top: 32px;"></div>
+        <div class="module-toolbar HOT-module-toolbar" style="height:120px; width:100%;">
+            <h4 style="cursor: move;">
+        <span class="module-extra">
+        <a class="icon-del js-module-delete" href="javascript:void(0)"
+           th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+                    <a class="icon-up js-module-up" href="javascript:void(0)"
+                       th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+                    <a class="icon-down js-module-down" href="javascript:void(0)"
+                       th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+        </span>
+                <span class="module-name HOT-module-name">广告</span>
+        <span class="HOT-module-set">
+        <a href="javascript:void(0)" class="HOT-module-set-data js-widget-edit"
+           th:attr="data-editurl=${widgetEditUri},data-id=${id},data-for=${guid},data-url=${widgetUri},data-layoutid=${layoutId},data-position=${layoutPosition}">
+            编辑
+        </a>
+        <a href="javascript:void(0)" class="HOT-module-set-template">
+            模板
+        </a>
+        </span>
+            </h4>
+        </div>
+    </div>
+</div>
+
+<!--binner.html-->
+<!--编辑视图-->
+<div id="module_area">
+    <script src="../libs/JColor/spectrum.js" type="application/javascript"></script>
+    <link href="../libs/JColor/spectrum.css" rel="stylesheet"/>
+    <style>
+        .forms label {
+            text-align: left;
+        }
+        .sp-preview{
+            width:25px;
+        }
+    </style>
+    <div class="page-operate">
+        <a class="btn-green" href="javascript:void(0)" id="js-nav-add">增加广告</a>
+    </div>
+    <div class="data-table">
+        <div class="table-thead">
+            <table cellspacing="0" cellpadding="0" border="0">
+                <thead>
+                <tr>
+                    <th>背景颜色<em>*</em></th>
+                    <th>背景图片<em>*</em></th>
+                    <th>链接地址<em>*</em></th>
+                    <th>打开方式<em>*</em></th>
+                    <th class="operate">操作</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="table-tbody" id="links-form" style="max-height:255px;">
+            <table id="linkTable" cellspacing="0" cellpadding="0" border="0">
+                <tbody id="js-nav-box">
+                <tr th:each="row,iterStat:${Rows}" th:id="${iterStat.index}">
+                    <td>
+                        <input type="text" class="js-hot-color input-normal" id="goods_pageBackGround"
+                               th:attr="data-default=${row.bgColor_Rows==null?'#73583e':row.bgColor_Rows},data-trid=${iterStat.index}" data-default="#73583e" data-input="bgColor_Rows"/>
+                        <input type="hidden" class="js-hot-properties" th:value="${row.bgColor_Rows}" name="bgColor_Rows" style="background:#73583e"/>
+                    </td>
+                    <td>
+                        <input type="text" id="pageBackImage" name="bgImg_Rows" th:value="${row.bgImg_Rows}" maxlength="50" class="input-normal" style="width:115px;"/>
+                        <a href="javascript:void(0)" class="js-cms-selectPageBackImage">图片选择</a>
+                    </td>
+                    <td>
+                        <input type="text" class="text-normal" name="url_Rows" th:value="${row.url_Rows}" maxlength="256" style="width:115px;">
+                    </td>
+                    <td>
+                        <select name="type_Rows" class="select-short" style="width:50px">
+                            <option value="0" th:selected="(${row.type_Rows}=='0'?selected)">当前窗口打开</option>
+                            <option value="1" th:selected="(${row.type_Rows}=='1'?selected)">新窗口打开</option>
+                        </select>
+                    </td>
+                    <td class="operate">
+                        <span class="icon-up js-nav-up" title="上移" th:attr="data-id=${iterStat.index}"></span>
+                        <span class="icon-down js-nav-next" title="下移" th:attr="data-id=${iterStat.index}"></span>
+                        <span class="icon-del js-nav-delete" title="删除" th:attr="data-id=${iterStat.index}"></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script type="application/template" id="js-nav-template">
+        <tr id="{id}">
+            <td>
+                <input type="text" class="js-hot-color input-normal" data-default="#73583e" data-input="bgColor_Rows" data-trid="{id}"/>
+                <input type="hidden" class="js-hot-properties" name="bgColor_Rows" value="#73583e" style="background:#73583e"/>
+            </td>
+            <td>
+                <input type="text" name="bgImg_Rows" maxlength="50" class="input-normal"  style="width:115px;"/>
+                <a href="javascript:void(0)" class="js-cms-selectPageBackImage">图片选择</a>
+            </td>
+            <td>
+                <input type="text" class="text-normal" name="url_Rows" maxlength="256"  style="width:115px;">
+            </td>
+            <td>
+                <select name="type_Rows" class="select-short"  style="width:50px">
+                    <option value="0">当前窗口打开</option>
+                    <option value="1">新窗口打开</option>
+                </select>
+            </td>
+            <td class="operate">
+                <span class="icon-up js-nav-up" title="上移" data-id="{id}"></span>
+                <span class="icon-down js-nav-next" title="下移" data-id="{id}"></span>
+                <span class="icon-del js-nav-delete" title="删除" data-id="{id}"></span>
+            </td>
+        </tr>
+    </script>
+    <script type="application/javascript">
+        var navModule = {
+            addNav: function () {
+                var obj = $("#js-nav-add");
+                $.each(obj, function (item, dom) {
+                    $(dom).click(function () {
+                        var html = $("#js-nav-template").html();
+                        var defaultID = new Date().getTime();
+                        var obj = {id: defaultID};
+                        html = JUtils.resolveTemplate(obj, html);
+                        $("#js-nav-box").append(html);
+                        navModule.deleteNav();
+                        navModule.upNav();
+                        navModule.downNav();
+                        colorModule.color();
+                        bgImage.selectImg();
+                    });
+                });
+            },
+            deleteNav: function () {
+                var obj = $(".js-nav-delete");
+                obj.unbind("click");
+                $.each(obj, function (item, dom) {
+                    $(dom).click(function () {
+                        var id = $(dom).data('id');
+                        $("#" + id).remove();
+                    });
+                });
+            },
+            upNav: function () {
+                var obj = $(".js-nav-up");
+                obj.unbind("click");
+                $.each(obj, function (item, dom) {
+                    $(dom).click(function () {
+                        var id = $(dom).data('id');
+                        var up = $("#" + id).prev();
+                        if (up.length > 0) {
+                            $("#" + id).insertBefore(up);
+                        }
+                    });
+                });
+            },
+            downNav: function () {
+                var obj = $(".js-nav-next");
+                obj.unbind("click");
+                $.each(obj, function (item, dom) {
+                    $(dom).click(function () {
+                        var id = $(dom).data('id');
+                        var down = $("#" + id).next();
+                        if (down.length > 0) {
+                            $("#" + id).insertAfter(down);
+                        }
+                    });
+                });
+            }
+        }
+        var colorModule = {
+            color: function(){
+                var obj = $(".js-hot-color");
+                $.each(obj, function (item, dom) {
+                    var inputValueName = $(dom).data("input");
+                    var defaultColor = $(dom).data("default");
+                    var trId = $(dom).data("trid");
+                    $(dom).spectrum({
+                        allowEmpty: true,
+                        chooseText: "ȷ��",
+                        cancelText: "ȡ��",
+                        color: defaultColor,
+                        preferredFormat: "rgb",
+                        showInitial: false,
+                        showButtons: false,
+                        showInput: true,
+//                        width: "20px",
+                        change: function (color) {
+                            $("tr[id="+trId+"] input[name="+inputValueName+"]").val(color.toHexString());
+                        }
+                    });
+                });
+            }
+        }
+        var bgImage = {
+            /**
+             * @brief 获得页面参数
+             * @param 参数名
+             * */
+            getQuery: function(name){
+                var strHref = window.parent.document.location.href;
+                var intPos = strHref.indexOf("?");
+                var strRight = strHref.substr(intPos + 1);
+                var arrTmp = strRight.split("&");
+                for (var i = 0; i < arrTmp.length; i++) {
+                    var arrTemp = arrTmp[i].split("=");
+                    if (arrTemp[0].toUpperCase() == name.toUpperCase()) return arrTemp[1];
+                }
+                if (arguments.length == 1)
+                    return "";
+                if (arguments.length == 2)
+                    return arguments[1];
+            },
+            selectImg:function(){
+                var obj = $(".js-cms-selectPageBackImage");
+                $.each(obj, function (item, dom) {
+                    $(dom).click(function(){
+                        parent.layer.open({
+                            type: 2,
+                            title: "图片库",
+                            shadeClose: true,
+                            shade: 0.8,
+                            closeBtn: 1,
+                            area: ['700px', '580px'],
+                            content: "/assets/js/jPicture/photo.html?customerId=" + customerId + "&isMult=false&v=1.2",
+                            //btn:["确定"],
+                            end: function (index, layero) {
+                                var jsonStr = parent.$("#js_cms_picture_value").val();
+                                var obj = JSON.parse(jsonStr);
+                                if (typeof obj !== "undefined") {
+                                    $(dom).prev().val(obj[0].localUri);
+                                }
+                            }
+                        });
+                    })
+                });
+            }
+        }
+        var customerId = bgImage.getQuery("customerid");
+        navModule.addNav();
+        navModule.deleteNav();
+        navModule.upNav();
+        navModule.downNav();
+        colorModule.color();
+        bgImage.selectImg();
+    </script>
+</div>

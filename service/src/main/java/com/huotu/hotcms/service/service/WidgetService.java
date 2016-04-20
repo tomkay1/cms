@@ -68,6 +68,12 @@ public  interface WidgetService {
 
     WidgetMains findWidgetMainsById(Long id);
 
+    /**
+     * 根据控件类型查找控件主体
+     *
+     * @param id
+     * @return
+     */
     List<WidgetMains> findWidgetMainsByWidgetTypeId(Long id);
 
     List<WidgetList> findList();

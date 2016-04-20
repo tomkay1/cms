@@ -16,6 +16,13 @@ public interface  GalleryService {
 
     List<Gallery> getSpecifyGallerys(String[] specifyIds);
 
-    Page<Gallery> getGalleryList(PageableForeachParam oreachParam) throws Exception;
+    /**
+     * 标签解析时获取所有gallery
+     *
+     * @param foreachParam
+     * @return
+     * @throws Exception
+     */
+    Page<Gallery> getGalleryList(PageableForeachParam foreachParam) throws Exception;
 
 }

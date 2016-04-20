@@ -59,6 +59,12 @@ public class SiteController {
     @Autowired
     private CookieUser cookieUser;
 
+    /**
+     * 站点列表页面
+     * @param request
+     * @return
+     * @throws Exception
+     */
     @RequestMapping("/siteList")
     public ModelAndView siteList(HttpServletRequest request) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
@@ -66,7 +72,13 @@ public class SiteController {
         return modelAndView;
     }
 
-
+    /**
+     *
+     * 添加站点页面
+     * @param request
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/addSite")
     public ModelAndView addSite(HttpServletRequest request) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
@@ -130,6 +142,13 @@ public class SiteController {
         return result;
     }
 
+    /**
+     * 修改站点页面
+     * @param id
+     * @param customerId
+     * @return
+     * @throws Exception
+     */
     @RequestMapping("/updateSite")
     public ModelAndView updateSite(@RequestParam(value = "id", defaultValue = "0") Long id, int customerId) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
@@ -163,6 +182,14 @@ public class SiteController {
         return modelAndView;
     }
 
+    /**
+     * 获取站点
+     * @param customerId
+     * @param name
+     * @param page
+     * @param pageSize
+     * @return
+     */
     @RequestMapping(value = "/getSiteList")
     @ResponseBody
     public PageData<Site> getModelList(@RequestParam(name = "customerId", required = false) Integer customerId,
@@ -178,6 +205,13 @@ public class SiteController {
         return pageModel;
     }
 
+    /**
+     * 删除站点(管理员权限)
+     * @param id
+     * @param customerId
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/deleteSite", method = RequestMethod.POST)
     @ResponseBody
     public ResultView deleteModel(@RequestParam(name = "id", required = true, defaultValue = "0") Long id, int customerId, HttpServletRequest request) {

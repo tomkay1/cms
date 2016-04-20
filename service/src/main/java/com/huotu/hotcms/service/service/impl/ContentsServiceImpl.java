@@ -44,10 +44,7 @@ public class ContentsServiceImpl implements ContentsService {
         }
         else{
             String parentIds=categoryService.getCategoryParentIds(category);
-//            Page<Object> page1=baseEntityRepository.findAllContents(siteId,parentIds,title,new PageRequest(page - 1, pageSize));
             contentsList=baseEntityRepository.findAllContentsBySiteIdAndCategoryIdsAndName(siteId,parentIds,title,(page-1)*pageSize,pageSize);
-//            contentsList=baseEntityRepository.findAllContentsBySiteIdAndCategoryIdsAndName(siteId,"26,31,32,39,40,41",title,(page-1)*pageSize,pageSize);
-//            contentsList = baseEntityRepository.findAllContentsBySiteIdAndCategoryIdAndName(siteId, category,title,(page-1)*pageSize,pageSize);
             contentsSize =baseEntityRepository.findContentsSizeBySiteIdAndCategoryIdsAndName(siteId, parentIds, title);
         }
         List<Contents> contentsList1 = new ArrayList<>();
@@ -90,44 +87,4 @@ public class ContentsServiceImpl implements ContentsService {
         return data;
     }
 
-
-//    @Override//当站点和栏目都搜索了
-//    public PageData<Contents> getPage(String title,Long siteId,Long categoryId, int page, int pageSize) {
-//        PageData<Contents> data = null;
-//        Specification<BaseEntity> specification = (root, query, cb) -> {
-//            List<Predicate> predicates = new ArrayList<>();
-//            if (!StringUtils.isEmpty(title)) {
-//                predicates.add(cb.like(root.get("title").as(String.class), "%" + title + "%"));
-//            }
-//            predicates.add(cb.equal(root.get("deleted").as(String.class), false));
-//            Join<BaseEntity,Category> category=root.join(root.getModel().getSingularAttribute("category",Category.class));
-////            predicates.add(cb.equal(root.get("category").as(Category.class).g))
-//            predicates.add(cb.equal(category.get("id"), categoryId));
-////            predicates.add(cb.equal(root.get("customerId").as(Integer.class), customerId));
-//            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
-//        };
-//        Page<BaseEntity> pageData = baseEntityRepository.findAll(specification, new PageRequest(page - 1, pageSize));
-//        if (pageData != null) {
-//            List<BaseEntity> baseModelList =pageData.getContent();
-//            List<Contents> contentsList =new ArrayList<>();
-//            for(BaseEntity baseModel : baseModelList){
-//                Contents contents = new Contents();
-//                contents.setModelname(ModelType.valueOf(baseModel.getCategory().getModelId()).getValue().toString());//模型名称
-//                contents.setModelId(baseModel.getCategory().getModelId());//模型Id
-//                contents.setModel(ModelType.valueOf(baseModel.getCategory().getModelId()).getValue().toString());//用来取得模型小写字母，来跳转
-//                contents.setTitle(baseModel.getTitle());
-//                contents.setName(baseModel.getCategory().getName());
-//                contents.setCreateTime(baseModel.getCreateTime());
-//                contents.setDescription(baseModel.getDescription());
-//                contentsList.add(contents);
-//            }
-//            data = new PageData<Contents>();
-//            data.setPageCount(pageData.getTotalPages());
-//            data.setPageIndex(pageData.getNumber());
-//            data.setPageSize(pageData.getSize());
-//            data.setTotal(pageData.getTotalElements());
-//            data.setRows((Contents[])contentsList.toArray(new Contents[contentsList.size()]));
-//        }
-//        return data;
-//    }
 }

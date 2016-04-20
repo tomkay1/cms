@@ -13,7 +13,16 @@ import java.net.URISyntaxException;
 public interface GalleryListService {
 
 
-
+    /**
+     * 获取gallery的分页
+     *
+     * @param customerId
+     * @param galleryId
+     * @param page
+     * @param pageSize
+     * @return
+     * @throws URISyntaxException
+     */
     Page<GalleryList> getPage(Integer customerId, Long galleryId, int page, int pageSize) throws URISyntaxException;
 
     Boolean saveGalleryList(GalleryList galleryList);

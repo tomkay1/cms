@@ -11,6 +11,7 @@ package com.huotu.hotcms.service.thymeleaf.dialect;
 import com.huotu.hotcms.service.thymeleaf.processor.GoodsCATGTagProcessor;
 import com.huotu.hotcms.service.thymeleaf.processor.GoodsPageableTagProcessor;
 import com.huotu.hotcms.service.thymeleaf.processor.HotGoodsProcessor;
+import org.springframework.stereotype.Component;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.processor.IProcessor;
@@ -22,6 +23,7 @@ import java.util.Set;
  * 商城组件方言
  * Created by cwb on 2016/3/17.
  */
+@Component
 public class WidgetDialect extends AbstractProcessorDialect {
 
     public static String NAME = "widget";

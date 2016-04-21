@@ -1,6 +1,7 @@
 package com.huotu.hotcms.service.thymeleaf.dialect;
 
 import com.huotu.hotcms.service.thymeleaf.processor.ForeachProcessor;
+import org.springframework.stereotype.Component;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.processor.IProcessor;
@@ -11,6 +12,7 @@ import java.util.Set;
 /**
  * Created by chendeyu on 2016/3/23.
  */
+@Component
 public class GalleryListDialect extends AbstractProcessorDialect{
 
     public static  String NAME = "GalleryList";

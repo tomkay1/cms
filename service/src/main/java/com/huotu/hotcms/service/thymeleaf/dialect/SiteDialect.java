@@ -10,6 +10,7 @@ package com.huotu.hotcms.service.thymeleaf.dialect;
 
 import com.huotu.hotcms.service.thymeleaf.processor.CurrentProcessor;
 import com.huotu.hotcms.service.thymeleaf.processor.ForeachProcessor;
+import org.springframework.stereotype.Component;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.processor.IProcessor;
@@ -20,6 +21,7 @@ import java.util.Set;
 /**
  * Created by Administrator on 2016/1/5.
  */
+@Component
 public class SiteDialect extends AbstractProcessorDialect {
     public static  String NAME = "Site";
     public static  String PREFIX = "site";

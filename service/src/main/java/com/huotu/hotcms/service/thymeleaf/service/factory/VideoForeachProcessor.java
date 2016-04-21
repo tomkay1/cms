@@ -22,10 +22,10 @@ import com.huotu.hotcms.service.thymeleaf.model.PageModel;
 import com.huotu.hotcms.service.thymeleaf.model.RequestModel;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import org.springframework.web.context.ContextLoader;
-import org.springframework.web.context.WebApplicationContext;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.context.IWebContext;
 import org.thymeleaf.model.IProcessableElementTag;
@@ -37,35 +37,25 @@ import java.util.List;
 /**
  * Created by cwb on 2016/1/15.
  */
-public class VideoForeachProcessorFactory {
+@Component
+public class VideoForeachProcessor {
+    private static final Log log = LogFactory.getLog(VideoForeachProcessor.class);
     private final int DEFAULT_PAGE_NO = 1;
     private final int DEFAULT_PAGE_SIZE = 12;
     private final int DEFAULT_PAGE_NUMBER = 5;
-
-    private static Log log = LogFactory.getLog(ArticleForeachProcessorFactory.class);
-
-    private static VideoForeachProcessorFactory instance;
-
-    private VideoForeachProcessorFactory() {
-    }
-
-    public static VideoForeachProcessorFactory getInstance() {
-        if(instance == null) {
-            instance = new VideoForeachProcessorFactory();
-        }
-        return instance;
-    }
-
+    @Autowired
+    private CategoryService categoryService;
+    @Autowired
+    private VideoService videoService;
 
     public Object process(IProcessableElementTag elementTag,ITemplateContext context) {
         Page<Video> videoPage = null;
         try {
-            PageableForeachParam videoForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag, PageableForeachParam.class);
+            PageableForeachParam videoForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag
+                    , PageableForeachParam.class);
 
-            WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
             HttpServletRequest request = ((IWebContext)context).getRequest();
             Route route = (Route) VariableExpression.getVariable(context, "route");
-            CategoryService categoryService = (CategoryService)applicationContext.getBean("categoryServiceImpl");
             Category current = categoryService.getCategoryByRoute(route);
             if(StringUtils.isEmpty(videoForeachParam.getCategoryid())) {
                 if(route.getRouteType()== RouteType.VIDEO_LIST) {
@@ -103,7 +93,6 @@ public class VideoForeachProcessorFactory {
             if(videoForeachParam.getPagenumber() == null) {
                 videoForeachParam.setPagenumber(DEFAULT_PAGE_NUMBER);
             }
-            VideoService videoService = (VideoService)applicationContext.getBean("videoServiceImpl");
             videoPage = videoService.getVideoList(videoForeachParam);
             //图片路径处理
             Site site = (Site)VariableExpression.getVariable(context,"site");

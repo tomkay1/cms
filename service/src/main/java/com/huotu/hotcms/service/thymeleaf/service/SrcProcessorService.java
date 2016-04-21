@@ -9,17 +9,23 @@
 package com.huotu.hotcms.service.thymeleaf.service;
 
 import com.huotu.hotcms.service.thymeleaf.common.DialectTypeEnum;
-import com.huotu.hotcms.service.thymeleaf.service.factory.ArticleSrcProcessorFactory;
+import com.huotu.hotcms.service.thymeleaf.service.factory.ArticleSrcProcessor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.thymeleaf.context.ITemplateContext;
 
 /**
  * Created by Administrator xhl 2016/1/7.
  */
-public class SrcProcessorService extends BaseProcessorService{
+@Component
+public class SrcProcessorService {
 
-    public Object resolveSrcData(String attributeValue, ITemplateContext context){
+    @Autowired
+    private ArticleSrcProcessor articleSrcProcessor;
+
+    public Object resolveSrcData(String dialectPrefix, String attributeValue, ITemplateContext context) {
         if(dialectPrefix.equals(DialectTypeEnum.ARTICLE.getDialectPrefix())) {
-            return ArticleSrcProcessorFactory.getInstance().resolveDataByAttr(attributeValue,context);
+            return articleSrcProcessor.resolveDataByAttr(attributeValue, context);
         }
         if(dialectPrefix.equals(DialectTypeEnum.SITE.getDialectPrefix())) {
             return null;

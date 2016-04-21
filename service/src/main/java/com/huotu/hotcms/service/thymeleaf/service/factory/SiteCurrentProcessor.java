@@ -10,34 +10,22 @@ package com.huotu.hotcms.service.thymeleaf.service.factory;
 
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
-import com.huotu.hotcms.service.thymeleaf.service.BaseProcessorService;
 import com.huotu.hotcms.service.util.PatternMatchUtil;
 import com.huotu.hotcms.service.util.StringUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Component;
 import org.thymeleaf.context.ITemplateContext;
 
 /**
  * Created by Administrator xhl 2016/1/6.
  */
-public class SiteCurrentProcessorFactory  extends BaseProcessorService {
+@Component
+public class SiteCurrentProcessor {
     private static final String regexp="\\$\\{([^\\}]+)}";//匹配${key}模式的正则表达式
 
-    private static final Log log = LogFactory.getLog(CategoryForeachProcessorFactory.class);
+    private static final Log log = LogFactory.getLog(CategoryForeachProcessor.class);
 
-    private static SiteCurrentProcessorFactory instance;
-
-    private SiteCurrentProcessorFactory() {
-    }
-
-    public static SiteCurrentProcessorFactory getInstance() {
-        if(instance == null) {
-            instance = new SiteCurrentProcessorFactory();
-        }
-        return instance;
-    }
-
-    @Override
     public Object resolveDataByAttr(String attributeValue, ITemplateContext context){
         Site site = (Site) VariableExpression.getVariable(context, "site");
         try {

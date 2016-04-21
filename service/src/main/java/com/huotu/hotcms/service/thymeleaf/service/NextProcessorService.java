@@ -9,7 +9,9 @@
 package com.huotu.hotcms.service.thymeleaf.service;
 
 import com.huotu.hotcms.service.thymeleaf.common.DialectTypeEnum;
-import com.huotu.hotcms.service.thymeleaf.service.factory.ArticleNextProcessorFactory;
+import com.huotu.hotcms.service.thymeleaf.service.factory.ArticleNextProcessor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.model.IProcessableElementTag;
 
@@ -23,13 +25,18 @@ import org.thymeleaf.model.IProcessableElementTag;
  *
  * @since 1.0.0
  */
-public class NextProcessorService extends BaseProcessorService {
-    public Object resolveDataByAttr(IProcessableElementTag tab,ITemplateContext context){
+@Component
+public class NextProcessorService {
+
+    @Autowired
+    private ArticleNextProcessor articleNextProcessor;
+
+    public Object resolveDataByAttr(String dialectPrefix, IProcessableElementTag tab, ITemplateContext context) {
         if (dialectPrefix.equals(DialectTypeEnum.ARTICLE.getDialectPrefix())) {
-            return ArticleNextProcessorFactory.getInstance().resolveDataByAttr(tab,context);
+            return articleNextProcessor.resolveDataByAttr(tab, context);
         }
         if(dialectPrefix.equals(DialectTypeEnum.VIDEO.getDialectPrefix())){
-//            return VideoCurrentProcessorFactory.getInstance().resolveDataByAttr(tab,context);
+//            return VideoCurrentProcessor.getInstance().resolveDataByAttr(tab,context);
         }
         if (dialectPrefix.equals(DialectTypeEnum.SITE.getDialectPrefix())) {
             return null;

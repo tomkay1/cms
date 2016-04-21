@@ -11,6 +11,9 @@ package com.huotu.hotcms.service.thymeleaf.dialect;
 import com.huotu.hotcms.service.thymeleaf.processor.GoodsCATGTagProcessor;
 import com.huotu.hotcms.service.thymeleaf.processor.GoodsPageableTagProcessor;
 import com.huotu.hotcms.service.thymeleaf.processor.HotGoodsProcessor;
+import com.huotu.hotcms.service.widget.service.GoodsCategoryService;
+import com.huotu.hotcms.service.widget.service.GoodsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
 import org.thymeleaf.dialect.IProcessorDialect;
@@ -29,6 +32,10 @@ public class WidgetDialect extends AbstractProcessorDialect {
     public static String NAME = "widget";
     public static String PREFIX = "widget";
     public static  int PROCESSOR_PRECEDENCE = 800;
+    @Autowired
+    private GoodsCategoryService goodsCategoryService;
+    @Autowired
+    private GoodsService goodsService;
 
     public WidgetDialect() {
         super(NAME, PREFIX, PROCESSOR_PRECEDENCE);
@@ -41,9 +48,9 @@ public class WidgetDialect extends AbstractProcessorDialect {
 
     private Set<IProcessor> createWidgetProcessorsSet(final IProcessorDialect dialect, String dialectPrefix) {
         final Set<IProcessor> processors = new LinkedHashSet<IProcessor>();
-        processors.add(new GoodsPageableTagProcessor(dialect,dialectPrefix));
-        processors.add(new GoodsCATGTagProcessor(dialect,dialectPrefix));
-        processors.add(new HotGoodsProcessor(dialect,dialectPrefix));
+        processors.add(new GoodsPageableTagProcessor(dialect, dialectPrefix, goodsService));
+        processors.add(new GoodsCATGTagProcessor(dialect, dialectPrefix, goodsCategoryService));
+        processors.add(new HotGoodsProcessor(dialect, dialectPrefix, goodsService));
         return processors;
     }
 

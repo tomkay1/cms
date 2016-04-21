@@ -10,6 +10,9 @@ package com.huotu.hotcms.service.thymeleaf.dialect;
 
 import com.huotu.hotcms.service.thymeleaf.processor.CurrentProcessor;
 import com.huotu.hotcms.service.thymeleaf.processor.ForeachProcessor;
+import com.huotu.hotcms.service.thymeleaf.service.CurrentProcessorService;
+import com.huotu.hotcms.service.thymeleaf.service.ForeachProcessorService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
 import org.thymeleaf.dialect.IProcessorDialect;
@@ -26,6 +29,10 @@ public class VideoDialect extends AbstractProcessorDialect {
     public static  String NAME = "Video";
     public static  String PREFIX = "video";
     public static  int PROCESSOR_PRECEDENCE = 800;
+    @Autowired
+    private ForeachProcessorService foreachProcessorService;
+    @Autowired
+    private CurrentProcessorService currentProcessorService;
 
     public VideoDialect() {
         super(NAME, PREFIX, PROCESSOR_PRECEDENCE);
@@ -38,8 +45,8 @@ public class VideoDialect extends AbstractProcessorDialect {
 
     private Set<IProcessor> createArticleProcessorsSet(final IProcessorDialect dialect, final String dialectPrefix) {
         final Set<IProcessor> processors = new LinkedHashSet<IProcessor>();
-        processors.add(new ForeachProcessor(dialect,dialectPrefix));
-        processors.add(new CurrentProcessor(dialect,dialectPrefix));
+        processors.add(new ForeachProcessor(dialect, dialectPrefix, foreachProcessorService));
+        processors.add(new CurrentProcessor(dialect, dialectPrefix, currentProcessorService));
         return processors;
     }
 }

@@ -19,12 +19,9 @@ import com.huotu.hotcms.service.widget.model.GoodsSearcher;
 import com.huotu.hotcms.service.widget.service.GoodsService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.web.context.ContextLoader;
-import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.thymeleaf.context.ITemplateContext;
-import org.thymeleaf.context.IWebContext;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.engine.AttributeName;
 import org.thymeleaf.model.IProcessableElementTag;
@@ -44,11 +41,12 @@ public class GoodsPageableTagProcessor extends AbstractAttributeTagProcessor {
 
     public static final String ATTR_NAME = "page";
     public static final int PRECEDENCE = 1300;
-
     private static Log log = LogFactory.getLog(GoodsPageableTagProcessor.class);
+    private final GoodsService goodsService;
 
-    public GoodsPageableTagProcessor(IProcessorDialect dialect, String dialectPrefix) {
+    public GoodsPageableTagProcessor(IProcessorDialect dialect, String dialectPrefix, GoodsService goodsService) {
         super(dialect, TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
+        this.goodsService = goodsService;
     }
 
     @Override
@@ -59,8 +57,6 @@ public class GoodsPageableTagProcessor extends AbstractAttributeTagProcessor {
     }
 
     private Object invokeGoodsPageableService(IProcessableElementTag tag, ITemplateContext context) {
-        WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
-        GoodsService goodsService = applicationContext.getBean("goodsServiceImpl",GoodsService.class);
         int customerId = ((Site) VariableExpression.getVariable(context, "site")).getCustomerId();
         GoodsPage goodsPage = null;
         try {

@@ -32,12 +32,15 @@ public class FormatProcessor  extends AbstractStandardExpressionAttributeTagProc
 
 
     public static final String ATTR_NAME = "format";
-    private FormatProcessorService formatProcessorService;
+    private final FormatProcessorService formatProcessorService;
+    private final String dialectPrefix;
 
-    public FormatProcessor(final IProcessorDialect dialect,final String dialectPrefix) {
+    public FormatProcessor(final IProcessorDialect dialect, final String dialectPrefix
+            , FormatProcessorService formatProcessorService) {
         super(dialect, TemplateMode.HTML, dialectPrefix,  ATTR_NAME, PRECEDENCE, true);
-        this.formatProcessorService = new FormatProcessorService();
-        this.formatProcessorService.setDialectPrefix(dialectPrefix);
+        this.formatProcessorService = formatProcessorService;
+//        this.formatProcessorService.setDialectPrefix(dialectPrefix);
+        this.dialectPrefix = dialectPrefix;
     }
 
     @Override
@@ -48,7 +51,7 @@ public class FormatProcessor  extends AbstractStandardExpressionAttributeTagProc
                              Object expressionResult,
                              IElementTagStructureHandler structureHandler) {
 
-        Object obj=this.formatProcessorService.resolveDataByAttr(tag,context,expressionResult);
+        Object obj = this.formatProcessorService.resolveDataByAttr(dialectPrefix, tag, context, expressionResult);
         String text =obj!=null?obj.toString():"";
         structureHandler.setBody(text, false);
 

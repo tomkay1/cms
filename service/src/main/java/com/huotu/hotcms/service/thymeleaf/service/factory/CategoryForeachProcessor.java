@@ -18,38 +18,28 @@ import com.huotu.hotcms.service.thymeleaf.expression.DialectAttributeFactory;
 import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import org.springframework.web.context.ContextLoader;
-import org.springframework.web.context.WebApplicationContext;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.model.IProcessableElementTag;
 
 /**
  * Created by cwb on 2016/1/6.
  */
-public class CategoryForeachProcessorFactory {
+@Component
+public class CategoryForeachProcessor {
 
+    private static final Log log = LogFactory.getLog(CategoryForeachProcessor.class);
     private final int DEFAULT_SIZE = 6;
-
-    private static final Log log = LogFactory.getLog(CategoryForeachProcessorFactory.class);
-
-    private static CategoryForeachProcessorFactory instance;
-
-    private CategoryForeachProcessorFactory(){
-    }
-
-    public static CategoryForeachProcessorFactory getInstance() {
-        if(instance == null) {
-            instance = new CategoryForeachProcessorFactory();
-        }
-        return instance;
-    }
+    @Autowired
+    private CategoryService categoryService;
 
     public Object process(IProcessableElementTag elementTag, ITemplateContext context) {
         try {
-            WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
-            CategoryForeachParam categoryForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag, CategoryForeachParam.class);
-            CategoryService categoryService = (CategoryService)applicationContext.getBean("categoryServiceImpl");
+            CategoryForeachParam categoryForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag
+                    , CategoryForeachParam.class);
+
             //根据指定id获取栏目列表
             if(!StringUtils.isEmpty(categoryForeachParam.getSpecifyids())) {
                 return categoryService.getSpecifyCategories(categoryForeachParam.getSpecifyids());

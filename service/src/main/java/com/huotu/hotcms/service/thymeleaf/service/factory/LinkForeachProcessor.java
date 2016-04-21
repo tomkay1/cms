@@ -16,9 +16,9 @@ import com.huotu.hotcms.service.thymeleaf.expression.DialectAttributeFactory;
 import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import org.springframework.web.context.ContextLoader;
-import org.springframework.web.context.WebApplicationContext;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.model.IProcessableElementTag;
 
@@ -28,27 +28,20 @@ import java.util.List;
 /**
  * Created by cwb on 2016/1/6.
  */
-public class LinkForeachProcessorFactory {
+@Component
+public class LinkForeachProcessor {
 
+    private static Log log = LogFactory.getLog(LinkForeachProcessor.class);
     private final int DEFAULT_PAGE_SIZE = 5;
-
-    private static Log log = LogFactory.getLog(LinkForeachProcessorFactory.class);
-
-    private static LinkForeachProcessorFactory instance;
-
-    public static LinkForeachProcessorFactory getInstance() {
-        if(instance == null) {
-            instance = new LinkForeachProcessorFactory();
-        }
-        return instance;
-    }
+    @Autowired
+    private LinkService linkService;
 
     public Object process(IProcessableElementTag elementTag, ITemplateContext context) {
         List<Link> linkList=null;
         try {
-            NormalForeachParam linkForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag, NormalForeachParam.class);
-            WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
-            LinkService linkService = (LinkService)applicationContext.getBean("linkServiceImpl");
+            NormalForeachParam linkForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag
+                    , NormalForeachParam.class);
+
             //根据指定id获取栏目列表
             if(linkForeachParam.getSpecifyids()!=null) {
                 return linkService.getSpecifyLinks(linkForeachParam.getSpecifyids());

@@ -12,11 +12,8 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
 import com.huotu.hotcms.service.widget.model.GoodsModel;
 import com.huotu.hotcms.service.widget.service.GoodsService;
-import com.huotu.huobanplus.common.entity.Goods;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.web.context.ContextLoader;
-import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.thymeleaf.context.ITemplateContext;
@@ -39,11 +36,13 @@ public class HotGoodsProcessor extends AbstractAttributeTagProcessor {
 
     public static final String ATTR_NAME = "hot";
     public static final int PRECEDENCE = 1300;
+    private final GoodsService goodsService;
 
     private Log log = LogFactory.getLog(HotGoodsProcessor.class);
 
-    public HotGoodsProcessor(IProcessorDialect dialect, String dialectPrefix) {
+    public HotGoodsProcessor(IProcessorDialect dialect, String dialectPrefix, GoodsService goodsService) {
         super(dialect, TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
+        this.goodsService = goodsService;
     }
 
     @Override
@@ -54,8 +53,6 @@ public class HotGoodsProcessor extends AbstractAttributeTagProcessor {
     }
 
     private Object invokeHogGoodsService(IProcessableElementTag tag, ITemplateContext context) {
-        WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
-        GoodsService goodsService = (GoodsService)applicationContext.getBean("goodsServiceImpl");
         List<GoodsModel> goodses = new ArrayList<>();
         try {
             int customerId = ((Site) VariableExpression.getVariable(context, "site")).getCustomerId();

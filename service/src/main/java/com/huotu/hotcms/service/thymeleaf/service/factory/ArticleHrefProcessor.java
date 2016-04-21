@@ -10,12 +10,12 @@ package com.huotu.hotcms.service.thymeleaf.service.factory;
 
 import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
-import com.huotu.hotcms.service.thymeleaf.service.BaseProcessorService;
 import com.huotu.hotcms.service.util.PatternMatchUtil;
 import com.huotu.hotcms.service.util.StringUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.plexus.util.StringUtils;
+import org.springframework.stereotype.Component;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.standard.expression.Assignation;
 
@@ -24,24 +24,12 @@ import java.util.List;
 /**
  * Created by Administrator xhl 2016/1/6.
  */
-public class ArticleHrefProcessorFactory extends BaseProcessorService {
+@Component
+public class ArticleHrefProcessor {
     private static final String regexp="\\$\\{([^\\}]+)}";//匹配${key}模式的正则表达式
 
-    private static final Log log = LogFactory.getLog(CategoryForeachProcessorFactory.class);
+    private static final Log log = LogFactory.getLog(CategoryForeachProcessor.class);
 
-    private static ArticleHrefProcessorFactory instance;
-
-    private ArticleHrefProcessorFactory() {
-    }
-
-    public static ArticleHrefProcessorFactory getInstance() {
-        if(instance == null) {
-            instance = new ArticleHrefProcessorFactory();
-        }
-        return instance;
-    }
-
-    @Override
     public String resolveLinkData(List<Assignation> assignations, String LinkExpression, ITemplateContext context) {
         try {
             if(!StringUtils.isEmpty(LinkExpression)) {

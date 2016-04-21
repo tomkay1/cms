@@ -8,24 +8,22 @@
 
 package com.huotu.hotcms.service.thymeleaf.service.factory;
 
-import com.huotu.hotcms.service.common.RouteType;
-import com.huotu.hotcms.service.entity.Article;
-import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.GalleryList;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.PageableForeachParam;
-import com.huotu.hotcms.service.service.ArticleService;
-import com.huotu.hotcms.service.service.CategoryService;
+import com.huotu.hotcms.service.service.GalleryListService;
 import com.huotu.hotcms.service.thymeleaf.expression.DialectAttributeFactory;
 import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
 import com.huotu.hotcms.service.thymeleaf.model.PageModel;
 import com.huotu.hotcms.service.thymeleaf.model.RequestModel;
+import com.huotu.hotcms.service.util.PatternMatchUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import org.springframework.web.context.ContextLoader;
-import org.springframework.web.context.WebApplicationContext;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.context.IWebContext;
 import org.thymeleaf.model.IProcessableElementTag;
@@ -35,84 +33,65 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by cwb on 2016/1/6.
+ * Created by cwb on 2016/3/23.
  */
-public class ArticleForeachProcessorFactory {
+@Component
+public class GalleryListForeachProcessor {
 
+    private static Log log = LogFactory.getLog(GalleryListForeachProcessor.class);
     private final int DEFAULT_PAGE_NO = 1;
     private final int DEFAULT_PAGE_SIZE = 12;
     private final int DEFAULT_PAGE_NUMBER = 5;
-
-    private static Log log = LogFactory.getLog(ArticleForeachProcessorFactory.class);
-
-    private static ArticleForeachProcessorFactory instance;
-
-    private ArticleForeachProcessorFactory() {
-    }
-
-    public static ArticleForeachProcessorFactory getInstance() {
-        if(instance == null) {
-            instance = new ArticleForeachProcessorFactory();
-        }
-        return instance;
-    }
+    @Autowired
+    private GalleryListService galleryListService;
 
     public Object process(IProcessableElementTag elementTag,ITemplateContext context) {
-        Page<Article> articles = null;
+        Page<GalleryList> galleries = null;
         try {
-            WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
             HttpServletRequest request = ((IWebContext)context).getRequest();
-            PageableForeachParam articleForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag, PageableForeachParam.class);
+            String selvertUrl=PatternMatchUtil.getServletUrl(request);
+            PageableForeachParam galleryListForeachParam = DialectAttributeFactory.getInstance()
+                    .getForeachParam(elementTag, PageableForeachParam.class);
             Route route = (Route) VariableExpression.getVariable(context, "route");
-            CategoryService categoryService = (CategoryService)applicationContext.getBean("categoryServiceImpl");
-            if(StringUtils.isEmpty(articleForeachParam.getCategoryid())) {
-                if(route.getRouteType()==RouteType.ARTICLE_LIST) {
-                    Category current = categoryService.getCategoryByRoute(route);
-                    articleForeachParam.setCategoryid(current.getId());
-                }
-            }
-            //如果不是具体子栏目，应取得当前栏目所有一级子栏目数据列表
-            if(StringUtils.isEmpty(articleForeachParam.getParentcid())) {
-                if(route.getRouteType()!=RouteType.ARTICLE_LIST && route.getRouteType()!=RouteType.ARTICLE_CONTENT) {
-                    Category current = categoryService.getCategoryByRoute(route);
-                    articleForeachParam.setParentcid(current.getId());
-                }
-            }
-            if(articleForeachParam.getPageno() == null) {
+            if(galleryListForeachParam.getPageno() == null) {
                 if(StringUtils.isEmpty(request.getParameter("pageNo"))) {
-                    articleForeachParam.setPageno(DEFAULT_PAGE_NO);
+                    galleryListForeachParam.setPageno(DEFAULT_PAGE_NO);
                 }else {
                     int pageNo = Integer.parseInt(request.getParameter("pageNo"));
                     if(pageNo < 1) {
                         throw new Exception("页码小于1");
                     }
-                    articleForeachParam.setPageno(pageNo);
+                    galleryListForeachParam.setPageno(pageNo);
                 }
             }
-            if(articleForeachParam.getPagesize() == null) {
+            if(galleryListForeachParam.getPagesize() == null) {
                 if(StringUtils.isEmpty(request.getParameter("pageSize"))) {
-                    articleForeachParam.setPagesize(DEFAULT_PAGE_SIZE);
+                    galleryListForeachParam.setPagesize(DEFAULT_PAGE_SIZE);
                 }else {
                     int pageSize = Integer.parseInt(request.getParameter("pageSize"));
                     if(pageSize < 1) {
                         throw new Exception("请求数据列表容量小于1");
                     }
-                    articleForeachParam.setPagesize(pageSize);
+                    galleryListForeachParam.setPagesize(pageSize);
                 }
             }
-            if(articleForeachParam.getPagenumber() == null) {
-                articleForeachParam.setPagenumber(DEFAULT_PAGE_NUMBER);
+            if(galleryListForeachParam.getPagenumber() == null) {
+                galleryListForeachParam.setPagenumber(DEFAULT_PAGE_NUMBER);
             }
-            ArticleService articleService = (ArticleService)applicationContext.getBean("articleServiceImpl");
-            articles = articleService.getArticleList(articleForeachParam);
+            //根据当前请求的Uri来获得指定的ID
+            if (galleryListForeachParam.getGalleryId() == null) {
+                galleryListForeachParam.setGalleryId(PatternMatchUtil.getUrlIdByLongType(selvertUrl
+                        , PatternMatchUtil.urlParamRegexp));
+            }
+            galleries = galleryListService.getGalleryList(galleryListForeachParam);
             //图片路径处理
             Site site = (Site)VariableExpression.getVariable(context,"site");
-            for(Article article : articles) {
-                article.setThumbUri(site.getResourceUrl() + article.getThumbUri());
+            for(GalleryList galleryList : galleries) {
+                galleryList.setThumbUri(site.getResourceUrl() + galleryList.getThumbUri());
             }
             List<PageModel> pages = new ArrayList<>();
-            int currentPage = articleForeachParam.getPageno();
-            int totalPages = articles.getTotalPages();
+            int currentPage = galleryListForeachParam.getPageno();
+            int totalPages = galleries.getTotalPages();
             int pageNumber = DEFAULT_PAGE_NUMBER < totalPages ? DEFAULT_PAGE_NUMBER : totalPages;
             int startPage = calculateStartPageNo(currentPage,pageNumber,totalPages);
             for(int i=1;i<=pageNumber;i++) {
@@ -124,21 +103,20 @@ public class ArticleForeachProcessorFactory {
             }
             RequestModel requestModel = (RequestModel)VariableExpression.getVariable(context,"request");
             requestModel.setPages(pages);
-            requestModel.setHasNextPage(articles.hasNext());
-            if(articles.hasNext()) {
+            requestModel.setHasNextPage(galleries.hasNext());
+            if(galleries.hasNext()) {
                 requestModel.setNextPageHref("?pageNo=" + (currentPage + 1));
             }
-            if(articles.hasPrevious()) {
+            if(galleries.hasPrevious()) {
                 requestModel.setPrevPageHref("?pageNo=" + (currentPage - 1));
             }
-            requestModel.setHasPrevPage(articles.hasPrevious());
+            requestModel.setHasPrevPage(galleries.hasPrevious());
             requestModel.setCurrentPage(currentPage);
         }catch (Exception e) {
-            log.error("articleForeach process-->"+e.getMessage());
+            log.error("galleryListForeach process-->"+e.getMessage());
         }
-        return articles;
+        return galleries;
     }
-
 
     private int calculateStartPageNo(int currentPage, int pageNumber, int totalPages) {
         if(pageNumber == totalPages) {

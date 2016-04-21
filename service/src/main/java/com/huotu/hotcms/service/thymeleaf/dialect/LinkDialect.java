@@ -9,6 +9,8 @@
 package com.huotu.hotcms.service.thymeleaf.dialect;
 
 import com.huotu.hotcms.service.thymeleaf.processor.ForeachProcessor;
+import com.huotu.hotcms.service.thymeleaf.service.ForeachProcessorService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
 import org.thymeleaf.dialect.IProcessorDialect;
@@ -26,6 +28,8 @@ public class LinkDialect extends AbstractProcessorDialect {
     public static  String NAME = "Link";
     public static  String PREFIX = "link";
     public static  int PROCESSOR_PRECEDENCE = 800;
+    @Autowired
+    private ForeachProcessorService foreachProcessorService;
 
     public LinkDialect() {
         super(NAME, PREFIX, PROCESSOR_PRECEDENCE);
@@ -38,7 +42,7 @@ public class LinkDialect extends AbstractProcessorDialect {
 
     private Set<IProcessor> createArticleProcessorsSet(final IProcessorDialect dialect, final String dialectPrefix) {
         final Set<IProcessor> processors = new LinkedHashSet<IProcessor>();
-        processors.add(new ForeachProcessor(dialect, dialectPrefix));
+        processors.add(new ForeachProcessor(dialect, dialectPrefix, foreachProcessorService));
         return processors;
     }
 }

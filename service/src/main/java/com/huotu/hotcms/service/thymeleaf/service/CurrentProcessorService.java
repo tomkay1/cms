@@ -9,9 +9,11 @@
 package com.huotu.hotcms.service.thymeleaf.service;
 
 import com.huotu.hotcms.service.thymeleaf.common.DialectTypeEnum;
-import com.huotu.hotcms.service.thymeleaf.service.factory.ArticleCurrentProcessorFactory;
-import com.huotu.hotcms.service.thymeleaf.service.factory.SiteCurrentProcessorFactory;
-import com.huotu.hotcms.service.thymeleaf.service.factory.VideoCurrentProcessorFactory;
+import com.huotu.hotcms.service.thymeleaf.service.factory.ArticleCurrentProcessor;
+import com.huotu.hotcms.service.thymeleaf.service.factory.SiteCurrentProcessor;
+import com.huotu.hotcms.service.thymeleaf.service.factory.VideoCurrentProcessor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.model.IProcessableElementTag;
 
@@ -25,13 +27,22 @@ import org.thymeleaf.model.IProcessableElementTag;
  *
  * @since 1.0.0
  */
-public class CurrentProcessorService extends BaseProcessorService {
-    public Object resolveDataByAttr(IProcessableElementTag tag,String attributeValue, ITemplateContext context) {
+@Component
+public class CurrentProcessorService {
+
+    @Autowired
+    private ArticleCurrentProcessor articleCurrentProcessor;
+    @Autowired
+    private SiteCurrentProcessor siteCurrentProcessor;
+    @Autowired
+    private VideoCurrentProcessor videoCurrentProcessor;
+
+    public Object resolveDataByAttr(String dialectPrefix, IProcessableElementTag tag, String attributeValue, ITemplateContext context) {
         if (dialectPrefix.equals(DialectTypeEnum.ARTICLE.getDialectPrefix())) {
-            return ArticleCurrentProcessorFactory.getInstance().resolveDataByAttr(tag,attributeValue, context);
+            return articleCurrentProcessor.resolveDataByAttr(tag, attributeValue, context);
         }
         if (dialectPrefix.equals(DialectTypeEnum.SITE.getDialectPrefix())) {
-            return SiteCurrentProcessorFactory.getInstance().resolveDataByAttr(attributeValue, context);
+            return siteCurrentProcessor.resolveDataByAttr(attributeValue, context);
         }
         if(dialectPrefix.equals(DialectTypeEnum.CATEGORY.getDialectPrefix())) {
             return null;
@@ -44,12 +55,12 @@ public class CurrentProcessorService extends BaseProcessorService {
         return null;
     }
 
-    public Object resolveDataByAttr(IProcessableElementTag tab,ITemplateContext context){
+    public Object resolveDataByAttr(String dialectPrefix, IProcessableElementTag tab, ITemplateContext context) {
         if (dialectPrefix.equals(DialectTypeEnum.ARTICLE.getDialectPrefix())) {
-            return ArticleCurrentProcessorFactory.getInstance().resolveDataByAttr(tab,context);
+            return articleCurrentProcessor.resolveDataByAttr(tab, context);
         }
         if(dialectPrefix.equals(DialectTypeEnum.VIDEO.getDialectPrefix())){
-            return VideoCurrentProcessorFactory.getInstance().resolveDataByAttr(tab,context);
+            return videoCurrentProcessor.resolveDataByAttr(tab, context);
         }
         if (dialectPrefix.equals(DialectTypeEnum.SITE.getDialectPrefix())) {
             return null;

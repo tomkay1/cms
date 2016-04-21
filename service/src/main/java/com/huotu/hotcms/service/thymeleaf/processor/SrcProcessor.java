@@ -26,12 +26,14 @@ public class SrcProcessor extends AbstractStandardExpressionAttributeTagProcesso
     public static final int PRECEDENCE = 1000;
     public static final String ATTR_NAME = "src";
 
-    private SrcProcessorService srcProcessorService;
+    private final SrcProcessorService srcProcessorService;
+    private final String dialectPrefix;
 
-    public SrcProcessor(final IProcessorDialect dialect, final String dialectPrefix) {
+    public SrcProcessor(final IProcessorDialect dialect, final String dialectPrefix, SrcProcessorService srcProcessorService) {
         super(dialect, TemplateMode.HTML, dialectPrefix, ATTR_NAME, PRECEDENCE, true);
-        this.srcProcessorService = new SrcProcessorService();
-        this.srcProcessorService.setDialectPrefix(dialectPrefix);
+        this.srcProcessorService = srcProcessorService;
+//        this.srcProcessorService.setDialectPrefix(dialectPrefix);
+        this.dialectPrefix = dialectPrefix;
     }
 
     @Override
@@ -47,7 +49,7 @@ public class SrcProcessor extends AbstractStandardExpressionAttributeTagProcesso
 
 //        final IStandardExpressionParser expressionParser = StandardExpressions.getExpressionParser(context.getConfiguration());
         String newAttributeValue=null;
-        Object srcObject=this.srcProcessorService.resolveSrcData(attributeValue,context);
+        Object srcObject = this.srcProcessorService.resolveSrcData(dialectPrefix, attributeValue, context);
         newAttributeValue=srcObject!=null?srcObject.toString():"";
 
         newAttributeValue= HtmlEscape.escapeHtml4Xml(newAttributeValue == null ? "" : newAttributeValue.toString());

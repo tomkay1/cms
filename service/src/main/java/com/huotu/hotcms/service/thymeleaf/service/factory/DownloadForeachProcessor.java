@@ -35,9 +35,12 @@ public class DownloadForeachProcessor {
     @Autowired
     private DownloadService downloadService;
 
+    @Autowired
+    private DialectAttributeFactory dialectAttributeFactory;
+
     public List<Download> process(IProcessableElementTag elementTag,ITemplateContext context) {
         try {
-            NormalForeachParam downloadForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag
+            NormalForeachParam downloadForeachParam =dialectAttributeFactory.getForeachParam(elementTag
                     , NormalForeachParam.class);
 
             Site site = (Site) VariableExpression.getVariable(context, "site");

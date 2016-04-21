@@ -49,11 +49,14 @@ public class GalleryForeachProcessor {
     @Autowired
     private GalleryService galleryService;
 
+    @Autowired
+    private DialectAttributeFactory dialectAttributeFactory;
+
     public Object process(IProcessableElementTag elementTag,ITemplateContext context) {
         Page<Gallery> galleries = null;
         try {
             HttpServletRequest request = ((IWebContext)context).getRequest();
-            PageableForeachParam galleryForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag
+            PageableForeachParam galleryForeachParam =dialectAttributeFactory.getForeachParam(elementTag
                     , PageableForeachParam.class);
             Route route = (Route) VariableExpression.getVariable(context, "route");
             if(StringUtils.isEmpty(galleryForeachParam.getCategoryid())) {

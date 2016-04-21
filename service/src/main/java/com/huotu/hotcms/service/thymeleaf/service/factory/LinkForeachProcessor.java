@@ -36,10 +36,13 @@ public class LinkForeachProcessor {
     @Autowired
     private LinkService linkService;
 
+    @Autowired
+    private DialectAttributeFactory dialectAttributeFactory;
+
     public Object process(IProcessableElementTag elementTag, ITemplateContext context) {
         List<Link> linkList=null;
         try {
-            NormalForeachParam linkForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag
+            NormalForeachParam linkForeachParam = dialectAttributeFactory.getForeachParam(elementTag
                     , NormalForeachParam.class);
 
             //根据指定id获取栏目列表

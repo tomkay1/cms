@@ -25,7 +25,7 @@
                 </a>
             </div>
             <ul th:style="'background:'+${goods_pageBackGround}">
-                <li data-widget-page="goods">
+                <li data-widget-page="goods" data-param-pagesize="10">
                     <div class="jItem">
                         <div class="jPic">
                             <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}">
@@ -369,7 +369,7 @@
                     <option value="1" th:selected="${defaultOrder==1}">价格</option>
                     <option value="2" th:selected="${defaultOrder==2}">上架时间</option>
                 </select>-->
-                <label style="width: 116px;margin-left: 20px;">是否显示可用积分 </label>
+                <label style="width: 116px;">是否显示可用积分 </label>
                 <select class="select-short" name="showIntegral">
                     <option value="0" th:selected="${showIntegral==null} or ${showIntegral==0}">是</option>
                     <option value="1" th:selected="${showIntegral==1}">否</option>

@@ -55,7 +55,8 @@ public class GoodsServiceImpl implements GoodsService {
     public GoodsPage searchGoods(HttpServletRequest request, int customerId, GoodsSearcher goodsSearcher){
         Sort sort = getSort(goodsSearcher);
         int page = goodsSearcher.getPage()==null ? 0 : goodsSearcher.getPage()-1;
-        PageRequest pageRequest = new PageRequest(page,20,sort);
+        int pageSize=goodsSearcher.getPagesize()==null?0:goodsSearcher.getPagesize();
+        PageRequest pageRequest = new PageRequest(page,pageSize,sort);
         Page<Goods> goodses = null;
         try {
             goodses = goodsRestRepository.search(customerId,

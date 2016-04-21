@@ -48,10 +48,13 @@ public class VideoForeachProcessor {
     @Autowired
     private VideoService videoService;
 
+    @Autowired
+    private DialectAttributeFactory dialectAttributeFactory;
+
     public Object process(IProcessableElementTag elementTag,ITemplateContext context) {
         Page<Video> videoPage = null;
         try {
-            PageableForeachParam videoForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag
+            PageableForeachParam videoForeachParam = dialectAttributeFactory.getForeachParam(elementTag
                     , PageableForeachParam.class);
 
             HttpServletRequest request = ((IWebContext)context).getRequest();

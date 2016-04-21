@@ -33,9 +33,12 @@ public class NoticeForeachProcessor {
     @Autowired
     private NoticeService noticeService;
 
+    @Autowired
+    private DialectAttributeFactory dialectAttributeFactory;
+
     public List<Notice> process(IProcessableElementTag elementTag,ITemplateContext context) {
         try {
-            NormalForeachParam noticeForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag
+            NormalForeachParam noticeForeachParam = dialectAttributeFactory.getForeachParam(elementTag
                     , NormalForeachParam.class);
 
             //根据指定id获取栏目列表

@@ -40,6 +40,9 @@ public class ArticlePreviousProcessor {
     @Autowired
     private ArticleService articleService;
 
+    @Autowired
+    private DialectAttributeFactory dialectAttributeFactory;
+
     public Object resolveDataByAttr(IProcessableElementTag tab,ITemplateContext context){
         try{
             Article article=(Article) VariableExpression.getVariable(context, "article");
@@ -48,7 +51,7 @@ public class ArticlePreviousProcessor {
                 articlePreviousParam=new ArticlePreviousParam();
                 articlePreviousParam.setId(article.getId());
             }else{
-                articlePreviousParam = DialectAttributeFactory.getInstance().getForeachParam(tab
+                articlePreviousParam = dialectAttributeFactory.getForeachParam(tab
                         , ArticlePreviousParam.class);
                 HttpServletRequest request = ((IWebContext)context).getRequest();
                 String servletUrl= PatternMatchUtil.getServletUrl(request);

@@ -50,6 +50,11 @@ public class GoodsSearcher {
      * 页码
      */
     private Integer page;
+
+    /**
+     * 没页显示的数量
+     * */
+    private Integer pagesize;
     /**
      * 排序(propertyName[,desc|asc]，排序方向默认asc，这个参数支持多个以达成多条件排序)
      * 举例：http://(……)&sort=price,desc&sort=salesCount,asc

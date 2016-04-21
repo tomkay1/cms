@@ -5,6 +5,7 @@ package com.huotu.hotcms.service.util;
  * Created by cwb on 2016/3/17.
  */
 public class PageUtils {
+    public static Integer pageSize = 20;
 
     /**
      * 计算分页button的起始显示页码

@@ -12,6 +12,7 @@ import com.huotu.hotcms.service.common.CMSEnums;
 import com.huotu.hotcms.service.service.HttpService;
 import com.huotu.hotcms.service.util.ApiResult;
 import com.huotu.hotcms.service.util.CookieHelper;
+import com.huotu.hotcms.service.util.PageUtils;
 import com.huotu.hotcms.service.widget.model.GoodsModel;
 import com.huotu.hotcms.service.widget.model.GoodsPage;
 import com.huotu.hotcms.service.widget.model.GoodsSearcher;
@@ -55,7 +56,7 @@ public class GoodsServiceImpl implements GoodsService {
     public GoodsPage searchGoods(HttpServletRequest request, int customerId, GoodsSearcher goodsSearcher){
         Sort sort = getSort(goodsSearcher);
         int page = goodsSearcher.getPage()==null ? 0 : goodsSearcher.getPage()-1;
-        int pageSize=goodsSearcher.getPagesize()==null?0:goodsSearcher.getPagesize();
+        int pageSize=goodsSearcher.getPagesize()==null? PageUtils.pageSize:goodsSearcher.getPagesize();
         PageRequest pageRequest = new PageRequest(page,pageSize,sort);
         Page<Goods> goodses = null;
         try {

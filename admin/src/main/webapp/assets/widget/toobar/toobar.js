@@ -258,7 +258,6 @@ define(function (require, exports, module) {
                 $.each(obj, function (item, dom) {
                     var layoutId = $(dom).data('id');
                     var layoutPositionIndex = $(dom).data("index");
-                    //alert(layoutPositionIndex);
                     $(dom).click(function () {
                         widgetData.clear();
                         layer.open({
@@ -272,7 +271,7 @@ define(function (require, exports, module) {
                             //btn:["确定"],
                             end: function (index, layero) {
                                 var widgetJson = $("#js_widget_json_value").html();
-                                window.console.log(widgetJson);
+                                //window.console.log(widgetJson);
                                 if (widgetJson == "404") {
                                     layer.msg("控件主体没有添加预览视图");
                                     return;
@@ -297,6 +296,7 @@ define(function (require, exports, module) {
                                     widgetModule.init();
                                 }
                                 page.widgetEdit();
+                                page.clearHref();
                             }
                         });
                     });
@@ -408,6 +408,7 @@ define(function (require, exports, module) {
                         widget: widgetPageData
                     },
                     success: function (data) {
+                        var objInit={pageName:"页面名称",pageEnabledHead:true};
                         if (data != null) {
                             if (data.code == 200 && data.data != null) {
                                 var obj = JSON.parse(data.data);
@@ -417,11 +418,16 @@ define(function (require, exports, module) {
                                         delete obj["layout"];
                                     }
                                     widgetPageModel = widgetPage.setModel(obj);
+                                }else{
+                                    widgetPageModel=widgetPage.setModel(objInit);
                                 }
                                 page.initPageProperty();
                             } else {
                                 layer.msg("加载页面配置数据失败...");
+                                widgetPageModel=widgetPage.setModel(objInit);
                             }
+                        }else{
+                            widgetPageModel=widgetPage.setModel(objInit);
                         }
                     },
                     error: function () {
@@ -526,7 +532,7 @@ define(function (require, exports, module) {
                 var obj = $(".js-layout-header a");
                 var layoutBox = $(".js-hot-layout a");
                 $.each(obj, function (item, dom) {
-                    window.console.log($(dom));
+                    //window.console.log($(dom));
                     $(dom).attr('href', "javascript:void(0)");
                 });
                 $.each(layoutBox, function (item, dom) {
@@ -570,6 +576,7 @@ define(function (require, exports, module) {
                     success: function (data) {
                         layer.close(indexLoad);
                         if (data != null) {
+                            //alert(data.data.html);
                             if (data.code == 200) {
                                 $("#" + widgetGuid).replaceWith(data.data.html);
                                 page.widgetEdit();
@@ -580,6 +587,7 @@ define(function (require, exports, module) {
                         } else {
                             layer.msg("解析模版错误");
                         }
+                        page.clearHref();//去除编辑视图中的所有组件的链接信息
                     },
                     error: function () {
                         layer.close(indexLoad);

@@ -99,10 +99,15 @@ public class PagesController {
     }
 
     @RequestMapping(value = "/defaults")
-    public ModelAndView defaults(HttpServletRequest request, @RequestParam("customerid") Integer customerid) {
+    public ModelAndView defaults(HttpServletRequest request, @RequestParam("customerid") Integer customerid,String scope) {
         ModelAndView modelAndView = new ModelAndView();
         try {
-            List<Site> siteList = siteRepository.findByCustomerIdAndDeletedAndPersonaliseOrderBySiteIdDesc(customerid, false, true);
+            List<Site> siteList = null;
+            if(scope.equals("shop")){
+                siteList = siteRepository.findByCustomerIdAndDeletedAndPersonaliseAndSiteTypeOrderBySiteIdDesc(customerid, false, true,SiteType.SITE_PC_SHOP);
+            }else{
+                siteList = siteRepository.findByCustomerIdAndDeletedAndPersonaliseAndSiteTypeOrderBySiteIdDesc(customerid, false, true,SiteType.SITE_PC_WEBSITE);
+            }
             modelAndView.addObject("siteList", siteList);
             modelAndView.setViewName("/decoration/pages/defaults.html");
         } catch (Exception ex) {

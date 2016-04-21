@@ -3,7 +3,7 @@
  */
 define(["js/jquery-1.9.1.min"],function () {
     return {
-        /*
+        /**
         * @brief 获得页面参数
         * @param 参数名
         * */

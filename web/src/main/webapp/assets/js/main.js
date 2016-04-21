@@ -30,7 +30,8 @@ define(function (require, exports, module) {
         binner:function(){
             var obj = $(".js-binner");
             if(obj.length > 0){
-                //require("superSlide");
+                var sliber=require("superSlide");
+                window.console.log(sliber);
                 var widget = require("binner");
                 widget.init();
             }

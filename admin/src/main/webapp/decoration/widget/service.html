@@ -54,8 +54,8 @@
         <ul>
             <li>
                 <label>模块名称 </label>
-                <input type="text" maxlength="10" class="text-short" name="moduleName" value="保暖内衣"
-                       th:value="${moduleName}"/>
+                <input type="text" maxlength="10" class="text-short" name="moduleName"
+                       th:value="${moduleName==null?'模块名称':moduleName}"/>
             </li>
         </ul>
     </div>

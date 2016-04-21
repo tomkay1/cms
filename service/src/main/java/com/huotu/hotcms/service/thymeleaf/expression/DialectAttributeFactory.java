@@ -12,6 +12,7 @@ import com.huotu.hotcms.service.common.EnumUtils;
 import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.util.HttpUtils;
 import com.huotu.hotcms.service.widget.model.GoodsSearcher;
+import org.springframework.stereotype.Component;
 import org.thymeleaf.engine.AttributeName;
 import org.thymeleaf.model.IElementAttributes;
 import org.thymeleaf.model.IProcessableElementTag;
@@ -23,19 +24,20 @@ import java.util.List;
 /**
  * Created by cwb on 2016/1/5.
  */
+@Component
 public class DialectAttributeFactory {
 
-    private static DialectAttributeFactory instance;
-
-    private DialectAttributeFactory() {
-    }
-
-    public static DialectAttributeFactory getInstance() {
-        if (instance == null) {
-            instance = new DialectAttributeFactory();
-        }
-        return instance;
-    }
+//    private static DialectAttributeFactory instance;
+//
+//    private DialectAttributeFactory() {
+//    }
+//
+//    public static DialectAttributeFactory getInstance() {
+//        if (instance == null) {
+//            instance = new DialectAttributeFactory();
+//        }
+//        return instance;
+//    }
 
     public <T> T getForeachParam(IProcessableElementTag elementTag, Class<T> t) throws Exception {
         T obj = t.newInstance();
@@ -82,7 +84,7 @@ public class DialectAttributeFactory {
     public <T> T megerObject(IProcessableElementTag elementTag, HttpServletRequest httpServletRequest, Class<T> clz)
             throws Exception {
 
-        T obj1 = DialectAttributeFactory.getInstance().getForeachParam(elementTag, clz);//自定义字段中读取到的
+        T obj1 =this.getForeachParam(elementTag, clz);//自定义字段中读取到的
         T obj2 = HttpUtils.getRequestParam(httpServletRequest, clz); //从一起请求中读取到
 
         Field[] obj1Fields = obj1.getClass().getDeclaredFields();

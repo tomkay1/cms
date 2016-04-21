@@ -40,6 +40,9 @@ public class ArticleNextProcessor {
     @Autowired
     private ArticleService articleService;
 
+    @Autowired
+    private DialectAttributeFactory dialectAttributeFactory;
+
     public Object resolveDataByAttr(IProcessableElementTag tab,ITemplateContext context){
         try{
             Article article=(Article) VariableExpression.getVariable(context, "article");
@@ -48,7 +51,7 @@ public class ArticleNextProcessor {
                 articleNextParam=new ArticleNextParam();
                 articleNextParam.setId(article.getId());
             }else{
-                articleNextParam = DialectAttributeFactory.getInstance().getForeachParam(tab, ArticleNextParam.class);
+                articleNextParam = dialectAttributeFactory.getForeachParam(tab, ArticleNextParam.class);
                 HttpServletRequest request = ((IWebContext)context).getRequest();
                 String servletUrl= PatternMatchUtil.getServletUrl(request);
                 if(articleNextParam!=null){//根据当前请求的Uri来获得指定的ID

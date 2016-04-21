@@ -12,6 +12,7 @@ import com.huotu.hotcms.service.model.thymeleaf.format.TimeFormatParam;
 import com.huotu.hotcms.service.thymeleaf.expression.DialectAttributeFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.thymeleaf.context.ITemplateContext;
@@ -35,9 +36,12 @@ import java.time.format.DateTimeFormatter;
 public class TimeFormatProcessorService {
     private static final Log log = LogFactory.getLog(TimeFormatProcessorService.class);
 
+    @Autowired
+    private DialectAttributeFactory dialectAttributeFactory;
+
     public Object resolveDataByAttr(IProcessableElementTag tab,ITemplateContext context,Object expressResult) {
         try {
-            TimeFormatParam timeFormatParam = DialectAttributeFactory.getInstance().getForeachParam(tab
+            TimeFormatParam timeFormatParam = dialectAttributeFactory.getForeachParam(tab
                     , TimeFormatParam.class);
             String formatterExpress=null;
             if(timeFormatParam!=null){

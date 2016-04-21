@@ -34,13 +34,16 @@ public class VideoCurrentProcessor {
     @Autowired
     private VideoService videoService;
 
+    @Autowired
+    private DialectAttributeFactory dialectAttributeFactory;
+
     public Object resolveDataByAttr(IProcessableElementTag tab,ITemplateContext context){
         try{
             Video video=(Video) VariableExpression.getVariable(context, "video");
             if(video!=null){
                 return video;
             }else{
-                VideoCurrentParam videoCurrentParam = DialectAttributeFactory.getInstance().getForeachParam(tab
+                VideoCurrentParam videoCurrentParam = dialectAttributeFactory.getForeachParam(tab
                         , VideoCurrentParam.class);
                 HttpServletRequest request = ((IWebContext)context).getRequest();
                 String selvertUrl= PatternMatchUtil.getServletUrl(request);

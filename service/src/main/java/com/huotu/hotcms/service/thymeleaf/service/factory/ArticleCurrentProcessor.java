@@ -44,6 +44,9 @@ public class ArticleCurrentProcessor {
     @Autowired
     ArticleService articleService;
 
+    @Autowired
+    private DialectAttributeFactory dialectAttributeFactory;
+
     public Object resolveDataByAttr(IProcessableElementTag tag,String attributeValue, ITemplateContext context){
         Article article=(Article) VariableExpression.getVariable(context, "article");
         try {
@@ -68,7 +71,7 @@ public class ArticleCurrentProcessor {
             if(article!=null){
                 return article;
             }else{
-                ArticleCurrentParam articleCurrentParam = DialectAttributeFactory.getInstance().getForeachParam(tab
+                ArticleCurrentParam articleCurrentParam =dialectAttributeFactory.getForeachParam(tab
                         , ArticleCurrentParam.class);
                 HttpServletRequest request = ((IWebContext)context).getRequest();
                 String selvertUrl=PatternMatchUtil.getServletUrl(request);

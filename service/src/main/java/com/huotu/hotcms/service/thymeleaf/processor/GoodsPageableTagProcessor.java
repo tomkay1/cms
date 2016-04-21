@@ -8,22 +8,10 @@
 
 package com.huotu.hotcms.service.thymeleaf.processor;
 
-import com.huotu.hotcms.service.common.SysConstant;
-import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.model.thymeleaf.foreach.PageableForeachParam;
-import com.huotu.hotcms.service.thymeleaf.expression.DialectAttributeFactory;
-import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
-import com.huotu.hotcms.service.thymeleaf.model.RequestModel;
-import com.huotu.hotcms.service.thymeleaf.service.factory.GoodsPageableTagProcessorFactory;
-import com.huotu.hotcms.service.util.HttpUtils;
-import com.huotu.hotcms.service.util.PageUtils;
-import com.huotu.hotcms.service.widget.model.GoodsPage;
-import com.huotu.hotcms.service.widget.model.GoodsSearcher;
+import com.huotu.hotcms.service.thymeleaf.service.GoodsPageableTagProcessorService;
 import com.huotu.hotcms.service.widget.service.GoodsService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.engine.AttributeName;
@@ -31,10 +19,6 @@ import org.thymeleaf.model.IProcessableElementTag;
 import org.thymeleaf.processor.element.AbstractAttributeTagProcessor;
 import org.thymeleaf.processor.element.IElementTagStructureHandler;
 import org.thymeleaf.templatemode.TemplateMode;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 商品分页组件处理器
@@ -45,56 +29,19 @@ public class GoodsPageableTagProcessor extends AbstractAttributeTagProcessor {
     public static final String ATTR_NAME = "page";
     public static final int PRECEDENCE = 1300;
     private static Log log = LogFactory.getLog(GoodsPageableTagProcessor.class);
-    private final GoodsService goodsService;
+    private final GoodsPageableTagProcessorService goodsPageableTagProcessorService;
 
-    public GoodsPageableTagProcessor(IProcessorDialect dialect, String dialectPrefix, GoodsService goodsService) {
+    public GoodsPageableTagProcessor(IProcessorDialect dialect, String dialectPrefix, GoodsPageableTagProcessorService goodsPageableTagProcessorService) {
         super(dialect, TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
-        this.goodsService = goodsService;
+        this.goodsPageableTagProcessorService=goodsPageableTagProcessorService;
     }
 
     @Override
     protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName, String attributeValue, String attributeTemplateName, int attributeLine, int attributeCol, IElementTagStructureHandler structureHandler) {
         final Object iteratedValue;
-        iteratedValue = invokeGoodsPageableService(tag, context);
+        iteratedValue = goodsPageableTagProcessorService.invokeGoodsPageableService(tag, context);
         structureHandler.iterateElement(attributeValue, null, iteratedValue);
     }
 
-    private Object invokeGoodsPageableService(IProcessableElementTag tag, ITemplateContext context) {
-        int customerId = ((Site) VariableExpression.getVariable(context, "site")).getCustomerId();
-        GoodsPage goodsPage = null;
-        try {
-            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-            GoodsSearcher goodsSearcher= (GoodsSearcher) GoodsPageableTagProcessorFactory.process(tag,request);
-//            GoodsSearcher goodsSearcher = HttpUtils.getsRequestParam(request, GoodsSearcher.class);
-//           GoodsSearcher goodsSearcher=DialectAttributeFactory.getInstance().getForeachParam(tag, GoodsSearcher.class);
 
-            goodsSearcher.init(goodsSearcher);
-            goodsPage = goodsService.searchGoods(request, customerId, goodsSearcher);
-            putPageAttrsIntoModel(context, goodsPage);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
-        return goodsPage == null ? null : goodsPage.getGoodses();
-    }
-
-    private void putPageAttrsIntoModel(ITemplateContext context, GoodsPage goodsPage) {
-        //分页标签处理
-        RequestModel requestModel = (RequestModel) VariableExpression.getVariable(context, "request");
-        int pageNo = goodsPage.getPageNo() + 1;
-        int totalPages = goodsPage.getTotalPages();
-        int pageBtnNum = totalPages > SysConstant.DEFAULT_PAGE_BUTTON_NUM ? SysConstant.DEFAULT_PAGE_BUTTON_NUM : totalPages;
-        int startPageNo = PageUtils.calculateStartPageNo(pageNo, pageBtnNum, totalPages);
-        List<Integer> pageNos = new ArrayList<>();
-        for (int i = 1; i <= pageBtnNum; i++) {
-            pageNos.add(startPageNo);
-            startPageNo++;
-        }
-        requestModel.setCurrentPage(pageNo);
-        requestModel.setTotalPages(totalPages);
-        //没有数据时前台页面显示 第1页/共1页
-        requestModel.setTotalRecords(goodsPage.getTotalRecords() == 0 ? 1 : goodsPage.getTotalRecords());
-        requestModel.setHasPrevPage(pageNo > 1);
-        requestModel.setHasNextPage(pageNo < totalPages);
-        requestModel.setPageNos(pageNos);
-    }
 }

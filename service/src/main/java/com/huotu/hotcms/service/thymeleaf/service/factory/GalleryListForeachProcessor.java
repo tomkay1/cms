@@ -45,13 +45,15 @@ public class GalleryListForeachProcessor {
     @Autowired
     private GalleryListService galleryListService;
 
+    @Autowired
+    private DialectAttributeFactory dialectAttributeFactory;
+
     public Object process(IProcessableElementTag elementTag,ITemplateContext context) {
         Page<GalleryList> galleries = null;
         try {
             HttpServletRequest request = ((IWebContext)context).getRequest();
             String selvertUrl=PatternMatchUtil.getServletUrl(request);
-            PageableForeachParam galleryListForeachParam = DialectAttributeFactory.getInstance()
-                    .getForeachParam(elementTag, PageableForeachParam.class);
+            PageableForeachParam galleryListForeachParam =dialectAttributeFactory.getForeachParam(elementTag, PageableForeachParam.class);
             Route route = (Route) VariableExpression.getVariable(context, "route");
             if(galleryListForeachParam.getPageno() == null) {
                 if(StringUtils.isEmpty(request.getParameter("pageNo"))) {

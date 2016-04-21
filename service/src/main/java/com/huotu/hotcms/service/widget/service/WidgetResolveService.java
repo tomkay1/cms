@@ -44,6 +44,9 @@ public class WidgetResolveService {
     @Autowired
     private WidgetResourceService widgetResourceService;
 
+    @Autowired
+    private WidgetDialect widgetDialect;
+
     private TemplateEngine templateEngine = new TemplateEngine();
 
     private HttpServletRequest request = null;
@@ -53,7 +56,7 @@ public class WidgetResolveService {
      * */
     private void addDialect() {
         if (!templateEngine.isInitialized()) {
-            templateEngine.addDialect(new WidgetDialect());
+            templateEngine.addDialect(widgetDialect);
         }
     }
 

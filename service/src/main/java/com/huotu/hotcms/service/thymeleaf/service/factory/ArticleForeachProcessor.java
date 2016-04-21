@@ -49,11 +49,14 @@ public class ArticleForeachProcessor {
     @Autowired
     private ArticleService articleService;
 
+    @Autowired
+    private DialectAttributeFactory dialectAttributeFactory;
+
     public Object process(IProcessableElementTag elementTag,ITemplateContext context) {
         Page<Article> articles = null;
         try {
             HttpServletRequest request = ((IWebContext)context).getRequest();
-            PageableForeachParam articleForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag
+            PageableForeachParam articleForeachParam = dialectAttributeFactory.getForeachParam(elementTag
                     , PageableForeachParam.class);
             Route route = (Route) VariableExpression.getVariable(context, "route");
             if(StringUtils.isEmpty(articleForeachParam.getCategoryid())) {

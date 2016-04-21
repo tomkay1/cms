@@ -24,11 +24,8 @@
                     上架时间
                 </a>
             </div>
-            <script >
-                $("li").attr("data-param-pagesize").
-            </script>
             <ul th:style="'background:'+${goods_pageBackGround}">
-                <li data-widget-page="goods" data-param-pagesize="${pageSize}">
+                <li data-widget-page="goods" data-param-pagesize="10">
                     <div class="jItem">
                         <div class="jPic">
                             <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}">
@@ -140,7 +137,7 @@
                 </a>
             </div>
             <ul th:style="'background:'+${goods_pageBackGround}">
-                <li data-widget-page="goods" data-param-pagesize="${pageSize}">
+                <li data-widget-page="goods">
                     <div class="jItem">
                         <div class="jPic">
                             <a th:href="'/front/shop/product/'+${goods.id}" target="">
@@ -261,7 +258,7 @@
                     <span class="jTitleName">产品列表</span>
                 </div>
                 <ul th:style="'background:'+${goods_pageBackGround}">
-                    <li data-widget-page="goods" data-param-pagesize="${pageSize}">
+                    <li data-widget-page="goods">
                         <div class="jItem">
                             <div class="jPic">
                                 <a th:href="${request.rootUrl}+'/shop/product/'+${goods.id}">

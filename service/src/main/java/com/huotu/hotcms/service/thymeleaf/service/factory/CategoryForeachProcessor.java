@@ -35,9 +35,12 @@ public class CategoryForeachProcessor {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private DialectAttributeFactory dialectAttributeFactory;
+
     public Object process(IProcessableElementTag elementTag, ITemplateContext context) {
         try {
-            CategoryForeachParam categoryForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag
+            CategoryForeachParam categoryForeachParam = dialectAttributeFactory.getForeachParam(elementTag
                     , CategoryForeachParam.class);
 
             //根据指定id获取栏目列表

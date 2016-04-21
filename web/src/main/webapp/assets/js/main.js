@@ -35,12 +35,20 @@ define(function (require, exports, module) {
                 widget.init();
             }
         },
+        salesRanking:function(){
+            var obj = $(".js-sales-ranking");
+            if(obj.length > 0){
+                var widget = require("salesRanking");
+                widget.init();
+            }
+        },
         widgetInit:function(){
             //widgetEffect.widgetTest();
             widgetEffect.classification();
             widgetEffect.goodList();
             widgetEffect.advanceSearch();
             widgetEffect.banner();
+            widgetEffect.salesRanking();
         }
     }
 

@@ -98,6 +98,16 @@ public class PageResolveService {
         return widgetPage;
     }
 
+    /**
+     * <p>
+     *     创建页面信息
+     * </p>
+     * @param page 页面信息对象
+     * @param customerId 商户ID
+     * @param siteId 站点ID
+     * @param publish 是否发布
+     * @return 是否成功
+     * */
     public boolean createPageAndConfigByWidgetPage(WidgetPage page,Integer customerId,Long siteId,Boolean publish) throws IOException, URISyntaxException {
         CustomPages customPages=new CustomPages();
         if(page!=null) {
@@ -127,6 +137,16 @@ public class PageResolveService {
         return false;
     }
 
+    /**
+     * <p>
+     *     创建默认的页面信息
+     * </p>
+     * @param widgetPage 页面信息对象
+     * @param customerId 商户ID
+     * @param siteId 站点ID
+     * @param config 默认页面对应的名称，比如head或者search 则存储的xml文件为head.xml或者search.xml
+     * @return 是否成功
+     * */
     public boolean createDefaultPageConfigByWidgetPage(WidgetPage widgetPage,Integer customerId,Long siteId,String config) throws IOException, URISyntaxException {
         if(widgetPage!=null) {
             Site site = siteRepository.findOne(siteId);
@@ -142,6 +162,16 @@ public class PageResolveService {
         return false;
     }
 
+    /**
+     * <p>
+     *     修改页面信息
+     * </p>
+     * @param widgetPage 页面信息对象
+     * @param customerId 商户ID
+     * @param pageId 页面ID
+     * @param publish 是否发布
+     * @return 是否成功
+     * */
     public boolean patchPageAndConfigByWidgetPage(WidgetPage widgetPage,Integer customerId,Long pageId,Boolean publish) throws IOException, URISyntaxException {
         CustomPages customPages=customPagesRepository.findOne(pageId);
         if(widgetPage!=null) {

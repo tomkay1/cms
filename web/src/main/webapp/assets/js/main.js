@@ -27,11 +27,20 @@ define(function (require, exports, module) {
                 widget.init();
             }
         },
+        binner:function(){
+            var obj = $(".js-binner");
+            if(obj.length > 0){
+                //require("superSlide");
+                var widget = require("binner");
+                widget.init();
+            }
+        },
         widgetInit:function(){
             widgetEffect.widgetTest();
             widgetEffect.classification();
             widgetEffect.goodList();
             widgetEffect.advanceSearch();
+            widgetEffect.binner();
         }
     }
 

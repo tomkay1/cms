@@ -258,6 +258,7 @@ define(function (require, exports, module) {
                 $.each(obj, function (item, dom) {
                     var layoutId = $(dom).data('id');
                     var layoutPositionIndex = $(dom).data("index");
+                    //alert(layoutPositionIndex);
                     $(dom).click(function () {
                         widgetData.clear();
                         layer.open({
@@ -287,12 +288,12 @@ define(function (require, exports, module) {
                                     var layoutPosition = $(dom).data("index");//布局位置
                                     widgetObj.layoutId = layoutId;
                                     widgetObj.layoutPosition = layoutPosition;
-                                    window.console.log("----------s1-----");
-                                    window.console.log(widgetObj);
+                                    //window.console.log("----------s1-----");
+                                    //window.console.log(widgetObj);
                                     //window.console.log("layoutId--->"+layoutId+"  layoutPosition-->"+layoutPosition);
                                     //window.console.log(widgetObj);
                                     JQueue.putQueueLayoutWidget(layoutId, layoutPosition, widgetObj);
-                                    window.console.log("----------s2-----");
+                                    //window.console.log("----------s2-----");
                                     widgetModule.init();
                                 }
                                 page.widgetEdit();

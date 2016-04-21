@@ -28,6 +28,7 @@ import org.apache.commons.vfs2.util.EncryptUtil;
 import org.apache.logging.log4j.core.jmx.Server;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -125,6 +126,10 @@ public class WidgetTemplateResource implements ITemplateResource {
 
     private ApplicationContext applicationContext;
 
+    public WidgetTemplateResource(){
+        this.characterEncoding="utf-8";
+    }
+
     public WidgetTemplateResource(final ApplicationContext applicationContext, final String location, final String characterEncoding) {
         super();
         request=((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
@@ -145,23 +150,20 @@ public class WidgetTemplateResource implements ITemplateResource {
         this.WIDGET_RESOURCES = this.WIDGET_RESOURCES.replace("{version}", this.version);
     }
 
+    /**
+     * <p>获得组件资源根Uri</p>
+     * @param applicationContext 程序上下文
+     * */
     private String getURI_PREFIX(ApplicationContext applicationContext) {
-        String uriPrefix = applicationContext.getEnvironment().getProperty("cms.resourcesPrefix", (String) null);
+        return getURI_PREFIXByEnvironment(applicationContext.getEnvironment());
+    }
+
+    private String getURI_PREFIXByEnvironment(Environment environment){
+        String uriPrefix = environment.getProperty("cms.resourcesPrefix", (String) null);
         if (uriPrefix == null) {
             uriPrefix = "http://cms.huobanj.cn";
         }
         return uriPrefix;
-    }
-
-    public WidgetTemplateResource(final Resource resource, final String characterEncoding) {
-
-        super();
-
-        Validate.notNull(resource, "Resource cannot be null");
-        // Character encoding CAN be null (system default will be used)
-
-//        this.resource = resource;
-        this.characterEncoding = characterEncoding;
     }
 
     @Override
@@ -229,11 +231,24 @@ public class WidgetTemplateResource implements ITemplateResource {
         return false;
     }
 
+    /**
+     * <p>
+     *     获得控件主体所需要的静态资源应用,css、js等的引用
+     * </p>
+     * */
+    public String getHtmlHeadStaticResources(Environment environment){
+        this.URI_PREFIX = this.getURI_PREFIXByEnvironment(environment);
+        String cssResources=this.WIDGET_RESOURCES + BROWSE_RESOURCES;
+        cssResources= cssResources.replace("{version}", this.version);
+        cssResources= cssResources.replace("{PREFIX}", this.URI_PREFIX);
+        return cssResources;
+    }
+
     private String getBrowseTemplate(WidgetPage widgetPage, Site site) throws Exception {
         String htmlTemplate = pageResourceService.getHtmlTemplateByWidgetPage(widgetPage, false, site);
         if (widgetPage.getPageEnabledHead() != null) {
             if (widgetPage.getPageEnabledHead()) {//取用头部
-                String commonHeader = pageResourceService.getHeaderTemplaeBySite(site);
+                String commonHeader = pageResourceService.getHeaderTemplateBySite(site);
                 if (null != commonHeader) {
                     htmlTemplate = commonHeader + htmlTemplate;
                 }
@@ -241,7 +256,7 @@ public class WidgetTemplateResource implements ITemplateResource {
         }
         this.BROWSE_RESOURCES = this.BROWSE_RESOURCES.replace("{PREFIX}", this.URI_PREFIX);
         this.BROWSE_RESOURCES = this.BROWSE_RESOURCES.replace("{version}", this.version);
-        String browseTemplate=pageResourceService.getHeaderTemplate(this.BROWSE_HTML_BOX,widgetPage);
+        String browseTemplate=pageResourceService.getHeaderTemplate(this.BROWSE_HTML_BOX,widgetPage,site);
         htmlTemplate = String.format(browseTemplate, this.WIDGET_RESOURCES + BROWSE_RESOURCES, htmlTemplate);
         return htmlTemplate;
     }
@@ -249,13 +264,7 @@ public class WidgetTemplateResource implements ITemplateResource {
     private String getEditTemplate(WidgetPage widgetPage, String pageConfigName, Site site) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         String htmlTemplate = pageResourceService.getHtmlTemplateByWidgetPage(widgetPage, true, site);
-//        if(widgetPage.getPageEnabledHead()){//取用头部
-//            String commonHeader=pageResourceService.getHeaderTemplaeBySite(site);
-//            if(null!=commonHeader){
-//                htmlTemplate=commonHeader+htmlTemplate;
-//            }
-//        }
-        String editTemplate=pageResourceService.getHeaderTemplate(this.EDIT_HTML_BOX,widgetPage);
+        String editTemplate=pageResourceService.getHeaderTemplate(this.EDIT_HTML_BOX,widgetPage,site);
         htmlTemplate = String.format(editTemplate, this.WIDGET_RESOURCES, htmlTemplate, EDIT_JAVASCRIPT);
         htmlTemplate = htmlTemplate.replace("{config_existsPage}", (isExists(pageConfigName) ? pageConfigName : "0"));
         String widgetJson = mapper.writeValueAsString(widgetPage);

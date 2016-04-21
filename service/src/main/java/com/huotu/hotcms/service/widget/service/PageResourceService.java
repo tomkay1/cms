@@ -24,7 +24,7 @@ import java.util.UUID;
 
 /**
  * <p>
- * 页面解析服务
+ * 页面资源服务
  * </p>
  *
  * @author xhl
@@ -36,16 +36,25 @@ public class PageResourceService {
     private StaticResourceService resourceServer;
 
     @Autowired
-    private RedisService redisService;
-
-    @Autowired
     private PageResolveService pageResolveService;
 
     @Autowired
     private WidgetResolveService widgetResolveService;
 
+    @Autowired
+    private WidgetResourceService widgetResourceService;
+
     private TemplateEngine templateEngine=new TemplateEngine();
 
+    /**
+     * <p>
+     *     获得页面浏览视图
+     * </p>
+     * @param widgetPage 页面对象
+     * @param isEdit 是否是编辑视图
+     * @param site  站点信息对象
+     * @return 返回页面视图模版
+     * */
     public String getHtmlTemplateByWidgetPage(WidgetPage widgetPage,Boolean isEdit,Site site) throws Exception {
         String htmlTemplate = "";
         if (widgetPage != null) {
@@ -61,47 +70,8 @@ public class PageResourceService {
         return htmlTemplate;
     }
 
-    public String getWidgetTemplateByWidgetBase(WidgetBase widgetBase) throws Exception {
-        if (redisService.isContent())
-            return isWidgetTemplateCached(widgetBase) ? getCachedWidgetTemplate(widgetBase) : getWidgetTemplateFromFile(widgetBase);
-        else
-            return getWidgetTemplateFromFile(widgetBase);
-    }
 
-    public String getWidgetTemplateResolveByWidgetBase(WidgetBase widgetBase,Site site) throws Exception {
-        String widgetHtml=getWidgetTemplateByWidgetBase(widgetBase);
-        widgetHtml=widgetResolveService.widgetBriefView(widgetHtml,widgetBase,site);
-        return widgetHtml;
-    }
-
-    private String getCachedWidgetTemplate(WidgetBase widgetBase) {
-        return redisService.findByWidgetId(widgetBase.getId());
-    }
-
-    private boolean isWidgetTemplateCached(WidgetBase widgetBase) {
-        return redisService.isWidgetExists(widgetBase.getId());
-    }
-
-    private String getWidgetTemplateFromFile(WidgetBase widgetBase) throws Exception{
-        URL url = resourceServer.getResource(widgetBase.getWidgetUri()).toURL();
-//        List<WidgetProperty> widgetProperties = widgetBase.getProperty();
-//        Map widgetProperties=widgetBase.getProperty();
-        String widgetTemplate = HttpUtils.getHtmlByUrl(url);
-//        if (widgetProperties != null) {
-//            for (WidgetProperty widgetProperty : widgetProperties) {
-//                if (widgetProperty != null) {
-//                    widgetTemplate = widgetTemplate.replace("{" + widgetProperty.getName() + "}", widgetProperty.getValue());
-//                }
-//            }
-//        }
-        if(redisService.isContent()) {
-            redisService.saveWidget(widgetBase.getId(), widgetTemplate);
-        }
-        return widgetTemplate;
-    }
-
-
-    public String getWidgetModuleTemplateByWidgetModule(WidgetModule widgetModule,Boolean isEdit,Site site) throws Exception {
+    private String getWidgetModuleTemplateByWidgetModule(WidgetModule widgetModule,Boolean isEdit,Site site) throws Exception {
         String moduleTemplate = "";
         if (widgetModule != null) {
             List<WidgetBase> widgetBases = widgetModule.getWidget();
@@ -111,7 +81,7 @@ public class PageResourceService {
                     if(widgetBase.getGuid()==null){
                         widgetBase.setGuid(UUID.randomUUID().toString());
                     }
-                    String template=getWidgetTemplateResolveByWidgetBase(widgetBase,site);
+                    String template=widgetResourceService.getWidgetTemplateResolveByWidgetBase(widgetBase,site);
                     moduleTemplate +=template;
                 }
             }
@@ -122,7 +92,7 @@ public class PageResourceService {
     /**
      * 解析模块列表下面的组件Html 模版
      */
-    public List<String> getWidgetModuleTemplateByWidgetModuleList(List<WidgetModule> widgetModules,Boolean isEdit,Site site) throws Exception {
+    private List<String> getWidgetModuleTemplateByWidgetModuleList(List<WidgetModule> widgetModules,Boolean isEdit,Site site) throws Exception {
         List<String> moduleTemplateList = new ArrayList<>();
         if (widgetModules != null) {
             for (WidgetModule widgetModule : widgetModules) {
@@ -130,13 +100,16 @@ public class PageResourceService {
                     String moduleTemplate = "";
                     moduleTemplate += getWidgetModuleTemplateByWidgetModule(widgetModule, isEdit,site);
                     moduleTemplateList.add(moduleTemplate);
+                }else{
+                    String moduleTemplate = "";
+                    moduleTemplateList.add(moduleTemplate);
                 }
             }
         }
         return moduleTemplateList;
     }
 
-    public String getWidgetLayoutTemplateByWidgetLayout(WidgetLayout widgetLayout,Boolean isEdit,Site site) throws Exception {
+    private String getWidgetLayoutTemplateByWidgetLayout(WidgetLayout widgetLayout,Boolean isEdit,Site site) throws Exception {
         String layoutTemplate = "";
         if (widgetLayout != null) {
             List<String> moduleTemplateList = getWidgetModuleTemplateByWidgetModuleList(widgetLayout.getModule(),isEdit,site);
@@ -146,7 +119,14 @@ public class PageResourceService {
         return layoutTemplate;
     }
 
-    public String getHeaderTemplaeBySite(Site site) throws Exception {
+    /**
+     * <p>
+     *     根据站点获得头部模版信息对象
+     * </p>
+     * @param site 站点信息对象
+     * @return 返回头部浏览视图,已经解析后的html视图
+     * */
+    public String getHeaderTemplateBySite(Site site) throws Exception {
         WidgetPage widgetPage=pageResolveService.getWidgetPageByConfig("head.xml", site);
         if(widgetPage!=null){
            return getHtmlTemplateByWidgetPage(widgetPage, false,site);
@@ -154,10 +134,20 @@ public class PageResourceService {
         return null;
     }
 
-    public String getHeaderTemplate(String resources,WidgetPage widgetPage){
+    /**
+     * <P>
+     *     获得头部浏览视图
+     * </P>
+     * @param resources 资源
+     * @param  widgetPage
+     * @param site
+     * @return String
+     * */
+    public String getHeaderTemplate(String resources,WidgetPage widgetPage,Site site){
         try{
             Context context=new Context(Locale.CHINA, ReflectionUtil.getFieldList(widgetPage));
             StringWriter writer = new StringWriter();
+            context=widgetResolveService.setVariable(context,site);
             templateEngine.process(resources,context,writer);
             return writer.toString();
         }catch (Exception ex){

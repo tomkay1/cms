@@ -6,13 +6,17 @@ import com.huotu.hotcms.service.entity.CustomPages;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.service.CustomPagesService;
 import com.huotu.hotcms.service.thymeleaf.service.SiteResolveService;
+import com.huotu.hotcms.service.thymeleaf.templateresource.WidgetTemplateResource;
 import com.huotu.hotcms.service.widget.model.GoodsDetail;
+import com.huotu.hotcms.service.widget.service.PageResolveService;
+import com.huotu.hotcms.service.widget.service.WidgetResolveService;
 import com.huotu.hotcms.service.widget.service.PageResourceService;
 import com.huotu.hotcms.web.service.GoodsDetailService;
 import com.huotu.hotcms.web.util.web.CookieUser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,12 +47,15 @@ public class ShopController {
     SiteResolveService siteResolveService;
 
     @Autowired
-    private PageResourceService pageResourceService;
-
-
-    @Autowired
     private CookieUser cookieUser;
 
+    @Autowired
+    private PageResourceService pageResourceService;
+
+    private WidgetTemplateResource widgetTemplateResource=new WidgetTemplateResource();
+
+    @Autowired
+    private Environment environment;
 
     /**
      * 商城首页/shop/
@@ -98,9 +105,11 @@ public class ShopController {
                  userId = Integer.valueOf(cookieUser.getUserId(request));
             }
             Site site = siteResolveService.getCurrentSite(request);
-            String head = pageResourceService.getHeaderTemplaeBySite(site);
+            String head = pageResourceService.getHeaderTemplateBySite(site);
             if(head == null) {
                 head = "";
+            }else{
+                head=widgetTemplateResource.getHtmlHeadStaticResources(environment)+head;
             }
             GoodsDetail goods = goodsDetailService.getGoodsDetail(Integer.valueOf(id),userId);
             String url = goodsDetailService.getGoodsWxUrl(request,goods.getId());//微信登录跳转链接
@@ -108,9 +117,10 @@ public class ShopController {
 
             modelAndView.setViewName("/template/0/goodsDetail.html");
             modelAndView.addObject("goods",goods);
+            modelAndView.addObject("head",head);
             modelAndView.addObject("url",url);//获取域名
             modelAndView.addObject("spec",spec);
-            modelAndView.addObject("head",head);
+
         }catch (Exception ex){
             log.error(ex);
         }

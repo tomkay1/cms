@@ -37,7 +37,8 @@ public class CurrentProcessorService {
     @Autowired
     private VideoCurrentProcessor videoCurrentProcessor;
 
-    public Object resolveDataByAttr(String dialectPrefix, IProcessableElementTag tag, String attributeValue, ITemplateContext context) {
+    public Object resolveDataByAttr(String dialectPrefix, IProcessableElementTag tag, String attributeValue
+            , ITemplateContext context) {
         if (dialectPrefix.equals(DialectTypeEnum.ARTICLE.getDialectPrefix())) {
             return articleCurrentProcessor.resolveDataByAttr(tag, attributeValue, context);
         }

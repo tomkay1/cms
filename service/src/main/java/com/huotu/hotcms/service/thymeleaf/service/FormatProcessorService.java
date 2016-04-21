@@ -30,7 +30,8 @@ public class FormatProcessorService {
     @Autowired
     private TimeFormatProcessorService timeFormatProcessorService;
 
-    public Object resolveDataByAttr(String dialectPrefix, IProcessableElementTag tab, ITemplateContext context, Object expressionResult) {
+    public Object resolveDataByAttr(String dialectPrefix, IProcessableElementTag tab, ITemplateContext context
+            , Object expressionResult) {
         if (dialectPrefix.equals(DialectTypeEnum.TIME.getDialectPrefix())) {
             return timeFormatProcessorService.resolveDataByAttr(tab, context, expressionResult);
         }

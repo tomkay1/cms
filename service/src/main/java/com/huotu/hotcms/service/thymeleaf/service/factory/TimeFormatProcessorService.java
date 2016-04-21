@@ -37,7 +37,8 @@ public class TimeFormatProcessorService {
 
     public Object resolveDataByAttr(IProcessableElementTag tab,ITemplateContext context,Object expressResult) {
         try {
-            TimeFormatParam timeFormatParam = DialectAttributeFactory.getInstance().getForeachParam(tab, TimeFormatParam.class);
+            TimeFormatParam timeFormatParam = DialectAttributeFactory.getInstance().getForeachParam(tab
+                    , TimeFormatParam.class);
             String formatterExpress=null;
             if(timeFormatParam!=null){
                 formatterExpress=timeFormatParam.getFormat();

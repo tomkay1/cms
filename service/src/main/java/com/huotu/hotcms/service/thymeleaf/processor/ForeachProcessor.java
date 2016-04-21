@@ -35,7 +35,8 @@ public class ForeachProcessor extends AbstractAttributeTagProcessor {
 ////        this.foreachProcessorService.setDialectPrefix(dialectPrefix);
 //    }
 
-    public ForeachProcessor(final IProcessorDialect dialect, final String dialectPrefix, ForeachProcessorService foreachProcessorService) {
+    public ForeachProcessor(final IProcessorDialect dialect, final String dialectPrefix
+            , ForeachProcessorService foreachProcessorService) {
         super(dialect, TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
         this.foreachProcessorService = foreachProcessorService;
         this.dialectPrefix = dialectPrefix;
@@ -43,7 +44,9 @@ public class ForeachProcessor extends AbstractAttributeTagProcessor {
     }
 
     @Override
-    protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName, String attributeValue, String attributeTemplateName, int attributeLine, int attributeCol, IElementTagStructureHandler structureHandler){
+    protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName
+            , String attributeValue, String attributeTemplateName, int attributeLine, int attributeCol
+            , IElementTagStructureHandler structureHandler) {
         final Object iteratedValue;
         iteratedValue = foreachProcessorService.resolveDataByAttr(dialectPrefix, tag, context);
         structureHandler.iterateElement(attributeValue, null, iteratedValue);

@@ -29,9 +29,6 @@
            th:attr="data-editurl=${widgetEditUri},data-id=${id},data-for=${guid},data-url=${widgetUri},data-layoutid=${layoutId},data-position=${layoutPosition}">
             编辑
         </a>
-        <a href="javascript:void(0)" class="HOT-module-set-template">
-            模板
-        </a>
         </span>
             </h4>
         </div>
@@ -47,16 +44,16 @@
         }
     </style>
     <div class="page-operate">
-        <a class="btn-green" href="javascript:void(0)" id="js-nav-add">页面尾部</a>
+        <a class="btn-green" href="javascript:void(0)" id="js-nav-add">增加链接</a>
     </div>
     <div class="data-table">
         <div class="table-thead">
             <table cellspacing="0" cellpadding="0" border="0">
                 <thead>
                 <tr>
-                    <th>名称<em>*</em></th>
-                    <th>链接地址<em>*</em></th>
-                    <th>打开方式<em>*</em></th>
+                    <th class="operate" width="110px">名称<em>*</em></th>
+                    <th class="operate" width="195px">链接地址<em>*</em></th>
+                    <th class="operate" width="160px">打开方式<em>*</em></th>
                     <th class="operate">操作</th>
                 </tr>
                 </thead>
@@ -66,11 +63,11 @@
             <table id="linkTable" cellspacing="0" cellpadding="0" border="0">
                 <tbody id="js-nav-box">
                 <tr th:each="row,iterStat:${Rows}" th:id="${iterStat.index}">
-                    <td><input type="text" class="text-short" name="name_Rows" maxlength="32"
+                    <td  class="operate"><input type="text" class="text-short" name="name_Rows" maxlength="32" width="80px;"
                                th:value="${row.name_Rows}"></td>
-                    <td><input type="text" class="text-normal" name="url_Rows" th:value="${row.url_Rows}"
+                    <td  class="operate"><input type="text" class="text-normal" name="url_Rows" th:value="${row.url_Rows}" width="250px"
                                maxlength="256"></td>
-                    <td>
+                    <td  class="operate">
                         <select name="type_Rows" class="select-short">
                             <option value="0" th:selected="(${row.type_Rows}=='0'?selected)">当前窗口打开</option>
                             <option value="1" th:selected="(${row.type_Rows}=='1'?selected)">新窗口打开</option>
@@ -88,9 +85,9 @@
     </div>
     <script type="application/template" id="js-nav-template">
         <tr id="{id}">
-            <td><input type="text" class="text-short" name="name_Rows" maxlength="32" value=""></td>
-            <td><input type="text" class="text-normal" name="url_Rows" maxlength="256"></td>
-            <td>
+            <td class="operate"><input type="text" class="text-short" name="name_Rows" maxlength="32" value="" width: 80px;></td>
+            <td class="operate"><input type="text" class="text-normal" name="url_Rows" maxlength="256"  width="250px;"></td>
+            <td class="operate">
                 <select name="type_Rows" class="select-short">
                     <option value="0">当前窗口打开</option>
                     <option value="1" selected="selected">新窗口打开</option>

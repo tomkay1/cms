@@ -57,20 +57,20 @@
     </style>
     <div class="forms">
         <ul>
-            <li>
-                <label style="width: 180px;">选择模版 </label>
+            <!--<li>
+                <label>选择模版 </label>
                 <select name="templateClass" class="select-short" id="templateClass">
                     <option value="sh-brand-wrap-630128" th:selected="${templateClass== null or templateClass=='sh-brand-wrap-630128'}">模版一</option>
                     <option value="sh-brand-wrap-633464" th:selected="${templateClass=='sh-brand-wrap-633464'}">模版二</option>
                 </select>
-            </li>
+            </li>-->
             <li>
-                <label style="width: 180px;">背景图片 </label>
+                <label>背景图片 </label>
                 <input type="text" id="pageBackImage" name="pageBackImage" th:value="${pageBackImage}" maxlength="50" class="input-normal"/>
                 <a href="javascript:void(0)" id="js-cms-selectPageBackImage">图片选择</a>
             </li>
             <li>
-                <label style="width: 180px;">店铺LOGO </label>
+                <label>店铺LOGO </label>
                 <input type="text" id="shopLogoImage" name="shopLogoImage" th:value="${shopLogoImage}" maxlength="50" class="input-normal"/>
                 <a href="javascript:void(0)" id="js-cms-selectLogoImage" >图片选择</a>
             </li>

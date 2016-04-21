@@ -33,9 +33,6 @@
            th:attr="data-editurl=${widgetEditUri},data-id=${id},data-for=${guid},data-url=${widgetUri},data-layoutid=${layoutId},data-position=${layoutPosition}">
             编辑
         </a>
-        <a href="javascript:void(0)" class="HOT-module-set-template">
-            模板
-        </a>
         </span>
             </h4>
         </div>
@@ -101,8 +98,8 @@
     </div>
     <script type="application/template" id="js-nav-template">
         <tr id="{id}">
-            <td><input type="text" class="text-short" name="name_Rows" maxlength="32" value=""></td>
-            <td><input type="text" class="text-normal" name="url_Rows" maxlength="256"></td>
+            <td><input type="text" class="text-short" name="name_Rows" maxlength="32" value="" width="80px"></td>
+            <td><input type="text" class="text-normal" name="url_Rows" maxlength="256" width="250px;"></td>
             <td>
                 <select name="type_Rows" class="select-short">
                     <option value="0">当前窗口打开</option>

@@ -71,10 +71,10 @@ public class ArticleCurrentProcessor {
                 ArticleCurrentParam articleCurrentParam = DialectAttributeFactory.getInstance().getForeachParam(tab
                         , ArticleCurrentParam.class);
                 HttpServletRequest request = ((IWebContext)context).getRequest();
-                String selvertUrl=PatternMatchUtil.getServletUrl(request);
+                String servletUrl=PatternMatchUtil.getServletUrl(request);
                 if(articleCurrentParam!=null){//根据当前请求的Uri来获得指定的ID
                     if(articleCurrentParam.getId()==null){
-                        articleCurrentParam.setId(PatternMatchUtil.getUrlIdByLongType(selvertUrl
+                        articleCurrentParam.setId(PatternMatchUtil.getUrlIdByLongType(servletUrl
                                 , PatternMatchUtil.urlParamRegexp));
                     }
                 }

@@ -14,9 +14,9 @@ import com.huotu.hotcms.service.service.NoticeService;
 import com.huotu.hotcms.service.thymeleaf.expression.DialectAttributeFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import org.springframework.web.context.ContextLoader;
-import org.springframework.web.context.WebApplicationContext;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.model.IProcessableElementTag;
 
@@ -25,28 +25,19 @@ import java.util.List;
 /**
  * Created by cwb on 2016/1/18.
  */
-public class NoticeForeachProcessorFactory {
+@Component
+public class NoticeForeachProcessor {
 
+    private static Log log = LogFactory.getLog(NoticeForeachProcessor.class);
     private final int DEFAULT_PAGE_SIZE = 5;
-
-    private static Log log = LogFactory.getLog(NoticeForeachProcessorFactory.class);
-
-    private static NoticeForeachProcessorFactory instance;
-
-    private NoticeForeachProcessorFactory(){}
-
-    public static NoticeForeachProcessorFactory getInstance() {
-        if(instance == null) {
-            instance = new NoticeForeachProcessorFactory();
-        }
-        return instance;
-    }
+    @Autowired
+    private NoticeService noticeService;
 
     public List<Notice> process(IProcessableElementTag elementTag,ITemplateContext context) {
         try {
-            NormalForeachParam noticeForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag, NormalForeachParam.class);
-            WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
-            NoticeService noticeService = (NoticeService)applicationContext.getBean("noticeServiceImpl");
+            NormalForeachParam noticeForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag
+                    , NormalForeachParam.class);
+
             //根据指定id获取栏目列表
             if(noticeForeachParam.getSpecifyids()!=null) {
                 return noticeService.getSpecifyNotices(noticeForeachParam.getSpecifyids());

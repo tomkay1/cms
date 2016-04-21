@@ -16,9 +16,9 @@ import com.huotu.hotcms.service.thymeleaf.expression.DialectAttributeFactory;
 import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import org.springframework.web.context.ContextLoader;
-import org.springframework.web.context.WebApplicationContext;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.model.IProcessableElementTag;
 
@@ -27,28 +27,19 @@ import java.util.List;
 /**
  * Created by cwb on 2016/1/18.
  */
-public class DownloadForeachProcessorFactory {
+@Component
+public class DownloadForeachProcessor {
 
+    private static Log log = LogFactory.getLog(DownloadForeachProcessor.class);
     private final int DEFAULT_PAGE_SIZE = 5;
-
-    private static Log log = LogFactory.getLog(DownloadForeachProcessorFactory.class);
-
-    private static DownloadForeachProcessorFactory instance;
-
-    private DownloadForeachProcessorFactory(){}
-
-    public static DownloadForeachProcessorFactory getInstance() {
-        if(instance == null) {
-            instance = new DownloadForeachProcessorFactory();
-        }
-        return instance;
-    }
+    @Autowired
+    private DownloadService downloadService;
 
     public List<Download> process(IProcessableElementTag elementTag,ITemplateContext context) {
         try {
-            NormalForeachParam downloadForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag, NormalForeachParam.class);
-            WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
-            DownloadService downloadService = (DownloadService)applicationContext.getBean("downloadServiceImpl");
+            NormalForeachParam downloadForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag
+                    , NormalForeachParam.class);
+
             Site site = (Site) VariableExpression.getVariable(context, "site");
             //根据指定id获取栏目列表
             if(downloadForeachParam.getSpecifyids()!=null) {

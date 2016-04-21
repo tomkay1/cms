@@ -9,6 +9,9 @@
 package com.huotu.hotcms.service.thymeleaf.dialect;
 
 import com.huotu.hotcms.service.thymeleaf.processor.FormatProcessor;
+import com.huotu.hotcms.service.thymeleaf.service.FormatProcessorService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.processor.IProcessor;
@@ -24,10 +27,14 @@ import java.util.Set;
  *
  * @since 1.0.0
  */
+@Component
 public class TimeDialect extends AbstractProcessorDialect {
     public static  String NAME = "Time";
     public static  String PREFIX = "time";
     public static  int PROCESSOR_PRECEDENCE = 800;
+
+    @Autowired
+    private FormatProcessorService formatProcessorService;
 
     public TimeDialect() {
         super(NAME, PREFIX, PROCESSOR_PRECEDENCE);
@@ -39,8 +46,8 @@ public class TimeDialect extends AbstractProcessorDialect {
     }
 
     private Set<IProcessor> createArticleProcessorsSet(final IProcessorDialect dialect, final String dialectPrefix) {
-        final Set<IProcessor> processors = new LinkedHashSet<IProcessor>();
-        processors.add(new FormatProcessor(dialect,dialectPrefix));
+        final Set<IProcessor> processors = new LinkedHashSet<>();
+        processors.add(new FormatProcessor(dialect, dialectPrefix, formatProcessorService));
         return processors;
     }
 }

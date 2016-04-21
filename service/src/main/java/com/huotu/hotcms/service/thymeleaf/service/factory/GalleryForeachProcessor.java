@@ -8,22 +8,24 @@
 
 package com.huotu.hotcms.service.thymeleaf.service.factory;
 
-import com.huotu.hotcms.service.entity.GalleryList;
+import com.huotu.hotcms.service.common.RouteType;
+import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.Gallery;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.PageableForeachParam;
-import com.huotu.hotcms.service.service.GalleryListService;
+import com.huotu.hotcms.service.service.CategoryService;
+import com.huotu.hotcms.service.service.GalleryService;
 import com.huotu.hotcms.service.thymeleaf.expression.DialectAttributeFactory;
 import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
 import com.huotu.hotcms.service.thymeleaf.model.PageModel;
 import com.huotu.hotcms.service.thymeleaf.model.RequestModel;
-import com.huotu.hotcms.service.util.PatternMatchUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import org.springframework.web.context.ContextLoader;
-import org.springframework.web.context.WebApplicationContext;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.context.IWebContext;
 import org.thymeleaf.model.IProcessableElementTag;
@@ -35,72 +37,71 @@ import java.util.List;
 /**
  * Created by cwb on 2016/3/23.
  */
-public class GalleryListForeachProcessorFactory {
+@Component
+public class GalleryForeachProcessor {
 
+    private static Log log = LogFactory.getLog(GalleryForeachProcessor.class);
     private final int DEFAULT_PAGE_NO = 1;
     private final int DEFAULT_PAGE_SIZE = 12;
     private final int DEFAULT_PAGE_NUMBER = 5;
-
-    private static Log log = LogFactory.getLog(GalleryListForeachProcessorFactory.class);
-
-    private static GalleryListForeachProcessorFactory instance;
-
-    private GalleryListForeachProcessorFactory(){}
-
-    public static GalleryListForeachProcessorFactory getInstance() {
-        if(instance == null) {
-            instance = new GalleryListForeachProcessorFactory();
-        }
-        return instance;
-    }
+    @Autowired
+    private CategoryService categoryService;
+    @Autowired
+    private GalleryService galleryService;
 
     public Object process(IProcessableElementTag elementTag,ITemplateContext context) {
-        Page<GalleryList> galleries = null;
+        Page<Gallery> galleries = null;
         try {
-            WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
             HttpServletRequest request = ((IWebContext)context).getRequest();
-            String selvertUrl=PatternMatchUtil.getServletUrl(request);
-            PageableForeachParam galleryListForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag, PageableForeachParam.class);
+            PageableForeachParam galleryForeachParam = DialectAttributeFactory.getInstance().getForeachParam(elementTag
+                    , PageableForeachParam.class);
             Route route = (Route) VariableExpression.getVariable(context, "route");
-            if(galleryListForeachParam.getPageno() == null) {
+            if(StringUtils.isEmpty(galleryForeachParam.getCategoryid())) {
+                if(route.getRouteType()== RouteType.GALLERY_CONTENT) {
+                    Category current = categoryService.getCategoryByRoute(route);
+                    galleryForeachParam.setCategoryid(current.getId());
+                }
+            }
+            //如果不是具体子栏目，应取得当前栏目所有一级子栏目数据列表
+            if(StringUtils.isEmpty(galleryForeachParam.getParentcid())) {
+                if(route.getRouteType()!=RouteType.GALLERY_CONTENT && route.getRouteType()!=RouteType.GALLERY_CONTENT) {
+                    Category current = categoryService.getCategoryByRoute(route);
+                    galleryForeachParam.setParentcid(current.getId());
+                }
+            }
+            if(galleryForeachParam.getPageno() == null) {
                 if(StringUtils.isEmpty(request.getParameter("pageNo"))) {
-                    galleryListForeachParam.setPageno(DEFAULT_PAGE_NO);
+                    galleryForeachParam.setPageno(DEFAULT_PAGE_NO);
                 }else {
                     int pageNo = Integer.parseInt(request.getParameter("pageNo"));
                     if(pageNo < 1) {
                         throw new Exception("页码小于1");
                     }
-                    galleryListForeachParam.setPageno(pageNo);
+                    galleryForeachParam.setPageno(pageNo);
                 }
             }
-            if(galleryListForeachParam.getPagesize() == null) {
+            if(galleryForeachParam.getPagesize() == null) {
                 if(StringUtils.isEmpty(request.getParameter("pageSize"))) {
-                    galleryListForeachParam.setPagesize(DEFAULT_PAGE_SIZE);
+                    galleryForeachParam.setPagesize(DEFAULT_PAGE_SIZE);
                 }else {
                     int pageSize = Integer.parseInt(request.getParameter("pageSize"));
                     if(pageSize < 1) {
                         throw new Exception("请求数据列表容量小于1");
                     }
-                    galleryListForeachParam.setPagesize(pageSize);
+                    galleryForeachParam.setPagesize(pageSize);
                 }
             }
-            if(galleryListForeachParam.getPagenumber() == null) {
-                galleryListForeachParam.setPagenumber(DEFAULT_PAGE_NUMBER);
+            if(galleryForeachParam.getPagenumber() == null) {
+                galleryForeachParam.setPagenumber(DEFAULT_PAGE_NUMBER);
             }
-            if(galleryListForeachParam!=null){//根据当前请求的Uri来获得指定的ID
-                if(galleryListForeachParam.getGalleryId()==null){
-                    galleryListForeachParam.setGalleryId(PatternMatchUtil.getUrlIdByLongType(selvertUrl, PatternMatchUtil.urlParamRegexp));
-                }
-            }
-            GalleryListService galleryListService = (GalleryListService)applicationContext.getBean("galleryListServiceImpl");
-            galleries = galleryListService.getGalleryList(galleryListForeachParam);
+            galleries = galleryService.getGalleryList(galleryForeachParam);
             //图片路径处理
             Site site = (Site)VariableExpression.getVariable(context,"site");
-            for(GalleryList galleryList : galleries) {
-                galleryList.setThumbUri(site.getResourceUrl() + galleryList.getThumbUri());
+            for(Gallery gallery : galleries) {
+                gallery.setThumbUri(site.getResourceUrl() + gallery.getThumbUri());
             }
             List<PageModel> pages = new ArrayList<>();
-            int currentPage = galleryListForeachParam.getPageno();
+            int currentPage = galleryForeachParam.getPageno();
             int totalPages = galleries.getTotalPages();
             int pageNumber = DEFAULT_PAGE_NUMBER < totalPages ? DEFAULT_PAGE_NUMBER : totalPages;
             int startPage = calculateStartPageNo(currentPage,pageNumber,totalPages);
@@ -123,7 +124,7 @@ public class GalleryListForeachProcessorFactory {
             requestModel.setHasPrevPage(galleries.hasPrevious());
             requestModel.setCurrentPage(currentPage);
         }catch (Exception e) {
-            log.error("galleryListForeach process-->"+e.getMessage());
+            log.error("galleryForeach process-->"+e.getMessage());
         }
         return galleries;
     }

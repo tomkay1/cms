@@ -8,9 +8,17 @@
 
 package com.huotu.hotcms.service.util;
 
-import com.huotu.hotcms.service.thymeleaf.dialect.*;
+import com.huotu.hotcms.service.thymeleaf.dialect.ArticleDialect;
+import com.huotu.hotcms.service.thymeleaf.dialect.CategoryDialect;
+import com.huotu.hotcms.service.thymeleaf.dialect.DownloadDialect;
+import com.huotu.hotcms.service.thymeleaf.dialect.GalleryDialect;
+import com.huotu.hotcms.service.thymeleaf.dialect.GalleryListDialect;
+import com.huotu.hotcms.service.thymeleaf.dialect.LinkDialect;
+import com.huotu.hotcms.service.thymeleaf.dialect.NoticeDialect;
+import com.huotu.hotcms.service.thymeleaf.dialect.TimeDialect;
+import com.huotu.hotcms.service.thymeleaf.dialect.VideoDialect;
+import com.huotu.hotcms.service.thymeleaf.dialect.WidgetDialect;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
-import org.thymeleaf.templatemode.TemplateMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +36,11 @@ public class CMSDialect {
     private static List<AbstractProcessorDialect> dialectList = new ArrayList<>();
 
 
+    /**
+     * @return list if all dialects
+     * @deprecated 不要再用这个方法了, 应该使用@{@link org.springframework.beans.factory.annotation.Autowired}
+     * 一个{@link org.thymeleaf.dialect.IDialect}的{@link java.util.Set 集合}
+     */
     public static List<AbstractProcessorDialect> getDialectList() {
         initDialect();
         return dialectList;

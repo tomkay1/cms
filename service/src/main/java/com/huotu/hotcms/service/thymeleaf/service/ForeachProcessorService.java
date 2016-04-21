@@ -9,7 +9,16 @@
 package com.huotu.hotcms.service.thymeleaf.service;
 
 import com.huotu.hotcms.service.thymeleaf.common.DialectTypeEnum;
-import com.huotu.hotcms.service.thymeleaf.service.factory.*;
+import com.huotu.hotcms.service.thymeleaf.service.factory.ArticleForeachProcessor;
+import com.huotu.hotcms.service.thymeleaf.service.factory.CategoryForeachProcessor;
+import com.huotu.hotcms.service.thymeleaf.service.factory.DownloadForeachProcessor;
+import com.huotu.hotcms.service.thymeleaf.service.factory.GalleryForeachProcessor;
+import com.huotu.hotcms.service.thymeleaf.service.factory.GalleryListForeachProcessor;
+import com.huotu.hotcms.service.thymeleaf.service.factory.LinkForeachProcessor;
+import com.huotu.hotcms.service.thymeleaf.service.factory.NoticeForeachProcessor;
+import com.huotu.hotcms.service.thymeleaf.service.factory.VideoForeachProcessor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.model.IProcessableElementTag;
 
@@ -17,33 +26,51 @@ import org.thymeleaf.model.IProcessableElementTag;
 /**
  * Created by cwb on 2016/1/4.
  */
-public class ForeachProcessorService extends BaseProcessorService {
+@Component
+public class ForeachProcessorService {
+
+    @Autowired
+    private ArticleForeachProcessor articleForeachProcessor;
+    @Autowired
+    private CategoryForeachProcessor categoryForeachProcessor;
+    @Autowired
+    private VideoForeachProcessor videoForeachProcessor;
+    @Autowired
+    private LinkForeachProcessor linkForeachProcessor;
+    @Autowired
+    private NoticeForeachProcessor noticeForeachProcessor;
+    @Autowired
+    private DownloadForeachProcessor downloadForeachProcessor;
+    @Autowired
+    private GalleryForeachProcessor galleryForeachProcessor;
+    @Autowired
+    private GalleryListForeachProcessor galleryListForeachProcessor;
 
 
-    public Object resolveDataByAttr(IProcessableElementTag elementTag, ITemplateContext context) {
+    public Object resolveDataByAttr(String dialectPrefix, IProcessableElementTag elementTag, ITemplateContext context) {
         if(dialectPrefix.equals(DialectTypeEnum.ARTICLE.getDialectPrefix())) {
-            return ArticleForeachProcessorFactory.getInstance().process(elementTag, context);
+            return articleForeachProcessor.process(elementTag, context);
         }
         if(dialectPrefix.equals(DialectTypeEnum.CATEGORY.getDialectPrefix())) {
-            return CategoryForeachProcessorFactory.getInstance().process(elementTag,context);
+            return categoryForeachProcessor.process(elementTag, context);
         }
         if(dialectPrefix.equals(DialectTypeEnum.VIDEO.getDialectPrefix())) {
-            return VideoForeachProcessorFactory.getInstance().process(elementTag, context);
+            return videoForeachProcessor.process(elementTag, context);
         }
         if(dialectPrefix.equals(DialectTypeEnum.LINK.getDialectPrefix())) {
-            return LinkForeachProcessorFactory.getInstance().process(elementTag, context);
+            return linkForeachProcessor.process(elementTag, context);
         }
         if(dialectPrefix.equals(DialectTypeEnum.NOTICE.getDialectPrefix())) {
-            return NoticeForeachProcessorFactory.getInstance().process(elementTag,context);
+            return noticeForeachProcessor.process(elementTag, context);
         }
         if(dialectPrefix.equals(DialectTypeEnum.DOWNLOAD.getDialectPrefix())) {
-            return DownloadForeachProcessorFactory.getInstance().process(elementTag,context);
+            return downloadForeachProcessor.process(elementTag, context);
         }
         if(dialectPrefix.equals(DialectTypeEnum.GALLERY.getDialectPrefix())) {
-            return GalleryForeachProcessorFactory.getInstance().process(elementTag,context);
+            return galleryForeachProcessor.process(elementTag, context);
         }
         if(dialectPrefix.equals(DialectTypeEnum.GALLERYLIST.getDialectPrefix())) {
-            return GalleryListForeachProcessorFactory.getInstance().process(elementTag,context);
+            return galleryListForeachProcessor.process(elementTag, context);
         }
         return null;
     }

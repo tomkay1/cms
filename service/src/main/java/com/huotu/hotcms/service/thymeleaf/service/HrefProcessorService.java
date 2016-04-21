@@ -9,7 +9,9 @@
 package com.huotu.hotcms.service.thymeleaf.service;
 
 import com.huotu.hotcms.service.thymeleaf.common.DialectTypeEnum;
-import com.huotu.hotcms.service.thymeleaf.service.factory.ArticleHrefProcessorFactory;
+import com.huotu.hotcms.service.thymeleaf.service.factory.ArticleHrefProcessor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.standard.expression.Assignation;
 
@@ -18,18 +20,23 @@ import java.util.List;
 /**
  * Created by Administrator xhl 2016/1/6.
  */
-public class HrefProcessorService extends BaseProcessorService{
-    public String resolveLinkData(List<Assignation> assignation,String LinkExpression, ITemplateContext context){
-        if(dialectPrefix.equals(DialectTypeEnum.ARTICLE.getDialectPrefix())) {
-            return ArticleHrefProcessorFactory.getInstance().resolveLinkData(assignation,LinkExpression,context);
+@Component
+public class HrefProcessorService {
+
+    @Autowired
+    private ArticleHrefProcessor articleHrefProcessor;
+
+    public String resolveLinkData(String dialectPrefix, List<Assignation> assignation, String LinkExpression
+            , ITemplateContext context) {
+        if (dialectPrefix.equals(DialectTypeEnum.ARTICLE.getDialectPrefix())) {
+            return articleHrefProcessor.resolveLinkData(assignation, LinkExpression, context);
         }
 
-        if(dialectPrefix.equals(DialectTypeEnum.CATEGORY.getDialectPrefix())) {
+        if (dialectPrefix.equals(DialectTypeEnum.CATEGORY.getDialectPrefix())) {
             return null;
         }
 
-        if(dialectPrefix.equals(DialectTypeEnum.LINK.getDialectPrefix()))
-        {
+        if (dialectPrefix.equals(DialectTypeEnum.LINK.getDialectPrefix())) {
             return null;
         }
         return null;

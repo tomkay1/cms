@@ -30,18 +30,20 @@ public class NextProcessor extends AbstractAttributeTagProcessor {
     public static final int PRECEDENCE = 200;
 
     public static final String ATTR_NAME = "next";
-    private NextProcessorService nextProcessorService;
+    private final String dialectPrefix;
+    private final NextProcessorService nextProcessorService;
 
-    public NextProcessor(final IProcessorDialect dialect, final String dialectPrefix) {
+    public NextProcessor(final IProcessorDialect dialect, final String dialectPrefix, NextProcessorService nextProcessorService) {
         super(dialect, TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
-        this.nextProcessorService = new NextProcessorService();
-        this.nextProcessorService.setDialectPrefix(dialectPrefix);
+        this.nextProcessorService = nextProcessorService;
+        this.dialectPrefix = dialectPrefix;
+//        this.nextProcessorService.setDialectPrefix(dialectPrefix);
     }
 
     @Override
     protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName, String attributeValue, String attributeTemplateName, int attributeLine, int attributeCol, IElementTagStructureHandler structureHandler){
         final Object iteratedValue;
-        iteratedValue = nextProcessorService.resolveDataByAttr(tag, context);
+        iteratedValue = nextProcessorService.resolveDataByAttr(dialectPrefix, tag, context);
         structureHandler.iterateElement(attributeValue, null, iteratedValue);
     }
 }

@@ -12,6 +12,12 @@ import com.huotu.hotcms.service.thymeleaf.processor.CurrentProcessor;
 import com.huotu.hotcms.service.thymeleaf.processor.ForeachProcessor;
 import com.huotu.hotcms.service.thymeleaf.processor.NextProcessor;
 import com.huotu.hotcms.service.thymeleaf.processor.PreviousProcessor;
+import com.huotu.hotcms.service.thymeleaf.service.CurrentProcessorService;
+import com.huotu.hotcms.service.thymeleaf.service.ForeachProcessorService;
+import com.huotu.hotcms.service.thymeleaf.service.NextProcessorService;
+import com.huotu.hotcms.service.thymeleaf.service.PreviousProcessorService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.processor.IProcessor;
@@ -22,11 +28,20 @@ import java.util.Set;
 /**
  * Created by cwb on 2016/1/4.
  */
+@Component
 public class ArticleDialect extends AbstractProcessorDialect {
 
-    public static  String NAME = "Article";
-    public static  String PREFIX = "article";
-    public static  int PROCESSOR_PRECEDENCE = 2000;
+    public static String NAME = "Article";
+    public static String PREFIX = "article";
+    public static int PROCESSOR_PRECEDENCE = 2000;
+    @Autowired
+    private ForeachProcessorService foreachProcessorService;
+    @Autowired
+    private CurrentProcessorService currentProcessorService;
+    @Autowired
+    private NextProcessorService nextProcessorService;
+    @Autowired
+    private PreviousProcessorService previousProcessorService;
 
     public ArticleDialect() {
         super(NAME, PREFIX, PROCESSOR_PRECEDENCE);
@@ -34,16 +49,16 @@ public class ArticleDialect extends AbstractProcessorDialect {
 
     @Override
     public Set<IProcessor> getProcessors(String dialectPrefix) {
-        return createArticleProcessorsSet(this,dialectPrefix);
+        return createArticleProcessorsSet(this, dialectPrefix);
     }
 
 
     private Set<IProcessor> createArticleProcessorsSet(final IProcessorDialect dialect, final String dialectPrefix) {
-        final Set<IProcessor> processors = new LinkedHashSet<IProcessor>();
-        processors.add(new ForeachProcessor(dialect,dialectPrefix));
-        processors.add(new CurrentProcessor(dialect, dialectPrefix));
-        processors.add(new NextProcessor(dialect, dialectPrefix));
-        processors.add(new PreviousProcessor(dialect, dialectPrefix));
+        final Set<IProcessor> processors = new LinkedHashSet<>();
+        processors.add(new ForeachProcessor(dialect, dialectPrefix, foreachProcessorService));
+        processors.add(new CurrentProcessor(dialect, dialectPrefix, currentProcessorService));
+        processors.add(new NextProcessor(dialect, dialectPrefix, nextProcessorService));
+        processors.add(new PreviousProcessor(dialect, dialectPrefix, previousProcessorService));
 //        processors.add(new HrefProcessor(dialect, dialectPrefix));
 //        processors.add(new SrcProcessor(dialect, dialectPrefix));
         return processors;

@@ -29,18 +29,20 @@ public class CurrentProcessor extends AbstractAttributeTagProcessor {
     public static final int PRECEDENCE = 200;
 
     public static final String ATTR_NAME = "current";
-    private CurrentProcessorService currentProcessorService;
+    private final CurrentProcessorService currentProcessorService;
+    private final String dialectPrefix;
 
-    public CurrentProcessor(final IProcessorDialect dialect, final String dialectPrefix) {
+    public CurrentProcessor(final IProcessorDialect dialect, final String dialectPrefix, CurrentProcessorService currentProcessorService) {
         super(dialect, TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
-        this.currentProcessorService = new CurrentProcessorService();
-        this.currentProcessorService.setDialectPrefix(dialectPrefix);
+        this.currentProcessorService = currentProcessorService;
+//        this.currentProcessorService.setDialectPrefix(dialectPrefix);
+        this.dialectPrefix = dialectPrefix;
     }
 
     @Override
     protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName, String attributeValue, String attributeTemplateName, int attributeLine, int attributeCol, IElementTagStructureHandler structureHandler){
         final Object iteratedValue;
-        iteratedValue = currentProcessorService.resolveDataByAttr(tag, context);
+        iteratedValue = currentProcessorService.resolveDataByAttr(dialectPrefix, tag, context);
         structureHandler.iterateElement(attributeValue, null, iteratedValue);
     }
 }

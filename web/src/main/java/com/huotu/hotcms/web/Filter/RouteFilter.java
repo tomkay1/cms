@@ -8,11 +8,18 @@ import com.huotu.hotcms.service.util.CheckMobile;
 import com.huotu.hotcms.service.util.PatternMatchUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.util.StringUtils;
-import org.springframework.web.context.ContextLoader;
-import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.FrameworkServlet;
+import org.springframework.web.servlet.support.AbstractDispatcherServletInitializer;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -27,34 +34,38 @@ import java.io.IOException;
  */
 public class RouteFilter implements Filter {
     private static final Log log = LogFactory.getLog(RouteFilter.class);
-
     private static final String filter = "interim/join";
-
-    private static final String[] diy_filter = new String[]{"/shop", "/bind", "/template/0/", "/template/error/", ".js", ".css"};//DIY网站过滤规则->(PC官网装修,PC商城装修)
+    private static final String[] diy_filter = new String[]{"/shop", "/bind", "/template/0/", "/template/error/"
+            , ".js", ".css"};//DIY网站过滤规则->(PC官网装修,PC商城装修)
+    private ApplicationContext applicationContext;
+    private ServletContext servletContext;
 
 //    private static final String[] static_filter=new String[]{".js",".css",".png",".jpeg",".gif"};
+private SiteResolveService siteResolveService;
+    private RouteResolverService routeResolverService;
 
     private boolean isContains(String servletPath) {
-        boolean flag = false;
         for (String str : diy_filter) {
             if (servletPath.contains(str)) {
                 return true;
             }
         }
-        return flag;
+        return false;
     }
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
+        log.debug("RouteFilter Init.");
+        servletContext = filterConfig.getServletContext();
     }
 
     /**
      * DIY网站过滤拦截方法,个性化装修(官网装修、商城装修)
      */
-    private boolean personaliseFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws Exception {
+    private boolean personaliseFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws Exception {
         HttpServletRequest request1 = ((HttpServletRequest) request);
 
-        WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
 //        SiteResolveService siteResolveService = (SiteResolveService) applicationContext.getBean("siteResolveService");
 //        Site site = siteResolveService.getCurrentSite(request1);
 //        String servletPath = PatternMatchUtil.getServletPath(site, request1);
@@ -78,11 +89,10 @@ public class RouteFilter implements Filter {
     /**
      * 定制网站过滤拦截方法
      */
-    private boolean customizeFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws Exception {
+    private boolean customizeFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws Exception {
         HttpServletRequest request1 = ((HttpServletRequest) request);
 
-        WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
-        SiteResolveService siteResolveService = (SiteResolveService) applicationContext.getBean("siteResolveService");
         Site site = siteResolveService.getCurrentSite(request1);
         //目前为了兼容我们公司自己的官网，暂时先这样处理兼容,后面考虑在网站配置中新增一个字段(是否有手机官网，如果有则做该业务判断),统一使用m.xxx.com为手机官网地址
         if (site.getCustomerId().equals(5)) {
@@ -98,40 +108,58 @@ public class RouteFilter implements Filter {
         String langParam = PatternMatchUtil.getEffecterLangParam(request1, site);//获得国际化参数(url上带上的语言地区参数信息)
         if (!servletPath.contains(filter)) {
             if (PatternMatchUtil.isMatchFilter(servletPath)) {
-                RouteResolverService routeResolverService = (RouteResolverService) applicationContext.getBean("routeResolverService");
-                if (site != null) {
-                    Route route = routeResolverService.getRoute(site, servletPath);
-                    if (route == null && !site.isCustom()) {
-                        request.getRequestDispatcher("/template/" + site.getCustomerId() + servletPath).forward(request, response);
-                    } else {
-                        if (!StringUtils.isEmpty(langParam)) {//语言参数不为空追加上语言参数并做服务端forward
-                            request.getRequestDispatcher("/web/" + langParam + servletPath).forward(request, response);
-                        } else {
-                            request.getRequestDispatcher("/web" + servletPath).forward(request, response);
-                        }
-                    }
-                    return false;
+                Route route = routeResolverService.getRoute(site, servletPath);
+                if (route == null && !site.isCustom()) {
+                    request.getRequestDispatcher("/template/" + site.getCustomerId() + servletPath).forward(request
+                            , response);
                 } else {
-                    chain.doFilter(request, response);
+                    if (!StringUtils.isEmpty(langParam)) {//语言参数不为空追加上语言参数并做服务端forward
+                        request.getRequestDispatcher("/web/" + langParam + servletPath).forward(request, response);
+                    } else {
+                        request.getRequestDispatcher("/web" + servletPath).forward(request, response);
+                    }
                 }
+                return false;
             }
         }
         return true;
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException
+            , ServletException {
         try {
-            HttpServletRequest request1 = ((HttpServletRequest) request);
 
-            WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
-            SiteResolveService siteResolveService = (SiteResolveService) applicationContext.getBean("siteResolveService");
+            if (applicationContext == null) {
+                String key = FrameworkServlet.SERVLET_CONTEXT_PREFIX
+                        + AbstractDispatcherServletInitializer.DEFAULT_SERVLET_NAME;
+                applicationContext = (ApplicationContext) servletContext.getAttribute(key);
+
+                if (applicationContext == null) {
+                    //在测试环境中 servlet 的名字是空的
+                    applicationContext = (ApplicationContext) servletContext
+                            .getAttribute(FrameworkServlet.SERVLET_CONTEXT_PREFIX);
+                }
+
+                if (applicationContext == null)
+                    throw new ServletException("Spring ApplicationContext Required.");
+            }
+            if (siteResolveService == null) {
+                siteResolveService = applicationContext.getBean("siteResolveService", SiteResolveService.class);
+            }
+            if (routeResolverService == null) {
+                routeResolverService = applicationContext.getBean("routeResolverService", RouteResolverService.class);
+            }
+
+
+            HttpServletRequest request1 = ((HttpServletRequest) request);
             Site site = siteResolveService.getCurrentSite(request1);
-            boolean Flag = site.isPersonalise() ? personaliseFilter(request, response, chain) : customizeFilter(request, response, chain);
+            boolean Flag = site.isPersonalise() ? personaliseFilter(request, response, chain) :
+                    customizeFilter(request, response, chain);
             if (!Flag)
                 return;
         } catch (Exception ex) {
-            log.error(String.format("doFilter error-->%s ,Message-->%s", ex.getStackTrace(), ex.getLocalizedMessage()));
+            log.error("doFilter", ex);
         }
         chain.doFilter(request, response);
     }

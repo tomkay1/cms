@@ -16,7 +16,12 @@ import org.thymeleaf.engine.AttributeName;
 import org.thymeleaf.model.IProcessableElementTag;
 import org.thymeleaf.processor.element.IElementTagStructureHandler;
 import org.thymeleaf.spring4.requestdata.RequestDataValueProcessorUtils;
-import org.thymeleaf.standard.expression.*;
+import org.thymeleaf.standard.expression.Assignation;
+import org.thymeleaf.standard.expression.AssignationSequence;
+import org.thymeleaf.standard.expression.IStandardExpression;
+import org.thymeleaf.standard.expression.IStandardExpressionParser;
+import org.thymeleaf.standard.expression.LinkExpression;
+import org.thymeleaf.standard.expression.StandardExpressions;
 import org.thymeleaf.standard.processor.AbstractStandardExpressionAttributeTagProcessor;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.unbescape.html.HtmlEscape;
@@ -35,12 +40,14 @@ public class HrefProcessor  extends AbstractStandardExpressionAttributeTagProces
     public static final int PRECEDENCE = 1000;
     public static final String ATTR_NAME = "href";
 
-    private HrefProcessorService hrefProcessorService;
+    private final HrefProcessorService hrefProcessorService;
+    private final String dialectPrefix;
 
-    public HrefProcessor(final IProcessorDialect dialect, final String dialectPrefix) {
+    public HrefProcessor(final IProcessorDialect dialect, final String dialectPrefix, HrefProcessorService hrefProcessorService) {
         super(dialect, TemplateMode.HTML, dialectPrefix, ATTR_NAME, PRECEDENCE, true);
-        this.hrefProcessorService = new HrefProcessorService();
-        this.hrefProcessorService.setDialectPrefix(dialectPrefix);
+        this.hrefProcessorService = hrefProcessorService;
+//        this.hrefProcessorService.setDialectPrefix(dialectPrefix);
+        this.dialectPrefix = dialectPrefix;
     }
 
     @Override
@@ -63,7 +70,7 @@ public class HrefProcessor  extends AbstractStandardExpressionAttributeTagProces
             List<Assignation> list= assignations.getAssignations();
             String linkExpression=((LinkExpression) expression).getBase().toString();//获得链接Template
             linkExpression= StringUtil.Trim(linkExpression,"'");
-            newAttributeValue=this.hrefProcessorService.resolveLinkData(list,linkExpression,context);
+            newAttributeValue = this.hrefProcessorService.resolveLinkData(dialectPrefix, list, linkExpression, context);
         }
         newAttributeValue=HtmlEscape.escapeHtml4Xml(newAttributeValue == null ? "" : newAttributeValue.toString());;
 

@@ -10,6 +10,8 @@ package com.huotu.hotcms.service.thymeleaf.service;
 
 import com.huotu.hotcms.service.thymeleaf.common.DialectTypeEnum;
 import com.huotu.hotcms.service.thymeleaf.service.factory.TimeFormatProcessorService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.model.IProcessableElementTag;
 
@@ -22,10 +24,16 @@ import org.thymeleaf.model.IProcessableElementTag;
  *
  * @since 1.0.0
  */
-public class FormatProcessorService extends BaseProcessorService{
-    public Object resolveDataByAttr(IProcessableElementTag tab,ITemplateContext context,Object expressionResult){
+@Component
+public class FormatProcessorService {
+
+    @Autowired
+    private TimeFormatProcessorService timeFormatProcessorService;
+
+    public Object resolveDataByAttr(String dialectPrefix, IProcessableElementTag tab, ITemplateContext context
+            , Object expressionResult) {
         if (dialectPrefix.equals(DialectTypeEnum.TIME.getDialectPrefix())) {
-            return TimeFormatProcessorService.getInstance().resolveDataByAttr(tab,context,expressionResult);
+            return timeFormatProcessorService.resolveDataByAttr(tab, context, expressionResult);
         }
         return null;
     }

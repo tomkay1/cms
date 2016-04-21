@@ -2,7 +2,7 @@ package com.huotu.hotcms.service.thymeleaf.dialect;
 
 import com.huotu.hotcms.service.TestBase;
 import com.huotu.hotcms.service.config.ServiceTestConfig;
-import com.huotu.hotcms.service.util.CMSDialect;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.ResultActions;
@@ -10,14 +10,14 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.IEngineConfiguration;
-import org.thymeleaf.dialect.AbstractProcessorDialect;
+import org.thymeleaf.dialect.IDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresource.ITemplateResource;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -52,6 +52,10 @@ public abstract class DialectTest extends TestBase {
 
     @EnableWebMvc
     static class DialectTestConfig extends WebMvcConfigurerAdapter {
+
+        @Autowired
+        private Set<IDialect> allDialects;
+
         @Override
         public void addViewControllers(ViewControllerRegistry registry) {
             super.addViewControllers(registry);
@@ -79,8 +83,8 @@ public abstract class DialectTest extends TestBase {
                 }
             });
 
-            List<AbstractProcessorDialect> list = CMSDialect.getDialectList();
-            list.forEach(engine::addDialect);
+//            List<AbstractProcessorDialect> list = CMSDialect.getDialectList();
+            allDialects.forEach(engine::addDialect);
 
             resolver.setTemplateEngine(engine);
 

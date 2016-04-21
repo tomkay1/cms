@@ -46,4 +46,17 @@ define(function (require, exports, module) {
             $("#"+parentId).addClass("active");
         })
     })
+
+    var banner = $(".js-banner");
+    if(banner.length > 0){
+        require("superSlide");
+        $(".js-banner .fullSlide").slide({
+            titCell:".hd ul",
+            mainCell:".bd ul",
+            effect:"fold",
+            autoPlay:true,
+            autoPage:true,
+            trigger:"click"
+        });
+    }
 });

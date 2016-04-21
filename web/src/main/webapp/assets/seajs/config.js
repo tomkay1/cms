@@ -10,7 +10,7 @@ seajs.config({
 		"classification":"js/page/widget/classification.js?v="+version,
 		"goodList":"js/page/widget/good_list.js?v="+version,
 		"advanceSearch":"js/page/widget/advance_search.js?v="+version,
-		"binner":"js/page/widget/binner.js?v="+version
+		"banner":"js/page/widget/banner.js?v="+version
 	},
 	preload: ['jquery']
 });

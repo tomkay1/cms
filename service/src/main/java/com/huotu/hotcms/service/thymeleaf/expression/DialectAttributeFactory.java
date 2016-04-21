@@ -27,18 +27,6 @@ import java.util.List;
 @Component
 public class DialectAttributeFactory {
 
-//    private static DialectAttributeFactory instance;
-//
-//    private DialectAttributeFactory() {
-//    }
-//
-//    public static DialectAttributeFactory getInstance() {
-//        if (instance == null) {
-//            instance = new DialectAttributeFactory();
-//        }
-//        return instance;
-//    }
-
     public <T> T getForeachParam(IProcessableElementTag elementTag, Class<T> t) throws Exception {
         T obj = t.newInstance();
         IElementAttributes elementAttributes = elementTag.getAttributes();

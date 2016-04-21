@@ -138,9 +138,14 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
         resolver.setViewNames(ArrayUtil.array("*.shtml"));
         resolver.setCharacterEncoding(UTF8);
-        resolver.setTemplateEngine(templateEngine(widgetTemplateResolver()));
-        resolver.setApplicationContext(applicationContext);
+//        resolver.setTemplateEngine(templateEngine(widgetTemplateResolver()));
+//        resolver.setApplicationContext(applicationContext);
         return resolver;
+    }
+
+    @Autowired
+    public void setWidgetViewResolver(ThymeleafViewResolver widgetViewResolver){
+        widgetViewResolver.setTemplateEngine(templateEngine(widgetTemplateResolver()));
     }
 
 

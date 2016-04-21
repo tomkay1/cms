@@ -10,8 +10,11 @@ package com.huotu.hotcms.service.thymeleaf.processor;
 
 import com.huotu.hotcms.service.common.SysConstant;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.PageableForeachParam;
+import com.huotu.hotcms.service.thymeleaf.expression.DialectAttributeFactory;
 import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
 import com.huotu.hotcms.service.thymeleaf.model.RequestModel;
+import com.huotu.hotcms.service.thymeleaf.service.factory.GoodsPageableTagProcessorFactory;
 import com.huotu.hotcms.service.util.HttpUtils;
 import com.huotu.hotcms.service.util.PageUtils;
 import com.huotu.hotcms.service.widget.model.GoodsPage;
@@ -61,7 +64,10 @@ public class GoodsPageableTagProcessor extends AbstractAttributeTagProcessor {
         GoodsPage goodsPage = null;
         try {
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-            GoodsSearcher goodsSearcher = HttpUtils.getRequestParam(request, GoodsSearcher.class);
+            GoodsSearcher goodsSearcher= (GoodsSearcher) GoodsPageableTagProcessorFactory.process(tag,request);
+//            GoodsSearcher goodsSearcher = HttpUtils.getsRequestParam(request, GoodsSearcher.class);
+//           GoodsSearcher goodsSearcher=DialectAttributeFactory.getInstance().getForeachParam(tag, GoodsSearcher.class);
+
             goodsSearcher.init(goodsSearcher);
             goodsPage = goodsService.searchGoods(request, customerId, goodsSearcher);
             putPageAttrsIntoModel(context, goodsPage);

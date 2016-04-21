@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 public class LocalHttpServiceImpl extends AbstractHttpServiceImpl {
     @Autowired
     private void setEnv() {
-        appRoot="http://api.open.fancat.cn:8081";
+        this.appRoot="http://api.open.fancat.cn:8081";
+        this.appKey="_demo";
+        this.appSecret="1f2f3f4f5f6f7f8f";
     }
 }

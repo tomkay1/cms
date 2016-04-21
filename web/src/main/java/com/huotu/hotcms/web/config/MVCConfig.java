@@ -11,19 +11,25 @@ package com.huotu.hotcms.web.config;
 import com.huotu.hotcms.service.config.JpaConfig;
 import com.huotu.hotcms.service.config.ServiceConfig;
 import com.huotu.hotcms.service.thymeleaf.templateresolver.WidgetTemplateResolver;
-import com.huotu.hotcms.service.util.CMSDialect;
 import com.huotu.hotcms.web.interceptor.RouteInterceptor;
 import com.huotu.hotcms.web.interceptor.SiteResolver;
 import com.huotu.hotcms.web.util.ArrayUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.ITemplateEngine;
-import org.thymeleaf.dialect.AbstractProcessorDialect;
+import org.thymeleaf.dialect.IDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
@@ -31,6 +37,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by cwb on 2015/12/30.
@@ -62,7 +69,8 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
     private ThymeleafViewResolver widgetViewResolver;
-
+    @Autowired
+    private Set<IDialect> dialectSet;
 
     /**
      * 允许访问静态资源
@@ -73,12 +81,10 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         configurer.enable();
     }
 
-
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(siteResolver);
     }
-
 
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
@@ -95,7 +101,6 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         registry.addInterceptor(routeInterceptor);
     }
 
-
     public ViewResolver htmlViewResolver() {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
         resolver.setTemplateEngine(templateEngine(htmlTemplateResolver()));
@@ -107,7 +112,6 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         resolver.setViewNames(ArrayUtil.array("*.html"));
         return resolver;
     }
-
 
     private ViewResolver javascriptViewResolver() {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
@@ -136,7 +140,6 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         return resolver;
     }
 
-
     private ITemplateResolver widgetTemplateResolver() {
         WidgetTemplateResolver resolver = new WidgetTemplateResolver();
         resolver.setCharacterEncoding(UTF8);
@@ -148,8 +151,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
     public ITemplateEngine templateEngine(ITemplateResolver templateResolver) {
         SpringTemplateEngine engine = new SpringTemplateEngine();
         engine.setTemplateResolver(templateResolver);
-        List<AbstractProcessorDialect> list= CMSDialect.getDialectList();
-        list.forEach(engine::addDialect);
+        dialectSet.forEach(engine::addDialect);
         return engine;
     }
 

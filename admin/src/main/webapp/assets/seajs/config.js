@@ -92,6 +92,8 @@ seajs.config({
 		"widgetSelect":"widget/select.js?v="+version,
 		"cmsQueue":"js/jquery.cms.queue.js?v="+version,
 		"widgetData":"widget/widgetData.js?v="+version,
+
+		"superSlide":"js/jquery.SuperSlide.2.1.1.js?v="+version,
 	},
 	preload: ['jquery']
 });

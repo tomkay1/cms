@@ -38,7 +38,6 @@ public class GoodsPageableTagProcessorService {
         try {
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
             GoodsSearcher goodsSearcher= (GoodsSearcher) goodsPageableTagProcessor.process(tag, request);
-
             goodsSearcher.init(goodsSearcher);
             goodsPage = goodsService.searchGoods(request, customerId, goodsSearcher);
             putPageAttrsIntoModel(context, goodsPage);

@@ -36,7 +36,7 @@ public  interface WidgetService {
      * @param pageSize 每页展示的记录数量
      * @return PageData
      * */
-    PageData<WidgetMains> getWidgetMainsPage(String name,int page,int pageSize);
+    PageData<WidgetMains> getWidgetMainsPage(String name,int page,int pageSize,Long widgetTypeId);
 
     /**
      * <p>

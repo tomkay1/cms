@@ -6,7 +6,6 @@ define(function (require, exports, module) {
     $(".select1").uedSelect({
         width: 200
     });
-
     var commonUtil = require("common");
     commonUtil.setDisabled("jq-cms-Save");
     var layer = require("layer");
@@ -286,5 +285,14 @@ define(function (require, exports, module) {
     });
     $("#siteType").change(function(){
         pageList.search();
+        initHomePage();
     })
+
+    function initHomePage(){
+        commonUtil.getHomePages(function(data){
+            alert(data.code);
+            window.console.log(data);
+        },$("#siteType").val())
+    }
+    initHomePage();
 });

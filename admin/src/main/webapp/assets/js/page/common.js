@@ -128,7 +128,8 @@ define(["js/jquery-1.9.1.min"],function () {
                         if(data.code==200){
                             urlRoot=data.data;
                             if(isDebug=="1"){//调试模式
-                                urlRoot=urlRoot+":8080/front/";
+                                //urlRoot=urlRoot+":8080/front/";
+                                urlRoot=urlRoot+":8090/";
                             }
                             urlRoot=urlRoot;
                         }
@@ -149,6 +150,24 @@ define(["js/jquery-1.9.1.min"],function () {
                 return true;
             }
             return false;
+        },
+        /**
+         * @brief 获得指定站点的首页
+         * @param callback 回调
+         * @param siteId 站点ID
+         * */
+        getHomePages:function(callback,siteId){
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                url: '/page/getHomePage',//提交到一般处理程序请求数据
+                data: {
+                    siteId: siteId
+                },
+                success: function (data) {
+                    callback(data);
+                }
+            });
         }
     }
 });

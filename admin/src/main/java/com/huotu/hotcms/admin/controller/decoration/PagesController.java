@@ -9,10 +9,12 @@ import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.Result;
 import com.huotu.hotcms.service.model.widget.WidgetPage;
+import com.huotu.hotcms.service.repository.CustomPagesRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.service.CustomPagesService;
 import com.huotu.hotcms.service.service.HostService;
 import com.huotu.hotcms.service.service.SiteService;
+import com.huotu.hotcms.service.service.impl.CustomPagesServiceImpl;
 import com.huotu.hotcms.service.util.PageData;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
@@ -52,9 +54,6 @@ public class PagesController {
     private SiteRepository siteRepository;
 
     @Autowired
-    private CustomPagesService customPagesService;
-
-    @Autowired
     private CookieUser cookieUser;
 
     @Autowired
@@ -62,6 +61,9 @@ public class PagesController {
 
     @Autowired
     private HostService hostService;
+
+    @Autowired
+    private CustomPagesService customPagesService;
 
     @RequestMapping("/list")
     public ModelAndView pageList(HttpServletRequest request, @RequestParam("customerid") Integer customerid,String scope) throws Exception {
@@ -79,6 +81,25 @@ public class PagesController {
             log.error(ex);
         }
         return modelAndView;
+    }
+
+
+    @RequestMapping("/getHomePage")
+    @ResponseBody
+    public ResultView getHomePage(Long siteId){
+        ResultView resultView=null;
+        try{
+            Site site=siteRepository.findOne(siteId);
+            CustomPages customPages=customPagesService.findHomePages(site);
+            if(customPages!=null){
+                resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), customPages);
+            }else{
+                resultView = new ResultView(ResultOptionEnum.FAILE.getCode(), ResultOptionEnum.FAILE.getValue(), customPages);
+            }
+        }catch (Exception ex){
+            log.error(ex.getMessage());
+        }
+        return resultView;
     }
 
     @RequestMapping(value = "/getPagesList")

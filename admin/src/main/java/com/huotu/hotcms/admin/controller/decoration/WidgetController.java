@@ -10,6 +10,7 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.WidgetMains;
 import com.huotu.hotcms.service.entity.WidgetType;
 import com.huotu.hotcms.service.model.WidgetList;
+import com.huotu.hotcms.service.repository.WidgetTypeRepository;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.service.WidgetService;
 import com.huotu.hotcms.service.util.HttpUtils;
@@ -58,6 +59,9 @@ public class WidgetController {
     @Autowired
     private SiteService siteService;
 
+    @Autowired
+    private WidgetTypeRepository widgetTypeRepository;
+
     @RequestMapping("/widgetTypeList")
     public ModelAndView widgetTypeList() throws Exception {
         ModelAndView modelAndView = new ModelAndView();
@@ -68,6 +72,8 @@ public class WidgetController {
     @RequestMapping("/widgetMainsList")
     public ModelAndView widgetMainsList() throws Exception {
         ModelAndView modelAndView = new ModelAndView();
+        List<WidgetType> widgetTypes= widgetTypeRepository.findAll();
+        modelAndView.addObject("widgetTypes",widgetTypes);
         modelAndView.setViewName("/decoration/control/widgetMainsList.html");
         return modelAndView;
     }
@@ -249,10 +255,11 @@ public class WidgetController {
     @ResponseBody
     public PageData<WidgetMains> getWidgetMainsList(@RequestParam(name = "name", required = false) String name,
                                                     @RequestParam(name = "page", required = true, defaultValue = "1") Integer page,
-                                                    @RequestParam(name = "pagesize", required = true, defaultValue = "20") Integer pageSize) {
+                                                    @RequestParam(name = "pagesize", required = true, defaultValue = "20") Integer pageSize,
+                                                    @RequestParam(name="widgetTypeId",defaultValue = "0") Long widgetTypeId) {
         PageData<WidgetMains> pageModel = null;
         try {
-            pageModel = widgetService.getWidgetMainsPage(name, page, pageSize);
+            pageModel = widgetService.getWidgetMainsPage(name, page, pageSize,widgetTypeId);
         } catch (Exception ex) {
             log.error(ex.getMessage());
         }

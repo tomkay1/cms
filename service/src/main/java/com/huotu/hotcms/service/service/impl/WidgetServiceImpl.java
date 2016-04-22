@@ -52,12 +52,15 @@ public class WidgetServiceImpl implements WidgetService {
     }
 
     @Override
-    public PageData<WidgetMains> getWidgetMainsPage(String name, int page, int pageSize) {
+    public PageData<WidgetMains> getWidgetMainsPage(String name, int page, int pageSize,Long widgetTypeId) {
         PageData<WidgetMains> data = new PageData<WidgetMains>();
         Specification<Site> specification = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (!StringUtils.isEmpty(name)) {
                 predicates.add(cb.like(root.get("name").as(String.class), "%" + name + "%"));
+            }
+            if(widgetTypeId!=0){
+                predicates.add(cb.equal(root.get("widgetType").get("id").as(Long.class), widgetTypeId));
             }
             return cb.and(predicates.toArray(new Predicate[predicates.size()]));
         };

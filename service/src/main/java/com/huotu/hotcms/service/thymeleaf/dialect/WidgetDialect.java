@@ -32,7 +32,7 @@ public class WidgetDialect extends AbstractProcessorDialect {
 
     public static String NAME = "widget";
     public static String PREFIX = "widget";
-    public static  int PROCESSOR_PRECEDENCE = 800;
+    public static  int PROCESSOR_PRECEDENCE = 1200;
     @Autowired
     private GoodsCategoryService goodsCategoryService;
     @Autowired

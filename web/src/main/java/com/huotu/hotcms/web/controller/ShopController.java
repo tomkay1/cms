@@ -8,8 +8,6 @@ import com.huotu.hotcms.service.service.CustomPagesService;
 import com.huotu.hotcms.service.thymeleaf.service.SiteResolveService;
 import com.huotu.hotcms.service.thymeleaf.templateresource.WidgetTemplateResource;
 import com.huotu.hotcms.service.widget.model.GoodsDetail;
-import com.huotu.hotcms.service.widget.service.PageResolveService;
-import com.huotu.hotcms.service.widget.service.WidgetResolveService;
 import com.huotu.hotcms.service.widget.service.PageResourceService;
 import com.huotu.hotcms.web.service.GoodsDetailService;
 import com.huotu.hotcms.web.util.web.CookieUser;
@@ -117,6 +115,7 @@ public class ShopController {
 
             modelAndView.setViewName("/template/0/goodsDetail.html");
             modelAndView.addObject("goods",goods);
+            modelAndView.addObject("products",goods.getProducts());
             modelAndView.addObject("head",head);
             modelAndView.addObject("url",url);//获取域名
             modelAndView.addObject("spec",spec);

@@ -91,10 +91,13 @@ public class BindController {
      *
      * 二维码购买
      */
-    @RequestMapping(value = "/qrCode", method = { RequestMethod.POST, RequestMethod.GET })
-    public void qrCode(HttpServletRequest request,HttpServletResponse resp, String goodsId) throws Exception {
+    @RequestMapping(value = "/qrCode", method = { RequestMethod.GET,RequestMethod.POST })
+    public void qrCode(HttpServletRequest request, HttpServletResponse resp) throws Exception {
         int customerId = siteResolveService.getCurrentSite(request).getCustomerId();
         Merchant merchant = null;
+        String num = request.getParameter("num");//购买数量
+        String productId = request.getParameter("productId");//购买的产品Id
+        String goodsId = request.getParameter("goodsId");//商品id
         String subDomain = "";
         try {
             merchant = merchantRestRepository.getOneByPK(customerId);
@@ -103,7 +106,8 @@ public class BindController {
             e.printStackTrace();
             log.error("接口服务不可用");
         }
-        String url = configService.getCustomerUri(subDomain)+".aspx?customerid="+customerId+"&goodsid="+goodsId;
+        String url = configService.getCustomerUri(subDomain)+".aspx?customerid="+customerId
+                +"&productId="+productId+"&goodsId="+goodsId+"&num="+num;
         if (url != null && !"".equals(url)) {
             ServletOutputStream stream = null;
             try {
@@ -125,4 +129,10 @@ public class BindController {
     }
 
 
+
 }
+
+
+
+
+

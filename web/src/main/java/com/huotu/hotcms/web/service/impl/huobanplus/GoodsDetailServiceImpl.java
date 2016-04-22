@@ -6,6 +6,7 @@ import com.huotu.hotcms.service.service.HttpService;
 import com.huotu.hotcms.service.widget.model.GoodsDetail;
 import com.huotu.hotcms.web.service.ConfigService;
 import com.huotu.hotcms.web.service.GoodsDetailService;
+import com.huotu.huobanplus.common.entity.Product;
 import com.huotu.huobanplus.sdk.common.repository.GoodsRestRepository;
 import com.huotu.huobanplus.sdk.common.repository.UserRestRepository;
 import org.apache.commons.logging.Log;
@@ -16,6 +17,10 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 商品详情
@@ -42,28 +47,38 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
     private ConfigService configService;
 
     @Override
-    public GoodsDetail getGoodsDetail(int goodsId,int userId) throws Exception {
-
+    public GoodsDetail getGoodsDetail(int goodsId, int userId) throws Exception {
         com.huotu.huobanplus.common.entity.Goods huobanGoods = null;
         try{
-         huobanGoods = goodsRestRepository.getOneByPK(goodsId);
+            huobanGoods = goodsRestRepository.getOneByPK(goodsId);
         }
         catch (IOException e) {
             System.out.println("接口服务不可用");
             log.error("接口服务不可用");
         }
         GoodsDetail mallGoods = new GoodsDetail();
-        if (userId!=0) {
-            try{
-                Double[] userPrice = userRestRepository.goodPrice(userId, goodsId);
-                mallGoods.setUserPrice(userPrice);
-            }
-            catch (IOException e) {
-                System.out.println("接口服务不可用");
-                log.error("接口服务不可用");
-            }
-        }
+//        if (userId!=0) {
+//            try{
+//                Double[] userPrice = userRestRepository.goodPrice(userId, goodsId);
+//                mallGoods.setUserPrice(userPrice);
+//            }
+//            catch (IOException e) {
+//                System.out.println("接口服务不可用");
+//                log.error("接口服务不可用");
+//            }
+//        }
         huobanGoods.setSpec(JSON.parse(huobanGoods.getSpec()).toString());
+        Set<Product> products = huobanGoods.getProducts();
+        List<Double> userPrice = new ArrayList<>();
+        if (products.size()!=0){//获取产品价格区间
+            List<Double> priceList = new ArrayList<>();
+            for (Product product : products ){
+                priceList.add(product.getPrice());
+            }
+            userPrice.add(Collections.max(priceList));
+            userPrice.add(Collections.min(priceList));
+        }
+        mallGoods.setUserPrice(userPrice);
         mallGoods.setId(Long.valueOf(goodsId));
         if(mallGoods.getBrandName()!=null){
             mallGoods.setBrandName(huobanGoods.getBrand().getBrandName());

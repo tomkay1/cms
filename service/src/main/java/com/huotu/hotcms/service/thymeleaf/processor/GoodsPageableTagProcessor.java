@@ -27,7 +27,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 public class GoodsPageableTagProcessor extends AbstractAttributeTagProcessor {
 
     public static final String ATTR_NAME = "page";
-    public static final int PRECEDENCE = 1300;
+    public static final int PRECEDENCE = 200;
     private static Log log = LogFactory.getLog(GoodsPageableTagProcessor.class);
     private final GoodsPageableTagProcessorService goodsPageableTagProcessorService;
 

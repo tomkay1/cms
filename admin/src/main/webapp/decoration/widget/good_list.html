@@ -25,7 +25,7 @@
                 </a>
             </div>
             <ul th:style="'background:'+${goods_pageBackGround}">
-                <li data-widget-page="goods" data-param-pagesize="10">
+                <li data-widget-page="goods" th:attr="data-param-pagesize=${pageSize}">
                     <div class="jItem">
                         <div class="jPic">
                             <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}">
@@ -137,7 +137,7 @@
                 </a>
             </div>
             <ul th:style="'background:'+${goods_pageBackGround}">
-                <li data-widget-page="goods">
+                <li data-widget-page="goods" th:attr="data-param-pagesize=${pageSize}">
                     <div class="jItem">
                         <div class="jPic">
                             <a th:href="'/front/shop/product/'+${goods.id}" target="">
@@ -258,7 +258,7 @@
                     <span class="jTitleName">产品列表</span>
                 </div>
                 <ul th:style="'background:'+${goods_pageBackGround}">
-                    <li data-widget-page="goods">
+                    <li data-widget-page="goods" th:attr="data-param-pagesize=${pageSize}">
                         <div class="jItem">
                             <div class="jPic">
                                 <a th:href="${request.rootUrl}+'/shop/product/'+${goods.id}">
@@ -377,7 +377,7 @@
             </li>
             <li>
                 <label style="width: 116px;">每页显示商品数量 </label>
-                <input type="text" th:value="${pageSize}" class="text-normal goodsInput" name="pageSize" maxlength="256">
+                <input type="text" th:value="${pagesize}" class="text-normal goodsInput" name="pagesize" maxlength="256">
             </li>
             <li>
                 <label style="width: 116px;">背景颜色 </label>

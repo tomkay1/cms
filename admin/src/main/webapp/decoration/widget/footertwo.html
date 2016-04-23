@@ -55,12 +55,14 @@
             textareaInit:function(){
                 KindEditor.create('#footerContent', {
                     resizeType : 1,
-                    allowPreviewEmoticons : false,
-                    allowImageUpload : false,
+                    allowImageRemote:true,
+                    allowImageUpload : true,
+                    filePostName:'richTextImages',
+                    uploadJson:'/admin/uploadRichTextImages',//上传文本中的图片
                     items : [
                         'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
                         'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
-                        'insertunorderedlist', '|', 'emoticons', 'link'],
+                        'insertunorderedlist', '|', 'emoticons', 'image ','link'],
                     afterBlur:function(){
                         this.sync();
                     }

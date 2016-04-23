@@ -1,7 +1,7 @@
 <!--浏览试图-->
 <!--400152-->
 <div th:if="${list_template}==null or ${list_template=='goods_style1'}"
-     th:class="'fn-clear js-hot-module jGoodsList-400152 toolhover js-form-' + ${guid}" th:attr="id=${guid}">
+     th:class="fn-clear js-hot-module jGoodsList-400152 toolhover js-form-${guid}" th:attr="id=${guid}">
     <div class="mc" style="overflow: visible;">
         <form th:class="'js-good-list js-form-'+${guid}">
             <input type="hidden" name="sort"
@@ -78,7 +78,10 @@
                 ></a>
                 <a th:if="${request.hasNextPage}" href="javascript:void(0)"
                    th:attr="pageNo=${request.currentPage+1}">下一页</a>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第
+                <a href="javascript:void(0)"
+                   th:attr="pageNo=${totalPages}">尾页</a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                第
                 <input name="page" class="current-index input-small"
                        style="text-align:center;width: 50px;margin: 0px 4px;" type="number"
                        th:value="${request.currentPage}">

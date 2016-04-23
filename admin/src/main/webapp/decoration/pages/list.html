@@ -49,7 +49,7 @@
         <div class="smart-action-left" style="margin-left:10px; width: 200px;">
             <select class="select1" id="siteType">
                 <option value="">选择站点</option>
-                <option th:each="site:${siteList}" th:value="${site.siteId}" th:text="${site.name}" th:selected="${site.siteId}==${siteList[0].siteId}?true:false"></option>//
+                <option th:each="site:${siteList}" th:value="${site.siteId}" th:text="${site.name}" th:selected="${site.siteId}==${siteList[0].siteId}?true:false"></option>
             </select>
         </div>
         <div class="smart-action-left">

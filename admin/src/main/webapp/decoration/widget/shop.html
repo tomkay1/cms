@@ -11,7 +11,7 @@
                     <a th:href="${request.rootUri}" class="shop-logo-link">
                         <img th:src="${shopLogoImage==null or shopLogoImage == ''}?'/assets/img/widget/shop_logo.png':${shopLogoImage}"/>
                     </a>
-                    <a th:href="${request.rootUri}" class="follow-me for-light-bg">关注我</a>
+                    <!--<a th:href="${request.rootUri}" class="follow-me for-light-bg">关注我</a>-->
                 </div>
                 <div class="m-search for-black-bg">
                     <form class="m-form" th:action="${request.rootUri}+'/shop/search'">

@@ -1,5 +1,6 @@
 <!--sales-ranking.html-->
 <!--浏览视图-->
+<!--浏览试图（销售排行）-->
 <div class="fn-clear js-hot-module jSaleRank-401642 toolhover" th:if="${templateClass == null or templateClass == 'jSaleRank-401642'}" data-th-attr="id=${guid}">
     <div class="mc">
         <div class="j-module">
@@ -71,7 +72,7 @@
                     <div class="jItem">
                         <div class="jPic">
                             <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="">
-                                <img th:src="${goods.smallPic}" th:attr="alt=${goods.title}" class="err-product">
+                                <img th:src="${goods.smallPic}" th:attr="alt=${goods.title}" class="err-product" style="width: 100%">
                             </a>
                             <div class="HOTesc" th:attr="title=${goods.title}">
                                 <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="">[[${goods.title}]]</a>
@@ -105,7 +106,7 @@
                     <a class="icon-down js-module-down" href="javascript:void(0)"
                        th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
                 </span>
-                <span class="module-name J-module-name">商品搜索结果</span>
+                <span class="module-name J-module-name">销量排行</span>
                     <span class="J-module-set">
                         <a href="javascript:void(0)" class="HOT-module-set-data js-widget-edit"
                            th:attr="data-editurl=${widgetEditUri},data-id=${id},data-for=${guid},data-url=${widgetUri},data-layoutid=${layoutId},data-position=${layoutPosition}">

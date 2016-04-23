@@ -1,11 +1,13 @@
 package com.huotu.hotcms.service.widget.model;
 
+import com.huotu.hotcms.service.model.Bind.Product;
 import com.huotu.huobanplus.common.entity.support.SpecDescriptions;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.rest.core.annotation.Description;
 
 import javax.persistence.Column;
+import java.util.List;
 
 /**
  * Created by chendeyu on 2016/4/8.
@@ -41,6 +43,11 @@ public class GoodsDetail {
      */
     private String title;
 
+    /**
+     *产品
+     */
+    private  List<Product> products;
+
 
     /**
      * 库存量 -1无限制
@@ -61,11 +68,27 @@ public class GoodsDetail {
      */
     private double marketPrice;
 
+
+    /**
+     * 最大价格
+     * @since 1.4
+     *
+     */
+    private double maxPrice;
+
+    /**
+     * 最大价格
+     * @since 1.4
+     *
+     */
+    private double minPrice;
+
+
     /**
      * 用户价格
      * @since 1.4
      */
-    private Double[] userPrice;
+     private  List<Double> userPrice;
 
     /**
      * 商品价格

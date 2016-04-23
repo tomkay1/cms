@@ -6,6 +6,7 @@
     <title>产品</title>
     <link rel="stylesheet" type="text/css" href="/template/0/css/lobo.css" th:href="@{/template/0/css/lobo.css}"/>
     <link rel="stylesheet" type="text/css" href="/template/0/css/common.css" th:href="@{/template/0/css/common.css}"/>
+    <link rel="stylesheet" type="text/css" href="/template/0/css/style.css" th:href="@{/template/0/css/style.css}"/>
     <link rel="stylesheet" type="text/css" href="/template/0/css/scfdforPC.css"
           th:href="@{/template/0/css/scfdforPC.css}"/>
     <!--<link rel="stylesheet" href="/template/0/css/ShopShow.css" th:href="@{/template/0/css/ShopShow.css}" type="text/css" />-->
@@ -16,6 +17,7 @@
 </head>
 <body>
 <div th:utext="${head}"></div>
+
 <div>
     <div class="prointroduce" style="width:1000px;margin:0 auto;">
         <div style="background-color:#ffffff;padding:20px 0px 20px 0px;min-height:440px;">
@@ -58,6 +60,8 @@
                     </div>
                 </div>
             </div>
+
+
             <div class="buy_area" style="border:0; padding-left:20px;">
                 <div class="fn_wrap">
                     <div id="itemInfo">
@@ -76,17 +80,17 @@
                 </div>
                 <div style="" id="divPriceShow">
                     <!--会员价格BEGIN-->
-                    <div id="userPriceDiv" style=" display: " th:if="${unlogin}==true">
+                    <div id="userPriceDiv" style=" display: " th:if="${unlogin}==false">
                         <div class="price_wrap" style="position:relative; height:28px">
-                            <span class="price">￥<span id="userPrice" th:text="${goods.userPrice[0]}">69</span></span>
+                            <span class="price">￥<span id="userPrice" th:text="${goods.minPrice}+'-'+${goods.maxPrice}">69</span></span>
               <span class="flag" id="priceDis" style="display: ;overflow: hidden;
     width: 12px; margin-top:8px;">5.8折</span>
-                            <span class="lsls" style="display:" th:text="立省+${goods.marketPrice-goods.userPrice[0]}+元">立省293元</span>
+                            <span class="lsls" id= "lsls" style="display:" th:text="最大立省+${goods.marketPrice-goods.price}+元">立省293元</span>
                             <!--20151103-add-gmw-->
 
                         </div>
                         <div class="old_price_wrap">
-                            <span>专柜价：<b id="price" class="dlejiage">￥<span class="normalPrice" style="float: none;"
+                            <span>专柜价：<b id="price" class="dlejiage">￥<span class="normalPrice" id ="normalPrice" style="float: none;"
                                                                             th:text="${goods.marketPrice}">120</span></b></span>
                         </div>
                         <div class="old_price_wrap salesshow"
@@ -107,7 +111,7 @@
                     <!--会员价格END-->
 
                     <!--未登录BEGIN-->
-                    <div id="" style=" display:" th:if="${unlogin}==false">
+                    <div id="" style=" display:" th:if="${unlogin}==true">
                         <div class="price_wrap">
                             <span class="tit"></span>
                             <span class="price">￥<span class="normalPrice"
@@ -139,11 +143,11 @@
                     <div class="sku_wrap" style="margin-top: 10px;">
                         <div id="prop-list">
                             <div class="sku" th:each="spec:${spec}">
-                                <h3 th:text="${spec.value}+': '">规格1：</h3>
+                                <h3 th:text="${spec.value}+': '" >规格1：</h3>
                                 <div class="sku_list" th:each="specDescriptions:${goods.specDescriptions}"
                                      th:if="${spec.key}==${specDescriptions.key}" th:value="${specDescriptions.key}">
                                     <span class="option" id="specValue6342" th:each="specDes:${specDescriptions.value}"
-                                          th:text="${specDes.specValue}">39</span>
+                                          th:text="${specDes.specValue}" th:attr="specId=${specDes.specId}" th:value="${specDes.specValueId}">39</span>
                                 </div>
                             </div>
                             <!--<div class="sku">-->
@@ -157,9 +161,9 @@
                         <div class="sku sku_num">
                             <h3>数量：</h3>
                             <div class="num_wrap">
-                                <span class="minus minus_disabled" id="minusNum"></span>
-                                <input class="num" id="buyNum" type="tel" value="1">
-                                <span class="plus" id="addNum"></span>
+                                <span class="minus minus_disabled" id="minusNum" onclick="numDec()"></span>
+                                <input class="num" id="quantity" type="tel" value="1">
+                                <span class="plus" id="addNum" onclick="numAdd()"></span>
                                 <input type="hidden" id="hiddenStore" value="80">
                                 <input type="hidden" id="hiddenBuyNum" value="0">
                                 <input type="hidden" id="hiddenMemberBuyLimit" value="1000000">
@@ -191,7 +195,7 @@
                             <p style=" margin-top:10px">扫一扫，进入购买</p>
                         </div>
                     </div>
-                    <a th:if="${unlogin}==false" href="#" class="tb-btn-sku tb-btn-basket" onclick="showQRCode()"
+                    <a th:if="${unlogin}==true" href="#" class="tb-btn-sku tb-btn-basket" onclick="showQRCode()"
                        style="float:left;"><img src="images/denglu2x.png" th:src="@{/template/0/images/denglu2x.png}"
                                                 style="width:16px; vertical-align:middle; margin-right:6px; margin-top:-1px"/>扫码登录</a>
                     <a href="#" class="tb-btn-sku " onclick="showBuyQRCode()" style="float:left;"><img
@@ -210,11 +214,14 @@
                 <div class="mt">
                     <ul class="tab">
                         <li class="hide ui-switchable-item curr" style="display: list-item;">
-                            <a href="#none">商品介绍</a>
+                            <a href="#none" style="color: ">商品介绍</a>
                         </li>
                     </ul>
                 </div>
             </div>
+            <div id="hottech_wxin" class="hottech_wxin" onmouseover="personQrCode()"><a href="javascript:void(0)">1<div class="hottech_wxinh"></div></a></div>
+            <div id="hottech_wshare" class="hottech_wshare"><a href="javascript:void(0)">2<div class="hottech_wshareh"></div></a></div>
+            <a id="hottech_top" href="javascript:scroll(0,0)"></a>
             <div style="width:1000px;margin:0 auto;text-align:center;">
                 <div th:utext="${goods.intro}"></div>
             </div>
@@ -224,8 +231,11 @@
 </body>
 </html>
 <script src="js/jquery-1.9.1.min.js" th:src="@{/template/0/js/jquery-1.9.1.min.js}"></script>
+<script src="js/qrScript.js.js" th:src="@{/template/0/js/qrCodeScript.js}"></script>
 <script src="js/layer/layer.js" th:src="@{/template/0/js/layer/layer.js}"></script>
 <script th:inline="javascript">
+    var specSize = /*[[${spec.size()}]]*/"/";//商品规格行数
+    var spec ="";
     function showQRCode() {
         var url = /*[[${url}]]*/"/";
 
@@ -242,26 +252,92 @@
         });
     }
 
-    function showBuyQRCode() {
-        var goodsId = /*[[${goods.id}]]*/"/";
-        layer.open({
-            type: 2,
-            title: "请扫码购买 ",
-            shadeClose: true,
-            shade: 0.8,
-            area: ['410px', '450px'],
-            content: "/bind/qrCode?goodsId=" + goodsId,
-            end: function () {
-//                window.console.log("!1");
+    function showBuyQRCode() {//扫码购买
+        var goodsId = /*[[${goods.id}]]*/"/";//商品id
+
+        var num =  $("#quantity").val();//购买商品数量
+
+        if(specSize!=$(".option_selected").length){
+            layer.msg("请选择完整规格");
+        }
+        else{//当规格选择完整后才可进行扫码购买
+            $(".option_selected").each(function(i,v) {
+                var name = $(this).text();
+                spec =spec+name+',';
+            });
+            var products = /*[[${products}]]*/"";
+            if(specSize == 0){
+                spec = spec + ',';
             }
-        });
+            for(i=0;i<products.length;i++){
+                var x =products[i].spec+',';
+                var productId = products[i].id;
+                if(spec == x){//当筛选出正确的productId
+                    layer.open({
+                    type: 2,
+                    title: "请扫码购买 ",
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['410px', '450px'],
+                    content: "/front/bind/qrCode?goodsId=" + goodsId+"&productId="+productId+"&num="+num ,
+                    end: function () {
+                    }
+                });
+                }
+            }
+        }
     }
 
-    $(".sku_list span").click(function () {
+    $(".sku_list span").click(function () {//规格选择框
         $(this).addClass("option_selected").siblings().removeClass("option_selected");
+        var products = /*[[${products}]]*/"";
+        var spec ="";
+        $(".option_selected").each(function(i,v) {
+            var name = $(this).text();
+            spec =spec+name+',';
+        });
+
+        if(specSize==$(".option_selected").length) {//当规则选择完毕时，改变商品价格以及库存
+
+            for (i = 0; i < products.length; i++) {
+                var x =products[i].spec+',';
+                var savePrice= products[i].marketPrice-products[i].price;//省的价格
+                if(spec == x){//当筛选出正确的productId
+                    $("#userPrice").text(products[i].price);//修改产品价格
+                    $("#normalPrice").text(products[i].marketPric);//修改市场价格
+                    $("#lsls").text("立省"+savePrice.toString()+'元');//修改市场价格
+                    $("#stock-num").text('库存数: '+products[i].stock+' 件') ;//修改产品库存
+                }
+            }
+        }
     });
-    $(".spec-items li").click(function () {
+    $(".spec-items li").click(function () {//图片选择框
         $(this).children("img").addClass("img-hover");
         $(this).siblings().children("img").removeClass("img-hover");
     });
+</script>
+<script type="text/javascript">
+    /*商品数量+1*/
+    function numAdd(){
+        var num_add = parseInt($("#quantity").val())+1;
+        if($("#quantity").val()==""){
+            num_add = 1;
+        }
+        $("#quantity").val(num_add);
+    }
+    /*商品数量-1*/
+    function numDec(){
+        var num_dec = parseInt($("#quantity").val())-1;
+        if(num_dec<1){
+            //购买数量必须大于或等于1
+        }else{
+            $("#quantity").val(num_dec);
+        }
+    }
+
+    function  personQrCode(){//个人中心二维码
+        thisURL = "http://www.baidu.com";
+        var  strwrite = "http://pan.baidu.com/share/qrcode?w=220&h=220&url="+thisURL;
+        $('.hottech_wxinh').css('background-image',"url(" + strwrite + ")");
+    }
 </script>

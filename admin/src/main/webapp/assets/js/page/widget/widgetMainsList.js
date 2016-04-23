@@ -2,6 +2,10 @@
  * Created by chendeyu on 2016/3/17.
  */
 define(function (require, exports, module) {
+    $(".select1").uedSelect({
+        width: 200
+    });
+    var layer=require("layer");
     var commonUtil = require("common");
     commonUtil.setDisabled("jq-cms-Save");
     var customerId =commonUtil.getQuery("customerId");
@@ -52,16 +56,20 @@ define(function (require, exports, module) {
     });
 //搜索
     $("#jq-cms-search").click(function(){
-        var commonUtil = require("common");
+        search();
+    })
+
+    function search(){
         commonUtil.setDisabled("jq-cms-Save");
         var customerId =commonUtil.getQuery("customerId");
         var option={
             dataParam:{
                 name:$("#name").val(),
+                widgetTypeId:$("#widgetMainType").val()
             }
         };
         WidgetMainsGrid.Refresh(option);
-    })
+    }
 
     //显示所有
     $("#jq-cms-searchAll").click(function(){
@@ -124,8 +132,6 @@ define(function (require, exports, module) {
         })
     }
 
-
-    var layer=require("layer");
     //新增
     $("#js-cms-addWidgetMains").click(function(){
         layer.open({
@@ -216,4 +222,8 @@ define(function (require, exports, module) {
             })
         })
     }
+
+    $("#widgetMainType").change(function(){
+        search();
+    });
 });

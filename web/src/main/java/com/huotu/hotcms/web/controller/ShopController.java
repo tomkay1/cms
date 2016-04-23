@@ -8,8 +8,6 @@ import com.huotu.hotcms.service.service.CustomPagesService;
 import com.huotu.hotcms.service.thymeleaf.service.SiteResolveService;
 import com.huotu.hotcms.service.thymeleaf.templateresource.WidgetTemplateResource;
 import com.huotu.hotcms.service.widget.model.GoodsDetail;
-import com.huotu.hotcms.service.widget.service.PageResolveService;
-import com.huotu.hotcms.service.widget.service.WidgetResolveService;
 import com.huotu.hotcms.service.widget.service.PageResourceService;
 import com.huotu.hotcms.web.service.GoodsDetailService;
 import com.huotu.hotcms.web.util.web.CookieUser;
@@ -112,13 +110,15 @@ public class ShopController {
                 head=widgetTemplateResource.getHtmlHeadStaticResources(environment)+head;
             }
             GoodsDetail goods = goodsDetailService.getGoodsDetail(Integer.valueOf(id),userId);
-            String url = goodsDetailService.getGoodsWxUrl(request,goods.getId());//微信登录跳转链接
+//            String url = goodsDetailService.getGoodsWxUrl(request,goods.getId());//微信登录跳转链接
+            String url = "/UserCenter/Index.aspx?customerid={0}";
             Map spec = JSON.parseObject(goods.getSpec(), Map.class);//规格格式化
 
             modelAndView.setViewName("/template/0/goodsDetail.html");
             modelAndView.addObject("goods",goods);
-            modelAndView.addObject("head",head);
-            modelAndView.addObject("url",url);//获取域名
+            modelAndView.addObject("products",goods.getProducts());
+            modelAndView.addObject("head",head);//公共头部
+//            modelAndView.addObject("url",url);//获取域名
             modelAndView.addObject("spec",spec);
 
         }catch (Exception ex){

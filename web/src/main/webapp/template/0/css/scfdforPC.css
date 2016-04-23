@@ -1,6 +1,5 @@
  
 .wx_bar_back a:after, .wx_backtop:after, .wx_bar_new:after, .wx_bar_best:before {
-	background-image:url(../images/sprites_v2.png);
 	background-repeat:no-repeat;
 	background-size:100px 100px;
 	-webkit-background-size:100px 100px

@@ -8,7 +8,11 @@ import com.huotu.hotcms.web.service.GoodsDetailService;
 import com.huotu.hotcms.web.service.RegisterByWeixinService;
 import com.huotu.hotcms.web.service.impl.config.AbstractConfigService;
 import com.huotu.huobanplus.common.entity.Merchant;
+import com.huotu.huobanplus.common.entity.Product;
+import com.huotu.huobanplus.sdk.common.repository.GoodsRestRepository;
 import com.huotu.huobanplus.sdk.common.repository.MerchantRestRepository;
+import com.huotu.huobanplus.sdk.common.repository.ProductRestRepository;
+import com.huotu.huobanplus.sdk.common.repository.UserRestRepository;
 import com.huotu.huobanplus.sdk.mall.model.RegisterWeixinUserData;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,8 +23,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by chendeyu on 2016/4/8.
@@ -37,6 +40,11 @@ public class GoodsDetailServiceTest {
     private GoodsDetailService goodsDetailService;
     @Autowired
     private RegisterByWeixinService registerByWeixinService;
+    @Autowired
+    private GoodsRestRepository goodsRestRepository;
+
+    @Autowired
+    private ProductRestRepository productRestRepository;
 
     @Autowired
     private AbstractConfigService abstractConfigService;
@@ -44,9 +52,14 @@ public class GoodsDetailServiceTest {
     @Autowired
     private MerchantRestRepository merchantRestRepository;
 
+    @Autowired
+    private UserRestRepository userRestRepository;
+
     @Test
     public void getGoodsDetailTest() throws Exception{
         GoodsDetail goods = goodsDetailService.getGoodsDetail(1,28);
+        List<Product> productList = productRestRepository.findByGoods( goodsRestRepository.getOneByPK(1));
+//        Double[] userPrice = userRestRepository.goodPrice(null, 1);
         System.out.println(goods);
     }
 
@@ -99,6 +112,20 @@ public class GoodsDetailServiceTest {
         String info  = "<ul class=\"attributes-list list-paddingleft-2\" style=\"list-style-type: none;\"><li><p>产品名称：AVENT/新安怡 SCF660/17</p></li><li><p>品牌: AVENT/新安怡</p></li><li><p>货号: SCF660/17</p></li><li><p>容量: 125ML</p></li><li><p>奶瓶是否带柄: 不带柄</p></li><li><p>材质: 其他</p></li><li><p>商品条形码: 198800</p></li><li><p>口径大小: 宽口径</p></li><li><p>形状: 弧形</p></li></ul><p><img src=\"/resource/content/html/images/20140419130611.jpg\" title=\"1.jpg\"/></p><p><img src=\"/resource/content/html/images/20140419130642.jpg\" style=\"float:none;\" title=\"2.jpg\"/></p><p><img src=\"/resource/content/html/images/20140419130729.jpg\" title=\"1.jpg\"/></p><p><img src=\"/resource/content/html/images/20140419130843.jpg\" style=\"float:none;\" title=\"2.jpg\"/></p><p><img src=\"/resource/content/html/images/20140419130844.jpg\" style=\"float:none;\" title=\"3.jpg\"/></p><p><img src=\"/resource/content/html/images/20140419130845.jpg\" style=\"float:none;\" title=\"4.jpg\"/></p><p><img src=\"/resource/content/html/images/20140419130846.jpg\" style=\"float:none;\" title=\"5.jpg\"/></p><p><img src=\"/resource/content/html/images/20140419130847.jpg\" style=\"float:none;\" title=\"6.jpg\"/></p><p><img src=\"/resource/content/html/images/20140419130848.jpg\" style=\"float:none;\" title=\"7.jpg\"/></p><p><img src=\"/resource/content/html/images/20140419130849.jpg\" style=\"float:none;\" title=\"8.jpg\"/></p><p><img src=\"/resource/content/html/images/20140419130851.jpg\" style=\"float:none;\" title=\"9.jpg\"/></p><p><img src=\"/resource/content/html/images/20140419130852.jpg\" style=\"float:none;\" title=\"10.jpg\"/></p><p><img src=\"/resource/content/html/images/20140419130853.jpg\" style=\"float:none;\" title=\"11.jpg\"/></p><p><br/></p>";
         String info1 =info.replace("img src=\"/", "img src=\""+abstractConfigService.getImgUri("")+"/");
         System.out.print(info);
+    }
+
+
+    @Test
+    public void test3() {
+        List<Double> priceList = new ArrayList<>();
+        priceList.add(Double.valueOf(1));
+        priceList.add(Double.valueOf(2));
+        priceList.add(Double.valueOf(3));
+        priceList.add(Double.valueOf(4));
+        priceList.add(Double.valueOf(5));
+        priceList.get(0);
+        System.out.print("最大："+Collections.max(priceList)+"  最小："+Collections.min(priceList));
+
     }
 
 

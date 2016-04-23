@@ -49,20 +49,9 @@ public class ConfigInfo {
     @Value("${resources.config}")
     private String resourcesConfig;
 
-    @Value("${resources.appid}")
-    private String appid;
-
-    @Value("${resources.appsecret}")
-    private String appsecret;
 
 
-    public String getAppid() {
-        return appid;
-    }
 
-    public String getAppsecret() {
-        return appsecret;
-    }
 
     public String getResourcesSiteLogo(Integer customerId) {
         return String.format(resourcesSiteLogo,customerId) ;

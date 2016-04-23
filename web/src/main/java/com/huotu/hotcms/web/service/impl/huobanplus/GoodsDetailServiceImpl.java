@@ -115,14 +115,15 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
 
     @Override
     public String getGoodsWxUrl(HttpServletRequest request, Long goodsId) {
-        String remotePort = "";
-        if(request.getLocalPort()!=80){
-            remotePort = "%3A"+request.getLocalPort() ;//获取端口号
-        }
-
-        String appid = configInfo.getAppid();
-        String url = "https://open.weixin.qq.com/connect/qrconnect?appid="+appid+"&redirect_uri=http%3A%2F%2F"+request.getServerName()+remotePort+"%2Ffront%2Fbind%2Fcallback%2F&response_type=code&scope=snsapi_login&state=" + goodsId;
-        return url;
+//        String remotePort = "";
+//        if(request.getLocalPort()!=80){
+//            remotePort = "%3A"+request.getLocalPort() ;//获取端口号
+//        }
+//
+//        String appid = configInfo.getAppid();
+//        String url = "https://open.weixin.qq.com/connect/qrconnect?appid="+appid+"&redirect_uri=http%3A%2F%2F"+request.getServerName()+remotePort+"%2Ffront%2Fbind%2Fcallback%2F&response_type=code&scope=snsapi_login&state=" + goodsId;
+//        return url;
+        return  null;
     }
 
 

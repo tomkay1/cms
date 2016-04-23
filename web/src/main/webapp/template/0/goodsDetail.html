@@ -6,6 +6,7 @@
     <title>产品</title>
     <link rel="stylesheet" type="text/css" href="/template/0/css/lobo.css" th:href="@{/template/0/css/lobo.css}"/>
     <link rel="stylesheet" type="text/css" href="/template/0/css/common.css" th:href="@{/template/0/css/common.css}"/>
+    <link rel="stylesheet" type="text/css" href="/template/0/css/style.css" th:href="@{/template/0/css/style.css}"/>
     <link rel="stylesheet" type="text/css" href="/template/0/css/scfdforPC.css"
           th:href="@{/template/0/css/scfdforPC.css}"/>
     <!--<link rel="stylesheet" href="/template/0/css/ShopShow.css" th:href="@{/template/0/css/ShopShow.css}" type="text/css" />-->
@@ -59,8 +60,7 @@
                     </div>
                 </div>
             </div>
-            <div id="hottech_wxin" class="hottech_wxin"><a href="javascript:void(0)">1<div class="hottech_wxinh"></div></a></div>
-            <div id="hottech_wshare" class="hottech_wshare"><a href="javascript:void(0)">2<div class="hottech_wshareh"></div></a></div>
+
 
             <div class="buy_area" style="border:0; padding-left:20px;">
                 <div class="fn_wrap">
@@ -219,6 +219,9 @@
                     </ul>
                 </div>
             </div>
+            <div id="hottech_wxin" class="hottech_wxin" onmouseover="personQrCode()"><a href="javascript:void(0)">1<div class="hottech_wxinh"></div></a></div>
+            <div id="hottech_wshare" class="hottech_wshare"><a href="javascript:void(0)">2<div class="hottech_wshareh"></div></a></div>
+            <a id="hottech_top" href="javascript:scroll(0,0)"></a>
             <div style="width:1000px;margin:0 auto;text-align:center;">
                 <div th:utext="${goods.intro}"></div>
             </div>
@@ -228,7 +231,7 @@
 </body>
 </html>
 <script src="js/jquery-1.9.1.min.js" th:src="@{/template/0/js/jquery-1.9.1.min.js}"></script>
-<script src="js/qrscript.js.js" th:src="@{/template/0/js/qrscript.js}"></script>
+<script src="js/qrScript.js.js" th:src="@{/template/0/js/qrCodeScript.js}"></script>
 <script src="js/layer/layer.js" th:src="@{/template/0/js/layer/layer.js}"></script>
 <script th:inline="javascript">
     var specSize = /*[[${spec.size()}]]*/"/";//商品规格行数
@@ -330,5 +333,11 @@
         }else{
             $("#quantity").val(num_dec);
         }
+    }
+
+    function  personQrCode(){//个人中心二维码
+        thisURL = "http://www.baidu.com";
+        var  strwrite = "http://pan.baidu.com/share/qrcode?w=220&h=220&url="+thisURL;
+        $('.hottech_wxinh').css('background-image',"url(" + strwrite + ")");
     }
 </script>

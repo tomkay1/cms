@@ -1,23 +1,44 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>无标题文档</title>
-    <link type="text/css" rel="stylesheet" href="css/style.css">
+    <title>微信 返回顶部</title>
+
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="js/qrCodeScript.js"></script>
 
 </head>
-<body style="height:2000px;">
-顶部
-<br />
-<div class="toolbar">
-    <a href="###" class="toolbar-item toolbar-item-weixin">
-        <span class="toolbar-layer"></span>
-    </a>
-    <a href="###" class="toolbar-item toolbar-item-feedback"></a>
-    <a href="###" class="toolbar-item toolbar-item-app">
-        <span class="toolbar-layer"></span>
-    </a>
-    <a href="javascript:scroll(0,0)" id="top" class="toolbar-item toolbar-item-top"></a>
-</div>
+<body>
+
+<!-- 代码 开始 -->
+<div id="hottech_wxin" class="hottech_wxin" onmouseover="change()"><a href="javascript:void(0)">1<div class="hottech_wxinh"></div></a></div>
+<div id="hottech_wshare" class="hottech_wshare"><a href="javascript:void(0)">2<div class="hottech_wshareh"></div></a></div>
+<a id="hottech_top" a href="javascript:scroll(0,0)"></a>
+
+<!-- 代码 结束 -->
+
+
+<!--<div style=" height:2000px">-->
+    <!--<script>-->
+        <!--// <![CDATA[-->
+
+<!--//        thisURL = document.URL;-->
+        <!--thisURL = "http://www.baidu.com";-->
+        <!--strwrite =-->
+                <!--"<img src='https://chart.googleapis.com/chart?cht=qr&chs=150x150&choe=UTF-8&chld=L|4&chl="  + thisURL + "' width='250' height='250' alt='网址URL 二维码生成' />";-->
+        <!--document.write( strwrite );-->
+        <!--// ]]></script>-->
+<!--</div>-->
+
 </body>
 </html>
+<script>
+    function  change(){
+        thisURL = "http://www.baidu.com";
+        var  strwrite = "http://pan.baidu.com/share/qrcode?w=220&h=220&url="+thisURL;
+        $('.hottech_wxinh').css('background-image',"url(" + strwrite + ")");
+    }
+</script>

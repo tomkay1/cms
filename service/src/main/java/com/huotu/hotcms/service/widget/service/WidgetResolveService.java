@@ -92,11 +92,12 @@ public class WidgetResolveService {
         request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         if (widgetBase != null) {
             Map<String, Object> map = null;
-            if (widgetBase.getProperty() != null) {
-                map = ConvertMapByList(widgetBase.getProperty());
-            } else {
-                map=getWidgetMainsDefaults(widgetBase.getId());
-            }
+            map = getWidgetMainsDefaults(widgetBase);
+//            if (widgetBase.getProperty() != null) {
+//                map = ConvertMapByList(widgetBase.getProperty());
+//            } else {
+//                map=getWidgetMainsDefaults(widgetBase);
+//            }
             Field[] fields = widgetBase.getClass().getDeclaredFields();
             for (Field field : fields) {
                 if (!map.containsKey(field.getName())) {
@@ -124,11 +125,12 @@ public class WidgetResolveService {
         String templateResources = widgetResourceService.getWidgetEditTemplate(widgetBase);
         if (widgetBase != null) {
             Map map = null;
-            if (widgetBase.getProperty() != null) {
-                map = ConvertMapByList(widgetBase.getProperty());
-            } else {
-                map=getWidgetMainsDefaults(widgetBase.getId());
-            }
+            map = getWidgetMainsDefaults(widgetBase);
+//            if (widgetBase.getProperty() != null) {
+//                map = ConvertMapByList(widgetBase.getProperty());
+//            } else {
+//                map=getWidgetMainsDefaults(widgetBase.getId());
+//            }
             Field[] fields = widgetBase.getClass().getDeclaredFields();
             for (Field field : fields) {
                 if (!map.containsKey(field.getName())) {
@@ -169,26 +171,93 @@ public class WidgetResolveService {
 
     /**
      * <p>
-     *     根据控件主体Id获得默认属性
+     *     根据控件主体Id获得默认属性,不存在的属性则以默认属性为主
      * </p>
-     * @param widgetMainsId 控件主体ID
+     * @param widgetBase 控件主体ID
      * @return 默认属性Map字典
      * */
-    public Map<String,Object> getWidgetMainsDefaults(Long widgetMainsId){
+    public Map<String,Object> getWidgetMainsDefaults(WidgetBase widgetBase){
         Map<String,Object> map=new HashMap<>();
         try{
-            WidgetMains widgetMains=widgetMainsRepository.findOne(widgetMainsId);
+            WidgetMains widgetMains=widgetMainsRepository.findOne(widgetBase.getId());
+            List<WidgetProperty> defaultPropertyList=null;
             if(widgetMains!=null){
                 String defaultProperty=widgetMains.getDefaultsProperty();
-                List<WidgetProperty> properties=null;
                 if(defaultProperty!=null&&defaultProperty!=""){
-                    properties= JSONArray.parseArray(defaultProperty, WidgetProperty.class);
+                    defaultPropertyList= JSONArray.parseArray(defaultProperty, WidgetProperty.class);
                 }
-                map=ConvertMapByList(properties);
             }
+            List<WidgetProperty> widgetProperties=widgetBase.getProperty();
+            List<WidgetProperty> widgetProperties1=null;
+            if(widgetProperties!=null&&defaultPropertyList!=null){
+                widgetProperties1=mergeWidgetProperty(widgetProperties,defaultPropertyList);
+            }
+            if(widgetProperties==null&&defaultPropertyList!=null){
+                widgetProperties1=defaultPropertyList;
+            }
+            if(defaultPropertyList==null&&widgetProperties!=null){
+                widgetProperties1=widgetProperties;
+            }
+            map=ConvertMapByList(widgetProperties1);
         }catch (Exception ex){
             ex.getStackTrace();
         }
         return map;
     }
+
+    /**
+     * <p>
+     *     合并属性列表对象,设置属性列表中没有则取控件主体默认的属性值
+     * </p>
+     * @param widgetProperties 控件主体设置信息
+     * @param defaultsProperty 控件主体默认设置信息
+     * @return 控件主体设置信息列表
+     * */
+    private List<WidgetProperty> mergeWidgetProperty(List<WidgetProperty> widgetProperties,List<WidgetProperty> defaultsProperty){
+        if(defaultsProperty!=null&&defaultsProperty.size()>0){
+            List<WidgetProperty> widgetPropertyList=new ArrayList<>();
+            for(WidgetProperty widgetProperty:defaultsProperty){
+                WidgetProperty widgetProperty1=getDefaultValue(widgetProperties,widgetProperty.getName());
+                if(widgetProperty1==null){
+                    widgetPropertyList.add(widgetProperty);
+                }else{
+                    widgetPropertyList.add(widgetProperty1);
+                }
+            }
+            for(WidgetProperty widgetProperty:widgetProperties){
+                if(!existsWidgetProperty(widgetPropertyList,widgetProperty.getName())){
+                    widgetPropertyList.add(widgetProperty);
+                }
+            }
+            return widgetPropertyList;
+        }else{
+            return widgetProperties;
+        }
+    }
+
+    private Boolean existsWidgetProperty(List<WidgetProperty> widgetProperties,String name){
+        for(WidgetProperty widgetProperty:widgetProperties){
+            if(widgetProperty.getName().equals(name)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * <p>
+     * 根据属性名称获得默认值
+     * </p>
+     * @param widgetProperties 目标属性列表
+     * @param name 名称
+     * */
+    private WidgetProperty getDefaultValue(List<WidgetProperty> widgetProperties,String name){
+        for(WidgetProperty widgetProperty:widgetProperties){
+            if(name.equals(widgetProperty.getName())){
+                return widgetProperty;
+            }
+        }
+        return null;
+    }
+
 }

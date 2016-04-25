@@ -93,11 +93,6 @@ public class WidgetResolveService {
         if (widgetBase != null) {
             Map<String, Object> map = null;
             map = getWidgetMainsDefaults(widgetBase);
-//            if (widgetBase.getProperty() != null) {
-//                map = ConvertMapByList(widgetBase.getProperty());
-//            } else {
-//                map=getWidgetMainsDefaults(widgetBase);
-//            }
             Field[] fields = widgetBase.getClass().getDeclaredFields();
             for (Field field : fields) {
                 if (!map.containsKey(field.getName())) {

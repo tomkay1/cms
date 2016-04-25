@@ -1,5 +1,6 @@
 package com.huotu.hotcms.admin.controller.decoration;
 
+import com.alibaba.fastjson.JSONArray;
 import com.huotu.hotcms.admin.common.StringUtil;
 import com.huotu.hotcms.admin.util.web.CookieUser;
 import com.huotu.hotcms.service.common.ConfigInfo;
@@ -10,6 +11,7 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.WidgetMains;
 import com.huotu.hotcms.service.entity.WidgetType;
 import com.huotu.hotcms.service.model.WidgetList;
+import com.huotu.hotcms.service.model.widget.WidgetProperty;
 import com.huotu.hotcms.service.repository.WidgetTypeRepository;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.service.WidgetService;
@@ -72,8 +74,8 @@ public class WidgetController {
     @RequestMapping("/widgetMainsList")
     public ModelAndView widgetMainsList() throws Exception {
         ModelAndView modelAndView = new ModelAndView();
-        List<WidgetType> widgetTypes= widgetTypeRepository.findAll();
-        modelAndView.addObject("widgetTypes",widgetTypes);
+        List<WidgetType> widgetTypes = widgetTypeRepository.findAll();
+        modelAndView.addObject("widgetTypes", widgetTypes);
         modelAndView.setViewName("/decoration/control/widgetMainsList.html");
         return modelAndView;
     }
@@ -203,13 +205,29 @@ public class WidgetController {
         return result;
     }
 
+    private boolean verificationDefaultProperty(String defaultProperty) {
+        List<WidgetProperty> widgetProperties = null;
+        try {
+            if (!StringUtil.isEmptyStr(defaultProperty)) {
+                widgetProperties = JSONArray.parseArray(defaultProperty, WidgetProperty.class);
+                return true;
+            }
+        } catch (Exception ex) {
+            return false;
+        }
+        return true;
+    }
+
     @RequestMapping(value = "/saveWidgetMains", method = RequestMethod.POST)
     @Transactional(value = "transactionManager")
     @ResponseBody
     public ResultView saveWidgetMains(WidgetMains widgetMains, Long widgetTypeId, String template, String editTemplate) {
         ResultView result = null;
         try {
-
+            if(!verificationDefaultProperty(widgetMains.getDefaultsProperty())){
+                result = new ResultView(ResultOptionEnum.PARAMERROR.getCode(), ResultOptionEnum.PARAMERROR.getValue(), null);
+                return result;
+            }
             if (widgetMains.getResourceUri() != null) {
                 InputStream inputStream = StringUtil.getInputStream(template);
                 widgetMains.setResourceUri(configInfo.getResourcesWidget() + "/template_" + widgetMains.getId() + ".html");
@@ -256,10 +274,10 @@ public class WidgetController {
     public PageData<WidgetMains> getWidgetMainsList(@RequestParam(name = "name", required = false) String name,
                                                     @RequestParam(name = "page", required = true, defaultValue = "1") Integer page,
                                                     @RequestParam(name = "pagesize", required = true, defaultValue = "20") Integer pageSize,
-                                                    @RequestParam(name="widgetTypeId",defaultValue = "0") Long widgetTypeId) {
+                                                    @RequestParam(name = "widgetTypeId", defaultValue = "0") Long widgetTypeId) {
         PageData<WidgetMains> pageModel = null;
         try {
-            pageModel = widgetService.getWidgetMainsPage(name, page, pageSize,widgetTypeId);
+            pageModel = widgetService.getWidgetMainsPage(name, page, pageSize, widgetTypeId);
         } catch (Exception ex) {
             log.error(ex.getMessage());
         }

@@ -3,9 +3,9 @@
  */
 define(function (require, exports, module) {
     var commonUtil = require("common");
-    var customerId =commonUtil.getQuery("customerId");
-    var layer=require("layer");
-    exports.fromValidata=function() {
+    var customerId = commonUtil.getQuery("customerId");
+    var layer = require("layer");
+    exports.fromValidata = function () {
         $("#updateWidgetMainsForm").validate({
             rules: {
                 name: {
@@ -34,7 +34,7 @@ define(function (require, exports, module) {
                 var commonUtil = require("common");
                 commonUtil.setDisabled("jq-cms-Save");
                 var thumbUri = $("#thumbUri").val();
-                if(thumbUri==null||thumbUri==""){
+                if (thumbUri == null || thumbUri == "") {
                     layer.msg("请先上传图片", {
                         icon: 2,
                         time: 2000 //2秒关闭（如果不配置，默认是3秒）
@@ -42,7 +42,7 @@ define(function (require, exports, module) {
                         commonUtil.cancelDisabled("jq-cms-Save");
                     });
                 }
-                else{
+                else {
                     $.ajax({
                         url: "/widget/saveWidgetMains",
                         data: {
@@ -55,8 +55,9 @@ define(function (require, exports, module) {
                             resourceUri: $("#resourceUri").val(),
                             resourceEditUri: $("#resourceEditUri").val(),
                             orderWeight: $("#txtOrderWeight").val(),
-                            template:$("#uploadWidgetUri").val(),
-                            editTemplate:$("#uploadWidgetEditUri").val()
+                            template: $("#uploadWidgetUri").val(),
+                            editTemplate: $("#uploadWidgetEditUri").val(),
+                            defaultsProperty: $("#widgetDefaultProperty").val()
                         },
                         type: "POST",
                         dataType: 'json',
@@ -70,22 +71,32 @@ define(function (require, exports, module) {
                                         icon: 1,
                                         time: 2000 //2秒关闭（如果不配置，默认是3秒）
                                     }, function () {
-                                        window.location.href="http://"+window.location.host+"/"+"widget/widgetMainsList";
+                                        window.location.href = "http://" + window.location.host + "/" + "widget/widgetMainsList";
                                     });
                                 }
-                                if (index == 500)
+                                if (index == 500){
                                     layer.msg("操作失败,请联系管理员", {
                                         icon: 2,
                                         time: 2000 //2秒关闭（如果不配置，默认是3秒）
                                     }, function () {
                                         commonUtil.cancelDisabled("jq-cms-Save");
                                     });
+                                }
+                                if(index==501){
+                                    layer.msg("默认属性格式有误,请检查格式", {
+                                        icon: 2,
+                                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                                    }, function () {
+                                        commonUtil.cancelDisabled("jq-cms-Save");
+                                    });
+                                }
                             }
                         },
                         error: function () {
                             commonUtil.cancelDisabled("jq-cms-Save");
                         }
-                    });}
+                    });
+                }
                 return false;
             },
             invalidHandler: function () {
@@ -94,28 +105,27 @@ define(function (require, exports, module) {
         });
     }
 
-    exports.uploadImg=function(){
+    exports.uploadImg = function () {
         uploadModule.uploadImg();
         //uploadModule.uploadWidget();
     }
 
     //上传图片模块
-    var uploadModule={
-        uploadImg:function(){
+    var uploadModule = {
+        uploadImg: function () {
             $("#btnFile").jacksonUpload({
                 url: "/cms/imgUpLoad",
                 name: "btnFile",
                 enctype: "multipart/form-data",
                 submit: true,
                 method: "post",
-                data:{
+                data: {
                     customerId: customerId
                 },
                 callback: function (json) {
-                    if(json!=null)
-                    {
-                        var code=parseInt(json.code);
-                        switch (code){
+                    if (json != null) {
+                        var code = parseInt(json.code);
+                        switch (code) {
                             case 200:
                                 $("#uploadThumbUri").attr("src", json.data.fileUrl);
                                 $("#thumbUri").val(json.data.fileUri);
@@ -145,21 +155,20 @@ define(function (require, exports, module) {
             });
         },
 
-        uploadWidget:function(){
+        uploadWidget: function () {
             $("#btnFile1").jacksonUpload({
                 url: "/cms/widgetUpLoad",
                 name: "btnFile1",
                 enctype: "multipart/form-data",
                 submit: true,
                 method: "post",
-                data:{
+                data: {
                     customerId: customerId
                 },
                 callback: function (json) {
-                    if(json!=null)
-                    {
-                        var code=parseInt(json.code);
-                        switch (code){
+                    if (json != null) {
+                        var code = parseInt(json.code);
+                        switch (code) {
                             case 200:
                                 $("#uploadWidgetUri").val(json.data.fileContent);
                                 $("#resourceUri").val(json.data.fileUri);

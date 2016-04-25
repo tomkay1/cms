@@ -5,11 +5,11 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- * PC商城静态资源解析服务,用于{@link com.huotu.hotcms.service.thymeleaf.templateresource;}
+ * PC商城静态资源准备服务,用于{@link com.huotu.hotcms.service.thymeleaf.templateresource;}
  * </p>
  *
  * @author xhl
- * @since 1.0
+ * @since 1.2
  */
 @Service
 public class ShopPageStaticResourceService implements PageStaticResourceService {
@@ -60,8 +60,10 @@ public class ShopPageStaticResourceService implements PageStaticResourceService 
     public String getBrowseHtmlBox(String contentPath) {
         return "<!DOCTYPE html><html>\n" +
                 "<head>\n" +
-                "    <title>商城首页</title>\n" +
+                "    <title th:text=\"(${widgetPage.pageName}==null?${site.title}:(${widgetPage.pageName}+'_'+${site.title}))\">商城首页</title>\n" +
                 "    <meta charset=\"UTF-8\" content=\"text/html\"/>\n" +
+                "    <meta name=\"keywords\" th:content=\"(${widgetPage.pageKeyWords}==null?${site.keywords}:${widgetPage.pageKeyWords})\" />\n" +
+                "    <meta name=\"description\" th:content=\"(${widgetPage.pageDescription}==null?${site.description}:${widgetPage.pageDescription})\"/>"+
                 "    <script src=\""+contentPath+"/assets/seajs/sea.js\"></script>\n" +
                 "    <script src=\"\"+contentPath+\"/assets/seajs/config.js\"></script>\n" +
                 "%s\n" +

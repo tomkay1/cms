@@ -4,9 +4,9 @@ import com.huotu.hotcms.service.widget.service.PageStaticResourceService;
 
 /**
  * <p>
- *     PC 官网静态资源解析服务,用于{@link com.huotu.hotcms.service.thymeleaf.templateresource;}
+ *     PC 官网静态资源准备服务,用于{@link com.huotu.hotcms.service.thymeleaf.templateresource;}
  * </p>
- * @since 1.0
+ * @since 1.2
  * @author xhl
  */
 public class OfficialSitePageStaticResourceService implements PageStaticResourceService {

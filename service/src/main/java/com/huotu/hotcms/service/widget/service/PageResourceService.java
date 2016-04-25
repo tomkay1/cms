@@ -147,7 +147,7 @@ public class PageResourceService {
         try{
             Context context=new Context(Locale.CHINA, ReflectionUtil.getFieldList(widgetPage));
             StringWriter writer = new StringWriter();
-            context=widgetResolveService.setVariable(context,site);
+            context=widgetResolveService.setVariable(context,site,widgetPage);
             templateEngine.process(resources,context,writer);
             return writer.toString();
         }catch (Exception ex){

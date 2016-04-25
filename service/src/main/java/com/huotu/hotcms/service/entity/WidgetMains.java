@@ -61,4 +61,11 @@ public class WidgetMains {
     @ManyToOne
     @JoinColumn(name = "widgetTypeId")
     private WidgetType widgetType;
+
+    /**
+     * 控件主体默认数据
+     * */
+    @Lob
+    @Column(name = "defaultsProperty")
+    private String defaultsProperty;
 }

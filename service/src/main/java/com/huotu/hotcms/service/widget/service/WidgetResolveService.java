@@ -1,10 +1,14 @@
 package com.huotu.hotcms.service.widget.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.entity.WidgetMains;
 import com.huotu.hotcms.service.model.widget.WidgetBase;
+import com.huotu.hotcms.service.model.widget.WidgetPage;
 import com.huotu.hotcms.service.model.widget.WidgetProperty;
+import com.huotu.hotcms.service.repository.WidgetMainsRepository;
 import com.huotu.hotcms.service.service.RedisService;
 import com.huotu.hotcms.service.thymeleaf.dialect.WidgetDialect;
 import com.huotu.hotcms.service.thymeleaf.service.RequestService;
@@ -47,6 +51,9 @@ public class WidgetResolveService {
     @Autowired
     private WidgetDialect widgetDialect;
 
+    @Autowired
+    private WidgetMainsRepository widgetMainsRepository;
+
     private TemplateEngine templateEngine = new TemplateEngine();
 
     private HttpServletRequest request = null;
@@ -63,9 +70,12 @@ public class WidgetResolveService {
     /**
      * <p>设置Context所需要的扩展内置对象</p>
      * */
-    public Context setVariable(Context context, Site site) {
+    public Context setVariable(Context context, Site site,WidgetPage widgetPage) {
         if (null != site) {
             context.setVariable("site", site);
+        }
+        if(null!=widgetPage){
+            context.setVariable("widgetPage",widgetPage);
         }
         context.setVariable("request", requestService.ConvertRequestModel(this.request,site));
         return context;
@@ -85,7 +95,7 @@ public class WidgetResolveService {
             if (widgetBase.getProperty() != null) {
                 map = ConvertMapByList(widgetBase.getProperty());
             } else {
-                map = new HashMap<>();
+                map=getWidgetMainsDefaults(widgetBase.getId());
             }
             Field[] fields = widgetBase.getClass().getDeclaredFields();
             for (Field field : fields) {
@@ -94,7 +104,7 @@ public class WidgetResolveService {
                 }
             }
             Context context = new Context(Locale.CHINA, map);
-            context = setVariable(context, site);
+            context = setVariable(context, site,null);
             addDialect();
             StringWriter writer = new StringWriter();
             templateEngine.process(templateResources, context, writer);
@@ -117,7 +127,7 @@ public class WidgetResolveService {
             if (widgetBase.getProperty() != null) {
                 map = ConvertMapByList(widgetBase.getProperty());
             } else {
-                map = new HashMap<>();
+                map=getWidgetMainsDefaults(widgetBase.getId());
             }
             Field[] fields = widgetBase.getClass().getDeclaredFields();
             for (Field field : fields) {
@@ -155,5 +165,30 @@ public class WidgetResolveService {
             list.add(widgetProperty);
         }
         return list;
+    }
+
+    /**
+     * <p>
+     *     根据控件主体Id获得默认属性
+     * </p>
+     * @param widgetMainsId 控件主体ID
+     * @return 默认属性Map字典
+     * */
+    public Map<String,Object> getWidgetMainsDefaults(Long widgetMainsId){
+        Map<String,Object> map=new HashMap<>();
+        try{
+            WidgetMains widgetMains=widgetMainsRepository.findOne(widgetMainsId);
+            if(widgetMains!=null){
+                String defaultProperty=widgetMains.getDefaultsProperty();
+                List<WidgetProperty> properties=null;
+                if(defaultProperty!=null&&defaultProperty!=""){
+                    properties= JSONArray.parseArray(defaultProperty, WidgetProperty.class);
+                }
+                map=ConvertMapByList(properties);
+            }
+        }catch (Exception ex){
+            ex.getStackTrace();
+        }
+        return map;
     }
 }

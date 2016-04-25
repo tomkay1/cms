@@ -108,7 +108,7 @@ public class WidgetTemplateResource implements ITemplateResource {
         this.location = location;
         this.characterEncoding = characterEncoding;
         Site site=siteService.getSite(this.getSiteId());
-        if(site!=null){
+        if(site!=null){//根据站点环境来构建pageStaticResourceService 服务
            SiteType siteType=site.getSiteType();
             if(siteType==SiteType.SITE_PC_WEBSITE){
                 this.pageStaticResourceService=(OfficialSitePageStaticResourceService) applicationContext.getBean("officialSitePageStaticResourceService");
@@ -235,8 +235,6 @@ public class WidgetTemplateResource implements ITemplateResource {
     public String getHtmlHeadStaticResources(Environment environment){
         this.URI_PREFIX = this.getURI_PREFIXByEnvironment(environment);
         String cssResources=this.WIDGET_RESOURCES + BROWSE_RESOURCES;
-        cssResources= cssResources.replace("{version}", this.version);
-        cssResources= cssResources.replace("{PREFIX}", this.URI_PREFIX);
         return cssResources;
     }
 

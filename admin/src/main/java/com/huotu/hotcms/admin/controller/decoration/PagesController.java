@@ -70,10 +70,6 @@ public class PagesController {
     public ModelAndView pageList(HttpServletRequest request, @RequestParam("customerid") Integer customerid,String scope) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         try {
-//            Long id=new Long(60);
-//            Article article= articleRepository.findAllByIdAndNext(id);
-//            Article article1=articleRepository.findAllByIdAndPreious(id);
-
             List<Site> siteList=null;
             if(scope.equals("shop")){
                 siteList = siteRepository.findByCustomerIdAndDeletedAndPersonaliseAndSiteTypeOrderBySiteIdDesc(customerid, false, true,SiteType.SITE_PC_SHOP);

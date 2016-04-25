@@ -2,11 +2,12 @@
 <!--浏览试图（友情链接类）-->
 <div class="fn-clear js-hot-module toolhover" th:attr="id=${guid}">
     <div class="mc" style="overflow: visible;">
-        <div id="footer-2014">
-            <div class="links">
+        <div id="footer-2014" th:style="'background:'+(${pageBackGround})">
+            <div class="links" th:style="'text-align:'+${alignment}">
                 <th:block th:each="row,iterStat:${Rows}">
                     <span th:if="${iterStat.index}!=0">|</span>
-                    <a rel="nofollow" target="" th:href="${row.url_Rows}" th:text="${row.name_Rows}"></a>
+                    <a rel="nofollow" target="" th:href="${row.url_Rows}" th:text="${row.name_Rows}"
+                            th:style="'color:'+${fontColor}"></a>
                 </th:block>
             </div>
         </div>
@@ -43,6 +44,34 @@
             text-align: left;
         }
     </style>
+    <div class="forms">
+        <ul>
+            <li>
+                <label style="width: 116px;">背景颜色 </label>
+                <input type="text" class="js-hot-color text-normal goodsInput" id="pageBackGround"
+                       th:attr="data-default=${pageBackGround==null?'#ffffff':pageBackGround}" data-input="pageBackGround"/>
+                <input type="hidden" class="js-hot-properties" th:value="${pageBackGround}" name="pageBackGround" style="background:#ffffff"/>
+            </li>
+            <li>
+                <label style="width: 116px;">字体颜色 </label>
+                <input type="text" class="js-hot-color text-normal goodsInput" id="fontColor"
+                       th:attr="data-default=${fontColor==null?'#ffffff':fontColor}" data-input="fontColor"/>
+                <input type="hidden" class="js-hot-properties" th:value="${fontColor}" name="fontColor" style="background:#666666"/>
+            </li>
+            <li>
+                <label>对齐方式</label>
+                <select class="select-short" name="alignment"
+                        th:attr="data-default=${alignment==null?'left':alignment}"
+                        data-default="left" data-input="alignment"
+                        >
+                    <option value="left" selected="selected" th:selected="${alignment==null or alignment=='left'}">左对齐
+                    </option>
+                    <option value="center" th:selected="${alignment=='center'}">居中对齐</option>
+                    <option value="right" th:selected="${alignment=='right'}">右对齐</option>
+                </select>
+            </li>
+        </ul>
+    </div>
     <div class="page-operate">
         <a class="btn-green" href="javascript:void(0)" id="js-nav-add">增加链接</a>
     </div>
@@ -100,7 +129,13 @@
             </td>
         </tr>
     </script>
+    <script src="../libs/JColor/jquery.hotColor.js" type="application/javascript"></script>
+    <script src="../libs/JColor/spectrum.js" type="application/javascript"></script>
+    <link href="../libs/JColor/spectrum.css" rel="stylesheet"/>
     <script type="application/javascript">
+        $(function () {
+            hotColor();
+        });
         var navModule = {
             addNav: function () {
                 var obj = $("#js-nav-add");

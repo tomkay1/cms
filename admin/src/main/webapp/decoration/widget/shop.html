@@ -9,7 +9,7 @@
                 </a>
                 <div class="shop-logo-box">
                     <a th:href="${request.rootUri}" class="shop-logo-link">
-                        <img th:src="${shopLogoImage==null or shopLogoImage == ''}?'/assets/img/widget/shop_logo.png':${shopLogoImage}"/>
+                        <img th:src="${shopLogoImage}"/>
                     </a>
                     <!--<a th:href="${request.rootUri}" class="follow-me for-light-bg">关注我</a>-->
                 </div>
@@ -160,3 +160,7 @@
         });
     </script>
 </div>
+
+<!--默认值-->
+[{"name":"pageBackImage","value":"\"\""},
+{"name":"bgcolor","value":"\"#9c1b1b\""},{"name":"shopLogoImage","value":"\"http://cms.huobanj.cn/images/shop_logo.png\""},{"name":"defaultKewWord","value":"\"\""},{"name":"maxlength","value":"\"20\""},{"name":"Rows","value":"[]"}]

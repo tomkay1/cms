@@ -7,7 +7,7 @@
             <div class="HOTSearchArea">
                 <div class="HOTSearchInput">
                     <form th:action="${request.rootUri}+'/shop/search'">
-                        <input type="text" id="" onkeydown="" onfocus="" d="请输入关键词" class="inputMiddle"
+                        <input type="text" id="" onkeydown="" onfocus="" placeholder="请输入关键词" class="inputMiddle"
                                th:value="${request.get('keyword')}!=null?${request.get('keyword')}:${defaultKewWord}" name="keyword"
                                maxlength="20" size="20" th:attr="maxlength=(${maxlength}==null?20:${maxlength})"/>
                         <button type="submit" onclick="" d="" clstag="">搜索<s></s></button>
@@ -61,6 +61,24 @@
             <li>
                 <label>最长搜索字数</label>
                 <input type="number" class="text-short" name="maxlength" th:value="${maxlength==null}?'20':${maxlength}"/>
+            </li>
+            <li>
+                <label>宽度</label>
+                <input type="number" class="text-short" name="maxWidth" th:value="${maxWidth==null}?'20':${maxWidth}"/>
+            </li>
+            <li>
+                <label>背景颜色 </label>
+                <input type="text" class="js-hot-color input-normal" id="bgcolor"
+                       th:attr="data-default=${bgcolor==null?'#FFFFFF':bgcolor}" data-default="#FFFFFF" data-input="bgcolor"/>
+                <input type="hidden" class="js-hot-properties" th:value="${bgcolor}" name="bgcolor" style="background: #ffffff;"/>
+            </li>
+            <li>
+                <label>对齐方式</label>
+                <select class="select-short" name="alignment">
+                    <option value="alignment-left">左对齐</option>
+                    <option value="alignment-center">居中对齐</option>
+                    <option value="alignment-right">右对齐</option>
+                </select>
             </li>
         </ul>
     </div>

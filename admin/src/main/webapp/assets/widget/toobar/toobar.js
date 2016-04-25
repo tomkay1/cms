@@ -297,6 +297,7 @@ define(function (require, exports, module) {
                                 }
                                 page.widgetEdit();
                                 page.clearHref();
+                                bannerModule.banner();
                             }
                         });
                     });
@@ -555,6 +556,7 @@ define(function (require, exports, module) {
                 page.pageReact();
                 widgetModule.init();
                 page.clearHref();
+                bannerModule.banner();
             }
         };
         var widgetModule = {
@@ -588,6 +590,7 @@ define(function (require, exports, module) {
                             layer.msg("解析模版错误");
                         }
                         page.clearHref();//去除编辑视图中的所有组件的链接信息
+                        bannerModule.banner();
                     },
                     error: function () {
                         layer.close(indexLoad);
@@ -709,5 +712,21 @@ define(function (require, exports, module) {
                 });
             }
         };
+        var bannerModule={
+            banner:function(){
+                var obj = $(".js-banner");
+                if(obj.length > 0){
+                    require("superSlide");
+                    $(".fullSlide").slide({
+                        titCell: ".hd ul",
+                        mainCell: ".bd ul",
+                        effect: "fold",
+                        autoPlay: true,
+                        autoPage: true,
+                        trigger: "click"
+                    });
+                }
+            }
+        }
     })
 });

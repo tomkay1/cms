@@ -70,6 +70,12 @@
                 <a href="javascript:void(0)" id="js-cms-selectPageBackImage">图片选择</a>
             </li>
             <li>
+                <label>背景颜色 </label>
+                <input type="text" class="js-hot-color input-normal" id="bgcolor"
+                       th:attr="data-default=${bgcolor==null?'#FFFFFF':bgcolor}" data-default="#FFFFFF" data-input="bgcolor"/>
+                <input type="hidden" class="js-hot-properties" th:value="${bgcolor}" name="bgcolor" style="background: #ffffff;"/>
+            </li>
+            <li>
                 <label>店铺LOGO </label>
                 <input type="text" id="shopLogoImage" name="shopLogoImage" th:value="${shopLogoImage}" maxlength="50" class="input-normal"/>
                 <a href="javascript:void(0)" id="js-cms-selectLogoImage" >图片选择</a>

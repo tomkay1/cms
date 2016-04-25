@@ -34,6 +34,14 @@ public class CookieUser {
         CookieHelper.setCookie(response,CMSEnums.MallCookieKeyValue.UserId.toString(),UnionId);
     }
 
+    /**
+     * 把商户ID放到Cookie中
+     * */
+    public void setCustomerId(HttpServletResponse response,int customerId)
+    {
+        CookieHelper.setCookie(response,CMSEnums.CookieKeyValue.CustomerID.toString(),String.valueOf(customerId));
+    }
+
 //    /**
 //     * 把userID放到Cookie中
 //     * */

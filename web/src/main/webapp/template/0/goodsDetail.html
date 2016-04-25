@@ -3,7 +3,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>产品</title>
+    <title th:text="${goods.title}+'-'+${site.title}">前端社区(JQSite)-Web前端开发工程师专业的资源、知识分享交流平台|JQ插件库、素材资源网站</title>
+    <meta name="keywords" content="前端社区,前端网,JQ插件库,素材网,Js特效,JQ社区,jQuery,jQuery特效,jQuery ui,jQuery插件,jQuery 教程,css3,网页特效" th:content="${site.keywords}" />
+    <meta name="description" content="前端社区网(JQSite),人气爆棚的知识插件特效分享专业社区，国内最大的WEB前端工程师的技术分享交流平台,提供面向前端工程师综合性服务的一站式服务平台！前端未来，我们打造！" th:content="${site.description}"/>
     <link rel="stylesheet" type="text/css" href="/template/0/css/lobo.css" th:href="@{/template/0/css/lobo.css}"/>
     <link rel="stylesheet" type="text/css" href="/template/0/css/common.css" th:href="@{/template/0/css/common.css}"/>
     <link rel="stylesheet" type="text/css" href="/template/0/css/style.css" th:href="@{/template/0/css/style.css}"/>
@@ -24,11 +26,11 @@
             <div id="preview">
                 <!--<div id="spec-n1" class="jqzoom" style="position:relative" >-->
                 <div id="spec-n1" class="jqzoom" style="width:450px;height:450px">
-                    <span style="position:absolute;bottom:0px;right:0px; z-index:9999"><img src="images/sss.png" th:src="@{/template/0/images/sss.png}"/></span>
+                    <span style="position:absolute;bottom:0px;right:0px; z-index:9999"><img class="lazy" src="images/sss.png" th:src="@{/template/0/images/sss.png}"/></span>
                     <!--<span style="position:absolute"><img width="100%"  src="images/1.jpg" alt="" ></span>-->
                     <div id="tsImgS">
                         <a href="/template/0/images/ghi.jpg" th:href="${goods.bigPic}" title="Images" class="MagicZoom" id="MagicZoom">
-                        <img width="100%" src="/template/0/images/ghi.jpg" th:src="${goods.bigPic}"/></a>
+                        <img width="100%" class="lazy" src="/template/0/images/ghi.jpg" th:src="${goods.bigPic}"/></a>
                     </div>
                 </div>
                 <div id="spec-list">
@@ -66,7 +68,7 @@
                 <div class="fn_wrap">
                     <div id="itemInfo">
                         <div id="name">
-                            <h1 th:text="${goods.title}">NICE CLAUP2015夏商场同款日系女装甜美高腰蝴蝶结直筒九分裤111510450A 青色 均码</h1>
+                            <h1 id="goodsTitle" th:text="${goods.title}">NICE CLAUP2015夏商场同款日系女装甜美高腰蝴蝶结直筒九分裤111510450A 青色 均码</h1>
                         </div>
                     </div>
                     <!--<h1 id="proSubTitle" style="color: #f63a3a; font-size: 12px;">即日起购买一箱罐头就送一只不锈钢水果叉！由于发货成本 新疆 西藏 青海 内蒙-->
@@ -82,10 +84,10 @@
                     <!--会员价格BEGIN-->
                     <div id="userPriceDiv" style=" display: " th:if="${unlogin}==false">
                         <div class="price_wrap" style="position:relative; height:28px">
-                            <span class="price">￥<span id="userPrice" th:text="${goods.minPrice}+'-'+${goods.maxPrice}">69</span></span>
+                            <span class="price">￥<span id="userPrice" th:text="${products.get(0).price}">69</span></span>
               <span class="flag" id="priceDis" style="display: ;overflow: hidden;
     width: 12px; margin-top:8px;">5.8折</span>
-                            <span class="lsls" id= "lsls" style="display:" th:text="最大立省+${goods.marketPrice-goods.price}+元">立省293元</span>
+                            <span class="lsls" id= "lsls" style="display:" th:text="立省+${products.get(0).marketPrice-products.get(0).price}+元">立省293元</span>
                             <!--20151103-add-gmw-->
 
                         </div>
@@ -128,11 +130,9 @@
                         <div class="old_price_wrap">
                             <span class="gBN">商品编号：34325643</span><br>
               <span style="height: 20px; clear:both; margin-top:10px" class="saleTag">
-              <img src="images/tongy.jpg" th:src="@{/template/0/images/tongy.jpg}"
-                   style="width: 20px;vertical-align:middle;">品牌直供 <img src="images/tongy.jpg"
-                                                                        th:src="@{/template/0/images/tongy.jpg}"
-                                                                        style="width: 20px;vertical-align:middle;">包邮 <img
-                      src="images/tongy.jpg" th:src="@{/template/0/images/tongy.jpg}"
+              <img src="images/tongy.jpg" th:src="@{/template/0/images/tongy.jpg}" style="width: 20px;vertical-align:middle;">
+                  品牌直供 <img src="images/tongy.jpg" th:src="@{/template/0/images/tongy.jpg}" style="width: 20px;vertical-align:middle;">包邮
+                  <img src="images/tongy.jpg" th:src="@{/template/0/images/tongy.jpg}"
                       style="width: 20px;vertical-align:middle;">七天无理由退货</span>
                         </div>
                     </div>
@@ -146,8 +146,11 @@
                                 <h3 th:text="${spec.value}+': '" >规格1：</h3>
                                 <div class="sku_list" th:each="specDescriptions:${goods.specDescriptions}"
                                      th:if="${spec.key}==${specDescriptions.key}" th:value="${specDescriptions.key}">
+
+                                     <span class="option option_selected" id="specValue6342" th:each="specDes:${specDescriptions.value}"
+                                           th:text="${specDes.specValue}" th:if="${specDes} == ${specDescriptions.value.get(0)}">39</span>
                                     <span class="option" id="specValue6342" th:each="specDes:${specDescriptions.value}"
-                                          th:text="${specDes.specValue}" th:attr="specId=${specDes.specId}" th:value="${specDes.specValueId}">39</span>
+                                          th:text="${specDes.specValue}" th:if="${specDes} != ${specDescriptions.value.get(0)}">39</span>
                                 </div>
                             </div>
                             <!--<div class="sku">-->
@@ -220,7 +223,7 @@
                 </div>
             </div>
             <div id="hottech_wxin" class="hottech_wxin" onmouseover="personQrCode()"><a href="javascript:void(0)">1<div class="hottech_wxinh"></div></a></div>
-            <div id="hottech_wshare" class="hottech_wshare"><a href="javascript:void(0)">2<div class="hottech_wshareh"></div></a></div>
+            <div id="hottech_wshare" class="hottech_wshare" onmouseover="subscribeCode()" ><a href="javascript:void(0)">2<div class="hottech_wshareh"></div></a></div>
             <a id="hottech_top" href="javascript:scroll(0,0)"></a>
             <div style="width:1000px;margin:0 auto;text-align:center;">
                 <div th:utext="${goods.intro}"></div>
@@ -231,6 +234,7 @@
 </body>
 </html>
 <script src="js/jquery-1.9.1.min.js" th:src="@{/template/0/js/jquery-1.9.1.min.js}"></script>
+<script src="js/jquery.lazyload.js" th:src="@{/template/0/js/jquery.lazyload.js}"></script>
 <script src="js/qrScript.js.js" th:src="@{/template/0/js/qrCodeScript.js}"></script>
 <script src="js/layer/layer.js" th:src="@{/template/0/js/layer/layer.js}"></script>
 <script th:inline="javascript">
@@ -303,6 +307,7 @@
                 var x =products[i].spec+',';
                 var savePrice= products[i].marketPrice-products[i].price;//省的价格
                 if(spec == x){//当筛选出正确的productId
+                    $("#goodsTitle").text(products[i].name);//修改产品价格
                     $("#userPrice").text(products[i].price);//修改产品价格
                     $("#normalPrice").text(products[i].marketPric);//修改市场价格
                     $("#lsls").text("立省"+savePrice.toString()+'元');//修改市场价格
@@ -316,7 +321,11 @@
         $(this).siblings().children("img").removeClass("img-hover");
     });
 </script>
-<script type="text/javascript">
+<script th:inline="javascript">
+    var subscribeUrl = /*[[${subscribeUrl}]]*/"/";//获取二维码域名（商户公众号）
+    var personDetailUrl = /*[[${personDetailUrl}]]*/"/";//获取二维码域名（商城个人中心）
+
+
     /*商品数量+1*/
     function numAdd(){
         var num_add = parseInt($("#quantity").val())+1;
@@ -336,8 +345,18 @@
     }
 
     function  personQrCode(){//个人中心二维码
-        thisURL = "http://www.baidu.com";
-        var  strwrite = "http://pan.baidu.com/share/qrcode?w=220&h=220&url="+thisURL;
+        var  strwrite = "http://pan.baidu.com/share/qrcode?w=220&h=220&url="+personDetailUrl;
         $('.hottech_wxinh').css('background-image',"url(" + strwrite + ")");
     }
+    hottech_wshare
+    function  subscribeCode(){//商户公众号二维码
+        var  strwrite = "http://pan.baidu.com/share/qrcode?w=220&h=220&url="+subscribeUrl;
+        $('.hottech_wshareh').css('background-image',"url(" + strwrite + ")");
+    }
+
+    $(function() {
+        $("img.lazy").lazyload({effect: "fadeIn"});
+    });
+
+
 </script>

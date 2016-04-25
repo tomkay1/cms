@@ -2,14 +2,17 @@
 package com.huotu.hotcms.web.service.impl.mock;
 
 import com.alibaba.fastjson.JSON;
-import com.huotu.hotcms.service.common.ConfigInfo;
+import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.thymeleaf.service.SiteResolveService;
 import com.huotu.hotcms.service.widget.model.GoodsDetail;
 import com.huotu.hotcms.web.service.ConfigService;
 import com.huotu.hotcms.web.service.GoodsDetailService;
+import com.huotu.huobanplus.common.entity.Merchant;
 import com.huotu.huobanplus.common.entity.Product;
 import com.huotu.huobanplus.sdk.common.repository.GoodsRestRepository;
+import com.huotu.huobanplus.sdk.common.repository.MerchantRestRepository;
 import com.huotu.huobanplus.sdk.common.repository.ProductRestRepository;
-import com.huotu.huobanplus.sdk.common.repository.UserRestRepository;
+import com.huotu.huobanplus.sdk.mall.service.MallInfoService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,10 +43,13 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
     private ProductRestRepository productRestRepository;
 
     @Autowired
-    private ConfigInfo configInfo;
+    private SiteResolveService siteResolveService;
 
     @Autowired
-    private UserRestRepository userRestRepository;
+    private MerchantRestRepository merchantRestRepository;
+
+    @Autowired
+    private MallInfoService mallInfoService;
 
     @Autowired
     private ConfigService configService;
@@ -135,6 +141,39 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
 //        return url;
 
         return null;
+    }
+
+    @Override
+    public String getPersonDetailUrl(HttpServletRequest request){
+        Site site = null;
+        String domain = "";
+        try {
+            site = siteResolveService.getCurrentSite(request);
+            Merchant merchant = merchantRestRepository.getOneByPK(site.getCustomerId());
+            domain = merchant.getSubDomain();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String url = configService.getCustomerUri(domain)+"/UserCenter/Index.aspx?customerid="+site.getCustomerId();
+        return  url;
+    }
+
+    @Override
+    public String getSubscribeUrl(HttpServletRequest request) {
+        Site site = null;
+        try {
+            site = siteResolveService.getCurrentSite(request);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String url = null;
+        try {
+            url = mallInfoService.subscribeUrl(site.getCustomerId());
+        } catch (IOException e) {
+            System.out.println("接口服务不可用");
+            log.error("接口服务不可用");
+        }
+        return  url;
     }
 
 

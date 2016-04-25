@@ -1,26 +1,4 @@
-html,body {
-	height:100%
-}
-html,body,form,input,span,p,img,ul,ol,li,dl,dt,dd {
-	margin:0;
-	padding:0;
-	border:0
-}
-ul,ol {
-	list-style:none
-}
-body {
-	background:#fff;
-	font:12px/1.5 arial,sans-serif;
-	text-align:center;
-	height:3000px;
-}
-a {
-	text-decoration:none
-}
-a:hover {
-	text-decoration:underline
-}
+
 
 #hottech_top,#hottech_wxin,#hottech_wshare,#hottech_wmaps {
 	z-index:2;

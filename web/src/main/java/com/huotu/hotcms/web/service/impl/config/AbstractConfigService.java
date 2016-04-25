@@ -16,7 +16,7 @@ public  abstract class AbstractConfigService implements ConfigService {
 
     @Override
     public String getCustomerUri(String domain) {
-        return "http://"+this.mallDomain+"."+domain;
+        return "http://"+domain+"."+this.mallDomain;
     }
 
     @Override

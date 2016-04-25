@@ -104,7 +104,7 @@ public class BindController {
             e.printStackTrace();
             log.error("接口服务不可用");
         }
-        String url = configService.getCustomerUri(subDomain)+".aspx?customerid="+customerId
+        String url = configService.getCustomerUri(subDomain)+"/Mall/View.aspx?customerid="+customerId
                 +"&productId="+productId+"&goodsId="+goodsId+"&num="+num;
         if (url != null && !"".equals(url)) {
             ServletOutputStream stream = null;

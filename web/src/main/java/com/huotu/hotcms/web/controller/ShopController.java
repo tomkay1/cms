@@ -103,22 +103,23 @@ public class ShopController {
                  userId = Integer.valueOf(cookieUser.getUserId(request));
             }
             Site site = siteResolveService.getCurrentSite(request);
-            String head = pageResourceService.getHeaderTemplateBySite(site);
+            String head = pageResourceService.getHeaderTemplateBySite(site);//公共头部
             if(head == null) {
                 head = "";
             }else{
                 head=widgetTemplateResource.getHtmlHeadStaticResources(environment)+head;
             }
             GoodsDetail goods = goodsDetailService.getGoodsDetail(Integer.valueOf(id),userId);
-//            String url = goodsDetailService.getGoodsWxUrl(request,goods.getId());//微信登录跳转链接
-            String url = "/UserCenter/Index.aspx?customerid={0}";
+            String personDetailUrl = goodsDetailService.getPersonDetailUrl(request);//获取二维码域名（商城个人中心）
+            String subscribeUrl = goodsDetailService.getSubscribeUrl(request);//获取二维码域名（商户公众号）
             Map spec = JSON.parseObject(goods.getSpec(), Map.class);//规格格式化
-
             modelAndView.setViewName("/template/0/goodsDetail.html");
             modelAndView.addObject("goods",goods);
+            modelAndView.addObject("site",site);//为了传递seo
             modelAndView.addObject("products",goods.getProducts());
             modelAndView.addObject("head",head);//公共头部
-//            modelAndView.addObject("url",url);//获取域名
+            modelAndView.addObject("personDetailUrl",personDetailUrl);//获取二维码域名（商城个人中心）
+            modelAndView.addObject("subscribeUrl",subscribeUrl);//获取二维码域名（商户公众号）
             modelAndView.addObject("spec",spec);
 
         }catch (Exception ex){

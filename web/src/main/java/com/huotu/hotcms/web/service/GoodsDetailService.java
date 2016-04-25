@@ -36,4 +36,20 @@ public interface GoodsDetailService {
      * @return
      */
     String getGoodsWxUrl(HttpServletRequest request,Long goodsId);
+
+    /**
+     * 获取PC商城个人中心二维码地址
+     * @param request
+     * @return
+     */
+    String getPersonDetailUrl(HttpServletRequest request) throws Exception;
+
+    /**
+     * 获取商户的二维码地址
+     * @param request
+     * @return
+     */
+    String getSubscribeUrl(HttpServletRequest request) throws Exception;
+
+
 }

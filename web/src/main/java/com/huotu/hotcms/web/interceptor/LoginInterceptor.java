@@ -27,6 +27,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        System.out.print("!212");
 //        if(Arrays.asList(IGNORE_URI).contains(request.getServletPath())) {
 //            return true;
 //        }
@@ -43,6 +44,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        System.out.print("!212");
 //        String servletPath=request.getServletPath();
 //        if(modelAndView!=null) {//加载用户信息
 //            UserInfo userInfo = new UserInfo();

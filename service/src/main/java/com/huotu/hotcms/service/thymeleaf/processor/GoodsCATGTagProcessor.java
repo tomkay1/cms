@@ -26,7 +26,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 public class GoodsCATGTagProcessor extends AbstractAttributeTagProcessor {
 
     public static final String ATTR_NAME = "category";
-    public static final int PRECEDENCE = 1300;
+    public static final int PRECEDENCE = 200;
     private final GoodsCategoryService goodsCategoryService;
 
     public GoodsCATGTagProcessor(IProcessorDialect dialect, String dialectPrefix, GoodsCategoryService goodsCategoryService) {

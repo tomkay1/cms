@@ -3,13 +3,13 @@
 <div class="fn-clear js-hot-module toolhover" th:attr="id=${guid}">
     <div class="mc" style="overflow: visible;margin: 0 auto; min-height: 30px;">
         <div id="service-2014">
-            <div class="w">
+            <div class="w" >
                 <dl>
                     <dt th:text="${moduleName}"></dt>
-                    <dd>
+                    <dd th:style="'background:'+(${pageBackGround});width:100%">
                         <div th:each="row,iterStat:${Rows}">
                             <a rel="nofollow" target="" th:href="${row.url_Rows}" th:text="${row.name_Rows}"
-                               th:style=""></a>
+                               th:style="'color:'+${fontColor}"></a>
                         </div>
                     </dd>
                 </dl>
@@ -57,15 +57,15 @@
             </li>
             <li>
                 <label style="width: 116px;">背景颜色 </label>
-                <input type="text" class="js-hot-color text-normal goodsInput" id="goods_pageBackGround"
-                       th:attr="data-default=${goods_pageBackGround==null?'#ffffff':goods_pageBackGround}" data-input="goods_pageBackGround"/>
-                <input type="hidden" class="js-hot-properties" th:value="${goods_pageBackGround}" name="goods_pageBackGround" style="background:#ffffff"/>
+                <input type="text" class="js-hot-color text-normal goodsInput" id="pageBackGround"
+                       th:attr="data-default=${pageBackGround==null?'#ffffff':pageBackGround}" data-input="pageBackGround"/>
+                <input type="hidden" class="js-hot-properties" th:value="${pageBackGround}" name="pageBackGround" style="background:#ffffff"/>
             </li>
             <li>
                 <label style="width: 116px;">字体颜色 </label>
-                <input type="text" class="js-hot-color text-normal goodsInput" id="goods_fontColor"
-                       th:attr="data-default=${goods_fontColor==null?'#ffffff':goods_fontColor}" data-input="goods_fontColor"/>
-                <input type="hidden" class="js-hot-properties" th:value="${goods_fontColor}" name="goods_fontColor" style="background:#666666"/>
+                <input type="text" class="js-hot-color text-normal goodsInput" id="fontColor"
+                       th:attr="data-default=${fontColor==null?'#ffffff':fontColor}" data-input="fontColor"/>
+                <input type="hidden" class="js-hot-properties" th:value="${fontColor}" name="fontColor" style="background:#666666"/>
             </li>
         </ul>
     </div>

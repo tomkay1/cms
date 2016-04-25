@@ -290,8 +290,13 @@ define(function (require, exports, module) {
 
     function initHomePage(){
         commonUtil.getHomePages(function(data){
-            alert(data.code);
-            window.console.log(data);
+            if(data!=null){
+                if(data.code==200){
+                    $("#js-shop-title").html((data.data.name==null)?"暂无标题":data.data.name);
+                    var time=data.data.createTime.year + "-" + data.data.createTime.monthValue + "-" + data.data.createTime.dayOfMonth + " " + data.data.createTime.hour + ":" + data.data.createTime.minute;
+                    $("#js-shop-time").html(time);
+                }
+            }
         },$("#siteType").val())
     }
     initHomePage();

@@ -92,6 +92,7 @@ public class PagesController {
             Site site=siteRepository.findOne(siteId);
             CustomPages customPages=customPagesService.findHomePages(site);
             if(customPages!=null){
+                customPages.setSite(null);
                 resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), customPages);
             }else{
                 resultView = new ResultView(ResultOptionEnum.FAILE.getCode(), ResultOptionEnum.FAILE.getValue(), customPages);

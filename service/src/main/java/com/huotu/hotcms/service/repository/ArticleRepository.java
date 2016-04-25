@@ -12,10 +12,24 @@ public interface ArticleRepository extends JpaRepository<Article,Long>,JpaSpecif
 
 //    Article findOneByIdGreatThanOrderByIdAsc(Long id);
 
-    @Query(value = "select * from cms_article  where id >?1 order BY id asc LIMIT 1",nativeQuery = true)
+    /**
+     * <p>
+     *     根据指定的文章ID查找下一篇文章
+     * </p>
+     * @param id 指定的文章ID]
+     * @return article
+     * */
+    @Query(value = "select * from cms_article  where id >?1 and categoryId=(select categoryId from cms_article where id=?1) order BY id asc LIMIT 1",nativeQuery = true)
     Article findAllByIdAndNext(Long id);
 
 
-    @Query(value = "select * from cms_article  where id <?1 order BY id desc LIMIT 1",nativeQuery = true)
+    /**
+     * <p>
+     *     根据指定的ID查找上一篇文章
+     * </p>
+     * @param id 指定的文章ID
+     * @return article
+     * */
+    @Query(value = "select * from cms_article  where id <?1 and categoryId=(select categoryId from cms_article where id=?1) order BY id desc LIMIT 1",nativeQuery = true)
     Article findAllByIdAndPreious(Long id);
 }

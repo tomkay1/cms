@@ -10,6 +10,7 @@ package com.huotu.hotcms.service.thymeleaf.templateresource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.service.common.PageErrorType;
+import com.huotu.hotcms.service.common.SiteType;
 import com.huotu.hotcms.service.entity.CustomPages;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.widget.WidgetPage;
@@ -21,6 +22,9 @@ import com.huotu.hotcms.service.util.DesEncryption;
 import com.huotu.hotcms.service.util.StringUtil;
 import com.huotu.hotcms.service.widget.service.PageResolveService;
 import com.huotu.hotcms.service.widget.service.PageResourceService;
+import com.huotu.hotcms.service.widget.service.PageStaticResourceService;
+import com.huotu.hotcms.service.widget.service.impl.OfficialSitePageStaticResourceService;
+import com.huotu.hotcms.service.widget.service.impl.ShopPageStaticResourceService;
 import jdk.nashorn.internal.runtime.regexp.joni.EncodingHelper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -55,57 +59,15 @@ import java.net.URLEncoder;
 public class WidgetTemplateResource implements ITemplateResource {
     private static final Log log = LogFactory.getLog(WidgetTemplateResource.class);
     private String location;//编辑格式如下{siteId}_{pageConfigName}.shtml
-    private final String EDIT_JAVASCRIPT = "<script>seajs.use([\"widgetTooBar\",\"cmsQueue\",\"widgetData\"]);</script>";
-    //    private final String EDIT_JAVASCRIPT="<script>seajs.use([\"widgetTooBar\",\"cmsQueue\"]);</script>";
     private final String version = "1.1";
+
+    private PageStaticResourceService pageStaticResourceService;
 
     private HttpServletRequest request;
 
-    private String WIDGET_RESOURCES = " " +
-            "<link rel=\"stylesheet\" type=\"text/css\" href=\"{PREFIX}/css/mall.base.css?v={version}\"/>\n" +
-            "<link rel=\"stylesheet\" type=\"text/css\" href=\"{PREFIX}/css/mall.set.css?v={version}\"/>\n" +
-            "<link rel=\"stylesheet\" type=\"text/css\" href=\"{PREFIX}/css/mall.layout.css?v={version}\"/>\n" +
-            "<link rel=\"stylesheet\" type=\"text/css\" href=\"{PREFIX}/css/mall.design.css?v={version}\"/>\n" +
-            "<link rel=\"stylesheet\" type=\"text/css\" href=\"{PREFIX}/css/Advanced-search.css?v={version}\"/>";
+    private String WIDGET_RESOURCES="";
 
-
-    private final String EDIT_HTML_BOX = "<!DOCTYPE html><html>\n" +
-            "<head>\n" +
-            "    <title>店铺装修-可视化编辑</title>\n" +
-            "    <meta charset=\"UTF-8\" content=\"text/html\"/>\n" +
-            "    <meta name=\"widget\" content=\"{config_widgetJson}\"/>\n" +
-            "    <meta name=\"exists\" content=\"{config_existsPage}\"/>\n" +
-            " <link  href=\"/assets/css/main.css\"  type=\"text/css\" rel=\"stylesheet\"/>\n%s" +
-            " <link href=\"/assets/libs/layer/skin/layer.css\" rel=\"stylesheet\"/>" +
-            "    <script src=\"/assets/seajs/sea.js\"></script>\n" +
-            "    <script src=\"/assets/seajs/config.js\"></script>\n" +
-            "</head>\n" +
-            "<body th:style=\"'background-color:'+${pageBackGround}+'; background: url('+${pageBackImage}+')'+((${pageBackRepeat}=='no-repeat')?' no-repeat':(' '+${pageHorizontalDistance}+${pageHorizontalUnit}+' '+${pageVerticalDistance}+${pageVerticalUnit}+' '+${pageBackRepeat}))\">" +
-            "%s" +
-            "<div class=\"layout-area HOT-layout-add js-layout js-layout-add\" id=\"insertToLayout\">\n" +
-            "    <div class=\"layout\">\n" +
-            "      <a href=\"javascript:;\" class=\"link-add-layout\" id=\"addLayout\">添加布局</a>\n" +
-            "    </div>\n" +
-            "  </div>" +
-            "%s" +
-            "</body>" +
-            "</html>";
-
-    private String BROWSE_RESOURCES = "<link rel=\"stylesheet\" type=\"text/css\" href=\"{PREFIX}/css/mall.global.css?v={version}\"/>";
-
-    private String BROWSE_HTML_BOX = "<!DOCTYPE html><html>\n" +
-            "<head>\n" +
-            "    <title>商城首页</title>\n" +
-            "    <meta charset=\"UTF-8\" content=\"text/html\"/>\n" +
-            "    <script src=\"{contentPath}/assets/seajs/sea.js\"></script>\n" +
-            "    <script src=\"{contentPath}/assets/seajs/config.js\"></script>\n" +
-            "%s\n" +
-            "</head>" +
-            "<body th:style=\"'background-color:'+${pageBackGround}+'; background: url('+${pageBackImage}+')'+((${pageBackRepeat}=='no-repeat')?' no-repeat':(' '+${pageHorizontalDistance}+${pageHorizontalUnit}+' '+${pageVerticalDistance}+${pageVerticalUnit}+' '+${pageBackRepeat}))\">" +
-            "%s" +
-            "<script>seajs.use([\"main\"]);</script>"+
-            "</body>" +
-            "</html>";
+    private String BROWSE_RESOURCES="";
 
     private PageResourceService pageResourceService;
 
@@ -133,7 +95,6 @@ public class WidgetTemplateResource implements ITemplateResource {
     public WidgetTemplateResource(final ApplicationContext applicationContext, final String location, final String characterEncoding) {
         super();
         request=((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        this.BROWSE_HTML_BOX=this.BROWSE_HTML_BOX.replace("{contentPath}",request.getContextPath());
         URI_PREFIX = this.getURI_PREFIX(applicationContext);
         this.applicationContext=applicationContext;
         Validate.notNull(applicationContext, "Application Context cannot be null");
@@ -146,8 +107,16 @@ public class WidgetTemplateResource implements ITemplateResource {
         failPageService = (FailPageServiceImpl) applicationContext.getBean("failPageServiceImpl");
         this.location = location;
         this.characterEncoding = characterEncoding;
-        this.WIDGET_RESOURCES = this.WIDGET_RESOURCES.replace("{PREFIX}", this.URI_PREFIX);
-        this.WIDGET_RESOURCES = this.WIDGET_RESOURCES.replace("{version}", this.version);
+        Site site=siteService.getSite(this.getSiteId());
+        if(site!=null){
+           SiteType siteType=site.getSiteType();
+            if(siteType==SiteType.SITE_PC_WEBSITE){
+                this.pageStaticResourceService=(OfficialSitePageStaticResourceService) applicationContext.getBean("officialSitePageStaticResourceService");
+            }else{
+                this.pageStaticResourceService=(ShopPageStaticResourceService) applicationContext.getBean("shopPageStaticResourceService");
+            }
+        }
+        this.WIDGET_RESOURCES=pageStaticResourceService.getWidgetResources(this.URI_PREFIX,this.version);
     }
 
     /**
@@ -158,6 +127,12 @@ public class WidgetTemplateResource implements ITemplateResource {
         return getURI_PREFIXByEnvironment(applicationContext.getEnvironment());
     }
 
+    /**
+     * <p>
+     *     获得组件静态资源根Url
+     * </p>
+     * @param environment  环境
+     * */
     private String getURI_PREFIXByEnvironment(Environment environment){
         String uriPrefix = environment.getProperty("cms.resourcesPrefix", (String) null);
         if (uriPrefix == null) {
@@ -184,6 +159,11 @@ public class WidgetTemplateResource implements ITemplateResource {
         return true;
     }
 
+    /**
+     * <p>
+     *     获得站点ID
+     * </p>
+     * */
     private Long getSiteId() {
         if (this.location != null) {
             if (this.location.indexOf("_") > 0) {
@@ -193,6 +173,11 @@ public class WidgetTemplateResource implements ITemplateResource {
         return null;
     }
 
+    /**
+     * <p>
+     *     判断是否浏览
+     * </p>
+     * */
     private Boolean isBrowse() {
         if (this.location != null) {
             return this.location.contains(".cshtml");
@@ -208,6 +193,11 @@ public class WidgetTemplateResource implements ITemplateResource {
         return configName + ".xml";
     }
 
+    /**
+     * <p>
+     *     获得xml配置文件名称
+     * </p>
+     * */
     private String getPageConfigName() {
         String suffix = "";
         if (isBrowse()) {
@@ -221,6 +211,12 @@ public class WidgetTemplateResource implements ITemplateResource {
         return null;
     }
 
+    /**
+     * <p>
+     *     判断该页面Xml文件是否存在
+     * </p>
+     * @param pageConfigName xml配置文件名称
+     * */
     private Boolean isExists(String pageConfigName) {
         try {
             CustomPages customPages = customPagesService.getCustomPages(Long.valueOf(pageConfigName));
@@ -254,9 +250,9 @@ public class WidgetTemplateResource implements ITemplateResource {
                 }
             }
         }
-        this.BROWSE_RESOURCES = this.BROWSE_RESOURCES.replace("{PREFIX}", this.URI_PREFIX);
-        this.BROWSE_RESOURCES = this.BROWSE_RESOURCES.replace("{version}", this.version);
-        String browseTemplate=pageResourceService.getHeaderTemplate(this.BROWSE_HTML_BOX,widgetPage,site);
+        this.BROWSE_RESOURCES=pageStaticResourceService.getBrowseResources(this.URI_PREFIX,this.version);
+        String browseHtmlBox=pageStaticResourceService.getBrowseHtmlBox(request.getContextPath());
+        String browseTemplate=pageResourceService.getHeaderTemplate(browseHtmlBox,widgetPage,site);
         htmlTemplate = String.format(browseTemplate, this.WIDGET_RESOURCES + BROWSE_RESOURCES, htmlTemplate);
         return htmlTemplate;
     }
@@ -264,8 +260,8 @@ public class WidgetTemplateResource implements ITemplateResource {
     private String getEditTemplate(WidgetPage widgetPage, String pageConfigName, Site site) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         String htmlTemplate = pageResourceService.getHtmlTemplateByWidgetPage(widgetPage, true, site);
-        String editTemplate=pageResourceService.getHeaderTemplate(this.EDIT_HTML_BOX,widgetPage,site);
-        htmlTemplate = String.format(editTemplate, this.WIDGET_RESOURCES, htmlTemplate, EDIT_JAVASCRIPT);
+        String editTemplate=pageResourceService.getHeaderTemplate(pageStaticResourceService.getEditHtmlBox(),widgetPage,site);
+        htmlTemplate = String.format(editTemplate, this.WIDGET_RESOURCES, htmlTemplate, this.pageStaticResourceService.getEditScript());
         htmlTemplate = htmlTemplate.replace("{config_existsPage}", (isExists(pageConfigName) ? pageConfigName : "0"));
         String widgetJson = mapper.writeValueAsString(widgetPage);
         htmlTemplate = htmlTemplate.replace("{config_widgetJson}", DesEncryption.encryptData(widgetJson));
@@ -308,7 +304,6 @@ public class WidgetTemplateResource implements ITemplateResource {
 
     @Override
     public ITemplateResource relative(final String relativeLocation) throws IOException {
-//        return new WidgetTemplateResource(this.resource.createRelative(relativeLocation), this.characterEncoding);
         return null;
     }
 

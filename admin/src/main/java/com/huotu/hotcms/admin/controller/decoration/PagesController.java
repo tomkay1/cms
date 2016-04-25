@@ -3,12 +3,10 @@ package com.huotu.hotcms.admin.controller.decoration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.admin.util.web.CookieUser;
 import com.huotu.hotcms.service.common.SiteType;
-import com.huotu.hotcms.service.entity.Category;
-import com.huotu.hotcms.service.entity.CustomPages;
-import com.huotu.hotcms.service.entity.Host;
-import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.entity.*;
 import com.huotu.hotcms.service.model.Result;
 import com.huotu.hotcms.service.model.widget.WidgetPage;
+import com.huotu.hotcms.service.repository.ArticleRepository;
 import com.huotu.hotcms.service.repository.CustomPagesRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.service.CustomPagesService;
@@ -65,10 +63,17 @@ public class PagesController {
     @Autowired
     private CustomPagesService customPagesService;
 
+    @Autowired
+    private ArticleRepository articleRepository;
+
     @RequestMapping("/list")
     public ModelAndView pageList(HttpServletRequest request, @RequestParam("customerid") Integer customerid,String scope) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         try {
+//            Long id=new Long(60);
+//            Article article= articleRepository.findAllByIdAndNext(id);
+//            Article article1=articleRepository.findAllByIdAndPreious(id);
+
             List<Site> siteList=null;
             if(scope.equals("shop")){
                 siteList = siteRepository.findByCustomerIdAndDeletedAndPersonaliseAndSiteTypeOrderBySiteIdDesc(customerid, false, true,SiteType.SITE_PC_SHOP);

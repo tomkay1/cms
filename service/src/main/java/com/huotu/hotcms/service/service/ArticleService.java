@@ -45,17 +45,29 @@ public interface ArticleService {
     Page<Article> getArticleList(PageableForeachParam articleForeachParam) throws Exception;
 
     /**
-     * 文章标签解析时,获取当页文章内容
+     * <p>
+     *    根据articleCurrentParam 获得文章对象
+     * </p>
+     * @param articleCurrentParam
+     * @return article
      */
     Article getArticleByParam(ArticleCurrentParam articleCurrentParam);
 
     /**
-     * 文章标签解析时,下一页
+     * <p>
+     *     根据articleNextParam对象获得 文章对象（下一篇文章）
+     * </p>
+     * @param articleNextParam
+     * @return article
      */
     Article getArticleNextByParam(ArticleNextParam articleNextParam);
 
     /**
-     * 文章标签解析时,上一页
+     * <p>
+     *     根据ArticlePreviousParam对象获得上一篇文章
+     * </p>
+     * @param articlePreviousParam
+     * @return article
      */
     Article getArticlePreiousByParam(ArticlePreviousParam articlePreviousParam);
 }

@@ -1,14 +1,15 @@
 <!--service.html-->
 <!--浏览试图（文字导航组合）-->
 <div class="fn-clear js-hot-module toolhover" th:attr="id=${guid}">
-    <div class="mc" style="overflow: visible;margin: 0 auto;">
+    <div class="mc" style="overflow: visible;margin: 0 auto; min-height: 30px;">
         <div id="service-2014">
             <div class="w">
                 <dl>
                     <dt th:text="${moduleName}"></dt>
                     <dd>
                         <div th:each="row,iterStat:${Rows}">
-                            <a rel="nofollow" target="" th:href="${row.url_Rows}" th:text="${row.name_Rows}"></a>
+                            <a rel="nofollow" target="" th:href="${row.url_Rows}" th:text="${row.name_Rows}"
+                               th:style=""></a>
                         </div>
                     </dd>
                 </dl>
@@ -53,6 +54,18 @@
                 <label>模块名称 </label>
                 <input type="text" maxlength="10" class="text-short" name="moduleName"
                        th:value="${moduleName==null?'模块名称':moduleName}"/>
+            </li>
+            <li>
+                <label style="width: 116px;">背景颜色 </label>
+                <input type="text" class="js-hot-color text-normal goodsInput" id="goods_pageBackGround"
+                       th:attr="data-default=${goods_pageBackGround==null?'#ffffff':goods_pageBackGround}" data-input="goods_pageBackGround"/>
+                <input type="hidden" class="js-hot-properties" th:value="${goods_pageBackGround}" name="goods_pageBackGround" style="background:#ffffff"/>
+            </li>
+            <li>
+                <label style="width: 116px;">字体颜色 </label>
+                <input type="text" class="js-hot-color text-normal goodsInput" id="goods_fontColor"
+                       th:attr="data-default=${goods_fontColor==null?'#ffffff':goods_fontColor}" data-input="goods_fontColor"/>
+                <input type="hidden" class="js-hot-properties" th:value="${goods_fontColor}" name="goods_fontColor" style="background:#666666"/>
             </li>
         </ul>
     </div>
@@ -113,7 +126,13 @@
             </td>
         </tr>
     </script>
+    <script src="../libs/JColor/jquery.hotColor.js" type="application/javascript"></script>
+    <script src="../libs/JColor/spectrum.js" type="application/javascript"></script>
+    <link href="../libs/JColor/spectrum.css" rel="stylesheet"/>
     <script type="application/javascript">
+        $(function () {
+            hotColor();
+        });
         var navModule = {
             addNav: function () {
                 var obj = $("#js-nav-add");

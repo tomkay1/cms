@@ -1,6 +1,206 @@
 <!--advanced-search.html-->
 <!--浏览试图-->
--
+<div th:class="'fn-clear js-hot-module js-advance-search ' + ${templateClass==null?'HOTSearchList-414060':templateClass} + ' toolhover'"
+     th:attr="id=${guid}">
+    <form th:class="'js-advance-search js-form-' + ${guid}">
+        <div class="mc" style="overflow: visible;">
+            <div class="HOT-module">
+                <div class="HOTimension">
+                    <div class="HOTModulesTitle">
+                        <em></em> 找到[[${request.totalRecords}]]件相关商品
+                    </div>
+                    <div class="HOTimensionSelect" style="height:auto;">
+                        <!--<dl>
+                            <dt>品牌：</dt>
+                            <dd>
+                                <a href="" class="num-five">
+                                    L'ALPINA
+                                </a>
+                            </dd>
+                        </dl>-->
+                        <dl class="js-advance-search-price">
+                            <dt>价格：</dt>
+                            <dd th:attr="guid=${guid}">
+                                <a href="javascript:void(0)" minPrice="0" maxPrice="69" th:class="(${request.get('minPrice')}!=null and ${request.get('minPrice')}=='0'
+                            and ${request.get('maxPrice')}!=null and ${request.get('maxPrice')} == '69')?'on'">
+                                    0-69<i></i>
+                                </a>
+                                <a href="javascript:void(0)" minPrice="70" maxPrice="199" th:class="(${request.get('minPrice')}!=null and ${request.get('minPrice')}=='70'
+                            and ${request.get('maxPrice')}!=null and ${request.get('maxPrice')} == '199')?'on'">
+                                    70-199<i></i>
+                                </a>
+                                <a href="javascript:void(0)" minPrice="200" maxPrice="299" th:class="(${request.get('minPrice')}!=null and ${request.get('minPrice')}=='200'
+                            and ${request.get('maxPrice')}!=null and ${request.get('maxPrice')} == '299')?'on'">
+                                    200-299<i></i>
+                                </a>
+                                <a href="javascript:void(0)" minPrice="300" maxPrice="399" th:class="(${request.get('minPrice')}!=null and ${request.get('minPrice')}=='300'
+                            and ${request.get('maxPrice')}!=null and ${request.get('maxPrice')} == '399')?'on'">
+                                    300-399<i></i>
+                                </a>
+                                <a href="javascript:void(0)" minPrice="400" maxPrice="499" th:class="(${request.get('minPrice')}!=null and ${request.get('minPrice')}=='400'
+                            and ${request.get('maxPrice')}!=null and ${request.get('maxPrice')} == '499')?'on'">
+                                    400-499<i></i>
+                                </a>
+                            </dd>
+                            <dd class="sl-price">
+                                <input class="js-minPrice input-txt" name="minPrice"
+                                       th:value="${request.get('minPrice')}!=null?${request.get('minPrice')}">
+                                <em>-</em>
+                                <input class="js-maxPrice input-txt" name="maxPrice"
+                                       th:value="${request.get('maxPrice')}!=null?${request.get('maxPrice')}">
+                                <input type="submit" class="btn btn-default" value="确定" id="price-search"/>
+                            </dd>
+                        </dl>
+                        <dl class="js-top-category">
+                            <dt>分类：</dt>
+                            <dd th:attr="guid=${guid}">
+                                <input class="js-goodsCatId" type="hidden" name="goodsCatId"
+                                       th:value="${request.get('goodsCatId')}!=null?${request.get('goodsCatId')}"/>
+                                <span data-widget-category="category">
+                                    <a href="javascript:void(0)"
+                                       data-th-utext="${category.name}+'<i></i>'" data-th-attr="catId=${category.id}"
+                                       data-th-class="'js-'+${category.id}+' '+((${request.get('goodsCatId')}!=null and ${request.get('goodsCatId')}==${category.id})?'on':'')"><i></i>
+                                    </a>
+                                </span>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                <!--<div class="HOTAdvanced">
+                    <div class="HOTMoreOptions HOTClose">
+                        <div>更多选项<b></b></div>
+                    </div>
+                </div>-->
+                <div class="HOTSearchListArea">
+                    <div class="HOTTab" th:attr="guid=${guid}">
+                        <input type="hidden" name="sort" class="js-sort"
+                               th:value="${request.get('sort')} != null?${request.get('sort')}:'salesCount,desc'"
+                               sortColumn="">
+                        <a th:class="${request.get('sort')} == null or ${#strings.indexOf(request.get('sort'),'salesCount')} > -1?'current':''"
+                           href="javascript:void(0)" sortColumn="salesCount"
+                           th:attr="sortDirect=(${request.get('sort')} == null?'desc':(${#strings.indexOf(request.get('sort'),'salesCount')}>-1?${#strings.substringAfter(request.get('sort'),'salesCount,')}))">
+                            销量
+                        </a>
+                        <a th:class="${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'price')} > -1?'current':''"
+                           href="javascript:void(0)" sortColumn="price"
+                           th:attr="sortDirect=(${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'price')} > -1?${#strings.substringAfter(request.get('sort'),'price,')})">
+                            价格
+                        </a>
+                        <a th:class="${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'autoMarketDate')} > -1?'current':''"
+                           href="javascript:void(0)" sortColumn="autoMarketDate"
+                           th:attr="sortDirect=(${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'autoMarketDate')} > -1?${#strings.substringAfter(request.get('sort'),'autoMarketDate,')})">
+                            上架时间
+                        </a>
+                    </div>
+                    <div class="HOTModulesTitle">商品列表</div>
+                    <ul>
+                        <li class="HOTSubObHOTect" data-widget-page="goods" th:attr="data-param-pagesize=${pageSize}">
+                            <a class="HOTBtnAttention" href="javascript:void(0)">
+                                + 加关注
+                            </a>
+                            <input value="关注" class="btn-coll" type="button">
+                            <div class="HOTItem">
+                                <div class="HOTPic">
+                                    <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="">
+                                        <img data-th-src="${goods.smallPic}" class="err-product"  width="220" height="220">
+                                    </a>
+                                </div>
+                                <div class="HOTScroll">
+                                    <a class="HOTScrollBtn HOTScrollPrev" th:href="${request.rootUri}+'/shop/product/'+${goods.id}">
+                                    </a>
+                                    <div class="HOTScrollWrap">
+                                        <ul>
+                                            <li class="HOTCurrent">
+                                                <a title="" class="" th:href="${request.rootUri}+'/shop/product/'+${goods.id}">
+                                                    <img data-th-src="${goods.smallPic}" class="err-product">
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <a class="HOTScrollBtn HOTScrollNext" th:href="${request.rootUri}+'shop/product/'+${goods.id}">
+                                        &gt;
+                                    </a>
+                                </div>
+                                <div class="HOTGoodsInfo">
+                                    <div class="HOTBtnArea" th:if="${templateClass=='HOTSearchList-432763'}">
+                                        <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" class="HOT-cart">
+                                            立即购买
+                                        </a>
+                                    </div>
+                                    <div class="HOTesc">
+                                        <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target=""
+                                           th:text="${goods.title}">
+                                            意大利袋鼠男士内裤 男 经典款棉平角裤内裤男 4条礼盒装（L'ALPINA） XXXL
+                                        </a>
+                                    </div>
+                                    <div class="HOTPrice">
+                                        <div class="HOTPrice">
+                                            <span class="HOTRmb">￥</span>
+                                            <span class="HOTNum" HOTshop="price" HOTprice="1313707977">[[${goods.price}]]</span>
+                                        </div>
+                                    </div>
+                                    <div class="HOTExtra">
+                                        <!--<span class="star"><span class="star-white"><span class="star-yellow h5"></span></span></span>-->
+                                        <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="">
+                                            销量<em>[[${goods.sales}]]</em>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="HOTPage" th:attr="guid=${guid}">
+                        <em>共[[${request.totalRecords}]]条记录 当前[[${request.currentPage}]]/[[${request.totalPages}]]页</em>
+                        <a  pageNo=1
+                           href="javascript:void(0)">首页</a>
+                        <a th:if="${request.hasPrevPage}" th:attr="pageNo=${request.currentPage-1}"
+                           href="javascript:void(0)">上一页</a>
+                        <a href="javascript:void(0)" th:each="pageNo:${request.pageNos}"
+                           th:class="${request.currentPage}==*{pageNo}?'current'" th:text="*{pageNo}"
+                           th:attr="pageNo=*{pageNo}"
+                        ></a>
+                        <a th:if="${request.hasNextPage}" href="javascript:void(0)"
+                           th:attr="pageNo=${request.currentPage+1}">下一页</a>
+                        <a th:attr="pageNo=${request.totalPages}"
+                            href="javascript:void(0)">尾页</a>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第
+                        <input name="page" class="current-index input-small"
+                               style="text-align:center;width: 50px;margin: 0px 4px;" type="number"
+                               th:value="${request.currentPage}">
+                        页&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="javascript:void(0)">跳转</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="module-toolbal-container ui-draggable" th:if="${edit}">
+            <div class="module-assist" style="padding-top: 32px;"></div>
+            <div class="module-toolbal-container ui-draggable" th:if="${edit}">
+                <div class="module-assist" style="padding-top: 32px;"></div>
+                <div class="module-toolbar J-module-toolbar" style="height:360px; width:100%;">
+                    <h4 style="cursor: move;">
+                <span class="module-extra">
+                    <a class="icon-del js-module-delete" href="javascript:void(0)"
+                       th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+                    <a class="icon-up js-module-up" href="javascript:void(0)"
+                       th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+                    <a class="icon-down js-module-down" href="javascript:void(0)"
+                       th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+                </span>
+                        <span class="module-name J-module-name">商品搜索结果</span>
+                    <span class="J-module-set">
+                        <a href="javascript:void(0)" class="HOT-module-set-data js-widget-edit"
+                           th:attr="data-editurl=${widgetEditUri},data-id=${id},data-for=${guid},data-url=${widgetUri},data-layoutid=${layoutId},data-position=${layoutPosition}">
+                            编辑
+                        </a>
+                    </span>
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!--advanced-search.html-->
 <!--编辑视图-->
 <div id="module_area">
     <style>
@@ -18,10 +218,9 @@
                 </select>
             </li>
             <li>
-                <label style="width: 180px;">每页显示商品数量 </label>
-                <input type="text" th:value="${pagesize}" class="text-normal goodsInput" name="pagesize" maxlength="256">
+                <label style="width: 116px;">每页显示商品数量 </label>
+                &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" th:value="${pageSize}" class="text-normal goodsInput" name="pageSize" maxlength="256">
             </li>
         </ul>
-
     </div>
 </div>

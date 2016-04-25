@@ -5,7 +5,7 @@
         <div class="sh-brand-wrap">
             <div class="sh-brand">
                 <a th:href="${request.rootUri}" class="brand-link">
-                    <img th:src="${pageBackImage==null or pageBackImage == ''}?'/assets/img/widget/shop_brand.jpg':${pageBackImage}"/>
+                    <img th:src="${pageBackImage==null or pageBackImage == ''}?'${bgcolor}:${pageBackImage}"/>
                 </a>
                 <div class="shop-logo-box">
                     <a th:href="${request.rootUri}" class="shop-logo-link">
@@ -15,7 +15,7 @@
                 </div>
                 <div class="m-search for-black-bg">
                     <form class="m-form" th:action="${request.rootUri}+'/shop/search'">
-                        <input type="text" class="m-kw" value="" maxlength="50" size="50" th:value="${request.get('keyword')}!=null?${request.get('keyword')}:${defaultKewWord}" name="keyword"/>
+                        <input type="text" class="m-kw" value="" th:maxlength="${maxlength}" size="50" th:value="${request.get('keyword')}!=null?${request.get('keyword')}:${defaultKewWord}" name="keyword"/>
                         <input type="submit" value="搜索" class="m-submit"
                                id="in-shop-search"/>
                     </form>
@@ -71,7 +71,7 @@
             </li>
             <li>
                 <label>背景颜色 </label>
-                <input type="text" class="js-hot-color input-normal" id="bgcolor"
+                <input type="text" class="js-hot-color  input-normal" id="bgcolor"
                        th:attr="data-default=${bgcolor==null?'#FFFFFF':bgcolor}" data-default="#FFFFFF" data-input="bgcolor"/>
                 <input type="hidden" class="js-hot-properties" th:value="${bgcolor}" name="bgcolor" style="background: #ffffff;"/>
             </li>
@@ -93,6 +93,9 @@
     </div>
     <script src="../libs/layer/layer.js" type="application/javascript"></script>
     <script type="application/javascript">
+        $(function () {
+            hotColor();
+        });
         /**
          * @brief 获得页面参数
          * @param 参数名

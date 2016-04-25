@@ -1,15 +1,17 @@
 <!--search.html-->
 <!--浏览视图（搜索组件）-->
 <!--43971-->
-<div th:class="'fn-clear js-hot-module '+(${templateClass}==null?'HOTSearch-43971':${templateClass})+' toolhover'"  th:attr="id=${guid}">
-    <div class="mc" style="overflow: visible;">
-        <div class="searchArea">
-            <div class="HOTSearchArea">
-                <div class="HOTSearchInput">
+<div th:class="'fn-clear js-hot-module '+(${templateClass}==null?'HOTSearch-43971':${templateClass})+' toolhover'"
+     th:attr="id=${guid}">
+    <div class="mc" th:style="'overflow: visible;background: '+${bgcolor}">
+        <div class="searchArea" th:style="'text-align:'+${alignment}">
+            <div class="HOTSearchArea" style="display: inline-block">
+                <div class="HOTSearchInput" >
                     <form th:action="${request.rootUri}+'/shop/search'">
-                        <input type="text" id="" onkeydown="" onfocus="" placeholder="请输入关键词" class="inputMiddle"
-                               th:value="${request.get('keyword')}!=null?${request.get('keyword')}:${defaultKewWord}" name="keyword"
-                               maxlength="20" size="20" th:attr="maxlength=(${maxlength}==null?20:${maxlength})"/>
+                        <input type="text" th:style="'width:'+${maxWidth}+'px'" placeholder="请输入关键词" class="inputMiddle"
+                               th:value="${request.get('keyword')}!=null?${request.get('keyword')}:${defaultKewWord}"
+                               name="keyword"
+                               maxlength="20" size="20" th:attr="maxlength=(${maxlength}==null?20:${maxlength}),"/>
                         <button type="submit" onclick="" d="" clstag="">搜索<s></s></button>
                     </form>
                 </div>
@@ -21,9 +23,12 @@
         <div class="module-toolbar HOT-module-toolbar" style="height:95px; width:100%;">
             <h4 style="cursor: move;">
         <span class="module-extra">
-            <a class="icon-del js-module-delete" href="javascript:void(0)" th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
-            <a class="icon-up js-module-up" href="javascript:void(0)" th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
-            <a class="icon-down js-module-down" href="javascript:void(0)" th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+            <a class="icon-del js-module-delete" href="javascript:void(0)"
+               th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+            <a class="icon-up js-module-up" href="javascript:void(0)"
+               th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+            <a class="icon-down js-module-down" href="javascript:void(0)"
+               th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
         </span>
                 <span class="module-name HOT-module-name">店内搜索</span>
         <span class="HOT-module-set">
@@ -48,7 +53,9 @@
             <li>
                 <label>选择模版 </label>
                 <select name="templateClass" class="select-short" id="templateClass">
-                    <option value="HOTSearch-43971" th:selected="${templateClass== null or templateClass=='HOTSearch-43971'}">模版一</option>
+                    <option value="HOTSearch-43971"
+                            th:selected="${templateClass== null or templateClass=='HOTSearch-43971'}">模版一
+                    </option>
                     <option value="HOTSearch-400300" th:selected="${templateClass=='HOTSearch-400300'}">模版二</option>
                     <option value="HOTSearch-400301" th:selected="${templateClass=='HOTSearch-400301'}">模版三</option>
                 </select>
@@ -60,26 +67,42 @@
             </li>
             <li>
                 <label>最长搜索字数</label>
-                <input type="number" class="text-short" name="maxlength" th:value="${maxlength==null}?'20':${maxlength}"/>
+                <input type="number" class="text-short" name="maxlength"
+                       th:value="${maxlength==null}?'20':${maxlength}"/>
             </li>
             <li>
                 <label>宽度</label>
-                <input type="number" class="text-short" name="maxWidth" th:value="${maxWidth==null}?'20':${maxWidth}"/>
+                <input type="number" class="text-short" name="maxWidth"
+                       th:value="${maxWidth==null}?'20':${maxWidth}"/>
             </li>
             <li>
                 <label>背景颜色 </label>
                 <input type="text" class="js-hot-color input-normal" id="bgcolor"
-                       th:attr="data-default=${bgcolor==null?'#FFFFFF':bgcolor}" data-default="#FFFFFF" data-input="bgcolor"/>
-                <input type="hidden" class="js-hot-properties" th:value="${bgcolor}" name="bgcolor" style="background: #ffffff;"/>
+                       th:attr="data-default=${bgcolor==null?'#FFFFFF':bgcolor}" data-default="#FFFFFF"
+                       data-input="bgcolor"/>
+                <input type="hidden" class="js-hot-properties" th:value="${bgcolor}" name="bgcolor"
+                       style="background: #ffffff;"/>
             </li>
             <li>
                 <label>对齐方式</label>
-                <select class="select-short" name="alignment">
-                    <option value="alignment-left">左对齐</option>
-                    <option value="alignment-center">居中对齐</option>
-                    <option value="alignment-right">右对齐</option>
+                <select class="select-short" name="alignment"
+                        th:attr="data-default=${alignment==null?'left':alignment}"
+                        data-default="left" data-input="alignment"
+                        >
+                    <option value="left" selected="selected" th:selected="${alignment==null or alignment=='left'}">左对齐
+                    </option>
+                    <option value="center" th:selected="${alignment=='center'}">居中对齐</option>
+                    <option value="right" th:selected="${alignment=='right'}">右对齐</option>
                 </select>
             </li>
         </ul>
     </div>
 </div>
+<script src="../libs/JColor/jquery.hotColor.js" type="application/javascript"></script>
+<script src="../libs/JColor/spectrum.js" type="application/javascript"></script>
+<link href="../libs/JColor/spectrum.css" rel="stylesheet"/>
+<script type="text/javascript">
+    $(function () {
+        hotColor();
+    })
+</script>

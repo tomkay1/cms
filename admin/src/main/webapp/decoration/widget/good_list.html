@@ -1,7 +1,7 @@
 <!--浏览试图-->
 <!--400152-->
 <div th:if="${list_template}==null or ${list_template=='goods_style1'}"
-     th:class="fn-clear js-hot-module jGoodsList-400152 toolhover js-form-${guid}" th:attr="id=${guid}">
+     th:class="'fn-clear js-hot-module jGoodsList-400152 toolhover js-form-'+${guid}" th:attr="id=${guid}">
     <div class="mc" style="overflow: visible;">
         <form th:class="'js-good-list js-form-'+${guid}">
             <input type="hidden" name="sort"
@@ -70,6 +70,7 @@
             </ul>
             <div class="jPage" th:attr="guid=${guid}">
                 <em>共[[${request.totalRecords}]]条记录 当前[[${request.currentPage}]]/[[${request.totalPages}]]页</em>
+                <a href="javascript:void(0)" pageNo=1>首页</a>
                 <a th:if="${request.hasPrevPage}" th:attr="pageNo=${request.currentPage-1}"
                    href="javascript:void(0)">上一页</a>
                 <a href="javascript:void(0)" th:each="pageNo:${request.pageNos}"
@@ -78,8 +79,7 @@
                 ></a>
                 <a th:if="${request.hasNextPage}" href="javascript:void(0)"
                    th:attr="pageNo=${request.currentPage+1}">下一页</a>
-                <a href="javascript:void(0)"
-                   th:attr="pageNo=${totalPages}">尾页</a>
+                <a href="javascript:void(0)" th:attr="pageNo=${request.totalPages}">尾页</a>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 第
                 <input name="page" class="current-index input-small"
@@ -190,6 +190,7 @@
             </ul>
             <div class="jPage" th:attr="guid=${guid}">
                 <em>共[[${request.totalRecords}]]条记录 当前[[${request.currentPage}]]/[[${request.totalPages}]]页</em>
+                <a pageNo=1 href="javascript:void(0)">首页</a>
                 <a th:if="${request.hasPrevPage}" th:attr="pageNo=${request.currentPage-1}"
                    href="javascript:void(0)">上一页</a>
                 <a href="javascript:void(0)" th:each="pageNo:${request.pageNos}"
@@ -198,6 +199,8 @@
                 ></a>
                 <a th:if="${request.hasNextPage}" href="javascript:void(0)"
                    th:attr="pageNo=${request.currentPage+1}">下一页</a>
+                <a th:attr="pageNo=${request.totalPages}"
+                   href="javascript:void(0)">尾页</a>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第
                 <input name="page" class="current-index input-small"
                        style="text-align:center;width: 50px;margin: 0px 4px;" type="number"
@@ -264,13 +267,13 @@
                     <li data-widget-page="goods" th:attr="data-param-pagesize=${pageSize}">
                         <div class="jItem">
                             <div class="jPic">
-                                <a th:href="${request.rootUrl}+'/shop/product/'+${goods.id}">
+                                <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}">
                                     <img data-th-src="${goods.smallPic}" data-th-attr="alt=${goods.title}"  width="160" height="160">
                                 </a>
                             </div>
                             <div class="jGoodsInfo">
                                 <div class="HOTesc">
-                                    <a th:href="${request.rootUrl}+'/shop/product/'+${goods.id}">
+                                    <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}">
                                         [[${goods.title}]]
                                     </a>
                                     <span class="jSlogan"></span>
@@ -296,7 +299,7 @@
                                 <p style="height: 7px;"></p>
 
                                 <div class="jBtnArea">
-                                    <a th:href="${request.rootUrl}+'/shop/product/'+${goods.id}" class="addToCart"
+                                    <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" class="addToCart"
                                        rel="nofollow">
                                         购买
                                     </a>
@@ -308,6 +311,8 @@
                 </ul>
                 <div class="jPage" th:attr="guid=${guid}">
                     <em>共[[${request.totalRecords}]]条记录 当前[[${request.currentPage}]]/[[${request.totalPages}]]页</em>
+                    <a href="javascript:void(0)"
+                       pageNo=1>首页</a>
                     <a th:if="${request.hasPrevPage}" th:attr="pageNo=${request.currentPage-1}"
                        href="javascript:void(0)">上一页</a>
                     <a href="javascript:void(0)" th:each="pageNo:${request.pageNos}"
@@ -316,6 +321,8 @@
                     ></a>
                     <a th:if="${request.hasNextPage}" href="javascript:void(0)"
                        th:attr="pageNo=${request.currentPage+1}">下一页</a>
+                    <a href="javascript:void(0)"
+                       th:attr="pageNo=${request.totalPages}">尾页</a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第
                     <input name="page" class="current-index input-small"
                            style="text-align:center;width: 50px;margin: 0px 4px;" type="number"
@@ -380,42 +387,38 @@
             </li>
             <li>
                 <label style="width: 116px;">每页显示商品数量 </label>
-                <input type="text" th:value="${pagesize}" class="text-normal goodsInput" name="pagesize" maxlength="256">
+                <input type="text" th:value="${pageSize}" class="text-normal goodsInput" name="pageSize" maxlength="256">
             </li>
             <li>
                 <label style="width: 116px;">背景颜色 </label>
                 <input type="text" class="js-hot-color text-normal goodsInput" id="goods_pageBackGround"
-                       data-default="#ffffff" data-input="goods_pageBackGround"/>
+                       th:attr="data-default=${goods_pageBackGround==null?'#ffffff':goods_pageBackGround}" data-input="goods_pageBackGround"/>
                 <input type="hidden" class="js-hot-properties" th:value="${goods_pageBackGround}" name="goods_pageBackGround" style="background:#ffffff"/>
             </li>
             <li>
                 <label style="width: 116px;">字体颜色 </label>
                 <input type="text" class="js-hot-color text-normal goodsInput" id="goods_fontColor"
-                       data-default="" data-input="goods_fontColor"/>
+                       th:attr="data-default=${goods_fontColor==null?'#ffffff':goods_fontColor}" data-input="goods_fontColor"/>
                 <input type="hidden" class="js-hot-properties" th:value="${goods_fontColor}" name="goods_fontColor" style="background:#666666"/>
             </li>
             <li>
                 <label style="width: 116px;">模板选择 </label>
 
             </li>
-            <li style="padding: 10px;">
-                <div style="width: 40%;border: 1px solid #ccc;">
+            <li style="padding: 10px; height: 120px;">
+                <div style="width: 30%;border: 1px solid #ccc; float: left;margin-right: 10px;">
                     <input th:checked="${list_template=='goods_style1'} or ${list_template}==null" type="radio" name="list_template" checked="checked" value="goods_style1"/>
-                    <img src="../img/widget/goods_style1.jpg" style="width: 100%">
+                    <img src="../img/widget/goods_style1.jpg" style="width: 100%;height: 100px;">
                 </div>
-                <p style="height: 5px;"></p>
-
-                <div style="width: 40%;height: 150px; border: 1px solid #ccc;">
+                <div style="width: 30%;border: 1px solid #ccc; float: left;margin-right: 10px;">
                     <input th:checked="${list_template=='goods_style2'}" type="radio" name="list_template" value="goods_style2"/>
-                    <img src="../img/widget/goods_style2.jpg" style="width: 100%">
+                    <img src="../img/widget/goods_style2.jpg" style="width: 100%; height: 100px;">
                 </div>
-                <p style="height: 5px;"></p>
-
-                <div style="width: 40%;height: 150px; border: 1px solid #ccc;">
+                <div style="width: 30%;border: 1px solid #ccc; float: left;margin-right: 10px;">
                     <input th:checked="${list_template=='goods_style3'}" type="radio" name="list_template" value="goods_style3"/>
-                    <img src="../img/widget/goods_style3.jpg" style="width: 100%">
+                    <img src="../img/widget/goods_style3.jpg" style="width: 100%;height: 100px;">
                 </div>
-            </li>
+            </li><div class="clear"></div>
         </ul>
     </div>
 
@@ -443,12 +446,6 @@
 <script type="text/javascript">
     $(function () {
         hotColor();
-        var chosenColor = $.trim($("input[name=goods_pageBackGround]").val());
-        if (chosenColor.length > 0) {
-            $("#goods_pageBackGround").spectrum({
-                color: chosenColor
-            })
-        }
     })
 </script>
 

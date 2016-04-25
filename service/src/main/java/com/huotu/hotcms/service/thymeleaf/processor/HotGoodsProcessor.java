@@ -35,7 +35,7 @@ import java.util.List;
 public class HotGoodsProcessor extends AbstractAttributeTagProcessor {
 
     public static final String ATTR_NAME = "hot";
-    public static final int PRECEDENCE = 1300;
+    public static final int PRECEDENCE = 200;
     private final GoodsService goodsService;
 
     private Log log = LogFactory.getLog(HotGoodsProcessor.class);

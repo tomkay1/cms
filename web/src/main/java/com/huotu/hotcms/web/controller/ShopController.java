@@ -1,6 +1,5 @@
 package com.huotu.hotcms.web.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.huotu.hotcms.service.common.PageErrorType;
 import com.huotu.hotcms.service.entity.CustomPages;
 import com.huotu.hotcms.service.entity.Site;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 /**
  * <p>
@@ -112,7 +110,6 @@ public class ShopController {
             GoodsDetail goods = goodsDetailService.getGoodsDetail(Integer.valueOf(id),userId);
             String personDetailUrl = goodsDetailService.getPersonDetailUrl(request);//获取二维码域名（商城个人中心）
             String subscribeUrl = goodsDetailService.getSubscribeUrl(request);//获取二维码域名（商户公众号）
-            Map spec = JSON.parseObject(goods.getSpec(), Map.class);//规格格式化
             modelAndView.setViewName("/template/0/goodsDetail.html");
             modelAndView.addObject("goods",goods);
             modelAndView.addObject("site",site);//为了传递seo
@@ -120,7 +117,6 @@ public class ShopController {
             modelAndView.addObject("head",head);//公共头部
             modelAndView.addObject("personDetailUrl",personDetailUrl);//获取二维码域名（商城个人中心）
             modelAndView.addObject("subscribeUrl",subscribeUrl);//获取二维码域名（商户公众号）
-            modelAndView.addObject("spec",spec);
 
         }catch (Exception ex){
             log.error(ex);

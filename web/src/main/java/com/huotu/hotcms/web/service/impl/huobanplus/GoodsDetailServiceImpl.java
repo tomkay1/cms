@@ -11,6 +11,7 @@ import com.huotu.huobanplus.common.entity.Merchant;
 import com.huotu.huobanplus.common.entity.Product;
 import com.huotu.huobanplus.sdk.common.repository.GoodsRestRepository;
 import com.huotu.huobanplus.sdk.common.repository.MerchantRestRepository;
+import com.huotu.huobanplus.sdk.common.repository.ProductRestRepository;
 import com.huotu.huobanplus.sdk.mall.service.MallInfoService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -20,10 +21,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 商品详情
@@ -40,6 +38,9 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
 
     @Autowired
     private GoodsRestRepository goodsRestRepository;
+
+    @Autowired
+    private ProductRestRepository productRestRepository;
 
     @Autowired
     private MerchantRestRepository merchantRestRepository;
@@ -74,22 +75,28 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
 //                log.error("接口服务不可用");
 //            }
 //        }
-        huobanGoods.setSpec(JSON.parse(huobanGoods.getSpec()).toString());
-        Set<Product> products = huobanGoods.getProducts();
-        List<Double> userPrice = new ArrayList<>();
-        if (products.size()!=0){//获取产品价格区间
-            List<Double> priceList = new ArrayList<>();
-            for (Product product : products ){
-                priceList.add(product.getPrice());
-            }
-            userPrice.add(Collections.max(priceList));
-            userPrice.add(Collections.min(priceList));
+        List<Product> huobanProductList = productRestRepository.findByGoods(huobanGoods);//获取goods里的product
+        List<com.huotu.hotcms.service.model.Bind.Product> productList = new ArrayList();
+        List<Double> priceList = new ArrayList();
+        for(Product huobanProduct : huobanProductList){
+            com.huotu.hotcms.service.model.Bind.Product product = new com.huotu.hotcms.service.model.Bind.Product();
+            product.setId(huobanProduct.getId());
+            product.setSpec(huobanProduct.getSpec());
+            product.setCode(huobanProduct.getCode());
+            product.setCostPrice(huobanProduct.getCostPrice());
+            product.setMarketPrice(huobanProduct.getMarketPrice());
+            product.setName(huobanProduct.getName());
+            product.setStock(huobanProduct.getStock());
+            product.setPrice(huobanProduct.getPrice());
+            priceList.add(huobanProduct.getPrice());
+            productList.add(product);
         }
-        mallGoods.setUserPrice(userPrice);
+        mallGoods.setProducts(productList);
         mallGoods.setId(Long.valueOf(goodsId));
         if(mallGoods.getBrandName()!=null){
             mallGoods.setBrandName(huobanGoods.getBrand().getBrandName());
         }
+        mallGoods.setSpec(JSON.parseObject(huobanGoods.getSpec(), Map.class));
         mallGoods.setSpecDescriptions(huobanGoods.getSpecDescriptions());
         mallGoods.setCode(huobanGoods.getCode());
         mallGoods.setTitle(huobanGoods.getTitle());
@@ -111,28 +118,29 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
             mallGoods.setBigPic(huobanGoods.getBigPic().getValue());
         }
         mallGoods.setThumbnailPic(huobanGoods.getThumbnailPic().getValue());
-        mallGoods.setSpec(huobanGoods.getSpec());
         mallGoods.setScenes(huobanGoods.getScenes());
         mallGoods.setCost(huobanGoods.getCost());
         mallGoods.setSalesCount(huobanGoods.getSalesCount());
         mallGoods.setPrice(huobanGoods.getPrice());
+        mallGoods.setMaxPrice(Collections.max(priceList));//设置产品最大价格
+        mallGoods.setMinPrice(Collections.min(priceList));//设置产品最小价格
         mallGoods.setStock(huobanGoods.getStock());
         return mallGoods;
     }
 
     @Override
-    public String getGoodsWxUrl(HttpServletRequest request, Long goodsId) {
+    public String getGoodsWxUrl(HttpServletRequest request,Long goodsId) {
 //        String remotePort = "";
 //        if(request.getLocalPort()!=80){
 //            remotePort = "%3A"+request.getLocalPort() ;//获取端口号
 //        }
 //
 //        String appid = configInfo.getAppid();
-//        String url = "https://open.weixin.qq.com/connect/qrconnect?appid="+appid+"&redirect_uri=http%3A%2F%2F"+request.getServerName()+remotePort+"%2Ffront%2Fbind%2Fcallback%2F&response_type=code&scope=snsapi_login&state=" + goodsId;
+//        String url = "https://open.weixin.qq.com/connect/qrconnect?appid="+appid+"&redirect_uri=http%3A%2F%2F"+request.getServerName()+remotePort+"%2Fbind%2Fcallback%2F&response_type=code&scope=snsapi_login&state=" + goodsId;
 //        return url;
-        return  null;
-    }
 
+        return null;
+    }
 
     @Override
     public String getPersonDetailUrl(HttpServletRequest request){

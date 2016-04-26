@@ -26,11 +26,11 @@
             <div id="preview">
                 <!--<div id="spec-n1" class="jqzoom" style="position:relative" >-->
                 <div id="spec-n1" class="jqzoom" style="width:450px;height:450px">
-                    <span style="position:absolute;bottom:0px;right:0px; z-index:9999"><img class="lazy" src="images/sss.png" th:src="@{/template/0/images/sss.png}"/></span>
+                    <span style="position:absolute;bottom:0px;right:0px; z-index:9999"><img class="img" src="images/sss.png" th:src="@{/template/0/images/sss.png}"/></span>
                     <!--<span style="position:absolute"><img width="100%"  src="images/1.jpg" alt="" ></span>-->
                     <div id="tsImgS">
-                        <a href="/template/0/images/ghi.jpg" th:href="${goods.bigPic}" title="Images" class="MagicZoom" id="MagicZoom">
-                        <img width="100%" class="lazy" src="/template/0/images/ghi.jpg" th:src="${goods.bigPic}"/></a>
+                        <a href="/template/0/images/ghi.jpg" th:href="${goods.bigPic}"  title="Images" class="MagicZoom" id="MagicZoom">
+                        <img width="100%" class="img" src="/template/0/images/ghi.jpg" th:src="${goods.bigPic}"/></a>
                     </div>
                 </div>
                 <div id="spec-list">
@@ -40,24 +40,24 @@
                                                      th:src="${goods.bigPic}"
                                                      th:attr="tsImgS=${goods.bigPic}"
                                                      data-url="" data-img="1" width="50" height="50" ks_mark="y"
-                                                     class="img-hover"></li>
+                                                     class="img img-hover"></li>
                             <li rel="MagicZoom"><img alt="NICE CLAUP2015夏商场同款日系女装甜美高腰蝴蝶结直筒九分裤111510450A 青色 均码"
                                                      th:src="${goods.bigPic}"
                                                      th:attr="tsImgS=${goods.bigPic}" data-url=""
-                                                     data-img="1" width="50" height="50" ks_mark="y" class="">
+                                                     data-img="1" width="50" height="50" ks_mark="y" class="img">
                             </li>
                             <li rel="MagicZoom"><img alt="NICE CLAUP2015夏商场同款日系女装甜美高腰蝴蝶结直筒九分裤111510450A 青色 均码"
                                                      th:src="${goods.bigPic}"
                                                      th:attr="tsImgS=${goods.bigPic}" data-url=""
-                                                     data-img="1" width="50" height="50" ks_mark="y" class=""></li>
+                                                     data-img="1" width="50" height="50" ks_mark="y" class="img"></li>
                             <li rel="MagicZoom"><img alt="NICE CLAUP2015夏商场同款日系女装甜美高腰蝴蝶结直筒九分裤111510450A 青色 均码"
                                                      th:src="${goods.bigPic}"
                                                      th:attr="tsImgS=${goods.bigPic}" data-url=""
-                                                     data-img="1" width="50" height="50" ks_mark="y" class=""></li>
+                                                     data-img="1" width="50" height="50" ks_mark="y" class="img"></li>
                             <li rel="MagicZoom"><img alt="NICE CLAUP2015夏商场同款日系女装甜美高腰蝴蝶结直筒九分裤111510450A 青色 均码"
                                                      th:src="${goods.bigPic}"
                                                      th:attr="tsImgS=${goods.bigPic}" data-url=""
-                                                     data-img="1" width="50" height="50" ks_mark="y" class=""></li>
+                                                     data-img="1" width="50" height="50" ks_mark="y" class="img"></li>
                         </ul>
                     </div>
                 </div>
@@ -142,7 +142,7 @@
                 <div class="sku_container sku_container_on detail_standard_wx">
                     <div class="sku_wrap" style="margin-top: 10px;">
                         <div id="prop-list">
-                            <div class="sku" th:each="spec:${spec}">
+                            <div class="sku" th:each="spec:${goods.spec}">
                                 <h3 th:text="${spec.value}+': '" >规格1：</h3>
                                 <div class="sku_list" th:each="specDescriptions:${goods.specDescriptions}"
                                      th:if="${spec.key}==${specDescriptions.key}" th:value="${specDescriptions.key}">
@@ -238,7 +238,7 @@
 <script src="js/qrScript.js.js" th:src="@{/template/0/js/qrCodeScript.js}"></script>
 <script src="js/layer/layer.js" th:src="@{/template/0/js/layer/layer.js}"></script>
 <script th:inline="javascript">
-    var specSize = /*[[${spec.size()}]]*/"/";//商品规格行数
+    var specSize = /*[[${goods.spec.size()}]]*/"/";//商品规格行数
     var spec ="";
     function showQRCode() {
         var url = /*[[${url}]]*/"/";
@@ -355,7 +355,7 @@
     }
 
     $(function() {
-        $("img.lazy").lazyload({effect: "fadeIn"});
+        $("img.img").lazyload({effect: "fadeIn"});
     });
 
 

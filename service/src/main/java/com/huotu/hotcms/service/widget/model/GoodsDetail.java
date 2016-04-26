@@ -8,6 +8,7 @@ import org.springframework.data.rest.core.annotation.Description;
 
 import javax.persistence.Column;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by chendeyu on 2016/4/8.
@@ -133,7 +134,7 @@ public class GoodsDetail {
     private SpecDescriptions specDescriptions;
 
     @Description("商品规格")
-    private String spec;
+    private Map spec;
 
     /**
      * 销量,据说不太准确,交易成功就会增加,但被取消也不会减少

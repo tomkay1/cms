@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 商品详情
@@ -75,7 +76,6 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
 //                log.error("接口服务不可用");
 //            }
 //        }
-        huobanGoods.setSpec(JSON.parse(huobanGoods.getSpec()).toString());
         List<Product> huobanProductList = productRestRepository.findByGoods(huobanGoods);//获取goods里的product
         List<com.huotu.hotcms.service.model.Bind.Product> productList = new ArrayList();
         List<Double> priceList = new ArrayList();
@@ -97,6 +97,7 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
         if(mallGoods.getBrandName()!=null){
             mallGoods.setBrandName(huobanGoods.getBrand().getBrandName());
         }
+        mallGoods.setSpec(JSON.parseObject(huobanGoods.getSpec(), Map.class));
         mallGoods.setSpecDescriptions(huobanGoods.getSpecDescriptions());
         mallGoods.setCode(huobanGoods.getCode());
         mallGoods.setTitle(huobanGoods.getTitle());
@@ -118,7 +119,6 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
             mallGoods.setBigPic(huobanGoods.getBigPic().getValue());
         }
         mallGoods.setThumbnailPic(huobanGoods.getThumbnailPic().getValue());
-        mallGoods.setSpec(huobanGoods.getSpec());
         mallGoods.setScenes(huobanGoods.getScenes());
         mallGoods.setCost(huobanGoods.getCost());
         mallGoods.setSalesCount(huobanGoods.getSalesCount());

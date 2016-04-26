@@ -14,8 +14,8 @@
             </div>
         </div>
     </div>
-    <div class="module-toolbal-container ui-draggable" th:if="${edit}">
-        <div class="module-assist" style="padding-top: 32px;"></div>
+    <div class="module-module-assisttoolbal-container ui-draggable" th:if="${edit}">
+        <div class="" style="padding-top: 32px;"></div>
         <div class="module-toolbar HOT-module-toolbar" style="height:50px; width:100%;">
             <h4 style="cursor: move;">
         <span class="module-extra">
@@ -67,7 +67,7 @@
     <script type="application/javascript">
         $("#hours").blur(function(){
             var hours = parseInt($("#hours").val());
-            if(hours <0 || hours >=23){
+            if(hours <0 || hours >23){
                 $("#errorMsg").text('\"时\"必须在0-23之间');
                 $("#errorMsg").attr('style','display:block;color:red;');
             }else{
@@ -77,7 +77,7 @@
         })
         $("#minutes").blur(function(){
             var hours = parseInt($("#minutes").val());
-            if(hours <0 || hours >= 59){
+            if(hours <0 || hours > 59){
                 $("#errorMsg").text('\"分\"必须在0-59之间');
                 $("#errorMsg").attr('style','display:block;color:red;');
             }else{
@@ -87,7 +87,7 @@
         })
         $("#seconds").blur(function(){
             var hours = parseInt($("#seconds").val());
-            if(hours <0 || hours >=59){
+            if(hours <0 || hours >59){
                 $("#errorMsg").text('\"秒\"必须在0-59之间');
                 $("#errorMsg").attr('style','display:block;color:red;');
             }else{

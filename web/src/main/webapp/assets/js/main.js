@@ -23,6 +23,7 @@ define(function (require, exports, module) {
         advanceSearch:function(){
             var obj = $(".js-advance-search");
             if(obj.length > 0){
+                console.log("advance-search");
                 var widget = require("advanceSearch");
                 widget.init();
             }

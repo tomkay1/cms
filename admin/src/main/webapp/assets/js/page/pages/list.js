@@ -130,7 +130,11 @@ define(function (require, exports, module) {
                             layer.msg(msgTitle+"成功");
                             pageGrid.Refresh();
                             pageGrid2.Refresh();
-                        }else{
+                        }
+                        else if(data.code==202){
+                            layer.msg("对不起,您没有权限");
+                        }
+                        else{
                             layer.msg(msgTitle+"失败");
                         }
                     }else{

@@ -47,9 +47,9 @@ public class CookieUser {
     /**
     * 把商户ID放到Cookie中
     * */
-    public void setCustomerId(HttpServletResponse response,int customerId)
+    public void setCustomerId(HttpServletRequest request,HttpServletResponse response,int customerId)
     {
-        CookieHelper.setCookie(response,CMSEnums.CookieKeyValue.CustomerID.toString(),String.valueOf(customerId));
+        CookieHelper.setCookie(request,response,CMSEnums.CookieKeyValue.CustomerID.toString(),String.valueOf(customerId),1209600);
     }
 
     /**
@@ -87,7 +87,7 @@ public class CookieUser {
         String userIdStr=CookieHelper.getCookieVal(request,CMSEnums.CookieKeyValue.UserID.toString());
         if(null!=userIdStr&&!userIdStr.equals(""))
         {
-            setCustomerId(response,customerId);
+            setCustomerId(request,response,customerId);
             int userId=getUserId(request);
             if(isSupper(request)){//超级管理员
                 loginIndex=true;

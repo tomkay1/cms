@@ -53,10 +53,10 @@
                         </dl>
                         <dl class="js-top-category">
                             <dt>分类：</dt>
-                            <dd th:attr="guid=${guid}">
+                            <dd>
                                 <input class="js-goodsCatId" type="hidden" name="goodsCatId"
                                        th:value="${request.get('goodsCatId')}!=null?${request.get('goodsCatId')}"/>
-                                <span data-widget-category="category">
+                                <span th:attr="guid=${guid}" data-widget-category="category">
                                     <a href="javascript:void(0)"
                                        data-th-utext="${category.name}+'<i></i>'" data-th-attr="catId=${category.id}"
                                        data-th-class="'js-'+${category.id}+' '+((${request.get('goodsCatId')}!=null and ${request.get('goodsCatId')}==${category.id})?'on':'')"><i></i>

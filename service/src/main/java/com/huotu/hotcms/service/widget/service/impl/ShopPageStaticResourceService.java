@@ -65,7 +65,7 @@ public class ShopPageStaticResourceService implements PageStaticResourceService 
                 "    <meta name=\"keywords\" th:content=\"(${widgetPage.pageKeyWords}==null?${site.keywords}:${widgetPage.pageKeyWords})\" />\n" +
                 "    <meta name=\"description\" th:content=\"(${widgetPage.pageDescription}==null?${site.description}:${widgetPage.pageDescription})\"/>"+
                 "    <script src=\""+contentPath+"/assets/seajs/sea.js\"></script>\n" +
-                "    <script src=\"\"+contentPath+\"/assets/seajs/config.js\"></script>\n" +
+                "    <script src=\""+contentPath+"/assets/seajs/config.js\"></script>\n" +
                 "%s\n" +
                 "</head>" +
                 "<body th:style=\"'background-color:'+${pageBackGround}+';'+((${pageBackImage}==null)?'':'background: url('+${pageBackImage}+')'+((${pageBackRepeat}=='no-repeat')?' no-repeat':(' '+${pageHorizontalDistance}+${pageHorizontalUnit}+' '+${pageVerticalDistance}+${pageVerticalUnit}+' '+${pageBackRepeat})))\">" +

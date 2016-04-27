@@ -69,7 +69,7 @@
                         </div>
                         <div class="jGoodsInfo">
                             <div class="HOTesc" th:title="${goods.title}">
-                                <a th:href="'${request.rootUri}+'/shop/product/'+${goods.id}" target="">[[${goods.title}]]</a>
+                                <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="">[[${goods.title}]]</a>
                                 <span class="jSlogan"></span>
                             </div>
                             <div class="user jPrice">
@@ -82,7 +82,7 @@
                                 <span class="HOTNum">[[${goods.price}]]</span>
                             </div>
                             <div class="jBtnArea">
-                                <a target="" th:href="'${request.rootUri}+'/shop/product/'+${goods.id}" rel="">立即购买</a>
+                                <a target="" th:href="${request.rootUri}+'/shop/product/'+${goods.id}" rel="">立即购买</a>
                             </div>
                         </div>
                     </div>

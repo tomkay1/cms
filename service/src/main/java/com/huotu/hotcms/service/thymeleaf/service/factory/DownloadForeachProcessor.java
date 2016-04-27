@@ -45,14 +45,14 @@ public class DownloadForeachProcessor {
 
             Site site = (Site) VariableExpression.getVariable(context, "site");
             //根据指定id获取栏目列表
-            if(downloadForeachParam.getSpecifyids()!=null) {
-                List<Download> downloads = downloadService.getSpecifyDownloads(downloadForeachParam.getSpecifyids());
+            if(downloadForeachParam.getSpecifyIds()!=null) {
+                List<Download> downloads = downloadService.getSpecifyDownloads(downloadForeachParam.getSpecifyIds());
                 for(Download download : downloads) {
                     download.setDownloadUrl(site.getResourceUrl() + download.getDownloadUrl());
                 }
                 return downloads;
             }
-            if(StringUtils.isEmpty(downloadForeachParam.getCategoryid())) {
+            if(StringUtils.isEmpty(downloadForeachParam.getCategoryId())) {
                 throw new Exception("栏目id没有指定");
             }
             if(downloadForeachParam.getSize()==null) {

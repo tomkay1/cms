@@ -64,7 +64,7 @@ public class GalleryListServiceImpl implements GalleryListService {
             predicates.add(cb.equal(root.get("gallery").get("id").as(Long.class), foreachParam.getGalleryId()));
             return cb.and(predicates.toArray(new Predicate[predicates.size()]));
         };
-        Page<GalleryList> pageData = galleryListRepository.findAll(specification,new PageRequest(foreachParam.getPageno() - 1, foreachParam.getPagesize(),new Sort(Sort.Direction.DESC,"orderWeight")));
+        Page<GalleryList> pageData = galleryListRepository.findAll(specification,new PageRequest(foreachParam.getPageNo() - 1, foreachParam.getPageSize(),new Sort(Sort.Direction.DESC,"orderWeight")));
         return  pageData;
     }
 }

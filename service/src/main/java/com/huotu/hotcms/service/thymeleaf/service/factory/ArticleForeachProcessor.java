@@ -9,10 +9,7 @@
 package com.huotu.hotcms.service.thymeleaf.service.factory;
 
 import com.huotu.hotcms.service.common.RouteType;
-import com.huotu.hotcms.service.entity.Article;
-import com.huotu.hotcms.service.entity.Category;
-import com.huotu.hotcms.service.entity.Route;
-import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.entity.*;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.PageableForeachParam;
 import com.huotu.hotcms.service.service.ArticleService;
 import com.huotu.hotcms.service.service.CategoryService;
@@ -41,9 +38,6 @@ import java.util.List;
 public class ArticleForeachProcessor {
 
     private static Log log = LogFactory.getLog(ArticleForeachProcessor.class);
-    private final int DEFAULT_PAGE_NO = 1;
-    private final int DEFAULT_PAGE_SIZE = 12;
-    private final int DEFAULT_PAGE_NUMBER = 5;
     @Autowired
     private CategoryService categoryService;
     @Autowired
@@ -59,73 +53,77 @@ public class ArticleForeachProcessor {
             PageableForeachParam articleForeachParam = dialectAttributeFactory.getForeachParam(elementTag
                     , PageableForeachParam.class);
             Route route = (Route) VariableExpression.getVariable(context, "route");
-            if(StringUtils.isEmpty(articleForeachParam.getCategoryid())) {
+            if(StringUtils.isEmpty(articleForeachParam.getCategoryId())) {
                 if(route.getRouteType()==RouteType.ARTICLE_LIST) {
                     Category current = categoryService.getCategoryByRoute(route);
-                    articleForeachParam.setCategoryid(current.getId());
+                    articleForeachParam.setCategoryId(current.getId());
                 }
             }
             //如果不是具体子栏目，应取得当前栏目所有一级子栏目数据列表
-            if(StringUtils.isEmpty(articleForeachParam.getParentcid())) {
+            if(StringUtils.isEmpty(articleForeachParam.getParentcId())) {
                 if(route.getRouteType()!=RouteType.ARTICLE_LIST && route.getRouteType()!=RouteType.ARTICLE_CONTENT) {
                     Category current = categoryService.getCategoryByRoute(route);
-                    articleForeachParam.setParentcid(current.getId());
+                    articleForeachParam.setParentcId(current.getId());
                 }
             }
-            if(articleForeachParam.getPageno() == null) {
-                if(StringUtils.isEmpty(request.getParameter("pageNo"))) {
-                    articleForeachParam.setPageno(DEFAULT_PAGE_NO);
-                }else {
-                    int pageNo = Integer.parseInt(request.getParameter("pageNo"));
-                    if(pageNo < 1) {
-                        throw new Exception("页码小于1");
-                    }
-                    articleForeachParam.setPageno(pageNo);
-                }
-            }
-            if(articleForeachParam.getPagesize() == null) {
-                if(StringUtils.isEmpty(request.getParameter("pageSize"))) {
-                    articleForeachParam.setPagesize(DEFAULT_PAGE_SIZE);
-                }else {
-                    int pageSize = Integer.parseInt(request.getParameter("pageSize"));
-                    if(pageSize < 1) {
-                        throw new Exception("请求数据列表容量小于1");
-                    }
-                    articleForeachParam.setPagesize(pageSize);
-                }
-            }
-            if(articleForeachParam.getPagenumber() == null) {
-                articleForeachParam.setPagenumber(DEFAULT_PAGE_NUMBER);
-            }
+            articleForeachParam=dialectAttributeFactory.getForeachParamByRequest(request, articleForeachParam);
+            ///代码重构，以下部分为1.0版本,这里保留是为了后面出现问题遗留,后面测试没问题后，直接删除
+//            if(articleForeachParam.getPageNo() == null) {
+//                if(StringUtils.isEmpty(request.getParameter("pageNo"))) {
+//                    articleForeachParam.setPageNo(DEFAULT_PAGE_NO);
+//                }else {
+//                    int pageNo = Integer.parseInt(request.getParameter("pageNo"));
+//                    if(pageNo < 1) {
+//                        throw new Exception("页码小于1");
+//                    }
+//                    articleForeachParam.setPageNo(pageNo);
+//                }
+//            }
+//            if(articleForeachParam.getPageSize() == null) {
+//                if(StringUtils.isEmpty(request.getParameter("pageSize"))) {
+//                    articleForeachParam.setPageSize(DEFAULT_PAGE_SIZE);
+//                }else {
+//                    int pageSize = Integer.parseInt(request.getParameter("pageSize"));
+//                    if(pageSize < 1) {
+//                        throw new Exception("请求数据列表容量小于1");
+//                    }
+//                    articleForeachParam.setPageSize(pageSize);
+//                }
+//            }
+//            if(articleForeachParam.getPageNumber() == null) {
+//                articleForeachParam.setPageNumber(DEFAULT_PAGE_NUMBER);
+//            }
             articles = articleService.getArticleList(articleForeachParam);
+            dialectAttributeFactory.setPageList(articleForeachParam,articles,context);
             //图片路径处理
             Site site = (Site)VariableExpression.getVariable(context,"site");
             for(Article article : articles) {
                 article.setThumbUri(site.getResourceUrl() + article.getThumbUri());
             }
-            List<PageModel> pages = new ArrayList<>();
-            int currentPage = articleForeachParam.getPageno();
-            int totalPages = articles.getTotalPages();
-            int pageNumber = DEFAULT_PAGE_NUMBER < totalPages ? DEFAULT_PAGE_NUMBER : totalPages;
-            int startPage = calculateStartPageNo(currentPage,pageNumber,totalPages);
-            for(int i=1;i<=pageNumber;i++) {
-                PageModel pageModel = new PageModel();
-                pageModel.setPageNo(startPage);
-                pageModel.setPageHref("?pageNo=" + startPage);
-                pages.add(pageModel);
-                startPage++;
-            }
-            RequestModel requestModel = (RequestModel)VariableExpression.getVariable(context,"request");
-            requestModel.setPages(pages);
-            requestModel.setHasNextPage(articles.hasNext());
-            if(articles.hasNext()) {
-                requestModel.setNextPageHref("?pageNo=" + (currentPage + 1));
-            }
-            if(articles.hasPrevious()) {
-                requestModel.setPrevPageHref("?pageNo=" + (currentPage - 1));
-            }
-            requestModel.setHasPrevPage(articles.hasPrevious());
-            requestModel.setCurrentPage(currentPage);
+            dialectAttributeFactory.setPageList(articleForeachParam,articles,context);
+//            List<PageModel> pages = new ArrayList<>();
+//            int currentPage = articleForeachParam.getPageNo();
+//            int totalPages = articles.getTotalPages();
+//            int pageNumber = articleForeachParam.getPageNumber() < totalPages ? articleForeachParam.getPageNumber() : totalPages;
+//            int startPage = dialectAttributeFactory.calculateStartPageNo(currentPage,pageNumber,totalPages);
+//            for(int i=1;i<=pageNumber;i++) {
+//                PageModel pageModel = new PageModel();
+//                pageModel.setPageNo(startPage);
+//                pageModel.setPageHref("?pageNo=" + startPage);
+//                pages.add(pageModel);
+//                startPage++;
+//            }
+//            RequestModel requestModel = (RequestModel)VariableExpression.getVariable(context,"request");
+//            requestModel.setPages(pages);
+//            requestModel.setHasNextPage(articles.hasNext());
+//            if(articles.hasNext()) {
+//                requestModel.setNextPageHref("?pageNo=" + (currentPage + 1));
+//            }
+//            if(articles.hasPrevious()) {
+//                requestModel.setPrevPageHref("?pageNo=" + (currentPage - 1));
+//            }
+//            requestModel.setHasPrevPage(articles.hasPrevious());
+//            requestModel.setCurrentPage(currentPage);
         }catch (Exception e) {
             log.error("articleForeach process-->"+e.getMessage());
         }
@@ -133,11 +131,5 @@ public class ArticleForeachProcessor {
     }
 
 
-    private int calculateStartPageNo(int currentPage, int pageNumber, int totalPages) {
-        if(pageNumber == totalPages) {
-            return 1;
-        }
-        return currentPage - pageNumber + 1 < 1 ? 1 : currentPage - pageNumber + 1;
-    }
 
 }

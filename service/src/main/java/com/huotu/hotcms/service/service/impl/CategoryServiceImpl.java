@@ -104,19 +104,19 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> findByRouteTypeAndParentId(CategoryForeachParam param) {
-        Category parent = categoryRepository.findOne(param.getParentid());
+        Category parent = categoryRepository.findOne(param.getParentId());
         Sort sort = new Sort(Sort.Direction.DESC, "orderWeight");
         Specification<Category> specification = (root, query, cb) -> {
             List<Predicate> predicates;
-            if(!StringUtils.isEmpty(param.getExcludeids())) {
-                List<String> ids = Arrays.asList(param.getExcludeids());
+            if(!StringUtils.isEmpty(param.getExcludeIds())) {
+                List<String> ids = Arrays.asList(param.getExcludeIds());
                 List<Long> categoryIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
                 predicates = categoryIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
             }else {
                 predicates = new ArrayList<>();
             }
-            predicates.add(cb.equal(root.get("site").get("siteId").as(Long.class),param.getSiteid()));
-            predicates.add(cb.equal(root.get("route").get("routeType").as(RouteType.class), param.getRoutetype()));
+            predicates.add(cb.equal(root.get("site").get("siteId").as(Long.class),param.getSiteId()));
+            predicates.add(cb.equal(root.get("route").get("routeType").as(RouteType.class), param.getRouteType()));
             predicates.add(cb.equal(root.get("deleted").as(Boolean.class),false));
             predicates.add(cb.equal(root.get("parent").as(Category.class), parent));
             return cb.and(predicates.toArray(new Predicate[predicates.size()]));
@@ -126,24 +126,24 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> getHeaderCategoryList(CategoryForeachParam param) {
-        return categoryRepository.findBySite_SiteIdAndRoute_RouteTypeAndDeletedOrderByOrderWeightDesc(param.getSiteid(), RouteType.HEADER_NAVIGATION, false);
+        return categoryRepository.findBySite_SiteIdAndRoute_RouteTypeAndDeletedOrderByOrderWeightDesc(param.getSiteId(), RouteType.HEADER_NAVIGATION, false);
     }
 
 
     @Override
     public List<Category> getGivenTypeCategories(CategoryForeachParam param) {
         int requestSize = param.getSize();
-        Category parent = param.getParentid()==null ? null : categoryRepository.findOne(param.getParentid());
-        if(!StringUtils.isEmpty(param.getExcludeids())) {
+        Category parent = param.getParentId()==null ? null : categoryRepository.findOne(param.getParentId());
+        if(!StringUtils.isEmpty(param.getExcludeIds())) {
             Sort sort = new Sort(Sort.Direction.DESC, "orderWeight");
-            List<String> ids = Arrays.asList(param.getExcludeids());
+            List<String> ids = Arrays.asList(param.getExcludeIds());
             List<Long> categoryIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
             Specification<Category> specification = (root, query, cb) -> {
                 List<Predicate> predicates = categoryIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
-                predicates.add(cb.equal(root.get("site").get("siteId").as(Long.class),param.getSiteid()));
-                RouteType routeType = param.getRoutetype()==null?RouteType.HEADER_NAVIGATION:param.getRoutetype();
+                predicates.add(cb.equal(root.get("site").get("siteId").as(Long.class),param.getSiteId()));
+                RouteType routeType = param.getRouteType()==null?RouteType.HEADER_NAVIGATION:param.getRouteType();
                 predicates.add(cb.equal(root.get("route").get("routeType").as(Integer.class),routeType));
-                if(param.getParentid()!=null) {
+                if(param.getParentId()!=null) {
                     predicates.add(cb.equal(root.get("parent").as(Category.class), parent));
                 }
                 predicates.add(cb.equal(root.get("deleted").as(Boolean.class),false));
@@ -151,7 +151,7 @@ public class CategoryServiceImpl implements CategoryService {
             };
             return categoryRepository.findAll(specification,new PageRequest(0,requestSize,sort)).getContent();
         }
-        List<Category> categoryList = categoryRepository.findBySite_SiteIdAndRoute_RouteTypeAndDeletedAndParentOrderByOrderWeightDesc(param.getSiteid(), param.getRoutetype(), false, parent);
+        List<Category> categoryList = categoryRepository.findBySite_SiteIdAndRoute_RouteTypeAndDeletedAndParentOrderByOrderWeightDesc(param.getSiteId(), param.getRouteType(), false, parent);
         int origionSize = categoryList.size();
         if(requestSize > origionSize - 1) {
             requestSize = origionSize;

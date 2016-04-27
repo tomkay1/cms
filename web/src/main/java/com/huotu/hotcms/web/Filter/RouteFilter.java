@@ -65,7 +65,6 @@ private SiteResolveService siteResolveService;
     private boolean personaliseFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws Exception {
         HttpServletRequest request1 = ((HttpServletRequest) request);
-
 //        SiteResolveService siteResolveService = (SiteResolveService) applicationContext.getBean("siteResolveService");
 //        Site site = siteResolveService.getCurrentSite(request1);
 //        String servletPath = PatternMatchUtil.getServletPath(site, request1);
@@ -129,18 +128,15 @@ private SiteResolveService siteResolveService;
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException
             , ServletException {
         try {
-
             if (applicationContext == null) {
                 String key = FrameworkServlet.SERVLET_CONTEXT_PREFIX
                         + AbstractDispatcherServletInitializer.DEFAULT_SERVLET_NAME;
                 applicationContext = (ApplicationContext) servletContext.getAttribute(key);
-
                 if (applicationContext == null) {
                     //在测试环境中 servlet 的名字是空的
                     applicationContext = (ApplicationContext) servletContext
                             .getAttribute(FrameworkServlet.SERVLET_CONTEXT_PREFIX);
                 }
-
                 if (applicationContext == null)
                     throw new ServletException("Spring ApplicationContext Required.");
             }
@@ -150,8 +146,6 @@ private SiteResolveService siteResolveService;
             if (routeResolverService == null) {
                 routeResolverService = applicationContext.getBean("routeResolverService", RouteResolverService.class);
             }
-
-
             HttpServletRequest request1 = ((HttpServletRequest) request);
             Site site = siteResolveService.getCurrentSite(request1);
             boolean Flag = site.isPersonalise() ? personaliseFilter(request, response, chain) :

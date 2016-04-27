@@ -44,20 +44,20 @@ public class CategoryForeachProcessor {
                     , CategoryForeachParam.class);
 
             //根据指定id获取栏目列表
-            if(!StringUtils.isEmpty(categoryForeachParam.getSpecifyids())) {
-                return categoryService.getSpecifyCategories(categoryForeachParam.getSpecifyids());
+            if(!StringUtils.isEmpty(categoryForeachParam.getSpecifyIds())) {
+                return categoryService.getSpecifyCategories(categoryForeachParam.getSpecifyIds());
             }
             //设置路由类型
             Route route = (Route) VariableExpression.getVariable(context, "route");
-            if(categoryForeachParam.getRoutetype()==null) {
-                categoryForeachParam.setRoutetype(route.getRouteType());
+            if(categoryForeachParam.getRouteType()==null) {
+                categoryForeachParam.setRouteType(route.getRouteType());
             }
             //设置站点id
-            if (StringUtils.isEmpty(categoryForeachParam.getSiteid())) {
+            if (StringUtils.isEmpty(categoryForeachParam.getSiteId())) {
                 Site site = (Site) VariableExpression.getVariable(context, "site");
-                categoryForeachParam.setSiteid(site.getSiteId());
+                categoryForeachParam.setSiteId(site.getSiteId());
             }
-            if(isHeaderCategory(categoryForeachParam.getRoutetype())) {
+            if(isHeaderCategory(categoryForeachParam.getRouteType())) {
                 return categoryService.getHeaderCategoryList(categoryForeachParam);
             }
             if(categoryForeachParam.getSize()==null) {
@@ -67,10 +67,10 @@ public class CategoryForeachProcessor {
             }
             //根据所属父节点及路由类型取得列表
             //设置父节点id
-            Long parentId = categoryForeachParam.getParentid();
+            Long parentId = categoryForeachParam.getParentId();
             if(parentId==null) {
                 Category current = categoryService.getCategoryByRoute(route);
-                categoryForeachParam.setParentid(current.getId());
+                categoryForeachParam.setParentId(current.getId());
             }
             return categoryService.findByRouteTypeAndParentId(categoryForeachParam);
 

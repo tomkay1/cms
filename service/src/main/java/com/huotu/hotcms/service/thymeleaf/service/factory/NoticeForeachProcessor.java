@@ -42,10 +42,10 @@ public class NoticeForeachProcessor {
                     , NormalForeachParam.class);
 
             //根据指定id获取栏目列表
-            if(noticeForeachParam.getSpecifyids()!=null) {
-                return noticeService.getSpecifyNotices(noticeForeachParam.getSpecifyids());
+            if(noticeForeachParam.getSpecifyIds()!=null) {
+                return noticeService.getSpecifyNotices(noticeForeachParam.getSpecifyIds());
             }
-            if(StringUtils.isEmpty(noticeForeachParam.getCategoryid())) {
+            if(StringUtils.isEmpty(noticeForeachParam.getCategoryId())) {
                 throw new Exception("栏目id没有指定");
             }
             if(noticeForeachParam.getSize()==null) {

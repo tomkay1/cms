@@ -48,13 +48,13 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Page<Article> getArticleList(PageableForeachParam articleForeachParam) throws Exception {
-        int pageIndex = articleForeachParam.getPageno() - 1;
-        int pageSize = articleForeachParam.getPagesize();
+        int pageIndex = articleForeachParam.getPageNo() - 1;
+        int pageSize = articleForeachParam.getPageSize();
         Sort sort = new Sort(Sort.Direction.DESC, "orderWeight");
-        if (!StringUtils.isEmpty(articleForeachParam.getSpecifyids())) {
-            return getSpecifyArticles(articleForeachParam.getSpecifyids(), pageIndex, pageSize, sort);
+        if (!StringUtils.isEmpty(articleForeachParam.getSpecifyIds())) {
+            return getSpecifyArticles(articleForeachParam.getSpecifyIds(), pageIndex, pageSize, sort);
         }
-        if (!StringUtils.isEmpty(articleForeachParam.getCategoryid())) {
+        if (!StringUtils.isEmpty(articleForeachParam.getCategoryId())) {
             return getArticles(articleForeachParam, pageIndex, pageSize, sort);
         } else {
             return getAllArticle(articleForeachParam, pageIndex, pageSize, sort);
@@ -62,7 +62,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     private Page<Article> getAllArticle(PageableForeachParam params, int pageIndex, int pageSize, Sort sort) {
-        List<Category> subCategories = categoryService.getSubCategories(params.getParentcid());
+        List<Category> subCategories = categoryService.getSubCategories(params.getParentcId());
         if (subCategories.size() == 0) {
             try {
                 throw new Exception("父栏目节点没有子栏目");
@@ -77,8 +77,8 @@ public class ArticleServiceImpl implements ArticleService {
             }
             Predicate predicate = cb.or(p1.toArray(new Predicate[p1.size()]));
             List<Predicate> predicates = new ArrayList<>();
-            if (!StringUtils.isEmpty(params.getExcludeids())) {
-                List<String> ids = Arrays.asList(params.getExcludeids());
+            if (!StringUtils.isEmpty(params.getExcludeIds())) {
+                List<String> ids = Arrays.asList(params.getExcludeIds());
                 List<Long> articleIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
                 predicates = articleIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
             }
@@ -93,13 +93,13 @@ public class ArticleServiceImpl implements ArticleService {
         try {
             Specification<Article> specification = (root, criteriaQuery, cb) -> {
                 List<Predicate> predicates = new ArrayList<>();
-                if (!StringUtils.isEmpty(params.getExcludeids())) {
-                    List<String> ids = Arrays.asList(params.getExcludeids());
+                if (!StringUtils.isEmpty(params.getExcludeIds())) {
+                    List<String> ids = Arrays.asList(params.getExcludeIds());
                     List<Long> articleIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
                     predicates = articleIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
                 }
                 predicates.add(cb.equal(root.get("deleted").as(Boolean.class), false));
-                predicates.add(cb.equal(root.get("category").get("id").as(Long.class), params.getCategoryid()));
+                predicates.add(cb.equal(root.get("category").get("id").as(Long.class), params.getCategoryId()));
                 return cb.and(predicates.toArray(new Predicate[predicates.size()]));
             };
             return articleRepository.findAll(specification, new PageRequest(pageIndex, pageSize, sort));

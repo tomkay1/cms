@@ -40,7 +40,6 @@ public class ForeachProcessor extends AbstractAttributeTagProcessor {
         super(dialect, TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
         this.foreachProcessorService = foreachProcessorService;
         this.dialectPrefix = dialectPrefix;
-//        this.foreachProcessorService.setDialectPrefix(dialectPrefix);
     }
 
     @Override

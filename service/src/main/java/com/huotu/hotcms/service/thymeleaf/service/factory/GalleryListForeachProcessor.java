@@ -39,9 +39,6 @@ import java.util.List;
 public class GalleryListForeachProcessor {
 
     private static Log log = LogFactory.getLog(GalleryListForeachProcessor.class);
-    private final int DEFAULT_PAGE_NO = 1;
-    private final int DEFAULT_PAGE_SIZE = 12;
-    private final int DEFAULT_PAGE_NUMBER = 5;
     @Autowired
     private GalleryListService galleryListService;
 
@@ -55,31 +52,7 @@ public class GalleryListForeachProcessor {
             String selvertUrl=PatternMatchUtil.getServletUrl(request);
             PageableForeachParam galleryListForeachParam =dialectAttributeFactory.getForeachParam(elementTag, PageableForeachParam.class);
             Route route = (Route) VariableExpression.getVariable(context, "route");
-            if(galleryListForeachParam.getPageno() == null) {
-                if(StringUtils.isEmpty(request.getParameter("pageNo"))) {
-                    galleryListForeachParam.setPageno(DEFAULT_PAGE_NO);
-                }else {
-                    int pageNo = Integer.parseInt(request.getParameter("pageNo"));
-                    if(pageNo < 1) {
-                        throw new Exception("页码小于1");
-                    }
-                    galleryListForeachParam.setPageno(pageNo);
-                }
-            }
-            if(galleryListForeachParam.getPagesize() == null) {
-                if(StringUtils.isEmpty(request.getParameter("pageSize"))) {
-                    galleryListForeachParam.setPagesize(DEFAULT_PAGE_SIZE);
-                }else {
-                    int pageSize = Integer.parseInt(request.getParameter("pageSize"));
-                    if(pageSize < 1) {
-                        throw new Exception("请求数据列表容量小于1");
-                    }
-                    galleryListForeachParam.setPagesize(pageSize);
-                }
-            }
-            if(galleryListForeachParam.getPagenumber() == null) {
-                galleryListForeachParam.setPagenumber(DEFAULT_PAGE_NUMBER);
-            }
+            galleryListForeachParam=dialectAttributeFactory.getForeachParamByRequest(request,galleryListForeachParam);
             //根据当前请求的Uri来获得指定的ID
             if (galleryListForeachParam.getGalleryId() == null) {
                 galleryListForeachParam.setGalleryId(PatternMatchUtil.getUrlIdByLongType(selvertUrl
@@ -92,9 +65,9 @@ public class GalleryListForeachProcessor {
                 galleryList.setThumbUri(site.getResourceUrl() + galleryList.getThumbUri());
             }
             List<PageModel> pages = new ArrayList<>();
-            int currentPage = galleryListForeachParam.getPageno();
+            int currentPage = galleryListForeachParam.getPageNo();
             int totalPages = galleries.getTotalPages();
-            int pageNumber = DEFAULT_PAGE_NUMBER < totalPages ? DEFAULT_PAGE_NUMBER : totalPages;
+            int pageNumber = galleryListForeachParam.getPageNumber() < totalPages ?  galleryListForeachParam.getPageNumber() : totalPages;
             int startPage = calculateStartPageNo(currentPage,pageNumber,totalPages);
             for(int i=1;i<=pageNumber;i++) {
                 PageModel pageModel = new PageModel();

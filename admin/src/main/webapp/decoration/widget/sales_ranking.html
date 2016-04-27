@@ -7,8 +7,8 @@
                 <span class="jTitleName">销售排行</span>
             </div>
             <ul>
-                <li data-widget-hot="goods" th:class="${goods.iterCount<=3?'current':''}">
-                    <div class="jItem">
+                <li data-widget-hot="goods">
+                    <div th:class="${goods.iterCount<=3?'jItem current':'jItem'}">
                         <span class="jNum">[[${goods.iterCount}]]</span>
                         <div class="jPic">
                             <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="_blank">

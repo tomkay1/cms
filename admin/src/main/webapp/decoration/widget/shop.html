@@ -1,11 +1,11 @@
 <!--shop.html-->
 <!--浏览视图-->
-<div th:class="'fn-clear js-hot-module  '+(${templateClass==null}?'sh-brand-wrap-630128':${templateClass})+' toolhover'" th:attr="id=${guid}">
+<div th:class="'fn-clear js-hot-module  '+(${templateClass==null}?'sh-brand-wrap-630128':${templateClass})+' toolhover'" th:attr="id=${guid}"  th:style="'background:'+${bgcolor}">
     <div class="mc" style="overflow: visible;" >
         <div class="sh-brand-wrap">
             <div class="sh-brand">
-                <a th:href="${request.rootUri}" class="brand-link">
-                    <img th:src="${pageBackImage==null or pageBackImage == ''}?'${bgcolor}:${pageBackImage}"/>
+                <a th:href="${request.rootUri}" class="brand-link" th:if="${pageBackImage!=null or pageBackImage != ''}">
+                    <img th:src="${pageBackImage}"/>
                 </a>
                 <div class="shop-logo-box">
                     <a th:href="${request.rootUri}" class="shop-logo-link">

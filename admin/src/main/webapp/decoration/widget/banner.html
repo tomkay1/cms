@@ -1,9 +1,9 @@
 <!--banner.html-->
-<!--浏览试图-->
+<!--浏览试图(banner图)-->
 <div class="fn-clear js-hot-module hot-banner js-banner HOTAnnounce-6915 toolhover" th:attr="id=${guid}">
     <div class="mc" style="overflow: visible;">
         <div style=" height:460px" class="fullSlide">
-            <div class="bd">
+            <div class="bd" th:style="'background:'+(${pageBackGround})">
                 <ul>
                     <li th:each="row:${Rows}"
                         th:style="|background:url(${row.bgImg_Rows}) ${row.bgColor_Rows==null?'#FFFFFF':row.bgColor_Rows} center 0 no-repeat;background-size:cover;|">
@@ -50,17 +50,23 @@
         .forms label {
             text-align: left;
         }
-        .sp-preview{
-            width:25px;
+
+        .sp-preview {
+            width: 25px;
         }
     </style>
+    <div class="forms">
+        <ul>
+            <li>
+                <label style="width: 116px;">背景颜色 </label>
+                <input type="text" class="js-hot-color text-normal goodsInput" id="pageBackGround"
+                       th:attr="data-default=${pageBackGround==null?'#ffffff':pageBackGround}" data-input="pageBackGround"/>
+                <input type="hidden" class="js-hot-properties" th:value="${pageBackGround}" name="pageBackGround" style="background:#ffffff"/>
+            </li>
+        </ul>
+    </div>
     <div class="page-operate">
         <a class="btn-green" href="javascript:void(0)" id="js-nav-add">增加广告</a>
-    </div>
-    <div>
-        <input type="text" class="js-hot-color input-normal" id="goods_pageBackGround"
-               th:attr="data-default=${row.bgColor_Rows==null?'#FFFFFF':row.bgColor_Rows},data-trid=${iterStat.index}" data-default="#FFFFFF" data-input="bgColor_Rows"/>
-        <input type="hidden" class="js-hot-properties" th:value="${row.bgColor_Rows}" name="bgColor_Rows" style="background:#FFFFFF"/>
     </div>
     <div class="data-table">
         <div class="table-thead">
@@ -80,11 +86,13 @@
                 <tbody id="js-nav-box">
                 <tr th:each="row,iterStat:${Rows}" th:id="${iterStat.index}">
                     <td>
-                        <input type="text" id="pageBackImage" name="bgImg_Rows" th:value="${row.bgImg_Rows}" maxlength="50" class="input-normal" style="width:115px;"/>
+                        <input type="text" id="pageBackImage" name="bgImg_Rows" th:value="${row.bgImg_Rows}"
+                               maxlength="50" class="input-normal" style="width:115px;"/>
                         <a href="javascript:void(0)" class="js-cms-selectPageBackImage">图片选择</a>
                     </td>
                     <td>
-                        <input type="text" class="text-normal" name="url_Rows" th:value="${row.url_Rows}" maxlength="256" style="width:115px;">
+                        <input type="text" class="text-normal" name="url_Rows" th:value="${row.url_Rows}"
+                               maxlength="256" style="width:115px;">
                     </td>
                     <td>
                         <select name="type_Rows" class="select-short" style="width:50px">
@@ -105,18 +113,14 @@
     <script type="application/template" id="js-nav-template">
         <tr id="{id}">
             <td>
-                <input type="text" class="js-hot-color input-normal" data-default="" data-input="bgColor_Rows" data-trid="{id}"/>
-                <input type="hidden" class="js-hot-properties" name="bgColor_Rows" value="#FFFFFF" style="background:#FFFFFF"/>
-            </td>
-            <td>
-                <input type="text" name="bgImg_Rows" maxlength="50" class="input-normal"  style="width:115px;"/>
+                <input type="text" name="bgImg_Rows" maxlength="50" class="input-normal" style="width:115px;"/>
                 <a href="javascript:void(0)" class="js-cms-selectPageBackImage">图片选择</a>
             </td>
             <td>
-                <input type="text" class="text-normal" name="url_Rows" maxlength="256"  style="width:115px;">
+                <input type="text" class="text-normal" name="url_Rows" maxlength="256" style="width:115px;">
             </td>
             <td>
-                <select name="type_Rows" class="select-short"  style="width:50px">
+                <select name="type_Rows" class="select-short" style="width:50px">
                     <option value="0">当前窗口打开</option>
                     <option value="1">新窗口打开</option>
                 </select>
@@ -128,7 +132,14 @@
             </td>
         </tr>
     </script>
+    <script src="../libs/JColor/jquery.hotColor.js" type="application/javascript"></script>
+    <script src="../libs/JColor/spectrum.js" type="application/javascript"></script>
+    <link href="../libs/JColor/spectrum.css" rel="stylesheet"/>
     <script type="application/javascript">
+        $(function () {
+            hotColor();
+        });
+
         var navModule = {
             addNav: function () {
                 var obj = $("#js-nav-add");
@@ -142,7 +153,6 @@
                         navModule.deleteNav();
                         navModule.upNav();
                         navModule.downNav();
-                        colorModule.color();
                         bgImage.selectImg();
                     });
                 });
@@ -184,36 +194,12 @@
                 });
             }
         }
-        var colorModule = {
-            color: function(){
-                var obj = $(".js-hot-color");
-                $.each(obj, function (item, dom) {
-                    var inputValueName = $(dom).data("input");
-                    var defaultColor = $(dom).data("default");
-                    var trId = $(dom).data("trid");
-                    $(dom).spectrum({
-                        allowEmpty: true,
-                        chooseText: "ȷ��",
-                        cancelText: "ȡ��",
-                        color: defaultColor,
-                        preferredFormat: "rgb",
-                        showInitial: false,
-                        showButtons: false,
-                        showInput: true,
-//                        width: "20px",
-                        change: function (color) {
-                            $("tr[id="+trId+"] input[name="+inputValueName+"]").val(color.toHexString());
-                        }
-                    });
-                });
-            }
-        }
         var bgImage = {
             /**
              * @brief 获得页面参数
              * @param 参数名
              * */
-            getQuery: function(name){
+            getQuery: function (name) {
                 var strHref = window.parent.document.location.href;
                 var intPos = strHref.indexOf("?");
                 var strRight = strHref.substr(intPos + 1);
@@ -227,10 +213,10 @@
                 if (arguments.length == 2)
                     return arguments[1];
             },
-            selectImg:function(){
+            selectImg: function () {
                 var obj = $(".js-cms-selectPageBackImage");
                 $.each(obj, function (item, dom) {
-                    $(dom).click(function(){
+                    $(dom).click(function () {
                         parent.layer.open({
                             type: 2,
                             title: "图片库",
@@ -257,7 +243,6 @@
         navModule.deleteNav();
         navModule.upNav();
         navModule.downNav();
-        colorModule.color();
         bgImage.selectImg();
     </script>
 </div>

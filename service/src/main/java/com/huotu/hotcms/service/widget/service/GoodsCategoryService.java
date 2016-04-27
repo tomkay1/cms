@@ -22,6 +22,7 @@ public interface GoodsCategoryService {
      * 获得指定商户的商品分类列表
      * @param customerId 商户id
      * @return
+     *
      */
     List<GoodsCategory> getGoodsCategories(int customerId);
 

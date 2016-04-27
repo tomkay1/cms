@@ -1,7 +1,7 @@
 <!--search.html-->
 <!--浏览视图（搜索组件）-->
 <!--43971-->
-<div th:class="'fn-clear js-hot-module '+(${templateClass}==null?'HOTSearch-43971':${templateClass})+' toolhover'"
+<div class="fn-clear js-hot-module HOTSearch-43971  toolhover"
      th:attr="id=${guid}">
     <div class="mc" th:style="'overflow: visible;background: '+${bgcolor}">
         <div class="searchArea" th:style="'text-align:'+${alignment}">
@@ -50,16 +50,16 @@
     </style>
     <div class="forms">
         <ul>
-            <li>
-                <label>选择模版 </label>
-                <select name="templateClass" class="select-short" id="templateClass">
-                    <option value="HOTSearch-43971"
-                            th:selected="${templateClass== null or templateClass=='HOTSearch-43971'}">模版一
-                    </option>
-                    <option value="HOTSearch-400300" th:selected="${templateClass=='HOTSearch-400300'}">模版二</option>
-                    <option value="HOTSearch-400301" th:selected="${templateClass=='HOTSearch-400301'}">模版三</option>
-                </select>
-            </li>
+            <!--<li>-->
+                <!--<label>选择模版 </label>-->
+                <!--<select name="templateClass" class="select-short" id="templateClass">-->
+                    <!--<option value="HOTSearch-43971"-->
+                            <!--th:selected="${templateClass== null or templateClass=='HOTSearch-43971'}">模版一-->
+                    <!--</option>-->
+                    <!--<option value="HOTSearch-400300" th:selected="${templateClass=='HOTSearch-400300'}">模版二</option>-->
+                    <!--<option value="HOTSearch-400301" th:selected="${templateClass=='HOTSearch-400301'}">模版三</option>-->
+                <!--</select>-->
+            <!--</li>-->
             <li>
                 <label>默认搜索词</label>
                 <input type="text" maxlength="10" class="text-short" name="defaultKewWord" value="保暖内衣"
@@ -106,3 +106,6 @@
         hotColor();
     })
 </script>
+
+<!--默认属性-->
+[{"name":"defaultKewWord","value":"\"\""},{"name":"maxlength","value":"\"20\""},{"name":"maxWidth","value":"\"200\""},{"name":"bgcolor","value":"\"#851212\""},{"name":"alignment","value":"\"left\""},{"name":"Rows","value":"[]"}]

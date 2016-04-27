@@ -1,12 +1,12 @@
 <!--service.html-->
 <!--浏览试图（文字导航组合）-->
-<div class="fn-clear js-hot-module toolhover" th:attr="id=${guid}">
+<div class="fn-clear js-hot-module toolhover" th:attr="id=${guid}" th:style="'background:'+(${pageBackGround})">
     <div class="mc" style="overflow: visible;margin: 0 auto; min-height: 30px;">
         <div id="service-2014">
             <div class="w" >
                 <dl>
                     <dt th:text="${moduleName}"></dt>
-                    <dd th:style="'background:'+(${pageBackGround});width:100%">
+                    <dd >
                         <div th:each="row,iterStat:${Rows}">
                             <a rel="nofollow" target="" th:href="${row.url_Rows}" th:text="${row.name_Rows}"
                                th:style="'color:'+${fontColor}"></a>

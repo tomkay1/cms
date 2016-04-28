@@ -8,6 +8,7 @@ import com.huotu.hotcms.service.thymeleaf.service.SiteResolveService;
 import com.huotu.hotcms.service.thymeleaf.templateresource.WidgetTemplateResource;
 import com.huotu.hotcms.service.widget.model.GoodsDetail;
 import com.huotu.hotcms.service.widget.service.PageResourceService;
+import com.huotu.hotcms.service.widget.service.PageStaticResourceService;
 import com.huotu.hotcms.web.service.GoodsDetailService;
 import com.huotu.hotcms.web.util.web.CookieUser;
 import org.apache.commons.logging.Log;
@@ -47,6 +48,9 @@ public class ShopController {
 
     @Autowired
     private PageResourceService pageResourceService;
+
+    @Autowired
+    private PageStaticResourceService pageStaticResourceService;
 
     private WidgetTemplateResource widgetTemplateResource=new WidgetTemplateResource();
 
@@ -105,7 +109,7 @@ public class ShopController {
             if(head == null) {
                 head = "";
             }else{
-                head=widgetTemplateResource.getHtmlHeadStaticResources(environment)+head;
+                head=widgetTemplateResource.getHtmlHeadStaticResources(environment,pageStaticResourceService)+head;
             }
             GoodsDetail goods = goodsDetailService.getGoodsDetail(Integer.valueOf(id),userId);
             String personDetailUrl = goodsDetailService.getPersonDetailUrl(request);//获取二维码域名（商城个人中心）

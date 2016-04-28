@@ -12,18 +12,13 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 列表遍历解析器参数模型(公告、链接、下载)
+ * 列表遍历解析器参数模型(公告、链接、下载) 1.0 版本
  * Created by cwb on 2016/1/18.
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
+@Deprecated
 public class NormalForeachParam extends BaseForeachParam {
-//
-//    /**
-//     * 所属栏目id
-//     */
-//    protected Long categoryid;
-
     /**
      * 所属二级栏目id(所属栏目的父节点)，与所属栏目id存在性互斥
      */
@@ -31,50 +26,10 @@ public class NormalForeachParam extends BaseForeachParam {
     public Long parentcId;
 
     /**
-     * 取得列表大小(为了兼容1.0版本,该属性保留)
+     * 取得列表大小(为了兼容1.0版本,
+     * 该属性保留,1.0以后版本该属性同基类的pageSize相同,但是为了兼容故该属性优先级高于pageSize)
      */
     @Rename("size")
+    @Deprecated
     public Integer size;
-
-//    /**
-//     * 获取列表时排除的主键Id(可排除多个，逗号分隔)
-//     */
-//    protected String[] excludeids;
-//
-//    /**
-//     * 获取指定Id的列表(可指定多个，逗号分隔)
-//     */
-//    protected String[] specifyids;
-//
-//    public String[] getExcludeids() {
-//        return excludeids;
-//    }
-//
-//    public void setExcludeids(String[] excludeids) {
-//        this.excludeids = excludeids;
-//    }
-//
-//    public String[] getSpecifyids() {
-//        return specifyids;
-//    }
-//
-//    public void setSpecifyids(String[] specifyids) {
-//        this.specifyids = specifyids;
-//    }
-//
-//    public Integer getSize() {
-//        return size;
-//    }
-//
-//    public void setSize(Integer size) {
-//        this.size = size;
-//    }
-//
-//    public Long getCategoryid() {
-//        return categoryid;
-//    }
-//
-//    public void setCategoryid(Long categoryid) {
-//        this.categoryid = categoryid;
-//    }
 }

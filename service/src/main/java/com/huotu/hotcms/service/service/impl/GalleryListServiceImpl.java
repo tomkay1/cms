@@ -1,6 +1,7 @@
 package com.huotu.hotcms.service.service.impl;
 
 import com.huotu.hotcms.service.entity.GalleryList;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.GalleryForeachParam;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.PageableForeachParam;
 import com.huotu.hotcms.service.repository.GalleryListRepository;
 import com.huotu.hotcms.service.service.GalleryListService;
@@ -57,7 +58,7 @@ public class GalleryListServiceImpl implements GalleryListService {
     }
 
     @Override
-    public Page<GalleryList> getGalleryList(PageableForeachParam foreachParam) throws Exception {
+    public Page<GalleryList> getGalleryList(GalleryForeachParam foreachParam) throws Exception {
         Specification<GalleryList> specification = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(cb.equal(root.get("deleted").as(String.class), false));

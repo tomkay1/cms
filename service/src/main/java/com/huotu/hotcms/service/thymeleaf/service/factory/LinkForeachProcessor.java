@@ -8,8 +8,6 @@
 
 package com.huotu.hotcms.service.thymeleaf.service.factory;
 
-import com.huotu.hotcms.service.common.RouteType;
-import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
@@ -18,9 +16,6 @@ import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.service.LinkService;
 import com.huotu.hotcms.service.thymeleaf.expression.DialectAttributeFactory;
 import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
-import com.huotu.hotcms.service.thymeleaf.model.PageModel;
-import com.huotu.hotcms.service.thymeleaf.model.RequestModel;
-import com.huotu.hotcms.service.util.PatternMatchUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +27,6 @@ import org.thymeleaf.context.IWebContext;
 import org.thymeleaf.model.IProcessableElementTag;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -43,10 +36,6 @@ import java.util.List;
 public class LinkForeachProcessor {
 
     private static Log log = LogFactory.getLog(LinkForeachProcessor.class);
-    private final int DEFAULT_PAGE_NO = 1;
-//    private final int DEFAULT_PAGE_SIZE = 12;
-    private final int DEFAULT_PAGE_NUMBER = 5;
-    private final int DEFAULT_PAGE_SIZE = 5;
     @Autowired
     private LinkService linkService;
     @Autowired
@@ -55,33 +44,16 @@ public class LinkForeachProcessor {
     @Autowired
     private DialectAttributeFactory dialectAttributeFactory;
 
-    private Long getUrlId(HttpServletRequest request,Route route){
-        String requestUrl = PatternMatchUtil.getUrl(request);
-        Long id=PatternMatchUtil.getUrlIdByLongType(requestUrl, route.getRule());
-        return id;
-    }
-
     public Object process(IProcessableElementTag elementTag, ITemplateContext context) {
-//        List<Link> linkList=null;
         Page<Link> linkList = null;
         try {
             HttpServletRequest request = ((IWebContext)context).getRequest();
             NormalForeachParam linkForeachParam = dialectAttributeFactory.getForeachParam(elementTag
-                    , NormalForeachParam.class);
+                    , NormalForeachParam.class);//为了兼容目前先保留
             Route route = (Route) VariableExpression.getVariable(context, "route");
             if(route!=null){
                 if(StringUtils.isEmpty(linkForeachParam.getCategoryId())) {
-                    if(route.getRouteType()== RouteType.ARTICLE_LIST) {
-                        Category current = categoryService.getCategoryByRoute(route);
-                        linkForeachParam.setCategoryId(current.getId());
-                    }else{//尝试判断是否是通配规则,如果是则取通配规则中的ID,该ID必定为父节点ID(某个栏目ID)
-                        Long id=getUrlId(request,route);
-                        if(id!=null){
-                            linkForeachParam.setCategoryId(id);
-                        }
-                    }
-                }else{//根据通配路由获得栏目ID
-                    Long id=getUrlId(request,route);
+                    Long id=dialectAttributeFactory.getUrlId(request,route);
                     if(id!=null){
                         linkForeachParam.setCategoryId(id);
                     }

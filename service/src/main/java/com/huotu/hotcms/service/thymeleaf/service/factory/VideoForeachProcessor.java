@@ -69,6 +69,13 @@ public class VideoForeachProcessor {
                 }
             }
             videoForeachParam=dialectAttributeFactory.getForeachParamByRequest(request,videoForeachParam);
+            videoPage = videoService.getVideoList(videoForeachParam);
+            //图片路径处理
+            Site site = (Site)VariableExpression.getVariable(context,"site");
+            for(Video video : videoPage) {
+                video.setThumbUri(site.getResourceUrl()+video.getThumbUri());
+            }
+            dialectAttributeFactory.setPageList(videoForeachParam,videoPage,context);
             ///代码重构，以下部分为1.0版本,这里保留是为了后面出现问题遗留,后面测试没问题后，直接删除
 //            if(videoForeachParam.getPageNo() == null) {
 //                if(StringUtils.isEmpty(request.getParameter("pageNo"))) {
@@ -95,13 +102,6 @@ public class VideoForeachProcessor {
 //            if(videoForeachParam.getPageNumber() == null) {
 //                videoForeachParam.setPageNumber(DEFAULT_PAGE_NUMBER);
 //            }
-            videoPage = videoService.getVideoList(videoForeachParam);
-            //图片路径处理
-            Site site = (Site)VariableExpression.getVariable(context,"site");
-            for(Video video : videoPage) {
-                video.setThumbUri(site.getResourceUrl()+video.getThumbUri());
-            }
-            dialectAttributeFactory.setPageList(videoForeachParam,videoPage,context);
             //形成页码列表
 //            setPageList(videoForeachParam,videoPage,context);
         }catch (Exception e) {

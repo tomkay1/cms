@@ -24,10 +24,4 @@ public class PageableForeachParam extends BaseForeachParam{
      */
     @Rename("parentcid")
     public Long parentcId;
-
-    /**
-     * 所属图库的id
-     */
-    @Rename("galleryid")
-    public Long galleryId;
 }

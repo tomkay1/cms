@@ -232,8 +232,10 @@ public class WidgetTemplateResource implements ITemplateResource {
      *     获得控件主体所需要的静态资源应用,css、js等的引用
      * </p>
      * */
-    public String getHtmlHeadStaticResources(Environment environment){
+    public String getHtmlHeadStaticResources(Environment environment,PageStaticResourceService pageStaticResourceService){
         this.URI_PREFIX = this.getURI_PREFIXByEnvironment(environment);
+        this.WIDGET_RESOURCES=pageStaticResourceService.getWidgetResources(this.URI_PREFIX,this.version);
+        this.BROWSE_RESOURCES=pageStaticResourceService.getBrowseResources(this.URI_PREFIX,this.version);
         String cssResources=this.WIDGET_RESOURCES + BROWSE_RESOURCES;
         return cssResources;
     }

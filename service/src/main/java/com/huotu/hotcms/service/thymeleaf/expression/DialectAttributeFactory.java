@@ -12,6 +12,7 @@ import com.huotu.hotcms.service.common.EnumUtils;
 import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.common.SysConstant;
 import com.huotu.hotcms.service.entity.BaseEntity;
+import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.Video;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.BaseForeachParam;
@@ -20,6 +21,7 @@ import com.huotu.hotcms.service.thymeleaf.model.PageModel;
 import com.huotu.hotcms.service.thymeleaf.model.RequestModel;
 import com.huotu.hotcms.service.util.HttpUtils;
 import com.huotu.hotcms.service.util.PageUtils;
+import com.huotu.hotcms.service.util.PatternMatchUtil;
 import com.huotu.hotcms.service.util.StringUtil;
 import com.huotu.hotcms.service.widget.model.BasePage;
 import org.springframework.data.domain.Page;
@@ -131,7 +133,6 @@ public class DialectAttributeFactory {
         }
         return obj2;
     }
-
 
     private <T> T getObjectByFiled(Object object,Field field,String paramValue) throws IllegalAccessException {
         T obj=(T)object;
@@ -247,11 +248,16 @@ public class DialectAttributeFactory {
         requestModel.setCurrentPage(currentPage);
     }
 
-    public void setPageList(ITemplateContext context, BasePage goodsPage) {
+    /**
+     * 解析上下文(ITemplateContext) xhl 1.2 代码重构
+     * @param context ITemplateContext 上下文
+     * @param basePage 分页基类
+     */
+    public void setPageList(ITemplateContext context, BasePage basePage) {
         //分页标签处理
         RequestModel requestModel = (RequestModel) VariableExpression.getVariable(context, "request");
-        int pageNo = goodsPage.getPageNo() + 1;
-        int totalPages = goodsPage.getTotalPages();
+        int pageNo = basePage.getPageNo() + 1;
+        int totalPages = basePage.getTotalPages();
         int pageBtnNum = totalPages > SysConstant.DEFAULT_PAGE_BUTTON_NUM ? SysConstant.DEFAULT_PAGE_BUTTON_NUM : totalPages;
         int startPageNo = PageUtils.calculateStartPageNo(pageNo, pageBtnNum, totalPages);
         List<Integer> pageNos = new ArrayList<>();
@@ -262,9 +268,21 @@ public class DialectAttributeFactory {
         requestModel.setCurrentPage(pageNo);
         requestModel.setTotalPages(totalPages);
         //没有数据时前台页面显示 第1页/共1页
-        requestModel.setTotalRecords(goodsPage.getTotalRecords() == 0 ? 1 : goodsPage.getTotalRecords());
+        requestModel.setTotalRecords(basePage.getTotalRecords() == 0 ? 1 : basePage.getTotalRecords());
         requestModel.setHasPrevPage(pageNo > 1);
         requestModel.setHasNextPage(pageNo < totalPages);
         requestModel.setPageNos(pageNos);
+    }
+
+    /**
+     * 根据http request 和路由规则来获得指定ID，一般该路由规则为通配规则
+     * @param request
+     * @param route 通配路由规则
+     * @return
+     */
+    public Long getUrlId(HttpServletRequest request,Route route){
+        String requestUrl = PatternMatchUtil.getUrl(request);
+        Long id=PatternMatchUtil.getUrlIdByLongType(requestUrl, route.getRule());
+        return id;
     }
 }

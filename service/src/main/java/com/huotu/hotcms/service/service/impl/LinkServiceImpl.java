@@ -119,6 +119,9 @@ public class LinkServiceImpl implements LinkService {
     public Page<Link> getLinkList(NormalForeachParam normalForeachParam) throws Exception {
         int pageIndex = normalForeachParam.getPageNo() - 1;
         int pageSize = normalForeachParam.getPageSize();
+        if(normalForeachParam.getSize()!=null){
+            pageSize=normalForeachParam.getSize();
+        }
         Sort sort = new Sort(Sort.Direction.DESC, "orderWeight");
         if (!StringUtils.isEmpty(normalForeachParam.getSpecifyIds())) {
             return getSpecifyLinks(normalForeachParam.getSpecifyIds(), pageIndex, pageSize, sort);

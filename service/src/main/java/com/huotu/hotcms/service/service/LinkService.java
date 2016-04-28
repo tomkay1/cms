@@ -20,5 +20,13 @@ public interface LinkService {
 
     List<Link> getSpecifyLinks(String[] specifyids);
 
+    /**
+     * 根据NormalForeachParam 实体类来获得分页链接模型数据列表,
+     * NormalForeachParam 该实体类是通过编写的参数标签或者当前http 上下文 request中获得参数实体
+     *
+     * @param normalForeachParam 该实体类是通过编写的参数标签或者当前http 上下文 request中获得参数实体
+     * @return
+     * @throws Exception
+     */
     Page<Link> getLinkList(NormalForeachParam normalForeachParam) throws Exception;
 }

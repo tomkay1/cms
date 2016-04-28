@@ -11,6 +11,7 @@ package com.huotu.hotcms.service.thymeleaf.service.factory;
 import com.huotu.hotcms.service.entity.GalleryList;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.GalleryForeachParam;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.PageableForeachParam;
 import com.huotu.hotcms.service.service.GalleryListService;
 import com.huotu.hotcms.service.thymeleaf.expression.DialectAttributeFactory;
@@ -50,7 +51,7 @@ public class GalleryListForeachProcessor {
         try {
             HttpServletRequest request = ((IWebContext)context).getRequest();
             String selvertUrl=PatternMatchUtil.getServletUrl(request);
-            PageableForeachParam galleryListForeachParam =dialectAttributeFactory.getForeachParam(elementTag, PageableForeachParam.class);
+            GalleryForeachParam galleryListForeachParam =dialectAttributeFactory.getForeachParam(elementTag, GalleryForeachParam.class);
             Route route = (Route) VariableExpression.getVariable(context, "route");
             galleryListForeachParam=dialectAttributeFactory.getForeachParamByRequest(request,galleryListForeachParam);
             //根据当前请求的Uri来获得指定的ID
@@ -64,29 +65,30 @@ public class GalleryListForeachProcessor {
             for(GalleryList galleryList : galleries) {
                 galleryList.setThumbUri(site.getResourceUrl() + galleryList.getThumbUri());
             }
-            List<PageModel> pages = new ArrayList<>();
-            int currentPage = galleryListForeachParam.getPageNo();
-            int totalPages = galleries.getTotalPages();
-            int pageNumber = galleryListForeachParam.getPageNumber() < totalPages ?  galleryListForeachParam.getPageNumber() : totalPages;
-            int startPage = calculateStartPageNo(currentPage,pageNumber,totalPages);
-            for(int i=1;i<=pageNumber;i++) {
-                PageModel pageModel = new PageModel();
-                pageModel.setPageNo(startPage);
-                pageModel.setPageHref("?pageNo=" + startPage);
-                pages.add(pageModel);
-                startPage++;
-            }
-            RequestModel requestModel = (RequestModel)VariableExpression.getVariable(context,"request");
-            requestModel.setPages(pages);
-            requestModel.setHasNextPage(galleries.hasNext());
-            if(galleries.hasNext()) {
-                requestModel.setNextPageHref("?pageNo=" + (currentPage + 1));
-            }
-            if(galleries.hasPrevious()) {
-                requestModel.setPrevPageHref("?pageNo=" + (currentPage - 1));
-            }
-            requestModel.setHasPrevPage(galleries.hasPrevious());
-            requestModel.setCurrentPage(currentPage);
+            dialectAttributeFactory.setPageList(galleryListForeachParam,galleries,context);
+//            List<PageModel> pages = new ArrayList<>();
+//            int currentPage = galleryListForeachParam.getPageNo();
+//            int totalPages = galleries.getTotalPages();
+//            int pageNumber = galleryListForeachParam.getPageNumber() < totalPages ?  galleryListForeachParam.getPageNumber() : totalPages;
+//            int startPage = calculateStartPageNo(currentPage,pageNumber,totalPages);
+//            for(int i=1;i<=pageNumber;i++) {
+//                PageModel pageModel = new PageModel();
+//                pageModel.setPageNo(startPage);
+//                pageModel.setPageHref("?pageNo=" + startPage);
+//                pages.add(pageModel);
+//                startPage++;
+//            }
+//            RequestModel requestModel = (RequestModel)VariableExpression.getVariable(context,"request");
+//            requestModel.setPages(pages);
+//            requestModel.setHasNextPage(galleries.hasNext());
+//            if(galleries.hasNext()) {
+//                requestModel.setNextPageHref("?pageNo=" + (currentPage + 1));
+//            }
+//            if(galleries.hasPrevious()) {
+//                requestModel.setPrevPageHref("?pageNo=" + (currentPage - 1));
+//            }
+//            requestModel.setHasPrevPage(galleries.hasPrevious());
+//            requestModel.setCurrentPage(currentPage);
         }catch (Exception e) {
             log.error("galleryListForeach process-->"+e.getMessage());
         }

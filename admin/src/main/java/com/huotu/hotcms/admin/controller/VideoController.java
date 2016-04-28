@@ -4,6 +4,7 @@ import com.huotu.hotcms.admin.util.web.CookieUser;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Video;
 import com.huotu.hotcms.service.repository.CategoryRepository;
+import com.huotu.hotcms.service.repository.VideoRepository;
 import com.huotu.hotcms.service.service.VideoService;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
@@ -33,6 +34,10 @@ public class VideoController {
     private static final Log log = LogFactory.getLog(SiteController.class);
     @Autowired
     private VideoService videoService;
+
+    @Autowired
+    private VideoRepository videoRepository;
+
     @Autowired
     private StaticResourceService resourceServer;
 
@@ -163,8 +168,9 @@ public class VideoController {
         try{
             if(cookieUser.getCustomerId(request) == customerId) {
                 Video video = videoService.findById(id);
-                video.setDeleted(true);
-                videoService.saveVideo(video);
+                videoRepository.delete(video);
+//                video.setDeleted(true);
+//                videoService.saveVideo(video);
                 result=new ResultView(ResultOptionEnum.OK.getCode(),ResultOptionEnum.OK.getValue(),null);
             }
             else {

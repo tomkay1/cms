@@ -57,6 +57,9 @@ public class ArticleForeachProcessor {
                 if(route.getRouteType()==RouteType.ARTICLE_LIST) {
                     Category current = categoryService.getCategoryByRoute(route);
                     articleForeachParam.setCategoryId(current.getId());
+                }else{//通配规则ID
+                    Long id=dialectAttributeFactory.getUrlId(request,route);
+                    articleForeachParam.setCategoryId(id);
                 }
             }
             //如果不是具体子栏目，应取得当前栏目所有一级子栏目数据列表
@@ -100,7 +103,6 @@ public class ArticleForeachProcessor {
             for(Article article : articles) {
                 article.setThumbUri(site.getResourceUrl() + article.getThumbUri());
             }
-            dialectAttributeFactory.setPageList(articleForeachParam,articles,context);
 //            List<PageModel> pages = new ArrayList<>();
 //            int currentPage = articleForeachParam.getPageNo();
 //            int totalPages = articles.getTotalPages();
@@ -129,7 +131,4 @@ public class ArticleForeachProcessor {
         }
         return articles;
     }
-
-
-
 }

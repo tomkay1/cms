@@ -6,6 +6,7 @@ import com.huotu.hotcms.service.common.EnumUtils;
 import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.model.ArticleCategory;
+import com.huotu.hotcms.service.repository.ArticleRepository;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.service.ArticleService;
 import com.huotu.hotcms.service.util.PageData;
@@ -46,27 +47,29 @@ public class ArticleController {
     @Autowired
     private CookieUser cookieUser;
 
+    @Autowired
+    private ArticleRepository articleRepository;
+
     /**
-     *
      * 文章分页
+     *
      * @param id
      * @return
      * @throws Exception
      */
     @RequestMapping("/articleList")
-    public ModelAndView articleList(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception
-    {
-        ModelAndView modelAndView=new ModelAndView();
-        try{
-        modelAndView.setViewName("/view/contents/articleList.html");
-        Article article= articleService.findById(id);
-        String logo_uri="";
-        if(!StringUtils.isEmpty(article.getThumbUri())) {
-            logo_uri = resourceServer.getResource(article.getThumbUri()).toString();
-        }
-        modelAndView.addObject("logo_uri",logo_uri);
-        modelAndView.addObject("article",article);
-        }catch (Exception ex){
+    public ModelAndView articleList(@RequestParam(value = "id", defaultValue = "0") Long id) throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
+        try {
+            modelAndView.setViewName("/view/contents/articleList.html");
+            Article article = articleService.findById(id);
+            String logo_uri = "";
+            if (!StringUtils.isEmpty(article.getThumbUri())) {
+                logo_uri = resourceServer.getResource(article.getThumbUri()).toString();
+            }
+            modelAndView.addObject("logo_uri", logo_uri);
+            modelAndView.addObject("article", article);
+        } catch (Exception ex) {
             log.error(ex.getMessage());
         }
         return modelAndView;
@@ -81,37 +84,37 @@ public class ArticleController {
      * @throws Exception
      */
     @RequestMapping(value = "/addArticle")
-    public ModelAndView addArticle(Integer customerId) throws Exception{
-        ModelAndView modelAndView=new ModelAndView();
+    public ModelAndView addArticle(Integer customerId) throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/view/widget/addArticle.html");
-        return  modelAndView;
+        return modelAndView;
     }
 
     /**
-     *
      * 修改文章
+     *
      * @param id
      * @param customerId
      * @return
      * @throws Exception
      */
     @RequestMapping("/updateArticle")
-    public ModelAndView updateArticle(@RequestParam(value = "id",defaultValue = "0") Long id,Integer customerId) throws Exception{
-        ModelAndView modelAndView=new ModelAndView();
-        try{
-        modelAndView.setViewName("/view/contents/updateArticle.html");
-        Article article= articleService.findById(id);
-        String logo_uri="";
-        if(!StringUtils.isEmpty(article.getThumbUri())) {
-            logo_uri = resourceServer.getResource(article.getThumbUri()).toString();
-        }
-        Category category =article.getCategory();
-        Integer modelType = category.getModelId();
-        Set<Category> categorys=categoryRepository.findByCustomerIdAndModelId(customerId, modelType);
-        modelAndView.addObject("logo_uri",logo_uri);
-        modelAndView.addObject("categorys",categorys);
-        modelAndView.addObject("article",article);
-        }catch (Exception ex){
+    public ModelAndView updateArticle(@RequestParam(value = "id", defaultValue = "0") Long id, Integer customerId) throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
+        try {
+            modelAndView.setViewName("/view/contents/updateArticle.html");
+            Article article = articleService.findById(id);
+            String logo_uri = "";
+            if (!StringUtils.isEmpty(article.getThumbUri())) {
+                logo_uri = resourceServer.getResource(article.getThumbUri()).toString();
+            }
+            Category category = article.getCategory();
+            Integer modelType = category.getModelId();
+            Set<Category> categorys = categoryRepository.findByCustomerIdAndModelId(customerId, modelType);
+            modelAndView.addObject("logo_uri", logo_uri);
+            modelAndView.addObject("categorys", categorys);
+            modelAndView.addObject("article", article);
+        } catch (Exception ex) {
             log.error(ex.getMessage());
         }
         return modelAndView;
@@ -119,33 +122,31 @@ public class ArticleController {
 
 
     /**
-     *
      * 保存文章
+     *
      * @param article
      * @param isSystem
      * @param categoryId
      * @param articleSourceId
      * @return
      */
-    @RequestMapping(value = "/saveArticle",method = RequestMethod.POST)
+    @RequestMapping(value = "/saveArticle", method = RequestMethod.POST)
     @Transactional(value = "transactionManager")
     @ResponseBody
-    public ResultView saveArticle(Article article,Boolean isSystem,Long categoryId,int articleSourceId){
-        ResultView result=null;
+    public ResultView saveArticle(Article article, Boolean isSystem, Long categoryId, int articleSourceId) {
+        ResultView result = null;
         try {
             Long id = article.getId();
             Category category = categoryRepository.getOne(categoryId);
             ArticleSource articleSource = EnumUtils.valueOf(ArticleSource.class, articleSourceId);
-            if(id!=null)
-            {
+            if (id != null) {
                 Article articleOld = articleService.findById(article.getId());
                 article.setCreateTime(articleOld.getCreateTime());
                 article.setUpdateTime(LocalDateTime.now());
                 article.setLauds(articleOld.getLauds());
                 article.setScans(articleOld.getScans());
                 article.setUnlauds(articleOld.getUnlauds());
-            }
-            else{
+            } else {
                 article.setCreateTime(LocalDateTime.now());
                 article.setUpdateTime(LocalDateTime.now());
             }
@@ -154,19 +155,17 @@ public class ArticleController {
             article.setCategory(category);
             articleService.saveArticle(article);
             result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             log.error(ex.getMessage());
-            result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
+            result = new ResultView(ResultOptionEnum.FAILE.getCode(), ResultOptionEnum.FAILE.getValue(), null);
         }
-        return  result;
+        return result;
     }
 
 
     /**
-     *
      * 文章分页
+     *
      * @param customerId
      * @param title
      * @param page
@@ -175,14 +174,14 @@ public class ArticleController {
      */
     @RequestMapping(value = "/getArticleList")
     @ResponseBody
-    public PageData<ArticleCategory> getArticleList(@RequestParam(name="customerId",required = false) Integer customerId,
-                                                  @RequestParam(name="title",required = false) String title,
-                                                  @RequestParam(name = "page",required = true,defaultValue = "1") int page,
-                                                  @RequestParam(name = "pagesize",required = true,defaultValue = "20") int pageSize){
-        PageData<ArticleCategory> pageModel=  null;
-        try{
-        pageModel=  articleService.getPage(customerId,title, page, pageSize);
-        }catch (Exception ex){
+    public PageData<ArticleCategory> getArticleList(@RequestParam(name = "customerId", required = false) Integer customerId,
+                                                    @RequestParam(name = "title", required = false) String title,
+                                                    @RequestParam(name = "page", required = true, defaultValue = "1") int page,
+                                                    @RequestParam(name = "pagesize", required = true, defaultValue = "20") int pageSize) {
+        PageData<ArticleCategory> pageModel = null;
+        try {
+            pageModel = articleService.getPage(customerId, title, page, pageSize);
+        } catch (Exception ex) {
             log.error(ex.getMessage());
         }
         return pageModel;
@@ -190,37 +189,36 @@ public class ArticleController {
 
     /**
      * 删除文章,只有管理员才可做删除操作
+     *
      * @param id
      * @param customerId
      * @param request
      * @return
      */
-    @RequestMapping(value = "/deleteArticle",method = RequestMethod.POST)
+    @RequestMapping(value = "/deleteArticle", method = RequestMethod.POST)
     @ResponseBody
-    public ResultView deleteArticle(@RequestParam(name = "id",required = true,defaultValue = "0") Long id,int customerId,HttpServletRequest request) {
-        ResultView result=null;
-        try{
-            if(cookieUser.getCustomerId(request) == customerId) {
+    public ResultView deleteArticle(@RequestParam(name = "id", required = true, defaultValue = "0") Long id, int customerId, HttpServletRequest request) {
+        ResultView result = null;
+        try {
+            if (cookieUser.getCustomerId(request) == customerId) {
                 Article article = articleService.findById(id);
-                if(article.isSystem()==true){
-                    result=new ResultView(ResultOptionEnum.SYSTEM_ARTICLE.getCode(),ResultOptionEnum.SYSTEM_ARTICLE.getValue(),null);
-                    return  result;
+                if (article.isSystem() == true) {
+                    result = new ResultView(ResultOptionEnum.SYSTEM_ARTICLE.getCode(), ResultOptionEnum.SYSTEM_ARTICLE.getValue(), null);
+                    return result;
+                } else {
+                    articleRepository.delete(article);
+//                    article.setDeleted(true);
+//                    articleService.saveArticle(article);
+                    result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
                 }
-                else{
-                article.setDeleted(true);
-                articleService.saveArticle(article);
-                result=new ResultView(ResultOptionEnum.OK.getCode(),ResultOptionEnum.OK.getValue(),null);}
+            } else {
+                result = new ResultView(ResultOptionEnum.NO_LIMITS.getCode(), ResultOptionEnum.NO_LIMITS.getValue(), null);
             }
-            else {
-                result=new ResultView(ResultOptionEnum.NO_LIMITS.getCode(),ResultOptionEnum.NO_LIMITS.getValue(),null);
-            }
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             log.error(ex.getMessage());
-            result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
+            result = new ResultView(ResultOptionEnum.FAILE.getCode(), ResultOptionEnum.FAILE.getValue(), null);
         }
-        return  result;
+        return result;
     }
 
 

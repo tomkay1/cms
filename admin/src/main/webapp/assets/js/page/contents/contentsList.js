@@ -36,15 +36,15 @@ define(function (require, exports, module) {
             {width: '10%', field: 'title', title: '操作', align: 'center',
                 formatter: function (value, rowData) {
                     if(rowData.model=="gallery"){
-                        return    "<a href='javascript:' class='js-hot-contentsDelete' data-model='"+rowData.model+" 'data-id='"+rowData.id+"' style='margin-right:10px; color:blue;'>删除</a>" +
-                        "<a href='javascript:' class='js-hot-contentsUpdate'data-model='"+rowData.model+" ' data-id='"+rowData.id+"' style='margin-right:10px; color: blue'>修改</a>"+
-                        "<a href='javascript:' class='js-hot-contentsList'data-model='"+rowData.model+" ' data-id='"+rowData.id+"' style='margin-right:10px; color: blue'>查看详情</a>"
-                        + "<a href='javascript:' class='js-hot-addGalleryList'data-model='"+rowData.model+" ' data-id='"+rowData.id+"' style='margin-right:10px; color: blue'>添加图片</a>"+
-                        "<a href='javascript:' class='js-hot-galleryListDetail'data-model='"+rowData.model+" ' data-id='"+rowData.id+"' style='margin-right:10px; color: blue'>查看图库</a>"
+                        return    "<a href='javascript:' class='js-hot-contentsDelete' data-model='"+rowData.model+"' data-id='"+rowData.id+"' style='margin-right:10px; color:blue;'>删除</a>" +
+                        "<a href='javascript:' class='js-hot-contentsUpdate'data-model='"+rowData.model+"' data-id='"+rowData.id+"' style='margin-right:10px; color: blue'>修改</a>"+
+                        "<a href='javascript:' class='js-hot-contentsList'data-model='"+rowData.model+"' data-id='"+rowData.id+"' style='margin-right:10px; color: blue'>查看详情</a>"
+                        + "<a href='javascript:' class='js-hot-addGalleryList'data-model='"+rowData.model+"' data-id='"+rowData.id+"' style='margin-right:10px; color: blue'>添加图片</a>"+
+                        "<a href='javascript:' class='js-hot-galleryListDetail'data-model='"+rowData.model+"' data-id='"+rowData.id+"' style='margin-right:10px; color: blue'>查看图库</a>"
                     }else{
-                        return     "<a href='javascript:' class='js-hot-contentsDelete' data-model='"+rowData.model+" 'data-id='"+rowData.id+"' style='margin-right:10px; color:blue;'>删除</a>" +
-                        "<a href='javascript:' class='js-hot-contentsUpdate'data-model='"+rowData.model+" ' data-id='"+rowData.id+"' style='margin-right:10px; color: blue'>修改</a>"+
-                        "<a href='javascript:' class='js-hot-contentsList'data-model='"+rowData.model+" ' data-id='"+rowData.id+"' style='margin-right:10px; color: blue'>查看详情</a>"
+                        return     "<a href='javascript:' class='js-hot-contentsDelete' data-model='"+rowData.model+"' data-id='"+rowData.id+"' style='margin-right:10px; color:blue;'>删除</a>" +
+                        "<a href='javascript:' class='js-hot-contentsUpdate'data-model='"+rowData.model+"' data-id='"+rowData.id+"' style='margin-right:10px; color: blue'>修改</a>"+
+                        "<a href='javascript:' class='js-hot-contentsList'data-model='"+rowData.model+"' data-id='"+rowData.id+"' style='margin-right:10px; color: blue'>查看详情</a>"
                     }
                 }
             }
@@ -152,7 +152,6 @@ define(function (require, exports, module) {
     //删除
     function deleteContents(){
         var obj=$(".js-hot-contentsDelete");
-
         $.each(obj,function(item,dom){
             $(dom).click(function(){//绑定删除事件
                 var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;

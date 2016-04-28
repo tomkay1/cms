@@ -147,7 +147,15 @@ public class CategoryController {
      * */
     @RequestMapping(value = "/saveCategory",method = RequestMethod.POST)
     @ResponseBody
-    public ResultView saveCategory(String name, Integer model,Long siteId,Long parentId,Integer orderWeight,String rule,String template,String parentPath,Integer routeType){
+    public ResultView saveCategory(String name,
+                                   Integer model,
+                                   Long siteId,
+                                   Long parentId,
+                                   Integer orderWeight,
+                                   String rule,
+                                   String template,
+                                   String parentPath,
+                                   Integer routeType){
         ResultView result=null;
         try {
             Category category=new Category();
@@ -166,7 +174,7 @@ public class CategoryController {
                 category.setParent(categoryParent);
                 category.setCreateTime(LocalDateTime.now());
                 category.setUpdateTime(LocalDateTime.now());
-                log.error("site2-->"+site.hashCode());
+//                log.error("site2-->"+site.hashCode());
                 if (categoryService.saveCategoryAndRoute(category, rule, template
                         , EnumUtils.valueOf(RouteType.class, routeType))) {
                     result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);

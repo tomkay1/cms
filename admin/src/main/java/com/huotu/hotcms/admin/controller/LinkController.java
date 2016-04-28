@@ -5,6 +5,7 @@ import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.model.LinkCategory;
 import com.huotu.hotcms.service.repository.CategoryRepository;
+import com.huotu.hotcms.service.repository.LinkRepository;
 import com.huotu.hotcms.service.service.LinkService;
 import com.huotu.hotcms.service.util.PageData;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
@@ -38,6 +39,9 @@ public class LinkController {
     private LinkService linkService;
 
     @Autowired
+    private LinkRepository linkRepository;
+
+    @Autowired
     private StaticResourceService resourceServer;
 
     @Autowired
@@ -46,26 +50,25 @@ public class LinkController {
     private CookieUser cookieUser;
 
     /**
-     *
      * 链接列表页面
+     *
      * @param id
      * @return
      * @throws Exception
      */
     @RequestMapping("/linkList")
-    public ModelAndView linkList(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception
-    {
-        ModelAndView modelAndView=new ModelAndView();
-        try{
-        modelAndView.setViewName("/view/contents/linkList.html");
-        Link link= linkService.findById(id);
-        String logo_uri="";
-        if(!StringUtils.isEmpty(link.getThumbUri())) {
-            logo_uri = resourceServer.getResource(link.getThumbUri()).toString();
-        }
-        modelAndView.addObject("logo_uri",logo_uri);
-        modelAndView.addObject("link", link);
-        }catch (Exception ex){
+    public ModelAndView linkList(@RequestParam(value = "id", defaultValue = "0") Long id) throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
+        try {
+            modelAndView.setViewName("/view/contents/linkList.html");
+            Link link = linkService.findById(id);
+            String logo_uri = "";
+            if (!StringUtils.isEmpty(link.getThumbUri())) {
+                logo_uri = resourceServer.getResource(link.getThumbUri()).toString();
+            }
+            modelAndView.addObject("logo_uri", logo_uri);
+            modelAndView.addObject("link", link);
+        } catch (Exception ex) {
             log.error(ex.getMessage());
         }
         return modelAndView;
@@ -74,42 +77,43 @@ public class LinkController {
 
     /**
      * 添加链接
+     *
      * @param customerId
      * @return
      * @throws Exception
      */
     @RequestMapping(value = "/addLink")
-    public ModelAndView addLink(Integer customerId) throws Exception{
-        ModelAndView modelAndView=new ModelAndView();
+    public ModelAndView addLink(Integer customerId) throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/view/widget/addLink.html");
-        return  modelAndView;
+        return modelAndView;
     }
 
     /**
-     *
      * 修改链接
+     *
      * @param id
      * @param customerId
      * @return
      * @throws Exception
      */
     @RequestMapping("/updateLink")
-    public ModelAndView updateLink(@RequestParam(value = "id",defaultValue = "0") Long id,Integer customerId) throws Exception{
-        ModelAndView modelAndView=new ModelAndView();
-        try{
-        modelAndView.setViewName("/view/contents/updateLink.html");
-        Link link= linkService.findById(id);
-        String logo_uri="";
-        if(!StringUtils.isEmpty(link.getThumbUri())) {
-            logo_uri = resourceServer.getResource(link.getThumbUri()).toString();
-        }
-        Category category =link.getCategory();
-        Integer modelType = category.getModelId();
-        Set<Category> categorys=categoryRepository.findByCustomerIdAndModelId(customerId,modelType);
-        modelAndView.addObject("logo_uri",logo_uri);
-        modelAndView.addObject("categorys",categorys);
-        modelAndView.addObject("link",link);
-        }catch (Exception ex){
+    public ModelAndView updateLink(@RequestParam(value = "id", defaultValue = "0") Long id, Integer customerId) throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
+        try {
+            modelAndView.setViewName("/view/contents/updateLink.html");
+            Link link = linkService.findById(id);
+            String logo_uri = "";
+            if (!StringUtils.isEmpty(link.getThumbUri())) {
+                logo_uri = resourceServer.getResource(link.getThumbUri()).toString();
+            }
+            Category category = link.getCategory();
+            Integer modelType = category.getModelId();
+            Set<Category> categorys = categoryRepository.findByCustomerIdAndModelId(customerId, modelType);
+            modelAndView.addObject("logo_uri", logo_uri);
+            modelAndView.addObject("categorys", categorys);
+            modelAndView.addObject("link", link);
+        } catch (Exception ex) {
             log.error(ex.getMessage());
         }
         return modelAndView;
@@ -117,45 +121,42 @@ public class LinkController {
 
 
     /**
-     *
      * 保存链接
+     *
      * @param link
      * @param categoryId
      * @return
      */
-    @RequestMapping(value = "/saveLink",method = RequestMethod.POST)
+    @RequestMapping(value = "/saveLink", method = RequestMethod.POST)
     @Transactional(value = "transactionManager")
     @ResponseBody
-    public ResultView saveLink(Link link,Long categoryId){
-        ResultView result=null;
+    public ResultView saveLink(Link link, Long categoryId) {
+        ResultView result = null;
         try {
             Long id = link.getId();
             Category category = categoryRepository.getOne(categoryId);
-            if(id!=null)
-            {
+            if (id != null) {
                 Link linkOld = linkService.findById(link.getId());
                 link.setCreateTime(linkOld.getCreateTime());
                 link.setUpdateTime(LocalDateTime.now());
-            }
-            else{
+            } else {
                 link.setCreateTime(LocalDateTime.now());
                 link.setUpdateTime(LocalDateTime.now());
             }
             link.setCategory(category);
             linkService.saveLink(link);
             result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             log.error(ex.getMessage());
-            result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
+            result = new ResultView(ResultOptionEnum.FAILE.getCode(), ResultOptionEnum.FAILE.getValue(), null);
         }
-        return  result;
+        return result;
     }
 
 
     /**
      * 获取链接链表页内容
+     *
      * @param customerId
      * @param title
      * @param page
@@ -164,43 +165,41 @@ public class LinkController {
      */
     @RequestMapping(value = "/getLinkList")
     @ResponseBody
-    public PageData<LinkCategory> getLinkList(@RequestParam(name="customerId",required = false) Integer customerId,
-                                                    @RequestParam(name="title",required = false) String title,
-                                                    @RequestParam(name = "page",required = true,defaultValue = "1") int page,
-                                                    @RequestParam(name = "pagesize",required = true,defaultValue = "20") int pageSize){
-        PageData<LinkCategory> pageModel=linkService.getPage(customerId,title, page, pageSize);
+    public PageData<LinkCategory> getLinkList(@RequestParam(name = "customerId", required = false) Integer customerId,
+                                              @RequestParam(name = "title", required = false) String title,
+                                              @RequestParam(name = "page", required = true, defaultValue = "1") int page,
+                                              @RequestParam(name = "pagesize", required = true, defaultValue = "20") int pageSize) {
+        PageData<LinkCategory> pageModel = linkService.getPage(customerId, title, page, pageSize);
         return pageModel;
     }
 
     /**
-     *
      * 删除(管理员权限)
+     *
      * @param id
      * @param customerId
      * @param request
      * @return
      */
-    @RequestMapping(value = "/deleteLink",method = RequestMethod.POST)
+    @RequestMapping(value = "/deleteLink", method = RequestMethod.POST)
     @ResponseBody
-    public ResultView deleteLink(@RequestParam(name = "id",required = true,defaultValue = "0") Long id,int customerId,HttpServletRequest request) {
-        ResultView result=null;
-        try{
-            if(cookieUser.getCustomerId(request) == customerId) {
+    public ResultView deleteLink(@RequestParam(name = "id", required = true, defaultValue = "0") Long id, int customerId, HttpServletRequest request) {
+        ResultView result = null;
+        try {
+            if (cookieUser.getCustomerId(request) == customerId) {
                 Link link = linkService.findById(id);
-                link.setDeleted(true);
-                linkService.saveLink(link);
-                result=new ResultView(ResultOptionEnum.OK.getCode(),ResultOptionEnum.OK.getValue(),null);
+                linkRepository.delete(link);
+//                link.setDeleted(true);
+//                linkService.saveLink(link);
+                result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
+            } else {
+                result = new ResultView(ResultOptionEnum.NO_LIMITS.getCode(), ResultOptionEnum.NO_LIMITS.getValue(), null);
             }
-            else {
-                result=new ResultView(ResultOptionEnum.NO_LIMITS.getCode(),ResultOptionEnum.NO_LIMITS.getValue(),null);
-            }
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             log.error(ex.getMessage());
-            result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
+            result = new ResultView(ResultOptionEnum.FAILE.getCode(), ResultOptionEnum.FAILE.getValue(), null);
         }
-        return  result;
+        return result;
     }
 
 

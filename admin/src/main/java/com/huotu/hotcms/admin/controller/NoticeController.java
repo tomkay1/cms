@@ -5,6 +5,7 @@ import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Notice;
 import com.huotu.hotcms.service.model.NoticeCategory;
 import com.huotu.hotcms.service.repository.CategoryRepository;
+import com.huotu.hotcms.service.repository.NoticeRepository;
 import com.huotu.hotcms.service.service.NoticeService;
 import com.huotu.hotcms.service.util.PageData;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
@@ -34,6 +35,9 @@ public class NoticeController {
 
     @Autowired
     private NoticeService noticeService;
+
+    @Autowired
+    private NoticeRepository noticeRepository;
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -176,8 +180,9 @@ public class NoticeController {
         try{
             if(cookieUser.getCustomerId(request) == customerId) {
                 Notice notice = noticeService.findById(id);
-                notice.setDeleted(true);
-                noticeService.saveNotice(notice);
+                noticeRepository.delete(notice);
+//                notice.setDeleted(true);
+//                noticeService.saveNotice(notice);
                 result=new ResultView(ResultOptionEnum.OK.getCode(),ResultOptionEnum.OK.getValue(),null);
             }
             else {

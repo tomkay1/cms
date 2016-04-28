@@ -40,9 +40,6 @@ import java.util.List;
 @Component
 public class VideoForeachProcessor {
     private static final Log log = LogFactory.getLog(VideoForeachProcessor.class);
-    private final int DEFAULT_PAGE_NO = 1;
-    private final int DEFAULT_PAGE_SIZE = 12;
-    private final int DEFAULT_PAGE_NUMBER = 5;
     @Autowired
     private CategoryService categoryService;
     @Autowired
@@ -60,50 +57,53 @@ public class VideoForeachProcessor {
             HttpServletRequest request = ((IWebContext)context).getRequest();
             Route route = (Route) VariableExpression.getVariable(context, "route");
             Category current = categoryService.getCategoryByRoute(route);
-            if(StringUtils.isEmpty(videoForeachParam.getCategoryid())) {
+            if(StringUtils.isEmpty(videoForeachParam.getCategoryId())) {
                 if(route.getRouteType()== RouteType.VIDEO_LIST) {
-                    videoForeachParam.setCategoryid(current.getId());
+                    videoForeachParam.setCategoryId(current.getId());
                 }
             }
-            if(StringUtils.isEmpty(videoForeachParam.getParentcid())) {
+            if(StringUtils.isEmpty(videoForeachParam.getParentcId())) {
                 //如果不是具体子栏目，应取得当前栏目所有一级子栏目数据列表
                 if(route.getRouteType()!=RouteType.VIDEO_LIST) {
-                    videoForeachParam.setParentcid(current.getId());
+                    videoForeachParam.setParentcId(current.getId());
                 }
             }
-            if(videoForeachParam.getPageno() == null) {
-                if(StringUtils.isEmpty(request.getParameter("pageNo"))) {
-                    videoForeachParam.setPageno(DEFAULT_PAGE_NO);
-                }else {
-                    int pageNo = Integer.parseInt(request.getParameter("pageNo"));
-                    if(pageNo < 1) {
-                        throw new Exception("页码小于1");
-                    }
-                    videoForeachParam.setPageno(pageNo);
-                }
-            }
-            if(videoForeachParam.getPagesize() == null) {
-                if(StringUtils.isEmpty(request.getParameter("pageSize"))) {
-                    videoForeachParam.setPagesize(DEFAULT_PAGE_SIZE);
-                }else {
-                    int pageSize = Integer.parseInt(request.getParameter("pageSize"));
-                    if(pageSize < 1) {
-                        throw new Exception("请求数据列表容量小于1");
-                    }
-                    videoForeachParam.setPagesize(pageSize);
-                }
-            }
-            if(videoForeachParam.getPagenumber() == null) {
-                videoForeachParam.setPagenumber(DEFAULT_PAGE_NUMBER);
-            }
+            videoForeachParam=dialectAttributeFactory.getForeachParamByRequest(request,videoForeachParam);
+            ///代码重构，以下部分为1.0版本,这里保留是为了后面出现问题遗留,后面测试没问题后，直接删除
+//            if(videoForeachParam.getPageNo() == null) {
+//                if(StringUtils.isEmpty(request.getParameter("pageNo"))) {
+//                    videoForeachParam.setPageNo(DEFAULT_PAGE_NO);
+//                }else {
+//                    int pageNo = Integer.parseInt(request.getParameter("pageNo"));
+//                    if(pageNo < 1) {
+//                        throw new Exception("页码小于1");
+//                    }
+//                    videoForeachParam.setPageNo(pageNo);
+//                }
+//            }
+//            if(videoForeachParam.getPageSize() == null) {
+//                if(StringUtils.isEmpty(request.getParameter("pageSize"))) {
+//                    videoForeachParam.setPageSize(DEFAULT_PAGE_SIZE);
+//                }else {
+//                    int pageSize = Integer.parseInt(request.getParameter("pageSize"));
+//                    if(pageSize < 1) {
+//                        throw new Exception("请求数据列表容量小于1");
+//                    }
+//                    videoForeachParam.setPageSize(pageSize);
+//                }
+//            }
+//            if(videoForeachParam.getPageNumber() == null) {
+//                videoForeachParam.setPageNumber(DEFAULT_PAGE_NUMBER);
+//            }
             videoPage = videoService.getVideoList(videoForeachParam);
             //图片路径处理
             Site site = (Site)VariableExpression.getVariable(context,"site");
             for(Video video : videoPage) {
                 video.setThumbUri(site.getResourceUrl()+video.getThumbUri());
             }
+            dialectAttributeFactory.setPageList(videoForeachParam,videoPage,context);
             //形成页码列表
-            setPageList(videoForeachParam,videoPage,context);
+//            setPageList(videoForeachParam,videoPage,context);
         }catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -111,10 +111,10 @@ public class VideoForeachProcessor {
     }
 
     private void setPageList(PageableForeachParam videoForeachParam,Page<Video> videoPage,ITemplateContext context) {
-        int currentPage = videoForeachParam.getPageno();
+        int currentPage = videoForeachParam.getPageNo();
         int totalPages = videoPage.getTotalPages();
-        int pageNumber = DEFAULT_PAGE_NUMBER < totalPages ? DEFAULT_PAGE_NUMBER : totalPages;
-        int startPage = calculateStartPageNo(currentPage,pageNumber,totalPages);
+        int pageNumber = videoForeachParam.getPageNumber() < totalPages ? videoForeachParam.getPageNumber() : totalPages;
+        int startPage =dialectAttributeFactory.calculateStartPageNo(currentPage,pageNumber,totalPages);
         List<PageModel> pages = new ArrayList<>();
         for(int i=1;i<=pageNumber;i++) {
             PageModel pageModel = new PageModel();
@@ -134,12 +134,5 @@ public class VideoForeachProcessor {
         }
         requestModel.setHasPrevPage(videoPage.hasPrevious());
         requestModel.setCurrentPage(currentPage);
-    }
-
-    private int calculateStartPageNo(int currentPage, int pageNumber, int totalPages) {
-        if(pageNumber == totalPages) {
-            return 1;
-        }
-        return currentPage - pageNumber + 1 < 1 ? 1 : currentPage - pageNumber + 1;
     }
 }

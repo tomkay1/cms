@@ -1,5 +1,6 @@
 package com.huotu.hotcms.service.model.thymeleaf.format;
 
+import com.huotu.hotcms.service.model.thymeleaf.foreach.Rename;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,5 +14,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TimeFormatParam {
-    private String format;
+    @Rename("format")
+    public String format;
 }

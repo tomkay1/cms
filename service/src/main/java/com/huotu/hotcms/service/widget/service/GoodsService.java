@@ -36,6 +36,7 @@ public interface GoodsService {
      */
     GoodsPage searchGoods(HttpServletRequest request,int customerId, GoodsSearcher goodsSearcher) throws Exception;
 
+
     /**
      * 热销产品
      *  搜索销量前十的产品

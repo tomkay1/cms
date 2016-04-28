@@ -41,9 +41,7 @@ import java.util.List;
 public class GalleryForeachProcessor {
 
     private static Log log = LogFactory.getLog(GalleryForeachProcessor.class);
-    private final int DEFAULT_PAGE_NO = 1;
-    private final int DEFAULT_PAGE_SIZE = 12;
-    private final int DEFAULT_PAGE_NUMBER = 5;
+
     @Autowired
     private CategoryService categoryService;
     @Autowired
@@ -59,73 +57,75 @@ public class GalleryForeachProcessor {
             PageableForeachParam galleryForeachParam =dialectAttributeFactory.getForeachParam(elementTag
                     , PageableForeachParam.class);
             Route route = (Route) VariableExpression.getVariable(context, "route");
-            if(StringUtils.isEmpty(galleryForeachParam.getCategoryid())) {
+            if(StringUtils.isEmpty(galleryForeachParam.getCategoryId())) {
                 if(route.getRouteType()== RouteType.GALLERY_CONTENT) {
                     Category current = categoryService.getCategoryByRoute(route);
-                    galleryForeachParam.setCategoryid(current.getId());
+                    galleryForeachParam.setCategoryId(current.getId());
                 }
             }
             //如果不是具体子栏目，应取得当前栏目所有一级子栏目数据列表
-            if(StringUtils.isEmpty(galleryForeachParam.getParentcid())) {
+            if(StringUtils.isEmpty(galleryForeachParam.getParentcId())) {
                 if(route.getRouteType()!=RouteType.GALLERY_CONTENT && route.getRouteType()!=RouteType.GALLERY_CONTENT) {
                     Category current = categoryService.getCategoryByRoute(route);
-                    galleryForeachParam.setParentcid(current.getId());
+                    galleryForeachParam.setParentcId(current.getId());
                 }
             }
-            if(galleryForeachParam.getPageno() == null) {
-                if(StringUtils.isEmpty(request.getParameter("pageNo"))) {
-                    galleryForeachParam.setPageno(DEFAULT_PAGE_NO);
-                }else {
-                    int pageNo = Integer.parseInt(request.getParameter("pageNo"));
-                    if(pageNo < 1) {
-                        throw new Exception("页码小于1");
-                    }
-                    galleryForeachParam.setPageno(pageNo);
-                }
-            }
-            if(galleryForeachParam.getPagesize() == null) {
-                if(StringUtils.isEmpty(request.getParameter("pageSize"))) {
-                    galleryForeachParam.setPagesize(DEFAULT_PAGE_SIZE);
-                }else {
-                    int pageSize = Integer.parseInt(request.getParameter("pageSize"));
-                    if(pageSize < 1) {
-                        throw new Exception("请求数据列表容量小于1");
-                    }
-                    galleryForeachParam.setPagesize(pageSize);
-                }
-            }
-            if(galleryForeachParam.getPagenumber() == null) {
-                galleryForeachParam.setPagenumber(DEFAULT_PAGE_NUMBER);
-            }
+            galleryForeachParam=dialectAttributeFactory.getForeachParamByRequest(request, galleryForeachParam);
+//            if(galleryForeachParam.getPageNo() == null) {
+//                if(StringUtils.isEmpty(request.getParameter("pageNo"))) {
+//                    galleryForeachParam.setPageNo(DEFAULT_PAGE_NO);
+//                }else {
+//                    int pageNo = Integer.parseInt(request.getParameter("pageNo"));
+//                    if(pageNo < 1) {
+//                        throw new Exception("页码小于1");
+//                    }
+//                    galleryForeachParam.setPageNo(pageNo);
+//                }
+//            }
+//            if(galleryForeachParam.getPageSize() == null) {
+//                if(StringUtils.isEmpty(request.getParameter("pageSize"))) {
+//                    galleryForeachParam.setPageSize(DEFAULT_PAGE_SIZE);
+//                }else {
+//                    int pageSize = Integer.parseInt(request.getParameter("pageSize"));
+//                    if(pageSize < 1) {
+//                        throw new Exception("请求数据列表容量小于1");
+//                    }
+//                    galleryForeachParam.setPageSize(pageSize);
+//                }
+//            }
+//            if(galleryForeachParam.getPageNumber() == null) {
+//                galleryForeachParam.setPageNumber(DEFAULT_PAGE_NUMBER);
+//            }
             galleries = galleryService.getGalleryList(galleryForeachParam);
             //图片路径处理
             Site site = (Site)VariableExpression.getVariable(context,"site");
             for(Gallery gallery : galleries) {
                 gallery.setThumbUri(site.getResourceUrl() + gallery.getThumbUri());
             }
-            List<PageModel> pages = new ArrayList<>();
-            int currentPage = galleryForeachParam.getPageno();
-            int totalPages = galleries.getTotalPages();
-            int pageNumber = DEFAULT_PAGE_NUMBER < totalPages ? DEFAULT_PAGE_NUMBER : totalPages;
-            int startPage = calculateStartPageNo(currentPage,pageNumber,totalPages);
-            for(int i=1;i<=pageNumber;i++) {
-                PageModel pageModel = new PageModel();
-                pageModel.setPageNo(startPage);
-                pageModel.setPageHref("?pageNo=" + startPage);
-                pages.add(pageModel);
-                startPage++;
-            }
-            RequestModel requestModel = (RequestModel)VariableExpression.getVariable(context,"request");
-            requestModel.setPages(pages);
-            requestModel.setHasNextPage(galleries.hasNext());
-            if(galleries.hasNext()) {
-                requestModel.setNextPageHref("?pageNo=" + (currentPage + 1));
-            }
-            if(galleries.hasPrevious()) {
-                requestModel.setPrevPageHref("?pageNo=" + (currentPage - 1));
-            }
-            requestModel.setHasPrevPage(galleries.hasPrevious());
-            requestModel.setCurrentPage(currentPage);
+            dialectAttributeFactory.setPageList(galleryForeachParam,galleries,context);
+//            List<PageModel> pages = new ArrayList<>();
+//            int currentPage = galleryForeachParam.getPageNo();
+//            int totalPages = galleries.getTotalPages();
+//            int pageNumber = galleryForeachParam.getPageNumber() < totalPages ? galleryForeachParam.getPageNumber() : totalPages;
+//            int startPage = calculateStartPageNo(currentPage,pageNumber,totalPages);
+//            for(int i=1;i<=pageNumber;i++) {
+//                PageModel pageModel = new PageModel();
+//                pageModel.setPageNo(startPage);
+//                pageModel.setPageHref("?pageNo=" + startPage);
+//                pages.add(pageModel);
+//                startPage++;
+//            }
+//            RequestModel requestModel = (RequestModel)VariableExpression.getVariable(context,"request");
+//            requestModel.setPages(pages);
+//            requestModel.setHasNextPage(galleries.hasNext());
+//            if(galleries.hasNext()) {
+//                requestModel.setNextPageHref("?pageNo=" + (currentPage + 1));
+//            }
+//            if(galleries.hasPrevious()) {
+//                requestModel.setPrevPageHref("?pageNo=" + (currentPage - 1));
+//            }
+//            requestModel.setHasPrevPage(galleries.hasPrevious());
+//            requestModel.setCurrentPage(currentPage);
         }catch (Exception e) {
             log.error("galleryForeach process-->"+e.getMessage());
         }

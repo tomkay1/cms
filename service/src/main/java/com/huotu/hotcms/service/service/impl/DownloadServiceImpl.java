@@ -54,14 +54,14 @@ public class DownloadServiceImpl implements DownloadService {
         Sort sort = new Sort(Sort.Direction.DESC,"orderWeight");
         Specification<Link> specification = (root, query, cb) -> {
             List<Predicate> predicates;
-            if(!StringUtils.isEmpty(param.getExcludeids())) {
-                List<String> ids = Arrays.asList(param.getExcludeids());
+            if(!StringUtils.isEmpty(param.getExcludeIds())) {
+                List<String> ids = Arrays.asList(param.getExcludeIds());
                 List<Long> linkIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
                 predicates = linkIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class),id)).collect(Collectors.toList());
             }else {
                 predicates = new ArrayList<>();
             }
-            predicates.add(cb.equal(root.get("category").get("id").as(Long.class),param.getCategoryid()));
+            predicates.add(cb.equal(root.get("category").get("id").as(Long.class),param.getCategoryId()));
             predicates.add(cb.equal(root.get("deleted").as(Boolean.class),false));
             return cb.and(predicates.toArray(new Predicate[predicates.size()]));
         };

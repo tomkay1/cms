@@ -53,13 +53,13 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public Page<Video> getVideoList(PageableForeachParam videoForeachParam) {
-        int pageIndex = videoForeachParam.getPageno()-1;
-        int pageSize = videoForeachParam.getPagesize();
+        int pageIndex = videoForeachParam.getPageNo()-1;
+        int pageSize = videoForeachParam.getPageSize();
         Sort sort = new Sort(Sort.Direction.DESC, "orderWeight");
-        if(!StringUtils.isEmpty(videoForeachParam.getSpecifyids())) {
-            return getSpecifyVideos(videoForeachParam.getSpecifyids(), pageIndex, pageSize, sort);
+        if(!StringUtils.isEmpty(videoForeachParam.getSpecifyIds())) {
+            return getSpecifyVideos(videoForeachParam.getSpecifyIds(), pageIndex, pageSize, sort);
         }
-        if(!StringUtils.isEmpty(videoForeachParam.getCategoryid())) {
+        if(!StringUtils.isEmpty(videoForeachParam.getCategoryId())) {
             return getVideos(videoForeachParam, pageIndex, pageSize, sort);
         }else {
             return getAllVideo(videoForeachParam, pageIndex, pageSize, sort);
@@ -67,7 +67,7 @@ public class VideoServiceImpl implements VideoService {
     }
 
     private Page<Video> getAllVideo(PageableForeachParam params, int pageIndex, int pageSize, Sort sort) {
-        List<Category> subCategories =  categoryService.getSubCategories(params.getParentcid());
+        List<Category> subCategories =  categoryService.getSubCategories(params.getParentcId());
         if(subCategories.size()==0) {
             try {
                 throw new Exception("父栏目节点没有子栏目");
@@ -82,8 +82,8 @@ public class VideoServiceImpl implements VideoService {
             }
             Predicate predicate = cb.or(p1.toArray(new Predicate[p1.size()]));
             List<Predicate> predicates = new ArrayList<>();
-            if(!StringUtils.isEmpty(params.getExcludeids())) {
-                List<String> ids = Arrays.asList(params.getExcludeids());
+            if(!StringUtils.isEmpty(params.getExcludeIds())) {
+                List<String> ids = Arrays.asList(params.getExcludeIds());
                 List<Long> articleIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
                 predicates = articleIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
             }
@@ -97,13 +97,13 @@ public class VideoServiceImpl implements VideoService {
     private Page<Video> getVideos(PageableForeachParam params, int pageIndex, int pageSize, Sort sort) {
         Specification<Article> specification = (root, criteriaQuery, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
-            if(!StringUtils.isEmpty(params.getExcludeids())) {
-                List<String> ids = Arrays.asList(params.getExcludeids());
+            if(!StringUtils.isEmpty(params.getExcludeIds())) {
+                List<String> ids = Arrays.asList(params.getExcludeIds());
                 List<Long> articleIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
                 predicates = articleIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
             }
             predicates.add(cb.equal(root.get("deleted").as(Boolean.class),false));
-            predicates.add(cb.equal(root.get("category").get("id").as(Long.class), params.getCategoryid()));
+            predicates.add(cb.equal(root.get("category").get("id").as(Long.class), params.getCategoryId()));
             return cb.and(predicates.toArray(new Predicate[predicates.size()]));
         };
         return videoRepository.findAll(specification,new PageRequest(pageIndex,pageSize,sort));

@@ -10,15 +10,29 @@ package com.huotu.hotcms.service.thymeleaf.expression;
 
 import com.huotu.hotcms.service.common.EnumUtils;
 import com.huotu.hotcms.service.common.RouteType;
+import com.huotu.hotcms.service.common.SysConstant;
+import com.huotu.hotcms.service.entity.BaseEntity;
+import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.entity.Video;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.BaseForeachParam;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.Rename;
+import com.huotu.hotcms.service.thymeleaf.model.PageModel;
+import com.huotu.hotcms.service.thymeleaf.model.RequestModel;
 import com.huotu.hotcms.service.util.HttpUtils;
-import com.huotu.hotcms.service.widget.model.GoodsSearcher;
+import com.huotu.hotcms.service.util.PageUtils;
+import com.huotu.hotcms.service.util.StringUtil;
+import com.huotu.hotcms.service.widget.model.BasePage;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.engine.AttributeName;
 import org.thymeleaf.model.IElementAttributes;
 import org.thymeleaf.model.IProcessableElementTag;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,15 +40,39 @@ import java.util.List;
  */
 @Component
 public class DialectAttributeFactory {
+    private final String DEFAULT_PAGE_NO = "1";
+    private final String DEFAULT_PAGE_SIZE = "12";
+    private final String DEFAULT_PAGE_NUMBER = "5";
 
+    private Field getField(String rename,Object object){
+        Field[] fields=object.getClass().getFields();
+        for(Field fields1:fields){
+            Rename rename1=fields1.getAnnotation(Rename.class);
+            if(rename1.value().equals(rename)){
+                return  fields1;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 根据html 元素获得需要交给thymeleaf解析引擎的准备参数model
+     * 每一个方言对应一个参数实体类
+     *
+     * @param elementTag html 中的dom元素 IProcessableElementTag
+     * @param t
+     * @param <T>
+     * @return
+     * @throws Exception
+     */
     public <T> T getForeachParam(IProcessableElementTag elementTag, Class<T> t) throws Exception {
         T obj = t.newInstance();
         IElementAttributes elementAttributes = elementTag.getAttributes();
         List<AttributeName> attributeNames = elementAttributes.getAllAttributeNames();
         for (AttributeName attr : attributeNames) {
             String paramValue = elementAttributes.getValue(attr);
-            try {
-                Field field = t.getDeclaredField(attr.getAttributeName());
+            Field field =getField(attr.getAttributeName(),obj);
+            if(field!=null) {
                 field.setAccessible(true);
                 Class<?> classType = field.getType();
                 if (classType == Integer.class) {
@@ -52,7 +90,6 @@ public class DialectAttributeFactory {
                 } else {
                     field.set(obj, paramValue);
                 }
-            } catch (NoSuchFieldException ignored) {
             }
         }
         return obj;
@@ -93,5 +130,141 @@ public class DialectAttributeFactory {
             }
         }
         return obj2;
+    }
+
+
+    private <T> T getObjectByFiled(Object object,Field field,String paramValue) throws IllegalAccessException {
+        T obj=(T)object;
+        field.setAccessible(true);
+        Class<?> classType = field.getType();
+        if (classType == Integer.class) {
+            field.set(obj, Integer.parseInt(paramValue));
+        } else if (classType == Long.class) {
+            field.set(obj, Long.parseLong(paramValue));
+        } else if (classType == Double.class) {
+            field.set(obj, Double.parseDouble(paramValue));
+        } else if (classType == String.class) {
+            field.set(obj, paramValue);
+        } else if (classType == String[].class) {
+            field.set(obj, paramValue.split(","));
+        } else if (classType == RouteType.class) {
+            field.set(obj, EnumUtils.valueOf(RouteType.class, Integer.parseInt(paramValue)));
+        } else {
+            field.set(obj, paramValue);
+        }
+        return obj;
+    }
+
+    /**
+     * 根据请求环境获得解析需要的Model  xhl 1.2
+     * @param request http 请求的request 上下文
+     * @param object  目标对象
+     * @param <T>
+     * @return
+     * @throws Exception
+     */
+    public <T> T getForeachParamByRequest(HttpServletRequest request,Object object) throws Exception {
+        T resultObj=(T)object;
+        Field[] fields=object.getClass().getFields();
+        for(Field field:fields){
+            String name=field.getName();
+            String attrName = StringUtil.toUpperCase(name);
+            Object obj=object.getClass().getMethod("get" + attrName).invoke(object);
+            if(obj==null){
+                if(name=="pageNo"){
+                    if(StringUtils.isEmpty(request.getParameter("pageNo"))){
+                        resultObj=getObjectByFiled(resultObj,field,DEFAULT_PAGE_NO);
+                    }else{
+                        int pageNo = Integer.parseInt(request.getParameter("pageNo"));
+                        if(pageNo < 1) {
+                            throw new Exception("页码小于1");
+                        }else {
+                            resultObj = getObjectByFiled(resultObj, field, request.getParameter("pageNo"));
+                        }
+                    }
+                }
+                if(name=="pageSize"){
+                    if(StringUtils.isEmpty(request.getParameter("pageSize"))){
+                        resultObj=getObjectByFiled(resultObj,field,DEFAULT_PAGE_SIZE);
+                    }else{
+                        resultObj=getObjectByFiled(resultObj,field,request.getParameter("pageSize"));
+                    }
+                }
+                if(name=="pageNumber"){
+                    resultObj=getObjectByFiled(resultObj,field,DEFAULT_PAGE_NUMBER);
+                }
+            }
+        }
+        return resultObj;
+    }
+
+    /**
+     * 计算页码,分页扩展方言使用  xhl 1.2 代码重构
+     *
+     * @param currentPage
+     * @param pageNumber
+     * @param totalPages
+     * @return
+     */
+    public int calculateStartPageNo(int currentPage, int pageNumber, int totalPages) {
+        if(pageNumber == totalPages) {
+            return 1;
+        }
+        return currentPage - pageNumber + 1 < 1 ? 1 : currentPage - pageNumber + 1;
+    }
+
+    /**
+     * 设置分页相关信息对象
+     * 设置后,页面上可以通过cms 扩展的内置对象request来获得相关分页信息,比如${request.hasPrevPage} xhl 1.2 代码重构
+     *
+     * @param baseForeachParam 分页循环基本实体类
+     * @param Page 页面数据
+     * @param context
+     */
+    public <T> void setPageList(BaseForeachParam baseForeachParam,Page<T> Page,ITemplateContext context) {
+        int currentPage = baseForeachParam.getPageNo();
+        int totalPages = Page.getTotalPages();
+        int pageNumber = baseForeachParam.getPageNumber() < totalPages ? baseForeachParam.getPageNumber() : totalPages;
+        int startPage =calculateStartPageNo(currentPage,pageNumber,totalPages);
+        List<PageModel> pages = new ArrayList<>();
+        for(int i=1;i<=pageNumber;i++) {
+            PageModel pageModel = new PageModel();
+            pageModel.setPageNo(startPage);
+            pageModel.setPageHref("?pageNo=" + startPage);
+            pages.add(pageModel);
+            startPage++;
+        }
+        RequestModel requestModel = (RequestModel)VariableExpression.getVariable(context,"request");
+        requestModel.setPages(pages);
+        requestModel.setHasNextPage(Page.hasNext());
+        if(Page.hasNext()) {
+            requestModel.setNextPageHref("?pageNo=" + (currentPage + 1));
+        }
+        if(Page.hasPrevious()) {
+            requestModel.setPrevPageHref("?pageNo=" + (currentPage - 1));
+        }
+        requestModel.setHasPrevPage(Page.hasPrevious());
+        requestModel.setCurrentPage(currentPage);
+    }
+
+    public void setPageList(ITemplateContext context, BasePage goodsPage) {
+        //分页标签处理
+        RequestModel requestModel = (RequestModel) VariableExpression.getVariable(context, "request");
+        int pageNo = goodsPage.getPageNo() + 1;
+        int totalPages = goodsPage.getTotalPages();
+        int pageBtnNum = totalPages > SysConstant.DEFAULT_PAGE_BUTTON_NUM ? SysConstant.DEFAULT_PAGE_BUTTON_NUM : totalPages;
+        int startPageNo = PageUtils.calculateStartPageNo(pageNo, pageBtnNum, totalPages);
+        List<Integer> pageNos = new ArrayList<>();
+        for (int i = 1; i <= pageBtnNum; i++) {
+            pageNos.add(startPageNo);
+            startPageNo++;
+        }
+        requestModel.setCurrentPage(pageNo);
+        requestModel.setTotalPages(totalPages);
+        //没有数据时前台页面显示 第1页/共1页
+        requestModel.setTotalRecords(goodsPage.getTotalRecords() == 0 ? 1 : goodsPage.getTotalRecords());
+        requestModel.setHasPrevPage(pageNo > 1);
+        requestModel.setHasNextPage(pageNo < totalPages);
+        requestModel.setPageNos(pageNos);
     }
 }

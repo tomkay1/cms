@@ -46,7 +46,6 @@ public class ForeachProcessorService {
     @Autowired
     private GalleryListForeachProcessor galleryListForeachProcessor;
 
-
     public Object resolveDataByAttr(String dialectPrefix, IProcessableElementTag elementTag, ITemplateContext context) {
         if(dialectPrefix.equals(DialectTypeEnum.ARTICLE.getDialectPrefix())) {
             return articleForeachProcessor.process(elementTag, context);

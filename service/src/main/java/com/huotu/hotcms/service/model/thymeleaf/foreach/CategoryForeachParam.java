@@ -23,31 +23,36 @@ public class CategoryForeachParam {
     /**
      * 所属站点Id
      */
-    private Long siteid;
+    @Rename("siteid")
+    public Long siteId;
 
     /**
      * 路由类型
      */
-    private RouteType routetype;
+    @Rename("routetype")
+    public RouteType routeType;
 
     /**
      * 父节点id
      */
-    private Long parentid;
+    @Rename("parentid")
+    public Long parentId;
 
     /**
      * 取得列表大小
      */
-    private Integer size;
+    @Rename("size")
+    public Integer size;
 
     /**
      * 获取列表时排除的主键Id(可排除多个，逗号分隔)
      */
-    protected String[] excludeids;
+    @Rename("excludeids")
+    public String[] excludeIds;
 
     /**
      * 获取指定Id的列表(可指定多个，逗号分隔)
      */
-    protected String[] specifyids;
-
+    @Rename("specifyids")
+    public String[] specifyIds;
 }

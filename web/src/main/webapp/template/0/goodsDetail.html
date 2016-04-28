@@ -305,12 +305,12 @@
 
             for (i = 0; i < products.length; i++) {
                 var x =products[i].spec+',';
-                var savePrice= products[i].marketPrice-products[i].price;//省的价格
+                var savePrice= parseDouble(products[i].marketPrice-products[i].price);//省的价格
                 if(spec == x){//当筛选出正确的productId
-                    $("#goodsTitle").text(products[i].name);//修改产品价格
-                    $("#userPrice").text(products[i].price);//修改产品价格
-                    $("#normalPrice").text(products[i].marketPric);//修改市场价格
-                    $("#lsls").text("立省"+savePrice.toString()+'元');//修改市场价格
+                    $("#goodsTitle").text(parseDouble(products[i].name));//修改产品价格
+                    $("#userPrice").text(parseDouble(products[i].price));//修改产品价格
+                    $("#normalPrice").text(parseDouble(products[i].marketPric));//修改市场价格
+                    $("#lsls").text("立省"+parseDouble(savePrice).toString()+'元');//修改市场价格
                     $("#stock-num").text('库存数: '+products[i].stock+' 件') ;//修改产品库存
                 }
             }

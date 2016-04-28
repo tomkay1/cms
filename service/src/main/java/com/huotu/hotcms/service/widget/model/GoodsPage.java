@@ -19,14 +19,10 @@ import java.util.List;
  */
 @Getter
 @Setter
-public class GoodsPage {
+public class GoodsPage extends BasePage {
 
     List<GoodsModel> goodses;
 
-    private int pageNo;
 
-    private int totalPages;
-
-    private long totalRecords;
 
 }

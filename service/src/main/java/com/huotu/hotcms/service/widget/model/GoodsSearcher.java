@@ -7,6 +7,7 @@
  */
 
 package com.huotu.hotcms.service.widget.model;
+import com.huotu.hotcms.service.model.thymeleaf.foreach.Rename;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,45 +22,55 @@ public class GoodsSearcher {
     /**
      * 商品分类主键id
      */
-    private Long goodsCatId;
+    @Rename("goodscatid")
+    public Long goodsCatId;
     /**
      * 商品类型主键id
      */
-    private Integer goodsTypeId;
+    @Rename("goodstypeid")
+    public Integer goodsTypeId;
     /**
      * 品牌主键id
      */
-    private Long brandId;
+    @Rename("brandid")
+    public Long brandId;
     /**
      * 起始销售价格(闭合，如果会员是登录状态则查询的应该是会员价)
      */
-    private Double minPrice;
+    @Rename("minprice")
+    public Double minPrice;
     /**
      * 结束销售价格(闭合，如果会员是登录状态则查询的应该是会员价)
      */
-    private Double maxPrice;
+    @Rename("maxprice")
+    public Double maxPrice;
     /**
      * 会员主键id（用于查询会员价）
      */
-    private Long userId;
+    @Rename("userid")
+    public Long userId;
     /**
      * 商品关键字（可模糊匹配）
      */
-    private String keyword;
+    @Rename("keyword")
+    public String keyword;
     /**
      * 页码
      */
-    private Integer page;
+    @Rename("page")
+    public Integer page;
 
     /**
-     * 没页显示的数量
+     * 每页显示的数量
      * */
-    private Integer pagesize;
+    @Rename("pagesize")
+    public Integer pagesize;
     /**
      * 排序(propertyName[,desc|asc]，排序方向默认asc，这个参数支持多个以达成多条件排序)
      * 举例：http://(……)&sort=price,desc&sort=salesCount,asc
      */
-    private String[] sort;
+    @Rename("sort")
+    public String[] sort;
 
     public GoodsSearcher init(GoodsSearcher goodsSearcher){
         if(goodsSearcher.getSort() == null){

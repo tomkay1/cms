@@ -1,5 +1,6 @@
 package com.huotu.hotcms.service.model.thymeleaf.next;
 
+import com.huotu.hotcms.service.model.thymeleaf.foreach.Rename;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,5 +14,6 @@ public class ArticlePreviousParam {
     /**
      * 当前文章ID,根据该ID来获得上一条文章
      * */
-    private Long id;
+    @Rename("id")
+    public Long id;
 }

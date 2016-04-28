@@ -24,6 +24,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -83,6 +84,7 @@ public class GoodsServiceImpl implements GoodsService {
         }
         return goodsPage;
     }
+
 
     private Sort getSort(GoodsSearcher goodsSearcher) {
         String[] sortStrArray = goodsSearcher.getSort();

@@ -10,6 +10,7 @@ package com.huotu.hotcms.service.thymeleaf.expression;
 
 import com.huotu.hotcms.service.common.EnumUtils;
 import com.huotu.hotcms.service.common.RouteType;
+import com.huotu.hotcms.service.common.SysConstant;
 import com.huotu.hotcms.service.entity.BaseEntity;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.Video;
@@ -18,7 +19,9 @@ import com.huotu.hotcms.service.model.thymeleaf.foreach.Rename;
 import com.huotu.hotcms.service.thymeleaf.model.PageModel;
 import com.huotu.hotcms.service.thymeleaf.model.RequestModel;
 import com.huotu.hotcms.service.util.HttpUtils;
+import com.huotu.hotcms.service.util.PageUtils;
 import com.huotu.hotcms.service.util.StringUtil;
+import com.huotu.hotcms.service.widget.model.BasePage;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -244,4 +247,24 @@ public class DialectAttributeFactory {
         requestModel.setCurrentPage(currentPage);
     }
 
+    public void setPageList(ITemplateContext context, BasePage goodsPage) {
+        //分页标签处理
+        RequestModel requestModel = (RequestModel) VariableExpression.getVariable(context, "request");
+        int pageNo = goodsPage.getPageNo() + 1;
+        int totalPages = goodsPage.getTotalPages();
+        int pageBtnNum = totalPages > SysConstant.DEFAULT_PAGE_BUTTON_NUM ? SysConstant.DEFAULT_PAGE_BUTTON_NUM : totalPages;
+        int startPageNo = PageUtils.calculateStartPageNo(pageNo, pageBtnNum, totalPages);
+        List<Integer> pageNos = new ArrayList<>();
+        for (int i = 1; i <= pageBtnNum; i++) {
+            pageNos.add(startPageNo);
+            startPageNo++;
+        }
+        requestModel.setCurrentPage(pageNo);
+        requestModel.setTotalPages(totalPages);
+        //没有数据时前台页面显示 第1页/共1页
+        requestModel.setTotalRecords(goodsPage.getTotalRecords() == 0 ? 1 : goodsPage.getTotalRecords());
+        requestModel.setHasPrevPage(pageNo > 1);
+        requestModel.setHasNextPage(pageNo < totalPages);
+        requestModel.setPageNos(pageNos);
+    }
 }

@@ -81,7 +81,8 @@
 	top:-50px;
 	width:200px;
 	height:200px;
-	background:url(../images/lrtk_weixin.png) 0 -2px no-repeat
+	background:url(../images/lrtk_weixin.png) 0 -2px no-repeat;
+	background-size: cover;
 }
 .hottech_wshare .hottech_wshareh {
 	position:absolute;
@@ -90,5 +91,6 @@
 	top:-50px;
 	width:200px;
 	height:200px;
-	background:url(../images/lrtk_app.png) no-repeat
+	background:url(../images/lrtk_app.png) no-repeat;
+	background-size: cover;
 }

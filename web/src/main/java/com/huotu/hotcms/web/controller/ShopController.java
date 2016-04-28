@@ -112,15 +112,11 @@ public class ShopController {
                 head=widgetTemplateResource.getHtmlHeadStaticResources(environment,pageStaticResourceService)+head;
             }
             GoodsDetail goods = goodsDetailService.getGoodsDetail(Integer.valueOf(id),userId);
-            String personDetailUrl = goodsDetailService.getPersonDetailUrl(request);//获取二维码域名（商城个人中心）
-            String subscribeUrl = goodsDetailService.getSubscribeUrl(request);//获取二维码域名（商户公众号）
             modelAndView.setViewName("/template/0/goodsDetail.html");
             modelAndView.addObject("goods",goods);
             modelAndView.addObject("site",site);//为了传递seo
-            modelAndView.addObject("products",goods.getProducts());
+            modelAndView.addObject("products", goods.getProducts());
             modelAndView.addObject("head",head);//公共头部
-            modelAndView.addObject("personDetailUrl",personDetailUrl);//获取二维码域名（商城个人中心）
-            modelAndView.addObject("subscribeUrl",subscribeUrl);//获取二维码域名（商户公众号）
 
         }catch (Exception ex){
             log.error(ex);

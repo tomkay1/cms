@@ -240,6 +240,8 @@
 <script th:inline="javascript">
     var specSize = /*[[${goods.spec.size()}]]*/"/";//商品规格行数
     var spec ="";
+    var rootUrl = /*[[${request.root}]]*/"/"
+
     function showQRCode() {
         var url = /*[[${url}]]*/"/";
 
@@ -283,7 +285,7 @@
                     shadeClose: true,
                     shade: 0.8,
                     area: ['410px', '450px'],
-                    content: "/front/bind/qrCode?goodsId=" + goodsId+"&productId="+productId+"&num="+num ,
+                    content: rooturl+"/bind/qrCode?goodsId=" + goodsId+"&productId="+productId+"&num="+num ,
                     end: function () {
                     }
                 });
@@ -305,12 +307,12 @@
 
             for (i = 0; i < products.length; i++) {
                 var x =products[i].spec+',';
-                var savePrice= parseDouble(products[i].marketPrice-products[i].price);//省的价格
+                var savePrice = products[i].marketPrice-products[i].price;//省的价格
                 if(spec == x){//当筛选出正确的productId
-                    $("#goodsTitle").text(parseDouble(products[i].name));//修改产品价格
-                    $("#userPrice").text(parseDouble(products[i].price));//修改产品价格
-                    $("#normalPrice").text(parseDouble(products[i].marketPric));//修改市场价格
-                    $("#lsls").text("立省"+parseDouble(savePrice).toString()+'元');//修改市场价格
+                    $("#goodsTitle").text((products[i].name));//修改产品标题
+                    $("#userPrice").text(products[i].price);//修改产品价格
+                    $("#normalPrice").text(products[i].marketPric);//修改市场价格
+                    $("#lsls").text("立省"+savePrice.toString()+'元');//修改市场价格
                     $("#stock-num").text('库存数: '+products[i].stock+' 件') ;//修改产品库存
                 }
             }
@@ -322,9 +324,6 @@
     });
 </script>
 <script th:inline="javascript">
-    var subscribeUrl = /*[[${subscribeUrl}]]*/"/";//获取二维码域名（商户公众号）
-    var personDetailUrl = /*[[${personDetailUrl}]]*/"/";//获取二维码域名（商城个人中心）
-
 
     /*商品数量+1*/
     function numAdd(){
@@ -342,16 +341,6 @@
         }else{
             $("#quantity").val(num_dec);
         }
-    }
-
-    function  personQrCode(){//个人中心二维码
-        var  strwrite = "http://pan.baidu.com/share/qrcode?w=220&h=220&url="+personDetailUrl;
-        $('.hottech_wxinh').css('background-image',"url(" + strwrite + ")");
-    }
-    hottech_wshare
-    function  subscribeCode(){//商户公众号二维码
-        var  strwrite = "http://pan.baidu.com/share/qrcode?w=220&h=220&url="+subscribeUrl;
-        $('.hottech_wshareh').css('background-image',"url(" + strwrite + ")");
     }
 
     $(function() {

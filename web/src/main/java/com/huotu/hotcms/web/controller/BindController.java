@@ -5,13 +5,14 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
-import com.huotu.hotcms.service.common.ConfigInfo;
 import com.huotu.hotcms.service.thymeleaf.service.SiteResolveService;
 import com.huotu.hotcms.web.service.ConfigService;
+import com.huotu.hotcms.web.service.GoodsDetailService;
 import com.huotu.hotcms.web.service.RegisterByWeixinService;
-import com.huotu.hotcms.web.util.web.CookieUser;
 import com.huotu.huobanplus.common.entity.Merchant;
 import com.huotu.huobanplus.sdk.common.repository.MerchantRestRepository;
+import com.huotu.huobanplus.sdk.common.repository.WebSiteAppConfigRestRepository;
+import com.huotu.huobanplus.sdk.mall.service.MallInfoService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +22,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**
@@ -50,12 +53,15 @@ public class BindController {
     @Autowired
     private SiteResolveService siteResolveService;
 
+    @Autowired
+    private WebSiteAppConfigRestRepository webSiteAppConfigRestRepository;
+
 
     @Autowired
-    private ConfigInfo configInfo;
+    private MallInfoService mallInfoService;
 
     @Autowired
-    private CookieUser cookieUser;
+    private GoodsDetailService goodsDetailService;
 
     /**
      *
@@ -112,6 +118,46 @@ public class BindController {
                 int width = 400;//图片的宽度
                 int height = 400;//高度
                 stream = resp.getOutputStream();
+                QRCodeWriter writer = new QRCodeWriter();
+                BitMatrix m = writer.encode(url, BarcodeFormat.QR_CODE, height, width);
+                MatrixToImageWriter.writeToStream(m, "png", stream);
+            } catch (WriterException e) {
+                log.error(e);
+            } finally {
+                if (stream != null) {
+                    stream.flush();
+                    stream.close();
+                }
+            }
+        }
+    }
+
+
+    /**
+     *
+     * 二维码公众号
+     */
+    @RequestMapping(value = "/subscribeCode", method = { RequestMethod.GET })
+    public void subscribeCode(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        // 指定生成的响应是图片
+        int customerId = siteResolveService.getCurrentSite(request).getCustomerId();
+        BufferedImage bufferedImage = webSiteAppConfigRestRepository.imageForMerchantWeixinBusinessCard(customerId);
+        ImageIO.write(bufferedImage,"JPEG",response.getOutputStream());
+    }
+
+    /**
+     *
+     * 个人中心二维码
+     */
+    @RequestMapping(value = "/personCode", method = { RequestMethod.GET })
+    public void personCode(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String url = goodsDetailService.getSubscribeUrl(request);//获取二维码域名（商户公众号）
+        if (url != null && !"".equals(url)) {
+            ServletOutputStream stream = null;
+            try {
+                int width = 400;//图片的宽度
+                int height = 400;//高度
+                stream = response.getOutputStream();
                 QRCodeWriter writer = new QRCodeWriter();
                 BitMatrix m = writer.encode(url, BarcodeFormat.QR_CODE, height, width);
                 MatrixToImageWriter.writeToStream(m, "png", stream);

@@ -69,6 +69,7 @@ public class GoodsServiceImpl implements GoodsService {
                     goodsSearcher.getMaxPrice(),
                     goodsSearcher.getUserId(),
                     goodsSearcher.getKeyword(),
+                    false,
                     pageRequest);
         } catch (IOException e) {
             System.out.println("接口服务不可用");

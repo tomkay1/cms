@@ -1,12 +1,9 @@
 package com.huotu.hotcms.service.thymeleaf.service;
 
-import com.huotu.hotcms.service.common.SysConstant;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.thymeleaf.expression.DialectAttributeFactory;
 import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
-import com.huotu.hotcms.service.thymeleaf.model.RequestModel;
 import com.huotu.hotcms.service.thymeleaf.service.factory.GoodsPageableTagProcessor;
-import com.huotu.hotcms.service.util.PageUtils;
 import com.huotu.hotcms.service.widget.model.GoodsPage;
 import com.huotu.hotcms.service.widget.model.GoodsSearcher;
 import com.huotu.hotcms.service.widget.service.GoodsService;
@@ -18,8 +15,6 @@ import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.model.IProcessableElementTag;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Administrator on 2016/4/21.

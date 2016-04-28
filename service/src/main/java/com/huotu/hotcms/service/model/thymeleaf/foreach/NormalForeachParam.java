@@ -17,7 +17,6 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@Deprecated
 public class NormalForeachParam extends BaseForeachParam {
     /**
      * 所属二级栏目id(所属栏目的父节点)，与所属栏目id存在性互斥

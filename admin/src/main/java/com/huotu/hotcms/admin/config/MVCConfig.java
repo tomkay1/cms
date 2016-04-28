@@ -1,22 +1,22 @@
 package com.huotu.hotcms.admin.config;
 
+import com.huotu.hotcms.admin.aop.AuthorizeAspect;
 import com.huotu.hotcms.admin.dialect.HotDialect;
 import com.huotu.hotcms.admin.interceptor.LoginInterceptor;
 import com.huotu.hotcms.admin.interceptor.SiteResolver;
 import com.huotu.hotcms.admin.util.ArrayUtil;
+import com.huotu.hotcms.admin.util.web.CookieUser;
 import com.huotu.hotcms.service.config.JpaConfig;
 import com.huotu.hotcms.service.config.ServiceConfig;
 import com.huotu.hotcms.service.thymeleaf.templateresolver.WidgetTemplateResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.*;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
@@ -56,6 +56,8 @@ import java.util.Set;
         "com.huotu.hotcms.service.widget.service"
 })
 @Import({JpaConfig.class, ServiceConfig.class})
+@EnableTransactionManagement(mode = AdviceMode.PROXY)
+@EnableAspectJAutoProxy
 public class MVCConfig extends WebMvcConfigurerAdapter {
 
     private static final String UTF8 = "UTF-8";
@@ -71,6 +73,13 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private Set<IDialect> dialectSet;
 
+    @Autowired
+    private CookieUser cookieUser;
+
+    @Bean
+    public AuthorizeAspect authorizeAspect(){
+        return new AuthorizeAspect(cookieUser);
+    }
 
     /**
      * 允许访问静态资源

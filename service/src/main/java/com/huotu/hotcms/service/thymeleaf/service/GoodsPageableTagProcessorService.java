@@ -46,6 +46,7 @@ public class GoodsPageableTagProcessorService {
         return goodsPage == null ? null : goodsPage.getGoodses();
     }
 
+    //TODO 1.2 版本稳定后,把该代码移除
 //    private void putPageAttrsIntoModel(ITemplateContext context, GoodsPage goodsPage) {
 //        //分页标签处理
 //        RequestModel requestModel = (RequestModel) VariableExpression.getVariable(context, "request");

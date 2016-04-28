@@ -1,5 +1,6 @@
 package com.huotu.hotcms.admin.controller;
 
+import com.huotu.hotcms.admin.annoation.AuthorizeRole;
 import com.huotu.hotcms.admin.util.web.CookieUser;
 import com.huotu.hotcms.service.common.EnumUtils;
 import com.huotu.hotcms.service.common.SiteType;
@@ -7,7 +8,6 @@ import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Region;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.repository.RegionRepository;
-import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.service.HostService;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.util.PageData;
@@ -50,10 +50,6 @@ public class SiteController {
     private RegionRepository regionRepository;
 
     @Autowired
-    private SiteRepository siteRepository;
-
-
-    @Autowired
     private StaticResourceService resourceServer;
 
     @Autowired
@@ -66,6 +62,7 @@ public class SiteController {
      * @throws Exception
      */
     @RequestMapping("/siteList")
+//    @AuthorizeRole(roleType = AuthorizeRole.Role.Customer)
     public ModelAndView siteList(HttpServletRequest request) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/view/web/siteList.html");
@@ -73,8 +70,8 @@ public class SiteController {
     }
 
     /**
-     *
      * 添加站点页面
+     *
      * @param request
      * @return
      * @throws Exception
@@ -231,27 +228,4 @@ public class SiteController {
         }
         return result;
     }
-
-//    @RequestMapping(value = "/isExistsDomain",method = RequestMethod.POST)
-//    @ResponseBody
-//    public Boolean isExistsDomain(String...domains){
-//        try{
-//            return !hostService.isExistsByDomains(domains);
-//        }catch (Exception ex){
-//            log.error(ex.getMessage());
-//            return true;
-//        }
-//    }
-//
-//    @RequestMapping(value = "/isNoExistsDomain",method = RequestMethod.POST)
-//    @ResponseBody
-//    public Boolean isNoExistsDomain(Long siteId,String...domains){
-//        try{
-//            Site site=siteService.getSite(siteId);
-//            return !hostService.isNotExistsByDomainsAndSite(domains,);
-//        }catch (Exception ex){
-//            log.error(ex.getMessage());
-//            return true;
-//        }
-//    }
 }

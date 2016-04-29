@@ -9,6 +9,7 @@ import com.huotu.hotcms.web.service.ConfigService;
 import com.huotu.hotcms.web.service.GoodsDetailService;
 import com.huotu.huobanplus.common.entity.Merchant;
 import com.huotu.huobanplus.common.entity.Product;
+import com.huotu.huobanplus.common.entity.support.SpecDescription;
 import com.huotu.huobanplus.sdk.common.repository.GoodsRestRepository;
 import com.huotu.huobanplus.sdk.common.repository.MerchantRestRepository;
 import com.huotu.huobanplus.sdk.common.repository.ProductRestRepository;
@@ -66,16 +67,6 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
             log.error("接口服务不可用");
         }
         GoodsDetail mallGoods = new GoodsDetail();
-//        if (userId!=0) {
-//            try{
-//                Double[] userPrice = userRestRepository.goodPrice(userId, goodsId);
-//                mallGoods.setUserPrice(userPrice);
-//            }
-//            catch (IOException e) {
-//                System.out.println("接口服务不可用");
-//                log.error("接口服务不可用");
-//            }
-//        }
         List<Product> huobanProductList = productRestRepository.findByGoods(huobanGoods);//获取goods里的product
         List<com.huotu.hotcms.service.model.Bind.Product> productList = new ArrayList();
         List<Double> priceList = new ArrayList();
@@ -98,7 +89,16 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
             mallGoods.setBrandName(huobanGoods.getBrand().getBrandName());
         }
         mallGoods.setSpec(JSON.parseObject(huobanGoods.getSpec(), Map.class));
-        mallGoods.setSpecDescriptions(huobanGoods.getSpecDescriptions());
+        mallGoods.setSpecDescriptions(huobanGoods.getSpecDescriptions());//将规格对应的图片路径做处理
+        for(List<SpecDescription> specDescriptionList : mallGoods.getSpecDescriptions().values() ){
+            for(SpecDescription specDescription : specDescriptionList){
+                if(specDescription.getGoodsImageIds().length!=0){
+                String[] arry = new String[1];
+                arry[0] = configService.getImgUri("") + specDescription.getGoodsImageIds()[0];
+                specDescription.setGoodsImageIds(arry);
+            }
+            }
+        }
         mallGoods.setCode(huobanGoods.getCode());
         mallGoods.setTitle(huobanGoods.getTitle());
         mallGoods.setBrief(huobanGoods.getBrief());

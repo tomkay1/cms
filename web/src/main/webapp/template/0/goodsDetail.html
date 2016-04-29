@@ -8,7 +8,7 @@
     <meta name="description" content="前端社区网(JQSite),人气爆棚的知识插件特效分享专业社区，国内最大的WEB前端工程师的技术分享交流平台,提供面向前端工程师综合性服务的一站式服务平台！前端未来，我们打造！" th:content="${site.description}"/>
     <link rel="stylesheet" type="text/css" href="/template/0/css/lobo.css" th:href="@{/template/0/css/lobo.css}"/>
     <link rel="stylesheet" type="text/css" href="/template/0/css/common.css" th:href="@{/template/0/css/common.css}"/>
-    <link rel="stylesheet" type="text/css" href="/template/0/css/style.css" th:href="@{/template/0/css/style.css}"/>
+    <!--<link rel="stylesheet" type="text/css" href="/template/0/css/style.css" th:href="@{/template/0/css/style.css}"/>-->
     <link rel="stylesheet" type="text/css" href="/template/0/css/scfdforPC.css"
           th:href="@{/template/0/css/scfdforPC.css}"/>
     <!--<link rel="stylesheet" href="/template/0/css/ShopShow.css" th:href="@{/template/0/css/ShopShow.css}" type="text/css" />-->
@@ -30,7 +30,7 @@
                     <!--<span style="position:absolute"><img width="100%"  src="images/1.jpg" alt="" ></span>-->
                     <div id="tsImgS">
                         <a href="/template/0/images/ghi.jpg" th:href="${goods.bigPic}"  title="Images" class="MagicZoom" id="MagicZoom">
-                        <img width="100%" class="img" src="/template/0/images/ghi.jpg" th:src="${goods.bigPic}"/></a>
+                        <img id="mainImg" width="100%" class="img" src="/template/0/images/ghi.jpg" th:src="${goods.bigPic}"/></a>
                     </div>
                 </div>
                 <div id="spec-list">
@@ -41,23 +41,6 @@
                                                      th:attr="tsImgS=${goods.bigPic}"
                                                      data-url="" data-img="1" width="50" height="50" ks_mark="y"
                                                      class="img img-hover"></li>
-                            <li rel="MagicZoom"><img alt="NICE CLAUP2015夏商场同款日系女装甜美高腰蝴蝶结直筒九分裤111510450A 青色 均码"
-                                                     th:src="${goods.bigPic}"
-                                                     th:attr="tsImgS=${goods.bigPic}" data-url=""
-                                                     data-img="1" width="50" height="50" ks_mark="y" class="img">
-                            </li>
-                            <li rel="MagicZoom"><img alt="NICE CLAUP2015夏商场同款日系女装甜美高腰蝴蝶结直筒九分裤111510450A 青色 均码"
-                                                     th:src="${goods.bigPic}"
-                                                     th:attr="tsImgS=${goods.bigPic}" data-url=""
-                                                     data-img="1" width="50" height="50" ks_mark="y" class="img"></li>
-                            <li rel="MagicZoom"><img alt="NICE CLAUP2015夏商场同款日系女装甜美高腰蝴蝶结直筒九分裤111510450A 青色 均码"
-                                                     th:src="${goods.bigPic}"
-                                                     th:attr="tsImgS=${goods.bigPic}" data-url=""
-                                                     data-img="1" width="50" height="50" ks_mark="y" class="img"></li>
-                            <li rel="MagicZoom"><img alt="NICE CLAUP2015夏商场同款日系女装甜美高腰蝴蝶结直筒九分裤111510450A 青色 均码"
-                                                     th:src="${goods.bigPic}"
-                                                     th:attr="tsImgS=${goods.bigPic}" data-url=""
-                                                     data-img="1" width="50" height="50" ks_mark="y" class="img"></li>
                         </ul>
                     </div>
                 </div>
@@ -148,9 +131,12 @@
                                      th:if="${spec.key}==${specDescriptions.key}" th:value="${specDescriptions.key}">
 
                                      <span class="option option_selected" id="specValue6342" th:each="specDes:${specDescriptions.value}"
-                                           th:text="${specDes.specValue}" th:if="${specDes} == ${specDescriptions.value.get(0)}">39</span>
+                                           th:text="${specDes.specValue}"
+                                           th:value="${specDes.GoodsImageIds.length}!=0 ?${specDes.GoodsImageIds[0]}:''"
+                                           th:if="${specDes} == ${specDescriptions.value.get(0)}">39</span>
                                     <span class="option" id="specValue6342" th:each="specDes:${specDescriptions.value}"
-                                          th:text="${specDes.specValue}" th:if="${specDes} != ${specDescriptions.value.get(0)}">39</span>
+                                          th:text="${specDes.specValue}" th:value="${specDes.GoodsImageIds.length}!=0 ?${specDes.GoodsImageIds[0]}:''"
+                                          th:if="${specDes} != ${specDescriptions.value.get(0)}">39</span>
                                 </div>
                             </div>
                             <!--<div class="sku">-->
@@ -222,9 +208,9 @@
                     </ul>
                 </div>
             </div>
-            <div id="hottech_wxin" class="hottech_wxin" onmouseover="personQrCode()"><a href="javascript:void(0)">1<div class="hottech_wxinh"></div></a></div>
-            <div id="hottech_wshare" class="hottech_wshare" onmouseover="subscribeCode()" ><a href="javascript:void(0)">2<div class="hottech_wshareh"></div></a></div>
-            <a id="hottech_top" href="javascript:scroll(0,0)"></a>
+            <!--<div id="hottech_wxin" class="hottech_wxin" onmouseover="personQrCode()"><a href="javascript:void(0)">1<div class="hottech_wxinh"></div></a></div>-->
+            <!--<div id="hottech_wshare" class="hottech_wshare" onmouseover="subscribeCode()" ><a href="javascript:void(0)">2<div class="hottech_wshareh"></div></a></div>-->
+            <!--<a id="hottech_top" href="javascript:scroll(0,0)"></a>-->
             <div style="width:1000px;margin:0 auto;text-align:center;">
                 <div th:utext="${goods.intro}"></div>
             </div>
@@ -235,13 +221,15 @@
 </html>
 <script src="js/jquery-1.9.1.min.js" th:src="@{/template/0/js/jquery-1.9.1.min.js}"></script>
 <script src="js/jquery.lazyload.js" th:src="@{/template/0/js/jquery.lazyload.js}"></script>
-<script src="js/qrScript.js.js" th:src="@{/template/0/js/qrCodeScript.js}"></script>
+<script src="js/jquery.jhot.toolbar.min.js" th:src="@{/template/0/js/jquery.jhot.toolbar.min.js}"></script>
 <script src="js/layer/layer.js" th:src="@{/template/0/js/layer/layer.js}"></script>
 <script th:inline="javascript">
     var specSize = /*[[${goods.spec.size()}]]*/"/";//商品规格行数
     var spec ="";
     var rootUrl = /*[[${request.root}]]*/"/"
-
+    $.toolbar({
+        root: rootUrl
+    });
     function showQRCode() {
         var url = /*[[${url}]]*/"/";
 
@@ -303,6 +291,12 @@
             spec =spec+name+',';
         });
 
+        if( $(this).attr("value")!=''){
+            $("#tsImgS a>img").attr('src', $(this).attr("value"));//根据所选规格切换大图图片
+            $("#MagicZoom").removeClass("MagicZoom");
+        }
+
+
         if(specSize==$(".option_selected").length) {//当规则选择完毕时，改变商品价格以及库存
 
             for (i = 0; i < products.length; i++) {
@@ -321,6 +315,7 @@
     $(".spec-items li").click(function () {//图片选择框
         $(this).children("img").addClass("img-hover");
         $(this).siblings().children("img").removeClass("img-hover");
+        $("#MagicZoom").addClass("MagicZoom");
     });
 </script>
 <script th:inline="javascript">

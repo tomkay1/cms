@@ -155,8 +155,8 @@ public class BindController {
         if (url != null && !"".equals(url)) {
             ServletOutputStream stream = null;
             try {
-                int width = 200;//图片的宽度
-                int height = 200;//高度
+                int width = 245;//图片的宽度
+                int height = 245;//高度
                 stream = response.getOutputStream();
                 QRCodeWriter writer = new QRCodeWriter();
                 BitMatrix m = writer.encode(url, BarcodeFormat.QR_CODE, height, width);

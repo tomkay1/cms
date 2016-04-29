@@ -20,11 +20,10 @@
   display: none;
   position: absolute;
   top: 0;
-  left: -220px;
-  width: 220px;
-  height: 220px;
+  left: -200px;
+  width: 200px;
+  height: 200px;
   background-repeat: no-repeat;
-  background-size: cover;
 }
 #hottech_wechat,
 #hottech_share,
@@ -37,6 +36,9 @@
 #hottech_wechat:hover {
   background-position: -50px 0;
 }
+#hottech_wechat .hottech_wechat_code {
+  background-position: -20px -30px;
+}
 #hottech_share {
   background-position: 0 -50px;
 }
@@ -45,6 +47,7 @@
 }
 #hottech_share .hottech_share_code {
   top: -52px;
+  background-size: cover;
 }
 #hottech_top {
   background-position: 0 -100px;

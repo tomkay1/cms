@@ -31,6 +31,12 @@ public class IndexController {
     @Autowired
     private SiteService siteService;
 
+    /**
+     * CMS 1.0 beta 非个性化(非DIY版本)通配路由
+     *
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "**")
     public ModelAndView index(HttpServletRequest request)
     {

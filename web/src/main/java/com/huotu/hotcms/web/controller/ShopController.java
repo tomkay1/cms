@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * <p>
  * 商城入口Controller
+ * 一下路由已经做了伪静态处理,可以以.html为后缀请求,有助于SEO优化
  * </p>
  *
  * @since xhl
@@ -57,9 +58,13 @@ public class ShopController {
     @Autowired
     private Environment environment;
 
+
     /**
      * 商城首页/shop/
-     * */
+     *
+     * @param request
+     * @return
+     */
     @RequestMapping("/")
     public ModelAndView index(HttpServletRequest request){
         ModelAndView modelAndView=new ModelAndView();
@@ -78,9 +83,14 @@ public class ShopController {
     }
 
     /**
-     * 商城其他页面-->/shop/{id}/........
-     * **/
-    @RequestMapping("/{name}")
+     * 商城其他页面-->/shop/{name}/  其中name对应xml的文件名称,一个页面对应一个xml文件
+     * 该xml文件包含了页面、布局、组件以及组件设置相关信息,具体的请参考{@link com.huotu.hotcms.service.model.widget.WidgetPage}
+     *
+     * @param request
+     * @param id 其中name对应xml的文件名称,一个页面对应一个xml文件
+     * @return
+     */
+    @RequestMapping({"/{name}","/{name}.html"})
     public ModelAndView page(HttpServletRequest request, @PathVariable("name") String id){
         ModelAndView modelAndView = new ModelAndView();
         try {
@@ -93,9 +103,13 @@ public class ShopController {
     }
 
     /**
-     * 商品详情页面
-     * **/
-    @RequestMapping("/product/{id}")
+     * 商品详情页面路由
+     *
+     * @param request
+     * @param id 商品ID,商品相关信息来源于数据中心
+     * @return
+     */
+    @RequestMapping({"/product/{id}","/product/{id}.html"})
     public ModelAndView defaultsPage(HttpServletRequest request, @PathVariable("id") String id){
         ModelAndView modelAndView = new ModelAndView();
         try{
@@ -117,7 +131,6 @@ public class ShopController {
             modelAndView.addObject("site",site);//为了传递seo
             modelAndView.addObject("products", goods.getProducts());
             modelAndView.addObject("head",head);//公共头部
-
         }catch (Exception ex){
             log.error(ex);
         }

@@ -8,7 +8,7 @@
     <meta name="description" content="前端社区网(JQSite),人气爆棚的知识插件特效分享专业社区，国内最大的WEB前端工程师的技术分享交流平台,提供面向前端工程师综合性服务的一站式服务平台！前端未来，我们打造！" th:content="${site.description}"/>
     <link rel="stylesheet" type="text/css" href="/template/0/css/lobo.css" th:href="@{/template/0/css/lobo.css}"/>
     <link rel="stylesheet" type="text/css" href="/template/0/css/common.css" th:href="@{/template/0/css/common.css}"/>
-    <!--<link rel="stylesheet" type="text/css" href="/template/0/css/style.css" th:href="@{/template/0/css/style.css}"/>-->
+    <link rel="stylesheet" type="text/css" href="/template/0/js/toolbar/toolbar.css" th:href="@{/template/0/js/toolbar/toolbar.css}"/>
     <link rel="stylesheet" type="text/css" href="/template/0/css/scfdforPC.css"
           th:href="@{/template/0/css/scfdforPC.css}"/>
     <!--<link rel="stylesheet" href="/template/0/css/ShopShow.css" th:href="@{/template/0/css/ShopShow.css}" type="text/css" />-->
@@ -221,7 +221,7 @@
 </html>
 <script src="js/jquery-1.9.1.min.js" th:src="@{/template/0/js/jquery-1.9.1.min.js}"></script>
 <script src="js/jquery.lazyload.js" th:src="@{/template/0/js/jquery.lazyload.js}"></script>
-<script src="js/jquery.jhot.toolbar.min.js" th:src="@{/template/0/js/jquery.jhot.toolbar.min.js}"></script>
+<script src="js/toolbar/jquery.jhot.toolbar.min.js" th:src="@{/template/0/js/toolbar/jquery.jhot.toolbar.min.js}"></script>
 <script src="js/layer/layer.js" th:src="@{/template/0/js/layer/layer.js}"></script>
 <script th:inline="javascript">
     var specSize = /*[[${goods.spec.size()}]]*/"/";//商品规格行数
@@ -247,7 +247,7 @@
     }
 
     function showBuyQRCode() {//扫码购买
-        var goodsId = /*[[${goods.id}]]*/"/";//商品id
+        var goodsId = /*[[${goods.id}]]*/ "";//商品id
 
         var num =  $("#quantity").val();//购买商品数量
 
@@ -273,7 +273,7 @@
                     shadeClose: true,
                     shade: 0.8,
                     area: ['410px', '450px'],
-                    content: rooturl+"/bind/qrCode?goodsId=" + goodsId+"&productId="+productId+"&num="+num ,
+                    content: rootUrl+"/bind/qrCode?goodsId=" + goodsId+"&productId="+productId+"&num="+num ,
                     end: function () {
                     }
                 });

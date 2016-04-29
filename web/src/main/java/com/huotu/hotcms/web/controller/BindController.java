@@ -151,12 +151,12 @@ public class BindController {
      */
     @RequestMapping(value = "/personCode", method = { RequestMethod.GET })
     public void personCode(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String url = goodsDetailService.getSubscribeUrl(request);//获取二维码域名（商户公众号）
+        String url = goodsDetailService.getPersonDetailUrl(request);//获取二维码域名（商城个人中心）
         if (url != null && !"".equals(url)) {
             ServletOutputStream stream = null;
             try {
-                int width = 400;//图片的宽度
-                int height = 400;//高度
+                int width = 200;//图片的宽度
+                int height = 200;//高度
                 stream = response.getOutputStream();
                 QRCodeWriter writer = new QRCodeWriter();
                 BitMatrix m = writer.encode(url, BarcodeFormat.QR_CODE, height, width);

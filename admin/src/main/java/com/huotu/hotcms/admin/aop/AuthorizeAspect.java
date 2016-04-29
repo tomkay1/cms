@@ -23,6 +23,7 @@ import java.lang.reflect.Method;
  * </p>
  *
  * @author xhl
+ *
  * @since 1.2
  */
 @Aspect
@@ -37,7 +38,7 @@ public class AuthorizeAspect {
 
     @Pointcut("@annotation(com.huotu.hotcms.admin.annoation.AuthorizeRole)")
     public void authorizeAspect() {
-        System.out.print("命中切点...");
+//        System.out.print("命中切点...");
     }
 
     /**
@@ -65,10 +66,10 @@ public class AuthorizeAspect {
         }
     }
 
-    @After("authorizeAspect()")
-    public void doAfter(JoinPoint joinPoint) {
-        System.out.print("命中之后...");
-    }
+//    @After("authorizeAspect()")
+//    public void doAfter(JoinPoint joinPoint) {
+//        System.out.print("命中之后...");
+//    }
 
     /**
      * 获取注解中对方法的描述信息 用于Controller层注解

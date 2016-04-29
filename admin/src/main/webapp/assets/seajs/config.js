@@ -1,4 +1,4 @@
-var version="1.1.0";
+var version="1.4.0";
 seajs.config({
 	alias: {
 		"jquery": "js/jquery-1.9.1.min.js",
@@ -38,11 +38,12 @@ seajs.config({
 		"updateGalleryList":"js/page/contents/updateGalleryList.js?v="+version,
 		"addContents":"js/page/contents/addContents.js?v="+version,
 		"siteList":"js/page/web/siteList.js?v="+version,
+		"addSite":"js/page/web/addSite.js?v="+version,
+		"updateSite":"js/page/web/updateSite.js?v="+version,
 		"routeList":"js/page/web/routeList.js?v="+version,
 		"addRoute":"js/page/web/addRoute.js?v="+version,
 		"updateRoute":"js/page/web/updateRoute.js?v="+version,
-		"addSite":"js/page/web/addSite.js?v="+version,
-		"updateSite":"js/page/web/updateSite.js?v="+version,
+
 		"addCategory":"js/page/section/addCategory.js?v="+version,
 		"categoryList":"js/page/section/categoryList.js?v="+version,
 		"updateCategory":"js/page/section/updateCategory.js??v="+version,
@@ -94,6 +95,11 @@ seajs.config({
 		"widgetData":"widget/widgetData.js?v="+version,
 
 		"superSlide":"js/jquery.SuperSlide.2.1.1.js?v="+version,
+
+		"supperSiteList":"js/page/supper/siteList.js?v="+version,
+		"supperAddSite":"js/page/supper/addSite.js?v="+version,
+		"supperUpdateSite":"js/page/supper/updateSite.js?v="+version,
+		"supperSiteConfig":"js/page/supper/siteConfig.js?v="+version
 	},
 	preload: ['jquery']
 });

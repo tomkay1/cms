@@ -75,7 +75,6 @@ public class CheckMobile {
                 if(null == userAgent){
                     userAgent = "";
                 }
-                log.error("userAgnet-->"+userAgent);
                 isFromMobile=check(userAgent);
                 //判断是否为移动端访问
                 if(isFromMobile){

@@ -4,12 +4,9 @@ import com.huotu.hotcms.admin.annoation.AuthorizeRole;
 import com.huotu.hotcms.admin.util.web.CookieUser;
 import com.huotu.hotcms.admin.util.web.QueryHelper;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -19,54 +16,57 @@ import java.lang.reflect.Method;
 
 /**
  * <p>
- *     授权切入点
+ * 授权切入点
  * </p>
  *
- * @since 1.2
- *
  * @author xhl
+ *
+ * @since 1.2
  */
 @Aspect
 public class AuthorizeAspect {
 
     private CookieUser cookieUser;
 
-    public AuthorizeAspect(CookieUser cookieUser){
-        this.cookieUser=cookieUser;
+    public AuthorizeAspect(CookieUser cookieUser) {
+        this.cookieUser = cookieUser;
 //        System.out.print("初始化....");
     }
 
     @Pointcut("@annotation(com.huotu.hotcms.admin.annoation.AuthorizeRole)")
     public void authorizeAspect() {
-        System.out.print("命中切点...");
+//        System.out.print("命中切点...");
     }
 
     /**
      * 前置通知,用于授权验证
+     *
      * @param joinPoint
      */
     @Before("authorizeAspect()")
-    public Boolean doBefore(JoinPoint joinPoint) {
+    public void doBefore(JoinPoint joinPoint) {
         try {
+            Boolean isRole=true;
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-            HttpServletResponse response=((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
-            Integer customerId= QueryHelper.getQueryValInteger(request, "customerid");
-            AuthorizeRole.Role role=getControllerMethodRole(joinPoint);
-            if(role.equals(AuthorizeRole.Role.Customer)){
-                return cookieUser.checkLogin(request,response,customerId);
-            }else if(role.equals(AuthorizeRole.Role.Supper)){
-               return cookieUser.isSupper(request);
+            HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+            Integer customerId = QueryHelper.getQueryValInteger(request, "customerid");
+            AuthorizeRole.Role role = getControllerMethodRole(joinPoint);
+            if (role.equals(AuthorizeRole.Role.Customer)) {
+                isRole=cookieUser.checkLogin(request, response, customerId);
+            } else if (role.equals(AuthorizeRole.Role.Supper)) {
+                isRole=cookieUser.isSupper(request);
             }
+            if(!isRole)
+                throw new ExceptionInInitializerError("没有权限");
         } catch (Exception e) {
             e.printStackTrace();
         }
-       return false;
     }
 
-    @After("authorizeAspect()")
-    public void doAfter(JoinPoint joinPoint){
-        System.out.print("命中之后...");
-    }
+//    @After("authorizeAspect()")
+//    public void doAfter(JoinPoint joinPoint) {
+//        System.out.print("命中之后...");
+//    }
 
     /**
      * 获取注解中对方法的描述信息 用于Controller层注解
@@ -75,7 +75,7 @@ public class AuthorizeAspect {
      * @return 方法描述
      * @throws Exception
      */
-    public static AuthorizeRole.Role getControllerMethodRole(JoinPoint joinPoint)  throws Exception {
+    public static AuthorizeRole.Role getControllerMethodRole(JoinPoint joinPoint) throws Exception {
         String targetName = joinPoint.getTarget().getClass().getName();
         String methodName = joinPoint.getSignature().getName();
         Object[] arguments = joinPoint.getArgs();

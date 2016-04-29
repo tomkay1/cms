@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+    <link  href="/assets/css/admin.content.css"  type="text/css" rel="stylesheet"/>
+    <link  href="/assets/css/admin.global.css"  type="text/css" rel="stylesheet"/>
+    <link  href="/assets/css/global.css"  type="text/css" rel="stylesheet"/>
+    <link href="/assets/libs/layer/skin/layer.css" rel="stylesheet"/>
+    <script src="/assets/seajs/sea.js"></script>
+    <script src="/assets/seajs/config.js"></script>
+</head>
+<body>
+<div class="block">
+    <!--<div class="h">-->
+        <!--<span class="icon-sprite icon-list"></span>-->
+        <!--<h3>网站配置</h3>-->
+        <!--&lt;!&ndash;<div class="bar">&ndash;&gt;-->
+            <!--&lt;!&ndash;<a class="btn-lit" th:href="@{/site/siteList?customerid={customerid}(customerid=${site.customerId})}">&ndash;&gt;-->
+                <!--&lt;!&ndash;<span>返回网站列表</span></a>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--</div>-->
+    <form method="post"  id="siteConfigForm" enctype="multipart/form-data">
+        <div class="cnt-wp" style="padding: 0px;">
+            <div class="cnt form">
+                <div class="division">
+                    <input id="id" name="id" type="hidden" th:value="${siteConfig!=null?siteConfig.id:''}">
+                    <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                        <tbody>
+                        <tr>
+                            <th>是否开启微官网：</th>
+                            <td>
+                                <select name="enabledMobileSite" class="input-normal" id="enabledMobileSite">
+                                    <option value="false">不启用</option>
+                                    <option value="true">启用</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>微官网域名：</th>
+                            <td>
+                                <input name="mobileDomain"  id="mobileDomain" type="text" class="input-normal" placeholder="" th:value="${siteConfig!=null?siteConfig.mobileDomain:''}">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div style="text-align: center;">
+                    <input type="submit" class="btn-lit" name="btnSave"  value="保存" data-submiting-text="提交中..." data-text="保存" id="jq-cms-Save">
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>seajs.use(["supperSiteConfig","validate","message"]);</script>
+</body>
+</html>

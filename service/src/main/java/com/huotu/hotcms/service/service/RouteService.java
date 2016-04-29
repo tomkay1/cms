@@ -15,7 +15,7 @@ import java.util.Set;
  * </p>
  * @author xhl
  *
- * @since 1.0.0
+ * @since 1.0
  */
 public interface RouteService {
     Set<Route> getRoute(Site site);

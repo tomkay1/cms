@@ -4,11 +4,11 @@
 define(function (require, exports, module) {
     var commonUtil = require("common");
     commonUtil.calcuHeight("mainpanel");
-    commonUtil.calcuHeightToTop("menuContainer",74);
-    commonUtil.calcuHeightToTop("con_right",74);
+    commonUtil.calcuHeightToTop("menuContainer",100);
+    commonUtil.calcuHeightToTop("con_right",100);
     commonUtil.calcuHeightToTop("con_left",$("#con_left").offset().top);
     commonUtil.calcuWidth("content",$(".leftpanel").width());
-    commonUtil.cacleHeightByIframe("content",42);
+    commonUtil.cacleHeightByIframe("content",84);
     commonUtil.calcuWidth("con_right",$(".leftpanel").width());
 
     //左边栏目效果

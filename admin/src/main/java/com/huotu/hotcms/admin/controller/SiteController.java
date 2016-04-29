@@ -92,46 +92,25 @@ public class SiteController {
     @RequestMapping(value = "/saveSite", method = RequestMethod.POST)
     @Transactional(value = "transactionManager")
     @ResponseBody
-    public ResultView updateSite(Site site, Long regionId,Integer siteType, Boolean personalise, String homeDomains, String... domains) {
+    public ResultView updateSite(Site site) {
         ResultView result = null;
-        Set<Host> hosts = new HashSet<>();
-        site.setPersonalise(personalise);
-        Region region = regionRepository.findOne(regionId);
-        site.setSiteType(EnumUtils.valueOf(SiteType.class, siteType));
-        Site site2 = null;
         try {
-            Long siteId = site.getSiteId();
-            if(homeDomains==null){
-                return  new ResultView(ResultOptionEnum.NOFIND_HOME_DEMON.getCode(), ResultOptionEnum.NOFIND_HOME_DEMON.getValue(), null);
-            }
-            if (siteId == null) {
-                site.setCreateTime(LocalDateTime.now());
-                site.setUpdateTime(LocalDateTime.now());
-                site.setDeleted(false);
-                result= hostService.addHost(domains, homeDomains, site, regionId);
-            } else {//修改站点
-                result=hostService.patchHost(domains,homeDomains,site,regionId);
-            }
-            if(result!=null&&result.getCode().equals(ResultOptionEnum.OK.getCode())){
-                site=(Site)result.getData();
-                String resourceUrl = site.getResourceUrl();
-                if (StringUtils.isEmpty(resourceUrl)) {
-                    resourceUrl = resourceServer.getResource("").toString();
+            if(site!=null){
+                Site site1=siteService.getSite(site.getSiteId());
+                if(site1!=null){
+                    site1.setCopyright(site.getCopyright());
+                    site1.setDescription(site.getDescription());
+                    site1.setKeywords(site.getKeywords());
+                    site1.setLogoUri(site.getLogoUri());
+                    site1.setName(site.getName());
+                    site1.setTitle(site.getTitle());
+                    site1.setUpdateTime(LocalDateTime.now());
+                    siteService.save(site1);
+                    result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
+                }else{
+                    result = new ResultView(ResultOptionEnum.NOFIND.getCode(), ResultOptionEnum.NOFIND.getValue(), null);
                 }
-                site.setResourceUrl(resourceUrl);
-                if(siteId!=null) {
-                    site2 = siteService.getSite(site.getSiteId());
-                    site = hostService.mergeSite(domains, site);
-                    site.setUpdateTime(LocalDateTime.now());
-                    hosts = hostService.getRemoveHost(domains, site2);
-                }
-                site.setRegion(region);
-            }else{
-                return result;
             }
-            hostService.removeHost(hosts);
-            siteService.save(site);
-            result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
         } catch (Exception ex) {
             log.error(ex.getMessage());
             result = new ResultView(ResultOptionEnum.FAILE.getCode(), ResultOptionEnum.FAILE.getValue(), null);

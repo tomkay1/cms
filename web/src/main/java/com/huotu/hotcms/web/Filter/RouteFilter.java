@@ -2,6 +2,10 @@ package com.huotu.hotcms.web.Filter;
 
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.entity.SiteConfig;
+import com.huotu.hotcms.service.repository.SiteConfigRepository;
+import com.huotu.hotcms.service.service.SiteConfigService;
+import com.huotu.hotcms.service.service.impl.SiteConfigServiceImpl;
 import com.huotu.hotcms.service.thymeleaf.service.RouteResolverService;
 import com.huotu.hotcms.service.thymeleaf.service.SiteResolveService;
 import com.huotu.hotcms.service.util.CheckMobile;
@@ -41,8 +45,9 @@ public class RouteFilter implements Filter {
     private ServletContext servletContext;
 
 //    private static final String[] static_filter=new String[]{".js",".css",".png",".jpeg",".gif"};
-private SiteResolveService siteResolveService;
+    private SiteResolveService siteResolveService;
     private RouteResolverService routeResolverService;
+    private SiteConfigServiceImpl siteConfigService;
 
     private boolean isContains(String servletPath) {
         for (String str : diy_filter) {
@@ -71,16 +76,18 @@ private SiteResolveService siteResolveService;
         String servletPath = request1.getServletPath();
         if (!isContains(servletPath)) {
             if (servletPath.equals("/")) {
+                boolean isMobile = CheckMobile.check(request1);
+                if (isMobile) {
+                    Site site = siteResolveService.getCurrentSite(request1);
+                    String mobileUrl=siteConfigService.findMobileUrlBySite(site);
+                    if(mobileUrl!=null&&mobileUrl!=""){//开启了手机微官网则重定向微官网域名地址
+                        ((HttpServletResponse) response).sendRedirect(mobileUrl);
+                        return false;
+                    }
+                }
                 request.getRequestDispatcher("/shop" + servletPath).forward(request, response);
                 return  false;
             }
-//            else if(servletPath.contains("/shop/")){
-//                request.getRequestDispatcher(servletPath).forward(request, response);
-//            }
-//            else{
-//                request.getRequestDispatcher(servletPath).forward(request, response);
-//            }
-//            return false;
         }
         return true;
     }
@@ -145,6 +152,9 @@ private SiteResolveService siteResolveService;
             }
             if (routeResolverService == null) {
                 routeResolverService = applicationContext.getBean("routeResolverService", RouteResolverService.class);
+            }
+            if(siteConfigService==null){
+                siteConfigService = applicationContext.getBean("siteConfigServiceImpl", SiteConfigServiceImpl.class);
             }
             HttpServletRequest request1 = ((HttpServletRequest) request);
             Site site = siteResolveService.getCurrentSite(request1);

@@ -9,6 +9,19 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface AuthorizeRole {
-    public enum Role{Customer,Supper};
+    /**
+     * 角色权限
+     */
+    public enum Role {
+        /**
+         * 商户基本权限
+         */
+        Customer,
+        /**
+         * 超级管理员权限
+         */
+        Supper
+    };
+
     Role roleType() default Role.Customer;
 }

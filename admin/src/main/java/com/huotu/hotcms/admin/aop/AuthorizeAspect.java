@@ -19,20 +19,19 @@ import java.lang.reflect.Method;
 
 /**
  * <p>
- *     授权切入点
+ * 授权切入点
  * </p>
  *
- * @since 1.2
- *
  * @author xhl
+ * @since 1.2
  */
 @Aspect
 public class AuthorizeAspect {
 
     private CookieUser cookieUser;
 
-    public AuthorizeAspect(CookieUser cookieUser){
-        this.cookieUser=cookieUser;
+    public AuthorizeAspect(CookieUser cookieUser) {
+        this.cookieUser = cookieUser;
 //        System.out.print("初始化....");
     }
 
@@ -43,28 +42,31 @@ public class AuthorizeAspect {
 
     /**
      * 前置通知,用于授权验证
+     *
      * @param joinPoint
      */
     @Before("authorizeAspect()")
-    public Boolean doBefore(JoinPoint joinPoint) {
+    public void doBefore(JoinPoint joinPoint) {
         try {
+            Boolean isRole=true;
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-            HttpServletResponse response=((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
-            Integer customerId= QueryHelper.getQueryValInteger(request, "customerid");
-            AuthorizeRole.Role role=getControllerMethodRole(joinPoint);
-            if(role.equals(AuthorizeRole.Role.Customer)){
-                return cookieUser.checkLogin(request,response,customerId);
-            }else if(role.equals(AuthorizeRole.Role.Supper)){
-               return cookieUser.isSupper(request);
+            HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+            Integer customerId = QueryHelper.getQueryValInteger(request, "customerid");
+            AuthorizeRole.Role role = getControllerMethodRole(joinPoint);
+            if (role.equals(AuthorizeRole.Role.Customer)) {
+                isRole=cookieUser.checkLogin(request, response, customerId);
+            } else if (role.equals(AuthorizeRole.Role.Supper)) {
+                isRole=cookieUser.isSupper(request);
             }
+            if(!isRole)
+                throw new ExceptionInInitializerError("没有权限");
         } catch (Exception e) {
             e.printStackTrace();
         }
-       return false;
     }
 
     @After("authorizeAspect()")
-    public void doAfter(JoinPoint joinPoint){
+    public void doAfter(JoinPoint joinPoint) {
         System.out.print("命中之后...");
     }
 
@@ -75,7 +77,7 @@ public class AuthorizeAspect {
      * @return 方法描述
      * @throws Exception
      */
-    public static AuthorizeRole.Role getControllerMethodRole(JoinPoint joinPoint)  throws Exception {
+    public static AuthorizeRole.Role getControllerMethodRole(JoinPoint joinPoint) throws Exception {
         String targetName = joinPoint.getTarget().getClass().getName();
         String methodName = joinPoint.getSignature().getName();
         Object[] arguments = joinPoint.getArgs();

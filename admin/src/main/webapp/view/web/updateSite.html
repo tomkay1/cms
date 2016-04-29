@@ -13,18 +13,18 @@
 </head>
 <body>
 <div class="block">
-    <div class="h">
-        <span class="icon-sprite icon-list"></span>
-        <h3>网站修改</h3>
-        <div class="bar">
-            <a class="btn-lit" th:href="@{/site/siteList?customerid={customerid}(customerid=${site.customerId})}">
-                <span>返回网站列表</span></a>
-        </div>
-    </div>
+    <!--<div class="h">-->
+        <!--&lt;!&ndash;<span class="icon-sprite icon-list"></span>&ndash;&gt;-->
+        <!--&lt;!&ndash;<h3>网站修改</h3>&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="bar">&ndash;&gt;-->
+            <!--&lt;!&ndash;<a class="btn-lit" th:href="@{/site/siteList?customerid={customerid}(customerid=${site.customerId})}">&ndash;&gt;-->
+                <!--&lt;!&ndash;<span>返回网站列表</span></a>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--</div>-->
     <form method="post"  id="updateSiteForm" enctype="multipart/form-data">
-        <div class="cnt-wp">
-            <div class="cnt form">
-                <div class="division">
+        <div class="cnt-wp" style="padding: 10px;">
+            <!--<div class="cnt form">-->
+                <div class="division" style="padding: 0px; margin: 0px;">
                     <input type="hidden" name="hidSiteID" id="hidSiteID" th:value="${site.siteId}">
                     <table width="100%" border="0" cellpadding="0" cellspacing="0">
                         <tbody>
@@ -68,82 +68,81 @@
                                 <textarea rows="" cols="" style="width: 500px; height: 160px;" id="copyright" name="copyright" th:text="${site.copyright}" ></textarea>
                             </td>
                         </tr>
-                        <tr>
-                            <th>是否个性化：</th>
-                            <td>
-                                <table id="isPersonalise">
-                                    <tbody>
-                                    <tr>
-                                        <td><input id="isPersonalise_1" type="radio" name="isPersonalise" class="js-select-personalise" th:checked="${site.Personalise==true?true:false}" ><label for="isPersonalise_1">是</label></td>
-                                        <td><input id="isPersonalise_2" type="radio" name="isPersonalise" class="js-select-personalise" th:checked="${site.Personalise==false?true:false}" ><label for="isPersonalise_2">否</label></td>
-                                    </tr>
-                                    </tbody></table>
-                            </td>
-                        </tr>
-                        <tr class="js-custome-template">
-                            <th>是否自定义模板：</th>
-                            <td>
-                                <table id="custom">
-                                    <tbody>
-                                    <tr>
-                                        <td><input id="custom_0" type="radio" class="js-template" name="custom" th:value="${site.custom==true?1:0}" th:checked="${site.custom==true?true:false}" data-type="1"><label for="custom_0">是</label></td>
-                                        <td><input id="custom_1" type="radio"  class="js-template" name="custom" value="0" th:checked="${site.custom==false?true:false}" data-type="2" ><label for="custom_1">否</label></td>
-                                    </tr>
-                                    </tbody></table>
-                            </td>
-                        </tr>
-                        <tr class="js-custome-template" id ="cUrl" th:style="${site.custom}?'display:':'display:none'">
-                            <th>自定义模板根路径：</th>
-                            <td>
-                                <input name="customTemplateUrl"  id="customTemplateUrl" th:value="${site.customTemplateUrl}" type="text" class="input-normal" placeholder="">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>资源根路径：</th>
-                            <td>
-                                <input name="resourceUrl"  id="resourceUrl" type="text" class="input-normal" placeholder="" th:value="${site.resourceUrl}">
-                                <span style="color: #CCCCCC">系统中使用到动态数据的资源地址,一般为图片资源,可以不配置,配置一般配置为远程CDN加速服务地址</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>站点类型：</th>
-                            <td>
-                                <select name="siteType" class="input-normal" id="siteType">
-                                    <option value="0" th:each="siteType:${siteTypes}" th:value="${siteType.getCode()}"  th:selected="${site.siteType}!=null?${site.siteType.getCode().toString()}==${siteType.getCode().toString()}" th:text="${siteType.getValue().toString()}"></option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>域名：</th>
-                            <td>
-                                <input name="domains"  id="domains" type="text" class="input-normal" th:value="${domains}" placeholder="">
-                                <span style="color: #CCCCCC">可以使用多个域名,多个域名请使用","号隔开,并且域名不包含"/"结尾,例如huobanplus.com,www.huobanplus.com</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>主推域名：</th>
-                            <td>
-                                <input name="homeDomain" th:value="${homeDomain}" id="homeDomain" type="text" class="input-normal" placeholder="">
-                                <span style="color: #CCCCCC">主推域名必须为域名里面的某一个,并且只能设置一个主推域名</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>所属地区：</th>
-                            <td>
-                                <select name="regionId" class="input-normal"  id="regionId">
-                                    <!--<option value="-1">==请选择地区==</option>-->
-                                    <option  th:value="${region.id}"  th:text="${region.regionName}"></option>
-                                </select>
-                            </td>
-                        </tr>
+                        <!--<tr>-->
+                            <!--<th>是否个性化：</th>-->
+                            <!--<td>-->
+                                <!--<table id="isPersonalise">-->
+                                    <!--<tbody>-->
+                                    <!--<tr>-->
+                                        <!--<td><input id="isPersonalise_1" type="radio" name="isPersonalise" class="js-select-personalise" th:checked="${site.Personalise==true?true:false}" ><label for="isPersonalise_1">是</label></td>-->
+                                        <!--<td><input id="isPersonalise_2" type="radio" name="isPersonalise" class="js-select-personalise" th:checked="${site.Personalise==false?true:false}" ><label for="isPersonalise_2">否</label></td>-->
+                                    <!--</tr>-->
+                                    <!--</tbody></table>-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                        <!--<tr class="js-custome-template">-->
+                            <!--<th>是否自定义模板：</th>-->
+                            <!--<td>-->
+                                <!--<table id="custom">-->
+                                    <!--<tbody>-->
+                                    <!--<tr>-->
+                                        <!--<td><input id="custom_0" type="radio" class="js-template" name="custom" th:value="${site.custom==true?1:0}" th:checked="${site.custom==true?true:false}" data-type="1"><label for="custom_0">是</label></td>-->
+                                        <!--<td><input id="custom_1" type="radio"  class="js-template" name="custom" value="0" th:checked="${site.custom==false?true:false}" data-type="2" ><label for="custom_1">否</label></td>-->
+                                    <!--</tr>-->
+                                    <!--</tbody></table>-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                        <!--<tr class="js-custome-template" id ="cUrl" th:style="${site.custom}?'display:':'display:none'">-->
+                            <!--<th>自定义模板根路径：</th>-->
+                            <!--<td>-->
+                                <!--<input name="customTemplateUrl"  id="customTemplateUrl" th:value="${site.customTemplateUrl}" type="text" class="input-normal" placeholder="">-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                        <!--<tr>-->
+                            <!--<th>资源根路径：</th>-->
+                            <!--<td>-->
+                                <!--<input name="resourceUrl"  id="resourceUrl" type="text" class="input-normal" placeholder="" th:value="${site.resourceUrl}">-->
+                                <!--<span style="color: #CCCCCC">系统中使用到动态数据的资源地址,一般为图片资源,可以不配置,配置一般配置为远程CDN加速服务地址</span>-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                        <!--<tr>-->
+                            <!--<th>站点类型：</th>-->
+                            <!--<td>-->
+                                <!--<select name="siteType" class="input-normal" id="siteType">-->
+                                    <!--<option value="0" th:each="siteType:${siteTypes}" th:value="${siteType.getCode()}"  th:selected="${site.siteType}!=null?${site.siteType.getCode().toString()}==${siteType.getCode().toString()}" th:text="${siteType.getValue().toString()}"></option>-->
+                                <!--</select>-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                        <!--<tr>-->
+                            <!--<th>域名：</th>-->
+                            <!--<td>-->
+                                <!--<input name="domains"  id="domains" type="text" class="input-normal" th:value="${domains}" placeholder="">-->
+                                <!--<span style="color: #CCCCCC">可以使用多个域名,多个域名请使用","号隔开,并且域名不包含"/"结尾,例如huobanplus.com,www.huobanplus.com</span>-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                        <!--<tr>-->
+                            <!--<th>主推域名：</th>-->
+                            <!--<td>-->
+                                <!--<input name="homeDomain" th:value="${homeDomain}" id="homeDomain" type="text" class="input-normal" placeholder="">-->
+                                <!--<span style="color: #CCCCCC">主推域名必须为域名里面的某一个,并且只能设置一个主推域名</span>-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                        <!--<tr>-->
+                            <!--<th>所属地区：</th>-->
+                            <!--<td>-->
+                                <!--<select name="regionId" class="input-normal"  id="regionId">-->
+                                    <!--&lt;!&ndash;<option value="-1">==请选择地区==</option>&ndash;&gt;-->
+                                    <!--<option  th:value="${region.id}"  th:text="${region.regionName}"></option>-->
+                                <!--</select>-->
+                            <!--</td>-->
+                        <!--</tr>-->
                         </tbody>
                     </table>
                 </div>
-
                 <div style="text-align: center;">
                     <input type="submit" class="btn-lit" name="btnSave"  value="保存" data-submiting-text="提交中..." data-text="保存" id="jq-cms-Save">
                 </div>
-            </div>
+            <!--</div>-->
         </div>
     </form>
 </div>

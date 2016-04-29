@@ -4,6 +4,7 @@
 define(function (require, exports, module) {
     var commonUtil = require("common");
     commonUtil.setDisabled("jq-cms-Save");
+    var layer=require("layer");
     var customerId =commonUtil.getQuery("customerId");
     var SiteGrid=$("#js-SiteList").Grid({
         method: 'POST',//提交方式GET|POST
@@ -17,7 +18,7 @@ define(function (require, exports, module) {
         pageSize: 20,
         pagerCount: 10,
         pageDetail: true,
-        url: '/site/getSiteList',//数据来源Url|通过mobel自定义属性配置
+        url: '/supper/getSiteList',//数据来源Url|通过mobel自定义属性配置
         rows: [
             {width: '30%', field: 'name', title: '站点名称', align: 'center'},
             {width: '30%', field: 'title', title: '站点标题', align: 'center'},
@@ -33,15 +34,18 @@ define(function (require, exports, module) {
             },
             {width: '20%', field: 'title', title: '操作', align: 'center',
                 formatter: function (value, rowData) {
-                    return "<a href='javascript:' class='js-hot-siteUpdate' data-id='"+rowData.siteId+"' style='margin-right:10px; color: blue'>修改</a>"
+                    return "<a href='javascript:' class='js-hot-siteDelete' data-id='"+rowData.siteId+"' style='margin-right:10px; color:blue;'>删除</a>" +
+                        "<a href='javascript:' class='js-hot-siteConfig' data-id='"+rowData.siteId+"' style='margin-right:10px; color: blue'>更多配置</a>"+
+                        "<a href='javascript:' class='js-hot-siteUpdate' data-id='"+rowData.siteId+"' style='margin-right:10px; color: blue'>修改</a>"
                 }
             }
         ]
     },function(){
         updateSite();
         deleteSite();
+        openConfig();
     });
-//搜索
+   //搜索
     $("#jq-cms-search").click(function(){
         var commonUtil = require("common");
         commonUtil.setDisabled("jq-cms-Save");
@@ -72,23 +76,12 @@ define(function (require, exports, module) {
     //修改
     function updateSite(){
         var obj=$(".js-hot-siteUpdate");
-        var layer=require("layer");
         $.each(obj,function(item,dom){
             $(dom).click(function(){//绑定修改事件
                 var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;
                 var commonUtil = require("common");
                 var customerId = commonUtil.getQuery("customerid");
-                layer.open({
-                    type: 2,
-                    title: "修改站点信息",
-                    shadeClose: true,
-                    shade: 0.8,
-                    area: ['800px', '500px'],
-                    content: "/site/updateSite?id="+id+"&customerId="+customerId,
-                    end:function(){
-                        SiteGrid.Refresh();
-                    }
-                });
+                window.location.href="http://"+window.location.host+"/"+"supper/updateSite?id="+id+"&customerId="+customerId;
             })
         })
     }
@@ -97,18 +90,16 @@ define(function (require, exports, module) {
     //删除
     function deleteSite(){
         var obj=$(".js-hot-siteDelete");
-
         $.each(obj,function(item,dom){
             $(dom).click(function(){//绑定删除事件
                 var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;
                 var commonUtil = require("common");
                 var customerId = commonUtil.getQuery("customerid");
-                var layer=require("layer");
                 layer.confirm('您确定要删除该站点吗？', {
                     btn: ['确定','取消'] //按钮
                 }, function() {
                     $.ajax({
-                        url: "/site/deleteSite",
+                        url: "/supper/deleteSite",
                         data: {
                             id:id,
                             customerId:customerId
@@ -137,6 +128,28 @@ define(function (require, exports, module) {
                     });
                 });
             })
+        })
+    }
+
+    function openConfig(){
+        var obj=$(".js-hot-siteConfig");
+        $.each(obj,function(item,dom){
+            $(dom).click(function(){
+                var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;
+                var commonUtil = require("common");
+                var customerId = commonUtil.getQuery("customerid");
+                layer.open({
+                    type: 2,
+                    title: "修改配置信息",
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['500px', '300px'],
+                    content: "/supper/siteConfig?siteId="+id+"&customerId="+customerId,
+                    end:function(){
+                        //SiteGrid.Refresh();
+                    }
+                });
+            });
         })
     }
 });

@@ -118,7 +118,6 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
         if (huobanGoods.getBigPic() != null) {
             mallGoods.setBigPic(huobanGoods.getBigPic().getValue());
         }
-        mallGoods.setThumbnailPic(huobanGoods.getThumbnailPic().getValue());
         mallGoods.setScenes(huobanGoods.getScenes());
         mallGoods.setCost(huobanGoods.getCost());
         mallGoods.setSalesCount(huobanGoods.getSalesCount());

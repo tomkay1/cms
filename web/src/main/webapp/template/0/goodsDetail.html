@@ -70,7 +70,7 @@
                             <span class="price">￥<span id="userPrice" th:text="${products.get(0).price}">69</span></span>
               <span class="flag" id="priceDis" style="display: ;overflow: hidden;
     width: 12px; margin-top:8px;">5.8折</span>
-                            <span class="lsls" id= "lsls" style="display:" th:text="立省+${products.get(0).marketPrice-products.get(0).price}+元">立省293元</span>
+                            <span class="lsls" id= "lsls" style="display:" th:text="立省+${(products.get(0).marketPrice*1000-products.get(0).price*1000)/1000}+元">立省293元</span>
                             <!--20151103-add-gmw-->
 
                         </div>
@@ -82,15 +82,12 @@
                              style="line-height: 0px; border: none; height: 0px; padding-top: 10px; display: none;">
                             <span class="tit">总销量：</span><span class="salesCount">0</span>
                         </div>
-                        <div class="old_price_wrap">
-                            <span class="gBN" th:valie="${goods.code}">商品编号：34325643</span><br>
+                        <div class="old_price_wrap" th:if="${products.get(0).code!=''}">
+                            <span class="gBN" id="code" th:text="'商品编号: '+${products.get(0).code}">商品编号：34325643</span><br>
               <span style="height: 20px; clear:both; margin-top:10px" class="saleTag">
-              <img src="images/tongy.jpg" th:src="@{/template/0/images/tongy.jpg}"
-                   style="width: 20px;vertical-align:middle;">品牌直供 <img src="images/tongy.jpg"
-                                                                        th:src="@{/template/0/images/tongy.jpg}"
-                                                                        style="width: 20px;vertical-align:middle;">包邮 <img
-                      src="images/tongy.jpg" th:src="@{/template/0/images/tongy.jpg}"
-                      style="width: 20px;vertical-align:middle;">七天无理由退货</span>
+              <img src="images/tongy.jpg" th:src="@{/template/0/images/tongy.jpg}" style="width: 20px;vertical-align:middle;">品牌直供
+                  <img src="images/tongy.jpg" th:src="@{/template/0/images/tongy.jpg}" style="width: 20px;vertical-align:middle;">包邮
+                  <img src="images/tongy.jpg" th:src="@{/template/0/images/tongy.jpg}" style="width: 20px;vertical-align:middle;">七天无理由退货</span>
                         </div>
                     </div>
                     <!--会员价格END-->
@@ -111,7 +108,7 @@
                             <span class="tit">总销量：</span><span class="salesCount">0</span>
                         </div>
                         <div class="old_price_wrap">
-                            <span class="gBN">商品编号：34325643</span><br>
+                            <span class="gBN" th:text="'商品编号: '+${goods.code}">商品编号：34325643</span><br>
               <span style="height: 20px; clear:both; margin-top:10px" class="saleTag">
               <img src="images/tongy.jpg" th:src="@{/template/0/images/tongy.jpg}" style="width: 20px;vertical-align:middle;">
                   品牌直供 <img src="images/tongy.jpg" th:src="@{/template/0/images/tongy.jpg}" style="width: 20px;vertical-align:middle;">包邮
@@ -225,37 +222,20 @@
 <script src="js/layer/layer.js" th:src="@{/template/0/js/layer/layer.js}"></script>
 <script th:inline="javascript">
     var specSize = /*[[${goods.spec.size()}]]*/"/";//商品规格行数
-    var spec ="";
     var rootUrl = /*[[${request.root}]]*/"/"
     $.toolbar({
         root: rootUrl
     });
-    function showQRCode() {
-        var url = /*[[${url}]]*/"/";
-
-        layer.open({
-            type: 2,
-            title: "请扫码登录 ",
-            shadeClose: true,
-            shade: 0.8,
-            area: ['900px', '500px'],
-            content: url,
-            end: function () {
-//                window.console.log("!1");
-            }
-        });
-    }
-
     function showBuyQRCode() {//扫码购买
         var goodsId = /*[[${goods.id}]]*/ "";//商品id
-
+        var spec ="";
         var num =  $("#quantity").val();//购买商品数量
 
         if(specSize!=$(".option_selected").length){
             layer.msg("请选择完整规格");
         }
         else{//当规格选择完整后才可进行扫码购买
-            $(".option_selected").each(function(i,v) {
+            $(".option_selected").each(function(i,v) {//遍历规格，
                 var name = $(this).text();
                 spec =spec+name+',';
             });
@@ -286,7 +266,7 @@
         $(this).addClass("option_selected").siblings().removeClass("option_selected");
         var products = /*[[${products}]]*/"";
         var spec ="";
-        $(".option_selected").each(function(i,v) {
+        $(".option_selected").each(function(i,v) {//遍历规格，
             var name = $(this).text();
             spec =spec+name+',';
         });
@@ -301,13 +281,14 @@
 
             for (i = 0; i < products.length; i++) {
                 var x =products[i].spec+',';
-                var savePrice = products[i].marketPrice-products[i].price;//省的价格
+                var savePrice = (products[i].marketPrice*1000-products[i].price*1000)/1000;//省的价格
                 if(spec == x){//当筛选出正确的productId
                     $("#goodsTitle").text((products[i].name));//修改产品标题
                     $("#userPrice").text(products[i].price);//修改产品价格
                     $("#normalPrice").text(products[i].marketPric);//修改市场价格
                     $("#lsls").text("立省"+savePrice.toString()+'元');//修改市场价格
                     $("#stock-num").text('库存数: '+products[i].stock+' 件') ;//修改产品库存
+                    $("#code").text('商品编号: '+products[i].code) ;//修改商品编号
                 }
             }
         }
@@ -339,7 +320,7 @@
     }
 
     $(function() {
-        $("img.img").lazyload({effect: "fadeIn"});
+        $("img.img").lazyload({effect: "fadeIn"});//延迟加载
     });
 
 

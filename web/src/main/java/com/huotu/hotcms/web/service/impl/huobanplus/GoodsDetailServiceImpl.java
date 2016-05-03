@@ -88,7 +88,7 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
             mallGoods.setBrandName(huobanGoods.getBrand().getBrandName());
         }
         mallGoods.setSpec(JSON.parseObject(huobanGoods.getSpec(), Map.class));
-        mallGoods.setSpecDescriptions(huobanGoods.getSpecDescriptions());
+        mallGoods.setSpecDescriptions(huobanGoods.getSpecDescriptions());//将规格对应的图片路径做处理
         for(List<SpecDescription> specDescriptionList : mallGoods.getSpecDescriptions().values() ){
             for(SpecDescription specDescription : specDescriptionList){
                 if(specDescription.getGoodsImageIds().length!=0){
@@ -111,13 +111,13 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
         if (huobanGoods.getSmallPic() != null) {
             mallGoods.setSmallPic(huobanGoods.getSmallPic().getValue());
         }
-        if (huobanGoods.getThumbnailPic() != null) {
-            mallGoods.setThumbnailPic(huobanGoods.getThumbnailPic().getValue());
-        }
         if (huobanGoods.getBigPic() != null) {
             mallGoods.setBigPic(huobanGoods.getBigPic().getValue());
         }
-        mallGoods.setThumbnailPic(huobanGoods.getThumbnailPic().getValue());
+        if (huobanGoods.getThumbnailPic() != null) {
+            mallGoods.setThumbnailPic(huobanGoods.getThumbnailPic().getValue());
+        }
+
         mallGoods.setScenes(huobanGoods.getScenes());
         mallGoods.setCost(huobanGoods.getCost());
         mallGoods.setSalesCount(huobanGoods.getSalesCount());

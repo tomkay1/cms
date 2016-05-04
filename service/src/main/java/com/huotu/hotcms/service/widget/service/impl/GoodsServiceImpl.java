@@ -18,6 +18,7 @@ import com.huotu.hotcms.service.widget.model.GoodsPage;
 import com.huotu.hotcms.service.widget.model.GoodsSearcher;
 import com.huotu.hotcms.service.widget.service.GoodsService;
 import com.huotu.huobanplus.common.entity.Goods;
+import com.huotu.huobanplus.common.entity.GoodsImage;
 import com.huotu.huobanplus.sdk.common.repository.GoodsRestRepository;
 import com.huotu.huobanplus.sdk.common.repository.UserRestRepository;
 import org.apache.commons.logging.Log;
@@ -165,9 +166,17 @@ public class GoodsServiceImpl implements GoodsService {
             goodsModel.setSales(goods.getSalesCount());
             goodsModel.setMarketPrice(goods.getMarketPrice());
             goodsModel.setPrice(goods.getPrice());
-            goodsModel.setThumbnail(goods.getThumbnailPic().getValue());
-            goodsModel.setSmallPic(goods.getSmallPic().getValue());
-            goodsModel.setBigPic(goods.getBigPic().getValue());
+//            List<GoodsImage> goodsImages=goods.getImages();
+//            if(goodsImages!=null){
+//
+//            }
+//            goodsModel.setThumbnail(goods.getThumbnailPic().getValue());
+//            goodsModel.setSmallPic(goods.getSmallPic().getValue());
+//            goodsModel.setBigPic(goods.getBigPic().getValue());
+
+            goodsModel.setThumbnail(goods.getImages().get(0).getThumbnailPic().getValue());
+            goodsModel.setSmallPic(goods.getImages().get(0).getSmallPic().getValue());
+            goodsModel.setBigPic(goods.getImages().get(0).getBigPic().getValue());
             goodsModel.setIterCount(iterCount);
             goodsModels.add(goodsModel);
             goodsIds.add(goods.getId());

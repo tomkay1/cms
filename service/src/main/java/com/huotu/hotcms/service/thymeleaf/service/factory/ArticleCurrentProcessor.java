@@ -84,7 +84,7 @@ public class ArticleCurrentProcessor {
                                 , PatternMatchUtil.urlParamRegexp));
                     }
                 }
-                article=articleService.getArticleByParam(articleCurrentParam,site);
+                article=articleService.getArticleByParam(articleCurrentParam);
             }
         }catch (Exception ex){
             log.error(ex.getMessage());

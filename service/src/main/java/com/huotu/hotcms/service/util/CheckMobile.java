@@ -38,7 +38,6 @@ public class CheckMobile {
     /**
      * 检测是否是移动设备访问
      *
-     * @Title: check
      * @param userAgent 浏览器标识
      * @return true:移动设备接入，false:pc端接入
      */
@@ -59,10 +58,8 @@ public class CheckMobile {
     /**
      * 检查访问方式是否为移动端
      *
-     * @Title: check
-     * @Date : 2014-7-7 下午03:55:19
      * @param request
-     *  @return true:移动设备接入，false:pc端接入
+     * @return true:移动设备接入，false:pc端接入
      */
     public static boolean check(HttpServletRequest request){
         boolean isFromMobile=false;
@@ -93,7 +90,6 @@ public class CheckMobile {
     /**
      * 根据环境获得手机官网地址,默认m.xxx.xx规则,比如m.site.com
      *
-     * @Title: getMobileUrl
      * @param request
      */
     public static String getMobileUrl(HttpServletRequest request){

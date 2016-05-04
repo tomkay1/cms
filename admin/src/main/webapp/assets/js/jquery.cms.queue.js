@@ -1,5 +1,5 @@
 /**
- * Created by Administrator on 2016/3/31.
+ * Created by xhl on 2016/3/31.
  */
 var JQueue = [];
 var aElement = new Array();

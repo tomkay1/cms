@@ -3,7 +3,7 @@ package com.huotu.hotcms.service.util;
 /**
  * @since 1.0.0
  * @author xhl
- * @time 2015/15/25
+ * @time 2015/12/25
  */
 public class ResultView {
     private final   Integer code;

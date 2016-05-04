@@ -4,6 +4,7 @@
 define(function (require, exports, module) {
     require.async(['jqxcore'],function(){
         require.async(['jqxdata','jqxbuttons','jqxscrollbar','jqxdatatable','jqxtreegrid'], function() {
+
             var commonUtil = require("common");
             var customerId=commonUtil.getQuery("customerid");
             var layer=require("layer");

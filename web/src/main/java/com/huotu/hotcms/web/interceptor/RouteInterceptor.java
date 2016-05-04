@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
  * </p>
  * @author xhl
  *
- * @since 1.0.0
+ * @since 1.0
  */
 @Component
 public class RouteInterceptor  extends HandlerInterceptorAdapter {
@@ -73,6 +73,16 @@ public class RouteInterceptor  extends HandlerInterceptorAdapter {
         }
     }
 
+    /**
+     * 初始化ModelAndView 信息对象,并根据当前请求的环境获得相关数据信息,这样以达到CMS内置对象的扩展标签
+     *
+     * @param modelAndView
+     * @param site      站点信息对象
+     * @param route     当前请求对应的路由信息
+     * @param request
+     * @param response
+     * @return
+     */
     private ModelAndView initModelAndView(ModelAndView modelAndView, Site site, Route route, HttpServletRequest request,HttpServletResponse response){
         try {
             String resourcePath = site.isCustom() ? site.getCustomTemplateUrl() : ConfigInfo.getRootTemplate(site.getCustomerId());

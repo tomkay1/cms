@@ -22,6 +22,14 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class RequestService {
 
+    /**
+     * 重新包装request对象,以达到扩展cms自己的内置对象交给前端模版使用request对象获得相关的信息,
+     * 比如获得分页相关的信息以及网站语言版本的根地址信息等
+     *
+     * @param request
+     * @param site
+     * @return
+     */
     public RequestModel ConvertRequestModel(HttpServletRequest request,Site site){
         RequestModel model=new RequestModel();
         model.setUrl(PatternMatchUtil.getServletUrl(request));

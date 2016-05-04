@@ -34,7 +34,7 @@ import java.io.IOException;
  * PC官网、商城第三方授权绑定操作
  * </p>
  *
- * @since xhl
+ * @since 1.2
  */
 @Controller
 @RequestMapping(value = "/bind")
@@ -64,8 +64,8 @@ public class BindController {
     private GoodsDetailService goodsDetailService;
 
     /**
+     * 微信二维码注册回调
      *
-     * 微信二维码注册
      * @param request
      * @param response
      * @return

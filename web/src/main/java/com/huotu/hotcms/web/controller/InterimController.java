@@ -21,6 +21,19 @@ import javax.servlet.http.HttpServletRequest;
 public class InterimController {
     private static final Log log = LogFactory.getLog(InterimController.class);
 
+    /**
+     * 火图官网招商加盟表单交互临时解决方案 1.0 beta
+     *
+     * @param company 公司名称
+     * @param name  姓名
+     * @param mobile 手机号码
+     * @param qq  QQ
+     * @param province 省份
+     * @param city 城市
+     * @param description 描述信息
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/join",method = RequestMethod.POST)
     @ResponseBody
     public ResultView join(@RequestParam(value = "company") String company,

@@ -97,4 +97,11 @@ public class BasicController {
         modelAndView.setViewName("/view/test2.html");
         return modelAndView;
     }
+
+//    @Autowired
+////    private XmlServiceTest
+//
+//    public ModelAndView test4(){
+////        XmlServiceTest
+//    }
 }

@@ -41,6 +41,7 @@ public class ArticleResolveService {
     @Autowired
     private ArticleServiceImpl articleService;
 
+
     /**
      * 根据Context获得文章对象
      *
@@ -76,6 +77,7 @@ public class ArticleResolveService {
             Integer articleId=PatternMatchUtil.getUrlId(requestUrl, route.getRule());
             if(articleId!=null) {
                 Article article = articleService.findById(Long.valueOf(articleId));
+                article=articleService.setArticleThumbUri(article);
                 return article;
             }
         }

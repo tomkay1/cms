@@ -39,5 +39,4 @@ public class GoodsCategoryServiceImpl implements GoodsCategoryService {
         params.put("merchantId", customerId);
         return httpService.httpGet_prod(REQUEST_URI,params);
     }
-
 }

@@ -9,6 +9,7 @@
 package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.entity.Article;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.ArticleCategory;
 import com.huotu.hotcms.service.model.thymeleaf.current.ArticleCurrentParam;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.PageableForeachParam;
@@ -54,6 +55,14 @@ public interface ArticleService {
     Article getArticleByParam(ArticleCurrentParam articleCurrentParam);
 
     /**
+     * 处理文章相关缩略图地址
+     *
+     * @param article
+     * @return
+     */
+    Article setArticleThumbUri(Article article);
+
+    /**
      * <p>
      *     根据articleNextParam对象获得 文章对象（下一篇文章）
      * </p>
@@ -64,7 +73,7 @@ public interface ArticleService {
 
     /**
      * <p>
-     *     根据ArticlePreviousParam对象获得上一篇文章
+     *     根据ArticlePreviousParam对象获得上一篇文章信息对象
      * </p>
      * @param articlePreviousParam
      * @return article

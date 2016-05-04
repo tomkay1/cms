@@ -154,7 +154,8 @@
                         </div>
                         <div class="jGoodsInfo">
                             <div class="HOTesc" data-th-attr="alt=${goods.title}">
-                                <a th:href="'/front/shop/product/'+${goods.id}">
+                                <a th:href="'/front/shop/product/'+${goods.id}"
+                                   th:style="${goods_fontColor==null?'':'color:'+goods_fontColor}">
                                     [[${goods.title}]]
                                 </a>
                                 <span class="jSlogan"></span>
@@ -273,7 +274,8 @@
                             </div>
                             <div class="jGoodsInfo">
                                 <div class="HOTesc">
-                                    <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}">
+                                    <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}"
+                                       th:style="${goods_fontColor==null?'':'color:'+goods_fontColor}">
                                         [[${goods.title}]]
                                     </a>
                                     <span class="jSlogan"></span>

@@ -36,7 +36,7 @@ public class GalleryList {
     private String size;
 
     /**
-     * 缩略图Uri
+     * 图片
      */
     @Column(name = "thumbUri")
     private String thumbUri;

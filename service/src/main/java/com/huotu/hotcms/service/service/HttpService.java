@@ -19,8 +19,15 @@ import java.util.Map;
  */
 public interface HttpService {
 
-    ApiResult<String> httpGet_prod(String scheme, String host, Integer port, String path, Map<String, Object> params);
+//    ApiResult<String> httpGet_prod(String scheme, String host, Integer port, String path, Map<String, Object> params);
 
+    /***
+     * Http Get方式请求接口
+     *
+     * @param path 接口相对地址Uri,不包含根地址(以斜杠开头)
+     * @param params 参数列表
+     * @return
+     */
     ApiResult<String> httpGet_prod(String path, Map<String, Object> params);
 
     String createDigest(String appId,String random,String secret) throws UnsupportedEncodingException;

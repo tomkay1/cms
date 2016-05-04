@@ -28,9 +28,6 @@ public class ArticleSrcProcessor {
 
     public Object resolveDataByAttr(String attributeValue, ITemplateContext context){
         try {
-//            WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
-//            ArticleResolveService articleResolveService=(ArticleResolveService)applicationContext.getBean("articleResolveService");
-//            Article article=articleResolveService.getArticleByContent(context);
             Article article=(Article) VariableExpression.getVariable(context, "article");
             if(article!=null){
                 String attributeName = PatternMatchUtil.getMatchVal(attributeValue, regexp);

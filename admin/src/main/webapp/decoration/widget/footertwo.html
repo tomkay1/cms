@@ -44,25 +44,28 @@
     <div class="forms">
         <ul>
             <li>
-                <label>内容 </label>
+                <label>页尾内容 </label>
                 <textarea style=" height: 160px;" id="footerContent" name="footerContent" th:utext="${footerContent}" ></textarea>
             </li>
         </ul>
     </div>
 
     <script type="application/javascript">
+
         var init={
             textareaInit:function(){
+                console.log("11");
                 KindEditor.create('#footerContent', {
                     resizeType : 1,
+                    allowPreviewEmoticons : false,
                     allowImageRemote:true,
                     allowImageUpload : true,
-                    filePostName:'richTextImages',
-                    uploadJson:'/admin/uploadRichTextImages',//上传文本中的图片
+                    filePostName:'imgFile',
+                    uploadJson:'/cms/kindeditorUpload',//上传文本中的图片
                     items : [
                         'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
                         'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
-                        'insertunorderedlist', '|', 'emoticons', 'image ','link'],
+                        'insertunorderedlist', '|', 'emoticons', 'image','link'],
                     afterBlur:function(){
                         this.sync();
                     }

@@ -44,6 +44,8 @@ import java.util.*;
  */
 @Service
 public class GoodsServiceImpl implements GoodsService {
+    public static final String REQUEST_URI = "/goodses/search/findTop10BySales";
+
     @Autowired
     private HttpService httpService;
     @Autowired
@@ -134,7 +136,8 @@ public class GoodsServiceImpl implements GoodsService {
 
     private ApiResult<String> invokeGoodsSearchProce(int customerId, GoodsSearcher goodsSearcher) throws Exception{
         Map<String,Object> params = buildSortedParams(customerId,goodsSearcher);
-        return httpService.httpGet_prod("http", "api.open.fancat.cn", 8081, "/goodses/search/findByMixed", params);
+//        return httpService.httpGet_prod("http", "api.open.fancat.cn", 8081, "/goodses/search/findByMixed", params);
+        return httpService.httpGet_prod("/goodses/search/findByMixed",params);
     }
 
     private Map<String, Object> buildSortedParams(int customerId, GoodsSearcher goodsSearcher) throws Exception{
@@ -195,7 +198,8 @@ public class GoodsServiceImpl implements GoodsService {
     private ApiResult<String> invokeHotGoodsProce(int customerId) throws Exception{
         Map<String,Object> params = new TreeMap<>();
         params.put("merchantId",customerId);
-        return httpService.httpGet_prod("http", "api.open.fancat.cn", 8081, "/goodses/search/findTop10BySales", params);
+//        return httpService.httpGet_prod("http", "api.open.fancat.cn", 8081, "/goodses/search/findTop10BySales", params);
+        return httpService.httpGet_prod(REQUEST_URI,params);
     }
 
     public void setVipPrices(List<Double[]> prices,List<GoodsModel> goodsModels) {

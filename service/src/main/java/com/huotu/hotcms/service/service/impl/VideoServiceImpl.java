@@ -147,9 +147,9 @@ public class VideoServiceImpl implements VideoService {
                     if(!StringUtils.isEmpty(video.getThumbUri())) {
                         video.setThumbUri(site.getResourceUrl() + video.getThumbUri());
                     }
-                    if(!StringUtils.isEmpty(video.getOutLinkUrl())){
-                        video.setVideoUrl(site.getResourceUrl()+video.getOutLinkUrl());
-                    }
+//                    if(!StringUtils.isEmpty(video.getOutLinkUrl())){
+//                        video.setVideoUrl(site.getResourceUrl()+video.getOutLinkUrl());
+//                    }
                 }
             }
         }

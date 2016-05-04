@@ -60,6 +60,11 @@
             <artifactId>spring-data-redis</artifactId>
             <version>1.6.4.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>org.ocpsoft.prettytime</groupId>
+            <artifactId>prettytime</artifactId>
+            <version>3.2.5.Final</version>
+        </dependency>
     </dependencies>
 
     <build>

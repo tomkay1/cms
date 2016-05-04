@@ -32,43 +32,43 @@ public abstract class AbstractHttpServiceImpl implements HttpService {
     protected String appKey="_demo";
     protected String appSecret="1f2f3f4f5f6f7f8f";
 
-    @Override
-    public ApiResult<String> httpGet_prod(String scheme, String host, Integer port, String path, Map<String, Object> params) {
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        List<NameValuePair> nameValuePairs = new ArrayList<>();
-        params.forEach((key,value)->{
-            if(value != null) {
-                nameValuePairs.add(new BasicNameValuePair(key,String.valueOf(value)));
-            }
-        });
-        ApiResult<String> apiResult = new ApiResult<>();
-        URI uri;
-        try {
-            uri = new URIBuilder()
-                    .setScheme(scheme)
-                    .setHost(host)
-                    .setPort(port == null ? 80 : port)
-                    .setPath(path)
-                    .setParameters(nameValuePairs)
-                    .build();
-            HttpGet httpGet = new HttpGet(uri);
-            String random = String.valueOf(System.currentTimeMillis());
-            httpGet.setHeader("_user_key", appKey);
-            httpGet.setHeader("_user_random", random);
-            httpGet.setHeader("_user_secure", createDigest(appKey, random, appSecret));
-            CloseableHttpResponse response = httpClient.execute(httpGet);
-            apiResult.setCode(response.getStatusLine().getStatusCode());
-            apiResult.setMsg(response.getStatusLine().getReasonPhrase());
-            apiResult.setData(EntityUtils.toString(response.getEntity()));
-        } catch (URISyntaxException e) {
-            System.out.println("url语法错误");
-            log.error("url语法错误");
-        }catch (IOException e) {
-            System.out.println("接口服务不可用");
-            log.error("接口服务不可用");
-        }
-        return apiResult;
-    }
+//    @Override
+//    public ApiResult<String> httpGet_prod(String scheme, String host, Integer port, String path, Map<String, Object> params) {
+//        CloseableHttpClient httpClient = HttpClients.createDefault();
+//        List<NameValuePair> nameValuePairs = new ArrayList<>();
+//        params.forEach((key,value)->{
+//            if(value != null) {
+//                nameValuePairs.add(new BasicNameValuePair(key,String.valueOf(value)));
+//            }
+//        });
+//        ApiResult<String> apiResult = new ApiResult<>();
+//        URI uri;
+//        try {
+//            uri = new URIBuilder()
+//                    .setScheme(scheme)
+//                    .setHost(host)
+//                    .setPort(port == null ? 80 : port)
+//                    .setPath(path)
+//                    .setParameters(nameValuePairs)
+//                    .build();
+//            HttpGet httpGet = new HttpGet(uri);
+//            String random = String.valueOf(System.currentTimeMillis());
+//            httpGet.setHeader("_user_key", appKey);
+//            httpGet.setHeader("_user_random", random);
+//            httpGet.setHeader("_user_secure", createDigest(appKey, random, appSecret));
+//            CloseableHttpResponse response = httpClient.execute(httpGet);
+//            apiResult.setCode(response.getStatusLine().getStatusCode());
+//            apiResult.setMsg(response.getStatusLine().getReasonPhrase());
+//            apiResult.setData(EntityUtils.toString(response.getEntity()));
+//        } catch (URISyntaxException e) {
+//            System.out.println("url语法错误");
+//            log.error("url语法错误");
+//        }catch (IOException e) {
+//            System.out.println("接口服务不可用");
+//            log.error("接口服务不可用");
+//        }
+//        return apiResult;
+//    }
 
     @Override
     public ApiResult<String> httpGet_prod(String path, Map<String, Object> params) {

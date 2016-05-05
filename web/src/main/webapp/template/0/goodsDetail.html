@@ -78,7 +78,7 @@
                             <span class="tit">总销量：</span><span class="salesCount">0</span>
                         </div>
                         <div class="old_price_wrap">
-                            <span class="gBN" id="code" th:if="${products.get(0).code!=''}" th:text="'商品编号: '+${products.get(0).code}">商品编号：34325643</span><br>
+                            <span class="gBN" id="code" th:if="${goods.code!=''}" th:text="'商品编号: '+${goods.code}">商品编号：34325643</span><br>
               <span style="height: 20px; clear:both; margin-top:10px" class="saleTag" >
               <img src="images/tongy.jpg"  th:each="saleTags:${goods.saleTags}"
                    th:src="@{/template/0/images/tongy.jpg}" style="width: 20px;vertical-align:middle;" th:text="${saleTags}" >
@@ -180,12 +180,12 @@
             </div>
             <p style="clear:both"></p>
         </div>
-        <div class="m m1 hide" id="fitting-suit" style="display: block;background-color:#fff;">
+        <div class="m m1 hide" id="fitting-suit" style="display: block">
             <div class="float-nav-wrap" style="padding-bottom:6px">
                 <div class="mt">
                     <ul class="tab">
                         <li class="hide ui-switchable-item curr" style="display: list-item;">
-                            <a href="#none" style="color: ">商品介绍</a>
+                            <a href="#none" style="color: #000000">商品介绍</a>
                         </li>
                     </ul>
                 </div>
@@ -274,7 +274,6 @@
                     $("#normalPrice").text(products[i].marketPric);//修改市场价格
                     $("#lsls").text("立省"+savePrice.toString()+'元');//修改市场价格
                     $("#stock-num").text('库存数: '+products[i].stock+' 件') ;//修改产品库存
-                    $("#code").text('商品编号: '+products[i].code) ;//修改商品编号
                 }
             }
         }

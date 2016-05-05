@@ -15,7 +15,7 @@
                 </div>
                 <div class="m-search for-black-bg">
                     <form class="m-form" th:action="${request.rootUri}+'/shop/search'">
-                        <input type="text" class="m-kw" value="" th:maxlength="${maxlength}" size="50" th:value="${request.get('keyword')}!=null?${request.get('keyword')}:${defaultKewWord}" name="keyword"/>
+                        <input type="text" style="color: #BDBDBD;" class="m-kw" value="" th:maxlength="${maxlength}" size="50" th:value="${request.get('keyword')}!=null?${request.get('keyword')}:${defaultKewWord}" name="keyword"/>
                         <input type="submit" value="搜索" class="m-submit"
                                id="in-shop-search"/>
                     </form>

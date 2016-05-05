@@ -24,7 +24,7 @@
                 </ul>
                 <div class="s-form" th:if="${showSearch==1}">
                     <form class="form-body" th:action="${request.rootUri}+'/shop/search'">
-                        <input type="text" name="keyword" class="s-inp" th:value="${request.get('keyword')}!=null?${request.get('keyword')}:${defaultKewWord}"  maxlength="60" size="60"/>
+                        <input type="text" name="keyword" style="color:#BDBDBD" class="s-inp" th:value="${request.get('keyword')}!=null?${request.get('keyword')}:${defaultKewWord}"  maxlength="60" size="60"/>
                         <input type="submit" onclick="" value="搜索" class="s-submit"/>
                     </form>
                 </div>
@@ -76,14 +76,14 @@
             </li>
             <li>
                 <label style="width: 150px;">是否展示商品分类 </label>
-                <select name="showProductType" class="select-short">
+                <select name="showProductType" class="select-short" id="showProductType">
                     <option value="1" th:selected="(${showProductType==1}?selected)">是</option>
                     <option value="0" selected="selected"
                             th:selected="(${showProductType==null or showProductType==0}?selected)">否
                     </option>
                 </select>
             </li>
-            <li>
+            <li id="model-list">
                 <label style="width: 150px;">选择模版 </label>
                 <select name="templateClass" class="select-short" id="templateClass">
                     <option value="sh-head-menu-brown-624326" selected="selected"
@@ -170,6 +170,19 @@
     <script src="../libs/JColor/spectrum.js" type="application/javascript"></script>
     <link href="../libs/JColor/spectrum.css" rel="stylesheet"/>
     <script type="application/javascript">
+        $(document).ready(function(){
+            if($("#showProductType").val()==0){
+                $("#model-list").hide();
+            }else
+                $("#model-list").show();
+        });
+
+        $("#showProductType").change(function(){
+            if($(this).val()==0){
+                $("#model-list").hide();
+            }else
+                $("#model-list").show();
+        });
         var navModule = {
             addNav: function () {
                 var obj = $("#js-nav-add");

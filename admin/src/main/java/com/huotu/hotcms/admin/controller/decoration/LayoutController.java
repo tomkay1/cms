@@ -19,8 +19,10 @@ import java.util.UUID;
  * 布局控制器
  * </p>
  *
- * @version 1.2
- * @since xhl
+ * @since 1.2
+ *
+ * @author xhl
+ *
  */
 @Controller
 @RequestMapping("/layout")

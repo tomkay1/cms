@@ -5,6 +5,7 @@ import com.huotu.hotcms.service.config.ServiceTestConfig;
 import com.huotu.hotcms.service.model.widget.TestModel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.ocpsoft.prettytime.PrettyTime;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -16,6 +17,9 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Administrator on 2016/3/15.
@@ -49,6 +53,33 @@ public class XmlServiceTest {
         mapper.writeValue(stringWriter,model);
 //        mapper.
         System.out.println(stringWriter.toString());
+    }
+
+    @Test
+    public void testLocal() {
+        PrettyTime p = new PrettyTime(new Locale("ZH_CN"));
+        System.out.println(p.format(new Date()));
+    }
+
+    @Test
+    public void testMinutesFromNow() throws Exception {
+        PrettyTime t = new PrettyTime(new Date(0));
+        System.out.println(t.format(new Date(1000 * 60 * 12)));
+    }
+
+    @Test
+    public void testMomentsAgo() throws Exception {
+        PrettyTime t = new PrettyTime(new Date(6000));
+        System.out.println(t.format(new Date(0)));
+    }
+
+    @Test
+    public void testMinutesAgo() throws Exception {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:m:s");
+        Date date = format.parse("2012-07-18 23:42:05");
+        Date now = new Date();
+        PrettyTime t = new PrettyTime(now);
+        System.out.println(t.format(date));
     }
 
 }

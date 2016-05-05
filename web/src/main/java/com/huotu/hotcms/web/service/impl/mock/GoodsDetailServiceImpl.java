@@ -7,6 +7,7 @@ import com.huotu.hotcms.service.thymeleaf.service.SiteResolveService;
 import com.huotu.hotcms.service.widget.model.GoodsDetail;
 import com.huotu.hotcms.web.service.ConfigService;
 import com.huotu.hotcms.web.service.GoodsDetailService;
+import com.huotu.huobanplus.common.entity.GoodsImage;
 import com.huotu.huobanplus.common.entity.Merchant;
 import com.huotu.huobanplus.common.entity.Product;
 import com.huotu.huobanplus.common.entity.support.SpecDescription;
@@ -69,8 +70,13 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
         GoodsDetail mallGoods = new GoodsDetail();
         List<Product> huobanProductList = productRestRepository.findByGoods(huobanGoods);//获取goods里的product
         List<com.huotu.hotcms.service.model.Bind.Product> productList = new ArrayList();
+        String bigPic = "";
+        for(GoodsImage goodsImage : huobanGoods.getImages()){//对大图进行处理
+            bigPic =  bigPic + goodsImage.getBigPic().getValue()+",";
+        }
+        mallGoods.setBigPic(bigPic.split(","));
         List<Double> priceList = new ArrayList();
-        for(Product huobanProduct : huobanProductList){
+        for(Product huobanProduct : huobanProductList){//将货品进行处理
             com.huotu.hotcms.service.model.Bind.Product product = new com.huotu.hotcms.service.model.Bind.Product();
             product.setId(huobanProduct.getId());
             product.setSpec(huobanProduct.getSpec());
@@ -109,15 +115,6 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
         mallGoods.setMarketable(huobanGoods.isMarketable());
         mallGoods.setMarketPrice(huobanGoods.getMarketPrice());
         mallGoods.setTypeId(huobanGoods.getTypeId());
-        if (huobanGoods.getSmallPic() != null) {
-            mallGoods.setSmallPic(huobanGoods.getSmallPic().getValue());
-        }
-        if (huobanGoods.getThumbnailPic() != null) {
-            mallGoods.setThumbnailPic(huobanGoods.getThumbnailPic().getValue());
-        }
-        if (huobanGoods.getBigPic() != null) {
-            mallGoods.setBigPic(huobanGoods.getBigPic().getValue());
-        }
         mallGoods.setScenes(huobanGoods.getScenes());
         mallGoods.setCost(huobanGoods.getCost());
         mallGoods.setSalesCount(huobanGoods.getSalesCount());
@@ -151,7 +148,8 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
             Merchant merchant = merchantRestRepository.getOneByPK(site.getCustomerId());
             domain = merchant.getSubDomain();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("接口服务不可用");
+            log.error("接口服务不可用");
         }
         String url = configService.getCustomerUri(domain)+"/UserCenter/Index.aspx?customerid="+site.getCustomerId();
         return  url;

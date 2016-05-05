@@ -2,6 +2,7 @@ package com.huotu.hotcms.service.service.impl;
 
 import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.ArticleCategory;
 import com.huotu.hotcms.service.model.thymeleaf.current.ArticleCurrentParam;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.PageableForeachParam;
@@ -165,33 +166,53 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Article getArticleByParam(ArticleCurrentParam articleCurrentParam) {
+        Article article=null;
         if (articleCurrentParam != null) {
             if (articleCurrentParam.getId() != null) {
-                return articleRepository.getOne(articleCurrentParam.getId());
+                article=articleRepository.getOne(articleCurrentParam.getId());
             } else {
-                return articleRepository.getOne(articleCurrentParam.getDefaultid());
+                article=articleRepository.getOne(articleCurrentParam.getDefaultid());
             }
         }
-        return null;
+        article=setArticleThumbUri(article);
+        return article;
+    }
+
+    @Override
+    public Article setArticleThumbUri(Article article) {
+        if(article!=null) {
+            Category category = article.getCategory();
+            if (category != null) {
+                Site site = category.getSite();
+                if (site != null) {
+                    article.setThumbUri(site.getResourceUrl() + article.getThumbUri());
+                }
+            }
+        }
+        return article;
     }
 
     @Override
     public Article getArticleNextByParam(ArticleNextParam articleNextParam) {
+        Article article=null;
         if (articleNextParam != null) {
             if (articleNextParam.getId() != null) {
-                return articleRepository.findAllByIdAndNext(articleNextParam.getId());
+                article=articleRepository.findAllByIdAndNext(articleNextParam.getId());
             }
         }
-        return null;
+        article=setArticleThumbUri(article);
+        return article;
     }
 
     @Override
     public Article getArticlePreiousByParam(ArticlePreviousParam articlePreviousParam) {
+        Article article=null;
         if (articlePreviousParam != null) {
             if (articlePreviousParam.getId() != null) {
-                return articleRepository.findAllByIdAndPreious(articlePreviousParam.getId());
+                article=articleRepository.findAllByIdAndPreious(articlePreviousParam.getId());
             }
         }
-        return null;
+        article=setArticleThumbUri(article);
+        return article;
     }
 }

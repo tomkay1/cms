@@ -1,5 +1,6 @@
 package com.huotu.hotcms.service.service;
 
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.Video;
 import com.huotu.hotcms.service.model.thymeleaf.current.VideoCurrentParam;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.PageableForeachParam;

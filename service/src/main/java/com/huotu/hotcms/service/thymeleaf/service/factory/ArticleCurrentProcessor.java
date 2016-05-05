@@ -9,6 +9,7 @@
 package com.huotu.hotcms.service.thymeleaf.service.factory;
 
 import com.huotu.hotcms.service.entity.Article;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.thymeleaf.current.ArticleCurrentParam;
 import com.huotu.hotcms.service.service.ArticleService;
 import com.huotu.hotcms.service.thymeleaf.expression.DialectAttributeFactory;
@@ -66,8 +67,10 @@ public class ArticleCurrentProcessor {
     }
 
     public Object resolveDataByAttr(IProcessableElementTag tab,ITemplateContext context){
+        Article article=null;
         try{
-            Article article=(Article) VariableExpression.getVariable(context, "article");
+            article=(Article) VariableExpression.getVariable(context, "article");
+            Site site = (Site)VariableExpression.getVariable(context,"site");
             if(article!=null){
                 return article;
             }else{
@@ -81,7 +84,7 @@ public class ArticleCurrentProcessor {
                                 , PatternMatchUtil.urlParamRegexp));
                     }
                 }
-                return  articleService.getArticleByParam(articleCurrentParam);
+                article=articleService.getArticleByParam(articleCurrentParam);
             }
         }catch (Exception ex){
             log.error(ex.getMessage());

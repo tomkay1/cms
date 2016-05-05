@@ -44,7 +44,6 @@ public class RouteFilter implements Filter {
     private ApplicationContext applicationContext;
     private ServletContext servletContext;
 
-//    private static final String[] static_filter=new String[]{".js",".css",".png",".jpeg",".gif"};
     private SiteResolveService siteResolveService;
     private RouteResolverService routeResolverService;
     private SiteConfigServiceImpl siteConfigService;

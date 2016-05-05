@@ -1,22 +1,22 @@
 // JavaScript Document
 
-//����ͼƬ�б�
+//单击图片列表
 function showPic(num)
 {
-    //�����е�li��ʽ��ֵΪ��
+    //将所有的li样式赋值为空
     var objUl=FulS();
     for(var i=0;i<objUl.length;i++)
     {
         objUl[i].className="";
     }
 
-    //�Ե����Ľ�����ʽӦ��
+    //对单击的进行样式应用
     FliS(num).className="tsSelectImg";
 
-    //�õ��������ͼƬֵ
+    //得到单击后的图片值
     var src=Fpic(num).getAttribute("tsImgS");
 
-    //���и�ֵ
+    //进行赋值
     var Objimg=FimgS();
 
     Objimg.src=Fpic(num).src;
@@ -24,40 +24,40 @@ function showPic(num)
 
     document.getElementById("tsImgS").getElementsByTagName("a")[0].href=src;
 
-    //ͼƬ�ȱ���
+    //图片等比例
     tsScrollResize();
 
-    //���õ���
+    //设置导航
     tsScrollDh(num);
 
 
-    //����ͼƬ��λ
+    //滚动图片定位
     FulSs().style.marginLeft="-"+(tsNum()*tsRowNum()*FliS(0).offsetWidth)+"px";
 
 
 }
-//��һҳ
+//上一页
 function tsScrollArrLeft()
 {
     if(tsNum()+1>1)
     {
-        //���õ���
+        //设置导航
         tsScrollDh((tsNum()-1)*tsRowNum());
 
-        //����ͼƬ��λ
+        //滚动图片定位
         FulSs().style.marginLeft="-"+(tsNum())*tsRowNum()*FliS(0).offsetWidth+"px";
 
     }
 }
 
-//��һҳ
+//下一页
 function tsScrollArrRight()
 {
     if(tsNum()+2<=tsRowCount())
     {
-        //���õ���
+        //设置导航
         tsScrollDh((tsNum()+1)*tsRowNum());
-        //����ͼƬ��λ
+        //滚动图片定位
         FulSs().style.marginLeft="-"+(tsNum())*tsRowNum()*FliS(0).offsetWidth+"px";
 
     }
@@ -65,13 +65,13 @@ function tsScrollArrRight()
 
 
 
-//���õ���,������������Img���в���,��ôimgno��Ҫ�в�������
+//设置导航,如果不对上面的Img进行操作,那么imgno就要有参数进来
 function tsScrollDh(i)
 {
-    //������һҳ����
+    //设置上一页导航
     document.getElementById("tsImgSArrL").setAttribute("showPicNum",i);
 
-    //������һҳ����
+    //设置下一页导航
     document.getElementById("tsImgSArrR").setAttribute("showPicNum",i);
 
 }
@@ -87,11 +87,11 @@ function tsScrollResize()
     var imgNew = new Image();
     imgNew.src = myimg.src;
 
-    //��myimg���������൱��һ����������Ȼ�첽��ʱ��ִ��̫�죬һֱ�����һ��ͼ
+    //将myimg存起来，相当于一个参数，不然异步的时候执行太快，一直是最后一张图
     imgNew.preImg=myimg;
 
 
-    //�����Ϊ�˷����ε��������ͼƬ���߼�Ϊ0ִ��
+    //这个是为了防遨游等浏览器，图片宽、高加为0执行
     if (imgNew.width == 0 || imgNew.height == 0) {
         imgNew.onload=function(){
             tsScrollResizeHd(this,maxWidth,maxHeight,this.preImg);
@@ -151,55 +151,55 @@ function tsScrollResizeHd(imgNew,maxWidth,maxHeight,myimg)
     }
 }
 
-//һ����ʾ����
+//一行显示几个
 function tsRowNum()
 {
     return document.getElementById("tsImgSCon").offsetWidth/FliS(0).offsetWidth;
 }
 
-//�ڼ��� ��0��ʼ
+//第几行 从0开始
 function tsNum()
 {
     return Math.floor(document.getElementById("tsImgSArrL").getAttribute("showPicNum")/tsRowNum());
 }
-//������
+//共几行
 function tsRowCount()
 {
     return Math.ceil(FulS().length/tsRowNum());
 }
 
-//����ͼƬ����
+//返回图片对象
 function Fpic(i)
 {
     var tsImgSCon=document.getElementById("tsImgSCon").getElementsByTagName("li");
     return src=tsImgSCon.item(i).getElementsByTagName("img")[0];
 }
-//����li����
+//返回li对象
 function FliS(i)
 {
     return document.getElementById("tsImgSCon").getElementsByTagName("li")[i];
 }
 
-//����ͼƬ�б����
+//返回图片列表对象
 function FulS()
 {
     return document.getElementById("tsImgSCon").getElementsByTagName("li");
 }
-//��������ͼ
+//查找最大的图
 function FimgS(){
     return document.getElementById("tsImgS").getElementsByTagName("img")[0];
 }
-//����Ul����
+//查找Ul对象
 function FulSs()
 {
     return document.getElementById("tsImgSCon").getElementsByTagName("ul")[0];
 }
 
-//ͼƬ�������DIV��
+//图片集外面的DIV宽
 document.getElementById("tsImgSCon").style.width=FliS(0).offsetWidth*4+"px";
 
-//Ul��
+//Ul宽
 FulSs().style.width=FliS(0).offsetWidth*FulS().length+"px";
 
-//ͼƬ�ȱ���
+//图片等比例
 tsScrollResize();

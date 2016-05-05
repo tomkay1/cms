@@ -124,7 +124,7 @@ public class GoodsDetail {
      * @since 1.4.2
      */
     @Column(name = "Big_Pic")
-    private String bigPic;
+    private String[] bigPic;
 
 
     @Description("商品详情")

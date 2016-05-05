@@ -1,16 +1,14 @@
 /**
- * Created by Administrator on 2016/3/31.
+ * Created by xhl on 2016/3/31.
  */
 var JQueue = [];
 var aElement = new Array();
 (function ($) {
     $.extend(JQueue, {
         /**
-         * @brief: 元素入队
-         * @param: vElement元素列表,每个元素(必须包含ID唯一属性)
-         * @return: 返回当前队列元素个数
-         * @remark: 1.EnQueue方法参数可以多个
-         * 2.参数为空时返回-1
+         * 元素入队
+         * @param vElement vElement元素列表,每个元素(必须包含ID唯一属性)
+         * @returns {number} 返回当前队列元素个数
          */
         putQueue: function (vElement) {
             if (arguments == undefined && arguments.length == 0)
@@ -26,15 +24,22 @@ var aElement = new Array();
             }
             return aElement.length;
         },
+        /**
+         * 把布局列表丢入队列
+         *
+         * @param layoutList 布局列表
+         */
         putQueueList:function(layoutList){
             for(var i=0;i<layoutList.length;i++){
                 JQueue.putQueue(layoutList[i]);
             }
         },
+
         /**
-         * @brief: 元素出队
-         * @return: vElement
-         * @remark: 当队列元素为空时,返回null
+         *
+         * 元素出队
+         *
+         * @returns {*} vElement, 当队列元素为空时,返回null
          */
         deQueue: function () {
             if (aElement != null && aElement.length == 0)
@@ -104,8 +109,12 @@ var aElement = new Array();
         },
 
         /**
-         * @brief 把控件主体放入布局队列中，存在则修改
-         * */
+         * 把控件主体放入布局队列中，存在则修改
+         *
+         * @param layoutId 布局ID
+         * @param position 布局模块位置索引
+         * @param widget 控件主体设置信息对象
+         */
         putQueueLayoutWidget:function(layoutId,position,widget){
             var layout=JQueue.find(layoutId);
             if(layout!=null&&layout.module!=null){
@@ -123,8 +132,9 @@ var aElement = new Array();
             }
         },
         /**
-         *@brief 修改布局中的组件信息对象
-         * */
+         * 修改布局中的组件信息对象
+         * @param widget 控件主体设置信息对象
+         */
         patchQueueLayoutWidget:function(widget){
             var layout=JQueue.find(widget.layoutId);
             if(layout!=null&&layout.module!=null){
@@ -145,12 +155,13 @@ var aElement = new Array();
             }
         },
         /**
-         * @breaf 查找布局下面的控件主体是否存在
+         * 查找布局下面的控件主体是否存在
+         *
          * @param layoutId 布局ID
-         * @param position 布局位置
+         * @param position 布局位置索引
          * @param widgetGuid 控件主体唯一标识
-         * @return widget|-1
-         * */
+         * @returns {*} widget|-1
+         */
         findLayoutWdigetByPositionAndWidgetId:function(layoutId,position,widgetGuid){
             var layout=JQueue.find(layoutId);
             if(layout!=null&&layout.module!=null){
@@ -171,13 +182,12 @@ var aElement = new Array();
             return -1;
         },
         /**
-         * @breaf 布局排序,上移
+         * 布局排序,上移
+         *
          * @param currentLayoutId 当前布局ID
          * @param prevLayoutId 上一个布局ID
-         * */
+         */
         layoutUp:function(currentLayoutId,prevLayoutId){
-            //window.console.log(aElement);
-            //window.console.log("------------------currentLayoutId-->"+currentLayoutId+"  prevLayoutId-->"+prevLayoutId);
             var currentLayoutIndex=JQueue.findIndex(currentLayoutId);
             var prevLayoutIdIndex=JQueue.findIndex(prevLayoutId);
             var currentLayout=JQueue.find(currentLayoutId);
@@ -188,9 +198,9 @@ var aElement = new Array();
             }
             //window.console.log(aElement);
         },
+
         /**
-         * @brief: 将队列元素转化为字符串
-         * @return: 队列元素字符串
+         * 将队列元素转化为字符串
          */
         orderToJson: function () {
             //return JSON.stringify(aElement);
@@ -224,29 +234,11 @@ var aElement = new Array();
             }
             return JSON.stringify(orderElement);
         },
-        initQueue: function () {
-            var obj = $("div[data-control='ui']");
-            $.each(obj, function (item, dom) {
-                var id = $(dom).attr("id");
-                var resources = $(dom).attr("data-smartresources");
-                var elemet = JQueue.find(id);
-                if (elemet != null)
-                    aElement[item] = elemet;
-                else {
-                    var obj = {
-                        ID: id,
-                        smartResource: resources,
-                        isDelete: false//SmartUI for app the version 2.2.0.0 new add ---2016-03-03
-                    }
-                    aElement[item] = obj;
-                    //JQueue.PutQueue(obj);//把配置信息放入队列中方便后期保存时调用各参数
-                }
-            });
-        },
+
         /**
-         *@brief:根据队列唯一ID来修改该队列元素信息
-         *@param: id(队列元素的唯一标识)
-         *@return:返回队列修改后的元素
+         * 根据队列布局唯一ID来查找该队列布局元素所在索引信息
+         * @param id  (队列元素的布局唯一标识)
+         * @returns {number} 返回索引ID
          */
         findIndex: function (id) {
             for (var i = 0; i < aElement.length; i++) {
@@ -259,9 +251,9 @@ var aElement = new Array();
             return -1;
         },
         /**
-         *@brief:根据队列唯一ID来修改该队列元素信息
-         *@param: id(队列元素的唯一标识)
-         *@return:返回队列修改后的元素
+         * 根据队列布局唯一ID来查找该队列元素信息
+         * @param id(队列元素的布局唯一标识)
+         * @returns {*} 返回布局信息对象
          */
         find: function (id) {
             for (var i = 0; i < aElement.length; i++) {
@@ -273,11 +265,12 @@ var aElement = new Array();
             }
             return null;
         },
+
         /**
-         *@brief:查找数组中指定的ID
-         *@param array 要查找的数组
-         *@param: id(队列元素的唯一标识)
-         *@return:返回队列修改后的元素
+         * 查找数组中指定的ID 的布局信息对象
+         * @param array 布局列表信息
+         * @param id 布局唯一标识ID
+         * @returns {*} 返回查找到的布局信息对象
          */
         findByArray: function (array, id) {
             for (var i = 0; i < array.length; i++) {
@@ -290,8 +283,8 @@ var aElement = new Array();
             return null;
         },
         /**
-         *@brief 队列物理删除
-         * @param id 布局ID
+         * 布局信息物理删除
+         * @param id 布局唯一标识ID
          */
         delete: function (id) {
             for (var i = 0; i < aElement.length; i++) {
@@ -303,10 +296,12 @@ var aElement = new Array();
             }
         },
         /**
-         * @brief 删除控件主体信息
-         * @param widget 要删除的控件主体列表
-         * @param widgetGuid 控件主体ID
-         * */
+         * 删除控件主体信息
+         *
+         * @param widget 控件主体信息列表
+         * @param widgetGuid 控件主体唯一标识ID
+         * @returns {*} 返回删除后的控件主体信息
+         */
         deleteWidget:function(widget,widgetGuid){
             for (var i = 0; i < widget.length; i++) {
                 if (widget[i] != null && widget[i].length != 0 && widget[i].id.length != 0) {
@@ -318,11 +313,12 @@ var aElement = new Array();
             return widget;
         },
         /**
-         * @brief 删除指定的布局对象中的控件主体ID
-         * @param layoutId 布局ID
-         * @param widgetGuid 控件主体唯一标识ID
-         * @param position 控件主体所在的模块位置
-         * */
+         * 删除指定的布局对象中的控件主体ID
+         *
+         * @param layoutId 布局唯一标识ID
+         * @param widgetGuid 控件主体唯一标识ID->GUID
+         * @param position  控件主体所在的模块索引
+         */
         deleteWidgetByLayout:function(layoutId,widgetGuid,position) {
             var layout = JQueue.find(layoutId);
             if(layout!=null&&layout.module!=null){
@@ -336,6 +332,12 @@ var aElement = new Array();
                 JQueue.patchQueue(layout);
             }
         },
+        /**
+         * 从控件主体列表中查找指定的控件主体信息对象所在的索引
+         * @param widget 控件主体信息列表
+         * @param widgetGuid 控件主体唯一标识->Guid
+         * @returns {number} 返回查找到的索引位置
+         */
         findIndexByWidget:function(widget,widgetGuid){
             for (var i = 0; i < widget.length; i++) {
                 if (widget[i] != null && widget[i].length != 0 && widget[i].guid.length != 0) {
@@ -346,6 +348,12 @@ var aElement = new Array();
             }
             return -1;
         },
+        /**
+         * 从控件主体列表中查找指定的控件主体信息
+         * @param widget 控件主体列表
+         * @param widgetGuid 控件主体唯一标识->Guid
+         * @returns {*} 返回查找到的控件主体信息对象
+         */
         findByWidget:function(widget,widgetGuid){
             for (var i = 0; i < widget.length; i++) {
                 if (widget[i] != null && widget[i].length != 0 && widget[i].guid.length != 0) {
@@ -356,6 +364,13 @@ var aElement = new Array();
             }
             return null;
         },
+        /**
+         * 根据布局信息和控件主体唯一标识查找控件主体所在的索引
+         * @param layoutId 控件主体所在的布局唯一标识ID
+         * @param position 控件主体模块索引位置信息
+         * @param widgetGuid 控件主体唯一标识ID->Guid
+         * @returns {*} 返回控件主体所在布局列表中的索引信息
+         */
         findIndexByWidgetAndLayout:function(layoutId,position,widgetGuid){
             var layout = JQueue.find(layoutId);
             if(layout!=null&&layout.module!=null){
@@ -371,12 +386,12 @@ var aElement = new Array();
             return -1;
         },
         /**
-         * @brief 获得控件主体
-         * @param layoutId 布局ID
-         * @param position 所在布局的位置索引
-         * @param widgetGuid 要查找的控件主体唯一标识ID
-         * @return widget对象
-         * */
+         * 根据布局和控件主体唯一标识获得控件主体信息对象
+         * @param layoutId 布局唯一标识ID
+         * @param position 布局模块位置索引标识
+         * @param widgetGuid 控件主体唯一标识ID->GUID
+         * @returns {*} 返回控件主体信息对象
+         */
         findByWidgetAndLayout:function(layoutId,position,widgetGuid){
             var layout = JQueue.find(layoutId);
             if(layout!=null&&layout.module!=null){
@@ -392,11 +407,12 @@ var aElement = new Array();
             return null;
         },
         /**
-         * @brief 布局里面的控件主体排序
+         *  布局里面的控件主体排序
          * @param layoutId 布局ID
          * @param position 所在布局中的位置索引
          * @param currentWidgetGuid 当前的控件主体唯一标识ID
          * @param prevWidgetGuid 要调换位置的控件主体唯一标识ID
+         * @returns {*}
          * */
         widgetExChangeByLayout:function(layoutId,position,currentWidgetGuid,prevWidgetGuid){
             var layout = JQueue.find(layoutId);
@@ -421,7 +437,9 @@ var aElement = new Array();
             JQueue.patchQueue(layout);
         },
         /**
-         *@brief 队列假删除,标准删除状态
+         *队列（布局）假删除,标注删除状态
+         * @param id 布局唯一标识ID
+         * @return {*} 没有返回值
          */
         remove: function (id) {
             for (var i = 0; i < aElement.length; i++) {
@@ -434,7 +452,7 @@ var aElement = new Array();
             }
         },
         /**
-         *@brief:根据队列唯一ID来修改该队列元素信息
+         *根据队列唯一ID来修改该队列元素信息
          *@param: vElement元素(必须包含ID唯一属性)
          *@return:返回队列修改后的元素
          */

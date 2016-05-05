@@ -112,6 +112,7 @@ public class RouteInterceptor  extends HandlerInterceptorAdapter {
                 modelAndView.addObject("request", requestService.ConvertRequestModel(request,site));
             }else{
                 modelAndView.setViewName(resourcePath +request.getServletPath());
+                modelAndView.addObject("request", requestService.ConvertRequestModel(request,site));
             }
         }catch (Exception ex){
             log.error(ex.getMessage());

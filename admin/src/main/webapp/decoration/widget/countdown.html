@@ -70,26 +70,29 @@
             if(hours <0 || hours >23){
                 $("#errorMsg").text('\"时\"必须在0-23之间');
                 $("#errorMsg").attr('style','display:block;color:red;');
+                $("#hours").val(23);
             }else{
                 $("#errorMsg").text('');
                 $("#errorMsg").attr('style','display:none;color:red;');
             }
         })
         $("#minutes").blur(function(){
-            var hours = parseInt($("#minutes").val());
-            if(hours <0 || hours > 59){
+            var minutes = parseInt($("#minutes").val());
+            if(minutes <0 || minutes > 59){
                 $("#errorMsg").text('\"分\"必须在0-59之间');
                 $("#errorMsg").attr('style','display:block;color:red;');
+                $("#minutes").val(59);
             }else{
                 $("#errorMsg").text('');
                 $("#errorMsg").attr('style','display:none;color:red;');
             }
         })
         $("#seconds").blur(function(){
-            var hours = parseInt($("#seconds").val());
-            if(hours <0 || hours >59){
+            var seconds = parseInt($("#seconds").val());
+            if(seconds <0 || seconds >59){
                 $("#errorMsg").text('\"秒\"必须在0-59之间');
                 $("#errorMsg").attr('style','display:block;color:red;');
+                $("#seconds").val(59);
             }else{
                 $("#errorMsg").text('');
                 $("#errorMsg").attr('style','display:none;color:red;');

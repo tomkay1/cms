@@ -8,10 +8,10 @@
             <div class="HOTSearchArea" style="display: inline-block">
                 <div class="HOTSearchInput" >
                     <form th:action="${request.rootUri}+'/shop/search'">
-                        <input type="text" th:style="'width:'+${maxWidth}+'px'" placeholder="请输入关键词" class="inputMiddle"
+                        <input type="text" th:style="'width:'+${maxWidth}+'px;color:#BDBDBD'" placeholder="请输入关键词" class="inputMiddle"
                                th:value="${request.get('keyword')}!=null?${request.get('keyword')}:${defaultKewWord}"
                                name="keyword"
-                               maxlength="20" size="20" th:attr="maxlength=(${maxlength}==null?20:${maxlength}),"/>
+                               maxlength="20" size="20" th:attr="maxlength=(${maxlength}==null?20:${maxlength})"/>
                         <button type="submit" onclick="" d="" clstag="">搜索<s></s></button>
                     </form>
                 </div>
@@ -50,16 +50,6 @@
     </style>
     <div class="forms">
         <ul>
-            <!--<li>-->
-                <!--<label>选择模版 </label>-->
-                <!--<select name="templateClass" class="select-short" id="templateClass">-->
-                    <!--<option value="HOTSearch-43971"-->
-                            <!--th:selected="${templateClass== null or templateClass=='HOTSearch-43971'}">模版一-->
-                    <!--</option>-->
-                    <!--<option value="HOTSearch-400300" th:selected="${templateClass=='HOTSearch-400300'}">模版二</option>-->
-                    <!--<option value="HOTSearch-400301" th:selected="${templateClass=='HOTSearch-400301'}">模版三</option>-->
-                <!--</select>-->
-            <!--</li>-->
             <li>
                 <label>默认搜索词</label>
                 <input type="text" maxlength="10" class="text-short" name="defaultKewWord" value="保暖内衣"

@@ -208,7 +208,7 @@
 <script src="js/magicZoom.js" th:src="@{/template/0/js/magicZoom.js}" type="text/javascript"></script>
 <script th:inline="javascript">
     var specSize = /*[[${goods.spec.size()}]]*/"/";//商品规格行数
-    var rootUrl = /*[[${request.root}]]*/"/"
+    var rootUri = /*[[${request.rootUri}]]*/"/"
     $.toolbar({
         root: rootUrl
     });
@@ -239,7 +239,7 @@
                     shadeClose: true,
                     shade: 0.8,
                     area: ['410px', '450px'],
-                    content: "/bind/qrCode?goodsId=" + goodsId+"&productId="+productId+"&num="+num ,
+                    content: rootUri+"/bind/qrCode?goodsId=" + goodsId+"&productId="+productId+"&num="+num ,
                     end: function () {
                     }
                 });

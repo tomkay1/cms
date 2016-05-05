@@ -68,12 +68,12 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
             log.error("接口服务不可用");
         }
         GoodsDetail mallGoods = new GoodsDetail();
-        List<Product> huobanProductList = productRestRepository.findByGoods(huobanGoods);//获取goods里的product
-        List<com.huotu.hotcms.service.model.Bind.Product> productList = new ArrayList();
         String bigPic = "";
         for(GoodsImage goodsImage : huobanGoods.getImages()){//对大图进行处理
             bigPic =  bigPic + goodsImage.getBigPic().getValue()+",";
         }
+        List<Product> huobanProductList = productRestRepository.findByGoods(huobanGoods);//获取goods里的product
+        List<com.huotu.hotcms.service.model.Bind.Product> productList = new ArrayList();
         mallGoods.setBigPic(bigPic.split(","));
         List<Double> priceList = new ArrayList();
         for(Product huobanProduct : huobanProductList){//将货品进行处理

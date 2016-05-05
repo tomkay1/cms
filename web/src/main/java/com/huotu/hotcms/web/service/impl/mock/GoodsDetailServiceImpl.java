@@ -58,6 +58,7 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
     private ConfigService configService;
 
     @Override
+    @SuppressWarnings("Duplicates")
     public GoodsDetail getGoodsDetail(int goodsId, int userId) throws Exception {
         com.huotu.huobanplus.common.entity.Goods huobanGoods = null;
         try{

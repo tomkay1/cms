@@ -78,9 +78,9 @@
                              style="line-height: 0px; border: none; height: 0px; padding-top: 10px; display: none;">
                             <span class="tit">总销量：</span><span class="salesCount">0</span>
                         </div>
-                        <div class="old_price_wrap" th:if="${products.get(0).code!=''}">
-                            <span class="gBN" id="code" th:text="'商品编号: '+${products.get(0).code}">商品编号：34325643</span><br>
-              <span style="height: 20px; clear:both; margin-top:10px" class="saleTag" th:if="${goods.saleTags!=null}">
+                        <div class="old_price_wrap">
+                            <span class="gBN" id="code" th:if="${products.get(0).code!=''}" th:text="'商品编号: '+${products.get(0).code}">商品编号：34325643</span><br>
+              <span style="height: 20px; clear:both; margin-top:10px" class="saleTag" >
               <img src="images/tongy.jpg"  th:each="saleTags:${goods.saleTags}"
                    th:src="@{/template/0/images/tongy.jpg}" style="width: 20px;vertical-align:middle;" th:text="${saleTags}" >
               </span>
@@ -148,7 +148,7 @@
                                 <div class="inner">
                                     <div id="skuStock">
                                         <span id="stock-num" style="color: rgb(153, 153, 153);"
-                                              th:text="'库存数: '+${goods.stock}+' 件'">库存充足</span>
+                                              th:text="'库存数: '+${products.get(0).stock}+' 件'">库存充足</span>
                                     </div>
                                     <div id="buyLimit">
                                     </div>
@@ -208,7 +208,7 @@
     var specSize = /*[[${goods.spec.size()}]]*/"/";//商品规格行数
     var rootUrl = /*[[${request.root}]]*/"/"
     $.toolbar({
-        root: rootUrl
+        root: ""
     });
     function showBuyQRCode() {//扫码购买
         var goodsId = /*[[${goods.id}]]*/ "";//商品id
@@ -237,7 +237,7 @@
                     shadeClose: true,
                     shade: 0.8,
                     area: ['410px', '450px'],
-                    content: rootUrl+"/bind/qrCode?goodsId=" + goodsId+"&productId="+productId+"&num="+num ,
+                    content: "/bind/qrCode?goodsId=" + goodsId+"&productId="+productId+"&num="+num ,
                     end: function () {
                     }
                 });

@@ -80,10 +80,10 @@
                         </div>
                         <div class="old_price_wrap" th:if="${products.get(0).code!=''}">
                             <span class="gBN" id="code" th:text="'商品编号: '+${products.get(0).code}">商品编号：34325643</span><br>
-              <span style="height: 20px; clear:both; margin-top:10px" class="saleTag">
-              <img src="images/tongy.jpg" th:src="@{/template/0/images/tongy.jpg}" style="width: 20px;vertical-align:middle;">品牌直供
-                  <img src="images/tongy.jpg" th:src="@{/template/0/images/tongy.jpg}" style="width: 20px;vertical-align:middle;">包邮
-                  <img src="images/tongy.jpg" th:src="@{/template/0/images/tongy.jpg}" style="width: 20px;vertical-align:middle;">七天无理由退货</span>
+              <span style="height: 20px; clear:both; margin-top:10px" class="saleTag" th:if="${goods.saleTags!=null}">
+              <img src="images/tongy.jpg"  th:each="saleTags:${goods.saleTags}"
+                   th:src="@{/template/0/images/tongy.jpg}" style="width: 20px;vertical-align:middle;" th:text="${saleTags}" >
+              </span>
                         </div>
                     </div>
                     <!--会员价格END-->

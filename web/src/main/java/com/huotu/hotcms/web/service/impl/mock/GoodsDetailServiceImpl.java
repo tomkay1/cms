@@ -105,6 +105,9 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
             }
             }
         }
+        if (huobanGoods.getSaleTags()!=null){
+            mallGoods.setSaleTags(huobanGoods.getSaleTags().getTags());
+        }
         mallGoods.setCode(huobanGoods.getCode());
         mallGoods.setTitle(huobanGoods.getTitle());
         mallGoods.setBrief(huobanGoods.getBrief());

@@ -557,6 +557,7 @@ define(function (require, exports, module) {
                 widgetModule.init();
                 page.clearHref();
                 bannerModule.banner();
+
             }
         };
         var widgetModule = {
@@ -652,10 +653,18 @@ define(function (require, exports, module) {
                     });
                 });
             },
+            widgetMarkHeight:function(){
+                //$(".HOT-module-toolbar").each(function() {
+                //    var _h = $(this).parent().siblings('.mc').height();
+                //    console.log(_h);
+                //    $(this).height(_h);
+                //});
+            },
             init: function () {
                 widgetModule.deleteModule();
                 widgetModule.upModule();
                 widgetModule.downModule();
+                widgetModule.widgetMarkHeight();
             }
         };
         var layoutModule = {

@@ -3,7 +3,7 @@
 <div th:class="'fn-clear js-hot-module  '+(${templateClass==null}?'sh-brand-wrap-630128':${templateClass})+' toolhover'" th:attr="id=${guid}"  th:style="'background:'+${bgcolor}">
     <div class="mc" style="overflow: visible;" >
         <div class="sh-brand-wrap">
-            <div class="sh-brand">
+            <div class="sh-brand" th:style="${(pageBackImage==null or pageBackImage=='')?'height:100px;':'height:auto'}">
                 <a th:href="${request.rootUri}" class="brand-link" th:if="${pageBackImage!=null or pageBackImage != ''}">
                     <img th:src="${pageBackImage}"/>
                 </a>
@@ -13,7 +13,7 @@
                     </a>
                     <!--<a th:href="${request.rootUri}" class="follow-me for-light-bg">关注我</a>-->
                 </div>
-                <div class="m-search for-black-bg">
+                <div class="m-search for-black-bg" style="margin-top: 7px">
                     <form class="m-form" th:action="${request.rootUri}+'/shop/search'">
                         <input type="text" style="color: #BDBDBD;" class="m-kw" value="" th:maxlength="${maxlength}" size="50" th:value="${request.get('keyword')}!=null?${request.get('keyword')}:${defaultKewWord}" name="keyword"/>
                         <input type="submit" value="搜索" class="m-submit"

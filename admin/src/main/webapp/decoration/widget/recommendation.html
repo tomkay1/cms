@@ -51,6 +51,11 @@
                                     <span>立即购买 &gt;</span>
                                 </a>
                             </div>
+                            <div class="jBtnArea">
+                                <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}">
+                                    <span>加入购物车</span>
+                                </a>
+                            </div>
                         </div>
                     </li>
                 </ul>
@@ -118,37 +123,37 @@
             </div>
         </div>
     </div>
-    <div class="mc"  style="overflow: visible;" th:if="${templateClass == 'double12-723938'}">
-        <div class="j-module School_season">
-            <div class="mod-990">
-                <ul class="clearfloat">
-                    <li class="item item-8 " data-widget-hot="goods">
-                        <div class="jPic">
-                            <img th:src="${goods.smallPic}"  style="width: 100%;">
-                            <span class="pic_icon"><img th:src="${goods.smallPic}"></span>
-                        </div>
-                        <div class="jGoodsInfo">
-                            <div class="HOTesc">
-                                <span>[[${goods.title}]]</span>
-                            </div>
-                            <div class="jPrice">
-                                <span class="jRmb">￥</span>
-                                <span class="HOTNum">[[${goods.price}]]</span>
-                            </div>
-                            <div class="jBtnArea">
-                                <span>立即抢购</span>
-                            </div>
-                        </div>
-                        <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target=""><span class="border3"></span></a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
+    <!--<div class="mc"  style="overflow: visible;" th:if="${templateClass == 'double12-723938'}">-->
+        <!--<div class="j-module School_season">-->
+            <!--<div class="mod-990">-->
+                <!--<ul class="clearfloat">-->
+                    <!--<li class="item item-8 " data-widget-hot="goods">-->
+                        <!--<div class="jPic">-->
+                            <!--<img th:src="${goods.smallPic}"  style="width: 100%;">-->
+                            <!--<span class="pic_icon"><img th:src="${goods.smallPic}"></span>-->
+                        <!--</div>-->
+                        <!--<div class="jGoodsInfo">-->
+                            <!--<div class="HOTesc">-->
+                                <!--<span>[[${goods.title}]]</span>-->
+                            <!--</div>-->
+                            <!--<div class="jPrice">-->
+                                <!--<span class="jRmb">￥</span>-->
+                                <!--<span class="HOTNum">[[${goods.price}]]</span>-->
+                            <!--</div>-->
+                            <!--<div class="jBtnArea">-->
+                                <!--<span>立即抢购</span>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target=""><span class="border3"></span></a>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
     <div class="mc" style="overflow: visible;" th:if="${templateClass == 'goodsRec9-672540'}">
         <div class="j-module" style="overflow: hidden; padding-bottom: 0px;">
             <ul>
-                <li style="margin-left: 0px; margin-right: 0px; margin-top: 0px; width: 256.667px;" data-widget-hot="goods">
+                <li style="margin-left: 5px; margin-right: 0px; margin-top: 0px;" data-widget-hot="goods">
                     <div class="jItem">
                         <div class="jPic">
                             <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="">
@@ -169,7 +174,7 @@
     <div class="mc" style="overflow: visible;" th:if="${templateClass == 'goodsRec8-672537'}">
         <div class="j-module"  style="overflow: hidden; padding-bottom: 0px;">
             <ul>
-                <li style="margin-left: 0px; margin-right: 0px; margin-top: 0px; width: 256.667px;" data-widget-hot="goods">
+                <li style="margin-left: 5px; margin-right: 0px; margin-top: 0px;" data-widget-hot="goods">
                     <div class="jItem">
                         <div class="jPic">
                             <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="">
@@ -189,7 +194,7 @@
     <div class="mc" style="overflow: visible;" th:if="${templateClass == 'goodsRec7-672533'}">
         <div class="j-module" style="overflow: hidden; padding-bottom: 0px;">
             <ul>
-                <li style="margin-left: 10px; margin-right: 0px; margin-top: 0px; width: 256.667px;" data-widget-hot="goods">
+                <li style="margin-left: 5px; margin-right: 0px; margin-top: 0px;" data-widget-hot="goods">
                     <div class="jItem">
                         <div class="jPic">
                             <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" target="">
@@ -355,12 +360,12 @@
                                 </a>
                             </div>
                             <div class="jPrice">
-                                <!--<div class="HOTPrice">
-                                    <span class="jsTag">京东价：</span><span class="HOTNum">129.00</span>
-                                </div>-->
-                                <div class="jSalePrice">
-                                    <!--<span class="jText">参考价：</span>--><span class="jRmb">¥</span><span class="jsNum">[[${goods.price}]]</span>
+                                <div class="HOTPrice">
+                                    <span class="jsTag">京东价：</span><span class="HOTNum">[[${goods.price}]]</span>
                                 </div>
+                                <!--<div class="jSalePrice">-->
+                                    <!--&lt;!&ndash;<span class="jText">参考价：</span>&ndash;&gt;<span class="jRmb">¥</span><span class="jsNum">[[${goods.price}]]</span>-->
+                                <!--</div>-->
                             </div>
                         </div>
                     </div>
@@ -489,17 +494,16 @@
                     <option value="HOT_woman-768144" th:selected="${templateClass=='HOT_woman-768144'}">模版二</option>
                     <option value="userjGoodsRecommend-400154" th:selected="${templateClass=='userjGoodsRecommend-400154'}">模版三</option>
                     <option value="double12-724042" th:selected="${templateClass=='double12-724042'}">模版四</option>
-                    <option value="double12-723938" th:selected="${templateClass=='double12-723938'}">模版五</option>
-                    <option value="goodsRec9-672540" th:selected="${templateClass=='goodsRec9-672540'}">模版六</option>
-                    <option value="goodsRec8-672537" th:selected="${templateClass=='goodsRec8-672537'}">模版七</option>
-                    <option value="goodsRec7-672533" th:selected="${templateClass=='goodsRec7-672533'}">模版八</option>
-                    <option value="jGoodsRecommend-400156" th:selected="${templateClass=='jGoodsRecommend-400156'}">模版九</option>
-                    <option value="jGoodsRecommend-400210" th:selected="${templateClass=='jGoodsRecommend-400210'}">模版十</option>
-                    <option value="jGoodsRecommend-400211" th:selected="${templateClass=='jGoodsRecommend-400211'}">模版十一</option>
-                    <option value="jGoodsRecommend-400214" th:selected="${templateClass=='jGoodsRecommend-400214'}">模版十二</option>
-                    <option value="jGoodsRecommend-400215" th:selected="${templateClass=='jGoodsRecommend-400215'}">模版十三</option>
-                    <option value="jGoodsRecommend-412502" th:selected="${templateClass=='jGoodsRecommend-412502'}">模版十四</option>
-                    <option value="jGoodsRecommend-400376" th:selected="${templateClass=='jGoodsRecommend-400376'}">模版十五</option>
+                    <option value="goodsRec9-672540" th:selected="${templateClass=='goodsRec9-672540'}">模版五</option>
+                    <option value="goodsRec8-672537" th:selected="${templateClass=='goodsRec8-672537'}">模版六</option>
+                    <option value="goodsRec7-672533" th:selected="${templateClass=='goodsRec7-672533'}">模版七</option>
+                    <option value="jGoodsRecommend-400156" th:selected="${templateClass=='jGoodsRecommend-400156'}">模版八</option>
+                    <option value="jGoodsRecommend-400210" th:selected="${templateClass=='jGoodsRecommend-400210'}">模版九</option>
+                    <option value="jGoodsRecommend-400211" th:selected="${templateClass=='jGoodsRecommend-400211'}">模版十</option>
+                    <option value="jGoodsRecommend-400214" th:selected="${templateClass=='jGoodsRecommend-400214'}">模版十一</option>
+                    <option value="jGoodsRecommend-400215" th:selected="${templateClass=='jGoodsRecommend-400215'}">模版十二</option>
+                    <option value="jGoodsRecommend-412502" th:selected="${templateClass=='jGoodsRecommend-412502'}">模版十三</option>
+                    <option value="jGoodsRecommend-400376" th:selected="${templateClass=='jGoodsRecommend-400376'}">模版十四</option>
                 </select>
             </li>
             <!--<li>-->

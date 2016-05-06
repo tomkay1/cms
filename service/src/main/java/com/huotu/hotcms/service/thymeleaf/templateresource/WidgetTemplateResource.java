@@ -246,7 +246,7 @@ public class WidgetTemplateResource implements ITemplateResource {
         String htmlTemplate = pageResourceService.getHtmlTemplateByWidgetPage(widgetPage, false, site);
         if (widgetPage.getPageEnabledHead() != null) {
             if (widgetPage.getPageEnabledHead()) {//取用头部
-                String commonHeader = pageResourceService.getHeaderTemplateBySite(site);
+                String commonHeader = pageResourceService.getCommonTemplateBySite(site,BasicPageType.PAGE_HEAD_CONFIG);
                 if (null != commonHeader) {
                     htmlTemplate = commonHeader + htmlTemplate;
                 }

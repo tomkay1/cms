@@ -13,7 +13,6 @@
           th:href="@{/template/0/css/scfdforPC.css}"/>
     <link rel="stylesheet" href="/template/0/css/MagicZoom.css" th:href="@{/template/0/css/MagicZoom.css}"
           type="text/css"/>
-
     <!--<script src="js/ShopShow.js" th:src="@{/template/0/js/shopShow.js}"></script>-->
 </head>
 <body>
@@ -78,12 +77,12 @@
                              style="line-height: 0px; border: none; height: 0px; padding-top: 10px; display: none;">
                             <span class="tit">总销量：</span><span class="salesCount">0</span>
                         </div>
-                        <div class="old_price_wrap" th:if="${products.get(0).code!=''}">
-                            <span class="gBN" id="code" th:text="'商品编号: '+${products.get(0).code}">商品编号：34325643</span><br>
-              <span style="height: 20px; clear:both; margin-top:10px" class="saleTag">
-              <img src="images/tongy.jpg" th:src="@{/template/0/images/tongy.jpg}" style="width: 20px;vertical-align:middle;">品牌直供
-                  <img src="images/tongy.jpg" th:src="@{/template/0/images/tongy.jpg}" style="width: 20px;vertical-align:middle;">包邮
-                  <img src="images/tongy.jpg" th:src="@{/template/0/images/tongy.jpg}" style="width: 20px;vertical-align:middle;">七天无理由退货</span>
+                        <div class="old_price_wrap">
+                            <span class="gBN" id="code" th:if="${goods.code!=''}" th:text="'商品编号: '+${goods.code}">商品编号：34325643</span><br>
+              <span style="height: 20px; clear:both; margin-top:10px" class="saleTag" >
+              <img src="images/tongy.jpg"  th:each="saleTags:${goods.saleTags}"
+                   th:src="@{/template/0/images/tongy.jpg}" style="width: 20px;vertical-align:middle;" th:text="${saleTags}" >
+              </span>
                         </div>
                     </div>
                     <!--会员价格END-->
@@ -148,7 +147,7 @@
                                 <div class="inner">
                                     <div id="skuStock">
                                         <span id="stock-num" style="color: rgb(153, 153, 153);"
-                                              th:text="'库存数: '+${goods.stock}+' 件'">库存充足</span>
+                                              th:text="'库存数: '+${products.get(0).stock}+' 件'">库存充足</span>
                                     </div>
                                     <div id="buyLimit">
                                     </div>
@@ -181,12 +180,12 @@
             </div>
             <p style="clear:both"></p>
         </div>
-        <div class="m m1 hide" id="fitting-suit" style="display: block;background-color:#fff;">
+        <div class="m m1 hide" id="fitting-suit" style="display: block">
             <div class="float-nav-wrap" style="padding-bottom:6px">
                 <div class="mt">
                     <ul class="tab">
                         <li class="hide ui-switchable-item curr" style="display: list-item;">
-                            <a href="#none" style="color: ">商品介绍</a>
+                            <a href="#none" style="color: #000000">商品介绍</a>
                         </li>
                     </ul>
                 </div>
@@ -197,6 +196,9 @@
         </div>
     </div>
 </div>
+<div th:utext="${bottom}">
+
+</div>
 </body>
 </html>
 <script src="js/jquery-1.9.1.min.js" th:src="@{/template/0/js/jquery-1.9.1.min.js}"></script>
@@ -206,9 +208,9 @@
 <script src="js/magicZoom.js" th:src="@{/template/0/js/magicZoom.js}" type="text/javascript"></script>
 <script th:inline="javascript">
     var specSize = /*[[${goods.spec.size()}]]*/"/";//商品规格行数
-    var rootUrl = /*[[${request.root}]]*/"/"
+    var rootUri = /*[[${request.rootUri}]]*/"/"
     $.toolbar({
-        root: rootUrl
+        root: rootUri
     });
     function showBuyQRCode() {//扫码购买
         var goodsId = /*[[${goods.id}]]*/ "";//商品id
@@ -237,7 +239,7 @@
                     shadeClose: true,
                     shade: 0.8,
                     area: ['410px', '450px'],
-                    content: rootUrl+"/bind/qrCode?goodsId=" + goodsId+"&productId="+productId+"&num="+num ,
+                    content: rootUri+"/bind/qrCode?goodsId=" + goodsId+"&productId="+productId+"&num="+num ,
                     end: function () {
                     }
                 });
@@ -272,7 +274,6 @@
                     $("#normalPrice").text(products[i].marketPric);//修改市场价格
                     $("#lsls").text("立省"+savePrice.toString()+'元');//修改市场价格
                     $("#stock-num").text('库存数: '+products[i].stock+' 件') ;//修改产品库存
-                    $("#code").text('商品编号: '+products[i].code) ;//修改商品编号
                 }
             }
         }

@@ -1,5 +1,6 @@
 package com.huotu.hotcms.service.widget.service;
 
+import com.huotu.hotcms.service.common.BasicPageType;
 import com.huotu.hotcms.service.common.EnumUtils;
 import com.huotu.hotcms.service.common.LayoutEnum;
 import com.huotu.hotcms.service.entity.Site;
@@ -130,6 +131,37 @@ public class PageResourceService {
         WidgetPage widgetPage=pageResolveService.getWidgetPageByConfig("head.xml", site);
         if(widgetPage!=null){
            return getHtmlTemplateByWidgetPage(widgetPage, false,site);
+        }
+        return null;
+    }
+
+    /***
+     *  根据站点获得公共页面模版
+     *
+     * @param site
+     * @param basicPageType
+     * @return
+     * @throws Exception
+     */
+    public String getCommonTemplateBySite(Site site,BasicPageType basicPageType) throws Exception {
+        WidgetPage widgetPage=pageResolveService.getWidgetPageByConfig(basicPageType.getValue(), site);
+        if(widgetPage!=null){
+            return getHtmlTemplateByWidgetPage(widgetPage, false,site);
+        }
+        return null;
+    }
+
+    /**
+     * 根据站点获得底部模版信息对象
+     *
+     * @param site
+     * @return
+     * @throws Exception
+     */
+    public String getBottomTemplateBySite(Site site) throws Exception {
+        WidgetPage widgetPage=pageResolveService.getWidgetPageByConfig("bottom.xml", site);
+        if(widgetPage!=null){
+            return getHtmlTemplateByWidgetPage(widgetPage, false,site);
         }
         return null;
     }

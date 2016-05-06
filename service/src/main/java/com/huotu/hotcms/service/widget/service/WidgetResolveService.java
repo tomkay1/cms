@@ -178,7 +178,7 @@ public class WidgetResolveService {
             List<WidgetProperty> defaultPropertyList=null;
             if(widgetMains!=null){
                 String defaultProperty=widgetMains.getDefaultsProperty();
-                if(defaultProperty!=null&&defaultProperty!=""){
+                if(defaultProperty!=null&&!defaultProperty.equals("")){
                     defaultPropertyList= JSONArray.parseArray(defaultProperty, WidgetProperty.class);
                 }
             }

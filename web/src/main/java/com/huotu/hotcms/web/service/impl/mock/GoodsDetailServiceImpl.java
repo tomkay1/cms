@@ -58,6 +58,7 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
     private ConfigService configService;
 
     @Override
+    @SuppressWarnings("Duplicates")
     public GoodsDetail getGoodsDetail(int goodsId, int userId) throws Exception {
         com.huotu.huobanplus.common.entity.Goods huobanGoods = null;
         try{
@@ -68,13 +69,13 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
             log.error("接口服务不可用");
         }
         GoodsDetail mallGoods = new GoodsDetail();
-        List<Product> huobanProductList = productRestRepository.findByGoods(huobanGoods);//获取goods里的product
-        List<com.huotu.hotcms.service.model.Bind.Product> productList = new ArrayList();
         String bigPic = "";
         for(GoodsImage goodsImage : huobanGoods.getImages()){//对大图进行处理
             bigPic =  bigPic + goodsImage.getBigPic().getValue()+",";
         }
         mallGoods.setBigPic(bigPic.split(","));
+        List<Product> huobanProductList = productRestRepository.findByGoods(huobanGoods);//获取goods里的product
+        List<com.huotu.hotcms.service.model.Bind.Product> productList = new ArrayList();
         List<Double> priceList = new ArrayList();
         for(Product huobanProduct : huobanProductList){//将货品进行处理
             com.huotu.hotcms.service.model.Bind.Product product = new com.huotu.hotcms.service.model.Bind.Product();
@@ -104,6 +105,9 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
                 specDescription.setGoodsImageIds(arry);
             }
             }
+        }
+        if (huobanGoods.getSaleTags()!=null){
+            mallGoods.setSaleTags(huobanGoods.getSaleTags().getTags());
         }
         mallGoods.setCode(huobanGoods.getCode());
         mallGoods.setTitle(huobanGoods.getTitle());

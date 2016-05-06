@@ -118,6 +118,15 @@ public class GoodsDetail {
      */
     private String thumbnailPic;
 
+
+    /**
+     * 销售标签
+     *
+     * @since 1.4.5
+     */
+    private String[] saleTags;
+
+
     /**
      * 商品大图资源
      *

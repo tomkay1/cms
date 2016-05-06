@@ -1,5 +1,6 @@
 package com.huotu.hotcms.web.controller;
 
+import com.huotu.hotcms.service.common.BasicPageType;
 import com.huotu.hotcms.service.common.PageErrorType;
 import com.huotu.hotcms.service.entity.CustomPages;
 import com.huotu.hotcms.service.entity.Site;
@@ -119,11 +120,16 @@ public class ShopController {
                  userId = Integer.valueOf(cookieUser.getUserId(request));
             }
             Site site = siteResolveService.getCurrentSite(request);
-            String head = pageResourceService.getHeaderTemplateBySite(site);//公共头部
+//          String head = pageResourceService.getHeaderTemplateBySite(site);//公共头部
+            String head=pageResourceService.getCommonTemplateBySite(site, BasicPageType.PAGE_HEAD_CONFIG);
+            String bottom=pageResourceService.getCommonTemplateBySite(site,BasicPageType.PAGE_BOTTOM_CONFIG);//公共底部
             if(head == null) {
                 head = "";
             }else{
                 head=widgetTemplateResource.getHtmlHeadStaticResources(environment,pageStaticResourceService)+head;
+            }
+            if(bottom==null){
+                bottom="";
             }
             GoodsDetail goods = goodsDetailService.getGoodsDetail(Integer.valueOf(id),userId);
             modelAndView.setViewName("/template/0/goodsDetail.html");
@@ -131,6 +137,7 @@ public class ShopController {
             modelAndView.addObject("site",site);//为了传递seo
             modelAndView.addObject("products", goods.getProducts());
             modelAndView.addObject("head",head);//公共头部
+            modelAndView.addObject("bottom",bottom);//公共头部
         }catch (Exception ex){
             log.error(ex);
         }

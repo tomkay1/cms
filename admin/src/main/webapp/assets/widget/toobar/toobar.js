@@ -451,7 +451,7 @@ define(function (require, exports, module) {
                     $("#pageBackVertical").find("option[value='" + (widgetPageModel.pageBackVertical == null ? "" : widgetPageModel.pageBackVertical) + "']").attr("selected", true);
 
                     $("#pageEnableHead").attr("checked", (widgetPageModel.pageEnabledHead == null ? "false" : widgetPageModel.pageEnabledHead));
-                    if (configName != "head") {
+                    if (configName != "head"&&configName!="bottom") {
                         page.pageEnableHead();
                     } else {
                         $("#jq-page-common-no").hide();

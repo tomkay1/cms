@@ -67,6 +67,4 @@ public class GoodsPageableTagProcessorService {
 //        requestModel.setHasNextPage(pageNo < totalPages);
 //        requestModel.setPageNos(pageNos);
 //    }
-
-
 }

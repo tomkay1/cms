@@ -9,6 +9,7 @@
 package com.huotu.hotcms.service.thymeleaf.templateresource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.huotu.hotcms.service.common.BasicPageType;
 import com.huotu.hotcms.service.common.PageErrorType;
 import com.huotu.hotcms.service.common.SiteType;
 import com.huotu.hotcms.service.entity.CustomPages;
@@ -240,6 +241,7 @@ public class WidgetTemplateResource implements ITemplateResource {
         return cssResources;
     }
 
+
     private String getBrowseTemplate(WidgetPage widgetPage, Site site) throws Exception {
         String htmlTemplate = pageResourceService.getHtmlTemplateByWidgetPage(widgetPage, false, site);
         if (widgetPage.getPageEnabledHead() != null) {
@@ -271,8 +273,12 @@ public class WidgetTemplateResource implements ITemplateResource {
     private String getTemplate(WidgetPage widgetPage, Site site) throws Exception {
         String pageConfigName = this.getPageConfigName();
         String htmlTemplate = null;
+        String bottomTemplate=pageResourceService.getCommonTemplateBySite(site, BasicPageType.PAGE_BOTTOM_CONFIG);
         if (isBrowse()) {
             htmlTemplate = getBrowseTemplate(widgetPage, site);
+            if(bottomTemplate!=null){
+                htmlTemplate=htmlTemplate+bottomTemplate;
+            }
         } else {
             htmlTemplate = getEditTemplate(widgetPage, pageConfigName, site);
         }

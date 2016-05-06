@@ -58,5 +58,6 @@ define(function (require, exports, module) {
             autoPage:true,
             trigger:"click"
         });
-    }
+    };
+    
 });

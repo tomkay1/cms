@@ -22,14 +22,14 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * <p>
- *     路由器拦截器
+ * 路由器拦截器
  * </p>
- * @author xhl
  *
+ * @author xhl
  * @since 1.0
  */
 @Component
-public class RouteInterceptor  extends HandlerInterceptorAdapter {
+public class RouteInterceptor extends HandlerInterceptorAdapter {
 
     private static final Log log = LogFactory.getLog(RouteInterceptor.class);
 
@@ -52,24 +52,24 @@ public class RouteInterceptor  extends HandlerInterceptorAdapter {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        Site site=siteResolveService.getCurrentSite(request);
-        if(!site.isPersonalise()){
-            String servletPath= PatternMatchUtil.getServletPath(site, request);
-            if(site!=null){
-                Route route=routeResolverService.getRoute(site,servletPath);
-                if(modelAndView==null){
-                    modelAndView=new ModelAndView();
+        Site site = siteResolveService.getCurrentSite(request);
+        if (!site.isPersonalise()) {
+            String servletPath = PatternMatchUtil.getServletPath(site, request);
+            if (site != null) {
+                Route route = routeResolverService.getRoute(site, servletPath);
+                if (modelAndView == null) {
+                    modelAndView = new ModelAndView();
                 }
-                if(route==null){
-                    modelAndView.setViewName(routeResolverService.getRouteTemplate(site,RouteType.NOT_FOUND));
+                if (route == null) {
+                    modelAndView.setViewName(routeResolverService.getRouteTemplate(site, RouteType.NOT_FOUND));
                 }
-                initModelAndView(modelAndView, site, route, request,response);
-            }else {
-                modelAndView.setViewName(routeResolverService.getRouteTemplate(site,RouteType.SERVER_ERROR));
+                initModelAndView(modelAndView, site, route, request, response);
+            } else {
+                modelAndView.setViewName(routeResolverService.getRouteTemplate(site, RouteType.SERVER_ERROR));
             }
-        }else{
-            modelAndView.addObject("site",site);
-            modelAndView.addObject("request", requestService.ConvertRequestModel(request,site));
+        } else {
+            modelAndView.addObject("site", site);
+            modelAndView.addObject("request", requestService.ConvertRequestModel(request, site));
         }
     }
 
@@ -77,27 +77,27 @@ public class RouteInterceptor  extends HandlerInterceptorAdapter {
      * 初始化ModelAndView 信息对象,并根据当前请求的环境获得相关数据信息,这样以达到CMS内置对象的扩展标签
      *
      * @param modelAndView
-     * @param site      站点信息对象
-     * @param route     当前请求对应的路由信息
+     * @param site         站点信息对象
+     * @param route        当前请求对应的路由信息
      * @param request
      * @param response
      * @return
      */
-    private ModelAndView initModelAndView(ModelAndView modelAndView, Site site, Route route, HttpServletRequest request,HttpServletResponse response){
+    private ModelAndView initModelAndView(ModelAndView modelAndView, Site site, Route route, HttpServletRequest request, HttpServletResponse response) {
         try {
             String resourcePath = site.isCustom() ? site.getCustomTemplateUrl() : ConfigInfo.getRootTemplate(site.getCustomerId());
-            if(route!=null) {
+            if (route != null) {
                 if (route.getRouteType() != null) {
                     if (route.getRouteType().getCode().equals(RouteType.ARTICLE_CONTENT.getCode())) {
                         Article article = articleResolveService.getArticleBySiteAndRequest(site, request);
                         if (article != null) {
-                            if(article.getCustomerId().equals(site.getCustomerId())){
+                            if (article.getCustomerId().equals(site.getCustomerId())) {
                                 modelAndView.addObject("article", article);
                                 modelAndView.setViewName(resourcePath + route.getTemplate());
-                            }else{//不是该商户下面的文章则给出404页面
-                                modelAndView.setViewName(routeResolverService.getRouteTemplate(site,RouteType.NOT_FOUND));
+                            } else {//不是该商户下面的文章则给出404页面
+                                modelAndView.setViewName(routeResolverService.getRouteTemplate(site, RouteType.NOT_FOUND));
                             }
-                        }else {
+                        } else {
                             modelAndView.setViewName(resourcePath + route.getTemplate());
                         }
                     } else {
@@ -109,12 +109,12 @@ public class RouteInterceptor  extends HandlerInterceptorAdapter {
                 modelAndView.addObject("route", route);
                 modelAndView.addObject("site", site);
                 modelAndView.addObject("resourcePath", resourcePath);
-                modelAndView.addObject("request", requestService.ConvertRequestModel(request,site));
-            }else{
-                modelAndView.setViewName(resourcePath +request.getServletPath());
-                modelAndView.addObject("request", requestService.ConvertRequestModel(request,site));
+                modelAndView.addObject("request", requestService.ConvertRequestModel(request, site));
+            } else {
+                modelAndView.setViewName(resourcePath + request.getServletPath());
+                modelAndView.addObject("request", requestService.ConvertRequestModel(request, site));
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             log.error(ex.getMessage());
         }
         return modelAndView;

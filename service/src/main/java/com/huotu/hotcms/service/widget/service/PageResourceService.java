@@ -120,20 +120,20 @@ public class PageResourceService {
         return layoutTemplate;
     }
 
-    /**
-     * <p>
-     *     根据站点获得头部模版信息对象
-     * </p>
-     * @param site 站点信息对象
-     * @return 返回头部浏览视图,已经解析后的html视图
-     * */
-    public String getHeaderTemplateBySite(Site site) throws Exception {
-        WidgetPage widgetPage=pageResolveService.getWidgetPageByConfig("head.xml", site);
-        if(widgetPage!=null){
-           return getHtmlTemplateByWidgetPage(widgetPage, false,site);
-        }
-        return null;
-    }
+//    /**
+//     * <p>
+//     *     根据站点获得头部模版信息对象
+//     * </p>
+//     * @param site 站点信息对象
+//     * @return 返回头部浏览视图,已经解析后的html视图
+//     * */
+//    public String getHeaderTemplateBySite(Site site) throws Exception {
+//        WidgetPage widgetPage=pageResolveService.getWidgetPageByConfig("head.xml", site);
+//        if(widgetPage!=null){
+//           return getHtmlTemplateByWidgetPage(widgetPage, false,site);
+//        }
+//        return null;
+//    }
 
     /***
      *  根据站点获得公共页面模版
@@ -151,20 +151,20 @@ public class PageResourceService {
         return null;
     }
 
-    /**
-     * 根据站点获得底部模版信息对象
-     *
-     * @param site
-     * @return
-     * @throws Exception
-     */
-    public String getBottomTemplateBySite(Site site) throws Exception {
-        WidgetPage widgetPage=pageResolveService.getWidgetPageByConfig("bottom.xml", site);
-        if(widgetPage!=null){
-            return getHtmlTemplateByWidgetPage(widgetPage, false,site);
-        }
-        return null;
-    }
+//    /**
+//     * 根据站点获得底部模版信息对象
+//     *
+//     * @param site
+//     * @return
+//     * @throws Exception
+//     */
+//    public String getBottomTemplateBySite(Site site) throws Exception {
+//        WidgetPage widgetPage=pageResolveService.getWidgetPageByConfig("bottom.xml", site);
+//        if(widgetPage!=null){
+//            return getHtmlTemplateByWidgetPage(widgetPage, false,site);
+//        }
+//        return null;
+//    }
 
     /**
      * <P>

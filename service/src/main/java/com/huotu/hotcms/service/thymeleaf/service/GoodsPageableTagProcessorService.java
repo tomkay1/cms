@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Component
 public class GoodsPageableTagProcessorService {
+    private final int DEFAULT_PAGE_NUMBER = 3;
 
     @Autowired
     private GoodsService goodsService;
@@ -36,10 +37,12 @@ public class GoodsPageableTagProcessorService {
         try {
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
             GoodsSearcher goodsSearcher= (GoodsSearcher) goodsPageableTagProcessor.process(tag, request);
+            if(goodsSearcher.getPageNumber()==null){
+                goodsSearcher.setPageNumber(DEFAULT_PAGE_NUMBER);
+            }
             goodsSearcher.init(goodsSearcher);
             goodsPage = goodsService.searchGoods(request, customerId, goodsSearcher);
-            dialectAttributeFactory.setPageList(context,goodsPage);
-//            putPageAttrsIntoModel(context, goodsPage);
+            dialectAttributeFactory.setPageList(context,goodsPage,goodsSearcher.getPageNumber());
         } catch (Exception e) {
            return null;
         }

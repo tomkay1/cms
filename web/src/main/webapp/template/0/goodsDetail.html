@@ -77,7 +77,7 @@
                              style="line-height: 0px; border: none; height: 0px; padding-top: 10px; display: none;">
                             <span class="tit">总销量：</span><span class="salesCount">0</span>
                         </div>
-                        <div class="old_price_wrap">
+                        <div class="old_price_wrap" th:if="${goods.code!=''|| goods.saleTags!=null}" >
                             <span class="gBN" id="code" th:if="${goods.code!=''}" th:text="'商品编号: '+${goods.code}">商品编号：34325643</span><br>
               <span style="height: 20px; clear:both; margin-top:10px" class="saleTag" >
               <img src="images/tongy.jpg"  th:each="saleTags:${goods.saleTags}"

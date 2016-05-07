@@ -8,7 +8,7 @@
                     <dt th:text="${moduleName}"></dt>
                     <dd >
                         <div th:each="row,iterStat:${Rows}">
-                            <a rel="nofollow" target="" th:href="${row.url_Rows}" th:text="${row.name_Rows}"
+                            <a rel="nofollow" th:target="${row.type_Rows==0?'_self':'_blank'}" th:href="${row.url_Rows}" th:text="${row.name_Rows}"
                                th:style="'color:'+${fontColor}"></a>
                         </div>
                     </dd>

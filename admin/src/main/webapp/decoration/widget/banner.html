@@ -7,7 +7,7 @@
                 <ul>
                     <li th:each="row:${Rows}"
                         th:style="|background:url(${row.bgImg_Rows}) ${row.bgColor_Rows==null?'#FFFFFF':row.bgColor_Rows} center 0 no-repeat;background-size:cover;|">
-                        <a style="height:460px" target="" th:href="${row.url_Rows}"></a>
+                        <a style="height:460px" th:target="${row.type_Rows==0?'_self':'_blank'}" th:href="${row.url_Rows}"></a>
                     </li>
                 </ul>
             </div>

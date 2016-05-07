@@ -68,7 +68,7 @@
                     </div>
                 </li>
             </ul>
-            <div class="jPage" th:attr="guid=${guid}" style="padding: 5px 18px;">
+            <div class="jPage" th:attr="guid=${guid}" style="padding: 5px 12px;">
                 <em>共[[${request.totalRecords}]]条记录 当前[[${request.currentPage}]]/[[${request.totalPages}]]页</em>
                 <a href="javascript:void(0)" pageNo=1>首页</a>
                 <a th:if="${request.hasPrevPage}" th:attr="pageNo=${request.currentPage-1}"
@@ -189,7 +189,7 @@
                     </div>
                 </li>
             </ul>
-            <div class="jPage" th:attr="guid=${guid}" style="padding: 5px 18px;">
+            <div class="jPage" th:attr="guid=${guid}" style="padding: 5px 12px;">
                 <em>共[[${request.totalRecords}]]条记录 当前[[${request.currentPage}]]/[[${request.totalPages}]]页</em>
                 <a pageNo=1 href="javascript:void(0)">首页</a>
                 <a th:if="${request.hasPrevPage}" th:attr="pageNo=${request.currentPage-1}"
@@ -311,7 +311,7 @@
                         </div>
                     </li>
                 </ul>
-                <div class="jPage" th:attr="guid=${guid}" style="padding: 5px 18px;">
+                <div class="jPage" th:attr="guid=${guid}" style="padding: 5px 12px;">
                     <em>共[[${request.totalRecords}]]条记录 当前[[${request.currentPage}]]/[[${request.totalPages}]]页</em>
                     <a href="javascript:void(0)"
                        pageNo=1>首页</a>

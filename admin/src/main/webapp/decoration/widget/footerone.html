@@ -6,7 +6,7 @@
             <div class="links" th:style="'text-align:'+${alignment}">
                 <th:block th:each="row,iterStat:${Rows}">
                     <span th:if="${iterStat.index}!=0">|</span>
-                    <a rel="nofollow" target="" th:href="${row.url_Rows}" th:text="${row.name_Rows}"
+                    <a rel="nofollow" th:target="${row.type_Rows==0?'_self':'_blank'}" th:href="${row.url_Rows}" th:text="${row.name_Rows}"
                             th:style="'color:'+${fontColor}"></a>
                 </th:block>
             </div>

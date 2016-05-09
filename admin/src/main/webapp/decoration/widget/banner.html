@@ -7,7 +7,7 @@
                 <ul>
                     <li th:each="row:${Rows}"
                         th:style="|background:url(${row.bgImg_Rows}) ${row.bgColor_Rows==null?'#FFFFFF':row.bgColor_Rows} center 0 no-repeat;background-size:cover;|">
-                        <a style="height:460px" target="" th:href="${row.url_Rows}"></a>
+                        <a style="height:460px" th:target="${row.type_Rows==0?'_self':'_blank'}" th:href="${row.url_Rows}"></a>
                     </li>
                 </ul>
             </div>
@@ -95,7 +95,7 @@
                                maxlength="256" style="width:115px;">
                     </td>
                     <td>
-                        <select name="type_Rows" class="select-short" style="width:50px">
+                        <select name="type_Rows" class="select-short" style="width:100px">
                             <option value="0" th:selected="(${row.type_Rows}=='0'?selected)">当前窗口打开</option>
                             <option value="1" th:selected="(${row.type_Rows}=='1'?selected)">新窗口打开</option>
                         </select>

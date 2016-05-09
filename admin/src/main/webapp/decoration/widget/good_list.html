@@ -68,7 +68,7 @@
                     </div>
                 </li>
             </ul>
-            <div class="jPage" th:attr="guid=${guid}">
+            <div class="jPage" th:attr="guid=${guid}" style="padding: 5px 12px;">
                 <em>共[[${request.totalRecords}]]条记录 当前[[${request.currentPage}]]/[[${request.totalPages}]]页</em>
                 <a href="javascript:void(0)" pageNo=1>首页</a>
                 <a th:if="${request.hasPrevPage}" th:attr="pageNo=${request.currentPage-1}"
@@ -76,17 +76,17 @@
                 <a href="javascript:void(0)" th:each="pageNo:${request.pageNos}"
                    th:class="${request.currentPage}==*{pageNo}?'current'" th:text="*{pageNo}"
                    th:attr="pageNo=*{pageNo}"
-                ></a>
+                        ></a>
                 <a th:if="${request.hasNextPage}" href="javascript:void(0)"
                    th:attr="pageNo=${request.currentPage+1}">下一页</a>
                 <a href="javascript:void(0)" th:attr="pageNo=${request.totalPages}">尾页</a>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;
                 第
                 <input name="page" class="current-index input-small"
                        style="text-align:center;width: 50px;margin: 0px 4px;" type="number"
                        th:value="${request.currentPage}">
                 页&nbsp;&nbsp;&nbsp;&nbsp;
-                <a href="javascript:void(0)">跳转</a>
+                <a href="javascript:void(0)" style="padding: 3px 4px;">跳转</a>
             </div>
         </form>
     </div>
@@ -189,7 +189,7 @@
                     </div>
                 </li>
             </ul>
-            <div class="jPage" th:attr="guid=${guid}">
+            <div class="jPage" th:attr="guid=${guid}" style="padding: 5px 12px;">
                 <em>共[[${request.totalRecords}]]条记录 当前[[${request.currentPage}]]/[[${request.totalPages}]]页</em>
                 <a pageNo=1 href="javascript:void(0)">首页</a>
                 <a th:if="${request.hasPrevPage}" th:attr="pageNo=${request.currentPage-1}"
@@ -197,17 +197,17 @@
                 <a href="javascript:void(0)" th:each="pageNo:${request.pageNos}"
                    th:class="${request.currentPage}==*{pageNo}?'current'" th:text="*{pageNo}"
                    th:attr="pageNo=*{pageNo}"
-                ></a>
+                        ></a>
                 <a th:if="${request.hasNextPage}" href="javascript:void(0)"
                    th:attr="pageNo=${request.currentPage+1}">下一页</a>
                 <a th:attr="pageNo=${request.totalPages}"
                    href="javascript:void(0)">尾页</a>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第
+                &nbsp;第
                 <input name="page" class="current-index input-small"
                        style="text-align:center;width: 50px;margin: 0px 4px;" type="number"
                        th:value="${request.currentPage}">
                 页&nbsp;&nbsp;&nbsp;&nbsp;
-                <a href="javascript:void(0)">跳转</a>
+                <a href="javascript:void(0)" style="padding: 3px 4px;">跳转</a>
             </div>
         </form>
     </div>
@@ -311,7 +311,7 @@
                         </div>
                     </li>
                 </ul>
-                <div class="jPage" th:attr="guid=${guid}">
+                <div class="jPage" th:attr="guid=${guid}" style="padding: 5px 12px;">
                     <em>共[[${request.totalRecords}]]条记录 当前[[${request.currentPage}]]/[[${request.totalPages}]]页</em>
                     <a href="javascript:void(0)"
                        pageNo=1>首页</a>
@@ -320,17 +320,17 @@
                     <a href="javascript:void(0)" th:each="pageNo:${request.pageNos}"
                        th:class="${request.currentPage}==*{pageNo}?'current'" th:text="*{pageNo}"
                        th:attr="pageNo=*{pageNo}"
-                    ></a>
+                            ></a>
                     <a th:if="${request.hasNextPage}" href="javascript:void(0)"
                        th:attr="pageNo=${request.currentPage+1}">下一页</a>
                     <a href="javascript:void(0)"
                        th:attr="pageNo=${request.totalPages}">尾页</a>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第
+                    &nbsp;第
                     <input name="page" class="current-index input-small"
                            style="text-align:center;width: 50px;margin: 0px 4px;" type="number"
                            th:value="${request.currentPage}">
                     页&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a href="javascript:void(0)">跳转</a>
+                    <a href="javascript:void(0)" style="padding: 3px 4px;">跳转</a>
                 </div>
             </form>
         </div>

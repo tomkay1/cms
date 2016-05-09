@@ -8,7 +8,7 @@
                     <dt th:text="${moduleName}"></dt>
                     <dd >
                         <div th:each="row,iterStat:${Rows}">
-                            <a rel="nofollow" target="" th:href="${row.url_Rows}" th:text="${row.name_Rows}"
+                            <a rel="nofollow" th:target="${row.type_Rows==0?'_self':'_blank'}" th:href="${row.url_Rows}" th:text="${row.name_Rows}"
                                th:style="'color:'+${fontColor}"></a>
                         </div>
                     </dd>
@@ -51,11 +51,6 @@
     <div class="forms">
         <ul>
             <li>
-                <label>模块名称 </label>
-                <input type="text" maxlength="10" class="text-short" name="moduleName"
-                       th:value="${moduleName==null?'模块名称':moduleName}"/>
-            </li>
-            <li>
                 <label style="width: 116px;">背景颜色 </label>
                 <input type="text" class="js-hot-color text-normal goodsInput" id="pageBackGround"
                        th:attr="data-default=${pageBackGround==null?'#ffffff':pageBackGround}" data-input="pageBackGround"/>
@@ -67,8 +62,18 @@
                        th:attr="data-default=${fontColor==null?'#ffffff':fontColor}" data-input="fontColor"/>
                 <input type="hidden" class="js-hot-properties" th:value="${fontColor}" name="fontColor" style="background:#666666"/>
             </li>
+            <li>
+                <label>设置列数</label>
+                <input type="text" class="text-normal" id="columns-setting">
+            </li>
+            <li>
+                <label>模块名称 </label>
+                <input type="text" maxlength="10" class="text-short" name="moduleName"
+                       th:value="${moduleName==null?'模块名称':moduleName}"/>
+            </li>
         </ul>
     </div>
+
     <div class="page-operate">
         <a class="btn-green" href="javascript:void(0)" id="js-nav-add">增加链接</a>
     </div>

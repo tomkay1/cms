@@ -3,13 +3,13 @@
 <div th:class="'fn-clear js-hot-module  '+(${templateClass==null}?'sh-brand-wrap-630128':${templateClass})+' toolhover'" th:attr="id=${guid}"  th:style="'background:'+${bgcolor}">
     <div class="mc" style="overflow: visible;" >
         <div class="sh-brand-wrap">
-            <div class="sh-brand" th:style="${(pageBackImage==null or pageBackImage=='')?'height:100px;':'height:auto'}">
+            <div class="sh-brand" th:style="${(pageBackImage==null or pageBackImage=='')?'height:100px;':'height:100px;overflow: hidden;'}">
                 <a th:href="${request.rootUri}" class="brand-link" th:if="${pageBackImage!=null or pageBackImage != ''}">
-                    <img th:src="${pageBackImage}"/>
+                    <img th:src="${pageBackImage}" />
                 </a>
                 <div class="shop-logo-box">
                     <a th:href="${request.rootUri}" class="shop-logo-link">
-                        <img th:src="${shopLogoImage}"/>
+                        <img th:src="${shopLogoImage}" style="height: 100px;margin-top:-10px;"/>
                     </a>
                     <!--<a th:href="${request.rootUri}" class="follow-me for-light-bg">关注我</a>-->
                 </div>

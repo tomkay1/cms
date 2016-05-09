@@ -42,6 +42,4 @@ public class GoodsPageableTagProcessor extends AbstractAttributeTagProcessor {
         iteratedValue = goodsPageableTagProcessorService.invokeGoodsPageableService(tag, context);
         structureHandler.iterateElement(attributeValue, null, iteratedValue);
     }
-
-
 }

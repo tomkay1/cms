@@ -44,7 +44,7 @@ import java.util.List;
 public class DialectAttributeFactory {
     private final String DEFAULT_PAGE_NO = "1";
     private final String DEFAULT_PAGE_SIZE = "12";
-    private final String DEFAULT_PAGE_NUMBER = "5";
+    private final String DEFAULT_PAGE_NUMBER = "3";
 
     private Field getField(String rename,Object object){
         Field[] fields=object.getClass().getFields();
@@ -223,6 +223,9 @@ public class DialectAttributeFactory {
      * @param context
      */
     public <T> void setPageList(BaseForeachParam baseForeachParam,Page<T> Page,ITemplateContext context) {
+        if(baseForeachParam.getPageNumber()==null){
+            baseForeachParam.setPageNumber(Integer.valueOf(DEFAULT_PAGE_NUMBER));
+        }
         int currentPage = baseForeachParam.getPageNo();
         int totalPages = Page.getTotalPages();
         int pageNumber = baseForeachParam.getPageNumber() < totalPages ? baseForeachParam.getPageNumber() : totalPages;
@@ -252,13 +255,14 @@ public class DialectAttributeFactory {
      * 解析上下文(ITemplateContext) xhl 1.2 代码重构
      * @param context ITemplateContext 上下文
      * @param basePage 分页基类
+     * @param pageBtnCount 分页显示页码数量
      */
-    public void setPageList(ITemplateContext context, BasePage basePage) {
+    public void setPageList(ITemplateContext context, BasePage basePage,Integer pageBtnCount) {
         //分页标签处理
         RequestModel requestModel = (RequestModel) VariableExpression.getVariable(context, "request");
         int pageNo = basePage.getPageNo() + 1;
         int totalPages = basePage.getTotalPages();
-        int pageBtnNum = totalPages > SysConstant.DEFAULT_PAGE_BUTTON_NUM ? SysConstant.DEFAULT_PAGE_BUTTON_NUM : totalPages;
+        int pageBtnNum =pageBtnCount < totalPages ? pageBtnCount: totalPages;
         int startPageNo = PageUtils.calculateStartPageNo(pageNo, pageBtnNum, totalPages);
         List<Integer> pageNos = new ArrayList<>();
         for (int i = 1; i <= pageBtnNum; i++) {

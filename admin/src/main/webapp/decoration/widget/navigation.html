@@ -19,7 +19,7 @@
                         </div>
                     </li>
                     <li class="menu" th:each="row:${Rows}">
-                        <a class="main-link" target="" th:href="${row.url_Rows}" th:text="${row.name_Rows}"  th:style="${goods_fontColor==null?'':'color:'+goods_fontColor}">测试2</a>
+                        <a class="main-link" th:target="${row.type_Rows==0?'_self':'_blank'}" th:href="${row.url_Rows}" th:text="${row.name_Rows}"  th:style="${goods_fontColor==null?'':'color:'+goods_fontColor}">测试2</a>
                     </li>
                 </ul>
                 <div class="s-form" th:if="${showSearch==1}">

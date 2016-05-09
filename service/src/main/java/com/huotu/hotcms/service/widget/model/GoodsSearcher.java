@@ -60,6 +60,9 @@ public class GoodsSearcher {
     @Rename("page")
     public Integer page;
 
+    @Rename("pagenumber")
+    public Integer pageNumber;
+
     /**
      * 每页显示的数量
      * */

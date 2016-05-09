@@ -251,6 +251,7 @@
     $(".sku_list span").click(function () {//规格选择框
         $(this).addClass("option_selected").siblings().removeClass("option_selected");
         var products = /*[[${products}]]*/"";
+        var bigPic = /*[[${goods.bigPic[0]}]]*/"";
         var spec ="";
         $(".option_selected").each(function(i,v) {//遍历规格，
             var name = $(this).text();
@@ -260,6 +261,11 @@
         if( $(this).attr("value")!=''){
             $("#tsImgS a>img").attr('src', $(this).attr("value"));//根据所选规格切换大图图片
             $("#MagicZoom").removeClass("MagicZoom");
+        }
+        else  {
+            $("#tsImgS a>img").attr('src', bigPic);//根据所选规格切换大图图片
+            $("#MagicZoom").removeClass("MagicZoom");
+
         }
 
 

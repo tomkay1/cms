@@ -7,7 +7,7 @@
             <div class="HOT-module">
                 <div class="HOTimension">
                     <div class="HOTModulesTitle">
-                        <em></em> 找到[[${request.totalRecords}]]件相关商品
+                        <em></em>
                     </div>
                     <div class="HOTimensionSelect" style="height:auto;">
                         <!--<dl>
@@ -150,6 +150,7 @@
                         </li>
                     </ul>
                     <div class="HOTPage" th:attr="guid=${guid}">
+                        <span id="totalRecords" style="display: none">找到[[${request.totalRecords}]]件相关商品</span>
                         <em>共[[${request.totalRecords}]]条记录 当前[[${request.currentPage}]]/[[${request.totalPages}]]页</em>
                         <a  pageNo=1
                            href="javascript:void(0)">首页</a>

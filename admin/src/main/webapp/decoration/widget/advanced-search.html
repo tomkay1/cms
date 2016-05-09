@@ -7,7 +7,7 @@
             <div class="HOT-module">
                 <div class="HOTimension">
                     <div class="HOTModulesTitle">
-                        <em></em> 找到[[${request.totalRecords}]]件相关商品
+                        <em></em>
                     </div>
                     <div class="HOTimensionSelect" style="height:auto;">
                         <!--<dl>
@@ -150,19 +150,20 @@
                         </li>
                     </ul>
                     <div class="HOTPage" th:attr="guid=${guid}">
+                        <span id="totalRecords" style="display: none">找到[[${request.totalRecords}]]件相关商品</span>
                         <em>共[[${request.totalRecords}]]条记录 当前[[${request.currentPage}]]/[[${request.totalPages}]]页</em>
                         <a  pageNo=1
-                           href="javascript:void(0)">首页</a>
+                            href="javascript:void(0)">首页</a>
                         <a th:if="${request.hasPrevPage}" th:attr="pageNo=${request.currentPage-1}"
                            href="javascript:void(0)">上一页</a>
                         <a href="javascript:void(0)" th:each="pageNo:${request.pageNos}"
                            th:class="${request.currentPage}==*{pageNo}?'current'" th:text="*{pageNo}"
                            th:attr="pageNo=*{pageNo}"
-                        ></a>
+                                ></a>
                         <a th:if="${request.hasNextPage}" href="javascript:void(0)"
                            th:attr="pageNo=${request.currentPage+1}">下一页</a>
                         <a th:attr="pageNo=${request.totalPages}"
-                            href="javascript:void(0)">尾页</a>
+                           href="javascript:void(0)">尾页</a>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第
                         <input name="page" class="current-index input-small"
                                style="text-align:center;width: 50px;margin: 0px 4px;" type="number"

@@ -49,6 +49,9 @@ public class ConfigInfo {
     @Value("${resources.config}")
     private String resourcesConfig;
 
+    @Value("${resources.template}")
+    private String resorcesTemplate;
+
 
 
 
@@ -71,6 +74,10 @@ public class ConfigInfo {
 
     public String getResourcesDownload(Integer customerId) {
         return String.format(resourcesDownload,customerId);
+    }
+
+    public String getResorcesTemplate() {
+        return resorcesTemplate;
     }
 
     /**

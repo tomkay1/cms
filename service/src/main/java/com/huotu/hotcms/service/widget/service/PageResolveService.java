@@ -108,7 +108,8 @@ public class PageResolveService {
      * @param publish 是否发布
      * @return 是否成功
      * */
-    public boolean createPageAndConfigByWidgetPage(WidgetPage page,Integer customerId,Long siteId,Boolean publish) throws IOException, URISyntaxException {
+    public boolean createPageAndConfigByWidgetPage(WidgetPage page,Integer customerId,Long siteId,Boolean publish)
+            throws IOException, URISyntaxException {
         CustomPages customPages=new CustomPages();
         if(page!=null) {
             Site site = siteRepository.findOne(siteId);

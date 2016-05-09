@@ -3,7 +3,7 @@
 <div class="fn-clear js-hot-module HOTAnnounce-6915 toolhover" th:attr="id=${guid}">
     <div class="mc" style="overflow: visible;">
         <dl>
-            <dt>店铺公告：</dt>
+            <dt style="color: #000;font-weight: bold">店铺公告：</dt>
             <dd class="HOTAnnounceArea">
                 <marquee height="75" style="height: 50px;"
                          th:attr="direction = ${direction==null?'right':direction},scrollamount=${scrollamount==null?5:scrollamount},bgcolor=${bgcolor==null?'#FFFFFF':bgcolor}">
@@ -26,7 +26,7 @@
                     <a class="icon-down js-module-down" href="javascript:void(0)"
                        th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
         </span>
-                <span class="module-name HOT-module-name">品牌公告</span>
+                <span class="module-name HOT-module-name" >品牌公告</span>
         <span class="HOT-module-set">
         <a href="javascript:void(0)" class="HOT-module-set-data js-widget-edit"
            th:attr="data-editurl=${widgetEditUri},data-id=${id},data-for=${guid},data-url=${widgetUri},data-layoutid=${layoutId},data-position=${layoutPosition}">

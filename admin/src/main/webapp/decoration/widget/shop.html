@@ -14,7 +14,7 @@
                     <!--<a th:href="${request.rootUri}" class="follow-me for-light-bg">关注我</a>-->
                 </div>
                 <div class="m-search for-black-bg" style="margin-top: 7px">
-                    <form class="m-form" th:action="${request.rootUri}+'/shop/search'">
+                    <form class="m-form" th:action="${request.rootUri}+'/shop/search'" autocomplete="off">
                         <input type="text" style="color: #BDBDBD;" class="m-kw" value="" th:maxlength="${maxlength}" size="50" th:value="${request.get('keyword')}!=null?${request.get('keyword')}:${defaultKewWord}" name="keyword"/>
                         <input type="submit" value="搜索" class="m-submit"
                                id="in-shop-search"/>

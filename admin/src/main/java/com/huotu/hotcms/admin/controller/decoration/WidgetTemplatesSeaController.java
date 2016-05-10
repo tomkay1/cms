@@ -1,7 +1,9 @@
 package com.huotu.hotcms.admin.controller.decoration;
 
+import com.sun.javafx.sg.prism.NGShape;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Created by fawzi on 2016/5/9.
@@ -20,8 +22,10 @@ public class WidgetTemplatesSeaController {
      * @return
      */
     @RequestMapping("/list")
-    public String widgetTemplateList(){
-        return "decoration/pages/templates.html";
+    public ModelAndView widgetTemplateList(){
+        ModelAndView mv=new ModelAndView();
+        mv.setViewName("decoration/pages/templates.html");
+        return mv;
     }
 
     /**

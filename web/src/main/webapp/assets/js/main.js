@@ -43,6 +43,13 @@ define(function (require, exports, module) {
                 widget.init();
             }
         },
+        searchSubmit:function(){
+            var obj=$(".js-search-button");
+            if(obj.length>0){
+                var widget=require("searchSubmit")
+                widget.init();
+            }
+        },
         widgetInit:function(){
             //widgetEffect.widgetTest();
             widgetEffect.classification();
@@ -50,6 +57,7 @@ define(function (require, exports, module) {
             widgetEffect.advanceSearch();
             widgetEffect.banner();
             widgetEffect.salesRanking();
+            widgetEffect.searchSubmit();
         }
     }
 

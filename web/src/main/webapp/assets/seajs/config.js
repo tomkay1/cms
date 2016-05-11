@@ -11,7 +11,8 @@ seajs.config({
 		"goodList":"js/page/widget/good_list.js?v="+version,
 		"advanceSearch":"js/page/widget/advance_search.js?v="+version,
 		"banner":"js/page/widget/banner.js?v="+version,
-		"salesRanking":"js/page/widget/sales_ranking.js?v=" + version
+		"salesRanking":"js/page/widget/sales_ranking.js?v=" + version,
+		"searchSubmit":"js/page/widget/search.js?v=" + version
 	},
 	preload: ['jquery']
 });

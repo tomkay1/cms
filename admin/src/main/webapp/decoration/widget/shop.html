@@ -14,10 +14,12 @@
                     <!--<a th:href="${request.rootUri}" class="follow-me for-light-bg">关注我</a>-->
                 </div>
                 <div class="m-search for-black-bg" style="margin-top: 7px">
-                    <form class="m-form" th:action="${request.rootUri}+'/shop/search'" autocomplete="off">
-                        <input type="text" style="color: #BDBDBD;" class="m-kw" value="" th:maxlength="${maxlength}" size="50" th:value="${request.get('keyword')}!=null?${request.get('keyword')}:${defaultKewWord}" name="keyword"/>
-                        <input type="submit" value="搜索" class="m-submit"
-                               id="in-shop-search"/>
+                    <form class="m-form js-search-form" th:action="${request.rootUri}+'/shop/search'" autocomplete="off" id="in-shop-form">
+                        <input type="text" style="color: #BDBDBD;" class="m-kw js-search-keyword" value="" th:maxlength="${maxlength}" size="50"
+                               th:value="${request.get('keyword')}!=null?${request.get('keyword')}:${defaultKewWord}"
+                               id="in-shop-search"
+                               name="keyword"/>
+                        <input type="button" value="搜索" class="m-submit js-search-button" />
                     </form>
                     <!--<div class="m-hw" th:if="${templateClass == null or templateClass == 'sh-brand-wrap-630128'}" th:attr="templateClass=${templateClass}">
                         <a href="" target="" class="hw-link">1</a>

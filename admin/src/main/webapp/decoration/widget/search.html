@@ -7,12 +7,13 @@
         <div class="searchArea" th:style="'text-align:'+${alignment}">
             <div class="HOTSearchArea" style="display: inline-block">
                 <div class="HOTSearchInput" >
-                    <form th:action="${request.rootUri}+'/shop/search'" autocomplete="off">
-                        <input type="text" th:style="'width:'+${maxWidth}+'px;color:#BDBDBD'" placeholder="请输入关键词" class="inputMiddle"
+                    <form th:action="${request.rootUri}+'/shop/search'" class="js-search-form" autocomplete="off" id="search-form">
+                        <input type="text" th:style="'width:'+${maxWidth}+'px;color:#BDBDBD'" placeholder="请输入关键词"
+                               class="inputMiddle js-search-keyword"
                                th:value="${request.get('keyword')}!=null?${request.get('keyword')}:${defaultKewWord}"
-                               name="keyword"
+                               name="keyword" id="search-keyword"
                                maxlength="20" size="20" th:attr="maxlength=(${maxlength}==null?20:${maxlength})"/>
-                        <button type="submit" onclick="" d="" clstag="">搜索<s></s></button>
+                        <input type="button" class="js-search-button" d="" clstag="">搜索<s></s></input>
                     </form>
                 </div>
             </div>

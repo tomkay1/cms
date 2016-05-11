@@ -1,6 +1,5 @@
 package com.huotu.hotcms.admin.controller.decoration;
 
-import com.sun.javafx.sg.prism.NGShape;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;

@@ -80,7 +80,7 @@ public class GoodsServiceImpl implements GoodsService {
             log.error("接口服务不可用");
         }
         GoodsPage goodsPage = new GoodsPage();
-        if(goodses != null){
+        if(goodses != null&&goodses.getContent().size()>0){
             goodsPage.setPageNo(goodses.getNumber());
             goodsPage.setTotalPages(goodses.getTotalPages());
             goodsPage.setTotalRecords(goodses.getTotalElements());

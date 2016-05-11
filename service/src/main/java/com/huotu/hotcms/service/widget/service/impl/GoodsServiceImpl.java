@@ -175,9 +175,11 @@ public class GoodsServiceImpl implements GoodsService {
 //            goodsModel.setSmallPic(goods.getSmallPic().getValue());
 //            goodsModel.setBigPic(goods.getBigPic().getValue());
 
-            goodsModel.setThumbnail(goods.getImages().get(0).getThumbnailPic().getValue());
-            goodsModel.setSmallPic(goods.getImages().get(0).getSmallPic().getValue());
-            goodsModel.setBigPic(goods.getImages().get(0).getBigPic().getValue());
+            if(goods.getImages()!=null && goods.getImages().size()>0){
+                goodsModel.setThumbnail(goods.getImages().get(0).getThumbnailPic().getValue());
+                goodsModel.setSmallPic(goods.getImages().get(0).getSmallPic().getValue());
+                goodsModel.setBigPic(goods.getImages().get(0).getBigPic().getValue());
+            }
             goodsModel.setIterCount(iterCount);
             goodsModels.add(goodsModel);
             goodsIds.add(goods.getId());

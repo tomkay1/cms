@@ -44,7 +44,8 @@ public class GoodsPageableTagProcessorService {
             goodsPage = goodsService.searchGoods(request, customerId, goodsSearcher);
             dialectAttributeFactory.setPageList(context,goodsPage,goodsSearcher.getPageNumber());
         } catch (Exception e) {
-           return null;
+
+            e.printStackTrace();
         }
         return goodsPage == null ? null : goodsPage.getGoodses();
     }

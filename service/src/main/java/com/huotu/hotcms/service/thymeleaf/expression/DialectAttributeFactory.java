@@ -270,9 +270,9 @@ public class DialectAttributeFactory {
             startPageNo++;
         }
         requestModel.setCurrentPage(pageNo);
-        requestModel.setTotalPages(totalPages);
-        //没有数据时前台页面显示 第1页/共1页
-        requestModel.setTotalRecords(basePage.getTotalRecords() == 0 ? 1 : basePage.getTotalRecords());
+        requestModel.setTotalPages(totalPages==0?1:totalPages);
+        //总记录数
+        requestModel.setTotalRecords(basePage.getTotalRecords());
         requestModel.setHasPrevPage(pageNo > 1);
         requestModel.setHasNextPage(pageNo < totalPages);
         requestModel.setPageNos(pageNos);

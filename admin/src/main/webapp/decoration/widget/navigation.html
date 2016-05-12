@@ -10,7 +10,7 @@
                     </li>
                     <li class="menu all-cate" th:if="${showProductType==1}">
                         <a class="main-link" href="javascript:void(0)" target=""  th:style="${goods_fontColor==null?'':'color:'+goods_fontColor}">全部分类<span class="arrow"></span></a>
-                        <div class="sub-menu-wrap" th:style="'background:'+${bgcolor}">
+                        <div class="sub-menu-wrap">
                             <dl class="sub-pannel" widget:category="category">
                                 <dt class="sub-title">
                                     <a th:href="${request.rootUri}+'/shop/search?goodsCatId='+${category.id}" target="" class="sub-tit-link" th:text="${category.name}"  th:style="${goods_fontColor==null?'':'color:'+goods_fontColor}">保暖内衣 &gt;</a>

@@ -25,7 +25,7 @@
                 <div class="s-form" th:if="${showSearch==1}">
                     <form class="form-body js-search-form" th:action="${request.rootUri}+'/shop/search'" autocomplete="off">
                         <input type="text"  name="keyword" style="color:#BDBDBD" class="s-inp js-search-keyword" th:value="${request.get('keyword')}!=null?${request.get('keyword')}:${defaultKewWord}"  maxlength="60" size="60"/>
-                        <input type="button" value="搜索" class="s-submit js-search-button" />
+                        <input type="submit" onclick="" value="搜索" class="s-submit js-search-button" />
                     </form>
                 </div>
             </div>

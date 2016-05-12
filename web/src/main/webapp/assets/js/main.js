@@ -3,9 +3,6 @@
  * */
 define(function (require, exports, module) {
     var widgetEffect={
-        widgetTest:function(){
-            window.console.log("测试");
-        },
         classification:function(){
             var obj=$(".js-classification");
             if(obj.length > 0){

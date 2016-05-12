@@ -60,7 +60,8 @@ public class WidgetTemplateController {
 
     @RequestMapping(value = "/{id}",method = RequestMethod.POST)
     @ResponseBody
-    public ResultView getWidgetTemplate(@PathVariable("id") Long id,String layoutId,String guid,String layoutPosition,Long siteId, String properties) {
+    public ResultView getWidgetTemplate(@PathVariable("id") Long id,String layoutId,String guid,String layoutPosition
+            ,Long siteId, String properties) {
         ResultView resultView = null;
         try {
             List<WidgetProperty> properties1=null;
@@ -91,14 +92,16 @@ public class WidgetTemplateController {
             }
         } catch (Exception ex) {
             log.error(ex.getMessage());
-            resultView=new ResultView(ResultOptionEnum.SERVERFAILE.getCode(), ResultOptionEnum.SERVERFAILE.getValue(),ex.getMessage());
+            resultView=new ResultView(ResultOptionEnum.SERVERFAILE.getCode(), ResultOptionEnum.SERVERFAILE.getValue()
+                    ,ex.getMessage());
         }
         return resultView;
     }
 
     @RequestMapping("/edit/{id}")
     @ResponseBody
-    public ResultView getWidgetEditTemplate(@PathVariable("id") Long id,String layoutId,String guid,String layoutPosition, String properties){
+    public ResultView getWidgetEditTemplate(@PathVariable("id") Long id,String layoutId,String guid
+            ,String layoutPosition, String properties){
         ResultView resultView = null;
         try {
             List<WidgetProperty> widgetProperties=null;

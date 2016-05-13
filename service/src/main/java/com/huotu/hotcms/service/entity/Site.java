@@ -18,7 +18,7 @@ import java.util.Set;
 @Setter
 @Getter
 @Cacheable(value = false)
-public class Site {
+public class Site implements Cloneable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -127,6 +127,12 @@ public class Site {
     private SiteType siteType;
 
     /**
+     * 从哪个站点复制而来
+     */
+    @Column(name="fromSiteId")
+    private  Long fromSiteId;
+
+    /**
      * 所属地区
      */
     @OneToOne(optional = false)
@@ -151,4 +157,8 @@ public class Site {
         this.hosts.remove(host);
     }
 
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }

@@ -3,6 +3,9 @@ package com.huotu.hotcms.service.service;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.util.PageData;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.util.Set;
 
 /**
@@ -18,4 +21,15 @@ public interface SiteService {
     Site findBySiteIdAndCustomerId(Long siteId,int customerId);
 
     Set<Site> findByCustomerIdAndDeleted(Integer customerId,boolean deleted);
+
+    /**
+     * 实现站点的可复制
+     * @param templateSite 模板对应的匿名站点
+     * @param customerSite 用户自定义的站点
+     * @return true,成功 反之失败
+     *
+     * @since v2.0
+     * @author fawzi
+     */
+    boolean siteCopy(Site templateSite,Site customerSite) throws URISyntaxException, IOException, CloneNotSupportedException;
 }

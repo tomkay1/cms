@@ -98,6 +98,10 @@ public class ConfigInfo {
         return String.format(resourcesConfig,customerId,siteId);
     }
 
+    public String getTemplateConfig(Long siteId){
+        return String.format(resorcesTemplate,siteId);
+    }
+
     public String getOutLoginUrl() {
         return outLoginUrl;
     }

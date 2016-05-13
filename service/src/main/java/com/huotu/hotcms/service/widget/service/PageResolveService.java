@@ -148,7 +148,8 @@ public class PageResolveService {
      * @param config 默认页面对应的名称，比如head或者search 则存储的xml文件为head.xml或者search.xml
      * @return 是否成功
      * */
-    public boolean createDefaultPageConfigByWidgetPage(WidgetPage widgetPage,Integer customerId,Long siteId,String config) throws IOException, URISyntaxException {
+    public boolean createDefaultPageConfigByWidgetPage(WidgetPage widgetPage,Integer customerId,Long siteId
+            ,String config) throws IOException, URISyntaxException {
         if(widgetPage!=null) {
             Site site = siteRepository.findOne(siteId);
             if (site != null) {

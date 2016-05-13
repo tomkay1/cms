@@ -2,6 +2,7 @@ package com.huotu.hotcms.service.service.impl;
 
 import com.huotu.hotcms.service.common.ConfigInfo;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.model.widget.WidgetDefaultPage;
 import com.huotu.hotcms.service.model.widget.WidgetPage;
 import com.huotu.hotcms.service.repository.HostRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
@@ -110,42 +111,47 @@ public class SiteServiceImpl implements SiteService {
     }
 
     @Override
-    public boolean siteCopy(Site templateSite, Site customerSite) throws URISyntaxException, IOException
-            , CloneNotSupportedException {
+    public boolean siteCopy(Site templateSite, Site customerSite) throws Exception {
         customerSite=siteRepository.findOne(customerSite.getSiteId());
         Site customerViewOrUserSite=(Site)customerSite.clone();
-        customerViewOrUserSite.setFromSiteId(templateSite.getSiteId());
         customerViewOrUserSite=siteRepository.save(customerViewOrUserSite);
-        /**
-         * 对自定义界面的复制
-         */
+         //对自定义界面的复制
         String tempalteResourceConfigUrl=configInfo.getTemplateConfig(templateSite.getSiteId());
         URI url= resourceService.getResource(tempalteResourceConfigUrl);
         InputStream inputStream = HttpUtils.getInputStreamByUrl(url.toURL());
         WidgetPage widgetPage = JAXB.unmarshal(inputStream, WidgetPage.class);
         pageResolveService.createPageAndConfigByWidgetPage(widgetPage,customerViewOrUserSite.getCustomerId()
                 ,customerViewOrUserSite.getSiteId(),false);
-        /**
-         * 默认头部&搜索结果页&的复制
-         */
-        WidgetPage headWidgetPage=pageResolveService.getWidgetPageByConfig("head.xml", templateSite);
-        if(headWidgetPage!=null){
-            pageResolveService.createDefaultPageConfigByWidgetPage(headWidgetPage,customerViewOrUserSite.getCustomerId()
-                    ,customerViewOrUserSite.getSiteId(),"head");
-        }
-        WidgetPage searchWidgetPage=pageResolveService.getWidgetPageByConfig("search.xml", templateSite);
-        if(searchWidgetPage!=null){
-            pageResolveService.createDefaultPageConfigByWidgetPage(searchWidgetPage,customerViewOrUserSite.getCustomerId()
-                    ,customerViewOrUserSite.getSiteId(),"head");
-        }
-        WidgetPage bottomWidgetPage=pageResolveService.getWidgetPageByConfig("bottom.xml", templateSite);
-        if(bottomWidgetPage!=null){
-            pageResolveService.createDefaultPageConfigByWidgetPage(bottomWidgetPage,customerViewOrUserSite.getCustomerId()
-                    ,customerViewOrUserSite.getSiteId(),"head");
-        }
 
+        createDefaultWidgetPage(templateSite, customerViewOrUserSite);
         return false;
     }
 
+    /** 创建公共界面
+     * <p>
+     *     <em>目前默认公共界面如下：</em>
+     *     <ul>
+     *         <li>公共头部 {@link com.huotu.hotcms.service.model.widget.WidgetDefaultPage#head }</li>
+     *         <li>搜索结果界面 {@link com.huotu.hotcms.service.model.widget.WidgetDefaultPage#search }</li>
+     *         <li>公共尾部 {@link com.huotu.hotcms.service.model.widget.WidgetDefaultPage#bottom }</li>
+     *     </ul>
+     * </p>
+     * @param templateSite 模板站点
+     * @param customerViewOrUserSite  模板预览或者使用站点
+     * @throws IOException 其他异常
+     * @throws URISyntaxException 其他异常
+     *
+     * @since  v2.0
+     */
+    private void createDefaultWidgetPage(Site templateSite, Site customerViewOrUserSite)
+            throws IOException, URISyntaxException {
 
+        for(WidgetDefaultPage widgetDefaultPage:WidgetDefaultPage.values()){
+            WidgetPage defaultWidgetPage=pageResolveService.getWidgetPageByConfig(widgetDefaultPage.name()+".xml", templateSite);
+            if(defaultWidgetPage!=null){
+                pageResolveService.createDefaultPageConfigByWidgetPage(defaultWidgetPage,customerViewOrUserSite.getCustomerId()
+                        ,customerViewOrUserSite.getSiteId(),widgetDefaultPage.name());
+            }
+        }
+    }
 }

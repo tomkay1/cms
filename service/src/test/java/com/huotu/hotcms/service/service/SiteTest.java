@@ -1,6 +1,7 @@
 package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.config.ServiceTestConfig;
+import com.huotu.hotcms.service.model.widget.WidgetPage;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class SiteTest {
      * 站点复制测试
      */
     @Test
-    public void testSiteCopy(){
+    public void testSiteCopy() throws Exception {
         siteService.siteCopy(null,null);
     }
 }

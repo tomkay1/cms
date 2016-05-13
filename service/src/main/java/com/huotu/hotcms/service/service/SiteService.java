@@ -31,5 +31,5 @@ public interface SiteService {
      * @since v2.0
      * @author fawzi
      */
-    boolean siteCopy(Site templateSite,Site customerSite) throws URISyntaxException, IOException, CloneNotSupportedException;
+    boolean siteCopy(Site templateSite,Site customerSite) throws Exception;
 }

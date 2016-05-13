@@ -125,13 +125,6 @@ public class Site implements Cloneable{
      * */
     @Column(name = "siteType")
     private SiteType siteType;
-
-    /**
-     * 从哪个站点复制而来
-     */
-    @Column(name="fromSiteId")
-    private  Long fromSiteId;
-
     /**
      * 所属地区
      */

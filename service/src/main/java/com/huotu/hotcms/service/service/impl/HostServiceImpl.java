@@ -242,6 +242,8 @@ public class HostServiceImpl implements HostService {
                 host=setHome(host,homeDomains);
 //                hostRepository.save(host);
                 hosts.add(host);
+
+
             }
         }
         site.setHosts(hosts);

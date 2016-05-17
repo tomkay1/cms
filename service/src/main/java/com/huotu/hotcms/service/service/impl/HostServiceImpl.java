@@ -227,11 +227,13 @@ public class HostServiceImpl implements HostService {
                     host.setCustomerId(site.getCustomerId());
                     host.setDomain(domain);
                     host=setHome(host,homeDomains);
-                    site.addHost(host);
+                    hosts.add(host);
+//                    site.addHost(host);
                 } else {//不是全新域名
                     if (host.getCustomerId().equals(site.getCustomerId())) {
                         host=setHome(host,homeDomains);
-                        site.addHost(host);
+                        hosts.add(host);
+//                        site.addHost(host);
                     }
                     else {
                         return new ResultView(ResultOptionEnum.DOMAIN_EXIST.getCode(), ResultOptionEnum.DOMAIN_EXIST.getValue(), null);
@@ -242,8 +244,6 @@ public class HostServiceImpl implements HostService {
                 host=setHome(host,homeDomains);
 //                hostRepository.save(host);
                 hosts.add(host);
-
-
             }
         }
         site.setHosts(hosts);

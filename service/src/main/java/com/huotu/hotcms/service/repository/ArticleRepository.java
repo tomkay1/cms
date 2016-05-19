@@ -13,6 +13,14 @@ public interface ArticleRepository extends JpaRepository<Article,Long>,JpaSpecif
 //    Article findOneByIdGreatThanOrderByIdAsc(Long id);
 
     /**
+     * 根绝站点ID和序列号 查询 文章
+     * @param siteId 站点ID
+     * @param serial 序列号
+     * @return article {@link com.huotu.hotcms.service.entity.Article}
+     */
+    Article findBySiteIdAndSerial(long siteId,String serial);
+
+    /**
      * <p>
      *     根据指定的文章ID查找下一篇文章
      * </p>

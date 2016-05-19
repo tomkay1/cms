@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  * Created by chendeyu on 2016/5/6.
  */
 @Entity
-@Table(name = "cms_message")
+@Table(name = "cms_message",uniqueConstraints = @UniqueConstraint(columnNames = {"siteId","serial"}))
 @Getter
 @Setter
 @Cacheable(value = false)

@@ -18,6 +18,8 @@ public interface SiteService {
     Site getSite(long siteId);
     Boolean save(Site site);
 
+    Site saveAndFlush(Site site);
+
     Site findBySiteIdAndCustomerId(Long siteId,int customerId);
 
     Set<Site> findByCustomerIdAndDeleted(Integer customerId,boolean deleted);
@@ -25,7 +27,7 @@ public interface SiteService {
     /**
      * 实现站点的可复制
      * @param templateSite 模板对应的匿名站点
-     * @param customerSite 用户自定义的站点
+     * @param customerSite 用户站点
      * @return true,成功 反之失败
      *
      * @since v2.0

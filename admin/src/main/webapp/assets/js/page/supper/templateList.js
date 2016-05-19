@@ -18,10 +18,21 @@ define(function (require, exports, module) {
         pageSize: 20,
         pagerCount: 10,
         pageDetail: true,
-        url: '/supper/getSiteList',//数据来源Url|通过model自定义属性配置
+        url: '/supper/getTemplateList',//数据来源Url|通过mobel自定义属性配置
         rows: [
-            {width: '30%', field: 'name', title: '站点名称', align: 'center'},
-            {width: '30%', field: 'title', title: '站点标题', align: 'center'},
+            {width: '10%', field: 'tempName', title: '模板名称', align: 'center'},
+            {width: '20%', field: 'thumbUri', title: '缩略图', align: 'center',
+                formatter:function(value,rowData){
+                    if(value!=null){
+                        return "<img src=/"+rowData.thumbUri+" style='width:100%;height:300px;'/>";
+                    }
+                    return "";
+                }
+
+            },
+            {width: '10%' , field: 'previewTimes',title: '预览量',align: 'center'},
+            {width: '10%' , field: 'scans',title: '浏览量',align: 'center'},
+            {width: '10%' , field: 'lauds',title: '点赞数量',align: 'center'},
             {
                 width: '20%', field: 'createTime', title: '创建时间', align: 'center',
                 formatter: function (value, rowData) {
@@ -34,9 +45,9 @@ define(function (require, exports, module) {
             },
             {width: '20%', field: 'title', title: '操作', align: 'center',
                 formatter: function (value, rowData) {
-                    return "<a href='javascript:' class='js-hot-siteDelete' data-id='"+rowData.siteId+"' style='margin-right:10px; color:blue;'>删除</a>" +
-                        "<a href='javascript:' class='js-hot-siteConfig' data-id='"+rowData.siteId+"' style='margin-right:10px; color: blue'>更多配置</a>"+
-                        "<a href='javascript:' class='js-hot-siteUpdate' data-id='"+rowData.siteId+"' style='margin-right:10px; color: blue'>修改</a>"
+                    return "<a href='javascript:' class='js-hot-templateDelete' data-id='"+rowData.siteId+"' style='margin-right:10px; color:blue;'>删除</a>" +
+                        "<a href='javascript:' class='js-hot-templateConfig' data-id='"+rowData.siteId+"' style='margin-right:10px; color: blue'>更多配置</a>"+
+                        "<a href='javascript:' class='js-hot-templateUpdate' data-id='"+rowData.siteId+"' style='margin-right:10px; color: blue'>修改</a>"
                 }
             }
         ]

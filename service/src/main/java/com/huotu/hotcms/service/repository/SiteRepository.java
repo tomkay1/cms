@@ -18,6 +18,20 @@ public interface SiteRepository  extends JpaRepository<Site, Long>,JpaSpecificat
     List<Site> findByHosts(Host host);
 
     /**
+     * 查询模板库
+     * @param customerId  商户ID *此处为系统用户
+     * @return 模板库list
+     */
+    List<Site> findByIsTemplateSiteFalseAndCustomerId(long customerId);
+
+    /**
+     * 查询模板库，如果系统默认只有一个系统用户
+     * @return 模板库list
+     */
+    List<Site> findByIsTemplateSiteFalse();
+
+
+    /**
      * 根据商户查询所有站点
      */
     List<Site> findByCustomerIdAndDeletedOrderBySiteIdDesc(int customerId,Boolean deleted);

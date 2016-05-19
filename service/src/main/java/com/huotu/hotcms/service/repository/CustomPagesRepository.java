@@ -16,4 +16,6 @@ public interface CustomPagesRepository extends JpaRepository<CustomPages, Long>,
 
     @Query(value = "update CustomPages set home=false where site=?1")
     void updateCustomerPageHome(Site site);
+
+    CustomPages findBySiteAndSerial(Site site,String serial);
 }

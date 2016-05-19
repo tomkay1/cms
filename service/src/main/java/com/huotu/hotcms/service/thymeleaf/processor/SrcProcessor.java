@@ -16,6 +16,7 @@ import org.thymeleaf.model.IProcessableElementTag;
 import org.thymeleaf.processor.element.IElementTagStructureHandler;
 import org.thymeleaf.spring4.requestdata.RequestDataValueProcessorUtils;
 import org.thymeleaf.standard.processor.AbstractStandardExpressionAttributeTagProcessor;
+import org.thymeleaf.standard.util.StandardProcessorUtils;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.unbescape.html.HtmlEscape;
 
@@ -30,24 +31,46 @@ public class SrcProcessor extends AbstractStandardExpressionAttributeTagProcesso
     private final String dialectPrefix;
 
     public SrcProcessor(final IProcessorDialect dialect, final String dialectPrefix, SrcProcessorService srcProcessorService) {
-        super(dialect, TemplateMode.HTML, dialectPrefix, ATTR_NAME, PRECEDENCE, true);
+//        super(dialect, TemplateMode.HTML, dialectPrefix, ATTR_NAME, PRECEDENCE, true);
+        super(TemplateMode.HTML, dialectPrefix,  ATTR_NAME, PRECEDENCE, true);
         this.srcProcessorService = srcProcessorService;
 //        this.srcProcessorService.setDialectPrefix(dialectPrefix);
         this.dialectPrefix = dialectPrefix;
     }
+
+    //TODO Thymeleaf3.0.0beta01 版本 ,稳定后移除
+//    @Override
+//    protected void doProcess(ITemplateContext context,
+//                             IProcessableElementTag tag,
+//                             AttributeName attributeName,
+//                             String attributeValue,
+//                             String attributeTemplateName,
+//                             int attributeLine,
+//                             int attributeCol,
+//                             Object expressionResult,
+//                             IElementTagStructureHandler structureHandler) {
+//
+////        final IStandardExpressionParser expressionParser = StandardExpressions.getExpressionParser(context.getConfiguration());
+//        String newAttributeValue=null;
+//        Object srcObject = this.srcProcessorService.resolveSrcData(dialectPrefix, attributeValue, context);
+//        newAttributeValue=srcObject!=null?srcObject.toString():"";
+//
+//        newAttributeValue= HtmlEscape.escapeHtml4Xml(newAttributeValue == null ? "" : newAttributeValue.toString());
+//
+//        // Let RequestDataValueProcessor modify the attribute value if needed
+//        newAttributeValue = RequestDataValueProcessorUtils.processUrl(context, newAttributeValue);
+//        // Set the real, non prefixed attribute
+//
+//        tag.getAttributes().replaceAttribute(attributeName, ATTR_NAME, (newAttributeValue == null? "" : newAttributeValue));
+//    }
 
     @Override
     protected void doProcess(ITemplateContext context,
                              IProcessableElementTag tag,
                              AttributeName attributeName,
                              String attributeValue,
-                             String attributeTemplateName,
-                             int attributeLine,
-                             int attributeCol,
                              Object expressionResult,
                              IElementTagStructureHandler structureHandler) {
-
-//        final IStandardExpressionParser expressionParser = StandardExpressions.getExpressionParser(context.getConfiguration());
         String newAttributeValue=null;
         Object srcObject = this.srcProcessorService.resolveSrcData(dialectPrefix, attributeValue, context);
         newAttributeValue=srcObject!=null?srcObject.toString():"";
@@ -57,6 +80,9 @@ public class SrcProcessor extends AbstractStandardExpressionAttributeTagProcesso
         // Let RequestDataValueProcessor modify the attribute value if needed
         newAttributeValue = RequestDataValueProcessorUtils.processUrl(context, newAttributeValue);
         // Set the real, non prefixed attribute
-        tag.getAttributes().replaceAttribute(attributeName, ATTR_NAME, (newAttributeValue == null? "" : newAttributeValue));
+
+//        tag.getAttributes().replaceAttribute(attributeName, ATTR_NAME, (newAttributeValue == null? "" : newAttributeValue));
+        StandardProcessorUtils.replaceAttribute(
+                structureHandler, attributeName, null, null, (newAttributeValue == null ? "" : newAttributeValue));
     }
 }

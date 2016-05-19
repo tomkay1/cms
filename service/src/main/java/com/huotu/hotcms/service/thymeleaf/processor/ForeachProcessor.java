@@ -9,6 +9,7 @@
 package com.huotu.hotcms.service.thymeleaf.processor;
 
 import com.huotu.hotcms.service.thymeleaf.service.ForeachProcessorService;
+import com.sun.org.apache.xalan.internal.xsltc.compiler.Template;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.engine.AttributeName;
@@ -37,15 +38,28 @@ public class ForeachProcessor extends AbstractAttributeTagProcessor {
 
     public ForeachProcessor(final IProcessorDialect dialect, final String dialectPrefix
             , ForeachProcessorService foreachProcessorService) {
-        super(dialect, TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
+//        super(dialect,);
+        super(TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
+//        super(TemplateMode.HTML,dialectPrefix,null,false,null,false,PRECEDENCE,true);
+//        super(dialect, TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
         this.foreachProcessorService = foreachProcessorService;
         this.dialectPrefix = dialectPrefix;
     }
 
+//    @Override
+//    protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName
+//            , String attributeValue, String attributeTemplateName, int attributeLine, int attributeCol
+//            , IElementTagStructureHandler structureHandler) {
+//        final Object iteratedValue;
+//        iteratedValue = foreachProcessorService.resolveDataByAttr(dialectPrefix, tag, context);
+//        structureHandler.iterateElement(attributeValue, null, iteratedValue);
+//    }
+
     @Override
-    protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName
-            , String attributeValue, String attributeTemplateName, int attributeLine, int attributeCol
-            , IElementTagStructureHandler structureHandler) {
+    protected void doProcess(ITemplateContext context,
+                             IProcessableElementTag tag,
+                             AttributeName attributeName,
+                             String attributeValue, IElementTagStructureHandler structureHandler) {
         final Object iteratedValue;
         iteratedValue = foreachProcessorService.resolveDataByAttr(dialectPrefix, tag, context);
         structureHandler.iterateElement(attributeValue, null, iteratedValue);

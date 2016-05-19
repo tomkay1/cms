@@ -12,7 +12,6 @@ import com.huotu.hotcms.service.entity.Video;
 import com.huotu.hotcms.service.model.thymeleaf.current.VideoCurrentParam;
 import com.huotu.hotcms.service.service.VideoService;
 import com.huotu.hotcms.service.thymeleaf.expression.DialectAttributeFactory;
-import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
 import com.huotu.hotcms.service.util.PatternMatchUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -39,7 +38,9 @@ public class VideoCurrentProcessor {
 
     public Object resolveDataByAttr(IProcessableElementTag tab,ITemplateContext context){
         try{
-            Video video=(Video) VariableExpression.getVariable(context, "video");
+            Video video=(Video) context.getVariable("video");
+//            article = (Article) context.getVariable("article");
+//            Site site = (Site) context.getVariable("site");
             if(video!=null){
                 return video;
             }else{

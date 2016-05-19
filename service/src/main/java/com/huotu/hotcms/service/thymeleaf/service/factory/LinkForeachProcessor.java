@@ -15,7 +15,6 @@ import com.huotu.hotcms.service.model.thymeleaf.foreach.NormalForeachParam;
 import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.service.LinkService;
 import com.huotu.hotcms.service.thymeleaf.expression.DialectAttributeFactory;
-import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +49,8 @@ public class LinkForeachProcessor {
             HttpServletRequest request = ((IWebContext)context).getRequest();
             NormalForeachParam linkForeachParam = dialectAttributeFactory.getForeachParam(elementTag
                     , NormalForeachParam.class);//为了兼容目前先保留
-            Route route = (Route) VariableExpression.getVariable(context, "route");
+//            Route route = (Route) VariableExpression.getVariable(context, "route");
+            Route route=(Route)context.getVariable("route");
             if(route!=null){
                 if(StringUtils.isEmpty(linkForeachParam.getCategoryId())) {
                     Long id=dialectAttributeFactory.getUrlId(request,route);
@@ -61,7 +61,8 @@ public class LinkForeachProcessor {
             }
             linkForeachParam=dialectAttributeFactory.getForeachParamByRequest(request, linkForeachParam);
             linkList = linkService.getLinkList(linkForeachParam);
-            Site site = (Site)VariableExpression.getVariable(context,"site");
+//            Site site = (Site)VariableExpression.getVariable(context,"site");
+            Site site=(Site)context.getVariable("site");
             for(Link article : linkList) {
                 article.setThumbUri(site.getResourceUrl() + article.getThumbUri());
             }

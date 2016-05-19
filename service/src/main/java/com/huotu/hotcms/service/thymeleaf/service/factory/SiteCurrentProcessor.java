@@ -9,7 +9,6 @@
 package com.huotu.hotcms.service.thymeleaf.service.factory;
 
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
 import com.huotu.hotcms.service.util.PatternMatchUtil;
 import com.huotu.hotcms.service.util.StringUtil;
 import org.apache.commons.logging.Log;
@@ -27,7 +26,8 @@ public class SiteCurrentProcessor {
     private static final Log log = LogFactory.getLog(CategoryForeachProcessor.class);
 
     public Object resolveDataByAttr(String attributeValue, ITemplateContext context){
-        Site site = (Site) VariableExpression.getVariable(context, "site");
+//        Site site = (Site) VariableExpression.getVariable(context, "site");
+        Site site=(Site)context.getVariable("site");
         try {
             String attributeName= PatternMatchUtil.getMatchVal(attributeValue, regexp);
             attributeName= StringUtil.toUpperCase(attributeName);

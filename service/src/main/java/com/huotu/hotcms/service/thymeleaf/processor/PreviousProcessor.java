@@ -35,14 +35,32 @@ public class PreviousProcessor extends AbstractAttributeTagProcessor {
 
     public PreviousProcessor(final IProcessorDialect dialect, final String dialectPrefix
             , PreviousProcessorService previousProcessorService) {
-        super(dialect, TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
+//        super(dialect, TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
+        super(TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
         this.previousProcessorService = previousProcessorService;
-//        this.previousProcessorService.setDialectPrefix(dialectPrefix);
         this.dialectPrefix = dialectPrefix;
     }
 
+    //TODO Thymeleaf 3.0.0beta01 版本,稳定后移除
+//    @Override
+//    protected void doProcess(ITemplateContext context,
+//                             IProcessableElementTag tag,
+//                             AttributeName attributeName,
+//                             String attributeValue, String attributeTemplateName,
+//                             int attributeLine, int attributeCol,
+//                             IElementTagStructureHandler structureHandler){
+//        final Object iteratedValue;
+//        iteratedValue = previousProcessorService.resolveDataByAttr(dialectPrefix, tag, context);
+//        structureHandler.iterateElement(attributeValue, null, iteratedValue);
+//    }
+
+
     @Override
-    protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName, String attributeValue, String attributeTemplateName, int attributeLine, int attributeCol, IElementTagStructureHandler structureHandler){
+    protected void doProcess(ITemplateContext context,
+                             IProcessableElementTag tag,
+                             AttributeName attributeName,
+                             String attributeValue,
+                             IElementTagStructureHandler structureHandler) {
         final Object iteratedValue;
         iteratedValue = previousProcessorService.resolveDataByAttr(dialectPrefix, tag, context);
         structureHandler.iterateElement(attributeValue, null, iteratedValue);

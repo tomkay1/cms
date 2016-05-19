@@ -13,7 +13,6 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.thymeleaf.current.ArticleCurrentParam;
 import com.huotu.hotcms.service.service.ArticleService;
 import com.huotu.hotcms.service.thymeleaf.expression.DialectAttributeFactory;
-import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
 import com.huotu.hotcms.service.util.PatternMatchUtil;
 import com.huotu.hotcms.service.util.StringUtil;
 import org.apache.commons.logging.Log;
@@ -33,12 +32,11 @@ import javax.servlet.http.HttpServletRequest;
  * </P>
  *
  * @author xhl
- *
  * @since 1.0.0
  */
 @Component
 public class ArticleCurrentProcessor {
-    private static final String regexp="\\$\\{([^\\}]+)}";//匹配${key}模式的正则表达式
+    private static final String regexp = "\\$\\{([^\\}]+)}";//匹配${key}模式的正则表达式
 
     private static final Log log = LogFactory.getLog(ArticleCurrentProcessor.class);
 
@@ -48,45 +46,48 @@ public class ArticleCurrentProcessor {
     @Autowired
     private DialectAttributeFactory dialectAttributeFactory;
 
-    public Object resolveDataByAttr(IProcessableElementTag tag,String attributeValue, ITemplateContext context){
-        Article article=(Article) VariableExpression.getVariable(context, "article");
+    public Object resolveDataByAttr(IProcessableElementTag tag, String attributeValue, ITemplateContext context) {
+//        Article article = (Article) VariableExpression.getVariable(context, "article");
+        Article article = (Article) context.getVariable("article");
         try {
-            if(article!=null) {
+            if (article != null) {
                 String attributeName = PatternMatchUtil.getMatchVal(attributeValue, regexp);
                 attributeName = StringUtil.toUpperCase(attributeName);
                 Object object = article.getClass().getMethod("get" + attributeName).invoke(article);
                 return object;
-            }else{//根据当前环境获得文章对象信息
+            } else {//根据当前环境获得文章对象信息
 
             }
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             log.error(ex.getMessage());
         }
         return "";
     }
 
-    public Object resolveDataByAttr(IProcessableElementTag tab,ITemplateContext context){
-        Article article=null;
-        try{
-            article=(Article) VariableExpression.getVariable(context, "article");
-            Site site = (Site)VariableExpression.getVariable(context,"site");
-            if(article!=null){
+    public Object resolveDataByAttr(IProcessableElementTag tab, ITemplateContext context) {
+        Article article = null;
+        try {
+//            article=(Article) VariableExpression.getVariable(context, "article");
+//            Site site = (Site)VariableExpression.getVariable(context,"site");
+
+            article = (Article) context.getVariable("article");
+            Site site = (Site) context.getVariable("site");
+            if (article != null) {
                 return article;
-            }else{
-                ArticleCurrentParam articleCurrentParam =dialectAttributeFactory.getForeachParam(tab
+            } else {
+                ArticleCurrentParam articleCurrentParam = dialectAttributeFactory.getForeachParam(tab
                         , ArticleCurrentParam.class);
-                HttpServletRequest request = ((IWebContext)context).getRequest();
-                String servletUrl=PatternMatchUtil.getServletUrl(request);
-                if(articleCurrentParam!=null){//根据当前请求的Uri来获得指定的ID
-                    if(articleCurrentParam.getId()==null){
+                HttpServletRequest request = ((IWebContext) context).getRequest();
+                String servletUrl = PatternMatchUtil.getServletUrl(request);
+                if (articleCurrentParam != null) {//根据当前请求的Uri来获得指定的ID
+                    if (articleCurrentParam.getId() == null) {
                         articleCurrentParam.setId(PatternMatchUtil.getUrlIdByLongType(servletUrl
                                 , PatternMatchUtil.urlParamRegexp));
                     }
                 }
-                article=articleService.getArticleByParam(articleCurrentParam);
+                article = articleService.getArticleByParam(articleCurrentParam);
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             log.error(ex.getMessage());
         }
         return null;

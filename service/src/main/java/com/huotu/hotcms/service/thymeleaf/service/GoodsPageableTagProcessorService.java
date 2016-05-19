@@ -2,7 +2,6 @@ package com.huotu.hotcms.service.thymeleaf.service;
 
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.thymeleaf.expression.DialectAttributeFactory;
-import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
 import com.huotu.hotcms.service.thymeleaf.service.factory.GoodsPageableTagProcessor;
 import com.huotu.hotcms.service.widget.model.GoodsPage;
 import com.huotu.hotcms.service.widget.model.GoodsSearcher;
@@ -32,7 +31,8 @@ public class GoodsPageableTagProcessorService {
     private DialectAttributeFactory dialectAttributeFactory;
 
     public Object invokeGoodsPageableService(IProcessableElementTag tag, ITemplateContext context) {
-        int customerId = ((Site) VariableExpression.getVariable(context, "site")).getCustomerId();
+        Site site=(Site) context.getVariable("site");
+        int customerId = site.getCustomerId();
         GoodsPage goodsPage = null;
         try {
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();

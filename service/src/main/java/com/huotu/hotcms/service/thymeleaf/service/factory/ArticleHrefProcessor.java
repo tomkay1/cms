@@ -9,7 +9,6 @@
 package com.huotu.hotcms.service.thymeleaf.service.factory;
 
 import com.huotu.hotcms.service.entity.Article;
-import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
 import com.huotu.hotcms.service.util.PatternMatchUtil;
 import com.huotu.hotcms.service.util.StringUtil;
 import org.apache.commons.logging.Log;
@@ -36,7 +35,8 @@ public class ArticleHrefProcessor {
 //                WebApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
 //                ArticleResolveService articleResolveService=(ArticleResolveService)applicationContext.getBean("articleResolveService");
 //                Article article=articleResolveService.getArticleByContent(context);
-                Article article=(Article) VariableExpression.getVariable(context, "article");
+//                Article article=(Article) VariableExpression.getVariable(context, "article");
+                Article article=(Article)context.getVariable("article");
                 if(article!=null){
                     for (Assignation assignation : assignations) {
                         String left = "{"+assignation.getLeft().toString()+"}";

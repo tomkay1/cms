@@ -10,11 +10,7 @@ package com.huotu.hotcms.service.thymeleaf.expression;
 
 import com.huotu.hotcms.service.common.EnumUtils;
 import com.huotu.hotcms.service.common.RouteType;
-import com.huotu.hotcms.service.common.SysConstant;
-import com.huotu.hotcms.service.entity.BaseEntity;
 import com.huotu.hotcms.service.entity.Route;
-import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.entity.Video;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.BaseForeachParam;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.Rename;
 import com.huotu.hotcms.service.thymeleaf.model.PageModel;
@@ -28,8 +24,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.thymeleaf.context.ITemplateContext;
-import org.thymeleaf.engine.AttributeName;
-//import org.thymeleaf.model.IElementAttributes;
 import org.thymeleaf.model.IAttribute;
 import org.thymeleaf.model.IProcessableElementTag;
 
@@ -70,6 +64,7 @@ public class DialectAttributeFactory {
      */
     public <T> T getForeachParam(IProcessableElementTag elementTag, Class<T> t) throws Exception {
         T obj = t.newInstance();
+        //TODO Thymeleaf 3.0.0beta01 版本,稳定后移除
 //        IElementAttributes elementAttributes = elementTag.getAttributes();
 //        List<AttributeName> attributeNames = elementAttributes.getAllAttributeNames();
 //        for (AttributeName attr : attributeNames) {

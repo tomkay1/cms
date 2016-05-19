@@ -14,16 +14,21 @@ import java.util.Set;
  * Created by cwb on 2015/12/21.
  */
 @Entity
-@Table(name = "cms_site")
+@Table(name = "cms_site",uniqueConstraints = {@UniqueConstraint(columnNames = {"serial"})})
 @Setter
 @Getter
 @Cacheable(value = false)
-public class Site implements Cloneable{
+public class Site{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "siteId")
     private Long siteId;
+
+    /**
+     * 序列号
+     */
+    private String serial;
 
     /**
      * 商户ID
@@ -85,6 +90,12 @@ public class Site implements Cloneable{
      * */
     @Column(name = "personalise")
     private boolean personalise;
+
+    /**
+     * 是否是模板站点
+     */
+    @Column(name ="isTemplateSite" )
+    private boolean isTemplateSite;
 
      /**
       * 对应域名
@@ -148,10 +159,5 @@ public class Site implements Cloneable{
     public void removeHost(Host host) {
         host.getSites().remove(this);
         this.hosts.remove(host);
-    }
-
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
     }
 }

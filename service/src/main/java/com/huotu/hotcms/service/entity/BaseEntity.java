@@ -27,6 +27,16 @@ public abstract class BaseEntity {
     private Long id;
 
     /**
+     * 站点ID
+     */
+    private long siteId;
+
+    /**
+     * 序列号
+     */
+    private String serial;
+
+    /**
      * 商户ID
      */
     @Column(name = "customerId")

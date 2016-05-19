@@ -19,7 +19,7 @@ import java.util.*;
  * Created by cwb on 2015/12/24.
  */
 @Entity
-@Table(name = "cms_host",uniqueConstraints = @UniqueConstraint(columnNames = {"domain"}))
+@Table(name = "cms_host",uniqueConstraints = @UniqueConstraint(columnNames = {"domain","serial"}))
 @Getter
 @Setter
 public class Host {
@@ -27,6 +27,11 @@ public class Host {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "hostId")
     private Long hostId;
+    
+    /**
+     * 序列号
+     */
+    private String serial;
 
     /**
      * 商户ID

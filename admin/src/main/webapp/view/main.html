@@ -55,9 +55,12 @@
                     </ul>
                 </li>
                 <li class="nav-parent nav-active js-cms-menus" id="menus04" style="cursor: pointer;margin-bottom: 15px;" th:if="${user.isSuperManage}">
+                    <a class="aparent" th:href="@{/supper/templateList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-chevron-circle-right"></i><span>模板管理</span></a>
+                </li>
+                <li class="nav-parent nav-active js-cms-menus" id="menus05" style="cursor: pointer;margin-bottom: 15px;" th:if="${user.isSuperManage}">
                     <a class="aparent" th:href="@{/supper/siteList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-chevron-circle-right"></i><span>站点管理</span></a>
                 </li>
-                <li class="nav-parent nav-active js-cms-menus" id="menus05" style="cursor: pointer;" th:if="${user.isSuperManage}">
+                <li class="nav-parent nav-active js-cms-menus" id="menus06" style="cursor: pointer;" th:if="${user.isSuperManage}">
                     <a class="aparent"><i class="fa fa-chevron-circle-right"></i><span>系统设置</span></a>
                     <ul class="children">
                         <li class="childMenus js-cms-submunes" data-id="menus05" style="cursor: pointer;">

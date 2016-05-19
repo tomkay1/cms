@@ -1,8 +1,13 @@
 package com.huotu.hotcms.admin.controller.decoration;
 
+import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.repository.SiteRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * Created by fawzi on 2016/5/9.
@@ -16,13 +21,18 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/widgetTemplateSea")
 public class WidgetTemplatesSeaController {
 
+    @Autowired
+    SiteRepository siteRepository;
+
     /**
      * 列表
      * @return
      */
     @RequestMapping("/list")
     public ModelAndView widgetTemplateList(){
+        List<Site> sites=siteRepository.findByIsTemplateSiteFalse();
         ModelAndView mv=new ModelAndView();
+        mv.addObject("sites",sites);
         mv.setViewName("decoration/pages/templates.html");
         return mv;
     }

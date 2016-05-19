@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
  * Created by cwb on 2015/12/21.
  */
 @Entity
-@Table(name = "cms_category")
+@Table(name = "cms_category",uniqueConstraints = {@UniqueConstraint(columnNames = {"serial"})})
 @Setter
 @Getter
 public class Category {
@@ -27,6 +27,11 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    /**
+     * 序列号
+     */
+    private String serial;
 
     /**
      * 商户ID

@@ -1,9 +1,7 @@
 package com.huotu.hotcms.service.repository;
 
 import com.huotu.hotcms.service.common.RouteType;
-import com.huotu.hotcms.service.entity.Category;
-import com.huotu.hotcms.service.entity.Route;
-import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.entity.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
@@ -14,6 +12,14 @@ import java.util.Set;
  * Created by chendeyu on 2015/12/31.
  */
 public interface CategoryRepository extends JpaRepository<Category, Long>,JpaSpecificationExecutor {
+
+   /**
+    *  根据序列号和站点信息进行查询
+    * @param serial 序列号
+    * @param site 站点 {@link com.huotu.hotcms.service.entity.Site}
+    * @return category {@link com.huotu.hotcms.service.entity.Category}
+    */
+   Category findBySerialAndSite(String serial,Site site);
 
    /**
     * 根据站点查询栏目

@@ -50,7 +50,7 @@ public class ConfigInfo {
     private String resourcesConfig;
 
     @Value("${resources.template}")
-    private String resorcesTemplate;
+    private String resourcesTemplate;
 
 
 
@@ -76,8 +76,8 @@ public class ConfigInfo {
         return String.format(resourcesDownload,customerId);
     }
 
-    public String getResorcesTemplate() {
-        return resorcesTemplate;
+    public String getResourcesTemplate() {
+        return resourcesTemplate;
     }
 
     /**
@@ -99,7 +99,7 @@ public class ConfigInfo {
     }
 
     public String getTemplateConfig(Long siteId){
-        return String.format(resorcesTemplate,siteId);
+        return String.format(resourcesTemplate,siteId);
     }
 
     public String getOutLoginUrl() {

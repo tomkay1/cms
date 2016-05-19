@@ -1,14 +1,17 @@
 package com.huotu.hotcms.service.service.impl;
 
 import com.huotu.hotcms.service.common.ConfigInfo;
+import com.huotu.hotcms.service.entity.Article;
+import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.CustomPages;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.widget.WidgetDefaultPage;
 import com.huotu.hotcms.service.model.widget.WidgetPage;
-import com.huotu.hotcms.service.repository.HostRepository;
-import com.huotu.hotcms.service.repository.SiteRepository;
+import com.huotu.hotcms.service.repository.*;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.util.HttpUtils;
 import com.huotu.hotcms.service.util.PageData;
+import com.huotu.hotcms.service.util.SerialUtil;
 import com.huotu.hotcms.service.widget.service.PageResolveService;
 import com.huotu.hotcms.service.widget.service.StaticResourceService;
 import org.codehaus.plexus.util.StringUtils;
@@ -101,6 +104,11 @@ public class SiteServiceImpl implements SiteService {
     }
 
     @Override
+    public Site saveAndFlush(Site site) {
+        return siteRepository.save(site);
+    }
+
+    @Override
     public Set<Site> findByCustomerIdAndDeleted(Integer customerId, boolean deleted) {
        Set<Site> siteList=siteRepository.findByCustomerIdAndDeleted(customerId,deleted);
         for(Site site : siteList){
@@ -112,19 +120,53 @@ public class SiteServiceImpl implements SiteService {
 
     @Override
     public boolean siteCopy(Site templateSite, Site customerSite) throws Exception {
-        customerSite=siteRepository.findOne(customerSite.getSiteId());
-        Site customerViewOrUserSite=(Site)customerSite.clone();
-        customerViewOrUserSite=siteRepository.save(customerViewOrUserSite);
          //对自定义界面的复制
         String tempalteResourceConfigUrl=configInfo.getTemplateConfig(templateSite.getSiteId());
-        URI url= resourceService.getResource(tempalteResourceConfigUrl);
-        InputStream inputStream = HttpUtils.getInputStreamByUrl(url.toURL());
-        WidgetPage widgetPage = JAXB.unmarshal(inputStream, WidgetPage.class);
-        pageResolveService.createPageAndConfigByWidgetPage(widgetPage,customerViewOrUserSite.getCustomerId()
-                ,customerViewOrUserSite.getSiteId(),false);
-
-        createDefaultWidgetPage(templateSite, customerViewOrUserSite);
+        if(tempalteResourceConfigUrl!=null){
+            URI url= resourceService.getResource(tempalteResourceConfigUrl);
+            InputStream inputStream = HttpUtils.getInputStreamByUrl(url.toURL());
+            WidgetPage widgetPage = JAXB.unmarshal(inputStream, WidgetPage.class);
+            pageResolveService.createPageAndConfigByWidgetPage(widgetPage,customerSite.getCustomerId()
+                    ,customerSite.getSiteId(),false);
+            createDefaultWidgetPage(templateSite, customerSite);
+            deepCopy(templateSite, customerSite);
+        }
         return false;
+    }
+
+    /**
+     * 深度复制   站点下属类目全部复制
+     * @param templateSite  模板站点
+     * @param customerSite  商户站点
+     */
+    @Autowired
+    CategoryRepository categoryRepository;
+    @Autowired
+    ArticleRepository articleRepository;
+    @Autowired
+    CustomPagesRepository customPagesRepository;
+    private void deepCopy(Site templateSite, Site customerSite) {
+
+        /*对Category的复制*/
+        Category templateCategory=categoryRepository.findOne(templateSite.getSiteId());
+        Category customerCategory=templateCategory;
+        customerCategory.setId(null);
+        customerCategory.setSerial(SerialUtil.formartSerial(customerSite));
+        customerCategory.setSite(customerSite);
+        customerCategory=categoryRepository.save(customerCategory);
+        /*文章复制*/
+        Article templateSiteArticle=articleRepository.findBySiteIdAndSerial(templateSite.getSiteId(), templateSite.getSerial());
+        Article customerSiteArticle=templateSiteArticle;
+        customerSiteArticle.setId(null);
+        customerSiteArticle.setSiteId(customerSite.getSiteId());
+        customerSiteArticle.setCategory(customerCategory);
+        articleRepository.save(customerSiteArticle);
+
+        /*自定义页面*/
+        CustomPages templateCustomPages=customPagesRepository.findBySiteAndSerial(templateSite
+                ,templateSite.getSerial());
+
+
     }
 
     /** 创建公共界面

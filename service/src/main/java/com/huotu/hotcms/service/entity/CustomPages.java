@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  * Created by Administrator on 2016/3/18.
  */
 @Entity
-@Table(name = "cms_customPages")
+@Table(name = "cms_customPages",uniqueConstraints = {@UniqueConstraint(columnNames = {"serial"})})
 @Getter
 @Setter
 public class CustomPages {
@@ -18,6 +18,11 @@ public class CustomPages {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    /**
+     * 序列号  暂定生成规则是：site_{siteID}_serial
+     */
+    private String serial;
 
     /**
      * 商户ID

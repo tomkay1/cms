@@ -18,7 +18,7 @@ import javax.persistence.*;
  * Created by cwb on 2015/12/22.
  */
 @Entity
-@Table(name = "cms_notice")
+@Table(name = "cms_notice",uniqueConstraints = @UniqueConstraint(columnNames = {"siteId","serial"}))
 @Setter
 @Getter
 @Cacheable(value = false)

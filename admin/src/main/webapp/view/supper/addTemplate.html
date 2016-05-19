@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+    <link  href="/assets/css/admin.content.css"  type="text/css" rel="stylesheet"/>
+    <link  href="/assets/css/admin.global.css"  type="text/css" rel="stylesheet"/>
+    <link  href="/assets/css/global.css"  type="text/css" rel="stylesheet"/>
+    <link href="/assets/libs/layer/skin/layer.css" rel="stylesheet"/>
+    <link href="/assets/libs/upload/JUpload.css" rel="stylesheet"/>
+    <script src="/assets/seajs/sea.js"></script>
+    <script src="/assets/seajs/config.js"></script>
+</head>
+<body>
+<div class="block">
+    <div class="h">
+        <span class="icon-sprite icon-list"></span>
+        <h3>模板添加</h3>
+        <div class="bar">
+            <a class="btn-lit" th:href="@{/supper/templateList?customerid={customerid}(customerid=${user.customerId})}">
+                <span>返回模板列表</span></a>
+            <!--<img src="../../images/bangzhu.png" style="vertical-align:middle;margin-left:20px;" onclick="window.open('http://bbs.huobanmall.com/showtopic-39.aspx')">-->
+        </div>
+    </div>
+    <form method="post"  id="addSiteForm" enctype="multipart/form-data">
+    <div class="cnt-wp">
+        <div class="cnt form">
+            <div class="division">
+                <input type="hidden" name="hidSiteID" id="hidSiteID" >
+                <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                    <tbody>
+                    <tr>
+                        <th>模板名称：</th>
+                        <td>
+                            <input name="tempName"  id="tempName" type="text" class="input-normal" placeholder="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>选择一个站点：</th>
+                        <td>
+                            <select name="siteId" class="input-normal" id="siteId" >
+                                <option value="-1">==请选择站点==</option>
+                                <option th:each="site:${siteList}" th:value="${site.siteId}" th:text="${site.name}" th:selected="${site.siteId}==${siteList[0].siteId}?true:false"></option>//
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>模板缩略图：</th>
+                        <td>
+                            <img id="uploadThumbUri" style="width: 80px; height: 80px; border: 1px solid #ccc; float: left; background: #efefef; line-height: 80px; text-align: center; color: #ccc;" />
+                            <span id="btnFile" name="btnFile" style="margin-left: 100px; margin-top: 20px; display: block;"/>
+                            <input type="hidden" id="thumbUri" name="thumbUri"/>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="text-align: center;">
+                <input type="submit" class="btn-lit" name="btnSave"  value="保存" data-submiting-text="提交中..." data-text="保存" id="jq-cms-Save">
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
+
+<script>seajs.use(["layer","validate","message","jupload","addTemplateJs"]);</script>
+</body>
+</html>

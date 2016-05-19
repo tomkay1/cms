@@ -16,8 +16,6 @@ public class Template {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-
     /**
      * 模板名称
      */
@@ -28,8 +26,7 @@ public class Template {
      * 站点id
      */
     @ManyToOne
-    @Column(name = "siteId")
-    private Site siteId; 
+    private Site site;
 
     /**
      * 缩略图
@@ -66,6 +63,9 @@ public class Template {
      */
     @Column(name = "updateTime")
     private LocalDateTime updateTime;
+
+    @ManyToOne
+    private TemplateType templateType;
 
 
 }

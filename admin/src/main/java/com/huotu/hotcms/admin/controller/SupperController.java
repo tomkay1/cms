@@ -4,12 +4,11 @@ import com.huotu.hotcms.admin.annoation.AuthorizeRole;
 import com.huotu.hotcms.admin.util.web.CookieUser;
 import com.huotu.hotcms.service.common.EnumUtils;
 import com.huotu.hotcms.service.common.SiteType;
-import com.huotu.hotcms.service.entity.Host;
-import com.huotu.hotcms.service.entity.Region;
-import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.entity.SiteConfig;
+import com.huotu.hotcms.service.entity.*;
 import com.huotu.hotcms.service.repository.RegionRepository;
 import com.huotu.hotcms.service.repository.SiteConfigRepository;
+import com.huotu.hotcms.service.repository.SiteRepository;
+import com.huotu.hotcms.service.repository.TemplateRepository;
 import com.huotu.hotcms.service.service.HostService;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.util.PageData;
@@ -19,6 +18,9 @@ import com.huotu.hotcms.service.widget.service.StaticResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -62,6 +64,12 @@ public class SupperController {
     @Autowired
     private SiteConfigRepository siteConfigRepository;
 
+    @Autowired
+    private TemplateRepository templateRepository;
+
+    @Autowired
+    private SiteRepository siteRepository;
+
     /**
      * 站点列表页面
      *
@@ -74,6 +82,14 @@ public class SupperController {
     public ModelAndView siteList(HttpServletRequest request) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/view/supper/siteList.html");
+        return modelAndView;
+    }
+
+    @RequestMapping("/templateList")
+    @AuthorizeRole(roleType = AuthorizeRole.Role.Supper)
+    public ModelAndView templateList(HttpServletRequest request) throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("/view/supper/templateList.html");
         return modelAndView;
     }
 
@@ -96,12 +112,30 @@ public class SupperController {
     }
 
     /**
+     * 添加模板
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/addTemplate")
+    @AuthorizeRole(roleType = AuthorizeRole.Role.Supper)
+    public ModelAndView addTemplate(HttpServletRequest request) throws Exception{
+        Integer customerId=Integer.valueOf(request.getParameter("customerid"));
+        ModelAndView modelAndView = new ModelAndView();
+        List<Site> siteList =siteRepository.findByCustomerIdAndDeletedOrderBySiteIdDesc(customerId,false);
+        modelAndView.setViewName("/view/supper/addTemplate.html");
+        modelAndView.addObject("siteList",siteList);
+        return modelAndView;
+    }
+
+    /**
      * 站点新增以及修改操作
      */
     @RequestMapping(value = "/saveSite", method = RequestMethod.POST)
     @Transactional(value = "transactionManager")
     @ResponseBody
-    public ResultView updateSite(HttpServletRequest request, Site site, Long regionId, Integer siteType, Boolean personalise, String homeDomains, String... domains) {
+    public ResultView updateSite(HttpServletRequest request, Site site, Long regionId, Integer siteType
+            , Boolean personalise, String homeDomains,Template template, String... domains) {
         ResultView result = null;
         Set<Host> hosts = new HashSet<>();
         site.setPersonalise(personalise);
@@ -151,6 +185,26 @@ public class SupperController {
         return result;
     }
 
+    @RequestMapping(value = "/saveTemplate", method = RequestMethod.POST)
+    @Transactional(value = "transactionManager")
+    @ResponseBody
+    public ResultView saveTemplate(Template template,long siteId){
+        template.setSite(siteRepository.findOne(siteId));
+        template.setCreateTime(LocalDateTime.now());
+        template.setUpdateTime(LocalDateTime.now());
+        template.setLauds(0);
+        template.setScans(0);
+        template.setPreviewTimes(0);
+        ResultView result = null;
+        try{
+            templateRepository.save(template);
+            result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
+        }catch (Exception ex){
+            log.error(ex.getMessage());
+            result = new ResultView(ResultOptionEnum.FAILE.getCode(), ResultOptionEnum.FAILE.getValue(), null);
+        }
+        return result;
+    }
     /**
      * 修改站点页面
      *
@@ -211,6 +265,40 @@ public class SupperController {
         PageData<Site> pageModel = null;
         try {
             pageModel = siteService.getPage(customerId, name, page, pageSize);
+        } catch (Exception ex) {
+            log.error(ex.getMessage());
+        }
+        return pageModel;
+    }
+
+    /**
+     * 获取模板列表
+     * @param customerId 系统商户ID
+     * @param page 页数
+     * @param pageSize 每页显示记录数
+     * @return 模板列表
+     */
+    @RequestMapping(value = "/getTemplateList")
+    @ResponseBody
+    public PageData<Template> getTemplateList(@RequestParam(name = "customerId", required = false) Integer customerId,
+                                              @RequestParam(name = "page", required = true, defaultValue = "1") int page,
+                                              @RequestParam(name = "pagesize", required = true, defaultValue = "20") int pageSize){
+        PageData<Template> pageModel = null;
+        try {
+            Pageable pageable=new PageRequest(page-1,pageSize);
+            Page<Template> pageData=templateRepository.findAll(pageable);
+            List<Template> Templates=pageData.getContent();
+            for(Template template : Templates){
+                template.getSite().setHosts(null);
+            }
+            if (pageData != null&&pageData.getContent().size()>0) {
+                pageModel = new PageData<Template>();
+                pageModel.setPageCount(pageData.getTotalPages());
+                pageModel.setPageIndex(pageData.getNumber());
+                pageModel.setPageSize(pageData.getSize());
+                pageModel.setTotal(pageData.getTotalElements());
+                pageModel.setRows((Template[])pageData.getContent().toArray(new Template[pageData.getContent().size()]));
+            }
         } catch (Exception ex) {
             log.error(ex.getMessage());
         }

@@ -17,9 +17,6 @@ import com.huotu.hotcms.service.model.thymeleaf.foreach.PageableForeachParam;
 import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.service.GalleryService;
 import com.huotu.hotcms.service.thymeleaf.expression.DialectAttributeFactory;
-import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
-import com.huotu.hotcms.service.thymeleaf.model.PageModel;
-import com.huotu.hotcms.service.thymeleaf.model.RequestModel;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +53,8 @@ public class GalleryForeachProcessor {
             HttpServletRequest request = ((IWebContext)context).getRequest();
             PageableForeachParam galleryForeachParam =dialectAttributeFactory.getForeachParam(elementTag
                     , PageableForeachParam.class);
-            Route route = (Route) VariableExpression.getVariable(context, "route");
+//            Route route = (Route) VariableExpression.getVariable(context, "route");
+            Route route=(Route)context.getVariable("route");
             if(StringUtils.isEmpty(galleryForeachParam.getCategoryId())) {
                 if(route.getRouteType()== RouteType.GALLERY_CONTENT) {
                     Category current = categoryService.getCategoryByRoute(route);
@@ -71,34 +69,9 @@ public class GalleryForeachProcessor {
                 }
             }
             galleryForeachParam=dialectAttributeFactory.getForeachParamByRequest(request, galleryForeachParam);
-//            if(galleryForeachParam.getPageNo() == null) {
-//                if(StringUtils.isEmpty(request.getParameter("pageNo"))) {
-//                    galleryForeachParam.setPageNo(DEFAULT_PAGE_NO);
-//                }else {
-//                    int pageNo = Integer.parseInt(request.getParameter("pageNo"));
-//                    if(pageNo < 1) {
-//                        throw new Exception("页码小于1");
-//                    }
-//                    galleryForeachParam.setPageNo(pageNo);
-//                }
-//            }
-//            if(galleryForeachParam.getPageSize() == null) {
-//                if(StringUtils.isEmpty(request.getParameter("pageSize"))) {
-//                    galleryForeachParam.setPageSize(DEFAULT_PAGE_SIZE);
-//                }else {
-//                    int pageSize = Integer.parseInt(request.getParameter("pageSize"));
-//                    if(pageSize < 1) {
-//                        throw new Exception("请求数据列表容量小于1");
-//                    }
-//                    galleryForeachParam.setPageSize(pageSize);
-//                }
-//            }
-//            if(galleryForeachParam.getPageNumber() == null) {
-//                galleryForeachParam.setPageNumber(DEFAULT_PAGE_NUMBER);
-//            }
             galleries = galleryService.getGalleryList(galleryForeachParam);
             //图片路径处理
-            Site site = (Site)VariableExpression.getVariable(context,"site");
+            Site site=(Site)context.getVariable("site");
             for(Gallery gallery : galleries) {
                 gallery.setThumbUri(site.getResourceUrl() + gallery.getThumbUri());
             }

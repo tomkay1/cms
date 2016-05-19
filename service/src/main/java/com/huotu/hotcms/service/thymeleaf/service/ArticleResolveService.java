@@ -13,7 +13,6 @@ import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.service.impl.ArticleServiceImpl;
-import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
 import com.huotu.hotcms.service.util.PatternMatchUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -49,7 +48,8 @@ public class ArticleResolveService {
      * @return
      * */
     public Article getArticleByContent( ITemplateContext context){
-        Site site = (Site) VariableExpression.getVariable(context, "site");
+//        Site site = (Site) VariableExpression.getVariable(context, "site");
+        Site site = (Site) context.getVariable("site");
         IExpressionObjects expressContent= context.getExpressionObjects();
         HttpServletRequest request=(HttpServletRequest)expressContent.getObject("request");
         Route routeRule=routeResolverService.getRoute(site, PatternMatchUtil.getUrl(request));

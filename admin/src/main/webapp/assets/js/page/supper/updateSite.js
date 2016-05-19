@@ -99,58 +99,57 @@ define(function (require, exports, module) {
                 if (custom == 1 && (customTemplateUrl == "" || customTemplateUrl == null)) {
                     layer.msg("请填上根路径", {time: 2000})
                     commonUtil.cancelDisabled("jq-cms-Save");
+                    return;
                 }
-                else {
-                    $.ajax({
-                        url: "/supper/saveSite",
-                        data: {
-                            siteId: $("#hidSiteID").val(),
-                            customerId: customerId,
-                            name: $("#name").val(),
-                            title: $("#title").val(),
-                            keywords: $("#keywords").val(),
-                            resourceUrl: $("#resourceUrl").val(),
-                            copyright: $("#copyright").val(),
-                            custom: $("#custom_0").val(),
-                            personalise: isPersonalise,
-                            logoUri: $("#logoUri").val(),
-                            homeDomains: $("#homeDomain").val(),
-                            customTemplateUrl: $("#customTemplateUrl").val(),
-                            domains: $("#domains").val(),
-                            regionId: $("#regionId").val(),
-                            description: $("#description").val(),
-                            siteType:$("#siteType").val()
-                        },
-                        type: "POST",
-                        dataType: 'json',
-                        success: function (data) {
-                            var layer = require("layer");
-                            if (data != null) {
-                                var index = parseInt(data.code);
-                                if (index == 200) {
-                                    var layer = require("layer");
-                                    layer.msg("修改成功,2秒后将自动返回列表页面", {time: 2000})
-                                    setTimeout(function () {
-                                            window.location.href = "http://" + window.location.host + "/" + "supper/siteList?customerId=" + customerId;
-                                        }
-                                        , 1000);
-                                    //commonUtil.redirectUrl("/model/modelList");
-                                    //$("#txtModelName").val("");
-                                    //$("#txtModelDescription").val("");
-                                }
-                                if (index == 500)
-                                    layer.msg("修改失败", {time: 2000})
-                                if (index == 203) {
-                                    layer.msg("域名已被占用，请修改域名", {time: 2000})
-                                }
+                $.ajax({
+                    url: "/supper/saveSite",
+                    data: {
+                        siteId: $("#hidSiteID").val(),
+                        customerId: customerId,
+                        name: $("#name").val(),
+                        title: $("#title").val(),
+                        keywords: $("#keywords").val(),
+                        resourceUrl: $("#resourceUrl").val(),
+                        copyright: $("#copyright").val(),
+                        custom: $("#custom_0").val(),
+                        personalise: isPersonalise,
+                        logoUri: $("#logoUri").val(),
+                        homeDomains: $("#homeDomain").val(),
+                        customTemplateUrl: $("#customTemplateUrl").val(),
+                        domains: $("#domains").val(),
+                        regionId: $("#regionId").val(),
+                        description: $("#description").val(),
+                        siteType: $("#siteType").val()
+                    },
+                    type: "POST",
+                    dataType: 'json',
+                    success: function (data) {
+                        var layer = require("layer");
+                        if (data != null) {
+                            var index = parseInt(data.code);
+                            if (index == 200) {
+                                var layer = require("layer");
+                                layer.msg("修改成功,2秒后将自动返回列表页面", {time: 2000})
+                                setTimeout(function () {
+                                        window.location.href = "http://" + window.location.host + "/" + "supper/siteList?customerId=" + customerId;
+                                    }
+                                    , 1000);
+                                //commonUtil.redirectUrl("/model/modelList");
+                                //$("#txtModelName").val("");
+                                //$("#txtModelDescription").val("");
                             }
-                            commonUtil.cancelDisabled("jq-cms-Save");
-                        },
-                        error: function () {
-                            commonUtil.cancelDisabled("jq-cms-Save");
+                            if (index == 500)
+                                layer.msg("修改失败", {time: 2000})
+                            if (index == 203) {
+                                layer.msg("域名已被占用，请修改域名", {time: 2000})
+                            }
                         }
-                    })
-                }
+                        commonUtil.cancelDisabled("jq-cms-Save");
+                    },
+                    error: function () {
+                        commonUtil.cancelDisabled("jq-cms-Save");
+                    }
+                })
             }
             ;
             return false;

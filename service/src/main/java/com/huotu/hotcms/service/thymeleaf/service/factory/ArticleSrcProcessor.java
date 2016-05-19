@@ -9,7 +9,6 @@
 package com.huotu.hotcms.service.thymeleaf.service.factory;
 
 import com.huotu.hotcms.service.entity.Article;
-import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
 import com.huotu.hotcms.service.util.PatternMatchUtil;
 import com.huotu.hotcms.service.util.StringUtil;
 import org.apache.commons.logging.Log;
@@ -28,7 +27,8 @@ public class ArticleSrcProcessor {
 
     public Object resolveDataByAttr(String attributeValue, ITemplateContext context){
         try {
-            Article article=(Article) VariableExpression.getVariable(context, "article");
+//            Article article=(Article) VariableExpression.getVariable(context, "article");
+            Article article=(Article) context.getVariable("article");
             if(article!=null){
                 String attributeName = PatternMatchUtil.getMatchVal(attributeValue, regexp);
                 attributeName = StringUtil.toUpperCase(attributeName);

@@ -309,9 +309,14 @@ public class WidgetTemplateResource implements ITemplateResource {
     }
 
     @Override
-    public ITemplateResource relative(final String relativeLocation) throws IOException {
+    public ITemplateResource relative(String relativeLocation) {
         return null;
     }
+
+//    @Override
+//    public ITemplateResource relative(final String relativeLocation) throws IOException {
+//        return null;
+//    }
 
     static String computeBaseName(final String path) {
         if (path == null) {

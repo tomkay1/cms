@@ -12,7 +12,6 @@ import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.model.thymeleaf.next.ArticleNextParam;
 import com.huotu.hotcms.service.service.ArticleService;
 import com.huotu.hotcms.service.thymeleaf.expression.DialectAttributeFactory;
-import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
 import com.huotu.hotcms.service.util.PatternMatchUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -45,7 +44,9 @@ public class ArticleNextProcessor {
 
     public Object resolveDataByAttr(IProcessableElementTag tab,ITemplateContext context){
         try{
-            Article article=(Article) VariableExpression.getVariable(context, "article");
+//            Article article=(Article) VariableExpression.getVariable(context, "article");
+            Article article=(Article) context.getVariable("article");
+
             ArticleNextParam articleNextParam;
             if(article!=null){
                 articleNextParam=new ArticleNextParam();

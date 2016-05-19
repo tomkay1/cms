@@ -9,7 +9,6 @@
 package com.huotu.hotcms.service.thymeleaf.processor;
 
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
 import com.huotu.hotcms.service.widget.service.GoodsCategoryService;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.dialect.IProcessorDialect;
@@ -30,19 +29,39 @@ public class GoodsCATGTagProcessor extends AbstractAttributeTagProcessor {
     private final GoodsCategoryService goodsCategoryService;
 
     public GoodsCATGTagProcessor(IProcessorDialect dialect, String dialectPrefix, GoodsCategoryService goodsCategoryService) {
-        super(dialect, TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
+        super(TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
+//        super(dialect, TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
         this.goodsCategoryService = goodsCategoryService;
     }
 
+    //TODO Thymeleaf 3.0.0beta01 稳定后移除
+//    @Override
+//    protected void doProcess(ITemplateContext context, IProcessableElementTag tag,
+//                             AttributeName attributeName,
+//                             String attributeValue,
+//                             String attributeTemplateName,
+//                             int attributeLine, int attributeCol,
+//                             IElementTagStructureHandler structureHandler) {
+//        final Object iteratedValue;
+//        iteratedValue = invokeGoodsCATGService(tag, context);
+//        structureHandler.iterateElement(attributeValue, null, iteratedValue);
+//    }
+
+
     @Override
-    protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName, String attributeValue, String attributeTemplateName, int attributeLine, int attributeCol, IElementTagStructureHandler structureHandler) {
+    protected void doProcess(ITemplateContext context,
+                             IProcessableElementTag tag,
+                             AttributeName attributeName,
+                             String attributeValue,
+                             IElementTagStructureHandler structureHandler) {
         final Object iteratedValue;
         iteratedValue = invokeGoodsCATGService(tag, context);
         structureHandler.iterateElement(attributeValue, null, iteratedValue);
     }
 
     private Object invokeGoodsCATGService(IProcessableElementTag tag,ITemplateContext context){
-        Site site = (Site)VariableExpression.getVariable(context,"site");
+//        Site site = (Site)VariableExpression.getVariable(context,"site");
+        Site site=(Site) context.getVariable("site");
         int customerId = site.getCustomerId();
         return goodsCategoryService.getGoodsCategories(customerId);
     }

@@ -29,7 +29,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.engine.AttributeName;
-import org.thymeleaf.model.IElementAttributes;
+//import org.thymeleaf.model.IElementAttributes;
+import org.thymeleaf.model.IAttribute;
 import org.thymeleaf.model.IProcessableElementTag;
 
 import javax.servlet.http.HttpServletRequest;
@@ -69,12 +70,36 @@ public class DialectAttributeFactory {
      */
     public <T> T getForeachParam(IProcessableElementTag elementTag, Class<T> t) throws Exception {
         T obj = t.newInstance();
-        IElementAttributes elementAttributes = elementTag.getAttributes();
-        List<AttributeName> attributeNames = elementAttributes.getAllAttributeNames();
-        for (AttributeName attr : attributeNames) {
-            String paramValue = elementAttributes.getValue(attr);
-            Field field =getField(attr.getAttributeName(),obj);
-            if(field!=null) {
+//        IElementAttributes elementAttributes = elementTag.getAttributes();
+//        List<AttributeName> attributeNames = elementAttributes.getAllAttributeNames();
+//        for (AttributeName attr : attributeNames) {
+//            String paramValue = elementAttributes.getValue(attr);
+//            Field field =getField(attr.getAttributeName(),obj);
+//            if(field!=null) {
+//                field.setAccessible(true);
+//                Class<?> classType = field.getType();
+//                if (classType == Integer.class) {
+//                    field.set(obj, Integer.parseInt(paramValue));
+//                } else if (classType == Long.class) {
+//                    field.set(obj, Long.parseLong(paramValue));
+//                } else if (classType == Double.class) {
+//                    field.set(obj, Double.parseDouble(paramValue));
+//                } else if (classType == String.class) {
+//                    field.set(obj, paramValue);
+//                } else if (classType == String[].class) {
+//                    field.set(obj, paramValue.split(","));
+//                } else if (classType == RouteType.class) {
+//                    field.set(obj, EnumUtils.valueOf(RouteType.class, Integer.parseInt(paramValue)));
+//                } else {
+//                    field.set(obj, paramValue);
+//                }
+//            }
+//        }
+        IAttribute[] attributes= elementTag.getAllAttributes();
+        for (IAttribute attr : attributes) {
+            String paramValue = attr.getValue();
+            Field field = getField(attr.getAttributeDefinition().getAttributeName().getAttributeName(), obj);
+            if (field != null) {
                 field.setAccessible(true);
                 Class<?> classType = field.getType();
                 if (classType == Integer.class) {
@@ -238,7 +263,8 @@ public class DialectAttributeFactory {
             pages.add(pageModel);
             startPage++;
         }
-        RequestModel requestModel = (RequestModel)VariableExpression.getVariable(context,"request");
+//        RequestModel requestModel = (RequestModel)VariableExpression.getVariable(context,"request");
+        RequestModel requestModel = (RequestModel)context.getVariable("request");
         requestModel.setPages(pages);
         requestModel.setHasNextPage(Page.hasNext());
         if(Page.hasNext()) {
@@ -259,7 +285,8 @@ public class DialectAttributeFactory {
      */
     public void setPageList(ITemplateContext context, BasePage basePage,Integer pageBtnCount) {
         //分页标签处理
-        RequestModel requestModel = (RequestModel) VariableExpression.getVariable(context, "request");
+//        RequestModel requestModel = (RequestModel) VariableExpression.getVariable(context, "request");
+        RequestModel requestModel = (RequestModel)context.getVariable("request");
         int pageNo = basePage.getPageNo() + 1;
         int totalPages = basePage.getTotalPages();
         int pageBtnNum =pageBtnCount < totalPages ? pageBtnCount: totalPages;

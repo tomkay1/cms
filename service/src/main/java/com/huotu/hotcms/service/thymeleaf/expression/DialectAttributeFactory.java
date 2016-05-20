@@ -93,24 +93,27 @@ public class DialectAttributeFactory {
         IAttribute[] attributes= elementTag.getAllAttributes();
         for (IAttribute attr : attributes) {
             String paramValue = attr.getValue();
-            Field field = getField(attr.getAttributeDefinition().getAttributeName().getAttributeName(), obj);
-            if (field != null) {
-                field.setAccessible(true);
-                Class<?> classType = field.getType();
-                if (classType == Integer.class) {
-                    field.set(obj, Integer.parseInt(paramValue));
-                } else if (classType == Long.class) {
-                    field.set(obj, Long.parseLong(paramValue));
-                } else if (classType == Double.class) {
-                    field.set(obj, Double.parseDouble(paramValue));
-                } else if (classType == String.class) {
-                    field.set(obj, paramValue);
-                } else if (classType == String[].class) {
-                    field.set(obj, paramValue.split(","));
-                } else if (classType == RouteType.class) {
-                    field.set(obj, EnumUtils.valueOf(RouteType.class, Integer.parseInt(paramValue)));
-                } else {
-                    field.set(obj, paramValue);
+            String prefix=attr.getAttributeDefinition().getAttributeName().getPrefix();
+            if(prefix!=null&&prefix.equals("param")){//获得自定义参数
+                Field field = getField(attr.getAttributeDefinition().getAttributeName().getAttributeName(), obj);
+                if (field != null) {
+                    field.setAccessible(true);
+                    Class<?> classType = field.getType();
+                    if (classType == Integer.class) {
+                        field.set(obj, Integer.parseInt(paramValue));
+                    } else if (classType == Long.class) {
+                        field.set(obj, Long.parseLong(paramValue));
+                    } else if (classType == Double.class) {
+                        field.set(obj, Double.parseDouble(paramValue));
+                    } else if (classType == String.class) {
+                        field.set(obj, paramValue);
+                    } else if (classType == String[].class) {
+                        field.set(obj, paramValue.split(","));
+                    } else if (classType == RouteType.class) {
+                        field.set(obj, EnumUtils.valueOf(RouteType.class, Integer.parseInt(paramValue)));
+                    } else {
+                        field.set(obj, paramValue);
+                    }
                 }
             }
         }

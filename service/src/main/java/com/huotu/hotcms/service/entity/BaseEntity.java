@@ -29,7 +29,8 @@ public abstract class BaseEntity {
     /**
      * 站点ID
      */
-    private long siteId;
+    @JoinColumn(name = "siteId")
+    private Site siteId;
 
     /**
      * 序列号
@@ -81,5 +82,4 @@ public abstract class BaseEntity {
     @ManyToOne
     @JoinColumn(name = "categoryId")
     private Category category;
-
 }

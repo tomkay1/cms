@@ -46,6 +46,7 @@ public class ForeachProcessor extends AbstractAttributeTagProcessor {
         this.dialectPrefix = dialectPrefix;
     }
 
+    //TODO thymeleaf 3.0.0beta01 稳定后移除
 //    @Override
 //    protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName
 //            , String attributeValue, String attributeTemplateName, int attributeLine, int attributeCol

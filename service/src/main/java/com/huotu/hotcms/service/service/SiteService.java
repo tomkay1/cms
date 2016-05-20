@@ -1,6 +1,7 @@
 package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.entity.Template;
 import com.huotu.hotcms.service.util.PageData;
 
 import java.io.IOException;
@@ -26,12 +27,12 @@ public interface SiteService {
 
     /**
      * 实现站点的可复制
-     * @param templateSite 模板对应的匿名站点
+     * @param templateId 模板ID
      * @param customerSite 用户站点
      * @return true,成功 反之失败
      *
      * @since v2.0
      * @author fawzi
      */
-    boolean siteCopy(Site templateSite,Site customerSite) throws Exception;
+    boolean siteCopy(long templateId,Site customerSite) throws Exception;
 }

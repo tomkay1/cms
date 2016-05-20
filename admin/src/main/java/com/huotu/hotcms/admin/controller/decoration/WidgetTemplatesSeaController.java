@@ -30,9 +30,9 @@ public class WidgetTemplatesSeaController {
      */
     @RequestMapping("/list")
     public ModelAndView widgetTemplateList(){
-        List<Site> sites=siteRepository.findByIsTemplateSiteFalse();
+
         ModelAndView mv=new ModelAndView();
-        mv.addObject("sites",sites);
+        mv.addObject("sites",null);
         mv.setViewName("decoration/pages/templates.html");
         return mv;
     }

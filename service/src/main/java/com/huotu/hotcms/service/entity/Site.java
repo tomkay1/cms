@@ -14,7 +14,7 @@ import java.util.Set;
  * Created by cwb on 2015/12/21.
  */
 @Entity
-@Table(name = "cms_site",uniqueConstraints = {@UniqueConstraint(columnNames = {"serial"})})
+@Table(name = "cms_site")
 @Setter
 @Getter
 @Cacheable(value = false)
@@ -24,11 +24,6 @@ public class Site{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "siteId")
     private Long siteId;
-
-    /**
-     * 序列号
-     */
-    private String serial;
 
     /**
      * 商户ID
@@ -91,11 +86,6 @@ public class Site{
     @Column(name = "personalise")
     private boolean personalise;
 
-    /**
-     * 是否是模板站点
-     */
-    @Column(name ="isTemplateSite" )
-    private boolean isTemplateSite;
 
      /**
       * 对应域名

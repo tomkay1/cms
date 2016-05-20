@@ -19,7 +19,7 @@ import java.util.*;
  * Created by cwb on 2015/12/24.
  */
 @Entity
-@Table(name = "cms_host",uniqueConstraints = @UniqueConstraint(columnNames = {"domain","serial"}))
+@Table(name = "cms_host")
 @Getter
 @Setter
 public class Host {
@@ -42,7 +42,7 @@ public class Host {
     /**
      * 域名
      */
-    @Column(name = "domain")
+    @Column(name = "domain",unique = true)
     private String domain;
 
     /**

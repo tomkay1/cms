@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "cms_galleryList",uniqueConstraints = {@UniqueConstraint(columnNames = {"serial"})})
+@Table(name = "cms_galleryList",uniqueConstraints = {@UniqueConstraint(columnNames = {"siteId,serial"})})
 @Getter
 @Setter
 @Cacheable(value = false)
@@ -19,7 +19,8 @@ public class GalleryList {
     /**
      * 站点ID
      */
-    private long siteId;
+    @JoinColumn(name = "siteId")
+    private Site siteId;
 
     /**
      * 序列号

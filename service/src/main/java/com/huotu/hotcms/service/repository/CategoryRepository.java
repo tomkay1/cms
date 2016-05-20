@@ -22,6 +22,13 @@ public interface CategoryRepository extends JpaRepository<Category, Long>,JpaSpe
    Category findBySerialAndSite(String serial,Site site);
 
    /**
+    * 获取某站点下的所有栏目
+    * @param site 站点
+    * @return 所有栏目
+    */
+   List<Category> findBySite(Site site);
+
+   /**
     * 根据站点查询栏目
     */
    List<Category> findBySiteAndDeletedOrderByOrderWeightDesc(Site site, Boolean deleted);

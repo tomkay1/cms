@@ -18,4 +18,11 @@ public interface CustomPagesRepository extends JpaRepository<CustomPages, Long>,
     void updateCustomerPageHome(Site site);
 
     CustomPages findBySiteAndSerial(Site site,String serial);
+
+    /**
+     * 拿到站点 下所有的界面
+     * @param site 站点{@link com.huotu.hotcms.service.entity.Site}
+     * @return 自定义界面 {@link com.huotu.hotcms.service.entity.CustomPages}列表 {@link java.util.List}
+     */
+    List<CustomPages> findBySite(Site site);
 }

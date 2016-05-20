@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
  * Created by cwb on 2015/12/21.
  */
 @Entity
-@Table(name = "cms_category",uniqueConstraints = {@UniqueConstraint(columnNames = {"serial"})})
+@Table(name = "cms_category",uniqueConstraints = {@UniqueConstraint(columnNames = {"site,serial"})})
 @Setter
 @Getter
 public class Category {

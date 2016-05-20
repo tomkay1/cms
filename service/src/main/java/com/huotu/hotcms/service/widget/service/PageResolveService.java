@@ -126,19 +126,13 @@ public class PageResolveService {
                 customPages.setSerial("site_"+site.getSiteId()+"_serial");
                 customPages.setCreateTime(LocalDateTime.now());
                 customPages = customPagesRepository.save(customPages);
-                boolean isTemplate=site.isTemplateSite();
                 if (customPages != null) {
                     StringWriter stringWriter = new StringWriter();
                     JAXB.marshal(page, stringWriter);
                     InputStream inputStream = new ByteArrayInputStream(stringWriter.toString().getBytes("utf-8"));
                     String path =null;
-                    if(!isTemplate){
-                        path = configInfo.getResourcesConfig(customerId, siteId) + "/" + customPages.getId() + ".xml";
-                        resourceServer.uploadResource(path, inputStream);
-                    }else{
-                        path = configInfo.getTemplateConfig(siteId) + "/" + customPages.getId() + ".xml";
-                        resourceServer.uploadResource(path, inputStream);
-                    }
+                    path = configInfo.getResourcesConfig(customerId, siteId) + "/" + customPages.getId() + ".xml";
+                    resourceServer.uploadResource(path, inputStream);
                     return true;
                 }
             }

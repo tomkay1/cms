@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  * Created by Administrator on 2016/3/18.
  */
 @Entity
-@Table(name = "cms_customPages",uniqueConstraints = {@UniqueConstraint(columnNames = {"serial"})})
+@Table(name = "cms_customPages",uniqueConstraints = {@UniqueConstraint(columnNames = {"siteId,serial"})})
 @Getter
 @Setter
 public class CustomPages {

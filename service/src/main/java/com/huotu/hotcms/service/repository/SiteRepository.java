@@ -13,24 +13,8 @@ import java.util.Set;
  * Created by chendeyu on 2015/12/24.
  */
 public interface SiteRepository  extends JpaRepository<Site, Long>,JpaSpecificationExecutor {
-
-
+    
     List<Site> findByHosts(Host host);
-
-    /**
-     * 查询模板库
-     * @param customerId  商户ID *此处为系统用户
-     * @return 模板库list
-     */
-    List<Site> findByIsTemplateSiteFalseAndCustomerId(long customerId);
-
-    /**
-     * 查询模板库，如果系统默认只有一个系统用户
-     * @return 模板库list
-     */
-    List<Site> findByIsTemplateSiteFalse();
-
-
     /**
      * 根据商户查询所有站点
      */

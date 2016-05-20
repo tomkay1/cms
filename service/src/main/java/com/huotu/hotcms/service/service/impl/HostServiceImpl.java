@@ -9,6 +9,7 @@ import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.service.HostService;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
+import com.huotu.hotcms.service.util.SerialUtil;
 import com.huotu.hotcms.service.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -189,6 +190,7 @@ public class HostServiceImpl implements HostService {
                     host = new Host();
                     host.setCustomerId(site.getCustomerId());
                     host.setDomain(domain);
+                    host.setSerial(SerialUtil.formartSerial(site));
                     host=setHome(host,homeDomains);
                     site.addHost(host);
                 } else {

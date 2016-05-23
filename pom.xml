@@ -85,6 +85,11 @@
             <version>${thymeleaf.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-springsecurity4</artifactId>
+            <version>${thymeleaf.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.luffy.lib</groupId>
             <artifactId>libspring</artifactId>
             <version>${luffy.version}</version>

@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
- *
+ *  模板信息
  */
 @Entity
 @Table(name = "cms_template")
@@ -64,6 +64,9 @@ public class Template {
     @Column(name = "updateTime")
     private LocalDateTime updateTime;
 
+    /**
+     * 模板类型，eg: 汽车行业，服装行业...
+     */
     @ManyToOne
     private TemplateType templateType;
 

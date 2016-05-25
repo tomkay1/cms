@@ -155,15 +155,21 @@ public class SiteServiceImpl implements SiteService {
 
         List<Category> categories=categoryRepository.findBySite(templateSite);
         for(Category category:categories){
-            category.setSerial(SerialUtil.formartSerial(customerSite));
-            category.setSite(customerSite);
-            category.setId(null);
-            category.setSite(customerSite);
-            category.setCustomerId(customerSite.getCustomerId());
-            category=categoryRepository.save(category);
+            Category newCategory=new Category();
+            newCategory.setSerial(SerialUtil.formartSerial(customerSite));
+            newCategory.setSite(customerSite);
+            newCategory.setSite(customerSite);
+            newCategory.setCustomerId(customerSite.getCustomerId());
+            newCategory.setParent(category.getParent());
+            newCategory.setName(category.getName());
+            newCategory.setCustom(category.isCustom());
+            newCategory.setDeleted(category.isDeleted());
+            newCategory.setRoute(category.getRoute());
+            category=categoryRepository.save(newCategory);
             //itemsCopy(category,customerSite);
         }
         /*自定义页面*/
+
         List<CustomPages> customPages=customPagesRepository.findBySite(templateSite);
         for(CustomPages customPage:customPages){
             customPage.setSerial(SerialUtil.formartSerial(customerSite));
@@ -171,7 +177,6 @@ public class SiteServiceImpl implements SiteService {
             customPage.setCustomerId(customerSite.getCustomerId());
             customPagesRepository.save(customPage);
         }
-
 
     }
 

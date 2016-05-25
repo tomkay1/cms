@@ -9,6 +9,7 @@ import com.huotu.hotcms.service.repository.CustomPagesRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.service.WidgetService;
 import com.huotu.hotcms.service.util.HttpUtils;
+import com.huotu.hotcms.service.util.SerialUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,7 +124,7 @@ public class PageResolveService {
                 customPages.setOrderWeight(50);
                 customPages.setPublish(publish);
                 //site_{siteID}_serial
-                customPages.setSerial("site_"+site.getSiteId()+"_serial");
+                customPages.setSerial(SerialUtil.formartSerial(site));
                 customPages.setCreateTime(LocalDateTime.now());
                 customPages = customPagesRepository.save(customPages);
                 if (customPages != null) {

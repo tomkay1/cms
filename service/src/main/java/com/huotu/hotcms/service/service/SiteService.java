@@ -32,7 +32,6 @@ public interface SiteService {
      * @return true,成功 反之失败
      *
      * @since v2.0
-     * @author fawzi
      */
     boolean siteCopy(long templateId,Site customerSite) throws Exception;
 }

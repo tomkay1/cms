@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.Predicate;
 import javax.xml.bind.JAXB;
@@ -57,6 +58,20 @@ public class SiteServiceImpl implements SiteService {
     ArticleRepository articleRepository;
     @Autowired
     CustomPagesRepository customPagesRepository;
+    @Autowired
+    DownloadRepository downloadRepository;
+    @Autowired
+    GalleryRepository galleryRepository;
+    @Autowired
+    LinkRepository linkRepository;
+
+    @Autowired
+    NoticeRepository noticeRepository;
+    @Autowired
+    VideoRepository videoRepository;
+
+    @Autowired
+    GalleryListRepository galleryListRepository;
 
 
 
@@ -158,24 +173,36 @@ public class SiteServiceImpl implements SiteService {
             Category newCategory=new Category();
             newCategory.setSerial(SerialUtil.formartSerial(customerSite));
             newCategory.setSite(customerSite);
-            newCategory.setSite(customerSite);
             newCategory.setCustomerId(customerSite.getCustomerId());
             newCategory.setParent(category.getParent());
             newCategory.setName(category.getName());
             newCategory.setCustom(category.isCustom());
             newCategory.setDeleted(category.isDeleted());
             newCategory.setRoute(category.getRoute());
+            newCategory.setModelId(category.getModelId());
+            newCategory.setOrderWeight(category.getOrderWeight());
+            newCategory.setParentIds(category.getParentIds());
+            newCategory.setCreateTime(category.getCreateTime());//这两个时间不确定是否要复制
+            newCategory.setUpdateTime(category.getUpdateTime());
             category=categoryRepository.save(newCategory);
-            //itemsCopy(category,customerSite);
+            itemsCopy(category,customerSite);
         }
         /*自定义页面*/
 
         List<CustomPages> customPages=customPagesRepository.findBySite(templateSite);
         for(CustomPages customPage:customPages){
-            customPage.setSerial(SerialUtil.formartSerial(customerSite));
-            customPage.setId(null);
-            customPage.setCustomerId(customerSite.getCustomerId());
-            customPagesRepository.save(customPage);
+            CustomPages newCustomPage=new CustomPages();
+            newCustomPage.setSerial(SerialUtil.formartSerial(customerSite));
+            newCustomPage.setCustomerId(customerSite.getCustomerId());
+            newCustomPage.setName(customPage.getName());
+            newCustomPage.setOrderWeight(customPage.getOrderWeight());
+            newCustomPage.setCreateTime(customPage.getCreateTime());
+            newCustomPage.setDeleted(customPage.isDeleted());
+            newCustomPage.setDescription(customPage.getDescription());
+            newCustomPage.setHome(customPage.isHome());
+            newCustomPage.setSite(customerSite);
+            newCustomPage.setPublish(customPage.isPublish());
+            customPagesRepository.save(newCustomPage);
         }
 
     }
@@ -189,11 +216,132 @@ public class SiteServiceImpl implements SiteService {
         //文章复制
        List<Article> articles=articleRepository.findByCategory(category);
         for(Article article:articles){
-            article.setId(null);
-            article.setCustomerId(customerSite.getCustomerId());
-            article.setCategory(category);
-            articleRepository.save(article);
+            Article newArticle=new Article();
+            newArticle.setCustomerId(customerSite.getCustomerId());
+            newArticle.setCategory(category);
+            newArticle.setDescription(article.getDescription());
+            newArticle.setDeleted(article.isDeleted());
+            newArticle.setArticleSource(article.getArticleSource());
+            newArticle.setAuthor(article.getAuthor());
+            newArticle.setContent(article.getContent());
+            newArticle.setSystem(article.isSystem());
+            newArticle.setThumbUri(article.getThumbUri());
+            newArticle.setOrderWeight(article.getOrderWeight());
+            newArticle.setSerial(SerialUtil.formartSerial(customerSite));
+            newArticle.setSiteId(customerSite);
+            newArticle.setTitle(article.getTitle());
+            newArticle.setCreateTime(article.getCreateTime());
+            newArticle.setUpdateTime(article.getUpdateTime());
+            articleRepository.save(newArticle);
         }
+        //下载模型复制
+        List<Download> downloads=downloadRepository.findByCategory(category);
+        for(Download download:downloads){
+            Download d=new Download();
+            d.setOrderWeight(download.getOrderWeight());
+            d.setUpdateTime(download.getUpdateTime());
+            d.setTitle(download.getTitle());
+            d.setCreateTime(download.getCreateTime());
+            d.setSiteId(customerSite);
+            d.setSerial(SerialUtil.formartSerial(customerSite));
+            d.setDownloadUrl(download.getDownloadUrl());
+            d.setCategory(category);
+            d.setCustomerId(customerSite.getCustomerId());
+            d.setDescription(download.getDescription());
+            d.setDeleted(download.isDeleted());
+            downloadRepository.save(d);
+        }
+        //图库模型复制
+        List<Gallery> galleries=galleryRepository.findByCategory(category);
+        for(Gallery gallery:galleries){
+            Gallery g=new Gallery();
+            g.setDeleted(gallery.isDeleted());
+            g.setOrderWeight(gallery.getOrderWeight());
+            g.setUpdateTime(gallery.getUpdateTime());
+            g.setDescription(gallery.getDescription());
+            g.setCustomerId(customerSite.getCustomerId());
+            g.setContent(gallery.getContent());
+            g.setLinkUrl(gallery.getLinkUrl());
+            g.setThumbUri(gallery.getThumbUri());
+            g.setCategory(category);
+            g.setSerial(SerialUtil.formartSerial(customerSite));
+            g.setTitle(gallery.getTitle());
+            g.setSiteId(customerSite);
+            g.setCreateTime(gallery.getCreateTime());
+
+            g=galleryRepository.save(g);
+
+            //图库集合复制
+            List<GalleryList> galleryLists=galleryListRepository.findByGallery(gallery);
+            for(GalleryList gl:galleryLists){
+                GalleryList galleryList=new GalleryList();
+                galleryList.setGallery(g);
+                galleryList.setSiteId(customerSite);
+                galleryList.setUpdateTime(gl.getUpdateTime());
+                galleryList.setOrderWeight(gl.getOrderWeight());
+                galleryList.setCustomerId(customerSite.getCustomerId());
+                galleryList.setSerial(SerialUtil.formartSerial(customerSite));
+                galleryList.setSize(gl.getSize());
+                galleryList.setThumbUri(gl.getThumbUri());
+                galleryList.setDeleted(gl.isDeleted());
+                galleryListRepository.save(galleryList);
+            }
+        }
+
+        //链接模型复制
+        List<Link> links=linkRepository.findByCategory(category);
+        for(Link link:links){
+            Link link1=new Link();
+            link1.setOrderWeight(link.getOrderWeight());
+            link1.setUpdateTime(link.getUpdateTime());
+            link1.setSiteId(customerSite);
+            link1.setTitle(link.getTitle());
+            link1.setSerial(SerialUtil.formartSerial(customerSite));
+            link1.setLinkUrl(link.getLinkUrl());
+            link1.setThumbUri(link.getThumbUri());
+            link1.setCategory(link.getCategory());
+            link1.setCreateTime(link.getCreateTime());
+            link1.setCustomerId(customerSite.getCustomerId());
+            link1.setDescription(link.getDescription());
+            link1.setDeleted(link.isDeleted());
+            linkRepository.save(link1);
+        }
+        //公告模型复制
+        List<Notice> notices=noticeRepository.findByCategory(category);
+        for(Notice notice:notices){
+            Notice notice1=new Notice();
+            notice1.setDeleted(notice.isDeleted());
+            notice1.setOrderWeight(notice.getOrderWeight());
+            notice1.setUpdateTime(notice.getUpdateTime());
+            notice1.setCreateTime(notice.getCreateTime());
+            notice1.setDescription(notice.getDescription());
+            notice1.setCustomerId(customerSite.getCustomerId());
+            notice1.setContent(notice.getContent());
+            notice1.setCategory(category);
+            notice1.setSerial(SerialUtil.formartSerial(customerSite));
+            notice1.setSiteId(customerSite);
+            notice1.setTitle(notice.getTitle());
+            noticeRepository.save(notice1);
+        }
+        //视频模型复制
+        List<Video> videos=videoRepository.findByCategory(category);
+        for(Video video:videos){
+            Video v=new Video();
+            v.setOrderWeight(video.getOrderWeight());
+            v.setUpdateTime(video.getUpdateTime());
+            v.setTitle(video.getTitle());
+            v.setSiteId(customerSite);
+            v.setSerial(SerialUtil.formartSerial(customerSite));
+            v.setCategory(category);
+            v.setOutLinkUrl(video.getOutLinkUrl());
+            v.setThumbUri(video.getThumbUri());
+            v.setVideoUrl(video.getVideoUrl());//视频地址 ？
+            v.setCustomerId(customerSite.getCustomerId());
+            v.setDescription(video.getDescription());
+            v.setDeleted(video.isDeleted()); //是否需要将此作为条件
+            videoRepository.save(v);
+        }
+
     }
 
     /** 创建公共界面

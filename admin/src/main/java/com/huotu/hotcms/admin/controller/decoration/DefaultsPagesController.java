@@ -34,7 +34,7 @@ public class DefaultsPagesController {
     private SiteService siteService;
 
     @RequestMapping("/{name}")
-    public ModelAndView defultsPages(@RequestParam("siteId") Long siteId,
+    public ModelAndView defaultsPages(@RequestParam("siteId") Long siteId,
                                        @PathVariable("name") String name){
         ModelAndView modelAndView=new ModelAndView();
         try{

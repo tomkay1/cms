@@ -17,4 +17,5 @@ package com.huotu.widget.model;
  * @author CJ
  */
 public class Page {
+
 }

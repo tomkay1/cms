@@ -1,7 +1,11 @@
 package com.huotu.hotcms.admin.controller.decoration;
 
+import com.huotu.hotcms.service.entity.CustomPages;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.repository.SiteRepository;
+import com.huotu.hotcms.service.repository.TemplateRepository;
+import com.huotu.hotcms.service.service.CustomPagesService;
+import com.huotu.hotcms.service.service.HostService;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
@@ -22,6 +26,15 @@ public class TemplatesController {
     @Autowired
     private SiteRepository siteRepository;
 
+    @Autowired
+    private TemplateRepository templateRepository;
+
+    @Autowired
+    private HostService hostService;
+
+    @Autowired
+    private CustomPagesService customPagesService;
+
     @RequestMapping("/use")
     @ResponseBody
     public ResultView useTemplate(long templateId,long siteId) {
@@ -36,8 +49,17 @@ public class TemplatesController {
     }
 
     @RequestMapping("/view")
-    public String viewTemplate(long templateId,@RequestParam(required = false) long pageId){
-        return "";
+    @ResponseBody
+    public ResultView viewTemplate(long templateId){
+        Site templateSite=templateRepository.findOne(templateId).getSite();
+        String domain=hostService.getHomeDomain(templateSite);
+        String url="http://"+domain;
+        CustomPages customPages=customPagesService.findHomePages(templateSite);
+        Long pageId=-1L;
+        if(customPages!=null){
+            pageId=customPages.getId();
+        }
+        return new ResultView(ResultOptionEnum.OK.getCode(),ResultOptionEnum.OK.getValue(),url+","+pageId);
     }
 
 

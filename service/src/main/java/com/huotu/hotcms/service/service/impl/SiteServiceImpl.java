@@ -190,18 +190,20 @@ public class SiteServiceImpl implements SiteService {
         /*自定义页面*/
         List<CustomPages> customPages=customPagesRepository.findBySite(templateSite);
         for(CustomPages customPage:customPages){
-            CustomPages newCustomPage=new CustomPages();
-            newCustomPage.setSerial(SerialUtil.formartSerial(customerSite));
-            newCustomPage.setCustomerId(customerSite.getCustomerId());
-            newCustomPage.setName(customPage.getName());
-            newCustomPage.setOrderWeight(customPage.getOrderWeight());
-            newCustomPage.setCreateTime(customPage.getCreateTime());
-            newCustomPage.setDeleted(customPage.isDeleted());
-            newCustomPage.setDescription(customPage.getDescription());
-            newCustomPage.setHome(customPage.isHome());
-            newCustomPage.setSite(customerSite);
-            newCustomPage.setPublish(customPage.isPublish());
-            customPagesRepository.save(newCustomPage);
+            if(customPage.isPublish()){//只复制发布了的，不复制草稿箱中的
+                CustomPages newCustomPage=new CustomPages();
+                newCustomPage.setSerial(SerialUtil.formartSerial(customerSite));
+                newCustomPage.setCustomerId(customerSite.getCustomerId());
+                newCustomPage.setName(customPage.getName());
+                newCustomPage.setOrderWeight(customPage.getOrderWeight());
+                newCustomPage.setCreateTime(customPage.getCreateTime());
+                newCustomPage.setDeleted(customPage.isDeleted());
+                newCustomPage.setDescription(customPage.getDescription());
+                newCustomPage.setHome(customPage.isHome());
+                newCustomPage.setSite(customerSite);
+                newCustomPage.setPublish(customPage.isPublish());
+                customPagesRepository.save(newCustomPage);
+            }
         }
     }
 

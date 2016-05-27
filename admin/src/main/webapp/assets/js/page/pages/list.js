@@ -76,7 +76,7 @@ define(function (require, exports, module) {
         pageSize: 20,
         pagerCount: 10,
         pageDetail: true,
-        url: '/page/getPagesList',//数据来源Url|通过mobel自定义属性配置
+        url: '/page/getPagesList',//数据来源Url|通过model自定义属性配置
         rows: [
             {width: '40%', field: 'name', title: '页面名称', align: 'center'},
             {

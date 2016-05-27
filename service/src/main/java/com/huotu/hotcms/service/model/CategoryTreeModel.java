@@ -1,5 +1,6 @@
 package com.huotu.hotcms.service.model;
 
+import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.Category;
 import lombok.Getter;
 import lombok.Setter;
@@ -46,7 +47,7 @@ public class CategoryTreeModel extends Category {
             if(category.getRoute()!=null&&category.getRoute().getRouteType()!=null) {
                 categoryTreeModel.setRouteType(category.getRoute().getRouteType().getCode());
             }else{
-                categoryTreeModel.setRouteType(((CategoryTreeModel) category).getRouteType());
+                categoryTreeModel.setRouteType(RouteType.NO_CONFIG.getCode());//暂时没有设置
             }
 //            categoryTreeModel.setRoute(null);
 //            categoryTreeModel.setSite(null);

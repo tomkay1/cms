@@ -119,10 +119,44 @@ define(function (require, exports, module) {
         $.each(obj,function(item,dom){
             $(dom).click(function(){//绑定修改事件
                 var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;
-                var commonUtil = require("common");
-                var customerId = commonUtil.getQuery("customerid");
-                window.location.href="http://"+window.location.host+"/"+"template/view?id="+id+"&customerId="+customerId;
+                var urlRoot="";
+                $.ajax({
+                    url:"/template/view",
+                    data:{
+                        templateId:id
+                    },
+                    dataType:"json",
+                    success:function(data){
+                        if(data!=null){
+                            var combineData=data.data;
+                            var url=combineData.split(",")[0];
+                            var id=combineData.split(",")[1];
+                            var debug=1;//debug模式，线上要删除
+                            if(id!=-1){
+                                if(debug==1)//如果ID=-1,表明该站点还没有一个主页面
+                                    urlRoot=url+":8080/front/shop/"+id;
+                                else
+                                    urlRoot=url+"/shop"+id;
+                                window.location.href=urlRoot;
+                            }else{
+                                layer.msg("当前模板还不能预览，请联系网站开发商",{time: 2000});
+                            }
+                        }else{
+                            layer.msg("当前模板还不能预览，请联系网站开发商",{time: 2000});
+                        }
+                    }
+                })
+                //var commonUtil = require("common");
+                //var customerId = commonUtil.getQuery("customerid");
+                //window.location.href="http://"+window.location.host+"/"+"template/view?templateId="+id;
             })
+        })
+    }
+
+    function view(){
+        $.ajax({
+            url:"/template/view",
+
         })
     }
 

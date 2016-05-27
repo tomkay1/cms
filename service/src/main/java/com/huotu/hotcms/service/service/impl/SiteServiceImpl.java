@@ -19,6 +19,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import javax.persistence.criteria.Predicate;
 import javax.xml.bind.JAXB;
 import java.io.IOException;
@@ -138,7 +139,7 @@ public class SiteServiceImpl implements SiteService {
 
 
     @Override
-    public boolean siteCopy(long templateId, Site customerSite) throws Exception {
+    public void siteCopy(long templateId, Site customerSite) throws Exception {
          //根据模板ID读取到相应的站点
         Template template=templateRepository.findOne(templateId);
         Site templateSite=template.getSite();
@@ -156,7 +157,6 @@ public class SiteServiceImpl implements SiteService {
         }
         createDefaultWidgetPage(templateSite, customerSite);
         deepCopy(templateSite, customerSite);
-        return false;
     }
 
     /**
@@ -188,7 +188,6 @@ public class SiteServiceImpl implements SiteService {
             itemsCopy(category,customerSite);
         }
         /*自定义页面*/
-
         List<CustomPages> customPages=customPagesRepository.findBySite(templateSite);
         for(CustomPages customPage:customPages){
             CustomPages newCustomPage=new CustomPages();
@@ -204,7 +203,6 @@ public class SiteServiceImpl implements SiteService {
             newCustomPage.setPublish(customPage.isPublish());
             customPagesRepository.save(newCustomPage);
         }
-
     }
 
     /**
@@ -270,7 +268,6 @@ public class SiteServiceImpl implements SiteService {
             g.setCreateTime(gallery.getCreateTime());
 
             g=galleryRepository.save(g);
-
             //图库集合复制
             List<GalleryList> galleryLists=galleryListRepository.findByGallery(gallery);
             for(GalleryList gl:galleryLists){
@@ -344,7 +341,7 @@ public class SiteServiceImpl implements SiteService {
 
     }
 
-    /** 创建公共界面
+    /** 复制并创建公共界面
      * <p>
      *     <em>目前默认公共界面如下：</em>
      *     <ul>
@@ -354,20 +351,20 @@ public class SiteServiceImpl implements SiteService {
      *     </ul>
      * </p>
      * @param templateSite 模板站点
-     * @param customerViewOrUserSite  模板预览或者使用站点
+     * @param customerSite 用户站点
      * @throws IOException 其他异常
      * @throws URISyntaxException 其他异常
      *
      * @since  v2.0
      */
-    private void createDefaultWidgetPage(Site templateSite, Site customerViewOrUserSite)
+    private void createDefaultWidgetPage(Site templateSite, Site customerSite)
             throws IOException, URISyntaxException {
 
         for(WidgetDefaultPage widgetDefaultPage:WidgetDefaultPage.values()){
             WidgetPage defaultWidgetPage=pageResolveService.getWidgetPageByConfig(widgetDefaultPage.name()+".xml", templateSite);
             if(defaultWidgetPage!=null){
-                pageResolveService.createDefaultPageConfigByWidgetPage(defaultWidgetPage,customerViewOrUserSite.getCustomerId()
-                        ,customerViewOrUserSite.getSiteId(),widgetDefaultPage.name());
+                pageResolveService.createDefaultPageConfigByWidgetPage(defaultWidgetPage,customerSite.getCustomerId()
+                        ,customerSite.getSiteId(),widgetDefaultPage.name());
             }
         }
     }

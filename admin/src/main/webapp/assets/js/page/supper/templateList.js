@@ -45,16 +45,20 @@ define(function (require, exports, module) {
             },
             {width: '20%', field: 'title', title: '操作', align: 'center',
                 formatter: function (value, rowData) {
-                    return "<a href='javascript:' class='js-hot-templateDelete' data-id='"+rowData.siteId+"' style='margin-right:10px; color:blue;'>删除</a>" +
-                        "<a href='javascript:' class='js-hot-templateConfig' data-id='"+rowData.siteId+"' style='margin-right:10px; color: blue'>更多配置</a>"+
-                        "<a href='javascript:' class='js-hot-templateUpdate' data-id='"+rowData.siteId+"' style='margin-right:10px; color: blue'>修改</a>"
+                    return "<a href='javascript:' class='js-hot-templateDelete' data-id='"+rowData.id+"' style='margin-right:10px; color:blue;'>删除</a>" +
+                        "<a href='javascript:' class='js-hot-templateConfig' data-id='"+rowData.id+"' style='margin-right:10px; color: blue'>更多配置</a>"+
+                        "<a href='javascript:' class='js-hot-templateUpdate' data-id='"+rowData.id+"' style='margin-right:10px; color: blue'>修改</a>" +
+                        "<a href='javascript:' class='js-hot-templateUse' data-id='"+rowData.id+"' style='margin-right:10px; color: blue'>使用</a>" +
+                        "<a href='javascript:' class='js-hot-templateView' data-id='"+rowData.id+"' style='margin-right:10px; color: blue'>预览</a>"
                 }
             }
         ]
     },function(){
-        updateSite();
-        deleteSite();
+        updateTemplate();
+        deleteTemplate();
         openConfig();
+        useTemplate();
+        viewTemplate();
     });
    //搜索
     $("#jq-cms-search").click(function(){
@@ -85,8 +89,8 @@ define(function (require, exports, module) {
     })
 
     //修改
-    function updateSite(){
-        var obj=$(".js-hot-siteUpdate");
+    function updateTemplate(){
+        var obj=$(".js-hot-templateUpdate");
         $.each(obj,function(item,dom){
             $(dom).click(function(){//绑定修改事件
                 var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;
@@ -97,10 +101,35 @@ define(function (require, exports, module) {
         })
     }
 
+    //使用
+    function useTemplate(){
+        var obj=$(".js-hot-templateUse");
+        $.each(obj,function(item,dom){
+            $(dom).click(function(){//绑定修改事件
+                var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;
+                var commonUtil = require("common");
+                var customerId = commonUtil.getQuery("customerid");
+                window.location.href="http://"+window.location.host+"/"+"template/use?templateId="+id+"&siteId=69";
+            })
+        })
+    }
+    //预览
+    function viewTemplate(){
+        var obj=$(".js-hot-templateView");
+        $.each(obj,function(item,dom){
+            $(dom).click(function(){//绑定修改事件
+                var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;
+                var commonUtil = require("common");
+                var customerId = commonUtil.getQuery("customerid");
+                window.location.href="http://"+window.location.host+"/"+"template/view?id="+id+"&customerId="+customerId;
+            })
+        })
+    }
+
 
     //删除
-    function deleteSite(){
-        var obj=$(".js-hot-siteDelete");
+    function deleteTemplate(){
+        var obj=$(".js-hot-templateDelete");
         $.each(obj,function(item,dom){
             $(dom).click(function(){//绑定删除事件
                 var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;

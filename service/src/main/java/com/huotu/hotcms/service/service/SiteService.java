@@ -33,5 +33,5 @@ public interface SiteService {
      *
      * @since v2.0
      */
-    boolean siteCopy(long templateId,Site customerSite) throws Exception;
+    void siteCopy(long templateId,Site customerSite) throws Exception;
 }

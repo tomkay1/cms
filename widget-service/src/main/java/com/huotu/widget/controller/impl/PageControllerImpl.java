@@ -1,12 +1,13 @@
 package com.huotu.widget.controller.impl;
 
 import com.huotu.widget.controller.PageController;
-import com.huotu.widget.model.ResultModel;
-import com.huotu.widget.model.ResultOptionsEnum;
+import com.huotu.widget.model.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * Created by hzbc on 2016/5/27.
@@ -16,34 +17,32 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class PageControllerImpl implements PageController {
 
     @RequestMapping("/pageInfo")
-    @ResponseBody
+    @ResponseStatus(code = HttpStatus.ACCEPTED)
+    @ResponseBody  //此处待测试 跟@ResponseStatus 是否有冲突不知..
     @Override
-    public ResultModel getPage(long customerId){
+    public Page getPage(long ownerId){
         //TODO 其他逻辑
-        return new ResultModel(ResultOptionsEnum.SUCCESS.getCode(),ResultOptionsEnum.SUCCESS.getValue(),null);
+        return new Page();
     }
 
     @RequestMapping(value = "save",method = RequestMethod.PUT)
-    @ResponseBody
+    @ResponseStatus(code = HttpStatus.ACCEPTED)
     @Override
-    public ResultModel savePage(){
+    public void savePage(){
         //TODO 其他逻辑
-        return new ResultModel(ResultOptionsEnum.SUCCESS.getCode(),ResultOptionsEnum.SUCCESS.getValue(),null);
     }
 
     @RequestMapping(value = "add",method = RequestMethod.POST)
-    @ResponseBody
+    @ResponseStatus(code = HttpStatus.ACCEPTED)
     @Override
-    public ResultModel addPage(long customerId){
+    public void addPage(long ownerId){
         //TODO 其他逻辑
-        return new ResultModel(ResultOptionsEnum.SUCCESS.getCode(),ResultOptionsEnum.SUCCESS.getValue(),null);
     }
 
     @RequestMapping(value = "delete",method = RequestMethod.DELETE)
-    @ResponseBody
+    @ResponseStatus(code = HttpStatus.ACCEPTED)
     @Override
-    public ResultModel deletePage(long pageId){
+    public void deletePage(long pageId){
         //TODO 其他逻辑
-        return new ResultModel(ResultOptionsEnum.SUCCESS.getCode(),ResultOptionsEnum.SUCCESS.getValue(),null);
     }
 }

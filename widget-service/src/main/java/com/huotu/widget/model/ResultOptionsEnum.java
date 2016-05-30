@@ -5,11 +5,11 @@ package com.huotu.widget.model;
  */
 
 /**
- * 模型选项
+ * 璇锋眰鎺ュ彛鍝嶅簲淇℃伅
  */
 public enum ResultOptionsEnum {
-    SUCCESS(202,"成功"),
-    FAIL(500,"失败");
+    SUCCESS(202,"鎴愬姛"),
+    FAIL(500,"澶辫触");
 
     private int code;
     private String value;

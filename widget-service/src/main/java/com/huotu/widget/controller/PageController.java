@@ -11,29 +11,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/pages")
 public interface PageController {
     /**
-     * <p>获取页面{@link com.huotu.widget.model.Page}</p>
-     * @param customerId 商户ID 暂定
-     * @return API返回数据模型 {@link com.huotu.widget.model.ResultModel}
+     * <p>鑾峰彇椤甸潰{@link com.huotu.widget.model.Page}</p>
+     * @param customerId 鍟嗘埛ID 鏆傚畾
+     * @return API杩斿洖鏁版嵁妯″瀷 {@link com.huotu.widget.model.ResultModel}
      */
     ResultModel getPage(long customerId);
 
     /**
-     * <p>保存界面{@link com.huotu.widget.model.Page}</p>
-     * @return API返回数据模型 {@link com.huotu.widget.model.ResultModel}
+     * <p>淇濆瓨鐣岄潰{@link com.huotu.widget.model.Page}</p>
+     * @return API杩斿洖鏁版嵁妯″瀷 {@link com.huotu.widget.model.ResultModel}
      */
     ResultModel savePage();
 
     /**
-     * <p>添加页面{@link com.huotu.widget.model.Page}</p>
-     * @param customerId 商户ID
-     * @return API返回数据模型 {@link com.huotu.widget.model.ResultModel}
+     * <p>娣诲姞椤甸潰{@link com.huotu.widget.model.Page}</p>
+     * @param customerId 鍟嗘埛ID
+     * @return API杩斿洖鏁版嵁妯″瀷 {@link com.huotu.widget.model.ResultModel}
      */
     ResultModel addPage(long customerId);
 
     /**
-     * <p>删除界面{@link com.huotu.widget.model.Page}</p>
-     * @param pageId 页面ID
-     * @return API返回数据模型 {@link com.huotu.widget.model.ResultModel}
+     * <p>鍒犻櫎鐣岄潰{@link com.huotu.widget.model.Page}</p>
+     * @param pageId 椤甸潰ID
+     * @return API杩斿洖鏁版嵁妯″瀷 {@link com.huotu.widget.model.ResultModel}
      */
     ResultModel deletePage(long pageId);
 }

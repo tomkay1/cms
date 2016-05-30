@@ -6,11 +6,11 @@ package com.huotu.widget.model;
  */
 
 /**
- * ½Ó¿Ú·µ»Ø½á¹ûÊı¾İÄ£ĞÍ,°üÀ¨£º
+ * æ¥å£è¿”å›ç»“æœæ•°æ®æ¨¡å‹,åŒ…æ‹¬ï¼š
  * <ul>
- *     <li>ÏìÓ¦Âë-code</li>
- *     <li>ÏìÓ¦ĞÅÏ¢-msg</li>
- *     <li>ÏàÓ¦·µ»ØÊı¾İ-data</li>
+ *     <li>å“åº”ç -code</li>
+ *     <li>å“åº”ä¿¡æ¯-msg</li>
+ *     <li>ç›¸åº”è¿”å›æ•°æ®-data</li>
  * </ul>
  */
 public class ResultModel {

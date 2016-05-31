@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.util.UUID;
+
 /**
  * Created by hzbc on 2016/5/27.
  */
@@ -22,7 +24,11 @@ public class PageControllerImpl implements PageController {
     @Override
     public Page getPage(long ownerId){
         //TODO 其他逻辑
-        return new Page();
+
+        Page page=new Page();
+        page.setModel(Math.round(100L));
+        page.setTest(UUID.randomUUID().toString());
+        return page;
     }
 
     @RequestMapping(value = "save",method = RequestMethod.PUT)

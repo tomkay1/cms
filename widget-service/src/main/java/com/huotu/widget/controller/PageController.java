@@ -27,6 +27,8 @@ public interface PageController {
     /**
      * <p>获取页面{@link com.huotu.widget.model.Page}</p>
      * @param ownerId 拥有者id
+     *
+     * @see com.huotu.widget.model.Page
      */
     Page getPage(long ownerId);
 

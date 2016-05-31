@@ -9,13 +9,20 @@
 
 package com.huotu.widget.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 页面
  * <p>
  * 包含布局,页面控件,SEO等信息
+ * </p>
  *
  * @author CJ
  */
+@Setter
+@Getter
 public class Page {
-
+    private String test;
+    private Integer model;
 }

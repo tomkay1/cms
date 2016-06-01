@@ -9,31 +9,18 @@
 
 package com.huotu.hotcms.widget;
 
-import org.springframework.core.io.Resource;
-
-import java.util.Locale;
+import lombok.Data;
 
 /**
- * 控件样式
+ * 已安装的控件,
  *
  * @author CJ
  */
-public interface WidgetStyle {
+@Data
+public class InstalledWidget {
 
-    String id();
-
-    String name();
-
-    String name(Locale locale);
-
-    String description();
-
-    String description(Locale locale);
-
-    Resource thumbnail();
-
-    Resource previewTemplate();
-
-    Resource browseTemplate();
+    private Widget widget;
+    // 其他属性 比如控件类型
+    private String type;
 
 }

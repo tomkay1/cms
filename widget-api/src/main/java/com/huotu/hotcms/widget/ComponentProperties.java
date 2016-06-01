@@ -7,21 +7,14 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.hotcms.widget.model;
+package com.huotu.hotcms.widget;
 
-import lombok.Data;
+import java.util.HashMap;
 
 /**
- * 页面
- * <p>
- * 包含布局,页面控件,SEO等信息
- * </p>
+ * 组件属性
  *
  * @author CJ
  */
-@Data
-public class Page {
-    private String title;
-
-    private PageElement element;
+public class ComponentProperties extends HashMap<String, Object> {
 }

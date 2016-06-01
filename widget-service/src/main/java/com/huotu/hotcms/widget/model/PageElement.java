@@ -9,19 +9,28 @@
 
 package com.huotu.hotcms.widget.model;
 
+
+import com.huotu.hotcms.widget.Component;
 import lombok.Data;
 
 /**
- * 页面
- * <p>
- * 包含布局,页面控件,SEO等信息
- * </p>
+ * 页面元素,可能为一个组件或者为一个布局
  *
  * @author CJ
  */
 @Data
-public class Page {
-    private String title;
+public class PageElement {
 
-    private PageElement element;
+    private Component component;
+
+    /**
+     * 布局识别符号
+     */
+    private int[] layoutIndicates;
+
+    /**
+     * 页面元素,长度必须和{@link #layoutIndicates}一致
+     */
+    private PageElement[] elements;
+
 }

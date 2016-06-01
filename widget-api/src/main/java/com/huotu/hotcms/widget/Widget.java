@@ -44,4 +44,12 @@ public interface Widget {
 
     WidgetStyle[] styles();
 
+    /**
+     * 检查以下的属性是否符合控件要求
+     *
+     * @param styleId
+     * @param properties
+     */
+    void valid(String styleId, ComponentProperties properties);
+
 }

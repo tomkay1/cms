@@ -7,21 +7,14 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.hotcms.widget.model;
-
-import lombok.Data;
+package com.huotu.hotcms.widget.service;
 
 /**
- * 页面
- * <p>
- * 包含布局,页面控件,SEO等信息
- * </p>
+ * 页面服务
  *
  * @author CJ
  */
-@Data
-public class Page {
-    private String title;
+public interface PageService {
 
-    private PageElement element;
+
 }

@@ -1,10 +1,17 @@
 [
   {
     //
-
-    "thumbnail": "http://www.baidu.com/abc.png",
-    "name": "名称",
-    "editHtml": "....",
-    "editorHtml": "html code",
+    "identity": "唯一识别, 字符串;格式应该是 <groupId>-<widgetId>:<version>",
+    "localedName": "本地化名称",
+    "thumbnail": "提供完整的缩略图路径，png格式",
+    "editorModule": "提供编辑控件属性的HTML代码片段",
+    "styles": [
+      // 控件可提供的样式,必须存在,默认样式为第一个样式
+      {
+        "localedName": "本地化样式名称",
+        "thumbnail": "提供完整的缩略图路径，png格式",
+        "devPreview": "提供拖拽、预览的HTML代码片段"
+      }
+    ]
   }
 ]

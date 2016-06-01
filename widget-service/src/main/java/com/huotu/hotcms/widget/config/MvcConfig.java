@@ -1,4 +1,4 @@
-package com.huotu.widget.config;
+package com.huotu.hotcms.widget.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;

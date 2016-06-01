@@ -1,4 +1,4 @@
-package com.huotu.widget.controller;
+package com.huotu.hotcms.widget.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;

@@ -7,7 +7,7 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.widget.model;
+package com.huotu.hotcms.widget.model;
 
 import lombok.Getter;
 import lombok.Setter;

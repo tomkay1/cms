@@ -1,4 +1,4 @@
-package com.huotu.widget.service;
+package com.huotu.hotcms.widget.service;
 
 /**
  * Created by wenqi on 2016/5/31.

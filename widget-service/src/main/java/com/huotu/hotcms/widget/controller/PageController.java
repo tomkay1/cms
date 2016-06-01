@@ -1,6 +1,6 @@
-package com.huotu.widget.controller;
+package com.huotu.hotcms.widget.controller;
 
-import com.huotu.widget.model.Page;
+import com.huotu.hotcms.widget.model.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -25,26 +25,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/pages")
 public interface PageController {
     /**
-     * <p>获取页面{@link com.huotu.widget.model.Page}</p>
+     * <p>获取页面{@link Page}</p>
      * @param ownerId 拥有者id
      *
-     * @see com.huotu.widget.model.Page
+     * @see Page
      */
     Page getPage(long ownerId);
 
     /**
-     * <p>保存界面{@link com.huotu.widget.model.Page}</p>
+     * <p>保存界面{@link Page}</p>
      */
     void savePage();
 
     /**
-     * <p>添加页面{@link com.huotu.widget.model.Page}</p>
+     * <p>添加页面{@link Page}</p>
      * @param ownerId 拥有者id
      */
     void addPage(long ownerId);
 
     /**
-     * <p>删除界面{@link com.huotu.widget.model.Page}</p>
+     * <p>删除界面{@link Page}</p>
      * @param pageId 页面ID
      */
     void deletePage(long pageId);

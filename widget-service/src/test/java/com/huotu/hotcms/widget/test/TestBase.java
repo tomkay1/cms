@@ -1,6 +1,6 @@
-package com.huotu.widget.test;
+package com.huotu.hotcms.widget.test;
 
-import com.huotu.widget.config.TestConfig;
+import com.huotu.hotcms.widget.config.TestConfig;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -26,7 +26,7 @@ public class TestBase {
     protected final Logger logger= LoggerFactory.getLogger(TestBase.class);
 
     @Autowired
-    WebApplicationContext webApplication;
+    private WebApplicationContext webApplication;
 
     protected MockMvc mockMvc;
 

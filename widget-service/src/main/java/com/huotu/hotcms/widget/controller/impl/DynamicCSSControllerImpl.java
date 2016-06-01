@@ -1,6 +1,6 @@
-package com.huotu.widget.controller.impl;
+package com.huotu.hotcms.widget.controller.impl;
 
-import com.huotu.widget.controller.DynamicCSSController;
+import com.huotu.hotcms.widget.controller.DynamicCSSController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,10 +1,8 @@
-package com.huotu.widget.test;
+package com.huotu.hotcms.widget.test;
 
 import org.junit.Test;
 
 import org.springframework.test.web.servlet.MvcResult;
-
-import java.util.Random;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 

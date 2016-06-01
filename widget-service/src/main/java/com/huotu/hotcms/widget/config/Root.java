@@ -1,4 +1,4 @@
-package com.huotu.widget.config;
+package com.huotu.hotcms.widget.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

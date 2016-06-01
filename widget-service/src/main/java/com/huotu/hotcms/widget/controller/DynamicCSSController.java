@@ -1,4 +1,4 @@
-package com.huotu.widget.controller;
+package com.huotu.hotcms.widget.controller;
 
 /**
  * Created by hzbc on 2016/5/30.

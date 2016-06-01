@@ -25,4 +25,4 @@
  *
  * @author CJ
  */
-package com.huotu.widget.controller;
+package com.huotu.hotcms.widget.controller;

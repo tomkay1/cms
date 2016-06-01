@@ -1,7 +1,7 @@
-package com.huotu.widget.controller.impl;
+package com.huotu.hotcms.widget.controller.impl;
 
-import com.huotu.widget.controller.PageController;
-import com.huotu.widget.model.Page;
+import com.huotu.hotcms.widget.controller.PageController;
+import com.huotu.hotcms.widget.model.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -20,13 +21,13 @@ public class PageControllerImpl implements PageController {
 
     @RequestMapping("/pageInfo")
     @ResponseStatus(code = HttpStatus.ACCEPTED)
-    @ResponseBody  //此处待测试 跟@ResponseStatus 是否有冲突不知..
+    @ResponseBody
     @Override
     public Page getPage(long ownerId){
         //TODO 其他逻辑
 
         Page page=new Page();
-        page.setModel(Math.round(100L));
+        page.setModel(new Random().nextInt(100));
         page.setTest(UUID.randomUUID().toString());
         return page;
     }

@@ -1,4 +1,4 @@
-package com.huotu.widget.config;
+package com.huotu.hotcms.widget.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 

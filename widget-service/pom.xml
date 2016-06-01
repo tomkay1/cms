@@ -26,6 +26,10 @@
         控件服务,请参考 https://huobanplus.quip.com/Y9mVAeo9KnTh
     </description>
 
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.huotu.hotcms</groupId>

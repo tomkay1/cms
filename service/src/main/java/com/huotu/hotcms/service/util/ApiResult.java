@@ -1,28 +1,29 @@
 /*
- * °æÈ¨ËùÓĞ:º¼Öİ»ğÍ¼¿Æ¼¼ÓĞÏŞ¹«Ë¾
- * µØÖ·:Õã½­Ê¡º¼ÖİÊĞ±õ½­ÇøÎ÷ĞË½ÖµÀÚäÄ°Â·ÖÇ»ÛE¹ÈB´±4Â¥
+ * ç‰ˆæƒæ‰€æœ‰:æ­å·ç«å›¾ç§‘æŠ€æœ‰é™å…¬å¸
+ * åœ°å€:æµ™æ±Ÿçœæ­å·å¸‚æ»¨æ±ŸåŒºè¥¿å…´è¡—é“é˜¡é™Œè·¯æ™ºæ…§Eè°·Bå¹¢4æ¥¼
  *
- *  (c) Copyright Hangzhou Hot Technology Co., Ltd.
- *  Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District 2013-2015. All rights reserved.
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
  */
 
 package com.huotu.hotcms.service.util;
 
 /**
- * ½Ó¿Ú·µ»ØÊµÌå
+ * æ¥å£è¿”å›å®ä½“
  * Created by liual on 2015-09-21.
  */
 public class ApiResult<T> {
 
     /**
-     * ·µ»Ø½á¹ûÃèÊö
+     * è¿”å›ç»“æœæè¿°
      */
     private String msg;
 
     private int code;
 
     /**
-     * ·µ»ØÊı¾İ
+     * è¿”å›æ•°æ®
      */
     private T data;
 

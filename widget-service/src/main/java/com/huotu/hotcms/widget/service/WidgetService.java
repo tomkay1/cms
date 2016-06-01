@@ -9,6 +9,8 @@
 
 package com.huotu.hotcms.widget.service;
 
+import com.huotu.hotcms.widget.CMSContext;
+import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.Widget;
@@ -53,10 +55,27 @@ public interface WidgetService {
      *
      * @param widget     控件
      * @param styleId    控件样式id,可选
-     * @param ownerId    CMS站点所有者Id,必选
-     * @param merchantId 商户id,可选
+     * @param context    交互空间
+     * @param properties 组件属性,可选
      * @return HTML Code
      */
-    String previewHTML(Widget widget, String styleId, Long ownerId, Long merchantId, ComponentProperties properties);
+    String previewHTML(Widget widget, String styleId, CMSContext context, ComponentProperties properties);
+
+    /**
+     * 生成编辑器HTML代码
+     *
+     * @param widget  控件
+     * @param context 交互空间
+     * @return HTML Code
+     */
+    String editorHTML(Widget widget, CMSContext context);
+
+    /**
+     * 生成一个组件的完整HTML代码
+     *
+     * @param component 组件
+     * @return HTML Code
+     */
+    String componentHTML(Component component);
 
 }

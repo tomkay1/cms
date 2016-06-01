@@ -54,7 +54,8 @@ import java.util.Set;
         "com.huotu.hotcms.service.widget",
         "com.huotu.hotcms.service.service",
         "com.huotu.hotcms.service.widget.service",
-        "com.huotu.widget"
+        "com.huotu.hotcms.widget.controller",
+        "com.huotu.hotcms.widget.service",
 })
 @Import({JpaConfig.class, ServiceConfig.class})
 @EnableTransactionManagement(mode = AdviceMode.PROXY)

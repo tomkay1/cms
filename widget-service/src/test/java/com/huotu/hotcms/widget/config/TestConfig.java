@@ -8,7 +8,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
  * Created by wenqi on 2016/5/31.
  */
 @Configuration
-@ComponentScan(value = {"com.huotu.hotcms.admin.config"
+@ComponentScan(value = {"com.huotu.hotcms.widget.config"
         })
 public class TestConfig {
 }

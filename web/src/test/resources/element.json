@@ -1,0 +1,19 @@
+{
+  //
+  "layouts": [
+    {
+      "pattern": "1:3:5[H|V]",
+      "elements": [
+        {
+          import
+          from
+          element
+        }
+      ]
+    }
+  ],
+  //
+  "widgetId": "...",
+  "properties": {
+  }
+}

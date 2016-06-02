@@ -32,7 +32,9 @@ public interface WidgetService {
      * 安装新的控件
      * <p>
      * 从私有Maven仓库 http://repo.51flashmall.com:8081/nexus/content/groups/public 自动获取</p>
-     *
+     * @param groupId 分组id,参考maven
+     * @param version 版本
+     * @param widgetId 控件id
      * @param type 控件类型
      */
     void installWidget(String groupId, String widgetId, String version, String type);

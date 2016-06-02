@@ -30,11 +30,12 @@ public interface WidgetService {
 
     /**
      * 安装新的控件
+     * <p>
+     * 从私有Maven仓库 http://repo.51flashmall.com:8081/nexus/content/groups/public 自动获取</p>
      *
-     * @param jarFile 工程控件jar包
-     * @param type    控件类型
+     * @param type 控件类型
      */
-    void installWidget(InputStream jarFile, String type);
+    void installWidget(String groupId, String widgetId, String version, String type);
 
     /**
      * 更新已安装的控件

@@ -49,7 +49,8 @@ public interface Widget {
      *
      * @param styleId
      * @param properties
+     * @throws IllegalArgumentException 表示验证失败
      */
-    void valid(String styleId, ComponentProperties properties);
+    void valid(String styleId, ComponentProperties properties) throws IllegalArgumentException;
 
 }

@@ -15,6 +15,7 @@ import lombok.Data;
  * CMS上下文,或者称之为交互空间
  * <p>
  * 每一个CMS线程都应当有拥有一个交互空间
+ * </p>
  *
  * @author CJ
  */

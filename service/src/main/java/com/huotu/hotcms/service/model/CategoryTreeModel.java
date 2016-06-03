@@ -46,8 +46,6 @@ public class CategoryTreeModel extends Category {
             categoryTreeModel.setParentIds(category.getParentIds());
             if(category.getRoute()!=null&&category.getRoute().getRouteType()!=null) {
                 categoryTreeModel.setRouteType(category.getRoute().getRouteType().getCode());
-            }else{
-                categoryTreeModel.setRouteType(RouteType.NO_CONFIG.getCode());//暂时没有设置
             }
 //            categoryTreeModel.setRoute(null);
 //            categoryTreeModel.setSite(null);

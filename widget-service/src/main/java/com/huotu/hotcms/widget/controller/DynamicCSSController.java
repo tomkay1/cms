@@ -19,6 +19,9 @@ package com.huotu.hotcms.widget.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.io.File;
+import java.io.IOException;
+
 /**
  * 动态CSS服务
  */
@@ -30,4 +33,11 @@ public interface DynamicCSSController {
      * @param pageId 页面ID
      */
     void getCss(long pageId);
+
+    /**
+     * 拖拽完成后，上传相应的less文件或者代码
+     * @param lessFile less文件
+     * @param lessString less代码
+     */
+    void uploadLess(File lessFile,String lessString) throws IOException, InterruptedException;
 }

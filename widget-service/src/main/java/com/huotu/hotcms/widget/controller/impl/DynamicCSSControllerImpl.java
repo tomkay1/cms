@@ -11,10 +11,18 @@
 
 package com.huotu.hotcms.widget.controller.impl;
 
+import com.huotu.hotcms.widget.PageTheme;
 import com.huotu.hotcms.widget.controller.DynamicCSSController;
+import com.huotu.hotcms.widget.service.CSSService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by hzbc on 2016/5/30.
@@ -24,6 +32,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/css")
 public class DynamicCSSControllerImpl implements DynamicCSSController {
 
+    @Autowired
+    CSSService cssService;
+
     @RequestMapping("/custom/{pageId}.css")
     @Override
     public void getCss(@PathVariable("pageId") long pageId) {
@@ -31,5 +42,21 @@ public class DynamicCSSControllerImpl implements DynamicCSSController {
         /*TODO  Problems:
         1.
          */
+    }
+
+    @Override
+    public void uploadLess(File lessFile, String lessString) throws IOException, InterruptedException {
+        PageTheme pageTheme=new PageTheme() {
+            @Override
+            public String mainColor() {
+                return lessString;
+            }
+            @Override
+            public Resource customLess() {
+                FileSystemResource fileSystemResource=new FileSystemResource(lessFile);
+                return fileSystemResource;
+            }
+        };
+        cssService.convertCss(pageTheme,null);
     }
 }

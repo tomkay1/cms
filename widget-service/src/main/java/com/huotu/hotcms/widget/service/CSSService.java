@@ -18,22 +18,22 @@ import java.io.OutputStream;
  * css相关服务
  */
 public interface CSSService {
+
 //    /**
 //     * 将less文件编译成css文件
 //     *
 //     * @param cssName  输出css文件路劲 全路劲
 //     * @param fileName less文件 全路劲
 //     */
-//    void convertLess2Css(String fileName, String cssName);
+//    void convertLess2Css(String fileName, String cssName) throws IOException, InterruptedException;
 
     /**
      * 将页面主题转换为既定规格的css
-     *
      * @param theme        页面主题
      * @param outputStream css的输出流
      * @throws IOException              如果保存css发生错误
      * @throws IllegalArgumentException 主题信息不符合要求
      */
-    void convertCss(PageTheme theme, OutputStream outputStream) throws IOException, IllegalArgumentException;
+    void convertCss(PageTheme theme, OutputStream outputStream) throws IOException, IllegalArgumentException, InterruptedException;
 
 }

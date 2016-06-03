@@ -4,7 +4,9 @@ import org.junit.Test;
 
 import org.springframework.test.web.servlet.MvcResult;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 /**
  * Created by wenqi on 2016/5/31.
@@ -13,11 +15,21 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 public class PageControllerTest extends TestBase{
 
     @Test
-    public void testPageSave() throws Exception {
-        MvcResult mockResult= mockMvc.perform(post("/pages/pageInfo").param("ownerId", String.valueOf(random.nextInt(100))))
+    public void testPageInfo() throws Exception {
+        MvcResult mockResult=
+                mockMvc.perform(get("/pages/pageInfo")
+                        .param("ownerId", String.valueOf(random.nextInt(100))))
+                        .andDo(print())
                 .andReturn();
        String responseContent= mockResult.getResponse().getContentAsString();
         int status=mockResult.getResponse().getStatus();
         logger.info("返回结果："+responseContent+",返回状态："+status);
+    }
+
+    @Test
+    public void testReplace(){
+        String s="com.huotu.cms";
+        s=s.replace(".","/");
+        System.out.println(s);
     }
 }

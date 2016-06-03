@@ -12,7 +12,7 @@ package com.huotu.hotcms.widget;
 import org.springframework.core.io.Resource;
 
 /**
- * 页面风格
+ * 页面主题
  *
  * @author CJ
  */
@@ -20,12 +20,13 @@ public interface PageTheme {
 
     /**
      * 主色调
-     *
      * @return 可以为null
      */
     String mainColor();
 
     // todo more styles
+
+
 
     /**
      * 高级用户自定义的LESS

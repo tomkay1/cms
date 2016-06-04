@@ -10,9 +10,12 @@ package com.huotu.hotcms.widget.service.impl;
 
 import com.huotu.hotcms.widget.PageTheme;
 import com.huotu.hotcms.widget.service.CSSService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,37 +27,59 @@ import java.nio.file.attribute.PosixFilePermissions;
  */
 @Service
 public class CSSServiceImpl implements CSSService {
+    private static final Log log = LogFactory.getLog(CSSServiceImpl.class);
 
     @Override
-    public void convertCss(PageTheme theme, OutputStream outputStream) throws IOException, IllegalArgumentException, InterruptedException {
-        System.out.println("OS :" + System.getProperties().getProperty("os.name"));
-        String mainColor = theme.mainColor();
+    public void convertCss(PageTheme theme, OutputStream outputStream) throws IOException, IllegalArgumentException {
+        String os = System.getProperties().getProperty("os.name");
+        if (theme == null || outputStream == null || theme.customLess() == null ) {
+            throw new IllegalArgumentException();
+        }
         // 创建临时 less文件和待输出css文件
         Path lessPath = Files.createTempFile("tempLess", ".less");
         InputStream lessInputStream = theme.customLess().getInputStream();// 用户自定义的less数据
-        if (mainColor != null) {
+        if (theme.mainColor() != null) {
+            String mainColor = "@mainColor:"+theme.mainColor()+";";
             //进行内容合并
             InputStream colorIs = new ByteArrayInputStream(mainColor.getBytes());
-            SequenceInputStream sequenceInputStream = new SequenceInputStream(colorIs,lessInputStream);
+            SequenceInputStream sequenceInputStream = new SequenceInputStream(colorIs, lessInputStream);
             Files.copy(sequenceInputStream, lessPath, StandardCopyOption.REPLACE_EXISTING);
-        }else {
+        } else {
             Files.copy(lessInputStream, lessPath, StandardCopyOption.REPLACE_EXISTING);
         }
-
-        // 创建临时 .sh文件并赋予文件内容和执行权限
-        Path shellPath = Files.createTempFile("tempLess2css", ".sh");
-        Files.copy(new ClassPathResource("less2css.sh").getInputStream(), shellPath, StandardCopyOption.REPLACE_EXISTING);
-        Files.setPosixFilePermissions(shellPath, PosixFilePermissions.fromString("rwxrwx---"));
         // 创建临时 css文件
         Path cssPath = Files.createTempFile("tempCss", ".css");
-
-        //执行生成sh脚本生成css文件
-        Process process = Runtime.getRuntime().exec("sh "+shellPath.toFile().getAbsolutePath() + " " + lessPath.toFile().getAbsolutePath() + " " + cssPath.toFile().getAbsolutePath());
-
+        Path shellPath = null;
+        Process process = null;
+        if (os.startsWith("Linux")){
+            // 创建临时 .sh文件并赋予文件内容和执行权限
+            shellPath = Files.createTempFile("tempLess2css", ".sh");
+            Files.copy(new ClassPathResource("less2css.sh").getInputStream(), shellPath, StandardCopyOption.REPLACE_EXISTING);
+            Files.setPosixFilePermissions(shellPath, PosixFilePermissions.fromString("rwxrwx---"));
+            //执行生成sh脚本生成css文件
+            process = Runtime.getRuntime().exec("sh " + shellPath.toFile().getAbsolutePath() + " "
+                    + lessPath.toFile().getAbsolutePath() + " " + cssPath.toFile().getAbsolutePath());
+        }else{
+            shellPath = Files.createTempFile("tempLess2css",".bat");
+            Files.copy(new ClassPathResource("less2css.bat").getInputStream(),shellPath, StandardCopyOption.REPLACE_EXISTING);
+            process = Runtime.getRuntime().exec(shellPath.toFile().getAbsolutePath()+" "+lessPath.toFile().getAbsolutePath() +" "
+                    + cssPath.toFile().getAbsolutePath());
+        }
         //额外工作
         StreamUtils.copy(process.getInputStream(), System.out);//控制台输出.sh文件的输出
-        System.out.println("status:" + process.waitFor());// .sh文件执行结果 0 为正常执行，非0出错
-
+        int status = -1;
+        try {
+            status = process.waitFor();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (status != 0) {
+            //删除临时文件
+            Files.deleteIfExists(lessPath);
+            Files.deleteIfExists(cssPath);
+            Files.deleteIfExists(shellPath);
+            throw new IOException();
+        }
         //读取临时文件写到输出流
         InputStream is = new FileInputStream(cssPath.toFile());
         byte[] data = new byte[1024];
@@ -62,9 +87,10 @@ public class CSSServiceImpl implements CSSService {
         while ((len = is.read(data)) != -1) {
             outputStream.write(data, 0, len);
         }
+        is.close();
         outputStream.flush();
         outputStream.close();
-        is.close();
+
 
         //删除临时文件
         Files.deleteIfExists(lessPath);

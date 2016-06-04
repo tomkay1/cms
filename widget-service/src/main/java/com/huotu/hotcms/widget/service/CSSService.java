@@ -34,6 +34,6 @@ public interface CSSService {
      * @throws IOException              如果保存css发生错误
      * @throws IllegalArgumentException 主题信息不符合要求
      */
-    void convertCss(PageTheme theme, OutputStream outputStream) throws IOException, IllegalArgumentException, InterruptedException;
+    void convertCss(PageTheme theme, OutputStream outputStream) throws IOException, IllegalArgumentException;
 
 }

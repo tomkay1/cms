@@ -1,8 +1,31 @@
 {
-  "title": "..",
-  <
-  import
-  from
-  element
-  >
+  "pageIdentity": "唯一ID",
+  //唯一id必选
+  "theme": {
+    //页面主题,可以为空
+    "mainColor": "#101010",
+    //这里只是一个demo属性 还有其他更多
+    "lessCode": "<自定义的LESSCODE>"
+    //可以为空
+  },
+  "elements": [
+    {
+      "layout": "12",
+      //布局字符 支持...吧啦吧啦
+      "components": [
+        {
+          "widgetIdentity": "foo-bar:1.0",
+          //形似 <groupId>-<widgetId>:<version> 该值等同于《页面初始化JSON数据规格》中提到的 widgets JSON 中的identity
+          "style": 0,
+          //所选择的样式
+          "properties": {},
+          // 组件属性
+          "previewHTML": ""
+          //该控件的编辑视图 ,这个属性是一种特殊属性,只有服务端响应中会出现,客户端不必将该属性发往服务端
+        }
+        //该元素可循环,表示一个组件
+      ]
+    }
+    // 该元素可循环,表示一个布局
+  ]
 }

@@ -53,4 +53,12 @@ public interface Widget {
      */
     void valid(String styleId, ComponentProperties properties) throws IllegalArgumentException;
 
+    /**
+     * 可以获取Spring额外配置信息
+     * 如果该值非空,则控件在生成HTML的时候 应该使用其他的ApplicationContext而非默认的
+     *
+     * @return 可以为null
+     */
+    Class springConfigClass();
+
 }

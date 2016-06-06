@@ -10,7 +10,7 @@
 package com.huotu.hotcms.widget.controller.impl;
 
 import com.huotu.hotcms.widget.controller.PageController;
-import com.huotu.hotcms.widget.model.Page;
+import com.huotu.hotcms.widget.page.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.widget;
 
+import com.huotu.hotcms.widget.page.PageElement;
 import lombok.Data;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -19,7 +20,7 @@ import org.apache.commons.logging.LogFactory;
  * @author CJ
  */
 @Data
-public class Component {
+public class Component implements PageElement {
 
     private static final Log log = LogFactory.getLog(Component.class);
 

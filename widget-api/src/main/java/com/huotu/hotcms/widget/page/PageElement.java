@@ -7,21 +7,19 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.hotcms.widget.model;
+package com.huotu.hotcms.widget.page;
 
-import lombok.Data;
 
 /**
- * 页面
+ * 页面元素,可能为一个组件或者为一个布局
  * <p>
- * 包含布局,页面控件,SEO等信息
- * </p>
+ * 该接口尚未声明任何方式</p>
  *
  * @author CJ
  */
-@Data
-public class Page {
-    private String title;
+public interface PageElement {
 
-    private PageElement element;
+
+
+
 }

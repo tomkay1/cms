@@ -92,12 +92,10 @@ public class CSSServiceImpl implements CSSService {
                     //noinspection ThrowFromFinallyBlock
                     Files.deleteIfExists(shellPath);
                 }
-
             } finally {
                 //noinspection ThrowFromFinallyBlock
                 Files.deleteIfExists(cssPath);
             }
-
         } finally {
             //noinspection ThrowFromFinallyBlock
             Files.deleteIfExists(lessPath);

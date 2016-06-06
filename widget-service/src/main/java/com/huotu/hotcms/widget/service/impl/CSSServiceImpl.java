@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -59,7 +58,8 @@ public class CSSServiceImpl implements CSSService {
             try {
                 Path shellPath;
                 Process process;
-                if (os.startsWith("Linux")) {
+                log.debug("current OS:" + os);
+                if (os.contains("Mac") || os.contains("Linux") || os.contains("linux") || os.contains("CentOS")) {
                     // 创建临时 .sh文件并赋予文件内容和执行权限
                     shellPath = Files.createTempFile("tempLess2css", ".sh");
                     Files.copy(new ClassPathResource("less2css.sh").getInputStream(), shellPath, StandardCopyOption.REPLACE_EXISTING);
@@ -90,15 +90,7 @@ public class CSSServiceImpl implements CSSService {
                         throw new IOException();
                     }
                     //读取临时文件写到输出流
-                    InputStream is = new FileInputStream(cssPath.toFile());
-                    byte[] data = new byte[1024];
-                    int len;
-                    while ((len = is.read(data)) != -1) {
-                        outputStream.write(data, 0, len);
-                    }
-                    is.close();
-                    outputStream.flush();
-                    outputStream.close();
+                    Files.copy(cssPath, outputStream);
                 } finally {
                     //noinspection ThrowFromFinallyBlock
                     Files.deleteIfExists(shellPath);

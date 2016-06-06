@@ -30,7 +30,7 @@ public interface CSSService {
     /**
      * 将页面主题转换为既定规格的css
      * @param theme        页面主题
-     * @param outputStream css的输出流
+     * @param outputStream css的输出流,并不会执行close
      * @throws IOException              如果保存css发生错误
      * @throws IllegalArgumentException 主题信息不符合要求
      */

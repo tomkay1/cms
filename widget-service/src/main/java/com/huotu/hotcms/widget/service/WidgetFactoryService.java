@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * @author CJ
  */
-public interface WidgetService {
+public interface WidgetFactoryService {
 
     /**
      * @return 已安装控件列表

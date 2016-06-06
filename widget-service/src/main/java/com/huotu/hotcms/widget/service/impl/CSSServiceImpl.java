@@ -84,9 +84,6 @@ public class CSSServiceImpl implements CSSService {
                     }
                     if (status != 0) {
                         //删除临时文件
-                        Files.deleteIfExists(lessPath);
-                        Files.deleteIfExists(cssPath);
-                        Files.deleteIfExists(shellPath);
                         throw new IOException();
                     }
                     //读取临时文件写到输出流

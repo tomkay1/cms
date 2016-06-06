@@ -7,30 +7,18 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.hotcms.widget.model;
+package com.huotu.hotcms.widget.page;
 
-
-import com.huotu.hotcms.widget.Component;
 import lombok.Data;
 
 /**
- * 页面元素,可能为一个组件或者为一个布局
+ * 页面布局
  *
  * @author CJ
  */
 @Data
-public class PageElement {
+public class Layout implements PageElement {
+    //标记
 
-    private Component component;
-
-    /**
-     * 布局识别符号
-     */
-    private int[] layoutIndicates;
-
-    /**
-     * 页面元素,长度必须和{@link #layoutIndicates}一致
-     */
     private PageElement[] elements;
-
 }

@@ -46,6 +46,7 @@ public class DynamicCSSControllerImpl implements DynamicCSSController {
 
     @Override
     public void uploadLess(File lessFile, String lessString) throws IOException, InterruptedException {
+
         PageTheme pageTheme=new PageTheme() {
             @Override
             public String mainColor() {
@@ -53,8 +54,7 @@ public class DynamicCSSControllerImpl implements DynamicCSSController {
             }
             @Override
             public Resource customLess() {
-                FileSystemResource fileSystemResource=new FileSystemResource(lessFile);
-                return fileSystemResource;
+                return new FileSystemResource(lessFile);
             }
         };
         cssService.convertCss(pageTheme,null);

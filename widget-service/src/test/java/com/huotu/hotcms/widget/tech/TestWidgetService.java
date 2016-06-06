@@ -14,7 +14,7 @@ import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.Widget;
-import com.huotu.hotcms.widget.service.WidgetService;
+import com.huotu.hotcms.widget.service.WidgetFactoryService;
 
 import java.io.InputStream;
 import java.util.List;
@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * @author CJ
  */
-public class TestWidgetService implements WidgetService {
+public class TestWidgetService implements WidgetFactoryService {
     @Override
     public List<InstalledWidget> widgetList() {
         return null;

@@ -14,7 +14,7 @@ import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.Widget;
-import com.huotu.hotcms.widget.service.WidgetService;
+import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
@@ -25,7 +25,7 @@ import java.util.List;
  * Created by wenqi on 2016/6/2.
  */
 @Service
-public class WidgetServiceImpl implements WidgetService {
+public class WidgetFactoryServiceImpl implements WidgetFactoryService {
 
     private static final String PRIVATE_REPO="http://repo.51flashmall.com:8081/nexus/content/groups/public/{0}/{1}/{2}";
 

@@ -36,6 +36,7 @@ public class WidgetServiceImpl implements WidgetService {
     public void installWidget(String groupId, String widgetId, String version, String type) {
         groupId=groupId.replace(".","/");
         String repoUrl=String.format(PRIVATE_REPO,groupId,widgetId,version);
+
     }
 
     @Override

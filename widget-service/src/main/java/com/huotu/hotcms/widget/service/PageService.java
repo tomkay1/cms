@@ -9,12 +9,28 @@
 
 package com.huotu.hotcms.widget.service;
 
+import com.huotu.hotcms.widget.CMSContext;
+import com.huotu.hotcms.widget.page.Page;
+
+import java.io.IOException;
+
 /**
  * 页面服务
  *
  * @author CJ
  */
 public interface PageService {
+
+    /**
+     * 生成一个页面的html
+     * 这个结果无需缓存,因为上下文的变化应该是比较大的。
+     *
+     * @param page 页面
+     * @return html
+     * @throws IOException
+     */
+    String generateHTML(Page page, CMSContext context) throws IOException;
+    //, TemplateException, ComponentPropertiesException
 
 
 }

@@ -54,7 +54,7 @@ public class TestWidgetService implements WidgetService {
     }
 
     @Override
-    public String componentHTML(Component component) {
+    public String componentHTML(Component component, CMSContext context) {
         return null;
     }
 }

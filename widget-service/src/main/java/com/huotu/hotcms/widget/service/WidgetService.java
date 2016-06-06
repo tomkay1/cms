@@ -32,10 +32,11 @@ public interface WidgetService {
      * 安装新的控件
      * <p>
      * 从私有Maven仓库 http://repo.51flashmall.com:8081/nexus/content/groups/public 自动获取</p>
-     * @param groupId 分组id,参考maven
-     * @param version 版本
+     *
+     * @param groupId  分组id,参考maven
+     * @param version  版本
      * @param widgetId 控件id
-     * @param type 控件类型
+     * @param type     控件类型
      */
     void installWidget(String groupId, String widgetId, String version, String type);
 
@@ -75,10 +76,14 @@ public interface WidgetService {
 
     /**
      * 生成一个组件的完整HTML代码
+     * <p>
+     * 页面的生成者应该是通过调用这个方法获取每一个控件的HTML,技术上我们限定生成一个页面绝对不可以超过0.5s,假定一个页面转载了200个控件
+     * 也就是这个方法的响应时间不可以超过0.5/200s 也就是2.5ms</p>
      *
      * @param component 组件
+     * @param context   上下文环境
      * @return HTML Code
      */
-    String componentHTML(Component component);
+    String componentHTML(Component component, CMSContext context);
 
 }

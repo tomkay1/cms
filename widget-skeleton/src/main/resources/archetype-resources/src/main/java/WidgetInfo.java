@@ -16,4 +16,14 @@ import com.huotu.hotcms.widget.Widget;
  */
 public class WidgetInfo implements Widget{
 
+    @Override
+    public String groupId() {
+        return "${groupId}";
+    }
+
+    @Override
+    public String widgetId() {
+        return "${artifactId}";
+    }
+
 }

@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.widget;
 
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 import java.util.Locale;
@@ -24,13 +25,32 @@ public interface Widget {
 
     String widgetId();
 
-    String version();
+    /**
+     * 接口提供了默认实现读取包信息中的实现作者
+     *
+     * @return 控件作者
+     */
+    default String author() {
+        return getClass().getPackage().getImplementationVendor();
+    }
 
-    String author();
+    /**
+     * 接口提供了默认实现读取头信息的API Implement.
+     *
+     * @return 控件版本
+     */
+    default String version() {
+        return getClass().getPackage().getImplementationVersion();
+    }
 
-    int dependBuild();
-
-    String name();
+    /**
+     * 接口提供了默认返货读取头信息中的产品信息
+     *
+     * @return 控件名称(无语言)
+     */
+    default String name() {
+        return getClass().getPackage().getImplementationTitle();
+    }
 
     String name(Locale locale);
 
@@ -38,9 +58,26 @@ public interface Widget {
 
     String description(Locale locale);
 
-    Resource thumbnail();
+    /**
+     * 以int形式获取依赖widget-service的版本
+     *
+     * @return 依赖widget-service版本
+     */
+    int dependBuild();
 
-    Resource editorTemplate();
+    /**
+     * @return 插件缩略图
+     */
+    default Resource thumbnail() {
+        return new ClassPathResource("thumbnail.png", getClass().getClassLoader());
+    }
+
+    /**
+     * @return 编辑器的模板资源
+     */
+    default Resource editorTemplate() {
+        return new ClassPathResource("editor.html", getClass().getClassLoader());
+    }
 
     WidgetStyle[] styles();
 

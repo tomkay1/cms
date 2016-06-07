@@ -12,9 +12,11 @@ package com.huotu.hotcms.widget.service;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.ComponentProperties;
+import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.Widget;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -38,7 +40,7 @@ public interface WidgetFactoryService {
      * @param widgetId 控件id
      * @param type     控件类型
      */
-    void installWidget(String groupId, String widgetId, String version, String type);
+    void installWidget(String groupId, String widgetId, String version, String type) throws IOException, FormatException;
 
     /**
      * 更新已安装的控件

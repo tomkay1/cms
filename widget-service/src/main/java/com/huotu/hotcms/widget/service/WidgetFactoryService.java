@@ -41,6 +41,14 @@ public interface WidgetFactoryService {
     void installWidget(String groupId, String widgetId, String version, String type);
 
     /**
+     * 以实例方式直接进行安装
+     *
+     * @param widget 控件实例
+     * @param type   控件类型
+     */
+    void installWidget(Widget widget, String type);
+
+    /**
      * 更新已安装的控件
      * <p>
      * 需要检查每一个使用该控件的组件属性是否符合要求。<p/>

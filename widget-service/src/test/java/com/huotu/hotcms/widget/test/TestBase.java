@@ -18,6 +18,10 @@ import java.util.Random;
 /**
  * Created by wenqi on 2016/5/31.
  */
+
+/**
+ * CMS单元测试基类
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 @WebAppConfiguration

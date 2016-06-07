@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @since v2.0
  */
 @Controller
-@RequestMapping("/pages")
 public interface PageController {
     /**
      * <p>获取页面{@link Page}</p>
@@ -43,8 +42,9 @@ public interface PageController {
 
     /**
      * <p>保存界面{@link Page}</p>
+     * @param pageId 页面ID
      */
-    void savePage();
+    void savePage(long pageId);
 
     /**
      * <p>添加页面{@link Page}</p>

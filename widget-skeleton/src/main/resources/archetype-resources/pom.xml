@@ -80,4 +80,24 @@
             <url>http://repo.jiangcai.me:8082/content/groups/public/</url>
         </repository>
     </repositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Specification-Title>Huotu Widget API</Specification-Title>
+                            <Specification-Version>${apiVersion}</Specification-Version>
+                            <Specification-Vendor>Hangzhou Hot Technology Co., Ltd.</Specification-Vendor>
+                        </manifestEntries>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

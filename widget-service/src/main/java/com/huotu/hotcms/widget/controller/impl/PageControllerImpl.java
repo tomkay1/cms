@@ -9,27 +9,26 @@
 
 package com.huotu.hotcms.widget.controller.impl;
 
+import com.google.common.io.CharStreams;
 import com.huotu.hotcms.widget.controller.PageController;
 import com.huotu.hotcms.widget.page.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 /**
  * Created by hzbc on 2016/5/27.
  */
 @Controller
-@RequestMapping("/pages")
 public class PageControllerImpl implements PageController {
 
-    @RequestMapping("/pageInfo")
-    @ResponseStatus(code = HttpStatus.ACCEPTED)
+    @RequestMapping(value = "/owners/{ownerId}/pages",method = RequestMethod.GET)
     @ResponseBody
     @Override
-    public Page getPage(long ownerId){
+    public Page getPage(@PathVariable long ownerId){
         //TODO 其他逻辑
 
         Page page=new Page();
@@ -38,24 +37,26 @@ public class PageControllerImpl implements PageController {
         return page;
     }
 
-    @RequestMapping(value = "save",method = RequestMethod.PUT)
+    @RequestMapping(value = "/pages/{pageId}",method = RequestMethod.PUT)
     @ResponseStatus(code = HttpStatus.ACCEPTED)
     @Override
-    public void savePage(){
+    public void savePage(@PathVariable long pageId,HttpServletRequest request) throws IOException {
+        String pageJson=CharStreams.toString(request.getReader());
+        //TODO 对pageJson 可以做进一步处理
+    }
+
+    @RequestMapping(value = "/owners/{ownerId}/pages",method = RequestMethod.POST)
+    @ResponseStatus(code = HttpStatus.ACCEPTED)
+    @Override
+    public void addPage(@PathVariable long ownerId,HttpServletRequest request) throws IOException {
+        String pageJson=CharStreams.toString(request.getReader());
         //TODO 其他逻辑
     }
 
-    @RequestMapping(value = "add",method = RequestMethod.POST)
+    @RequestMapping(value = "/pages/{pageId}",method = RequestMethod.DELETE)
     @ResponseStatus(code = HttpStatus.ACCEPTED)
     @Override
-    public void addPage(long ownerId){
-        //TODO 其他逻辑
-    }
-
-    @RequestMapping(value = "delete",method = RequestMethod.DELETE)
-    @ResponseStatus(code = HttpStatus.ACCEPTED)
-    @Override
-    public void deletePage(long pageId){
+    public void deletePage(@PathVariable long pageId){
         //TODO 其他逻辑
     }
 }

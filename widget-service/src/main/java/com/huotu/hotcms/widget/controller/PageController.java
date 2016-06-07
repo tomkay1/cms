@@ -13,6 +13,9 @@ import com.huotu.hotcms.widget.page.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+
 /**
  * Created by wenqi on 2016/5/27.
  */
@@ -31,7 +34,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @since v2.0
  */
 @Controller
-@RequestMapping("/pages")
 public interface PageController {
     /**
      * <p>获取页面{@link Page}</p>
@@ -43,14 +45,17 @@ public interface PageController {
 
     /**
      * <p>保存界面{@link Page}</p>
+     * @param pageId 页面ID
+     * @throws IOException 从request中读取请求体时异常
      */
-    void savePage();
+    void savePage(long pageId,HttpServletRequest request) throws IOException;
 
     /**
      * <p>添加页面{@link Page}</p>
      * @param ownerId 拥有者id
+     * @throws IOException 从request中读取请求体时异常
      */
-    void addPage(long ownerId);
+    void addPage(long ownerId,HttpServletRequest request) throws IOException;
 
     /**
      * <p>删除界面{@link Page}</p>

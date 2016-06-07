@@ -9,11 +9,15 @@
 
 package com.huotu.hotcms.widget.controller.impl;
 
+import com.google.common.io.CharStreams;
 import com.huotu.hotcms.widget.controller.PageController;
 import com.huotu.hotcms.widget.page.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 /**
  * Created by hzbc on 2016/5/27.
@@ -22,7 +26,6 @@ import org.springframework.web.bind.annotation.*;
 public class PageControllerImpl implements PageController {
 
     @RequestMapping(value = "/owners/{ownerId}/pages",method = RequestMethod.GET)
-    @ResponseStatus(code = HttpStatus.ACCEPTED)
     @ResponseBody
     @Override
     public Page getPage(@PathVariable long ownerId){
@@ -37,14 +40,16 @@ public class PageControllerImpl implements PageController {
     @RequestMapping(value = "/pages/{pageId}",method = RequestMethod.PUT)
     @ResponseStatus(code = HttpStatus.ACCEPTED)
     @Override
-    public void savePage(@PathVariable long pageId){
-        //TODO 其他逻辑
+    public void savePage(@PathVariable long pageId,HttpServletRequest request) throws IOException {
+        String pageJson=CharStreams.toString(request.getReader());
+        //TODO 对pageJson 可以做进一步处理
     }
 
     @RequestMapping(value = "/owners/{ownerId}/pages",method = RequestMethod.POST)
     @ResponseStatus(code = HttpStatus.ACCEPTED)
     @Override
-    public void addPage(@PathVariable long ownerId){
+    public void addPage(@PathVariable long ownerId,HttpServletRequest request) throws IOException {
+        String pageJson=CharStreams.toString(request.getReader());
         //TODO 其他逻辑
     }
 

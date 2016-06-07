@@ -51,7 +51,7 @@ public class TestWidgetFactoryServiceImpl {
 
     @Test
     public void testGetInstallWidget() {
-        List<InstalledWidget> installedWidgets = widgetFactoryService.widgetList();
+     //   List<InstalledWidget> installedWidgets = widgetFactoryService.widgetList();
     }
 
 

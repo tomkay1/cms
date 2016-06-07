@@ -9,11 +9,10 @@
 
 package com.huotu.hotcms.widget.service.impl;
 
-import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
-import com.huotu.hotcms.widget.util.ClassLoaderUtil;
-import com.huotu.hotcms.widget.util.HttpClientUtil;
+import org.assertj.core.api.Assertions;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +20,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.web.context.WebApplicationContext;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Created by elvis on 2016/6/6.
@@ -33,6 +31,7 @@ import java.util.List;
 @Configuration
 @ContextConfiguration(classes = TestConfig.class)
 @WebAppConfiguration
+@Transactional
 public class TestWidgetFactoryServiceImpl {
 
     @Autowired
@@ -41,17 +40,24 @@ public class TestWidgetFactoryServiceImpl {
     @Test
     public void testInstallWidget() throws IOException, ClassNotFoundException {
 
-//        try {
-//            widgetFactoryService.installWidget("org.apache.httpcomponents","httpclient","4.5.1","type1");
 
-//        } catch (FormatException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            widgetFactoryService.installWidget("org.apache.httpcomponents","httpclient","4.5.1","type1");
+        } catch (FormatException e) {
+            Assertions.fail(e.toString());
+        }
     }
 
     @Test
     public void testGetInstallWidget() {
-     //   List<InstalledWidget> installedWidgets = widgetFactoryService.widgetList();
+
+        try {
+            Assert.assertNotNull(widgetFactoryService.widgetList());
+        } catch (FormatException e) {
+            Assertions.fail(e.toString());
+        } catch (IOException e) {
+            Assertions.fail(e.toString());
+        }
     }
 
 

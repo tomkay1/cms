@@ -50,17 +50,38 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService {
     private WidgetRepository widgetRepository;
 
 
+    /**
+     * 得到jar 在本地存储的真实路径
+     * @return
+     */
+    public String getRealPath(String widgetId, String version){
+        String rootPath = webApplicationContext.getServletContext().getRealPath("");
+        String jarName = getJarName(widgetId,version);
+        String realPath = rootPath+"/"+jarName;
+        return realPath;
+    }
+
+    public String getJarName(String widgetId, String version){
+        return  widgetId+"-"+version+".jar";
+    }
 
     @Override
-    public List<InstalledWidget> widgetList() {
+    public List<InstalledWidget> widgetList() throws FormatException, IOException {
 
-        List<InstalledWidget> result = new ArrayList<>();
+        List<InstalledWidget> result = null;
         List<WidgetInfo> all = widgetRepository.findAll();
 
         for(WidgetInfo widgetInfo : all){
             InstalledWidget installedWidget = new InstalledWidget();
-            installedWidget.setWidget(widgetInfo);
-            installedWidget.setType(widgetInfo.getType());
+
+            String realPath = getRealPath(widgetInfo.getWidgetId(),widgetInfo.getVersion());
+            try {
+                Widget widget =(Widget)ClassLoaderUtil.loadJarConfig(realPath).newInstance();
+                installedWidget.setWidget(widget);
+                installedWidget.setType(widgetInfo.getType());
+            } catch (InstantiationException |IllegalAccessException |ClassNotFoundException e) {
+                throw new FormatException(e.toString());
+            }
         }
         return  result;
     }
@@ -71,13 +92,11 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService {
         groupId=groupId.replace(".","/");
         StringBuilder repoUrl=new StringBuilder(String.format(PRIVATE_REPO,groupId,widgetId,version));
 
-        String jarName = widgetId+"-"+version+".jar";
-
+        String jarName = getJarName(widgetId,version);
         repoUrl.append("/");
         repoUrl.append(jarName);
 
-        String rootPath = webApplicationContext.getServletContext().getRealPath("");
-        String realPath = rootPath+"/"+jarName;
+        String realPath = getRealPath(widgetId,version);
 
         //下载jar
         HttpClientUtil.getInstance().downloadJar(repoUrl.toString(),realPath);
@@ -91,17 +110,12 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService {
     }
 
     public void installWidget(Widget widget, String type){
-
         //持久化相应的信息
         WidgetInfo widgetInfo = new WidgetInfo();
         widgetInfo.setGroupId(widget.groupId());
         widgetInfo.setWidgetId(widget.widgetId());
         widgetInfo.setVersion(widget.version());
-        widgetInfo.setAuthor(widget.author());
-        widgetInfo.setDependBuild(widget.dependBuild()+"");
-        widgetInfo.setName(widget.name());
         widgetInfo.setType(type);
-
         widgetRepository.save(widgetInfo);
     }
 

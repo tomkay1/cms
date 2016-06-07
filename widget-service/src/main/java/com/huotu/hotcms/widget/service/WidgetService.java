@@ -7,19 +7,16 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.hotcms.widget.repository;
+package com.huotu.hotcms.widget.service;
 
 import com.huotu.hotcms.widget.entity.WidgetInfo;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 
 /**
  * Created by elvis on 2016/6/7.
  */
-public interface WidgetRepository extends JpaRepository<WidgetInfo, Long>,JpaSpecificationExecutor {
+public interface WidgetService {
 
-    List<WidgetInfo> findByAuthor(String author);
-
+    List<WidgetInfo> getWidgetByOwerId(String owerID);
 }

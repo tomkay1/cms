@@ -17,7 +17,7 @@ import java.util.Locale;
 @Table(name = "cms_widgetInfo")
 @Getter
 @Setter
-public class WidgetInfo implements Widget {
+public class WidgetInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,74 +44,4 @@ public class WidgetInfo implements Widget {
 
     @Column(name = "type")
     private String type;
-
-    @Override
-    public String groupId() {
-        return getGroupId();
-    }
-
-    @Override
-    public String widgetId() {
-        return getWidgetId();
-    }
-
-    @Override
-    public String version() {
-        return getVersion();
-    }
-
-    @Override
-    public String author() {
-        return getAuthor();
-    }
-
-    @Override
-    public int dependBuild() {
-        return Integer.parseInt(getDependBuild());
-    }
-
-    @Override
-    public String name() {
-        return getName();
-    }
-
-    @Override
-    public String name(Locale locale) {
-        return null;
-    }
-
-    @Override
-    public String description() {
-        return null;
-    }
-
-    @Override
-    public String description(Locale locale) {
-        return null;
-    }
-
-    @Override
-    public Resource thumbnail() {
-        return null;
-    }
-
-    @Override
-    public Resource editorTemplate() {
-        return null;
-    }
-
-    @Override
-    public WidgetStyle[] styles() {
-        return new WidgetStyle[0];
-    }
-
-    @Override
-    public void valid(String styleId, ComponentProperties properties) throws IllegalArgumentException {
-
-    }
-
-    @Override
-    public Class springConfigClass() {
-        return null;
-    }
 }

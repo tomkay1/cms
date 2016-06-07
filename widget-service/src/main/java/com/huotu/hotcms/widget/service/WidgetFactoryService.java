@@ -28,7 +28,7 @@ public interface WidgetFactoryService {
     /**
      * @return 已安装控件列表
      */
-    List<InstalledWidget> widgetList();
+    List<InstalledWidget> widgetList() throws FormatException, IOException;
 
     /**
      * 安装新的控件

@@ -1,0 +1,367 @@
+.clearfix:before
+{
+    clear:both;
+}
+
+.section-custom
+{
+    width:350px;
+    margin-bottom:10px;
+    margin-left:15px;margin-right:15px;
+}
+.btn-search
+{
+    background-color: #9C6;
+    color: #fff;
+    height: 28px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    width: 350px;
+    text-align:center;
+    font-size:12px;
+    display: block;
+    cursor:pointer;
+    /*background-image: url(i/btn-search.png?v20150728);*/
+    background-position: 84px 6px;
+    background-repeat: no-repeat;
+}
+a.btn-search:link,a.btn-search:hover,a.btn-search
+{
+    color:#fff;
+}
+.btnShop
+{
+    display: inline-block;
+    padding: 4px 12px;
+    margin-bottom: 0;
+    font-size: 12px;
+    line-height: 20px;
+    color: #333333;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    text-decoration:none;
+    -webkit-background-clip: padding-box;
+}
+.btnShop:hover, .btnShop:focus,.btnShop:active, .btnShop.active
+{
+    text-decoration: none;
+    color:#fff;
+    background-color:#0080ed;
+    border-color: #ccc;
+    border: 1px solid #0080ed;
+}
+.btn-primary:hover,.btn-primary:focus, .btn-primary:active, .btn-primary.active
+{
+    color: #ffffff;
+    background-color: #0080ed;
+    border-color: #0066be;
+}
+.dialogTitle
+{
+    font-size:14px;
+    font-weight:bold;
+    cursor:pointer;
+}
+.dialogTitle a
+{
+    text-decoration:none;
+    color:#378cde;
+    margin-left:5px;
+}
+.animated
+{
+    border-radius:5px;
+}
+.de-datalist li
+{
+    position: relative;
+    height: 43px;
+    margin: 5px 0;
+    padding: 2px;
+    border: 1px solid #ddd;
+    background: #fff;
+}
+.de-datalist li img
+{
+    float: left;
+    width: 43px;
+    height: 43px;
+}
+.de-datalist li p
+{
+    float: left;
+    margin:0px;
+    margin-left: 10px;
+    line-height: 35px;
+    font-weight: 400;
+    padding:0px;
+}
+.de-result p
+{
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 30px;
+    text-align: left;
+    color: #4f4f4f;
+
+}
+.de-datalist li span {
+    display: block;
+    line-height: 20px;
+    color:#898787;
+    max-width:260px;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
+.de-datalist .mask
+{
+    position: absolute;
+    display: none;
+    background-color: rgba(16,18,19,.7);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+.unselectable:hover .mask
+{
+    display:inline-block;
+}
+.de-datalist .mask .down-btn
+{
+    top: 7px;
+    right: 55px;
+}
+.de-datalist .mask .up-btn {
+    top: 7px;
+    /* left: 118px; */
+}
+.de-datalist .mask .del-btn {
+    top: 7px;
+    left: 146px;
+}
+.de-datalist .mask a {
+    position: absolute;
+    cursor: pointer;
+}
+
+.de-datalist .mask .del-btn .icon-del {
+    top: 8px;
+    left: 14px;
+    width: 16px;
+    height: 18px;
+    background-position: -397px -677px;
+}
+.de-datalist .mask .down-btn .icon-down {
+    top: 7px;
+    left: 12px;
+    width: 21px;
+    height: 20px;
+    background-position: -420px -639px;
+}
+.de-datalist .mask .up-btn .icon-up {
+    top: 7px;
+    left: 12px;
+    width: 21px;
+    height: 20px;
+    background-position: -490px -640px;
+}
+
+.de-input
+{
+    height:30px;
+    margin-top:5px;
+    width:100%;
+    text-align:left;
+    margin-left:10px;
+    display: inline-block;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.de-btn
+{
+    display: inline-block;
+    margin-bottom: 10px;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+.de-btn
+{
+    display: inline-block;
+    padding: 4px 12px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #333333;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    border-radius: 0 4px 4px 0;
+}
+.de-btn-input
+{
+    width:150px;
+    background-color:#fff;
+    text-align:left;
+    border: 1px solid #cccccc;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    -webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
+    -moz-transition: border linear 0.2s, box-shadow linear 0.2s;
+    -o-transition: border linear 0.2s, box-shadow linear 0.2s;
+    transition: border linear 0.2s, box-shadow linear 0.2s;
+    list-style-type:none;
+    outline:none;
+    font-size:12px;
+}
+.de-btn-search
+{
+    margin-left:-2px;
+    font-size:12px;
+    text-decoration:none;
+    /*background:#0080ed;
+    color:#fff;*/
+}
+.de-btn-search:hover
+{
+    text-decoration: none;
+    color:#fff;
+    background-color:#0080ed;
+    border-color: #ccc;
+    border: 1px solid #0080ed;
+}
+
+.widget-image-item
+{
+    position: relative;
+    float: left;
+    width: 60px;
+    height: 60px;
+    margin: 10px 0 0 10px;
+    background: #d7d7d7;
+    cursor: pointer;
+}
+.widget-image-item .image-size
+{
+    display: none;
+}
+.widget-image-item .widget-image-item-content
+{
+    width: 60px;
+    height: 60px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
+.widget-image-item .widget-image-meta
+{
+    position: absolute;
+    bottom: 0;
+    height: 20px;
+    width: 60px;
+    line-height: 20px;
+    background: rgba(0,0,0,0.5);
+    text-align: center;
+    color: #eee;
+    overflow: hidden;
+}
+.widget-image-item .selected-style {
+    position: absolute;
+    display: none;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    border: 2px solid #09F;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.widget-image-item .selected-style i {
+    position: absolute;
+    right: 1px;
+    bottom: 1px;
+    z-index: 2;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-top: 1px;
+    line-height: 14px;
+    vertical-align: text-top;
+    background-image: url("img/glyphicons-halflings-white.png");
+    background-repeat: no-repeat;
+}
+
+.icon-ok {
+    background-position: -288px 0;
+}
+.widget-image-item .selected-style:after {
+    position: absolute;
+    display: block;
+    content: ' ';
+    right: 0px;
+    bottom: 0px;
+    border: 14px solid #09f;
+    border-left-color: transparent;
+    border-top-color: transparent;
+}
+.btn-primary
+{
+    color: #ffffff;
+    background-color: #0080ed;
+    border-color: #0066be;
+}
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active
+{
+    color: #ffffff;
+    background-color: #0080ed;
+    border-color: #0066be;
+}
+
+a:link, a:visited, ins {
+    text-decoration: none;
+}
+.main
+{
+    position: relative;
+    background: #CCC;
+    overflow: hidden;
+    margin: 0 220px 0 230px;
+    z-index: 99;
+}
+.btn-green {
+    position: absolute;
+    top: 340px;
+    left: 193px;
+    width: 233px;
+    height: 51px;
+    text-align: center;
+    line-height: 51px;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    color: #fff;
+    font-size: 18px;
+    background: #59b615;
+}
+.btn-green:hover
+{
+    text-decoration:none;
+    background: #59b615;
+    color: #fff;
+}

@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link  href="/assets/css/admin.content.css"  type="text/css" rel="stylesheet"/>
+    <link  href="/assets/css/admin.global.css"  type="text/css" rel="stylesheet"/>
+    <link  href="/assets/css/global.css"  type="text/css" rel="stylesheet"/>
+    <link href="/assets/libs/layer/skin/layer.css" rel="stylesheet"/>
+    <script src="/assets/seajs/sea.js" type="application/javascript"></script>
+    <script src="/assets/seajs/config.js" type="application/javascript"></script>
+</head>
+<body>
+<div class="block">
+    <div class="h">
+        <span class="icon-sprite icon-list"></span>
+        <h3>链接详情</h3>
+        <div class="bar">
+            <a class="btn-lit" id="jq-cms-return" target="content">
+                <span>返回内容管理列表</span></a>
+        </div>
+    </div>
+    <div class="cnt-wp">
+        <form method="post" id="updateLinkForm">
+            <div class="cnt form">
+                <div class="division">
+                    <input type="hidden" name="hidLinkID" id="hidLinkID" th:value="${link.id}">
+                    <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                        <tbody>
+                        <tr>
+                            <th>链接标题：</th>
+                            <td>
+                                <input name="title" type="text" id="title" maxlength="50" class="input-normal" th:value="${link.title}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>缩略图：</th>
+                            <td>
+                                <img id="uploadThumbUri" th:src="${logo_uri}"style="width: 80px; height: 80px; border: 1px solid #ccc; float: left; background: #efefef; line-height: 80px; text-align: center; color: #ccc;"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>描述：</th>
+                            <td>
+                                <input name="description" type="text" id="description" maxlength="50" class="input-normal" th:value="${link.description}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>链接：</th>
+                            <td>
+                                <input name="linkUrl" type="text" id="linkUrl" maxlength="100" class="input-normal" th:value="${link.linkUrl}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>创建时间：</th>
+                            <td>
+                                <span name="createTime" type="text" id="createTime" maxlength="50" class="input-normal" hot:java8time="${link.createTime}"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>更新时间：</th>
+                            <td>
+                                <span name="updateTime" type="text" id="updateTime" maxlength="50" class="input-normal" hot:java8time="${link.updateTime}"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>所属栏目：</th>
+                            <td>
+                                <select name="categoryId" class="input-normal" id="categoryId">
+                                    <option  th:value="${link.category.id}" th:text="${link.category.name}" th:selected=true></option></select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>排序权重：</th>
+                            <td>
+                                <input name="orderWeight" type="text" id="orderWeight" value="50" class="input-normal" placeholder="请输入排序权重">
+                                <span style="color:#ccc;">数字越大排越前面</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>seajs.use(["validate","message","linkList"]);</script>
+</body>
+</html>

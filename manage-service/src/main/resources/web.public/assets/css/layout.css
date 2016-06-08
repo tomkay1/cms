@@ -1,0 +1,73 @@
+@charset "utf-8";
+/* CSS Document */
+.msg-box-page {
+    padding: 10px 20px;
+}
+.msg-tips-page {
+    background: url(/assets/img/layout/rBEQWFFuaAAIAAAAAAAG-fysGIEAAAKogLL0W8AAAcR323.png) 1px no-repeat;
+}
+.msg-tips-page, .msg-error-page, .msg-ok-page {
+    font-size: 14px;
+    padding-left: 52px;
+    min-height: 32px;
+    _height: 32px;
+    overflow: visible;
+}
+ul{
+    padding: 0px;
+    margin: 0px;
+}
+.msg-content-page {
+    line-height: normal;
+}
+a, span, .forms label, .msg-box em {
+    display: inline-block;
+    vertical-align: middle;
+    zoom: 1;
+}
+.msg-content-page:before {
+    height: 32px;
+    line-height: 32px;
+    width: 1px;
+    content: '.';
+    text-indent: -99999px;
+    color: #fff;
+    display: inline-block;
+    zoom: 1;
+    vertical-align: middle;
+}
+.select-layout {
+    background: #FFF;
+    overflow: hidden;
+    padding-bottom: 10px;
+}
+.select-layout ul {
+    height: 360px;
+    overflow: auto;
+}
+.select-layout ul li {
+    width: 24%;
+    margin: 0 0.5%;
+    overflow: hidden;
+    text-align: center;
+    float: left;
+}
+.select-layout ul li span {
+    width: 120px;
+    height: 120px;
+    display: block;
+    margin: 5px auto;
+    border: solid 1px #CDCDCD;
+    cursor: pointer;
+}
+.select-layout em {
+    display: block;
+    height: 32px;
+    line-height: 1.3;
+    font-size: 13px;
+    overflow: hidden;
+}
+address, caption, cite, code, dfn, em, th, var {
+    font-style: normal;
+    font-weight: 500;
+}

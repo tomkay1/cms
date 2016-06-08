@@ -53,7 +53,7 @@ public class IndexController {
 //
 //    @RequestMapping("/test")
 //    public  String test(Model model){
-//        return "/view/test.html";
+//        return "/web.private.view/test.html";
 //    }
 //
 //    @ModelAttribute("categoryList")
@@ -65,7 +65,7 @@ public class IndexController {
 //    @RequestMapping("/content/2.html")
 //    public String test2(Model model){
 //
-//        return "/view/test2.html";
+//        return "/web.private.view/test2.html";
 //    }
 
 

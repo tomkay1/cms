@@ -110,7 +110,7 @@ public class PageControllerTest extends TestBase {
      * <p>保存界面信息test</p>
      *
      * @throws Exception mockMvc异常
-     * @see com.huotu.hotcms.widget.controller.PageController#savePage(long, HttpServletRequest)
+     * @see com.huotu.hotcms.widget.controller.PageController#savePage(String, HttpServletRequest)
      */
     @Test
     public void testSavePage() throws Exception {
@@ -146,7 +146,7 @@ public class PageControllerTest extends TestBase {
      * <p>删除页面 test</p>
      *
      * @throws Exception mockMvc异常
-     * @see com.huotu.hotcms.widget.controller.PageController#deletePage(long)
+     * @see com.huotu.hotcms.widget.controller.PageController#deletePage(String)
      */
     @Test
     public void testDeletePage() throws Exception {
@@ -159,7 +159,7 @@ public class PageControllerTest extends TestBase {
     /**
      * <p>测试 保存界面部分属性</p>
      *  @throws Exception mockMvc异常
-     *  @see com.huotu.hotcms.widget.controller.PageController#savePagePartProperties(long, String)
+     *  @see com.huotu.hotcms.widget.controller.PageController#savePagePartProperties(String, String)
      */
     @Test
     public void testSavePagePartProperties() throws Exception {

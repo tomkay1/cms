@@ -52,15 +52,6 @@
             <artifactId>httpclient</artifactId>
             <version>4.5.1</version>
         </dependency>
-
-        <!-- 断言相关-->
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>${assertj.version}</version>
-            <scope>test</scope>
-        </dependency>
-
         <dependency>
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>

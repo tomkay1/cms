@@ -17,6 +17,8 @@ import org.springframework.http.MediaType;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.util.UUID;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -45,7 +47,7 @@ public class PageControllerTest extends TestBase {
 
         // 保存它
         String json = JSON.toJSONString(page);
-        String pageHref = mockMvc.perform(post("/owners/{ownerId}/pages", ownerId)
+        String pageHref = mockMvc.perform(post("/pages/{pageId}", page.getPageIdentity())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
                 .andExpect(status().isCreated())
@@ -59,7 +61,11 @@ public class PageControllerTest extends TestBase {
 //                .andExpect()
         ;
 
-        // TODO 保存页面部分属性
+        //保存页面部分属性
+        String propertyName= UUID.randomUUID().toString();
+        mockMvc.perform(delete("/pages/{pageId}/{propertyName}", page.getPageIdentity(),propertyName)).andDo(print())
+                .andExpect(status().isAccepted())
+                .andReturn();
 
 
         mockMvc.perform(get("/owners/{ownerId}/pages", ownerId)
@@ -146,6 +152,20 @@ public class PageControllerTest extends TestBase {
     public void testDeletePage() throws Exception {
         long pageId = random.nextInt(100);
         mockMvc.perform(delete("/pages/{pageId}", pageId)).andDo(print())
+                .andExpect(status().isAccepted())
+                .andReturn();
+    }
+
+    /**
+     * <p>测试 保存界面部分属性</p>
+     *  @throws Exception mockMvc异常
+     *  @see com.huotu.hotcms.widget.controller.PageController#savePagePartProperties(long, String)
+     */
+    @Test
+    public void testSavePagePartProperties() throws Exception {
+        long pageId = random.nextInt(100);
+        String propertyName= UUID.randomUUID().toString();
+        mockMvc.perform(delete("/pages/{pageId}/{propertyName}", pageId,propertyName)).andDo(print())
                 .andExpect(status().isAccepted())
                 .andReturn();
     }

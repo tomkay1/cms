@@ -21,6 +21,12 @@ import lombok.Data;
  */
 @Data
 public class Page {
+
+    /**
+     * 该页面的唯一ID，字符串
+     */
+    private String pageIdentity;
+
     private String title;
 
     private PageElement[] elements;

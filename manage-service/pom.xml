@@ -25,5 +25,13 @@
         将代替admin项目 提供基于管理（页面,content）的服务
     </description>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.huotu.hotcms</groupId>
+            <artifactId>service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
 
 </project>

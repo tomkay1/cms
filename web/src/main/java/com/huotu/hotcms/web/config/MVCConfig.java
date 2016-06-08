@@ -9,7 +9,7 @@
 
 package com.huotu.hotcms.web.config;
 
-import com.huotu.cms.manage.ManageServiceSpringConfig;
+import com.huotu.cms.manage.config.ManageServiceSpringConfig;
 import com.huotu.hotcms.service.config.JpaConfig;
 import com.huotu.hotcms.service.config.ServiceConfig;
 import com.huotu.hotcms.service.thymeleaf.templateresolver.WidgetTemplateResolver;

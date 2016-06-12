@@ -233,6 +233,8 @@ public class SupperController {
         try {
             if (cookieUser.isSupper(request)) {
                 Site site = siteService.findBySiteIdAndCustomerId(id, customerId);
+                hostService.removeHost(site.getHosts());
+                site.setHosts(null);
                 site.setDeleted(true);
                 siteService.save(site);
                 result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);

@@ -9,7 +9,6 @@
 package com.huotu.hotcms.service.thymeleaf.processor;
 
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
 import com.huotu.hotcms.service.widget.model.GoodsModel;
 import com.huotu.hotcms.service.widget.service.GoodsService;
 import org.apache.commons.logging.Log;
@@ -41,12 +40,32 @@ public class HotGoodsProcessor extends AbstractAttributeTagProcessor {
     private Log log = LogFactory.getLog(HotGoodsProcessor.class);
 
     public HotGoodsProcessor(IProcessorDialect dialect, String dialectPrefix, GoodsService goodsService) {
-        super(dialect, TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
+//        super(dialect, TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
+        super(TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
         this.goodsService = goodsService;
     }
 
+    //TODO Thymeleaf 3.0.0beta01 版本 稳定后移除
+//    @Override
+//    protected void doProcess(ITemplateContext context,
+//                             IProcessableElementTag tag,
+//                             AttributeName attributeName,
+//                             String attributeValue,
+//                             String attributeTemplateName,
+//                             int attributeLine, int attributeCol,
+//                             IElementTagStructureHandler structureHandler) {
+//        final Object iteratedValue;
+//        iteratedValue = invokeHogGoodsService(tag, context);
+//        structureHandler.iterateElement(attributeValue, null, iteratedValue);
+//    }
+
+
     @Override
-    protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName, String attributeValue, String attributeTemplateName, int attributeLine, int attributeCol, IElementTagStructureHandler structureHandler) {
+    protected void doProcess(ITemplateContext context,
+                             IProcessableElementTag tag,
+                             AttributeName attributeName,
+                             String attributeValue,
+                             IElementTagStructureHandler structureHandler) {
         final Object iteratedValue;
         iteratedValue = invokeHogGoodsService(tag, context);
         structureHandler.iterateElement(attributeValue, null, iteratedValue);
@@ -55,7 +74,8 @@ public class HotGoodsProcessor extends AbstractAttributeTagProcessor {
     private Object invokeHogGoodsService(IProcessableElementTag tag, ITemplateContext context) {
         List<GoodsModel> goodses = new ArrayList<>();
         try {
-            int customerId = ((Site) VariableExpression.getVariable(context, "site")).getCustomerId();
+            Site site=(Site)context.getVariable("site");
+            int customerId = site.getCustomerId();
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
             goodses = goodsService.getHotGoodsList(request,customerId);
         } catch (Exception e) {

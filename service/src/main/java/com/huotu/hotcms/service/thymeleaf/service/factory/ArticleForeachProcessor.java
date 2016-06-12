@@ -14,9 +14,6 @@ import com.huotu.hotcms.service.model.thymeleaf.foreach.PageableForeachParam;
 import com.huotu.hotcms.service.service.ArticleService;
 import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.thymeleaf.expression.DialectAttributeFactory;
-import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
-import com.huotu.hotcms.service.thymeleaf.model.PageModel;
-import com.huotu.hotcms.service.thymeleaf.model.RequestModel;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +49,8 @@ public class ArticleForeachProcessor {
             HttpServletRequest request = ((IWebContext)context).getRequest();
             PageableForeachParam articleForeachParam = dialectAttributeFactory.getForeachParam(elementTag
                     , PageableForeachParam.class);
-            Route route = (Route) VariableExpression.getVariable(context, "route");
+//            Route route = (Route) VariableExpression.getVariable(context, "route");
+            Route route=(Route) context.getVariable("route");
             if(StringUtils.isEmpty(articleForeachParam.getCategoryId())) {
                 if(route.getRouteType()==RouteType.ARTICLE_LIST) {
                     Category current = categoryService.getCategoryByRoute(route);
@@ -99,7 +97,8 @@ public class ArticleForeachProcessor {
             articles = articleService.getArticleList(articleForeachParam);
             dialectAttributeFactory.setPageList(articleForeachParam,articles,context);
             //图片路径处理
-            Site site = (Site)VariableExpression.getVariable(context,"site");
+//            Site site = (Site)VariableExpression.getVariable(context,"site");
+            Site site=(Site)context.getVariable("site");
             for(Article article : articles) {
                 article.setThumbUri(site.getResourceUrl() + article.getThumbUri());
             }

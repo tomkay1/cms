@@ -15,7 +15,6 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.CategoryForeachParam;
 import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.thymeleaf.expression.DialectAttributeFactory;
-import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,13 +47,15 @@ public class CategoryForeachProcessor {
                 return categoryService.getSpecifyCategories(categoryForeachParam.getSpecifyIds());
             }
             //设置路由类型
-            Route route = (Route) VariableExpression.getVariable(context, "route");
+//            Route route = (Route) VariableExpression.getVariable(context, "route");
+            Route route=(Route)context.getVariable("route");
             if(categoryForeachParam.getRouteType()==null) {
                 categoryForeachParam.setRouteType(route.getRouteType());
             }
             //设置站点id
             if (StringUtils.isEmpty(categoryForeachParam.getSiteId())) {
-                Site site = (Site) VariableExpression.getVariable(context, "site");
+//                Site site = (Site) VariableExpression.getVariable(context, "site");
+                Site site=(Site)context.getVariable("site");
                 categoryForeachParam.setSiteId(site.getSiteId());
             }
             if(isHeaderCategory(categoryForeachParam.getRouteType())) {

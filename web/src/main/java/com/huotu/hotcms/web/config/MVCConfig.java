@@ -106,9 +106,10 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         resolver.setTemplateEngine(templateEngine(htmlTemplateResolver()));
         resolver.setContentType("text/html");
         resolver.setCharacterEncoding(UTF8);
-        if(environment.acceptsProfiles("development")) {
-            resolver.setCache(false);
-        }
+//        if(environment.acceptsProfiles("development")) {
+//            resolver.setCache(false);
+//        }
+        resolver.setCache(false);
         resolver.setViewNames(ArrayUtil.array("*.html"));
         return resolver;
     }
@@ -162,9 +163,10 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 
     private ITemplateResolver htmlTemplateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
-        if(environment.acceptsProfiles("development")) {
-            resolver.setCacheable(false);
-        }
+//        if(environment.acceptsProfiles("development")) {
+//            resolver.setCacheable(false);
+//        }
+        resolver.setCacheable(false);
         resolver.setCharacterEncoding(UTF8);
         resolver.setApplicationContext(applicationContext);
         resolver.setTemplateMode(TemplateMode.HTML);
@@ -173,9 +175,10 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 
     private ITemplateResolver javascriptTemplateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
-        if(environment.acceptsProfiles("development")) {
-            resolver.setCacheable(false);
-        }
+//        if(environment.acceptsProfiles("development")) {
+//            resolver.setCacheable(false);
+//        }
+        resolver.setCacheable(false);
         resolver.setCharacterEncoding(UTF8);
         resolver.setApplicationContext(applicationContext);
         resolver.setTemplateMode(TemplateMode.JAVASCRIPT);
@@ -184,9 +187,10 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 
     private ITemplateResolver cssTemplateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
-        if(environment.acceptsProfiles("development")) {
-            resolver.setCacheable(false);
-        }
+//        if(environment.acceptsProfiles("development")) {
+//            resolver.setCacheable(false);
+//        }
+        resolver.setCacheable(false);
         resolver.setCharacterEncoding(UTF8);
         resolver.setApplicationContext(applicationContext);
         resolver.setTemplateMode(TemplateMode.CSS);

@@ -11,11 +11,9 @@ package com.huotu.hotcms.service.thymeleaf.service.factory;
 import com.huotu.hotcms.service.entity.Download;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.model.thymeleaf.foreach.NormalForeachParam;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.PageableForeachParam;
 import com.huotu.hotcms.service.service.DownloadService;
 import com.huotu.hotcms.service.thymeleaf.expression.DialectAttributeFactory;
-import com.huotu.hotcms.service.thymeleaf.expression.VariableExpression;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +47,8 @@ public class DownloadForeachProcessor {
             HttpServletRequest request = ((IWebContext)context).getRequest();
             PageableForeachParam downloadForeachParam = dialectAttributeFactory.getForeachParam(elementTag
                     , PageableForeachParam.class);
-            Route route = (Route) VariableExpression.getVariable(context, "route");
+//            Route route = (Route) VariableExpression.getVariable(context, "route");
+            Route route=(Route)context.getVariable("route");
             if(route!=null){
                 if(StringUtils.isEmpty(downloadForeachParam.getCategoryId())) {
                     Long id=dialectAttributeFactory.getUrlId(request, route);
@@ -60,7 +59,9 @@ public class DownloadForeachProcessor {
             }
             downloadForeachParam=dialectAttributeFactory.getForeachParamByRequest(request, downloadForeachParam);
             downloads = downloadService.getDownloadList(downloadForeachParam);
-            Site site = (Site) VariableExpression.getVariable(context, "site");
+//            Site site = (Site) VariableExpression.getVariable(context, "site");
+            Site site=(Site)context.getVariable("site");
+
             for(Download article : downloads) {
                 article.setDownloadUrl(site.getResourceUrl() + article.getDownloadUrl());
             }

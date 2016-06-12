@@ -23,20 +23,33 @@ public class Java8TimeProcessor extends AbstractStandardExpressionAttributeTagPr
     public static final String ATTR_NAME = "java8Time";
 
     protected Java8TimeProcessor(final IProcessorDialect dialect, final String dialectPrefix) {
-        super(dialect, TemplateMode.HTML, dialectPrefix,  ATTR_NAME, PRECEDENCE, true);
+//        super(dialect, TemplateMode.HTML, dialectPrefix,  ATTR_NAME, PRECEDENCE, true);
+        super(TemplateMode.HTML, dialectPrefix,  ATTR_NAME, PRECEDENCE, true);
     }
+
+//    @Override
+//    protected void doProcess(ITemplateContext context,
+//                             IProcessableElementTag tag,
+//                             AttributeName attributeName, String attributeValue,
+//                             String attributeTemplateName, int attributeLine, int attributeCol,
+//                             Object expressionResult,
+//                             IElementTagStructureHandler structureHandler) {
+//
+//        String text = formatJava8Date(expressionResult);
+//        structureHandler.setBody(text, false);
+//
+//    }
+
 
     @Override
     protected void doProcess(ITemplateContext context,
                              IProcessableElementTag tag,
-                             AttributeName attributeName, String attributeValue,
-                             String attributeTemplateName, int attributeLine, int attributeCol,
+                             AttributeName attributeName,
+                             String attributeValue,
                              Object expressionResult,
                              IElementTagStructureHandler structureHandler) {
-
         String text = formatJava8Date(expressionResult);
         structureHandler.setBody(text, false);
-
     }
 
     public String formatJava8Date(Object object) {

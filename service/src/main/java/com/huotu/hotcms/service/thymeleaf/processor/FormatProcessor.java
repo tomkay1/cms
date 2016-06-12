@@ -37,20 +37,34 @@ public class FormatProcessor  extends AbstractStandardExpressionAttributeTagProc
 
     public FormatProcessor(final IProcessorDialect dialect, final String dialectPrefix
             , FormatProcessorService formatProcessorService) {
-        super(dialect, TemplateMode.HTML, dialectPrefix,  ATTR_NAME, PRECEDENCE, true);
+//        super(dialect, TemplateMode.HTML, dialectPrefix,  ATTR_NAME, PRECEDENCE, true);
+        super(TemplateMode.HTML, dialectPrefix,  ATTR_NAME, PRECEDENCE, true);
         this.formatProcessorService = formatProcessorService;
 //        this.formatProcessorService.setDialectPrefix(dialectPrefix);
         this.dialectPrefix = dialectPrefix;
     }
 
+    //TODO thymeleaf 3.0.0beta01 稳定后移除
+//    @Override
+//    protected void doProcess(ITemplateContext context,
+//                             IProcessableElementTag tag,
+//                             AttributeName attributeName, String attributeValue,
+//                             String attributeTemplateName, int attributeLine, int attributeCol,
+//                             Object expressionResult,
+//                             IElementTagStructureHandler structureHandler) {
+//
+//        Object obj = this.formatProcessorService.resolveDataByAttr(dialectPrefix, tag, context, expressionResult);
+//        String text =obj!=null?obj.toString():"";
+//        structureHandler.setBody(text, false);
+//    }
+
     @Override
     protected void doProcess(ITemplateContext context,
                              IProcessableElementTag tag,
-                             AttributeName attributeName, String attributeValue,
-                             String attributeTemplateName, int attributeLine, int attributeCol,
+                             AttributeName attributeName,
+                             String attributeValue,
                              Object expressionResult,
                              IElementTagStructureHandler structureHandler) {
-
         Object obj = this.formatProcessorService.resolveDataByAttr(dialectPrefix, tag, context, expressionResult);
         String text =obj!=null?obj.toString():"";
         structureHandler.setBody(text, false);

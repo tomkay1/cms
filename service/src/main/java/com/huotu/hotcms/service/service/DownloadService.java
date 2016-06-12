@@ -1,8 +1,6 @@
 package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.entity.Download;
-import com.huotu.hotcms.service.entity.Link;
-import com.huotu.hotcms.service.model.thymeleaf.foreach.NormalForeachParam;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.PageableForeachParam;
 import org.springframework.data.domain.Page;
 

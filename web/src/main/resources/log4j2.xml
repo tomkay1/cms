@@ -10,12 +10,15 @@
   ~
   -->
 
-<configuration status="error">
+<configuration status="OFF">
     <!--先定义所有的appender-->
     <appenders>
         <!--文件会打印出所有信息，这个log每次运行程序会自动清空，由append属性决定，这个也挺有用的，适合临时测试用-->
-        <File name="log" fileName="log/HotJoin.log" append="true">
+        <File name="HotJoin" fileName="log/HotJoin.log" append="true">
             <PatternLayout pattern="%d{yyyy/MM/dd HH:mm:ss} 火图官网招商加盟信息 - %msg%xEx%n"/>
+        </File>
+        <File name="webLog" fileName="log/web.log" append="true">
+            <PatternLayout pattern="%d{yyyy/MM/dd HH:mm:ss} %class{36} %L %M - %msg%xEx%n"/>
         </File>
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{HH:mm:ss} [%t] %-5level %logger{36} - %msg%n"/>
@@ -24,9 +27,15 @@
     </appenders>
     <!--然后定义logger，只有定义了logger并引入的appender，appender才会生效-->
     <loggers>
+
+        <logger name="com.huotu.hotcms.web.controller.InterimController" level="info" additivity="false">
+            <appender-ref ref="HotJoin"/>
+            <appender-ref ref="Console"/>
+        </logger>
+
         <!--建立一个默认的root的logger-->
-        <root level="error">
-            <appender-ref ref="log"/>
+        <root level="info">
+            <appender-ref ref="webLog"/>
             <appender-ref ref="Console"/>
         </root>
 

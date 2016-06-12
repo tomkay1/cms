@@ -93,9 +93,9 @@ define(function (require, exports, module) {
                 }
             }
             if (flag == 0) {
-                if ($("#custom_0").is(':checked')) {
+                if ($("#custom_0").is(':checked')&&customTemplateUrl=='') {
                     layer.msg("请填上根路径", {time: 2000})
-                    commonUtil.cancelDisabled("jq-cms-Save");
+                    return;
                 }
                 else {
                     $.ajax({

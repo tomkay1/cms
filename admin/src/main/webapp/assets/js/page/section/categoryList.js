@@ -2,12 +2,22 @@
  * Created by xhl on 2015/12/30.
  */
 define(function (require, exports, module) {
-    require.async(['jqxcore'],function(){
-        require.async(['jqxdata','jqxbuttons','jqxscrollbar','jqxdatatable','jqxtreegrid'], function() {
-
-            var commonUtil = require("common");
-            var customerId=commonUtil.getQuery("customerid");
-            var layer=require("layer");
+    var commonUtil = require("common");
+    var customerId=commonUtil.getQuery("customerid");
+    var layer=require("layer");
+        require.async('jqxcore', function() {
+            require.async('jqxdatatable',function(){
+                require.async(['jqxdata','jqxbuttons','jqxscrollbar','jqxtreegrid'],function(){
+                    categoryModule.initSite();//加载站点列表信息
+                    $("#jq-cms-siteList").on("change",function(){
+                        categoryModule.initList();
+                    })
+                    $("#jq-cms-search").on("click",function(){
+                        categoryModule.initList();
+                    })
+                    categoryModule.initList();
+                })
+            });
             var categoryModule={
                 initSite:function(){
                     $.ajax({
@@ -297,14 +307,5 @@ define(function (require, exports, module) {
                     });
                 }
             };
-            categoryModule.initSite();//加载站点列表信息
-            $("#jq-cms-siteList").on("change",function(){
-                categoryModule.initList();
-            })
-            $("#jq-cms-search").on("click",function(){
-                categoryModule.initList();
-            })
-            categoryModule.initList();
         })
-    })
 });

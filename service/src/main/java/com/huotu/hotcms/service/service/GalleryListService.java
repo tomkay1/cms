@@ -6,7 +6,6 @@ package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.entity.GalleryList;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.GalleryForeachParam;
-import com.huotu.hotcms.service.model.thymeleaf.foreach.PageableForeachParam;
 import org.springframework.data.domain.Page;
 
 import java.net.URISyntaxException;

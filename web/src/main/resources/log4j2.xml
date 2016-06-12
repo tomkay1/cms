@@ -34,7 +34,7 @@
         </logger>
 
         <!--建立一个默认的root的logger-->
-        <root level="info">
+        <root level="error">
             <appender-ref ref="webLog"/>
             <appender-ref ref="Console"/>
         </root>

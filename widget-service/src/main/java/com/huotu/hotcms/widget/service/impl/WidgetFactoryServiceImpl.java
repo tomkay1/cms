@@ -91,7 +91,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService {
                 Widget widget =(Widget)ClassLoaderUtil.loadJarConfig(realPath).newInstance();
                 installedWidget.setWidget(widget);
                 installedWidget.setType(widgetInfo.getType());
-            } catch (InstantiationException |IllegalAccessException |ClassNotFoundException e) {
+            } catch (InstantiationException |IllegalAccessException |FormatException e) {
                 throw new FormatException(e.toString());
             }
         }
@@ -116,7 +116,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService {
         //加载jar
         try {
             installWidget((Widget)ClassLoaderUtil.loadJarConfig(realPath).newInstance(),type);
-        } catch (InstantiationException |IllegalAccessException |ClassNotFoundException e) {
+        } catch (InstantiationException |IllegalAccessException |FormatException e) {
             throw new FormatException(e.toString());
         }
     }

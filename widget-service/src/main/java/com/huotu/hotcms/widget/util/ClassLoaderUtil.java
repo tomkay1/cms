@@ -13,6 +13,7 @@ package com.huotu.hotcms.widget.util;
  * Created by elvis on 2016/6/2.
  */
 
+import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.service.impl.CSSServiceImpl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -40,7 +41,7 @@ import java.util.Properties;
  */
 public final class ClassLoaderUtil {
 
-    private static final Log log = LogFactory.getLog(CSSServiceImpl.class);
+    private static final Log log = LogFactory.getLog(ClassLoaderUtil.class);
 
     /** URLClassLoader的addURL方法 */
     private static Method addURL = initAddMethod();
@@ -116,7 +117,7 @@ public final class ClassLoaderUtil {
      * 按照路径加载jar
      * @param path
      */
-    public static Class loadJarConfig(String path) throws IOException, ClassNotFoundException {
+    public static Class loadJarConfig(String path) throws IOException, FormatException {
 
         File file = new File(path);
         ClassLoaderUtil.loadJarFile(file);
@@ -124,11 +125,19 @@ public final class ClassLoaderUtil {
 
         Properties prop = new Properties();
             InputStream in = ClassLoaderUtil.class.getResourceAsStream("/META-INF/widget.properties");
+
+        if(in==null){
+            throw new FormatException("this jar "+path+" format error");
+        }
             prop.load(in);
             //直接读取文件
             String className = prop.getProperty("widgetClasses").trim();
+        try {
             clazz = ClassLoaderUtil.getSystem().loadClass(className);
-            return clazz;
+        } catch (ClassNotFoundException e) {
+            throw new FormatException(e.toString());
+        }
+        return clazz;
     }
 
 

@@ -45,7 +45,7 @@ public class InterimController {
                            @RequestParam(value = "desciption") String description,HttpServletRequest request){
         ResultView resultView=null;
         try{
-            log.info("公司名称:"+company+"   ;姓名："+name+"   ; 手机号码："+mobile+" ; qq:"+qq+"  ;省份:"+province+"  ;城市:"+city+" 需求说明:"+description);
+            log.fatal("公司名称:" + company + ";姓名：" + name + ";手机号码：" + mobile + ";qq:" + qq + ";省份:" + province + ";城市:" + city + "需求说明:" + description);
             resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
         }catch (Exception ex){
             log.error(ex.getMessage());

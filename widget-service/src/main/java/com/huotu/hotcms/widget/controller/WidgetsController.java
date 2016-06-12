@@ -11,7 +11,6 @@ package com.huotu.hotcms.widget.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  * Created by elvis on 2016/6/7.
@@ -20,7 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface WidgetsController {
 
 
-    JSONArray getWidgets(@PathVariable("ownerId") String ownerId);
+    JSONArray getWidgets(String ownerId);
 
 
 }

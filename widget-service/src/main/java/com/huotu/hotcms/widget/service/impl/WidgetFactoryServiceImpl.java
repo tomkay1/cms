@@ -61,10 +61,22 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService {
         return realPath;
     }
 
+    /**
+     * 得到jar 名称
+     * @param widgetId
+     * @param version
+     * @return
+     */
     public String getJarName(String widgetId, String version){
         return  widgetId+"-"+version+".jar";
     }
 
+    /**
+     * 已安装控件列表
+     * @return
+     * @throws FormatException
+     * @throws IOException
+     */
     @Override
     public List<InstalledWidget> widgetList() throws FormatException, IOException {
 

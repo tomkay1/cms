@@ -9,12 +9,9 @@
 
 package com.huotu.hotcms.widget.util;
 
-import com.huotu.hotcms.widget.common.HttpResult;
-import com.huotu.hotcms.widget.service.impl.CSSServiceImpl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -25,7 +22,10 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.*;
 
@@ -33,10 +33,9 @@ import java.util.*;
  * 作为http 请求发起的工具类
  * Created by elvis on 2016-6-7.
  */
-//// FIXME: 2016/6/7 需要关闭对应的流和客户端连接（有待完善）
 public class HttpClientUtil {
 
-    private static final Log log = LogFactory.getLog(CSSServiceImpl.class);
+    private static final Log log = LogFactory.getLog(HttpClientUtil.class);
 
     private static HttpClientUtil httpClientUtil = new HttpClientUtil();
     private CloseableHttpClient httpClient = null;
@@ -103,7 +102,7 @@ public class HttpClientUtil {
 
 
     /**
-     * 下载jar 到本地（异常在这里处理）
+     * 下载jar 到本地
      *
      * @param url  发起下载的url路径
      * @param path path 存到本地的路径
@@ -124,11 +123,21 @@ public class HttpClientUtil {
         }
         BufferedOutputStream bw = new BufferedOutputStream(new FileOutputStream(path));
         bw.write(result);
+
+        //关闭连接
+        close(response);
         return true;
     }
 
     //提供一个关闭连接和流的方法
     //// TODO: 2016/6/7
-
-
+    public void close(CloseableHttpResponse response) throws IOException {
+        EntityUtils.consume(response.getEntity());
+        if (response != null) {
+            response.close();
+        }
+        if (httpClient != null) {
+            httpClient.close();
+        }
+    }
 }

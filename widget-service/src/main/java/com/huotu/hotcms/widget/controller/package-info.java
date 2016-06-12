@@ -21,6 +21,8 @@
     <li>POST  /owners/{ownerId}/pages</li>
     <b>删除页面</b>
     <li>DELETE /pages/{pageId}</li>
+    <b>保存页面部分属性</b>
+    <li>PUT /pages/{pageId}/{propertyName}</li>
  </ul>
  *
  * @author CJ

@@ -48,7 +48,7 @@ public interface PageController {
      * @param pageId 页面ID
      * @throws IOException 从request中读取请求体时异常
      */
-    void savePage(long pageId,HttpServletRequest request) throws IOException;
+    void savePage(String pageId,HttpServletRequest request) throws IOException;
 
     /**
      * <p>添加页面{@link Page}</p>
@@ -61,5 +61,12 @@ public interface PageController {
      * <p>删除界面{@link Page}</p>
      * @param pageId 页面ID
      */
-    void deletePage(long pageId);
+    void deletePage(String pageId);
+
+    /**
+     * 保存页面部分属性
+     * @param pageId 页面ID
+     * @param propertyName 要保存的属性名
+     */
+    void savePagePartProperties(String pageId,String propertyName);
 }

@@ -35,6 +35,7 @@
         <module>widget-skeleton</module>
         <module>widget-api</module>
         <module>widget-service</module>
+        <module>manage-service</module>
     </modules>
 
     <distributionManagement>
@@ -61,7 +62,7 @@
 
         <javaee.version>7.0</javaee.version>
         <spring.version>4.2.5.RELEASE</spring.version>
-        <luffy.version>2.0</luffy.version>
+        <luffy.version>2.1-SNAPSHOT</luffy.version>
         <thymeleaf.version>3.0.0.RELEASE</thymeleaf.version>
         <huobanplus.version>1.5.0-SNAPSHOT</huobanplus.version>
         <slf4j.version>1.7.19</slf4j.version>
@@ -118,12 +119,12 @@
             <version>${thymeleaf.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.luffy.lib</groupId>
-            <artifactId>libspring</artifactId>
+            <groupId>me.jiangcai.lib</groupId>
+            <artifactId>spring</artifactId>
             <version>${luffy.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.luffy.lib</groupId>
+            <groupId>me.jiangcai.lib</groupId>
             <artifactId>test</artifactId>
             <version>${luffy.version}</version>
             <scope>test</scope>

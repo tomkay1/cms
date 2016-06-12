@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link  href="/assets/css/admin.content.css"  type="text/css" rel="stylesheet"/>
+    <link  href="/assets/css/admin.global.css"  type="text/css" rel="stylesheet"/>
+    <link href="/assets/libs/layer/skin/layer.css" rel="stylesheet"/>
+    <link href="/assets/libs/jqwidgets/styles/jqx.base.css" rel="stylesheet"/>
+    <script src="/assets/seajs/sea.js"></script>
+    <script src="/assets/seajs/config.js"></script>
+</head>
+<body>
+<div class="search block">
+    <div class="h">
+        <span class="icon-sprite icon-magnifier"></span>
+        <h3>快速搜索</h3>
+    </div>
+    <div class="cnt-wp">
+        <div class="cnt">
+            <div class="search-bar">
+                <input type="hidden" id="supper" name="supper" th:value="${user.isSuperManage}">
+                <label class="first ">站点：</label>
+                <select name="siteName" class="input-small" id="jq-cms-siteList" style="width: 200px;">
+                </select>
+                <label class="first ">栏目：</label>
+                <input name="categotyName" type="text" id="categotyName" class="input-small" style="width: 200px;" placeholder=" 栏目名称">
+                <label><a class="btn-lit btn-middle " id="jq-cms-search" href="javascript:" style="margin-bottom: 3px;"><span>搜索</span></a></label>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="block">
+    <div class="h">
+        <span class="icon-sprite icon-list"></span>
+        <h3 style="float: left; width: 144px;">栏目列表</h3>
+    </div>
+    <div class="cnt-wp" id="js-SiteList">
+        <div id="treeGrid">
+        </div>
+    </div>
+</div>
+<script>seajs.use(["categoryList"]);</script>
+</body>
+</html>

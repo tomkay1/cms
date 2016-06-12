@@ -47,6 +47,7 @@ public class TestBase {
      */
     protected Page randomPage(){
         Page page=new Page();
+        page.setPageIdentity(UUID.randomUUID().toString());
         page.setTitle(UUID.randomUUID().toString());
         return page;
     }

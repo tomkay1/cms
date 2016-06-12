@@ -40,7 +40,7 @@ public class PageControllerImpl implements PageController {
     @RequestMapping(value = "/pages/{pageId}",method = RequestMethod.PUT)
     @ResponseStatus(code = HttpStatus.ACCEPTED)
     @Override
-    public void savePage(@PathVariable long pageId,HttpServletRequest request) throws IOException {
+    public void savePage(@PathVariable String pageId,HttpServletRequest request) throws IOException {
         String pageJson=CharStreams.toString(request.getReader());
         //TODO 对pageJson 可以做进一步处理
     }
@@ -56,7 +56,14 @@ public class PageControllerImpl implements PageController {
     @RequestMapping(value = "/pages/{pageId}",method = RequestMethod.DELETE)
     @ResponseStatus(code = HttpStatus.ACCEPTED)
     @Override
-    public void deletePage(@PathVariable long pageId){
+    public void deletePage(@PathVariable String pageId){
         //TODO 其他逻辑
+    }
+
+    @RequestMapping(value = "/pages/{pageId}/{propertyName}",method = RequestMethod.PUT)
+    @ResponseStatus(code = HttpStatus.ACCEPTED)
+    @Override
+    public void savePagePartProperties(@PathVariable String pageId,@PathVariable String propertyName) {
+
     }
 }

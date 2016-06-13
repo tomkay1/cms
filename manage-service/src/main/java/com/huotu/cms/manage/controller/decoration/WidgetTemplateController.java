@@ -1,7 +1,7 @@
 package com.huotu.cms.manage.controller.decoration;
 
 import com.alibaba.fastjson.JSONArray;
-import com.huotu.hotcms.admin.common.StringUtil;
+import com.huotu.cms.manage.common.StringUtil;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.WidgetMains;
 import com.huotu.hotcms.service.model.widget.WidgetBase;

@@ -1,7 +1,7 @@
 package com.huotu.cms.manage.interceptor;
 
-import com.huotu.hotcms.admin.util.web.CookieUser;
-import com.huotu.hotcms.admin.util.web.QueryHelper;
+import com.huotu.cms.manage.util.web.CookieUser;
+import com.huotu.cms.manage.util.web.QueryHelper;
 import com.huotu.hotcms.service.common.ConfigInfo;
 import com.huotu.hotcms.service.util.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;

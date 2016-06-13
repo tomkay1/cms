@@ -1,6 +1,6 @@
 package com.huotu.cms.manage.controller;
 
-import com.huotu.hotcms.admin.util.web.CookieUser;
+import com.huotu.cms.manage.util.web.CookieUser;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.model.LinkCategory;

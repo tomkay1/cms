@@ -1,8 +1,10 @@
 package com.huotu.cms.manage.controller.decoration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.huotu.hotcms.admin.util.web.CookieUser;
+import com.huotu.cms.manage.util.web.CookieUser;
 import com.huotu.hotcms.service.common.SiteType;
+import com.huotu.hotcms.service.entity.CustomPages;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.widget.WidgetPage;
 import com.huotu.hotcms.service.repository.ArticleRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;

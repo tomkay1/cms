@@ -38,13 +38,13 @@ public class TestWidgetFactoryServiceImpl {
     private WidgetFactoryService widgetFactoryService;
 
     @Test
-    public void testInstallWidget() throws IOException, ClassNotFoundException {
-
-
+    public void testInstallWidget() {
         try {
-            widgetFactoryService.installWidget("org.apache.httpcomponents","httpclient","4.5.1","type1");
+            widgetFactoryService.installWidget("commons-dbcp","commons-dbcp","1.4","type1");
         } catch (FormatException e) {
             Assertions.fail(e.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

@@ -1,33 +1,43 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ 版权所有:杭州火图科技有限公司
-  ~ 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
   ~
-  ~ (c) Copyright Hangzhou Hot Technology Co., Ltd.
-  ~ Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
-  ~ 2013-2016. All rights reserved.
+  ~  版权所有:杭州火图科技有限公司
+  ~  地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+  ~
+  ~  (c) Copyright Hangzhou Hot Technology Co., Ltd.
+  ~  Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+  ~  2013-2016. All rights reserved.
+  ~
   -->
-<Configuration status="INFO" debug="true">
-    <Appenders>
+
+<configuration status="OFF">
+    <!--先定义所有的appender-->
+    <appenders>
+        <!--文件会打印出所有信息，这个log每次运行程序会自动清空，由append属性决定，这个也挺有用的，适合临时测试用-->
+        <File name="HotJoin" fileName="log/HotJoin.log" append="true">
+            <PatternLayout pattern="%d{yyyy/MM/dd HH:mm:ss} 火图官网招商加盟信息 - %msg%xEx%n"/>
+        </File>
+        <File name="webLog" fileName="log/web.log" append="true">
+            <PatternLayout pattern="%d{yyyy/MM/dd HH:mm:ss} %class{36} %L %M - %msg%xEx%n"/>
+        </File>
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %p [%c] %m%n"/>
+            <PatternLayout pattern="%d{HH:mm:ss} [%t] %-5level %logger{36} - %msg%n"/>
         </Console>
-        <RollingFile name="ServerDailyRollingFile" filename="logs/cms/app.log"
-                     filePattern="logs/platform/$${date:yyyy-MM}/app-%d{yyyy-MM-dd-HH}-%i.log">
-            <PatternLayout>
-                <pattern>%d %t- %c{1}[%p]%m%n</pattern>
-            </PatternLayout>
-            <Policies>
-                <TimeBasedTriggeringPolicy interval="24" modulate="true"/>
-                <SizeBasedTriggeringPolicy size="250 MB"/>
-            </Policies>
-        </RollingFile>
-    </Appenders>
-    <Loggers>
-        <Root level="info">
-            <AppenderRef ref="Console"/>
-            <AppenderRef ref="ServerDailyRollingFile"/>
-        </Root>
-    </Loggers>
-</Configuration>
+        <!--这个会打印出所有的信息，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档-->
+    </appenders>
+    <!--然后定义logger，只有定义了logger并引入的appender，appender才会生效-->
+    <loggers>
+
+        <logger name="com.huotu.hotcms.web.controller.InterimController" level="info" additivity="false">
+            <appender-ref ref="HotJoin"/>
+            <appender-ref ref="Console"/>
+        </logger>
+
+        <!--建立一个默认的root的logger-->
+        <root level="error">
+            <appender-ref ref="webLog"/>
+            <appender-ref ref="Console"/>
+        </root>
+
+    </loggers>
+</configuration>

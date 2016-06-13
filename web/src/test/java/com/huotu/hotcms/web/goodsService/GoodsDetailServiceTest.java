@@ -14,16 +14,23 @@ import com.huotu.huobanplus.sdk.common.repository.MerchantRestRepository;
 import com.huotu.huobanplus.sdk.common.repository.ProductRestRepository;
 import com.huotu.huobanplus.sdk.common.repository.UserRestRepository;
 import com.huotu.huobanplus.sdk.mall.model.RegisterWeixinUserData;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MockMvcBuilder;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
 import java.util.*;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 /**
  * Created by chendeyu on 2016/4/8.
@@ -35,6 +42,11 @@ import java.util.*;
 @Transactional
 
 public class GoodsDetailServiceTest {
+
+    @Autowired
+    WebApplicationContext webApplicationContext;
+
+    private MockMvc mockMvc;
 
     @Autowired
     private GoodsDetailService goodsDetailService;
@@ -126,6 +138,24 @@ public class GoodsDetailServiceTest {
         priceList.get(0);
         System.out.print("最大："+Collections.max(priceList)+"  最小："+Collections.min(priceList));
 
+    }
+
+    @Before
+    public void initMockMvc(){
+        mockMvc= MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    }
+
+
+    @Test
+    public void testInterim() throws Exception {
+        mockMvc.perform(post("/interim/join").param("company","AAA")
+        .param("name","name")
+                .param("mobile","asdasdasd")
+                .param("qq","1212")
+                .param("province","123123")
+                .param("city","ads")
+                .param("desciption","desciption")
+        ).andReturn();
     }
 
 

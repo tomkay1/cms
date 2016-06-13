@@ -132,8 +132,8 @@ public class HttpClientUtil {
     //提供一个关闭连接和流的方法
     //// TODO: 2016/6/7
     public void close(CloseableHttpResponse response) throws IOException {
-        EntityUtils.consume(response.getEntity());
         if (response != null) {
+            EntityUtils.consume(response.getEntity());
             response.close();
         }
         if (httpClient != null) {

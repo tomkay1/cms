@@ -1,6 +1,6 @@
 package com.huotu.cms.manage.controller;
 
-import com.huotu.hotcms.admin.util.web.CookieUser;
+import com.huotu.cms.manage.util.web.CookieUser;
 import com.huotu.hotcms.service.entity.Region;
 import com.huotu.hotcms.service.repository.RegionRepository;
 import com.huotu.hotcms.service.service.RegionService;

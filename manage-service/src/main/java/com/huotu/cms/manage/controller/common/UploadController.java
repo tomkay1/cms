@@ -1,6 +1,6 @@
 package com.huotu.cms.manage.controller.common;
 
-import com.huotu.hotcms.admin.common.StringUtil;
+import com.huotu.cms.manage.common.StringUtil;
 import com.huotu.hotcms.service.common.ConfigInfo;
 import com.huotu.hotcms.service.entity.WidgetMains;
 import com.huotu.hotcms.service.model.Result;
@@ -55,7 +55,7 @@ public class UploadController {
             String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
             if("jpg, jpeg,png,gif,bmp".contains(suffix))
             {
-                String path=configInfo.getResourcesSiteLogo(customerId)+"/"+StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + suffix;
+                String path=configInfo.getResourcesSiteLogo(customerId)+"/"+ StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + suffix;
                 URI uri = resourceServer.uploadResource(path, files.getInputStream());
                 Map<String,Object> map= new HashMap<String, Object>();
                 map.put("fileUrl", uri);

@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link  href="/assets/css/admin.content.css"  type="text/css" rel="stylesheet"/>
+    <link  href="/assets/css/admin.global.css"  type="text/css" rel="stylesheet"/>
+    <link  href="/assets/css/global.css"  type="text/css" rel="stylesheet"/>
+    <link href="/assets/libs/layer/skin/layer.css" rel="stylesheet"/>
+    <link href="/assets/libs/upload/JUpload.css" rel="stylesheet"/>
+    <script src="/assets/seajs/sea.js" type="application/javascript"></script>
+    <script src="/assets/seajs/config.js" type="application/javascript"></script>
+</head>
+<body>
+<div class="block">
+    <div class="h">
+        <span class="icon-sprite icon-list"></span>
+        <h3>修改控件主体</h3>
+        <div class="bar">
+            <a class="btn-lit" th:href="@{/widget/widgetMainsList?customerid={customerid}(customerid=${user.customerId})}" target="content">
+                <span>返回控件主体管理列表</span></a>
+        </div>
+    </div>
+    <div class="cnt-wp">
+        <form method="post" id="updateWidgetMainsForm">
+            <div class="cnt form">
+                <div class="division">
+                    <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                        <tbody>
+                        <input type="hidden" name="hidWidgetTypeID" id="hidWidgetTypeID" th:value="${widgetMains.id}">
+                        <tr>
+                            <th>控件名称：</th>
+                            <td>
+                                <input name="name" type="text" id="name" maxlength="50"  th:value="${widgetMains.name}" class="input-normal" >
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>控件描述：</th>
+                            <td>
+                                <textarea rows="" cols="" style="width: 500px; height: 60px;" class="input-normal" id="description" name="description" th:text="${widgetMains.description}" ></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>视图浏览：</th>
+                            <td>
+                                <textarea rows="" cols="" style="width: 600px; height: 260px;" class="input-normal" id="uploadWidgetUri" name="uploadWidgetUri" th:text="${content}"></textarea>
+                                <!--<span id="btnFile1" name="btnFile1" style="margin-left: 100px; margin-top: 20px; display: block;"/>-->
+                                <input type="hidden" id="resourceUri" name="resourceUri" th:value="${widgetMains.resourceUri}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>视图编辑：</th>
+                            <td>
+                                <textarea rows="" cols="" style="width: 600px; height: 260px;" class="input-normal" id="uploadWidgetEditUri" name="uploadWidgetEditUri" th:text="${editContent}"></textarea>
+                                <!--<span id="btnFile1" name="btnFile1" style="margin-left: 100px; margin-top: 20px; display: block;"/>-->
+                                <input type="hidden" id="resourceEditUri" name="resourceEditUri" th:value="${widgetMains.resourceEditUri}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>默认属性：</th>
+                            <td>
+                                <textarea rows="" cols="" style="width: 500px; height: 160px;" class="input-normal" id="widgetDefaultProperty" name="widgetDefaultProperty" th:text="${widgetMains.defaultsProperty}"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>缩略图：</th>
+                            <td>
+                                <img id="uploadThumbUri" style="width: 80px; height: 80px; border: 1px solid #ccc; float: left; background: #efefef; line-height: 80px; text-align: center; color: #ccc;" th:src="${logo_uri}"/>
+                                <span id="btnFile" name="btnFile" style="margin-left: 100px; margin-top: 20px; display: block;"/>
+                                <input type="hidden" id="thumbUri" name="thumbUri" th:value="${widgetMains.imageUri}" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>控件类型：</th>
+                            <td>
+                                <select name="widgetTypeId" class="input-normal" id="widgetTypeId">
+                                    <option value="-1">==请选择类型==</option>
+                                    <option th:each="widgetType:${widgetTypes}" th:value="${widgetType.id}" th:text="${widgetType.name}" th:selected="${widgetType.id}==${widgetMains.widgetType.id}?true:false"></option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>排序权重：</th>
+                            <td>
+                                <input name="txtOrderWeight" type="text" id="txtOrderWeight" value="50" th:value="${widgetMains.orderWeight}" class="input-normal" placeholder="请输入排序权重">
+                                <span style="color:#ccc;">数字越大排越前面</span>
+                            </td>
+                        </tr>
+
+
+                        </tbody>
+                    </table>
+                </div>
+                <div style="text-align: center;">
+                    <input type="submit" class="btn-lit" name="btnSave"  value="保存" data-submiting-text="提交中..." data-text="保存" id="jq-cms-Save">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    seajs.use(["validate","message","jupload","updateWidgetMains"],function(a,b,c,d){
+        d.fromValidata();
+        d.uploadImg();
+    })
+</script>
+</body>
+</html>

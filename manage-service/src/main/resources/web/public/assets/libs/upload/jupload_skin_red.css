@@ -1,0 +1,32 @@
+.jq-jupload-box{
+    width: 100px;
+}
+.jq-site-bottom
+{
+    position:relative;
+    display:block;
+    width:100px;
+    height:30px;
+    background:#c23700;
+    color: #ffffff;
+    border:1px solid #ffffff;
+    line-height: 20px;
+    float:left; 
+    text-align:center;
+    cursor:pointer
+}
+.jq-site-bottom-loadding
+{
+    position:relative;
+    display:block;
+    width:100px;
+    height:30px;
+    background:#EEE;
+    border:1px solid #d1cfcf;
+    float:left; 
+    text-align:center;
+    cursor:pointer;
+    background:url(image/loading-3.gif) 10px  no-repeat;
+    background-size:24px 24px;
+    text-indent:12px;
+}

@@ -1,0 +1,440 @@
+<!--浏览试图-->
+<!--400152-->
+<div th:if="${list_template}==null or ${list_template=='goods_style1'}"
+     th:class="'fn-clear js-hot-module jGoodsList-400152 toolhover js-form-'+${guid}" th:attr="id=${guid}">
+    <div class="mc" style="overflow: visible;">
+        <form th:class="'js-good-list js-form-'+${guid}">
+            <input type="hidden" name="sort"
+                   th:value="${request.get('sort')} != null?${request.get('sort')}:'salesCount,desc'"
+                   sortColumn="" class="js-sort">
+            <div class="jTab" th:attr="guid=${guid}">
+                <a th:class="${request.get('sort')} == null or ${#strings.indexOf(request.get('sort'),'salesCount')} > -1?'current':''"
+                   href="javascript:void(0)" sortColumn="salesCount"
+                   th:attr="sortDirect=(${request.get('sort')} == null?'desc':(${#strings.indexOf(request.get('sort'),'salesCount')}>-1?${#strings.substringAfter(request.get('sort'),'salesCount,')}))">
+                    销量
+                </a>
+                <a th:class="${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'price')} > -1?'current':''"
+                   href="javascript:void(0)" sortColumn="price"
+                   th:attr="sortDirect=(${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'price')} > -1?${#strings.substringAfter(request.get('sort'),'price,')})">
+                    价格
+                </a>
+                <a th:class="${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'autoMarketDate')} > -1?'current':''"
+                   href="javascript:void(0)" sortColumn="autoMarketDate"
+                   th:attr="sortDirect=(${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'autoMarketDate')} > -1?${#strings.substringAfter(request.get('sort'),'autoMarketDate,')})">
+                    上架时间
+                </a>
+            </div>
+            <ul th:style="'background:'+${goods_pageBackGround}">
+                <li data-widget-page="goods" th:attr="data-param-pagesize=${pageSize}">
+                    <div class="jItem">
+                        <div class="jPic">
+                            <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}">
+                                <img data-th-src="${goods.smallPic}" width="160" height="160"
+                                     data-th-attr="alt=${goods.title}">
+                            </a>
+                        </div>
+                        <div class="jGoodsInfo">
+                            <div class="HOTesc">
+                                <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}"
+                                   th:style="${goods_fontColor==null?'':'color:'+goods_fontColor}">
+                                    [[${goods.title}]]
+                                </a>
+                                <span class="jSlogan"></span>
+                            </div>
+                            <div class="jPrice">
+                                <span class="jRmb">￥</span>
+                                <span class="HOTNum">[[${goods.price}]]</span>
+                            </div>
+                            <div th:if="${showIntegral==null} or ${showIntegral==0}" class="extra">
+                                <span class="evaluate">
+                                    <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}">
+                                        销量[[${goods.sales}]]
+                                    </a>
+                                </span>
+                                <span class="evaluate" th:if="${goods.vipPrice!=null and goods.vipPrice > 0}">
+                                    <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}">
+                                        会员价：<i style="color: #FF1414;">[[${goods.vipPrice}]]</i>
+                                    </a>
+                                </span>
+                            </div>
+                            <p style="height: 7px;"></p>
+
+                            <div class="jBtnArea">
+                                <a target="" th:href="${request.rootUri}+'/shop/product/'+${goods.id}" rel="">
+                                    购买
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <div class="jPage" th:attr="guid=${guid}" style="padding: 5px 12px;">
+                <em>共[[${request.totalRecords}]]条记录 当前[[${request.currentPage}]]/[[${request.totalPages}]]页</em>
+                <a href="javascript:void(0)" pageNo=1>首页</a>
+                <a th:if="${request.hasPrevPage}" th:attr="pageNo=${request.currentPage-1}"
+                   href="javascript:void(0)">上一页</a>
+                <a href="javascript:void(0)" th:each="pageNo:${request.pageNos}"
+                   th:class="${request.currentPage}==*{pageNo}?'current'" th:text="*{pageNo}"
+                   th:attr="pageNo=*{pageNo}"
+                        ></a>
+                <a th:if="${request.hasNextPage}" href="javascript:void(0)"
+                   th:attr="pageNo=${request.currentPage+1}">下一页</a>
+                <a href="javascript:void(0)" th:attr="pageNo=${request.totalPages}">尾页</a>
+                &nbsp;
+                第
+                <input name="page" class="current-index input-small"
+                       style="text-align:center;width: 50px;margin: 0px 4px;" type="number"
+                       th:value="${request.currentPage}">
+                页&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="javascript:void(0)" style="padding: 3px 4px;">跳转</a>
+            </div>
+        </form>
+    </div>
+    <div class="module-toolbal-container ui-draggable" th:if="${edit}">
+        <div class="module-assist" style="padding-top: 32px;"></div>
+        <div class="module-toolbar J-module-toolbar" style="height:360px; width:100%;">
+            <h4 style="cursor: move;">
+                    <span class="module-extra">
+                        <a class="icon-del js-module-delete" href="javascript:void(0)"
+                           th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+            <a class="icon-up js-module-up" href="javascript:void(0)"
+               th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+            <a class="icon-down js-module-down" href="javascript:void(0)"
+               th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+                    </span>
+                <span class="module-name J-module-name">商品搜索结果</span>
+                    <span class="J-module-set">
+                        <a href="javascript:void(0)" class="HOT-module-set-data js-widget-edit"
+                           th:attr="data-editurl=${widgetEditUri},data-id=${id},data-for=${guid},data-url=${widgetUri},data-layoutid=${layoutId},data-position=${layoutPosition}">
+                            编辑
+                        </a>
+                    </span>
+            </h4>
+        </div>
+    </div>
+</div>
+
+<!--400221-->
+<div th:if="${list_template=='goods_style2'}" th:class="'fn-clear js-hot-module jGoodsPage-400221 toolhover js-form-' + ${guid}"
+     th:attr="id=${guid}">
+    <div class="mc" style="overflow: visible;">
+        <form th:class="'js-good-list js-form-'+${guid}">
+            <input type="hidden" name="sort"
+                   th:value="${request.get('sort')} != null?${request.get('sort')}:'salesCount,desc'"
+                   sortColumn="" class="js-sort">
+            <div class="jTab" th:attr="guid=${guid}">
+                <a th:class="${request.get('sort')} == null or ${#strings.indexOf(request.get('sort'),'salesCount')} > -1?'current':''"
+                   href="javascript:void(0)" sortColumn="salesCount"
+                   th:attr="sortDirect=(${request.get('sort')} == null?'desc':(${#strings.indexOf(request.get('sort'),'salesCount')}>-1?${#strings.substringAfter(request.get('sort'),'salesCount,')}))">
+                    销量
+                </a>
+                <a th:class="${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'price')} > -1?'current':''"
+                   href="javascript:void(0)" sortColumn="price"
+                   th:attr="sortDirect=(${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'price')} > -1?${#strings.substringAfter(request.get('sort'),'price,')})">
+                    价格
+                </a>
+                <a th:class="${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'autoMarketDate')} > -1?'current':''"
+                   href="javascript:void(0)" sortColumn="autoMarketDate"
+                   th:attr="sortDirect=(${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'autoMarketDate')} > -1?${#strings.substringAfter(request.get('sort'),'autoMarketDate,')})">
+                    上架时间
+                </a>
+            </div>
+            <ul th:style="'background:'+${goods_pageBackGround}">
+                <li data-widget-page="goods" th:attr="data-param-pagesize=${pageSize}">
+                    <div class="jItem">
+                        <div class="jPic">
+                            <a th:href="'/front/shop/product/'+${goods.id}" target="">
+                                <img data-th-src="${goods.smallPic}" data-th-attr="alt=${goods.title}"  width="160" height="160">
+                            </a>
+
+                            <div class="jToolBar">
+                                <input value="关注" class="btn-coll" type="button">
+                                <input type="button" onclick="" value="">
+                            </div>
+                        </div>
+                        <div class="jGoodsInfo">
+                            <div class="HOTesc" data-th-attr="alt=${goods.title}">
+                                <a th:href="'/front/shop/product/'+${goods.id}"
+                                   th:style="${goods_fontColor==null?'':'color:'+goods_fontColor}">
+                                    [[${goods.title}]]
+                                </a>
+                                <span class="jSlogan"></span>
+                            </div>
+                            <div th:if="${showIntegral==null} or ${showIntegral==0}" class="jExtra">
+                                <!--<span class="jEvaluate">-->
+                                <!--<a href=" ">-->
+                                <!--已有64人评价-->
+                                <!--</a>-->
+                                <!--</span>-->
+                                <span class="evaluate" th:if="${goods.vipPrice!=null and goods.vipPrice>0}">
+                                    <a th:href="'/front/shop/product/'+${goods.id}">
+                                        会员价：<i style="color: #FF1414;">[[${goods.vipPrice}]]</i>
+                                    </a>
+                                </span>
+                            </div>
+                            <div class="jPrice">
+                                <div class="HOTPrice">
+                                    <span class="jRmb">￥</span>
+                                    <span class="HOTNum">[[${goods.price}]]</span>
+                                </div>
+                            </div>
+                            <p style="height: 7px;"></p>
+
+                            <div class="jBtnArea">
+                                <a target="" th:href="'/front/shop/product/'+${goods.id}" rel="">
+                                    购买
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <div class="jPage" th:attr="guid=${guid}" style="padding: 5px 12px;">
+                <em>共[[${request.totalRecords}]]条记录 当前[[${request.currentPage}]]/[[${request.totalPages}]]页</em>
+                <a pageNo=1 href="javascript:void(0)">首页</a>
+                <a th:if="${request.hasPrevPage}" th:attr="pageNo=${request.currentPage-1}"
+                   href="javascript:void(0)">上一页</a>
+                <a href="javascript:void(0)" th:each="pageNo:${request.pageNos}"
+                   th:class="${request.currentPage}==*{pageNo}?'current'" th:text="*{pageNo}"
+                   th:attr="pageNo=*{pageNo}"
+                        ></a>
+                <a th:if="${request.hasNextPage}" href="javascript:void(0)"
+                   th:attr="pageNo=${request.currentPage+1}">下一页</a>
+                <a th:attr="pageNo=${request.totalPages}"
+                   href="javascript:void(0)">尾页</a>
+                &nbsp;第
+                <input name="page" class="current-index input-small"
+                       style="text-align:center;width: 50px;margin: 0px 4px;" type="number"
+                       th:value="${request.currentPage}">
+                页&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="javascript:void(0)" style="padding: 3px 4px;">跳转</a>
+            </div>
+        </form>
+    </div>
+    <div class="module-toolbal-container ui-draggable" th:if="${edit}">
+        <div class="module-assist" style="padding-top: 32px;"></div>
+        <div class="module-toolbar J-module-toolbar" style="height:360px; width:100%;">
+            <h4 style="cursor: move;">
+                    <span class="module-extra">
+                        <a class="icon-del js-module-delete" href="javascript:void(0)"
+                           th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+            <a class="icon-up js-module-up" href="javascript:void(0)"
+               th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+            <a class="icon-down js-module-down" href="javascript:void(0)"
+               th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+                    </span>
+                <span class="module-name J-module-name">分页显示商品</span>
+                    <span class="J-module-set">
+                        <a href="javascript:void(0)" class="HOT-module-set-data js-widget-edit"
+                           th:attr="data-editurl=${widgetEditUri},data-id=${id},data-for=${guid},data-url=${widgetUri},data-layoutid=${layoutId},data-position=${layoutPosition}">
+                            编辑
+                        </a>
+                    </span>
+            </h4>
+        </div>
+    </div>
+</div>
+
+<!--402643-->
+<div th:if="${list_template=='goods_style3'}" th:class="'fn-clear js-hot-module jGoodsPage-402643 toolhover js-form-'+${guid}"
+     th:attr="id=${guid}">
+    <div class="mc" style="">
+        <div class="j-module">
+            <form th:class="'js-good-list js-form-'+${guid}">
+                <input type="hidden" name="sort"
+                       th:value="${request.get('sort')} != null?${request.get('sort')}:'salesCount,desc'"
+                       sortColumn="" class="js-sort">
+                <div class="jTitle">
+                    <div class="jTab" th:attr="guid=${guid}">
+                        <a th:class="${request.get('sort')} == null or ${#strings.indexOf(request.get('sort'),'salesCount')} > -1?'current':''"
+                           href="javascript:void(0)" sortColumn="salesCount"
+                           th:attr="sortDirect=(${request.get('sort')} == null?'desc':(${#strings.indexOf(request.get('sort'),'salesCount')}>-1?${#strings.substringAfter(request.get('sort'),'salesCount,')}))">
+                            销量
+                        </a>
+                        <a th:class="${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'price')} > -1?'current':''"
+                           href="javascript:void(0)" sortColumn="price"
+                           th:attr="sortDirect=(${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'price')} > -1?${#strings.substringAfter(request.get('sort'),'price,')})">
+                            价格
+                        </a>
+                        <a th:class="${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'autoMarketDate')} > -1?'current':''"
+                           href="javascript:void(0)" sortColumn="autoMarketDate"
+                           th:attr="sortDirect=(${request.get('sort')} != null and ${#strings.indexOf(request.get('sort'),'autoMarketDate')} > -1?${#strings.substringAfter(request.get('sort'),'autoMarketDate,')})">
+                            上架时间
+                        </a>
+                    </div>
+                    <span class="jTitleName">产品列表</span>
+                </div>
+                <ul th:style="'background:'+${goods_pageBackGround}">
+                    <li data-widget-page="goods" th:attr="data-param-pagesize=${pageSize}">
+                        <div class="jItem">
+                            <div class="jPic">
+                                <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}">
+                                    <img data-th-src="${goods.smallPic}" data-th-attr="alt=${goods.title}"  width="160" height="160">
+                                </a>
+                            </div>
+                            <div class="jGoodsInfo">
+                                <div class="HOTesc">
+                                    <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}"
+                                       th:style="${goods_fontColor==null?'':'color:'+goods_fontColor}">
+                                        [[${goods.title}]]
+                                    </a>
+                                    <span class="jSlogan"></span>
+                                </div>
+                                <div class="jPrice">
+                                    <div class="HOTPrice">
+                                        <span class="jRmb">¥</span>
+                                        <span class="HOTNum">[[${goods.price}]]</span>
+                                    </div>
+                                </div>
+                                <div th:if="${showIntegral==null} or ${showIntegral==0}" class="jExtra">
+                                    <!--<span class="jEvaluate">-->
+                                    <!--<a href="">-->
+                                    <!--已有<em> 64 </em>人评价-->
+                                    <!--</a>-->
+                                    <!--</span>-->
+                                    <span class="evaluate" th:if="${goods.vipPrice!=null and goods.vipPrice > 0}">
+                                        <a href="javascript:void(0)">
+                                            会员价：<i style="color: #FF1414;">[[${goods.vipPrice}]]</i>
+                                        </a>
+                                    </span>
+                                </div>
+                                <p style="height: 7px;"></p>
+
+                                <div class="jBtnArea">
+                                    <a th:href="${request.rootUri}+'/shop/product/'+${goods.id}" class="addToCart"
+                                       rel="nofollow">
+                                        购买
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="jPage" th:attr="guid=${guid}" style="padding: 5px 12px;">
+                    <em>共[[${request.totalRecords}]]条记录 当前[[${request.currentPage}]]/[[${request.totalPages}]]页</em>
+                    <a href="javascript:void(0)"
+                       pageNo=1>首页</a>
+                    <a th:if="${request.hasPrevPage}" th:attr="pageNo=${request.currentPage-1}"
+                       href="javascript:void(0)">上一页</a>
+                    <a href="javascript:void(0)" th:each="pageNo:${request.pageNos}"
+                       th:class="${request.currentPage}==*{pageNo}?'current'" th:text="*{pageNo}"
+                       th:attr="pageNo=*{pageNo}"
+                            ></a>
+                    <a th:if="${request.hasNextPage}" href="javascript:void(0)"
+                       th:attr="pageNo=${request.currentPage+1}">下一页</a>
+                    <a href="javascript:void(0)"
+                       th:attr="pageNo=${request.totalPages}">尾页</a>
+                    &nbsp;第
+                    <input name="page" class="current-index input-small"
+                           style="text-align:center;width: 50px;margin: 0px 4px;" type="number"
+                           th:value="${request.currentPage}">
+                    页&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="javascript:void(0)" style="padding: 3px 4px;">跳转</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="module-toolbal-container ui-draggable" th:if="${edit}">
+        <div class="module-assist" style="padding-top: 32px;"></div>
+        <div class="module-toolbar J-module-toolbar" style="height:360px; width:100%;">
+            <h4 style="cursor: move;">
+                    <span class="module-extra">
+                        <a class="icon-del js-module-delete" href="javascript:void(0)"
+                           th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+                    <a class="icon-up js-module-up" href="javascript:void(0)"
+                       th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+                    <a class="icon-down js-module-down" href="javascript:void(0)"
+                       th:attr="data-id=${guid},data-layoutid=${layoutId},data-position=${layoutPosition}"></a>
+                    </span>
+                <span class="module-name J-module-name">分页显示商品</span>
+                    <span class="J-module-set">
+                        <a href="javascript:void(0)" class="HOT-module-set-data js-widget-edit"
+                           th:attr="data-editurl=${widgetEditUri},data-id=${id},data-for=${guid},data-url=${widgetUri},data-layoutid=${layoutId},data-position=${layoutPosition}">
+                            编辑
+                        </a>
+                    </span>
+            </h4>
+        </div>
+    </div>
+</div>
+
+
+<!--编辑试图-->
+<div id="module_area">
+    <style>
+        .forms label {
+            text-align: left;
+        }
+
+        .forms .goodsInput {
+            width: 115px;
+            border-radius: 4px;
+        }
+    </style>
+    <div class="forms">
+        <ul>
+            <li>
+                <label style="width: 116px;">每页显示商品数量 </label>
+                <input type="text" th:value="${pageSize}" class="text-normal goodsInput" name="pageSize" maxlength="256">
+            </li>
+            <li>
+                <label style="width: 116px;">背景颜色 </label>
+                <input type="text" class="js-hot-color text-normal goodsInput" id="goods_pageBackGround"
+                       th:attr="data-default=${goods_pageBackGround==null?'#ffffff':goods_pageBackGround}" data-input="goods_pageBackGround"/>
+                <input type="hidden" class="js-hot-properties" th:value="${goods_pageBackGround}" name="goods_pageBackGround" style="background:#ffffff"/>
+            </li>
+            <li>
+                <label style="width: 116px;">字体颜色 </label>
+                <input type="text" class="js-hot-color text-normal goodsInput" id="goods_fontColor"
+                       th:attr="data-default=${goods_fontColor==null?'#ffffff':goods_fontColor}" data-input="goods_fontColor"/>
+                <input type="hidden" class="js-hot-properties" th:value="${goods_fontColor}" name="goods_fontColor" style="background:#666666"/>
+            </li>
+            <li>
+                <label style="width: 116px;">模板选择 </label>
+
+            </li>
+            <li style="padding: 10px; height: 120px;">
+                <div style="width: 30%;border: 1px solid #ccc; float: left;margin-right: 10px;">
+                    <input th:checked="${list_template=='goods_style1'} or ${list_template}==null" type="radio" name="list_template" checked="checked" value="goods_style1"/>
+                    <img src="../img/widget/goods_style1.jpg" style="width: 100%;height: 100px;">
+                </div>
+                <div style="width: 30%;border: 1px solid #ccc; float: left;margin-right: 10px;">
+                    <input th:checked="${list_template=='goods_style2'}" type="radio" name="list_template" value="goods_style2"/>
+                    <img src="../img/widget/goods_style2.jpg" style="width: 100%; height: 100px;">
+                </div>
+                <div style="width: 30%;border: 1px solid #ccc; float: left;margin-right: 10px;">
+                    <input th:checked="${list_template=='goods_style3'}" type="radio" name="list_template" value="goods_style3"/>
+                    <img src="../img/widget/goods_style3.jpg" style="width: 100%;height: 100px;">
+                </div>
+            </li><div class="clear"></div>
+        </ul>
+    </div>
+
+    <script type="application/template" id="js-nav-template">
+        <tr id="{id}">
+            <td><input type="text" class="text-short" name="name_Rows" maxlength="32" value=""></td>
+            <td><input type="text" class="text-normal" name="url_Rows" maxlength="256"></td>
+            <td>
+                <select name="type_Rows" class="select-short">
+                    <option value="0">当前窗口打开</option>
+                    <option value="1" selected="selected">新窗口打开</option>
+                </select>
+            </td>
+            <td class="operate">
+                <span class="icon-up js-nav-up" title="上移" data-id="{id}"></span>
+                <span class="icon-down js-nav-next" title="下移" data-id="{id}"></span>
+                <span class="icon-del js-nav-delete" title="删除" data-id="{id}"></span>
+            </td>
+        </tr>
+    </script>
+</div>
+<script src="../libs/JColor/jquery.hotColor.js" type="application/javascript"></script>
+<script src="../libs/JColor/spectrum.js" type="application/javascript"></script>
+<link href="../libs/JColor/spectrum.css" rel="stylesheet"/>
+<script type="text/javascript">
+    $(function () {
+        hotColor();
+    })
+</script>
+

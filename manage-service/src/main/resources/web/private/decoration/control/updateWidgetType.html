@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link  href="/assets/css/admin.content.css"  type="text/css" rel="stylesheet"/>
+    <link  href="/assets/css/admin.global.css"  type="text/css" rel="stylesheet"/>
+    <link  href="/assets/css/global.css"  type="text/css" rel="stylesheet"/>
+    <link href="/assets/libs/layer/skin/layer.css" rel="stylesheet"/>
+    <script src="/assets/seajs/sea.js" type="application/javascript"></script>
+    <script src="/assets/seajs/config.js" type="application/javascript"></script>
+</head>
+<body>
+<div class="block">
+    <!--<div class="h">-->
+        <!--<span class="icon-sprite icon-list"></span>-->
+        <!--<h3>修改控件类型</h3>-->
+        <!--&lt;!&ndash;<div class="bar">&ndash;&gt;-->
+            <!--&lt;!&ndash;<a class="btn-lit" th:href="@{/widget/widgetTypeList?customerid={customerid}(customerid=${user.customerId})}" target="content">&ndash;&gt;-->
+                <!--&lt;!&ndash;<span>返回控件类型管理列表</span></a>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--</div>-->
+    <div class="cnt-wp" style="padding: 10px;">
+        <form method="post" id="updateWidgetTypeForm">
+            <div class="cnt form">
+                <div class="division">
+                    <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                        <tbody>
+                        <input type="hidden" name="hidWidgetTypeID" id="hidWidgetTypeID" th:value="${widgetType.id}">
+                        <tr>
+                            <th>控件类型名称：</th>
+                            <td>
+                                <input name="name" type="text" id="name" maxlength="50" th:value="${widgetType.name}" class="input-normal" >
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>选择范畴：</th>
+                            <td>
+                                <select class="input-small" id="widgetScopes" name="widgetScopes">
+                                    <option value="0" th:each="scopeType:${scopeTypes}"  th:selected="${widgetType.scenes}!=null?${widgetType.scenes.getCode().toString()}==${scopeType.getCode().toString()}"  th:value="${scopeType.getCode()}" th:text="${scopeType.getValue().toString()}">文章模型</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>排序权重：</th>
+                            <td>
+                                <input name="txtOrderWeight" type="text" id="txtOrderWeight" value="50" th:value="${widgetType.orderWeight}" class="input-normal" placeholder="请输入排序权重">
+                                <span style="color:#ccc;">数字越大排越前面</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div style="text-align: center;">
+                    <input type="submit" class="btn-lit" name="btnSave"  value="保存" data-submiting-text="提交中..." data-text="保存" id="jq-cms-Save">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>seajs.use(["validate","message","updateWidgetType"]);</script>
+</body>
+</html>

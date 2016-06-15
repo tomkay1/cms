@@ -1,0 +1,12 @@
+{{each Rows as row i}}
+{{if row.PFCate==0}}
+<li class="picture-file" data-id="{{row.PFId}}" data-parentid="{{row.PFatherId}}"><img src="/assets/js/jPicture/w01.png" alt="{{row.PFName}}"><p>{{row.PFName}}</p></li>
+{{else}}
+<li class="picture-photo"  data-id="{{row.PFId}}" data-parentid="{{row.PFatherId}}">
+    <img src="{{row.PFUrl}}" alt="{{row.PFName}}">
+    <div class="widget-image-meta">{{row.PFSize}}</div>
+    <p>{{row.PFName}}</p>
+    <div class="selected-style"><i class="icon-ok icon-white"></i></div>
+</li>
+{/if}
+{{/each}}

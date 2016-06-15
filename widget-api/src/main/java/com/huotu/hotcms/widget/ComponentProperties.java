@@ -17,4 +17,5 @@ import java.util.HashMap;
  * @author CJ
  */
 public class ComponentProperties extends HashMap<String, Object> {
+
 }

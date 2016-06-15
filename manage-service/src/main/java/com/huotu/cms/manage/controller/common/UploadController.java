@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import sun.misc.BASE64Decoder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URI;
@@ -44,6 +45,51 @@ public class UploadController {
 
     @Autowired
     private ConfigInfo configInfo;
+
+    @RequestMapping(value = "/resourceUpload", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultView resourceUpload(Integer ownerId, @RequestParam(value = "file", required = false) MultipartFile files,HttpServletRequest request) {
+        ResultView resultView = null;
+        try {
+             //todo 验证权限
+//           if (){
+//                resultView = new ResultView(ResultOptionEnum.RESOURCE_PERMISSION_ERROR.getCode(), ResultOptionEnum.RESOURCE_PERMISSION_ERROR.getValue(), null);
+//           }
+            Date now = new Date();
+            String fileName = files.getOriginalFilename();
+            String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
+            String path=ownerId+"/"+StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + suffix;
+            URI uri = resourceServer.uploadResource(path, files.getInputStream());
+            Map<String,Object> map= new HashMap<>();
+            map.put("fileUrl", uri);
+            map.put("fileUri", path);
+            resultView = new ResultView(ResultOptionEnum.RESOURCE_OK.getCode(), ResultOptionEnum.RESOURCE_OK.getValue(), map);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            resultView = new ResultView(ResultOptionEnum.RESOURCE_ERROR.getCode(),e.getMessage(), null);
+        }
+        return resultView;
+    }
+
+    @RequestMapping(value = "/deleteResource", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultView deleteResource(Integer ownerId, @RequestParam(value = "fileUri", required = false) String fileUri ) {
+        ResultView resultView = null;
+        try {
+            //todo 验证权限
+//          if (){
+//                resultView = new ResultView(ResultOptionEnum.RESOURCE_PERMISSION_ERROR.getCode(), ResultOptionEnum.RESOURCE_PERMISSION_ERROR.getValue(), null);
+//          }
+            resourceServer.deleteResource(new URI(fileUri));
+            Map<String,Object> map= new HashMap<>();
+            resultView = new ResultView(ResultOptionEnum.RESOURCE_OK.getCode(), ResultOptionEnum.RESOURCE_OK.getValue(), null);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            resultView = new ResultView(ResultOptionEnum.RESOURCE_ERROR.getCode(),e.getMessage(), null);
+        }
+        return resultView;
+    }
+
 
     @RequestMapping(value = "/siteUpLoad", method = RequestMethod.POST)
     @ResponseBody

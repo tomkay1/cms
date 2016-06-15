@@ -23,7 +23,12 @@ public enum ResultOptionEnum implements CommonEnum {
 
     FAILE(500,"失败"),
     PARAMERROR(501,"参数错误"),
-    SERVERFAILE(502,"服务器错误"), ;
+    SERVERFAILE(502,"服务器错误"),
+
+    RESOURCE_OK(302,"成功"),
+    RESOURCE_ERROR(500,"服务器错误"),
+    RESOURCE_PERMISSION_ERROR(403,"缺少权限"),
+    ;
 
     private int code;
     private String value;

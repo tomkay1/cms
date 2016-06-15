@@ -79,6 +79,17 @@ public interface Widget {
         return new ClassPathResource("editor.html", getClass().getClassLoader());
     }
 
+
+    /**
+     * @return 编辑器的js资源路径
+     */
+    Resource widgetJsHref();
+
+
+    /**
+     * 第一个样式为默认样式
+     * @return 有且至少有一个样式
+     */
     WidgetStyle[] styles();
 
     /**
@@ -97,5 +108,6 @@ public interface Widget {
      * @return 可以为null
      */
     Class springConfigClass();
+
 
 }

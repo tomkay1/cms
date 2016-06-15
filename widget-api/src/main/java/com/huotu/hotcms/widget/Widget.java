@@ -13,6 +13,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * 请参考<a href="https://huobanplus.quip.com/KngdAAGxtKSQ">控件技术标准</a>
@@ -64,6 +65,14 @@ public interface Widget {
      * @return 依赖widget-service版本
      */
     int dependBuild();
+
+    /**
+     * 这个控件所需要的公开静态资源
+     * key为资源的名字,可以通过在thymeleaf的w:src或者s:href属性获取运行时准确URL
+     *
+     * @return
+     */
+    Map<String, Resource> publicResources();
 
     /**
      * @return 插件缩略图

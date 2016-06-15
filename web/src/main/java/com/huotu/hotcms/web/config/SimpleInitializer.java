@@ -15,19 +15,19 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 /**
  * @author CJ
  */
-public abstract class SimpleInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+public abstract class SimpleInitializer  {
 
     private static WebApplicationContext webApplicationContext;
 
-    @Override
+
     protected WebApplicationContext createRootApplicationContext() {
         if (webApplicationContext == null) {
-            webApplicationContext = super.createRootApplicationContext();
+            webApplicationContext =null;
         }
         return webApplicationContext;
     }
 
-    @Override
+
     protected final Class<?>[] getRootConfigClasses() {
         return new Class<?>[0];
     }

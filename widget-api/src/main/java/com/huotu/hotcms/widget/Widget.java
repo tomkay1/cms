@@ -13,6 +13,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * 请参考<a href="https://huobanplus.quip.com/KngdAAGxtKSQ">控件技术标准</a>
@@ -66,6 +67,14 @@ public interface Widget {
     int dependBuild();
 
     /**
+     * 这个控件所需要的公开静态资源
+     * key为资源的名字,可以通过在thymeleaf的w:src或者s:href属性获取运行时准确URL
+     *
+     * @return
+     */
+    Map<String, Resource> publicResources();
+
+    /**
      * @return 插件缩略图
      */
     default Resource thumbnail() {
@@ -79,6 +88,17 @@ public interface Widget {
         return new ClassPathResource("editor.html", getClass().getClassLoader());
     }
 
+
+    /**
+     * @return 编辑器的js资源
+     */
+    Resource widgetJs();
+
+
+    /**
+     * 第一个样式为默认样式
+     * @return 有且至少有一个样式
+     */
     WidgetStyle[] styles();
 
     /**
@@ -97,5 +117,6 @@ public interface Widget {
      * @return 可以为null
      */
     Class springConfigClass();
+
 
 }

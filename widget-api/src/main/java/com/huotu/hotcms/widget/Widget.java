@@ -81,9 +81,9 @@ public interface Widget {
 
 
     /**
-     * @return 编辑器的js资源路径
+     * @return 编辑器的js资源
      */
-    Resource widgetJsHref();
+    Resource widgetJs();
 
 
     /**

@@ -20,7 +20,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -43,17 +45,17 @@ public class TestWidgetFactoryServiceImpl {
 
         String randomType = UUID.randomUUID().toString();
         // 安装一个demo控件
-        widgetFactoryService.installWidget("com.huotu.wedget", "picBanner", "1.0-SNAPSHOT", randomType);
+        widgetFactoryService.installWidget("com.huotu.hotcms.widget.picCarousel", "picCarousel", "1.0-SNAPSHOT", randomType);
 
         // 校验列表,应当包含picBanner控件
-        assertWidgetListContainWidgetName("picBanner", randomType);
+        assertWidgetListContainWidgetName("picCarousel", randomType);
 
         widgetFactoryService.reloadWidgets();
 
-        assertWidgetListContainWidgetName("picBanner", randomType);
+        assertWidgetListContainWidgetName("picCarousel", randomType);
     }
 
-    private void assertWidgetListContainWidgetName(String widgetName, String type) throws IOException, FormatException {
+    private void assertWidgetListContainWidgetName(String widgetId, String type) throws IOException, FormatException {
         Widget newWidget = null;
         for (InstalledWidget widget : widgetFactoryService.widgetList()) {
             if (type.equals(widget.getType())) {
@@ -61,11 +63,8 @@ public class TestWidgetFactoryServiceImpl {
                 break;
             }
         }
-
-        assertThat(newWidget)
-                .isNotNull();
-        assertThat(newWidget.name())
-                .isEqualToIgnoringCase(widgetName);
+        assertThat(newWidget).isNotNull();
+        assertThat(newWidget.widgetId()).isEqualToIgnoringCase(widgetId);
     }
 
 //    @Test

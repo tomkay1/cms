@@ -13,6 +13,9 @@ import com.huotu.hotcms.widget.Widget;
 import com.huotu.widget.test.bean.WidgetHolder;
 import me.jiangcai.lib.test.SpringWebTest;
 import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -20,8 +23,12 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Map;
+import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 /**
  * @author CJ
@@ -30,16 +37,58 @@ import static org.assertj.core.api.Assertions.assertThat;
 @WebAppConfiguration
 public abstract class WidgetTest extends SpringWebTest {
 
+    @Autowired
+    private WidgetHolder holder;
+
     /**
-     * 正在测试的目标控件
+     * @return true to open pageSource
      */
     @SuppressWarnings("WeakerAccess")
-    protected Widget widget;
+    protected abstract boolean printPageSource();
 
-    @Autowired
-    public void setWidgetHolder(WidgetHolder holder) {
-        widget = holder.getWidget();
+    /**
+     * 编辑器测试
+     * 总体测试流程
+     * 打开编辑器
+     * 执行编辑操作
+     * 校验编辑结果
+     */
+    @Test
+    public void editor() throws Exception {
+        for (Widget widget : holder.getWidgetSet()) {
+            editor(widget);
+        }
     }
+
+    @SuppressWarnings("WeakerAccess")
+    protected void editor(Widget widget) throws Exception {
+
+        if (printPageSource())
+            mockMvc.perform(get("/editor/" + WidgetTestConfig.WidgetIdentity(widget)))
+                    .andDo(print());
+
+        driver.get("http://localhost/editor/" + WidgetTestConfig.WidgetIdentity(widget));
+//        System.out.println(driver.getPageSource());
+        editorWork(widget, driver.findElement(By.id("editor")).findElement(By.tagName("div")), () -> {
+            if (driver instanceof JavascriptExecutor) {
+                return (Map) ((JavascriptExecutor) driver).executeScript("return widgetProperties($('#editor'))");
+            }
+            throw new IllegalStateException("no JavascriptExecutor driver");
+        });
+    }
+
+    /**
+     * 执行编辑操作,校验编辑结果
+     * {@link #driver}应该是一个{@link JavascriptExecutor}
+     * 可以通过这个方法获取脚本信息
+     *
+     * @param widget                  控件
+     * @param editor                  编辑器element
+     * @param currentWidgetProperties 可以从浏览器中获取当前控件属性
+     * @see JavascriptExecutor#executeScript(String, Object...)
+     */
+    @SuppressWarnings("WeakerAccess")
+    protected abstract void editorWork(Widget widget, WebElement editor, Supplier<Map<String, Object>> currentWidgetProperties);
 
     /**
      * 一些常用属性测试
@@ -48,6 +97,12 @@ public abstract class WidgetTest extends SpringWebTest {
      */
     @Test
     public void properties() throws IOException {
+        holder.getWidgetSet().forEach(this::propertiesFor);
+    }
+
+    @SuppressWarnings("WeakerAccess")
+    protected void propertiesFor(Widget widget) {
+
 //        assertThat(widget.name())
 //                .isNotEmpty();
 
@@ -89,10 +144,15 @@ public abstract class WidgetTest extends SpringWebTest {
                 .as("必须拥有缩略图")
                 .isTrue();
         //图片资源必须是 106x82 png
-        BufferedImage thumbnail = ImageIO.read(widget.thumbnail().getInputStream());
-        assertThat((float) thumbnail.getWidth() / (float) thumbnail.getHeight())
-                .as("缩略图必须为106*82的PNG图片")
-                .isEqualTo(106f / 82f);
+        try {
+            BufferedImage thumbnail = ImageIO.read(widget.thumbnail().getInputStream());
+            assertThat((float) thumbnail.getWidth() / (float) thumbnail.getHeight())
+                    .as("缩略图必须为106*82的PNG图片")
+                    .isEqualTo(106f / 82f);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+
 
         // 现在检查编辑器
     }

@@ -22,6 +22,17 @@ import java.util.Map;
  */
 public interface Widget {
 
+    /**
+     * 获得这个widget的唯一id
+     * 这个还不稳定,需要及早确定唯一表达式
+     *
+     * @param widget 控件
+     * @return 唯一id
+     */
+    static String WidgetIdentity(Widget widget) {
+        return widget.groupId() + "." + widget.widgetId() + ":" + widget.version();
+    }
+
     String groupId();
 
     String widgetId();
@@ -97,6 +108,7 @@ public interface Widget {
 
     /**
      * 第一个样式为默认样式
+     *
      * @return 有且至少有一个样式
      */
     WidgetStyle[] styles();

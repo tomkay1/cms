@@ -12,10 +12,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Demo Editor</title>
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js" crossorigin="anonymous"></script>
+    <script>
+        var _widgetProperties = {};
+        function widgetProperties() {
+            return _widgetProperties;
+        }
+    </script>
 </head>
 <body>
 
-<div th:replace="EDITOR :: div"></div>
+<!--/*@thymesVar id="widgetId" type="java.lang.String"*/-->
+<div id="editor">
+
+    <div th:replace="'EDITOR/'+${widgetId} :: div "></div>
+</div>
+
 
 </body>
 </html>

@@ -124,14 +124,14 @@ public final class ClassLoaderUtil {
         Class<?> clazz = null;
 
         Properties prop = new Properties();
-            InputStream in = ClassLoaderUtil.class.getResourceAsStream("/META-INF/widget.properties");
+        InputStream in = ClassLoaderUtil.class.getResourceAsStream("/META-INF/widget.properties");
 
         if(in==null){
             throw new FormatException("this jar "+path+" format error");
         }
-            prop.load(in);
-            //直接读取文件
-            String className = prop.getProperty("widgetClasses").trim();
+        prop.load(in);
+        //直接读取文件
+        String className = prop.getProperty("widgetClasses").trim();
         try {
             clazz = ClassLoaderUtil.getSystem().loadClass(className);
         } catch (ClassNotFoundException e) {

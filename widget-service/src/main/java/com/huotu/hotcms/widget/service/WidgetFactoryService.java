@@ -16,8 +16,10 @@ import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.exception.FormatException;
 import org.springframework.transaction.annotation.Transactional;
+import org.xml.sax.SAXException;
 
 import javax.annotation.PostConstruct;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -38,13 +40,12 @@ public interface WidgetFactoryService {
      */
     @PostConstruct
     @Transactional(readOnly = true)
-    void reloadWidgets();
+    void reloadWidgets() throws IOException, FormatException;
 
     /**
      * 安装新的控件
      * <p>
      * 从私有Maven仓库 http://repo.51flashmall.com:8081/nexus/content/groups/public 自动获取</p>
-     *
      * @param groupId  分组id,参考maven
      * @param version  版本
      * @param widgetId 控件id
@@ -72,9 +73,8 @@ public interface WidgetFactoryService {
      * @param widget  原控件
      * @param jarFile 新的工程控件jar包
      */
-    void updateWidget(Widget widget, InputStream jarFile);
+    void updateWidget(Widget widget, InputStream jarFile) throws IOException;
 
-    //
 
     /**
      * 生成预览HTML代码

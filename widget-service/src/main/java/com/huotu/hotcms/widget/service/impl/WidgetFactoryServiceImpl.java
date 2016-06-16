@@ -16,8 +16,6 @@ import com.huotu.hotcms.widget.entity.WidgetInfo;
 import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.Widget;
-import com.huotu.hotcms.widget.entity.WidgetInfo;
-import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.repository.WidgetRepository;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import com.huotu.hotcms.widget.util.ClassLoaderUtil;
@@ -28,6 +26,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.luffy.libs.libseext.XMLUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 import org.w3c.dom.Document;
@@ -42,7 +41,6 @@ import java.util.HashMap;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import java.util.Properties;
 
 
 /**
@@ -87,6 +85,37 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService {
         return widgetId + "-" + version + ".jar";
     }
 
+    @Override
+    public String downloadJar(String groupId, String widgetId, String version) throws IOException, ParserConfigurationException, SAXException {
+        groupId = groupId.replace(".", "/");
+        StringBuilder repoUrl = new StringBuilder(String.format(PRIVATE_REPO, groupId, widgetId, version));
+        CloseableHttpResponse response = HttpClientUtil.getInstance().get(repoUrl + "/maven-metadata.xml", new HashMap<>());
+        byte[] result = EntityUtils.toByteArray(response.getEntity());
+        String timeBuild = "";
+        Document doc = XMLUtils.xml2doc(new ByteArrayInputStream(result));
+        NodeList nodeList = doc.getElementsByTagName("timestamp");
+        NodeList buildNumber = doc.getElementsByTagName("buildNumber");
+        if (nodeList != null) {
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                Node node = nodeList.item(i);
+                timeBuild = timeBuild + node.getTextContent();
+            }
+        }
+        if (buildNumber != null) {
+            for (int i = 0; i < buildNumber.getLength(); i++) {
+                Node node = buildNumber.item(i);
+                timeBuild = timeBuild + "-" + node.getTextContent();
+            }
+        }
+        String jarName = getJarName(widgetId, version.replace("SNAPSHOT", "") + timeBuild);
+        repoUrl.append("/");
+        repoUrl.append(jarName);
+        String realPath = getRealPath(widgetId, version);
+        //下载jar
+        HttpClientUtil.getInstance().downloadJar(repoUrl.toString(), realPath);
+        return realPath;
+    }
+
     /**
      * 已安装控件列表
      *
@@ -128,36 +157,16 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService {
 
     @Override
     public void installWidget(String groupId, String widgetId, String version, String type) throws IOException, FormatException {
-        groupId = groupId.replace(".", "/");
-        StringBuilder repoUrl = new StringBuilder(String.format(PRIVATE_REPO, groupId, widgetId, version));
-        CloseableHttpResponse response = HttpClientUtil.getInstance().get(repoUrl + "/maven-metadata.xml", new HashMap<>());
-        byte[] result = EntityUtils.toByteArray(response.getEntity());
-        String timeBuild = "";
         try {
-            Document doc = XMLUtils.xml2doc(new ByteArrayInputStream(result));
-            NodeList nodeList = doc.getElementsByTagName("timestamp");
-            NodeList buildNumber = doc.getElementsByTagName("buildNumber");
-            if (nodeList != null) {
-                for (int i = 0; i < nodeList.getLength(); i++) {
-                    Node node = nodeList.item(i);
-                    timeBuild = timeBuild + node.getTextContent();
+            String realPath = downloadJar(groupId,widgetId,version);
+            List<Class> classes = ClassLoaderUtil.loadJarWidgetClasss(realPath);
+            if (classes != null) {
+                for (Class classz : classes) {
+                    //加载jar
+                    installWidget((Widget) classz.newInstance(), type);
                 }
             }
-            if (buildNumber != null) {
-                for (int i = 0; i < buildNumber.getLength(); i++) {
-                    Node node = buildNumber.item(i);
-                    timeBuild = timeBuild + "-" + node.getTextContent();
-                }
-            }
-            String jarName = getJarName(widgetId, version.replace("SNAPSHOT", "") + timeBuild);
-            repoUrl.append("/");
-            repoUrl.append(jarName);
-            String realPath = getRealPath(widgetId, version);
-            //下载jar
-            HttpClientUtil.getInstance().downloadJar(repoUrl.toString(), realPath);
-            //加载jar
-            installWidget((Widget) ClassLoaderUtil.loadJarConfig(realPath).newInstance(), type);
-        } catch (ParserConfigurationException | SAXException |InstantiationException
+        } catch (ParserConfigurationException | SAXException | InstantiationException
                 | IllegalAccessException | FormatException e) {
             throw new FormatException(e.toString());
         }
@@ -174,19 +183,12 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService {
         widgetRepository.save(widgetInfo);
     }
 
+
     @Override
     public void updateWidget(Widget widget, InputStream jarFile) throws IOException {
-        //todo 检查每一个使用该控件的组件属性是否符合要求
-        //假设控件widget符合要求
+        //todo 检查每一个使用该控件的组件属性是否符合要求  假设控件widget符合要求
         //更新数据库信息
-        WidgetInfo widgetInfo = widgetRepository.findByWidgetIdAndVersion(widget.widgetId(), widget.version());
-        if (widgetInfo != null) {
-            widgetInfo.setGroupId(widget.groupId());
-            widgetInfo.setName(widget.name());
-            widgetInfo.setDependBuild(widget.dependBuild() + "");
-            widgetInfo.setAuthor(widget.author());
-            widgetRepository.saveAndFlush(widgetInfo);
-        }
+        updataWidget(widget);
         //替换jar包
         if (jarFile != null) {
             BufferedOutputStream bw = null;
@@ -210,6 +212,33 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService {
         }
     }
 
+    public void updataWidget(Widget widget) {
+        WidgetInfo widgetInfo = widgetRepository.findByWidgetIdAndVersion(widget.widgetId(), widget.version());
+        if (widgetInfo != null) {
+            widgetInfo.setGroupId(widget.groupId());
+            widgetInfo.setName(widget.name());
+            widgetInfo.setDependBuild(widget.dependBuild() + "");
+            widgetInfo.setAuthor(widget.author());
+            widgetRepository.saveAndFlush(widgetInfo);
+        }
+    }
+
+    @Override
+    public void updateWidget(String groupId, String widgetId, String version, String type) throws IOException, FormatException {
+        try {
+            String realPath = downloadJar(groupId,widgetId,version);
+            List<Class> classes = ClassLoaderUtil.loadJarWidgetClasss(realPath);
+            if (classes != null) {
+                for (Class classz : classes) {
+                    updataWidget((Widget) classz.newInstance());
+                }
+            }
+        } catch (ParserConfigurationException | SAXException | InstantiationException
+                | IllegalAccessException | FormatException e) {
+            throw new FormatException(e.toString());
+        }
+    }
+
     @Override
     public String previewHTML(Widget widget, String styleId, CMSContext context, ComponentProperties properties) {
         return null;
@@ -217,6 +246,8 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService {
 
     @Override
     public String editorHTML(Widget widget, CMSContext context) {
+        Resource resource = widget.editorTemplate();
+
         return null;
     }
 

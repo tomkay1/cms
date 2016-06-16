@@ -2,14 +2,12 @@ package com.huotu.hotcms.web.Filter;
 
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.entity.SiteConfig;
-import com.huotu.hotcms.service.repository.SiteConfigRepository;
-import com.huotu.hotcms.service.service.SiteConfigService;
 import com.huotu.hotcms.service.service.impl.SiteConfigServiceImpl;
 import com.huotu.hotcms.service.thymeleaf.service.RouteResolverService;
 import com.huotu.hotcms.service.thymeleaf.service.SiteResolveService;
 import com.huotu.hotcms.service.util.CheckMobile;
 import com.huotu.hotcms.service.util.PatternMatchUtil;
+import com.huotu.hotcms.service.util.StaticResource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContext;
@@ -118,7 +116,7 @@ public class RouteFilter implements Filter {
         if (!servletPath.contains(filter)) {
             if (PatternMatchUtil.isMatchFilter(servletPath)) {
                 Route route = routeResolverService.getRoute(site, servletPath);
-                if(!isStaticResc(request1.getServletPath())){
+                if(!StaticResource.isStaticResc(request1.getServletPath())){
                     if (route == null && !site.isCustom()) {
                         request.getRequestDispatcher("/template/" + site.getCustomerId() + servletPath).forward(request
                                 , response);
@@ -180,15 +178,5 @@ public class RouteFilter implements Filter {
     @Override
     public void destroy() {
 
-    }
-
-    private boolean isStaticResc(String path){
-        String staticRescSuffix[]={".js",".css",".png",".jpg",".jpeg",".gif"};
-        for(String s:staticRescSuffix){
-            if(path.endsWith(s)){
-                return true;
-            }
-        }
-        return false;
     }
 }

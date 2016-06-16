@@ -14,6 +14,7 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.service.HostService;
 import com.huotu.hotcms.service.service.RegionService;
 import com.huotu.hotcms.service.util.PatternMatchUtil;
+import com.huotu.hotcms.service.util.StaticResource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,7 +123,7 @@ public class SiteResolveService {
                 if(regionService.isRegionByCode(languageParam)){
                     site= getParamSite(request,languageParam);
                 }else{
-                    if(!request.getServletPath().contains("/manage")){
+                    if(!request.getServletPath().contains("/manage")&& StaticResource.isStaticResc(request.getContextPath())){
                         site= getEnvironmentSite(request);
                     }
                 }

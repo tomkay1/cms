@@ -15,7 +15,10 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -25,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Component
 public class WidgetHolder {
 
-    private final Widget widget;
+    private final Set<Widget> widgetSet;
 
     public WidgetHolder() throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
         Properties properties = new Properties();
@@ -33,14 +36,23 @@ public class WidgetHolder {
         try (InputStream inputStream = resource.getInputStream()) {
             properties.load(inputStream);
         }
-        assertThat(properties.getProperty("widgetClasses"))
+
+        String classes = properties.getProperty("widgetClasses");
+        assertThat(classes)
                 .isNotNull();
 
-        widget = (Widget) Class.forName(properties.getProperty("widgetClasses")).newInstance();
+        HashSet<Widget> widgetArrayList = new HashSet<>();
+        for (String clazz : classes.split(",")) {
+            Widget widget = (Widget) Class.forName(clazz.trim()).newInstance();
+            widgetArrayList.add(widget);
+        }
+
+        widgetSet = Collections.unmodifiableSet(widgetArrayList);
+//        widget = (Widget) Class.forName(properties.getProperty("widgetClasses")).newInstance();
     }
 
-    public Widget getWidget() {
-        return widget;
+    public Set<Widget> getWidgetSet() {
+        return widgetSet;
     }
 
 }

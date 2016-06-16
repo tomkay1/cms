@@ -10,6 +10,9 @@
 package com.huotu.widget.test.bean;
 
 import com.huotu.hotcms.widget.Widget;
+import com.huotu.widget.test.WidgetTestConfig;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.thymeleaf.IEngineConfiguration;
 import org.thymeleaf.cache.ICacheEntryValidity;
 import org.thymeleaf.cache.NonCacheableCacheEntryValidity;
@@ -25,6 +28,7 @@ import java.util.Map;
  *
  * @author CJ
  */
+@Component
 public class WidgetTemplateResolver extends AbstractTemplateResolver {
 
     /**
@@ -32,19 +36,25 @@ public class WidgetTemplateResolver extends AbstractTemplateResolver {
      *
      * @see Widget#editorTemplate()
      */
-    public static final String EDITOR = "EDITOR";
-    private final Widget widget;
+    public static final String EDITOR = "EDITOR/";
+    private final WidgetHolder holder;
 
-    public WidgetTemplateResolver(Widget widget) {
-        this.widget = widget;
+    @Autowired
+    public WidgetTemplateResolver(WidgetHolder holder) {
+        this.holder = holder;
     }
 
     @Override
     protected ITemplateResource computeTemplateResource(IEngineConfiguration configuration, String ownerTemplate
             , String template, Map<String, Object> templateResolutionAttributes) {
-        switch (template) {
-            case EDITOR:
-                return new SpringResourceTemplateResource(widget.editorTemplate(), "UTF-8");
+        if (template.startsWith(EDITOR)) {
+            // 寻找控件
+            String subName = template.substring(EDITOR.length());
+            for (Widget widget : holder.getWidgetSet()) {
+                if (WidgetTestConfig.WidgetIdentity(widget).equals(subName))
+                    return new SpringResourceTemplateResource(widget.editorTemplate(), "UTF-8");
+            }
+            throw new IllegalStateException("can not find such widget id:" + subName);
         }
         // SpringResourceTemplateResource
         return null;

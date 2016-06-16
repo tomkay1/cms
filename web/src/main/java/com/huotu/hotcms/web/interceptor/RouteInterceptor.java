@@ -33,6 +33,8 @@ public class RouteInterceptor extends HandlerInterceptorAdapter {
 
     private static final Log log = LogFactory.getLog(RouteInterceptor.class);
 
+    private static final String manage = "/manage/";
+
     @Autowired
     private SiteResolveService siteResolveService;
 
@@ -61,7 +63,9 @@ public class RouteInterceptor extends HandlerInterceptorAdapter {
                     modelAndView = new ModelAndView();
                 }
                 if (route == null) {
-                    modelAndView.setViewName(routeResolverService.getRouteTemplate(site, RouteType.NOT_FOUND));
+                    if(!servletPath.contains(manage)){
+                        modelAndView.setViewName(routeResolverService.getRouteTemplate(site, RouteType.NOT_FOUND));
+                    }
                 }
                 initModelAndView(modelAndView, site, route, request, response);
             } else {
@@ -111,8 +115,10 @@ public class RouteInterceptor extends HandlerInterceptorAdapter {
                 modelAndView.addObject("resourcePath", resourcePath);
                 modelAndView.addObject("request", requestService.ConvertRequestModel(request, site));
             } else {
-                modelAndView.setViewName(resourcePath + request.getServletPath());
-                modelAndView.addObject("request", requestService.ConvertRequestModel(request, site));
+                if(!request.getServletPath().contains(manage)){
+                    modelAndView.setViewName(resourcePath + request.getServletPath());
+                    modelAndView.addObject("request", requestService.ConvertRequestModel(request, site));
+                }
             }
         } catch (Exception ex) {
             log.error(ex.getMessage());

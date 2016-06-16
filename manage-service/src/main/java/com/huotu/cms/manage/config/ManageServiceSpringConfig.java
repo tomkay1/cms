@@ -10,6 +10,7 @@
 package com.huotu.cms.manage.config;
 
 import me.jiangcai.lib.embedweb.EmbedWeb;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -18,6 +19,7 @@ import org.springframework.context.annotation.Configuration;
  * @author CJ
  */
 @Configuration
+@ComponentScan("com.huotu.cms.manage")
 public class ManageServiceSpringConfig implements EmbedWeb {
 
 

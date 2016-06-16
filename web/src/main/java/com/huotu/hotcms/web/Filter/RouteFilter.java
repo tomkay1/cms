@@ -39,6 +39,7 @@ import java.io.IOException;
 public class RouteFilter implements Filter {
     private static final Log log = LogFactory.getLog(RouteFilter.class);
     private static final String filter = "interim/join";
+    private static final String manage = "/manage/";
     private static final String[] diy_filter = new String[]{"/shop", "/bind", "/template/0/", "/template/error/"
             , ".js", ".css"};//DIY网站过滤规则->(PC官网装修,PC商城装修)
     private ApplicationContext applicationContext;
@@ -47,6 +48,8 @@ public class RouteFilter implements Filter {
     private SiteResolveService siteResolveService;
     private RouteResolverService routeResolverService;
     private SiteConfigServiceImpl siteConfigService;
+
+    private static boolean isChecked=false;//拦截规则是否检测过
 
     private boolean isContains(String servletPath) {
         for (String str : diy_filter) {
@@ -96,6 +99,7 @@ public class RouteFilter implements Filter {
      */
     private boolean customizeFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws Exception {
+        isChecked=true;
         HttpServletRequest request1 = ((HttpServletRequest) request);
 
         Site site = siteResolveService.getCurrentSite(request1);
@@ -114,17 +118,18 @@ public class RouteFilter implements Filter {
         if (!servletPath.contains(filter)) {
             if (PatternMatchUtil.isMatchFilter(servletPath)) {
                 Route route = routeResolverService.getRoute(site, servletPath);
-                if (route == null && !site.isCustom()) {
-                    request.getRequestDispatcher("/template/" + site.getCustomerId() + servletPath).forward(request
-                            , response);
-                } else {
-                    if (!StringUtils.isEmpty(langParam)) {//语言参数不为空追加上语言参数并做服务端forward
-                        request.getRequestDispatcher("/web/" + langParam + servletPath).forward(request, response);
+                if(!isStaticResc(request1.getServletPath())){
+                    if (route == null && !site.isCustom()) {
+                        request.getRequestDispatcher("/template/" + site.getCustomerId() + servletPath).forward(request
+                                , response);
                     } else {
-                        request.getRequestDispatcher("/web" + servletPath).forward(request, response);
+                        if (!StringUtils.isEmpty(langParam)) {//语言参数不为空追加上语言参数并做服务端forward
+                            request.getRequestDispatcher("/web/" + langParam + servletPath).forward(request, response);
+                        } else {
+                            request.getRequestDispatcher("/web" + servletPath).forward(request, response);
+                        }
                     }
                 }
-                return false;
             }
         }
         return true;
@@ -157,10 +162,14 @@ public class RouteFilter implements Filter {
             }
             HttpServletRequest request1 = ((HttpServletRequest) request);
             Site site = siteResolveService.getCurrentSite(request1);
-            boolean Flag = site.isPersonalise() ? personaliseFilter(request, response, chain) :
-                    customizeFilter(request, response, chain);
-            if (!Flag)
-                return;
+
+            if(!((HttpServletRequest) request).getServletPath().contains(manage)){
+                boolean Flag = site.isPersonalise() ? personaliseFilter(request, response, chain) :
+                        customizeFilter(request, response, chain);
+                if (!Flag)
+                    return;
+            }
+
         } catch (Exception ex) {
             log.error("doFilter", ex);
         }
@@ -170,5 +179,15 @@ public class RouteFilter implements Filter {
     @Override
     public void destroy() {
 
+    }
+
+    private boolean isStaticResc(String path){
+        String staticRescSuffix[]={".js",".css",".png",".jpg",".jpeg",".gif"};
+        for(String s:staticRescSuffix){
+            if(path.endsWith(s)){
+                return true;
+            }
+        }
+        return false;
     }
 }

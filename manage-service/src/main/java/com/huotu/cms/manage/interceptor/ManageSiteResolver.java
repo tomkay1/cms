@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
  * Created by cwb on 2015/12/21.
  */
 @Component
-public class SiteResolver implements HandlerMethodArgumentResolver {
+public class ManageSiteResolver implements HandlerMethodArgumentResolver {
 
 
     @Autowired

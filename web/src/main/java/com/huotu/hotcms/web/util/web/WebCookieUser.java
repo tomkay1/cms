@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
  * Created by chendeyu on 2016/4/6.
  */
 @Component
-public class CookieUser {
+public class WebCookieUser {
 
     private static String UNIONID="_UNIONID";
 

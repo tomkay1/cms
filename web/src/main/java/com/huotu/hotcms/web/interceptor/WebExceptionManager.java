@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Created by Administrator on 2015/12/18.
  */
 @ControllerAdvice
-public class ExceptionManager {
+public class WebExceptionManager {
 
-    private static final Log log = LogFactory.getLog(ExceptionManager.class);
+    private static final Log log = LogFactory.getLog(WebExceptionManager.class);
 
     /**
      * 所有异常统一处理

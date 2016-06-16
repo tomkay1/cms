@@ -11,7 +11,7 @@ import com.huotu.hotcms.service.widget.model.GoodsDetail;
 import com.huotu.hotcms.service.widget.service.PageResourceService;
 import com.huotu.hotcms.service.widget.service.PageStaticResourceService;
 import com.huotu.hotcms.web.service.GoodsDetailService;
-import com.huotu.hotcms.web.util.web.CookieUser;
+import com.huotu.hotcms.web.util.web.WebCookieUser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +46,7 @@ public class ShopController {
     SiteResolveService siteResolveService;
 
     @Autowired
-    private CookieUser cookieUser;
+    private WebCookieUser cookieUser;
 
     @Autowired
     private PageResourceService pageResourceService;

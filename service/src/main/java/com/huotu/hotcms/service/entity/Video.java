@@ -60,8 +60,8 @@ public class Video extends BaseEntity {
     /**
      * 播放次数
      */
-    @Column(name = "palyTimes")
-    private int palyTimes;
+    @Column(name = "playTimes")
+    private int playTimes;
 
 //    /**
 //     * 所属栏目

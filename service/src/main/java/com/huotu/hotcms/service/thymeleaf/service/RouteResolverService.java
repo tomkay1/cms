@@ -2,8 +2,9 @@
  * 版权所有:杭州火图科技有限公司
  * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
  *
- *  (c) Copyright Hangzhou Hot Technology Co., Ltd.
- *  Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District 2013-2015. All rights reserved.
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
  */
 
 package com.huotu.hotcms.service.thymeleaf.service;
@@ -83,7 +84,8 @@ public class RouteResolverService {
      * */
     public String getRouteTemplate(Site site,RouteType routeType){
         if(site!=null&&routeType!=null){
-            String resourcePath = site.isCustom() ? site.getCustomTemplateUrl() : ConfigInfo.getRootTemplate(site.getCustomerId());
+            String resourcePath = site.isCustom() ? site.getCustomTemplateUrl() :
+                    ConfigInfo.getRootTemplate(site.getOwner().getId());
             if(routeType.getCode().equals(RouteType.NOT_FOUND.getCode())){
                 Route route=getRouteByRouteType(site, routeType);
                 if(route!=null){

@@ -36,18 +36,12 @@ public class GalleryList {
      * 站点ID
      */
     @JoinColumn(name = "siteId")
-    private Site siteId;
+    private Site site;
 
     /**
      * 序列号
      */
     private String serial;
-
-    /**
-     * 商户ID
-     */
-    @Column(name = "customerId")
-    private Integer customerId;
 
     /**
      * 排序权重

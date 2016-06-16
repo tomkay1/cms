@@ -1,3 +1,12 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 package com.huotu.cms.manage.controller.decoration;
 
 import com.huotu.hotcms.service.model.widget.WidgetPage;
@@ -30,9 +39,7 @@ public class BasicController {
     private PageResolveService pageResolveService;
 
     @RequestMapping("/{name}")
-    public ModelAndView widgetTypeList(HttpServletRequest request,
-                                       @RequestParam("customerid") Integer customerid,
-                                       @RequestParam("siteId") String siteId,
+    public ModelAndView widgetTypeList(@RequestParam("siteId") String siteId,
                                        @PathVariable("name") String name) throws Exception{
         ModelAndView modelAndView=new ModelAndView();
         String[] goods = {"dd","ss","zz"};
@@ -42,11 +49,10 @@ public class BasicController {
     }
 
     @RequestMapping("/edit")
-    public ModelAndView editMain(HttpServletRequest request,
-                                 @RequestParam("customerid") Integer customerid,
-                                 @RequestParam("siteId") String siteId,@RequestParam("url") String url) throws Exception{
+    public ModelAndView editMain(@RequestParam("ownerId") long ownerId,
+                                 @RequestParam("siteId") String siteId, @RequestParam("url") String url) throws Exception {
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.addObject("url",url+"?customerid="+customerid+"&siteId="+siteId);
+        modelAndView.addObject("url", url + "?ownerId=" + ownerId + "&siteId=" + siteId);
         modelAndView.setViewName("/decoration/edit/editMain.html");
         return  modelAndView;
     }

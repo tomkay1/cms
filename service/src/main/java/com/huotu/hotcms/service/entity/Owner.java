@@ -12,11 +12,13 @@ package com.huotu.hotcms.service.entity;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Objects;
 
 /**
  * cms 的owner,拥有一个可选的商户号对应伙伴商城
@@ -36,6 +38,20 @@ public class Owner {
     /**
      * 可选商户号
      */
+    @Column(name = "customerId")
     private Integer customerId;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Owner)) return false;
+        Owner owner = (Owner) o;
+        return Objects.equals(id, owner.id) &&
+                Objects.equals(customerId, owner.customerId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, customerId);
+    }
 }

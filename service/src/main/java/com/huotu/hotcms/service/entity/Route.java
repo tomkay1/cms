@@ -38,12 +38,6 @@ public class Route {
     private Long id;
 
     /**
-     * 商户ID
-     */
-    @Column(name = "customerId")
-    private Integer customerId;
-
-    /**
      * 排序权重
      */
     @Column(name = "orderWeight")

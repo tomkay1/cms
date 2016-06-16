@@ -1,3 +1,12 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.util.web.CookieUser;
@@ -78,12 +87,11 @@ public class LinkController {
     /**
      * 添加链接
      *
-     * @param customerId
      * @return
      * @throws Exception
      */
     @RequestMapping(value = "/addLink")
-    public ModelAndView addLink(Integer customerId) throws Exception {
+    public ModelAndView addLink() throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/view/widget/addLink.html");
         return modelAndView;
@@ -93,12 +101,12 @@ public class LinkController {
      * 修改链接
      *
      * @param id
-     * @param customerId
+     * @param ownerId
      * @return
      * @throws Exception
      */
     @RequestMapping("/updateLink")
-    public ModelAndView updateLink(@RequestParam(value = "id", defaultValue = "0") Long id, Integer customerId) throws Exception {
+    public ModelAndView updateLink(@RequestParam(value = "id", defaultValue = "0") Long id, long ownerId) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         try {
             modelAndView.setViewName("/view/contents/updateLink.html");
@@ -109,7 +117,7 @@ public class LinkController {
             }
             Category category = link.getCategory();
             Integer modelType = category.getModelId();
-            Set<Category> categorys = categoryRepository.findByCustomerIdAndModelId(customerId, modelType);
+            Set<Category> categorys = categoryRepository.findBySite_Owner_IdAndModerId(ownerId, modelType);
             modelAndView.addObject("logo_uri", logo_uri);
             modelAndView.addObject("categorys", categorys);
             modelAndView.addObject("link", link);
@@ -131,7 +139,7 @@ public class LinkController {
     @Transactional(value = "transactionManager")
     @ResponseBody
     public ResultView saveLink(Link link, Long categoryId) {
-        ResultView result = null;
+        ResultView result;
         try {
             Long id = link.getId();
             Category category = categoryRepository.getOne(categoryId);
@@ -157,7 +165,7 @@ public class LinkController {
     /**
      * 获取链接链表页内容
      *
-     * @param customerId
+     * @param ownerId
      * @param title
      * @param page
      * @param pageSize
@@ -165,28 +173,28 @@ public class LinkController {
      */
     @RequestMapping(value = "/getLinkList")
     @ResponseBody
-    public PageData<LinkCategory> getLinkList(@RequestParam(name = "customerId", required = false) Integer customerId,
+    public PageData<LinkCategory> getLinkList(@RequestParam(name = "ownerId") long ownerId,
                                               @RequestParam(name = "title", required = false) String title,
                                               @RequestParam(name = "page", required = true, defaultValue = "1") int page,
                                               @RequestParam(name = "pagesize", required = true, defaultValue = "20") int pageSize) {
-        PageData<LinkCategory> pageModel = linkService.getPage(customerId, title, page, pageSize);
-        return pageModel;
+        return linkService.getPage(ownerId, title, page, pageSize);
     }
 
     /**
      * 删除(管理员权限)
      *
      * @param id
-     * @param customerId
+     * @param ownerId
      * @param request
      * @return
      */
     @RequestMapping(value = "/deleteLink", method = RequestMethod.POST)
     @ResponseBody
-    public ResultView deleteLink(@RequestParam(name = "id", required = true, defaultValue = "0") Long id, int customerId, HttpServletRequest request) {
+    public ResultView deleteLink(@RequestParam(name = "id", defaultValue = "0") Long id, long ownerId
+            , HttpServletRequest request) {
         ResultView result = null;
         try {
-            if (cookieUser.getCustomerId(request) == customerId) {
+            if (cookieUser.getOwnerId(request) == ownerId) {
                 Link link = linkService.findById(id);
                 linkRepository.delete(link);
 //                link.setDeleted(true);

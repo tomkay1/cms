@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -33,7 +34,9 @@ public class Notice extends BaseEntity {
 
     /**
      * 公告内容
+     * 应当是富文本
      */
+    @Lob
     private String content;
 
 

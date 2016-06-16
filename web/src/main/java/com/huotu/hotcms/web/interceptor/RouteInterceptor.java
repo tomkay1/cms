@@ -1,3 +1,12 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 package com.huotu.hotcms.web.interceptor;
 
 import com.huotu.hotcms.service.common.RouteType;
@@ -91,13 +100,14 @@ public class RouteInterceptor extends HandlerInterceptorAdapter {
      */
     private ModelAndView initModelAndView(ModelAndView modelAndView, Site site, Route route, HttpServletRequest request, HttpServletResponse response) {
         try {
-            String resourcePath = site.isCustom() ? site.getCustomTemplateUrl() : ConfigInfo.getRootTemplate(site.getCustomerId());
+            String resourcePath = site.isCustom() ? site.getCustomTemplateUrl() : ConfigInfo.getRootTemplate(site.getOwner().getId());
             if (route != null) {
                 if (route.getRouteType() != null) {
                     if (route.getRouteType().getCode().equals(RouteType.ARTICLE_CONTENT.getCode())) {
                         Article article = articleResolveService.getArticleBySiteAndRequest(site, request);
                         if (article != null) {
-                            if (article.getCustomerId().equals(site.getCustomerId())) {
+                            // TODO 必须是自己站点的 这个逻辑对么?
+                            if (article.getCategory().getSite().getSiteId().equals(site.getSiteId())) {
                                 modelAndView.addObject("article", article);
                                 modelAndView.setViewName(resourcePath + route.getTemplate());
                             } else {//不是该商户下面的文章则给出404页面

@@ -26,6 +26,7 @@ import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 /**
+ * 没搞明白这个是做什么的
  * Created by chendeyu on 2016/5/6.
  */
 @Entity
@@ -37,12 +38,6 @@ public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    /**
-     * 商户ID
-     */
-    @Column(name = "customerId")
-    private Integer customerId;
 
     /**
      * 留言用户

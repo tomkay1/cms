@@ -1,3 +1,12 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 package com.huotu.hotcms.web.Filter;
 
 import com.huotu.hotcms.service.entity.Route;
@@ -40,14 +49,12 @@ public class RouteFilter implements Filter {
     private static final String manage = "/manage/";
     private static final String[] diy_filter = new String[]{"/shop", "/bind", "/template/0/", "/template/error/"
             , ".js", ".css"};//DIY网站过滤规则->(PC官网装修,PC商城装修)
+    private static boolean isChecked = false;//拦截规则是否检测过
     private ApplicationContext applicationContext;
     private ServletContext servletContext;
-
     private SiteResolveService siteResolveService;
     private RouteResolverService routeResolverService;
     private SiteConfigServiceImpl siteConfigService;
-
-    private static boolean isChecked=false;//拦截规则是否检测过
 
     private boolean isContains(String servletPath) {
         for (String str : diy_filter) {
@@ -102,7 +109,7 @@ public class RouteFilter implements Filter {
 
         Site site = siteResolveService.getCurrentSite(request1);
         //目前为了兼容我们公司自己的官网，暂时先这样处理兼容,后面考虑在网站配置中新增一个字段(是否有手机官网，如果有则做该业务判断),统一使用m.xxx.com为手机官网地址
-        if (site.getCustomerId().equals(5)) {
+        if (site.getOwner().getCustomerId() == 5) {
             boolean isMobile = CheckMobile.check(request1);
             if (isMobile) {
                 String mobileUrl = CheckMobile.getMobileUrl(request1);
@@ -118,7 +125,7 @@ public class RouteFilter implements Filter {
                 Route route = routeResolverService.getRoute(site, servletPath);
                 if(!StaticResource.isStaticResc(request1.getServletPath())){
                     if (route == null && !site.isCustom()) {
-                        request.getRequestDispatcher("/template/" + site.getCustomerId() + servletPath).forward(request
+                        request.getRequestDispatcher("/template/" + site.getOwner().getId() + servletPath).forward(request
                                 , response);
                     } else {
                         if (!StringUtils.isEmpty(langParam)) {//语言参数不为空追加上语言参数并做服务端forward

@@ -29,11 +29,11 @@ import javax.persistence.UniqueConstraint;
 @Setter
 public class Article extends BaseEntity {
 
-
     /**
      * 缩略图
+     * TODO path? url?
      */
-    @Column(name = "thumbUri")
+    @Column(name = "thumbUri", length = 200)
     private String thumbUri;
 
     /**
@@ -70,7 +70,7 @@ public class Article extends BaseEntity {
     /**
      * 作者
      */
-    @Column(name = "author")
+    @Column(name = "author", length = 80)
     private String author;
 
     /**

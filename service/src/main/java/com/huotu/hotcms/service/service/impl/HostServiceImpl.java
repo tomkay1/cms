@@ -1,9 +1,16 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 package com.huotu.hotcms.service.service.impl;
 
 import com.huotu.hotcms.service.entity.Host;
-import com.huotu.hotcms.service.entity.Region;
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.model.Result;
 import com.huotu.hotcms.service.repository.HostRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.service.HostService;
@@ -13,9 +20,7 @@ import com.huotu.hotcms.service.util.SerialUtil;
 import com.huotu.hotcms.service.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -188,13 +193,13 @@ public class HostServiceImpl implements HostService {
                 Host host = getHost(domain);
                 if (host == null) {//全新域名
                     host = new Host();
-                    host.setCustomerId(site.getCustomerId());
+                    host.setOwner(site.getOwner());
                     host.setDomain(domain);
                     host.setSerial(SerialUtil.formartSerial(site));
                     host=setHome(host,homeDomains);
                     site.addHost(host);
                 } else {
-                    if (host.getCustomerId().equals(site.getCustomerId())) {//如果是同一商户
+                    if (host.getOwner().equals(site.getOwner())) {//如果是同一商户
                         List<Site> siteList = siteRepository.findByHosts(host);
                         List<Long> regionList = new ArrayList<>();
                         for (Site site1 : siteList) {
@@ -226,13 +231,13 @@ public class HostServiceImpl implements HostService {
                 Host host =getHost(domain);
                 if (host == null) {//全新域名
                     host = new Host();
-                    host.setCustomerId(site.getCustomerId());
+                    host.setOwner(site.getOwner());
                     host.setDomain(domain);
                     host=setHome(host,homeDomains);
                     hosts.add(host);
 //                    site.addHost(host);
                 } else {//不是全新域名
-                    if (host.getCustomerId().equals(site.getCustomerId())) {
+                    if (host.getOwner().equals(site.getOwner())) {
                         host=setHome(host,homeDomains);
                         hosts.add(host);
 //                        site.addHost(host);
@@ -264,7 +269,7 @@ public class HostServiceImpl implements HostService {
     @Override
     public Host getHomeHost(Site site) {
         for (Host host:site.getHosts()){
-            if(host.getHome()){
+            if (host.isHome()) {
                 return host;
             }
         }

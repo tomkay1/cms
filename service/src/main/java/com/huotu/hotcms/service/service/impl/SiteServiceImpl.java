@@ -1,10 +1,40 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 package com.huotu.hotcms.service.service.impl;
 
 import com.huotu.hotcms.service.common.ConfigInfo;
-import com.huotu.hotcms.service.entity.*;
+import com.huotu.hotcms.service.entity.Article;
+import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.CustomPages;
+import com.huotu.hotcms.service.entity.Download;
+import com.huotu.hotcms.service.entity.Gallery;
+import com.huotu.hotcms.service.entity.GalleryList;
+import com.huotu.hotcms.service.entity.Link;
+import com.huotu.hotcms.service.entity.Notice;
+import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.entity.Template;
+import com.huotu.hotcms.service.entity.Video;
 import com.huotu.hotcms.service.model.widget.WidgetDefaultPage;
 import com.huotu.hotcms.service.model.widget.WidgetPage;
-import com.huotu.hotcms.service.repository.*;
+import com.huotu.hotcms.service.repository.ArticleRepository;
+import com.huotu.hotcms.service.repository.CategoryRepository;
+import com.huotu.hotcms.service.repository.CustomPagesRepository;
+import com.huotu.hotcms.service.repository.DownloadRepository;
+import com.huotu.hotcms.service.repository.GalleryListRepository;
+import com.huotu.hotcms.service.repository.GalleryRepository;
+import com.huotu.hotcms.service.repository.HostRepository;
+import com.huotu.hotcms.service.repository.LinkRepository;
+import com.huotu.hotcms.service.repository.NoticeRepository;
+import com.huotu.hotcms.service.repository.SiteRepository;
+import com.huotu.hotcms.service.repository.TemplateRepository;
+import com.huotu.hotcms.service.repository.VideoRepository;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.util.HttpUtils;
 import com.huotu.hotcms.service.util.PageData;
@@ -17,9 +47,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import javax.persistence.criteria.Predicate;
 import javax.xml.bind.JAXB;
 import java.io.IOException;
@@ -77,7 +105,7 @@ public class SiteServiceImpl implements SiteService {
 
 
     @Override
-    public PageData<Site> getPage(Integer customerId,String name, int page, int pageSize) {
+    public PageData<Site> getPage(long ownerId, String name, int page, int pageSize) {
         PageData<Site> data = null;
         Specification<Site> specification = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
@@ -85,7 +113,7 @@ public class SiteServiceImpl implements SiteService {
                 predicates.add(cb.like(root.get("name").as(String.class), "%" + name + "%"));
             }
             predicates.add(cb.equal(root.get("deleted").as(String.class), false));
-            predicates.add(cb.equal(root.get("customerId").as(Integer.class), customerId));
+            predicates.add(cb.equal(root.get("owner").get("id").as(Long.class), ownerId));
             return cb.and(predicates.toArray(new Predicate[predicates.size()]));
         };
         Page<Site> pageData = siteRepository.findAll(specification,new PageRequest(page - 1, pageSize));
@@ -94,22 +122,15 @@ public class SiteServiceImpl implements SiteService {
             for(Site site1 : site){
                 site1.setHosts(null);
             }
-            data = new PageData<Site>();
+            data = new PageData<>();
             data.setPageCount(pageData.getTotalPages());
             data.setPageIndex(pageData.getNumber());
             data.setPageSize(pageData.getSize());
             data.setTotal(pageData.getTotalElements());
-            data.setRows((Site[])pageData.getContent().toArray(new Site[pageData.getContent().size()]));
+            data.setRows(pageData.getContent().toArray(new Site[pageData.getContent().size()]));
         }
         return  data;
     }
-
-    @Override
-    public Site findBySiteIdAndCustomerId(Long siteId,int customerId) {
-        Site site =siteRepository.findBySiteIdAndCustomerId(siteId,customerId);
-        return  site;
-    }
-
 
     @Override
     public Site getSite(long siteId) {
@@ -128,8 +149,8 @@ public class SiteServiceImpl implements SiteService {
     }
 
     @Override
-    public Set<Site> findByCustomerIdAndDeleted(Integer customerId, boolean deleted) {
-       Set<Site> siteList=siteRepository.findByCustomerIdAndDeleted(customerId,deleted);
+    public Set<Site> findByOwnerIdAndDeleted(long ownerId, boolean deleted) {
+        Set<Site> siteList = siteRepository.findByOwner_IdAndDeleted(ownerId, deleted);
         for(Site site : siteList){
             site.setHosts(null);
             site.setRegion(null);
@@ -145,15 +166,12 @@ public class SiteServiceImpl implements SiteService {
         Site templateSite=template.getSite();
         List<CustomPages> customPages=customPagesRepository.findBySite(templateSite);
         for(CustomPages customPage:customPages){
-            String templateResourceConfigUrl=configInfo.getResourcesConfig(templateSite.getCustomerId()
-                    ,templateSite.getSiteId())+"/"+customPage.getId()+".xml";
-            if(templateResourceConfigUrl!=null){
-                URI url= resourceService.getResource(templateResourceConfigUrl);
-                InputStream inputStream = HttpUtils.getInputStreamByUrl(url.toURL());
-                WidgetPage widgetPage = JAXB.unmarshal(inputStream, WidgetPage.class);
-                pageResolveService.createPageAndConfigByWidgetPage(widgetPage,customerSite.getCustomerId()
-                        ,customerSite.getSiteId(),false);
-            }
+            String templateResourceConfigUrl = configInfo.getResourcesConfig(templateSite) + "/" + customPage.getId() + ".xml";
+            URI url = resourceService.getResource(templateResourceConfigUrl);
+            InputStream inputStream = HttpUtils.getInputStreamByUrl(url.toURL());
+            WidgetPage widgetPage = JAXB.unmarshal(inputStream, WidgetPage.class);
+            pageResolveService.createPageAndConfigByWidgetPage(widgetPage,
+                    customerSite.getSiteId(), false);
         }
         createDefaultWidgetPage(templateSite, customerSite);
         deepCopy(templateSite, customerSite);
@@ -173,7 +191,6 @@ public class SiteServiceImpl implements SiteService {
             Category newCategory=new Category();
             newCategory.setSerial(SerialUtil.formartSerial(customerSite));
             newCategory.setSite(customerSite);
-            newCategory.setCustomerId(customerSite.getCustomerId());
             newCategory.setParent(category.getParent());
             newCategory.setName(category.getName());
             newCategory.setCustom(category.isCustom());
@@ -193,7 +210,6 @@ public class SiteServiceImpl implements SiteService {
             if(customPage.isPublish()){//只复制发布了的，不复制草稿箱中的
                 CustomPages newCustomPage=new CustomPages();
                 newCustomPage.setSerial(SerialUtil.formartSerial(customerSite));
-                newCustomPage.setCustomerId(customerSite.getCustomerId());
                 newCustomPage.setName(customPage.getName());
                 newCustomPage.setOrderWeight(customPage.getOrderWeight());
                 newCustomPage.setCreateTime(customPage.getCreateTime());
@@ -217,7 +233,6 @@ public class SiteServiceImpl implements SiteService {
        List<Article> articles=articleRepository.findByCategory(category);
         for(Article article:articles){
             Article newArticle=new Article();
-            newArticle.setCustomerId(customerSite.getCustomerId());
             newArticle.setCategory(category);
             newArticle.setDescription(article.getDescription());
             newArticle.setDeleted(article.isDeleted());
@@ -228,7 +243,6 @@ public class SiteServiceImpl implements SiteService {
             newArticle.setThumbUri(article.getThumbUri());
             newArticle.setOrderWeight(article.getOrderWeight());
             newArticle.setSerial(SerialUtil.formartSerial(customerSite));
-            newArticle.setSiteId(customerSite);
             newArticle.setTitle(article.getTitle());
             newArticle.setCreateTime(article.getCreateTime());
             newArticle.setUpdateTime(article.getUpdateTime());
@@ -242,11 +256,9 @@ public class SiteServiceImpl implements SiteService {
             d.setUpdateTime(download.getUpdateTime());
             d.setTitle(download.getTitle());
             d.setCreateTime(download.getCreateTime());
-            d.setSiteId(customerSite);
             d.setSerial(SerialUtil.formartSerial(customerSite));
             d.setDownloadUrl(download.getDownloadUrl());
             d.setCategory(category);
-            d.setCustomerId(customerSite.getCustomerId());
             d.setDescription(download.getDescription());
             d.setDeleted(download.isDeleted());
             downloadRepository.save(d);
@@ -259,14 +271,12 @@ public class SiteServiceImpl implements SiteService {
             g.setOrderWeight(gallery.getOrderWeight());
             g.setUpdateTime(gallery.getUpdateTime());
             g.setDescription(gallery.getDescription());
-            g.setCustomerId(customerSite.getCustomerId());
             g.setContent(gallery.getContent());
             g.setLinkUrl(gallery.getLinkUrl());
             g.setThumbUri(gallery.getThumbUri());
             g.setCategory(category);
             g.setSerial(SerialUtil.formartSerial(customerSite));
             g.setTitle(gallery.getTitle());
-            g.setSiteId(customerSite);
             g.setCreateTime(gallery.getCreateTime());
 
             g=galleryRepository.save(g);
@@ -275,10 +285,9 @@ public class SiteServiceImpl implements SiteService {
             for(GalleryList gl:galleryLists){
                 GalleryList galleryList=new GalleryList();
                 galleryList.setGallery(g);
-                galleryList.setSiteId(customerSite);
+                galleryList.setSite(customerSite);
                 galleryList.setUpdateTime(gl.getUpdateTime());
                 galleryList.setOrderWeight(gl.getOrderWeight());
-                galleryList.setCustomerId(customerSite.getCustomerId());
                 galleryList.setSerial(SerialUtil.formartSerial(customerSite));
                 galleryList.setSize(gl.getSize());
                 galleryList.setThumbUri(gl.getThumbUri());
@@ -293,14 +302,12 @@ public class SiteServiceImpl implements SiteService {
             Link link1=new Link();
             link1.setOrderWeight(link.getOrderWeight());
             link1.setUpdateTime(link.getUpdateTime());
-            link1.setSiteId(customerSite);
             link1.setTitle(link.getTitle());
             link1.setSerial(SerialUtil.formartSerial(customerSite));
             link1.setLinkUrl(link.getLinkUrl());
             link1.setThumbUri(link.getThumbUri());
             link1.setCategory(link.getCategory());
             link1.setCreateTime(link.getCreateTime());
-            link1.setCustomerId(customerSite.getCustomerId());
             link1.setDescription(link.getDescription());
             link1.setDeleted(link.isDeleted());
             linkRepository.save(link1);
@@ -314,11 +321,9 @@ public class SiteServiceImpl implements SiteService {
             notice1.setUpdateTime(notice.getUpdateTime());
             notice1.setCreateTime(notice.getCreateTime());
             notice1.setDescription(notice.getDescription());
-            notice1.setCustomerId(customerSite.getCustomerId());
             notice1.setContent(notice.getContent());
             notice1.setCategory(category);
             notice1.setSerial(SerialUtil.formartSerial(customerSite));
-            notice1.setSiteId(customerSite);
             notice1.setTitle(notice.getTitle());
             noticeRepository.save(notice1);
         }
@@ -329,13 +334,11 @@ public class SiteServiceImpl implements SiteService {
             v.setOrderWeight(video.getOrderWeight());
             v.setUpdateTime(video.getUpdateTime());
             v.setTitle(video.getTitle());
-            v.setSiteId(customerSite);
             v.setSerial(SerialUtil.formartSerial(customerSite));
             v.setCategory(category);
             v.setOutLinkUrl(video.getOutLinkUrl());
             v.setThumbUri(video.getThumbUri());
             v.setVideoUrl(video.getVideoUrl());//视频地址 ？
-            v.setCustomerId(customerSite.getCustomerId());
             v.setDescription(video.getDescription());
             v.setDeleted(video.isDeleted()); //是否需要将此作为条件
             videoRepository.save(v);
@@ -365,8 +368,8 @@ public class SiteServiceImpl implements SiteService {
         for(WidgetDefaultPage widgetDefaultPage:WidgetDefaultPage.values()){
             WidgetPage defaultWidgetPage=pageResolveService.getWidgetPageByConfig(widgetDefaultPage.name()+".xml", templateSite);
             if(defaultWidgetPage!=null){
-                pageResolveService.createDefaultPageConfigByWidgetPage(defaultWidgetPage,customerSite.getCustomerId()
-                        ,customerSite.getSiteId(),widgetDefaultPage.name());
+                pageResolveService.createDefaultPageConfigByWidgetPage(defaultWidgetPage,
+                        customerSite.getSiteId(), widgetDefaultPage.name());
             }
         }
     }

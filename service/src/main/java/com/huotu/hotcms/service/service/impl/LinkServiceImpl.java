@@ -1,5 +1,15 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 package com.huotu.hotcms.service.service.impl;
 
+import com.huotu.hotcms.service.entity.BaseEntity;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.model.LinkCategory;
@@ -39,17 +49,10 @@ public class LinkServiceImpl implements LinkService {
 
 
     @Override
-    public PageData<LinkCategory> getPage(Integer customerId, String title, int page, int pageSize) {
+    public PageData<LinkCategory> getPage(long ownerId, String title, int page, int pageSize) {
         PageData<LinkCategory> data = null;
-        Specification<Link> specification = (root, query, cb) -> {
-            List<Predicate> predicates = new ArrayList<>();
-            if (!StringUtils.isEmpty(title)) {
-                predicates.add(cb.like(root.get("title").as(String.class), "%" + title + "%"));
-            }
-            predicates.add(cb.equal(root.get("deleted").as(String.class), false));
-            predicates.add(cb.equal(root.get("customerId").as(Integer.class), customerId));
-            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
-        };
+        Specification<Link> specification = BaseEntity.Specification(ownerId, title, false);
+
         Page<Link> pageData = linkRepository.findAll(specification,new PageRequest(page - 1, pageSize));
         if (pageData != null) {
             List<Link> links =pageData.getContent();
@@ -63,12 +66,12 @@ public class LinkServiceImpl implements LinkService {
                 linkCategory.setTitle(link.getTitle());
                 linkCategoryList.add(linkCategory);
             }
-            data = new PageData<LinkCategory>();
+            data = new PageData<>();
             data.setPageCount(pageData.getTotalPages());
             data.setPageIndex(pageData.getNumber());
             data.setPageSize(pageData.getSize());
             data.setTotal(pageData.getTotalElements());
-            data.setRows((LinkCategory[])linkCategoryList.toArray(new LinkCategory[linkCategoryList.size()]));
+            data.setRows(linkCategoryList.toArray(new LinkCategory[linkCategoryList.size()]));
         }
         return  data;
     }
@@ -81,28 +84,8 @@ public class LinkServiceImpl implements LinkService {
 
     @Override
     public Link findById(Long id) {
-        Link link= linkRepository.findOne(id);
-        return link ;
+        return linkRepository.findOne(id);
     }
-
-//    @Override
-//    public Page<Link> getLinkList(NormalForeachParam param) {
-//        Sort sort = new Sort(Sort.Direction.DESC,"orderWeight");
-//        Specification<Link> specification = (root, query, cb) -> {
-//          List<Predicate> predicates;
-//            if(!StringUtils.isEmpty(param.getExcludeIds())) {
-//                List<String> ids = Arrays.asList(param.getExcludeIds());
-//                List<Long> linkIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
-//                predicates = linkIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class),id)).collect(Collectors.toList());
-//            }else {
-//                predicates = new ArrayList<>();
-//            }
-//            predicates.add(cb.equal(root.get("category").get("id").as(Long.class),param.getCategoryId()));
-//            predicates.add(cb.equal(root.get("deleted").as(Boolean.class),false));
-//            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
-//        };
-//        return linkRepository.findAll(specification,new PageRequest(0,param.getSize(),sort)).getContent();
-//    }
 
     @Override
     public List<Link> getSpecifyLinks(String[] specifyIds) {

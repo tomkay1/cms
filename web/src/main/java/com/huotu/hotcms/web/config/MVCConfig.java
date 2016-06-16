@@ -55,8 +55,40 @@ import java.util.Set;
         "com.huotu.hotcms.service.thymeleaf.expression",
         "com.huotu.hotcms.service.thymeleaf.service",
 })
-@Import({JpaConfig.class, ServiceConfig.class, WebHost.class, ManageServiceSpringConfig.class})
+@Import({MVCConfig.MVCConfigLoader.class, JpaConfig.class, ServiceConfig.class, WebHost.class, ManageServiceSpringConfig.class})
 public class MVCConfig extends WebMvcConfigurerAdapter {
+
+    static class MVCConfigLoader{
+
+        @Autowired
+        private ApplicationContext applicationContext;
+        @Autowired
+        private Set<IDialect> dialectSet;
+
+        private ITemplateEngine templateEngine(ITemplateResolver templateResolver) {
+            SpringTemplateEngine engine = new SpringTemplateEngine();
+            engine.setTemplateResolver(templateResolver);
+            dialectSet.forEach(engine::addDialect);
+            return engine;
+        }
+
+        private ITemplateResolver widgetTemplateResolver() {
+            WidgetTemplateResolver resolver = new WidgetTemplateResolver();
+            resolver.setCharacterEncoding(UTF8);
+            resolver.setApplicationContext(applicationContext);
+            resolver.setTemplateMode(TemplateMode.HTML);
+            return resolver;
+        }
+
+        @Bean
+        public ThymeleafViewResolver widgetViewResolver() {
+            ThymeleafViewResolver resolver = new ThymeleafViewResolver();
+            resolver.setViewNames(ArrayUtil.array("*.cshtml"));
+            resolver.setCharacterEncoding(UTF8);
+            resolver.setTemplateEngine(templateEngine(widgetTemplateResolver()));
+            return resolver;
+        }
+    }
 
     private static final String UTF8 = "UTF-8";
 
@@ -135,27 +167,13 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         return resolver;
     }
 
-    @Bean
-    public ThymeleafViewResolver widgetViewResolver() {
-        ThymeleafViewResolver resolver = new ThymeleafViewResolver();
-        resolver.setViewNames(ArrayUtil.array("*.cshtml"));
-        resolver.setCharacterEncoding(UTF8);
-//        resolver.setTemplateEngine(templateEngine(widgetTemplateResolver()));
-        return resolver;
-    }
 
-    @Autowired
-    public void setWidgetViewResolver(ThymeleafViewResolver widgetViewResolver){
-        widgetViewResolver.setTemplateEngine(templateEngine(widgetTemplateResolver()));
-    }
+//    @Autowired
+//    public void setWidgetViewResolver(ThymeleafViewResolver widgetViewResolver){
+//        widgetViewResolver.setTemplateEngine(templateEngine(widgetTemplateResolver()));
+//    }
 
-    private ITemplateResolver widgetTemplateResolver() {
-        WidgetTemplateResolver resolver = new WidgetTemplateResolver();
-        resolver.setCharacterEncoding(UTF8);
-        resolver.setApplicationContext(applicationContext);
-        resolver.setTemplateMode(TemplateMode.HTML);
-        return resolver;
-    }
+
 
     public ITemplateEngine templateEngine(ITemplateResolver templateResolver) {
         SpringTemplateEngine engine = new SpringTemplateEngine();

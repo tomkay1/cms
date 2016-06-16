@@ -70,7 +70,7 @@ public interface Widget {
      * 这个控件所需要的公开静态资源
      * key为资源的名字,可以通过在thymeleaf的w:src或者s:href属性获取运行时准确URL
      *
-     * @return
+     * @return 没有的话可以为null
      */
     Map<String, Resource> publicResources();
 

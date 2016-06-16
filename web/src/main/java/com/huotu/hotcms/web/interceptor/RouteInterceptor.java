@@ -54,26 +54,28 @@ public class RouteInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        Site site = siteResolveService.getCurrentSite(request);
-        if (!site.isPersonalise()) {
-            String servletPath = PatternMatchUtil.getServletPath(site, request);
-            if (site != null) {
-                Route route = routeResolverService.getRoute(site, servletPath);
-                if (modelAndView == null) {
-                    modelAndView = new ModelAndView();
-                }
-                if (route == null) {
-                    if(!servletPath.contains(manage)){
-                        modelAndView.setViewName(routeResolverService.getRouteTemplate(site, RouteType.NOT_FOUND));
+        if(!request.getServletPath().contains("/manage")){
+            Site site = siteResolveService.getCurrentSite(request);
+            if (!site.isPersonalise()) {
+                String servletPath = PatternMatchUtil.getServletPath(site, request);
+                if (site != null) {
+                    Route route = routeResolverService.getRoute(site, servletPath);
+                    if (modelAndView == null) {
+                        modelAndView = new ModelAndView();
                     }
+                    if (route == null) {
+                        if(!servletPath.contains(manage)){
+                            modelAndView.setViewName(routeResolverService.getRouteTemplate(site, RouteType.NOT_FOUND));
+                        }
+                    }
+                    initModelAndView(modelAndView, site, route, request, response);
+                } else {
+                    modelAndView.setViewName(routeResolverService.getRouteTemplate(site, RouteType.SERVER_ERROR));
                 }
-                initModelAndView(modelAndView, site, route, request, response);
             } else {
-                modelAndView.setViewName(routeResolverService.getRouteTemplate(site, RouteType.SERVER_ERROR));
+                modelAndView.addObject("site", site);
+                modelAndView.addObject("request", requestService.ConvertRequestModel(request, site));
             }
-        } else {
-            modelAndView.addObject("site", site);
-            modelAndView.addObject("request", requestService.ConvertRequestModel(request, site));
         }
     }
 

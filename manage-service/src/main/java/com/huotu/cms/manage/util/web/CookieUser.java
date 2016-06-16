@@ -10,6 +10,7 @@
 package com.huotu.cms.manage.util.web;
 import com.huotu.hotcms.service.common.CMSEnums;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  * @since 1.0
  * @author xhl
  */
-@Component
+@Service
 public class CookieUser {
 
     public CookieUser(){

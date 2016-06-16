@@ -13,6 +13,7 @@ import com.huotu.cms.manage.config.ManageServiceSpringConfig;
 import com.huotu.hotcms.service.config.JpaConfig;
 import com.huotu.hotcms.service.config.ServiceConfig;
 import com.huotu.hotcms.service.thymeleaf.templateresolver.WidgetTemplateResolver;
+import com.huotu.hotcms.web.interceptor.LoginInterceptor;
 import com.huotu.hotcms.web.interceptor.RouteInterceptor;
 import com.huotu.hotcms.web.interceptor.SiteResolver;
 import com.huotu.hotcms.web.util.ArrayUtil;
@@ -103,6 +104,9 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private Set<IDialect> dialectSet;
 
+    @Autowired
+    LoginInterceptor loginInterceptor;
+
     /**
      * 允许访问静态资源
      * @param configurer
@@ -130,6 +134,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(routeInterceptor);
+        registry.addInterceptor(loginInterceptor);
     }
 
     public ViewResolver htmlViewResolver() {

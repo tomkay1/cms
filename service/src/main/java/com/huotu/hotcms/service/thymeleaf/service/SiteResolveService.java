@@ -122,7 +122,9 @@ public class SiteResolveService {
                 if(regionService.isRegionByCode(languageParam)){
                     site= getParamSite(request,languageParam);
                 }else{
-                    site= getEnvironmentSite(request);
+                    if(!request.getServletPath().contains("/manage")){
+                        site= getEnvironmentSite(request);
+                    }
                 }
             }
         }

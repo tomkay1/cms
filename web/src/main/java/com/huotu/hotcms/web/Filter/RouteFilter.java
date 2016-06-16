@@ -161,13 +161,14 @@ public class RouteFilter implements Filter {
                 siteConfigService = applicationContext.getBean("siteConfigServiceImpl", SiteConfigServiceImpl.class);
             }
             HttpServletRequest request1 = ((HttpServletRequest) request);
-            Site site = siteResolveService.getCurrentSite(request1);
-
-            if(!((HttpServletRequest) request).getServletPath().contains(manage)){
-                boolean Flag = site.isPersonalise() ? personaliseFilter(request, response, chain) :
-                        customizeFilter(request, response, chain);
-                if (!Flag)
-                    return;
+            if(!((HttpServletRequest) request).getServletPath().contains(manage)){//非管理地址才会进行域名，站点等的判断
+                Site site = siteResolveService.getCurrentSite(request1);
+                if(!((HttpServletRequest) request).getServletPath().contains(manage)){
+                    boolean Flag = site.isPersonalise() ? personaliseFilter(request, response, chain) :
+                            customizeFilter(request, response, chain);
+                    if (!Flag)
+                        return;
+                }
             }
 
         } catch (Exception ex) {

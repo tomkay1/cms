@@ -1,4 +1,4 @@
-package com.huotu.cms.manage.interceptor;
+package com.huotu.hotcms.web.interceptor;
 
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.repository.SiteRepository;

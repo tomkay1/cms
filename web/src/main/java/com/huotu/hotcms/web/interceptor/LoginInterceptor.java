@@ -1,4 +1,4 @@
-package com.huotu.cms.manage.interceptor;
+package com.huotu.hotcms.web.interceptor;
 
 import com.huotu.cms.manage.util.web.CookieUser;
 import com.huotu.cms.manage.util.web.QueryHelper;

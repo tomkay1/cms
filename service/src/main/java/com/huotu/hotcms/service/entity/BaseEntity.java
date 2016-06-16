@@ -9,8 +9,10 @@
 
 package com.huotu.hotcms.service.entity;
 
+import com.huotu.hotcms.service.model.thymeleaf.foreach.BaseForeachParam;
 import lombok.Getter;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 
@@ -26,7 +28,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.criteria.Predicate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 数据模型基类
@@ -81,6 +85,54 @@ public abstract class BaseEntity {
     @ManyToOne
     @JoinColumn(name = "categoryId")
     private Category category;
+
+
+    /**
+     * 依然不知道这是干什么……
+     *
+     * @param params
+     * @param <T>
+     * @return
+     */
+    @NotNull
+    public static <T extends BaseEntity> Specification<T> Specification(BaseForeachParam params) {
+        return (root, criteriaQuery, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            if (!StringUtils.isEmpty(params.getExcludeIds())) {
+                List<String> ids = Arrays.asList(params.getExcludeIds());
+                List<Long> articleIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
+                predicates = articleIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
+            }
+            predicates.add(cb.equal(root.get("deleted").as(Boolean.class), false));
+            predicates.add(cb.equal(root.get("category").get("id").as(Long.class), params.getCategoryId()));
+            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
+    }
+
+    /**
+     * 没看出来到底做了什么……
+     *
+     * @param params
+     * @param subCategories
+     * @return
+     */
+    @NotNull
+    public static <T extends BaseEntity> Specification<T> Specification(BaseForeachParam params, List<Category> subCategories) {
+        return (root, criteriaQuery, cb) -> {
+            List<Predicate> p1 = subCategories.stream().map(category -> cb.equal(root.get("category")
+                    .as(Category.class), category)).collect(Collectors.toList());
+            Predicate predicate = cb.or(p1.toArray(new Predicate[p1.size()]));
+            List<Predicate> predicates = new ArrayList<>();
+            if (!StringUtils.isEmpty(params.getExcludeIds())) {
+                List<String> ids = Arrays.asList(params.getExcludeIds());
+                List<Long> articleIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
+                predicates = articleIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
+            }
+            predicates.add(cb.equal(root.get("deleted").as(Boolean.class), false));
+            predicates.add(predicate);
+            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
+    }
 
     /**
      * 获取数据模型的搜索规格

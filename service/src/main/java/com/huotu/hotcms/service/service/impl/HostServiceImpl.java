@@ -138,15 +138,7 @@ public class HostServiceImpl implements HostService {
            Host host=getHost(domain);
             if(host!=null){
                 if(host.getSites()!=null) {
-                    for (Site site : host.getSites()) {
-                        if (site!=null){
-                            if(site.getRegion()!=null){
-                                if(site.getRegion().getId().equals(regionId)){
-                                    isExists=true;
-                                }
-                            }
-                        }
-                    }
+                    isExists = isExists(regionId, isExists, host);
                 }
             }
         }
@@ -161,15 +153,20 @@ public class HostServiceImpl implements HostService {
             if (host != null) {
                 if (host.getSites() != null) {
                     if(host.getSites().contains(site)){
-                        for (Site sites : host.getSites()) {
-                            if (sites!=null){
-                                if(sites.getRegion()!=null){
-                                    if(sites.getRegion().getId().equals(regionId)){
-                                        isExists=true;
-                                    }
-                                }
-                            }
-                        }
+                        isExists = isExists(regionId, isExists, host);
+                    }
+                }
+            }
+        }
+        return isExists;
+    }
+
+    private boolean isExists(Long regionId, boolean isExists, Host host) {
+        for (Site sites : host.getSites()) {
+            if (sites != null) {
+                if (sites.getRegion() != null) {
+                    if (sites.getRegion().getId().equals(regionId)) {
+                        isExists = true;
                     }
                 }
             }

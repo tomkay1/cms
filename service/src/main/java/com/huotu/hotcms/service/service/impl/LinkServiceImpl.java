@@ -128,17 +128,7 @@ public class LinkServiceImpl implements LinkService {
 
     private Page<Link> getLinks(NormalForeachParam params, int pageIndex, int pageSize, Sort sort) throws Exception {
         try {
-            Specification<Link> specification = (root, criteriaQuery, cb) -> {
-                List<Predicate> predicates = new ArrayList<>();
-                if (!StringUtils.isEmpty(params.getExcludeIds())) {
-                    List<String> ids = Arrays.asList(params.getExcludeIds());
-                    List<Long> linkIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
-                    predicates = linkIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
-                }
-                predicates.add(cb.equal(root.get("deleted").as(Boolean.class), false));
-                predicates.add(cb.equal(root.get("category").get("id").as(Long.class), params.getCategoryId()));
-                return cb.and(predicates.toArray(new Predicate[predicates.size()]));
-            };
+            Specification<Link> specification = BaseEntity.Specification(params);
             return linkRepository.findAll(specification, new PageRequest(pageIndex, pageSize, sort));
         } catch (Exception ex) {
             throw new Exception("获得文章列表出现错误");
@@ -154,22 +144,7 @@ public class LinkServiceImpl implements LinkService {
                 log.error(e.getMessage());
             }
         }
-        Specification<Link> specification = (root, criteriaQuery, cb) -> {
-            List<Predicate> p1 = new ArrayList<>();
-            for (Category category : subCategories) {
-                p1.add(cb.equal(root.get("category").as(Category.class), category));
-            }
-            Predicate predicate = cb.or(p1.toArray(new Predicate[p1.size()]));
-            List<Predicate> predicates = new ArrayList<>();
-            if (!StringUtils.isEmpty(params.getExcludeIds())) {
-                List<String> ids = Arrays.asList(params.getExcludeIds());
-                List<Long> articleIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
-                predicates = articleIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
-            }
-            predicates.add(cb.equal(root.get("deleted").as(Boolean.class), false));
-            predicates.add(predicate);
-            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
-        };
+        Specification<Link> specification = BaseEntity.Specification(params, subCategories);
         return linkRepository.findAll(specification, new PageRequest(pageIndex, pageSize, sort));
     }
 }

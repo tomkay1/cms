@@ -81,38 +81,14 @@ public class ArticleServiceImpl implements ArticleService {
                 log.error(e.getMessage());
             }
         }
-        Specification<Article> specification = (root, criteriaQuery, cb) -> {
-            List<Predicate> p1 = new ArrayList<>();
-            for (Category category : subCategories) {
-                p1.add(cb.equal(root.get("category").as(Category.class), category));
-            }
-            Predicate predicate = cb.or(p1.toArray(new Predicate[p1.size()]));
-            List<Predicate> predicates = new ArrayList<>();
-            if (!StringUtils.isEmpty(params.getExcludeIds())) {
-                List<String> ids = Arrays.asList(params.getExcludeIds());
-                List<Long> articleIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
-                predicates = articleIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
-            }
-            predicates.add(cb.equal(root.get("deleted").as(Boolean.class), false));
-            predicates.add(predicate);
-            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
-        };
+        Specification<Article> specification = BaseEntity.Specification(params, subCategories);
         return articleRepository.findAll(specification, new PageRequest(pageIndex, pageSize, sort));
     }
 
+
     private Page<Article> getArticles(PageableForeachParam params, int pageIndex, int pageSize, Sort sort) throws Exception {
         try {
-            Specification<Article> specification = (root, criteriaQuery, cb) -> {
-                List<Predicate> predicates = new ArrayList<>();
-                if (!StringUtils.isEmpty(params.getExcludeIds())) {
-                    List<String> ids = Arrays.asList(params.getExcludeIds());
-                    List<Long> articleIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
-                    predicates = articleIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
-                }
-                predicates.add(cb.equal(root.get("deleted").as(Boolean.class), false));
-                predicates.add(cb.equal(root.get("category").get("id").as(Long.class), params.getCategoryId()));
-                return cb.and(predicates.toArray(new Predicate[predicates.size()]));
-            };
+            Specification<Article> specification = BaseEntity.Specification(params);
             return articleRepository.findAll(specification, new PageRequest(pageIndex, pageSize, sort));
         } catch (Exception ex) {
             throw new Exception("获得文章列表出现错误");
@@ -169,21 +145,21 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Article getArticleByParam(ArticleCurrentParam articleCurrentParam) {
-        Article article=null;
+        Article article = null;
         if (articleCurrentParam != null) {
             if (articleCurrentParam.getId() != null) {
-                article=articleRepository.getOne(articleCurrentParam.getId());
+                article = articleRepository.getOne(articleCurrentParam.getId());
             } else {
-                article=articleRepository.getOne(articleCurrentParam.getDefaultid());
+                article = articleRepository.getOne(articleCurrentParam.getDefaultid());
             }
         }
-        article=setArticleThumbUri(article);
+        article = setArticleThumbUri(article);
         return article;
     }
 
     @Override
     public Article setArticleThumbUri(Article article) {
-        if(article!=null) {
+        if (article != null) {
             Category category = article.getCategory();
             if (category != null) {
                 Site site = category.getSite();
@@ -197,25 +173,25 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Article getArticleNextByParam(ArticleNextParam articleNextParam) {
-        Article article=null;
+        Article article = null;
         if (articleNextParam != null) {
             if (articleNextParam.getId() != null) {
-                article=articleRepository.findAllByIdAndNext(articleNextParam.getId());
+                article = articleRepository.findAllByIdAndNext(articleNextParam.getId());
             }
         }
-        article=setArticleThumbUri(article);
+        article = setArticleThumbUri(article);
         return article;
     }
 
     @Override
     public Article getArticlePreiousByParam(ArticlePreviousParam articlePreviousParam) {
-        Article article=null;
+        Article article = null;
         if (articlePreviousParam != null) {
             if (articlePreviousParam.getId() != null) {
-                article=articleRepository.findAllByIdAndPreious(articlePreviousParam.getId());
+                article = articleRepository.findAllByIdAndPreious(articlePreviousParam.getId());
             }
         }
-        article=setArticleThumbUri(article);
+        article = setArticleThumbUri(article);
         return article;
     }
 }

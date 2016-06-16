@@ -2,8 +2,9 @@
  * 版权所有:杭州火图科技有限公司
  * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
  *
- *  (c) Copyright Hangzhou Hot Technology Co., Ltd.
- *  Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District 2013-2015. All rights reserved.
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
  */
 
 package com.huotu.hotcms.service.thymeleaf.expression;
@@ -31,6 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by cwb on 2016/1/5.
@@ -99,25 +101,29 @@ public class DialectAttributeFactory {
                 if (field != null) {
                     field.setAccessible(true);
                     Class<?> classType = field.getType();
-                    if (classType == Integer.class) {
-                        field.set(obj, Integer.parseInt(paramValue));
-                    } else if (classType == Long.class) {
-                        field.set(obj, Long.parseLong(paramValue));
-                    } else if (classType == Double.class) {
-                        field.set(obj, Double.parseDouble(paramValue));
-                    } else if (classType == String.class) {
-                        field.set(obj, paramValue);
-                    } else if (classType == String[].class) {
-                        field.set(obj, paramValue.split(","));
-                    } else if (classType == RouteType.class) {
-                        field.set(obj, EnumUtils.valueOf(RouteType.class, Integer.parseInt(paramValue)));
-                    } else {
-                        field.set(obj, paramValue);
-                    }
+                    theMethod(obj, paramValue, field, classType);
                 }
             }
         }
         return obj;
+    }
+
+    private <T> void theMethod(T obj, String paramValue, Field field, Class<?> classType) throws IllegalAccessException {
+        if (classType == Integer.class) {
+            field.set(obj, Integer.parseInt(paramValue));
+        } else if (classType == Long.class) {
+            field.set(obj, Long.parseLong(paramValue));
+        } else if (classType == Double.class) {
+            field.set(obj, Double.parseDouble(paramValue));
+        } else if (classType == String.class) {
+            field.set(obj, paramValue);
+        } else if (classType == String[].class) {
+            field.set(obj, paramValue.split(","));
+        } else if (classType == RouteType.class) {
+            field.set(obj, EnumUtils.valueOf(RouteType.class, Integer.parseInt(paramValue)));
+        } else {
+            field.set(obj, paramValue);
+        }
     }
 
     /**
@@ -161,21 +167,7 @@ public class DialectAttributeFactory {
         T obj=(T)object;
         field.setAccessible(true);
         Class<?> classType = field.getType();
-        if (classType == Integer.class) {
-            field.set(obj, Integer.parseInt(paramValue));
-        } else if (classType == Long.class) {
-            field.set(obj, Long.parseLong(paramValue));
-        } else if (classType == Double.class) {
-            field.set(obj, Double.parseDouble(paramValue));
-        } else if (classType == String.class) {
-            field.set(obj, paramValue);
-        } else if (classType == String[].class) {
-            field.set(obj, paramValue.split(","));
-        } else if (classType == RouteType.class) {
-            field.set(obj, EnumUtils.valueOf(RouteType.class, Integer.parseInt(paramValue)));
-        } else {
-            field.set(obj, paramValue);
-        }
+        theMethod(obj, paramValue, field, classType);
         return obj;
     }
 
@@ -195,7 +187,7 @@ public class DialectAttributeFactory {
             String attrName = StringUtil.toUpperCase(name);
             Object obj=object.getClass().getMethod("get" + attrName).invoke(object);
             if(obj==null){
-                if(name=="pageNo"){
+                if (Objects.equals(name, "pageNo")) {
                     if(StringUtils.isEmpty(request.getParameter("pageNo"))){
                         resultObj=getObjectByFiled(resultObj,field,DEFAULT_PAGE_NO);
                     }else{
@@ -207,14 +199,14 @@ public class DialectAttributeFactory {
                         }
                     }
                 }
-                if(name=="pageSize"){
+                if (Objects.equals(name, "pageSize")) {
                     if(StringUtils.isEmpty(request.getParameter("pageSize"))){
                         resultObj=getObjectByFiled(resultObj,field,DEFAULT_PAGE_SIZE);
                     }else{
                         resultObj=getObjectByFiled(resultObj,field,request.getParameter("pageSize"));
                     }
                 }
-                if(name=="pageNumber"){
+                if (Objects.equals(name, "pageNumber")) {
                     resultObj=getObjectByFiled(resultObj,field,DEFAULT_PAGE_NUMBER);
                 }
             }

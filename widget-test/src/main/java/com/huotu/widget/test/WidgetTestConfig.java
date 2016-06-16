@@ -76,7 +76,5 @@ public class WidgetTestConfig extends WebMvcConfigurerAdapter {
 
             return resolver;
         }
-
-
     }
 }

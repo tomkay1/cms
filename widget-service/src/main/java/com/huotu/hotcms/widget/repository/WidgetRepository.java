@@ -24,4 +24,6 @@ public interface WidgetRepository extends JpaRepository<WidgetInfo, Long>,JpaSpe
 
     List<WidgetInfo> findByAuthor(String author);
 
+    WidgetInfo findByWidgetIdAndVersion(String widgetId,String version);
+
 }

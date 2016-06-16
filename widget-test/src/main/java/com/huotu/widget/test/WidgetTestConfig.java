@@ -33,16 +33,12 @@ import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 @ComponentScan("com.huotu.widget.test.bean")
 public class WidgetTestConfig extends WebMvcConfigurerAdapter {
 
-    public static String WidgetIdentity(Widget widget) {
-        return widget.widgetId().replace('-', '.');
-    }
-
-    public static String WidgetIdentity(Widget widget) {
-        return widget.widgetId().replace('-', '.');
-    }
-
     @Autowired
     private ThymeleafViewResolver normalViewResolver;
+
+    public static String WidgetIdentity(Widget widget) {
+        return widget.widgetId().replace('-', '.');
+    }
 
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {

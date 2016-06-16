@@ -13,6 +13,9 @@ import com.huotu.hotcms.widget.Widget;
 import com.huotu.widget.test.bean.WidgetHolder;
 import me.jiangcai.lib.test.SpringWebTest;
 import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -20,8 +23,12 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Map;
+import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 /**
  * @author CJ
@@ -40,6 +47,45 @@ public abstract class WidgetTest extends SpringWebTest {
     public void setWidgetHolder(WidgetHolder holder) {
         widget = holder.getWidget();
     }
+
+    /**
+     * @return true to open pageSource
+     */
+    protected abstract boolean printPageSource();
+
+    /**
+     * 编辑器测试
+     * 总体测试流程
+     * 打开编辑器
+     * 执行编辑操作
+     * 校验编辑结果
+     */
+    @Test
+    public void editor() throws Exception {
+        if (printPageSource())
+            mockMvc.perform(get("/editor"))
+                    .andDo(print());
+
+        driver.get("http://localhost/editor");
+//        System.out.println(driver.getPageSource());
+        editorWork(driver.findElement(By.id("editor")).findElement(By.tagName("div")), () -> {
+            if (driver instanceof JavascriptExecutor) {
+                return (Map) ((JavascriptExecutor) driver).executeScript("return widgetProperties($('#editor'))");
+            }
+            throw new IllegalStateException("no JavascriptExecutor driver");
+        });
+    }
+
+    /**
+     * 执行编辑操作,校验编辑结果
+     * {@link #driver}应该是一个{@link JavascriptExecutor}
+     * 可以通过这个方法获取脚本信息
+     *
+     * @param editor                  编辑器element
+     * @param currentWidgetProperties 可以从浏览器中获取当前控件属性
+     * @see JavascriptExecutor#executeScript(String, Object...)
+     */
+    protected abstract void editorWork(WebElement editor, Supplier<Map<String, Object>> currentWidgetProperties);
 
     /**
      * 一些常用属性测试

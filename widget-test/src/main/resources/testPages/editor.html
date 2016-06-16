@@ -12,10 +12,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Demo Editor</title>
+    <script src="https://code.jquery.com/jquery-3.0.0.min.js"
+            integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0=" crossorigin="anonymous"></script>
+    <script>
+        var _widgetProperties = {};
+        function widgetProperties() {
+            return _widgetProperties;
+        }
+    </script>
 </head>
 <body>
 
-<div th:replace="EDITOR :: div"></div>
+<div id="editor">
+    <div th:replace="EDITOR :: div"></div>
+</div>
+
 
 </body>
 </html>

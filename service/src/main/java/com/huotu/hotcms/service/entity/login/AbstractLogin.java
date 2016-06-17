@@ -13,26 +13,51 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import java.util.Objects;
 
 /**
  * 可登录者
  *
  * @author CJ
  */
-@Table(name = "cms_login")
+@Table(name = "cms_login", uniqueConstraints = {@UniqueConstraint(columnNames = {"loginName"})})
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
 public abstract class AbstractLogin implements Login {
 
-    @Column(length = 100)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(length = 100, unique = true)
     private String loginName;
     @Column(length = 100)
     private String password;
     private boolean enabled = true;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AbstractLogin)) return false;
+        AbstractLogin that = (AbstractLogin) o;
+        return enabled == that.enabled &&
+                Objects.equals(id, that.id) &&
+                Objects.equals(loginName, that.loginName) &&
+                Objects.equals(password, that.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, loginName, password, enabled);
+    }
 
     @Override
     public String getUsername() {

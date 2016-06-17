@@ -9,20 +9,12 @@
 
 package com.huotu.hotcms.service.repository;
 
-import com.huotu.hotcms.service.entity.login.Owner;
+import com.huotu.hotcms.service.entity.login.User;
 import com.huotu.hotcms.service.repositoryi.LoginRepository;
 
 /**
  * @author CJ
  */
-public interface OwnerRepository extends LoginRepository<Owner> {
-
-    /**
-     * 查找伙伴商城相关的owner
-     *
-     * @param customerId 伙伴商城商户号
-     * @return owner
-     */
-    Owner findByCustomerId(int customerId);
+public interface UserRepository extends LoginRepository<User> {
 
 }

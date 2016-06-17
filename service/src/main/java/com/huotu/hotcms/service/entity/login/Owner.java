@@ -20,9 +20,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import java.util.Collection;
@@ -40,10 +37,6 @@ import java.util.Objects;
 @Setter
 public class Owner extends AbstractLogin {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     /**
      * 可选商户号
      */
@@ -54,14 +47,14 @@ public class Owner extends AbstractLogin {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Owner)) return false;
+        if (!super.equals(o)) return false;
         Owner owner = (Owner) o;
-        return Objects.equals(id, owner.id) &&
-                Objects.equals(customerId, owner.customerId);
+        return Objects.equals(customerId, owner.customerId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, customerId);
+        return Objects.hash(super.hashCode(), customerId);
     }
 
     @Override

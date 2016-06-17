@@ -70,7 +70,7 @@ public class SiteTest {
     @Test
     public void testQuery(){
         long siteID=4471;
-        Article templateSiteArticle=articleRepository.findArticleBySiteId(siteID);
+        Article templateSiteArticle=articleRepository.findArticleByCategory_Site_SiteId(siteID);
         long id=templateSiteArticle.getId();
     }
 

@@ -114,7 +114,7 @@ public class VideoController {
             }
             Category category = video.getCategory();
             Integer modelType = category.getModelId();
-            Set<Category> categorys = categoryRepository.findBySite_Owner_IdAndModerId(ownerId, modelType);
+            Set<Category> categorys = categoryRepository.findBySite_Owner_IdAndModelId(ownerId, modelType);
             modelAndView.addObject("logo_uri", logo_uri);
             modelAndView.addObject("categorys", categorys);
             modelAndView.addObject("video", video);

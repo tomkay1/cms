@@ -99,7 +99,7 @@ public class NoticeController {
             Notice notice = noticeService.findById(id);
             Category category = notice.getCategory();
             Integer modelType = category.getModelId();
-            Set<Category> categorys = categoryRepository.findBySite_Owner_IdAndModerId(ownerId, modelType);
+            Set<Category> categorys = categoryRepository.findBySite_Owner_IdAndModelId(ownerId, modelType);
             modelAndView.addObject("categorys", categorys);
             modelAndView.addObject("notice", notice);
         } catch (Exception ex) {

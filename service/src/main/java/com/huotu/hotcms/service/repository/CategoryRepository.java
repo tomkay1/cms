@@ -57,7 +57,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long>, JpaSp
     /**
      * 根据所有者,模型,以及栏目名查询栏目
      */
-    Set<Category> findBySite_Owner_IdAndModerId(long ownerId, Integer modelType);
+    Set<Category> findBySite_Owner_IdAndModelId(long ownerId, Integer modelType);
 
     /**
      * 根据站点查询栏目

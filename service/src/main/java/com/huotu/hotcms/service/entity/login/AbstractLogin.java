@@ -12,14 +12,7 @@ package com.huotu.hotcms.service.entity.login;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 import java.util.Objects;
 
 /**
@@ -27,6 +20,7 @@ import java.util.Objects;
  *
  * @author CJ
  */
+@Entity
 @Table(name = "cms_login", uniqueConstraints = {@UniqueConstraint(columnNames = {"loginName"})})
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter

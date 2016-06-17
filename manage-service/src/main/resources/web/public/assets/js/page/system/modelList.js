@@ -13,7 +13,7 @@ define(function (require, exports, module) {
         pagerCount: 10,
        doubleLine:true,
         pageDetail: true,
-        url: '/model/getModelList',//数据来源Url|通过mobel自定义属性配置
+        url: '/manage/model/getModelList',//数据来源Url|通过mobel自定义属性配置
         rows: [
             {
                 width: '20%', field: 'name', title: '模型名称', align: 'center'
@@ -33,7 +33,7 @@ define(function (require, exports, module) {
             { width: '10%', field: 'title', title: '操作', align: 'center',
                 formatter: function (value, rowData) {
                     return "<a href='javascript:' class='js-hot-modelDelete' data-id='"+rowData.id+"' style='margin-right:10px; color:blue;'>删除</a>" +
-                        "<a href='/model/updateModel?id="+rowData.id+"' target='content' style='margin-right:10px; color: blue'>修改</a>"
+                        "<a href='/manage/model/updateModel?id="+rowData.id+"' target='content' style='margin-right:10px; color: blue'>修改</a>"
                 }
             },
 
@@ -73,7 +73,7 @@ define(function (require, exports, module) {
                     btn: ['确定','取消'] //按钮
                 }, function() {
                     $.ajax({
-                        url: "/model/deleteModel",
+                        url: "/manage/model/deleteModel",
                         data: {
                             id:id
                         },

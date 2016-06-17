@@ -42,7 +42,7 @@ import java.util.Set;
  * </p>
  */
 @Controller
-@RequestMapping("/supper")
+@RequestMapping("/manage/supper")
 public class SupperController {
     private static final Log log = LogFactory.getLog(SupperController.class);
 

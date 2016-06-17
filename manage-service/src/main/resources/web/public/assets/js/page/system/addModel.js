@@ -35,7 +35,7 @@ define(function (require, exports, module) {
             var commonUtil = require("common");
             commonUtil.setDisabled("jq-cms-Save");
             $.ajax({
-                url: "/model/saveModel",
+                url: "/manage/model/saveModel",
                 data: {
                     id:$("#hidModelID").val(),
                     name: $("#txtModelName").val(),

@@ -29,7 +29,7 @@ import java.util.Set;
  * Created by chendeyu on 2016/1/5.
  */
 @Controller
-@RequestMapping("/notice")
+@RequestMapping("/manage/notice")
 public class NoticeController {
     private static final Log log = LogFactory.getLog(NoticeController.class);
 

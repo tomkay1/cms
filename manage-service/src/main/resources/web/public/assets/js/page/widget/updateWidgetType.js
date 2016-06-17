@@ -21,7 +21,7 @@ define(function (require, exports, module) {
             var commonUtil = require("common");
             commonUtil.setDisabled("jq-cms-Save");
             $.ajax({
-                url: "/widget/saveWidgetType",
+                url: "/manage/widget/saveWidgetType",
                 data: {
                     name: $("#name").val(),
                     id: $("#hidWidgetTypeID").val(),

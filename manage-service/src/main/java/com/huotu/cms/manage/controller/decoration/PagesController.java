@@ -38,7 +38,7 @@ import java.util.List;
  * @since xhl
  */
 @Controller
-@RequestMapping("/page")
+@RequestMapping("/manage/page")
 public class PagesController {
     private static final Log log = LogFactory.getLog(PagesController.class);
 

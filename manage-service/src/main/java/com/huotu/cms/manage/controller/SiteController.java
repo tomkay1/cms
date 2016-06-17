@@ -33,7 +33,7 @@ import java.util.Set;
  * Created by chendeyu on 2015/12/24.
  */
 @Controller
-@RequestMapping("/site")
+@RequestMapping("/manage/site")
 public class SiteController {
     private static final Log log = LogFactory.getLog(SiteController.class);
 

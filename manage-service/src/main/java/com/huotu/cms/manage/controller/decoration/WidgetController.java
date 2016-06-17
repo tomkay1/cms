@@ -41,7 +41,7 @@ import java.util.List;
  * Created by chendeyu on 2016/3/17.
  */
 @Controller
-@RequestMapping("/widget")
+@RequestMapping("/manage/widget")
 public class WidgetController {
 
     private static final Log log = LogFactory.getLog(WidgetController.class);

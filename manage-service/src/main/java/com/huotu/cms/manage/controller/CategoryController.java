@@ -33,7 +33,7 @@ import java.util.Set;
  * Created by chendeyu on 2015/12/31.
  */
 @Controller
-@RequestMapping("/category")
+@RequestMapping("/manage/category")
 public class CategoryController {
     private static final Log log = LogFactory.getLog(CategoryController.class);
     @Autowired

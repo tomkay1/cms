@@ -32,7 +32,7 @@ define(["js/jquery-1.9.1.min"],function () {
     return {
         getCategoryList:function(siteid,name,div){
             $.ajax({
-                url: "/category/getCategoryList",
+                url: "/manage/category/getCategoryList",
                 data: {
                     siteId:siteid,
                     name: name

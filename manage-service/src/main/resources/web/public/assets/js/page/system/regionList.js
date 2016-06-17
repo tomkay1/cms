@@ -16,7 +16,7 @@ define(function (require, exports, module) {
         dataParam: {
             enabled: true
         },
-        url: '/region/getRegionList',//数据来源Url|通过region自定义属性配置
+        url: '/manage/region/getRegionList',//数据来源Url|通过region自定义属性配置
         rows: [
             {
                 width: '20%', field: 'regionCode', title: '地区编号', align: 'center'
@@ -28,7 +28,7 @@ define(function (require, exports, module) {
             { width: '10%', field: 'title', title: '操作', align: 'center',
                 formatter: function (value, rowData) {
                     return "<a href='javascript:' class='js-hot-regionDelete' data-id='"+rowData.id+"' style='margin-right:10px; color:blue;'>删除</a>" +
-                        "<a href='/region/updateRegion?id="+rowData.id+"' target='content' style='margin-right:10px; color: blue'>修改</a>"
+                        "<a href='/manage/region/updateRegion?id="+rowData.id+"' target='content' style='margin-right:10px; color: blue'>修改</a>"
                 }
             },
 
@@ -68,7 +68,7 @@ define(function (require, exports, module) {
                     btn: ['确定','取消'] //按钮
                 }, function() {
                     $.ajax({
-                        url: "/region/deleteRegion",
+                        url: "/manage/region/deleteRegion",
                         data: {
                             id:id
                         },

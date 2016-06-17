@@ -47,7 +47,7 @@ define(function (require, exports, module) {
                 commonUtil.setDisabled("jq-cms-Save");
                 editor.sync();
                 $.ajax({
-                    url: "/article/saveArticle",
+                    url: "/manage/article/saveArticle",
                     data: {
                         id:$("#hidArticleID").val(),
                         title:$("#title").val(),
@@ -111,7 +111,7 @@ define(function (require, exports, module) {
     var uploadModule={
         uploadImg:function(){
             $("#btnFile").jacksonUpload({
-                url: "/cms/imgUpLoad",
+                url: "/manage/cms/imgUpLoad",
                 name: "btnFile",
                 enctype: "multipart/form-data",
                 submit: true,

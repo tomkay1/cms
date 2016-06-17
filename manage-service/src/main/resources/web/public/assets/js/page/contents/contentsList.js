@@ -22,7 +22,7 @@ define(function (require, exports, module) {
         pageSize: 20,
         pagerCount: 10,
         pageDetail: true,
-        url: '/contents/getContentsList',//数据来源Url|
+        url: '/manage/contents/getContentsList',//数据来源Url|
         rows: [
             {width: '10%', field: 'id', title: '内容ID', align: 'center'},
             {width: '15%', field: 'name', title: '所属栏目', align: 'center'},
@@ -83,7 +83,7 @@ define(function (require, exports, module) {
         var category=$("#category").val();
         var layer=require("layer");
         //window.location.href="http://"+window.location.host+"/contents/addContents"+"?siteId="+siteId+"&customerId="+customerId+"&category="+category;
-        var content="/contents/addContents"+"?siteId="+siteId+"&customerId="+customerId+"&category="+category;
+        var content="/manage/contents/addContents"+"?siteId="+siteId+"&customerId="+customerId+"&category="+category;
         layer.open({
             type: 2,
             title: "添加内容",
@@ -132,7 +132,7 @@ define(function (require, exports, module) {
                 var commonUtil = require("common");
                 var customerId = commonUtil.getQuery("customerId");
                 //window.location.href="http://"+window.location.host+"/"+model+"/update"+link+"?id="+id+"&customerId="+customerId;
-                var content ="/"+model+"/update"+link+"?id="+id+"&customerId="+customerId;
+                var content ="/manage/"+model+"/update"+link+"?id="+id+"&customerId="+customerId;
                 layer.open({
                     type: 2,
                     title: "修改内容",
@@ -173,7 +173,7 @@ define(function (require, exports, module) {
                     btn: ['确定','取消'] //按钮
                 }, function() {
                     $.ajax({
-                        url: "/"+model+"/delete"+link,
+                        url: "/manage/"+model+"/delete"+link,
                         data: {
                             id:id,
                             customerId:customerId
@@ -220,7 +220,7 @@ define(function (require, exports, module) {
                 var commonUtil = require("common");
                 var customerId = commonUtil.getQuery("customerId");
                 //window.location.href="http://"+window.location.host+"/"+model+"/"+model+"List"+"?id="+id+"&customerId="+customerId;
-                var content="/"+model+"/"+model+"List"+"?id="+id+"&customerId="+customerId;
+                var content="/manage/"+model+"/"+model+"List"+"?id="+id+"&customerId="+customerId;
                 var layer=require("layer");
                 layer.open({
                     type: 2,
@@ -244,7 +244,7 @@ define(function (require, exports, module) {
         $.each(obj,function(item,dom){
             $(dom).click(function(){//绑定删除事件
                 var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;
-                var content="/gallery/addGalleryList"+"?id="+id+"&customerId="+customerId;
+                var content="/manage/gallery/addGalleryList"+"?id="+id+"&customerId="+customerId;
                 var layer=require("layer");
                 layer.open({
                     type: 2,
@@ -270,7 +270,7 @@ define(function (require, exports, module) {
                 var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;
                 var model=$(this).attr("data-model");//Html5可以使用$(this).data('id')方式来写;
                 model=$.trim(model);
-                var content="/gallery/galleryListDetail"+"?id="+id+"&customerId="+customerId;
+                var content="/manage/gallery/galleryListDetail"+"?id="+id+"&customerId="+customerId;
                 var layer=require("layer");
                 layer.open({
                     type: 2,
@@ -306,7 +306,7 @@ define(function (require, exports, module) {
         commonUtil.setDisabled("jq-cms-Save");
         var customerId =commonUtil.getQuery("customerId");
         $.ajax({
-            url: "/contents/contentsSelect",
+            url: "/manage/contents/contentsSelect",
             dataType: 'json',
             type: "GET",
             data: {

@@ -35,7 +35,7 @@ import java.util.Map;
  * @since xhl
  */
 @Controller
-@RequestMapping("/mallapi")
+@RequestMapping("/manage/mallapi")
 public class MallController {
     private static final Log log = LogFactory.getLog(MallController.class);
 

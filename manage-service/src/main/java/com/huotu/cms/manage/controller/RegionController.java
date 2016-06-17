@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
  * Created by chendeyu on 2015/12/29.
  */
 @Controller
-@RequestMapping("/region")
+@RequestMapping("/manage/region")
 public class RegionController {
     private static final Log log = LogFactory.getLog(RegionController.class);
 

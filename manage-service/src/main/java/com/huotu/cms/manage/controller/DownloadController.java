@@ -38,7 +38,7 @@ import java.util.Set;
  * Created by chendeyu on 2016/1/11.
  */
 @Controller
-@RequestMapping("/download")
+@RequestMapping("/manage/download")
 public class DownloadController {
     private static final Log log = LogFactory.getLog(DownloadController.class);
 

@@ -35,7 +35,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 @Controller
-@RequestMapping("/notice")
+@RequestMapping("/manage/notice")
 public class NoticeController {
     private static final Log log = LogFactory.getLog(NoticeController.class);
 

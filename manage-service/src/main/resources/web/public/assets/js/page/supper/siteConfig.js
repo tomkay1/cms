@@ -20,7 +20,7 @@ define(function (require, exports, module) {
             var commonUtil = require("common");
             commonUtil.setDisabled("jq-cms-Save");
             $.ajax({
-                url: "/supper/saveConfig",
+                url: "/manage/supper/saveConfig",
                 data: {
                     id:$("#id").val(),
                     siteId: siteId,

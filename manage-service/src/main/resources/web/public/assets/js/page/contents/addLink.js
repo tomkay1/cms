@@ -39,7 +39,7 @@ define(function (require, exports, module) {
             submitHandler: function (form, ev) {
                 commonUtil.setDisabled("jq-cms-Save");
                 $.ajax({
-                    url: "/link/saveLink",
+                    url: "/manage/link/saveLink",
                     data: {
                         id: $("#hidLinkID").val(),
                         title: $("#title").val(),
@@ -96,7 +96,7 @@ define(function (require, exports, module) {
     var uploadModule={
         uploadImg:function(){
             $("#btnFile").jacksonUpload({
-                url: "/cms/imgUpLoad",
+                url: "/manage/cms/imgUpLoad",
                 name: "btnFile",
                 enctype: "multipart/form-data",
                 submit: true,

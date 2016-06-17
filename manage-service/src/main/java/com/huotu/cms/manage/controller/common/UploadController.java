@@ -47,7 +47,7 @@ import java.util.Map;
  * Created by chendeyu on 2016/1/7.
  */
 @Controller
-@RequestMapping("/cms")
+@RequestMapping("/manage/cms")
 public class UploadController {
     private static final Log log = LogFactory.getLog(UploadController.class);
     static BASE64Decoder decoder = new BASE64Decoder();

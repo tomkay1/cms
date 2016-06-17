@@ -17,7 +17,7 @@ define(function (require, exports, module) {
         pageSize: 20,
         pagerCount: 10,
         pageDetail: true,
-        url: '/site/getSiteList',//数据来源Url|通过mobel自定义属性配置
+        url: '/manage/site/getSiteList',//数据来源Url|通过mobel自定义属性配置
         rows: [
             {width: '30%', field: 'name', title: '站点名称', align: 'center'},
             {width: '30%', field: 'title', title: '站点标题', align: 'center'},
@@ -84,7 +84,7 @@ define(function (require, exports, module) {
                     shadeClose: true,
                     shade: 0.8,
                     area: ['800px', '500px'],
-                    content: "/site/updateSite?id="+id+"&customerId="+customerId,
+                    content: "/manage/site/updateSite?id="+id+"&customerId="+customerId,
                     end:function(){
                         SiteGrid.Refresh();
                     }

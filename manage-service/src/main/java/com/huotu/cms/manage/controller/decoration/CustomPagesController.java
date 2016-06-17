@@ -23,7 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @version 1.2
  */
 @Controller
-@RequestMapping("/customPages")
+@RequestMapping("/manage/customPages")
 public class CustomPagesController {
     private static final Log log = LogFactory.getLog(CustomPagesController.class);
 

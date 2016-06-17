@@ -39,7 +39,7 @@ import java.time.LocalDateTime;
  * Created by Administrator xhl 2016/1/9.
  */
 @Controller
-@RequestMapping("/route")
+@RequestMapping("/manage/route")
 public class RouteController {
     private static final Log log = LogFactory.getLog(RouteController.class);
 

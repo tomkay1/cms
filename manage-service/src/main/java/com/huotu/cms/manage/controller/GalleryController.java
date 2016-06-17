@@ -42,7 +42,7 @@ import java.util.Set;
  * Created by chendeyu on 2016/1/10.
  */
 @Controller
-@RequestMapping("/gallery")
+@RequestMapping("/manage/gallery")
 public class GalleryController {
     private static final Log log = LogFactory.getLog(GalleryController.class);
 

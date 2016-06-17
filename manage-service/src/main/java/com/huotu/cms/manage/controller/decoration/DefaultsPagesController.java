@@ -29,7 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @version 1.2
  */
 @Controller
-@RequestMapping("/defaultsPages")
+@RequestMapping("/manage/defaultsPages")
 public class DefaultsPagesController {
     private static final Log log = LogFactory.getLog(DefaultsPagesController.class);
 

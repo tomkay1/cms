@@ -45,22 +45,22 @@ define(function (require, exports, module) {
             var customerId =commonUtil.getQuery("customerId");
             var widgetUrl="";
             if(modelId==0) {
-                widgetUrl = "/article/addArticle?customerId=" + customerId;
+                widgetUrl = "/manage/article/addArticle?customerId=" + customerId;
             }
             if (modelId == 1) {
-                widgetUrl = "/notice/addNotice?customerId=" + customerId;
+                widgetUrl = "/manage/notice/addNotice?customerId=" + customerId;
             }
             if (modelId == 2) {
-                widgetUrl = "/video/addVideo?customerId=" + customerId;
+                widgetUrl = "/manage/video/addVideo?customerId=" + customerId;
             }
             if (modelId == 3) {
-                widgetUrl = "/gallery/addGallery?customerId=" + customerId;
+                widgetUrl = "/manage/gallery/addGallery?customerId=" + customerId;
             }
             if (modelId == 4) {
-                widgetUrl = "/download/addDownload?customerId=" + customerId;
+                widgetUrl = "/manage/download/addDownload?customerId=" + customerId;
             }
             if (modelId == 5) {
-                widgetUrl = "/link/addLink?customerId=" + customerId;
+                widgetUrl = "/manage/link/addLink?customerId=" + customerId;
             }
             if(modelId!=-2) {
                 $.get(widgetUrl + "&_=" + Math.random(), function (html) {

@@ -19,7 +19,7 @@ define(function (require, exports, module) {
         pageSize: 20,
         pagerCount: 10,
         pageDetail: true,
-        url: '/route/getRouteList',//数据来源Url|通过mobel自定义属性配置
+        url: '/manage/route/getRouteList',//数据来源Url|通过mobel自定义属性配置
         rows: [
             {width: '30%', field: 'rule', title: '路由规则', align: 'left'},
             {width: '30%', field: 'template', title: '路由模版', align: 'left'},
@@ -97,7 +97,7 @@ define(function (require, exports, module) {
             shadeClose: true,
             shade: 0.8,
             area: ['900px', '500px'],
-            content: "/route/addRoute?siteId="+siteId,
+            content: "/manage/route/addRoute?siteId="+siteId,
             end:function(){
                 Refresh();
             }
@@ -116,7 +116,7 @@ define(function (require, exports, module) {
                     shadeClose: true,
                     shade: 0.8,
                     area: ['900px', '500px'],
-                    content: "/route/updateRoute?id="+id,
+                    content: "/manage/route/updateRoute?id="+id,
                     end:function(){
                        Refresh();
                     }
@@ -135,7 +135,7 @@ define(function (require, exports, module) {
                     btn: ['确定','取消'] //按钮
                 }, function(){
                     $.ajax({
-                        url: "/route/deleteRoute",
+                        url: "/manage/route/deleteRoute",
                         data: {
                             id: id
                         },

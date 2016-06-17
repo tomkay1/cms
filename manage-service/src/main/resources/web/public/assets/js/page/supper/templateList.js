@@ -18,7 +18,7 @@ define(function (require, exports, module) {
         pageSize: 20,
         pagerCount: 10,
         pageDetail: true,
-        url: '/supper/getTemplateList',//数据来源Url|通过mobel自定义属性配置
+        url: '/manage/supper/getTemplateList',//数据来源Url|通过mobel自定义属性配置
         rows: [
             {width: '10%', field: 'tempName', title: '模板名称', align: 'center'},
             {width: '20%', field: 'thumbUri', title: '缩略图', align: 'center',
@@ -121,7 +121,7 @@ define(function (require, exports, module) {
                 var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;
                 var urlRoot="";
                 $.ajax({
-                    url:"/template/view",
+                    url:"/manage/template/view",
                     data:{
                         templateId:id
                     },
@@ -155,7 +155,7 @@ define(function (require, exports, module) {
 
     function view(){
         $.ajax({
-            url:"/template/view",
+            url:"/manage/template/view",
 
         })
     }
@@ -173,7 +173,7 @@ define(function (require, exports, module) {
                     btn: ['确定','取消'] //按钮
                 }, function() {
                     $.ajax({
-                        url: "/supper/deleteSite",
+                        url: "/manage/supper/deleteSite",
                         data: {
                             id:id,
                             customerId:customerId
@@ -218,7 +218,7 @@ define(function (require, exports, module) {
                     shadeClose: true,
                     shade: 0.8,
                     area: ['500px', '300px'],
-                    content: "/supper/siteConfig?siteId="+id+"&customerId="+customerId,
+                    content: "/manage/supper/siteConfig?siteId="+id+"&customerId="+customerId,
                     end:function(){
                         //SiteGrid.Refresh();
                     }

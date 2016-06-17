@@ -36,7 +36,7 @@ import java.util.UUID;
  * @since xhl
  */
 @Controller
-@RequestMapping("/widgetTemplate")
+@RequestMapping("/manage/widgetTemplate")
 public class WidgetTemplateController {
     private static final Log log = LogFactory.getLog(WidgetTemplateController.class);
 

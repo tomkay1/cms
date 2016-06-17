@@ -42,7 +42,7 @@ import java.util.Set;
  * Created by chendeyu on 2016/1/6.
  */
 @Controller
-@RequestMapping("/article")
+@RequestMapping("/manage/article")
 public class ArticleController {
     private static final Log log = LogFactory.getLog(ArticleController.class);
 

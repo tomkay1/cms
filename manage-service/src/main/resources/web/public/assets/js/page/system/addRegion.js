@@ -45,7 +45,7 @@ define(function (require, exports, module) {
             var commonUtil = require("common");
             commonUtil.setDisabled("jq-cms-Save");
             $.ajax({
-                url: "/region/saveRegion",
+                url: "/manage/region/saveRegion",
                 data: {
                     id:$("#hidRegionID").val(),
                     regionCode: $("#regionCode").val(),

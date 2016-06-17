@@ -28,7 +28,7 @@ import java.time.LocalDateTime;
  * @time 2015/15/25
  */
 @Controller
-@RequestMapping("/model")
+@RequestMapping("/manage/model")
 public class ModelController {
     private static final Log log = LogFactory.getLog(ModelController.class);
     @Autowired

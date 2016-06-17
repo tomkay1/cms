@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletRequest;
  * @version 1.2
  */
 @Controller
-@RequestMapping("/basic")
+@RequestMapping("/manage/basic")
 public class BasicController {
     private static final Log log = LogFactory.getLog(BasicController.class);
 

@@ -36,7 +36,7 @@ import java.util.List;
  * Created by chendeyu on 2016/1/7.
  */
 @Controller
-@RequestMapping("/contents")
+@RequestMapping("/manage/contents")
 public class ContentsController {
 
     private static final Log log = LogFactory.getLog(ContentsController.class);

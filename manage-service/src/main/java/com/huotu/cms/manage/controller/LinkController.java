@@ -40,7 +40,7 @@ import java.util.Set;
  * Created by chendeyu on 2016/1/6.
  */
 @Controller
-@RequestMapping("/link")
+@RequestMapping("/manage/link")
 public class LinkController {
     private static final Log log = LogFactory.getLog(LinkController.class);
 

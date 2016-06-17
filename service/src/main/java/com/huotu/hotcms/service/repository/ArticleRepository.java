@@ -22,16 +22,6 @@ import java.util.List;
  */
 public interface ArticleRepository extends JpaRepository<Article, Long>, JpaSpecificationExecutor<Article> {
 
-//    Article findOneByIdGreatThanOrderByIdAsc(Long id);
-
-    /**
-     * 根绝站点ID和序列号 查询 文章
-     * @param siteId 站点ID
-     * @param serial 序列号
-     * @return article {@link com.huotu.hotcms.service.entity.Article}
-     */
-    Article findBySiteIdAndSerial(long siteId,String serial);
-
     /**
      * 查找栏目下所有的文章
      * @param category 栏目
@@ -40,9 +30,12 @@ public interface ArticleRepository extends JpaRepository<Article, Long>, JpaSpec
     List<Article> findByCategory(Category category);
 
 
-
-    @Query("select o from Article o where o.category.site.siteId=?1")
-    Article findArticleBySiteId(long siteId);
+    /**
+     * 根绝siteID 查询文章
+     * @param siteId 站点ID
+     * @return 文章
+     */
+    Article findArticleByCategory_Site_SiteId(long siteId);
 
     /**
      * <p>

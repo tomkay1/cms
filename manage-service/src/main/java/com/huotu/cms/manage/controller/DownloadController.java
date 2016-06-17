@@ -107,7 +107,7 @@ public class DownloadController {
             Download download = downloadService.findById(id);
             Category category = download.getCategory();
             Integer modelType = category.getModelId();
-            Set<Category> categorys = categoryRepository.findBySite_Owner_IdAndModerId(ownerId, modelType);
+            Set<Category> categorys = categoryRepository.findBySite_Owner_IdAndModelId(ownerId, modelType);
             String downloadFile = "";
             if (!StringUtils.isEmpty(download.getDownloadUrl())) {
                 downloadFile = resourceServer.getResource(download.getDownloadUrl()).toString();

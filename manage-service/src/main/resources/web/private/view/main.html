@@ -20,7 +20,7 @@
                     <ul class="children">
                         <li class="childMenus js-cms-submunes" data-id="menus01" style="cursor: pointer;">
                             <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
-                            <a th:href="@{/category/categoryList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>栏目列表<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
+                            <a th:href="@{/manage/category/categoryList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>栏目列表<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
                                 </span>
                             </a>
                         </li>
@@ -31,7 +31,7 @@
                     <ul class="children">
                         <li class="childMenus js-cms-submunes" data-id="menus02" style="cursor: pointer;">
                             <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
-                            <a th:href="@{/contents/contentsList?customerid={customerid}(customerid=${user.customerId})}" target="content" ><i class="fa fa-caret-right"></i>内容列表<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
+                            <a th:href="@{/manage/contents/contentsList?customerid={customerid}(customerid=${user.customerId})}" target="content" ><i class="fa fa-caret-right"></i>内容列表<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
                                 </span>
                             </a>
                         </li>
@@ -42,30 +42,30 @@
                     <ul class="children">
                         <li class="childMenus js-cms-submunes active" data-id="menus03" style="cursor: pointer;">
                             <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
-                            <a th:href="@{/site/siteList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>站点管理<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
+                            <a th:href="@{/manage/site/siteList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>站点管理<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
                                 </span>
                             </a>
                         </li>
                         <li class="childMenus js-cms-submunes" data-id="menus03" style="cursor: pointer;" th:if="${user.isSuperManage}">
                             <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
-                            <a th:href="@{/route/routeList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>路由规则<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
+                            <a th:href="@{/manage/route/routeList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>路由规则<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
                                 </span>
                             </a>
                         </li>
                     </ul>
                 </li>
                 <li class="nav-parent nav-active js-cms-menus" id="menus04" style="cursor: pointer;margin-bottom: 15px;" th:if="${user.isSuperManage}">
-                    <a class="aparent" th:href="@{/supper/templateList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-chevron-circle-right"></i><span>模板管理</span></a>
+                    <a class="aparent" th:href="@{/manage/supper/templateList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-chevron-circle-right"></i><span>模板管理</span></a>
                 </li>
                 <li class="nav-parent nav-active js-cms-menus" id="menus05" style="cursor: pointer;margin-bottom: 15px;" th:if="${user.isSuperManage}">
-                    <a class="aparent" th:href="@{/supper/siteList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-chevron-circle-right"></i><span>站点管理</span></a>
+                    <a class="aparent" th:href="@{/manage/supper/siteList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-chevron-circle-right"></i><span>站点管理</span></a>
                 </li>
                 <li class="nav-parent nav-active js-cms-menus" id="menus06" style="cursor: pointer;" th:if="${user.isSuperManage}">
                     <a class="aparent"><i class="fa fa-chevron-circle-right"></i><span>系统设置</span></a>
                     <ul class="children">
                         <li class="childMenus js-cms-submunes" data-id="menus05" style="cursor: pointer;">
                             <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
-                            <a th:href="@{/region/regionList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>地区管理<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
+                            <a th:href="@{/manage/region/regionList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>地区管理<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
                                 </span>
                             </a>
                         </li>
@@ -88,13 +88,13 @@
                         </a>
                     </li>
                     <li>
-                        <a class="huoban active" style="right:374px;"  th:href="@{/main/decorated?customerid={customerid}(customerid=${user.customerId},scope=shop)}" target="_blank" >
+                        <a class="huoban active" style="right:374px;"  th:href="@{/manage/main/decorated?customerid={customerid}(customerid=${user.customerId},scope=shop)}" target="_blank" >
                             <span><img src="'/assets/img/iconfont-zhuangxiu.png'" ewp:src="'/assets/img/iconfont-zhuangxiu.png'" style="height: 20px; width:22px;vertical-align: middle;"></span>
                             <span>店铺装修</span>
                         </a>
                     </li>
                     <li>
-                        <a class="huoban" style="right:249px; background: #7CB147;border-right: 1px #7CB147 solid;" th:href="@{/main/decorated?customerid={customerid}(customerid=${user.customerId},scope=website)}" target="_blank" >
+                        <a class="huoban" style="right:249px; background: #7CB147;border-right: 1px #7CB147 solid;" th:href="@{/manage/main/decorated?customerid={customerid}(customerid=${user.customerId},scope=website)}" target="_blank" >
                             <span><img src="/assets/img/icon-website.png" ewp:src="'/assets/img/icon-website.png'" style="height:auto; width:17px;vertical-align: middle;"></span>
                             <span>官网装修</span>
                         </a>
@@ -137,7 +137,7 @@
         </div>
     </div>
     <div class="con_right" id="con_right">
-        <iframe id="content" name="content" width="1152" height="800" class="hide" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" src="/model/modelList" th:src="@{/site/siteList?customerid={customerid}(customerid=${user.customerId})}" style="display: inline;">
+        <iframe id="content" name="content" width="1152" height="800" class="hide" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" src="/model/modelList" th:src="@{/manage/site/siteList?customerid={customerid}(customerid=${user.customerId})}" style="display: inline;">
         </iframe>
     </div>
 </div>

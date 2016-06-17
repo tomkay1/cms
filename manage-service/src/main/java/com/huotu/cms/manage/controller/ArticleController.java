@@ -117,7 +117,7 @@ public class ArticleController {
             }
             Category category = article.getCategory();
             Integer modelType = category.getModelId();
-            Set<Category> categories = categoryRepository.findBySite_Owner_IdAndModerId(ownerId, modelType);
+            Set<Category> categories = categoryRepository.findBySite_Owner_IdAndModelId(ownerId, modelType);
             modelAndView.addObject("logo_uri", logo_uri);
             modelAndView.addObject("categorys", categories);
             modelAndView.addObject("article", article);

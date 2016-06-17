@@ -1,6 +1,15 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 package com.huotu.hotcms.service.service.impl;
 
-import com.huotu.hotcms.service.entity.Article;
+import com.huotu.hotcms.service.entity.BaseEntity;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.Video;
@@ -20,7 +29,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.Predicate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,104 +55,79 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public Video findById(Long id) {
-        Video video =  videoRepository.findOne(id);
+        Video video = videoRepository.findOne(id);
         return video;
     }
 
     @Override
     public Page<Video> getVideoList(PageableForeachParam videoForeachParam) {
-        int pageIndex = videoForeachParam.getPageNo()-1;
+        int pageIndex = videoForeachParam.getPageNo() - 1;
         int pageSize = videoForeachParam.getPageSize();
         Sort sort = new Sort(Sort.Direction.DESC, "orderWeight");
-        if(!StringUtils.isEmpty(videoForeachParam.getSpecifyIds())) {
+        if (!StringUtils.isEmpty(videoForeachParam.getSpecifyIds())) {
             return getSpecifyVideos(videoForeachParam.getSpecifyIds(), pageIndex, pageSize, sort);
         }
-        if(!StringUtils.isEmpty(videoForeachParam.getCategoryId())) {
+        if (!StringUtils.isEmpty(videoForeachParam.getCategoryId())) {
             return getVideos(videoForeachParam, pageIndex, pageSize, sort);
-        }else {
+        } else {
             return getAllVideo(videoForeachParam, pageIndex, pageSize, sort);
         }
     }
 
     private Page<Video> getAllVideo(PageableForeachParam params, int pageIndex, int pageSize, Sort sort) {
-        List<Category> subCategories =  categoryService.getSubCategories(params.getParentcId());
-        if(subCategories.size()==0) {
+        List<Category> subCategories = categoryService.getSubCategories(params.getParentcId());
+        if (subCategories.size() == 0) {
             try {
                 throw new Exception("父栏目节点没有子栏目");
-            }catch (Exception e) {
+            } catch (Exception e) {
                 log.error(e.getMessage());
             }
         }
-        Specification<Article> specification = (root, criteriaQuery, cb) -> {
-            List<Predicate> p1 = new ArrayList<>();
-            for(Category category : subCategories) {
-                p1.add(cb.equal(root.get("category").as(Category.class), category));
-            }
-            Predicate predicate = cb.or(p1.toArray(new Predicate[p1.size()]));
-            List<Predicate> predicates = new ArrayList<>();
-            if(!StringUtils.isEmpty(params.getExcludeIds())) {
-                List<String> ids = Arrays.asList(params.getExcludeIds());
-                List<Long> articleIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
-                predicates = articleIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
-            }
-            predicates.add(cb.equal(root.get("deleted").as(Boolean.class), false));
-            predicates.add(predicate);
-            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
-        };
-        return videoRepository.findAll(specification,new PageRequest(pageIndex,pageSize,sort));
+        Specification<Video> specification = BaseEntity.Specification(params, subCategories);
+        return videoRepository.findAll(specification, new PageRequest(pageIndex, pageSize, sort));
     }
 
     private Page<Video> getVideos(PageableForeachParam params, int pageIndex, int pageSize, Sort sort) {
-        Specification<Article> specification = (root, criteriaQuery, cb) -> {
-            List<Predicate> predicates = new ArrayList<>();
-            if(!StringUtils.isEmpty(params.getExcludeIds())) {
-                List<String> ids = Arrays.asList(params.getExcludeIds());
-                List<Long> articleIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
-                predicates = articleIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
-            }
-            predicates.add(cb.equal(root.get("deleted").as(Boolean.class),false));
-            predicates.add(cb.equal(root.get("category").get("id").as(Long.class), params.getCategoryId()));
-            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
-        };
-        return videoRepository.findAll(specification,new PageRequest(pageIndex,pageSize,sort));
+        Specification<Video> specification = BaseEntity.Specification(params);
+        return videoRepository.findAll(specification, new PageRequest(pageIndex, pageSize, sort));
     }
 
     private Page<Video> getSpecifyVideos(String[] specifyIds, int pageIndex, int pageSize, Sort sort) {
         List<String> ids = Arrays.asList(specifyIds);
         List<Long> articleIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
-        Specification<Article> specification = (root, criteriaQuery, cb) -> {
+        Specification<Video> specification = (root, criteriaQuery, cb) -> {
             List<Predicate> predicates = articleIds.stream().map(id -> cb.equal(root.get("id").as(Long.class), id)).collect(Collectors.toList());
             return cb.or(predicates.toArray(new Predicate[predicates.size()]));
         };
-        return videoRepository.findAll(specification,new PageRequest(pageIndex,pageSize,sort));
+        return videoRepository.findAll(specification, new PageRequest(pageIndex, pageSize, sort));
     }
 
     @Override
     public Video getVideoByParam(VideoCurrentParam videoCurrentParam) {
-        Video video=null;
+        Video video = null;
         if (videoCurrentParam != null) {
             if (videoCurrentParam.getId() != null) {
-                video= videoRepository.getOne(videoCurrentParam.getId());
+                video = videoRepository.getOne(videoCurrentParam.getId());
             } else {
-                video= videoRepository.getOne(videoCurrentParam.getDefaultid());
+                video = videoRepository.getOne(videoCurrentParam.getDefaultid());
             }
         }
         ///图片资源处理
-        video=setVideoResourcesPath(video);
+        video = setVideoResourcesPath(video);
         return video;
     }
 
     @Override
     public Video setVideoResourcesPath(Video video) {
-        if(video!=null){
-            Category category=video.getCategory();
-            if(category!=null) {
+        if (video != null) {
+            Category category = video.getCategory();
+            if (category != null) {
                 Site site = category.getSite();
-                if(site!=null&&!StringUtils.isEmpty(site.getResourceUrl())){
-                    if(!StringUtils.isEmpty(video.getVideoUrl())){
-                        video.setVideoUrl(site.getResourceUrl()+video.getVideoUrl());
+                if (site != null && !StringUtils.isEmpty(site.getResourceUrl())) {
+                    if (!StringUtils.isEmpty(video.getVideoUrl())) {
+                        video.setVideoUrl(site.getResourceUrl() + video.getVideoUrl());
                     }
-                    if(!StringUtils.isEmpty(video.getThumbUri())) {
+                    if (!StringUtils.isEmpty(video.getThumbUri())) {
                         video.setThumbUri(site.getResourceUrl() + video.getThumbUri());
                     }
 //                    if(!StringUtils.isEmpty(video.getOutLinkUrl())){

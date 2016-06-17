@@ -9,13 +9,20 @@
 
 package com.huotu.hotcms.service.repository;
 
-import com.huotu.hotcms.service.entity.Category;
-import com.huotu.hotcms.service.entity.Video;
+import com.huotu.hotcms.service.entity.Owner;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-import java.util.List;
+/**
+ * @author CJ
+ */
+public interface OwnerRepository extends JpaRepository<Owner, Long> {
 
-public interface VideoRepository extends JpaRepository<Video, Long>, JpaSpecificationExecutor<Video> {
-    List<Video> findByCategory(Category category);
+    /**
+     * 查找伙伴商城相关的owner
+     *
+     * @param customerId 伙伴商城商户号
+     * @return owner
+     */
+    Owner findByCustomerId(int customerId);
+
 }

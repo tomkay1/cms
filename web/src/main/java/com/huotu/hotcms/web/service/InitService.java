@@ -2,20 +2,23 @@
  * 版权所有:杭州火图科技有限公司
  * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
  *
- *  (c) Copyright Hangzhou Hot Technology Co., Ltd.
- *  Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District 2013-2015. All rights reserved.
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
  */
 
 package com.huotu.hotcms.web.service;
 
-import com.huotu.hotcms.service.entity.*;
-import com.huotu.hotcms.service.repository.*;
+import com.huotu.hotcms.service.repository.CategoryRepository;
+import com.huotu.hotcms.service.repository.HostRepository;
+import com.huotu.hotcms.service.repository.RegionRepository;
+import com.huotu.hotcms.service.repository.RouteRepository;
+import com.huotu.hotcms.service.repository.SiteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import java.time.LocalDateTime;
 
 /**
  * Created by cwb on 2015/12/28.
@@ -65,12 +68,12 @@ public class InitService {
 //        if(siteRepository.count() == 0) {
 //            Host host = new Host();
 //            host.setDomain("cms.51flashmall.com");
-//            host.setCustomerId(3447);
+//            host.setOwnerId(3447);
 //            Host host1 = new Host();
 //            host1.setDomain("localhost");
-//            host1.setCustomerId(3447);
+//            host1.setOwnerId(3447);
 //            Site site = new Site();
-//            site.setCustomerId(3447);
+//            site.setOwnerId(3447);
 //            site.setName("火图科技");
 //            site.setTitle("火图科技");
 //            site.setDescription("杭州火图科技有限公司是一家专业的微信商城服务提供商，" +
@@ -82,7 +85,7 @@ public class InitService {
 //            site.setCustomTemplateUrl("http://www.test.com");
 //            siteRepository.save(site);
 //            Site s = new Site();
-//            s.setCustomerId(3447);
+//            s.setOwnerId(3447);
 //            s.setName("huobanplus");
 //            s.setTitle("huobanplus");
 //            s.setDescription("Hangzhou fire science and Technology Co., Ltd. is a professional mall of micro channel service providers, " +
@@ -121,7 +124,7 @@ public class InitService {
 //            Category category = new Category();
 //            category.setCreateTime(LocalDateTime.now());
 //            category.setName("首页");
-//            category.setCustomerId(3447);
+//            category.setOwnerId(3447);
 //            category.setOrderWeight(100);
 //            category.setSite(site);
 //            category.setRoute(routeRepository.findBySiteAndRule(site, "/"));
@@ -130,7 +133,7 @@ public class InitService {
 //            Category category1 = new Category();
 //            category1.setCreateTime(LocalDateTime.now());
 //            category1.setName("新闻资讯");
-//            category1.setCustomerId(3447);
+//            category1.setOwnerId(3447);
 //            category1.setOrderWeight(90);
 //            category1.setSite(site);
 //            category1.setRoute(routeRepository.findBySiteAndRule(site,"/news"));
@@ -139,7 +142,7 @@ public class InitService {
 //            Category category2 = new Category();
 //            category2.setCreateTime(LocalDateTime.now());
 //            category2.setName("最新公告");
-//            category2.setCustomerId(3447);
+//            category2.setOwnerId(3447);
 //            category2.setOrderWeight(90);
 //            category2.setSite(site);
 //            category2.setRoute(routeRepository.findBySiteAndRule(site,"/notices"));

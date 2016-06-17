@@ -1,10 +1,31 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 package com.huotu.hotcms.service.entity;
 
 import com.huotu.hotcms.service.common.SiteType;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,8 +38,7 @@ import java.util.Set;
 @Table(name = "cms_site")
 @Setter
 @Getter
-@Cacheable(value = false)
-public class Site{
+public class Site {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,21 +46,22 @@ public class Site{
     private Long siteId;
 
     /**
-     * 商户ID
+     * 所有主体
      */
-    @Column(name = "customerId")
-    private Integer customerId;
+    @ManyToOne
+    @JoinColumn(name = "ownerId")
+    private Owner owner;
 
     /**
      * 站点名称
      */
-    @Column(name = "name")
+    @Column(name = "name", length = 100)
     private String name;
 
     /**
      * 标题，填写有助于搜索引擎优化
      */
-    @Column(name = "title")
+    @Column(name = "title", length = 200)
     private String title;
 
     /**
@@ -82,22 +103,22 @@ public class Site{
 
     /**
      * 站点是否个性化
-     * */
+     */
     @Column(name = "personalise")
     private boolean personalise;
 
 
-     /**
-      * 对应域名
-      */
-     @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-     @JoinTable(name = "cms_site_host",
-     joinColumns = {@JoinColumn(name = "siteId",referencedColumnName = "siteId")},
-     inverseJoinColumns = {@JoinColumn(name = "hostId",referencedColumnName = "hostId")}
-     )
-     private Set<Host> hosts;
+    /**
+     * 对应域名
+     */
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(name = "cms_site_host",
+            joinColumns = {@JoinColumn(name = "siteId", referencedColumnName = "siteId")},
+            inverseJoinColumns = {@JoinColumn(name = "hostId", referencedColumnName = "hostId")}
+    )
+    private Set<Host> hosts;
 
-     /**
+    /**
      * 站点创建时间
      */
     @Column(name = "createTime")
@@ -123,7 +144,7 @@ public class Site{
 
     /**
      * 网站类型(pc 商城or pc shop)
-     * */
+     */
     @Column(name = "siteType")
     private SiteType siteType;
     /**
@@ -134,13 +155,13 @@ public class Site{
     private Region region;
 
     public void addHost(Host host) {
-        if(this.hosts == null) {
+        if (this.hosts == null) {
             this.hosts = new HashSet<>();
         }
-        if(host.getSites() == null) {
+        if (host.getSites() == null) {
             host.setSites(new HashSet<>());
         }
-        if(this.getSiteId()!=null) {
+        if (this.getSiteId() != null) {
             host.getSites().add(this);
         }
         this.hosts.add(host);

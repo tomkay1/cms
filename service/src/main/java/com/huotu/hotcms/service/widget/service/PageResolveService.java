@@ -1,3 +1,12 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 package com.huotu.hotcms.service.widget.service;
 
 import com.huotu.hotcms.service.common.BasicPageType;
@@ -7,7 +16,6 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.widget.WidgetPage;
 import com.huotu.hotcms.service.repository.CustomPagesRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
-import com.huotu.hotcms.service.service.WidgetService;
 import com.huotu.hotcms.service.util.HttpUtils;
 import com.huotu.hotcms.service.util.SerialUtil;
 import org.apache.commons.logging.Log;
@@ -16,7 +24,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.xml.bind.JAXB;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -55,7 +66,7 @@ public class PageResolveService {
      * */
     public WidgetPage getWidgetPageByConfig(BasicPageType basicPageType,Site site){
         WidgetPage widgetPage=null;
-        String path=configInfo.getResourcesConfig(site.getCustomerId(),site.getSiteId())+"/"+basicPageType.getValue();
+        String path = configInfo.getResourcesConfig(site) + "/" + basicPageType.getValue();
         URI url=null;
         try {
             url=resourceServer.getResource(path);
@@ -81,7 +92,7 @@ public class PageResolveService {
      * */
     public WidgetPage getWidgetPageByConfig(String pageConfigName,Site site){
         WidgetPage widgetPage=null;
-        String path=configInfo.getResourcesConfig(site.getCustomerId(),site.getSiteId())+"/"+pageConfigName;
+        String path = configInfo.getResourcesConfig(site) + "/" + pageConfigName;
         URI url=null;
         try {
             url=resourceServer.getResource(path);
@@ -104,19 +115,18 @@ public class PageResolveService {
      *     创建页面信息
      * </p>
      * @param page 页面信息对象
-     * @param customerId 商户ID
      * @param siteId 站点ID
      * @param publish 是否发布
      * @return 是否成功
      * */
-    public boolean createPageAndConfigByWidgetPage(WidgetPage page,Integer customerId,Long siteId,Boolean publish)
+    public boolean createPageAndConfigByWidgetPage(WidgetPage page, Long siteId, Boolean publish)
             throws IOException, URISyntaxException {
         CustomPages customPages=new CustomPages();
         if(page!=null) {
             Site site = siteRepository.findOne(siteId);
             if (site != null) {
                 customPages.setSite(site);
-                customPages.setCustomerId(customerId);
+//                customPages.setCustomerId(customerId);
                 customPages.setDeleted(false);
                 customPages.setDescription(page.getPageDescription());
                 customPages.setHome(false);
@@ -131,8 +141,8 @@ public class PageResolveService {
                     StringWriter stringWriter = new StringWriter();
                     JAXB.marshal(page, stringWriter);
                     InputStream inputStream = new ByteArrayInputStream(stringWriter.toString().getBytes("utf-8"));
-                    String path =null;
-                    path = configInfo.getResourcesConfig(customerId, siteId) + "/" + customPages.getId() + ".xml";
+                    String path;
+                    path = configInfo.getResourcesConfig(site) + "/" + customPages.getId() + ".xml";
                     resourceServer.uploadResource(path, inputStream);
                     return true;
                 }
@@ -146,20 +156,19 @@ public class PageResolveService {
      *     创建默认的页面信息
      * </p>
      * @param widgetPage 页面信息对象
-     * @param customerId 商户ID
      * @param siteId 站点ID
      * @param config 默认页面对应的名称，比如head或者search 则存储的xml文件为head.xml或者search.xml
      * @return 是否成功
      * */
-    public boolean createDefaultPageConfigByWidgetPage(WidgetPage widgetPage,Integer customerId,Long siteId
-            ,String config) throws IOException, URISyntaxException {
+    public boolean createDefaultPageConfigByWidgetPage(WidgetPage widgetPage, Long siteId
+            , String config) throws IOException, URISyntaxException {
         if(widgetPage!=null) {
             Site site = siteRepository.findOne(siteId);
             if (site != null) {
                 StringWriter stringWriter = new StringWriter();
                 JAXB.marshal(widgetPage, stringWriter);
                 InputStream inputStream = new ByteArrayInputStream(stringWriter.toString().getBytes("utf-8"));
-                String path = configInfo.getResourcesConfig(customerId, siteId) + "/" +config + ".xml";
+                String path = configInfo.getResourcesConfig(site) + "/" + config + ".xml";
                 URI uri = resourceServer.uploadResource(path, inputStream);
                 return true;
             }
@@ -172,12 +181,11 @@ public class PageResolveService {
      *     修改页面信息
      * </p>
      * @param widgetPage 页面信息对象
-     * @param customerId 商户ID
      * @param pageId 页面ID
      * @param publish 是否发布
      * @return 是否成功
      * */
-    public boolean patchPageAndConfigByWidgetPage(WidgetPage widgetPage,Integer customerId,Long pageId,Boolean publish) throws IOException, URISyntaxException {
+    public boolean patchPageAndConfigByWidgetPage(WidgetPage widgetPage, Long pageId, Boolean publish) throws IOException, URISyntaxException {
         CustomPages customPages=customPagesRepository.findOne(pageId);
         if(widgetPage!=null) {
             if (customPages != null) {
@@ -189,7 +197,7 @@ public class PageResolveService {
                 StringWriter stringWriter = new StringWriter();
                 JAXB.marshal(widgetPage, stringWriter);
                 InputStream inputStream = new ByteArrayInputStream(stringWriter.toString().getBytes("utf-8"));
-                String path = configInfo.getResourcesConfig(customerId, site.getSiteId()) + "/" + pageId+ ".xml";
+                String path = configInfo.getResourcesConfig(site) + "/" + pageId + ".xml";
                 URI uri = resourceServer.uploadResource(path, inputStream);
                 return true;
             }

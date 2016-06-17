@@ -1,3 +1,12 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 package com.huotu.cms.manage.controller.common;
 
 import com.huotu.cms.manage.common.StringUtil;
@@ -23,7 +32,12 @@ import sun.misc.BASE64Decoder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.net.URI;
 import java.util.Date;
 import java.util.HashMap;
@@ -36,13 +50,11 @@ import java.util.Map;
 @RequestMapping("/manage/cms")
 public class UploadController {
     private static final Log log = LogFactory.getLog(UploadController.class);
+    static BASE64Decoder decoder = new BASE64Decoder();
     @Autowired
     private StaticResourceService resourceServer;
     @Autowired
     private WidgetService widgetService;
-
-    static BASE64Decoder decoder = new BASE64Decoder();
-
     @Autowired
     private ConfigInfo configInfo;
 
@@ -93,7 +105,7 @@ public class UploadController {
 
     @RequestMapping(value = "/siteUpLoad", method = RequestMethod.POST)
     @ResponseBody
-    public ResultView siteUpLoad(Integer customerId, @RequestParam(value = "btnFile", required = false) MultipartFile files) {
+    public ResultView siteUpLoad(long ownerId, @RequestParam(value = "btnFile", required = false) MultipartFile files) {
         ResultView resultView = null;
         try {
             Date now = new Date();
@@ -101,7 +113,7 @@ public class UploadController {
             String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
             if("jpg, jpeg,png,gif,bmp".contains(suffix))
             {
-                String path=configInfo.getResourcesSiteLogo(customerId)+"/"+ StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + suffix;
+                String path = configInfo.getResourcesSiteLogo(ownerId) + "/" + StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + suffix;
                 URI uri = resourceServer.uploadResource(path, files.getInputStream());
                 Map<String,Object> map= new HashMap<String, Object>();
                 map.put("fileUrl", uri);
@@ -119,7 +131,7 @@ public class UploadController {
 
     @RequestMapping(value = "/imgUpLoad", method = RequestMethod.POST)
     @ResponseBody
-    public ResultView imgUpLoad(Integer customerId, @RequestParam(value = "btnFile", required = false) MultipartFile files) {
+    public ResultView imgUpLoad(@RequestParam(value = "btnFile", required = false) MultipartFile files) {
         ResultView resultView = null;
         try {
             Date now = new Date();
@@ -129,7 +141,7 @@ public class UploadController {
             String path=configInfo.getResourceWidgetImg()+"/"+StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + suffix;
                 URI uri = resourceServer.uploadResource(path, files.getInputStream());
                 BufferedImage sourceImg = javax.imageio.ImageIO.read(files.getInputStream());
-                Map<String,Object> map= new HashMap<String, Object>();
+                Map<String, Object> map = new HashMap<>();
                 map.put("fileUrl", uri);
                 map.put("fileUri", path);
                 map.put("wide", sourceImg.getWidth());
@@ -262,14 +274,14 @@ public class UploadController {
 
     @RequestMapping(value = "/downloadUpLoad", method = RequestMethod.POST)
     @ResponseBody
-    public ResultView downloadUpLoad(Integer customerId, @RequestParam(value = "btnFile", required = false) MultipartFile files) {
+    public ResultView downloadUpLoad(long ownerId, @RequestParam(value = "btnFile", required = false) MultipartFile files) {
         ResultView resultView = null;
         try {
             Date now = new Date();
             String fileName = files.getOriginalFilename();
             String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
             if("txt,zip,jar,docx,doc,xlsx".contains(suffix)){
-                String path=configInfo.getResourcesDownload(customerId)+"/"+StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + suffix;
+                String path = configInfo.getResourcesDownload(ownerId) + "/" + StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + suffix;
                 URI uri = resourceServer.uploadResource(path, files.getInputStream());
                 Map<String,Object> map= new HashMap<String, Object>();
                 map.put("fileUrl", uri);
@@ -288,7 +300,7 @@ public class UploadController {
 
     @RequestMapping(value="/kindeditorUpload",method = RequestMethod.POST)
     @ResponseBody
-    public Result fileUploadUeImage(Integer customerId,MultipartHttpServletRequest multipartHttpServletRequest) throws Exception {
+    public Result fileUploadUeImage(long ownerId, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception {
         Result result=new Result();
         Date now = new Date();
         MultipartFile file=multipartHttpServletRequest.getFile("imgFile");
@@ -297,7 +309,7 @@ public class UploadController {
         String fileExt = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1).toLowerCase();
 //        String path =img[0]+"/"+3447+"/"+img[2]+"/"+ StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + fileExt;
 
-        String path=configInfo.getResourcesUeditor(customerId)+"/"+StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + fileExt;
+        String path = configInfo.getResourcesUeditor(ownerId) + "/" + StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + fileExt;
 
         URI uri = resourceServer.uploadResource(path, file.getInputStream());
         result.setError(0);
@@ -308,7 +320,7 @@ public class UploadController {
 
     @RequestMapping("/ajaxEditorFileUpload")
     @ResponseBody
-    public Result ajaxEditorFileUpload(Integer customerId,String imgsrc) throws Exception {
+    public Result ajaxEditorFileUpload(long ownerId, String imgsrc) throws Exception {
         Result result = new Result();
         //去掉字符串前面多余的字符"data:image/png;base64,"，获得纯粹的二进制地址
         imgsrc = imgsrc.substring(22);
@@ -321,7 +333,7 @@ public class UploadController {
 //            String path =img[0]+"/"+3447+"/"+img[2]+"/"+ StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + "png";
             Date now = new Date();
 //            String fileExt = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1).toLowerCase();
-            String path=configInfo.getResourcesUeditor(customerId)+"/"+StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + ".png";
+            String path = configInfo.getResourcesUeditor(ownerId) + "/" + StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + ".png";
             //上传至服务器
 //            String fileName = StaticResourceService.RICHTEXT_UPLOAD + UUID.randomUUID().toString() + ".png";
             URI uri =resourceServer.uploadResource(path, bais);

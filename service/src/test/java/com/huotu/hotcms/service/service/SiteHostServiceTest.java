@@ -2,16 +2,19 @@
  * 版权所有:杭州火图科技有限公司
  * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
  *
- *  (c) Copyright Hangzhou Hot Technology Co., Ltd.
- *  Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District 2013-2015. All rights reserved.
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
  */
 
 package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.config.ServiceTestConfig;
 import com.huotu.hotcms.service.entity.Host;
+import com.huotu.hotcms.service.entity.Owner;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.repository.HostRepository;
+import com.huotu.hotcms.service.repository.OwnerRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import org.junit.Assert;
 import org.junit.Before;
@@ -47,23 +50,29 @@ public class SiteHostServiceTest {
     private HostRepository hostRepository;
     @Autowired
     private SiteRepository siteRepository;
+    @Autowired
+    private OwnerRepository ownerRepository;
+    private Owner owner;
 
     @Before
     public void setUp() {
+        owner = new Owner();
+        owner.setCustomerId(3447);
+        owner = ownerRepository.save(owner);
         host1 = new Host();
         domain1 = UUID.randomUUID().toString();
         while (hostRepository.findByDomain(domain1)!=null) {
             domain1 = UUID.randomUUID().toString();
         }
         host1.setDomain(domain1);
-        host1.setCustomerId(3447);
+        host1.setOwner(owner);
         host2 = new Host();
         domain2 = UUID.randomUUID().toString();
         while (hostRepository.findByDomain(domain2)!=null) {
             domain2 = UUID.randomUUID().toString();
         }
         host2.setDomain(domain2);
-        host2.setCustomerId(3447);
+        host2.setOwner(owner);
     }
 
     /**
@@ -75,7 +84,7 @@ public class SiteHostServiceTest {
     public void addHostTest() {
         //新建站点新绑定域名，级联保存并建立关系
         Site site = new Site();
-        site.setCustomerId(3447);
+        site.setOwner(owner);
         site.setTitle("火图科技");
         site.setDescription("杭州火图科技有限公司是一家专业的微信商城服务提供商，" +
                 "专业/质优/高端微商城定制开发，为客户建立专属微信三级分销系统，并提供代运营、微商人才培训等服务");
@@ -92,7 +101,7 @@ public class SiteHostServiceTest {
 
         //新建站点绑定旧域名，建立关系
         Site s = new Site();
-        s.setCustomerId(3447);
+        s.setOwner(owner);
         s.setTitle("huobanplus");
         s.setDescription("Hangzhou fire science and Technology Co., Ltd. is a professional mall of micro channel service providers, " +
                 "professional / quality / high-end micro mall custom development……");

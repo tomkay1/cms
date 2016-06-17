@@ -1,3 +1,12 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.util.web.CookieUser;
@@ -79,12 +88,10 @@ public class ArticleController {
     /**
      * 添加文章
      *
-     * @param customerId
-     * @return
      * @throws Exception
      */
     @RequestMapping(value = "/addArticle")
-    public ModelAndView addArticle(Integer customerId) throws Exception {
+    public ModelAndView addArticle() throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/view/widget/addArticle.html");
         return modelAndView;
@@ -94,12 +101,12 @@ public class ArticleController {
      * 修改文章
      *
      * @param id
-     * @param customerId
+     * @param ownerId
      * @return
      * @throws Exception
      */
     @RequestMapping("/updateArticle")
-    public ModelAndView updateArticle(@RequestParam(value = "id", defaultValue = "0") Long id, Integer customerId) throws Exception {
+    public ModelAndView updateArticle(@RequestParam(value = "id", defaultValue = "0") Long id, long ownerId) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         try {
             modelAndView.setViewName("/view/contents/updateArticle.html");
@@ -110,9 +117,9 @@ public class ArticleController {
             }
             Category category = article.getCategory();
             Integer modelType = category.getModelId();
-            Set<Category> categorys = categoryRepository.findByCustomerIdAndModelId(customerId, modelType);
+            Set<Category> categories = categoryRepository.findBySite_Owner_IdAndModerId(ownerId, modelType);
             modelAndView.addObject("logo_uri", logo_uri);
-            modelAndView.addObject("categorys", categorys);
+            modelAndView.addObject("categorys", categories);
             modelAndView.addObject("article", article);
         } catch (Exception ex) {
             log.error(ex.getMessage());
@@ -131,7 +138,7 @@ public class ArticleController {
      * @return
      */
     @RequestMapping(value = "/saveArticle", method = RequestMethod.POST)
-    @Transactional(value = "transactionManager")
+    @Transactional
     @ResponseBody
     public ResultView saveArticle(Article article, Boolean isSystem, Long categoryId, int articleSourceId) {
         ResultView result = null;
@@ -166,7 +173,7 @@ public class ArticleController {
     /**
      * 文章分页
      *
-     * @param customerId
+     * @param ownerId
      * @param title
      * @param page
      * @param pageSize
@@ -174,13 +181,13 @@ public class ArticleController {
      */
     @RequestMapping(value = "/getArticleList")
     @ResponseBody
-    public PageData<ArticleCategory> getArticleList(@RequestParam(name = "customerId", required = false) Integer customerId,
+    public PageData<ArticleCategory> getArticleList(@RequestParam(name = "ownerId") long ownerId,
                                                     @RequestParam(name = "title", required = false) String title,
-                                                    @RequestParam(name = "page", required = true, defaultValue = "1") int page,
-                                                    @RequestParam(name = "pagesize", required = true, defaultValue = "20") int pageSize) {
+                                                    @RequestParam(name = "page", defaultValue = "1") int page,
+                                                    @RequestParam(name = "pagesize", defaultValue = "20") int pageSize) {
         PageData<ArticleCategory> pageModel = null;
         try {
-            pageModel = articleService.getPage(customerId, title, page, pageSize);
+            pageModel = articleService.getPage(ownerId, title, page, pageSize);
         } catch (Exception ex) {
             log.error(ex.getMessage());
         }
@@ -191,18 +198,19 @@ public class ArticleController {
      * 删除文章,只有管理员才可做删除操作
      *
      * @param id
-     * @param customerId
+     * @param ownerId
      * @param request
      * @return
      */
     @RequestMapping(value = "/deleteArticle", method = RequestMethod.POST)
     @ResponseBody
-    public ResultView deleteArticle(@RequestParam(name = "id", required = true, defaultValue = "0") Long id, int customerId, HttpServletRequest request) {
+    public ResultView deleteArticle(@RequestParam(name = "id", defaultValue = "0") Long id
+            , long ownerId, HttpServletRequest request) {
         ResultView result = null;
         try {
-            if (cookieUser.getCustomerId(request) == customerId) {
+            if (cookieUser.getOwnerId(request) == ownerId) {
                 Article article = articleService.findById(id);
-                if (article.isSystem() == true) {
+                if (article.isSystem()) {
                     result = new ResultView(ResultOptionEnum.SYSTEM_ARTICLE.getCode(), ResultOptionEnum.SYSTEM_ARTICLE.getValue(), null);
                     return result;
                 } else {

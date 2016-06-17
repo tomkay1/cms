@@ -1,3 +1,12 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 package com.huotu.hotcms.web.controller;
 
 import com.google.zxing.BarcodeFormat;
@@ -78,7 +87,7 @@ public class BindController {
 //                String state = request.getParameter("state");//state为goodsId
 //                String appid = configInfo.getAppid();
 //                String secret = configInfo.getAppsecret();
-//                int customerId = siteResolveService.getCurrentSite(request).getCustomerId();
+//                int customerId = siteResolveService.getCurrentSite(request).getOwnerId();
 //                String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + appid + "&secret=" + secret + "&code=" + code + "&grant_type=authorization_code" + "&state=" + state;
 //                WxUser wxUser = registerByWeixinService.getWxUser(url);//返回用户信息
 //                RegisterWeixinUserData registerWeixinUserData =registerByWeixinService.RegisterByWeixin(customerId,wxUser);
@@ -97,7 +106,7 @@ public class BindController {
      */
     @RequestMapping(value = "/qrCode", method = { RequestMethod.GET,RequestMethod.POST })
     public void qrCode(HttpServletRequest request, HttpServletResponse resp) throws Exception {
-        int customerId = siteResolveService.getCurrentSite(request).getCustomerId();
+        int customerId = siteResolveService.getCurrentSite(request).getOwner().getCustomerId();
         Merchant merchant = null;
         String num = request.getParameter("num");//购买数量
         String productId = request.getParameter("productId");//购买的产品Id
@@ -140,7 +149,7 @@ public class BindController {
     @RequestMapping(value = "/subscribeCode", method = { RequestMethod.GET })
     public void subscribeCode(HttpServletRequest request, HttpServletResponse response) throws Exception {
         // 指定生成的响应是图片
-        int customerId = siteResolveService.getCurrentSite(request).getCustomerId();
+        int customerId = siteResolveService.getCurrentSite(request).getOwner().getCustomerId();
         BufferedImage bufferedImage = webSiteAppConfigRestRepository.imageForMerchantWeixinBusinessCard(customerId);
         ImageIO.write(bufferedImage,"JPEG",response.getOutputStream());
     }

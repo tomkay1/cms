@@ -82,7 +82,7 @@ define(function (require, exports, module) {
         var siteId=$("#siteId").val();
         var category=$("#category").val();
         var layer=require("layer");
-        //window.location.href="http://"+window.location.host+"/contents/addContents"+"?siteId="+siteId+"&customerId="+customerId+"&category="+category;
+        //window.location.href="http://"+window.location.host+"/contents/addContents"+"?siteId="+siteId+"&ownerId="+ownerId+"&category="+category;
         var content="/manage/contents/addContents"+"?siteId="+siteId+"&ownerId="+ownerId+"&category="+category;
         layer.open({
             type: 2,
@@ -130,8 +130,8 @@ define(function (require, exports, module) {
                     }
                 }
                 var commonUtil = require("common");
-                var customerId = commonUtil.getQuery("customerId");
-                //window.location.href="http://"+window.location.host+"/"+model+"/update"+link+"?id="+id+"&customerId="+customerId;
+                var ownerId = commonUtil.getQuery("ownerId");
+                //window.location.href="http://"+window.location.host+"/"+model+"/update"+link+"?id="+id+"&ownerId="+ownerId;
                 var content ="/manage/"+model+"/update"+link+"?id="+id+"&ownerId="+ownerId;
                 layer.open({
                     type: 2,
@@ -219,7 +219,7 @@ define(function (require, exports, module) {
                 model=$.trim(model);
                 var commonUtil = require("common");
                 var ownerId = commonUtil.getQuery("ownerId");
-                //window.location.href="http://"+window.location.host+"/"+model+"/"+model+"List"+"?id="+id+"&customerId="+customerId;
+                //window.location.href="http://"+window.location.host+"/"+model+"/"+model+"List"+"?id="+id+"&ownerId="+ownerId;
                 var content="/manage/"+model+"/"+model+"List"+"?id="+id+"&ownerId="+ownerId;
                 var layer=require("layer");
                 layer.open({

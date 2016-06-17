@@ -16,7 +16,7 @@
 <body>
 <div class="header-app">
     <p class="app-title">
-        <a th:href="@{/page/list?customerid={customerid}(customerid=${user.customerId})}">首页</a><span>&gt;</span><span>默认页面</span>
+        <a th:href="@{/page/list?ownerId={ownerId}(ownerId=${user.ownerId})}">首页</a><span>&gt;</span><span>默认页面</span>
     </p>
 </div>
 <div id="usual1" class="usual" style="margin:10px; padding-top:5px; background: #ffffff;">
@@ -49,25 +49,25 @@
                                 <!--<tr bgcolor="" class="jackson-data-rows-datarow">-->
                                     <!--<td align="left">&nbsp;&nbsp;商品列表页</td>-->
                                     <!--<td align="center">&nbsp;&nbsp;-->
-                                        <!--<a th:attr="data-customerid=${user.customerId}" data-url="/defaultsPages/list?customerid={0}&siteId={1}&config=list" href="javascript:void(0)" target="content" class="js-cms-defaults" style="color:#07d;margin-right:5px;margin-left:5px;" title="编辑">编辑</a>-->
+                                        <!--<a th:attr="data-ownerId=${user.ownerId}" data-url="/defaultsPages/list?ownerId={0}&siteId={1}&config=list" href="javascript:void(0)" target="content" class="js-cms-defaults" style="color:#07d;margin-right:5px;margin-left:5px;" title="编辑">编辑</a>-->
                                     <!--</td>-->
                                 <!--</tr>-->
                                 <tr bgcolor="#F5F8FA" class="jackson-data-rows-datarow">
                                     <td align="left">&nbsp;&nbsp;搜索结果页</td>
                                     <td align="center">&nbsp;&nbsp;
-                                        <a th:attr="data-customerid=${user.customerId}" data-url="/defaultsPages/search?customerid={0}&siteId={1}&config=search" href="javascript:void(0)" target="content" class="js-cms-defaults" style="color:#07d;margin-right:5px;margin-left:5px;" title="编辑">编辑</a>
+                                        <a th:attr="data-ownerId=${user.ownerId}" data-url="/defaultsPages/search?ownerId={0}&siteId={1}&config=search" href="javascript:void(0)" target="content" class="js-cms-defaults" style="color:#07d;margin-right:5px;margin-left:5px;" title="编辑">编辑</a>
                                     </td>
                                 </tr>
                                 <tr bgcolor="" class="jackson-data-rows-datarow">
                                     <td align="left">&nbsp;&nbsp;公共头部</td>
                                     <td align="center">&nbsp;&nbsp;
-                                        <a th:attr="data-customerid=${user.customerId}" data-url="/defaultsPages/head?customerid={0}&siteId={1}&config=head" href="javascript:void(0)" target="content" class="js-cms-defaults" style="color:#07d;margin-right:5px;margin-left:5px;" title="编辑">编辑</a>
+                                        <a th:attr="data-ownerId=${user.ownerId}" data-url="/defaultsPages/head?ownerId={0}&siteId={1}&config=head" href="javascript:void(0)" target="content" class="js-cms-defaults" style="color:#07d;margin-right:5px;margin-left:5px;" title="编辑">编辑</a>
                                     </td>
                                 </tr>
                                 <tr bgcolor="#F5F8FA" class="jackson-data-rows-datarow">
                                     <td align="left">&nbsp;&nbsp;公共底部</td>
                                     <td align="center">&nbsp;&nbsp;
-                                        <a th:attr="data-customerid=${user.customerId}" data-url="/defaultsPages/bottom?customerid={0}&siteId={1}&config=bottom" href="javascript:void(0)" target="content" class="js-cms-defaults" style="color:#07d;margin-right:5px;margin-left:5px;" title="编辑">编辑</a>
+                                        <a th:attr="data-ownerId=${user.ownerId}" data-url="/defaultsPages/bottom?ownerId={0}&siteId={1}&config=bottom" href="javascript:void(0)" target="content" class="js-cms-defaults" style="color:#07d;margin-right:5px;margin-left:5px;" title="编辑">编辑</a>
                                     </td>
                                 </tr>
                                 </tbody>

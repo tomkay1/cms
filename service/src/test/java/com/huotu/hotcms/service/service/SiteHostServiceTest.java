@@ -11,8 +11,8 @@ package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.config.ServiceTestConfig;
 import com.huotu.hotcms.service.entity.Host;
-import com.huotu.hotcms.service.entity.Owner;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.repository.HostRepository;
 import com.huotu.hotcms.service.repository.OwnerRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;

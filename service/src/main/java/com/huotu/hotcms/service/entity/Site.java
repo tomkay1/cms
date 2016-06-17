@@ -10,6 +10,7 @@
 package com.huotu.hotcms.service.entity;
 
 import com.huotu.hotcms.service.common.SiteType;
+import com.huotu.hotcms.service.entity.login.Owner;
 import lombok.Getter;
 import lombok.Setter;
 

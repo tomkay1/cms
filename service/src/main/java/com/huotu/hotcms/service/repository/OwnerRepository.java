@@ -9,7 +9,7 @@
 
 package com.huotu.hotcms.service.repository;
 
-import com.huotu.hotcms.service.entity.Owner;
+import com.huotu.hotcms.service.entity.login.Owner;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

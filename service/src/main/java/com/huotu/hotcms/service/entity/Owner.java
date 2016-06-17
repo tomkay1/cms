@@ -18,6 +18,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import java.util.Objects;
 
 /**
@@ -26,7 +27,7 @@ import java.util.Objects;
  * @author CJ
  */
 @Entity
-@Table(name = "cms_owner")
+@Table(name = "cms_owner", uniqueConstraints = {@UniqueConstraint(columnNames = {"customerId"})})
 @Getter
 @Setter
 public class Owner {
@@ -38,7 +39,7 @@ public class Owner {
     /**
      * 可选商户号
      */
-    @Column(name = "customerId")
+    @Column(name = "customerId", unique = true)
     private Integer customerId;
 
     @Override

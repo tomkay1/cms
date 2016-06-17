@@ -138,7 +138,7 @@ public class ArticleController {
      * @return
      */
     @RequestMapping(value = "/saveArticle", method = RequestMethod.POST)
-    @Transactional(value = "transactionManager")
+    @Transactional
     @ResponseBody
     public ResultView saveArticle(Article article, Boolean isSystem, Long categoryId, int articleSourceId) {
         ResultView result = null;
@@ -204,7 +204,7 @@ public class ArticleController {
      */
     @RequestMapping(value = "/deleteArticle", method = RequestMethod.POST)
     @ResponseBody
-    public ResultView deleteArticle(@RequestParam(name = "id", required = true, defaultValue = "0") Long id
+    public ResultView deleteArticle(@RequestParam(name = "id", defaultValue = "0") Long id
             , long ownerId, HttpServletRequest request) {
         ResultView result = null;
         try {

@@ -9,7 +9,7 @@
 
 package com.huotu.cms.manage.controller;
 
-import com.huotu.cms.manage.annoation.AuthorizeRole;
+import com.huotu.cms.manage.authorize.annoation.AuthorizeRole;
 import com.huotu.cms.manage.util.web.CookieUser;
 import com.huotu.hotcms.service.common.EnumUtils;
 import com.huotu.hotcms.service.common.SiteType;

@@ -16,4 +16,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author CJ
  */
 public interface OwnerRepository extends JpaRepository<Owner, Long> {
+
+    /**
+     * 查找伙伴商城相关的owner
+     *
+     * @param customerId 伙伴商城商户号
+     * @return owner
+     */
+    Owner findByCustomerId(int customerId);
+
 }

@@ -68,7 +68,7 @@ public class SiteController {
      * @throws Exception
      */
     @RequestMapping("/siteList")
-//    @AuthorizeRole(roleType = AuthorizeRole.Role.Customer)
+//    @AuthorizeRole(roleType = AuthorizeRole.Role.Owner)
     public ModelAndView siteList(HttpServletRequest request) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/view/web/siteList.html");

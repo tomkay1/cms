@@ -10,6 +10,7 @@
 package com.huotu.widget.test;
 
 import com.huotu.hotcms.widget.Widget;
+import com.huotu.hotcms.widget.WidgetStyle;
 import com.huotu.widget.test.bean.WidgetHolder;
 import me.jiangcai.lib.test.SpringWebTest;
 import org.junit.Test;
@@ -57,6 +58,20 @@ public abstract class WidgetTest extends SpringWebTest {
     public void editor() throws Exception {
         for (Widget widget : holder.getWidgetSet()) {
             editor(widget);
+        }
+    }
+
+    @Test
+    public void style() {
+        for (Widget widget : holder.getWidgetSet()) {
+            assertThat(widget.styles())
+                    .isNotNull();
+            assertThat(widget.styles().length)
+                    .isGreaterThanOrEqualTo(1);
+
+            for (WidgetStyle style : widget.styles()) {
+
+            }
         }
     }
 

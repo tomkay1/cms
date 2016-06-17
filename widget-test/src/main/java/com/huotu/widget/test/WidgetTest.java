@@ -9,6 +9,7 @@
 
 package com.huotu.widget.test;
 
+import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetStyle;
 import com.huotu.widget.test.bean.WidgetHolder;
@@ -25,6 +26,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -103,7 +105,16 @@ public abstract class WidgetTest extends SpringWebTest {
      * @see JavascriptExecutor#executeScript(String, Object...)
      */
     @SuppressWarnings("WeakerAccess")
-    protected abstract void editorWork(Widget widget, WebElement editor, Supplier<Map<String, Object>> currentWidgetProperties);
+    protected abstract void editorWork(Widget widget, WebElement editor
+            , Supplier<Map<String, Object>> currentWidgetProperties);
+
+    /**
+     * @param widget
+     * @param style
+     * @param uiChanger
+     */
+    protected abstract void browseWork(Widget widget, WidgetStyle style
+            , Function<ComponentProperties, WebElement> uiChanger);
 
     /**
      * 一些常用属性测试

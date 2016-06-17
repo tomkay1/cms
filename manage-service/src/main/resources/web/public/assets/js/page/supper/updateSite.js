@@ -4,7 +4,7 @@
 define(function (require, exports, module) {
     $("#regionId").attr("disabled", "disabled");
     var commonUtil = require("common");
-    var customerId = commonUtil.getQuery("customerId");
+    var ownerId = commonUtil.getQuery("ownerId");
     $("#updateSiteForm").validate({
         rules: {
             name: {
@@ -105,7 +105,7 @@ define(function (require, exports, module) {
                     url: "/supper/saveSite",
                     data: {
                         siteId: $("#hidSiteID").val(),
-                        customerId: customerId,
+                        ownerId: ownerId,
                         name: $("#name").val(),
                         title: $("#title").val(),
                         keywords: $("#keywords").val(),
@@ -131,7 +131,7 @@ define(function (require, exports, module) {
                                 var layer = require("layer");
                                 layer.msg("修改成功,2秒后将自动返回列表页面", {time: 2000})
                                 setTimeout(function () {
-                                        window.location.href = "http://" + window.location.host + "/" + "supper/siteList?customerId=" + customerId;
+                                        window.location.href = "http://" + window.location.host + "/" + "supper/siteList?ownerId=" + ownerId;
                                     }
                                     , 1000);
                                 //commonUtil.redirectUrl("/model/modelList");
@@ -213,7 +213,7 @@ define(function (require, exports, module) {
                 submit: true,
                 method: "post",
                 data: {
-                    customerId: customerId
+                    ownerId: ownerId
                 },
                 callback: function (json) {
                     if (json != null) {

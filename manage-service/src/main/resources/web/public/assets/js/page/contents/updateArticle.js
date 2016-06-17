@@ -3,7 +3,7 @@
  */
 define(function (require, exports, module) {
     var commonUtil = require("common");
-    var customerId =commonUtil.getQuery("customerId");
+    var ownerId =commonUtil.getQuery("ownerId");
     var layer=require("layer");
     $("#updateArticleForm").validate({
         rules: {
@@ -55,7 +55,7 @@ define(function (require, exports, module) {
                 data: {
                     id:$("#hidArticleID").val(),
                     title:$("#title").val(),
-                    customerId:customerId,
+                    ownerId:ownerId,
                     thumbUri: $("#thumbUri").val(),
                     isSystem: $("#isSystem").val(),
                     content: $("#content").val(),
@@ -76,7 +76,7 @@ define(function (require, exports, module) {
                         {
                             layer.msg("操作成功,2秒后将自动返回列表页面",{time: 2000});
                             //setTimeout(function(){
-                            //        window.location.href="http://"+window.location.host+"/"+"contents/contentsList?&customerid="+customerId;
+                            //        window.location.href="http://"+window.location.host+"/"+"contents/contentsList?&ownerId="+ownerId;
                             //    }
                             //    ,1000);
                            setTimeout(function(){
@@ -116,7 +116,7 @@ define(function (require, exports, module) {
                 submit: true,
                 method: "post",
                 data:{
-                    customerId: customerId
+                    ownerId: ownerId
                 },
                 callback: function (json) {
                     if(json!=null)

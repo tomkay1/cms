@@ -5,7 +5,7 @@ define(function (require, exports, module) {
     var commonUtil = require("common");
     commonUtil.setDisabled("jq-cms-Save");
     var commonCategory=require("categoryCommon");
-    var customerId =commonUtil.getQuery("customerId");
+    var ownerId =commonUtil.getQuery("ownerId");
     var siteId = $("#siteId").val();
     commonCategory.getCategoryList(siteId,"","category");
     var category = $("#category").val();
@@ -13,7 +13,7 @@ define(function (require, exports, module) {
         method: 'POST',//提交方式GET|POST
         form: 'form1',//表单ID
         dataParam:{
-            customerId:customerId,
+            ownerId:ownerId,
             siteId:siteId,
             category:category,
         },
@@ -60,13 +60,13 @@ define(function (require, exports, module) {
     function search(){
         var commonUtil = require("common");
         commonUtil.setDisabled("jq-cms-Save");
-        var customerId =commonUtil.getQuery("customerId");
+        var ownerId =commonUtil.getQuery("ownerId");
         var option={
             dataParam:{
                 siteId:$("#siteId").val(),
                 category:$("#category").val(),
                 name:$("#contentsName").val(),
-                customerId:customerId
+                ownerId:ownerId
             }
         };
         ContentsGrid.Refresh(option);
@@ -78,12 +78,12 @@ define(function (require, exports, module) {
 
     $("#jq-cms-add").click(function(){
         var commonUtil = require("common");
-        var customerId =commonUtil.getQuery("customerId");
+        var ownerId =commonUtil.getQuery("ownerId");
         var siteId=$("#siteId").val();
         var category=$("#category").val();
         var layer=require("layer");
-        //window.location.href="http://"+window.location.host+"/contents/addContents"+"?siteId="+siteId+"&customerId="+customerId+"&category="+category;
-        var content="/contents/addContents"+"?siteId="+siteId+"&customerId="+customerId+"&category="+category;
+        //window.location.href="http://"+window.location.host+"/contents/addContents"+"?siteId="+siteId+"&ownerId="+ownerId+"&category="+category;
+        var content="/contents/addContents"+"?siteId="+siteId+"&ownerId="+ownerId+"&category="+category;
         layer.open({
             type: 2,
             title: "添加内容",
@@ -101,11 +101,11 @@ define(function (require, exports, module) {
     $("#jq-cms-searchAll").click(function(){
         var commonUtil = require("common");
         commonUtil.setDisabled("jq-cms-Save");
-        var customerId =commonUtil.getQuery("customerId");
+        var ownerId =commonUtil.getQuery("ownerId");
         var option={
             dataParam:{
                 name:"",
-                customerId:customerId
+                ownerId:ownerId
             }
         };
         ContentsGrid.Refresh(option);
@@ -130,9 +130,9 @@ define(function (require, exports, module) {
                     }
                 }
                 var commonUtil = require("common");
-                var customerId = commonUtil.getQuery("customerId");
-                //window.location.href="http://"+window.location.host+"/"+model+"/update"+link+"?id="+id+"&customerId="+customerId;
-                var content ="/"+model+"/update"+link+"?id="+id+"&customerId="+customerId;
+                var ownerId = commonUtil.getQuery("ownerId");
+                //window.location.href="http://"+window.location.host+"/"+model+"/update"+link+"?id="+id+"&ownerId="+ownerId;
+                var content ="/"+model+"/update"+link+"?id="+id+"&ownerId="+ownerId;
                 layer.open({
                     type: 2,
                     title: "修改内容",
@@ -167,7 +167,7 @@ define(function (require, exports, module) {
                     }
                 }
                 var commonUtil = require("common");
-                var customerId = commonUtil.getQuery("customerId");
+                var ownerId = commonUtil.getQuery("ownerId");
                 var layer=require("layer");
                 layer.confirm('您确定要删除该内容吗？', {
                     btn: ['确定','取消'] //按钮
@@ -176,7 +176,7 @@ define(function (require, exports, module) {
                         url: "/"+model+"/delete"+link,
                         data: {
                             id:id,
-                            customerId:customerId
+                            ownerId:ownerId
                         },
                         type: "POST",
                         dataType: 'json',
@@ -218,9 +218,9 @@ define(function (require, exports, module) {
                 var model=$(this).attr("data-model");//Html5可以使用$(this).data('id')方式来写;
                 model=$.trim(model);
                 var commonUtil = require("common");
-                var customerId = commonUtil.getQuery("customerId");
-                //window.location.href="http://"+window.location.host+"/"+model+"/"+model+"List"+"?id="+id+"&customerId="+customerId;
-                var content="/"+model+"/"+model+"List"+"?id="+id+"&customerId="+customerId;
+                var ownerId = commonUtil.getQuery("ownerId");
+                //window.location.href="http://"+window.location.host+"/"+model+"/"+model+"List"+"?id="+id+"&ownerId="+ownerId;
+                var content="/"+model+"/"+model+"List"+"?id="+id+"&ownerId="+ownerId;
                 var layer=require("layer");
                 layer.open({
                     type: 2,
@@ -244,7 +244,7 @@ define(function (require, exports, module) {
         $.each(obj,function(item,dom){
             $(dom).click(function(){//绑定删除事件
                 var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;
-                var content="/gallery/addGalleryList"+"?id="+id+"&customerId="+customerId;
+                var content="/gallery/addGalleryList"+"?id="+id+"&ownerId="+ownerId;
                 var layer=require("layer");
                 layer.open({
                     type: 2,
@@ -270,7 +270,7 @@ define(function (require, exports, module) {
                 var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;
                 var model=$(this).attr("data-model");//Html5可以使用$(this).data('id')方式来写;
                 model=$.trim(model);
-                var content="/gallery/galleryListDetail"+"?id="+id+"&customerId="+customerId;
+                var content="/gallery/galleryListDetail"+"?id="+id+"&ownerId="+ownerId;
                 var layer=require("layer");
                 layer.open({
                     type: 2,
@@ -304,13 +304,13 @@ define(function (require, exports, module) {
         var siteId = obj.value;
         var commonUtil = require("common");
         commonUtil.setDisabled("jq-cms-Save");
-        var customerId =commonUtil.getQuery("customerId");
+        var ownerId =commonUtil.getQuery("ownerId");
         $.ajax({
             url: "/contents/contentsSelect",
             dataType: 'json',
             type: "GET",
             data: {
-                customerid:customerId,
+                ownerId:ownerId,
                 siteId :siteId
             },
             error: function (data, status, e) {

@@ -4,14 +4,14 @@
 define(function (require, exports, module) {
     var commonUtil = require("common");
     commonUtil.setDisabled("jq-cms-Save");
-    var customerId =commonUtil.getQuery("customerId");
+    var ownerId =commonUtil.getQuery("ownerId");
     var layer=require("layer");
     var GalleryListGrid=$("#js-GalleryList").Grid({
         method: 'POST',//提交方式GET|POST
         form: 'form1',//表单ID
         pageSize: 10,
         dataParam:{
-            customerId:customerId,
+            ownerId:ownerId,
             galleryId:$("#galleryId").val()
         },
         height:'auto',
@@ -60,7 +60,7 @@ define(function (require, exports, module) {
         $.each(obj,function(item,dom){
             $(dom).click(function(){//绑定修改事件
                 var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;
-                window.location.href="http://"+window.location.host+"/"+"gallery/updateGalleryList?id="+id+"&customerId="+customerId;
+                window.location.href="http://"+window.location.host+"/"+"gallery/updateGalleryList?id="+id+"&ownerId="+ownerId;
             })
         })
     }
@@ -80,7 +80,7 @@ define(function (require, exports, module) {
                         url: "/gallery/deleteGalleryList",
                         data: {
                             id:id,
-                            customerId : customerId
+                            ownerId : ownerId
                         },
                         type: "POST",
                         dataType: 'json',

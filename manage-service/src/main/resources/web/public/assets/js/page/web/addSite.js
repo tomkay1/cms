@@ -3,7 +3,7 @@
  */
 define(function (require, exports, module) {
     var commonUtil = require("common");
-    var customerId = commonUtil.getQuery("customerId");
+    var ownerId = commonUtil.getQuery("ownerId");
     $("#addSiteForm").validate({
         rules: {
             name: {
@@ -102,7 +102,7 @@ define(function (require, exports, module) {
                         url: "/site/saveSite",
                         data: {
                             siteId: $("#hidSiteID").val(),
-                            customerId: customerId,
+                            ownerId: ownerId,
                             name: $("#name").val(),
                             title: $("#title").val(),
                             keywords: $("#keywords").val(),
@@ -225,7 +225,7 @@ define(function (require, exports, module) {
     //    layer.msg("正在上传", {time: 2000});
     //    var commonUtil = require("common");
     //    commonUtil.setDisabled("jq-cms-Save");
-    //    var customerId =commonUtil.getQuery("customerId");
+    //    var ownerId =commonUtil.getQuery("ownerId");
     //    $.ajaxFileUpload({
     //        url: "/cms/siteUpLoad",
     //        secureuri: false,//安全协议
@@ -233,7 +233,7 @@ define(function (require, exports, module) {
     //        dataType: 'json',
     //        type: "post",
     //        data:{
-    //            customerId: customerId
+    //            ownerId: ownerId
     //        },
     //        error: function (data, status, e) {
     //
@@ -263,7 +263,7 @@ define(function (require, exports, module) {
                 submit: true,
                 method: "post",
                 data: {
-                    customerId: customerId
+                    ownerId: ownerId
                 },
                 callback: function (json) {
                     if (json != null) {

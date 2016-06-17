@@ -56,11 +56,11 @@ define(["js/jquery-1.9.1.min"],function () {
             if (arguments.length == 2)
                 return arguments[1];
         },
-        getSiteList:function(customerId,div){
+        getSiteList:function(ownerId,div){
             $.ajax({
                 url: "/category/getSiteList",
                 data: {
-                    customerId:customerId
+                    ownerId:ownerId
                 },
                 async:false,
                 type: "POST",

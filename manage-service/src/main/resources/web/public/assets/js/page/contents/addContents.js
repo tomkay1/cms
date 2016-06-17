@@ -6,25 +6,25 @@ define(function (require, exports, module) {
         //var modelId= $("#categoryId").find("option:selected").attr("data-modelType");
         //var commonUtil = require("common");
         //commonUtil.setDisabled("jq-cms-Save");
-        //var customerId =commonUtil.getQuery("customerId");
+        //var ownerId =commonUtil.getQuery("ownerId");
         //var widgetUrl="";
         //if(modelId==0) {
-        //    widgetUrl = "/article/addArticle?customerId=" + customerId;
+        //    widgetUrl = "/article/addArticle?ownerId=" + ownerId;
         //}
         //if (modelId == 1) {
-        //    widgetUrl = "/notice/addNotice?customerId=" + customerId;
+        //    widgetUrl = "/notice/addNotice?ownerId=" + ownerId;
         //}
         //if (modelId == 2) {
-        //    widgetUrl = "/video/addVideo?customerId=" + customerId;
+        //    widgetUrl = "/video/addVideo?ownerId=" + ownerId;
         //}
         //if (modelId == 3) {
-        //    widgetUrl = "/gallery/addGallery?customerId=" + customerId;
+        //    widgetUrl = "/gallery/addGallery?ownerId=" + ownerId;
         //}
         //if (modelId == 4) {
-        //    widgetUrl = "/download/addDownload?customerId=" + customerId;
+        //    widgetUrl = "/download/addDownload?ownerId=" + ownerId;
         //}
         //if (modelId == 5) {
-        //    widgetUrl = "/link/addLink?customerId=" + customerId;
+        //    widgetUrl = "/link/addLink?ownerId=" + ownerId;
         //}
         //$.get(widgetUrl+"&_="+Math.random(), function (html) {
         //    $("#widget").html(html);
@@ -42,25 +42,25 @@ define(function (require, exports, module) {
             var modelId= $("#categoryId").find("option:selected").attr("data-modelType");
             var commonUtil = require("common");
             commonUtil.setDisabled("jq-cms-Save");
-            var customerId =commonUtil.getQuery("customerId");
+            var ownerId =commonUtil.getQuery("ownerId");
             var widgetUrl="";
             if(modelId==0) {
-                widgetUrl = "/article/addArticle?customerId=" + customerId;
+                widgetUrl = "/article/addArticle?ownerId=" + ownerId;
             }
             if (modelId == 1) {
-                widgetUrl = "/notice/addNotice?customerId=" + customerId;
+                widgetUrl = "/notice/addNotice?ownerId=" + ownerId;
             }
             if (modelId == 2) {
-                widgetUrl = "/video/addVideo?customerId=" + customerId;
+                widgetUrl = "/video/addVideo?ownerId=" + ownerId;
             }
             if (modelId == 3) {
-                widgetUrl = "/gallery/addGallery?customerId=" + customerId;
+                widgetUrl = "/gallery/addGallery?ownerId=" + ownerId;
             }
             if (modelId == 4) {
-                widgetUrl = "/download/addDownload?customerId=" + customerId;
+                widgetUrl = "/download/addDownload?ownerId=" + ownerId;
             }
             if (modelId == 5) {
-                widgetUrl = "/link/addLink?customerId=" + customerId;
+                widgetUrl = "/link/addLink?ownerId=" + ownerId;
             }
             if(modelId!=-2) {
                 $.get(widgetUrl + "&_=" + Math.random(), function (html) {

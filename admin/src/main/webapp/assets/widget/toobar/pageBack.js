@@ -1,7 +1,7 @@
 define(function (require, exports, module) {
     var layer=require("layer");
     var common=require("common");
-    var customerId=common.getQuery("customerId");
+    var ownerId=common.getQuery("ownerId");
     var siteId=common.getQuery("siteId");
     $("#js-cms-selectPhoto").click(function(){
         alert('fssss');
@@ -12,7 +12,7 @@ define(function (require, exports, module) {
             shade: 0.8,
             closeBtn:1,
             area: ['580px', '500px'],
-            content: "/assets/js/jPicture/photo.html?customerId="+customerId+"&isMult=false",
+            content: "/assets/js/jPicture/photo.html?ownerId="+ownerId+"&isMult=false",
             //btn:["确定"],
             end: function(index, layero){
                 var jsonStr=$("#js_cms_picture_value").val();

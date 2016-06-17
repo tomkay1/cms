@@ -3,7 +3,7 @@
  */
 define(function (require, exports, module) {
     var commonUtil = require("common");
-    var customerId = commonUtil.getQuery("customerId");
+    var ownerId = commonUtil.getQuery("ownerId");
     var layer = require("layer");
     exports.fromValidata = function () {
         $("#updateWidgetMainsForm").validate({
@@ -120,7 +120,7 @@ define(function (require, exports, module) {
                 submit: true,
                 method: "post",
                 data: {
-                    customerId: customerId
+                    ownerId: ownerId
                 },
                 callback: function (json) {
                     if (json != null) {
@@ -163,7 +163,7 @@ define(function (require, exports, module) {
                 submit: true,
                 method: "post",
                 data: {
-                    customerId: customerId
+                    ownerId: ownerId
                 },
                 callback: function (json) {
                     if (json != null) {

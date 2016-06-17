@@ -3,7 +3,7 @@
  */
 define(function (require, exports, module) {
     var commonUtil = require("common");
-    var customerId = commonUtil.getQuery("customerId");
+    var ownerId = commonUtil.getQuery("ownerId");
     var siteId=commonUtil.getQuery("siteId");
     $("#siteConfigForm").validate({
         rules: {
@@ -24,7 +24,7 @@ define(function (require, exports, module) {
                 data: {
                     id:$("#id").val(),
                     siteId: siteId,
-                    customerId: customerId,
+                    ownerId: ownerId,
                     enabledMobileSite:$("#enabledMobileSite").val(),
                     mobileDomain:$("#mobileDomain").val()
                 },

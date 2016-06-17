@@ -224,7 +224,7 @@
                             shade: 0.8,
                             closeBtn: 1,
                             area: ['700px', '580px'],
-                            content: "/assets/js/jPicture/photo.html?customerId=" + customerId + "&isMult=false&v=1.2",
+                            content: "/assets/js/jPicture/photo.html?ownerId=" + ownerId + "&isMult=false&v=1.2",
                             //btn:["确定"],
                             end: function (index, layero) {
                                 var jsonStr = parent.$("#js_cms_picture_value").val();
@@ -238,7 +238,7 @@
                 });
             }
         }
-        var customerId = bgImage.getQuery("customerid");
+        var ownerId = bgImage.getQuery("ownerId");
         navModule.addNav();
         navModule.deleteNav();
         navModule.upNav();

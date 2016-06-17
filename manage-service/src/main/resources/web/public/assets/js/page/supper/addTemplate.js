@@ -3,7 +3,7 @@
  */
 define(function (require, exports, module) {
     var commonUtil = require("common");
-    var customerId = commonUtil.getQuery("customerId");
+    var ownerId = commonUtil.getQuery("ownerId");
     $("#addSiteForm").validate({
         rules: {
             tempName: {
@@ -23,7 +23,7 @@ define(function (require, exports, module) {
                 url: "/supper/saveTemplate",
                 data: {
                     siteId: $("#hidSiteID").val(),
-                    customerId: customerId,
+                    ownerId: ownerId,
                     tempName: $("#tempName").val(),
                     thumbUri: $("#thumbUri").val(),
                     siteId:$("#siteId").val()
@@ -68,7 +68,7 @@ define(function (require, exports, module) {
                 submit: true,
                 method: "post",
                 data: {
-                    customerId: customerId
+                    ownerId: ownerId
                 },
                 callback: function (json) {
                     if (json != null) {

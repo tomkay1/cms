@@ -117,7 +117,7 @@
                 return arguments[1];
         }
         ;
-        var customerId = getQuery("customerid");
+        var ownerId = getQuery("ownerId");
         $("#js-cms-selectPageBackImage").click(function () {
             parent.layer.open({
                 type: 2,
@@ -126,7 +126,7 @@
                 shade: 0.8,
                 closeBtn: 1,
                 area: ['700px', '580px'],
-                content: "/assets/js/jPicture/photo.html?customerId=" + customerId + "&isMult=false&v=1.2",
+                content: "/assets/js/jPicture/photo.html?ownerId=" + ownerId + "&isMult=false&v=1.2",
                 //btn:["确定"],
                 end: function (index, layero) {
                     var jsonStr = parent.$("#js_cms_picture_value").val();
@@ -147,7 +147,7 @@
                 shade: 0.8,
                 closeBtn: 1,
                 area: ['700px', '580px'],
-                content: "/assets/js/jPicture/photo.html?customerId=" + customerId + "&isMult=false&v=1.2",
+                content: "/assets/js/jPicture/photo.html?ownerId=" + ownerId + "&isMult=false&v=1.2",
                 //btn:["确定"],
                 end: function (index, layero) {
                     var jsonStr = parent.$("#js_cms_picture_value").val();

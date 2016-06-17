@@ -9,15 +9,15 @@ define(function (require, exports, module) {
     var commonUtil = require("common");
     commonUtil.setDisabled("jq-cms-Save");
     var scope=commonUtil.getQuery("scope");
-    var customerId =commonUtil.getQuery("customerId");
+    var ownerId =commonUtil.getQuery("ownerId");
 
     var obj=$(".js-cms-defaults");
     $.each(obj,function(item,dom){
         $(dom).click(function(){
-            var customerId=$(dom).data("customerid");
+            var ownerId=$(dom).data("ownerId");
             var urlFormatter=$(dom).data("url")+"&scope="+scope;
             var siteId=$("#siteId").val();
-            var url=commonUtil.formatString(urlFormatter,customerId,siteId);
+            var url=commonUtil.formatString(urlFormatter,ownerId,siteId);
             window.location.href=url;
         })
     })

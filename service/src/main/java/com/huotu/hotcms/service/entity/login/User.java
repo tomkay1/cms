@@ -29,7 +29,6 @@ import java.util.Collections;
 @Table(name = "cms_user")
 public class User extends AbstractLogin {
 
-
     @Override
     public boolean siteManageable(Site site) {
         return false;

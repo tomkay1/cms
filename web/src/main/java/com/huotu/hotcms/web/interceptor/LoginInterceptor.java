@@ -50,6 +50,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         if(modelAndView!=null) {//加载用户信息
             UserInfo userInfo = new UserInfo();
             userInfo.setCustomerId(QueryHelper.getQueryValInteger(request, "customerid"));
+            userInfo.setOwnerId(QueryHelper.getQueryValInteger(request, "customerid"));
             userInfo.setIsSuperManage(cookieUser.getRoleId(request) == -1);
             if(cookieUser.isSupper(request)){
                 modelAndView.addObject("mallManageUrl",configInfo.getMallSupperUrl(userInfo.getCustomerId()));

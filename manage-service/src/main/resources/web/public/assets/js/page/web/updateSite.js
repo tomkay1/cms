@@ -45,7 +45,7 @@ define(function (require, exports, module) {
             commonUtil.setDisabled("jq-cms-Save");
             var layer = require("layer");
             $.ajax({
-                url: "/site/saveSite",
+                url: "/manage/site/saveSite",
                 data: {
                     siteId: $("#hidSiteID").val(),
                     ownerId: ownerId,
@@ -96,7 +96,7 @@ define(function (require, exports, module) {
     var uploadModule = {
         uploadImg: function () {
             $("#btnFile").jacksonUpload({
-                url: "/cms/siteUpLoad",
+                url: "/manage/cms/siteUpLoad",
                 name: "btnFile",
                 enctype: "multipart/form-data",
                 submit: true,

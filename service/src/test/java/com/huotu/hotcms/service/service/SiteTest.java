@@ -1,3 +1,12 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.config.ServiceTestConfig;
@@ -5,12 +14,10 @@ import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.Template;
-import com.huotu.hotcms.service.model.widget.WidgetPage;
 import com.huotu.hotcms.service.repository.ArticleRepository;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.repository.TemplateRepository;
-import com.huotu.hotcms.service.util.HttpUtils;
 import com.huotu.hotcms.service.util.SerialUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,12 +29,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.xml.bind.JAXB;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 
 /**
@@ -45,6 +46,17 @@ public class SiteTest {
     @Autowired
     SiteRepository siteRepository;
     /**
+     * 注意：需要先部署整个项目才可以启动该单元测试。不然无法复制资源文件
+     */
+    @Autowired
+    ArticleRepository articleRepository;
+    @Qualifier("templateRepository")
+    @Autowired
+    TemplateRepository templateRepository;
+    @Autowired
+    CategoryRepository categoryRepository;
+
+    /**
      * 站点复制测试
      */
     @Test
@@ -55,25 +67,12 @@ public class SiteTest {
         siteService.siteCopy(templateID,customerSite);
     }
 
-
-    /**
-     * 注意：需要先部署整个项目才可以启动该单元测试。不然无法复制资源文件
-     */
-    @Autowired
-    ArticleRepository articleRepository;
     @Test
     public void testQuery(){
         long siteID=4471;
         Article templateSiteArticle=articleRepository.findArticleBySiteId(siteID);
         long id=templateSiteArticle.getId();
     }
-
-    @Qualifier("templateRepository")
-    @Autowired
-    TemplateRepository templateRepository;
-    @Autowired
-    CategoryRepository categoryRepository;
-
 
     @Test
     public void testDeepCopy(){
@@ -90,7 +89,6 @@ public class SiteTest {
                 category.setSite(customerSite);
                 category.setId(null);
                 category.setSite(customerSite);
-                category.setCustomerId(customerSite.getCustomerId());
                 category=categoryRepository.save(category);
             }
         }catch (Throwable e){

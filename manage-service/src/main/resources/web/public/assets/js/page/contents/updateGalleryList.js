@@ -31,7 +31,7 @@ define(function (require, exports, module) {
                 }
                 else{
                     $.ajax({
-                        url: "/gallery/saveGalleryList",
+                        url: "/manage/gallery/saveGalleryList",
                         data: {
                             id: $("#id").val(),
                             galleryId: $("#galleryId").val(),
@@ -91,7 +91,7 @@ define(function (require, exports, module) {
     var uploadModule= {
         uploadImg: function () {
             $("#btnFile").jacksonUpload({
-                url: "/cms/imgUpLoad",
+                url: "/manage/cms/imgUpLoad",
                 name: "btnFile",
                 enctype: "multipart/form-data",
                 submit: true,

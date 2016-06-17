@@ -25,6 +25,10 @@
         将代替admin项目 提供基于管理（页面,content）的服务
     </description>
 
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.huotu.hotcms</groupId>

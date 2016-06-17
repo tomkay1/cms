@@ -1,29 +1,29 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.entity.Template;
 import com.huotu.hotcms.service.util.PageData;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.util.Set;
 
-/**
- * Created by chendeyu on 2015/12/24.
- */
 public interface SiteService {
 
-    PageData<Site> getPage(Integer customerId,String name,int page,int pageSize);
+    PageData<Site> getPage(long owner, String name, int page, int pageSize);
 
     Site getSite(long siteId);
     Boolean save(Site site);
 
     Site saveAndFlush(Site site);
 
-    Site findBySiteIdAndCustomerId(Long siteId,int customerId);
-
-    Set<Site> findByCustomerIdAndDeleted(Integer customerId,boolean deleted);
+    Set<Site> findByOwnerIdAndDeleted(long ownerId, boolean deleted);
 
     /**
      * 实现站点的可复制

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Created by Administrator on 2016/4/7.
  */
 @Controller
-@RequestMapping("/common")
+@RequestMapping("/manage/common")
 public class CommonController {
     private static final Log log = LogFactory.getLog(CommonController.class);
 

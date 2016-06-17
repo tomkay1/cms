@@ -2,17 +2,28 @@
  * 版权所有:杭州火图科技有限公司
  * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
  *
- *  (c) Copyright Hangzhou Hot Technology Co., Ltd.
- *  Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District 2013-2015. All rights reserved.
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
  */
 
 package com.huotu.hotcms.service.entity;
 
+import com.huotu.hotcms.service.entity.login.Owner;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
-import java.util.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import java.util.Set;
 
 /**
  * 域名
@@ -31,18 +42,21 @@ public class Host {
     /**
      * 序列号
      */
+    @Column
     private String serial;
 
     /**
-     * 商户ID
+     * 所有主体
      */
-    @Column(name = "customerId")
-    private Integer customerId;
+    @ManyToOne
+    @JoinColumn(name = "ownerId")
+    private Owner owner;
 
     /**
      * 域名
+     * 既然是唯一的,为了避免用户的恶意侵占应该具备检测制度,以正式用户具有该域名的所有权
      */
-    @Column(name = "domain",unique = true)
+    @Column(name = "domain", unique = true, length = 100)
     private String domain;
 
     /**
@@ -55,7 +69,7 @@ public class Host {
      * 主推域名,一般一个网站只有一个主推域名
      * */
     @Column(name = "home")
-    private Boolean home;
+    private boolean home;
 
     /**
      * 对应站点

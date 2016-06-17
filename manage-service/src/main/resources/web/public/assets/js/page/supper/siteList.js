@@ -18,7 +18,7 @@ define(function (require, exports, module) {
         pageSize: 20,
         pagerCount: 10,
         pageDetail: true,
-        url: '/supper/getSiteList',//数据来源Url|通过model自定义属性配置
+        url: '/manage/supper/getSiteList',//数据来源Url|通过model自定义属性配置
         rows: [
             {width: '30%', field: 'name', title: '站点名称', align: 'center'},
             {width: '30%', field: 'title', title: '站点标题', align: 'center'},
@@ -99,7 +99,7 @@ define(function (require, exports, module) {
                     btn: ['确定','取消'] //按钮
                 }, function() {
                     $.ajax({
-                        url: "/supper/deleteSite",
+                        url: "/manage/supper/deleteSite",
                         data: {
                             id:id,
                             ownerId:ownerId
@@ -144,7 +144,7 @@ define(function (require, exports, module) {
                     shadeClose: true,
                     shade: 0.8,
                     area: ['500px', '300px'],
-                    content: "/supper/siteConfig?siteId="+id+"&ownerId="+ownerId,
+                    content: "/manage/supper/siteConfig?siteId="+id+"&ownerId="+ownerId,
                     end:function(){
                         //SiteGrid.Refresh();
                     }

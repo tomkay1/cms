@@ -11,7 +11,7 @@ define(function (require, exports, module) {
             var categoryModule={
                 initSite:function(){
                     $.ajax({
-                        url: "/category/getSiteList",
+                        url: "/manage/category/getSiteList",
                         data: {
                             ownerId:ownerId
                         },
@@ -56,7 +56,7 @@ define(function (require, exports, module) {
                         children:[]
                     }];
                     $.ajax({
-                        url: "/category/getCategoryList",
+                        url: "/manage/category/getCategoryList",
                         data: {
                             siteId:$("#jq-cms-siteList").val(),
                             name: $("#categotyName").val()
@@ -243,9 +243,9 @@ define(function (require, exports, module) {
                 },
                 openUpdateCategory:function(id,title,type){
                     var siteId=$("#jq-cms-siteList").val();
-                    var content='/category/addCategory/?id='+id+"&siteId="+siteId+"&ownerId="+ownerId //iframe的url
+                    var content='/manage/category/addCategory/?id='+id+"&siteId="+siteId+"&ownerId="+ownerId //iframe的url
                     if(type==2){
-                        content='/category/updateCategory/?id='+id+"&ownerId="+ownerId //iframe的url
+                        content='/manage/category/updateCategory/?id='+id+"&ownerId="+ownerId //iframe的url
                     }
                     layer.open({
                         type: 2,
@@ -264,7 +264,7 @@ define(function (require, exports, module) {
                         btn: ['确定','取消'] //按钮
                     }, function(){
                         $.ajax({
-                            url: "/category/deleteCategory",
+                            url: "/manage/category/deleteCategory",
                             data: {
                                 id: id
                             },

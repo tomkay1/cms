@@ -44,7 +44,7 @@ define(function (require, exports, module) {
                 }
                 else {
                     $.ajax({
-                        url: "/widget/saveWidgetMains",
+                        url: "/manage/widget/saveWidgetMains",
                         data: {
 
                             name: $("#name").val(),
@@ -114,7 +114,7 @@ define(function (require, exports, module) {
     var uploadModule = {
         uploadImg: function () {
             $("#btnFile").jacksonUpload({
-                url: "/cms/imgUpLoad",
+                url: "/manage/cms/imgUpLoad",
                 name: "btnFile",
                 enctype: "multipart/form-data",
                 submit: true,
@@ -157,7 +157,7 @@ define(function (require, exports, module) {
 
         uploadWidget: function () {
             $("#btnFile1").jacksonUpload({
-                url: "/cms/widgetUpLoad",
+                url: "/manage/cms/widgetUpLoad",
                 name: "btnFile1",
                 enctype: "multipart/form-data",
                 submit: true,

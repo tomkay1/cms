@@ -1,3 +1,12 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.util.web.CookieUser;
@@ -33,7 +42,7 @@ import java.util.Set;
  * Created by chendeyu on 2015/12/24.
  */
 @Controller
-@RequestMapping("/site")
+@RequestMapping("/manage/site")
 public class SiteController {
     private static final Log log = LogFactory.getLog(SiteController.class);
 
@@ -59,7 +68,7 @@ public class SiteController {
      * @throws Exception
      */
     @RequestMapping("/siteList")
-//    @AuthorizeRole(roleType = AuthorizeRole.Role.Customer)
+//    @AuthorizeRole(roleType = AuthorizeRole.Role.Owner)
     public ModelAndView siteList(HttpServletRequest request) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/view/web/siteList.html");
@@ -118,18 +127,17 @@ public class SiteController {
     /**
      * 修改站点页面
      * @param id
-     * @param customerId
      * @return
      * @throws Exception
      */
     @RequestMapping("/updateSite")
-    public ModelAndView updateSite(@RequestParam(value = "id", defaultValue = "0") Long id, int customerId) throws Exception {
+    public ModelAndView updateSite(@RequestParam(value = "id", defaultValue = "0") Long id) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         try {
             modelAndView.setViewName("/view/web/updateSite.html");
             String logo_uri = "";
             if (id != 0) {
-                Site site = siteService.findBySiteIdAndCustomerId(id, customerId);
+                Site site = siteService.getSite(id);
                 if (site != null) {
                     if (!StringUtils.isEmpty(site.getLogoUri())) {
                         logo_uri = resourceServer.getResource(site.getLogoUri()).toString();
@@ -157,7 +165,7 @@ public class SiteController {
 
     /**
      * 获取站点
-     * @param customerId
+     * @param ownerId
      * @param name
      * @param page
      * @param pageSize
@@ -165,13 +173,13 @@ public class SiteController {
      */
     @RequestMapping(value = "/getSiteList")
     @ResponseBody
-    public PageData<Site> getModelList(@RequestParam(name = "customerId", required = false) Integer customerId,
+    public PageData<Site> getModelList(@RequestParam(name = "ownerId", required = false) long ownerId,
                                        @RequestParam(name = "name", required = false) String name,
-                                       @RequestParam(name = "page", required = true, defaultValue = "1") int page,
-                                       @RequestParam(name = "pagesize", required = true, defaultValue = "20") int pageSize) {
+                                       @RequestParam(name = "page", defaultValue = "1") int page,
+                                       @RequestParam(name = "pagesize", defaultValue = "20") int pageSize) {
         PageData<Site> pageModel = null;
         try {
-            pageModel = siteService.getPage(customerId, name, page, pageSize);
+            pageModel = siteService.getPage(ownerId, name, page, pageSize);
         } catch (Exception ex) {
             log.error(ex.getMessage());
         }
@@ -181,17 +189,16 @@ public class SiteController {
     /**
      * 删除站点(管理员权限)
      * @param id
-     * @param customerId
      * @param request
      * @return
      */
     @RequestMapping(value = "/deleteSite", method = RequestMethod.POST)
     @ResponseBody
-    public ResultView deleteModel(@RequestParam(name = "id", required = true, defaultValue = "0") Long id, int customerId, HttpServletRequest request) {
+    public ResultView deleteModel(@RequestParam(name = "id", defaultValue = "0") Long id, HttpServletRequest request) {
         ResultView result = null;
         try {
             if (cookieUser.isSupper(request)) {
-                Site site = siteService.findBySiteIdAndCustomerId(id, customerId);
+                Site site = siteService.getSite(id);
                 site.setDeleted(true);
                 siteService.save(site);
                 result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);

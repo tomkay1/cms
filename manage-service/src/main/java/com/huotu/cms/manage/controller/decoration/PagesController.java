@@ -1,3 +1,12 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 package com.huotu.cms.manage.controller.decoration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -6,7 +15,6 @@ import com.huotu.hotcms.service.common.SiteType;
 import com.huotu.hotcms.service.entity.CustomPages;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.widget.WidgetPage;
-import com.huotu.hotcms.service.repository.ArticleRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.service.CustomPagesService;
 import com.huotu.hotcms.service.service.HostService;
@@ -38,7 +46,7 @@ import java.util.List;
  * @since xhl
  */
 @Controller
-@RequestMapping("/page")
+@RequestMapping("/manage/page")
 public class PagesController {
     private static final Log log = LogFactory.getLog(PagesController.class);
 
@@ -60,18 +68,17 @@ public class PagesController {
     @Autowired
     private CustomPagesService customPagesService;
 
-    @Autowired
-    private ArticleRepository articleRepository;
-
     @RequestMapping("/list")
-    public ModelAndView pageList(HttpServletRequest request, @RequestParam("customerid") Integer customerid,String scope) throws Exception {
+    public ModelAndView pageList(@RequestParam("ownerId") long ownerId, String scope) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         try {
-            List<Site> siteList=null;
+            List<Site> siteList;
             if(scope.equals("shop")){
-                siteList = siteRepository.findByCustomerIdAndDeletedAndPersonaliseAndSiteTypeOrderBySiteIdDesc(customerid, false, true,SiteType.SITE_PC_SHOP);
+                siteList = siteRepository.findByOwner_IdAndDeletedAndPersonaliseAndSiteTypeOrderBySiteIdDesc(ownerId
+                        , false, true, SiteType.SITE_PC_SHOP);
             }else{
-                siteList = siteRepository.findByCustomerIdAndDeletedAndPersonaliseAndSiteTypeOrderBySiteIdDesc(customerid, false, true,SiteType.SITE_PC_WEBSITE);
+                siteList = siteRepository.findByOwner_IdAndDeletedAndPersonaliseAndSiteTypeOrderBySiteIdDesc(ownerId
+                        , false, true, SiteType.SITE_PC_WEBSITE);
             }
             modelAndView.addObject("siteList", siteList);
             modelAndView.setViewName("/decoration/pages/list.html");
@@ -93,7 +100,7 @@ public class PagesController {
                 customPages.setSite(null);
                 resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), customPages);
             }else{
-                resultView = new ResultView(ResultOptionEnum.FAILE.getCode(), ResultOptionEnum.FAILE.getValue(), customPages);
+                resultView = new ResultView(ResultOptionEnum.FAILE.getCode(), ResultOptionEnum.FAILE.getValue(), null);
             }
         }catch (Exception ex){
             log.error(ex.getMessage());
@@ -105,10 +112,10 @@ public class PagesController {
     @ResponseBody
     public PageData<CustomPages> getPagesList(@RequestParam(name = "siteId", required = false) Long siteId,
                                               @RequestParam(name = "name", required = false) String name,
-                                              @RequestParam(name = "delete", required = true) boolean delete,
-                                              @RequestParam(name = "publish", required = true) boolean publish,
-                                              @RequestParam(name = "page", required = true, defaultValue = "1") int page,
-                                              @RequestParam(name = "pagesize", required = true, defaultValue = "20") int pageSize) {
+                                              @RequestParam(name = "delete") boolean delete,
+                                              @RequestParam(name = "publish") boolean publish,
+                                              @RequestParam(name = "page", defaultValue = "1") int page,
+                                              @RequestParam(name = "pagesize", defaultValue = "20") int pageSize) {
         PageData<CustomPages> pageModel = null;
         try {
             pageModel = customPagesService.getPage(name, siteId, delete, publish, page, pageSize);
@@ -119,14 +126,16 @@ public class PagesController {
     }
 
     @RequestMapping(value = "/defaults")
-    public ModelAndView defaults(HttpServletRequest request, @RequestParam("customerid") Integer customerid,String scope) {
+    public ModelAndView defaults(@RequestParam("ownerId") long ownerId, String scope) {
         ModelAndView modelAndView = new ModelAndView();
         try {
             List<Site> siteList = null;
             if(scope.equals("shop")){
-                siteList = siteRepository.findByCustomerIdAndDeletedAndPersonaliseAndSiteTypeOrderBySiteIdDesc(customerid, false, true,SiteType.SITE_PC_SHOP);
+                siteList = siteRepository.findByOwner_IdAndDeletedAndPersonaliseAndSiteTypeOrderBySiteIdDesc(ownerId
+                        , false, true, SiteType.SITE_PC_SHOP);
             }else{
-                siteList = siteRepository.findByCustomerIdAndDeletedAndPersonaliseAndSiteTypeOrderBySiteIdDesc(customerid, false, true,SiteType.SITE_PC_WEBSITE);
+                siteList = siteRepository.findByOwner_IdAndDeletedAndPersonaliseAndSiteTypeOrderBySiteIdDesc(ownerId
+                        , false, true, SiteType.SITE_PC_WEBSITE);
             }
             modelAndView.addObject("siteList", siteList);
             modelAndView.setViewName("/decoration/pages/defaults.html");
@@ -139,7 +148,6 @@ public class PagesController {
     @RequestMapping(value = "/createPage", method = RequestMethod.POST)
     @ResponseBody
     public ResultView createPage(@RequestParam("widgetStr") String widgetPage,
-                                 @RequestParam("customerId") Integer customerId,
                                  @RequestParam("siteId") Long siteId,
                                  @RequestParam("publish") boolean publish,
                                  @RequestParam(value = "config", required = false) String config) {
@@ -149,9 +157,9 @@ public class PagesController {
             WidgetPage widget = mapper.readValue(widgetPage, WidgetPage.class);
             boolean Flag = false;
             if (StringUtils.isEmpty(config)) {
-                Flag = pageResolveService.createPageAndConfigByWidgetPage(widget, customerId, siteId, publish);
+                Flag = pageResolveService.createPageAndConfigByWidgetPage(widget, siteId, publish);
             } else {
-                Flag = pageResolveService.createDefaultPageConfigByWidgetPage(widget, customerId, siteId, config);
+                Flag = pageResolveService.createDefaultPageConfigByWidgetPage(widget, siteId, config);
             }
             if (Flag) {
                 resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
@@ -168,14 +176,14 @@ public class PagesController {
     @RequestMapping(value = "/patch")
     @ResponseBody
     public ResultView updatePage(@RequestParam("widgetStr") String widgetPage,
-                                 @RequestParam("customerId") Integer customerId,
+                                 @RequestParam("ownerId") long ownerId,
                                  @RequestParam("publish") boolean publish,
                                  @RequestParam("id") Long id) {
         ResultView resultView = null;
         try {
             ObjectMapper mapper = new ObjectMapper();
             WidgetPage widget = mapper.readValue(widgetPage, WidgetPage.class);
-            boolean Flag = pageResolveService.patchPageAndConfigByWidgetPage(widget, customerId, id, publish);
+            boolean Flag = pageResolveService.patchPageAndConfigByWidgetPage(widget, id, publish);
             if (Flag) {
                 resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
             } else {
@@ -197,7 +205,7 @@ public class PagesController {
         try {
             CustomPages customPages = customPagesService.getCustomPages(id);
             if (customPages != null) {
-                if (cookieUser.isCustomer(request, customPages.getCustomerId())) {
+                if (cookieUser.isOwnerLogin(request, customPages.getSite().getOwner().getId())) {
                     customPages.setPublish(publish);
                     CustomPages customPages1 = customPagesService.save(customPages);
                     if (customPages1 != null) {
@@ -221,7 +229,7 @@ public class PagesController {
     @RequestMapping(value = "/home")
     @ResponseBody
     public ResultView homePage(@RequestParam("id") Long id) {
-        ResultView resultView = null;
+        ResultView resultView;
         try {
             Boolean flag = customPagesService.setHomePages(id);
             if(flag){
@@ -267,7 +275,7 @@ public class PagesController {
         try {
             CustomPages customPages = customPagesService.getCustomPages(id);
             if (customPages != null) {
-                if (cookieUser.isCustomer(request, customPages.getCustomerId())) {
+                if (cookieUser.isOwnerLogin(request, customPages.getSite().getOwner().getId())) {
                     customPagesService.delete(customPages);
                     resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
                 } else {

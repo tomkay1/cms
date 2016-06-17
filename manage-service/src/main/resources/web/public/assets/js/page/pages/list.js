@@ -27,7 +27,7 @@ define(function (require, exports, module) {
         pageSize: 20,
         pagerCount: 10,
         pageDetail: true,
-        url: '/page/getPagesList',//数据来源Url|通过mobel自定义属性配置
+        url: '/manage/page/getPagesList',//数据来源Url|通过mobel自定义属性配置
         rows: [
             {width: '40%', field: 'name', title: '页面名称', align: 'center'},
             {
@@ -43,7 +43,7 @@ define(function (require, exports, module) {
                 width: '30%', field: 'title', title: '操作', align: 'center',
                 formatter: function (value, rowData) {
                     if(rowData.home.toString()=='true'){
-                        return "<a href='/customPages/" + rowData.id + "?ownerId=" + rowData.ownerId + "&siteId=" + $("#siteType").val() + "' target='content'' style='color:#07d;margin-right:5px;margin-left:5px;' title='编辑'>编辑</a>|" +
+                        return "<a href='/manage/customPages/" + rowData.id + "?ownerId=" + rowData.ownerId + "&siteId=" + $("#siteType").val() + "' target='content'' style='color:#07d;margin-right:5px;margin-left:5px;' title='编辑'>编辑</a>|" +
                             "<a href='javascript:void(0)' class='js-pages-publish' data-id='"+rowData.id+"'  data-publish='false' style='color:#07d;margin-right:5px;margin-left:5px;' title='丢草稿箱'>丢草稿箱</a>|" +
                             "<a href='javascript:void(0)' style='color:#ccc !important;margin-right:5px;margin-left:5px;' title='店铺主页'>店铺主页</a>|" +
                             "<a href='javascript:void(0)' class='js-link-open' id='"+rowData.id+"'  style='color:#07d !important;margin-right:5px;margin-left:5px;' title='链接'>链接</a>";
@@ -76,7 +76,7 @@ define(function (require, exports, module) {
         pageSize: 20,
         pagerCount: 10,
         pageDetail: true,
-        url: '/page/getPagesList',//数据来源Url|通过model自定义属性配置
+        url: '/manage/page/getPagesList',//数据来源Url|通过model自定义属性配置
         rows: [
             {width: '40%', field: 'name', title: '页面名称', align: 'center'},
             {
@@ -91,7 +91,7 @@ define(function (require, exports, module) {
             {
                 width: '30%', field: 'title', title: '操作', align: 'center',
                 formatter: function (value, rowData) {
-                    return "<a href='/customPages/" + rowData.id + "?ownerId=" + rowData.ownerId + "&siteId=" + $("#siteType").val() + "' target='content'' style='color:#07d;margin-right:5px;margin-left:5px;' title='编辑'>编辑</a>|" +
+                    return "<a href='/manage/customPages/" + rowData.id + "?ownerId=" + rowData.ownerId + "&siteId=" + $("#siteType").val() + "' target='content'' style='color:#07d;margin-right:5px;margin-left:5px;' title='编辑'>编辑</a>|" +
                         "<a href='javascript:void(0)' class='js-pages-publish'  data-id='"+rowData.id+"' data-publish='true' style='color:#07d;margin-right:5px;margin-left:5px;' title='发布'>发布</a>|" +
                         "<a href='javascript:void(0)' class='js-pages-delete' data-id='"+rowData.id+"'  style='color:#07d !important;margin-right:5px;margin-left:5px;' title='删除'>删除</a>"+
                         "<a href='javascript:void(0)' class='js-link-open' id='"+rowData.id+"' style='color:#07d !important;margin-right:5px;margin-left:5px;' title='链接'>链接</a>";
@@ -120,7 +120,7 @@ define(function (require, exports, module) {
         publishPage: function (id,publish) {
             var msgTitle=publish?"页面发布":"页面丢弃草稿箱";
             $.ajax({
-                url: '/page/publish',
+                url: '/manage/page/publish',
                 type: "POST",
                 dataType: 'json',
                 data:{publish:publish,id:id},
@@ -147,7 +147,7 @@ define(function (require, exports, module) {
         },
         homePage:function(id){
             $.ajax({
-                url: '/page/home',
+                url: '/manage/page/home',
                 type: "POST",
                 dataType: 'json',
                 data:{id:id},
@@ -205,7 +205,7 @@ define(function (require, exports, module) {
         },
         deletePage:function(id){
             $.ajax({
-                url: '/page/delete',
+                url: '/manage/page/delete',
                 type: "POST",
                 dataType: 'json',
                 data:{id:id},

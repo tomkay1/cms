@@ -17,7 +17,7 @@ define(function (require, exports, module) {
         pageSize: 20,
         pagerCount: 10,
         pageDetail: true,
-        url: '/widget/getWidgetTypeList',//数据来源Url|通过mobel自定义属性配置
+        url: '/manage/widget/getWidgetTypeList',//数据来源Url|通过mobel自定义属性配置
         rows: [
             {width: '30%', field: 'name', title: '类型名称', align: 'center'},
             {width: '30%', field: 'scenes', title: '范畴类型', align: 'center',
@@ -89,7 +89,7 @@ define(function (require, exports, module) {
             shadeClose: true,
             shade: 0.8,
             area: ['600px', '400px'],
-            content: "/widget/addWidgetType",
+            content: "/manage/widget/addWidgetType",
             end:function(){
                 var option={
                     dataParam:{
@@ -113,7 +113,7 @@ define(function (require, exports, module) {
                     shadeClose: true,
                     shade: 0.8,
                     area: ['600px', '400px'],
-                    content: "/widget/updateWidgetType?id="+id,
+                    content: "/manage/widget/updateWidgetType?id="+id,
                     end:function(){
                         var option={
                             dataParam:{
@@ -143,7 +143,7 @@ define(function (require, exports, module) {
                     btn: ['确定','取消'] //按钮
                 }, function() {
                     $.ajax({
-                        url: "/widget/deleteWidgetType",
+                        url: "/manage/widget/deleteWidgetType",
                         data: {
                             id:id,
                             ownerId:ownerId

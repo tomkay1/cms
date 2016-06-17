@@ -1,3 +1,12 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 package com.huotu.hotcms.web.service.impl.huobanplus;
 
 import com.alibaba.fastjson.JSON;
@@ -23,7 +32,10 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 商品详情
@@ -33,11 +45,9 @@ import java.util.*;
 @Service
 public class GoodsDetailServiceImpl implements GoodsDetailService {
 
+    private static final Log log = LogFactory.getLog(GoodsDetailServiceImpl.class);
     @Autowired
     private HttpService httpService;
-
-    private static final Log log = LogFactory.getLog(GoodsDetailServiceImpl.class);
-
     @Autowired
     private GoodsRestRepository goodsRestRepository;
 
@@ -148,13 +158,13 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
         String domain = "";
         try {
             site = siteResolveService.getCurrentSite(request);
-            Merchant merchant = merchantRestRepository.getOneByPK(site.getCustomerId());
+            Merchant merchant = merchantRestRepository.getOneByPK(site.getOwner().getCustomerId());
             domain = merchant.getSubDomain();
         } catch (Exception e) {
             System.out.println("接口服务不可用");
             log.error("接口服务不可用");
         }
-        String url = configService.getCustomerUri(domain)+"/UserCenter/Index.aspx?customerid="+site.getCustomerId();
+        String url = configService.getCustomerUri(domain) + "/UserCenter/Index.aspx?customerid=" + site.getOwner().getCustomerId();
         return  url;
     }
 
@@ -168,7 +178,7 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
         }
         String url = null;
         try {
-            url = mallInfoService.subscribeUrl(site.getCustomerId());
+            url = mallInfoService.subscribeUrl(site.getOwner().getCustomerId());
         } catch (IOException e) {
             System.out.println("接口服务不可用");
             log.error("接口服务不可用");

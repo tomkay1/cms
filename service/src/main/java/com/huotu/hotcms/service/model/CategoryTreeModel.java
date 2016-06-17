@@ -1,6 +1,14 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 package com.huotu.hotcms.service.model;
 
-import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.Category;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,43 +32,15 @@ public class CategoryTreeModel extends Category {
      * 所属路由模型
      * */
     public Integer routeType;
+    private List<CategoryTreeModel> children;
 
     public CategoryTreeModel(){
         children=new ArrayList<CategoryTreeModel>();
     }
 
-    private List<CategoryTreeModel> children;
-
-    public void addChildren(Category category){
-        if(category!=null) {
-            CategoryTreeModel categoryTreeModel = new CategoryTreeModel();
-            categoryTreeModel.setCreateTime(category.getCreateTime());
-            categoryTreeModel.setCustomerId(category.getCustomerId());
-            categoryTreeModel.setCustom(category.isCustom());
-            categoryTreeModel.setDeleted(category.isDeleted());
-            categoryTreeModel.setId(category.getId());
-            categoryTreeModel.setModelId(category.getModelId());
-            categoryTreeModel.setName(category.getName());
-            categoryTreeModel.setOrderWeight(category.getOrderWeight());
-            categoryTreeModel.setParent(category.getParent());
-            categoryTreeModel.setParentIds(category.getParentIds());
-            if(category.getRoute()!=null&&category.getRoute().getRouteType()!=null) {
-                categoryTreeModel.setRouteType(category.getRoute().getRouteType().getCode());
-            }
-//            categoryTreeModel.setRoute(null);
-//            categoryTreeModel.setSite(null);
-            categoryTreeModel.setExpanded(true);
-            categoryTreeModel.setUpdateTime(category.getUpdateTime());
-//            String time=category.getCreateTime().getYear()+"-"+category.getCreateTime().getMonthValue()+"-"+category.getCreateTime().getDayOfMonth();
-            categoryTreeModel.setTime(category.getCreateTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-            this.children.add(categoryTreeModel);
-        }
-    }
-
     public static CategoryTreeModel ConvertToCategoryTreeModel(Category category){
         CategoryTreeModel categoryTreeModel = new CategoryTreeModel();
         categoryTreeModel.setCreateTime(category.getCreateTime());
-        categoryTreeModel.setCustomerId(category.getCustomerId());
         categoryTreeModel.setCustom(category.isCustom());
         categoryTreeModel.setDeleted(category.isDeleted());
         categoryTreeModel.setId(category.getId());
@@ -101,6 +81,31 @@ public class CategoryTreeModel extends Category {
             }
         }
         return categoryTreeModelList;
+    }
+
+    public void addChildren(Category category) {
+        if (category != null) {
+            CategoryTreeModel categoryTreeModel = new CategoryTreeModel();
+            categoryTreeModel.setCreateTime(category.getCreateTime());
+            categoryTreeModel.setCustom(category.isCustom());
+            categoryTreeModel.setDeleted(category.isDeleted());
+            categoryTreeModel.setId(category.getId());
+            categoryTreeModel.setModelId(category.getModelId());
+            categoryTreeModel.setName(category.getName());
+            categoryTreeModel.setOrderWeight(category.getOrderWeight());
+            categoryTreeModel.setParent(category.getParent());
+            categoryTreeModel.setParentIds(category.getParentIds());
+            if (category.getRoute() != null && category.getRoute().getRouteType() != null) {
+                categoryTreeModel.setRouteType(category.getRoute().getRouteType().getCode());
+            }
+//            categoryTreeModel.setRoute(null);
+//            categoryTreeModel.setSite(null);
+            categoryTreeModel.setExpanded(true);
+            categoryTreeModel.setUpdateTime(category.getUpdateTime());
+//            String time=category.getCreateTime().getYear()+"-"+category.getCreateTime().getMonthValue()+"-"+category.getCreateTime().getDayOfMonth();
+            categoryTreeModel.setTime(category.getCreateTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+            this.children.add(categoryTreeModel);
+        }
     }
 //
 //    public static CategoryTreeModel setEmpty(CategoryTreeModel categoryTreeModel){

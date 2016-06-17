@@ -1,3 +1,12 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.util.web.CookieUser;
@@ -29,7 +38,7 @@ import java.util.Set;
  * Created by chendeyu on 2016/1/11.
  */
 @Controller
-@RequestMapping("/download")
+@RequestMapping("/manage/download")
 public class DownloadController {
     private static final Log log = LogFactory.getLog(DownloadController.class);
 
@@ -59,7 +68,6 @@ public class DownloadController {
         ModelAndView modelAndView = new ModelAndView();
         try {
             Download download = downloadService.findById(id);
-            Category category = download.getCategory();
             modelAndView.addObject("download", download);
             modelAndView.setViewName("/view/contents/downloadList.html");
         } catch (Exception ex) {
@@ -72,12 +80,12 @@ public class DownloadController {
     /**
      * 添加下载
      *
-     * @param customerId
+     * @param ownerId
      * @return
      * @throws Exception
      */
     @RequestMapping(value = "/addDownload")
-    public ModelAndView addDownload(Integer customerId) throws Exception {
+    public ModelAndView addDownload(long ownerId) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/view/widget/addDownload.html");
         return modelAndView;
@@ -87,19 +95,19 @@ public class DownloadController {
      * 修改下载
      *
      * @param id
-     * @param customerId
+     * @param ownerId
      * @return
      * @throws Exception
      */
     @RequestMapping("/updateDownload")
-    public ModelAndView updateDownload(@RequestParam(value = "id", defaultValue = "0") Long id, Integer customerId) throws Exception {
+    public ModelAndView updateDownload(@RequestParam(value = "id", defaultValue = "0") Long id, long ownerId) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         try {
             modelAndView.setViewName("/view/contents/updateDownload.html");
             Download download = downloadService.findById(id);
             Category category = download.getCategory();
             Integer modelType = category.getModelId();
-            Set<Category> categorys = categoryRepository.findByCustomerIdAndModelId(customerId, modelType);
+            Set<Category> categorys = categoryRepository.findBySite_Owner_IdAndModerId(ownerId, modelType);
             String downloadFile = "";
             if (!StringUtils.isEmpty(download.getDownloadUrl())) {
                 downloadFile = resourceServer.getResource(download.getDownloadUrl()).toString();
@@ -124,7 +132,7 @@ public class DownloadController {
     @Transactional(value = "transactionManager")
     @ResponseBody
     public ResultView saveLink(Download download, Long categoryId) {
-        ResultView result = null;
+        ResultView result;
         try {
             Long id = download.getId();
             Category category = categoryRepository.getOne(categoryId);
@@ -151,16 +159,17 @@ public class DownloadController {
      * 删除(管理员权限)
      *
      * @param id
-     * @param customerId
+     * @param ownerId
      * @param request
      * @return
      */
     @RequestMapping(value = "/deleteDownload", method = RequestMethod.POST)
     @ResponseBody
-    public ResultView deleteDownload(@RequestParam(name = "id", required = true, defaultValue = "0") Long id, int customerId, HttpServletRequest request) {
-        ResultView result = null;
+    public ResultView deleteDownload(@RequestParam(name = "id", required = true, defaultValue = "0") Long id
+            , long ownerId, HttpServletRequest request) {
+        ResultView result;
         try {
-            if (cookieUser.getCustomerId(request) == customerId) {
+            if (cookieUser.getOwnerId(request) == ownerId) {
                 Download download = downloadService.findById(id);
                 downloadRepository.delete(download);
 //                download.setDeleted(true);

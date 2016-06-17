@@ -1,9 +1,17 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 package com.huotu.hotcms.service.service.impl;
 
+import com.huotu.hotcms.service.entity.BaseEntity;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Download;
-import com.huotu.hotcms.service.entity.Link;
-import com.huotu.hotcms.service.model.thymeleaf.foreach.NormalForeachParam;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.PageableForeachParam;
 import com.huotu.hotcms.service.repository.DownloadRepository;
 import com.huotu.hotcms.service.service.CategoryService;
@@ -19,7 +27,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.Predicate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,7 +61,7 @@ public class DownloadServiceImpl implements DownloadService {
     public List<Download> getSpecifyDownloads(String[] specifyIds) {
         List<String> ids = Arrays.asList(specifyIds);
         List<Long> linkIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
-        Specification<Link> specification = (root, query, cb) -> {
+        Specification<Download> specification = (root, query, cb) -> {
             List<Predicate> predicates = linkIds.stream().map(id -> cb.equal(root.get("id").as(Long.class),id)).collect(Collectors.toList());
             return cb.or(predicates.toArray(new Predicate[predicates.size()]));
         };
@@ -98,7 +105,7 @@ public class DownloadServiceImpl implements DownloadService {
     private Page<Download> getSpecifyLinks(String[] specifyIds, int pageIndex, int pageSize, Sort sort) {
         List<String> ids = Arrays.asList(specifyIds);
         List<Long> downloadsIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
-        Specification<Link> specification = (root, criteriaQuery, cb) -> {
+        Specification<Download> specification = (root, criteriaQuery, cb) -> {
             List<Predicate> predicates = downloadsIds.stream().map(id -> cb.equal(root.get("id").as(Long.class), id)).collect(Collectors.toList());
             return cb.or(predicates.toArray(new Predicate[predicates.size()]));
         };
@@ -107,17 +114,7 @@ public class DownloadServiceImpl implements DownloadService {
 
     private Page<Download> getDownloads(PageableForeachParam params, int pageIndex, int pageSize, Sort sort) throws Exception {
         try {
-            Specification<Link> specification = (root, criteriaQuery, cb) -> {
-                List<Predicate> predicates = new ArrayList<>();
-                if (!StringUtils.isEmpty(params.getExcludeIds())) {
-                    List<String> ids = Arrays.asList(params.getExcludeIds());
-                    List<Long> downloadsIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
-                    predicates = downloadsIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
-                }
-                predicates.add(cb.equal(root.get("deleted").as(Boolean.class), false));
-                predicates.add(cb.equal(root.get("category").get("id").as(Long.class), params.getCategoryId()));
-                return cb.and(predicates.toArray(new Predicate[predicates.size()]));
-            };
+            Specification<Download> specification = BaseEntity.Specification(params);
             return downloadRepository.findAll(specification, new PageRequest(pageIndex, pageSize, sort));
         } catch (Exception ex) {
             throw new Exception("获得下载模型列表出现错误");
@@ -133,22 +130,7 @@ public class DownloadServiceImpl implements DownloadService {
                 log.error(e.getMessage());
             }
         }
-        Specification<Link> specification = (root, criteriaQuery, cb) -> {
-            List<Predicate> p1 = new ArrayList<>();
-            for (Category category : subCategories) {
-                p1.add(cb.equal(root.get("category").as(Category.class), category));
-            }
-            Predicate predicate = cb.or(p1.toArray(new Predicate[p1.size()]));
-            List<Predicate> predicates = new ArrayList<>();
-            if (!StringUtils.isEmpty(params.getExcludeIds())) {
-                List<String> ids = Arrays.asList(params.getExcludeIds());
-                List<Long> articleIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
-                predicates = articleIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
-            }
-            predicates.add(cb.equal(root.get("deleted").as(Boolean.class), false));
-            predicates.add(predicate);
-            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
-        };
+        Specification<Download> specification = BaseEntity.Specification(params, subCategories);
         return downloadRepository.findAll(specification, new PageRequest(pageIndex, pageSize, sort));
     }
 

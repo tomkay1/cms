@@ -21,7 +21,7 @@ define(function (require, exports, module) {
                 var commonUtil = require("common");
                 commonUtil.setDisabled("jq-cms-Save");
                     $.ajax({
-                        url: "/cms/saveWidgetRead",
+                        url: "/manage/cms/saveWidgetRead",
                         data: {
                             id: $("#id").val(),
                             path: $("#resourceUri").val(),
@@ -77,7 +77,7 @@ define(function (require, exports, module) {
     uploadWidget:function(){
         var id = $("#id").val();
         $("#btnFile1").jacksonUpload({
-            url: "/cms/widgetUpLoadRead?id="+id,
+            url: "/manage/cms/widgetUpLoadRead?id="+id,
             name: "btnFile1",
             enctype: "multipart/form-data",
             submit: true,

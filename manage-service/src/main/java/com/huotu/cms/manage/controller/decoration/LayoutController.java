@@ -25,7 +25,7 @@ import java.util.UUID;
  *
  */
 @Controller
-@RequestMapping("/layout")
+@RequestMapping("/manage/layout")
 public class LayoutController {
     private static final Log log = LogFactory.getLog(LayoutController.class);
 

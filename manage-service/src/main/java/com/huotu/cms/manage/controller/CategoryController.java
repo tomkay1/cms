@@ -1,3 +1,12 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.util.web.CookieUser;
@@ -33,7 +42,7 @@ import java.util.Set;
  * Created by chendeyu on 2015/12/31.
  */
 @Controller
-@RequestMapping("/category")
+@RequestMapping("/manage/category")
 public class CategoryController {
     private static final Log log = LogFactory.getLog(CategoryController.class);
     @Autowired
@@ -62,10 +71,10 @@ public class CategoryController {
      * */
     @RequestMapping("/getSiteList")
     @ResponseBody
-    public ResultView getSiteList(@RequestParam(value = "customerId",defaultValue = "0") Integer customerid){
-        ResultView result=null;
+    public ResultView getSiteList(@RequestParam(value = "ownerId") long ownerId) {
+        ResultView result;
         try{
-            Set<Site> sites=siteService.findByCustomerIdAndDeleted(customerid, false);
+            Set<Site> sites = siteService.findByOwnerIdAndDeleted(ownerId, false);
             if(sites!=null&&sites.size()>0) {
                 result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), sites.toArray(new Site[sites.size()]));
             }else{
@@ -86,7 +95,7 @@ public class CategoryController {
     @ResponseBody
     public ResultView getCategoryList(@RequestParam(name="siteId",required = false) Long siteId,
                                       @RequestParam(name = "name",required=false) String name){
-        ResultView resultView=null;
+        ResultView resultView;
         try{
             Site site=siteService.getSite(siteId);
             List<Category> categoryList=categoryService.getCategoryBySiteAndDeletedAndNameContainingOrderByOrderWeightDesc(site,false,name);
@@ -156,7 +165,7 @@ public class CategoryController {
                                    String template,
                                    String parentPath,
                                    Integer routeType){
-        ResultView result=null;
+        ResultView result;
         try {
             Category category=new Category();
             Site site = siteRepository.findOne(siteId);
@@ -167,7 +176,6 @@ public class CategoryController {
                 Category categoryParent = categoryService.getCategoryById(parentId);
                 category.setSite(site);
                 category.setParentIds(parentPath);
-                category.setCustomerId(site.getCustomerId());
                 if (model >= 0) {
                     category.setModelId(model);
                 }
@@ -199,13 +207,13 @@ public class CategoryController {
      * */
     @RequestMapping(value = "/deleteCategory",method = RequestMethod.POST)
     @ResponseBody
-    public ResultView deleteCategory(@RequestParam(name = "id",required = true,defaultValue = "0") Long id,
+    public ResultView deleteCategory(@RequestParam(name = "id", defaultValue = "0") Long id,
                                      HttpServletRequest request) {
-        ResultView result=null;
+        ResultView result;
         try{
             if(cookieUser.isSupper(request)) {
                 Category category = categoryService.getCategoryById(id);
-//                if(category.getCustomerId().equals(cookieUser.getCustomerId(request))) {//删除的时候验证是否是删除同一商户下面的栏目，增强安全性
+//                if(category.getOwnerId().equals(cookieUser.getOwnerId(request))) {//删除的时候验证是否是删除同一商户下面的栏目，增强安全性
                     if(categoryService.deleteCategory(category)) {
                         result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
                     }else{
@@ -253,7 +261,6 @@ public class CategoryController {
                     }
                     category.setName(name);
                     category.setOrderWeight(orderWeight);
-                    category.setCustomerId(site.getCustomerId());
                     category.setUpdateTime(LocalDateTime.now());
                     categoryService.updateCategoryAndRoute(category, rule, template, noRule
                             , EnumUtils.valueOf(RouteType.class, routeType));

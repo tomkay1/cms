@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Created by hzbc on 2016/5/26.
  */
 @Controller
-@RequestMapping("/template")
+@RequestMapping("/manage/template")
 public class TemplatesController {
     @Autowired
     private SiteService siteService;

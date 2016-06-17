@@ -30,7 +30,7 @@ define(function (require, exports, module) {
             commonUtil.setDisabled("jq-cms-Save");
             var ownerId =commonUtil.getQuery("ownerId");
             $.ajax({
-                url: "/notice/saveNotice",
+                url: "/manage/notice/saveNotice",
                 data: {
                     id:$("#hidNoticeID").val(),
                     title:$("#title").val(),

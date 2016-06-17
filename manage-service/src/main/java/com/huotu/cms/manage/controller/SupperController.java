@@ -1,10 +1,23 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 package com.huotu.cms.manage.controller;
 
-import com.huotu.cms.manage.annoation.AuthorizeRole;
+import com.huotu.cms.manage.authorize.annoation.AuthorizeRole;
 import com.huotu.cms.manage.util.web.CookieUser;
 import com.huotu.hotcms.service.common.EnumUtils;
 import com.huotu.hotcms.service.common.SiteType;
-import com.huotu.hotcms.service.entity.*;
+import com.huotu.hotcms.service.entity.Host;
+import com.huotu.hotcms.service.entity.Region;
+import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.entity.SiteConfig;
+import com.huotu.hotcms.service.entity.Template;
 import com.huotu.hotcms.service.repository.RegionRepository;
 import com.huotu.hotcms.service.repository.SiteConfigRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
@@ -42,7 +55,7 @@ import java.util.Set;
  * </p>
  */
 @Controller
-@RequestMapping("/supper")
+@RequestMapping("/manage/supper")
 public class SupperController {
     private static final Log log = LogFactory.getLog(SupperController.class);
 
@@ -113,18 +126,17 @@ public class SupperController {
 
     /**
      * 添加模板
-     * @param request
+     *
      * @return
      * @throws Exception
      */
     @RequestMapping("/addTemplate")
     @AuthorizeRole(roleType = AuthorizeRole.Role.Supper)
-    public ModelAndView addTemplate(HttpServletRequest request) throws Exception{
-        Integer customerId=Integer.valueOf(request.getParameter("customerid"));
+    public ModelAndView addTemplate(long ownerId) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
-        List<Site> siteList =siteRepository.findByCustomerIdAndDeletedOrderBySiteIdDesc(customerId,false);
+        List<Site> siteList = siteRepository.findByOwner_IdAndDeletedOrderBySiteIdDesc(ownerId, false);
         modelAndView.setViewName("/view/supper/addTemplate.html");
-        modelAndView.addObject("siteList",siteList);
+        modelAndView.addObject("siteList", siteList);
         return modelAndView;
     }
 
@@ -135,7 +147,7 @@ public class SupperController {
     @Transactional(value = "transactionManager")
     @ResponseBody
     public ResultView updateSite(HttpServletRequest request, Site site, Long regionId, Integer siteType
-            , Boolean personalise, String homeDomains,Template template, String... domains) {
+            , Boolean personalise, String homeDomains, Template template, String... domains) {
         ResultView result = null;
         Set<Host> hosts = new HashSet<>();
         site.setPersonalise(personalise);
@@ -188,7 +200,7 @@ public class SupperController {
     @RequestMapping(value = "/saveTemplate", method = RequestMethod.POST)
     @Transactional(value = "transactionManager")
     @ResponseBody
-    public ResultView saveTemplate(Template template,long siteId){
+    public ResultView saveTemplate(Template template, long siteId) {
         template.setSite(siteRepository.findOne(siteId));
         template.setCreateTime(LocalDateTime.now());
         template.setUpdateTime(LocalDateTime.now());
@@ -196,32 +208,32 @@ public class SupperController {
         template.setScans(0);
         template.setPreviewTimes(0);
         ResultView result = null;
-        try{
+        try {
             templateRepository.save(template);
             result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             log.error(ex.getMessage());
             result = new ResultView(ResultOptionEnum.FAILE.getCode(), ResultOptionEnum.FAILE.getValue(), null);
         }
         return result;
     }
+
     /**
      * 修改站点页面
      *
      * @param id
-     * @param customerId
      * @return
      * @throws Exception
      */
     @RequestMapping("/updateSite")
     @AuthorizeRole(roleType = AuthorizeRole.Role.Supper)
-    public ModelAndView updateSite(@RequestParam(value = "id", defaultValue = "0") Long id, int customerId) throws Exception {
+    public ModelAndView updateSite(@RequestParam(value = "id", defaultValue = "0") Long id) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         try {
             modelAndView.setViewName("/view/supper/updateSite.html");
             String logo_uri = "";
             if (id != 0) {
-                Site site = siteService.findBySiteIdAndCustomerId(id, customerId);
+                Site site = siteService.getSite(id);
                 if (site != null) {
                     if (!StringUtils.isEmpty(site.getLogoUri())) {
                         logo_uri = resourceServer.getResource(site.getLogoUri()).toString();
@@ -250,7 +262,7 @@ public class SupperController {
     /**
      * 获取站点
      *
-     * @param customerId
+     * @param ownerId
      * @param name
      * @param page
      * @param pageSize
@@ -258,13 +270,13 @@ public class SupperController {
      */
     @RequestMapping(value = "/getSiteList")
     @ResponseBody
-    public PageData<Site> getModelList(@RequestParam(name = "customerId", required = false) Integer customerId,
+    public PageData<Site> getModelList(@RequestParam(name = "ownerId", required = false) long ownerId,
                                        @RequestParam(name = "name", required = false) String name,
-                                       @RequestParam(name = "page", required = true, defaultValue = "1") int page,
-                                       @RequestParam(name = "pagesize", required = true, defaultValue = "20") int pageSize) {
+                                       @RequestParam(name = "page", defaultValue = "1") int page,
+                                       @RequestParam(name = "pagesize", defaultValue = "20") int pageSize) {
         PageData<Site> pageModel = null;
         try {
-            pageModel = siteService.getPage(customerId, name, page, pageSize);
+            pageModel = siteService.getPage(ownerId, name, page, pageSize);
         } catch (Exception ex) {
             log.error(ex.getMessage());
         }
@@ -273,31 +285,30 @@ public class SupperController {
 
     /**
      * 获取模板列表
-     * @param customerId 系统商户ID
-     * @param page 页数
-     * @param pageSize 每页显示记录数
+     *
+     * @param page       页数
+     * @param pageSize   每页显示记录数
      * @return 模板列表
      */
     @RequestMapping(value = "/getTemplateList")
     @ResponseBody
-    public PageData<Template> getTemplateList(@RequestParam(name = "customerId", required = false) Integer customerId,
-                                              @RequestParam(name = "page", required = true, defaultValue = "1") int page,
-                                              @RequestParam(name = "pagesize", required = true, defaultValue = "20") int pageSize){
+    public PageData<Template> getTemplateList(@RequestParam(name = "page", defaultValue = "1") int page,
+                                              @RequestParam(name = "pagesize", defaultValue = "20") int pageSize) {
         PageData<Template> pageModel = null;
         try {
-            Pageable pageable=new PageRequest(page-1,pageSize);
-            Page<Template> pageData=templateRepository.findAll(pageable);
-            List<Template> Templates=pageData.getContent();
-            for(Template template : Templates){
+            Pageable pageable = new PageRequest(page - 1, pageSize);
+            Page<Template> pageData = templateRepository.findAll(pageable);
+            List<Template> Templates = pageData.getContent();
+            for (Template template : Templates) {
                 template.getSite().setHosts(null);
             }
-            if (pageData != null&&pageData.getContent().size()>0) {
-                pageModel = new PageData<Template>();
+            if (pageData.getContent().size() > 0) {
+                pageModel = new PageData<>();
                 pageModel.setPageCount(pageData.getTotalPages());
                 pageModel.setPageIndex(pageData.getNumber());
                 pageModel.setPageSize(pageData.getSize());
                 pageModel.setTotal(pageData.getTotalElements());
-                pageModel.setRows((Template[])pageData.getContent().toArray(new Template[pageData.getContent().size()]));
+                pageModel.setRows(pageData.getContent().toArray(new Template[pageData.getContent().size()]));
             }
         } catch (Exception ex) {
             log.error(ex.getMessage());
@@ -309,18 +320,18 @@ public class SupperController {
      * 删除站点(管理员权限)
      *
      * @param id
-     * @param customerId
      * @param request
      * @return
      */
     @RequestMapping(value = "/deleteSite", method = RequestMethod.POST)
     @AuthorizeRole(roleType = AuthorizeRole.Role.Supper)
     @ResponseBody
-    public ResultView deleteModel(@RequestParam(name = "id", required = true, defaultValue = "0") Long id, int customerId, HttpServletRequest request) {
-        ResultView result = null;
+    public ResultView deleteModel(@RequestParam(name = "id", required = true, defaultValue = "0") Long id
+            , HttpServletRequest request) {
+        ResultView result;
         try {
             if (cookieUser.isSupper(request)) {
-                Site site = siteService.findBySiteIdAndCustomerId(id, customerId);
+                Site site = siteService.getSite(id);
                 hostService.removeHost(site.getHosts());
                 site.setHosts(null);
                 site.setDeleted(true);
@@ -338,12 +349,12 @@ public class SupperController {
 
     @RequestMapping(value = "/siteConfig")
     @AuthorizeRole(roleType = AuthorizeRole.Role.Supper)
-    public ModelAndView siteConfig(Long siteId,Integer customerId) {
+    public ModelAndView siteConfig(Long siteId) {
         ModelAndView modelAndView = new ModelAndView();
         try {
             modelAndView.setViewName("/view/supper/siteConfig.html");
-            Site site=siteService.getSite(siteId);
-            if(site!=null){
+            Site site = siteService.getSite(siteId);
+            if (site != null) {
                 modelAndView.addObject("siteConfig", siteConfigRepository.findBySite(site));
             }
         } catch (Exception ex) {
@@ -355,14 +366,14 @@ public class SupperController {
     @RequestMapping(value = "/saveConfig")
     @AuthorizeRole(roleType = AuthorizeRole.Role.Supper)
     @ResponseBody
-    public ResultView saveConfig(SiteConfig siteConfig,Long siteId){
-        ResultView resultView=null;
-        try{
-            Site site=siteService.getSite(siteId);
+    public ResultView saveConfig(SiteConfig siteConfig, Long siteId) {
+        ResultView resultView = null;
+        try {
+            Site site = siteService.getSite(siteId);
             siteConfig.setSite(site);
             siteConfigRepository.save(siteConfig);
             resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             log.error(ex);
             resultView = new ResultView(ResultOptionEnum.SERVERFAILE.getCode(), ResultOptionEnum.SERVERFAILE.getValue(), null);
         }

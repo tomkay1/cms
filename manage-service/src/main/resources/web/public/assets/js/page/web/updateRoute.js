@@ -11,7 +11,7 @@ define(function (require, exports, module) {
                 required: true,
                 route:true,
                 remote: {
-                    url: "/route/isExistsRouteBySiteAndRuleIgnore",     //后台处理程序
+                    url: "/manage/route/isExistsRouteBySiteAndRuleIgnore",     //后台处理程序
                     type: "post",               //数据发送方式
                     dataType: "json",           //接受数据格式
                     data: {                     //要传递的数据
@@ -46,7 +46,7 @@ define(function (require, exports, module) {
             var commonUtil = require("common");
             commonUtil.setDisabled("jq-cms-Save");
             $.ajax({
-                url: "/route/modifyRoute",
+                url: "/manage/route/modifyRoute",
                 data: {
                     id:$("#id").val(),
                     routeName: $("#routeName").val(),

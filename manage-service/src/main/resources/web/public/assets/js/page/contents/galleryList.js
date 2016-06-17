@@ -19,7 +19,7 @@ define(function (require, exports, module) {
         pageSize: 20,
         pagerCount: 10,
         pageDetail: true,
-        url: '/gallery/getGalleryList',//数据来源Url|通过mobel自定义属性配置
+        url: '/manage/gallery/getGalleryList',//数据来源Url|通过mobel自定义属性配置
         rows: [
             {width: '10%', field: 'id', title: '图片id', align: 'center'},
             {width: '10%', field: 'size', title: '图片规格', align: 'center'},
@@ -77,7 +77,7 @@ define(function (require, exports, module) {
                     btn: ['确定','取消'] //按钮
                 }, function() {
                     $.ajax({
-                        url: "/gallery/deleteGalleryList",
+                        url: "/manage/gallery/deleteGalleryList",
                         data: {
                             id:id,
                             ownerId : ownerId

@@ -1,3 +1,12 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.util.web.CookieUser;
@@ -25,11 +34,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-/**
- * Created by chendeyu on 2016/1/5.
- */
 @Controller
-@RequestMapping("/notice")
+@RequestMapping("/manage/notice")
 public class NoticeController {
     private static final Log log = LogFactory.getLog(NoticeController.class);
 
@@ -52,52 +58,51 @@ public class NoticeController {
      * @throws Exception
      */
     @RequestMapping("/noticeList")
-    public ModelAndView noticeList(@RequestParam(value = "id",defaultValue = "0") Long id) throws Exception
-    {
-        ModelAndView modelAndView=new ModelAndView();
-        try{
-        Notice notice= noticeService.findById(id);
-        modelAndView.addObject("notice",notice);
-        modelAndView.setViewName("/view/contents/noticeList.html");
-        }catch (Exception ex){
+    public ModelAndView noticeList(@RequestParam(value = "id", defaultValue = "0") Long id) throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
+        try {
+            Notice notice = noticeService.findById(id);
+            modelAndView.addObject("notice", notice);
+            modelAndView.setViewName("/view/contents/noticeList.html");
+        } catch (Exception ex) {
             log.error(ex.getMessage());
         }
-        return  modelAndView;
+        return modelAndView;
     }
 
     /**
      * 添加公告
-     * @param customerId
+     *
      * @return
      * @throws Exception
      */
     @RequestMapping(value = "/addNotice")
-    public ModelAndView addNotice(Integer customerId) throws Exception{
-        ModelAndView modelAndView=new ModelAndView();
+    public ModelAndView addNotice() throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/view/widget/addNotice.html");
-        return  modelAndView;
+        return modelAndView;
     }
 
     /**
-     *
      * 修改公告
+     *
      * @param id
-     * @param customerId
+     * @param ownerId
      * @return
      * @throws Exception
      */
     @RequestMapping("/updateNotice")
-    public ModelAndView updateNotice(@RequestParam(value = "id",defaultValue = "0") Long id,Integer customerId) throws Exception{
-        ModelAndView modelAndView=new ModelAndView();
-        try{
-        modelAndView.setViewName("/view/contents/updateNotice.html");
-        Notice notice= noticeService.findById(id);
-        Category category =notice.getCategory();
-        Integer modelType = category.getModelId();
-        Set<Category> categorys=categoryRepository.findByCustomerIdAndModelId(customerId,modelType);
-        modelAndView.addObject("categorys",categorys);
-        modelAndView.addObject("notice",notice);
-        }catch (Exception ex){
+    public ModelAndView updateNotice(@RequestParam(value = "id", defaultValue = "0") Long id, long ownerId) throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
+        try {
+            modelAndView.setViewName("/view/contents/updateNotice.html");
+            Notice notice = noticeService.findById(id);
+            Category category = notice.getCategory();
+            Integer modelType = category.getModelId();
+            Set<Category> categorys = categoryRepository.findBySite_Owner_IdAndModerId(ownerId, modelType);
+            modelAndView.addObject("categorys", categorys);
+            modelAndView.addObject("notice", notice);
+        } catch (Exception ex) {
             log.error(ex.getMessage());
         }
         return modelAndView;
@@ -105,47 +110,44 @@ public class NoticeController {
 
 
     /**
-     *
      * 保存公告
+     *
      * @param notice
      * @param categoryId
      * @return
      */
-    @RequestMapping(value = "/saveNotice",method = RequestMethod.POST)
+    @RequestMapping(value = "/saveNotice", method = RequestMethod.POST)
     @Transactional(value = "transactionManager")
     @ResponseBody
-    public ResultView saveNotice(Notice notice,Long categoryId){
-        ResultView result=null;
+    public ResultView saveNotice(Notice notice, Long categoryId) {
+        ResultView result;
         try {
             Long id = notice.getId();
             Category category = categoryRepository.getOne(categoryId);
-            if(id!=null)
-            {
+            if (id != null) {
                 notice.setUpdateTime(LocalDateTime.now());
                 Notice noticeOld = noticeService.findById(notice.getId());
                 notice.setCreateTime(noticeOld.getCreateTime());
                 notice.setUpdateTime(LocalDateTime.now());
-            }
-            else{
+            } else {
                 notice.setCreateTime(LocalDateTime.now());
                 notice.setUpdateTime(LocalDateTime.now());
             }
             notice.setCategory(category);
             noticeService.saveNotice(notice);
             result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             log.error(ex.getMessage());
-            result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
+            result = new ResultView(ResultOptionEnum.FAILE.getCode(), ResultOptionEnum.FAILE.getValue(), null);
         }
-        return  result;
+        return result;
     }
 
 
     /**
      * 获取公告列表
-     * @param customerId
+     *
+     * @param ownerId
      * @param title
      * @param page
      * @param pageSize
@@ -153,14 +155,14 @@ public class NoticeController {
      */
     @RequestMapping(value = "/getNoticeList")
     @ResponseBody
-    public PageData<NoticeCategory> getNoticeList(@RequestParam(name="customerId",required = false) Integer customerId,
-                                         @RequestParam(name="title",required = false) String title,
-                                         @RequestParam(name = "page",required = true,defaultValue = "1") int page,
-                                         @RequestParam(name = "pagesize",required = true,defaultValue = "20") int pageSize){
-        PageData<NoticeCategory> pageModel=null;
+    public PageData<NoticeCategory> getNoticeList(@RequestParam(name = "ownerId") long ownerId,
+                                                  @RequestParam(name = "title", required = false) String title,
+                                                  @RequestParam(name = "page", defaultValue = "1") int page,
+                                                  @RequestParam(name = "pagesize", defaultValue = "20") int pageSize) {
+        PageData<NoticeCategory> pageModel = null;
         try {
-             pageModel = noticeService.getPage(customerId, title, page, pageSize);
-        }catch (Exception ex){
+            pageModel = noticeService.getPage(ownerId, title, page, pageSize);
+        } catch (Exception ex) {
             log.error(ex.getMessage());
         }
         return pageModel;
@@ -168,33 +170,32 @@ public class NoticeController {
 
     /**
      * 删除(管理员权限)
+     *
      * @param id
-     * @param customerId
+     * @param ownerId
      * @param request
      * @return
      */
-    @RequestMapping(value = "/deleteNotice",method = RequestMethod.POST)
+    @RequestMapping(value = "/deleteNotice", method = RequestMethod.POST)
     @ResponseBody
-    public ResultView deleteNotice(@RequestParam(name = "id",required = true,defaultValue = "0") Long id,int customerId,HttpServletRequest request) {
-        ResultView result=null;
-        try{
-            if(cookieUser.getCustomerId(request) == customerId) {
+    public ResultView deleteNotice(@RequestParam(name = "id", defaultValue = "0") Long id, long ownerId
+            , HttpServletRequest request) {
+        ResultView result;
+        try {
+            if (cookieUser.getOwnerId(request) == ownerId) {
                 Notice notice = noticeService.findById(id);
                 noticeRepository.delete(notice);
 //                notice.setDeleted(true);
 //                noticeService.saveNotice(notice);
-                result=new ResultView(ResultOptionEnum.OK.getCode(),ResultOptionEnum.OK.getValue(),null);
+                result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
+            } else {
+                result = new ResultView(ResultOptionEnum.NO_LIMITS.getCode(), ResultOptionEnum.NO_LIMITS.getValue(), null);
             }
-            else {
-                result=new ResultView(ResultOptionEnum.NO_LIMITS.getCode(),ResultOptionEnum.NO_LIMITS.getValue(),null);
-            }
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             log.error(ex.getMessage());
-            result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
+            result = new ResultView(ResultOptionEnum.FAILE.getCode(), ResultOptionEnum.FAILE.getValue(), null);
         }
-        return  result;
+        return result;
     }
 
 

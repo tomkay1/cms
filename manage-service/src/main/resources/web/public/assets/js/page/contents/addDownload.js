@@ -39,7 +39,7 @@ define(function (require, exports, module) {
                 commonUtil.setDisabled("jq-cms-Save");
                 var ownerId = commonUtil.getQuery("ownerId");
                 $.ajax({
-                    url: "/download/saveDownload",
+                    url: "/manage/download/saveDownload",
                     data: {
                         id: $("#hidDownloadID").val(),
                         title: $("#title").val(),
@@ -95,7 +95,7 @@ define(function (require, exports, module) {
     var uploadModule={
             uploadDownload:function () {
                 $("#btnFile").jacksonUpload({
-                    url: "/cms/downloadUpLoad",
+                    url: "/manage/cms/downloadUpLoad",
                     name: "btnFile",
                     enctype: "multipart/form-data",
                     submit: true,

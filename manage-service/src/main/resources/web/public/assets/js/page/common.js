@@ -58,7 +58,7 @@ define(["js/jquery-1.9.1.min"],function () {
         },
         getSiteList:function(ownerId,div){
             $.ajax({
-                url: "/category/getSiteList",
+                url: "/manage/category/getSiteList",
                 data: {
                     ownerId:ownerId
                 },
@@ -118,7 +118,7 @@ define(["js/jquery-1.9.1.min"],function () {
             $.ajax({
                 type: "post",
                 dataType: "json",
-                url: '/page/root',//提交到一般处理程序请求数据
+                url: '/manage/page/root',//提交到一般处理程序请求数据
                 data: {
                     siteId: siteId
                 },
@@ -160,7 +160,7 @@ define(["js/jquery-1.9.1.min"],function () {
             $.ajax({
                 type: "post",
                 dataType: "json",
-                url: '/page/getHomePage',//提交到一般处理程序请求数据
+                url: '/manage/page/getHomePage',//提交到一般处理程序请求数据
                 data: {
                     siteId: siteId
                 },

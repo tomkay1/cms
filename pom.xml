@@ -29,7 +29,7 @@
     </organization>
 
     <modules>
-        <module>admin</module>
+        <!--<module>admin</module>-->
         <module>service</module>
         <module>web</module>
         <module>widget-skeleton</module>

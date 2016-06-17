@@ -20,11 +20,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "cms_galleryList",uniqueConstraints = {@UniqueConstraint(columnNames = {"siteId,serial"})})
+@Table(name = "cms_galleryList")
 @Getter
 @Setter
 public class GalleryList {
@@ -35,6 +34,7 @@ public class GalleryList {
     /**
      * 站点ID
      */
+    @ManyToOne
     @JoinColumn(name = "siteId")
     private Site site;
 

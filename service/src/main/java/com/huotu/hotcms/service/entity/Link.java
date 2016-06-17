@@ -15,14 +15,13 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 /**
  * 链接模型
  * Created by cwb on 2015/12/22.
  */
 @Entity
-@Table(name = "cms_link",uniqueConstraints = @UniqueConstraint(columnNames = {"siteId","serial"}))
+@Table(name = "cms_link")
 @Getter
 @Setter
 public class Link extends BaseEntity {

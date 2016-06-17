@@ -17,14 +17,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 /**
  * 文章模型
  * Created by cwb on 2015/12/21.
  */
 @Entity
-@Table(name = "cms_article",uniqueConstraints = {@UniqueConstraint(columnNames = {"siteId,serial"})})
+@Table(name = "cms_article")
 @Getter
 @Setter
 public class Article extends BaseEntity {

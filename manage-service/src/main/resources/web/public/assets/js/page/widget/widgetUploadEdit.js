@@ -3,7 +3,7 @@
  */
 define(function (require, exports, module) {
     var commonUtil = require("common");
-    var customerId =commonUtil.getQuery("customerId");
+    var ownerId =commonUtil.getQuery("ownerId");
     var layer=require("layer");
     exports.fromValidata=function() {
         $("#widgetUploadForm").validate({

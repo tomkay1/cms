@@ -16,7 +16,7 @@
                 shade: 0.8,
                 closeBtn:1,
                 area: ['580px', '500px'],
-                content: "/assets/js/jPicture/photo.html?customerId="+customerId+"&isMult=false",
+                content: "/assets/js/jPicture/photo.html?ownerId="+ownerId+"&isMult=false",
                 //btn:["确定"],
                 end: function(index, layero){
                     var jsonStr=$("#js_cms_picture_value").val();
@@ -24,7 +24,7 @@
                 }
         });
     1，content参数中是layer.js弹出请求的地址,该地址中需要两个参数
-        a,customerId ---->商户ID
+        a,ownerId ---->商户ID
         b,isMult     ---->是否可以选择多张图片
  2、修改photo.html 里面的引用js和css路径,让其路径是可用状态;以下仅是例子:
      <link  href="/assets/js/jPicture/skin.css"  type="text/css" rel="stylesheet"/>
@@ -105,7 +105,7 @@ $.fn.extend({
                 method: 'GET',
                 dataType: "jsonp",
                 msgImg: "/assets/js/jPicture/w01.png",
-                data: { page: 1, pagesize: option.pageSize,fileid:fileid,customerid:option.customerId},
+                data: { page: 1, pagesize: option.pageSize,fileid:fileid,ownerId:option.ownerId},
                 Templete: template,
                 isArtTemplete: true,
                 scorllBox:""
@@ -195,7 +195,7 @@ $.fn.extend({
                 boxWidth:'100',
                 position:"fixed",
                 data: {
-                    customerId: $this.customerId,
+                    ownerId: $this.ownerId,
                     fileId:$("#js-picture-addFile").attr('data-fileid')
                 },
                 callback: function (json) {
@@ -216,7 +216,7 @@ $.fn.extend({
                         type: "get",
                         dataType:"jsonp",
                         url: $this.url+'/gallery/addfile',//提交到一般处理程序请求数据
-                        data: {customid:$this.customerId,extenName:name,fileid:fileid},
+                        data: {ownerId:$this.ownerId,extenName:name,fileid:fileid},
                         success: function (data) {
                             $("#"+$this.label).resolveDataTemplate(fileid);
                         }

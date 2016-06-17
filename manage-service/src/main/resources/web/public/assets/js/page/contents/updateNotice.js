@@ -34,14 +34,14 @@ define(function (require, exports, module) {
         submitHandler: function (form, ev) {
             var commonUtil = require("common");
             commonUtil.setDisabled("jq-cms-Save");
-            var customerId =commonUtil.getQuery("customerId");
+            var ownerId =commonUtil.getQuery("ownerId");
             $.ajax({
                 url: "/manage/notice/saveNotice",
                 data: {
                     id:$("#hidNoticeID").val(),
                     title:$("#title").val(),
                     description:$("#description").val(),
-                    customerId:customerId,
+                    ownerId:ownerId,
                     content: $("#content").val(),
                     categoryId: $("#categoryId").val(),
                     orderWeight: $("#orderWeight").val()
@@ -58,7 +58,7 @@ define(function (require, exports, module) {
                         {
                             layer.msg("操作成功,2秒后将自动返回列表页面",{time: 2000});
                             //setTimeout(function(){
-                            //        window.location.href="http://"+window.location.host+"/"+"contents/contentsList?&customerid="+customerId;
+                            //        window.location.href="http://"+window.location.host+"/"+"contents/contentsList?&ownerId="+ownerId;
                             //    }
                             //    ,1000);
                             setTimeout(function(){

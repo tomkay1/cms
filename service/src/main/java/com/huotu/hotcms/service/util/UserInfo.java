@@ -16,6 +16,8 @@ public class UserInfo {
     * */
     public int customerId;
 
+    public int ownerId;
+
     public int getCustomerId() {
         return customerId;
     }
@@ -24,9 +26,17 @@ public class UserInfo {
         this.customerId = customerId;
     }
 
+    public int getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(int ownerId) {
+        this.ownerId = ownerId;
+    }
+
     /*
-    * 是否超级管理员登录
-    * */
+            * 是否超级管理员登录
+            * */
     public boolean isSuperManage;
 
     public void setIsSuperManage(boolean isSuperManage) {

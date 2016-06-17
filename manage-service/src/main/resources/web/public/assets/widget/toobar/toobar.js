@@ -13,7 +13,7 @@ define(function (require, exports, module) {
         })
         var layer = require("layer");
         var common = require("common");
-        var customerId = common.getQuery("customerid");
+        var ownerId = common.getQuery("ownerId");
         var siteId = common.getQuery("siteId");
         var configName = common.getQuery("config");
         var page = {
@@ -94,7 +94,7 @@ define(function (require, exports, module) {
                         shade: 0.8,
                         closeBtn: 1,
                         area: ['700px', '580px'],
-                        content: "/assets/js/jPicture/photo.html?customerId=" + customerId + "&isMult=false&v=1.2",
+                        content: "/assets/js/jPicture/photo.html?ownerId=" + ownerId + "&isMult=false&v=1.2",
                         //btn:["确定"],
                         end: function (index, layero) {
                             var jsonStr = $("#js_cms_picture_value").val();
@@ -191,7 +191,7 @@ define(function (require, exports, module) {
                     url: '/page/createPage',//提交到一般处理程序请求数据
                     data: {
                         widgetStr: JSON.stringify(widgetPage),
-                        customerId: customerId,
+                        ownerId: ownerId,
                         siteId: siteId,
                         publish: publish,
                         config: configName
@@ -227,7 +227,7 @@ define(function (require, exports, module) {
                         url: '/page/patch',//提交到一般处理程序请求数据
                         data: {
                             widgetStr: JSON.stringify(widgetPage),
-                            customerId: customerId,
+                            ownerId: ownerId,
                             publish: publish,
                             id: pageId
                         },

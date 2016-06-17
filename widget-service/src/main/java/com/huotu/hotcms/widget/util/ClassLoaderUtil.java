@@ -140,6 +140,39 @@ public final class ClassLoaderUtil {
         return clazz;
     }
 
+    /**
+     * 按照路径加载jar
+     * @param path
+     */
+    public static List<Class> loadJarWidgetClasss(String path) throws IOException, FormatException {
+
+        File file = new File(path);
+        ClassLoaderUtil.loadJarFile(file);
+        List<Class> classes = null;
+
+        Properties prop = new Properties();
+        InputStream in = ClassLoaderUtil.class.getResourceAsStream("/META-INF/widget.properties");
+
+        if(in==null){
+            throw new FormatException("this jar "+path+" format error");
+        }
+        prop.load(in);
+        //直接读取文件
+        String classNameStr = prop.getProperty("widgetClasses").trim();
+        try {
+            String[] classNameArr = classNameStr.split(",");
+            if (classNameArr!=null && classNameArr.length>0){
+                classes = new ArrayList<>();
+                for (String className : classNameArr){
+                    Class<?> clazz = ClassLoaderUtil.getSystem().loadClass(className);
+                    classes.add(clazz);
+                }
+            }
+        } catch (ClassNotFoundException e) {
+            throw new FormatException(e.toString());
+        }
+        return classes;
+    }
 
 /*    public static void main(String [] agrs) throws IOException {
         loadJarPath("E:/WorkSpace/MapSDKLibrary/libs/");

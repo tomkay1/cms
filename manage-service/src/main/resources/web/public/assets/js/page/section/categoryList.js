@@ -6,14 +6,14 @@ define(function (require, exports, module) {
         require.async(['jqxdata','jqxbuttons','jqxscrollbar','jqxdatatable','jqxtreegrid'], function() {
 
             var commonUtil = require("common");
-            var customerId=commonUtil.getQuery("customerid");
+            var ownerId=commonUtil.getQuery("ownerId");
             var layer=require("layer");
             var categoryModule={
                 initSite:function(){
                     $.ajax({
                         url: "/manage/category/getSiteList",
                         data: {
-                            customerId:customerId
+                            ownerId:ownerId
                         },
                         async:false,
                         type: "POST",
@@ -243,9 +243,9 @@ define(function (require, exports, module) {
                 },
                 openUpdateCategory:function(id,title,type){
                     var siteId=$("#jq-cms-siteList").val();
-                    var content='/manage/category/addCategory/?id='+id+"&siteId="+siteId+"&customerid="+customerId //iframe的url
+                    var content='/manage/category/addCategory/?id='+id+"&siteId="+siteId+"&ownerId="+ownerId //iframe的url
                     if(type==2){
-                        content='/manage/category/updateCategory/?id='+id+"&customerid="+customerId //iframe的url
+                        content='/manage/category/updateCategory/?id='+id+"&ownerId="+ownerId //iframe的url
                     }
                     layer.open({
                         type: 2,

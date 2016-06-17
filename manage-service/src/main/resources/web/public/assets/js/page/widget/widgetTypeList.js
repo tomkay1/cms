@@ -4,13 +4,13 @@
 define(function (require, exports, module) {
     var commonUtil = require("common");
     commonUtil.setDisabled("jq-cms-Save");
-    var customerId =commonUtil.getQuery("customerId");
+    var ownerId =commonUtil.getQuery("ownerId");
     var WidgetTypeGrid=$("#js-WidgetTypeList").Grid({
         method: 'POST',//提交方式GET|POST
         form: 'form1',//表单ID
         pageSize: 10,
         dataParam:{
-            customerId:customerId
+            ownerId:ownerId
         },
         height:'auto',
         showNumber: false,
@@ -56,11 +56,11 @@ define(function (require, exports, module) {
     $("#jq-cms-search").click(function(){
         var commonUtil = require("common");
         commonUtil.setDisabled("jq-cms-Save");
-        var customerId =commonUtil.getQuery("customerId");
+        var ownerId =commonUtil.getQuery("ownerId");
         var option={
             dataParam:{
                 name:$("#name").val(),
-                customerId:customerId
+                ownerId:ownerId
             }
         };
         WidgetTypeGrid.Refresh(option);
@@ -70,11 +70,11 @@ define(function (require, exports, module) {
     $("#jq-cms-searchAll").click(function(){
         var commonUtil = require("common");
         commonUtil.setDisabled("jq-cms-Save");
-        var customerId =commonUtil.getQuery("customerId");
+        var ownerId =commonUtil.getQuery("ownerId");
         var option={
             dataParam:{
                 name:"",
-                customerId:customerId
+                ownerId:ownerId
             }
         };
         WidgetTypeGrid.Refresh(option);
@@ -93,7 +93,7 @@ define(function (require, exports, module) {
             end:function(){
                 var option={
                     dataParam:{
-                        customerId:customerId
+                        ownerId:ownerId
                     }
                 };
                 WidgetTypeGrid.Refresh(option);
@@ -117,7 +117,7 @@ define(function (require, exports, module) {
                     end:function(){
                         var option={
                             dataParam:{
-                                customerId:customerId
+                                ownerId:ownerId
                             }
                         };
                         WidgetTypeGrid.Refresh(option);
@@ -137,7 +137,7 @@ define(function (require, exports, module) {
             $(dom).click(function(){//绑定删除事件
                 var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;
                 var commonUtil = require("common");
-                var customerId = commonUtil.getQuery("customerid");
+                var ownerId = commonUtil.getQuery("ownerId");
                 var layer=require("layer");
                 layer.confirm('您确定要删除该类型吗？', {
                     btn: ['确定','取消'] //按钮
@@ -146,7 +146,7 @@ define(function (require, exports, module) {
                         url: "/manage/widget/deleteWidgetType",
                         data: {
                             id:id,
-                            customerId:customerId
+                            ownerId:ownerId
                         },
                         type: "POST",
                         dataType: 'json',

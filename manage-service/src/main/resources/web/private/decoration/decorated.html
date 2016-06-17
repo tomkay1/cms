@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="leftpanel" style="background: #1c1d1f">
-    <a class="logo" style="left:0px;width:200px;margin-left:0px; " th:href="@{/main/?customerid={customerid}(customerid=${user.customerId})}" title="伙伴">
+    <a class="logo" style="left:0px;width:200px;margin-left:0px; " th:href="@{/main/?ownerId={ownerId}(ownerId=${user.ownerId})}" title="伙伴">
     </a>
     <!--账号信息END--->
     <!--菜单BEGIN--->
@@ -16,46 +16,46 @@
         <div class="leftpanelinner" id="menuContainer" style="overflow-y: auto;">
             <ul class="nav nav-pills nav-stacked nav-bracket" id="menuList">
                 <li class="nav-parent nav-active active js-cms-menus nav-app" id="menus01" style="cursor: pointer;margin-bottom: 15px;">
-                    <a class="aparent" th:href="@{/page/list?customerid={customerid}(customerid=${user.customerId},scope=${scope})}" target="content" >
+                    <a class="aparent" th:href="@{/page/list?ownerId={ownerId}(ownerId=${user.ownerId},scope=${scope})}" target="content" >
                         <i class="icon add"></i>
                         <!--<i class="fa fa-chevron-circle-right"></i>-->
                         <span>页面管理</span></a>
                     <!--<ul class="children">-->
                         <!--<li class="childMenus js-cms-submunes active" data-id="menus01"  style="cursor: pointer;">-->
                             <!--<div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>-->
-                            <!--<a th:href="@{/page/list?customerid={customerid}(customerid=${user.customerId})}" target="content" ><i class="fa fa-caret-right"></i>页面管理<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!-->
+                            <!--<a th:href="@{/page/list?ownerId={ownerId}(ownerId=${user.ownerId})}" target="content" ><i class="fa fa-caret-right"></i>页面管理<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!-->
                                 <!--</span>-->
                             <!--</a>-->
                         <!--</li>-->
                     <!--</ul>-->
                 </li>
                 <li class="nav-parent nav-active js-cms-menus nav-app" id="menus02" style="cursor: pointer;margin-bottom: 15px;">
-                    <a class="aparent" th:href="@{/page/defaults?customerid={customerid}(customerid=${user.customerId},scope=${scope})}" target="content">
+                    <a class="aparent" th:href="@{/page/defaults?ownerId={ownerId}(ownerId=${user.ownerId},scope=${scope})}" target="content">
                         <i class="icon add"></i>
                         <!--<i class="fa fa-chevron-circle-right"></i>-->
                         <span>默认页面</span></a>
                     <!--<ul class="children">-->
                         <!--<li class="childMenus js-cms-submunes" data-id="menus02" style="cursor: pointer;">-->
                             <!--<div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>-->
-                            <!--<a th:href="@{/basic/head?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>公共头部<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!-->
+                            <!--<a th:href="@{/basic/head?ownerId={ownerId}(ownerId=${user.ownerId})}" target="content"><i class="fa fa-caret-right"></i>公共头部<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!-->
                                 <!--</span>-->
                             <!--</a>-->
                         <!--</li>-->
                         <!--<li class="childMenus js-cms-submunes" data-id="menus01"  style="cursor: pointer;">-->
                             <!--<div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>-->
-                            <!--<a th:href="@{/category/categoryList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>店铺首页<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!-->
+                            <!--<a th:href="@{/category/categoryList?ownerId={ownerId}(ownerId=${user.ownerId})}" target="content"><i class="fa fa-caret-right"></i>店铺首页<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!-->
                                 <!--</span>-->
                             <!--</a>-->
                         <!--</li>-->
                         <!--<li class="childMenus js-cms-submunes" data-id="menus01"  style="cursor: pointer;">-->
                             <!--<div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>-->
-                            <!--<a th:href="@{/category/categoryList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>商品列表页<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!-->
+                            <!--<a th:href="@{/category/categoryList?ownerId={ownerId}(ownerId=${user.ownerId})}" target="content"><i class="fa fa-caret-right"></i>商品列表页<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!-->
                                 <!--</span>-->
                             <!--</a>-->
                         <!--</li>-->
                         <!--<li class="childMenus js-cms-submunes" data-id="menus01"  style="cursor: pointer;">-->
                             <!--<div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>-->
-                            <!--<a th:href="@{/category/categoryList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>搜索结果页<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!-->
+                            <!--<a th:href="@{/category/categoryList?ownerId={ownerId}(ownerId=${user.ownerId})}" target="content"><i class="fa fa-caret-right"></i>搜索结果页<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!-->
                                 <!--</span>-->
                             <!--</a>-->
                         <!--</li>-->
@@ -69,7 +69,7 @@
                     <!--<ul class="children">-->
                         <!--<li class="childMenus js-cms-submunes" data-id="menus03" style="cursor: pointer;">-->
                             <!--<div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>-->
-                            <!--<a th:href="@{/site/siteList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>备份列表<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!-->
+                            <!--<a th:href="@{/site/siteList?ownerId={ownerId}(ownerId=${user.ownerId})}" target="content"><i class="fa fa-caret-right"></i>备份列表<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!-->
                                 <!--</span>-->
                             <!--</a>-->
                         <!--</li>-->
@@ -84,13 +84,13 @@
                     <ul class="children">
                         <li class="childMenus js-cms-submunes" data-id="menus03"  style="cursor: pointer;">
                             <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
-                            <a th:href="@{/widget/widgetTypeList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>控件类型<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
+                            <a th:href="@{/widget/widgetTypeList?ownerId={ownerId}(ownerId=${user.ownerId})}" target="content"><i class="fa fa-caret-right"></i>控件类型<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
                                 </span>
                             </a>
                         </li>
                         <li class="childMenus js-cms-submunes" data-id="menus03" style="cursor: pointer;">
                             <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
-                            <a th:href="@{/widget/widgetMainsList?customerid={customerid}(customerid=${user.customerId})}" target="content"><i class="fa fa-caret-right"></i>控件主体<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
+                            <a th:href="@{/widget/widgetMainsList?ownerId={ownerId}(ownerId=${user.ownerId})}" target="content"><i class="fa fa-caret-right"></i>控件主体<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
                                 </span>
                             </a>
                         </li>
@@ -113,7 +113,7 @@
                         </a>
                     </li>
                     <li>
-                        <a class="huoban active" style="right:249px;" th:href="@{/main/decorated?customerid={customerid}(customerid=${user.customerId},scope=${scope})}">
+                        <a class="huoban active" style="right:249px;" th:href="@{/main/decorated?ownerId={ownerId}(ownerId=${user.ownerId},scope=${scope})}">
                             <span><img src="/assets/img/iconfont-zhuangxiu.png" style="height: 20px; width:22px;vertical-align: middle;"></span>
                             <span>店铺装修</span>
                         </a>
@@ -135,7 +135,7 @@
         </div>
     </div>
     <div class="con_right" id="con_right">
-        <iframe id="content" name="content" width="1152" height="800" class="hide" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" src="/model/modelList" th:src="@{/page/list?customerid={customerid}(customerid=${user.customerId},scope=${scope})}" style="display: inline;">
+        <iframe id="content" name="content" width="1152" height="800" class="hide" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" src="/model/modelList" th:src="@{/page/list?ownerId={ownerId}(ownerId=${user.ownerId},scope=${scope})}" style="display: inline;">
         </iframe>
     </div>
 </div>

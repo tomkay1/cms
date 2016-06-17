@@ -12,7 +12,7 @@ define(function (require, exports, module) {
     var isDebug=commonUtil.isDebug();
     var rootUrl=commonUtil.getWebRoot($("#siteType").val(),isDebug);
     var scope=commonUtil.getQuery("scope");
-    var customerId = commonUtil.getQuery("customerId");
+    var ownerId = commonUtil.getQuery("ownerId");
     var pageGrid = $("#tab1").Grid({
         method: 'POST',//提交方式GET|POST
         form: 'form1',//表单ID
@@ -43,12 +43,12 @@ define(function (require, exports, module) {
                 width: '30%', field: 'title', title: '操作', align: 'center',
                 formatter: function (value, rowData) {
                     if(rowData.home.toString()=='true'){
-                        return "<a href='/manage/customPages/" + rowData.id + "?customerid=" + rowData.customerId + "&siteId=" + $("#siteType").val() + "' target='content'' style='color:#07d;margin-right:5px;margin-left:5px;' title='编辑'>编辑</a>|" +
+                        return "<a href='/manage/customPages/" + rowData.id + "?ownerId=" + rowData.ownerId + "&siteId=" + $("#siteType").val() + "' target='content'' style='color:#07d;margin-right:5px;margin-left:5px;' title='编辑'>编辑</a>|" +
                             "<a href='javascript:void(0)' class='js-pages-publish' data-id='"+rowData.id+"'  data-publish='false' style='color:#07d;margin-right:5px;margin-left:5px;' title='丢草稿箱'>丢草稿箱</a>|" +
                             "<a href='javascript:void(0)' style='color:#ccc !important;margin-right:5px;margin-left:5px;' title='店铺主页'>店铺主页</a>|" +
                             "<a href='javascript:void(0)' class='js-link-open' id='"+rowData.id+"'  style='color:#07d !important;margin-right:5px;margin-left:5px;' title='链接'>链接</a>";
                     }else{
-                        return "<a href='/customPages/" + rowData.id + "?customerid=" + rowData.customerId + "&siteId=" + $("#siteType").val() + "' target='content'' style='color:#07d;margin-right:5px;margin-left:5px;' title='编辑'>编辑</a>|" +
+                        return "<a href='/customPages/" + rowData.id + "?ownerId=" + rowData.ownerId + "&siteId=" + $("#siteType").val() + "' target='content'' style='color:#07d;margin-right:5px;margin-left:5px;' title='编辑'>编辑</a>|" +
                             "<a href='javascript:void(0)' class='js-pages-publish' data-id='"+rowData.id+"'  data-publish='false' style='color:#07d;margin-right:5px;margin-left:5px;' title='丢草稿箱'>丢草稿箱</a>|" +
                             "<a href='javascript:void(0)' class='js-pages-home' data-id='"+rowData.id+"' style='color:#07d !important;margin-right:5px;margin-left:5px;' title='设为主页'>设为主页</a>|" +
                             "<a href='javascript:void(0)' class='js-link-open' id='"+rowData.id+"' style='color:#07d !important;margin-right:5px;margin-left:5px;' title='链接'>链接</a>";
@@ -91,7 +91,7 @@ define(function (require, exports, module) {
             {
                 width: '30%', field: 'title', title: '操作', align: 'center',
                 formatter: function (value, rowData) {
-                    return "<a href='/manage/customPages/" + rowData.id + "?customerid=" + rowData.customerId + "&siteId=" + $("#siteType").val() + "' target='content'' style='color:#07d;margin-right:5px;margin-left:5px;' title='编辑'>编辑</a>|" +
+                    return "<a href='/manage/customPages/" + rowData.id + "?ownerId=" + rowData.ownerId + "&siteId=" + $("#siteType").val() + "' target='content'' style='color:#07d;margin-right:5px;margin-left:5px;' title='编辑'>编辑</a>|" +
                         "<a href='javascript:void(0)' class='js-pages-publish'  data-id='"+rowData.id+"' data-publish='true' style='color:#07d;margin-right:5px;margin-left:5px;' title='发布'>发布</a>|" +
                         "<a href='javascript:void(0)' class='js-pages-delete' data-id='"+rowData.id+"'  style='color:#07d !important;margin-right:5px;margin-left:5px;' title='删除'>删除</a>"+
                         "<a href='javascript:void(0)' class='js-link-open' id='"+rowData.id+"' style='color:#07d !important;margin-right:5px;margin-left:5px;' title='链接'>链接</a>";
@@ -108,10 +108,10 @@ define(function (require, exports, module) {
     var obj = $(".js-cms-defaults");
     $.each(obj, function (item, dom) {
         $(dom).click(function () {
-            var customerId = $(dom).data("customerid");
+            var ownerId = $(dom).data("ownerId");
             var urlFormatter = $(dom).data("url")+"&scope="+scope;
             var siteId = $("#siteType").val();
-            var url = commonUtil.formatString(urlFormatter, customerId, siteId);
+            var url = commonUtil.formatString(urlFormatter, ownerId, siteId);
             window.location.href = url;
         })
     })

@@ -48,10 +48,10 @@
             return arguments[1];
     };
     var isMult=getQuery("isMult");
-    var customerId=getQuery("customerId");
+    var ownerId=getQuery("ownerId");
     $("#photo_box").jPicture({
         isMult:isMult=='true',//是否可以选择多张图片
-        customerId:customerId, //商户ID
+        ownerId:ownerId, //商户ID
     });
 
     var index = parent.layer.getFrameIndex(window.name); //获取窗口索引

@@ -30,6 +30,16 @@ import java.util.List;
 public interface WidgetFactoryService {
 
     /**
+     * 下载widget jar文件
+     *
+     * @param groupId  分组id,参考maven
+     * @param version  版本
+     * @param widgetId 控件id
+     * @return realPath jar文件的安装路径
+     */
+    String downloadJar(String groupId, String widgetId, String version) throws IOException, ParserConfigurationException, SAXException;
+
+    /**
      * @return 已安装控件列表
      */
     @Transactional(readOnly = true)
@@ -46,6 +56,7 @@ public interface WidgetFactoryService {
      * 安装新的控件
      * <p>
      * 从私有Maven仓库 http://repo.51flashmall.com:8081/nexus/content/groups/public 自动获取</p>
+     *
      * @param groupId  分组id,参考maven
      * @param version  版本
      * @param widgetId 控件id
@@ -75,6 +86,27 @@ public interface WidgetFactoryService {
      */
     void updateWidget(Widget widget, InputStream jarFile) throws IOException;
 
+
+    /**
+     * 更新数据库已经安装后的控件
+     *
+     * @param widget 控件
+     */
+    void updataWidget(Widget widget);
+
+    /**
+     * 更新已安装的控件
+     * <p>
+     * 需要检查每一个使用该控件的组件属性是否符合要求。<p/>
+     * <p>
+     * 如果使用了缓存系统,包括组件缓存和页面缓存,更新以后都需要清理缓存。</p>
+     *
+     * @param groupId  分组id,参考maven
+     * @param version  版本
+     * @param widgetId 控件id
+     * @param type     控件类型
+     */
+    void updateWidget(String groupId, String widgetId, String version, String type) throws IOException, FormatException;
 
     /**
      * 生成预览HTML代码

@@ -5,13 +5,13 @@ define(function (require, exports, module) {
     var commonUtil = require("common");
     commonUtil.setDisabled("jq-cms-Save");
     var layer=require("layer");
-    var customerId =commonUtil.getQuery("customerId");
+    var ownerId =commonUtil.getQuery("ownerId");
     var SiteGrid=$("#js-SiteList").Grid({
         method: 'POST',//提交方式GET|POST
         form: 'form1',//表单ID
         pageSize: 10,
         dataParam:{
-            customerId:customerId
+            ownerId:ownerId
         },
         height:'auto',
         showNumber: false,
@@ -49,11 +49,11 @@ define(function (require, exports, module) {
     $("#jq-cms-search").click(function(){
         var commonUtil = require("common");
         commonUtil.setDisabled("jq-cms-Save");
-        var customerId =commonUtil.getQuery("customerId");
+        var ownerId =commonUtil.getQuery("ownerId");
         var option={
             dataParam:{
                 name:$("#siteName").val(),
-                customerId:customerId
+                ownerId:ownerId
             }
         };
         SiteGrid.Refresh(option);
@@ -63,11 +63,11 @@ define(function (require, exports, module) {
     $("#jq-cms-searchAll").click(function(){
         var commonUtil = require("common");
         commonUtil.setDisabled("jq-cms-Save");
-        var customerId =commonUtil.getQuery("customerId");
+        var ownerId =commonUtil.getQuery("ownerId");
         var option={
             dataParam:{
                 name:"",
-                customerId:customerId
+                ownerId:ownerId
             }
         };
         SiteGrid.Refresh(option);
@@ -80,8 +80,8 @@ define(function (require, exports, module) {
             $(dom).click(function(){//绑定修改事件
                 var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;
                 var commonUtil = require("common");
-                var customerId = commonUtil.getQuery("customerid");
-                window.location.href="http://"+window.location.host+"/"+"supper/updateSite?id="+id+"&customerId="+customerId;
+                var ownerId = commonUtil.getQuery("ownerId");
+                window.location.href="http://"+window.location.host+"/"+"supper/updateSite?id="+id+"&ownerId="+ownerId;
             })
         })
     }
@@ -94,7 +94,7 @@ define(function (require, exports, module) {
             $(dom).click(function(){//绑定删除事件
                 var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;
                 var commonUtil = require("common");
-                var customerId = commonUtil.getQuery("customerid");
+                var ownerId = commonUtil.getQuery("ownerId");
                 layer.confirm('您确定要删除该站点吗？', {
                     btn: ['确定','取消'] //按钮
                 }, function() {
@@ -102,7 +102,7 @@ define(function (require, exports, module) {
                         url: "/manage/supper/deleteSite",
                         data: {
                             id:id,
-                            customerId:customerId
+                            ownerId:ownerId
                         },
                         type: "POST",
                         dataType: 'json',
@@ -137,14 +137,14 @@ define(function (require, exports, module) {
             $(dom).click(function(){
                 var id=$(this).attr("data-id");//Html5可以使用$(this).data('id')方式来写;
                 var commonUtil = require("common");
-                var customerId = commonUtil.getQuery("customerid");
+                var ownerId = commonUtil.getQuery("ownerId");
                 layer.open({
                     type: 2,
                     title: "修改配置信息",
                     shadeClose: true,
                     shade: 0.8,
                     area: ['500px', '300px'],
-                    content: "/manage/supper/siteConfig?siteId="+id+"&customerId="+customerId,
+                    content: "/manage/supper/siteConfig?siteId="+id+"&ownerId="+ownerId,
                     end:function(){
                         //SiteGrid.Refresh();
                     }

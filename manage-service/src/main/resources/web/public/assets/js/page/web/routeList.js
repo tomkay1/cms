@@ -4,14 +4,14 @@
 define(function (require, exports, module) {
     var commonUtil = require("common");
     commonUtil.setDisabled("jq-cms-Save");
-    var customerId =commonUtil.getQuery("customerId");
-    commonUtil.getSiteList(customerId,"jq-cms-siteList");
+    var ownerId =commonUtil.getQuery("ownerId");
+    commonUtil.getSiteList(ownerId,"jq-cms-siteList");
     var SiteGrid=$("#js-RouteList").Grid({
         method: 'POST',//提交方式GET|POST
         form: 'form1',//表单ID
         pageSize: 10,
         dataParam:{
-            customerId:customerId,
+            ownerId:ownerId,
             siteId:$("#jq-cms-siteList").val()
         },
         height:'auto',
@@ -48,7 +48,7 @@ define(function (require, exports, module) {
     $("#jq-cms-siteList").on("change",function(){
         var option={
             dataParam:{
-                customerId:customerId,
+                ownerId:ownerId,
                 siteId:$("#jq-cms-siteList").val()
             }
         };
@@ -57,7 +57,7 @@ define(function (require, exports, module) {
     $("#jq-cms-search").click(function(){
         var option={
             dataParam:{
-                customerId:customerId,
+                ownerId:ownerId,
                 description:$("#description").val(),
                 siteId:$("#jq-cms-siteList").val()
             }
@@ -68,7 +68,7 @@ define(function (require, exports, module) {
     $("#jq-cms-searchAll").click(function(){
         var option={
             dataParam:{
-                customerId:customerId,
+                ownerId:ownerId,
                 description:"",
                 siteId:$("#jq-cms-siteList").val()
             }
@@ -79,7 +79,7 @@ define(function (require, exports, module) {
     function Refresh(){
         var option={
             dataParam:{
-                customerId:customerId,
+                ownerId:ownerId,
                 description:$("#description").val(),
                 siteId:$("#jq-cms-siteList").val()
             }

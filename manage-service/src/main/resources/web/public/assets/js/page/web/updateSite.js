@@ -4,7 +4,7 @@
 define(function (require, exports, module) {
     $("#regionId").attr("disabled", "disabled");
     var commonUtil = require("common");
-    var customerId = commonUtil.getQuery("customerId");
+    var ownerId = commonUtil.getQuery("ownerId");
     $("#updateSiteForm").validate({
         rules: {
             name: {
@@ -48,7 +48,7 @@ define(function (require, exports, module) {
                 url: "/manage/site/saveSite",
                 data: {
                     siteId: $("#hidSiteID").val(),
-                    customerId: customerId,
+                    ownerId: ownerId,
                     name: $("#name").val(),
                     title: $("#title").val(),
                     keywords: $("#keywords").val(),
@@ -103,7 +103,7 @@ define(function (require, exports, module) {
                 method: "post",
                 boxWidth:508,
                 data: {
-                    customerId: customerId
+                    ownerId: ownerId
                 },
                 callback: function (json) {
                     if (json != null) {

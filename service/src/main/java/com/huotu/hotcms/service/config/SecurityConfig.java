@@ -7,7 +7,7 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.hotcms.web.config;
+package com.huotu.hotcms.service.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -71,26 +71,33 @@ public class SecurityConfig {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http
-                    .authorizeRequests()
-                    .antMatchers(
-//                            "/config"
-//                            , "/register"
-                            "/login"
-                            // 这里加入安全系统可见但允许所有操作的uri
-//                            "/_resources/**",
-//                            "/getGoodDetails/**"
-                    ).permitAll()
-                    .anyRequest().authenticated()
-                    .and()
-                    .csrf().disable()
-                    .formLogin()
-//                    .failureHandler(new K3AuthenticationFailureHandler())
-                    .loginProcessingUrl("/auth")
-                    .loginPage("/login")
+//            super.configure(http);
+            http.authorizeRequests()
+                    .anyRequest()
                     .permitAll()
-                    .and()
-                    .httpBasic();
+                    .and().csrf().disable()
+            ;
+
+//            http
+//                    .authorizeRequests()
+//                    .antMatchers(
+////                            "/config"
+////                            , "/register"
+//                            "/login"
+//                            // 这里加入安全系统可见但允许所有操作的uri
+////                            "/_resources/**",
+////                            "/getGoodDetails/**"
+//                    ).permitAll()
+//                    .anyRequest().authenticated()
+//                    .and()
+//                    .csrf().disable()
+//                    .formLogin()
+////                    .failureHandler(new K3AuthenticationFailureHandler())
+//                    .loginProcessingUrl("/auth")
+//                    .loginPage("/login")
+//                    .permitAll()
+//                    .and()
+//                    .httpBasic();
         }
     }
 }

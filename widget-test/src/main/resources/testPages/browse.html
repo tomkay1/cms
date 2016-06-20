@@ -26,6 +26,9 @@
 <div id="browse">
 
     <div th:replace="'TEMPLATE/'+${widgetId}+'/'+${styleId} :: div "></div>
+    <div w:replaceEditor="widgetId"></div>
+    <div w:replaceBrowse="widgetId:styleId:${..}"></div>
+    <div w:replacePreview="widgetId:styleId:${..}"></div>
 </div>
 
 

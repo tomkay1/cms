@@ -21,9 +21,12 @@ import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.thymeleaf.dialect.IDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
+
+import java.util.Set;
 
 /**
  * @author CJ
@@ -59,6 +62,8 @@ public class WidgetTestConfig extends WebMvcConfigurerAdapter {
         private ApplicationContext applicationContext;
         @Autowired
         private WidgetTemplateResolver widgetTemplateResolver;
+        @Autowired
+        private Set<IDialect> dialectSet;
 
         @Bean
         public ThymeleafViewResolver normalViewResolver() {
@@ -73,6 +78,7 @@ public class WidgetTestConfig extends WebMvcConfigurerAdapter {
             SpringTemplateEngine engine = new SpringTemplateEngine();
             engine.addTemplateResolver(templateResolver);
             engine.addTemplateResolver(widgetTemplateResolver);
+            engine.setAdditionalDialects(dialectSet);
 
             ThymeleafViewResolver resolver = new ThymeleafViewResolver();
             resolver.setCharacterEncoding("UTF-8");

@@ -12,7 +12,8 @@ package com.huotu.hotcms.web.controller;
 import com.huotu.hotcms.web.WebTestBase;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 /**
  * @author CJ
@@ -20,6 +21,12 @@ import static org.junit.Assert.*;
 public class IndexControllerTest extends WebTestBase {
     @Test
     public void index() throws Exception {
+
+        mockMvc.perform(get("/"))
+                .andDo(print());
+
+        mockMvc.perform(get("/manage/"))
+                .andDo(print());
 
     }
 

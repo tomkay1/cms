@@ -28,4 +28,11 @@ public class Controller {
         return "editor";
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/browse/{styleId}")
+    public String browse(@PathVariable("styleId") String styleId, Model model) {
+        model.addAttribute("styleId", styleId);
+        return "browse";
+    }
+
+
 }

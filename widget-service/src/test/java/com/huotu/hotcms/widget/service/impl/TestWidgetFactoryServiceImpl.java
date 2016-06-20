@@ -50,9 +50,17 @@ public class TestWidgetFactoryServiceImpl {
         // 校验列表,应当包含picBanner控件
         assertWidgetListContainWidgetName("picCarousel", randomType);
 
+        //检验重新加载
         widgetFactoryService.reloadWidgets();
 
         assertWidgetListContainWidgetName("picCarousel", randomType);
+
+        //更新控件
+        widgetFactoryService.updateWidget("com.huotu.hotcms.widget.picCarousel", "picCarousel", "1.0-SNAPSHOT", randomType);
+
+        assertWidgetListContainWidgetName("picCarousel", randomType);
+
+
     }
 
     private void assertWidgetListContainWidgetName(String widgetId, String type) throws IOException, FormatException {

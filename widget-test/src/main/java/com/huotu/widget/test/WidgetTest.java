@@ -21,6 +21,7 @@ import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.thymeleaf.context.WebEngineContext;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -72,7 +73,22 @@ public abstract class WidgetTest extends SpringWebTest {
                     .isGreaterThanOrEqualTo(1);
 
             for (WidgetStyle style : widget.styles()) {
-
+                stylePropertiesFor(style);
+                browseWork(widget, style, new Function<ComponentProperties, WebElement>() {
+                    @Override
+                    public WebElement apply(ComponentProperties componentProperties){
+                        if (printPageSource())
+                            try {
+                                mockMvc.perform(get("/browse/" + style.id()))
+                                        .andDo(print());
+                            } catch (Exception e) {
+                                throw new IllegalStateException("no print html");
+                            }
+                        driver.get("http://localhost/browse/" + style.id() + "BrowseTemplate");
+                        WebElement webElement = driver.findElement(By.id("browse")).findElement(By.tagName("div"));
+                        return webElement;
+                    }
+                });
             }
         }
     }
@@ -109,9 +125,11 @@ public abstract class WidgetTest extends SpringWebTest {
             , Supplier<Map<String, Object>> currentWidgetProperties);
 
     /**
-     * @param widget
-     * @param style
-     * @param uiChanger
+     * 浏览视图的测试
+     * 通过设置属性改变预览视图
+     * @param widget    控件
+     * @param style     样式
+     * @param uiChanger 更改后的预览视图
      */
     protected abstract void browseWork(Widget widget, WidgetStyle style
             , Function<ComponentProperties, WebElement> uiChanger);
@@ -129,11 +147,6 @@ public abstract class WidgetTest extends SpringWebTest {
     @SuppressWarnings("WeakerAccess")
     protected void propertiesFor(Widget widget) {
 
-//        assertThat(widget.name())
-//                .isNotEmpty();
-
-//        assertThat(widget.author())
-//                .isNotEmpty();
 
         assertThat(widget.description())
                 .isNotEmpty();
@@ -144,8 +157,6 @@ public abstract class WidgetTest extends SpringWebTest {
         assertThat(widget.widgetId())
                 .isNotEmpty();
 
-//        assertThat(widget.version())
-//                .isNotEmpty();
 
         if (widget.publicResources() != null) {
             widget.publicResources().forEach((name, resource) -> {
@@ -179,6 +190,39 @@ public abstract class WidgetTest extends SpringWebTest {
             throw new RuntimeException(ex);
         }
 
+        // 现在检查编辑器
+    }
+
+
+    /**
+     * 样式基本属性测试
+     * @param widgetStyle
+     */
+    protected void stylePropertiesFor(WidgetStyle widgetStyle) {
+        assertThat(widgetStyle.description())
+                .isNotEmpty();
+
+        assertThat(widgetStyle.id())
+                .isNotEmpty();
+
+        assertThat(widgetStyle.name())
+                .isNotEmpty();
+        assertThat(widgetStyle.thumbnail())
+                .as("缩略图不可为空")
+                .isNotNull();
+        assertThat(widgetStyle.thumbnail().exists())
+                .as("公开资源必须存在")
+                .isTrue();
+
+        //图片资源必须是 106x82 png
+        try {
+            BufferedImage thumbnail = ImageIO.read(widgetStyle.thumbnail().getInputStream());
+//            assertThat((float) thumbnail.getWidth() / (float) thumbnail.getHeight())
+//                    .as("缩略图必须为106*82的PNG图片")
+//                    .isEqualTo(106f / 82f);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
 
         // 现在检查编辑器
     }

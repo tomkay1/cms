@@ -10,6 +10,7 @@
 package com.huotu.widget.test.bean;
 
 import com.huotu.hotcms.widget.Widget;
+import com.huotu.hotcms.widget.WidgetStyle;
 import com.huotu.widget.test.WidgetTestConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -37,6 +38,7 @@ public class WidgetTemplateResolver extends AbstractTemplateResolver {
      * @see Widget#editorTemplate()
      */
     public static final String EDITOR = "EDITOR/";
+    public static final String TEMPLATE = "TEMPLATE/";
     private final WidgetHolder holder;
 
     @Autowired
@@ -53,6 +55,19 @@ public class WidgetTemplateResolver extends AbstractTemplateResolver {
             for (Widget widget : holder.getWidgetSet()) {
                 if (WidgetTestConfig.WidgetIdentity(widget).equals(subName))
                     return new SpringResourceTemplateResource(widget.editorTemplate(), "UTF-8");
+            }
+            throw new IllegalStateException("can not find such widget id:" + subName);
+        }
+        if (template.startsWith(TEMPLATE)){
+            // 寻找控件
+            String subName = template.substring(TEMPLATE.length());
+            String sname[] = subName.split("/");
+            for (Widget widget : holder.getWidgetSet()) {
+                if (WidgetTestConfig.WidgetIdentity(widget).equals(sname[0]))
+                    for (WidgetStyle style : widget.styles())
+                    if (style.id().equals(sname[1])) {
+                        return new SpringResourceTemplateResource(style.browseTemplate(), "UTF-8");
+                    }
             }
             throw new IllegalStateException("can not find such widget id:" + subName);
         }

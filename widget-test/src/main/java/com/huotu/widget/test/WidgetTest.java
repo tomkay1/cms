@@ -26,6 +26,7 @@ import org.thymeleaf.context.WebEngineContext;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -79,12 +80,12 @@ public abstract class WidgetTest extends SpringWebTest {
                     public WebElement apply(ComponentProperties componentProperties){
                         if (printPageSource())
                             try {
-                                mockMvc.perform(get("/browse/" + style.id()))
+                                mockMvc.perform(get("/browse/" + style.id() +"/"+WidgetTestConfig.WidgetIdentity(widget)))
                                         .andDo(print());
                             } catch (Exception e) {
                                 throw new IllegalStateException("no print html");
                             }
-                        driver.get("http://localhost/browse/" + style.id() + "BrowseTemplate");
+                        driver.get("http://localhost/browse/" + style.id() +"/"+WidgetTestConfig.WidgetIdentity(widget));
                         WebElement webElement = driver.findElement(By.id("browse")).findElement(By.tagName("div"));
                         return webElement;
                     }

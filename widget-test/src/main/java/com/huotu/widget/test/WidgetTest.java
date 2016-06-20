@@ -13,6 +13,7 @@ import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetStyle;
 import com.huotu.widget.test.bean.WidgetHolder;
+import com.huotu.widget.test.bean.WidgetViewController;
 import me.jiangcai.lib.test.SpringWebTest;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -21,12 +22,10 @@ import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.thymeleaf.context.WebEngineContext;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -41,6 +40,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @ContextConfiguration(classes = WidgetTestConfig.class)
 @WebAppConfiguration
 public abstract class WidgetTest extends SpringWebTest {
+
+    @Autowired
+    private WidgetViewController widgetViewController;
 
     @Autowired
     private WidgetHolder holder;
@@ -75,20 +77,21 @@ public abstract class WidgetTest extends SpringWebTest {
 
             for (WidgetStyle style : widget.styles()) {
                 stylePropertiesFor(style);
-                browseWork(widget, style, new Function<ComponentProperties, WebElement>() {
-                    @Override
-                    public WebElement apply(ComponentProperties componentProperties){
-                        if (printPageSource())
-                            try {
-                                mockMvc.perform(get("/browse/" + style.id() +"/"+WidgetTestConfig.WidgetIdentity(widget)))
-                                        .andDo(print());
-                            } catch (Exception e) {
-                                throw new IllegalStateException("no print html");
-                            }
-                        driver.get("http://localhost/browse/" + style.id() +"/"+WidgetTestConfig.WidgetIdentity(widget));
-                        WebElement webElement = driver.findElement(By.id("browse")).findElement(By.tagName("div"));
-                        return webElement;
-                    }
+                browseWork(widget, style, componentProperties -> {
+
+                    widgetViewController.setCurrentProperties(componentProperties);
+
+                    String uri = "/browse/" + WidgetTestConfig.WidgetIdentity(widget) + "/" + style.id();
+                    if (printPageSource())
+                        try {
+                            mockMvc.perform(get(uri))
+                                    .andDo(print());
+                        } catch (Exception e) {
+                            throw new IllegalStateException("no print html");
+                        }
+                    driver.get("http://localhost" + uri);
+                    WebElement webElement = driver.findElement(By.id("browse")).findElement(By.tagName("div"));
+                    return webElement;
                 });
             }
         }

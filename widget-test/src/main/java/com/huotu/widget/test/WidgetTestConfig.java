@@ -55,6 +55,7 @@ public class WidgetTestConfig extends WebMvcConfigurerAdapter {
 //    }
 
     @DependsOn("widgetHolder")
+    @ComponentScan("com.huotu.widget.test.thymeleaf")
     static class ViewResolver {
         @Autowired
         private WidgetHolder widgetHolder;

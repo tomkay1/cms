@@ -3,20 +3,20 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
-    <link  href="/assets/css/admin.content.css"  type="text/css" rel="stylesheet"/>
-    <link  href="/assets/css/admin.global.css"  type="text/css" rel="stylesheet"/>
-    <link  href="/assets/libs/JGrid/theme/Jackson_skin_gray.css"  type="text/css" rel="stylesheet"/>
-    <link href="/assets/libs/layer/skin/layer.css" rel="stylesheet"/>
-    <link  href="/assets/css/smart.css"  type="text/css" rel="stylesheet"/>
-    <link  href="/assets/css/decorated.css"  type="text/css" rel="stylesheet"/>
-    <link href="/assets/libs/select/jackson.select.css" rel="stylesheet" type="text/css" />
-    <script src="/assets/seajs/sea.js"></script>
-    <script src="/assets/seajs/config.js"></script>
+    <link  href="/assets/css/admin.content.css" ewp:href="'/assets/css/admin.content.css'"   type="text/css" rel="stylesheet"/>
+    <link  href="/assets/css/admin.global.css" ewp:href="'/assets/css/admin.global.css'"  type="text/css" rel="stylesheet"/>
+    <link  href="/assets/libs/JGrid/theme/Jackson_skin_gray.css" ewp:href="'/assets/libs/JGrid/theme/Jackson_skin_gray.css'"  type="text/css" rel="stylesheet"/>
+    <link href="/assets/libs/layer/skin/layer.css" ewp:href="'/assets/libs/layer/skin/layer.css'" rel="stylesheet"/>
+    <link  href="/assets/css/smart.css" ewp:href="'/assets/css/smart.css'"  type="text/css" rel="stylesheet"/>
+    <link  href="/assets/css/decorated.css" ewp:href="'/assets/css/decorated.css'"  type="text/css" rel="stylesheet"/>
+    <link href="/assets/libs/select/jackson.select.css" ewp:href="'/assets/libs/select/jackson.select.css'" rel="stylesheet" type="text/css" />
+    <script src="/assets/seajs/sea.js" ewp:src="'/assets/seajs/sea.js'"></script>
+    <script src="/assets/seajs/config.js" ewp:src="'/assets/seajs/config.js'"></script>
 </head>
 <body>
 <div class="header-app">
     <p class="app-title">
-        <a th:href="@{/page/list?ownerId={ownerId}(ownerId=${user.ownerId})}">首页</a><span>&gt;</span><span>默认页面</span>
+        <a th:href="@{/manage/page/list?ownerId={ownerId}(ownerId=${user.ownerId})}">首页</a><span>&gt;</span><span>默认页面</span>
     </p>
 </div>
 <div id="usual1" class="usual" style="margin:10px; padding-top:5px; background: #ffffff;">
@@ -55,19 +55,19 @@
                                 <tr bgcolor="#F5F8FA" class="jackson-data-rows-datarow">
                                     <td align="left">&nbsp;&nbsp;搜索结果页</td>
                                     <td align="center">&nbsp;&nbsp;
-                                        <a th:attr="data-ownerId=${user.ownerId}" data-url="/defaultsPages/search?ownerId={0}&siteId={1}&config=search" href="javascript:void(0)" target="content" class="js-cms-defaults" style="color:#07d;margin-right:5px;margin-left:5px;" title="编辑">编辑</a>
+                                        <a th:attr="data-ownerId=${user.ownerId}" data-url="/manage/defaultsPages/search?ownerId={0}&siteId={1}&config=search" href="javascript:void(0)" target="content" class="js-cms-defaults" style="color:#07d;margin-right:5px;margin-left:5px;" title="编辑">编辑</a>
                                     </td>
                                 </tr>
                                 <tr bgcolor="" class="jackson-data-rows-datarow">
                                     <td align="left">&nbsp;&nbsp;公共头部</td>
                                     <td align="center">&nbsp;&nbsp;
-                                        <a th:attr="data-ownerId=${user.ownerId}" data-url="/defaultsPages/head?ownerId={0}&siteId={1}&config=head" href="javascript:void(0)" target="content" class="js-cms-defaults" style="color:#07d;margin-right:5px;margin-left:5px;" title="编辑">编辑</a>
+                                        <a th:attr="data-ownerId=${user.ownerId}" data-url="/manage/defaultsPages/head?ownerId={0}&siteId={1}&config=head" href="javascript:void(0)" target="content" class="js-cms-defaults" style="color:#07d;margin-right:5px;margin-left:5px;" title="编辑">编辑</a>
                                     </td>
                                 </tr>
                                 <tr bgcolor="#F5F8FA" class="jackson-data-rows-datarow">
                                     <td align="left">&nbsp;&nbsp;公共底部</td>
                                     <td align="center">&nbsp;&nbsp;
-                                        <a th:attr="data-ownerId=${user.ownerId}" data-url="/defaultsPages/bottom?ownerId={0}&siteId={1}&config=bottom" href="javascript:void(0)" target="content" class="js-cms-defaults" style="color:#07d;margin-right:5px;margin-left:5px;" title="编辑">编辑</a>
+                                        <a th:attr="data-ownerId=${user.ownerId}" data-url="/manage/defaultsPages/bottom?ownerId={0}&siteId={1}&config=bottom" href="javascript:void(0)" target="content" class="js-cms-defaults" style="color:#07d;margin-right:5px;margin-left:5px;" title="编辑">编辑</a>
                                     </td>
                                 </tr>
                                 </tbody>

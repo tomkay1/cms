@@ -7,29 +7,22 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.widget.test.thymeleaf.process;
+package com.huotu.widget.test.service.thymeleaf;
 
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetService;
-import com.huotu.widget.test.bean.TestWidgetService;
-import com.huotu.widget.test.thymeleaf.WidgetProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.context.ITemplateContext;
-import org.thymeleaf.context.WebEngineContext;
 import org.thymeleaf.engine.AttributeDefinitions;
 import org.thymeleaf.engine.AttributeName;
 import org.thymeleaf.engine.IAttributeDefinitionsAware;
 import org.thymeleaf.model.IProcessableElementTag;
 import org.thymeleaf.processor.element.IElementTagProcessor;
 import org.thymeleaf.processor.element.IElementTagStructureHandler;
-import org.thymeleaf.spring4.SpringTemplateEngine;
-import org.thymeleaf.standard.expression.ExpressionParsingUtilAccess;
 import org.thymeleaf.standard.processor.AbstractStandardExpressionAttributeTagProcessor;
 import org.thymeleaf.templatemode.TemplateMode;
-
-import java.util.Map;
 
 /**
  * @author CJ
@@ -38,16 +31,15 @@ import java.util.Map;
 public class SrcProcessor extends AbstractStandardExpressionAttributeTagProcessor implements IElementTagProcessor
         , IAttributeDefinitionsAware,WidgetProcessor {
 
-    private AttributeDefinitions attributeDefinitions;
     @Autowired
     ApplicationContext applicationContext;
-
     @Autowired
     WidgetService widgetService;
+    private AttributeDefinitions attributeDefinitions;
 
 
     public SrcProcessor() {
-        super(TemplateMode.HTML, "w", "src", 10000, true);
+        super(TemplateMode.HTML, WidgetDialect.Prefix, "src", 10000, true);
     }
 
 

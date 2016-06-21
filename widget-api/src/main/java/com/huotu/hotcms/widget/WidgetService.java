@@ -9,9 +9,6 @@
 
 package com.huotu.hotcms.widget;
 
-import org.thymeleaf.context.IContext;
-import org.thymeleaf.context.WebEngineContext;
-
 import java.net.URI;
 
 /**
@@ -35,20 +32,19 @@ public interface WidgetService {
      * @param styleId    控件样式id,可选
      * @param cmsContext    交互空间
      * @param properties 组件属性,可选
-     * @param context    WebEngineContext
      * @return HTML Code
      */
-    String previewHTML(Widget widget, String styleId, CMSContext cmsContext, ComponentProperties properties,WebEngineContext context);
+    String previewHTML(Widget widget, String styleId, CMSContext cmsContext, ComponentProperties properties);
 
     /**
      * 生成编辑器HTML代码
      *
      * @param widget  控件
      * @param cmsContext 交互空间
-     * @param context  WebEngineContext
+     * @param properties
      * @return HTML Code
      */
-    String editorHTML(Widget widget, CMSContext cmsContext,WebEngineContext context);
+    String editorHTML(Widget widget, CMSContext cmsContext, ComponentProperties properties);
 
     /**
      * 生成一个组件的完整HTML代码
@@ -58,8 +54,7 @@ public interface WidgetService {
      *
      * @param component 组件
      * @param cmsContext   上下文环境
-     * @param context WebEngineContext
      * @return HTML Code
      */
-    String componentHTML(Component component, CMSContext cmsContext,WebEngineContext context);
+    String componentHTML(Component component, CMSContext cmsContext);
 }

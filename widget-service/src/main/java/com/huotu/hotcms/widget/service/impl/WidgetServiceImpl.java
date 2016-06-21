@@ -9,11 +9,14 @@
 
 package com.huotu.hotcms.widget.service.impl;
 
-import com.huotu.hotcms.widget.*;
+import com.huotu.hotcms.widget.CMSContext;
+import com.huotu.hotcms.widget.Component;
+import com.huotu.hotcms.widget.ComponentProperties;
+import com.huotu.hotcms.widget.Widget;
+import com.huotu.hotcms.widget.WidgetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
-import org.thymeleaf.context.WebEngineContext;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 
 import java.io.IOException;
@@ -42,7 +45,7 @@ public class WidgetServiceImpl implements WidgetService {
     }
 
     @Override
-    public String previewHTML(Widget widget, String styleId, CMSContext cmsContext, ComponentProperties properties, WebEngineContext context) {
+    public String previewHTML(Widget widget, String styleId, CMSContext cmsContext, ComponentProperties properties) {
         SpringTemplateEngine engine = applicationContext.getBean(SpringTemplateEngine.class);
         String finalHTML = engine.process("TEMPLATE/" +  ((Widget) context.getVariable("widget")).widgetId().replace('-', '.')
                 + "/" + styleId , Collections.singleton("div"), context);
@@ -50,7 +53,7 @@ public class WidgetServiceImpl implements WidgetService {
     }
 
     @Override
-    public String editorHTML(Widget widget, CMSContext cmsContext, WebEngineContext context) {
+    public String editorHTML(Widget widget, CMSContext cmsContext, ComponentProperties properties) {
         SpringTemplateEngine engine = applicationContext.getBean(SpringTemplateEngine.class);
         String finalHTML = engine.process("EDITOR/"+ ((Widget) context.getVariable("widget")).widgetId().replace('-', '.')
                 , Collections.singleton("div"), context);
@@ -58,7 +61,7 @@ public class WidgetServiceImpl implements WidgetService {
     }
 
     @Override
-    public String componentHTML(Component component, CMSContext cmsContext, WebEngineContext context) {
+    public String componentHTML(Component component, CMSContext cmsContext) {
         Widget widget =  component.getWidget().getWidget();
         String styleId = component.getStyleId();
         ComponentProperties componentProperties = component.getProperties();

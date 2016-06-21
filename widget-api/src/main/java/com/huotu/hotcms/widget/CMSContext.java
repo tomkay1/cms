@@ -11,6 +11,10 @@ package com.huotu.hotcms.widget;
 
 import lombok.Data;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Locale;
+
 /**
  * CMS上下文,或者称之为交互空间
  * <p>
@@ -22,14 +26,18 @@ import lombok.Data;
 @Data
 public class CMSContext {
 
-    /**
-     * CMS站点所有者Id,必选
-     */
-    private long ownerId;
-    /**
-     * 商户id,可选
-     */
-    private Long merchantId;
+//    /**
+//     * CMS站点所有者Id,必选
+//     */
+//    private long ownerId;
+//    /**
+//     * 商户id,可选
+//     */
+//    private Long merchantId;
+
+    private HttpServletRequest request;
+    private HttpServletResponse response;
+    private Locale locale;
 
 
 }

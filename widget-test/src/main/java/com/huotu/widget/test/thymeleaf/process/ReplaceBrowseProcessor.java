@@ -9,39 +9,27 @@
 
 package com.huotu.widget.test.thymeleaf.process;
 
+import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.ComponentProperties;
+import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetService;
 import com.huotu.widget.test.WidgetTestConfig;
 import com.huotu.widget.test.bean.WidgetHolder;
-import com.huotu.widget.test.thymeleaf.WidgetProcessor;
+import com.huotu.widget.test.thymeleaf.CMSDialect;
+import com.huotu.widget.test.thymeleaf.CMSProcessor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-import org.thymeleaf.IEngineConfiguration;
-import org.thymeleaf.ITemplateEngine;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.Thymeleaf;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.context.WebEngineContext;
 import org.thymeleaf.engine.AttributeName;
-import org.thymeleaf.engine.TemplateData;
 import org.thymeleaf.model.IProcessableElementTag;
 import org.thymeleaf.processor.element.AbstractAttributeTagProcessor;
 import org.thymeleaf.processor.element.IElementTagStructureHandler;
-import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.standard.expression.ExpressionParsingUtilAccess;
-import org.thymeleaf.standard.expression.IStandardExpression;
-import org.thymeleaf.standard.processor.StandardEachTagProcessor;
-import org.thymeleaf.standard.processor.StandardReplaceTagProcessor;
 import org.thymeleaf.templatemode.TemplateMode;
-
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.*;
 
 /**
  * 注意使用{@link IElementTagStructureHandler#replaceWith(CharSequence, boolean)}替换所有
@@ -49,22 +37,17 @@ import java.util.*;
  * @author CJ
  */
 @Component
-public class ReplaceBrowseProcessor extends AbstractAttributeTagProcessor implements WidgetProcessor {
+public class ReplaceBrowseProcessor extends AbstractAttributeTagProcessor implements CMSProcessor {
 
     private static final Log log = LogFactory.getLog(ReplaceBrowseProcessor.class);
-    StandardEachTagProcessor processor;
-    StandardReplaceTagProcessor standardReplaceTagProcessor;
     @Autowired
-    WidgetHolder widgetHolder;
+    private WidgetHolder widgetHolder;
     @Autowired
-    private ApplicationContext applicationContext;
-    @Autowired
-    WidgetService widgetService;
+    private WidgetService widgetService;
 
     public ReplaceBrowseProcessor() {
-        super(TemplateMode.HTML, "w", null, false, "replaceBrowse", true, 99999, true);
+        super(TemplateMode.HTML, CMSDialect.Prefix, null, false, "replaceBrowse", true, 99999, true);
     }
-
 
     @Override
     protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName
@@ -72,24 +55,33 @@ public class ReplaceBrowseProcessor extends AbstractAttributeTagProcessor implem
         // 我们的格式应该是 widgetId,styleId,...
         final ThymeleafComponent component = ExpressionParsingUtilAccess.parseThymeleafComponent(context, attributeValue);
 
-        if (!(context instanceof WebEngineContext)){
-            throw new IllegalStateException("TemplateContext should be a WebEngineContext");
-        }
-
-        SpringTemplateEngine engine = applicationContext.getBean(SpringTemplateEngine.class);
-
         String widgetId = component.getWidgetId().execute(context).toString();
         String styleId = component.getStyleId().execute(context).toString();
         ComponentProperties properties = (ComponentProperties) component.getProperties().execute(context);
+        Widget widget = widgetHolder.getWidgetSet().stream().filter(widgetPredicate -> WidgetTestConfig.WidgetIdentity(widgetPredicate)
+                .equals(widgetId)).findAny().orElseThrow(() -> new IllegalArgumentException("bad widgetId:" + widgetId));
 
-        WebEngineContext engineContext = (WebEngineContext) context;
-        engineContext.setVariable("widgetId",widgetId);
-        engineContext.setVariable("styleId",styleId);
-        engineContext.setVariable("properties", properties);
-        widgetHolder.getWidgetSet().stream().filter(widget -> WidgetTestConfig.WidgetIdentity(widget)
-                .equals(widgetId)).forEach(widget -> engineContext.setVariable("widget", widget));
+        InstalledWidget installedWidget = new InstalledWidget();
+        installedWidget.setType("unknown");
+        installedWidget.setWidget(widget);
 
-        String finalHTML = engine.process("TEMPLATE/"+widgetId+"/"+styleId, Collections.singleton("div"), engineContext);
-        structureHandler.replaceWith(finalHTML, false);
+        // TODO 组件应该是参数给予的,而非自己构造
+        com.huotu.hotcms.widget.Component component1 = new com.huotu.hotcms.widget.Component();
+        component1.setWidget(installedWidget);
+        component1.setStyleId(styleId);
+        component1.setProperties(properties);
+
+        if (!(context instanceof WebEngineContext)) {
+            throw new IllegalStateException("TemplateContext should be a WebEngineContext");
+        }
+        // TODO 上下文是CMS生命周期 必不可少的,应该无需在此初始化
+        CMSContext cmsContext = new CMSContext();
+        cmsContext.setRequest(((WebEngineContext) context).getRequest());
+        cmsContext.setResponse(((WebEngineContext) context).getResponse());
+        cmsContext.setLocale(context.getLocale());
+
+        String htmlCode = widgetService.componentHTML(component1, cmsContext);
+
+        structureHandler.replaceWith(htmlCode, false);
     }
 }

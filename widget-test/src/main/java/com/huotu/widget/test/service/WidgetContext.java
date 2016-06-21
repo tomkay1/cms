@@ -66,8 +66,5 @@ public class WidgetContext extends WebEngineContext {
         variables.put("style",style);
         variables.put("properties",properties);
         return variables;
-//        if (properties == null)
-//            return null;
-//        return Collections.singletonMap("properties", properties);
     }
 }

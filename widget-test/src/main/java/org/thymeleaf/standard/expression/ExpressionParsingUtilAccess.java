@@ -40,5 +40,22 @@ public class ExpressionParsingUtilAccess {
         return component;
     }
 
+    public static ThymeleafComponent parseWidgetAndProperties(ITemplateContext context, String input) {
+//        final String preprocessedInput =
+//                StandardExpressionPreprocessor.preprocess(context, input);
+
+        ExpressionParsingState state = ExpressionParsingUtil.decompose(input);
+
+        if (state.size() != 3) {
+            log.warn("bad replaceBrowse value:" + input);
+            throw new IllegalArgumentException(input);
+        }
+
+        ThymeleafComponent component = new ThymeleafComponent();
+        component.setWidgetId(state.get(1).getExpression());
+        component.setProperties(state.get(2).getExpression());
+        return component;
+    }
+
 
 }

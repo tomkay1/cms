@@ -10,6 +10,7 @@
 package com.huotu.widget.test.thymeleaf.process;
 
 import com.huotu.hotcms.widget.CMSContext;
+import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetService;
 import com.huotu.widget.test.WidgetTestConfig;
@@ -27,6 +28,7 @@ import org.thymeleaf.engine.EngineEventUtils;
 import org.thymeleaf.model.IProcessableElementTag;
 import org.thymeleaf.processor.element.AbstractAttributeTagProcessor;
 import org.thymeleaf.processor.element.IElementTagStructureHandler;
+import org.thymeleaf.standard.expression.ExpressionParsingUtilAccess;
 import org.thymeleaf.standard.expression.IStandardExpression;
 import org.thymeleaf.templatemode.TemplateMode;
 
@@ -58,9 +60,9 @@ public class ReplaceEditorProcessor extends AbstractAttributeTagProcessor implem
             , String attributeValue, IElementTagStructureHandler structureHandler) {
         // 我们的格式应该是 widgetId,..
 
-        final IStandardExpression expression = EngineEventUtils.computeAttributeExpression(context, tag, attributeName
-                , attributeValue);
-        String widgetId = expression.execute(context).toString();
+        final ThymeleafComponent component =  ExpressionParsingUtilAccess.parseWidgetAndProperties(context, attributeValue);
+        String widgetId = component.getWidgetId().execute(context).toString();
+        ComponentProperties properties = (ComponentProperties) component.getProperties().execute(context);
         Widget widget = widgetHolder.getWidgetSet().stream().filter(widgetPredicate -> WidgetTestConfig.WidgetIdentity(widgetPredicate)
                 .equals(widgetId)).findAny().orElseThrow(() -> new IllegalArgumentException("bad widgetId:" + widgetId));
 
@@ -74,6 +76,6 @@ public class ReplaceEditorProcessor extends AbstractAttributeTagProcessor implem
         cmsContext.setResponse(((WebEngineContext) context).getResponse());
         cmsContext.setLocale(context.getLocale());
 
-        structureHandler.replaceWith(widgetService.editorHTML(widget, cmsContext, null), false);
+        structureHandler.replaceWith(widgetService.editorHTML(widget, cmsContext,properties ), false);
     }
 }

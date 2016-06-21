@@ -58,6 +58,7 @@ public class ReplaceBrowseProcessor extends AbstractAttributeTagProcessor implem
         String widgetId = component.getWidgetId().execute(context).toString();
         String styleId = component.getStyleId().execute(context).toString();
         ComponentProperties properties = (ComponentProperties) component.getProperties().execute(context);
+
         Widget widget = widgetHolder.getWidgetSet().stream().filter(widgetPredicate -> WidgetTestConfig.WidgetIdentity(widgetPredicate)
                 .equals(widgetId)).findAny().orElseThrow(() -> new IllegalArgumentException("bad widgetId:" + widgetId));
 

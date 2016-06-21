@@ -19,7 +19,7 @@ public class PublicStackHolder {
         return models.get();
     }
 
-    public static void putStack(Stack model){
+    public static void putStack(Stack<WidgetConfiguration> model){
         models.set(model);
     }
 }

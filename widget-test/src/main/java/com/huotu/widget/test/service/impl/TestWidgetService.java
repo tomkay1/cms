@@ -43,10 +43,6 @@ public class TestWidgetService implements WidgetService {
     @Autowired
     private SpringTemplateEngine widgetTemplateEngine;
 
-    @Autowired
-    private WidgetHolder widgetHolder;
-
-    public static ThreadLocal threadLocal = new ThreadLocal();
 
 
     @Override
@@ -76,7 +72,7 @@ public class TestWidgetService implements WidgetService {
         WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
                 , widget, style, webApplicationContext.getServletContext(), properties);
         WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();
-        Stack stack = new Stack();
+        Stack<WidgetConfiguration> stack = new Stack();
         stack.push(widgetConfiguration);
         PublicStackHolder.putStack(stack);
         return widgetTemplateEngine.process(WidgetTemplateResolver.PREVIEW
@@ -89,7 +85,7 @@ public class TestWidgetService implements WidgetService {
         WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
                 , widget, null, webApplicationContext.getServletContext(), properties);
         WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();
-        Stack stack = new Stack();
+        Stack<WidgetConfiguration> stack = new Stack();
         stack.push(widgetConfiguration);
         PublicStackHolder.putStack(stack);
         return widgetTemplateEngine.process(WidgetTemplateResolver.EDITOR
@@ -113,7 +109,7 @@ public class TestWidgetService implements WidgetService {
         WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
                 , component.getWidget().getWidget(), style, webApplicationContext.getServletContext(), component.getProperties());
         WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();
-        Stack stack = new Stack();
+        Stack<WidgetConfiguration> stack = new Stack();
         stack.push(widgetConfiguration);
         PublicStackHolder.putStack(stack);
         return widgetTemplateEngine.process(WidgetTemplateResolver.BROWSE

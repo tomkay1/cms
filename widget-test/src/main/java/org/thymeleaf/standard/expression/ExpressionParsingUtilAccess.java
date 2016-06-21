@@ -36,13 +36,9 @@ public class ExpressionParsingUtilAccess {
         component.setWidgetId(state.get(1).getExpression());
         component.setStyleId(state.get(2).getExpression());
         component.setProperties(state.get(3).getExpression());
-//        if (state.hasExpressionAt(3))
-
-
-//        String[] names = input.split(",");
-
 
         return component;
     }
+
 
 }

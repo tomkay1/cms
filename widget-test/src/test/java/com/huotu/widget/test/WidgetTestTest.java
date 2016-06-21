@@ -38,7 +38,7 @@ public class WidgetTestTest extends WidgetTest {
 
     @Override
     protected void browseWork(Widget widget, WidgetStyle style, Function<ComponentProperties, WebElement> uiChanger) {
-        WebElement div = uiChanger.apply(null);
+        WebElement div = uiChanger.apply(new ComponentProperties());
         assertThat(div.getAttribute("align"))
                 .isEqualTo("right");
     }

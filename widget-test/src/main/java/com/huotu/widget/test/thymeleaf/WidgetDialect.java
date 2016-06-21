@@ -10,12 +10,14 @@
 package com.huotu.widget.test.thymeleaf;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import com.huotu.widget.test.thymeleaf.process.ReplaceEditorProcessor;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.dialect.AbstractDialect;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.processor.IProcessor;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -46,6 +48,7 @@ public class WidgetDialect extends AbstractDialect implements IProcessorDialect 
 
     @Override
     public Set<IProcessor> getProcessors(String dialectPrefix) {
+      
         HashSet<IProcessor> iProcessors = new HashSet<>();
         iProcessors.addAll(widgetProcessors);
         return Collections.unmodifiableSet(iProcessors);

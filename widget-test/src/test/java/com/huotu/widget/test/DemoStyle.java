@@ -56,6 +56,6 @@ public class DemoStyle implements WidgetStyle {
 
     @Override
     public Resource browseTemplate() {
-        return new ClassPathResource("look.html", getClass().getClassLoader());
+        return new ClassPathResource("browse.html", getClass().getClassLoader());
     }
 }

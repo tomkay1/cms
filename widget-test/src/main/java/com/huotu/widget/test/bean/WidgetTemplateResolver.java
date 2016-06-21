@@ -13,6 +13,7 @@ import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetStyle;
 import com.huotu.widget.test.WidgetTestConfig;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.IEngineConfiguration;
 import org.thymeleaf.cache.ICacheEntryValidity;
@@ -45,10 +46,13 @@ public class WidgetTemplateResolver extends AbstractTemplateResolver {
     public WidgetTemplateResolver(WidgetHolder holder) {
         this.holder = holder;
     }
+    @Autowired
+    ApplicationContext applicationContext;
 
     @Override
     protected ITemplateResource computeTemplateResource(IEngineConfiguration configuration, String ownerTemplate
             , String template, Map<String, Object> templateResolutionAttributes) {
+
         if (template.startsWith(EDITOR)) {
             // 寻找控件
             String subName = template.substring(EDITOR.length());

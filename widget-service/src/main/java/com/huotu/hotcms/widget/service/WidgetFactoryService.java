@@ -14,6 +14,7 @@ import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.Widget;
+import com.huotu.hotcms.widget.entity.WidgetInfo;
 import com.huotu.hotcms.widget.exception.FormatException;
 import org.springframework.transaction.annotation.Transactional;
 import org.xml.sax.SAXException;
@@ -92,7 +93,7 @@ public interface WidgetFactoryService {
      *
      * @param widget 控件
      */
-    void updataWidget(Widget widget);
+    void updateWidget(Widget widget);
 
     /**
      * 更新已安装的控件
@@ -108,36 +109,7 @@ public interface WidgetFactoryService {
      */
     void updateWidget(String groupId, String widgetId, String version, String type) throws IOException, FormatException;
 
-    /**
-     * 生成预览HTML代码
-     *
-     * @param widget     控件
-     * @param styleId    控件样式id,可选
-     * @param context    交互空间
-     * @param properties 组件属性,可选
-     * @return HTML Code
-     */
-    String previewHTML(Widget widget, String styleId, CMSContext context, ComponentProperties properties);
 
-    /**
-     * 生成编辑器HTML代码
-     *
-     * @param widget  控件
-     * @param context 交互空间
-     * @return HTML Code
-     */
-    String editorHTML(Widget widget, CMSContext context);
-
-    /**
-     * 生成一个组件的完整HTML代码
-     * <p>
-     * 页面的生成者应该是通过调用这个方法获取每一个控件的HTML,技术上我们限定生成一个页面绝对不可以超过0.5s,假定一个页面转载了200个控件
-     * 也就是这个方法的响应时间不可以超过0.5/200s 也就是2.5ms</p>
-     *
-     * @param component 组件
-     * @param context   上下文环境
-     * @return HTML Code
-     */
-    String componentHTML(Component component, CMSContext context);
+    List<WidgetInfo> getWidgetByOwerId(String owerID);
 
 }

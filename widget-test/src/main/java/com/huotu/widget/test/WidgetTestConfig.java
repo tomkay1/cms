@@ -12,6 +12,8 @@ package com.huotu.widget.test;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.widget.test.bean.WidgetHolder;
 import com.huotu.widget.test.bean.WidgetTemplateResolver;
+import com.huotu.widget.test.thymeleaf.process.ReplaceBrowseProcessor;
+import com.huotu.widget.test.thymeleaf.process.ReplaceEditorProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -39,6 +41,7 @@ public class WidgetTestConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private ThymeleafViewResolver normalViewResolver;
 
+
     public static String WidgetIdentity(Widget widget) {
         return widget.widgetId().replace('-', '.');
     }
@@ -46,6 +49,11 @@ public class WidgetTestConfig extends WebMvcConfigurerAdapter {
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
         registry.viewResolver(normalViewResolver);
+    }
+
+    @Bean
+    public SpringTemplateEngine springTemplateEngine(){
+        return new SpringTemplateEngine();
     }
 
 //    @Override
@@ -76,7 +84,7 @@ public class WidgetTestConfig extends WebMvcConfigurerAdapter {
 
             widgetTemplateResolver.setOrder(1);
 
-            SpringTemplateEngine engine = new SpringTemplateEngine();
+            SpringTemplateEngine engine = applicationContext.getBean(SpringTemplateEngine.class);
             engine.addTemplateResolver(templateResolver);
             engine.addTemplateResolver(widgetTemplateResolver);
             engine.setAdditionalDialects(dialectSet);

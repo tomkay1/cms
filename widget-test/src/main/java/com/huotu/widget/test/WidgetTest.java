@@ -78,9 +78,7 @@ public abstract class WidgetTest extends SpringWebTest {
             for (WidgetStyle style : widget.styles()) {
                 stylePropertiesFor(style);
                 browseWork(widget, style, componentProperties -> {
-
                     widgetViewController.setCurrentProperties(componentProperties);
-
                     String uri = "/browse/" + WidgetTestConfig.WidgetIdentity(widget) + "/" + style.id();
                     if (printPageSource())
                         try {
@@ -105,7 +103,6 @@ public abstract class WidgetTest extends SpringWebTest {
                     .andDo(print());
 
         driver.get("http://localhost/editor/" + WidgetTestConfig.WidgetIdentity(widget));
-//        System.out.println(driver.getPageSource());
         editorWork(widget, driver.findElement(By.id("editor")).findElement(By.tagName("div")), () -> {
             if (driver instanceof JavascriptExecutor) {
                 return (Map) ((JavascriptExecutor) driver).executeScript("return widgetProperties($('#editor'))");

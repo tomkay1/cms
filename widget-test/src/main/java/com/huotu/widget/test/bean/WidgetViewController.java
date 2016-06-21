@@ -42,11 +42,11 @@ public class WidgetViewController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = {"/browse/{widgetName}/{styleId}"})
-    public String browse(@PathVariable("styleId") String styleId,
-                         @PathVariable("widgetName") String widgetName, Model model) {
+    public String browse(@PathVariable("widgetName") String widgetName
+            ,@PathVariable("styleId") String styleId,Model model) {
+
         model.addAttribute("styleId", styleId);
         model.addAttribute("widgetId",widgetName);
-
         model.addAttribute("properties", currentProperties);
         return "browse";
     }

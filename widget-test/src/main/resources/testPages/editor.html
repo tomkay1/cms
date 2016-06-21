@@ -25,7 +25,7 @@
 <!--/*@thymesVar id="widgetId" type="java.lang.String"*/-->
 <div id="editor">
 
-    <div th:replace="'EDITOR/'+${widgetId} :: div "></div>
+    <div w:replaceEditor="${widgetId},${styleId},${properties}" ></div>
 </div>
 
 

@@ -3,22 +3,22 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
-    <link  href="/assets/css/admin.content.css"  type="text/css" rel="stylesheet"/>
-    <link  href="/assets/css/admin.global.css"  type="text/css" rel="stylesheet"/>
-    <link  href="/assets/libs/JGrid/theme/Jackson_skin_gray.css"  type="text/css" rel="stylesheet"/>
-    <link href="/assets/libs/layer/skin/layer.css" rel="stylesheet"/>
-    <link  href="/assets/css/smart.css"  type="text/css" rel="stylesheet"/>
-    <link  href="/assets/css/decorated.css"  type="text/css" rel="stylesheet"/>
-    <link href="/assets/libs/tab/jackson.tabs.css" rel="stylesheet" type="text/css" />
-    <link href="/assets/libs/select/jackson.select.css" rel="stylesheet" type="text/css" />
-    <link href="/assets/css/hot-bootstrap.css" rel="stylesheet" type="text/css" />
-    <script src="/assets/seajs/sea.js"></script>
-    <script src="/assets/seajs/config.js"></script>
+    <link  href="/assets/css/admin.content.css"  ewp:href="'/assets/css/admin.content.css'" type="text/css" rel="stylesheet"/>
+    <link  href="/assets/css/admin.global.css" ewp:href="'/assets/css/admin.global.css'"  type="text/css" rel="stylesheet"/>
+    <link  href="/assets/libs/JGrid/theme/Jackson_skin_gray.css" ewp:href="'/assets/libs/JGrid/theme/Jackson_skin_gray.css'"  type="text/css" rel="stylesheet"/>
+    <link href="/assets/libs/layer/skin/layer.css" ewp:href="'/assets/libs/layer/skin/layer.css'" rel="stylesheet"/>
+    <link  href="/assets/css/smart.css" ewp:href="'/assets/css/smart.css'"  type="text/css" rel="stylesheet"/>
+    <link  href="/assets/css/decorated.css" ewp:href="'/assets/css/decorated.css'"  type="text/css" rel="stylesheet"/>
+    <link href="/assets/libs/tab/jackson.tabs.css" ewp:href="'/assets/libs/tab/jackson.tabs.css'" rel="stylesheet" type="text/css" />
+    <link href="/assets/libs/select/jackson.select.css" ewp:href="'/assets/libs/select/jackson.select.css'" rel="stylesheet" type="text/css" />
+    <link href="/assets/css/hot-bootstrap.css" ewp:href="'/assets/css/hot-bootstrap.css'" rel="stylesheet" type="text/css" />
+    <script src="/assets/seajs/sea.js" ewp:src="'/assets/seajs/sea.js'"></script>
+    <script src="/assets/seajs/config.js" ewp:src="'/assets/seajs/config.js'"></script>
 </head>
 <body>
 <div class="header-app">
     <p class="app-title">
-        <a th:href="@{/page/list?ownerId={ownerId}(ownerId=${user.ownerId},scope=${scope})}">首页</a><span>&gt;</span><span>页面管理</span>
+        <a th:href="@{/manage/page/list?ownerId={ownerId}(ownerId=${user.ownerId},scope=${scope})}">首页</a><span>&gt;</span><span>页面管理</span>
     </p>
 </div>
 <div id="usual1" class="usual" style="margin:10px; padding-top:5px; background: #ffffff;">
@@ -44,7 +44,7 @@
     </div><div style="clear: both;"></div>
     <div class="smart-box">
         <div class="smart-action-left">
-            <a class="btnShop active js-cms-defaults" th:attr="data-ownerId=${user.ownerId}" data-url="/customPages/0?ownerId={0}&siteId={1}" href="javascript:void(0)" target="content">新增页面</a>
+            <a class="btnShop active js-cms-defaults" th:attr="data-ownerId=${user.ownerId}" data-url="/manage/customPages/0?ownerId={0}&siteId={1}" href="javascript:void(0)" target="content">新增页面</a>
         </div>
         <div class="smart-action-left" style="margin-left:10px; width: 200px;">
             <select class="select1" id="siteType">

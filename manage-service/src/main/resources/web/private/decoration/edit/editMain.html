@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="leftpanel" style="background: #1c1d1f">
-    <a class="logo" style="left:0px;width:200px;margin-left:0px; " th:href="@{/main/?ownerId={ownerId}(ownerId=${user.ownerId})}" title="伙伴">
+    <a class="logo" style="left:0px;width:200px;margin-left:0px; " th:href="@{/manage/main/?ownerId={ownerId}(ownerId=${user.ownerId})}" title="伙伴">
     </a>
     <!--账号信息END--->
     <!--菜单BEGIN--->
@@ -16,7 +16,7 @@
         <div class="leftpanelinner" id="menuContainer" style="overflow-y: auto;">
             <ul class="nav nav-pills nav-stacked nav-bracket" id="menuList">
                 <li class="nav-parent nav-active  js-cms-menus nav-app" id="menus01" style="cursor: pointer;margin-bottom: 15px;">
-                    <a class="aparent" th:href="@{/page/list?ownerId={ownerId}(ownerId=${user.ownerId})}" target="content" >
+                    <a class="aparent" th:href="@{/manage/page/list?ownerId={ownerId}(ownerId=${user.ownerId})}" target="content" >
                         <i class="icon add"></i>
                         <!--<i class="fa fa-chevron-circle-right"></i>-->
                         <span>页面管理</span></a>
@@ -30,7 +30,7 @@
                     <!--</ul>-->
                 </li>
                 <li class="nav-parent nav-active js-cms-menus active nav-app" id="menus02" style="cursor: pointer;margin-bottom: 15px;">
-                    <a class="aparent" th:href="@{/page/defaults?ownerId={ownerId}(ownerId=${user.ownerId})}" target="content">
+                    <a class="aparent" th:href="@{/manage/page/defaults?ownerId={ownerId}(ownerId=${user.ownerId})}" target="content">
                         <i class="icon add"></i>
                         <!--<i class="fa fa-chevron-circle-right"></i>-->
                         <span>默认页面</span></a>
@@ -69,7 +69,7 @@
                     <ul class="children">
                         <li class="childMenus js-cms-submunes" data-id="menus03" style="cursor: pointer;">
                             <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
-                            <a th:href="@{/site/siteList?ownerId={ownerId}(ownerId=${user.ownerId})}" target="content"><i class="fa fa-caret-right"></i>备份列表<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
+                            <a th:href="@{/manage/site/siteList?ownerId={ownerId}(ownerId=${user.ownerId})}" target="content"><i class="fa fa-caret-right"></i>备份列表<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
                                 </span>
                             </a>
                         </li>
@@ -83,13 +83,13 @@
                     <ul class="children">
                         <li class="childMenus js-cms-submunes" data-id="menus04"  style="cursor: pointer;">
                             <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
-                            <a th:href="@{/widget/widgetTypeList?ownerId={ownerId}(ownerId=${user.ownerId})}" target="content"><i class="fa fa-caret-right"></i>控件类型<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
+                            <a th:href="@{/manage/widget/widgetTypeList?ownerId={ownerId}(ownerId=${user.ownerId})}" target="content"><i class="fa fa-caret-right"></i>控件类型<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
                                 </span>
                             </a>
                         </li>
                         <li class="childMenus js-cms-submunes" data-id="menus04" style="cursor: pointer;">
                             <div style="display: none; position: absolute; left: 10px; padding: 10px; top: 43px; color: #fff; z-index: 9999; background: #04B299; width: 180px; height: auto; border-radius: 4px 4px 4px 4px;"></div>
-                            <a th:href="@{/widget/widgetMainsList?ownerId={ownerId}(ownerId=${user.ownerId})}" target="content"><i class="fa fa-caret-right"></i>控件主体<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
+                            <a th:href="@{/manage/widget/widgetMainsList?ownerId={ownerId}(ownerId=${user.ownerId})}" target="content"><i class="fa fa-caret-right"></i>控件主体<span class="fa pull-right badge badge-success" style="display: none;background-color:red;">!
                                 </span>
                             </a>
                         </li>
@@ -102,32 +102,32 @@
 </div>
 <div class="mainpanel" id="mainpanel">
     <div class="headerbar">
-        <a class="logo" style="left:0px;width:200px;margin-left:0px;float: left " th:href="@{/main/?ownerId={ownerId}(ownerId=${user.ownerId})}" title="伙伴">
+        <a class="logo" style="left:0px;width:200px;margin-left:0px;float: left " th:href="@{/manage/main/?ownerId={ownerId}(ownerId=${user.ownerId})}" title="伙伴">
         </a>
         <div class="header-left" style="padding-left: 5px;float: right;">
             <div class="header-edit">
                 <ul class="project-opts clearfix">
                     <li>
                         <a href="http://www.huobanplus.com/" class="btn-contact-us" style="right:374px; border-right:none;" target="_blank">
-                            <span><img style="height: auto;max-width: 100%;vertical-align: middle;" src="/assets/img/lianxi.png"></span>
+                            <span><img style="height: auto;max-width: 100%;vertical-align: middle;" src="/assets/img/lianxi.png" ewp:src="'/assets/img/lianxi.png'"></span>
                             <span>联系我们</span>
                         </a>
                     </li>
                     <li>
-                        <a class="huoban active" style="right:249px;" th:href="@{/main/decorated?ownerId={ownerId}(ownerId=${user.ownerId})}">
-                            <span><img src="/assets/img/iconfont-zhuangxiu.png" style="height: 20px; width:22px;vertical-align: middle;"></span>
+                        <a class="huoban active" style="right:249px;" th:href="@{/manage/main/decorated?ownerId={ownerId}(ownerId=${user.ownerId})}">
+                            <span><img src="/assets/img/iconfont-zhuangxiu.png" ewp:src="'/assets/img/iconfont-zhuangxiu.png'" style="height: 20px; width:22px;vertical-align: middle;"></span>
                             <span>店铺装修</span>
                         </a>
                     </li>
                     <li>
                         <a class="huoban" style="right:124px;" th:href="@{${mallManageUrl}}" target="_blank">
-                            <span><img src="/assets/img/huoban.png" style="height: auto;max-width: 100%;vertical-align: middle;"></span>
+                            <span><img src="/assets/img/huoban.png" ewp:src="'/assets/img/huoban.png'" style="height: auto;max-width: 100%;vertical-align: middle;"></span>
                             <span>伙伴商城</span>
                         </a>
                     </li>
                     <li>
                         <a class="out js-hot-save" style="width:125px;border-right:none; right: 0px;" href="javascript:void(0)">
-                            <span><img src="/assets/img/out.png" style="height: auto;max-width: 100%;vertical-align: middle;"></span>
+                            <span><img src="/assets/img/out.png" ewp:src="'/assets/img/out.png'" style="height: auto;max-width: 100%;vertical-align: middle;"></span>
                             <span>注销</span>
                         </a>
                     </li>

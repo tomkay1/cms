@@ -3,12 +3,12 @@
 <html>
 <head>
     <title></title>
-    <link  href="/assets/css/admin.content.css"  type="text/css" rel="stylesheet"/>
-    <link  href="/assets/css/admin.global.css"  type="text/css" rel="stylesheet"/>
-    <link  href="/assets/libs/JGrid/theme/Jackson_skin_gray.css"  type="text/css" rel="stylesheet"/>
-    <link href="/assets/libs/layer/skin/layer.css" rel="stylesheet"/>
-    <script src="/assets/seajs/sea.js"></script>
-    <script src="/assets/seajs/config.js"></script>
+    <link  href="/assets/css/admin.content.css"  ewp:href="@{/assets/css/admin.content.css}" type="text/css" rel="stylesheet"/>
+    <link  href="/assets/css/admin.global.css" ewp:href="@{/assets/css/admin.global.css}" type="text/css" rel="stylesheet"/>
+    <link  href="/assets/libs/JGrid/theme/Jackson_skin_gray.css" ewp:href="'/assets/libs/JGrid/theme/Jackson_skin_gray.css'"  type="text/css" rel="stylesheet"/>
+    <link href="/assets/libs/layer/skin/layer.css" ewp:href="@{/assets/libs/layer/skin/layer.css}" rel="stylesheet"/>
+    <script src="/assets/seajs/sea.js" ewp:src="@{/assets/seajs/sea.js}"></script>
+    <script src="/assets/seajs/config.js" ewp:src="@{/assets/seajs/config.js}"></script>
 </head>
 <body>
 <div class="search block">
@@ -34,7 +34,7 @@
         <span class="icon-sprite icon-list"></span>
         <h3 style="float: left; width: 144px;">地区列表</h3>
         <div class="bar">
-            <a class="btn-lit" th:href="@{/region/addRegion?ownerId={ownerId}(ownerId=${user.ownerId})}"  target="content">
+            <a class="btn-lit" th:href="@{/manage/region/addRegion?ownerId={ownerId}(ownerId=${user.ownerId})}"  target="content">
                 <span>新增</span></a>
         </div>
     </div>

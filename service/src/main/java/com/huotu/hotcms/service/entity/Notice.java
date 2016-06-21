@@ -15,14 +15,13 @@ import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 /**
  * 公告模型
  * Created by cwb on 2015/12/22.
  */
 @Entity
-@Table(name = "cms_notice",uniqueConstraints = @UniqueConstraint(columnNames = {"siteId","serial"}))
+@Table(name = "cms_notice")
 @Setter
 @Getter
 public class Notice extends BaseEntity {

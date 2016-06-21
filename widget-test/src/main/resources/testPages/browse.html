@@ -8,7 +8,7 @@
   ~ 2013-2016. All rights reserved.
   -->
 
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Demo Editor</title>
@@ -23,11 +23,12 @@
 <body>
 
 <!--/*@thymesVar id="widgetId" type="java.lang.String"*/-->
-<div id="editor">
+<div id="browse">
 
-    <div w:replaceEditor="${widgetId},${styleId},${properties}" ></div>
+    <!--<div th:replace="'TEMPLATE/'+${widgetId}+'/'+${styleId} :: div "></div>-->
+    <div w:replaceBrowse="${widgetId},${styleId},${properties}"></div>
+
 </div>
-
 
 </body>
 </html>

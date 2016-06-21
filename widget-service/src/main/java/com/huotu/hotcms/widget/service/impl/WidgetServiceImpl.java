@@ -9,24 +9,32 @@
 
 package com.huotu.hotcms.widget.service.impl;
 
-import com.huotu.hotcms.widget.entity.WidgetInfo;
-import com.huotu.hotcms.widget.repository.WidgetRepository;
-import com.huotu.hotcms.widget.service.WidgetService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.huotu.hotcms.widget.*;
 
-import java.util.List;
+import java.net.URI;
 
 /**
  * Created by elvis on 2016/6/7.
  */
 public class WidgetServiceImpl implements WidgetService {
 
-    @Autowired
-    private WidgetRepository widgetRepository;
-
+    @Override
+    public URI resourceURI(Widget widget, String resourceName) {
+        return null;
+    }
 
     @Override
-    public List<WidgetInfo> getWidgetByOwerId(String owerID) {
-        return widgetRepository.findByAuthor(owerID);
+    public String previewHTML(Widget widget, String styleId, CMSContext context, ComponentProperties properties) {
+        return null;
+    }
+
+    @Override
+    public String editorHTML(Widget widget, CMSContext context) {
+        return null;
+    }
+
+    @Override
+    public String componentHTML(Component component, CMSContext context) {
+        return null;
     }
 }

@@ -12,6 +12,8 @@ package com.huotu.widget.test;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.widget.test.bean.WidgetHolder;
 import com.huotu.widget.test.bean.WidgetTemplateResolver;
+import com.huotu.widget.test.thymeleaf.process.ReplaceBrowseProcessor;
+import com.huotu.widget.test.thymeleaf.process.ReplaceEditorProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -21,9 +23,12 @@ import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.thymeleaf.dialect.IDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
+
+import java.util.Set;
 
 /**
  * @author CJ
@@ -36,6 +41,7 @@ public class WidgetTestConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private ThymeleafViewResolver normalViewResolver;
 
+
     public static String WidgetIdentity(Widget widget) {
         return widget.widgetId().replace('-', '.');
     }
@@ -45,6 +51,11 @@ public class WidgetTestConfig extends WebMvcConfigurerAdapter {
         registry.viewResolver(normalViewResolver);
     }
 
+    @Bean
+    public SpringTemplateEngine springTemplateEngine(){
+        return new SpringTemplateEngine();
+    }
+
 //    @Override
 //    public void addViewControllers(ViewControllerRegistry registry) {
 //        registry.addViewController("/editor")
@@ -52,6 +63,7 @@ public class WidgetTestConfig extends WebMvcConfigurerAdapter {
 //    }
 
     @DependsOn("widgetHolder")
+    @ComponentScan("com.huotu.widget.test.thymeleaf")
     static class ViewResolver {
         @Autowired
         private WidgetHolder widgetHolder;
@@ -59,6 +71,8 @@ public class WidgetTestConfig extends WebMvcConfigurerAdapter {
         private ApplicationContext applicationContext;
         @Autowired
         private WidgetTemplateResolver widgetTemplateResolver;
+        @Autowired
+        private Set<IDialect> dialectSet;
 
         @Bean
         public ThymeleafViewResolver normalViewResolver() {
@@ -70,9 +84,10 @@ public class WidgetTestConfig extends WebMvcConfigurerAdapter {
 
             widgetTemplateResolver.setOrder(1);
 
-            SpringTemplateEngine engine = new SpringTemplateEngine();
+            SpringTemplateEngine engine = applicationContext.getBean(SpringTemplateEngine.class);
             engine.addTemplateResolver(templateResolver);
             engine.addTemplateResolver(widgetTemplateResolver);
+            engine.setAdditionalDialects(dialectSet);
 
             ThymeleafViewResolver resolver = new ThymeleafViewResolver();
             resolver.setCharacterEncoding("UTF-8");

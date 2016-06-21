@@ -21,7 +21,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 
 /**
@@ -29,7 +28,7 @@ import java.time.LocalDateTime;
  * Created by cwb on 2015/12/21.
  */
 @Entity
-@Table(name = "cms_category",uniqueConstraints = {@UniqueConstraint(columnNames = {"site,serial"})})
+@Table(name = "cms_category")
 @Setter
 @Getter
 public class Category {

@@ -20,14 +20,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 
-/**
- * Created by Administrator on 2016/3/18.
- */
 @Entity
-@Table(name = "cms_customPages",uniqueConstraints = {@UniqueConstraint(columnNames = {"siteId,serial"})})
+@Table(name = "cms_customPages")
 @Getter
 @Setter
 public class CustomPages {

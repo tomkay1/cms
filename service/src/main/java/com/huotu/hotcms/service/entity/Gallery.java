@@ -16,14 +16,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 /**
  * 图库模型
  * Created by cwb on 2015/12/22.
  */
 @Entity
-@Table(name = "cms_gallery",uniqueConstraints = {@UniqueConstraint(columnNames = {"siteId,serial"})})
+@Table(name = "cms_gallery")
 @Getter
 @Setter
 public class Gallery extends BaseEntity {

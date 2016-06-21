@@ -12,6 +12,10 @@ package com.huotu.cms.manage.config;
 import me.jiangcai.lib.embedweb.EmbedWeb;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 /**
  * 载入manage-service的Spring配置类
@@ -19,12 +23,26 @@ import org.springframework.context.annotation.Configuration;
  * @author CJ
  */
 @Configuration
+@EnableWebSecurity
+@Order(99)//毕竟不是老大 100就让给别人了
 @ComponentScan("com.huotu.cms.manage")
-public class ManageServiceSpringConfig implements EmbedWeb {
+public class ManageServiceSpringConfig extends WebSecurityConfigurerAdapter implements EmbedWeb {
 
 
     @Override
     public String name() {
         return "manage-service";
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+//        super.configure(http);
+        http.authorizeRequests().antMatchers(
+                "/manage/**"
+        ).authenticated()
+                .and()
+                .formLogin()
+                .loginPage("/manage/login")
+                .permitAll();
     }
 }

@@ -9,9 +9,6 @@
 
 package com.huotu.hotcms.widget.service.impl;
 
-import com.huotu.hotcms.widget.CMSContext;
-import com.huotu.hotcms.widget.Component;
-import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.entity.WidgetInfo;
 import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.InstalledWidget;
@@ -26,14 +23,12 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.luffy.libs.libseext.XMLUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.util.ArrayList;
@@ -55,9 +50,6 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
-
-    @Autowired
-    private WidgetRepository widgetRepository;
 
     public List<InstalledWidget> installedWidgets = new ArrayList<>();
 
@@ -188,7 +180,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService {
     public void updateWidget(Widget widget, InputStream jarFile) throws IOException {
         //todo 检查每一个使用该控件的组件属性是否符合要求  假设控件widget符合要求
         //更新数据库信息
-        updataWidget(widget);
+        updateWidget(widget);
         //替换jar包
         if (jarFile != null) {
             BufferedOutputStream bw = null;
@@ -212,7 +204,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService {
         }
     }
 
-    public void updataWidget(Widget widget) {
+    public void updateWidget(Widget widget) {
         WidgetInfo widgetInfo = widgetRepository.findByWidgetIdAndVersion(widget.widgetId(), widget.version());
         if (widgetInfo != null) {
             widgetInfo.setGroupId(widget.groupId());
@@ -230,7 +222,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService {
             List<Class> classes = ClassLoaderUtil.loadJarWidgetClasss(realPath);
             if (classes != null) {
                 for (Class classz : classes) {
-                    updataWidget((Widget) classz.newInstance());
+                    updateWidget((Widget) classz.newInstance());
                 }
             }
         } catch (ParserConfigurationException | SAXException | InstantiationException
@@ -239,20 +231,12 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService {
         }
     }
 
-    @Override
-    public String previewHTML(Widget widget, String styleId, CMSContext context, ComponentProperties properties) {
-        return null;
-    }
+    @Autowired
+    private WidgetRepository widgetRepository;
+
 
     @Override
-    public String editorHTML(Widget widget, CMSContext context) {
-        Resource resource = widget.editorTemplate();
-
-        return null;
-    }
-
-    @Override
-    public String componentHTML(Component component, CMSContext context) {
-        return null;
+    public List<WidgetInfo> getWidgetByOwerId(String owerID) {
+        return widgetRepository.findByAuthor(owerID);
     }
 }

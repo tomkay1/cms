@@ -9,8 +9,11 @@
 
 package com.huotu.widget.test;
 
+import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.Widget;
+import com.huotu.hotcms.widget.WidgetStyle;
 import com.huotu.widget.test.bean.WidgetHolder;
+import com.huotu.widget.test.bean.WidgetViewController;
 import me.jiangcai.lib.test.SpringWebTest;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -24,6 +27,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,6 +40,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @ContextConfiguration(classes = WidgetTestConfig.class)
 @WebAppConfiguration
 public abstract class WidgetTest extends SpringWebTest {
+
+    @Autowired
+    private WidgetViewController widgetViewController;
 
     @Autowired
     private WidgetHolder holder;
@@ -60,6 +67,34 @@ public abstract class WidgetTest extends SpringWebTest {
         }
     }
 
+    @Test
+    public void style() {
+        for (Widget widget : holder.getWidgetSet()) {
+            assertThat(widget.styles())
+                    .isNotNull();
+            assertThat(widget.styles().length)
+                    .isGreaterThanOrEqualTo(1);
+
+            for (WidgetStyle style : widget.styles()) {
+                stylePropertiesFor(style);
+                browseWork(widget, style, componentProperties -> {
+                    widgetViewController.setCurrentProperties(componentProperties);
+                    String uri = "/browse/" + WidgetTestConfig.WidgetIdentity(widget) + "/" + style.id();
+                    if (printPageSource())
+                        try {
+                            mockMvc.perform(get(uri))
+                                    .andDo(print());
+                        } catch (Exception e) {
+                            throw new IllegalStateException("no print html");
+                        }
+                    driver.get("http://localhost" + uri);
+                    WebElement webElement = driver.findElement(By.id("browse")).findElement(By.tagName("div"));
+                    return webElement;
+                });
+            }
+        }
+    }
+
     @SuppressWarnings("WeakerAccess")
     protected void editor(Widget widget) throws Exception {
 
@@ -68,7 +103,6 @@ public abstract class WidgetTest extends SpringWebTest {
                     .andDo(print());
 
         driver.get("http://localhost/editor/" + WidgetTestConfig.WidgetIdentity(widget));
-//        System.out.println(driver.getPageSource());
         editorWork(widget, driver.findElement(By.id("editor")).findElement(By.tagName("div")), () -> {
             if (driver instanceof JavascriptExecutor) {
                 return (Map) ((JavascriptExecutor) driver).executeScript("return widgetProperties($('#editor'))");
@@ -88,7 +122,18 @@ public abstract class WidgetTest extends SpringWebTest {
      * @see JavascriptExecutor#executeScript(String, Object...)
      */
     @SuppressWarnings("WeakerAccess")
-    protected abstract void editorWork(Widget widget, WebElement editor, Supplier<Map<String, Object>> currentWidgetProperties);
+    protected abstract void editorWork(Widget widget, WebElement editor
+            , Supplier<Map<String, Object>> currentWidgetProperties);
+
+    /**
+     * 浏览视图的测试
+     * 通过设置属性改变预览视图
+     * @param widget    控件
+     * @param style     样式
+     * @param uiChanger 更改后的预览视图
+     */
+    protected abstract void browseWork(Widget widget, WidgetStyle style
+            , Function<ComponentProperties, WebElement> uiChanger);
 
     /**
      * 一些常用属性测试
@@ -103,11 +148,6 @@ public abstract class WidgetTest extends SpringWebTest {
     @SuppressWarnings("WeakerAccess")
     protected void propertiesFor(Widget widget) {
 
-//        assertThat(widget.name())
-//                .isNotEmpty();
-
-//        assertThat(widget.author())
-//                .isNotEmpty();
 
         assertThat(widget.description())
                 .isNotEmpty();
@@ -118,8 +158,6 @@ public abstract class WidgetTest extends SpringWebTest {
         assertThat(widget.widgetId())
                 .isNotEmpty();
 
-//        assertThat(widget.version())
-//                .isNotEmpty();
 
         if (widget.publicResources() != null) {
             widget.publicResources().forEach((name, resource) -> {
@@ -153,6 +191,39 @@ public abstract class WidgetTest extends SpringWebTest {
             throw new RuntimeException(ex);
         }
 
+        // 现在检查编辑器
+    }
+
+
+    /**
+     * 样式基本属性测试
+     * @param widgetStyle
+     */
+    protected void stylePropertiesFor(WidgetStyle widgetStyle) {
+        assertThat(widgetStyle.description())
+                .isNotEmpty();
+
+        assertThat(widgetStyle.id())
+                .isNotEmpty();
+
+        assertThat(widgetStyle.name())
+                .isNotEmpty();
+        assertThat(widgetStyle.thumbnail())
+                .as("缩略图不可为空")
+                .isNotNull();
+        assertThat(widgetStyle.thumbnail().exists())
+                .as("公开资源必须存在")
+                .isTrue();
+
+        //图片资源必须是 106x82 png
+        try {
+            BufferedImage thumbnail = ImageIO.read(widgetStyle.thumbnail().getInputStream());
+//            assertThat((float) thumbnail.getWidth() / (float) thumbnail.getHeight())
+//                    .as("缩略图必须为106*82的PNG图片")
+//                    .isEqualTo(106f / 82f);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
 
         // 现在检查编辑器
     }

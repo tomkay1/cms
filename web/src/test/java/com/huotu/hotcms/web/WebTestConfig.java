@@ -7,16 +7,16 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.hotcms.widget.service;
+package com.huotu.hotcms.web;
 
-import com.huotu.hotcms.widget.entity.WidgetInfo;
-
-import java.util.List;
+import com.huotu.hotcms.web.config.MVCConfig;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 /**
- * Created by elvis on 2016/6/7.
+ * @author CJ
  */
-public interface WidgetService {
-
-    List<WidgetInfo> getWidgetByOwerId(String owerID);
+@Configuration
+@Import(MVCConfig.class)
+public class WebTestConfig {
 }

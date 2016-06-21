@@ -43,7 +43,7 @@ import java.util.Set;
 /**
  * @author CJ
  */
-public class WidgetConfiguration implements IEngineConfiguration {
+public class WidgetConfiguration  implements IEngineConfiguration {
 
     private final IEngineConfiguration configuration;
     private final Widget widget;

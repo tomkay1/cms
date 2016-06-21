@@ -11,6 +11,7 @@ package com.huotu.widget.test.service.impl;
 
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetStyle;
+import com.huotu.widget.test.bean.PublicStackHolder;
 import com.huotu.widget.test.bean.WidgetHolder;
 import com.huotu.widget.test.service.WidgetConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,8 @@ public class WidgetTemplateResolver extends AbstractTemplateResolver {
     public static final String PREVIEW = "PREVIEW";
     public static final String BROWSE = "BROWSE";
     private final WidgetHolder holder;
+
+
     @Autowired
     ApplicationContext applicationContext;
 
@@ -54,11 +57,9 @@ public class WidgetTemplateResolver extends AbstractTemplateResolver {
     @Override
     protected ITemplateResource computeTemplateResource(IEngineConfiguration configuration, String ownerTemplate
             , String template, Map<String, Object> templateResolutionAttributes) {
-
-        assert (configuration instanceof WidgetConfiguration);
-        WidgetConfiguration configuration1 = (WidgetConfiguration) configuration;
-        Widget widget = configuration1.getWidget();
-        WidgetStyle style = configuration1.getStyle();
+        WidgetConfiguration widgetConfiguration = (WidgetConfiguration) PublicStackHolder.getStack().pop();
+        Widget widget = widgetConfiguration.getWidget();
+        WidgetStyle style = widgetConfiguration.getStyle();
 
         switch (template) {
             case EDITOR:

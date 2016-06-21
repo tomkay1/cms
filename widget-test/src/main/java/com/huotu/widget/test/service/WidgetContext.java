@@ -22,6 +22,7 @@ import org.thymeleaf.spring4.SpringTemplateEngine;
 
 import javax.servlet.ServletContext;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -53,14 +54,20 @@ public class WidgetContext extends WebEngineContext {
     public WidgetContext(SpringTemplateEngine engine, CMSContext context, Widget widget, WidgetStyle style
             , ServletContext servletContext, ComponentProperties properties) {
         // TODO 后期考虑到缓存,性能巴拉巴拉的时候 可能需要定制 TemplateData
+
         super(new WidgetConfiguration(engine.getConfiguration(), widget, style), null, null, context.getRequest()
                 , context.getResponse(), servletContext
-                , context.getLocale(), FromComponentProperties(properties));
+                , context.getLocale(), FromComponentProperties(widget,style,properties));
     }
 
-    private static Map<String, Object> FromComponentProperties(ComponentProperties properties) {
-        if (properties == null)
-            return null;
-        return Collections.singletonMap("properties", properties);
+    private static Map<String, Object> FromComponentProperties(Widget widget,WidgetStyle style,ComponentProperties properties) {
+        Map<String,Object> variables = new HashMap<>();
+        variables.put("widget",widget);
+        variables.put("style",style);
+        variables.put("properties",properties);
+        return variables;
+//        if (properties == null)
+//            return null;
+//        return Collections.singletonMap("properties", properties);
     }
 }

@@ -20,6 +20,7 @@ import org.apache.commons.logging.LogFactory;
  * @author CJ
  */
 @Data
+
 public class Component implements PageElement {
 
     private static final Log log = LogFactory.getLog(Component.class);
@@ -31,6 +32,7 @@ public class Component implements PageElement {
     private String styleId;
 
     private ComponentProperties properties;
+
 
     private String previewHTML;
 

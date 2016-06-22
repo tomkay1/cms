@@ -9,8 +9,9 @@
 
 package com.huotu.hotcms.widget.test;
 
-import com.huotu.hotcms.widget.Component;
+import com.huotu.hotcms.widget.*;
 import com.huotu.hotcms.widget.config.TestConfig;
+import com.huotu.hotcms.widget.controller.TestWidget;
 import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.page.PageElement;
@@ -19,6 +20,7 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -26,10 +28,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by wenqi on 2016/5/31.
@@ -80,7 +79,18 @@ public class TestBase {
     }
 
     private Component randomComponent() {
-        return null;
+        Component component=new Component();
+        component.setPreviewHTML("");
+        component.setStyleId(UUID.randomUUID().toString());
+        component.setWidgetIdentity(UUID.randomUUID().toString());
+        ComponentProperties componentProperties =new ComponentProperties();
+        componentProperties.put(UUID.randomUUID().toString(),UUID.randomUUID().toString());
+        component.setProperties(componentProperties);
+        InstalledWidget installedWidget=new InstalledWidget();
+        installedWidget.setType(UUID.randomUUID().toString());
+        installedWidget.setWidget(new TestWidget());
+        component.setWidget(installedWidget);
+        return component;
     }
 
     private Layout randomLayout() {

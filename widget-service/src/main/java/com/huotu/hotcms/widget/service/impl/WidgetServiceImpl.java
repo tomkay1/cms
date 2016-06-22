@@ -10,7 +10,6 @@
 package com.huotu.hotcms.widget.service.impl;
 
 import com.huotu.hotcms.widget.*;
-import org.thymeleaf.context.WebEngineContext;
 
 import java.net.URI;
 
@@ -25,18 +24,17 @@ public class WidgetServiceImpl implements WidgetService {
     }
 
     @Override
-    public String previewHTML(Widget widget, String styleId, CMSContext cmsContext, ComponentProperties properties, WebEngineContext context) {
+    public String previewHTML(Widget widget, String styleId, CMSContext context, ComponentProperties properties) {
         return null;
     }
 
     @Override
-    public String editorHTML(Widget widget, CMSContext cmsContext, WebEngineContext context) {
+    public String editorHTML(Widget widget, CMSContext context) {
         return null;
     }
 
     @Override
-    public String componentHTML(Component component, CMSContext cmsContext, WebEngineContext context) {
+    public String componentHTML(Component component, CMSContext context) {
         return null;
     }
-
 }

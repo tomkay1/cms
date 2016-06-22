@@ -7,14 +7,14 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.widget.test.thymeleaf;
+package com.huotu.hotcms.widget.loader.thymeleaf;
 
 import org.thymeleaf.processor.IProcessor;
 
 /**
- * {@link WidgetDialect}为owner的属性处理器
+ * {@link CMSDialect}为owner的属性处理器
  *
  * @author CJ
  */
-public interface WidgetProcessor extends IProcessor {
+public interface CMSProcessor extends IProcessor {
 }

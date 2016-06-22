@@ -173,6 +173,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService {
         widgetInfo.setVersion(widget.version());
         widgetInfo.setType(type);
         widgetRepository.save(widgetInfo);
+
     }
 
 

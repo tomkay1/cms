@@ -7,30 +7,29 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.widget.test.thymeleaf;
+package com.huotu.hotcms.widget.resolve.thymeleaf;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import com.huotu.widget.test.thymeleaf.process.ReplaceEditorProcessor;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.dialect.AbstractDialect;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.processor.IProcessor;
+import org.thymeleaf.standard.processor.StandardXmlNsTagProcessor;
+import org.thymeleaf.templatemode.TemplateMode;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 模拟widget-service中向控件服务提供的前端方言服务
- *
  * @author CJ
  */
 @Service
 public class WidgetDialect extends AbstractDialect implements IProcessorDialect {
+    public static final String Prefix = "w";
 
     @Autowired
-    private Set<WidgetProcessor> widgetProcessors;
+    private Set<WidgetProcessor> CMSProcessors;
 
     public WidgetDialect() {
         super("Widget");
@@ -38,7 +37,7 @@ public class WidgetDialect extends AbstractDialect implements IProcessorDialect 
 
     @Override
     public String getPrefix() {
-        return "w";
+        return Prefix;
     }
 
     @Override
@@ -48,9 +47,10 @@ public class WidgetDialect extends AbstractDialect implements IProcessorDialect 
 
     @Override
     public Set<IProcessor> getProcessors(String dialectPrefix) {
-      
+
         HashSet<IProcessor> iProcessors = new HashSet<>();
-        iProcessors.addAll(widgetProcessors);
+        iProcessors.addAll(CMSProcessors);
+        iProcessors.add(new StandardXmlNsTagProcessor(TemplateMode.HTML, dialectPrefix));
         return Collections.unmodifiableSet(iProcessors);
     }
 }

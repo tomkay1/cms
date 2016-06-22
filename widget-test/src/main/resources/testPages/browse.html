@@ -8,7 +8,7 @@
   ~ 2013-2016. All rights reserved.
   -->
 
-<html lang="en">
+<html xmlns:cms="http://cms.huobanplus.com" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Demo Editor</title>
@@ -22,11 +22,9 @@
 </head>
 <body>
 
-<!--/*@thymesVar id="widgetId" type="java.lang.String"*/-->
 <div id="browse">
 
-    <!--<div th:replace="'TEMPLATE/'+${widgetId}+'/'+${styleId} :: div "></div>-->
-    <div w:replaceBrowse="${widgetId},${styleId},${properties}"></div>
+    <div cms:replaceBrowse="${component}"></div>
 
 </div>
 

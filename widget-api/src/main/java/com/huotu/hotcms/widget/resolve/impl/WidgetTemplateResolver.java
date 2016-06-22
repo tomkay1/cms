@@ -7,11 +7,12 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.widget.test.bean;
+package com.huotu.hotcms.widget.resolve.impl;
 
+import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetStyle;
-import com.huotu.widget.test.WidgetTestConfig;
+import com.huotu.hotcms.widget.resolve.WidgetConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -38,44 +39,32 @@ public class WidgetTemplateResolver extends AbstractTemplateResolver {
      *
      * @see Widget#editorTemplate()
      */
-    public static final String EDITOR = "EDITOR/";
-    public static final String TEMPLATE = "TEMPLATE/";
-    private final WidgetHolder holder;
+    public static final String EDITOR = "EDITOR";
+    public static final String PREVIEW = "PREVIEW";
+    public static final String BROWSE = "BROWSE";
+
 
     @Autowired
-    public WidgetTemplateResolver(WidgetHolder holder) {
-        this.holder = holder;
-    }
-    @Autowired
     ApplicationContext applicationContext;
+
 
     @Override
     protected ITemplateResource computeTemplateResource(IEngineConfiguration configuration, String ownerTemplate
             , String template, Map<String, Object> templateResolutionAttributes) {
+        WidgetConfiguration widgetConfiguration = CMSContext.RequestContext()
+                .getWidgetConfigurationStack().pop();
+        Widget widget = widgetConfiguration.getWidget();
+        WidgetStyle style = widgetConfiguration.getStyle();
 
-        if (template.startsWith(EDITOR)) {
-            // 寻找控件
-            String subName = template.substring(EDITOR.length());
-            for (Widget widget : holder.getWidgetSet()) {
-                if (WidgetTestConfig.WidgetIdentity(widget).equals(subName))
-                    return new SpringResourceTemplateResource(widget.editorTemplate(), "UTF-8");
-            }
-            throw new IllegalStateException("can not find such widget id:" + subName);
+        switch (template) {
+            case EDITOR:
+                return new SpringResourceTemplateResource(widget.editorTemplate(), "UTF-8");
+            case PREVIEW:
+                // TODO previewTemplate 支持空
+                return new SpringResourceTemplateResource(style.previewTemplate(), "UTF-8");
+            case BROWSE:
+                return new SpringResourceTemplateResource(style.browseTemplate(), "UTF-8");
         }
-        if (template.startsWith(TEMPLATE)){
-            // 寻找控件
-            String subName = template.substring(TEMPLATE.length());
-            String sname[] = subName.split("/");
-            for (Widget widget : holder.getWidgetSet()) {
-                if (WidgetTestConfig.WidgetIdentity(widget).equals(sname[0]))
-                    for (WidgetStyle style : widget.styles())
-                    if (style.id().equals(sname[1])) {
-                        return new SpringResourceTemplateResource(style.browseTemplate(), "UTF-8");
-                    }
-            }
-            throw new IllegalStateException("can not find such widget id:" + subName);
-        }
-        // SpringResourceTemplateResource
         return null;
     }
 

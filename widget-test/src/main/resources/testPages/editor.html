@@ -8,7 +8,7 @@
   ~ 2013-2016. All rights reserved.
   -->
 
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:cms="http://cms.huobanplus.com" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Demo Editor</title>
@@ -25,7 +25,8 @@
 <!--/*@thymesVar id="widgetId" type="java.lang.String"*/-->
 <div id="editor">
 
-    <div w:replaceEditor="${widgetId},${styleId},${properties}" ></div>
+    <!--${properties} should be supported-->
+    <div cms:replaceEditor="${widgetId},${properties}"></div>
 </div>
 
 

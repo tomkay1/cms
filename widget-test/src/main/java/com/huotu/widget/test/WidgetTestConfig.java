@@ -10,10 +10,9 @@
 package com.huotu.widget.test;
 
 import com.huotu.hotcms.widget.Widget;
+import com.huotu.hotcms.widget.loader.WidgetLoaderConfig;
+import com.huotu.hotcms.widget.resolve.WidgetResolveServiceConfig;
 import com.huotu.widget.test.bean.WidgetHolder;
-import com.huotu.widget.test.bean.WidgetTemplateResolver;
-import com.huotu.widget.test.thymeleaf.process.ReplaceBrowseProcessor;
-import com.huotu.widget.test.thymeleaf.process.ReplaceEditorProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -34,7 +33,7 @@ import java.util.Set;
  * @author CJ
  */
 @EnableWebMvc
-@Import(WidgetTestConfig.ViewResolver.class)
+@Import({WidgetTestConfig.ViewResolver.class, WidgetResolveServiceConfig.class})
 @ComponentScan("com.huotu.widget.test.bean")
 public class WidgetTestConfig extends WebMvcConfigurerAdapter {
 
@@ -51,10 +50,10 @@ public class WidgetTestConfig extends WebMvcConfigurerAdapter {
         registry.viewResolver(normalViewResolver);
     }
 
-    @Bean
-    public SpringTemplateEngine springTemplateEngine(){
-        return new SpringTemplateEngine();
-    }
+//    @Bean
+//    public SpringTemplateEngine springTemplateEngine(){
+//        return new SpringTemplateEngine();
+//    }
 
 //    @Override
 //    public void addViewControllers(ViewControllerRegistry registry) {
@@ -63,14 +62,14 @@ public class WidgetTestConfig extends WebMvcConfigurerAdapter {
 //    }
 
     @DependsOn("widgetHolder")
-    @ComponentScan("com.huotu.widget.test.thymeleaf")
+    @Import(WidgetLoaderConfig.class)
     static class ViewResolver {
         @Autowired
         private WidgetHolder widgetHolder;
         @Autowired
         private ApplicationContext applicationContext;
-        @Autowired
-        private WidgetTemplateResolver widgetTemplateResolver;
+        //        @Autowired
+//        private WidgetTemplateResolver widgetTemplateResolver;
         @Autowired
         private Set<IDialect> dialectSet;
 
@@ -82,11 +81,11 @@ public class WidgetTestConfig extends WebMvcConfigurerAdapter {
             templateResolver.setPrefix("classpath:/testPages/");
             templateResolver.setSuffix(".html");
 
-            widgetTemplateResolver.setOrder(1);
+//            widgetTemplateResolver.setOrder(1);
 
-            SpringTemplateEngine engine = applicationContext.getBean(SpringTemplateEngine.class);
+            SpringTemplateEngine engine = new SpringTemplateEngine();
             engine.addTemplateResolver(templateResolver);
-            engine.addTemplateResolver(widgetTemplateResolver);
+//            engine.addTemplateResolver(widgetTemplateResolver);
             engine.setAdditionalDialects(dialectSet);
 
             ThymeleafViewResolver resolver = new ThymeleafViewResolver();

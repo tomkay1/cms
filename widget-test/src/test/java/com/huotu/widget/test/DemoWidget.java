@@ -55,8 +55,9 @@ public class DemoWidget implements Widget {
 
     @Override
     public Map<String, Resource> publicResources() {
-        Map<String , Resource> map = new HashMap<>();
-        map.put("thumbnail.png",new ClassPathResource("thumbnail.png",getClass().getClassLoader()));
+        Map<String, Resource> map = new HashMap<>();
+        map.put("thumbnail.png", new ClassPathResource("thumbnail.png", getClass().getClassLoader()));
+        map.put("other/thumbnail.png", new ClassPathResource("thumbnail.png", getClass().getClassLoader()));
         return map;
     }
 

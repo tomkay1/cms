@@ -13,14 +13,14 @@ import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.Widget;
-import com.huotu.hotcms.widget.WidgetService;
+import com.huotu.hotcms.widget.WidgetResolveService;
 
 import java.net.URI;
 
 /**
  * Created by elvis on 2016/6/7.
  */
-public class WidgetServiceImpl implements WidgetService {
+public class WidgetResolveServiceImpl implements WidgetResolveService {
     @Override
     public URI resourceURI(Widget widget, String resourceName) {
         return null;

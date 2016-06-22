@@ -7,7 +7,7 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.widget.test.thymeleaf.process;
+package com.huotu.hotcms.widget.loader.thymeleaf.process;
 
 import lombok.Getter;
 import lombok.Setter;

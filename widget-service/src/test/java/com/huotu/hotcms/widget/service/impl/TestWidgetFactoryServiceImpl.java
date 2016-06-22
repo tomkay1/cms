@@ -20,6 +20,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -37,6 +38,9 @@ public class TestWidgetFactoryServiceImpl {
 
     @Autowired
     private WidgetFactoryService widgetFactoryService;
+
+    @Autowired
+    private WebApplicationContext webApplicationContext;
 
     @Test
     public void testInstallWidget() throws IOException, FormatException {

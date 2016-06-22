@@ -10,7 +10,6 @@
 package com.huotu.hotcms.widget.service.impl;
 
 import com.huotu.hotcms.widget.InstalledWidget;
-import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import org.junit.Test;
@@ -20,9 +19,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -64,15 +61,13 @@ public class TestWidgetFactoryServiceImpl {
     }
 
     private void assertWidgetListContainWidgetName(String widgetId, String type) throws IOException, FormatException {
-        Widget newWidget = null;
         for (InstalledWidget widget : widgetFactoryService.widgetList()) {
             if (type.equals(widget.getType())) {
-                newWidget = widget.getWidget();
-                break;
+                assertThat(widget.getWidget().widgetId()).isEqualToIgnoringCase(widgetId);
+                return;
             }
         }
-        assertThat(newWidget).isNotNull();
-        assertThat(newWidget.widgetId()).isEqualToIgnoringCase(widgetId);
+        assertThat(0).isEqualTo(1);
     }
 
 //    @Test

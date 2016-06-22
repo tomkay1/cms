@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
@@ -44,13 +45,13 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
 
 
     @Override
-    public URI resourceURI(Widget widget, String resourceName) throws URISyntaxException {
+    public URI resourceURI(Widget widget, String resourceName) throws URISyntaxException, IOException {
         Map<String, Resource> publicResources = widget.publicResources();
         Resource resource = publicResources.get(resourceName);
-        log.info("uri:" + webApplicationContext.getServletContext().getRealPath("/") + "/" + resourceName);
-        if (resource != null)
-            return new URI(webApplicationContext.getServletContext().getRealPath("/") + "/" + resourceName);
-        return null;
+        return resource.getURI();
+//        if (resource!=null)
+//            return new URI(webApplicationContext.getServletContext().getRealPath("/")+"/"+resourceName);
+//        return null;
     }
 
     @Override

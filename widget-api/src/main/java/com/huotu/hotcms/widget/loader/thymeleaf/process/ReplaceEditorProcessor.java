@@ -16,7 +16,7 @@ import com.huotu.hotcms.widget.WidgetLocateService;
 import com.huotu.hotcms.widget.WidgetResolveService;
 import com.huotu.hotcms.widget.loader.thymeleaf.CMSDialect;
 import com.huotu.hotcms.widget.loader.thymeleaf.CMSProcessor;
-import com.huotu.hotcms.widget.loader.thymeleaf.ExpressionParsingNode;
+import com.huotu.hotcms.widget.support.ExpressionParsingNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;

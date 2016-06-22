@@ -33,13 +33,13 @@ public class ExpressionParsingUtilAccess {
      * @return 表达式List
      */
     @NotNull
-    public static List<com.huotu.hotcms.widget.loader.thymeleaf.ExpressionParsingNode>
+    public static List<com.huotu.hotcms.widget.support.ExpressionParsingNode>
     parsingNodes(ITemplateContext context, String input) {
         ExpressionParsingState state = ExpressionParsingUtil.decompose(input);
-        ArrayList<com.huotu.hotcms.widget.loader.thymeleaf.ExpressionParsingNode> nodes = new ArrayList<>();
+        ArrayList<com.huotu.hotcms.widget.support.ExpressionParsingNode> nodes = new ArrayList<>();
         // state 0 保存着是整个表达式的结构,这里我们先忽略。
         for (int i = 1; i < state.size(); i++) {
-            nodes.add(new com.huotu.hotcms.widget.loader.thymeleaf.ExpressionParsingNode(state.get(i).getInput()
+            nodes.add(new com.huotu.hotcms.widget.support.ExpressionParsingNode(state.get(i).getInput()
                     , state.get(i).getExpression()));
         }
         return nodes;

@@ -9,31 +9,31 @@
 
 package com.huotu.hotcms.widget.support;
 
-import lombok.Data;
 import org.thymeleaf.context.ITemplateContext;
-import org.thymeleaf.standard.expression.Expression;
 import org.thymeleaf.standard.expression.FragmentExpression;
+import org.thymeleaf.standard.expression.IStandardExpression;
+import org.thymeleaf.standard.expression.IStandardExpressionParser;
 import org.thymeleaf.standard.expression.StandardExpressionExecutionContext;
+import org.thymeleaf.standard.expression.StandardExpressions;
 
 /**
+ * 应用在Thymeleaf中表达式的一些工具
+ *
  * @author CJ
  */
-@Data
-public class ExpressionParsingNode {
-
-    private final String input;
-    private final Expression expression;
+public class ExpressionUtils {
 
     /**
-     * 解析表达式,如果失败就返回input
+     * 处理传入的表达式,并且计算它的结果,如果失败则返回表达式本身
      *
-     * @param context 处理表达式的上下文
-     * @return 表达式的结果或者可能是Input
+     * @param context 处理上下文
+     * @param input   表达式
+     * @return 表达式的结果或者表达式本身
      */
-    public Object executeElseInput(ITemplateContext context) {
+    public static Object ParseInputElseInput(ITemplateContext context, String input) {
+        IStandardExpressionParser parser = StandardExpressions.getExpressionParser(context.getConfiguration());
         try {
-            if (expression == null)
-                return null;
+            IStandardExpression expression = parser.parseExpression(context, input);
             if (expression instanceof FragmentExpression) {
                 // This is merely a FragmentExpression (not complex, not combined with anything), so we can apply a shortcut
                 // so that we don't require a "null" result for this expression if the template does not exist. That will

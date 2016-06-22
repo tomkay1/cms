@@ -40,7 +40,7 @@ import com.huotu.hotcms.service.util.HttpUtils;
 import com.huotu.hotcms.service.util.PageData;
 import com.huotu.hotcms.service.util.SerialUtil;
 import com.huotu.hotcms.service.widget.service.PageResolveService;
-import com.huotu.hotcms.service.widget.service.StaticResourceService;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.codehaus.plexus.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -74,7 +74,7 @@ public class SiteServiceImpl implements SiteService {
     ConfigInfo configInfo;
 
     @Autowired
-    StaticResourceService resourceService;
+    ResourceService resourceService;
 
     @Autowired
     PageResolveService pageResolveService;
@@ -167,7 +167,7 @@ public class SiteServiceImpl implements SiteService {
         List<CustomPages> customPages=customPagesRepository.findBySite(templateSite);
         for(CustomPages customPage:customPages){
             String templateResourceConfigUrl = configInfo.getResourcesConfig(templateSite) + "/" + customPage.getId() + ".xml";
-            URI url = resourceService.getResource(templateResourceConfigUrl);
+            URI url = resourceService.getResource(templateResourceConfigUrl).httpUrl().toURI();
             InputStream inputStream = HttpUtils.getInputStreamByUrl(url.toURL());
             WidgetPage widgetPage = JAXB.unmarshal(inputStream, WidgetPage.class);
             pageResolveService.createPageAndConfigByWidgetPage(widgetPage,

@@ -2,8 +2,9 @@
  * 版权所有:杭州火图科技有限公司
  * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
  *
- *  (c) Copyright Hangzhou Hot Technology Co., Ltd.
- *  Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District 2013-2015. All rights reserved.
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
  */
 
 package com.huotu.hotcms.service.thymeleaf.templateresource;
@@ -20,38 +21,27 @@ import com.huotu.hotcms.service.service.impl.CustomPagesServiceImpl;
 import com.huotu.hotcms.service.service.impl.FailPageServiceImpl;
 import com.huotu.hotcms.service.service.impl.SiteServiceImpl;
 import com.huotu.hotcms.service.util.DesEncryption;
-import com.huotu.hotcms.service.util.StringUtil;
 import com.huotu.hotcms.service.widget.service.PageResolveService;
 import com.huotu.hotcms.service.widget.service.PageResourceService;
 import com.huotu.hotcms.service.widget.service.PageStaticResourceService;
 import com.huotu.hotcms.service.widget.service.impl.OfficialSitePageStaticResourceService;
 import com.huotu.hotcms.service.widget.service.impl.ShopPageStaticResourceService;
-import jdk.nashorn.internal.runtime.regexp.joni.EncodingHelper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.vfs2.util.EncryptUtil;
-import org.apache.logging.log4j.core.jmx.Server;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.Resource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter;
-import org.thymeleaf.ITemplateEngine;
 import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.IContext;
-import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresource.ITemplateResource;
 import org.thymeleaf.util.Validate;
-import sun.security.krb5.EncryptedData;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.*;
-import java.net.URLEncoder;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 
 /**
  * 组件模板资源
@@ -59,34 +49,22 @@ import java.net.URLEncoder;
  */
 public class WidgetTemplateResource implements ITemplateResource {
     private static final Log log = LogFactory.getLog(WidgetTemplateResource.class);
-    private String location;//编辑格式如下{siteId}_{pageConfigName}.shtml
     private final String version = "1.1";
-
+    //  private final Resource resource;
+    private final String characterEncoding;
+    private String location;//编辑格式如下{siteId}_{pageConfigName}.shtml
     private PageStaticResourceService pageStaticResourceService;
-
     private HttpServletRequest request;
-
     private String WIDGET_RESOURCES="";
-
     private String BROWSE_RESOURCES="";
-
     private PageResourceService pageResourceService;
-
     private PageResolveService pageResolveService;
-
     private CustomPagesServiceImpl customPagesService;
-
     private FailPageService failPageService;
-
-
     private SiteServiceImpl siteService;
     private ThymeleafViewResolver widgetViewResolver;
     private String URI_PREFIX;
     private TemplateEngine templateEngine;
-
-    //  private final Resource resource;
-    private final String characterEncoding;
-
     private ApplicationContext applicationContext;
 
     public WidgetTemplateResource(){
@@ -118,6 +96,24 @@ public class WidgetTemplateResource implements ITemplateResource {
             }
         }
         this.WIDGET_RESOURCES=pageStaticResourceService.getWidgetResources(this.URI_PREFIX,this.version);
+    }
+
+    static String computeBaseName(final String path) {
+        if (path == null) {
+            return null;
+        }
+        // First remove a trailing '/' if it exists
+        final String basePath = (path.charAt(path.length() - 1) == '/' ? path.substring(0, path.length() - 1) : path);
+
+        final int slashPos = basePath.lastIndexOf('/');
+        if (slashPos != -1) {
+            final int dotPos = basePath.lastIndexOf('.');
+            if (dotPos != -1 && dotPos > slashPos + 1) {
+                return basePath.substring(slashPos + 1, dotPos);
+            }
+            return basePath.substring(slashPos + 1);
+        }
+        return basePath;
     }
 
     /**
@@ -241,7 +237,6 @@ public class WidgetTemplateResource implements ITemplateResource {
         return cssResources;
     }
 
-
     private String getBrowseTemplate(WidgetPage widgetPage, Site site) throws Exception {
         String htmlTemplate = pageResourceService.getHtmlTemplateByWidgetPage(widgetPage, false, site);
         if (widgetPage.getPageEnabledHead() != null) {
@@ -308,31 +303,13 @@ public class WidgetTemplateResource implements ITemplateResource {
         return new StringReader(htmlTemplate);
     }
 
-    @Override
-    public ITemplateResource relative(String relativeLocation) {
-        return null;
-    }
-
 //    @Override
 //    public ITemplateResource relative(final String relativeLocation) throws IOException {
 //        return null;
 //    }
 
-    static String computeBaseName(final String path) {
-        if (path == null) {
-            return null;
-        }
-        // First remove a trailing '/' if it exists
-        final String basePath = (path.charAt(path.length() - 1) == '/' ? path.substring(0, path.length() - 1) : path);
-
-        final int slashPos = basePath.lastIndexOf('/');
-        if (slashPos != -1) {
-            final int dotPos = basePath.lastIndexOf('.');
-            if (dotPos != -1 && dotPos > slashPos + 1) {
-                return basePath.substring(slashPos + 1, dotPos);
-            }
-            return basePath.substring(slashPos + 1);
-        }
-        return basePath;
+    @Override
+    public ITemplateResource relative(String relativeLocation) {
+        return null;
     }
 }

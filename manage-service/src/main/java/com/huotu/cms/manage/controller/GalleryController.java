@@ -19,7 +19,7 @@ import com.huotu.hotcms.service.service.GalleryService;
 import com.huotu.hotcms.service.util.PageData;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
-import com.huotu.hotcms.service.widget.service.StaticResourceService;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +53,7 @@ public class GalleryController {
     private GalleryListService galleryListService;
 
     @Autowired
-    private StaticResourceService resourceServer;
+    private ResourceService resourceService;
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -71,7 +71,7 @@ public class GalleryController {
             Gallery gallery = galleryService.findById(id);
             String logo_uri = "";
             if (!StringUtils.isEmpty(gallery.getThumbUri())) {
-                logo_uri = resourceServer.getResource(gallery.getThumbUri()).toString();
+                logo_uri = resourceService.getResource(gallery.getThumbUri()).httpUrl().toString();
             }
             modelAndView.addObject("logo_uri", logo_uri);
             modelAndView.addObject("gallery", gallery);
@@ -107,7 +107,7 @@ public class GalleryController {
             if (galleryServicePage != null) {//先取得分页page再进行转化
                 List<GalleryList> galleryLists = galleryServicePage.getContent();
                 for (GalleryList gallery : galleryLists) {
-                    gallery.setThumbUri(resourceServer.getResource(gallery.getThumbUri()).toString());
+                    gallery.setThumbUri(resourceService.getResource(gallery.getThumbUri()).httpUrl().toString());
                     gallery.setGallery(null);
                 }
                 pageModel = new PageData<>();
@@ -151,7 +151,7 @@ public class GalleryController {
             Gallery gallery = galleryService.findById(id);
             String logo_uri = "";
             if (!StringUtils.isEmpty(gallery.getThumbUri())) {
-                logo_uri = resourceServer.getResource(gallery.getThumbUri()).toString();
+                logo_uri = resourceService.getResource(gallery.getThumbUri()).httpUrl().toString();
             }
             Category category = gallery.getCategory();
             Integer modelType = category.getModelId();
@@ -176,7 +176,7 @@ public class GalleryController {
             GalleryList galleryList = galleryListService.findGalleryListById(id);
             String logo_uri = "";
             if (!StringUtils.isEmpty(galleryList.getThumbUri())) {
-                logo_uri = resourceServer.getResource(galleryList.getThumbUri()).toString();
+                logo_uri = resourceService.getResource(galleryList.getThumbUri()).httpUrl().toString();
             }
             modelAndView.addObject("logo_uri", logo_uri);
             modelAndView.addObject("galleryList", galleryList);

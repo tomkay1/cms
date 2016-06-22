@@ -10,6 +10,7 @@
 package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.authorize.annoation.AuthorizeRole;
+import com.huotu.cms.manage.controller.support.AbstractSiteSupperController;
 import com.huotu.cms.manage.util.web.CookieUser;
 import com.huotu.hotcms.service.common.EnumUtils;
 import com.huotu.hotcms.service.common.SiteType;
@@ -27,7 +28,7 @@ import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.util.PageData;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
-import com.huotu.hotcms.service.widget.service.StaticResourceService;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +57,7 @@ import java.util.Set;
  */
 @Controller
 @RequestMapping("/manage/supper")
-public class SupperController {
+public class SupperController extends AbstractSiteSupperController {
     private static final Log log = LogFactory.getLog(SupperController.class);
 
     @Autowired
@@ -69,7 +70,7 @@ public class SupperController {
     private RegionRepository regionRepository;
 
     @Autowired
-    private StaticResourceService resourceServer;
+    private ResourceService resourceService;
 
     @Autowired
     private CookieUser cookieUser;
@@ -174,7 +175,7 @@ public class SupperController {
                 site = (Site) result.getData();
                 String resourceUrl = site.getResourceUrl();
                 if (StringUtils.isEmpty(resourceUrl)) {
-                    resourceUrl = resourceServer.getResource("").toString();
+                    resourceUrl = resourceService.getResource("").httpUrl().toString();
                 }
                 site.setResourceUrl(resourceUrl);
                 if (siteId != null) {
@@ -232,27 +233,7 @@ public class SupperController {
         try {
             modelAndView.setViewName("/view/supper/updateSite.html");
             String logo_uri = "";
-            if (id != 0) {
-                Site site = siteService.getSite(id);
-                if (site != null) {
-                    if (!StringUtils.isEmpty(site.getLogoUri())) {
-                        logo_uri = resourceServer.getResource(site.getLogoUri()).toString();
-                    }
-                    modelAndView.addObject("site", site);
-                    modelAndView.addObject("logo_uri", logo_uri);
-                    Set<Host> hosts = site.getHosts();
-                    String domains = "";
-                    for (Host host : hosts) {
-                        String domain = host.getDomain();
-                        domains = domains + domain + ",";
-                    }
-                    Region region = site.getRegion();
-                    modelAndView.addObject("siteTypes", SiteType.values());
-                    modelAndView.addObject("region", region);
-                    modelAndView.addObject("homeDomain", hostService.getHomeDomain(site));
-                    modelAndView.addObject("domains", domains.substring(0, domains.length() - 1));
-                }
-            }
+            someThing(id, modelAndView, logo_uri);
         } catch (Exception ex) {
             log.error(ex.getMessage());
         }

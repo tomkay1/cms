@@ -17,7 +17,7 @@ import com.huotu.hotcms.service.repository.DownloadRepository;
 import com.huotu.hotcms.service.service.DownloadService;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
-import com.huotu.hotcms.service.widget.service.StaticResourceService;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +49,7 @@ public class DownloadController {
     private DownloadRepository downloadRepository;
 
     @Autowired
-    private StaticResourceService resourceServer;
+    private ResourceService resourceService;
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -110,7 +110,7 @@ public class DownloadController {
             Set<Category> categorys = categoryRepository.findBySite_Owner_IdAndModelId(ownerId, modelType);
             String downloadFile = "";
             if (!StringUtils.isEmpty(download.getDownloadUrl())) {
-                downloadFile = resourceServer.getResource(download.getDownloadUrl()).toString();
+                downloadFile = resourceService.getResource(download.getDownloadUrl()).httpUrl().toString();
             }
             modelAndView.addObject("downloadFile", downloadFile);
             modelAndView.addObject("categorys", categorys);

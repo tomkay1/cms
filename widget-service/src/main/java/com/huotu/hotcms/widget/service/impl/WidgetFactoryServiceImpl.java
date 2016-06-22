@@ -209,14 +209,15 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService {
     }
 
     public void updateWidget(Widget widget) {
-        WidgetInfo widgetInfo = widgetRepository.findByWidgetIdAndVersion(widget.widgetId(), widget.version());
-        if (widgetInfo != null) {
-            widgetInfo.setGroupId(widget.groupId());
-            widgetInfo.setName(widget.name());
-            widgetInfo.setDependBuild(widget.dependBuild() + "");
-            widgetInfo.setAuthor(widget.author());
-            widgetRepository.saveAndFlush(widgetInfo);
-        }
+        throw new IllegalStateException("not support yet");
+//        WidgetInfo widgetInfo = widgetRepository.findByWidgetIdAndVersion(widget.widgetId(), widget.version());
+//        if (widgetInfo != null) {
+//            widgetInfo.setGroupId(widget.groupId());
+//            widgetInfo.setName(widget.name());
+//            widgetInfo.setDependBuild(widget.dependBuild() + "");
+//            widgetInfo.setAuthor(widget.author());
+//            widgetRepository.saveAndFlush(widgetInfo);
+//        }
     }
 
     @Override

@@ -16,7 +16,6 @@ import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetService;
 import com.huotu.hotcms.widget.WidgetStyle;
 import com.huotu.widget.test.bean.PublicStackHolder;
-import com.huotu.widget.test.bean.WidgetHolder;
 import com.huotu.widget.test.service.WidgetConfiguration;
 import com.huotu.widget.test.service.WidgetContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 import org.thymeleaf.spring4.SpringTemplateEngine;
-
 import java.io.IOException;
 import java.net.URI;
 import java.util.Collections;
@@ -72,7 +70,7 @@ public class TestWidgetService implements WidgetService {
         WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
                 , widget, style, webApplicationContext.getServletContext(), properties);
         WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();
-        Stack<WidgetConfiguration> stack = new Stack();
+        Stack<WidgetConfiguration> stack = new Stack<>();
         stack.push(widgetConfiguration);
         PublicStackHolder.putStack(stack);
         return widgetTemplateEngine.process(WidgetTemplateResolver.PREVIEW
@@ -85,7 +83,7 @@ public class TestWidgetService implements WidgetService {
         WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
                 , widget, null, webApplicationContext.getServletContext(), properties);
         WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();
-        Stack<WidgetConfiguration> stack = new Stack();
+        Stack<WidgetConfiguration> stack = new Stack<>();
         stack.push(widgetConfiguration);
         PublicStackHolder.putStack(stack);
         return widgetTemplateEngine.process(WidgetTemplateResolver.EDITOR
@@ -109,7 +107,7 @@ public class TestWidgetService implements WidgetService {
         WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
                 , component.getWidget().getWidget(), style, webApplicationContext.getServletContext(), component.getProperties());
         WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();
-        Stack<WidgetConfiguration> stack = new Stack();
+        Stack<WidgetConfiguration> stack = new Stack<>();
         stack.push(widgetConfiguration);
         PublicStackHolder.putStack(stack);
         return widgetTemplateEngine.process(WidgetTemplateResolver.BROWSE

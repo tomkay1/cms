@@ -9,7 +9,6 @@
 
 package com.huotu.hotcms.widget;
 
-import org.thymeleaf.context.IContext;
 import org.thymeleaf.context.WebEngineContext;
 
 import java.net.URI;

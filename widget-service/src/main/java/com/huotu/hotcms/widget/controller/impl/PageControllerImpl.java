@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.UUID;
 
 /**
  * Created by hzbc on 2016/5/27.
@@ -29,11 +30,9 @@ public class PageControllerImpl implements PageController {
     @ResponseBody
     @Override
     public Page getPage(@PathVariable long ownerId){
-        //TODO 其他逻辑
-
         Page page=new Page();
-//        page.setModel(new Random().nextInt(100));
-//        page.setTest(UUID.randomUUID().toString());
+        page.setPageIdentity(UUID.randomUUID().toString());
+        page.setTitle(UUID.randomUUID().toString());
         return page;
     }
 

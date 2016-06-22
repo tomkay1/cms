@@ -11,6 +11,11 @@ package com.huotu.hotcms.widget.page;
 
 import lombok.Data;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * 页面
  * <p>
@@ -20,11 +25,14 @@ import lombok.Data;
  * @author CJ
  */
 @Data
+@Entity
+@Table(name = "cms_page")
 public class Page {
 
     /**
      * 该页面的唯一ID，字符串
      */
+    @Id @Column(name = "pageIdentity")
     private String pageIdentity;
 
     private String title;

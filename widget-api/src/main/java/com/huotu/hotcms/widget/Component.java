@@ -24,11 +24,15 @@ public class Component implements PageElement {
 
     private static final Log log = LogFactory.getLog(Component.class);
 
+    private String widgetIdentity;
+
     private InstalledWidget widget;
 
     private String styleId;
 
     private ComponentProperties properties;
+
+    private String previewHTML;
 
     public WidgetStyle currentStyle() {
         if (styleId == null) {

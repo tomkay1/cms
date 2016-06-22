@@ -19,7 +19,4 @@ package com.huotu.hotcms.widget.page;
  */
 public interface PageElement {
 
-
-
-
 }

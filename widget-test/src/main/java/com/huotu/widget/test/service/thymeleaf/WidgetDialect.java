@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.dialect.AbstractDialect;
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.processor.IProcessor;
+import org.thymeleaf.standard.processor.StandardXmlNsTagProcessor;
+import org.thymeleaf.templatemode.TemplateMode;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -48,6 +50,7 @@ public class WidgetDialect extends AbstractDialect implements IProcessorDialect 
 
         HashSet<IProcessor> iProcessors = new HashSet<>();
         iProcessors.addAll(CMSProcessors);
+        iProcessors.add(new StandardXmlNsTagProcessor(TemplateMode.HTML, dialectPrefix));
         return Collections.unmodifiableSet(iProcessors);
     }
 }

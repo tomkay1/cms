@@ -9,101 +9,35 @@
 
 package com.huotu.hotcms.widget.service.impl;
 
-import com.huotu.hotcms.widget.*;
-import com.huotu.widget.test.bean.PublicStackHolder;
-import com.huotu.widget.test.service.WidgetConfiguration;
-import com.huotu.widget.test.service.WidgetContext;
-import com.huotu.widget.test.service.impl.WidgetTemplateResolver;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.web.context.WebApplicationContext;
-import org.thymeleaf.spring4.SpringTemplateEngine;
-import java.io.IOException;
+import com.huotu.hotcms.widget.CMSContext;
+import com.huotu.hotcms.widget.Component;
+import com.huotu.hotcms.widget.ComponentProperties;
+import com.huotu.hotcms.widget.Widget;
+import com.huotu.hotcms.widget.WidgetService;
+
 import java.net.URI;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Stack;
 
 /**
  * Created by elvis on 2016/6/7.
  */
 public class WidgetServiceImpl implements WidgetService {
-
-    @Autowired
-    private WebApplicationContext webApplicationContext;
-
-    @Autowired
-    private SpringTemplateEngine widgetTemplateEngine;
-
-
     @Override
     public URI resourceURI(Widget widget, String resourceName) {
-        Map<String ,Resource> publicResources = widget.publicResources();
-        Resource resource = publicResources.get(resourceName);
-        try {
-            return resource.getURI();
-        } catch (IOException e) {
-        }
         return null;
     }
 
     @Override
     public String previewHTML(Widget widget, String styleId, CMSContext cmsContext, ComponentProperties properties) {
-        WidgetStyle style = null;
-        for (WidgetStyle style1 : widget.styles()) {
-            if (style1.id().equals(styleId)) {
-                style = style1;
-                break;
-            }
-        }
-        if (style == null) {
-            style = widget.styles()[0];
-        }
-
-        WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
-                , widget, style, webApplicationContext.getServletContext(), properties);
-        WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();
-        Stack<WidgetConfiguration> stack = new Stack();
-        stack.push(widgetConfiguration);
-        PublicStackHolder.putStack(stack);
-        return widgetTemplateEngine.process(WidgetTemplateResolver.PREVIEW
-                , Collections.singleton("div"), widgetContext);
+        return null;
     }
 
     @Override
     public String editorHTML(Widget widget, CMSContext cmsContext, ComponentProperties properties) {
-        //构造控件专用的上下文
-        WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
-                , widget, null, webApplicationContext.getServletContext(), properties);
-        WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();
-        Stack<WidgetConfiguration> stack = new Stack();
-        stack.push(widgetConfiguration);
-        PublicStackHolder.putStack(stack);
-        return widgetTemplateEngine.process(WidgetTemplateResolver.EDITOR
-                , Collections.singleton("div"), widgetContext);
+        return null;
     }
 
     @Override
     public String componentHTML(Component component, CMSContext cmsContext) {
-        WidgetStyle style = null;
-        for (WidgetStyle style1 : component.getWidget().getWidget().styles()) {
-            if (style1.id().equals(component.getStyleId())) {
-                style = style1;
-                break;
-            }
-        }
-
-        if (style == null) {
-            style = component.getWidget().getWidget().styles()[0];
-        }
-
-        WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
-                , component.getWidget().getWidget(), style, webApplicationContext.getServletContext(), component.getProperties());
-        WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();
-        Stack<WidgetConfiguration> stack = new Stack();
-        stack.push(widgetConfiguration);
-        PublicStackHolder.putStack(stack);
-        return widgetTemplateEngine.process(WidgetTemplateResolver.BROWSE
-                , Collections.singleton("div"), widgetContext);
+        return null;
     }
 }

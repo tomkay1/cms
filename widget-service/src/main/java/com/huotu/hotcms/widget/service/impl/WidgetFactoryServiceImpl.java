@@ -9,10 +9,10 @@
 
 package com.huotu.hotcms.widget.service.impl;
 
-import com.huotu.hotcms.widget.entity.WidgetInfo;
-import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.Widget;
+import com.huotu.hotcms.widget.entity.WidgetInfo;
+import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.repository.WidgetRepository;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import com.huotu.hotcms.widget.util.ClassLoaderUtil;
@@ -29,12 +29,16 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -47,12 +51,11 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService {
     private static final Log log = LogFactory.getLog(CSSServiceImpl.class);
 
     private static final String PRIVATE_REPO = "http://repo.51flashmall.com:8081/nexus/content/groups/public/%s/%s/%s";
-
+    public List<InstalledWidget> installedWidgets = new ArrayList<>();
     @Autowired
     private WebApplicationContext webApplicationContext;
-
-    public List<InstalledWidget> installedWidgets = new ArrayList<>();
-
+    @Autowired
+    private WidgetRepository widgetRepository;
 
     /**
      * 得到jar 在本地存储的真实路径
@@ -231,9 +234,6 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService {
             throw new FormatException(e.toString());
         }
     }
-
-    @Autowired
-    private WidgetRepository widgetRepository;
 
 
     @Override

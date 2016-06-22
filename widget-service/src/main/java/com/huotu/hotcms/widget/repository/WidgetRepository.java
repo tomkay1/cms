@@ -26,4 +26,5 @@ public interface WidgetRepository extends JpaRepository<WidgetInfo, Long>,JpaSpe
 
     WidgetInfo findByWidgetIdAndVersion(String widgetId,String version);
 
+    WidgetInfo findByWidgetIdAndGroupIdAndVersion(String widgetId, String groupId, String version);
 }

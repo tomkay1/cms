@@ -18,7 +18,6 @@ import com.huotu.hotcms.widget.loader.thymeleaf.CMSDialect;
 import com.huotu.hotcms.widget.loader.thymeleaf.CMSProcessor;
 import com.huotu.hotcms.widget.support.ExpressionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.context.IContext;
 import org.thymeleaf.context.ITemplateContext;
@@ -47,9 +46,6 @@ public class ReplaceEditorProcessor extends AbstractAttributeTagProcessor implem
 
     @Autowired
     private WidgetLocateService widgetLocateService;
-
-    @Autowired
-    private ApplicationContext applicationContext;
 
     @Autowired
     private WidgetResolveService widgetResolveService;

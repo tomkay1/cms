@@ -15,14 +15,16 @@ import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetService;
 
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * Created by elvis on 2016/6/7.
  */
 public class WidgetServiceImpl implements WidgetService {
     @Override
-    public URI resourceURI(Widget widget, String resourceName) {
+    public URI resourceURI(Widget widget, String resourceName) throws URISyntaxException, IOException {
         return null;
     }
 

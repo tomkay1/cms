@@ -18,7 +18,6 @@ import com.huotu.hotcms.widget.WidgetStyle;
 import com.huotu.widget.test.bean.PublicStackHolder;
 import com.huotu.widget.test.service.WidgetConfiguration;
 import com.huotu.widget.test.service.WidgetContext;
-import jdk.nashorn.internal.runtime.Logging;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +25,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 import org.thymeleaf.spring4.SpringTemplateEngine;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -48,13 +48,13 @@ public class TestWidgetService implements WidgetService {
 
 
     @Override
-    public URI resourceURI(Widget widget, String resourceName) throws URISyntaxException {
+    public URI resourceURI(Widget widget, String resourceName) throws URISyntaxException, IOException {
         Map<String, Resource> publicResources = widget.publicResources();
         Resource resource = publicResources.get(resourceName);
-        log.info("uri:"+webApplicationContext.getServletContext().getRealPath("/")+"/"+resourceName);
-        if (resource!=null)
-            return new URI(webApplicationContext.getServletContext().getRealPath("/")+"/"+resourceName);
-        return null;
+        return resource.getURI();
+//        if (resource!=null)
+//            return new URI(webApplicationContext.getServletContext().getRealPath("/")+"/"+resourceName);
+//        return null;
     }
 
     @Override

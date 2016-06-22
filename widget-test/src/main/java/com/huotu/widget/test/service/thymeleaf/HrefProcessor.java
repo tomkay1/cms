@@ -25,9 +25,9 @@ import org.thymeleaf.processor.element.IElementTagStructureHandler;
 import org.thymeleaf.standard.expression.FragmentExpression;
 import org.thymeleaf.standard.expression.IStandardExpression;
 import org.thymeleaf.standard.expression.StandardExpressionExecutionContext;
-import org.thymeleaf.standard.processor.AbstractStandardExpressionAttributeTagProcessor;
 import org.thymeleaf.templatemode.TemplateMode;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 
 /**
@@ -82,7 +82,7 @@ public class HrefProcessor extends AbstractAttributeTagProcessor implements IEle
         try {
             structureHandler.replaceAttribute(attributeName,attributeName.getAttributeName()
                     ,widgetService.resourceURI(widget,attributeValue).toString());
-        } catch (URISyntaxException e) {
+        } catch (IOException | URISyntaxException e) {
             structureHandler.replaceAttribute(attributeName,attributeName.getAttributeName()
                     ,attributeValue);
         }

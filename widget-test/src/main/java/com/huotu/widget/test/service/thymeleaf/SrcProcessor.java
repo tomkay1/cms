@@ -28,6 +28,7 @@ import org.thymeleaf.standard.expression.IStandardExpression;
 import org.thymeleaf.standard.expression.StandardExpressionExecutionContext;
 import org.thymeleaf.templatemode.TemplateMode;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 
 /**
@@ -87,7 +88,7 @@ public class SrcProcessor extends AbstractAttributeTagProcessor implements IElem
         try {
             structureHandler.replaceAttribute(attributeName,attributeName.getAttributeName()
                     ,widgetService.resourceURI(widget,attributeValue).toString());
-        } catch (URISyntaxException e) {
+        } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
     }

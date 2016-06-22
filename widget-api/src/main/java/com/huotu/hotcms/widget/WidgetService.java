@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.widget;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -24,7 +25,7 @@ public interface WidgetService {
      * @param resourceName 资源名称
      * @return 资源uri, 假设项目运行的context为 /foo  资源uri 为 /bar.png  则完整的url为 http://host:port/foo/bar.png
      */
-    URI resourceURI(Widget widget,String resourceName) throws URISyntaxException;
+    URI resourceURI(Widget widget, String resourceName) throws URISyntaxException, IOException;
 
     /**
      * 生成预览HTML代码

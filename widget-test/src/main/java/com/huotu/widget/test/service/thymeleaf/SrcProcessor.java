@@ -17,29 +17,34 @@ import org.springframework.stereotype.Component;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.engine.AttributeDefinitions;
 import org.thymeleaf.engine.AttributeName;
+import org.thymeleaf.engine.EngineEventUtils;
 import org.thymeleaf.engine.IAttributeDefinitionsAware;
 import org.thymeleaf.model.IProcessableElementTag;
+import org.thymeleaf.processor.element.AbstractAttributeTagProcessor;
 import org.thymeleaf.processor.element.IElementTagProcessor;
 import org.thymeleaf.processor.element.IElementTagStructureHandler;
-import org.thymeleaf.standard.processor.AbstractStandardExpressionAttributeTagProcessor;
+import org.thymeleaf.standard.expression.FragmentExpression;
+import org.thymeleaf.standard.expression.IStandardExpression;
+import org.thymeleaf.standard.expression.StandardExpressionExecutionContext;
 import org.thymeleaf.templatemode.TemplateMode;
 
 /**
  * @author CJ
  */
 @Component
-public class SrcProcessor extends AbstractStandardExpressionAttributeTagProcessor implements IElementTagProcessor
-        , IAttributeDefinitionsAware,WidgetProcessor {
+public class SrcProcessor extends AbstractAttributeTagProcessor implements IElementTagProcessor
+        , IAttributeDefinitionsAware, WidgetProcessor {
 
     @Autowired
-    ApplicationContext applicationContext;
+    private ApplicationContext applicationContext;
     @Autowired
-    WidgetService widgetService;
+    private WidgetService widgetService;
     private AttributeDefinitions attributeDefinitions;
 
 
     public SrcProcessor() {
-        super(TemplateMode.HTML, WidgetDialect.Prefix, "src", 10000, true);
+        super(TemplateMode.HTML, WidgetDialect.Prefix, null, true, "src", true, 10000, false);
+//        super(TemplateMode.HTML, WidgetDialect.Prefix, "src", 10000, true);
     }
 
 
@@ -48,19 +53,34 @@ public class SrcProcessor extends AbstractStandardExpressionAttributeTagProcesso
         this.attributeDefinitions = attributeDefinitions;
     }
 
-    /**
-     * @param context
-     * @param tag
-     * @param attributeName
-     * @param attributeValue   原值 针对 {@link Widget#publicResources()}  的key
-     * @param expressionResult
-     * @param structureHandler
-     */
     @Override
     protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName
-            , String attributeValue, Object expressionResult, IElementTagStructureHandler structureHandler) {
+            , String attributeValue, IElementTagStructureHandler structureHandler) {
+        String resourceName;
+
+        try {
+            final IStandardExpression expression = EngineEventUtils.computeAttributeExpression(context, tag, attributeName, attributeValue);
+            if (expression != null && expression instanceof FragmentExpression) {
+                // This is merely a FragmentExpression (not complex, not combined with anything), so we can apply a shortcut
+                // so that we don't require a "null" result for this expression if the template does not exist. That will
+                // save a call to resource.exists() which might be costly.
+
+                final FragmentExpression.ExecutedFragmentExpression executedFragmentExpression =
+                        FragmentExpression.createExecutedFragmentExpression(context, (FragmentExpression) expression, StandardExpressionExecutionContext.NORMAL);
+
+                resourceName =
+                        FragmentExpression.resolveExecutedFragmentExpression(context, executedFragmentExpression, true).toString();
+
+            } else if (expression != null) {
+                resourceName = expression.execute(context).toString();
+            } else
+                resourceName = attributeValue;
+        } catch (Exception ex) {
+            resourceName = attributeValue;
+        }
+
         Widget widget = (Widget) context.getVariable("widget");
-        structureHandler.replaceAttribute(attributeName,attributeName.getAttributeName()
-                ,widgetService.resourceURI(widget,attributeValue).toString());
+        structureHandler.replaceAttribute(attributeName, attributeName.getAttributeName()
+                , widgetService.resourceURI(widget, resourceName).toString());
     }
 }

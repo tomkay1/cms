@@ -56,8 +56,6 @@ public class TestWidgetFactoryServiceImpl {
         widgetFactoryService.updateWidget("com.huotu.hotcms.widget.picCarousel", "picCarousel", "1.0-SNAPSHOT", randomType);
 
         assertWidgetListContainWidgetName("picCarousel", randomType);
-
-
     }
 
     private void assertWidgetListContainWidgetName(String widgetId, String type) throws IOException, FormatException {

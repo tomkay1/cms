@@ -240,9 +240,8 @@ public abstract class WidgetTest extends SpringWebTest {
         //图片资源必须是 106x82 png
         try {
             BufferedImage thumbnail = ImageIO.read(widgetStyle.thumbnail().getInputStream());
-//            assertThat((float) thumbnail.getWidth() / (float) thumbnail.getHeight())
-//                    .as("缩略图必须为106*82的PNG图片")
-//                    .isEqualTo(106f / 82f);
+            assertThat(thumbnail)
+                    .as("缩略图必须为106*82的PNG图片").isNotNull();
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }

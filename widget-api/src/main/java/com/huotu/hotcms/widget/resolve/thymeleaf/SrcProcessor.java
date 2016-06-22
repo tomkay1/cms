@@ -65,6 +65,8 @@ public class SrcProcessor extends AbstractAttributeTagProcessor implements IElem
                     , widgetResolveService.resourceURI(widget, resourceName).toString());
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
+            structureHandler.replaceAttribute(attributeName, attributeName.getAttributeName()
+                    , resourceName);
         }
     }
 }

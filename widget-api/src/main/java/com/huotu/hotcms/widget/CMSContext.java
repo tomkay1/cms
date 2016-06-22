@@ -36,7 +36,7 @@ public class CMSContext {
 
     private static final Log log = LogFactory.getLog(CMSContext.class);
 
-//    /**
+    //    /**
 //     * CMS站点所有者Id,必选
 //     */
 //    private long ownerId;
@@ -44,7 +44,7 @@ public class CMSContext {
 //     * 商户id,可选
 //     */
 //    private Long merchantId;
-private final static ThreadLocal<CMSContext> contexts = new ThreadLocal<>();
+    private final static ThreadLocal<CMSContext> contexts = new ThreadLocal<>();
     /**
      * 内部使用
      */

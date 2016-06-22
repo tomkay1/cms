@@ -65,7 +65,7 @@ private final static ThreadLocal<CMSContext> contexts = new ThreadLocal<>();
         CMSContext cmsContext = contexts.get();
         if (cmsContext == null) {
             log.error("NO CMSContext Stored!!");
-            throw new IllegalStateException("StoreContext before RequestContext!");
+            throw new IllegalStateException("StoreContext before RequestContext! Please Use CMSFilter!");
         }
         return cmsContext;
     }

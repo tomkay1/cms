@@ -81,8 +81,8 @@ public class HrefProcessor extends AbstractAttributeTagProcessor implements IEle
         Widget widget = (Widget) context.getVariable("widget");
         try {
             structureHandler.replaceAttribute(attributeName,attributeName.getAttributeName()
-                    , widgetResolveService.resourceURI(widget, attributeValue).toString());
-        } catch (URISyntaxException e) {
+                    , widgetResolveService.resourceURI(widget, resourceName).toString());
+        } catch (IOException | URISyntaxException e) {
             structureHandler.replaceAttribute(attributeName,attributeName.getAttributeName()
                     ,attributeValue);
         }

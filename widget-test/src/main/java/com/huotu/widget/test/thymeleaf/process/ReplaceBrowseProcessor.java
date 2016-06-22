@@ -9,11 +9,7 @@
 
 package com.huotu.widget.test.thymeleaf.process;
 
-import com.huotu.hotcms.widget.CMSContext;
-import com.huotu.hotcms.widget.ComponentProperties;
-import com.huotu.hotcms.widget.InstalledWidget;
-import com.huotu.hotcms.widget.Widget;
-import com.huotu.hotcms.widget.WidgetService;
+import com.huotu.hotcms.widget.*;
 import com.huotu.widget.test.WidgetTestConfig;
 import com.huotu.widget.test.bean.WidgetHolder;
 import com.huotu.widget.test.thymeleaf.CMSDialect;
@@ -40,13 +36,14 @@ import org.thymeleaf.templatemode.TemplateMode;
 public class ReplaceBrowseProcessor extends AbstractAttributeTagProcessor implements CMSProcessor {
 
     private static final Log log = LogFactory.getLog(ReplaceBrowseProcessor.class);
+
     @Autowired
     private WidgetHolder widgetHolder;
     @Autowired
     private WidgetService widgetService;
 
     public ReplaceBrowseProcessor() {
-        super(TemplateMode.HTML, CMSDialect.Prefix, null, false, "replaceBrowse", true, 99999, true);
+        super(TemplateMode.HTML, CMSDialect.Prefix, null, false, "replaceBrowse", true, 10000, true);
     }
 
     @Override

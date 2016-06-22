@@ -43,10 +43,10 @@ import java.util.Set;
 @Component
 public class ReplaceEditorProcessor extends AbstractAttributeTagProcessor implements CMSProcessor {
     @Autowired
-    WidgetHolder widgetHolder;
+    private WidgetHolder widgetHolder;
 
     @Autowired
-    ApplicationContext applicationContext;
+    private ApplicationContext applicationContext;
 
     @Autowired
     private WidgetService widgetService;

@@ -7,15 +7,15 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.widget.test.service;
+package com.huotu.hotcms.widget.resolve;
 
-import com.huotu.widget.test.service.impl.WidgetTemplateResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.thymeleaf.dialect.IDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
+import org.thymeleaf.templateresolver.ITemplateResolver;
 
 import java.util.Set;
 
@@ -25,13 +25,13 @@ import java.util.Set;
  * @author CJ
  */
 @Configuration
-@ComponentScan({"com.huotu.widget.test.service.impl", "com.huotu.widget.test.service.thymeleaf"})
-public class WidgetServiceConfig {
+@ComponentScan({"com.huotu.hotcms.widget.resolve.impl", "com.huotu.hotcms.widget.resolve.thymeleaf"})
+public class WidgetResolveServiceConfig {
 
     @Autowired
     private Set<IDialect> dialectSet;
     @Autowired
-    private WidgetTemplateResolver widgetTemplateResolver;
+    private ITemplateResolver widgetTemplateResolver;
 
     /**
      * 这个引擎仅帮助控件模板生成HTML

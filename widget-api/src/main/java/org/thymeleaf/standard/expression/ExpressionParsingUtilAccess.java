@@ -9,10 +9,14 @@
 
 package org.thymeleaf.standard.expression;
 
-import com.huotu.widget.test.thymeleaf.process.ThymeleafComponent;
+import com.huotu.hotcms.widget.loader.thymeleaf.process.ThymeleafComponent;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jetbrains.annotations.NotNull;
 import org.thymeleaf.context.ITemplateContext;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author CJ
@@ -21,7 +25,35 @@ public class ExpressionParsingUtilAccess {
 
     private static final Log log = LogFactory.getLog(ExpressionParsingUtilAccess.class);
 
+    /**
+     * 将输入字符串解析成数个表达式
+     *
+     * @param context 上下文
+     * @param input   字符串
+     * @return 表达式List
+     */
+    @NotNull
+    public static List<com.huotu.hotcms.widget.support.ExpressionParsingNode>
+    parsingNodes(ITemplateContext context, String input) {
+        ArrayList<com.huotu.hotcms.widget.support.ExpressionParsingNode> nodes = new ArrayList<>();
+        try {
+            ExpressionParsingState state = ExpressionParsingUtil.decompose(input);
+
+            // state 0 保存着是整个表达式的结构,这里我们先忽略。
+            for (int i = 1; i < state.size(); i++) {
+                nodes.add(new com.huotu.hotcms.widget.support.ExpressionParsingNode(state.get(i).getInput()
+                        , state.get(i).getExpression()));
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+        return nodes;
+    }
+
+
     public static ThymeleafComponent parseThymeleafComponent(ITemplateContext context, String input) {
+        ExpressionParsingNode node;
 //        final String preprocessedInput =
 //                StandardExpressionPreprocessor.preprocess(context, input);
 

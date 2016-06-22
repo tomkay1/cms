@@ -7,7 +7,7 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.widget.test.service.thymeleaf;
+package com.huotu.hotcms.widget.resolve.thymeleaf;
 
 import org.thymeleaf.processor.IProcessor;
 

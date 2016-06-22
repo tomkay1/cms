@@ -7,7 +7,7 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.widget.test.service;
+package com.huotu.hotcms.widget.resolve;
 
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.ComponentProperties;
@@ -21,7 +21,6 @@ import org.thymeleaf.context.WebEngineContext;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 
 import javax.servlet.ServletContext;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 

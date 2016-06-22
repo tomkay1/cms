@@ -9,7 +9,10 @@
 
 package com.huotu.widget.test.bean;
 
+import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.Widget;
+import com.huotu.hotcms.widget.WidgetLocateService;
+import com.huotu.widget.test.WidgetTestConfig;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author CJ
  */
 @Component
-public class WidgetHolder {
+public class WidgetHolder implements WidgetLocateService {
 
     private final Set<Widget> widgetSet;
 
@@ -55,4 +58,22 @@ public class WidgetHolder {
         return widgetSet;
     }
 
+    @Override
+    public InstalledWidget findWidget(String groupId, String widgetId, String version) {
+//        return null;
+        throw new IllegalStateException("not support yet");
+    }
+
+    @Override
+    public InstalledWidget findWidget(String identifier) {
+        for (Widget widget : widgetSet) {
+            if (WidgetTestConfig.WidgetIdentity(widget).equals(identifier)) {
+                InstalledWidget widget1 = new InstalledWidget();
+                widget1.setWidget(widget);
+                widget1.setType("test");
+                return widget1;
+            }
+        }
+        return null;
+    }
 }

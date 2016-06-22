@@ -7,13 +7,12 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.widget.test.service.impl;
+package com.huotu.hotcms.widget.resolve.impl;
 
+import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetStyle;
-import com.huotu.widget.test.bean.PublicStackHolder;
-import com.huotu.widget.test.bean.WidgetHolder;
-import com.huotu.widget.test.service.WidgetConfiguration;
+import com.huotu.hotcms.widget.resolve.WidgetConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -43,21 +42,17 @@ public class WidgetTemplateResolver extends AbstractTemplateResolver {
     public static final String EDITOR = "EDITOR";
     public static final String PREVIEW = "PREVIEW";
     public static final String BROWSE = "BROWSE";
-    private final WidgetHolder holder;
 
 
     @Autowired
     ApplicationContext applicationContext;
 
-    @Autowired
-    public WidgetTemplateResolver(WidgetHolder holder) {
-        this.holder = holder;
-    }
 
     @Override
     protected ITemplateResource computeTemplateResource(IEngineConfiguration configuration, String ownerTemplate
             , String template, Map<String, Object> templateResolutionAttributes) {
-        WidgetConfiguration widgetConfiguration = (WidgetConfiguration) PublicStackHolder.getStack().pop();
+        WidgetConfiguration widgetConfiguration = CMSContext.RequestContext()
+                .getWidgetConfigurationStack().pop();
         Widget widget = widgetConfiguration.getWidget();
         WidgetStyle style = widgetConfiguration.getStyle();
 

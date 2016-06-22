@@ -7,7 +7,7 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.widget.test.service.thymeleaf;
+package com.huotu.hotcms.widget.loader.thymeleaf;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,17 +22,20 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * CMS提供的方言
+ *
  * @author CJ
  */
 @Service
-public class WidgetDialect extends AbstractDialect implements IProcessorDialect {
-    public static final String Prefix = "w";
+public class CMSDialect extends AbstractDialect implements IProcessorDialect {
+
+    public static final String Prefix = "cms";
 
     @Autowired
-    private Set<WidgetProcessor> CMSProcessors;
+    private Set<CMSProcessor> CMSProcessors;
 
-    public WidgetDialect() {
-        super("Widget");
+    public CMSDialect() {
+        super("CMS");
     }
 
     @Override
@@ -47,7 +50,7 @@ public class WidgetDialect extends AbstractDialect implements IProcessorDialect 
 
     @Override
     public Set<IProcessor> getProcessors(String dialectPrefix) {
-
+      
         HashSet<IProcessor> iProcessors = new HashSet<>();
         iProcessors.addAll(CMSProcessors);
         iProcessors.add(new StandardXmlNsTagProcessor(TemplateMode.HTML, dialectPrefix));

@@ -14,16 +14,17 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 /**
- * 为控件提供服务，任何widget-api被导入的项目都应该维持实现本接口的实例。
+ * 控件解析服务
  */
-public interface WidgetService {
+public interface WidgetResolveService {
 
     /**
      * 获取资源在这个context下的URI
-     * @see Widget#publicResources()
-     * @param widget 控件
+     *
+     * @param widget       控件
      * @param resourceName 资源名称
      * @return 资源uri, 假设项目运行的context为 /foo  资源uri 为 /bar.png  则完整的url为 http://host:port/foo/bar.png
+     * @see Widget#publicResources()
      */
     URI resourceURI(Widget widget, String resourceName) throws URISyntaxException, IOException;
 
@@ -32,7 +33,7 @@ public interface WidgetService {
      *
      * @param widget     控件
      * @param styleId    控件样式id,可选
-     * @param cmsContext    交互空间
+     * @param cmsContext 交互空间
      * @param properties 组件属性,可选
      * @return HTML Code
      */
@@ -41,7 +42,7 @@ public interface WidgetService {
     /**
      * 生成编辑器HTML代码
      *
-     * @param widget  控件
+     * @param widget     控件
      * @param cmsContext 交互空间
      * @param properties
      * @return HTML Code
@@ -54,8 +55,8 @@ public interface WidgetService {
      * 页面的生成者应该是通过调用这个方法获取每一个控件的HTML,技术上我们限定生成一个页面绝对不可以超过0.5s,假定一个页面转载了200个控件
      * 也就是这个方法的响应时间不可以超过0.5/200s 也就是2.5ms</p>
      *
-     * @param component 组件
-     * @param cmsContext   上下文环境
+     * @param component  组件
+     * @param cmsContext 上下文环境
      * @return HTML Code
      */
     String componentHTML(Component component, CMSContext cmsContext);

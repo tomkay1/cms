@@ -22,11 +22,9 @@
 </head>
 <body>
 
-<!--/*@thymesVar id="widgetId" type="java.lang.String"*/-->
 <div id="browse">
 
-    <!--<div th:replace="'PREVIEW/'+${widgetId}+'/'+${styleId} :: div "></div>-->
-    <div cms:replaceBrowse="${widgetId},${styleId},${properties}"></div>
+    <div cms:replaceBrowse="${component}"></div>
 
 </div>
 

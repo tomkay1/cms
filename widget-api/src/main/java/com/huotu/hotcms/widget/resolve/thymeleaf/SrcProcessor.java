@@ -7,10 +7,10 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.widget.test.service.thymeleaf;
+package com.huotu.hotcms.widget.resolve.thymeleaf;
 
 import com.huotu.hotcms.widget.Widget;
-import com.huotu.hotcms.widget.WidgetService;
+import com.huotu.hotcms.widget.WidgetResolveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -28,7 +28,6 @@ import org.thymeleaf.standard.expression.IStandardExpression;
 import org.thymeleaf.standard.expression.StandardExpressionExecutionContext;
 import org.thymeleaf.templatemode.TemplateMode;
 
-import java.io.IOException;
 import java.net.URISyntaxException;
 
 /**
@@ -41,7 +40,7 @@ public class SrcProcessor extends AbstractAttributeTagProcessor implements IElem
     @Autowired
     private ApplicationContext applicationContext;
     @Autowired
-    private WidgetService widgetService;
+    private WidgetResolveService widgetResolveService;
     private AttributeDefinitions attributeDefinitions;
 
 
@@ -87,8 +86,8 @@ public class SrcProcessor extends AbstractAttributeTagProcessor implements IElem
         Widget widget = (Widget) context.getVariable("widget");
         try {
             structureHandler.replaceAttribute(attributeName,attributeName.getAttributeName()
-                    ,widgetService.resourceURI(widget,attributeValue).toString());
-        } catch (IOException | URISyntaxException e) {
+                    , widgetResolveService.resourceURI(widget, attributeValue).toString());
+        } catch (URISyntaxException e) {
             e.printStackTrace();
         }
     }

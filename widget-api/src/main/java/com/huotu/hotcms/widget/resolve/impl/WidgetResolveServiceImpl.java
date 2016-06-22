@@ -7,17 +7,16 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.widget.test.service.impl;
+package com.huotu.hotcms.widget.resolve.impl;
 
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.Widget;
-import com.huotu.hotcms.widget.WidgetService;
+import com.huotu.hotcms.widget.WidgetResolveService;
 import com.huotu.hotcms.widget.WidgetStyle;
-import com.huotu.widget.test.bean.PublicStackHolder;
-import com.huotu.widget.test.service.WidgetConfiguration;
-import com.huotu.widget.test.service.WidgetContext;
+import com.huotu.hotcms.widget.resolve.WidgetConfiguration;
+import com.huotu.hotcms.widget.resolve.WidgetContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,25 +25,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.Map;
-import java.util.Stack;
 
 /**
  * Created by lhx on 2016/6/21.
  */
 @Service
-public class TestWidgetService implements WidgetService {
-    private static final Log log = LogFactory.getLog(TestWidgetService.class);
+public class WidgetResolveServiceImpl implements WidgetResolveService {
+    private static final Log log = LogFactory.getLog(WidgetResolveServiceImpl.class);
     @Autowired
     private WebApplicationContext webApplicationContext;
 
     @Autowired
     private SpringTemplateEngine widgetTemplateEngine;
-
 
 
     @Override
@@ -73,9 +69,7 @@ public class TestWidgetService implements WidgetService {
         WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
                 , widget, style, webApplicationContext.getServletContext(), properties);
         WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();
-        Stack<WidgetConfiguration> stack = new Stack<>();
-        stack.push(widgetConfiguration);
-        PublicStackHolder.putStack(stack);
+        cmsContext.getWidgetConfigurationStack().push(widgetConfiguration);
         return widgetTemplateEngine.process(WidgetTemplateResolver.PREVIEW
                 , Collections.singleton("div"), widgetContext);
     }
@@ -86,9 +80,7 @@ public class TestWidgetService implements WidgetService {
         WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
                 , widget, null, webApplicationContext.getServletContext(), properties);
         WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();
-        Stack<WidgetConfiguration> stack = new Stack<>();
-        stack.push(widgetConfiguration);
-        PublicStackHolder.putStack(stack);
+        cmsContext.getWidgetConfigurationStack().push(widgetConfiguration);
         return widgetTemplateEngine.process(WidgetTemplateResolver.EDITOR
                 , Collections.singleton("div"), widgetContext);
     }
@@ -110,9 +102,7 @@ public class TestWidgetService implements WidgetService {
         WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
                 , component.getWidget().getWidget(), style, webApplicationContext.getServletContext(), component.getProperties());
         WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();
-        Stack<WidgetConfiguration> stack = new Stack<>();
-        stack.push(widgetConfiguration);
-        PublicStackHolder.putStack(stack);
+        cmsContext.getWidgetConfigurationStack().push(widgetConfiguration);
         return widgetTemplateEngine.process(WidgetTemplateResolver.BROWSE
                 , Collections.singleton("div"), widgetContext);
     }

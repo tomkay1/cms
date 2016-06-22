@@ -10,6 +10,8 @@
 package com.huotu.widget.test.bean;
 
 import com.huotu.hotcms.widget.ComponentProperties;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @org.springframework.stereotype.Controller
 public class WidgetViewController {
 
+    private static final Log log = LogFactory.getLog(WidgetViewController.class);
 
     private ComponentProperties currentProperties;
 

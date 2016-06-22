@@ -28,6 +28,8 @@ import org.thymeleaf.standard.expression.IStandardExpression;
 import org.thymeleaf.standard.expression.StandardExpressionExecutionContext;
 import org.thymeleaf.templatemode.TemplateMode;
 
+import java.net.URISyntaxException;
+
 /**
  * @author CJ
  */
@@ -57,19 +59,21 @@ public class SrcProcessor extends AbstractAttributeTagProcessor implements IElem
     protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName
             , String attributeValue, IElementTagStructureHandler structureHandler) {
         String resourceName;
-
         try {
-            final IStandardExpression expression = EngineEventUtils.computeAttributeExpression(context, tag, attributeName, attributeValue);
+            final IStandardExpression expression = EngineEventUtils.computeAttributeExpression(context, tag
+                    , attributeName, attributeValue);
             if (expression != null && expression instanceof FragmentExpression) {
                 // This is merely a FragmentExpression (not complex, not combined with anything), so we can apply a shortcut
                 // so that we don't require a "null" result for this expression if the template does not exist. That will
                 // save a call to resource.exists() which might be costly.
 
                 final FragmentExpression.ExecutedFragmentExpression executedFragmentExpression =
-                        FragmentExpression.createExecutedFragmentExpression(context, (FragmentExpression) expression, StandardExpressionExecutionContext.NORMAL);
+                        FragmentExpression.createExecutedFragmentExpression(context, (FragmentExpression) expression
+                                , StandardExpressionExecutionContext.NORMAL);
 
                 resourceName =
-                        FragmentExpression.resolveExecutedFragmentExpression(context, executedFragmentExpression, true).toString();
+                        FragmentExpression.resolveExecutedFragmentExpression(context, executedFragmentExpression, true)
+                                .toString();
 
             } else if (expression != null) {
                 resourceName = expression.execute(context).toString();
@@ -80,7 +84,11 @@ public class SrcProcessor extends AbstractAttributeTagProcessor implements IElem
         }
 
         Widget widget = (Widget) context.getVariable("widget");
-        structureHandler.replaceAttribute(attributeName, attributeName.getAttributeName()
-                , widgetService.resourceURI(widget, resourceName).toString());
+        try {
+            structureHandler.replaceAttribute(attributeName,attributeName.getAttributeName()
+                    ,widgetService.resourceURI(widget,attributeValue).toString());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 }

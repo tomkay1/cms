@@ -35,13 +35,19 @@ public class ExpressionParsingUtilAccess {
     @NotNull
     public static List<com.huotu.hotcms.widget.support.ExpressionParsingNode>
     parsingNodes(ITemplateContext context, String input) {
-        ExpressionParsingState state = ExpressionParsingUtil.decompose(input);
         ArrayList<com.huotu.hotcms.widget.support.ExpressionParsingNode> nodes = new ArrayList<>();
-        // state 0 保存着是整个表达式的结构,这里我们先忽略。
-        for (int i = 1; i < state.size(); i++) {
-            nodes.add(new com.huotu.hotcms.widget.support.ExpressionParsingNode(state.get(i).getInput()
-                    , state.get(i).getExpression()));
+        try {
+            ExpressionParsingState state = ExpressionParsingUtil.decompose(input);
+
+            // state 0 保存着是整个表达式的结构,这里我们先忽略。
+            for (int i = 1; i < state.size(); i++) {
+                nodes.add(new com.huotu.hotcms.widget.support.ExpressionParsingNode(state.get(i).getInput()
+                        , state.get(i).getExpression()));
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
         }
+
         return nodes;
     }
 

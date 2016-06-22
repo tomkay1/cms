@@ -10,6 +10,7 @@
 package com.huotu.widget.test;
 
 import com.huotu.hotcms.widget.Widget;
+import com.huotu.hotcms.widget.loader.WidgetLoaderConfig;
 import com.huotu.hotcms.widget.resolve.WidgetResolveServiceConfig;
 import com.huotu.widget.test.bean.WidgetHolder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +62,7 @@ public class WidgetTestConfig extends WebMvcConfigurerAdapter {
 //    }
 
     @DependsOn("widgetHolder")
-    @ComponentScan("com.huotu.hotcms.widget.loader.thymeleaf")
+    @Import(WidgetLoaderConfig.class)
     static class ViewResolver {
         @Autowired
         private WidgetHolder widgetHolder;

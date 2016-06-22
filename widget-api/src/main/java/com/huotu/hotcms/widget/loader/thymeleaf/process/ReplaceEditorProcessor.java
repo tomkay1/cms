@@ -16,7 +16,7 @@ import com.huotu.hotcms.widget.WidgetLocateService;
 import com.huotu.hotcms.widget.WidgetResolveService;
 import com.huotu.hotcms.widget.loader.thymeleaf.CMSDialect;
 import com.huotu.hotcms.widget.loader.thymeleaf.CMSProcessor;
-import com.huotu.hotcms.widget.support.ExpressionParsingNode;
+import com.huotu.hotcms.widget.support.ExpressionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -26,10 +26,8 @@ import org.thymeleaf.engine.AttributeName;
 import org.thymeleaf.model.IProcessableElementTag;
 import org.thymeleaf.processor.element.AbstractAttributeTagProcessor;
 import org.thymeleaf.processor.element.IElementTagStructureHandler;
-import org.thymeleaf.standard.expression.ExpressionParsingUtilAccess;
 import org.thymeleaf.templatemode.TemplateMode;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -64,24 +62,30 @@ public class ReplaceEditorProcessor extends AbstractAttributeTagProcessor implem
     protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName
             , String attributeValue, IElementTagStructureHandler structureHandler) {
         // 我们的格式应该是 widgetId,..
-        List<ExpressionParsingNode> nodeList = ExpressionParsingUtilAccess.parsingNodes(context, attributeValue);
+        String[] inputs = attributeValue.split(",");
+        Object[] results = new Object[inputs.length];
+        for (int i = 0; i < inputs.length; i++) {
+            results[i] = ExpressionUtils.ParseInputElseInput(context, inputs[i]);
+        }
+
+
         CMSContext cmsContext = CMSContext.RequestContext();
 
         Widget widget;
         ComponentProperties properties;
-        if (nodeList.size() > 2) {
+        if (results.length > 2) {
             //groupId,widgetId,version
-            String groupId = (String) nodeList.get(0).executeElseInput(context);
-            String widgetId = (String) nodeList.get(1).executeElseInput(context);
-            String version = (String) nodeList.get(2).executeElseInput(context);
+            String groupId = (String) results[0];
+            String widgetId = (String) results[1];
+            String version = (String) results[2];
 
             widget = widgetLocateService.findWidget(groupId, widgetId, version).getWidget();
             properties = null;
-            if (nodeList.size() > 3)
-                properties = (ComponentProperties) nodeList.get(3).getExpression().execute(context);
+            if (results.length > 3)
+                properties = (ComponentProperties) results[3];
         } else {
             // 第一个参数
-            Object widgetObject = nodeList.get(0).executeElseInput(context);
+            Object widgetObject = results[0];
 
             if (widgetObject instanceof Widget) {
                 widget = (Widget) widgetObject;
@@ -89,8 +93,8 @@ public class ReplaceEditorProcessor extends AbstractAttributeTagProcessor implem
                 widget = widgetLocateService.findWidget(widgetObject.toString()).getWidget();
             }
             properties = null;
-            if (nodeList.size() > 1)
-                properties = (ComponentProperties) nodeList.get(1).getExpression().execute(context);
+            if (results.length > 1)
+                properties = (ComponentProperties) results[1];
         }
 
         structureHandler.replaceWith(widgetResolveService.editorHTML(widget, cmsContext, properties), false);

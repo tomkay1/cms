@@ -22,7 +22,7 @@ import java.util.List;
 @Repository
 public interface WidgetRepository extends JpaRepository<WidgetInfo, Long>,JpaSpecificationExecutor {
 
-    List<WidgetInfo> findByAuthor(String author);
+//    List<WidgetInfo> findByAuthor(String author);
 
     WidgetInfo findByWidgetIdAndVersion(String widgetId,String version);
 

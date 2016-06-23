@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.widget.test;
 
+import com.huotu.hotcms.service.util.StringUtil;
 import com.huotu.hotcms.widget.*;
 import com.huotu.hotcms.widget.config.TestConfig;
 import com.huotu.hotcms.widget.controller.TestWidget;
@@ -26,6 +27,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.StringUtils;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.*;
@@ -84,12 +86,13 @@ public class TestBase {
         component.setStyleId(UUID.randomUUID().toString());
         component.setWidgetIdentity(UUID.randomUUID().toString());
         ComponentProperties componentProperties =new ComponentProperties();
-        componentProperties.put(UUID.randomUUID().toString(),UUID.randomUUID().toString());
+        componentProperties.put(StringUtil.createRandomStr(random.nextInt(3)+1),UUID.randomUUID().toString());
         component.setProperties(componentProperties);
         InstalledWidget installedWidget=new InstalledWidget();
         installedWidget.setType(UUID.randomUUID().toString());
         installedWidget.setWidget(new TestWidget());
         component.setWidget(installedWidget);
+        component.setElements(null);
         return component;
     }
 

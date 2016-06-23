@@ -51,4 +51,6 @@ public class WidgetInfo {
      */
     @Column(length = 100)
     private String path;
+
+
 }

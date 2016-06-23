@@ -34,6 +34,13 @@ public class Component implements PageElement {
     private ComponentProperties properties;
 
 
+    /**
+     * <p>只是为了兼容Layout,为了解析xml的方便</p>
+     * <b>注意：每次置为null即可！</b>
+     */
+    @Deprecated
+    private PageElement[] elements;
+
     private String previewHTML;
 
     public WidgetStyle currentStyle() {

@@ -240,7 +240,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
 
     @Override
     public List<WidgetInfo> getWidgetByOwerId(String owerID) {
-        return widgetRepository.findByAuthor(owerID);
+        return null;
     }
 
     @Override

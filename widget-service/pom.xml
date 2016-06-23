@@ -86,7 +86,6 @@
             <version>${json-version}</version>
         </dependency>
 
-
         <!-- 断言相关-->
         <dependency>
             <groupId>org.assertj</groupId>

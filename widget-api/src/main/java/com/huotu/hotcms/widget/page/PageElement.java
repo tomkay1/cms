@@ -10,6 +10,8 @@
 package com.huotu.hotcms.widget.page;
 
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 /**
  * 页面元素,可能为一个组件或者为一个布局
  * <p>
@@ -17,6 +19,7 @@ package com.huotu.hotcms.widget.page;
  *
  * @author CJ
  */
+@JsonDeserialize(using = PageElementDeserializer.class)
 public interface PageElement {
 
 }

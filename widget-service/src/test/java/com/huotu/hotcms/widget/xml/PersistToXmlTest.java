@@ -4,10 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.test.TestBase;
+import org.junit.Assert;
 import org.junit.Test;
 
-import javax.xml.bind.JAXB;
-import java.io.StringWriter;
+import java.io.IOException;
+import java.util.UUID;
+
 
 /**
  * Created by hzbc on 2016/6/22.
@@ -21,16 +23,19 @@ public class PersistToXmlTest extends TestBase {
 
 
     @Test
-    public void testToXml() throws JsonProcessingException {
+    public void testToXml() throws IOException {
         Page page=randomPage();
         XmlMapper xmlMapper=new XmlMapper();
-        String xmlString=xmlMapper.writeValueAsString(page);
-        System.out.println("xmlString:"+xmlString);
-    }
+        String xmlString1=xmlMapper.writeValueAsString(page);
+        System.out.println("xmlString:"+xmlString1);
 
-    @Test
-    public void testPrint(){
-        System.out.println(11);
-    }
+        Page getPage=xmlMapper.readValue(xmlString1,Page.class);
 
+        String xmlString2=xmlMapper.writeValueAsString(getPage);
+        System.out.println("xmlString:"+xmlString2);
+
+        Assert.assertEquals(xmlString1,xmlString2);
+
+
+    }
 }

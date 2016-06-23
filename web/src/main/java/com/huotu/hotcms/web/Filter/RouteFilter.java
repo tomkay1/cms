@@ -50,7 +50,6 @@ public class RouteFilter implements Filter {
     private static final String manage = "/manage/";
     private static final String[] diy_filter = new String[]{"/shop", "/bind", "/template/0/", "/template/error/"
             , ".js", ".css"};//DIY网站过滤规则->(PC官网装修,PC商城装修)
-    private static boolean isChecked = false;//拦截规则是否检测过
     private ApplicationContext applicationContext;
     private ServletContext servletContext;
     private SiteResolveService siteResolveService;
@@ -105,7 +104,6 @@ public class RouteFilter implements Filter {
      */
     private boolean customizeFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws Exception {
-        isChecked = true;
         HttpServletRequest request1 = ((HttpServletRequest) request);
 
         Site site = siteResolveService.getCurrentSite(request1);
@@ -124,7 +122,7 @@ public class RouteFilter implements Filter {
         if (!servletPath.contains(filter)) {
             if (PatternMatchUtil.isMatchFilter(servletPath)) {
                 Route route = routeResolverService.getRoute(site, servletPath);
-                if (!StaticResource.isStaticResc(request1.getServletPath())) {
+                if (!StaticResource.isStaticResource(request1.getServletPath())) {
                     if (route == null && !site.isCustom()) {
                         request.getRequestDispatcher("/template/" + site.getOwner().getId() + servletPath).forward(request
                                 , response);
@@ -135,6 +133,7 @@ public class RouteFilter implements Filter {
                             request.getRequestDispatcher("/web" + servletPath).forward(request, response);
                         }
                     }
+                    return false;
                 }
             }
         }

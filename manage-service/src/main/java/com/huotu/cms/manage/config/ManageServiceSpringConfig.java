@@ -28,7 +28,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @ComponentScan("com.huotu.cms.manage")
 public class ManageServiceSpringConfig extends WebSecurityConfigurerAdapter implements EmbedWeb {
 
-
     @Override
     public String name() {
         return "manage-service";
@@ -37,12 +36,13 @@ public class ManageServiceSpringConfig extends WebSecurityConfigurerAdapter impl
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 //        super.configure(http);
-        http.authorizeRequests().antMatchers(
+        http
+                .authorizeRequests().antMatchers(
                 "/manage/**"
         ).authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/manage/login")
+                .loginPage("/manage/main/login")
                 .permitAll();
     }
 }

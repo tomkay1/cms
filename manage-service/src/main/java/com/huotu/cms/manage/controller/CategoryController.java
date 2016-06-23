@@ -20,7 +20,7 @@ import com.huotu.hotcms.service.model.CategoryTreeModel;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.service.RouteService;
-import com.huotu.hotcms.service.service.impl.SiteServiceImpl;
+import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
 import org.apache.commons.logging.Log;
@@ -50,7 +50,7 @@ public class CategoryController {
     @Autowired
     SiteRepository siteRepository;
     @Autowired
-    SiteServiceImpl siteService;
+    SiteService siteService;
     @Autowired
     RouteService routeService;
     @Autowired
@@ -60,7 +60,7 @@ public class CategoryController {
      * 栏目列表视图
      * */
     @RequestMapping("/categoryList")
-    public ModelAndView categoryList(HttpServletRequest request) throws Exception{
+    public ModelAndView categoryList() throws Exception {
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("/view/section/categoryList.html");
         return  modelAndView;

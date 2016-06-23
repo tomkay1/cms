@@ -20,6 +20,7 @@ import com.huotu.hotcms.service.model.CategoryTreeModel;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.service.RouteService;
+import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.service.impl.SiteServiceImpl;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
@@ -50,7 +51,7 @@ public class CategoryController {
     @Autowired
     SiteRepository siteRepository;
     @Autowired
-    SiteServiceImpl siteService;
+    SiteService siteService;
     @Autowired
     RouteService routeService;
     @Autowired

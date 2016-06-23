@@ -34,6 +34,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * <p>
@@ -87,7 +88,7 @@ public class RouteFilter implements Filter {
                 if (isMobile) {
                     Site site = siteResolveService.getCurrentSite(request1);
                     String mobileUrl=siteConfigService.findMobileUrlBySite(site);
-                    if(mobileUrl!=null&&mobileUrl!=""){//开启了手机微官网则重定向微官网域名地址
+                    if (mobileUrl != null && !Objects.equals(mobileUrl, "")) {//开启了手机微官网则重定向微官网域名地址
                         ((HttpServletResponse) response).sendRedirect(mobileUrl);
                         return false;
                     }

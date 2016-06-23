@@ -85,7 +85,7 @@ public class SiteTest {
         List<Category> categories=categoryRepository.findBySite(templateSite);
         try{
             for(Category category:categories){
-                category.setSerial(SerialUtil.formartSerial(customerSite));
+                category.setSerial(SerialUtil.formatSerial(customerSite));
                 category.setSite(customerSite);
                 category.setId(null);
                 category.setSite(customerSite);

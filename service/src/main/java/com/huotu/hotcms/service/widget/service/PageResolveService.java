@@ -121,7 +121,7 @@ public class PageResolveService {
                 customPages.setOrderWeight(50);
                 customPages.setPublish(publish);
                 //site_{siteID}_serial
-                customPages.setSerial(SerialUtil.formartSerial(site));
+                customPages.setSerial(SerialUtil.formatSerial(site));
                 customPages.setCreateTime(LocalDateTime.now());
                 customPages = customPagesRepository.save(customPages);
                 if (customPages != null) {

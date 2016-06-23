@@ -189,7 +189,7 @@ public class SiteServiceImpl implements SiteService {
         List<Category> categories=categoryRepository.findBySite(templateSite);
         for(Category category:categories){
             Category newCategory=new Category();
-            newCategory.setSerial(SerialUtil.formartSerial(customerSite));
+            newCategory.setSerial(SerialUtil.formatSerial(customerSite));
             newCategory.setSite(customerSite);
             newCategory.setParent(category.getParent());
             newCategory.setName(category.getName());
@@ -209,7 +209,7 @@ public class SiteServiceImpl implements SiteService {
         for(CustomPages customPage:customPages){
             if(customPage.isPublish()){//只复制发布了的，不复制草稿箱中的
                 CustomPages newCustomPage=new CustomPages();
-                newCustomPage.setSerial(SerialUtil.formartSerial(customerSite));
+                newCustomPage.setSerial(SerialUtil.formatSerial(customerSite));
                 newCustomPage.setName(customPage.getName());
                 newCustomPage.setOrderWeight(customPage.getOrderWeight());
                 newCustomPage.setCreateTime(customPage.getCreateTime());
@@ -242,7 +242,7 @@ public class SiteServiceImpl implements SiteService {
             newArticle.setSystem(article.isSystem());
             newArticle.setThumbUri(article.getThumbUri());
             newArticle.setOrderWeight(article.getOrderWeight());
-            newArticle.setSerial(SerialUtil.formartSerial(customerSite));
+            newArticle.setSerial(SerialUtil.formatSerial(customerSite));
             newArticle.setTitle(article.getTitle());
             newArticle.setCreateTime(article.getCreateTime());
             newArticle.setUpdateTime(article.getUpdateTime());
@@ -256,7 +256,7 @@ public class SiteServiceImpl implements SiteService {
             d.setUpdateTime(download.getUpdateTime());
             d.setTitle(download.getTitle());
             d.setCreateTime(download.getCreateTime());
-            d.setSerial(SerialUtil.formartSerial(customerSite));
+            d.setSerial(SerialUtil.formatSerial(customerSite));
             d.setDownloadUrl(download.getDownloadUrl());
             d.setCategory(category);
             d.setDescription(download.getDescription());
@@ -275,7 +275,7 @@ public class SiteServiceImpl implements SiteService {
             g.setLinkUrl(gallery.getLinkUrl());
             g.setThumbUri(gallery.getThumbUri());
             g.setCategory(category);
-            g.setSerial(SerialUtil.formartSerial(customerSite));
+            g.setSerial(SerialUtil.formatSerial(customerSite));
             g.setTitle(gallery.getTitle());
             g.setCreateTime(gallery.getCreateTime());
 
@@ -288,7 +288,7 @@ public class SiteServiceImpl implements SiteService {
                 galleryList.setSite(customerSite);
                 galleryList.setUpdateTime(gl.getUpdateTime());
                 galleryList.setOrderWeight(gl.getOrderWeight());
-                galleryList.setSerial(SerialUtil.formartSerial(customerSite));
+                galleryList.setSerial(SerialUtil.formatSerial(customerSite));
                 galleryList.setSize(gl.getSize());
                 galleryList.setThumbUri(gl.getThumbUri());
                 galleryList.setDeleted(gl.isDeleted());
@@ -303,7 +303,7 @@ public class SiteServiceImpl implements SiteService {
             link1.setOrderWeight(link.getOrderWeight());
             link1.setUpdateTime(link.getUpdateTime());
             link1.setTitle(link.getTitle());
-            link1.setSerial(SerialUtil.formartSerial(customerSite));
+            link1.setSerial(SerialUtil.formatSerial(customerSite));
             link1.setLinkUrl(link.getLinkUrl());
             link1.setThumbUri(link.getThumbUri());
             link1.setCategory(link.getCategory());
@@ -323,7 +323,7 @@ public class SiteServiceImpl implements SiteService {
             notice1.setDescription(notice.getDescription());
             notice1.setContent(notice.getContent());
             notice1.setCategory(category);
-            notice1.setSerial(SerialUtil.formartSerial(customerSite));
+            notice1.setSerial(SerialUtil.formatSerial(customerSite));
             notice1.setTitle(notice.getTitle());
             noticeRepository.save(notice1);
         }
@@ -334,7 +334,7 @@ public class SiteServiceImpl implements SiteService {
             v.setOrderWeight(video.getOrderWeight());
             v.setUpdateTime(video.getUpdateTime());
             v.setTitle(video.getTitle());
-            v.setSerial(SerialUtil.formartSerial(customerSite));
+            v.setSerial(SerialUtil.formatSerial(customerSite));
             v.setCategory(category);
             v.setOutLinkUrl(video.getOutLinkUrl());
             v.setThumbUri(video.getThumbUri());

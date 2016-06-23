@@ -192,7 +192,7 @@ public class HostServiceImpl implements HostService {
                     host = new Host();
                     host.setOwner(site.getOwner());
                     host.setDomain(domain);
-                    host.setSerial(SerialUtil.formartSerial(site));
+                    host.setSerial(SerialUtil.formatSerial(site));
                     host=setHome(host,homeDomains);
                     site.addHost(host);
                 } else {

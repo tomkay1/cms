@@ -13,6 +13,7 @@ import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Site;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -49,6 +50,13 @@ public interface HostService {
      */
     @Transactional
     void stopHookSite(Site site);
+
+    /**
+     * @param site 相关站点
+     * @return 可以解析到站点的主机
+     */
+    @Transactional(readOnly = true)
+    Collection<Host> hookOn(Site site);
 
     String getHomeDomain(Site site);
 }

@@ -17,7 +17,7 @@ import com.huotu.hotcms.service.service.HostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -85,16 +85,20 @@ public class HostServiceImpl implements HostService {
      */
     @Override
     public void stopHookSite(Site site) {
-        List<Host> hostList = hostRepository.findBySitesContains(site);
-        for (Host host : hostList) {
+        for (Host host : hookOn(site)) {
             host.removeSite(site);
             hostRepository.save(host);
         }
     }
 
+    @Override
+    public Collection<Host> hookOn(Site site) {
+        return hostRepository.findBySitesContains(site);
+    }
+
 
     private Host getHomeHost(Site site) {
-        for (Host host : hostRepository.findBySitesContains(site)) {
+        for (Host host : hookOn(site)) {
             if (host.isHome()) {
                 return host;
             }

@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
-import java.util.Set;
 
 /**
  * @author CJ
@@ -45,9 +44,8 @@ public abstract class AbstractSiteSupperController {
                 }
                 modelAndView.addObject("site", site);
                 modelAndView.addObject("logo_uri", logo_uri);
-                Set<Host> hosts = site.getHosts();
                 String domains = "";
-                for (Host host : hosts) {
+                for (Host host : hostService.hookOn(site)) {
                     String domain = host.getDomain();
                     domains = domains + domain + ",";
                 }

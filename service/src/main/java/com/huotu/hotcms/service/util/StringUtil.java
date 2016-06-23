@@ -5,6 +5,7 @@ import org.codehaus.plexus.util.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.Random;
 import java.util.Stack;
 
 /**
@@ -103,4 +104,22 @@ public class StringUtil {
         }
         return false;
     }
+
+    /**
+     * 生成随机的字符串
+     * @param digit 生成的字符串的长度
+     * @return
+     */
+    public static String createRandomStr(int digit) {
+        String base = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        int baseLength = base.length();
+        Random random = new Random();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < digit; i++) {
+            int number = random.nextInt(baseLength);
+            stringBuilder.append(base.charAt(number));
+        }
+        return stringBuilder.toString();
+    }
+
 }

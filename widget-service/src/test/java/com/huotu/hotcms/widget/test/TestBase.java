@@ -65,16 +65,19 @@ public class TestBase {
         page.setTitle(UUID.randomUUID().toString());
 
         List<PageElement> pageElementList = new ArrayList<>();
-        int layouts = random.nextInt(10) + 1;
-        while (layouts-- > 0) {
-            pageElementList.add(randomLayout());
-        }
+        //PageElement 要么是Layout，要么是Component；二选一
+        int randomNum=random.nextInt(100)+1;
+        boolean isLayout=false;
+        if(randomNum%2==0)
+            isLayout=true;
 
-        int comps = random.nextInt(5) + 1;
-        while (comps-- > 0) {
-            pageElementList.add(randomComponent());
+        int nums = random.nextInt(4)+1;//生成PageElement的随机个数
+        while (nums-- > 0) {
+            if(isLayout)
+                pageElementList.add(randomLayout());
+            else
+                pageElementList.add(randomComponent());
         }
-
         page.setElements(pageElementList.toArray(new PageElement[pageElementList.size()]));
 
         return page;
@@ -92,7 +95,6 @@ public class TestBase {
         installedWidget.setType(UUID.randomUUID().toString());
         installedWidget.setWidget(new TestWidget());
         component.setWidget(installedWidget);
-        component.setElements(null);
         return component;
     }
 
@@ -100,18 +102,22 @@ public class TestBase {
         Layout layout = new Layout();
 
         List<PageElement> pageElementList = new ArrayList<>();
-        int layouts = random.nextInt(2);
-        while (layouts-- > 0) {
-            pageElementList.add(randomLayout());
-        }
 
-        int comps = random.nextInt(2);
-        while (comps-- > 0) {
-            pageElementList.add(randomComponent());
-        }
 
+        //PageElement 要么是Layout，要么是Component；二选一
+        int randomNum=random.nextInt(10);
+        boolean isLayout=false;
+        if(randomNum%2==0)
+            isLayout=true;
+
+        int nums = random.nextInt(2);//生成PageElement的随机个数
+        while (nums-- > 0) {
+            if(isLayout)
+                pageElementList.add(randomLayout());
+            else
+                pageElementList.add(randomComponent());
+        }
         layout.setElements(pageElementList.toArray(new PageElement[pageElementList.size()]));
-
         return layout;
     }
 }

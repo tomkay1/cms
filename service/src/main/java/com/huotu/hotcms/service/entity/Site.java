@@ -14,22 +14,16 @@ import com.huotu.hotcms.service.entity.login.Owner;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * 站点
@@ -108,17 +102,6 @@ public class Site {
     @Column(name = "personalise")
     private boolean personalise;
 
-
-    /**
-     * 对应域名
-     */
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinTable(name = "cms_site_host",
-            joinColumns = {@JoinColumn(name = "siteId", referencedColumnName = "siteId")},
-            inverseJoinColumns = {@JoinColumn(name = "hostId", referencedColumnName = "hostId")}
-    )
-    private Set<Host> hosts;
-
     /**
      * 站点创建时间
      */
@@ -151,25 +134,29 @@ public class Site {
     /**
      * 所属地区
      */
-    @OneToOne(optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "regionId")
     private Region region;
-
-    public void addHost(Host host) {
-        if (this.hosts == null) {
-            this.hosts = new HashSet<>();
-        }
-        if (host.getSites() == null) {
-            host.setSites(new HashSet<>());
-        }
-        if (this.getSiteId() != null) {
-            host.getSites().add(this);
-        }
-        this.hosts.add(host);
-    }
-
-    public void removeHost(Host host) {
-        host.getSites().remove(this);
-        this.hosts.remove(host);
-    }
+//
+//    public void addHost(Host host) {
+//        if (this.hosts == null) {
+//            this.hosts = new HashSet<>();
+//        }
+//        this.hosts.add(host);
+//    }
+//
+//    public void stopHookSite(Host host) {
+//        this.hosts.remove(host);
+//    }
+//
+//
+//    /**
+//     * 什么域名可以被解析到这个站点来
+//     */
+//    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+//    @JoinTable(name = "cms_site_host",
+//            joinColumns = {@JoinColumn(name = "siteId", referencedColumnName = "siteId")},
+//            inverseJoinColumns = {@JoinColumn(name = "hostId", referencedColumnName = "hostId")}
+//    )
+//    private Set<Host> hosts;
 }

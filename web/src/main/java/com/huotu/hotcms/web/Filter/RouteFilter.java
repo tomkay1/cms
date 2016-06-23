@@ -87,14 +87,14 @@ public class RouteFilter implements Filter {
                 boolean isMobile = CheckMobile.check(request1);
                 if (isMobile) {
                     Site site = siteResolveService.getCurrentSite(request1);
-                    String mobileUrl=siteConfigService.findMobileUrlBySite(site);
+                    String mobileUrl = siteConfigService.findMobileUrlBySite(site);
                     if (mobileUrl != null && !Objects.equals(mobileUrl, "")) {//开启了手机微官网则重定向微官网域名地址
                         ((HttpServletResponse) response).sendRedirect(mobileUrl);
                         return false;
                     }
                 }
                 request.getRequestDispatcher("/shop" + servletPath).forward(request, response);
-                return  false;
+                return false;
             }
         }
         return true;
@@ -105,7 +105,7 @@ public class RouteFilter implements Filter {
      */
     private boolean customizeFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws Exception {
-        isChecked=true;
+        isChecked = true;
         HttpServletRequest request1 = ((HttpServletRequest) request);
 
         Site site = siteResolveService.getCurrentSite(request1);
@@ -124,7 +124,7 @@ public class RouteFilter implements Filter {
         if (!servletPath.contains(filter)) {
             if (PatternMatchUtil.isMatchFilter(servletPath)) {
                 Route route = routeResolverService.getRoute(site, servletPath);
-                if(!StaticResource.isStaticResc(request1.getServletPath())){
+                if (!StaticResource.isStaticResc(request1.getServletPath())) {
                     if (route == null && !site.isCustom()) {
                         request.getRequestDispatcher("/template/" + site.getOwner().getId() + servletPath).forward(request
                                 , response);
@@ -163,19 +163,19 @@ public class RouteFilter implements Filter {
             if (routeResolverService == null) {
                 routeResolverService = applicationContext.getBean("routeResolverService", RouteResolverService.class);
             }
-            if(siteConfigService==null){
+            if (siteConfigService == null) {
                 siteConfigService = applicationContext.getBean("siteConfigServiceImpl", SiteConfigServiceImpl.class);
             }
             HttpServletRequest request1 = ((HttpServletRequest) request);
-            if(!((HttpServletRequest) request).getServletPath().contains(manage)){//非管理地址才会进行域名，站点等的判断
-                Site site = siteResolveService.getCurrentSite(request1);
-                if(!((HttpServletRequest) request).getServletPath().contains(manage)){
-                    boolean Flag = site.isPersonalise() ? personaliseFilter(request, response, chain) :
-                            customizeFilter(request, response, chain);
-                    if (!Flag)
-                        return;
-                }
+//            if(!((HttpServletRequest) request).getServletPath().contains(manage)){//非管理地址才会进行域名，站点等的判断
+            Site site = siteResolveService.getCurrentSite(request1);
+            if (!((HttpServletRequest) request).getServletPath().contains(manage)) {
+                boolean Flag = site.isPersonalise() ? personaliseFilter(request, response, chain) :
+                        customizeFilter(request, response, chain);
+                if (!Flag)
+                    return;
             }
+//            }
 
         } catch (Exception ex) {
             log.error("doFilter", ex);

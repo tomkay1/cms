@@ -48,6 +48,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -87,13 +88,12 @@ public class SupperController extends AbstractSiteSupperController {
     /**
      * 站点列表页面
      *
-     * @param request
      * @return
      * @throws Exception
      */
     @RequestMapping("/siteList")
     @AuthorizeRole(roleType = AuthorizeRole.Role.Supper)
-    public ModelAndView siteList(HttpServletRequest request) throws Exception {
+    public ModelAndView siteList() throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/view/supper/siteList.html");
         return modelAndView;
@@ -101,7 +101,7 @@ public class SupperController extends AbstractSiteSupperController {
 
     @RequestMapping("/templateList")
     @AuthorizeRole(roleType = AuthorizeRole.Role.Supper)
-    public ModelAndView templateList(HttpServletRequest request) throws Exception {
+    public ModelAndView templateList() throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/view/supper/templateList.html");
         return modelAndView;
@@ -110,13 +110,12 @@ public class SupperController extends AbstractSiteSupperController {
     /**
      * 添加站点页面
      *
-     * @param request
      * @return
      * @throws Exception
      */
     @RequestMapping(value = "/addSite")
     @AuthorizeRole(roleType = AuthorizeRole.Role.Supper)
-    public ModelAndView addSite(HttpServletRequest request) throws Exception {
+    public ModelAndView addSite() throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/view/supper/addSite.html");
         List<Region> regions = regionRepository.findAll();
@@ -143,12 +142,20 @@ public class SupperController extends AbstractSiteSupperController {
 
     /**
      * 站点新增以及修改操作
+     * @param request 请求实例
+     * @param site 要操作的站点
+     * @param regionId 语言代码
+     * @param siteType 站点类型
+     * @param personalise 不止何物
+     * @param homeDomains 主域名
+     * @param domains 其他可以处理这个站点的域名
+     * @return
      */
     @RequestMapping(value = "/saveSite", method = RequestMethod.POST)
-    @Transactional(value = "transactionManager")
+    @Transactional
     @ResponseBody
-    public ResultView updateSite(HttpServletRequest request, Site site, Long regionId, Integer siteType
-            , Boolean personalise, String homeDomains, Template template, String... domains) {
+    public ResultView updateSite(HttpServletRequest request, Site site, @RequestParam Locale regionId, Integer siteType
+            , boolean personalise, String homeDomains, String... domains) {
         ResultView result = null;
         Set<Host> hosts = new HashSet<>();
         site.setPersonalise(personalise);
@@ -167,9 +174,9 @@ public class SupperController extends AbstractSiteSupperController {
                 site.setCreateTime(LocalDateTime.now());
                 site.setUpdateTime(LocalDateTime.now());
                 site.setDeleted(false);
-                result = hostService.addHost(domains, homeDomains, site, regionId);
+                result = siteService.newSite(domains, homeDomains, site, regionId);
             } else {//修改站点
-                result = hostService.patchHost(domains, homeDomains, site, regionId);
+                result = siteService.patchSite(domains, homeDomains, site, regionId);
             }
             if (result != null && result.getCode().equals(ResultOptionEnum.OK.getCode())) {
                 site = (Site) result.getData();
@@ -180,7 +187,7 @@ public class SupperController extends AbstractSiteSupperController {
                 site.setResourceUrl(resourceUrl);
                 if (siteId != null) {
                     site2 = siteService.getSite(site.getSiteId());
-                    site = hostService.mergeSite(domains, site);
+//                    site = hostService.mergeSite(domains, site);
                     site.setUpdateTime(LocalDateTime.now());
                     hosts = hostService.getRemoveHost(domains, site2);
                 }
@@ -188,7 +195,7 @@ public class SupperController extends AbstractSiteSupperController {
             } else {
                 return result;
             }
-            hostService.removeHost(hosts);
+//            hostService.stopHookSite(hosts);
             siteService.save(site);
             result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
         } catch (Exception ex) {
@@ -280,9 +287,9 @@ public class SupperController extends AbstractSiteSupperController {
             Pageable pageable = new PageRequest(page - 1, pageSize);
             Page<Template> pageData = templateRepository.findAll(pageable);
             List<Template> Templates = pageData.getContent();
-            for (Template template : Templates) {
-                template.getSite().setHosts(null);
-            }
+//            for (Template template : Templates) {
+//                template.getSite().setHosts(null);
+//            }
             if (pageData.getContent().size() > 0) {
                 pageModel = new PageData<>();
                 pageModel.setPageCount(pageData.getTotalPages());
@@ -307,14 +314,14 @@ public class SupperController extends AbstractSiteSupperController {
     @RequestMapping(value = "/deleteSite", method = RequestMethod.POST)
     @AuthorizeRole(roleType = AuthorizeRole.Role.Supper)
     @ResponseBody
-    public ResultView deleteModel(@RequestParam(name = "id", required = true, defaultValue = "0") Long id
+    public ResultView deleteModel(@RequestParam(name = "id") Long id
             , HttpServletRequest request) {
         ResultView result;
         try {
             if (cookieUser.isSupper(request)) {
                 Site site = siteService.getSite(id);
-                hostService.removeHost(site.getHosts());
-                site.setHosts(null);
+                hostService.stopHookSite(site);
+//                site.setHosts(null);
                 site.setDeleted(true);
                 siteService.save(site);
                 result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);

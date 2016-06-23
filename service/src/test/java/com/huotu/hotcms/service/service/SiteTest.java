@@ -30,6 +30,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by fawzi on 2016/5/12.
@@ -55,6 +56,20 @@ public class SiteTest {
     TemplateRepository templateRepository;
     @Autowired
     CategoryRepository categoryRepository;
+
+    @Test
+    public void localTest() {
+        // only Lang
+        Locale locale1 = new Locale("zh");
+        System.out.println(locale1.getLanguage());
+        System.out.println(locale1.getCountry());
+        System.out.println(locale1.getVariant());
+
+        Locale locale2 = new Locale("zh", "CN");
+        System.out.println(locale2.getLanguage());
+        System.out.println(locale2.getCountry());
+        System.out.println(locale2.getVariant());
+    }
 
     /**
      * 站点复制测试

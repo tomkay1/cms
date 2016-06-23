@@ -15,6 +15,7 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.repository.HostRepository;
 import com.huotu.hotcms.service.repository.OwnerRepository;
+import com.huotu.hotcms.service.repository.RegionRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -23,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Locale;
 
 /**
  * 初始化服务
@@ -34,6 +35,8 @@ import java.util.List;
 public class InitService {
 
     @Autowired
+    private RegionRepository regionRepository;
+    @Autowired
     private SiteRepository siteRepository;
     @Autowired
     private HostRepository hostRepository;
@@ -41,6 +44,8 @@ public class InitService {
     private OwnerRepository ownerRepository;
     @Autowired
     private Environment environment;
+    @Autowired
+    private SiteService siteService;
 
     @Transactional
     @PostConstruct
@@ -57,25 +62,20 @@ public class InitService {
             }
             Host host = hostRepository.findByDomain("localhost");
             if (host == null) {
-                host = new Host();
-                host.setOwner(owner);
-                host.setDomain("localhost");
-                host.setRemarks("本地开发所用的host");
-                host = hostRepository.save(host);
-            }
-
-            List<Site> sites = siteRepository.findByHosts(host);
-            if (sites.isEmpty()) {
                 Site site = new Site();
                 site.setOwner(owner);
                 site.setCreateTime(LocalDateTime.now());
                 site.setName("本地站点");
                 site.setTitle("标题是什么");
                 site.setSiteType(SiteType.SITE_PC_WEBSITE);
-                site = siteRepository.save(site);
-                site.addHost(host);
-                host.addSite(site);
+
+                siteService.newSite(new String[]{"localhost"}, "localhost", site, Locale.CHINA);
+
+                host = hostRepository.findByDomain("localhost");
+                host.setRemarks("本地开发所用的host");
+                host = hostRepository.save(host);
             }
+
         }
     }
 

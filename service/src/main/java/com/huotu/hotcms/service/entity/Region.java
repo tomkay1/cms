@@ -13,15 +13,15 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Locale;
 
 /**
  * 地区/国家
- * TODO 应该使用Locale代替
+ *
  * Created by cwb on 2015/12/24.
  */
 @Entity
@@ -31,8 +31,9 @@ import javax.persistence.Table;
 public class Region {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Convert(converter = LocaleConverter.class)
+    @Column(name = "id", length = 20)
+    private Locale locale;
 
     /**
      * 地区编号（cn,us,etc.）

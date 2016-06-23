@@ -13,17 +13,19 @@ import com.huotu.hotcms.service.entity.login.Owner;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKey;
 import javax.persistence.Table;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 域名
@@ -71,17 +73,35 @@ public class Host {
     @Column(name = "home")
     private boolean home;
 
-    /**
-     * 对应站点
-     */
-    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.REMOVE,CascadeType.REFRESH},mappedBy = "hosts")
-    private Set<Site> sites;
+    @ManyToMany
+    @JoinTable(name = "cms_host_site")
+    @MapKey(name = "region")
+    private Map<Region, Site> sites;
+//    /**
+//     * 对应站点
+//     */
+//    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.REMOVE,CascadeType.REFRESH},mappedBy = "hosts")
+//    private Set<Site> sites;
+//
 
+    /**
+     * 让这个主机与指定站点建立联系,
+     * 会替换掉同语言的之前站点
+     * @param site 站点
+     */
     public void addSite(Site site) {
-        site.addHost(this);
+//        site.addHost(this);
+        if (sites == null) {
+            sites = new HashMap<>();
+        }
+        sites.put(site.getRegion(), site);
     }
 
     public void removeSite(Site site) {
-        site.removeHost(this);
+//        site.stopHookSite(this);
+        if (sites != null) {
+            sites.remove(site.getRegion(), site);
+        }
+
     }
 }

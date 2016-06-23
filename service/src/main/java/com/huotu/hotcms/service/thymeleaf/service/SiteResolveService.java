@@ -2,8 +2,9 @@
  * 版权所有:杭州火图科技有限公司
  * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
  *
- *  (c) Copyright Hangzhou Hot Technology Co., Ltd.
- *  Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District 2013-2015. All rights reserved.
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
  */
 
 package com.huotu.hotcms.service.thymeleaf.service;
@@ -26,19 +27,19 @@ import java.util.Set;
 
 /**
  * <p>
- *     站点解析服务
+ * 站点解析服务
  * </p>
- * @author xhl
  *
+ * @author xhl
  * @since 1.0.0
  */
 @Component
 public class SiteResolveService {
     private static final Log log = LogFactory.getLog(SiteResolveService.class);
 
-    private static final String default_country="cn";
+    private static final String default_country = "cn";
 
-    private static final String default_language="zh";
+    private static final String default_language = "zh";
 
     @Autowired
     private HostService hostService;
@@ -48,8 +49,8 @@ public class SiteResolveService {
 
     /**
      * 根据当前浏览器环境获得站点
-     * */
-    public Site getEnvironmentSite(HttpServletRequest request) throws Exception{
+     */
+    public Site getEnvironmentSite(HttpServletRequest request) throws Exception {
         Site site = null;
         try {
             String domain = request.getServerName();
@@ -75,64 +76,64 @@ public class SiteResolveService {
                     }
                 }
             }
-        }catch (Exception ex){
-            throw new Exception("getEnvironmentSite exception->"+ex.getMessage()+" domain-->"+request.getServerName());
+        } catch (Exception ex) {
+            throw new IllegalStateException("getEnvironmentSite " + " domain-->" + request.getServerName(), ex);
         }
         return site;
     }
 
     /**
      * 根据当前地址栏中输入的言语参数来获得站点信息
-     * */
-    public Site getParamSite(HttpServletRequest request,String langParam) throws Exception{
+     */
+    public Site getParamSite(HttpServletRequest request, String langParam) throws Exception {
         String domain = request.getServerName();
         Set<Site> sites = getSitesThroughDomain(domain);
-        if(langParam.contains("-")){//完整的语言地区参数
-            for(Site s : sites) {
-                String regionCode1=s.getRegion().getRegionCode();
-                String langCode1=s.getRegion().getLangCode();
-                if(langParam.equalsIgnoreCase(langCode1+"-"+regionCode1)) {
+        if (langParam.contains("-")) {//完整的语言地区参数
+            for (Site s : sites) {
+                String regionCode1 = s.getRegion().getRegionCode();
+                String langCode1 = s.getRegion().getLangCode();
+                if (langParam.equalsIgnoreCase(langCode1 + "-" + regionCode1)) {
                     return s;
                 }
             }
-        }else{//地区参数
-            for(Site s : sites) {
-                String regionCode=s.getRegion().getRegionCode();
-                if(langParam.equalsIgnoreCase(regionCode)) {
+        } else {//地区参数
+            for (Site s : sites) {
+                String regionCode = s.getRegion().getRegionCode();
+                if (langParam.equalsIgnoreCase(regionCode)) {
                     return s;
                 }
             }
         }
-       return null;
+        return null;
     }
 
-    public Site getCurrentSite(HttpServletRequest request) throws Exception{
+    public Site getCurrentSite(HttpServletRequest request) throws Exception {
 //        String languageParam= PatternMatchUtil.getUrlString(path,PatternMatchUtil.langRegexp);
-        Site site=null;
-        String languageParam= PatternMatchUtil.getLangParam(request);
-        if(StringUtils.isEmpty(languageParam)){
-            site= getEnvironmentSite(request);
-        }else{
-            if(languageParam.contains("-")){
-                if(regionService.isRegionByCode(languageParam.split("-")[1])){
-                    site= getParamSite(request,languageParam);
-                }else{
-                    site= getEnvironmentSite(request);
+        Site site = null;
+        String languageParam = PatternMatchUtil.getLangParam(request);
+        if (StringUtils.isEmpty(languageParam)) {
+            site = getEnvironmentSite(request);
+        } else {
+            if (languageParam.contains("-")) {
+                if (regionService.isRegionByCode(languageParam.split("-")[1])) {
+                    site = getParamSite(request, languageParam);
+                } else {
+                    site = getEnvironmentSite(request);
                 }
-            }else{
-                if(regionService.isRegionByCode(languageParam)){
-                    site= getParamSite(request,languageParam);
-                }else{
-                    if(!request.getServletPath().contains("/manage")&& StaticResource.isStaticResc(request.getContextPath())){
-                        site= getEnvironmentSite(request);
+            } else {
+                if (regionService.isRegionByCode(languageParam)) {
+                    site = getParamSite(request, languageParam);
+                } else {
+                    if (!request.getServletPath().contains("/manage") && StaticResource.isStaticResc(request.getContextPath())) {
+                        site = getEnvironmentSite(request);
                     }
                 }
             }
         }
-        if(site==null){//其他语言站点没有则默认访问中文站点
+        if (site == null) {//其他语言站点没有则默认访问中文站点
             String domain = request.getServerName();
-            site=getSiteByDomainAndLange(domain,default_language);
-            if(site!=null) {
+            site = getSiteByDomainAndLange(domain, default_language);
+            if (site != null) {
                 String language = request.getLocale().getLanguage();
                 String country = request.getLocale().getCountry();
             }
@@ -167,9 +168,9 @@ public class SiteResolveService {
 //        return site;
     }
 
-    public Set<Site> getSitesThroughDomain(String domain) throws Exception{
+    public Set<Site> getSitesThroughDomain(String domain) throws Exception {
         Host host = hostService.getHost(domain);
-        if(host == null) {
+        if (host == null) {
             throw new Exception("domain no find");
         }
         return host.getSites();
@@ -177,10 +178,10 @@ public class SiteResolveService {
 
     /**
      * 根据域名以及语言来获得唯一的站点信息
-     * **/
-    public Site getSiteByDomainAndLange(String domain,String language) throws Exception{
-        Site site=null;
-        Set<Site> sites=getSitesThroughDomain(domain);
+     **/
+    public Site getSiteByDomainAndLange(String domain, String language) throws Exception {
+        Site site = null;
+        Set<Site> sites = getSitesThroughDomain(domain);
         for (Site s : sites) {
             String lang = s.getRegion().getLangCode();
             if (language.equalsIgnoreCase(lang)) {
@@ -193,18 +194,18 @@ public class SiteResolveService {
 
     public boolean isHomeSitePath(String path) {
         path = path.substring(1);
-        if("".equals(path)) {
+        if ("".equals(path)) {
             return true;
         }
-        if(path.contains("/")) {
-            path = path.substring(0,path.indexOf("/",0));
+        if (path.contains("/")) {
+            path = path.substring(0, path.indexOf("/", 0));
             return isRegionCode(path);
         }
         return isRegionCode(path);
     }
 
     public boolean isRegionCode(String str) {
-        if(!str.matches("\\D[2]")) {
+        if (!str.matches("\\D[2]")) {
             return true;
         }
         return false;

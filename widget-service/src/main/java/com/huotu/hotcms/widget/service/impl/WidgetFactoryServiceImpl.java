@@ -11,6 +11,7 @@ package com.huotu.hotcms.widget.service.impl;
 
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.Widget;
+import com.huotu.hotcms.widget.WidgetLocateService;
 import com.huotu.hotcms.widget.entity.WidgetInfo;
 import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.repository.WidgetRepository;
@@ -46,7 +47,7 @@ import java.util.List;
  * Created by wenqi on 2016/6/2.
  */
 @Service
-public class WidgetFactoryServiceImpl implements WidgetFactoryService {
+public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLocateService {
 
     private static final Log log = LogFactory.getLog(CSSServiceImpl.class);
 
@@ -240,5 +241,15 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService {
     @Override
     public List<WidgetInfo> getWidgetByOwerId(String owerID) {
         return widgetRepository.findByAuthor(owerID);
+    }
+
+    @Override
+    public InstalledWidget findWidget(String groupId, String widgetId, String version) {
+        return null;
+    }
+
+    @Override
+    public InstalledWidget findWidget(String identifier) {
+        return null;
     }
 }

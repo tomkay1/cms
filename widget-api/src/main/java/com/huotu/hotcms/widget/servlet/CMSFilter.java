@@ -9,7 +9,13 @@
 
 package com.huotu.hotcms.widget.servlet;
 
+import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.exception.NoHostFoundException;
+import com.huotu.hotcms.service.exception.NoSiteFoundException;
+import com.huotu.hotcms.service.thymeleaf.service.SiteResolveService;
 import com.huotu.hotcms.widget.CMSContext;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.Filter;
@@ -20,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * 这个Filer所完成的工作就是让{@link CMSContext#RequestContext()}可用
  * 服务器需要将CMSFilter拉入Servlet环境中.
  *
  * @author CJ
@@ -30,7 +37,17 @@ public class CMSFilter extends OncePerRequestFilter implements Filter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        CMSContext.PutContext(request, response);
+
+        WebApplicationContext context = WebApplicationContextUtils.findWebApplicationContext(getServletContext());
+
+        try {
+            Site site = context.getBean(SiteResolveService.class).getCurrentSite(request);
+            CMSContext.PutContext(request, response, site);
+        } catch (NoSiteFoundException | NoHostFoundException e) {
+            response.sendRedirect("http://www.huobanplus.com");
+            return;
+        }
+
         filterChain.doFilter(request, response);
     }
 

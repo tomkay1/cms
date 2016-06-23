@@ -28,5 +28,12 @@
         参考 https://huobanplus.quip.com/KngdAAGxtKSQ
     </description>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.huotu.hotcms</groupId>
+            <artifactId>service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>

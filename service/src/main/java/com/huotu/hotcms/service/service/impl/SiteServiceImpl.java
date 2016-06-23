@@ -23,6 +23,7 @@ import com.huotu.hotcms.service.entity.Region;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.Template;
 import com.huotu.hotcms.service.entity.Video;
+import com.huotu.hotcms.service.exception.NoSiteFoundException;
 import com.huotu.hotcms.service.model.widget.WidgetDefaultPage;
 import com.huotu.hotcms.service.model.widget.WidgetPage;
 import com.huotu.hotcms.service.repository.ArticleRepository;
@@ -120,9 +121,9 @@ public class SiteServiceImpl implements SiteService {
     private HostService hostService;
 
     @Override
-    public Site closestSite(Host host, Locale locale) throws IllegalStateException {
+    public Site closestSite(Host host, Locale locale) throws NoSiteFoundException {
         if (host.getSites() == null || host.getSites().isEmpty())
-            throw new IllegalStateException("no site here");
+            throw new NoSiteFoundException("no site here");
         if (host.getSites().size() == 1)
             return host.getSites().values().iterator().next();
         //逐个检查语言环境

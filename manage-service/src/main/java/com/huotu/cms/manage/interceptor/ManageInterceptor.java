@@ -50,7 +50,7 @@ public class ManageInterceptor extends HandlerInterceptorAdapter {
                 modelAndView.addObject("mallManageUrl", configInfo.getMallManageUrl());
             }
 
-            response.setHeader("X-Frame-Options", "Allow");
+            response.setHeader("X-Frame-Options", "SAMEORIGIN");
         }
 //        String servletPath = request.getServletPath();
 //        if (modelAndView != null) {//加载用户信息

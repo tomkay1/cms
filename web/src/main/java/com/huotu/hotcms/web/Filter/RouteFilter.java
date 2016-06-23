@@ -13,10 +13,10 @@ import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.service.impl.SiteConfigServiceImpl;
 import com.huotu.hotcms.service.thymeleaf.service.RouteResolverService;
-import com.huotu.hotcms.service.thymeleaf.service.SiteResolveService;
 import com.huotu.hotcms.service.util.CheckMobile;
 import com.huotu.hotcms.service.util.PatternMatchUtil;
 import com.huotu.hotcms.service.util.StaticResource;
+import com.huotu.hotcms.widget.CMSContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContext;
@@ -52,7 +52,6 @@ public class RouteFilter implements Filter {
             , ".js", ".css"};//DIY网站过滤规则->(PC官网装修,PC商城装修)
     private ApplicationContext applicationContext;
     private ServletContext servletContext;
-    private SiteResolveService siteResolveService;
     private RouteResolverService routeResolverService;
     private SiteConfigServiceImpl siteConfigService;
 
@@ -85,7 +84,7 @@ public class RouteFilter implements Filter {
             if (servletPath.equals("/")) {
                 boolean isMobile = CheckMobile.check(request1);
                 if (isMobile) {
-                    Site site = siteResolveService.getCurrentSite(request1);
+                    Site site = CMSContext.RequestContext().getSite();
                     String mobileUrl = siteConfigService.findMobileUrlBySite(site);
                     if (mobileUrl != null && !Objects.equals(mobileUrl, "")) {//开启了手机微官网则重定向微官网域名地址
                         ((HttpServletResponse) response).sendRedirect(mobileUrl);
@@ -106,7 +105,7 @@ public class RouteFilter implements Filter {
             throws Exception {
         HttpServletRequest request1 = ((HttpServletRequest) request);
 
-        Site site = siteResolveService.getCurrentSite(request1);
+        Site site = CMSContext.RequestContext().getSite();
         //目前为了兼容我们公司自己的官网，暂时先这样处理兼容,后面考虑在网站配置中新增一个字段(是否有手机官网，如果有则做该业务判断),统一使用m.xxx.com为手机官网地址
         if (site.getOwner().getCustomerId() == 5) {
             boolean isMobile = CheckMobile.check(request1);
@@ -156,28 +155,28 @@ public class RouteFilter implements Filter {
                 if (applicationContext == null)
                     throw new ServletException("Spring ApplicationContext Required.");
             }
-            if (siteResolveService == null) {
-                siteResolveService = applicationContext.getBean("siteResolveService", SiteResolveService.class);
-            }
             if (routeResolverService == null) {
                 routeResolverService = applicationContext.getBean("routeResolverService", RouteResolverService.class);
             }
             if (siteConfigService == null) {
                 siteConfigService = applicationContext.getBean("siteConfigServiceImpl", SiteConfigServiceImpl.class);
             }
-            HttpServletRequest request1 = ((HttpServletRequest) request);
-//            if(!((HttpServletRequest) request).getServletPath().contains(manage)){//非管理地址才会进行域名，站点等的判断
-            Site site = siteResolveService.getCurrentSite(request1);
+
+            Site site = CMSContext.RequestContext().getSite();
+
             if (!((HttpServletRequest) request).getServletPath().contains(manage)) {
                 boolean Flag = site.isPersonalise() ? personaliseFilter(request, response, chain) :
                         customizeFilter(request, response, chain);
                 if (!Flag)
                     return;
             }
+            //            if(!((HttpServletRequest) request).getServletPath().contains(manage)){//非管理地址才会进行域名，站点等的判断
 //            }
 
         } catch (Exception ex) {
-            log.error("doFilter", ex);
+            log.error("on RouteFilter", ex);
+            ((HttpServletResponse) response).sendError(404);
+            return;
         }
         chain.doFilter(request, response);
     }

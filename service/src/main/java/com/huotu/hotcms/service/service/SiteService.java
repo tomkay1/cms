@@ -11,6 +11,7 @@ package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.exception.NoSiteFoundException;
 import com.huotu.hotcms.service.util.PageData;
 import com.huotu.hotcms.service.util.ResultView;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,10 +27,10 @@ public interface SiteService {
      * @param host   主机
      * @param locale 要求语言
      * @return 最合适的站点
-     * @throws IllegalStateException
+     * @throws NoSiteFoundException
      */
     @Transactional(readOnly = true)
-    Site closestSite(Host host, Locale locale) throws IllegalStateException;
+    Site closestSite(Host host, Locale locale) throws NoSiteFoundException;
 
     PageData<Site> getPage(long owner, String name, int page, int pageSize);
 

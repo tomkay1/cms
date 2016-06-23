@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
  *
  * @author CJ
  */
-@JsonDeserialize(using = CMSDeserializer.class)
+@JsonDeserialize(using = PageElementDeserializer.class)
 public interface PageElement {
 
 }

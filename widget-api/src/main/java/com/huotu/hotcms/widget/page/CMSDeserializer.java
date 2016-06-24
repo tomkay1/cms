@@ -1,7 +1,6 @@
 package com.huotu.hotcms.widget.page;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -13,9 +12,7 @@ import com.fasterxml.jackson.databind.type.SimpleType;
 import com.huotu.hotcms.widget.Component;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
 
 /**
  * Created by wenqi on 2016/6/23.
@@ -25,17 +22,10 @@ public abstract class CMSDeserializer<T> extends JsonDeserializer<T> {
     @Override
     public T deserialize(JsonParser p, DeserializationContext context) throws IOException {
         DeserializationConfig config = context.getConfig();
-        String nextFieldName=null;
         Class toParse=Layout.class;
-
-        Field[] fields=Component.class.getDeclaredFields();
-        List<String> fieldNames=new ArrayList<>();
-        for (Field field:fields){
-            fieldNames.add(field.getName());
-        }
-
-        while((nextFieldName=p.nextFieldName())!=null||p.nextTextValue()!=null){
-            if(fieldNames.contains(nextFieldName)){
+        Iterator<String> iterator= p.readValueAsTree().fieldNames();
+        while(iterator.hasNext()){
+            if(iterator.next().equals("widgetIdentity")){
                 toParse= Component.class;
                 break;
             }

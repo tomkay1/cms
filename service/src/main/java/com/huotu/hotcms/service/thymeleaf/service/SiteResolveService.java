@@ -11,6 +11,8 @@ package com.huotu.hotcms.service.thymeleaf.service;
 
 import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.exception.NoHostFoundException;
+import com.huotu.hotcms.service.exception.NoSiteFoundException;
 import com.huotu.hotcms.service.service.HostService;
 import com.huotu.hotcms.service.service.SiteService;
 import org.apache.commons.logging.Log;
@@ -55,13 +57,14 @@ public class SiteResolveService {
      *
      * @param request servlet 请求
      * @return 站点
-     * @throws Exception
+     * @throws NoSiteFoundException 找不到站点
+     * @throws NoHostFoundException 找不到主机
      */
-    public Site getCurrentSite(HttpServletRequest request) throws Exception {
+    public Site getCurrentSite(HttpServletRequest request) throws NoSiteFoundException, NoHostFoundException {
         String domain = request.getServerName();
         Host host = hostService.getHost(domain);
         if (host == null) {
-            throw new IllegalStateException("can not find any host about " + domain);
+            throw new NoHostFoundException(domain);
         }
 
         Locale locale = localeFromRequest(request);

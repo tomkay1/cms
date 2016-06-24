@@ -53,8 +53,8 @@ public class ConfigInfo {
     @PostConstruct
     public void InitConfigInfo() {
         this.outLoginUrl = ev.getProperty("cms.loginUrl", "http://manager.51flashmall.com");
-        this.mallSupperUrl = ev.getProperty("huobanmall.mallManageUrl", "http://pdmall.51flashmall.com/home.aspx");
-        this.mallManageUrl = ev.getProperty("huobanmall.mallSupperUrl", "http://manager.51flashmall.com/home.aspx?customerid=%s");
+        this.mallManageUrl = ev.getProperty("huobanmall.mallManageUrl", "http://pdmall.51flashmall.com/home.aspx");
+        this.mallSupperUrl = ev.getProperty("huobanmall.mallSupperUrl", "http://manager.51flashmall.com/home.aspx?customerid=%s");
     }
 
     public String getResourcesSiteLogo(long ownerId) {

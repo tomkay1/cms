@@ -13,7 +13,6 @@ import com.huotu.cms.manage.config.ManageServiceSpringConfig;
 import com.huotu.hotcms.service.config.JpaConfig;
 import com.huotu.hotcms.service.config.ServiceConfig;
 import com.huotu.hotcms.service.thymeleaf.templateresolver.WidgetTemplateResolver;
-import com.huotu.hotcms.web.interceptor.LoginInterceptor;
 import com.huotu.hotcms.web.interceptor.RouteInterceptor;
 import com.huotu.hotcms.web.interceptor.SiteResolver;
 import com.huotu.hotcms.web.util.ArrayUtil;
@@ -27,8 +26,12 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.*;
-import org.thymeleaf.ITemplateEngine;
+import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.dialect.IDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
@@ -55,65 +58,44 @@ import java.util.Set;
 @Import({MVCConfig.MVCConfigLoader.class, JpaConfig.class, ServiceConfig.class, WebHost.class, ManageServiceSpringConfig.class})
 public class MVCConfig extends WebMvcConfigurerAdapter {
 
-    static class MVCConfigLoader{
-
-        @Autowired
-        private ApplicationContext applicationContext;
-        @Autowired
-        private Set<IDialect> dialectSet;
-
-        private ITemplateEngine templateEngine(ITemplateResolver templateResolver) {
-            SpringTemplateEngine engine = new SpringTemplateEngine();
-            engine.setTemplateResolver(templateResolver);
-            dialectSet.forEach(engine::addDialect);
-            return engine;
-        }
-
-        private ITemplateResolver widgetTemplateResolver() {
-            WidgetTemplateResolver resolver = new WidgetTemplateResolver();
-            resolver.setCharacterEncoding(UTF8);
-            resolver.setApplicationContext(applicationContext);
-            resolver.setTemplateMode(TemplateMode.HTML);
-            return resolver;
-        }
-
-        @Bean
-        public ThymeleafViewResolver widgetViewResolver() {
-            ThymeleafViewResolver resolver = new ThymeleafViewResolver();
-            resolver.setViewNames(ArrayUtil.array("*.cshtml"));
-            resolver.setCharacterEncoding(UTF8);
-            resolver.setTemplateEngine(templateEngine(widgetTemplateResolver()));
-            return resolver;
-        }
-    }
-
     private static final String UTF8 = "UTF-8";
-
     @Autowired
     private ApplicationContext applicationContext;
     @Autowired
     private SiteResolver siteResolver;
     @Autowired
     private Environment environment;
-
     @Autowired
     private RouteInterceptor routeInterceptor;
-
     @Autowired
     private ThymeleafViewResolver widgetViewResolver;
     @Autowired
     private Set<IDialect> dialectSet;
-
     @Autowired
-    LoginInterceptor loginInterceptor;
+    private ThymeleafViewResolver htmlViewResolver;
+
+    //    @Autowired
+//    LoginInterceptor loginInterceptor;
+    @Autowired
+    private ThymeleafViewResolver javascriptViewResolver;
+    @Autowired
+    private ThymeleafViewResolver cssViewResolver;
 
     /**
      * 允许访问静态资源
+     * NO 不再允许 JiangCai
+     *
      * @param configurer
      */
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-        configurer.enable();
+//        configurer.enable();
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        super.addResourceHandlers(registry);
+        registry.addResourceHandler("/assets/**").addResourceLocations("/assets/");
     }
 
     @Override
@@ -123,9 +105,9 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
-        registry.viewResolver(htmlViewResolver());
-        registry.viewResolver(javascriptViewResolver());
-        registry.viewResolver(cssViewResolver());
+        registry.viewResolver(htmlViewResolver);
+        registry.viewResolver(javascriptViewResolver);
+        registry.viewResolver(cssViewResolver);
         registry.viewResolver(widgetViewResolver);
         registry.viewResolver(redirectViewResolver());
         registry.viewResolver(forwardViewResolver());
@@ -134,101 +116,152 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(routeInterceptor);
-        registry.addInterceptor(loginInterceptor);
+//        registry.addInterceptor(loginInterceptor);
     }
 
-    public ViewResolver htmlViewResolver() {
-        ThymeleafViewResolver resolver = new ThymeleafViewResolver();
-        resolver.setTemplateEngine(templateEngine(htmlTemplateResolver()));
-        resolver.setContentType("text/html");
-        resolver.setCharacterEncoding(UTF8);
-//        if(environment.acceptsProfiles("development")) {
-//            resolver.setCache(false);
-//        }
-        resolver.setCache(false);
-        resolver.setViewNames(ArrayUtil.array("*.html"));
-        return resolver;
-    }
-
-    private ViewResolver javascriptViewResolver() {
-        ThymeleafViewResolver resolver = new ThymeleafViewResolver();
-        resolver.setTemplateEngine(templateEngine(javascriptTemplateResolver()));
-        resolver.setContentType("application/javascript");
-        resolver.setCharacterEncoding(UTF8);
-        resolver.setViewNames(ArrayUtil.array("*.js"));
-        return resolver;
-    }
-
-    private ViewResolver cssViewResolver() {
-        ThymeleafViewResolver resolver = new ThymeleafViewResolver();
-        resolver.setTemplateEngine(templateEngine(cssTemplateResolver()));
-        resolver.setContentType("text/css");
-        resolver.setCharacterEncoding(UTF8);
-        resolver.setViewNames(ArrayUtil.array("*.css"));
-        return resolver;
-    }
-
-
-//    @Autowired
-//    public void setWidgetViewResolver(ThymeleafViewResolver widgetViewResolver){
-//        widgetViewResolver.setTemplateEngine(templateEngine(widgetTemplateResolver()));
-//    }
-
-
-
-    public ITemplateEngine templateEngine(ITemplateResolver templateResolver) {
-        SpringTemplateEngine engine = new SpringTemplateEngine();
-        engine.setTemplateResolver(templateResolver);
-        dialectSet.forEach(engine::addDialect);
-        return engine;
-    }
-
-    private ITemplateResolver htmlTemplateResolver() {
-        SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
-//        if(environment.acceptsProfiles("development")) {
-//            resolver.setCacheable(false);
-//        }
-        resolver.setCacheable(false);
-        resolver.setCharacterEncoding(UTF8);
-        resolver.setApplicationContext(applicationContext);
-        resolver.setTemplateMode(TemplateMode.HTML);
-        return resolver;
-    }
-
-    private ITemplateResolver javascriptTemplateResolver() {
-        SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
-//        if(environment.acceptsProfiles("development")) {
-//            resolver.setCacheable(false);
-//        }
-        resolver.setCacheable(false);
-        resolver.setCharacterEncoding(UTF8);
-        resolver.setApplicationContext(applicationContext);
-        resolver.setTemplateMode(TemplateMode.JAVASCRIPT);
-        return resolver;
-    }
-
-    private ITemplateResolver cssTemplateResolver() {
-        SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
-//        if(environment.acceptsProfiles("development")) {
-//            resolver.setCacheable(false);
-//        }
-        resolver.setCacheable(false);
-        resolver.setCharacterEncoding(UTF8);
-        resolver.setApplicationContext(applicationContext);
-        resolver.setTemplateMode(TemplateMode.CSS);
-        return resolver;
-    }
-
-    public ViewResolver redirectViewResolver() {
+    private ViewResolver redirectViewResolver() {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
         resolver.setViewNames(ArrayUtil.array("redirect:*"));
         return resolver;
     }
 
-    public ViewResolver forwardViewResolver() {
+    private ViewResolver forwardViewResolver() {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
         resolver.setViewNames(ArrayUtil.array("forward:*"));
         return resolver;
+    }
+
+    @Import(MVCConfigLoader.EngineLoader.class)
+    static class MVCConfigLoader {
+
+        @Autowired
+        private SpringTemplateEngine javascriptTemplateEngine;
+        @Autowired
+        private SpringTemplateEngine cssTemplateEngine;
+        @Autowired
+        private SpringTemplateEngine widgetTemplateEngine;
+        @Autowired
+        private SpringTemplateEngine htmlViewTemplateEngine;
+
+        @Bean
+        public ViewResolver htmlViewResolver() {
+            ThymeleafViewResolver resolver = new ThymeleafViewResolver();
+            resolver.setTemplateEngine(htmlViewTemplateEngine);
+            resolver.setContentType("text/html");
+            resolver.setCharacterEncoding(UTF8);
+//        if(environment.acceptsProfiles("development")) {
+//            resolver.setCache(false);
+//        }
+            resolver.setCache(false);
+            resolver.setViewNames(ArrayUtil.array("*.html"));
+            return resolver;
+        }
+
+        @Bean
+        public ThymeleafViewResolver widgetViewResolver() {
+            ThymeleafViewResolver resolver = new ThymeleafViewResolver();
+            resolver.setViewNames(ArrayUtil.array("*.cshtml"));
+            resolver.setCharacterEncoding(UTF8);
+            resolver.setTemplateEngine(widgetTemplateEngine);
+            return resolver;
+        }
+
+        @Bean
+        public ViewResolver javascriptViewResolver() {
+            ThymeleafViewResolver resolver = new ThymeleafViewResolver();
+            resolver.setTemplateEngine(javascriptTemplateEngine);
+            resolver.setContentType("application/javascript");
+            resolver.setCharacterEncoding(UTF8);
+            resolver.setViewNames(ArrayUtil.array("*.js"));
+            return resolver;
+        }
+
+        @Bean
+        public ViewResolver cssViewResolver() {
+            ThymeleafViewResolver resolver = new ThymeleafViewResolver();
+            resolver.setTemplateEngine(cssTemplateEngine);
+            resolver.setContentType("text/css");
+            resolver.setCharacterEncoding(UTF8);
+            resolver.setViewNames(ArrayUtil.array("*.css"));
+            return resolver;
+        }
+
+        static class EngineLoader {
+
+            @Autowired
+            private ApplicationContext applicationContext;
+            @Autowired
+            private Set<IDialect> dialectSet;
+            @Autowired
+            private Environment environment;
+
+            SpringTemplateEngine templateEngine(ITemplateResolver templateResolver) {
+                SpringTemplateEngine engine = new SpringTemplateEngine();
+                engine.setTemplateResolver(templateResolver);
+                dialectSet.forEach(engine::addDialect);
+                return engine;
+            }
+
+
+            private ITemplateResolver htmlTemplateResolver() {
+                SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
+                resolver.setCacheable(!environment.acceptsProfiles("development")
+                        && !environment.acceptsProfiles("test"));
+                resolver.setCharacterEncoding(UTF8);
+                resolver.setApplicationContext(applicationContext);
+                resolver.setTemplateMode(TemplateMode.HTML);
+                return resolver;
+            }
+
+            private ITemplateResolver widgetTemplateResolver() {
+                WidgetTemplateResolver resolver = new WidgetTemplateResolver();
+                resolver.setCharacterEncoding(UTF8);
+                resolver.setApplicationContext(applicationContext);
+                resolver.setTemplateMode(TemplateMode.HTML);
+                return resolver;
+            }
+
+            private ITemplateResolver javascriptTemplateResolver() {
+                SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
+                resolver.setCacheable(!environment.acceptsProfiles("development")
+                        && !environment.acceptsProfiles("test"));
+                resolver.setCharacterEncoding(UTF8);
+                resolver.setApplicationContext(applicationContext);
+                resolver.setTemplateMode(TemplateMode.JAVASCRIPT);
+                return resolver;
+            }
+
+            private ITemplateResolver cssTemplateResolver() {
+                SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
+                resolver.setCacheable(!environment.acceptsProfiles("development")
+                        && !environment.acceptsProfiles("test"));
+                resolver.setCharacterEncoding(UTF8);
+                resolver.setApplicationContext(applicationContext);
+                resolver.setTemplateMode(TemplateMode.CSS);
+                return resolver;
+            }
+
+            @Bean
+            public SpringTemplateEngine htmlViewTemplateEngine() {
+                return templateEngine(htmlTemplateResolver());
+            }
+
+            @Bean
+            public SpringTemplateEngine javascriptTemplateEngine() {
+                return templateEngine(javascriptTemplateResolver());
+            }
+
+            @Bean
+            public SpringTemplateEngine cssTemplateEngine() {
+                return templateEngine(cssTemplateResolver());
+            }
+
+            @Bean
+            public SpringTemplateEngine widgetTemplateEngine() {
+                return templateEngine(widgetTemplateResolver());
+            }
+
+        }
     }
 
 

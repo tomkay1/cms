@@ -7,7 +7,7 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.cms.manage.service.impl.mallApi;
+package com.huotu.cms.manage.service.impl.mallaa;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

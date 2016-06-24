@@ -9,17 +9,23 @@
 
 package com.huotu.cms.manage;
 
+import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.WebClient;
 import com.huotu.cms.manage.login.Manager;
 import com.huotu.cms.manage.test.AuthController;
 import com.huotu.hotcms.service.common.CMSEnums;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
+import com.huotu.hotcms.service.repository.OwnerRepository;
 import me.jiangcai.lib.test.SpringWebTest;
+import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.htmlunit.webdriver.MockMvcHtmlUnitDriverBuilder;
+import org.springframework.test.web.servlet.htmlunit.webdriver.WebConnectionHtmlUnitDriver;
 
 import javax.servlet.http.Cookie;
 
@@ -37,7 +43,15 @@ public abstract class ManageTest extends SpringWebTest {
 
     protected MockHttpSession session;
     @Autowired
+    protected OwnerRepository ownerRepository;
+    protected Owner testOwner;
+    @Autowired
     private AuthController authController;
+
+    @Before
+    public void aboutTestOwner() {
+        testOwner = ownerRepository.findByCustomerIdNotNull().get(0);
+    }
 
     /**
      * 以商户身份登录,目前的登录方式 只支持与商户关联的owner
@@ -65,10 +79,30 @@ public abstract class ManageTest extends SpringWebTest {
                 .andExpect(status().isFound())
                 .andReturn().getResponse().getRedirectedUrl();
 
-        mockMvc.perform(get(url).session(session))
-                .andExpect(status().isOk());
+        // 一直跳转直到200成功
+        while (true) {
+            result = mockMvc.perform(get(url).session(session)).andReturn();
+            if (result.getResponse().getStatus() == 200)
+                break;
+            if (result.getResponse().getStatus() == 302)
+                url = result.getResponse().getRedirectedUrl();
+            else
+                throw new IllegalStateException("why ?" + result.getResponse().getStatus());
+        }
 
-//        driver = createWebDriver(cookie);
+
+        driver = MockMvcHtmlUnitDriverBuilder
+                .mockMvcSetup(mockMvc)
+                .withDelegate(new WebConnectionHtmlUnitDriver(BrowserVersion.CHROME) {
+                    @Override
+                    protected WebClient modifyWebClientInternal(WebClient webClient) {
+                        webClient.getOptions().setThrowExceptionOnScriptError(false);
+                        return super.modifyWebClientInternal(webClient);
+                    }
+                })
+//                .javascriptEnabled(true)
+                // DIY by interface.
+                .build();
         driver.manage().deleteAllCookies();
         authController.setLogin(login);
         driver.get("http://localhost/testLoginAs");
@@ -85,5 +119,14 @@ public abstract class ManageTest extends SpringWebTest {
 
         driver.get("http://localhost/manage/main");
         System.out.println(driver.getPageSource());
+    }
+
+    /**
+     * @return 新建的随机Owner
+     */
+    protected Owner randomOwner() {
+        Owner owner = new Owner();
+        owner.setEnabled(true);
+        return ownerRepository.saveAndFlush(owner);
     }
 }

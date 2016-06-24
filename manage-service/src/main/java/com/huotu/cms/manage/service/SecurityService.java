@@ -60,6 +60,7 @@ public class SecurityService {
         context.setAuthentication(new QuickAuthentication(login));
 
         httpSessionSecurityContextRepository.saveContext(context, holder.getRequest(), holder.getResponse());
+//        SecurityContextHolder.setContext(context);
         response.sendRedirect("/manage/main");
         return null;
     }

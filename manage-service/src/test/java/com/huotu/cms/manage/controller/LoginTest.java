@@ -10,9 +10,8 @@
 package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.ManageTest;
-import com.huotu.hotcms.service.repository.OwnerRepository;
+import com.huotu.cms.manage.page.AdminPage;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -22,8 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 public class LoginTest extends ManageTest {
 
-    @Autowired
-    private OwnerRepository ownerRepository;
+
 
     @Test
     public void normal() throws Exception {
@@ -37,13 +35,14 @@ public class LoginTest extends ManageTest {
 
     @Test
     public void manager() throws Exception {
-
         loginAsManage();
+
+        AdminPage page = initPage(AdminPage.class);
     }
 
     @Test
     public void customer() throws Exception {
-        loginAsOwner(ownerRepository.findByCustomerIdNotNull().get(0));
+        loginAsOwner(testOwner);
     }
 
 }

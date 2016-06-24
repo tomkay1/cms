@@ -14,9 +14,9 @@
 <head>
     <title>内容管理-火图CMS内容管理系统</title>
     <meta charset="UTF-8" content="text/html">
-    <link href="/assets/css/main.css" ewp:href="'/assets/css/main.css'" type="text/css" rel="stylesheet"/>
-    <script src="/assets/seajs/sea.js" ewp:src="'/assets/seajs/sea.js'"></script>
-    <script src="/assets/seajs/config.js" ewp:src="'/assets/seajs/config.js'"></script>
+    <link href="../../public/assets/css/main.css" ewp:href="'/assets/css/main.css'" type="text/css" rel="stylesheet"/>
+    <script src="../../public/assets/seajs/sea.js" ewp:src="'/assets/seajs/sea.js'"></script>
+    <script src="../../public/assets/seajs/config.js" ewp:src="'/assets/seajs/config.js'"></script>
 </head>
 <body>
 <div class="leftpanel" style="background: #1c1d1f">
@@ -119,7 +119,8 @@
                         <a href="http://www.huobanplus.com/" class="btn-contact-us"
                            style="right:499px; border-right:none;" target="_blank">
                             <span><img style="height: auto;max-width: 100%;vertical-align: middle;"
-                                       src="/assets/img/lianxi.png" ewp:src="'/assets/img/lianxi.png'"></span>
+                                       src="../../public/assets/img/lianxi.png"
+                                       ewp:src="'/assets/img/lianxi.png'"></span>
                             <span>联系我们</span>
                         </a>
                     </li>
@@ -127,7 +128,7 @@
                         <a class="huoban active" style="right:374px;"
                            th:href="@{/manage/main/decorated(scope=shop)}"
                            target="_blank">
-                            <span><img src="'/assets/img/iconfont-zhuangxiu.png'"
+                            <span><img src="../../public/assets/img/iconfont-zhuangxiu.png"
                                        ewp:src="'/assets/img/iconfont-zhuangxiu.png'"
                                        style="height: 20px; width:22px;vertical-align: middle;"></span>
                             <span>店铺装修</span>
@@ -137,7 +138,8 @@
                         <a class="huoban" style="right:249px; background: #7CB147;border-right: 1px #7CB147 solid;"
                            th:href="@{/manage/main/decorated(scope=website)}"
                            target="_blank">
-                            <span><img src="/assets/img/icon-website.png" ewp:src="'/assets/img/icon-website.png'"
+                            <span><img src="../../public/assets/img/icon-website.png"
+                                       ewp:src="'/assets/img/icon-website.png'"
                                        style="height:auto; width:17px;vertical-align: middle;"></span>
                             <span>官网装修</span>
                         </a>
@@ -145,7 +147,7 @@
                     <li>
 
                         <a class="huoban" style="right:124px;" th:href="@{${mallManageUrl}}" target="_blank">
-                            <span><img src="/assets/img/huoban.png" ewp:src="/assets/img/huoban.png"
+                            <span><img src="../../public/assets/img/huoban.png" ewp:src="/assets/img/huoban.png"
                                        style="height: auto;max-width: 100%;vertical-align: middle;"></span>
                             <span>伙伴商城</span>
                         </a>
@@ -153,7 +155,7 @@
                     <li>
                         <a class="out js-hot-save" style="width:125px;border-right:none; right: 0px;"
                            href="javascript:void(0)">
-                            <span><img src="/assets/img/out.png" ewp:src="/assets/img/out.png"
+                            <span><img src="../../public/assets/img/out.png" ewp:src="/assets/img/out.png"
                                        style="height: auto;max-width: 100%;vertical-align: middle;"></span>
                             <span>注销</span>
                         </a>
@@ -164,7 +166,7 @@
     </div>
     <div class="con_right" id="con_right">
         <iframe id="content" name="content" width="1152" height="800" class="hide" marginwidth="0" marginheight="0"
-                frameborder="0" scrolling="auto" src="/model/modelList"
+                frameborder="0" scrolling="auto" src="web/siteList.html"
                 th:src="@{/manage/site/siteList}" style="display: inline;">
         </iframe>
     </div>

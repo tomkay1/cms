@@ -74,11 +74,10 @@ public class MainController {
     }
 
     @RequestMapping({"/index", ""})
-    public ModelAndView index(@AuthenticationPrincipal Login login) throws Exception {
-
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("/view/main.html");
-        return modelAndView;
+    public String index(@AuthenticationPrincipal Login login) throws Exception {
+        if (login.isRoot())
+            return "redirect:/manage/supper";
+        return "/view/main.html";
     }
 
     @RequestMapping(value = "/decorated")

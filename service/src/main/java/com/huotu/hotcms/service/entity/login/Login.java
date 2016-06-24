@@ -22,18 +22,24 @@ import org.springframework.security.core.userdetails.UserDetails;
  */
 public interface Login extends UserDetails {
 
+    String Role_Manage_Value = "MANAGE";
     /**
      * 可管理正文权限
      */
-    String Role_Manage = "MANAGE";
+    String Role_Manage = "ROLE_" + Role_Manage_Value;
+
+    String Role_AS_Value = "AS";
     /**
      * 可运行以{@link #Role_Manage}权限
      */
-    String Role_ManageAS = "AS";
+    String Role_AS = "ROLE_" + Role_AS_Value;
+
+    String Role_ManageOwner_Value = "OWNER";
     /**
      * 可管理Owner权限
      */
-    String Role_ManageOwner = "OWNER";
+    String Role_ManageOwner = "ROLE_" + Role_ManageOwner_Value;
+
 
     /**
      * @param site
@@ -60,4 +66,8 @@ public interface Login extends UserDetails {
     boolean categoryManageable(Category category);
 
 
+    /**
+     * @return 是超级管理员
+     */
+    boolean isRoot();
 }

@@ -11,10 +11,10 @@ package com.huotu.hotcms.widget.controller;
 
 import com.huotu.hotcms.widget.page.Page;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 /**
  * Created by wenqi on 2016/5/27.
@@ -38,17 +38,18 @@ public interface PageController {
     /**
      * <p>获取页面{@link Page}</p>
      * @param ownerId 拥有者id
-     *
+     * @param pageId 页面ID
+     * @return 拿到相应的界面
      * @see Page
      */
-    Page getPage(long ownerId);
+    Page getPage(long ownerId,String pageId) throws IOException;
 
     /**
      * <p>保存界面{@link Page}</p>
      * @param pageId 页面ID
      * @throws IOException 从request中读取请求体时异常
      */
-    void savePage(String pageId,HttpServletRequest request) throws IOException;
+    void savePage(long ownerId,String pageId,HttpServletRequest request) throws IOException, URISyntaxException;
 
     /**
      * <p>添加页面{@link Page}</p>
@@ -61,7 +62,7 @@ public interface PageController {
      * <p>删除界面{@link Page}</p>
      * @param pageId 页面ID
      */
-    void deletePage(String pageId);
+    void deletePage(String pageId,long ownerId) throws IOException;
 
     /**
      * 保存页面部分属性

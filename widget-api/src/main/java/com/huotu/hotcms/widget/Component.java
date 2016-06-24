@@ -27,7 +27,7 @@ public class Component implements PageElement {
 
     private String widgetIdentity;
 
-    private InstalledWidget widget;
+    private InstalledWidget installedWidget;
 
     private String styleId;
 
@@ -46,16 +46,16 @@ public class Component implements PageElement {
     public WidgetStyle currentStyle() {
         if (styleId == null) {
             log.debug("with null styleId, use default style instead.");
-            return widget.getWidget().styles()[0];
+            return installedWidget.getWidget().styles()[0];
         }
 
 
-        for (WidgetStyle style : widget.getWidget().styles()) {
+        for (WidgetStyle style : installedWidget.getWidget().styles()) {
             if (styleId.equalsIgnoreCase(style.id()))
                 return style;
         }
         log.debug("with " + styleId + " styleId, use default style instead because it's invalid.");
-        return widget.getWidget().styles()[0];
+        return installedWidget.getWidget().styles()[0];
     }
 
 }

@@ -47,6 +47,9 @@ public class ConfigInfo {
     @Value("${resources.template}")
     private String resourcesTemplate;
 
+    @Value("${resources.page}")
+    private String pageConfig;
+
     @PostConstruct
     public void InitConfigInfo() {
         this.outLoginUrl = ev.getProperty("cms.loginUrl", "http://manager.51flashmall.com");
@@ -76,6 +79,10 @@ public class ConfigInfo {
 
     public String getResourcesTemplate() {
         return resourcesTemplate;
+    }
+
+    public String getPageConfig(long ownerId,String pageId) {
+        return String.format(pageConfig,ownerId,pageId);
     }
 
     /**

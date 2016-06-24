@@ -85,7 +85,7 @@ public class TestBase {
 
     private Component randomComponent() {
         Component component=new Component();
-        component.setPreviewHTML("");
+        component.setPreviewHTML(UUID.randomUUID().toString());
         component.setStyleId(UUID.randomUUID().toString());
         component.setWidgetIdentity(UUID.randomUUID().toString());
         ComponentProperties componentProperties =new ComponentProperties();
@@ -94,7 +94,7 @@ public class TestBase {
         InstalledWidget installedWidget=new InstalledWidget();
         installedWidget.setType(UUID.randomUUID().toString());
         installedWidget.setWidget(new TestWidget());
-        component.setWidget(installedWidget);
+        component.setInstalledWidget(installedWidget);
         return component;
     }
 

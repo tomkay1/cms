@@ -9,9 +9,11 @@
 
 package com.huotu.hotcms.widget.controller.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.CharStreams;
 import com.huotu.hotcms.widget.controller.PageController;
 import com.huotu.hotcms.widget.page.Page;
+import com.huotu.hotcms.widget.service.PageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -19,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.UUID;
+import java.net.URISyntaxException;
 
 /**
  * Created by hzbc on 2016/5/27.
@@ -27,23 +29,26 @@ import java.util.UUID;
 @Controller
 public class PageControllerImpl implements PageController {
 
+    @Autowired
+    private PageService pageService;
 
-    @RequestMapping(value = "/owners/{ownerId}/pages",method = RequestMethod.GET)
+
+    @RequestMapping(value = "/owners/{ownerId}/pages/{pageId}",method = RequestMethod.GET)
     @ResponseBody
     @Override
-    public Page getPage(@PathVariable long ownerId){
-        Page page=new Page();
-        page.setPageIdentity(UUID.randomUUID().toString());
-        page.setTitle(UUID.randomUUID().toString());
-        return page;
+    public Page getPage(@PathVariable long ownerId,@PathVariable String pageId) throws IOException {
+        return pageService.getPageFromXMLConfig(ownerId,pageId);
     }
 
-    @RequestMapping(value = "/pages/{pageId}",method = RequestMethod.PUT)
+    @RequestMapping(value = "/{ownerId}/pages/{pageId}",method = RequestMethod.PUT)
     @ResponseStatus(code = HttpStatus.ACCEPTED)
     @Override
-    public void savePage(@PathVariable String pageId,HttpServletRequest request) throws IOException {
+    public void savePage(@PathVariable long ownerId,@PathVariable String pageId,HttpServletRequest request)
+            throws IOException, URISyntaxException {
         String pageJson=CharStreams.toString(request.getReader());
-        //TODO 对pageJson 可以做进一步处理
+        ObjectMapper objectMapper=new ObjectMapper();
+        Page page=objectMapper.readValue(pageJson, Page.class);
+        pageService.parsePageToXMlAndSave(page, ownerId, pageId);
     }
 
     @RequestMapping(value = "/owners/{ownerId}/pages",method = RequestMethod.POST)
@@ -51,14 +56,14 @@ public class PageControllerImpl implements PageController {
     @Override
     public void addPage(@PathVariable long ownerId,HttpServletRequest request) throws IOException {
         String pageJson=CharStreams.toString(request.getReader());
-        //TODO 其他逻辑
+
     }
 
     @RequestMapping(value = "/pages/{pageId}",method = RequestMethod.DELETE)
     @ResponseStatus(code = HttpStatus.ACCEPTED)
     @Override
-    public void deletePage(@PathVariable String pageId){
-        //TODO 其他逻辑
+    public void deletePage(@PathVariable String pageId,@RequestParam long ownerId) throws IOException {
+        pageService.deletePage(ownerId, pageId);
     }
 
     @RequestMapping(value = "/pages/{pageId}/{propertyName}",method = RequestMethod.PUT)

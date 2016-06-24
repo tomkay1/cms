@@ -89,7 +89,7 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
     @Override
     public String componentHTML(Component component, CMSContext cmsContext) {
         WidgetStyle style = null;
-        for (WidgetStyle style1 : component.getWidget().getWidget().styles()) {
+        for (WidgetStyle style1 : component.getInstalledWidget().getWidget().styles()) {
             if (style1.id().equals(component.getStyleId())) {
                 style = style1;
                 break;
@@ -97,11 +97,11 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
         }
 
         if (style == null) {
-            style = component.getWidget().getWidget().styles()[0];
+            style = component.getInstalledWidget().getWidget().styles()[0];
         }
 
         WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
-                , component.getWidget().getWidget(), style, webApplicationContext.getServletContext(), component.getProperties());
+                , component.getInstalledWidget().getWidget(), style, webApplicationContext.getServletContext(), component.getProperties());
         WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();
         cmsContext.getWidgetConfigurationStack().push(widgetConfiguration);
         return widgetTemplateEngine.process(WidgetTemplateResolver.BROWSE

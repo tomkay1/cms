@@ -9,6 +9,7 @@
 
 package com.huotu.cms.manage.controller;
 
+import com.huotu.cms.manage.ManageTest;
 import com.huotu.hotcms.service.repository.OwnerRepository;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

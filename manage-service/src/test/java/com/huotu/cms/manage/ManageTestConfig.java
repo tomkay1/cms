@@ -7,12 +7,13 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.cms.manage.controller;
+package com.huotu.cms.manage;
 
 import com.huotu.cms.manage.config.ManageServiceSpringConfig;
 import com.huotu.hotcms.service.config.ServiceConfig;
 import me.jiangcai.lib.embedweb.ewp.MockMVC;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -21,6 +22,7 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @Import({ServiceConfig.class, ManageServiceSpringConfig.class})
+@ComponentScan("com.huotu.cms.manage.test")
 public class ManageTestConfig extends MockMVC {
 
     @Autowired

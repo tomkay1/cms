@@ -9,12 +9,10 @@
 
 package com.huotu.cms.manage.interceptor;
 
+import com.huotu.cms.manage.service.SecurityService;
 import com.huotu.hotcms.service.common.ConfigInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.web.context.HttpRequestResponseHolder;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
-import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -33,7 +31,8 @@ public class ManageInterceptor extends HandlerInterceptorAdapter {
 
     @Autowired
     private ConfigInfo configInfo;
-    private SecurityContextRepository httpSessionSecurityContextRepository = new HttpSessionSecurityContextRepository();
+    @Autowired
+    private SecurityService securityService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -44,9 +43,8 @@ public class ManageInterceptor extends HandlerInterceptorAdapter {
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
 
         if (modelAndView != null) {
-            HttpRequestResponseHolder holder = new HttpRequestResponseHolder(request, response);
-            SecurityContext context = httpSessionSecurityContextRepository.loadContext(holder);
-            if (context.getAuthentication() != null && context.getAuthentication().isAuthenticated()) {
+            Authentication authentication = securityService.currentAuthentication(request, response);
+            if (authentication != null && authentication.isAuthenticated()) {
                 modelAndView.addObject("mallManageUrl", configInfo.getMallManageUrl());
             }
 

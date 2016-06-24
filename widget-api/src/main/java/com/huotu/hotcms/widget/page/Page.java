@@ -11,6 +11,10 @@ package com.huotu.hotcms.widget.page;
 
 import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+
 /**
  * 页面
  * <p>
@@ -21,7 +25,6 @@ import lombok.Data;
  */
 @Data
 public class Page {
-
     /**
      * 该页面的唯一ID，字符串
      */

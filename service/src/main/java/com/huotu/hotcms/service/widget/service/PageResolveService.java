@@ -18,6 +18,7 @@ import com.huotu.hotcms.service.repository.CustomPagesRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.util.HttpUtils;
 import com.huotu.hotcms.service.util.SerialUtil;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,16 +32,16 @@ import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.time.LocalDateTime;
 
 /**
  * <p>
- *     页面解析服务
+ * 页面解析服务
  * </p>
  *
- * @since 1.2
- *
  * @author xhl
+ * @since 1.2
  */
 @Component
 public class PageResolveService {
@@ -50,7 +51,7 @@ public class PageResolveService {
     private ConfigInfo configInfo;
 
     @Autowired
-    private StaticResourceService resourceServer;
+    private ResourceService resourceService;
 
     @Autowired
     private CustomPagesRepository customPagesRepository;
@@ -60,69 +61,55 @@ public class PageResolveService {
 
     /**
      * 根据页面配置信息获得WidgetPage对象
+     *
      * @param basicPageType
      * @param site
      * @return widgetPage
-     * */
-    public WidgetPage getWidgetPageByConfig(BasicPageType basicPageType,Site site){
-        WidgetPage widgetPage=null;
+     */
+    public WidgetPage getWidgetPageByConfig(BasicPageType basicPageType, Site site) {
         String path = configInfo.getResourcesConfig(site) + "/" + basicPageType.getValue();
-        URI url=null;
-        try {
-            url=resourceServer.getResource(path);
-            if(url!=null) {
-                InputStream inputStream = HttpUtils.getInputStreamByUrl(url.toURL());
-                widgetPage = JAXB.unmarshal(inputStream, WidgetPage.class);
-            }
-        } catch (URISyntaxException e) {
-            log.error("URISyntaxException 异常-->URI-->" + url.toString() +"path-->"+path+ " message-->" + e.getMessage());
-        } catch (MalformedURLException e) {
-            log.error("MalformedURL 异常-->"+url.toString()+"path-->"+path+" message-->"+e.getMessage());
-        } catch (IOException e) {
-            log.error("IO异常-->URI-->" + url.toString() +"path-->"+path+" message-->" + e.getMessage());
-        }
-        return widgetPage;
+        return aboutWidgetPage(path);
     }
 
     /**
      * 根据页面配置信息获得WidgetPage对象
+     *
      * @param pageConfigName
      * @param site
      * @return widgetPage
-     * */
-    public WidgetPage getWidgetPageByConfig(String pageConfigName,Site site){
-        WidgetPage widgetPage=null;
+     */
+    public WidgetPage getWidgetPageByConfig(String pageConfigName, Site site) {
         String path = configInfo.getResourcesConfig(site) + "/" + pageConfigName;
-        URI url=null;
+        return aboutWidgetPage(path);
+    }
+
+    private WidgetPage aboutWidgetPage(String path) {
         try {
-            url=resourceServer.getResource(path);
-            if(url!=null) {
-                InputStream inputStream = HttpUtils.getInputStreamByUrl(url.toURL());
-                widgetPage = JAXB.unmarshal(inputStream, WidgetPage.class);
-            }
-        } catch (URISyntaxException e) {
-            log.error("URISyntaxException 异常-->URI-->" + url.toString() + "path-->" + path + " message-->" + e.getMessage());
+            URL url = resourceService.getResource(path).httpUrl();
+            InputStream inputStream = HttpUtils.getInputStreamByUrl(url);
+            return JAXB.unmarshal(inputStream, WidgetPage.class);
         } catch (MalformedURLException e) {
-            log.error("MalformedURL 异常-->" + url.toString() + "path-->" + path + " message-->" + e.getMessage());
+            log.error("MalformedURL 异常--> path-->" + path + " message-->" + e.getMessage());
         } catch (IOException e) {
-            log.error("IO异常-->URI-->" + url.toString() + "path-->" + path + " message-->" + e.getMessage());
+            log.error("IO异常-->URI--> path-->" + path + " message-->" + e.getMessage());
         }
-        return widgetPage;
+        return null;
     }
 
     /**
      * <p>
-     *     创建页面信息
+     * 创建页面信息
      * </p>
-     * @param page 页面信息对象
-     * @param siteId 站点ID
+     *
+     * @param page    页面信息对象
+     * @param siteId  站点ID
      * @param publish 是否发布
      * @return 是否成功
-     * */
+     */
     public boolean createPageAndConfigByWidgetPage(WidgetPage page, Long siteId, Boolean publish)
             throws IOException, URISyntaxException {
-        CustomPages customPages=new CustomPages();
-        if(page!=null) {
+        CustomPages customPages = new CustomPages();
+        if (page != null) {
             Site site = siteRepository.findOne(siteId);
             if (site != null) {
                 customPages.setSite(site);
@@ -134,7 +121,7 @@ public class PageResolveService {
                 customPages.setOrderWeight(50);
                 customPages.setPublish(publish);
                 //site_{siteID}_serial
-                customPages.setSerial(SerialUtil.formartSerial(site));
+                customPages.setSerial(SerialUtil.formatSerial(site));
                 customPages.setCreateTime(LocalDateTime.now());
                 customPages = customPagesRepository.save(customPages);
                 if (customPages != null) {
@@ -143,7 +130,7 @@ public class PageResolveService {
                     InputStream inputStream = new ByteArrayInputStream(stringWriter.toString().getBytes("utf-8"));
                     String path;
                     path = configInfo.getResourcesConfig(site) + "/" + customPages.getId() + ".xml";
-                    resourceServer.uploadResource(path, inputStream);
+                    resourceService.uploadResource(path, inputStream);
                     return true;
                 }
             }
@@ -153,23 +140,24 @@ public class PageResolveService {
 
     /**
      * <p>
-     *     创建默认的页面信息
+     * 创建默认的页面信息
      * </p>
+     *
      * @param widgetPage 页面信息对象
-     * @param siteId 站点ID
-     * @param config 默认页面对应的名称，比如head或者search 则存储的xml文件为head.xml或者search.xml
+     * @param siteId     站点ID
+     * @param config     默认页面对应的名称，比如head或者search 则存储的xml文件为head.xml或者search.xml
      * @return 是否成功
-     * */
+     */
     public boolean createDefaultPageConfigByWidgetPage(WidgetPage widgetPage, Long siteId
             , String config) throws IOException, URISyntaxException {
-        if(widgetPage!=null) {
+        if (widgetPage != null) {
             Site site = siteRepository.findOne(siteId);
             if (site != null) {
                 StringWriter stringWriter = new StringWriter();
                 JAXB.marshal(widgetPage, stringWriter);
                 InputStream inputStream = new ByteArrayInputStream(stringWriter.toString().getBytes("utf-8"));
                 String path = configInfo.getResourcesConfig(site) + "/" + config + ".xml";
-                URI uri = resourceServer.uploadResource(path, inputStream);
+                URI uri = resourceService.uploadResource(path, inputStream).httpUrl().toURI();
                 return true;
             }
         }
@@ -178,27 +166,28 @@ public class PageResolveService {
 
     /**
      * <p>
-     *     修改页面信息
+     * 修改页面信息
      * </p>
+     *
      * @param widgetPage 页面信息对象
-     * @param pageId 页面ID
-     * @param publish 是否发布
+     * @param pageId     页面ID
+     * @param publish    是否发布
      * @return 是否成功
-     * */
+     */
     public boolean patchPageAndConfigByWidgetPage(WidgetPage widgetPage, Long pageId, Boolean publish) throws IOException, URISyntaxException {
-        CustomPages customPages=customPagesRepository.findOne(pageId);
-        if(widgetPage!=null) {
+        CustomPages customPages = customPagesRepository.findOne(pageId);
+        if (widgetPage != null) {
             if (customPages != null) {
                 customPages.setDescription(widgetPage.getPageDescription());
                 customPages.setName(widgetPage.getPageName());
                 customPages.setPublish(publish);
                 customPages = customPagesRepository.save(customPages);
-                Site site=customPages.getSite();
+                Site site = customPages.getSite();
                 StringWriter stringWriter = new StringWriter();
                 JAXB.marshal(widgetPage, stringWriter);
                 InputStream inputStream = new ByteArrayInputStream(stringWriter.toString().getBytes("utf-8"));
                 String path = configInfo.getResourcesConfig(site) + "/" + pageId + ".xml";
-                URI uri = resourceServer.uploadResource(path, inputStream);
+                URI uri = resourceService.uploadResource(path, inputStream).httpUrl().toURI();
                 return true;
             }
         }

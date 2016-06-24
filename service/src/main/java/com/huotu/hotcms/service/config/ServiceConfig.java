@@ -11,6 +11,7 @@ package com.huotu.hotcms.service.config;
 
 import com.huotu.huobanplus.sdk.common.CommonClientSpringConfig;
 import com.huotu.huobanplus.sdk.mall.MinMallSDKConfig;
+import me.jiangcai.lib.resource.ResourceSpringConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +26,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan({"com.huotu.hotcms.service"})
 @EnableTransactionManagement
 @ImportResource({"classpath:spring_dev.xml","classpath:spring_prod.xml"})
-@Import({CommonClientSpringConfig.class,MinMallSDKConfig.class})
+@Import({CommonClientSpringConfig.class, MinMallSDKConfig.class, ResourceSpringConfig.class})
 public class ServiceConfig {
 
     @Bean

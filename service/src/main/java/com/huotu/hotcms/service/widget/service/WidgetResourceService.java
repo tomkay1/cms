@@ -1,9 +1,19 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 package com.huotu.hotcms.service.widget.service;
 
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.widget.WidgetBase;
 import com.huotu.hotcms.service.service.RedisService;
 import com.huotu.hotcms.service.util.HttpUtils;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +38,7 @@ public class WidgetResourceService {
     private RedisService redisService;
 
     @Autowired
-    private StaticResourceService resourceServer;
+    private ResourceService resourceService;
 
     @Autowired
     private WidgetResolveService widgetResolveService;
@@ -66,7 +76,7 @@ public class WidgetResourceService {
      * @param widgetBase 控件主体对象
      * */
     private String getWidgetTemplateFromFile(WidgetBase widgetBase) throws Exception{
-        URL url = resourceServer.getResource(widgetBase.getWidgetUri()).toURL();
+        URL url = resourceService.getResource(widgetBase.getWidgetUri()).httpUrl();
         String widgetTemplate = HttpUtils.getHtmlByUrl(url);
         if(redisService.isContent()) {
             redisService.saveWidget(widgetBase.getId(), widgetTemplate);
@@ -111,7 +121,7 @@ public class WidgetResourceService {
 
     private String getWidgetEditTemplateFromFile(WidgetBase widgetBase) {
         try {
-            URL url = resourceServer.getResource(widgetBase.getWidgetEditUri()).toURL();
+            URL url = resourceService.getResource(widgetBase.getWidgetEditUri()).httpUrl();
             String widgetTemplate = HttpUtils.getHtmlByUrl(url);
             if(redisService.isContent()){
                 redisService.saveWidgetEdit(widgetBase.getId(), widgetTemplate);

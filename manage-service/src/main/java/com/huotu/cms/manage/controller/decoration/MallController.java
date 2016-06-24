@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import sun.misc.BASE64Encoder;
 
 import java.awt.image.BufferedImage;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,11 +51,10 @@ public class MallController {
             String fileName = files.getOriginalFilename();
             String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
             if ("jpg, jpeg,png,gif,bmp".contains(suffix)) {
-                BASE64Encoder base64Encoder = new BASE64Encoder();
-                String base64 = base64Encoder.encodeBuffer(files.getBytes());
+                String base64 = Base64.getEncoder().encodeToString(files.getBytes());
                 BufferedImage sourceImg = javax.imageio.ImageIO.read(files.getInputStream());
                 String size = sourceImg.getWidth() + "x" + sourceImg.getHeight();
-                Map<String, Object> map = new HashMap<String, Object>();
+                Map<String, Object> map = new HashMap<>();
                 map.put("customid", customerId);
                 map.put("base64Image", base64);
                 map.put("size", size);

@@ -20,14 +20,19 @@
 
     <artifactId>service</artifactId>
     <description>
-        service层
+        提供给CMS服务端的一些基础服务
     </description>
 
     <properties>
-        <maven.deploy.skip>true</maven.deploy.skip>
+        <maven.deploy.skip>false</maven.deploy.skip>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>me.jiangcai.lib</groupId>
+            <artifactId>resource</artifactId>
+            <version>${luffy.version}</version>
+        </dependency>
         <!--VFS-->
         <dependency>
             <groupId>org.apache.commons</groupId>

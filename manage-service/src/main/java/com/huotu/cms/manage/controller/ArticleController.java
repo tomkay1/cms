@@ -21,7 +21,7 @@ import com.huotu.hotcms.service.service.ArticleService;
 import com.huotu.hotcms.service.util.PageData;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
-import com.huotu.hotcms.service.widget.service.StaticResourceService;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +49,7 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
     @Autowired
-    private StaticResourceService resourceServer;
+    private ResourceService resourceService;
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -74,7 +74,7 @@ public class ArticleController {
             Article article = articleService.findById(id);
             String logo_uri = "";
             if (!StringUtils.isEmpty(article.getThumbUri())) {
-                logo_uri = resourceServer.getResource(article.getThumbUri()).toString();
+                logo_uri = resourceService.getResource(article.getThumbUri()).httpUrl().toString();
             }
             modelAndView.addObject("logo_uri", logo_uri);
             modelAndView.addObject("article", article);
@@ -113,7 +113,7 @@ public class ArticleController {
             Article article = articleService.findById(id);
             String logo_uri = "";
             if (!StringUtils.isEmpty(article.getThumbUri())) {
-                logo_uri = resourceServer.getResource(article.getThumbUri()).toString();
+                logo_uri = resourceService.getResource(article.getThumbUri()).httpUrl().toString();
             }
             Category category = article.getCategory();
             Integer modelType = category.getModelId();

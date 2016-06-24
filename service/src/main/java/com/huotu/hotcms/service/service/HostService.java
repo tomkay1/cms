@@ -1,9 +1,19 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.util.ResultView;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -11,63 +21,42 @@ import java.util.Set;
  */
 public interface HostService {
 
+    /**
+     * 根据输入域名获取主机
+     *
+     * @param domain 输入域名
+     * @return 主机实体
+     */
+    @Transactional(readOnly = true)
     Host getHost(String domain);
 
     Boolean save(Host host);
 
-    Boolean isExists(String domain,Set<Host> hostSet);
-
-    Site mergeSite(String[] domains,Site site);
-
     /**
      * <p>
-     *     根据域名列表和地区ID判断域名列表中是否存在重复
+     * 获得需要移除的Host列表
      * </p>
-     * @param domains 域名列表
-     * @param regionId 地区ID
-     * */
-    Boolean isExistsByDomains(String[] domains,Long regionId);
-
-    /**
-     * <p>
-     *     根据域名列表、站点信息、地区ID判断域名列表中新添加的域名是否存在重复值
-     * </p>
-     * @param domains 域名列表
-     * @param regionId 地区ID
-     * */
-    Boolean isExistsByDomainsAndSite(String[] domains,Site site,Long regionId);
-
-    /**
-     * <p>
-     *     获得需要移除的Host列表
-     * </p>
+     *
      * @param domains 新的域名列表
-     * @param site 目标站点信息
+     * @param site    目标站点信息
      * @return
-     * */
-    Set<Host> getRemoveHost(String[] domains,Site site);
+     */
+    Set<Host> getRemoveHost(String[] domains, Site site);
 
     /**
-     * <p>删除Host列表</p>
-     * @param hostSet 要移除的Host列表
-     * */
-    boolean removeHost(Set<Host> hostSet);
+     * <p>不要在管这个站点,让这个站点处于无主机可路由的状态</p>
+     *
+     * @param site 要处理掉的站点
+     */
+    @Transactional
+    void stopHookSite(Site site);
 
     /**
-     * <p>
-     *  * 站点新增域名
-     * </p>
-     * @param domains 要新增的域名列表
-     * @param homeDomains 主推域名
-     * @param site 站点对象
-     * @param regionId 地区ID
-     * @return ResultView 对象
-     * */
-    ResultView addHost(String[] domains,String homeDomains,Site site,Long regionId);
-
-    ResultView patchHost(String[] domains,String homeDomains,Site site,Long regionId);
-
-    Host getHomeHost(Site site);
+     * @param site 相关站点
+     * @return 可以解析到站点的主机
+     */
+    @Transactional(readOnly = true)
+    Collection<Host> hookOn(Site site);
 
     String getHomeDomain(Site site);
 }

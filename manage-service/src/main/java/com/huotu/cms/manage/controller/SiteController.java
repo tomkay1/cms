@@ -9,24 +9,21 @@
 
 package com.huotu.cms.manage.controller;
 
+import com.huotu.cms.manage.controller.support.AbstractSiteSupperController;
 import com.huotu.cms.manage.util.web.CookieUser;
 import com.huotu.hotcms.service.common.SiteType;
-import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Region;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.repository.RegionRepository;
-import com.huotu.hotcms.service.service.HostService;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.util.PageData;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
-import com.huotu.hotcms.service.widget.service.StaticResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,27 +33,20 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by chendeyu on 2015/12/24.
  */
 @Controller
 @RequestMapping("/manage/site")
-public class SiteController {
+public class SiteController extends AbstractSiteSupperController {
     private static final Log log = LogFactory.getLog(SiteController.class);
 
     @Autowired
     private SiteService siteService;
 
     @Autowired
-    private HostService hostService;
-
-    @Autowired
     private RegionRepository regionRepository;
-
-    @Autowired
-    private StaticResourceService resourceServer;
 
     @Autowired
     private CookieUser cookieUser;
@@ -136,32 +126,13 @@ public class SiteController {
         try {
             modelAndView.setViewName("/view/web/updateSite.html");
             String logo_uri = "";
-            if (id != 0) {
-                Site site = siteService.getSite(id);
-                if (site != null) {
-                    if (!StringUtils.isEmpty(site.getLogoUri())) {
-                        logo_uri = resourceServer.getResource(site.getLogoUri()).toString();
-                    }
-                    modelAndView.addObject("site", site);
-                    modelAndView.addObject("logo_uri", logo_uri);
-                    Set<Host> hosts = site.getHosts();
-                    String domains = "";
-                    for (Host host : hosts) {
-                        String domain = host.getDomain();
-                        domains = domains + domain + ",";
-                    }
-                    Region region = site.getRegion();
-                    modelAndView.addObject("siteTypes", SiteType.values());
-                    modelAndView.addObject("region", region);
-                    modelAndView.addObject("homeDomain",hostService.getHomeDomain(site));
-                    modelAndView.addObject("domains", domains.substring(0, domains.length() - 1));
-                }
-            }
+            someThing(id, modelAndView, logo_uri);
         } catch (Exception ex) {
             log.error(ex.getMessage());
         }
         return modelAndView;
     }
+
 
     /**
      * 获取站点

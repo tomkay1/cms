@@ -17,7 +17,7 @@ import com.huotu.hotcms.service.repository.VideoRepository;
 import com.huotu.hotcms.service.service.VideoService;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
-import com.huotu.hotcms.service.widget.service.StaticResourceService;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +48,7 @@ public class VideoController {
     private VideoRepository videoRepository;
 
     @Autowired
-    private StaticResourceService resourceServer;
+    private ResourceService resourceService;
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -70,7 +70,7 @@ public class VideoController {
             Video video = videoService.findById(id);
             String logo_uri = "";
             if (!StringUtils.isEmpty(video.getThumbUri())) {
-                logo_uri = resourceServer.getResource(video.getThumbUri()).toString();
+                logo_uri = resourceService.getResource(video.getThumbUri()).httpUrl().toString();
             }
             modelAndView.addObject("logo_uri", logo_uri);
             modelAndView.addObject("video", video);
@@ -110,7 +110,7 @@ public class VideoController {
             Video video = videoService.findById(id);
             String logo_uri = "";
             if (!StringUtils.isEmpty(video.getThumbUri())) {
-                logo_uri = resourceServer.getResource(video.getThumbUri()).toString();
+                logo_uri = resourceService.getResource(video.getThumbUri()).httpUrl().toString();
             }
             Category category = video.getCategory();
             Integer modelType = category.getModelId();

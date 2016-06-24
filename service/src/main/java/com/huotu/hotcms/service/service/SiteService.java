@@ -9,19 +9,33 @@
 
 package com.huotu.hotcms.service.service;
 
+import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.exception.NoSiteFoundException;
 import com.huotu.hotcms.service.util.PageData;
+import com.huotu.hotcms.service.util.ResultView;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Locale;
 import java.util.Set;
 
 public interface SiteService {
+
+    /**
+     * 寻找最适合的站点
+     *
+     * @param host   主机
+     * @param locale 要求语言
+     * @return 最合适的站点
+     * @throws NoSiteFoundException
+     */
+    @Transactional(readOnly = true)
+    Site closestSite(Host host, Locale locale) throws NoSiteFoundException;
 
     PageData<Site> getPage(long owner, String name, int page, int pageSize);
 
     Site getSite(long siteId);
     Boolean save(Site site);
-
-    Site saveAndFlush(Site site);
 
     Set<Site> findByOwnerIdAndDeleted(long ownerId, boolean deleted);
 
@@ -34,4 +48,28 @@ public interface SiteService {
      * @since v2.0
      */
     void siteCopy(long templateId,Site customerSite) throws Exception;
+
+    /**
+     * 新建站点
+     *
+     * @param domains     可用域名
+     * @param homeDomains 主推域名
+     * @param site        站点（可能只是一个JO）
+     * @param locale      要求的语言
+     * @return 操作结果
+     */
+    @Transactional
+    ResultView newSite(String[] domains, String homeDomains, Site site, Locale locale);
+
+    /**
+     * 修改当前站点
+     *
+     * @param domains     可用域名
+     * @param homeDomains 主推域名
+     * @param site        站点（可能只是一个JO）
+     * @param locale      要求的语言
+     * @return 操作结果
+     */
+    @Transactional
+    ResultView patchSite(String[] domains, String homeDomains, Site site, Locale locale);
 }

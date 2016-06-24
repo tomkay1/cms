@@ -1,3 +1,12 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 package com.huotu.hotcms.web.service.impl.config;
 
 import org.apache.commons.logging.Log;
@@ -19,8 +28,8 @@ public class DynamicConfigService extends AbstractConfigService {
 
     @Autowired
     private void setEnv(Environment env) {
-        this.mallDomain=env.getProperty("mall.domain",(String) null);
-        this.mallResources=env.getProperty("mall.resources",(String)null);
+        this.mallDomain = env.getProperty("mall.domain", "51flashmall.com");
+        this.mallResources = env.getProperty("mall.resources", "http://res.51flashmall.com");
         if(this.mallDomain==null){
             throw new IllegalStateException("请设置mall.domain");
         }

@@ -2,8 +2,9 @@
  * 版权所有:杭州火图科技有限公司
  * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
  *
- *  (c) Copyright Hangzhou Hot Technology Co., Ltd.
- *  Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District 2013-2015. All rights reserved.
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
  */
 
 package com.huotu.hotcms.web.interceptor;
@@ -25,7 +26,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * Created by cwb on 2015/12/21.
@@ -92,7 +93,7 @@ public class SiteResolver implements HandlerMethodArgumentResolver {
         }
         String language = region.getLangCode();
         String domain = request.getServerName();
-        Set<Site> sites = getSitesThroughDomain(domain);
+        Collection<Site> sites = getSitesThroughDomain(domain);
         for(Site s : sites) {
             if(s.getRegion().getLangCode().equalsIgnoreCase(language)) {
                 site = s;
@@ -109,7 +110,7 @@ public class SiteResolver implements HandlerMethodArgumentResolver {
         Site site = null;
         Site chSite = null;
         String domain = request.getServerName();
-        Set<Site> sites = getSitesThroughDomain(domain);
+        Collection<Site> sites = getSitesThroughDomain(domain);
         String language = request.getLocale().getLanguage();
         if(StringUtils.isEmpty(language)) {
             language = "zh";
@@ -128,12 +129,12 @@ public class SiteResolver implements HandlerMethodArgumentResolver {
         return site;
     }
 
-    private Set<Site> getSitesThroughDomain(String domain) throws Exception{
+    private Collection<Site> getSitesThroughDomain(String domain) throws Exception {
         Host host = hostService.getHost(domain);
         if(host == null) {
             throw new Exception("域名错误");
         }
-        return host.getSites();
+        return host.getSites().values();
     }
 
 

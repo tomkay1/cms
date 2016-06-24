@@ -1,15 +1,16 @@
 /*
- * 鐗堟潈鎵?鏈?:鏉窞鐏浘绉戞妧鏈夐檺鍏徃
- * 鍦板潃:娴欐睙鐪佹澀宸炲競婊ㄦ睙鍖鸿タ鍏磋閬撻槨闄岃矾鏅烘収E璋稡骞?4妤?
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
  *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
- * 2013-2015. All rights reserved.
+ * 2013-2016. All rights reserved.
  */
 
 package com.huotu.cms.manage.common;
 
 //import org.apache.commons.codec.digest.DigestUtils;
+
 import org.springframework.util.StringUtils;
 
 import java.io.ByteArrayInputStream;
@@ -18,15 +19,18 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Random;
 
 public class StringUtil {
+    public static final String NETSHOP_SECRET = "123456";
     public static String DATE_PATTERN = "yyyy-MM-dd";
     public static String TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
     public static String UTF8 = "utf-8";
-
-
-    public static final String NETSHOP_SECRET = "123456";
 
     public StringUtil() {
     }

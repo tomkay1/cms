@@ -30,6 +30,16 @@ public class CookieUser {
 
 
     /**
+     * 从cookie中获取当前用户customerId
+     *
+     * @param request 请求
+     * @return customerId 0 就是没有登录
+     */
+    public int getCustomerId(HttpServletRequest request) {
+        return CookieHelper.getCookieValInteger(request, CMSEnums.MallCookieKeyValue.CustomerID.toString());
+    }
+
+    /**
      * * Cookie中读取ownerId
      */
     public long getOwnerId(HttpServletRequest request) {

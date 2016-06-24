@@ -9,7 +9,9 @@
 
 package com.huotu.hotcms.widget;
 
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.widget.resolve.WidgetConfiguration;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -32,6 +34,7 @@ import java.util.Stack;
 @Setter
 @Getter
 @ToString
+@AllArgsConstructor
 public class CMSContext {
 
     private static final Log log = LogFactory.getLog(CMSContext.class);
@@ -49,12 +52,10 @@ public class CMSContext {
      * 内部使用
      */
     private final Stack<WidgetConfiguration> widgetConfigurationStack = new Stack<>();
-    private HttpServletRequest request;
-    private HttpServletResponse response;
-    private Locale locale;
-
-    private CMSContext() {
-    }
+    private final HttpServletRequest request;
+    private final HttpServletResponse response;
+    private final Site site;
+    private final Locale locale;
 
     /**
      * 请求当前的CMS上下文
@@ -76,12 +77,10 @@ public class CMSContext {
      *
      * @param request
      * @param response
+     * @param site     当前站点
      */
-    public static CMSContext PutContext(HttpServletRequest request, HttpServletResponse response) {
-        CMSContext cmsContext = new CMSContext();
-        cmsContext.request = request;
-        cmsContext.response = response;
-        cmsContext.locale = request.getLocale();
+    public static CMSContext PutContext(HttpServletRequest request, HttpServletResponse response, Site site) {
+        CMSContext cmsContext = new CMSContext(request, response, site, site.getRegion().getLocale());
         contexts.set(cmsContext);
         return cmsContext;
     }

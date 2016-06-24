@@ -1,3 +1,12 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 package com.huotu.cms.manage.controller.decoration;
 
 import com.alibaba.fastjson.JSONArray;
@@ -19,7 +28,7 @@ import com.huotu.hotcms.service.util.HttpUtils;
 import com.huotu.hotcms.service.util.PageData;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
-import com.huotu.hotcms.service.widget.service.StaticResourceService;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +59,7 @@ public class WidgetController {
     private CookieUser cookieUser;
 
     @Autowired
-    private StaticResourceService resourceServer;
+    private ResourceService resourceService;
 
     @Autowired
     private ConfigInfo configInfo;
@@ -125,13 +134,13 @@ public class WidgetController {
             modelAndView.setViewName("/decoration/control/updateWidgetMains.html");
             WidgetMains widgetMains = widgetService.findWidgetMainsById(id);
             if (!StringUtils.isEmpty(widgetMains.getImageUri())) {
-                logo_uri = resourceServer.getResource(widgetMains.getImageUri()).toString();
+                logo_uri = resourceService.getResource(widgetMains.getImageUri()).httpUrl().toString();
             }
             if (!StringUtils.isEmpty(widgetMains.getResourceUri())) {
-                content = HttpUtils.getHtmlByUrl(resourceServer.getResource(widgetMains.getResourceUri()).toURL());
+                content = HttpUtils.getHtmlByUrl(resourceService.getResource(widgetMains.getResourceUri()).httpUrl());
             }
             if (!StringUtils.isEmpty(widgetMains.getResourceEditUri())) {
-                editContent = HttpUtils.getHtmlByUrl(resourceServer.getResource(widgetMains.getResourceEditUri()).toURL());
+                editContent = HttpUtils.getHtmlByUrl(resourceService.getResource(widgetMains.getResourceEditUri()).httpUrl());
             }
 
 
@@ -231,12 +240,12 @@ public class WidgetController {
             if (widgetMains.getResourceUri() != null) {
                 InputStream inputStream = StringUtil.getInputStream(template);
                 widgetMains.setResourceUri(configInfo.getResourcesWidget() + "/template_" + widgetMains.getId() + ".html");
-                resourceServer.uploadResource(widgetMains.getResourceUri(), inputStream);
+                resourceService.uploadResource(widgetMains.getResourceUri(), inputStream);
             }
             if (widgetMains.getResourceEditUri() != null) {
                 InputStream inputStream = StringUtil.getInputStream(editTemplate);
                 widgetMains.setResourceEditUri(configInfo.getResourcesWidget() + "/edit/template_" + widgetMains.getId() + ".html");
-                resourceServer.uploadResource(widgetMains.getResourceEditUri(), inputStream);
+                resourceService.uploadResource(widgetMains.getResourceEditUri(), inputStream);
             }
             WidgetType widgetType = widgetService.findWidgetTypeById(widgetTypeId);
             if (widgetMains.getId() == null) {//当是新增时

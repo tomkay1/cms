@@ -12,12 +12,14 @@ package com.huotu.hotcms.widget.controller.impl;
 import com.google.common.io.CharStreams;
 import com.huotu.hotcms.widget.controller.PageController;
 import com.huotu.hotcms.widget.page.Page;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.UUID;
 
 /**
  * Created by hzbc on 2016/5/27.
@@ -25,15 +27,14 @@ import java.io.IOException;
 @Controller
 public class PageControllerImpl implements PageController {
 
+
     @RequestMapping(value = "/owners/{ownerId}/pages",method = RequestMethod.GET)
     @ResponseBody
     @Override
     public Page getPage(@PathVariable long ownerId){
-        //TODO 其他逻辑
-
         Page page=new Page();
-//        page.setModel(new Random().nextInt(100));
-//        page.setTest(UUID.randomUUID().toString());
+        page.setPageIdentity(UUID.randomUUID().toString());
+        page.setTitle(UUID.randomUUID().toString());
         return page;
     }
 

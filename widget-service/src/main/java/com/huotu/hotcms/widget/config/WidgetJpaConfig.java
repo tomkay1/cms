@@ -19,6 +19,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  */
 @Configuration
 @EnableJpaRepositories("com.huotu.hotcms.widget.repository")
-public class JpaConfig {
+public class WidgetJpaConfig {
 
 }

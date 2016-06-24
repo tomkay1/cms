@@ -1,3 +1,12 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 package com.huotu.hotcms.service.widget.service;
 
 import com.alibaba.fastjson.JSONArray;
@@ -9,10 +18,8 @@ import com.huotu.hotcms.service.model.widget.WidgetBase;
 import com.huotu.hotcms.service.model.widget.WidgetPage;
 import com.huotu.hotcms.service.model.widget.WidgetProperty;
 import com.huotu.hotcms.service.repository.WidgetMainsRepository;
-import com.huotu.hotcms.service.service.RedisService;
-import com.huotu.hotcms.service.thymeleaf.dialect.WidgetDialect;
+import com.huotu.hotcms.service.thymeleaf.dialect.OldWidgetDialect;
 import com.huotu.hotcms.service.thymeleaf.service.RequestService;
-import com.huotu.hotcms.service.util.HttpUtils;
 import com.huotu.hotcms.service.util.ReflectionUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,8 +34,11 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
-import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * <p>
@@ -49,7 +59,7 @@ public class WidgetResolveService {
     private WidgetResourceService widgetResourceService;
 
     @Autowired
-    private WidgetDialect widgetDialect;
+    private OldWidgetDialect oldWidgetDialect;
 
     @Autowired
     private WidgetMainsRepository widgetMainsRepository;
@@ -58,12 +68,25 @@ public class WidgetResolveService {
 
     private HttpServletRequest request = null;
 
+    public static List<WidgetProperty> ConvertWidgetPropertyByMap(Map<String, Object> property) throws JsonProcessingException {
+        List<WidgetProperty> list = new ArrayList<WidgetProperty>();
+        ObjectMapper objectMapper = new ObjectMapper();
+        for (Map.Entry<String, Object> entry : property.entrySet()) {
+            WidgetProperty widgetProperty = new WidgetProperty();
+            widgetProperty.setName(entry.getKey());
+            String json = objectMapper.writeValueAsString(entry.getValue());
+            widgetProperty.setValue(json);
+            list.add(widgetProperty);
+        }
+        return list;
+    }
+
     /**
      * <p>添加方言</p>
      * */
     private void addDialect() {
         if (!templateEngine.isInitialized()) {
-            templateEngine.addDialect(widgetDialect);
+            templateEngine.addDialect(oldWidgetDialect);
         }
     }
 
@@ -149,19 +172,6 @@ public class WidgetResolveService {
             objectMap.put(widgetProperty.getName(), obj);
         }
         return objectMap;
-    }
-
-    public static List<WidgetProperty> ConvertWidgetPropertyByMap(Map<String, Object> property) throws JsonProcessingException {
-        List<WidgetProperty> list = new ArrayList<WidgetProperty>();
-        ObjectMapper objectMapper = new ObjectMapper();
-        for (Map.Entry<String, Object> entry : property.entrySet()) {
-            WidgetProperty widgetProperty = new WidgetProperty();
-            widgetProperty.setName(entry.getKey());
-            String json = objectMapper.writeValueAsString(entry.getValue());
-            widgetProperty.setValue(json);
-            list.add(widgetProperty);
-        }
-        return list;
     }
 
     /**

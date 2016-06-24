@@ -8,17 +8,18 @@
   ~ 2013-2016. All rights reserved.
   -->
 
-<beans profile="!container" xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" profile="!container"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource"></property>
         <property name="persistenceUnitName" value="basePu"/>
         <property name="packagesToScan">
             <array>
+                <value>com.huotu.hotcms.service.entity</value>
                 <value>com.huotu.hotcms.widget.entity</value>
-                <value>com.huotu.hotcms.widget.config</value>
+                <value>com.huotu.hotcms.service.config</value>
             </array>
         </property>
         <property name="persistenceProvider">

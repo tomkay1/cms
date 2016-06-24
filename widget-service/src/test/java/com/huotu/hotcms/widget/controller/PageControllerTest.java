@@ -39,13 +39,28 @@ public class PageControllerTest extends TestBase {
 //                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.length()").value(0));
 
+        // Array of Page
+        mockMvc.perform(get("/sites/{siteId}/pages", ownerId)
+                .accept(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk())
+//                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.length()").value(0));
+
         // TODO 在其他逻辑都完成以后 应该创建随机数量的页面,以确保每一项属性
         // 创建一个page
         Page page = randomPage();
-
-        // 保存它
         String json = JSON.toJSONString(page);
-        String pageHref = mockMvc.perform(post("/pages/{pageId}", page.getPageIdentity())
+
+        // 新建Page
+        mockMvc.perform(post("/sites/{siteId}/pages", page.getPageIdentity())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json))
+                .andExpect(status().isCreated())
+                .andReturn().getResponse().getRedirectedUrl();
+
+        // 保存它 save
+
+        String pageHref = mockMvc.perform(put("/pages/{pageId}", page.getPageIdentity())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
                 .andExpect(status().isCreated())

@@ -13,6 +13,7 @@ import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.page.Page;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 /**
  * 页面服务
@@ -31,6 +32,12 @@ public interface PageService {
      */
     String generateHTML(Page page, CMSContext context) throws IOException;
     //, TemplateException, ComponentPropertiesException
+
+    void parsePageToXMlAndSave(Page page, long ownerID, String pageId) throws IOException, URISyntaxException;
+
+    Page getPageFromXMLConfig(long ownerID,String pageId) throws IOException;
+
+    void deletePage(long ownerId,String pageId) throws IOException;
 
 
 }

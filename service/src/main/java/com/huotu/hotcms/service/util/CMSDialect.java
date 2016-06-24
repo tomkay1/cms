@@ -2,8 +2,9 @@
  * 版权所有:杭州火图科技有限公司
  * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
  *
- *  (c) Copyright Hangzhou Hot Technology Co., Ltd.
- *  Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District 2013-2015. All rights reserved.
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
  */
 
 package com.huotu.hotcms.service.util;
@@ -15,9 +16,9 @@ import com.huotu.hotcms.service.thymeleaf.dialect.GalleryDialect;
 import com.huotu.hotcms.service.thymeleaf.dialect.GalleryListDialect;
 import com.huotu.hotcms.service.thymeleaf.dialect.LinkDialect;
 import com.huotu.hotcms.service.thymeleaf.dialect.NoticeDialect;
+import com.huotu.hotcms.service.thymeleaf.dialect.OldWidgetDialect;
 import com.huotu.hotcms.service.thymeleaf.dialect.TimeDialect;
 import com.huotu.hotcms.service.thymeleaf.dialect.VideoDialect;
-import com.huotu.hotcms.service.thymeleaf.dialect.WidgetDialect;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
 
 import java.util.ArrayList;
@@ -60,7 +61,7 @@ public class CMSDialect {
         dialectList.add(new GalleryDialect());
         dialectList.add(new GalleryListDialect());
         dialectList.add(new TimeDialect());
-        dialectList.add(new WidgetDialect());
+        dialectList.add(new OldWidgetDialect());
     }
 
 }

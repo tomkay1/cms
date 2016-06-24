@@ -33,10 +33,10 @@ import java.nio.charset.Charset;
 public class PageServiceImpl implements PageService {
 
     @Autowired
-    ResourceService resourceService;
+    private ResourceService resourceService;
 
     @Autowired
-    ConfigInfo configInfo;
+    private ConfigInfo configInfo;
 
 
     @Override

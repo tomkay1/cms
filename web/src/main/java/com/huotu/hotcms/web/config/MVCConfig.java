@@ -24,6 +24,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
+import org.springframework.http.MediaType;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
@@ -60,22 +61,13 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 
     private static final String UTF8 = "UTF-8";
     @Autowired
-    private ApplicationContext applicationContext;
-    @Autowired
     private SiteResolver siteResolver;
-    @Autowired
-    private Environment environment;
     @Autowired
     private RouteInterceptor routeInterceptor;
     @Autowired
     private ThymeleafViewResolver widgetViewResolver;
     @Autowired
-    private Set<IDialect> dialectSet;
-    @Autowired
     private ThymeleafViewResolver htmlViewResolver;
-
-    //    @Autowired
-//    LoginInterceptor loginInterceptor;
     @Autowired
     private ThymeleafViewResolver javascriptViewResolver;
     @Autowired
@@ -147,7 +139,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         public ViewResolver htmlViewResolver() {
             ThymeleafViewResolver resolver = new ThymeleafViewResolver();
             resolver.setTemplateEngine(htmlViewTemplateEngine);
-            resolver.setContentType("text/html");
+            resolver.setContentType(MediaType.TEXT_HTML_VALUE + ";charset=UTF-8");
             resolver.setCharacterEncoding(UTF8);
 //        if(environment.acceptsProfiles("development")) {
 //            resolver.setCache(false);
@@ -161,6 +153,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         public ThymeleafViewResolver widgetViewResolver() {
             ThymeleafViewResolver resolver = new ThymeleafViewResolver();
             resolver.setViewNames(ArrayUtil.array("*.cshtml"));
+            resolver.setContentType(MediaType.TEXT_HTML_VALUE + ";charset=UTF-8");
             resolver.setCharacterEncoding(UTF8);
             resolver.setTemplateEngine(widgetTemplateEngine);
             return resolver;

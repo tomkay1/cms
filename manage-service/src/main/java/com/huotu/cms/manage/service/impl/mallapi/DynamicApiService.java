@@ -7,7 +7,7 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.cms.manage.service.impl.mallaa;
+package com.huotu.cms.manage.service.impl.mallapi;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

@@ -19,6 +19,7 @@ import com.huotu.hotcms.service.entity.Region;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.SiteConfig;
 import com.huotu.hotcms.service.entity.Template;
+import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.repository.RegionRepository;
 import com.huotu.hotcms.service.repository.SiteConfigRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
@@ -35,6 +36,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -84,6 +87,22 @@ public class SupperController extends AbstractSiteSupperController {
 
     @Autowired
     private SiteRepository siteRepository;
+
+
+    /**
+     * 超级管理员首页
+     *
+     * @param login
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping({"/", ""})
+    @PreAuthorize("hasRole('ROOT')")
+    public ModelAndView admin(@AuthenticationPrincipal Login login) throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("/view/supper/index.html");
+        return modelAndView;
+    }
 
     /**
      * 站点列表页面
@@ -142,13 +161,14 @@ public class SupperController extends AbstractSiteSupperController {
 
     /**
      * 站点新增以及修改操作
-     * @param request 请求实例
-     * @param site 要操作的站点
-     * @param regionId 语言代码
-     * @param siteType 站点类型
+     *
+     * @param request     请求实例
+     * @param site        要操作的站点
+     * @param regionId    语言代码
+     * @param siteType    站点类型
      * @param personalise 不止何物
      * @param homeDomains 主域名
-     * @param domains 其他可以处理这个站点的域名
+     * @param domains     其他可以处理这个站点的域名
      * @return
      */
     @RequestMapping(value = "/saveSite", method = RequestMethod.POST)
@@ -274,8 +294,8 @@ public class SupperController extends AbstractSiteSupperController {
     /**
      * 获取模板列表
      *
-     * @param page       页数
-     * @param pageSize   每页显示记录数
+     * @param page     页数
+     * @param pageSize 每页显示记录数
      * @return 模板列表
      */
     @RequestMapping(value = "/getTemplateList")

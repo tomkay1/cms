@@ -45,12 +45,17 @@ public class Manager extends AbstractLogin {
     }
 
     @Override
+    public boolean isRoot() {
+        return true;
+    }
+
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 //        return Collections.singleton(new SimpleGrantedAuthority(Role_Manage));
         return CollectionUtils.mutliSet(
-                new SimpleGrantedAuthority("ROOT")
+                new SimpleGrantedAuthority("ROLE_ROOT")
                 , new SimpleGrantedAuthority(Role_Manage)
-                , new SimpleGrantedAuthority(Role_ManageAS)
+                , new SimpleGrantedAuthority(Role_AS)
                 , new SimpleGrantedAuthority(Role_ManageOwner)
         );
     }

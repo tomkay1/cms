@@ -9,6 +9,7 @@
 
 package com.huotu.cms.manage.config;
 
+import com.huotu.hotcms.service.entity.login.Login;
 import me.jiangcai.lib.embedweb.EmbedWeb;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -36,13 +37,18 @@ public class ManageServiceSpringConfig extends WebSecurityConfigurerAdapter impl
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 //        super.configure(http);
+//        .authorizeRequests().antMatchers("/**").hasRole("USER").antMatchers("/admin/**")
+//                .hasRole("ADMIN")
         http
-                .authorizeRequests().antMatchers(
-                "/manage/**"
-        ).authenticated()
+                .authorizeRequests()
+                .antMatchers("/manage/**").hasRole(Login.Role_Manage_Value)
+                .antMatchers("/manage/supper/**").hasRole("ROOT")
                 .and()
+                .csrf().disable()
                 .formLogin()
                 .loginPage("/manage/main/login")
-                .permitAll();
+                .permitAll()
+                .and()
+                .logout().logoutUrl("/logout").permitAll();
     }
 }

@@ -10,7 +10,7 @@
 package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.login.Manager;
-import com.huotu.cms.manage.login.QuickAuthentication;
+import com.huotu.cms.manage.service.SecurityService;
 import com.huotu.cms.manage.util.web.CookieUser;
 import com.huotu.hotcms.service.common.ConfigInfo;
 import com.huotu.hotcms.service.entity.login.Login;
@@ -20,10 +20,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.web.context.HttpRequestResponseHolder;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
-import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,19 +46,8 @@ public class MainController {
     private CookieUser cookieUser;
     @Autowired
     private OwnerRepository ownerRepository;
-    private SecurityContextRepository httpSessionSecurityContextRepository = new HttpSessionSecurityContextRepository();
-
-
-    private String loginAs(HttpServletRequest request, HttpServletResponse response, Login login) throws IOException {
-        HttpRequestResponseHolder holder = new HttpRequestResponseHolder(request, response);
-        SecurityContext context = httpSessionSecurityContextRepository.loadContext(holder);
-
-        context.setAuthentication(new QuickAuthentication(login));
-
-        httpSessionSecurityContextRepository.saveContext(context, holder.getRequest(), holder.getResponse());
-        response.sendRedirect("/manage/main");
-        return null;
-    }
+    @Autowired
+    private SecurityService securityService;
 
     @RequestMapping("/login")
     public String loginPage(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
@@ -70,7 +55,7 @@ public class MainController {
         if (cookieUser.isSupper(request)) {
             log.debug("LoginAs Manager");
             //以管理员身份登录
-            return loginAs(request, response, new Manager());
+            return securityService.loginAs(request, response, new Manager());
         }
 
         int customerId = cookieUser.getCustomerId(request);
@@ -79,7 +64,7 @@ public class MainController {
             Owner owner = ownerRepository.findByCustomerId(customerId);
             if (owner != null) {
                 log.debug("LoginAS Owner:" + owner);
-                return loginAs(request, response, owner);
+                return securityService.loginAs(request, response, owner);
             }
         }
 
@@ -89,11 +74,10 @@ public class MainController {
     }
 
     @RequestMapping({"/index", ""})
-    public ModelAndView index(@AuthenticationPrincipal Login login) throws Exception {
-
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("/view/main.html");
-        return modelAndView;
+    public String index(@AuthenticationPrincipal Login login) throws Exception {
+        if (login.isRoot())
+            return "redirect:/manage/supper";
+        return "/view/main.html";
     }
 
     @RequestMapping(value = "/decorated")

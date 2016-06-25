@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<!--
+  ~ 版权所有:杭州火图科技有限公司
+  ~ 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+  ~
+  ~ (c) Copyright Hangzhou Hot Technology Co., Ltd.
+  ~ Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+  ~ 2013-2016. All rights reserved.
+  -->
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:ewp="http://ewp.jiangcai.me"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="http://resali.huobanplus.com/cdn/bracket/css/style.default.css" rel="stylesheet">
+    <link href="http://resali.huobanplus.com/cdn/bracket/css/jquery.datatables.css" rel="stylesheet">
+    <title>Title</title>
+</head>
+<body class="mainpanel" id="fa-home">
+<div class="pageheader">
+    <h2><i class="fa fa-home"></i> 商户管理 <span>可以新增或者关闭商户</span></h2>
+</div>
+
+<div class="contentpanel">
+    <form id="addPatientForm" action="owner.html" method="POST" th:action="@{/manage/supper/owner}">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-btns">
+                    <a href="" class="panel-close">&times;</a>
+                    <a href="" class="minimize">&minus;</a>
+                </div><!-- panel-btns -->
+                <h3 class="panel-title">开通商户</h3>
+                <p>可以选择通过用户名密码,也可以通过输入伙伴商城商户号开通</p>
+            </div>
+            <div class="panel-body">
+
+                <div class="form-horizontal form-bordered">
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">商户号</label>
+                        <div class="col-sm-2">
+                            <input name="customerId" title="商户号" type="text" placeholder="伙伴商城商户号,可选"
+                                   class="form-control" value="3447"
+                                   th:value="${@environment.acceptsProfiles('test')?'3447':''}"/>
+                        </div>
+                        <label class="col-sm-2 control-label">用户名</label>
+                        <div class="col-sm-2">
+                            <input name="username" title="用户名" type="text"
+                                   class="form-control"/>
+                        </div>
+                        <label class="col-sm-2 control-label">密码</label>
+                        <div class="col-sm-2">
+                            <input name="password" title="密码" type="password"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- panel-body -->
+
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <button class="btn btn-primary">Submit</button>
+                        &nbsp;
+                        <button class="btn btn-default">Cancel</button>
+                    </div>
+                </div>
+            </div><!-- panel-footer -->
+
+        </div>
+    </form>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-btns">
+                <a href="" class="panel-close">&times;</a>
+                <a href="" class="minimize">&minus;</a>
+            </div><!-- panel-btns -->
+            <h3 class="panel-title">商户列表</h3>
+            <p>可以选择禁用或者恢复,也可以帮助商户管理资源</p>
+        </div>
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table" id="ownerTable">
+                    <thead>
+                    <tr>
+                        <th>登录名</th>
+                        <th>伙伴商城商户号</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                    </thead>
+                    <!--odd even-->
+                    <tbody>
+                    <!--/*@thymesVar id="list" type="java.lang.Iterable<com.huotu.hotcms.service.entity.login.Owner>"*/-->
+                    <tr th:each="owner,stats:${list}" th:class="${stats.odd?'odd':'even'}"
+                        th:attr="data-id=${owner.id}" data-id="456">
+                        <td class="actionWard" th:text="${owner.username}">hello</td>
+                        <td class="actionAccess" th:text="${owner.customerId}">3447</td>
+                        <td class="center">
+                            <a href="../main.html" target="_top" title="管理"><i class="fa fa-pencil"></i></a>
+                            <a href="javascript:void(0)" title="暂停" th:if="${owner.enabled}"><i
+                                    class="glyphicon glyphicon-pause"></i></a>
+                            <a href="javascript:void(0)" title="恢复" th:if="${!owner.enabled}"><i
+                                    class="glyphicon glyphicon-play"></i></a>
+                            <a href="javascript:void(0)" title="关联商户号">
+                                <i class="glyphicon glyphicon-shopping-cart"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr class="odd gradeX" th:remove="all" data-id="123">
+                        <td class="actionWard">607</td>
+                        <td class="actionAccess">&nbsp;</td>
+                        <td class="center">
+                            <a href="../main.html" target="_top"><i class="fa fa-pencil"></i></a>
+                            <a href="javascript:void(0)" title="恢复"><i class="glyphicon glyphicon-play"></i></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div><!-- table-responsive -->
+        </div>
+    </div>
+
+</div><!-- contentpanel -->
+
+<div class="modal fade" id="customerIdChanger" tabindex="-1" role="dialog" aria-labelledby="customerIdChangerLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="customerIdChangerLabel">关联伙伴商城</h4>
+            </div>
+            <div class="modal-body">
+                <p>如果当前商户已经关联商城号,执行操作将更改商户号,这个对于商城网站将带来极大影响,请务必慎重。</p>
+                <input name="customerId" title="商户号" type="text" placeholder="伙伴商城商户号"
+                       class="form-control" value="3447"
+                       th:value="${@environment.acceptsProfiles('test')?'3447':''}"/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">不了</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">好的</button>
+            </div>
+        </div><!-- modal-content -->
+    </div><!-- modal-dialog -->
+</div><!-- modal -->
+<script>
+    var toggleOwnerEnableUrl = /*[[@{/manage/supper/owner/$1/enable}]]*/ null;
+    var customerIdChangeUrl = /*[[@{/manage/supper/owner/$1/customerId}]]*/ null;
+</script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-1.10.2.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-ui-1.10.3.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/u/dt/dt-1.10.12/datatables.min.js"></script>
+<!--<script src="http://resali.huobanplus.com/cdn/bracket/js/custom.js"></script>-->
+<script src="../../../public/bracket/js/frame.js" ewp:src="/bracket/js/frame.js"></script>
+<script src="../../../public/js/owner.js" ewp:src="/js/owner.js"></script>
+</body>
+</html>

@@ -78,6 +78,11 @@ public class Owner extends AbstractLogin {
     }
 
     @Override
+    public boolean isRoot() {
+        return false;
+    }
+
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singleton(new SimpleGrantedAuthority(Role_Manage));
 //        return CollectionUtils.mutliSet(

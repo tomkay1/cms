@@ -17,6 +17,8 @@ import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -45,6 +47,20 @@ public class OwnerControllerTest extends ManageTest {
 
         OwnerPage ownerPage = adminPage.toOwner();
 
+        // 以商户进行
+        int customerId = Math.abs(random.nextInt());
+        ownerPage.addOwner(null, null, String.valueOf(customerId));
+        assertThat(ownerRepository.findByCustomerId(customerId))
+                .isNotNull();
+
+        // 用户密码进行
+        String username = randomEmailAddress();
+        String password = UUID.randomUUID().toString();
+        ownerPage.addOwner(username, password, null);
+        assertThat(ownerRepository.findByLoginName(username))
+                .isNotNull();
+
+        // 都没用 应该报错
     }
 
     /**

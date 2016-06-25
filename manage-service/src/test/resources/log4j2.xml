@@ -26,7 +26,8 @@
         </RollingFile>
     </Appenders>
     <Loggers>
-        <Logger name="org.springframework.security" level="debug"/>
+        <Logger name="com.gargoylesoftware.htmlunit" level="error"/>
+        <Logger name="org.springframework.security" level="info"/>
         <Root level="info">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="ServerDailyRollingFile"/>

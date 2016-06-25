@@ -35,22 +35,20 @@ public class OwnerPage extends AbstractContentPage {
     }
 
     public void addOwner(String username, String password, String customerId) {
-        if (username != null) {
-            WebElement input = addOwnerForm.findElement(By.name("username"));
-            input.clear();
+        WebElement input = addOwnerForm.findElement(By.name("loginName"));
+        input.clear();
+        if (username != null)
             input.sendKeys(username);
-        }
-        if (password != null) {
-            WebElement input = addOwnerForm.findElement(By.name("password"));
-            input.clear();
+        input = addOwnerForm.findElement(By.name("password"));
+        input.clear();
+        if (password != null)
             input.sendKeys(password);
-        }
-        if (customerId != null) {
-            WebElement input = addOwnerForm.findElement(By.name("customerId"));
-            input.clear();
+        input = addOwnerForm.findElement(By.name("customerId"));
+        input.clear();
+        if (customerId != null)
             input.sendKeys(customerId);
-        }
 
         addOwnerForm.findElement(By.className("btn-primary")).click();
+        reloadPageInfo();
     }
 }

@@ -118,7 +118,7 @@ public abstract class ManageTest extends SpringWebTest {
 //        driver.manage().addCookie(new org.openqa.selenium.Cookie("JSESSIONID", session.getId(), ".", "/", new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000)));
 
         driver.get("http://localhost/manage/main");
-        System.out.println(driver.getPageSource());
+//        System.out.println(driver.getPageSource());
     }
 
     /**

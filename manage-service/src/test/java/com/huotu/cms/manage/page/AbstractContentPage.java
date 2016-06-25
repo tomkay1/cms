@@ -9,15 +9,23 @@
 
 package com.huotu.cms.manage.page;
 
-import me.jiangcai.bracket.test.BracketPage;
 import org.openqa.selenium.WebDriver;
 
 /**
+ * iframe子页面
+ *
  * @author CJ
  */
-public abstract class AbstractManagePage extends BracketPage {
+abstract class AbstractContentPage extends AbstractManagePage {
 
-    public AbstractManagePage(WebDriver webDriver) {
-        super(webDriver);
+    AbstractContentPage(WebDriver webDriver) {
+        super(webDriver.switchTo().frame("content"));
+    }
+
+    /**
+     * 在使用driver之前总要确保已经switch到content
+     */
+    void beforeDriver() {
+        webDriver.switchTo().frame("content");
     }
 }

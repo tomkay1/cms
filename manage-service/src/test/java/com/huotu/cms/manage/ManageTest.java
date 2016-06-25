@@ -96,7 +96,7 @@ public abstract class ManageTest extends SpringWebTest {
                 .withDelegate(new WebConnectionHtmlUnitDriver(BrowserVersion.CHROME) {
                     @Override
                     protected WebClient modifyWebClientInternal(WebClient webClient) {
-                        webClient.getOptions().setThrowExceptionOnScriptError(false);
+//                        webClient.getOptions().setThrowExceptionOnScriptError(false);
                         return super.modifyWebClientInternal(webClient);
                     }
                 })

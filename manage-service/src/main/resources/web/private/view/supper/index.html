@@ -208,12 +208,13 @@
 <script src="http://resali.huobanplus.com/cdn/bracket/js/custom.js"></script>
 
 <!--<script src="http://resali.huobanplus.com/cdn/bracket/js/dashboard.js"></script>-->
-<script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
     $(function () {
         var firstUrl = /*[[@{/manage/supper/owner}]]*/ "owner.html";
-        console.error(firstUrl);
         $('#content').attr('src', firstUrl);
     });
+    /*]]*/
 </script>
 
 </body>

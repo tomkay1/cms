@@ -15,9 +15,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,6 +46,8 @@ public class OwnerController {
 
     @Autowired
     private OwnerRepository ownerRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @RequestMapping(value = "/{id}/enable", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -61,6 +65,21 @@ public class OwnerController {
         Owner owner = ownerRepository.getOne(id);
         owner.setCustomerId(customerId);
         log.info("Owner " + owner + " Toggle to " + owner.getCustomerId());
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    @Transactional
+    public String add(Owner data) {
+        if (StringUtils.isEmpty(data.getLoginName()) && data.getCustomerId() == null)
+            throw new IllegalArgumentException("用户名或者商户号必须选择一个");
+        if (!StringUtils.isEmpty(data.getLoginName()) && StringUtils.isEmpty(data.getPassword()))
+            throw new IllegalArgumentException("必须输入密码");
+        data.setEnabled(true);
+        if (!StringUtils.isEmpty(data.getLoginName()))
+            data.setPassword(passwordEncoder.encode(data.getPassword()));
+        ownerRepository.save(data);
+
+        return "redirect:/manage/supper/owner";
     }
 
     @RequestMapping(method = RequestMethod.GET)

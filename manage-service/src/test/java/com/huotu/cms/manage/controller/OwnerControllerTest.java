@@ -10,6 +10,8 @@
 package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.ManageTest;
+import com.huotu.cms.manage.page.AdminPage;
+import com.huotu.cms.manage.page.OwnerPage;
 import com.huotu.hotcms.service.entity.login.Owner;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -30,6 +32,19 @@ public class OwnerControllerTest extends ManageTest {
         loginAsManage();
 
         driver.get("http://localhost/manage/supper/owner");
+    }
+
+    @Test
+    public void add() throws Exception {
+        // 这里走的是实际测试 通过点击选择的菜单 然后进行操作
+        loginAsManage();
+
+        driver.get("http://localhost/manage/supper");
+
+        AdminPage adminPage = initPage(AdminPage.class);
+
+        OwnerPage ownerPage = adminPage.toOwner();
+
     }
 
     /**

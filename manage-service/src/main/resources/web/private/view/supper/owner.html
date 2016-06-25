@@ -14,7 +14,7 @@
     <meta charset="UTF-8">
     <link href="http://resali.huobanplus.com/cdn/bracket/css/style.default.css" rel="stylesheet">
     <link href="http://resali.huobanplus.com/cdn/bracket/css/jquery.datatables.css" rel="stylesheet">
-    <title>Title</title>
+    <title>Owner</title>
 </head>
 <body class="mainpanel" id="fa-home">
 <div class="pageheader">
@@ -22,7 +22,7 @@
 </div>
 
 <div class="contentpanel">
-    <form id="addPatientForm" action="owner.html" method="POST" th:action="@{/manage/supper/owner}">
+    <form id="addOwnerForm" action="owner.html" method="POST" th:action="@{/manage/supper/owner}">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="panel-btns">
@@ -144,7 +144,7 @@
         </div><!-- modal-content -->
     </div><!-- modal-dialog -->
 </div><!-- modal -->
-<script>
+<script th:inline="javascript">
     var toggleOwnerEnableUrl = /*[[@{/manage/supper/owner/$1/enable}]]*/ null;
     var customerIdChangeUrl = /*[[@{/manage/supper/owner/$1/customerId}]]*/ null;
 </script>

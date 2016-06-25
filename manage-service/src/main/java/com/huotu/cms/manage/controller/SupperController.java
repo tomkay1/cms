@@ -40,6 +40,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -98,9 +99,10 @@ public class SupperController extends AbstractSiteSupperController {
      */
     @RequestMapping({"/", ""})
     @PreAuthorize("hasRole('ROOT')")
-    public ModelAndView admin(@AuthenticationPrincipal Login login) throws Exception {
+    public ModelAndView admin(@AuthenticationPrincipal Login login, Model model) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/view/supper/index.html");
+        model.addAttribute("_info", "欢迎回来");
         return modelAndView;
     }
 

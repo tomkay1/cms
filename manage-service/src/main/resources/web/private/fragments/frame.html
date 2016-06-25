@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<!--
+  ~ 版权所有:杭州火图科技有限公司
+  ~ 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+  ~
+  ~ (c) Copyright Hangzhou Hot Technology Co., Ltd.
+  ~ Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+  ~ 2013-2016. All rights reserved.
+  -->
+
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Frame页面都需要载入的片段</title>
+</head>
+<body>
+
+<!--/*@thymesVar id="_primary" type="java.lang.String"*/-->
+<!--/*@thymesVar id="_info" type="java.lang.String"*/-->
+<!--/*@thymesVar id="_danger" type="java.lang.String"*/-->
+<!--/*@thymesVar id="_warning" type="java.lang.String"*/-->
+<!--/*@thymesVar id="_success" type="java.lang.String"*/-->
+<section id="messageSection">
+    <script th:inline="javascript" th:if="${_primary!=null}">
+        $(function () {
+            var message = /*[[${_primary}]]*/'重要信息';
+            top.showPrimary('重要', message);
+        });
+    </script>
+    <script th:inline="javascript" th:if="${_info!=null}">
+        $(function () {
+            var message = /*[[${_info}]]*/'提示信息';
+            top.showInfo('提示', message);
+        });
+    </script>
+    <script th:inline="javascript" th:if="${_danger!=null}">
+        $(function () {
+            var message = /*[[${_danger}]]*/'错误信息';
+            top.showDanger('错误', message);
+        });
+    </script>
+    <script th:inline="javascript" th:if="${_warning!=null}">
+        $(function () {
+            var message = /*[[${_warning}]]*/'警告信息';
+            top.showWarning('警告', message);
+        });
+    </script>
+    <script th:inline="javascript" th:if="${_success!=null}">
+        $(function () {
+            var message = /*[[${_success}]]*/'成功信息';
+            top.showSuccess('成功', message);
+        });
+    </script>
+</section>
+
+</body>
+</html>

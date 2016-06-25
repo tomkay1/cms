@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * 这里是超管管理商户的控制器
@@ -69,7 +70,7 @@ public class OwnerController {
 
     @RequestMapping(method = RequestMethod.POST)
     @Transactional
-    public String add(Owner data) {
+    public String add(Owner data, RedirectAttributes attributes) {
         if (StringUtils.isEmpty(data.getLoginName()) && data.getCustomerId() == null)
             throw new IllegalArgumentException("用户名或者商户号必须选择一个");
         if (!StringUtils.isEmpty(data.getLoginName()) && StringUtils.isEmpty(data.getPassword()))
@@ -79,6 +80,7 @@ public class OwnerController {
             data.setPassword(passwordEncoder.encode(data.getPassword()));
         ownerRepository.save(data);
 
+        attributes.addFlashAttribute("_success", "成功添加");
         return "redirect:/manage/supper/owner";
     }
 

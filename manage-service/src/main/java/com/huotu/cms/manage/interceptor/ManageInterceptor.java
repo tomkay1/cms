@@ -47,9 +47,8 @@ public class ManageInterceptor extends HandlerInterceptorAdapter {
             if (authentication != null && authentication.isAuthenticated()) {
                 modelAndView.addObject("mallManageUrl", configInfo.getMallManageUrl());
             }
-
-            response.setHeader("X-Frame-Options", "SAMEORIGIN");
         }
+        response.setHeader("X-Frame-Options", "SAMEORIGIN");
 //        String servletPath = request.getServletPath();
 //        if (modelAndView != null) {//加载用户信息
 //            UserInfo userInfo = new UserInfo();

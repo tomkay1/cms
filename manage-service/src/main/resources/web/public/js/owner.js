@@ -29,15 +29,25 @@ $(function () {
             return;
         // 懒得响应
         function success() {
-
+            top.showSuccess('成功', '关联成功');
         }
+
+        function error() {
+            top.showDanger('错误', '关联失败');
+        }
+
         if (customerIdChangeUrl) {
             $.ajax({
                 method: 'put',
                 contentType: 'application/json',
                 data: customerIdInput.val(),
-                url: customerIdChangeUrl.replace('$1', customerIdChanger.id)
+                url: customerIdChangeUrl.replace('$1', customerIdChanger.id),
+                success: success,
+                error: error
             });
+        } else {
+            console.log(customerIdInput.val());
+            success();
         }
     });
 
@@ -64,14 +74,15 @@ $(function () {
                 targetTitle = '恢复';
             }
             function success() {
-                console.log(currentClass, targetClass, targetTitle);
+                // console.log(currentClass, targetClass, targetTitle);
                 me.removeClass(currentClass);
                 me.addClass(targetClass);
                 me.closest('a').attr('title', targetTitle);
             }
 
             function error() {
-                alert('未知错误');
+                // alert('未知错误');
+                top.showDanger('错误', '未知错误');
                 console.error.apply(console, arguments);
             }
 

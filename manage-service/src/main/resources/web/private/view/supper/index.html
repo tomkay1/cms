@@ -8,7 +8,7 @@
   ~ 2013-2016. All rights reserved.
   -->
 
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:ewp="http://ewp.jiangcai.me" lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
@@ -195,57 +195,42 @@
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.gritter.min.js"></script>
 <!--<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.util.js"></script>-->
 <link href="http://resali.huobanplus.com/cdn/bracket/css/jquery.gritter.css" rel="stylesheet" property=""/>
-<script>
-    function showPrimary(title, text, image, time) {
-        jQuery.gritter.add({
-            title: title,
-            text: text,
-            class_name: 'growl-primary',
-            image: image,
-            sticky: false,
-            time: time ? time : ''
-        });
-    }
-    function showSuccess(title, text, image, time) {
-        jQuery.gritter.add({
-            title: title,
-            text: text,
-            class_name: 'growl-success',
-            image: image,
-            sticky: false,
-            time: time ? time : ''
-        });
-    }
-    function showWarning(title, text, image, time) {
-        jQuery.gritter.add({
-            title: title,
-            text: text,
-            class_name: 'growl-warning',
-            image: image,
-            sticky: false,
-            time: time ? time : ''
-        });
-    }
-    function showDanger(title, text, image, time) {
-        jQuery.gritter.add({
-            title: title,
-            text: text,
-            class_name: 'growl-danger',
-            image: image,
-            sticky: false,
-            time: time ? time : ''
-        });
-    }
-    function showInfo(title, text, image, time) {
-        jQuery.gritter.add({
-            title: title,
-            text: text,
-            class_name: 'growl-info',
-            image: image,
-            sticky: false,
-            time: time ? time : ''
-        });
-    }
+<script src="../../../public/bracket/js/gritter.js" ewp:src="/bracket/js/gritter.js"></script>
+
+<!--/*@thymesVar id="_primary" type="java.lang.String"*/-->
+<!--/*@thymesVar id="_info" type="java.lang.String"*/-->
+<!--/*@thymesVar id="_danger" type="java.lang.String"*/-->
+<!--/*@thymesVar id="_warning" type="java.lang.String"*/-->
+<!--/*@thymesVar id="_success" type="java.lang.String"*/-->
+<script th:inline="javascript" th:if="${_primary!=null}">
+    $(function () {
+        var message = /*[[${_primary}]]*/'重要信息';
+        showPrimary('重要', message);
+    });
+</script>
+<script th:inline="javascript" th:if="${_info!=null}">
+    $(function () {
+        var message = /*[[${_info}]]*/'提示信息';
+        showInfo('提示', message);
+    });
+</script>
+<script th:inline="javascript" th:if="${_danger!=null}">
+    $(function () {
+        var message = /*[[${_danger}]]*/'错误信息';
+        showDanger('错误', message);
+    });
+</script>
+<script th:inline="javascript" th:if="${_warning!=null}">
+    $(function () {
+        var message = /*[[${_warning}]]*/'警告信息';
+        showWarning('警告', message);
+    });
+</script>
+<script th:inline="javascript" th:if="${_success!=null}">
+    $(function () {
+        var message = /*[[${_success}]]*/'成功信息';
+        showSuccess('成功', message);
+    });
 </script>
 
 <!--<script src="http://resali.huobanplus.com/cdn/bracket/js/dashboard.js"></script>-->

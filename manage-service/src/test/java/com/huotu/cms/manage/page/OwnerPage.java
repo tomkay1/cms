@@ -50,5 +50,6 @@ public class OwnerPage extends AbstractContentPage {
 
         addOwnerForm.findElement(By.className("btn-primary")).click();
         reloadPageInfo();
+        System.out.println(webDriver.getPageSource());
     }
 }

@@ -9,6 +9,8 @@
 
 package com.huotu.hotcms.widget;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.HashMap;
 
 /**
@@ -16,6 +18,7 @@ import java.util.HashMap;
  *
  * @author CJ
  */
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public class ComponentProperties extends HashMap<String, Object> {
 
 }

@@ -24,10 +24,13 @@ $(function () {
     var customerIdChanger = $('#customerIdChanger');
     var customerIdInput = $('input', customerIdChanger);
 
-    $('.btn-primary', customerIdInput).click(function () {
+    $('.btn-primary', customerIdChanger).click(function () {
         if (!customerIdInput.val())
             return;
         // 懒得响应
+        function success() {
+
+        }
         if (customerIdChangeUrl) {
             $.ajax({
                 method: 'put',

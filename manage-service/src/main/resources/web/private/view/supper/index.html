@@ -176,36 +176,77 @@
 </section>
 
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-1.10.2.min.js"></script>
-
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-migrate-1.2.1.min.js"></script>
-
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-ui-1.10.3.min.js"></script>
-
 <script src="http://resali.huobanplus.com/cdn/bracket/js/bootstrap.min.js"></script>
-
 <script src="http://resali.huobanplus.com/cdn/bracket/js/modernizr.min.js"></script>
-
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.sparkline.min.js"></script>
-
 <script src="http://resali.huobanplus.com/cdn/bracket/js/toggles.min.js"></script>
-
 <script src="http://resali.huobanplus.com/cdn/bracket/js/retina.min.js"></script>
-
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.cookies.js"></script>
-
 <script src="http://resali.huobanplus.com/cdn/bracket/js/flot/flot.min.js"></script>
-
 <script src="http://resali.huobanplus.com/cdn/bracket/js/flot/flot.resize.min.js"></script>
-
 <script src="http://resali.huobanplus.com/cdn/bracket/js/morris.min.js"></script>
-
 <script src="http://resali.huobanplus.com/cdn/bracket/js/raphael-2.1.0.min.js"></script>
-
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.datatables.min.js"></script>
-
 <script src="http://resali.huobanplus.com/cdn/bracket/js/chosen.jquery.min.js"></script>
-
 <script src="http://resali.huobanplus.com/cdn/bracket/js/custom.js"></script>
+<!--gritter-->
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.gritter.min.js"></script>
+<!--<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.util.js"></script>-->
+<link href="http://resali.huobanplus.com/cdn/bracket/css/jquery.gritter.css" rel="stylesheet" property=""/>
+<script>
+    function showPrimary(title, text, image, time) {
+        jQuery.gritter.add({
+            title: title,
+            text: text,
+            class_name: 'growl-primary',
+            image: image,
+            sticky: false,
+            time: time ? time : ''
+        });
+    }
+    function showSuccess(title, text, image, time) {
+        jQuery.gritter.add({
+            title: title,
+            text: text,
+            class_name: 'growl-success',
+            image: image,
+            sticky: false,
+            time: time ? time : ''
+        });
+    }
+    function showWarning(title, text, image, time) {
+        jQuery.gritter.add({
+            title: title,
+            text: text,
+            class_name: 'growl-warning',
+            image: image,
+            sticky: false,
+            time: time ? time : ''
+        });
+    }
+    function showDanger(title, text, image, time) {
+        jQuery.gritter.add({
+            title: title,
+            text: text,
+            class_name: 'growl-danger',
+            image: image,
+            sticky: false,
+            time: time ? time : ''
+        });
+    }
+    function showInfo(title, text, image, time) {
+        jQuery.gritter.add({
+            title: title,
+            text: text,
+            class_name: 'growl-info',
+            image: image,
+            sticky: false,
+            time: time ? time : ''
+        });
+    }
+</script>
 
 <!--<script src="http://resali.huobanplus.com/cdn/bracket/js/dashboard.js"></script>-->
 <script th:inline="javascript">

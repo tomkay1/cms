@@ -16,7 +16,7 @@ $(function () {
         template: top.$('#qq-template').get(0),
         inputName: 'file',
         request: {
-            endpoint: '/server/uploads'
+            endpoint: uploadFileUrl
         },
         thumbnails: {
             placeholders: {

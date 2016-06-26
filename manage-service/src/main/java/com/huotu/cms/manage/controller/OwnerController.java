@@ -9,7 +9,7 @@
 
 package com.huotu.cms.manage.controller;
 
-import com.huotu.cms.manage.bracket.GritterUtils;
+import com.huotu.cms.manage.controller.support.CRUDController;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.repository.OwnerRepository;
 import org.apache.commons.logging.Log;
@@ -19,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,7 +41,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  */
 @Controller
 @RequestMapping("/manage/supper/owner")
-public class OwnerController {
+public class OwnerController extends CRUDController<Owner, Long, Void, Void> {
 
     private static final Log log = LogFactory.getLog(OwnerController.class);
 
@@ -69,40 +68,31 @@ public class OwnerController {
         log.info("Owner " + owner + " Toggle to " + owner.getCustomerId());
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    @Transactional
-    public String add(Owner data, RedirectAttributes attributes) {
-        try {
-            if (StringUtils.isEmpty(data.getLoginName()) && data.getCustomerId() == null)
-                throw new IllegalArgumentException("用户名或者商户号必须选择一个");
-            if (!StringUtils.isEmpty(data.getLoginName()) && StringUtils.isEmpty(data.getPassword()))
-                throw new IllegalArgumentException("必须输入密码");
-            data.setEnabled(true);
-            if (!StringUtils.isEmpty(data.getLoginName()))
-                data.setPassword(passwordEncoder.encode(data.getPassword()));
-            ownerRepository.save(data);
-
-            GritterUtils.AddFlashSuccess("成功添加", attributes);
-        } catch (IllegalArgumentException ex) {
-            GritterUtils.AddFlashDanger(ex.getMessage(), attributes);
-        }
-        return "redirect:/manage/supper/owner";
+    @Override
+    protected String indexViewName() {
+        return "/view/supper/owner.html";
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    @Transactional(readOnly = true)
-    public String index(Model model) {
-        model.addAttribute("list", ownerRepository.findAll());
-//        if (searchText != null) {
-//            String toSearch = "%" + searchText + "%";
-//
-//            model.addAttribute("list", ownerRepository.findAll((root, query, cb) -> {
-//                return cb.or(cb.equal(root.get("customerId"), toSearch), cb.like(root.get("loginName"), toSearch));
-//            }, pageable));
-//        } else
-//            model.addAttribute("list", ownerRepository.findAll(pageable));
+    @Override
+    protected void prepareSave(Owner entity, Owner data, Void extra, RedirectAttributes attributes) {
 
-        return "/view/supper/owner.html";
+    }
+
+    @Override
+    protected String openViewName() {
+        return null;
+    }
+
+    @Override
+    protected Owner preparePersist(Owner data, Void extra, RedirectAttributes attributes) {
+        if (StringUtils.isEmpty(data.getLoginName()) && data.getCustomerId() == null)
+            throw new IllegalArgumentException("用户名或者商户号必须选择一个");
+        if (!StringUtils.isEmpty(data.getLoginName()) && StringUtils.isEmpty(data.getPassword()))
+            throw new IllegalArgumentException("必须输入密码");
+        data.setEnabled(true);
+        if (!StringUtils.isEmpty(data.getLoginName()))
+            data.setPassword(passwordEncoder.encode(data.getPassword()));
+        return data;
     }
 
 }

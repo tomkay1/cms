@@ -17,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -38,6 +39,7 @@ public class ResourceController {
     @Autowired
     private ResourceService resourceService;
 
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<String> upload(MultipartFile file) throws IOException {
         String path = "tmp/" + UUID.randomUUID().toString();
         try (InputStream inputStream = file.getInputStream()) {

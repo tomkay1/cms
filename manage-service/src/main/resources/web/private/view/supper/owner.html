@@ -97,7 +97,9 @@
                         <td class="actionWard" th:text="${owner.username}">hello</td>
                         <td class="actionAccess" th:text="${owner.customerId}">3447</td>
                         <td class="center">
-                            <a href="../main.html" target="_top" title="管理"><i class="fa fa-pencil"></i></a>
+                            <a href="../main.html" th:href="@{/manage/supper/as/${owner.id}}" target="_top" title="管理">
+                                <i class="fa fa-pencil"></i>
+                            </a>
                             <a href="javascript:void(0)" title="暂停" th:if="${owner.enabled}"><i
                                     class="glyphicon glyphicon-pause"></i></a>
                             <a href="javascript:void(0)" title="恢复" th:if="${!owner.enabled}"><i

@@ -35,4 +35,9 @@ public interface OwnerRepository extends LoginRepository<Owner> {
      */
     List<Owner> findByCustomerIdNotNull();
 
+    /**
+     * @return 可用商户
+     */
+    List<Owner> findByEnabledTrue();
+
 }

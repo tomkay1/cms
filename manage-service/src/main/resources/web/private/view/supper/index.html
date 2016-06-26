@@ -126,17 +126,22 @@
                             <div class="dropdown-menu dropdown-menu-head pull-right">
                                 <h5 class="title">点击商户可以直接管理</h5>
                                 <ul class="dropdown-list user-list">
-                                    <li class="new">
-                                        <div class="thumb"><a href=""><img
-                                                src="http://resali.huobanplus.com/cdn/bracket/images/photos/user1.png"
-                                                alt=""/></a>
-                                        </div>
+                                    <li class="new" th:each="owner:${@ownerRepository.findByEnabledTrue()}">
+                                        <!--<div class="thumb"></a>-->
+                                        <!--</div>-->
                                         <div class="desc">
-                                            <h5><a href="">Draniem Daamul (@draniem)</a> <span
-                                                    class="badge badge-success">new</span></h5>
+                                            <h5><a href="../main.html" th:href="@{/manage/supper/as/${owner.id}}"
+                                                   th:text="${owner.loginName+'/'+owner.customerId}">
+                                                某个商户/3447
+                                            </a>
+                                                <!--<span class="badge badge-success">new</span>-->
+                                            </h5>
                                         </div>
                                     </li>
-                                    <li class="new"><a href="" target="content">查看所有商户</a></li>
+                                    <li class="new">
+                                        <a href="owner.html" th:href="@{/manage/supper/owner}" target="content">
+                                            查看所有商户</a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>

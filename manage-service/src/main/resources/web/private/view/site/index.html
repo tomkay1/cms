@@ -142,10 +142,10 @@
                         <td class="actionAccess" th:text="${site.title}">如此标题</td>
                         <td th:text="${site.createTime}">06-11</td>
                         <td class="center">
-                            <a href="site.html" th:href="@{/manage/site/${site.siteId}}" title="编辑">
+                            <a href="site.html" th:href="@{/manage/site/{id}(id=${site.siteId})}" title="编辑">
                                 <i class="fa fa-pencil"></i>
                             </a>
-                            <a href="index.html" class="delete" th:href="@{/manage/site/${site.siteId}/delete}"
+                            <a href="index.html" class="delete" th:href="@{/manage/site/{id}/delete(id=${site.siteId})}"
                                target="_top" title="删除">
                                 <i class="fa fa-trash-o"></i>
                             </a>
@@ -194,7 +194,7 @@
     </div><!-- modal-dialog -->
 </div><!-- modal -->
 <script th:inline="javascript">
-    var uploadFileUrl = /*[[@{/manage/upload}]]*/ null;
+    var uploadFileUrl = /*[[@{/manage/upload/fine}]]*/ null;
     var customerIdChangeUrl = /*[[@{/manage/supper/owner/$1/customerId}]]*/ null;
 </script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-1.10.2.min.js"></script>

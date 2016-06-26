@@ -131,7 +131,8 @@
                                         <!--<div class="thumb"></a>-->
                                         <!--</div>-->
                                         <div class="desc">
-                                            <h5><a href="../main.html" th:href="@{/manage/supper/as/${owner.id}}"
+                                            <h5><a href="../main.html"
+                                                   th:href="@{/manage/supper/as/{id}(id=${owner.id})}"
                                                    th:text="${owner.username}">
                                                 某个商户/3447
                                             </a>

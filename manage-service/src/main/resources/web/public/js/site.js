@@ -12,10 +12,15 @@
  * Created by CJ on 6/27/16.
  */
 $(function () {
+
+    function logoUploaded(id, name, responseJSON) {
+        // newUuid is the path
+    }
+    
     $('#logo-uploader').fineUploader({
         template: top.$('#qq-template').get(0),
-        inputName: 'file',
         request: {
+            inputName: 'file',
             endpoint: uploadFileUrl
         },
         thumbnails: {
@@ -28,6 +33,7 @@ $(function () {
             allowedExtensions: ['jpeg', 'jpg', 'png', 'bmp'],
             itemLimit: 1,
             sizeLimit: 3 * 1024 * 1024
-        }
+        },
+        onComplete: logoUploaded
     });
 });

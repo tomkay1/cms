@@ -75,7 +75,7 @@
             <ul class="nav nav-pills nav-stacked nav-bracket">
                 <li class="nav-parent"><a href=""><i class="fa fa-desktop"></i> <span>站点设置</span></a>
                     <ul class="children">
-                        <li><a href="site/index.html" th:href="@{/manage/site/siteList}" target="content">
+                        <li><a href="site/index.html" th:href="@{/manage/site}" target="content">
                             <i class="fa fa-sitemap"></i> 站点管理</a></li>
                         <li><a href="inner.html" target="content"><i class="fa fa-retweet"></i> 路由规则</a></li>
                     </ul>
@@ -301,7 +301,7 @@
 <script th:inline="javascript">
     /*<![CDATA[*/
     $(function () {
-        var firstUrl = /*[[@{/manage/site/siteList}]]*/ "site/index.html";
+        var firstUrl = /*[[@{/manage/site}]]*/ "site/index.html";
         $('#content').attr('src', firstUrl);
     });
     /*]]*/

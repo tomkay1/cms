@@ -9,7 +9,7 @@
 
 package com.huotu.cms.manage.controller;
 
-import com.huotu.cms.manage.controller.support.AbstractSiteSupperController;
+import com.huotu.cms.manage.controller.support.CRUDController;
 import com.huotu.cms.manage.util.web.CookieUser;
 import com.huotu.hotcms.service.common.SiteType;
 import com.huotu.hotcms.service.entity.Region;
@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
@@ -39,7 +40,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/manage/site")
-public class SiteController extends AbstractSiteSupperController {
+public class SiteController extends CRUDController<Site, Long, Void, Void> {
     private static final Log log = LogFactory.getLog(SiteController.class);
 
     @Autowired
@@ -50,6 +51,26 @@ public class SiteController extends AbstractSiteSupperController {
 
     @Autowired
     private CookieUser cookieUser;
+
+    @Override
+    protected String indexViewName() {
+        return "/view/site/index.html";
+    }
+
+    @Override
+    protected Site preparePersist(Site data, Void extra, RedirectAttributes attributes) {
+        return null;
+    }
+
+    @Override
+    protected void prepareSave(Site entity, Site data, Void extra, RedirectAttributes attributes) {
+        System.out.println(entity);
+    }
+
+    @Override
+    protected String openViewName() {
+        return "/view/site/open.html";
+    }
 
     /**
      * 站点列表页面
@@ -127,7 +148,7 @@ public class SiteController extends AbstractSiteSupperController {
         try {
             modelAndView.setViewName("/view/web/updateSite.html");
             String logo_uri = "";
-            someThing(id, modelAndView, logo_uri);
+//            someThing(id, modelAndView, logo_uri);
         } catch (Exception ex) {
             log.error(ex.getMessage());
         }

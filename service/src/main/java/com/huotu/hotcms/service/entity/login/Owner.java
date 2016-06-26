@@ -88,7 +88,9 @@ public class Owner extends AbstractLogin implements Serializable {
     public String getUsername() {
         if (getLoginName() == null)
             return String.valueOf(getCustomerId());
-        return super.getUsername();
+        if (getCustomerId() == null)
+            return super.getLoginName();
+        return getLoginName() + "/" + getCustomerId();
     }
 
     @Override

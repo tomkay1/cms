@@ -85,6 +85,13 @@ public class Owner extends AbstractLogin implements Serializable {
     }
 
     @Override
+    public String getUsername() {
+        if (getLoginName() == null)
+            return String.valueOf(getCustomerId());
+        return super.getUsername();
+    }
+
+    @Override
     public Long currentOwnerId() {
         return getId();
     }

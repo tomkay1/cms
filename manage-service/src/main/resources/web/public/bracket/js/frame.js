@@ -15,43 +15,57 @@
  */
 
 $(function () {
-    var top = window.top;
-    if (!top) {
-        console.error('需要在iframe中调用');
-        return;
-    }
-    if (!top.$) {
-        console.error('所在frame页面并不支持jQuery');
-        return;
-    }
     var debug = true;
-    var print = function () {
-        if (debug)
-            console.log.apply(console, arguments);
-    };
 
-    var menuUl = top.$('.nav').not('.mb30').not('.nav-justified');
-    print('found menu:', menuUl);
-    // 先移除
-    $('.nav-active', menuUl).removeClass('nav-active');
-    $('.active', menuUl).removeClass('active');
-    print('done to remove');
+    function resetTopMenuStatus() {
+        var top = window.top;
+        if (!top) {
+            console.error('需要在iframe中调用');
+            return;
+        }
+        if (!top.$) {
+            console.error('所在frame页面并不支持jQuery');
+            return;
+        }
 
-    var targetClass = document.body.id;
-    print('targetClass:', targetClass);
+        var print = function () {
+            if (debug)
+                console.log.apply(console, arguments);
+        };
 
-    // 寻找目标
-    var target = top.$('.' + targetClass, menuUl);
-    print('target:', target);
+        var menuUl = top.$('.nav').not('.mb30').not('.nav-justified');
+        print('found menu:', menuUl);
+        // 先移除
+        $('ul', $('.nav-active', menuUl)).css('display', 'none');
+        $('.nav-active', menuUl).removeClass('nav-active');
+        $('.active', menuUl).removeClass('active');
+        print('done to remove');
 
-    if (target.size() == 0) {
-        console.error('找不到对应的Class');
-        return;
+        var targetClass = document.body.id;
+        print('targetClass:', targetClass);
+
+        // 寻找目标
+        var target = top.$('.' + targetClass, menuUl);
+        print('target:', target);
+
+        if (target.size() == 0) {
+            console.error('找不到对应的Class');
+            return;
+        }
+        //先确定下它的上级菜单
+        var parent = target.closest('.nav-parent');
+        print('parent:', parent);
+
+        target.closest('li').addClass('active');
+        target.closest('.nav-parent').addClass('nav-active');
+
+        $('ul', target.closest('.nav-parent')).css('display', 'block');
     }
-    //先确定下它的上级菜单
-    var parent = target.closest('.nav-parent');
-    print('parent:', parent);
 
-    target.closest('li').addClass('active');
-    target.closest('.nav-parent').addClass('nav-active');
+    resetTopMenuStatus();
+
+    // 让delete class 具备确认能力
+    $('.delete').click(function () {
+        return confirm('确实要删除么?');
+    });
 });

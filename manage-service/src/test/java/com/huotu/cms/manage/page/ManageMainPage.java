@@ -14,26 +14,25 @@ import org.openqa.selenium.WebDriver;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * 管理员登录所看到的
+ * 商户管理主页面
  *
  * @author CJ
  */
-public class AdminPage extends AbstractFrameParentPage {
-    public AdminPage(WebDriver webDriver) {
+public class ManageMainPage extends AbstractFrameParentPage {
+    public ManageMainPage(WebDriver webDriver) {
         super(webDriver);
     }
-
 
     @Override
     public void validatePage() {
         assertThat(webDriver.getTitle())
-                .contains("后台管理");
+                .contains("内容管理");
     }
 
-    public OwnerPage toOwner() {
+    public SitePage toSite() {
         beforeDriver();
-        findMenuLiByClass("fa-home").click();
-        return initPage(OwnerPage.class);
+        findMenuLiByClass("fa-sitemap").click();
+        return initPage(SitePage.class);
     }
 
 }

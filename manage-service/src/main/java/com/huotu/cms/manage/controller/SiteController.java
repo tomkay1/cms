@@ -61,7 +61,8 @@ public class SiteController extends AbstractSiteSupperController {
 //    @AuthorizeRole(roleType = AuthorizeRole.Role.Owner)
     public ModelAndView siteList(HttpServletRequest request) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("/view/web/siteList.html");
+//        modelAndView.setViewName("/view/web/siteList.html");
+        modelAndView.setViewName("/view/site/index.html");
         return modelAndView;
     }
 

@@ -68,4 +68,14 @@ $(function () {
     $('.delete').click(function () {
         return confirm('确实要删除么?');
     });
+    // 让autoGrow class 可以自动增长
+    var autoGrow = $('.autoGrow');
+    if (autoGrow.size() > 0) {
+        //先判断长度是为了避免每个页面都需要载入autogrow页面
+        autoGrow.autogrow();
+    }
+    // 让inputTags class 可以变成点击添加
+    var inputTags = $('.inputTags');
+    if (inputTags.size() > 0)
+        inputTags.tagsInput({width: 'auto'});
 });

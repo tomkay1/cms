@@ -10,30 +10,25 @@
 package com.huotu.cms.manage.page;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * 管理员登录所看到的
- *
  * @author CJ
  */
-public class AdminPage extends AbstractFrameParentPage {
-    public AdminPage(WebDriver webDriver) {
+public class SitePage extends AbstractContentPage {
+    @FindBy(id = "fa-sitemap")
+    private WebElement body;
+
+    public SitePage(WebDriver webDriver) {
         super(webDriver);
     }
 
-
     @Override
     public void validatePage() {
-        assertThat(webDriver.getTitle())
-                .contains("后台管理");
+        System.out.println(webDriver.getPageSource());
+        assertThat(body.isDisplayed()).isTrue();
     }
-
-    public OwnerPage toOwner() {
-        beforeDriver();
-        findMenuLiByClass("fa-home").click();
-        return initPage(OwnerPage.class);
-    }
-
 }

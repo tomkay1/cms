@@ -8,7 +8,7 @@
   ~ 2013-2016. All rights reserved.
   -->
 
-<html xmlns:th="http://www.thymeleaf.org" xmlns:ewp="http://ewp.jiangcai.me"
+<html xmlns:th="http://www.thymeleaf.org" xmlns:ewp="http://ewp.jiangcai.me" xmlns:sec="http://security.thymeleaf.org"
       lang="en">
 <head>
     <meta charset="UTF-8">
@@ -22,35 +22,62 @@
 </div>
 
 <div class="contentpanel">
-    <form id="addSiteForm" action="index.html" method="POST" th:action="@{/manage/site}">
+    <form id="addSiteForm" sec:authorize="hasRole('OWNER')" action="index.html" method="POST"
+          th:action="@{/manage/site}">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="panel-btns">
                     <a href="" class="panel-close">&times;</a>
                     <a href="" class="minimize">&minus;</a>
                 </div><!-- panel-btns -->
-                <h3 class="panel-title">开通商户</h3>
-                <p>可以选择通过用户名密码,也可以通过输入伙伴商城商户号开通</p>
+                <h3 class="panel-title">新建网站</h3>
+                <p>为当前商户添加一个新网站</p>
             </div>
             <div class="panel-body">
 
                 <div class="form-horizontal form-bordered">
 
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">商户号</label>
+                        <label class="col-sm-2 control-label">站点名称</label>
                         <div class="col-sm-2">
-                            <input name="customerId" title="商户号" type="text" placeholder="伙伴商城商户号,可选"
-                                   class="form-control" value="3447"
-                                   th:value="${@environment.acceptsProfiles('test')?'3447':''}"/>
-                        </div>
-                        <label class="col-sm-2 control-label">用户名</label>
-                        <div class="col-sm-2">
-                            <input name="loginName" title="用户名" type="text"
+                            <input name="name" title="站点名称" type="text" placeholder="作用于识别站点"
                                    class="form-control"/>
                         </div>
-                        <label class="col-sm-2 control-label">密码</label>
+                        <label class="col-sm-2 control-label">站点标题</label>
+                        <div class="col-sm-6">
+                            <input name="title" title="站点标题" type="text"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">站点描述</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control autoGrow" name="description" rows="5" title="站点描述"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">站点关键字</label>
+                        <div class="col-sm-10">
+                            <input name="keywords" class="form-control inputTags" value="" title="站点关键字"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">站点LOGO</label>
+                        <div class="col-sm-10" id="logo-uploader"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">站点类型</label>
                         <div class="col-sm-2">
-                            <input name="password" title="密码" type="password"
+                            <select name="siteType" class="form-control">
+                                <option value="0"
+                                        th:each="siteType:${T(com.huotu.hotcms.service.common.SiteType).values()}"
+                                        th:value="${siteType.getCode()}"
+                                        th:text="${siteType.getValue().toString()}"></option>
+                            </select>
+                        </div>
+                        <label class="col-sm-2 control-label">站点标题</label>
+                        <div class="col-sm-6">
+                            <input name="title" title="站点标题" type="text"
                                    class="form-control"/>
                         </div>
                     </div>
@@ -159,11 +186,18 @@
 <script src="http://resali.huobanplus.com/cdn/bracket/js/bootstrap.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/toggles.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.cookies.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/u/dt/dt-1.10.12/datatables.min.js"></script>
+
+<script src="http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/jquery.fine-uploader.min.js"></script>
+<link rel="stylesheet" href="http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/fine-uploader.min.css"
+      property=""/>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.tagsinput.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.autogrow-textarea.js"></script>
+<link rel="stylesheet" href="http://resali.huobanplus.com/cdn/bracket/css/jquery.tagsinput.css" property=""/>
+<script src="http://resali.huobanplus.com/cdn/datatables/1.10.12/datatables.min.js"></script>
 <!--<script src="http://resali.huobanplus.com/cdn/bracket/js/custom.js"></script>-->
 <div ewp:replace="fragments/frame.html::#messageSection"></div>
 <script src="../../../public/bracket/js/frame.js" ewp:src="/bracket/js/frame.js"></script>
-<script src="../../../public/js/owner.js" ewp:src="/js/owner.js"></script>
 <script src="../../../public/bracket/js/frame_custom.js" ewp:src="/bracket/js/frame_custom.js"></script>
+<script src="../../../public/js/site.js" ewp:src="/js/site.js"></script>
 </body>
 </html>

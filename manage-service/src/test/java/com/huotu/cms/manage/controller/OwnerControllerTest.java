@@ -11,7 +11,9 @@ package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.ManageTest;
 import com.huotu.cms.manage.page.AdminPage;
+import com.huotu.cms.manage.page.ManageMainPage;
 import com.huotu.cms.manage.page.OwnerPage;
+import com.huotu.cms.manage.page.SitePage;
 import com.huotu.hotcms.service.entity.login.Owner;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -28,6 +30,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @Transactional
 public class OwnerControllerTest extends ManageTest {
+
+    /**
+     * 以某一个商户身份运行,并且添加站点
+     */
+    @Test
+    public void asAddSite() throws Exception {
+        loginAsManage();
+        Owner owner = randomOwner();
+
+        driver.get("http://localhost/manage/supper/as/" + owner.getId());
+
+        ManageMainPage mainPage = initPage(ManageMainPage.class);
+        SitePage sitePage = mainPage.toSite();
+
+        // do something.
+
+        // 然后离开这里然后应该回到管理员界面
+        mainPage.clickLogout();
+        AdminPage adminPage = initPage(AdminPage.class);
+    }
 
     @Test
     public void index() throws Exception {

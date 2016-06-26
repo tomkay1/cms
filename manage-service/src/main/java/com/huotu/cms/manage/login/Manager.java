@@ -18,12 +18,18 @@ import org.luffy.libs.libseext.CollectionUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 /**
  * @author CJ
  */
-public class Manager extends AbstractLogin {
+public class Manager extends AbstractLogin implements Serializable {
+
+    private static final long serialVersionUID = 5408870778058706106L;
+
+    private Long ownerId;
+
     @Override
     public boolean siteManageable(Site site) {
         return true;
@@ -47,6 +53,16 @@ public class Manager extends AbstractLogin {
     @Override
     public boolean isRoot() {
         return true;
+    }
+
+    @Override
+    public void updateOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    @Override
+    public Long currentOwnerId() {
+        return ownerId;
     }
 
     @Override

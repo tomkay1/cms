@@ -22,6 +22,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
@@ -35,8 +36,9 @@ import java.util.Objects;
 @Table(name = "cms_owner", uniqueConstraints = {@UniqueConstraint(columnNames = {"customerId"})})
 @Getter
 @Setter
-public class Owner extends AbstractLogin {
+public class Owner extends AbstractLogin implements Serializable {
 
+    private static final long serialVersionUID = 4886150755976285080L;
     /**
      * 可选商户号
      */
@@ -80,6 +82,11 @@ public class Owner extends AbstractLogin {
     @Override
     public boolean isRoot() {
         return false;
+    }
+
+    @Override
+    public Long currentOwnerId() {
+        return getId();
     }
 
     @Override

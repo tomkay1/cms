@@ -74,9 +74,13 @@ public class MainController {
     }
 
     @RequestMapping({"/index", ""})
-    public String index(@AuthenticationPrincipal Login login) throws Exception {
-        if (login.isRoot())
+    public String index(@AuthenticationPrincipal Login login, Model model) throws Exception {
+        if (login.isRoot() && login.currentOwnerId() == null)
             return "redirect:/manage/supper";
+        if (login.isRoot()) {
+            model.addAttribute("logout", "/manage/supper");
+        } else
+            model.addAttribute("logout", "/logout");
         return "/view/main.html";
     }
 

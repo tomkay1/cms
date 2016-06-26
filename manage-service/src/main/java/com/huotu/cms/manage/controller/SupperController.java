@@ -10,6 +10,7 @@
 package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.authorize.annoation.AuthorizeRole;
+import com.huotu.cms.manage.bracket.GritterUtils;
 import com.huotu.cms.manage.controller.support.AbstractSiteSupperController;
 import com.huotu.cms.manage.util.web.CookieUser;
 import com.huotu.hotcms.service.common.EnumUtils;
@@ -42,6 +43,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -100,10 +102,23 @@ public class SupperController extends AbstractSiteSupperController {
     @RequestMapping({"/", ""})
     @PreAuthorize("hasRole('ROOT')")
     public ModelAndView admin(@AuthenticationPrincipal Login login, Model model) throws Exception {
+        login.updateOwnerId(null);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/view/supper/index.html");
-        model.addAttribute("_info", "欢迎回来");
+        GritterUtils.AddInfo("欢迎回来", model);
         return modelAndView;
+    }
+
+    /**
+     * 以某商户身份运行。
+     *
+     * @return 回到商户管理主页
+     */
+    @RequestMapping(value = "/as/{id}", method = RequestMethod.GET)
+    @PreAuthorize("hasRole('" + Login.Role_AS_Value + "')")
+    public String as(@AuthenticationPrincipal Login login, @PathVariable(value = "id") Long id) {
+        login.updateOwnerId(id);
+        return "redirect:/manage/main";
     }
 
     /**

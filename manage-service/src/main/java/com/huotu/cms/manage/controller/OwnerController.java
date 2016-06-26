@@ -9,6 +9,7 @@
 
 package com.huotu.cms.manage.controller;
 
+import com.huotu.cms.manage.bracket.GritterUtils;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.repository.OwnerRepository;
 import org.apache.commons.logging.Log;
@@ -71,16 +72,20 @@ public class OwnerController {
     @RequestMapping(method = RequestMethod.POST)
     @Transactional
     public String add(Owner data, RedirectAttributes attributes) {
-        if (StringUtils.isEmpty(data.getLoginName()) && data.getCustomerId() == null)
-            throw new IllegalArgumentException("用户名或者商户号必须选择一个");
-        if (!StringUtils.isEmpty(data.getLoginName()) && StringUtils.isEmpty(data.getPassword()))
-            throw new IllegalArgumentException("必须输入密码");
-        data.setEnabled(true);
-        if (!StringUtils.isEmpty(data.getLoginName()))
-            data.setPassword(passwordEncoder.encode(data.getPassword()));
-        ownerRepository.save(data);
+        try {
+            if (StringUtils.isEmpty(data.getLoginName()) && data.getCustomerId() == null)
+                throw new IllegalArgumentException("用户名或者商户号必须选择一个");
+            if (!StringUtils.isEmpty(data.getLoginName()) && StringUtils.isEmpty(data.getPassword()))
+                throw new IllegalArgumentException("必须输入密码");
+            data.setEnabled(true);
+            if (!StringUtils.isEmpty(data.getLoginName()))
+                data.setPassword(passwordEncoder.encode(data.getPassword()));
+            ownerRepository.save(data);
 
-        attributes.addFlashAttribute("_success", "成功添加");
+            GritterUtils.AddFlashSuccess("成功添加", attributes);
+        } catch (IllegalArgumentException ex) {
+            GritterUtils.AddFlashDanger(ex.getMessage(), attributes);
+        }
         return "redirect:/manage/supper/owner";
     }
 

@@ -55,19 +55,3 @@ $(function () {
     target.closest('li').addClass('active');
     target.closest('.nav-parent').addClass('nav-active');
 });
-
-// Minimize Button in Panels
-jQuery('.minimize').click(function () {
-    var t = jQuery(this);
-    var p = t.closest('.panel');
-    if (!jQuery(this).hasClass('maximize')) {
-        p.find('.panel-body, .panel-footer').slideUp(200);
-        t.addClass('maximize');
-        t.html('&plus;');
-    } else {
-        p.find('.panel-body, .panel-footer').slideDown(200);
-        t.removeClass('maximize');
-        t.html('&minus;');
-    }
-    return false;
-});

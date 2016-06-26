@@ -70,4 +70,16 @@ public interface Login extends UserDetails {
      * @return 是超级管理员
      */
     boolean isRoot();
+
+    /**
+     * @return 当前管理的ownerId
+     */
+    Long currentOwnerId();
+
+    /**
+     * 更新当前的管理ownerId
+     *
+     * @param ownerId ownerId
+     */
+    void updateOwnerId(Long ownerId);
 }

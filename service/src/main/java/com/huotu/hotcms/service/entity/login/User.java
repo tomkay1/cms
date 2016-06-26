@@ -17,6 +17,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -27,7 +28,9 @@ import java.util.Collections;
  */
 @Entity
 @Table(name = "cms_user")
-public class User extends AbstractLogin {
+public class User extends AbstractLogin implements Serializable {
+
+    private static final long serialVersionUID = 6659977218017590423L;
 
     @Override
     public boolean siteManageable(Site site) {
@@ -52,6 +55,11 @@ public class User extends AbstractLogin {
     @Override
     public boolean isRoot() {
         return false;
+    }
+
+    @Override
+    public Long currentOwnerId() {
+        return null;
     }
 
     @Override

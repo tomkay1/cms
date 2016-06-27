@@ -63,6 +63,11 @@ public class User extends AbstractLogin implements Serializable {
     }
 
     @Override
+    public Long currentSiteId() {
+        return null;
+    }
+
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.emptySet();
     }

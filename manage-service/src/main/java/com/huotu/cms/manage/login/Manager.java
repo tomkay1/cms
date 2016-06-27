@@ -29,6 +29,7 @@ public class Manager extends AbstractLogin implements Serializable {
     private static final long serialVersionUID = 5408870778058706106L;
 
     private Long ownerId;
+    private Long siteId;
 
     @Override
     public boolean siteManageable(Site site) {
@@ -58,6 +59,18 @@ public class Manager extends AbstractLogin implements Serializable {
     @Override
     public void updateOwnerId(Long ownerId) {
         this.ownerId = ownerId;
+        if (this.ownerId == null)
+            updateSiteId(null);
+    }
+
+    @Override
+    public Long currentSiteId() {
+        return siteId;
+    }
+
+    @Override
+    public void updateSiteId(Long siteId) {
+        this.siteId = siteId;
     }
 
     @Override

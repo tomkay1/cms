@@ -11,6 +11,7 @@ package com.huotu.cms.manage.interceptor;
 
 import com.huotu.cms.manage.service.SecurityService;
 import com.huotu.hotcms.service.common.ConfigInfo;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.service.SiteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Set;
 
 /**
  * 用于管理后台的拦截器,它作用于所有请求
@@ -52,7 +54,21 @@ public class ManageInterceptor extends HandlerInterceptorAdapter {
                 modelAndView.addObject("mallManageUrl", configInfo.getMallManageUrl());
                 Login login = (Login) authentication.getPrincipal();
                 if (login.currentOwnerId() != null) {
+                    Set<Site> siteSet = siteService.findByOwnerIdAndDeleted(login.currentOwnerId(), false);
+                    if (login.currentSiteId() == null && !siteSet.isEmpty()) {
+                        login.updateSiteId(siteSet.iterator().next().getSiteId());
+                    } else if (login.currentSiteId() != null && siteSet.isEmpty()) {
+                        login.updateSiteId(null);
+                    }
+                    modelAndView.addObject("siteSet", siteSet);
+                    if (login.currentSiteId() != null)
+                        modelAndView.addObject("manageSite", siteSet.stream()
+                                .filter(site -> site.getSiteId().equals(login.currentSiteId()))
+                                .findAny().orElse(null)
+                        );
 
+                } else if (login.currentSiteId() != null) {
+                    login.updateSiteId(null);
                 }
             }
         }

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 
 /**
  * Created by hzbc on 2016/5/27.
@@ -33,22 +34,30 @@ public class PageControllerImpl implements PageController {
     private PageService pageService;
 
 
-    @RequestMapping(value = "/owners/{ownerId}/pages/{pageId}",method = RequestMethod.GET)
+    @RequestMapping(value = "/owners/{ownerId}/pages",method = RequestMethod.GET)
     @ResponseBody
     @Override
-    public Page getPage(@PathVariable long ownerId,@PathVariable String pageId) throws IOException {
-        return pageService.getPageFromXMLConfig(ownerId,pageId);
+    public List<Page> getPageList(@PathVariable long ownerId) throws IOException {
+        return null;
+        //return pageService.getPageFromXMLConfig(ownerId,pageId);
     }
 
-    @RequestMapping(value = "/{ownerId}/pages/{pageId}",method = RequestMethod.PUT)
+    @RequestMapping(value = "/pages/{pageId}",method = RequestMethod.GET)
+    @ResponseBody
+    @Override
+    public Page getPage(@PathVariable String pageId) throws IOException {
+        return null;
+    }
+
+    @RequestMapping(value = "/pages/{pageId}",method = RequestMethod.PUT)
     @ResponseStatus(code = HttpStatus.ACCEPTED)
     @Override
-    public void savePage(@PathVariable long ownerId,@PathVariable String pageId,HttpServletRequest request)
+    public void savePage(@PathVariable String pageId,HttpServletRequest request)
             throws IOException, URISyntaxException {
         String pageJson=CharStreams.toString(request.getReader());
         ObjectMapper objectMapper=new ObjectMapper();
         Page page=objectMapper.readValue(pageJson, Page.class);
-        pageService.parsePageToXMlAndSave(page, ownerId, pageId);
+        pageService.parsePageToXMlAndSave(page, pageId);
     }
 
     @RequestMapping(value = "/owners/{ownerId}/pages",method = RequestMethod.POST)
@@ -71,5 +80,11 @@ public class PageControllerImpl implements PageController {
     @Override
     public void savePagePartProperties(@PathVariable String pageId,@PathVariable String propertyName) {
 
+    }
+
+    @RequestMapping("/cms/edit")
+    @Override
+    public String startEdit() {
+        return "/edit/edit.html";
     }
 }

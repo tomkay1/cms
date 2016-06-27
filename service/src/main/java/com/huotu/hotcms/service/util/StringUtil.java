@@ -2,11 +2,7 @@ package com.huotu.hotcms.service.util;
 
 import org.codehaus.plexus.util.StringUtils;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.Random;
-import java.util.Stack;
 
 /**
  * <p>

@@ -597,7 +597,7 @@ public class StringUtil {
 //    }
 
     /**
-     * 得到随机字符串
+     * 生成随机字符串
      *
      * @return
      */

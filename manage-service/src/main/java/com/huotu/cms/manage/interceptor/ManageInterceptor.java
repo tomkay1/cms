@@ -11,6 +11,8 @@ package com.huotu.cms.manage.interceptor;
 
 import com.huotu.cms.manage.service.SecurityService;
 import com.huotu.hotcms.service.common.ConfigInfo;
+import com.huotu.hotcms.service.entity.login.Login;
+import com.huotu.hotcms.service.service.SiteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -33,6 +35,8 @@ public class ManageInterceptor extends HandlerInterceptorAdapter {
     private ConfigInfo configInfo;
     @Autowired
     private SecurityService securityService;
+    @Autowired
+    private SiteService siteService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -46,6 +50,10 @@ public class ManageInterceptor extends HandlerInterceptorAdapter {
             Authentication authentication = securityService.currentAuthentication(request, response);
             if (authentication != null && authentication.isAuthenticated()) {
                 modelAndView.addObject("mallManageUrl", configInfo.getMallManageUrl());
+                Login login = (Login) authentication.getPrincipal();
+                if (login.currentOwnerId() != null) {
+
+                }
             }
         }
         response.setHeader("X-Frame-Options", "SAMEORIGIN");

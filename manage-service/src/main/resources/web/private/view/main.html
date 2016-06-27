@@ -129,20 +129,37 @@
 
             <div class="header-right">
                 <ul class="headermenu">
-                    <!--<li>-->
-                    <!--<div class="btn-group">-->
-                    <!--<button class="btn btn-default dropdown-toggle tp-icon" data-toggle="dropdown">-->
-                    <!--<i class="glyphicon glyphicon-user"></i>-->
-                    <!--&lt;!&ndash;<span class="badge">2</span>&ndash;&gt;-->
-                    <!--</button>-->
-                    <!--<div class="dropdown-menu dropdown-menu-head pull-right">-->
-                    <!--<h5 class="title">用户列表</h5>-->
-                    <!--<ul class="dropdown-list user-list">-->
-                    <!--这里可以设计未新注册用户-->
-                    <!--</ul>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--</li>-->
+                    <li>
+                        <div class="btn-group">
+                            <button class="btn btn-default dropdown-toggle tp-icon" data-toggle="dropdown">
+                                <i class="glyphicon glyphicon-list"></i>
+                                <!--<span class="badge">2</span>-->
+                                <span>我的站点</span>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-head pull-right">
+                                <h5 class="title">选择站点进行操作</h5>
+                                <ul class="dropdown-list user-list">
+                                    <li class="new" th:each="owner:${@ownerRepository.findByEnabledTrue()}">
+                                        <!--<div class="thumb"></a>-->
+                                        <!--</div>-->
+                                        <div class="desc">
+                                            <h5><a href="../main.html"
+                                                   th:href="@{/manage/supper/as/{id}(id=${owner.id})}"
+                                                   th:text="${owner.username}">
+                                                某个商户/3447
+                                            </a>
+                                                <!--<span class="badge badge-success">new</span>-->
+                                            </h5>
+                                        </div>
+                                    </li>
+                                    <li class="new">
+                                        <a href="site/index.html" th:href="@{/manage/site}" target="content">
+                                            查看所有站点</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
                     <li>
                         <div class="btn-group">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">

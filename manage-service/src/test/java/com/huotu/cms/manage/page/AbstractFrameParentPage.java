@@ -12,7 +12,10 @@ package com.huotu.cms.manage.page;
 import me.jiangcai.lib.test.page.AbstractPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
+
+import java.util.List;
 
 /**
  * @author CJ
@@ -41,8 +44,10 @@ public abstract class AbstractFrameParentPage extends AbstractManagePage {
 
     public void clickLogout() {
         beforeDriver();
-        // TODO 运气不错 只有一个 .dropdown-toggle
-        webDriver.findElement(By.className("dropdown-toggle")).click();
+        // 点击最后一个dropdown
+        List<WebElement> drops = webDriver.findElements(By.className("dropdown-toggle"));
+        WebElement drop = drops.get(drops.size() - 1);
+        drop.click();
 
         webDriver.findElements(By.className("glyphicon-log-out")).forEach(i -> {
             if (i.isDisplayed())

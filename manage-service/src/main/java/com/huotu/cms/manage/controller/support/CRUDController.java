@@ -118,10 +118,11 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
     /**
      * 在新增持久一个资源之前
      *
-     * @param login 当前操作者的身份
+     * @param login      当前操作者的身份
      * @param data       来自用户的数据
      * @param extra      额外数据
-     * @param attributes 空间  @return 提交到持久层的数据
+     * @param attributes 空间
+     * @return 提交到持久层的数据
      */
     protected abstract T preparePersist(Login login, T data, PD extra, RedirectAttributes attributes);
 
@@ -137,7 +138,7 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
      * 在删除某一个资源之前
      *
      * @param login 当前操作者的身份
-     * @param id 主键
+     * @param id    主键
      */
     @SuppressWarnings("WeakerAccess")
     protected void prepareRemove(Login login, ID id) {
@@ -159,7 +160,7 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
     /**
      * 保存之前
      *
-     * @param login 当前操作者的身份
+     * @param login      当前操作者的身份
      * @param entity     数据
      * @param data       用户请求的数据
      * @param extra      额外数据

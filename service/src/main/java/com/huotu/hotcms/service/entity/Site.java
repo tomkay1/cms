@@ -41,6 +41,11 @@ public class Site {
     private Long siteId;
 
     /**
+     * 是否上架
+     */
+    private boolean enabled;
+
+    /**
      * 所有主体
      */
     @ManyToOne

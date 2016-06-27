@@ -84,7 +84,7 @@ public class SiteController extends CRUDController<Site, Long, AboutNewSite, Voi
         data.setCreateTime(LocalDateTime.now());
         data.setSiteType(EnumUtils.valueOf(SiteType.class, extra.getSiteTypeId()));
 
-        siteService.newSite(extra.getDomains(), extra.getHomeDomain(), data, Locale.CHINA);
+        data = siteService.newSite(extra.getDomains(), extra.getHomeDomain(), data, Locale.CHINA);
         return data;
     }
 

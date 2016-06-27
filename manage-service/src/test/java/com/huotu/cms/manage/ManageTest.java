@@ -18,6 +18,7 @@ import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.repository.OwnerRepository;
 import me.jiangcai.lib.test.SpringWebTest;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
@@ -128,5 +129,13 @@ public abstract class ManageTest extends SpringWebTest {
         Owner owner = new Owner();
         owner.setEnabled(true);
         return ownerRepository.saveAndFlush(owner);
+    }
+
+    protected String randomDomain() {
+        return RandomStringUtils.randomAlphabetic(random.nextInt(5) + 3)
+                + "."
+                + RandomStringUtils.randomAlphabetic(random.nextInt(5) + 3)
+                + "."
+                + RandomStringUtils.randomAlphabetic(random.nextInt(2) + 2);
     }
 }

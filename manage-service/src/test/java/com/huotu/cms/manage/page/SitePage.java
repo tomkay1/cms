@@ -12,7 +12,6 @@ package com.huotu.cms.manage.page;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -73,35 +72,4 @@ public class SitePage extends AbstractContentPage {
     }
 
 
-    private void inputSelect(WebElement formElement, String inputName, String label) {
-        WebElement input = formElement.findElement(By.name(inputName));
-        input.clear();
-        for (WebElement element : input.findElements(By.tagName("option"))) {
-//            System.out.println(element.getText());
-            if (label.equals(element.getText())) {
-                element.click();
-                return;
-            }
-        }
-    }
-
-    private void inputTags(WebElement formElement, String inputName, String[] values) {
-        WebElement input = formElement.findElement(By.name(inputName));
-        input.clear();
-        String id = input.getAttribute("id");
-        // 规律是加上 _tag
-        WebElement toInput = formElement.findElement(By.id(id + "_tag"));
-        for (String value : values) {
-            toInput.clear();
-            toInput.sendKeys(value);
-            toInput.sendKeys(Keys.ENTER);
-        }
-    }
-
-    private void inputText(WebElement formElement, String inputName, String value) {
-        WebElement input = formElement.findElement(By.name(inputName));
-        input.clear();
-        if (value != null)
-            input.sendKeys(value);
-    }
 }

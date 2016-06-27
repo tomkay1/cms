@@ -65,9 +65,9 @@ public interface SiteService {
      *
      * @param domains     可用域名
      * @param homeDomains 主推域名
-     * @param site        站点（可能只是一个JO）
+     * @param site        站点
      * @param locale      要求的语言
-     * @return 操作结果
+     * @return 已保存的站点
      */
     @Transactional
     Site patchSite(String[] domains, String homeDomains, Site site, Locale locale);

@@ -15,8 +15,10 @@ import com.huotu.cms.manage.page.ManageMainPage;
 import com.huotu.cms.manage.page.OwnerPage;
 import com.huotu.cms.manage.page.SitePage;
 import com.huotu.hotcms.service.common.SiteType;
+import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Owner;
+import com.huotu.hotcms.service.repository.HostRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,8 @@ public class OwnerControllerTest extends ManageTest {
 
     @Autowired
     private SiteRepository siteRepository;
+    @Autowired
+    private HostRepository hostRepository;
 
     /**
      * 以某一个商户身份运行,并且添加站点
@@ -58,11 +62,14 @@ public class OwnerControllerTest extends ManageTest {
         String title = UUID.randomUUID().toString();
         String desc = UUID.randomUUID().toString();
         String[] stringArrays = new String[]{
-                "love.com",
-                "foo.com",
-                "bar.org",
-                "nice.com.cn",
-                "huoban.cn"
+                randomDomain(),
+                randomDomain(),
+                randomDomain(),
+                randomDomain(),
+                randomDomain(),
+                randomDomain(),
+                randomDomain(),
+                randomDomain()
         };
         String[] keywords = randomArray(stringArrays, 1);
         String[] domains = randomArray(stringArrays, 1);
@@ -75,6 +82,26 @@ public class OwnerControllerTest extends ManageTest {
         Set<Site> siteSet = siteRepository.findByOwner_IdAndDeleted(owner.getId(), false);
         assertThat(siteSet)
                 .hasSize(1);
+        // 这个Site数据检查
+        Site site = siteSet.iterator().next();
+
+        assertThat(site.getName())
+                .isEqualTo(name);
+        assertThat(site.getCopyright())
+                .isEqualTo(copyright);
+        assertThat(site.getDescription())
+                .isEqualTo(desc);
+        assertThat(site.getSiteType())
+                .isEqualTo(siteType);
+        assertThat(site.getTitle())
+                .isEqualTo(title);
+
+        //检查每一个Host必须包含这个Site
+        for (String domain : domains) {
+            Host host = hostRepository.findByDomain(domain);
+            assertThat(host.getSites())
+                    .containsValues(site);
+        }
 
         // 然后离开这里然后应该回到管理员界面
         mainPage.clickLogout();
@@ -86,15 +113,15 @@ public class OwnerControllerTest extends ManageTest {
     public void index() throws Exception {
         loginAsManage();
 
-        driver.get("http://localhost/manage/supper/owner");
+        AdminPage adminPage = initPage(AdminPage.class);
+
+        OwnerPage ownerPage = adminPage.toOwner();
     }
 
     @Test
     public void add() throws Exception {
         // 这里走的是实际测试 通过点击选择的菜单 然后进行操作
         loginAsManage();
-
-        driver.get("http://localhost/manage/supper");
 
         AdminPage adminPage = initPage(AdminPage.class);
 

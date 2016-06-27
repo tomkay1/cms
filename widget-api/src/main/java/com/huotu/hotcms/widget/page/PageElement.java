@@ -23,7 +23,6 @@ import java.io.Serializable;
  *
  * @author CJ
  */
-//@JsonDeserialize(using = PageElementDeserializer.class)
 @JsonSubTypes({
         @JsonSubTypes.Type(value = Layout.class,name = "layout"),
         @JsonSubTypes.Type(value = Component.class,name = "component")

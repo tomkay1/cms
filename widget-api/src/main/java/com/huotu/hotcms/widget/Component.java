@@ -24,6 +24,7 @@ import org.apache.commons.logging.LogFactory;
 @Data
 @JsonTypeName("component")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT, visible = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Component implements PageElement {
 
     @JsonIgnore(value = true)

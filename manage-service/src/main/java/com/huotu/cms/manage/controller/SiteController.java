@@ -39,6 +39,7 @@ class AboutNewSite {
 
 /**
  * Created by chendeyu on 2015/12/24.
+ * 全面重写 by CJ
  */
 @Controller
 @RequestMapping("/manage/site")

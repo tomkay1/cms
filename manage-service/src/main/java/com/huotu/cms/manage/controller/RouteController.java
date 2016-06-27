@@ -9,7 +9,7 @@
 
 package com.huotu.cms.manage.controller;
 
-import com.huotu.cms.manage.controller.support.CRUDController;
+import com.huotu.cms.manage.controller.support.SiteManageController;
 import com.huotu.cms.manage.exception.RedirectException;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
@@ -20,6 +20,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.plexus.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,12 +28,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDateTime;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+
 /**
  * Created by Administrator xhl 2016/1/9.
+ * 全面重写 by CJ
  */
 @Controller
 @RequestMapping("/manage/route")
-public class RouteController extends CRUDController<Route, Long, Void, Void> {
+public class RouteController extends SiteManageController<Route, Long, Void, Void> {
     private static final Log log = LogFactory.getLog(RouteController.class);
 
 
@@ -44,22 +50,43 @@ public class RouteController extends CRUDController<Route, Long, Void, Void> {
 
     @Override
     protected String indexViewName() {
-        return null;
+        return "/view/route/index.html";
     }
 
     @Override
-    protected Route preparePersist(Login login, Route data, Void extra, RedirectAttributes attributes) throws RedirectException {
-        return null;
+    protected Route preparePersist(Login login, Site site, Route data, Void extra, RedirectAttributes attributes)
+            throws RedirectException {
+        try {
+            //noinspection ResultOfMethodCallIgnored
+            Pattern.compile(data.getRule());
+        } catch (PatternSyntaxException exception) {
+            throw new IllegalArgumentException("规则格式错误", exception);
+        }
+        data.setSite(site);
+        data.setCreateTime(LocalDateTime.now());
+        return data;
     }
 
     @Override
-    protected void prepareSave(Login login, Route entity, Route data, Void extra, RedirectAttributes attributes) throws RedirectException {
-
+    protected void prepareSave(Login login, Route entity, Route data, Void extra, RedirectAttributes attributes)
+            throws RedirectException {
+        if (!login.siteManageable(entity.getSite()))
+            throw new AccessDeniedException("你无权更改。");
+        try {
+            //noinspection ResultOfMethodCallIgnored
+            Pattern.compile(data.getRule());
+        } catch (PatternSyntaxException exception) {
+            throw new IllegalArgumentException("规则格式错误", exception);
+        }
+        entity.setUpdateTime(LocalDateTime.now());
+        entity.setRule(data.getRule());
+        entity.setTargetUri(data.getTargetUri());
+        entity.setDescription(data.getDescription());
     }
 
     @Override
     protected String openViewName() {
-        return null;
+        return "/view/route/route.html";
     }
 
     @RequestMapping(value = "/isExistsRouteBySiteAndRule", method = RequestMethod.POST)

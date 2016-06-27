@@ -113,15 +113,15 @@ public class OwnerControllerTest extends ManageTest {
     public void index() throws Exception {
         loginAsManage();
 
-        driver.get("http://localhost/manage/supper/owner");
+        AdminPage adminPage = initPage(AdminPage.class);
+
+        OwnerPage ownerPage = adminPage.toOwner();
     }
 
     @Test
     public void add() throws Exception {
         // 这里走的是实际测试 通过点击选择的菜单 然后进行操作
         loginAsManage();
-
-        driver.get("http://localhost/manage/supper");
 
         AdminPage adminPage = initPage(AdminPage.class);
 

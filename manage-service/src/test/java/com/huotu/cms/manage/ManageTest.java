@@ -12,6 +12,8 @@ package com.huotu.cms.manage;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.huotu.cms.manage.login.Manager;
+import com.huotu.cms.manage.page.AdminPage;
+import com.huotu.cms.manage.page.ManageMainPage;
 import com.huotu.cms.manage.test.AuthController;
 import com.huotu.hotcms.service.common.CMSEnums;
 import com.huotu.hotcms.service.common.SiteType;
@@ -63,6 +65,35 @@ public abstract class ManageTest extends SpringWebTest {
         testOwner = ownerRepository.findByCustomerIdNotNull().get(0);
     }
 
+    /**
+     * 选择一个站点进行管理,会根据当前登录的身份决定是否要进入商户管理模式
+     *
+     * @param site 要管理的站点
+     */
+    protected void chooseSite(Site site) throws Exception {
+        // driver 版本
+        driver.get("http://localhost/manage/main");
+        ManageMainPage page;
+        try {
+            page = initPage(ManageMainPage.class);
+        } catch (Exception ex) {
+            AdminPage page1 = initPage(AdminPage.class);
+            page = page1.toMainPage(site.getOwner());
+        }
+
+        page.switchSite(site);
+
+        // mvc 版本
+        int code = mockMvc.perform(get("/manage/main").session(session))
+                .andReturn().getResponse().getStatus();
+        if (code != 200) {
+            mockMvc.perform(get("/manage/supper/as/{id}", String.valueOf(site.getOwner().getId())).session(session))
+                    .andExpect(status().isFound());
+        }
+
+        mockMvc.perform(get("/manage/switch/{id}", String.valueOf(site.getSiteId())).session(session))
+                .andExpect(status().isOk());
+    }
 
     /**
      * 建立一个随机的站点
@@ -157,6 +188,7 @@ public abstract class ManageTest extends SpringWebTest {
     protected Owner randomOwner() {
         Owner owner = new Owner();
         owner.setEnabled(true);
+        owner.setCustomerId(Math.abs(random.nextInt()));
         return ownerRepository.saveAndFlush(owner);
     }
 

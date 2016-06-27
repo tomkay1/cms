@@ -51,9 +51,8 @@ public class OwnerControllerTest extends ManageTest {
         loginAsManage();
         Owner owner = randomOwner();
 
-        driver.get("http://localhost/manage/supper/as/" + owner.getId());
-
-        ManageMainPage mainPage = initPage(ManageMainPage.class);
+        AdminPage page = initPage(AdminPage.class);
+        ManageMainPage mainPage = page.toMainPage(owner);
         SitePage sitePage = mainPage.toSite();
 
         // do something.

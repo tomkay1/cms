@@ -290,7 +290,7 @@ public class SiteServiceImpl implements SiteService {
             newCategory.setName(category.getName());
             newCategory.setCustom(category.isCustom());
             newCategory.setDeleted(category.isDeleted());
-            newCategory.setRoute(category.getRoute());
+//            newCategory.setRoute(category.getRoute());
             newCategory.setModelId(category.getModelId());
             newCategory.setOrderWeight(category.getOrderWeight());
             newCategory.setParentIds(category.getParentIds());

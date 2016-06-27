@@ -10,9 +10,7 @@
 package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.util.web.CookieUser;
-import com.huotu.hotcms.service.common.EnumUtils;
 import com.huotu.hotcms.service.common.RouteType;
-import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.service.CategoryService;
@@ -165,13 +163,13 @@ public class RouteController {
                     Route route = new Route();
                     route.setSite(site);
                     route.setDescription(description);
-                    if (routeType >= 0) {
-                        route.setRouteType(EnumUtils.valueOf(RouteType.class, routeType));
-                    }
-                    route.setTemplate(template);
+//                    if (routeType >= 0) {
+//                        route.setRouteType(EnumUtils.valueOf(RouteType.class, routeType));
+//                    }
+//                    route.setTemplate(template);
                     route.setRule(routeRule);
                     route.setCreateTime(LocalDateTime.now());
-                    route.setDeleted(false);
+//                    route.setDeleted(false);
                     route.setOrderWeight(50);
                     route.setUpdateTime(LocalDateTime.now());
                     if(routeService.save(route)){
@@ -204,10 +202,10 @@ public class RouteController {
             Route route=routeService.getRoute(id);
             if(route!=null){
                 route.setDescription(description);
-                if (routeType >= 0) {
-                    route.setRouteType(EnumUtils.valueOf(RouteType.class, routeType));
-                }
-                route.setTemplate(template);
+//                if (routeType >= 0) {
+//                    route.setRouteType(EnumUtils.valueOf(RouteType.class, routeType));
+//                }
+//                route.setTemplate(template);
                 route.setRule(routeRule);
                 if(routeService.save(route)){
                     result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
@@ -233,13 +231,8 @@ public class RouteController {
             if(cookieUser.isSupper(request)) {
                 Route route = routeService.getRoute(id);
                 if(route!=null) {
-                    Category category = categoryService.getCategoryByRoute(route);
-                    if(category!=null) {
-                        result = new ResultView(ResultOptionEnum.EXISTS_RELATION.getCode(), ResultOptionEnum.EXISTS_RELATION.getValue(), null);
-                    }else {
-                        routeService.delete(route);
-                        result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
-                    }
+                    routeService.delete(route);
+                    result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
                 }else{
                     result=new ResultView(ResultOptionEnum.NOFIND.getCode(),ResultOptionEnum.NOFIND.getValue(),null);
                 }

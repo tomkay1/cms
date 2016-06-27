@@ -9,9 +9,7 @@
 
 package com.huotu.hotcms.service.repository;
 
-import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.Category;
-import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -65,29 +63,14 @@ public interface CategoryRepository extends JpaRepository<Category, Long>, JpaSp
     List<Category> findBySiteAndDeletedAndModelIdNotNullOrderByOrderWeightDesc(Site site, boolean deleted);
 
     /**
-     * 根据路由查询栏目
-     */
-    Category findByRoute(Route route);
-
-    /**
      * 根据父栏目查询栏目
      */
     List<Category> findByParentOrderByOrderWeightDesc(Category superCategory);
 
     /**
-     * 根据站点,路由类型,父栏目查询栏目
-     */
-    List<Category> findBySite_SiteIdAndRoute_RouteTypeAndDeletedAndParentOrderByOrderWeightDesc(Long siteid, RouteType routetype, boolean b, Category parent);
-
-    /**
      * 根据父栏目查询栏目
      */
     List<Category> findByParent_Id(Long parenId);
-
-    /**
-     * 根据站点,路由类型,父栏目查询栏目
-     */
-    List<Category> findBySite_SiteIdAndRoute_RouteTypeAndDeletedOrderByOrderWeightDesc(Long siteid, RouteType routetype, boolean b);
 
     /**
      * 根据父栏目查询栏目

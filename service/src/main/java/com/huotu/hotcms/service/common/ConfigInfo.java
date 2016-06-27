@@ -81,8 +81,8 @@ public class ConfigInfo {
         return resourcesTemplate;
     }
 
-    public String getPageConfig(long ownerId,String pageId) {
-        return String.format(pageConfig,ownerId,pageId);
+    public String getPageConfig(String pageId) {
+        return String.format(pageConfig,pageId);
     }
 
     /**

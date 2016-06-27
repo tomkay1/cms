@@ -10,6 +10,7 @@
 package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.controller.support.CRUDController;
+import com.huotu.cms.manage.exception.RedirectException;
 import com.huotu.hotcms.service.common.EnumUtils;
 import com.huotu.hotcms.service.common.SiteType;
 import com.huotu.hotcms.service.entity.Site;
@@ -57,7 +58,7 @@ public class SiteController extends CRUDController<Site, Long, AboutNewSite, Voi
     }
 
     @Override
-    protected Site preparePersist(Login login, Site data, AboutNewSite extra, RedirectAttributes attributes) {
+    protected Site preparePersist(Login login, Site data, AboutNewSite extra, RedirectAttributes attributes) throws RedirectException {
         //  只有Root才可以干这事。
         if (!login.isRoot())
             throw new AccessDeniedException("无法访问。");
@@ -71,7 +72,7 @@ public class SiteController extends CRUDController<Site, Long, AboutNewSite, Voi
     }
 
     @Override
-    protected void prepareSave(Login login, Site entity, Site data, Void extra, RedirectAttributes attributes) {
+    protected void prepareSave(Login login, Site entity, Site data, Void extra, RedirectAttributes attributes) throws RedirectException {
         System.out.println(entity);
     }
 

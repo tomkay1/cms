@@ -16,10 +16,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.Set;
 
-/**
- * Created by xhl on 2016/1/5.
- */
-public interface RouteRepository extends JpaRepository<Route, Long>,JpaSpecificationExecutor {
+public interface RouteRepository extends JpaRepository<Route, Long>, JpaSpecificationExecutor<Route> {
     Set<Route> findBySite(Site site);
 
     Route findBySiteAndRule(Site site,String rule);

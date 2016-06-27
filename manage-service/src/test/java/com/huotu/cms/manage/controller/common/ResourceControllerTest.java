@@ -31,7 +31,7 @@ public class ResourceControllerTest extends ManageTest {
 
         mockMvc.perform(fileUpload("/manage/upload")
                 .file("file", StreamUtils.copyToByteArray(resource.getInputStream()))
-                .session(session)
+//                .session(session)
         )
                 .andDo(print());
     }

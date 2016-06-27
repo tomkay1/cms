@@ -13,9 +13,7 @@ import com.huotu.cms.manage.authorize.annoation.AuthorizeRole;
 import com.huotu.cms.manage.bracket.GritterUtils;
 import com.huotu.cms.manage.controller.support.AbstractSiteSupperController;
 import com.huotu.cms.manage.util.web.CookieUser;
-import com.huotu.hotcms.service.common.EnumUtils;
 import com.huotu.hotcms.service.common.SiteType;
-import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Region;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.SiteConfig;
@@ -42,7 +40,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -52,10 +49,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
-import java.util.Set;
 
 /**
  * <p>
@@ -176,71 +170,71 @@ public class SupperController extends AbstractSiteSupperController {
         return modelAndView;
     }
 
-    /**
-     * 站点新增以及修改操作
-     *
-     * @param request     请求实例
-     * @param site        要操作的站点
-     * @param regionId    语言代码
-     * @param siteType    站点类型
-     * @param personalise 不止何物
-     * @param homeDomains 主域名
-     * @param domains     其他可以处理这个站点的域名
-     * @return
-     */
-    @RequestMapping(value = "/saveSite", method = RequestMethod.POST)
-    @Transactional
-    @ResponseBody
-    public ResultView updateSite(HttpServletRequest request, Site site, @RequestParam Locale regionId, Integer siteType
-            , boolean personalise, String homeDomains, String... domains) {
-        ResultView result = null;
-        Set<Host> hosts = new HashSet<>();
-        site.setPersonalise(personalise);
-        Region region = regionRepository.findOne(regionId);
-        site.setSiteType(EnumUtils.valueOf(SiteType.class, siteType));
-        Site site2 = null;
-        try {
-            if (!cookieUser.isSupper(request)) {
-                return new ResultView(ResultOptionEnum.NO_LIMITS.getCode(), ResultOptionEnum.NO_LIMITS.getValue(), null);
-            }
-            Long siteId = site.getSiteId();
-            if (homeDomains == null) {
-                return new ResultView(ResultOptionEnum.NOFIND_HOME_DEMON.getCode(), ResultOptionEnum.NOFIND_HOME_DEMON.getValue(), null);
-            }
-            if (siteId == null) {
-                site.setCreateTime(LocalDateTime.now());
-                site.setUpdateTime(LocalDateTime.now());
-                site.setDeleted(false);
-                result = siteService.newSite(domains, homeDomains, site, regionId);
-            } else {//修改站点
-                result = siteService.patchSite(domains, homeDomains, site, regionId);
-            }
-            if (result != null && result.getCode().equals(ResultOptionEnum.OK.getCode())) {
-                site = (Site) result.getData();
-                String resourceUrl = site.getResourceUrl();
-                if (StringUtils.isEmpty(resourceUrl)) {
-                    resourceUrl = resourceService.getResource("").httpUrl().toString();
-                }
-                site.setResourceUrl(resourceUrl);
-                if (siteId != null) {
-                    site2 = siteService.getSite(site.getSiteId());
-//                    site = hostService.mergeSite(domains, site);
-                    site.setUpdateTime(LocalDateTime.now());
-                    hosts = hostService.getRemoveHost(domains, site2);
-                }
-                site.setRegion(region);
-            } else {
-                return result;
-            }
-//            hostService.stopHookSite(hosts);
-            siteService.save(site);
-            result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
-        } catch (Exception ex) {
-            log.error(ex.getMessage());
-            result = new ResultView(ResultOptionEnum.FAILE.getCode(), ResultOptionEnum.FAILE.getValue(), null);
-        }
-        return result;
-    }
+//    /**
+//     * 站点新增以及修改操作
+//     *
+//     * @param request     请求实例
+//     * @param site        要操作的站点
+//     * @param regionId    语言代码
+//     * @param siteType    站点类型
+//     * @param personalise 不止何物
+//     * @param homeDomains 主域名
+//     * @param domains     其他可以处理这个站点的域名
+//     * @return
+//     */
+//    @RequestMapping(value = "/saveSite", method = RequestMethod.POST)
+//    @Transactional
+//    @ResponseBody
+//    public ResultView updateSite(HttpServletRequest request, Site site, @RequestParam Locale regionId, Integer siteType
+//            , boolean personalise, String homeDomains, String... domains) {
+//        ResultView result = null;
+//        Set<Host> hosts = new HashSet<>();
+//        site.setPersonalise(personalise);
+//        Region region = regionRepository.findOne(regionId);
+//        site.setSiteType(EnumUtils.valueOf(SiteType.class, siteType));
+//        Site site2 = null;
+//        try {
+//            if (!cookieUser.isSupper(request)) {
+//                return new ResultView(ResultOptionEnum.NO_LIMITS.getCode(), ResultOptionEnum.NO_LIMITS.getValue(), null);
+//            }
+//            Long siteId = site.getSiteId();
+//            if (homeDomains == null) {
+//                return new ResultView(ResultOptionEnum.NOFIND_HOME_DEMON.getCode(), ResultOptionEnum.NOFIND_HOME_DEMON.getValue(), null);
+//            }
+//            if (siteId == null) {
+//                site.setCreateTime(LocalDateTime.now());
+//                site.setUpdateTime(LocalDateTime.now());
+//                site.setDeleted(false);
+//                result = siteService.newSite(domains, homeDomains, site, regionId);
+//            } else {//修改站点
+//                result = siteService.patchSite(domains, homeDomains, site, regionId);
+//            }
+//            if (result != null && result.getCode().equals(ResultOptionEnum.OK.getCode())) {
+//                site = (Site) result.getData();
+//                String resourceUrl = site.getResourceUrl();
+//                if (StringUtils.isEmpty(resourceUrl)) {
+//                    resourceUrl = resourceService.getResource("").httpUrl().toString();
+//                }
+//                site.setResourceUrl(resourceUrl);
+//                if (siteId != null) {
+//                    site2 = siteService.getSite(site.getSiteId());
+////                    site = hostService.mergeSite(domains, site);
+//                    site.setUpdateTime(LocalDateTime.now());
+//                    hosts = hostService.getRemoveHost(domains, site2);
+//                }
+//                site.setRegion(region);
+//            } else {
+//                return result;
+//            }
+////            hostService.stopHookSite(hosts);
+//            siteService.save(site);
+//            result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
+//        } catch (Exception ex) {
+//            log.error(ex.getMessage());
+//            result = new ResultView(ResultOptionEnum.FAILE.getCode(), ResultOptionEnum.FAILE.getValue(), null);
+//        }
+//        return result;
+//    }
 
     @RequestMapping(value = "/saveTemplate", method = RequestMethod.POST)
     @Transactional(value = "transactionManager")

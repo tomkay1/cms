@@ -9,9 +9,16 @@
 
 package com.huotu.cms.manage.page;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.springframework.core.io.Resource;
+
+import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,8 +26,14 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author CJ
  */
 public class SitePage extends AbstractContentPage {
+    private static final Log log = LogFactory.getLog(SitePage.class);
+
     @FindBy(id = "fa-sitemap")
     private WebElement body;
+    @FindBy(id = "logo-uploader")
+    private WebElement uploader;
+    @FindBy(id = "addSiteForm")
+    private WebElement addSiteForm;
 
     public SitePage(WebDriver webDriver) {
         super(webDriver);
@@ -28,7 +41,67 @@ public class SitePage extends AbstractContentPage {
 
     @Override
     public void validatePage() {
-        System.out.println(webDriver.getPageSource());
+//        System.out.println(webDriver.getPageSource());
         assertThat(body.isDisplayed()).isTrue();
+    }
+
+    public void uploadLogo(String name, Resource resource) throws IOException {
+//        Path tempFile = Files.createTempFile(name,name);
+//        Files.copy(resource.getInputStream(),tempFile,REPLACE_EXISTING);
+//        tempFile.toFile().deleteOnExit();
+//        WebElement uploaderFile = uploader.findElement(By.tagName("input"));
+//        uploaderFile.sendKeys(tempFile.toString());
+    }
+
+    public void addSite(String name, String title, String desc, String[] keywords, String logo, String typeName
+            , String copyright, String[] domains, String homeDomain) {
+        beforeDriver();
+        inputText(addSiteForm, "name", name);
+        inputText(addSiteForm, "title", title);
+        inputText(addSiteForm, "description", desc);
+        inputTags(addSiteForm, "keywords", keywords);
+        // TODO logo
+        inputSelect(addSiteForm, "siteTypeId", typeName);
+        inputText(addSiteForm, "copyright", copyright);
+        inputTags(addSiteForm, "domains", domains);
+        inputText(addSiteForm, "homeDomain", homeDomain);
+
+        log.info("to click submit for add site.");
+//        System.out.println(webDriver.getPageSource());
+        addSiteForm.findElement(By.className("btn-primary")).click();
+        reloadPageInfo();
+    }
+
+
+    private void inputSelect(WebElement formElement, String inputName, String label) {
+        WebElement input = formElement.findElement(By.name(inputName));
+        input.clear();
+        for (WebElement element : input.findElements(By.tagName("option"))) {
+//            System.out.println(element.getText());
+            if (label.equals(element.getText())) {
+                element.click();
+                return;
+            }
+        }
+    }
+
+    private void inputTags(WebElement formElement, String inputName, String[] values) {
+        WebElement input = formElement.findElement(By.name(inputName));
+        input.clear();
+        String id = input.getAttribute("id");
+        // 规律是加上 _tag
+        WebElement toInput = formElement.findElement(By.id(id + "_tag"));
+        for (String value : values) {
+            toInput.clear();
+            toInput.sendKeys(value);
+            toInput.sendKeys(Keys.ENTER);
+        }
+    }
+
+    private void inputText(WebElement formElement, String inputName, String value) {
+        WebElement input = formElement.findElement(By.name(inputName));
+        input.clear();
+        if (value != null)
+            input.sendKeys(value);
     }
 }

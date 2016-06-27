@@ -9,6 +9,7 @@
 
 package com.huotu.cms.manage.page;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 /**
@@ -26,6 +27,7 @@ abstract class AbstractContentPage extends AbstractManagePage {
      * 在使用driver之前总要确保已经switch到content
      */
     void beforeDriver() {
-        webDriver.switchTo().frame("content");
+        if (!webDriver.findElements(By.id("content")).isEmpty())
+            webDriver.switchTo().frame("content");
     }
 }

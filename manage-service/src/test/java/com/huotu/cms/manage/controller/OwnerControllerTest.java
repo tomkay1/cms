@@ -14,11 +14,16 @@ import com.huotu.cms.manage.page.AdminPage;
 import com.huotu.cms.manage.page.ManageMainPage;
 import com.huotu.cms.manage.page.OwnerPage;
 import com.huotu.cms.manage.page.SitePage;
+import com.huotu.hotcms.service.common.SiteType;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Owner;
+import com.huotu.hotcms.service.repository.SiteRepository;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Set;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,6 +35,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @Transactional
 public class OwnerControllerTest extends ManageTest {
+
+    @Autowired
+    private SiteRepository siteRepository;
 
     /**
      * 以某一个商户身份运行,并且添加站点
@@ -45,9 +53,32 @@ public class OwnerControllerTest extends ManageTest {
         SitePage sitePage = mainPage.toSite();
 
         // do something.
+//        sitePage.uploadLogo("thumbnail.png",new ClassPathResource("thumbnail.png"));
+        String name = UUID.randomUUID().toString();
+        String title = UUID.randomUUID().toString();
+        String desc = UUID.randomUUID().toString();
+        String[] stringArrays = new String[]{
+                "love.com",
+                "foo.com",
+                "bar.org",
+                "nice.com.cn",
+                "huoban.cn"
+        };
+        String[] keywords = randomArray(stringArrays, 1);
+        String[] domains = randomArray(stringArrays, 1);
+        SiteType siteType = SiteType.values()[random.nextInt(SiteType.values().length)];
+        String copyright = UUID.randomUUID().toString();
+
+        sitePage.addSite(name, title, desc, keywords, null, siteType.getValue().toString(), copyright, domains,
+                domains[0]);
+
+        Set<Site> siteSet = siteRepository.findByOwner_IdAndDeleted(owner.getId(), false);
+        assertThat(siteSet)
+                .hasSize(1);
 
         // 然后离开这里然后应该回到管理员界面
         mainPage.clickLogout();
+
         AdminPage adminPage = initPage(AdminPage.class);
     }
 

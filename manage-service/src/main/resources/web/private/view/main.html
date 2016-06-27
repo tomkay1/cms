@@ -26,7 +26,12 @@
     <![endif]-->
     <script language="javascript" type="text/javascript">
         function resizeIframe(obj) {
-            obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+            try {
+                console.error('content has changed', obj, obj.contentWindow, obj.contentWindow.document);
+                obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+            } catch (e) {
+                console.error(e);
+            }
         }
     </script>
 </head>
@@ -169,7 +174,8 @@
         </div><!-- headerbar -->
 
         <iframe id="content" name="content" allowfullscreen="allowfullscreen" width="100%" marginwidth="0"
-                marginheight="0" frameborder="0" onload="resizeIframe(this)" scrolling="no" style="display: inline;">
+                marginheight="0" frameborder="0" onload="try{resizeIframe(this);}catch(e){console.error(e);}"
+                scrolling="no" style="display: inline;">
         </iframe>
 
     </div><!-- mainpanel -->
@@ -302,6 +308,7 @@
     /*<![CDATA[*/
     $(function () {
         var firstUrl = /*[[@{/manage/site}]]*/ "site/index.html";
+        console.log('start open ' + firstUrl);
         $('#content').attr('src', firstUrl);
     });
     /*]]*/

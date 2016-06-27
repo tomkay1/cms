@@ -25,9 +25,9 @@ public interface SiteRepository extends JpaRepository<Site, Long>, JpaSpecificat
     /**
      * 根据商户查询所有站点
      */
-    List<Site> findByOwner_IdAndDeletedOrderBySiteIdDesc(long ownerId, Boolean deleted);
+    List<Site> findByOwner_IdAndDeletedOrderBySiteIdDesc(long ownerId, boolean deleted);
 
-    Set<Site> findByOwner_IdAndDeleted(long owner, Boolean deleted);
+    Set<Site> findByOwner_IdAndDeleted(long owner, boolean deleted);
     /**
      * 根据商户和个性化,以及站点类型(Pc官网或者pc商城)查询站点
      */

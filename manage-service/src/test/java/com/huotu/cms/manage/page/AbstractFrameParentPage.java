@@ -26,7 +26,8 @@ public abstract class AbstractFrameParentPage extends AbstractManagePage {
      * 在使用driver之前总要确保已经switch到parent
      */
     void beforeDriver() {
-        webDriver.switchTo().parentFrame();
+        if (webDriver.findElements(By.id("content")).isEmpty())
+            webDriver.switchTo().parentFrame();
     }
 
     <T extends AbstractPage> T initPage(Class<T> pageClass) {

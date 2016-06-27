@@ -10,10 +10,12 @@
 package com.huotu.cms.manage.controller.support;
 
 import com.huotu.cms.manage.bracket.GritterUtils;
+import com.huotu.hotcms.service.entity.login.Login;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,9 +40,9 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
 
     @RequestMapping(method = RequestMethod.POST)
     @Transactional
-    public String add(T data, PD extra, RedirectAttributes attributes) {
+    public String add(@AuthenticationPrincipal Login login, T data, PD extra, RedirectAttributes attributes) {
         try {
-            data = preparePersist(data, extra, attributes);
+            data = preparePersist(login, data, extra, attributes);
 
             jpaRepository.save(data);
 
@@ -55,34 +57,34 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @Transactional
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void doDelete(@PathVariable("id") ID id) {
-        prepareRemove(id);
+    public void doDelete(@AuthenticationPrincipal Login login, @PathVariable("id") ID id) {
+        prepareRemove(login, id);
         jpaRepository.delete(id);
     }
 
     // 用这种方式,必然是需要302回主界面
     @RequestMapping(value = "/{id}/delete", method = RequestMethod.GET)
     @Transactional
-    public String delete(@PathVariable("id") ID id) {
-        doDelete(id);
+    public String delete(@AuthenticationPrincipal Login login, @PathVariable("id") ID id) {
+        doDelete(login, id);
         return redirectIndexViewName();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @Transactional(readOnly = true)
-    public String open(@PathVariable("id") ID id, Model model) {
+    public String open(@AuthenticationPrincipal Login login, @PathVariable("id") ID id, Model model) {
         T data = jpaRepository.getOne(id);
         model.addAttribute("object", data);
-        prepareOpen(data, model);
+        prepareOpen(login, data, model);
         return openViewName();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     @Transactional
-    public String save(@PathVariable("id") ID id, T data, MD extra, RedirectAttributes attributes) {
+    public String save(@AuthenticationPrincipal Login login, @PathVariable("id") ID id, T data, MD extra, RedirectAttributes attributes) {
         T entity = jpaRepository.getOne(id);
         try {
-            prepareSave(entity, data, extra, attributes);
+            prepareSave(login, entity, data, extra, attributes);
             jpaRepository.save(entity);
             GritterUtils.AddFlashSuccess("保存成功", attributes);
         } catch (Exception ex) {
@@ -116,11 +118,12 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
     /**
      * 在新增持久一个资源之前
      *
+     * @param login 当前操作者的身份
      * @param data       来自用户的数据
      * @param extra      额外数据
      * @param attributes 空间  @return 提交到持久层的数据
      */
-    protected abstract T preparePersist(T data, PD extra, RedirectAttributes attributes);
+    protected abstract T preparePersist(Login login, T data, PD extra, RedirectAttributes attributes);
 
     /**
      * @return 重定向到索引界面的视图名称
@@ -133,33 +136,36 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
     /**
      * 在删除某一个资源之前
      *
+     * @param login 当前操作者的身份
      * @param id 主键
      */
     @SuppressWarnings("WeakerAccess")
-    protected void prepareRemove(ID id) {
+    protected void prepareRemove(Login login, ID id) {
 
     }
 
     /**
      * 准备展示一个资源
      *
+     * @param login 当前操作者的身份
      * @param data  资源
      * @param model 模型
      */
     @SuppressWarnings("WeakerAccess")
-    protected void prepareOpen(T data, Model model) {
+    protected void prepareOpen(Login login, T data, Model model) {
 
     }
 
     /**
      * 保存之前
      *
+     * @param login 当前操作者的身份
      * @param entity     数据
      * @param data       用户请求的数据
      * @param extra      额外数据
      * @param attributes 空间
      */
-    protected abstract void prepareSave(T entity, T data, MD extra, RedirectAttributes attributes);
+    protected abstract void prepareSave(Login login, T entity, T data, MD extra, RedirectAttributes attributes);
 
     /**
      * @return 打开一个资源的视图名称

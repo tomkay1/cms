@@ -22,7 +22,7 @@
 </div>
 
 <div class="contentpanel">
-    <form id="addSiteForm" sec:authorize="hasRole('OWNER')" action="index.html" method="POST"
+    <form id="addSiteForm" sec:authorize="hasRole('OWNER')" action="index.html" method="post"
           th:action="@{/manage/site}">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -68,7 +68,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">站点类型</label>
                         <div class="col-sm-2">
-                            <select name="siteType" class="form-control input-sm" title="站点类型">
+                            <select name="siteTypeId" class="form-control input-sm" title="站点类型">
                                 <!--suppress ThymeleafVariablesResolveInspection -->
                                 <option value="0"
                                         th:each="siteType:${T(com.huotu.hotcms.service.common.SiteType).values()}"
@@ -210,6 +210,9 @@
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.autogrow-textarea.js"></script>
 <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/bracket/css/jquery.tagsinput.css" property=""/>
 <script src="http://resali.huobanplus.com/cdn/datatables/1.10.12/datatables.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.validate.min.js"></script>
+<script src="../../../public/js/jquery.validation.message-zh_cn.js"
+        ewp:src="/js/jquery.validation.message-zh_cn.js"></script>
 <!--<script src="http://resali.huobanplus.com/cdn/bracket/js/custom.js"></script>-->
 <div ewp:replace="fragments/frame.html::#messageSection"></div>
 <script src="../../../public/bracket/js/frame.js" ewp:src="/bracket/js/frame.js"></script>

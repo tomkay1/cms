@@ -13,7 +13,6 @@ import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.exception.NoSiteFoundException;
 import com.huotu.hotcms.service.util.PageData;
-import com.huotu.hotcms.service.util.ResultView;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Locale;
@@ -56,10 +55,10 @@ public interface SiteService {
      * @param homeDomains 主推域名
      * @param site        站点（可能只是一个JO）
      * @param locale      要求的语言
-     * @return 操作结果
+     * @return 已保存的站点
      */
     @Transactional
-    ResultView newSite(String[] domains, String homeDomains, Site site, Locale locale);
+    Site newSite(String[] domains, String homeDomains, Site site, Locale locale);
 
     /**
      * 修改当前站点
@@ -71,5 +70,5 @@ public interface SiteService {
      * @return 操作结果
      */
     @Transactional
-    ResultView patchSite(String[] domains, String homeDomains, Site site, Locale locale);
+    Site patchSite(String[] domains, String homeDomains, Site site, Locale locale);
 }

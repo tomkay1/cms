@@ -94,8 +94,8 @@ public class RoutePage extends AbstractContentPage {
      */
     public void checkRouteData(Route route) {
         checkInputText(form, "rule", route.getRule());
-        checkInputText(form, "rule", route.getDescription());
-        checkInputText(form, "rule", route.getTargetUri());
+        checkInputText(form, "description", route.getDescription());
+        checkInputText(form, "targetUri", route.getTargetUri());
     }
 
     private void checkInputText(WebElement form, String inputName, String value) {

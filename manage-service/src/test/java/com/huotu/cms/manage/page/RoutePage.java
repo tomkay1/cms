@@ -9,6 +9,8 @@
 
 package com.huotu.cms.manage.page;
 
+import com.huotu.hotcms.service.entity.Route;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -22,6 +24,8 @@ public class RoutePage extends AbstractContentPage {
 
     @FindBy(id = "fa-retweet")
     private WebElement body;
+    @FindBy(id = "routeForm")
+    private WebElement form;
 
     public RoutePage(WebDriver webDriver) {
         super(webDriver);
@@ -29,8 +33,19 @@ public class RoutePage extends AbstractContentPage {
 
     @Override
     public void validatePage() {
-        System.out.println(webDriver.getPageSource());
+//        System.out.println(webDriver.getPageSource());
         assertThat(body.isDisplayed())
                 .isTrue();
+    }
+
+    public void addRoute(Route route) {
+        beforeDriver();
+        assertThat(form.isDisplayed())
+                .isTrue();
+        inputText(form, "rule", route.getRule());
+        inputText(form, "targetUri", route.getTargetUri());
+        inputText(form, "description", route.getDescription());
+        form.findElement(By.className("btn-primary")).click();
+        reloadPageInfo();
     }
 }

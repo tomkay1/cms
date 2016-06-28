@@ -10,15 +10,21 @@
 package com.huotu.cms.manage.page;
 
 import me.jiangcai.bracket.test.BracketPage;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.util.List;
+
 /**
  * @author CJ
  */
 public abstract class AbstractManagePage extends BracketPage {
+
+    private static final Log log = LogFactory.getLog(AbstractManagePage.class);
 
     public AbstractManagePage(WebDriver webDriver) {
         super(webDriver);
@@ -61,5 +67,73 @@ public abstract class AbstractManagePage extends BracketPage {
         input.clear();
         if (value != null)
             input.sendKeys(value);
+    }
+
+    /**
+     * 点击这个class的菜单
+     *
+     * @param className className
+     */
+    protected void clickMenuByClass(String className) {
+        // 排除掉 mb30,nav-justified class 或者在 visible-xs内
+        //
+        List<WebElement> ulList = webDriver.findElements(By.cssSelector("ul[class~=nav]"));
+        WebElement ul = null;
+        for (WebElement element : ulList) {
+            if (element.getAttribute("class").contains("mb30"))
+                continue;
+            if (element.getAttribute("class").contains("nav-justified"))
+                continue;
+            ul = element;
+        }
+
+        if (ul == null)
+            throw new IllegalStateException("找不到必要的导航ul nav");
+
+        List<WebElement> list = ul.findElements(By.tagName("li"));
+
+        WebElement parentElement = null;
+        for (WebElement element : list) {
+            if (element.findElements(By.className(className)).isEmpty())
+                continue;
+
+            // 排除上级菜单
+            if (element.getAttribute("class") != null && element.getAttribute("class").contains("nav-parent")) {
+                parentElement = element;
+                continue;
+            }
+
+            if (element.isDisplayed()) {
+                clickElement(element);
+                return;
+            } else {
+                if (parentElement == null)
+                    throw new IllegalStateException("指定的菜单无法展示" + className);
+                parentElement.click();
+                clickElement(element);
+            }
+        }
+    }
+
+    /**
+     * @param element 点击这个东西
+     */
+    private void clickElement(WebElement element) {
+        try {
+            element.findElement(By.tagName("a")).click();
+        } catch (Exception ignored) {
+            //noinspection EmptyCatchBlock
+            try {
+                element.findElement(By.tagName("button")).click();
+            } catch (Exception ignored1) {
+                //noinspection EmptyCatchBlock
+                try {
+                    element.findElement(By.tagName("img")).click();
+                } catch (Exception ignored2) {
+                    log.warn("找不到里面的可点击目标,将直接点击自身");
+                    element.click();
+                }
+            }
+        }
     }
 }

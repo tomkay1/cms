@@ -10,6 +10,8 @@
 package com.huotu.cms.manage.page;
 
 import com.huotu.hotcms.service.entity.Site;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openqa.selenium.WebDriver;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,6 +22,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author CJ
  */
 public class ManageMainPage extends AbstractFrameParentPage {
+    private static final Log log = LogFactory.getLog(ManageMainPage.class);
+
     public ManageMainPage(WebDriver webDriver) {
         super(webDriver);
     }
@@ -32,13 +36,13 @@ public class ManageMainPage extends AbstractFrameParentPage {
 
     public SitePage toSite() {
         beforeDriver();
-        findMenuLiByClass("fa-sitemap").click();
+        clickMenuByClass("fa-sitemap");
         return initPage(SitePage.class);
     }
 
     public RoutePage toRoute() {
         beforeDriver();
-        findMenuLiByClass("fa-retweet").click();
+        clickMenuByClass("fa-retweet");
         return initPage(RoutePage.class);
     }
 

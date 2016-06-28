@@ -14,8 +14,8 @@ import com.huotu.cms.manage.exception.RedirectException;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
+import com.huotu.hotcms.service.service.RouteService;
 import com.huotu.hotcms.service.service.SiteService;
-import com.huotu.hotcms.service.service.impl.RouteServiceImpl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.plexus.util.StringUtils;
@@ -46,7 +46,7 @@ public class RouteController extends SiteManageController<Route, Long, Void, Voi
     private SiteService siteService;
 
     @Autowired
-    private RouteServiceImpl routeService;
+    private RouteService routeService;
 
     @Override
     protected String indexViewName() {

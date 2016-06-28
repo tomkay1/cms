@@ -40,7 +40,7 @@ public class AdminPage extends AbstractFrameParentPage {
 
     public OwnerPage toOwner() {
         beforeDriver();
-        findMenuLiByClass("fa-home").click();
+        clickMenuByClass("fa-home");
         return initPage(OwnerPage.class);
     }
 

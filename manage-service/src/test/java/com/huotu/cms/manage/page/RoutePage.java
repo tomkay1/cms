@@ -36,7 +36,11 @@ public class RoutePage extends AbstractContentPage {
 //        System.out.println(webDriver.getPageSource());
         assertThat(body.isDisplayed())
                 .isTrue();
-        assertNoDanger();
+        try {
+            assertNoDanger();
+        } catch (InterruptedException e) {
+            throw new AssertionError(e);
+        }
     }
 
     public void addRoute(Route route) {
@@ -58,7 +62,10 @@ public class RoutePage extends AbstractContentPage {
         webDriver.findElements(By.className("delete"))
                 .stream().findAny().ifPresent(webElement -> {
             webElement.click();
-            webDriver.switchTo().alert().accept();
+            try {
+                webDriver.switchTo().alert().accept();
+            } catch (Throwable ignored) {
+            }
         });
     }
 }

@@ -34,8 +34,9 @@ public abstract class AbstractManagePage extends BracketPage {
         super(webDriver);
     }
 
-    public void assertNoDanger() {
+    public void assertNoDanger() throws InterruptedException {
         // 在iframe 页面体系中 错误是由top发起的。所以需要先
+        Thread.sleep(100);
         List<String> messages = getGritterMessage("growl-danger");
         assertThat(messages)
                 .isEmpty();

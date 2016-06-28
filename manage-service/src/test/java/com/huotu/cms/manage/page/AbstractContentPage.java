@@ -32,7 +32,7 @@ abstract class AbstractContentPage extends AbstractManagePage {
     }
 
     @Override
-    public void assertNoDanger() {
+    public void assertNoDanger() throws InterruptedException {
         webDriver.switchTo().parentFrame();
         super.assertNoDanger();
         beforeDriver();

@@ -49,7 +49,7 @@ $(function () {
         print('target:', target);
 
         if (target.size() == 0) {
-            console.error('找不到对应的Class');
+            console.error('找不到对应的Class', targetClass);
             return;
         }
         //先确定下它的上级菜单

@@ -30,4 +30,11 @@ abstract class AbstractContentPage extends AbstractManagePage {
         if (!webDriver.findElements(By.id("content")).isEmpty())
             webDriver.switchTo().frame("content");
     }
+
+    @Override
+    public void assertNoDanger() {
+        webDriver.switchTo().parentFrame();
+        super.assertNoDanger();
+        beforeDriver();
+    }
 }

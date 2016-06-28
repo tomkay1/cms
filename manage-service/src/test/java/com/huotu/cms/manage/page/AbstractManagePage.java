@@ -12,12 +12,16 @@ package com.huotu.cms.manage.page;
 import me.jiangcai.bracket.test.BracketPage;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author CJ
@@ -28,6 +32,26 @@ public abstract class AbstractManagePage extends BracketPage {
 
     public AbstractManagePage(WebDriver webDriver) {
         super(webDriver);
+    }
+
+    public void assertNoDanger() {
+        // 在iframe 页面体系中 错误是由top发起的。所以需要先
+        List<String> messages = getGritterMessage("growl-danger");
+        assertThat(messages)
+                .isEmpty();
+    }
+
+    @NotNull
+    private List<String> getGritterMessage(String typeClass) {
+        List<WebElement> elements = webDriver.findElements(By.className(typeClass));
+        List<String> messages = new ArrayList<>();
+        if (!elements.isEmpty()) {
+            elements.forEach(type -> type.findElements(By.className("gritter-item")).forEach(item -> {
+                String message = item.findElement(By.tagName("p")).getText();
+                messages.add(message);
+            }));
+        }
+        return messages;
     }
 
     protected void inputSelect(WebElement formElement, String inputName, String label) {

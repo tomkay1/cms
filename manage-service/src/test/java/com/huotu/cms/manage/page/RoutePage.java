@@ -36,6 +36,7 @@ public class RoutePage extends AbstractContentPage {
 //        System.out.println(webDriver.getPageSource());
         assertThat(body.isDisplayed())
                 .isTrue();
+        assertNoDanger();
     }
 
     public void addRoute(Route route) {
@@ -47,5 +48,17 @@ public class RoutePage extends AbstractContentPage {
         inputText(form, "description", route.getDescription());
         form.findElement(By.className("btn-primary")).click();
         reloadPageInfo();
+    }
+
+    /**
+     * 点击任意一个.delete
+     */
+    public void deleteAny() {
+        beforeDriver();
+        webDriver.findElements(By.className("delete"))
+                .stream().findAny().ifPresent(webElement -> {
+            webElement.click();
+            webDriver.switchTo().alert().accept();
+        });
     }
 }

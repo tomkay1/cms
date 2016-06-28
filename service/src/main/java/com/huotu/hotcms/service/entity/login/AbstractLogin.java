@@ -85,4 +85,9 @@ public abstract class AbstractLogin implements Login {
     public void updateOwnerId(Long ownerId) {
         throw new NoSuchMethodError("");
     }
+
+    @Override
+    public void updateSiteId(Long siteId) {
+        throw new NoSuchMethodError("");
+    }
 }

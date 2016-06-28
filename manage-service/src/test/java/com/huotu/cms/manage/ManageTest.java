@@ -12,11 +12,16 @@ package com.huotu.cms.manage;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.huotu.cms.manage.login.Manager;
+import com.huotu.cms.manage.page.AdminPage;
+import com.huotu.cms.manage.page.ManageMainPage;
 import com.huotu.cms.manage.test.AuthController;
 import com.huotu.hotcms.service.common.CMSEnums;
+import com.huotu.hotcms.service.common.SiteType;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.repository.OwnerRepository;
+import com.huotu.hotcms.service.service.SiteService;
 import me.jiangcai.lib.test.SpringWebTest;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
@@ -29,6 +34,10 @@ import org.springframework.test.web.servlet.htmlunit.webdriver.MockMvcHtmlUnitDr
 import org.springframework.test.web.servlet.htmlunit.webdriver.WebConnectionHtmlUnitDriver;
 
 import javax.servlet.http.Cookie;
+import java.lang.reflect.Array;
+import java.time.LocalDateTime;
+import java.util.Locale;
+import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,11 +56,62 @@ public abstract class ManageTest extends SpringWebTest {
     protected OwnerRepository ownerRepository;
     protected Owner testOwner;
     @Autowired
+    private SiteService siteService;
+    @Autowired
     private AuthController authController;
 
     @Before
     public void aboutTestOwner() {
         testOwner = ownerRepository.findByCustomerIdNotNull().get(0);
+    }
+
+    /**
+     * 选择一个站点进行管理,会根据当前登录的身份决定是否要进入商户管理模式
+     *
+     * @param site 要管理的站点
+     */
+    protected void chooseSite(Site site) throws Exception {
+        // driver 版本
+        driver.get("http://localhost/manage/main");
+        ManageMainPage page;
+        try {
+            page = initPage(ManageMainPage.class);
+        } catch (Exception ex) {
+            AdminPage page1 = initPage(AdminPage.class);
+            page = page1.toMainPage(site.getOwner());
+        }
+
+        page.switchSite(site);
+
+        // mvc 版本
+        int code = mockMvc.perform(get("/manage/main").session(session))
+                .andReturn().getResponse().getStatus();
+        if (code != 200) {
+            mockMvc.perform(get("/manage/supper/as/{id}", String.valueOf(site.getOwner().getId())).session(session))
+                    .andExpect(status().isFound());
+        }
+
+        mockMvc.perform(get("/manage/switch/{id}", String.valueOf(site.getSiteId())).session(session))
+                .andExpect(status().isOk());
+    }
+
+    /**
+     * 建立一个随机的站点
+     *
+     * @param owner 所属
+     * @return 站点
+     */
+    protected Site randomSite(Owner owner) {
+        Site site = new Site();
+        site.setOwner(owner);
+        site.setName(UUID.randomUUID().toString());
+        site.setSiteType(SiteType.SITE_PC_WEBSITE);
+        site.setTitle(UUID.randomUUID().toString());
+        site.setCreateTime(LocalDateTime.now());
+        site.setEnabled(true);
+        site.setDescription(UUID.randomUUID().toString());
+        String[] domains = randomDomains();
+        return siteService.newSite(domains, domains[0], site, Locale.CHINA);
     }
 
     /**
@@ -128,6 +188,7 @@ public abstract class ManageTest extends SpringWebTest {
     protected Owner randomOwner() {
         Owner owner = new Owner();
         owner.setEnabled(true);
+        owner.setCustomerId(Math.abs(random.nextInt()));
         return ownerRepository.saveAndFlush(owner);
     }
 
@@ -137,5 +198,14 @@ public abstract class ManageTest extends SpringWebTest {
                 + RandomStringUtils.randomAlphabetic(random.nextInt(5) + 3)
                 + "."
                 + RandomStringUtils.randomAlphabetic(random.nextInt(2) + 2);
+    }
+
+    protected String[] randomDomains() {
+        int size = 4 + random.nextInt(4);
+        String[] domains = (String[]) Array.newInstance(String.class, size);
+        for (int i = 0; i < domains.length; i++) {
+            domains[i] = randomDomain();
+        }
+        return domains;
     }
 }

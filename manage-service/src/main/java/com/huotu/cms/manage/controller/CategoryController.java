@@ -10,11 +10,9 @@
 package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.util.web.CookieUser;
-import com.huotu.hotcms.service.common.EnumUtils;
 import com.huotu.hotcms.service.common.ModelType;
 import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.Category;
-import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.CategoryTreeModel;
 import com.huotu.hotcms.service.repository.SiteRepository;
@@ -146,8 +144,8 @@ public class CategoryController {
         modelAndView.addObject("category",category);
         modelAndView.addObject("modelTypes", ModelType.values());
         modelAndView.addObject("routeTypes", RouteType.values());
-        Route route=category.getRoute();
-        modelAndView.addObject("routes",route!=null?route.getRouteType():null);
+//        Route route=category.getRoute();
+//        modelAndView.addObject("routes",route!=null?route.getRouteType():null);
         return modelAndView;
     }
 
@@ -183,12 +181,13 @@ public class CategoryController {
                 category.setCreateTime(LocalDateTime.now());
                 category.setUpdateTime(LocalDateTime.now());
 //                log.error("site2-->"+site.hashCode());
-                if (categoryService.saveCategoryAndRoute(category, rule, template
-                        , EnumUtils.valueOf(RouteType.class, routeType))) {
-                    result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
-                } else {
-                    result = new ResultView(ResultOptionEnum.FAILE.getCode(), ResultOptionEnum.FAILE.getValue(), null);
-                }
+//                if (categoryService.saveCategoryAndRoute(category, rule, template
+//                        , EnumUtils.valueOf(RouteType.class, routeType))) {
+//                    result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
+//                } else {
+//                    result = new ResultView(ResultOptionEnum.FAILE.getCode(), ResultOptionEnum.FAILE.getValue(), null);
+//                }
+                result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
             } else {
                 result = new ResultView(ResultOptionEnum.ROUTE_EXISTS.getCode()
                         , ResultOptionEnum.ROUTE_EXISTS.getValue(), null);
@@ -262,8 +261,8 @@ public class CategoryController {
                     category.setName(name);
                     category.setOrderWeight(orderWeight);
                     category.setUpdateTime(LocalDateTime.now());
-                    categoryService.updateCategoryAndRoute(category, rule, template, noRule
-                            , EnumUtils.valueOf(RouteType.class, routeType));
+//                    categoryService.updateCategoryAndRoute(category, rule, template, noRule
+//                            , EnumUtils.valueOf(RouteType.class, routeType));
                     result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
                 }
             }else{

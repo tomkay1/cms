@@ -9,6 +9,7 @@
 
 package com.huotu.cms.manage.page;
 
+import com.huotu.hotcms.service.entity.login.Owner;
 import org.openqa.selenium.WebDriver;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,6 +29,13 @@ public class AdminPage extends AbstractFrameParentPage {
     public void validatePage() {
         assertThat(webDriver.getTitle())
                 .contains("后台管理");
+    }
+
+    public ManageMainPage toMainPage(Owner owner) {
+        beforeDriver();
+        webDriver.get("http://localhost/manage/supper/as/" + owner.getId());
+
+        return initPage(ManageMainPage.class);
     }
 
     public OwnerPage toOwner() {

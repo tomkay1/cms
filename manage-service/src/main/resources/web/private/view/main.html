@@ -82,7 +82,8 @@
                     <ul class="children">
                         <li><a href="site/index.html" th:href="@{/manage/site}" target="content">
                             <i class="fa fa-sitemap"></i> 站点管理</a></li>
-                        <li><a href="inner.html" target="content"><i class="fa fa-retweet"></i> 路由规则</a></li>
+                        <li><a href="route/index.html" th:href="@{/manage/route}" target="content">
+                            <i class="fa fa-retweet"></i> 路由规则</a></li>
                     </ul>
                 </li>
                 <li>
@@ -128,20 +129,40 @@
 
             <div class="header-right">
                 <ul class="headermenu">
-                    <!--<li>-->
-                    <!--<div class="btn-group">-->
-                    <!--<button class="btn btn-default dropdown-toggle tp-icon" data-toggle="dropdown">-->
-                    <!--<i class="glyphicon glyphicon-user"></i>-->
-                    <!--&lt;!&ndash;<span class="badge">2</span>&ndash;&gt;-->
-                    <!--</button>-->
-                    <!--<div class="dropdown-menu dropdown-menu-head pull-right">-->
-                    <!--<h5 class="title">用户列表</h5>-->
-                    <!--<ul class="dropdown-list user-list">-->
-                    <!--这里可以设计未新注册用户-->
-                    <!--</ul>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--</li>-->
+                    <li>
+                        <div class="btn-group">
+                            <!--/*@thymesVar id="manageSite" type="com.huotu.hotcms.service.entity.Site"*/-->
+                            <button class="btn btn-default dropdown-toggle tp-icon" data-toggle="dropdown">
+                                <i class="glyphicon glyphicon-list"></i>
+                                <span id="currentSiteSpan"
+                                      th:text="${manageSite==null?'请选择操作站点':manageSite.name}">我的站点</span>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-head pull-right">
+                                <h5 class="title">选择站点进行操作</h5>
+                                <ul class="dropdown-list user-list">
+                                    <!--/*@thymesVar id="siteSet" type="java.lang.Iterable<com.huotu.hotcms.service.entity.Site>"*/-->
+                                    <li class="new" th:each="site:${siteSet}">
+                                        <!--<div class="thumb"></a>-->
+                                        <!--</div>-->
+                                        <div class="desc">
+                                            <h5><a href="#"
+                                                   class="siteSwitcher"
+                                                   th:href="@{/manage/switch/{id}(id=${site.siteId})}"
+                                                   th:text="${site.name}">
+                                                某个站点
+                                            </a>
+                                                <!--<span class="badge badge-success">new</span>-->
+                                            </h5>
+                                        </div>
+                                    </li>
+                                    <li class="new">
+                                        <a href="site/index.html" th:href="@{/manage/site}" target="content">
+                                            查看所有站点</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
                     <li>
                         <div class="btn-group">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -306,10 +327,34 @@
 <!--<script src="http://resali.huobanplus.com/cdn/bracket/js/dashboard.js"></script>-->
 <script th:inline="javascript">
     /*<![CDATA[*/
+    var siteSwitchUrl = /*[[@{/manage/switch/}]]*/ null;
     $(function () {
         var firstUrl = /*[[@{/manage/site}]]*/ "site/index.html";
         console.log('start open ' + firstUrl);
         $('#content').attr('src', firstUrl);
+
+        // siteSwitcher
+        $('.siteSwitcher').click(function () {
+            var href = $(this).attr('href');
+            var name = $(this).text();
+            var button = $(this).closest('button');
+
+            function success() {
+                $('#currentSiteSpan').text(name);
+                showSuccess('成功', '已切换。');
+                $('#content').get(0).contentWindow.location.reload();
+            }
+
+//            button.dropdown(); how to hide the menu?
+            if (href != '#') {
+                $.ajax({
+                    url: href,
+                    success: success
+                });
+            } else
+                success();
+            return false;
+        });
     });
     /*]]*/
 </script>

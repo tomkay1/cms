@@ -31,22 +31,34 @@ public interface SiteService {
     @Transactional(readOnly = true)
     Site closestSite(Host host, Locale locale) throws NoSiteFoundException;
 
+    /**
+     * @param ownerId 指定商户的owerId
+     * @param deleted 是否已删除
+     * @return 指定商户的删除也是指定的站点
+     */
+    @Transactional(readOnly = true)
+    Set<Site> findByOwnerIdAndDeleted(long ownerId, boolean deleted);
+
     PageData<Site> getPage(long owner, String name, int page, int pageSize);
 
+    /**
+     *
+     * @param siteId 站点id
+     * @return 如果没有找到返回null
+     */
+    @Transactional(readOnly = true)
     Site getSite(long siteId);
-    Boolean save(Site site);
 
-    Set<Site> findByOwnerIdAndDeleted(long ownerId, boolean deleted);
+    Boolean save(Site site);
 
     /**
      * 实现站点的可复制
-     * @param templateId 模板ID
-     * @param customerSite 用户站点
-     * @return true,成功 反之失败
      *
+     * @param templateId   模板ID
+     * @param customerSite 用户站点
      * @since v2.0
      */
-    void siteCopy(long templateId,Site customerSite) throws Exception;
+    void siteCopy(long templateId, Site customerSite) throws Exception;
 
     /**
      * 新建站点

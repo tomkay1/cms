@@ -193,12 +193,7 @@ public class SiteServiceImpl implements SiteService {
 
     @Override
     public Set<Site> findByOwnerIdAndDeleted(long ownerId, boolean deleted) {
-        Set<Site> siteList = siteRepository.findByOwner_IdAndDeleted(ownerId, deleted);
-//        for(Site site : siteList){
-//            site.setHosts(null);
-//            site.setRegion(null);
-//        }
-        return siteList;
+        return siteRepository.findByOwner_IdAndDeleted(ownerId, deleted);
     }
 
 
@@ -290,7 +285,7 @@ public class SiteServiceImpl implements SiteService {
             newCategory.setName(category.getName());
             newCategory.setCustom(category.isCustom());
             newCategory.setDeleted(category.isDeleted());
-            newCategory.setRoute(category.getRoute());
+//            newCategory.setRoute(category.getRoute());
             newCategory.setModelId(category.getModelId());
             newCategory.setOrderWeight(category.getOrderWeight());
             newCategory.setParentIds(category.getParentIds());

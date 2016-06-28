@@ -10,6 +10,7 @@
 package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.controller.support.CRUDController;
+import com.huotu.cms.manage.exception.RedirectException;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.repository.OwnerRepository;
@@ -75,7 +76,7 @@ public class OwnerController extends CRUDController<Owner, Long, Void, Void> {
     }
 
     @Override
-    protected void prepareSave(Login login, Owner entity, Owner data, Void extra, RedirectAttributes attributes) {
+    protected void prepareSave(Login login, Owner entity, Owner data, Void extra, RedirectAttributes attributes) throws RedirectException {
 
     }
 
@@ -85,7 +86,7 @@ public class OwnerController extends CRUDController<Owner, Long, Void, Void> {
     }
 
     @Override
-    protected Owner preparePersist(Login login, Owner data, Void extra, RedirectAttributes attributes) {
+    protected Owner preparePersist(Login login, Owner data, Void extra, RedirectAttributes attributes) throws RedirectException {
         if (StringUtils.isEmpty(data.getLoginName()) && data.getCustomerId() == null)
             throw new IllegalArgumentException("用户名或者商户号必须选择一个");
         if (!StringUtils.isEmpty(data.getLoginName()) && StringUtils.isEmpty(data.getPassword()))

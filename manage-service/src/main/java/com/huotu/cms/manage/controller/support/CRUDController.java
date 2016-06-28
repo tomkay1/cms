@@ -10,14 +10,16 @@
 package com.huotu.cms.manage.controller.support;
 
 import com.huotu.cms.manage.bracket.GritterUtils;
+import com.huotu.cms.manage.exception.RedirectException;
 import com.huotu.hotcms.service.entity.login.Login;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -37,6 +39,8 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
 
     @Autowired
     private JpaRepository<T, ID> jpaRepository;
+    @Autowired
+    private JpaSpecificationExecutor<T> jpaSpecificationExecutor;
 
     @RequestMapping(method = RequestMethod.POST)
     @Transactional
@@ -47,6 +51,9 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
             jpaRepository.save(data);
 
             GritterUtils.AddFlashSuccess("成功添加", attributes);
+        } catch (RedirectException ex) {
+            GritterUtils.AddFlashDanger(ex.getMessage(), attributes);
+            return ex.redirectViewName();
         } catch (Exception ex) {
             // TODO 有些异常我们应该另外处理
             GritterUtils.AddFlashDanger(ex.getMessage(), attributes);
@@ -57,7 +64,7 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @Transactional
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void doDelete(@AuthenticationPrincipal Login login, @PathVariable("id") ID id) {
+    public void doDelete(@AuthenticationPrincipal Login login, @PathVariable("id") ID id) throws RedirectException {
         prepareRemove(login, id);
         jpaRepository.delete(id);
     }
@@ -65,28 +72,43 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
     // 用这种方式,必然是需要302回主界面
     @RequestMapping(value = "/{id}/delete", method = RequestMethod.GET)
     @Transactional
-    public String delete(@AuthenticationPrincipal Login login, @PathVariable("id") ID id) {
-        doDelete(login, id);
+    public String delete(@AuthenticationPrincipal Login login, @PathVariable("id") ID id
+            , RedirectAttributes attributes) {
+        try {
+            doDelete(login, id);
+        } catch (RedirectException e) {
+            GritterUtils.AddFlashDanger(e.getMessage(), attributes);
+            return e.redirectViewName();
+        }
         return redirectIndexViewName();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @Transactional(readOnly = true)
-    public String open(@AuthenticationPrincipal Login login, @PathVariable("id") ID id, Model model) {
+    public String open(@AuthenticationPrincipal Login login, @PathVariable("id") ID id, RedirectAttributes attributes) {
         T data = jpaRepository.getOne(id);
-        model.addAttribute("object", data);
-        prepareOpen(login, data, model);
+        attributes.addAttribute("object", data);
+        try {
+            prepareOpen(login, data, attributes);
+        } catch (RedirectException e) {
+            GritterUtils.AddFlashDanger(e.getMessage(), attributes);
+            return e.redirectViewName();
+        }
         return openViewName();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     @Transactional
-    public String save(@AuthenticationPrincipal Login login, @PathVariable("id") ID id, T data, MD extra, RedirectAttributes attributes) {
+    public String save(@AuthenticationPrincipal Login login, @PathVariable("id") ID id, T data, MD extra
+            , RedirectAttributes attributes) {
         T entity = jpaRepository.getOne(id);
         try {
             prepareSave(login, entity, data, extra, attributes);
             jpaRepository.save(entity);
             GritterUtils.AddFlashSuccess("保存成功", attributes);
+        } catch (RedirectException ex) {
+            GritterUtils.AddFlashDanger(ex.getMessage(), attributes);
+            return ex.redirectViewName();
         } catch (Exception ex) {
             // TODO 有些异常我们应该另外处理
             GritterUtils.AddFlashDanger(ex.getMessage(), attributes);
@@ -96,8 +118,21 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
 
     @RequestMapping(method = RequestMethod.GET)
     @Transactional(readOnly = true)
-    public String index(Model model) {
-        model.addAttribute("list", jpaRepository.findAll());
+    public String index(@AuthenticationPrincipal Login login, RedirectAttributes attributes) {
+        try {
+            Specification<T> specification = prepareIndex(login, attributes);
+            if (specification == null)
+                attributes.addAttribute("list", jpaRepository.findAll());
+            else
+                attributes.addAttribute("list", jpaSpecificationExecutor.findAll(specification));
+
+        } catch (RedirectException ex) {
+            GritterUtils.AddFlashDanger(ex.getMessage(), attributes);
+            return ex.redirectViewName();
+        } catch (Exception ex) {
+            // TODO 有些异常我们应该另外处理
+            GritterUtils.AddDanger(ex.getMessage(), attributes);
+        }
 //        if (searchText != null) {
 //            String toSearch = "%" + searchText + "%";
 //
@@ -108,6 +143,17 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
 //            model.addAttribute("list", ownerRepository.findAll(pageable));
 
         return indexViewName();
+    }
+
+    /**
+     * @param login      当前操作者的身份
+     * @param attributes 空间
+     * @return 搜索规格, null表示无规格要求
+     * @throws RedirectException 需要转发到其他地址
+     */
+    @SuppressWarnings("WeakerAccess")
+    protected Specification<T> prepareIndex(Login login, RedirectAttributes attributes) throws RedirectException {
+        return null;
     }
 
     /**
@@ -123,8 +169,10 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
      * @param extra      额外数据
      * @param attributes 空间
      * @return 提交到持久层的数据
+     * @throws RedirectException 让视图转向
      */
-    protected abstract T preparePersist(Login login, T data, PD extra, RedirectAttributes attributes);
+    protected abstract T preparePersist(Login login, T data, PD extra, RedirectAttributes attributes)
+            throws RedirectException;
 
     /**
      * @return 重定向到索引界面的视图名称
@@ -141,7 +189,7 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
      * @param id    主键
      */
     @SuppressWarnings("WeakerAccess")
-    protected void prepareRemove(Login login, ID id) {
+    protected void prepareRemove(Login login, ID id) throws RedirectException {
 
     }
 
@@ -153,7 +201,7 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
      * @param model 模型
      */
     @SuppressWarnings("WeakerAccess")
-    protected void prepareOpen(Login login, T data, Model model) {
+    protected void prepareOpen(Login login, T data, RedirectAttributes model) throws RedirectException {
 
     }
 
@@ -166,7 +214,7 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
      * @param extra      额外数据
      * @param attributes 空间
      */
-    protected abstract void prepareSave(Login login, T entity, T data, MD extra, RedirectAttributes attributes);
+    protected abstract void prepareSave(Login login, T entity, T data, MD extra, RedirectAttributes attributes) throws RedirectException;
 
     /**
      * @return 打开一个资源的视图名称

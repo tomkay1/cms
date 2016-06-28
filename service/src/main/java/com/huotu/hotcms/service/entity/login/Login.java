@@ -82,4 +82,16 @@ public interface Login extends UserDetails {
      * @param ownerId ownerId
      */
     void updateOwnerId(Long ownerId);
+
+    /**
+     * @return 当前管理的站点id
+     */
+    Long currentSiteId();
+
+    /**
+     * 更新当前的管理站点id
+     *
+     * @param siteId siteId
+     */
+    void updateSiteId(Long siteId);
 }

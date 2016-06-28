@@ -9,6 +9,7 @@
 
 package com.huotu.cms.manage.page;
 
+import com.huotu.hotcms.service.entity.Site;
 import org.openqa.selenium.WebDriver;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,4 +36,11 @@ public class ManageMainPage extends AbstractFrameParentPage {
         return initPage(SitePage.class);
     }
 
+    public void switchSite(Site site) {
+        beforeDriver();
+        // UI去点 可能会有Ajax 异步问题
+        webDriver.get("http://localhost/manage/switch/" + site.getSiteId());
+        webDriver.get("http://localhost/manage/main");
+        reloadPageInfo();
+    }
 }

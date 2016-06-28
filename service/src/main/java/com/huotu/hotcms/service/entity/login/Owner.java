@@ -21,6 +21,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import java.io.Serializable;
 import java.util.Collection;
@@ -44,6 +45,9 @@ public class Owner extends AbstractLogin implements Serializable {
      */
     @Column(name = "customerId", unique = true)
     private Integer customerId;
+
+    @Transient
+    private transient Long siteId;
 
     @Override
     public boolean equals(Object o) {
@@ -96,6 +100,16 @@ public class Owner extends AbstractLogin implements Serializable {
     @Override
     public Long currentOwnerId() {
         return getId();
+    }
+
+    @Override
+    public Long currentSiteId() {
+        return siteId;
+    }
+
+    @Override
+    public void updateSiteId(Long siteId) {
+        this.siteId = siteId;
     }
 
     @Override

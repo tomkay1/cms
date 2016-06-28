@@ -51,9 +51,8 @@ public class OwnerControllerTest extends ManageTest {
         loginAsManage();
         Owner owner = randomOwner();
 
-        driver.get("http://localhost/manage/supper/as/" + owner.getId());
-
-        ManageMainPage mainPage = initPage(ManageMainPage.class);
+        AdminPage page = initPage(AdminPage.class);
+        ManageMainPage mainPage = page.toMainPage(owner);
         SitePage sitePage = mainPage.toSite();
 
         // do something.
@@ -61,16 +60,7 @@ public class OwnerControllerTest extends ManageTest {
         String name = UUID.randomUUID().toString();
         String title = UUID.randomUUID().toString();
         String desc = UUID.randomUUID().toString();
-        String[] stringArrays = new String[]{
-                randomDomain(),
-                randomDomain(),
-                randomDomain(),
-                randomDomain(),
-                randomDomain(),
-                randomDomain(),
-                randomDomain(),
-                randomDomain()
-        };
+        String[] stringArrays = randomDomains();
         String[] keywords = randomArray(stringArrays, 1);
         String[] domains = randomArray(stringArrays, 1);
         SiteType siteType = SiteType.values()[random.nextInt(SiteType.values().length)];

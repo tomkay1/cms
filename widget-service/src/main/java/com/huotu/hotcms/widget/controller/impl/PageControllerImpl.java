@@ -82,7 +82,7 @@ public class PageControllerImpl implements PageController {
 
     }
 
-    @RequestMapping("/cms/edit")
+    @RequestMapping("/manage/edit")
     @Override
     public String startEdit() {
         return "/edit/edit.html";

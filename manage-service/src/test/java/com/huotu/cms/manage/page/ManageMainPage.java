@@ -36,6 +36,12 @@ public class ManageMainPage extends AbstractFrameParentPage {
         return initPage(SitePage.class);
     }
 
+    public RoutePage toRoute() {
+        beforeDriver();
+        findMenuLiByClass("fa-retweet").click();
+        return initPage(RoutePage.class);
+    }
+
     public void switchSite(Site site) {
         beforeDriver();
         // UI去点 可能会有Ajax 异步问题

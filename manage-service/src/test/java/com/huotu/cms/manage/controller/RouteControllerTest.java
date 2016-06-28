@@ -11,6 +11,7 @@ package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.ManageTest;
 import com.huotu.cms.manage.page.ManageMainPage;
+import com.huotu.cms.manage.page.RoutePage;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Owner;
 import org.junit.Test;
@@ -29,7 +30,18 @@ public class RouteControllerTest extends ManageTest {
         loginAsOwner(owner);
 
         ManageMainPage mainPage = initPage(ManageMainPage.class);
+
+        RoutePage page;
+        try {
+            page = mainPage.toRoute();
+            throw new AssertionError("现在应该还看不到页面");
+        } catch (Exception ignored) {
+        }
+
+
+        // 试下使用{{}}
         mainPage.switchSite(site);
+        page = mainPage.toRoute();
     }
 
 }

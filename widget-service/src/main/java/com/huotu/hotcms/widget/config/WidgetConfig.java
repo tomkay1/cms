@@ -14,7 +14,8 @@ import com.huotu.hotcms.widget.resolve.WidgetResolveServiceConfig;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.ImportResource;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Created by wenqi on 2016/6/1.
@@ -22,7 +23,11 @@ import org.springframework.context.annotation.ImportResource;
 
 @Configuration
 @ComponentScan("com.huotu.hotcms.widget")
-@ImportResource({"classpath:spring_dev.xml", "classpath:spring_prod.xml"})
-@Import({WidgetLoaderConfig.class, WidgetResolveServiceConfig.class})
+@Import({WidgetLoaderConfig.class, WidgetResolveServiceConfig.class,WidgetJpaConfig.class})
 public class WidgetConfig {
+
+    @PostConstruct
+    public void init(){
+        System.out.println("init WidgetConfig...");
+    }
 }

@@ -55,7 +55,6 @@ import java.util.Set;
         "com.huotu.hotcms.web.util.web",
         "com.huotu.hotcms.service.thymeleaf.expression",
         "com.huotu.hotcms.service.thymeleaf.service",
-        "com.huotu.hotcms.widget"
 })
 @Import({MVCConfig.MVCConfigLoader.class, JpaConfig.class, ServiceConfig.class, WebHost.class, ManageServiceSpringConfig.class})
 public class MVCConfig extends WebMvcConfigurerAdapter {

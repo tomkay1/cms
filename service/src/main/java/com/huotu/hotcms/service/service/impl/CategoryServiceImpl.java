@@ -11,7 +11,6 @@ package com.huotu.hotcms.service.service.impl;
 
 import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.Category;
-import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.CategoryTreeModel;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.CategoryForeachParam;
@@ -27,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.Predicate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -133,40 +131,6 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.findAll(specification,new PageRequest(0,param.getSize(),sort)).getContent();
     }
 
-    @Override
-    public List<Category> getHeaderCategoryList(CategoryForeachParam param) {
-        return categoryRepository.findBySite_SiteIdAndRoute_RouteTypeAndDeletedOrderByOrderWeightDesc(param.getSiteId(), RouteType.HEADER_NAVIGATION, false);
-    }
-
-
-    @Override
-    public List<Category> getGivenTypeCategories(CategoryForeachParam param) {
-        int requestSize = param.getSize();
-        Category parent = param.getParentId()==null ? null : categoryRepository.findOne(param.getParentId());
-        if(!StringUtils.isEmpty(param.getExcludeIds())) {
-            Sort sort = new Sort(Sort.Direction.DESC, "orderWeight");
-            List<String> ids = Arrays.asList(param.getExcludeIds());
-            List<Long> categoryIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
-            Specification<Category> specification = (root, query, cb) -> {
-                List<Predicate> predicates = categoryIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
-                predicates.add(cb.equal(root.get("site").get("siteId").as(Long.class),param.getSiteId()));
-                RouteType routeType = param.getRouteType()==null?RouteType.HEADER_NAVIGATION:param.getRouteType();
-                predicates.add(cb.equal(root.get("route").get("routeType").as(Integer.class),routeType));
-                if(param.getParentId()!=null) {
-                    predicates.add(cb.equal(root.get("parent").as(Category.class), parent));
-                }
-                predicates.add(cb.equal(root.get("deleted").as(Boolean.class),false));
-                return cb.and(predicates.toArray(new Predicate[predicates.size()]));
-            };
-            return categoryRepository.findAll(specification,new PageRequest(0,requestSize,sort)).getContent();
-        }
-        List<Category> categoryList = categoryRepository.findBySite_SiteIdAndRoute_RouteTypeAndDeletedAndParentOrderByOrderWeightDesc(param.getSiteId(), param.getRouteType(), false, parent);
-        int origionSize = categoryList.size();
-        if(requestSize > origionSize - 1) {
-            requestSize = origionSize;
-        }
-        return categoryList.subList(0,requestSize);
-    }
 
     @Override
     public List<Category> getSubCategories(Long parenId,int size) {
@@ -273,91 +237,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public Boolean saveCategoryAndRoute(Category category, String rule,String template,RouteType routeType) throws Exception{
-        if(!routeService.isPatterBySiteAndRule(category.getSite(), rule)) {
-            if(!StringUtils.isEmpty(rule)) {
-                Route route1 = new Route();
-                route1.setDescription(category.getName()+"路由");
-                route1.setRule(rule);
-                route1.setSite(category.getSite());
-                route1.setTemplate(template);
-                route1.setCreateTime(LocalDateTime.now());
-                route1.setDeleted(false);
-                route1.setOrderWeight(50);
-                route1.setRouteType(routeType);
-                route1.setUpdateTime(LocalDateTime.now());
-                routeService.save(route1);
-                category.setRoute(route1);
-            }
-        }
-        Category category1= categoryRepository.saveAndFlush(category);
-        CategorySetParents(category1);
-        return true;
-    }
-
-    @Override
-    @Transactional
-    public Boolean updateCategoryAndRoute(Category category, String rule, String template,String noRule,RouteType routeType) {
-        if(!routeService.isPatterBySiteAndRuleIgnore(category.getSite(), rule, noRule)) {
-            Route route1 =category.getRoute();
-            if(route1!=null) {
-                if(!StringUtils.isEmpty(rule)) {
-                    route1.setRule(rule);
-                    route1.setSite(category.getSite());
-                    route1.setTemplate(template);
-                    route1.setCreateTime(LocalDateTime.now());
-                    route1.setDeleted(false);
-                    route1.setOrderWeight(50);
-                    route1.setRouteType(routeType);
-                    route1.setUpdateTime(LocalDateTime.now());
-                    routeService.save(route1);
-                    save(category);
-                }else{
-                    category.setRoute(null);
-                    routeService.delete(route1);
-                    save(category);
-                }
-            }else{
-                if(!StringUtils.isEmpty(rule)) {
-                    route1 = new Route();
-                    route1.setDescription(category.getName() + "路由");
-                    route1.setRule(rule);
-                    route1.setSite(category.getSite());
-                    route1.setTemplate(template);
-                    route1.setCreateTime(LocalDateTime.now());
-                    route1.setDeleted(false);
-                    route1.setOrderWeight(50);
-                    route1.setUpdateTime(LocalDateTime.now());
-                    routeService.save(route1);
-                    category.setRoute(route1);
-                    save(category);
-                }else{
-                    category.setRoute(null);
-                    save(category);
-                }
-            }
-        }
-        return true;
-    }
-
-    @Override
-    @Transactional
     public Boolean deleteCategory(Category category) {
         category.setDeleted(true);
-        Route route=category.getRoute();
-        if(route!=null) {
-            category.setRoute(null);
-            save(category);
-            routeService.delete(route);
-        }else{
-            save(category);
-        }
+        save(category);
         return true;
-    }
-
-    @Override
-    public Category getCategoryByRoute(Route route) {
-        return categoryRepository.findByRoute(route);
     }
 
     @Override

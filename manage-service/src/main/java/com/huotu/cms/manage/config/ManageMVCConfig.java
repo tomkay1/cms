@@ -11,7 +11,9 @@ package com.huotu.cms.manage.config;
 
 import com.huotu.cms.manage.interceptor.ManageInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -29,6 +31,14 @@ public class ManageMVCConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
     private ManageInterceptor manageInterceptor;
+
+    /**
+     * for upload
+     */
+    @Bean
+    public CommonsMultipartResolver multipartResolver() {
+        return new CommonsMultipartResolver();
+    }
 
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired

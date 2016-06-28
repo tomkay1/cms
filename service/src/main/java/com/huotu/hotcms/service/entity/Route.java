@@ -9,7 +9,6 @@
 
 package com.huotu.hotcms.service.entity;
 
-import com.huotu.hotcms.service.common.RouteType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,6 +24,7 @@ import java.time.LocalDateTime;
 
 /**
  * 站点路由规则
+ * 路由应当是简单的从请求规则1 转发至结果URL 并且是内部转发
  * Created by xhl on 2015/12/21.
  */
 @Entity
@@ -38,16 +38,15 @@ public class Route {
     private Long id;
 
     /**
-     * 排序权重
+     * 权重
      */
     @Column(name = "orderWeight")
     private int orderWeight;
 
     /**
-     * 是否已删除
+     * 是否启用
      */
-    @Column(name = "deleted")
-    private boolean deleted = false;
+    private boolean enabled;
 
     /**
      * 创建时间
@@ -63,14 +62,14 @@ public class Route {
     /**
      * 路由规则,标准正则表达式
      */
-    @Column(name = "rule")
+    @Column(name = "rule", length = 50)
     private String rule;
 
     /**
-     * 目标模版地址（相对）
+     * 包含 $1 $2 的替换uri
      */
-    @Column(name = "template")
-    private String template;
+    @Column(length = 50)
+    private String targetUri;
 
     /**
      * 所属站点
@@ -81,11 +80,7 @@ public class Route {
 
     /**
      * 路由描述信息
-     * */
+     */
     @Column(name = "description")
     private String description;
-
-    @Column(name = "routeType")
-    private RouteType routeType;
-
 }

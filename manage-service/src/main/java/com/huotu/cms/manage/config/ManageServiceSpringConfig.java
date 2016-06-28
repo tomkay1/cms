@@ -9,13 +9,17 @@
 
 package com.huotu.cms.manage.config;
 
+import com.huotu.hotcms.service.entity.login.Login;
 import me.jiangcai.lib.embedweb.EmbedWeb;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 
 /**
  * 载入manage-service的Spring配置类
@@ -28,6 +32,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @ComponentScan("com.huotu.cms.manage")
 public class ManageServiceSpringConfig extends WebSecurityConfigurerAdapter implements EmbedWeb {
 
+    @Autowired
+    private Environment environment;
+
     @Override
     public String name() {
         return "manage-service";
@@ -36,13 +43,26 @@ public class ManageServiceSpringConfig extends WebSecurityConfigurerAdapter impl
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 //        super.configure(http);
-        http
-                .authorizeRequests().antMatchers(
-                "/manage/**"
-        ).authenticated()
+//        .authorizeRequests().antMatchers("/**").hasRole("USER").antMatchers("/admin/**")
+//                .hasRole("ADMIN")
+
+        ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = http.authorizeRequests();
+
+        // 在测试环境下 随意上传
+        if (environment.acceptsProfiles("test") || environment.acceptsProfiles("development")) {
+            registry = registry
+                    .antMatchers("/manage/upload").permitAll()
+                    .antMatchers("/manage/upload/fine").permitAll();
+        }
+        registry
+                .antMatchers("/manage/**").hasRole(Login.Role_Manage_Value)
+                .antMatchers("/manage/supper/**").hasRole("ROOT")
                 .and()
+                .csrf().disable()
                 .formLogin()
                 .loginPage("/manage/main/login")
-                .permitAll();
+                .permitAll()
+                .and()
+                .logout().logoutUrl("/logout").permitAll();
     }
 }

@@ -9,6 +9,10 @@
 
 package com.huotu.hotcms.widget.page;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import lombok.Data;
 
 
@@ -18,8 +22,12 @@ import lombok.Data;
  * @author CJ
  */
 @Data
+@JsonTypeName("layout")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT, visible = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Layout implements PageElement {
     //标记
 
+    @JacksonXmlElementWrapper(useWrapping=false)
     private PageElement[] elements;
 }

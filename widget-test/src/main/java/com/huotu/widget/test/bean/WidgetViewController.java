@@ -60,7 +60,7 @@ public class WidgetViewController {
         Component component = new Component();
         component.setProperties(currentProperties);
         component.setStyleId(styleId);
-        component.setWidget(widget);
+        component.setInstalledWidget(widget);
 
         model.addAttribute("component", component);
         return "browse";

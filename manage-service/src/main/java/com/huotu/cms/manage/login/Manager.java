@@ -18,12 +18,19 @@ import org.luffy.libs.libseext.CollectionUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 /**
  * @author CJ
  */
-public class Manager extends AbstractLogin {
+public class Manager extends AbstractLogin implements Serializable {
+
+    private static final long serialVersionUID = 5408870778058706106L;
+
+    private Long ownerId;
+    private Long siteId;
+
     @Override
     public boolean siteManageable(Site site) {
         return true;
@@ -45,12 +52,39 @@ public class Manager extends AbstractLogin {
     }
 
     @Override
+    public boolean isRoot() {
+        return true;
+    }
+
+    @Override
+    public void updateOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
+        if (this.ownerId == null)
+            updateSiteId(null);
+    }
+
+    @Override
+    public Long currentSiteId() {
+        return siteId;
+    }
+
+    @Override
+    public void updateSiteId(Long siteId) {
+        this.siteId = siteId;
+    }
+
+    @Override
+    public Long currentOwnerId() {
+        return ownerId;
+    }
+
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 //        return Collections.singleton(new SimpleGrantedAuthority(Role_Manage));
         return CollectionUtils.mutliSet(
-                new SimpleGrantedAuthority("ROOT")
+                new SimpleGrantedAuthority("ROLE_ROOT")
                 , new SimpleGrantedAuthority(Role_Manage)
-                , new SimpleGrantedAuthority(Role_ManageAS)
+                , new SimpleGrantedAuthority(Role_AS)
                 , new SimpleGrantedAuthority(Role_ManageOwner)
         );
     }

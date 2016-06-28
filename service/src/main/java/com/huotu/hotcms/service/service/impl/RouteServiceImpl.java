@@ -1,7 +1,17 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 package com.huotu.hotcms.service.service.impl;
 
-import com.huotu.hotcms.service.common.RouteType;
-import com.huotu.hotcms.service.entity.*;
+import com.huotu.hotcms.service.entity.Region;
+import com.huotu.hotcms.service.entity.Route;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.repository.RouteRepository;
 import com.huotu.hotcms.service.service.RegionService;
 import com.huotu.hotcms.service.service.RouteService;
@@ -42,11 +52,6 @@ public class RouteServiceImpl  implements RouteService {
     }
 
     @Override
-    public Route getRouteByRouteType(Site site, RouteType routeType){
-        return routeRepository.findBySiteAndRouteType(site,routeType);
-    }
-
-    @Override
     public Route getRouteByRuleAndSite(Site site, String rule) {
         return routeRepository.findBySiteAndRule(site, rule);
     }
@@ -54,7 +59,7 @@ public class RouteServiceImpl  implements RouteService {
     @Override
     public Boolean isExistsBySiteAndRule(Site site, String rule) {
        Route routeSet=routeRepository.findBySiteAndRule(site,rule);
-       return routeSet!=null?true:false;
+        return routeSet != null;
     }
 
     @Override

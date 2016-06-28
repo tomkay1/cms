@@ -9,18 +9,20 @@
 
 package com.huotu.cms.manage.interceptor;
 
+import com.huotu.cms.manage.service.SecurityService;
 import com.huotu.hotcms.service.common.ConfigInfo;
+import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.entity.login.Login;
+import com.huotu.hotcms.service.service.SiteService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.web.context.HttpRequestResponseHolder;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
-import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Set;
 
 /**
  * 用于管理后台的拦截器,它作用于所有请求
@@ -33,7 +35,10 @@ public class ManageInterceptor extends HandlerInterceptorAdapter {
 
     @Autowired
     private ConfigInfo configInfo;
-    private SecurityContextRepository httpSessionSecurityContextRepository = new HttpSessionSecurityContextRepository();
+    @Autowired
+    private SecurityService securityService;
+    @Autowired
+    private SiteService siteService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -44,14 +49,28 @@ public class ManageInterceptor extends HandlerInterceptorAdapter {
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
 
         if (modelAndView != null) {
-            HttpRequestResponseHolder holder = new HttpRequestResponseHolder(request, response);
-            SecurityContext context = httpSessionSecurityContextRepository.loadContext(holder);
-            if (context.getAuthentication() != null && context.getAuthentication().isAuthenticated()) {
+            Authentication authentication = securityService.currentAuthentication(request, response);
+            if (authentication != null && authentication.isAuthenticated()) {
                 modelAndView.addObject("mallManageUrl", configInfo.getMallManageUrl());
+                Login login = (Login) authentication.getPrincipal();
+                if (login.currentOwnerId() != null) {
+                    Set<Site> siteSet = siteService.findByOwnerIdAndDeleted(login.currentOwnerId(), false);
+                    modelAndView.addObject("siteSet", siteSet);
+                    // 干嘛自动为用户设置?
+                    if (login.currentSiteId() != null) {
+                        Site manageSite = siteService.getSite(login.currentSiteId());
+                        if (siteSet.contains(manageSite)) {
+                            modelAndView.addObject("manageSite", manageSite);
+                        } else {
+                            login.updateSiteId(null);
+                        }
+                    }
+                } else if (login.currentSiteId() != null) {
+                    login.updateSiteId(null);
+                }
             }
-
-            response.setHeader("X-Frame-Options", "SAMEORIGIN");
         }
+        response.setHeader("X-Frame-Options", "SAMEORIGIN");
 //        String servletPath = request.getServletPath();
 //        if (modelAndView != null) {//加载用户信息
 //            UserInfo userInfo = new UserInfo();

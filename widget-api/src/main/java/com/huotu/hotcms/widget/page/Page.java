@@ -9,11 +9,13 @@
 
 package com.huotu.hotcms.widget.page;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import lombok.Data;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import java.io.Serializable;
 
 /**
  * 页面
@@ -24,7 +26,7 @@ import javax.xml.bind.annotation.XmlAttribute;
  * @author CJ
  */
 @Data
-public class Page {
+public class Page implements Serializable {
     /**
      * 该页面的唯一ID，字符串
      */
@@ -32,5 +34,6 @@ public class Page {
 
     private String title;
 
+    @JacksonXmlElementWrapper(useWrapping=false)
     private PageElement[] elements;
 }

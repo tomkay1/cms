@@ -304,7 +304,6 @@ public class DialectAttributeFactory {
      */
     public Long getUrlId(HttpServletRequest request,Route route){
         String requestUrl = PatternMatchUtil.getUrl(request);
-        Long id=PatternMatchUtil.getUrlIdByLongType(requestUrl, route.getRule());
-        return id;
+        return PatternMatchUtil.getUrlIdByLongType(requestUrl, route.getRule());
     }
 }

@@ -61,7 +61,7 @@ public class InitService {
                 owner = ownerRepository.save(owner);
             }
             Host host = hostRepository.findByDomain("localhost");
-            if (host == null) {
+            if (host == null || siteRepository.count() == 0) {
                 Site site = new Site();
                 site.setOwner(owner);
                 site.setCreateTime(LocalDateTime.now());
@@ -69,7 +69,7 @@ public class InitService {
                 site.setTitle("标题是什么");
                 site.setSiteType(SiteType.SITE_PC_WEBSITE);
 
-                siteService.newSite(new String[]{"localhost"}, "localhost", site, Locale.CHINA);
+                siteService.newSite(new String[]{"localhost", "mycms.51flashmall.com"}, "localhost", site, Locale.CHINA);
 
                 host = hostRepository.findByDomain("localhost");
                 host.setRemarks("本地开发所用的host");

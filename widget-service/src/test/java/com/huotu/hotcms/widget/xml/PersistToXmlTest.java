@@ -28,12 +28,12 @@ public class PersistToXmlTest extends TestBase {
         Page page=randomPage();
         XmlMapper xmlMapper=new XmlMapper();
         String xmlString1=xmlMapper.writeValueAsString(page);
-        System.out.println("xmlString:"+xmlString1);
+        System.out.println("xmlString1:"+xmlString1);
 
         Page getPage=xmlMapper.readValue(xmlString1,Page.class);
 
         String xmlString2=xmlMapper.writeValueAsString(getPage);
-        System.out.println("xmlString:"+xmlString2);
+        System.out.println("xmlString2:"+xmlString2);
 
         Assert.assertEquals(xmlString1,xmlString2);
 

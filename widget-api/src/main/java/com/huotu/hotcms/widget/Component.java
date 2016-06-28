@@ -9,10 +9,12 @@
 
 package com.huotu.hotcms.widget;
 
+import com.fasterxml.jackson.annotation.*;
 import com.huotu.hotcms.widget.page.PageElement;
 import lombok.Data;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 
 /**
  * 组件
@@ -20,28 +22,25 @@ import org.apache.commons.logging.LogFactory;
  * @author CJ
  */
 @Data
-
+@JsonTypeName("component")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT, visible = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Component implements PageElement {
 
+    @JsonIgnore(value = true)
     private static final Log log = LogFactory.getLog(Component.class);
 
     private String widgetIdentity;
 
+    @JsonIgnore(value = true)//在生成的xml中忽略该属性，true即为忽略
     private InstalledWidget installedWidget;
 
     private String styleId;
 
     private ComponentProperties properties;
 
+    @JsonIgnore(value = true)
     private String previewHTML;
-
-    public Component(String widgetIdentity){
-        this.widgetIdentity=widgetIdentity;
-    }
-
-    public Component(){
-
-    }
 
     public WidgetStyle currentStyle() {
         if (styleId == null) {

@@ -13,7 +13,6 @@ import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.exception.NoSiteFoundException;
 import com.huotu.hotcms.service.util.PageData;
-import com.huotu.hotcms.service.util.ResultView;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Locale;
@@ -32,22 +31,34 @@ public interface SiteService {
     @Transactional(readOnly = true)
     Site closestSite(Host host, Locale locale) throws NoSiteFoundException;
 
+    /**
+     * @param ownerId 指定商户的owerId
+     * @param deleted 是否已删除
+     * @return 指定商户的删除也是指定的站点
+     */
+    @Transactional(readOnly = true)
+    Set<Site> findByOwnerIdAndDeleted(long ownerId, boolean deleted);
+
     PageData<Site> getPage(long owner, String name, int page, int pageSize);
 
+    /**
+     *
+     * @param siteId 站点id
+     * @return 如果没有找到返回null
+     */
+    @Transactional(readOnly = true)
     Site getSite(long siteId);
-    Boolean save(Site site);
 
-    Set<Site> findByOwnerIdAndDeleted(long ownerId, boolean deleted);
+    Boolean save(Site site);
 
     /**
      * 实现站点的可复制
-     * @param templateId 模板ID
-     * @param customerSite 用户站点
-     * @return true,成功 反之失败
      *
+     * @param templateId   模板ID
+     * @param customerSite 用户站点
      * @since v2.0
      */
-    void siteCopy(long templateId,Site customerSite) throws Exception;
+    void siteCopy(long templateId, Site customerSite) throws Exception;
 
     /**
      * 新建站点
@@ -56,20 +67,20 @@ public interface SiteService {
      * @param homeDomains 主推域名
      * @param site        站点（可能只是一个JO）
      * @param locale      要求的语言
-     * @return 操作结果
+     * @return 已保存的站点
      */
     @Transactional
-    ResultView newSite(String[] domains, String homeDomains, Site site, Locale locale);
+    Site newSite(String[] domains, String homeDomains, Site site, Locale locale);
 
     /**
      * 修改当前站点
      *
      * @param domains     可用域名
      * @param homeDomains 主推域名
-     * @param site        站点（可能只是一个JO）
+     * @param site        站点
      * @param locale      要求的语言
-     * @return 操作结果
+     * @return 已保存的站点
      */
     @Transactional
-    ResultView patchSite(String[] domains, String homeDomains, Site site, Locale locale);
+    Site patchSite(String[] domains, String homeDomains, Site site, Locale locale);
 }

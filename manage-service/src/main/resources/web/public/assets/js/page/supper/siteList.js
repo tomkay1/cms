@@ -1,3 +1,12 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 /**
  * Created by Administrator on 2015/12/21.
  */
@@ -15,7 +24,6 @@ define(function (require, exports, module) {
         },
         height:'auto',
         showNumber: false,
-        pageSize: 20,
         pagerCount: 10,
         pageDetail: true,
         url: '/manage/supper/getSiteList',//数据来源Url|通过model自定义属性配置
@@ -57,7 +65,7 @@ define(function (require, exports, module) {
             }
         };
         SiteGrid.Refresh(option);
-    })
+    });
 
     //显示所有
     $("#jq-cms-searchAll").click(function(){
@@ -71,7 +79,7 @@ define(function (require, exports, module) {
             }
         };
         SiteGrid.Refresh(option);
-    })
+    });
 
     //修改
     function updateSite(){

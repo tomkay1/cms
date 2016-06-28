@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<!--
+  ~ 版权所有:杭州火图科技有限公司
+  ~ 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+  ~
+  ~ (c) Copyright Hangzhou Hot Technology Co., Ltd.
+  ~ Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+  ~ 2013-2016. All rights reserved.
+  -->
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:ewp="http://ewp.jiangcai.me" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>后台管理-火图CMS内容管理系统</title>
+    <link href="http://resali.huobanplus.com/cdn/bracket/css/style.default.css" rel="stylesheet">
+    <link href="http://resali.huobanplus.com/cdn/bracket/css/jquery.datatables.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="http://resali.huobanplus.com/cdn/bracket/js/html5shiv.js"></script>
+    <script src="http://resali.huobanplus.com/cdn/bracket/js/respond.min.js"></script>
+    <![endif]-->
+    <script language="javascript" type="text/javascript">
+        function resizeIframe(obj) {
+            obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+        }
+    </script>
+</head>
+<body>
+<!-- Preloader -->
+<div id="preloader">
+    <div id="status">
+        <i class="fa fa-spinner fa-spin"></i>
+    </div>
+</div>
+<section>
+
+    <div class="leftpanel">
+
+        <div class="logopanel">
+            <h1><span>[</span> 火图CMS管理 <span>]</span></h1>
+        </div><!-- logopanel -->
+
+        <div class="leftpanelinner">
+
+            <!-- This is only visible to small devices -->
+            <div class="visible-xs hidden-sm hidden-md hidden-lg">
+                <div class="media userlogged">
+                    <img alt="" src="http://resali.huobanplus.com/cdn/bracket/images/photos/loggeduser.png"
+                         class="media-object">
+                    <div class="media-body">
+                        <h4>管理员</h4>
+                        <span>"Enjoy it"</span>
+                    </div>
+                </div>
+
+                <h5 class="sidebartitle actitle">帐号</h5>
+                <ul class="nav nav-pills nav-stacked nav-bracket mb30">
+                    <!--<li><a href="profile.html"><i class="fa fa-user"></i> <span>Profile</span></a></li>-->
+                    <!--<li><a href=""><i class="fa fa-cog"></i> <span>Account Settings</span></a></li>-->
+                    <!--<li><a href=""><i class="fa fa-question-circle"></i> <span>Help</span></a></li>-->
+                    <li><a href="index.html" th:href="@{/logout}"><i class="fa fa-sign-out"></i> <span>注销</span></a>
+                    </li>
+                </ul>
+            </div>
+
+            <h5 class="sidebartitle">导航</h5>
+            <ul class="nav nav-pills nav-stacked nav-bracket">
+                <li class="active">
+                    <a href="owner.html" th:href="@{/manage/supper/owner}" target="content"><i class="fa fa-home"></i>
+                        <span>商户管理</span></a>
+                </li>
+                <li>
+                    <a href="inner.html" target="content"><i class="fa fa-suitcase"></i> <span>模板管理</span></a>
+                </li>
+                <li><a href="inner.html" target="content"><i class="fa fa-th-list"></i> <span>站点管理</span></a></li>
+                <li class="nav-parent"><a href=""><i class="fa fa-edit"></i> <span>系统设置</span></a>
+                    <ul class="children">
+                        <li><a href="inner.html" target="content"><i class="fa fa-caret-right"></i> 地区管理</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div class="infosummary">
+                <h5 class="sidebartitle">概要</h5>
+                <ul>
+                    <li>
+                        <div class="datainfo">
+                            <span class="text-muted">商户数量</span>
+                            <h4>630, 201</h4>
+                        </div>
+                        <div id="sidebar-chart" class="chart"></div>
+                    </li>
+                    <li>
+                        <div class="datainfo">
+                            <span class="text-muted">站点数量</span>
+                            <h4>1, 332, 801</h4>
+                        </div>
+                        <div id="sidebar-chart2" class="chart"></div>
+                    </li>
+                </ul>
+            </div><!-- infosummary -->
+
+        </div><!-- leftpanelinner -->
+    </div><!-- leftpanel -->
+
+    <div class="mainpanel">
+
+        <div class="headerbar">
+
+            <a class="menutoggle"><i class="fa fa-bars"></i></a>
+
+            <!--<form class="searchform" action="index.html" method="post">-->
+            <!--<input type="text" class="form-control" name="keyword" placeholder="Search here..."/>-->
+            <!--</form>-->
+
+            <div class="header-right">
+                <ul class="headermenu">
+                    <li>
+                        <div class="btn-group">
+                            <button class="btn btn-default dropdown-toggle tp-icon" data-toggle="dropdown">
+                                <i class="glyphicon glyphicon-user"></i>
+                                <!--<span class="badge">2</span>-->
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-head pull-right">
+                                <h5 class="title">点击商户可以直接管理</h5>
+                                <ul class="dropdown-list user-list">
+                                    <li class="new" th:each="owner:${@ownerRepository.findByEnabledTrue()}">
+                                        <!--<div class="thumb"></a>-->
+                                        <!--</div>-->
+                                        <div class="desc">
+                                            <h5><a href="../main.html"
+                                                   th:href="@{/manage/supper/as/{id}(id=${owner.id})}"
+                                                   th:text="${owner.username}">
+                                                某个商户/3447
+                                            </a>
+                                                <!--<span class="badge badge-success">new</span>-->
+                                            </h5>
+                                        </div>
+                                    </li>
+                                    <li class="new">
+                                        <a href="owner.html" th:href="@{/manage/supper/owner}" target="content">
+                                            查看所有商户</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                <img src="http://resali.huobanplus.com/cdn/bracket/images/photos/loggeduser.png"
+                                     alt=""/>
+                                管理员
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-usermenu pull-right">
+                                <!--<li><a href="profile.html"><i class="glyphicon glyphicon-user"></i> My Profile</a></li>-->
+                                <!--<li><a href="#"><i class="glyphicon glyphicon-cog"></i> Account Settings</a></li>-->
+                                <li><a href="#"><i class="glyphicon glyphicon-question-sign"></i> 帮助</a></li>
+                                <li><a href="index.html"><i class="glyphicon glyphicon-log-out"></i> 注销</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div><!-- header-right -->
+
+        </div><!-- headerbar -->
+
+        <iframe id="content" name="content" allowfullscreen="allowfullscreen" width="100%" marginwidth="0"
+                marginheight="0" frameborder="0" onload="resizeIframe(this)" scrolling="no" style="display: inline;">
+        </iframe>
+
+    </div><!-- mainpanel -->
+
+    <div class="rightpanel">
+    </div><!-- rightpanel -->
+
+
+</section>
+
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-1.10.2.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-migrate-1.2.1.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-ui-1.10.3.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/bootstrap.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/modernizr.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.sparkline.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/toggles.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/retina.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.cookies.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/flot/flot.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/flot/flot.resize.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/morris.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/raphael-2.1.0.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.datatables.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/chosen.jquery.min.js"></script>
+<script src="../../../public/bracket/js/iframe_custom.js" ewp:src="/bracket/js/iframe_custom.js"></script>
+<!--gritter-->
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.gritter.min.js"></script>
+<!--<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.util.js"></script>-->
+<link href="http://resali.huobanplus.com/cdn/bracket/css/jquery.gritter.css" rel="stylesheet" property=""/>
+<script src="../../../public/bracket/js/gritter.js" ewp:src="/bracket/js/gritter.js"></script>
+
+<!--/*@thymesVar id="_primary" type="java.lang.String"*/-->
+<!--/*@thymesVar id="_info" type="java.lang.String"*/-->
+<!--/*@thymesVar id="_danger" type="java.lang.String"*/-->
+<!--/*@thymesVar id="_warning" type="java.lang.String"*/-->
+<!--/*@thymesVar id="_success" type="java.lang.String"*/-->
+<script th:inline="javascript" th:if="${_primary!=null}">
+    $(function () {
+        var message = /*[[${_primary}]]*/'重要信息';
+        showPrimary('重要', message);
+    });
+</script>
+<script th:inline="javascript" th:if="${_info!=null}">
+    $(function () {
+        var message = /*[[${_info}]]*/'提示信息';
+        showInfo('提示', message);
+    });
+</script>
+<script th:inline="javascript" th:if="${_danger!=null}">
+    $(function () {
+        var message = /*[[${_danger}]]*/'错误信息';
+        showDanger('错误', message);
+    });
+</script>
+<script th:inline="javascript" th:if="${_warning!=null}">
+    $(function () {
+        var message = /*[[${_warning}]]*/'警告信息';
+        showWarning('警告', message);
+    });
+</script>
+<script th:inline="javascript" th:if="${_success!=null}">
+    $(function () {
+        var message = /*[[${_success}]]*/'成功信息';
+        showSuccess('成功', message);
+    });
+</script>
+
+<!--<script src="http://resali.huobanplus.com/cdn/bracket/js/dashboard.js"></script>-->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    $(function () {
+        var firstUrl = /*[[@{/manage/supper/owner}]]*/ "owner.html";
+        $('#content').attr('src', firstUrl);
+    });
+    /*]]*/
+</script>
+
+</body>
+</html>

@@ -43,8 +43,6 @@ import com.huotu.hotcms.service.service.HostService;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.util.HttpUtils;
 import com.huotu.hotcms.service.util.PageData;
-import com.huotu.hotcms.service.util.ResultOptionEnum;
-import com.huotu.hotcms.service.util.ResultView;
 import com.huotu.hotcms.service.util.SerialUtil;
 import com.huotu.hotcms.service.util.StringUtil;
 import com.huotu.hotcms.service.widget.service.PageResolveService;
@@ -195,12 +193,7 @@ public class SiteServiceImpl implements SiteService {
 
     @Override
     public Set<Site> findByOwnerIdAndDeleted(long ownerId, boolean deleted) {
-        Set<Site> siteList = siteRepository.findByOwner_IdAndDeleted(ownerId, deleted);
-//        for(Site site : siteList){
-//            site.setHosts(null);
-//            site.setRegion(null);
-//        }
-        return siteList;
+        return siteRepository.findByOwner_IdAndDeleted(ownerId, deleted);
     }
 
 
@@ -223,10 +216,11 @@ public class SiteServiceImpl implements SiteService {
     }
 
     @Override
-    public ResultView newSite(String[] domains, String homeDomains, Site site, Locale locale) {
+    public Site newSite(String[] domains, String homeDomains, Site site, Locale locale) {
         if (!StringUtil.Contains(domains, homeDomains)) {//不存在主推域名则外抛出
             // 这是一个很糟糕的设计
-            return new ResultView(ResultOptionEnum.NOFIND_HOME_DEMON.getCode(), ResultOptionEnum.NOFIND_HOME_DEMON.getValue(), null);
+            throw new IllegalArgumentException("没有主推域名");
+//            return new ResultView(ResultOptionEnum.NOFIND_HOME_DEMON.getCode(), ResultOptionEnum.NOFIND_HOME_DEMON.getValue(), null);
         }
         Region region = regionRepository.findOne(locale);
         if (region == null) {
@@ -253,18 +247,20 @@ public class SiteServiceImpl implements SiteService {
             } else {
                 // host 已存在
                 if (!host.getOwner().equals(site.getOwner())) {
-                    return new ResultView(ResultOptionEnum.DOMAIN_EXIST.getCode(), ResultOptionEnum.DOMAIN_EXIST.getValue(), null);
+                    throw new IllegalArgumentException("域名已经存在");
+//                    return new ResultView(ResultOptionEnum.DOMAIN_EXIST.getCode(), ResultOptionEnum.DOMAIN_EXIST.getValue(), null);
                 }
                 host.addSite(site);
                 hostRepository.save(host);
             }
         }
         siteRepository.save(site);
-        return new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), site);
+//        return new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), site);
+        return site;
     }
 
     @Override
-    public ResultView patchSite(String[] domains, String homeDomains, Site site, Locale locale) {
+    public Site patchSite(String[] domains, String homeDomains, Site site, Locale locale) {
         // 将之前关联
         hostService.stopHookSite(site);
         return newSite(domains, homeDomains, site, locale);
@@ -289,7 +285,7 @@ public class SiteServiceImpl implements SiteService {
             newCategory.setName(category.getName());
             newCategory.setCustom(category.isCustom());
             newCategory.setDeleted(category.isDeleted());
-            newCategory.setRoute(category.getRoute());
+//            newCategory.setRoute(category.getRoute());
             newCategory.setModelId(category.getModelId());
             newCategory.setOrderWeight(category.getOrderWeight());
             newCategory.setParentIds(category.getParentIds());

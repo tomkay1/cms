@@ -33,10 +33,21 @@ public interface PageService {
     String generateHTML(Page page, CMSContext context) throws IOException;
     //, TemplateException, ComponentPropertiesException
 
-    void parsePageToXMlAndSave(Page page, long ownerID, String pageId) throws IOException, URISyntaxException;
+    void parsePageToXMlAndSave(Page page, String pageId) throws IOException, URISyntaxException;
+    /**
+     * 解析保存了{@link com.huotu.hotcms.widget.page.Page}信息的XML
+     * @param pageId pageId
+     * @return  {@link com.huotu.hotcms.widget.page.Page}
+     * @throws IOException 其他异常
+     */
+    Page getPageFromXMLConfig(String pageId) throws IOException;
 
-    Page getPageFromXMLConfig(long ownerID,String pageId) throws IOException;
-
+    /**
+     * 删除相关页面信息
+     * @param ownerId  ownerId
+     * @param pageId 页面ID
+     * @throws IOException 其他异常
+     */
     void deletePage(long ownerId,String pageId) throws IOException;
 
 

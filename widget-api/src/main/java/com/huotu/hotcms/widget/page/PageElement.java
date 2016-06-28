@@ -10,7 +10,11 @@
 package com.huotu.hotcms.widget.page;
 
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.huotu.hotcms.widget.Component;
+
+import java.io.Serializable;
 
 /**
  * 页面元素,可能为一个组件或者为一个布局
@@ -19,7 +23,11 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
  *
  * @author CJ
  */
-@JsonDeserialize(using = PageElementDeserializer.class)
-public interface PageElement {
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Layout.class,name = "layout"),
+        @JsonSubTypes.Type(value = Component.class,name = "component")
+})
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT, visible = true)
+public interface PageElement extends Serializable {
 
 }

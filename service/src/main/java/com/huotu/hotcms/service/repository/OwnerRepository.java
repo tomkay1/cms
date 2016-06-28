@@ -12,7 +12,10 @@ package com.huotu.hotcms.service.repository;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.repositoryi.LoginRepository;
 
+import java.util.List;
+
 /**
+ * Owner仓库
  * @author CJ
  */
 public interface OwnerRepository extends LoginRepository<Owner> {
@@ -24,5 +27,17 @@ public interface OwnerRepository extends LoginRepository<Owner> {
      * @return owner
      */
     Owner findByCustomerId(int customerId);
+
+    /**
+     * 查询跟伙伴商城关联的owner
+     *
+     * @return owner List
+     */
+    List<Owner> findByCustomerIdNotNull();
+
+    /**
+     * @return 可用商户
+     */
+    List<Owner> findByEnabledTrue();
 
 }

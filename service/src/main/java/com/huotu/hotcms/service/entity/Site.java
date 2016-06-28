@@ -24,6 +24,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * 站点
@@ -39,6 +40,11 @@ public class Site {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "siteId")
     private Long siteId;
+
+    /**
+     * 是否上架
+     */
+    private boolean enabled;
 
     /**
      * 所有主体
@@ -137,7 +143,36 @@ public class Site {
     @ManyToOne(optional = false)
     @JoinColumn(name = "regionId")
     private Region region;
-//
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Site)) return false;
+        Site site = (Site) o;
+        return enabled == site.enabled &&
+                custom == site.custom &&
+                personalise == site.personalise &&
+                deleted == site.deleted &&
+                Objects.equals(siteId, site.siteId) &&
+                Objects.equals(name, site.name) &&
+                Objects.equals(title, site.title) &&
+                Objects.equals(keywords, site.keywords) &&
+                Objects.equals(description, site.description) &&
+                Objects.equals(logoUri, site.logoUri) &&
+                Objects.equals(copyright, site.copyright) &&
+                Objects.equals(customTemplateUrl, site.customTemplateUrl) &&
+                Objects.equals(createTime, site.createTime) &&
+                Objects.equals(updateTime, site.updateTime) &&
+                Objects.equals(resourceUrl, site.resourceUrl) &&
+                siteType == site.siteType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(siteId, enabled, name, title, keywords, description, logoUri, copyright, custom, customTemplateUrl, personalise, createTime, updateTime, deleted, resourceUrl, siteType);
+    }
+
+    //
 //    public void addHost(Host host) {
 //        if (this.hosts == null) {
 //            this.hosts = new HashSet<>();

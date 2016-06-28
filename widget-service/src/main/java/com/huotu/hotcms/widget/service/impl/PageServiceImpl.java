@@ -45,8 +45,8 @@ public class PageServiceImpl implements PageService {
     }
 
     @Override
-    public void parsePageToXMlAndSave(Page page, long ownerID, String pageId) throws IOException, URISyntaxException {
-        String path = configInfo.getPageConfig(ownerID,pageId)+".xml";
+    public void parsePageToXMlAndSave(Page page, String pageId) throws IOException, URISyntaxException {
+        String path = configInfo.getPageConfig(pageId)+".xml";
         XmlMapper xmlMapper=new XmlMapper();
         byte[] pageStream=xmlMapper.writeValueAsString(page).getBytes();
         InputStream inputStream=new ByteArrayInputStream(pageStream);
@@ -54,17 +54,16 @@ public class PageServiceImpl implements PageService {
     }
 
     @Override
-    public Page getPageFromXMLConfig(long ownerID, String pageId) throws IOException {
-        String path = configInfo.getPageConfig(ownerID,pageId)+".xml";
+    public Page getPageFromXMLConfig(String pageId) throws IOException {
+        String path = configInfo.getPageConfig(pageId)+".xml";
         Resource resource=resourceService.getResource(path);
         String xml=StreamUtils.copyToString(resource.getInputStream(), Charset.defaultCharset());
         XmlMapper xmlMapper=new XmlMapper();
         return xmlMapper.readValue(xml,Page.class);
     }
-
     @Override
     public void deletePage(long ownerId, String pageId) throws IOException {
-        String path = configInfo.getPageConfig(ownerId,pageId)+".xml";
+        String path = configInfo.getPageConfig(pageId)+".xml";
         resourceService.deleteResource(path);
     }
 

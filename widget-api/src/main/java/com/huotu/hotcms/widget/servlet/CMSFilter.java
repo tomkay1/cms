@@ -14,6 +14,8 @@ import com.huotu.hotcms.service.exception.NoHostFoundException;
 import com.huotu.hotcms.service.exception.NoSiteFoundException;
 import com.huotu.hotcms.service.thymeleaf.service.SiteResolveService;
 import com.huotu.hotcms.widget.CMSContext;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -33,6 +35,7 @@ import java.io.IOException;
  */
 public class CMSFilter extends OncePerRequestFilter implements Filter {
 
+    private static final Log log = LogFactory.getLog(CMSFilter.class);
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -44,6 +47,7 @@ public class CMSFilter extends OncePerRequestFilter implements Filter {
             Site site = context.getBean(SiteResolveService.class).getCurrentSite(request);
             CMSContext.PutContext(request, response, site);
         } catch (NoSiteFoundException | NoHostFoundException e) {
+            log.info("Redirect http://www.huobanplus.com ", e);
             response.sendRedirect("http://www.huobanplus.com");
             return;
         }

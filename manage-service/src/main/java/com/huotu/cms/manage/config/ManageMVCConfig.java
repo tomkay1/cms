@@ -17,10 +17,6 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
-import org.thymeleaf.spring4.SpringTemplateEngine;
-
-import java.util.Set;
 
 /**
  * @author CJ
@@ -38,13 +34,6 @@ public class ManageMVCConfig extends WebMvcConfigurerAdapter {
     @Bean
     public CommonsMultipartResolver multipartResolver() {
         return new CommonsMultipartResolver();
-    }
-
-    @SuppressWarnings("SpringJavaAutowiringInspection")
-    @Autowired
-    public void setTemplateEngineSet(Set<SpringTemplateEngine> templateEngineSet) {
-        // 所有都增加安全方言
-        templateEngineSet.forEach(engine -> engine.addDialect(new SpringSecurityDialect()));
     }
 
     @Override

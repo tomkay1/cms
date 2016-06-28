@@ -13,6 +13,7 @@ import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.widget.config.WidgetConfig;
 import me.jiangcai.lib.embedweb.EmbedWeb;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -22,6 +23,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
+import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
+import org.thymeleaf.spring4.SpringTemplateEngine;
+
+import javax.annotation.PostConstruct;
 
 /**
  * 载入manage-service的Spring配置类
@@ -37,11 +42,26 @@ public class ManageServiceSpringConfig extends WebSecurityConfigurerAdapter impl
 
     @Autowired
     private Environment environment;
+    @Autowired
+    private ApplicationContext applicationContext;
 
     @Override
     public String name() {
         return "manage-service";
     }
+
+    @PostConstruct
+    public void init() {
+        applicationContext.getBeansOfType(SpringTemplateEngine.class)
+                .values().forEach(engine -> engine.addDialect(new SpringSecurityDialect()));
+    }
+//
+//    @SuppressWarnings("SpringJavaAutowiringInspection")
+//    @Autowired
+//    public void setTemplateEngineSet(Set<SpringTemplateEngine> templateEngineSet) {
+//        // 所有都增加安全方言
+//        templateEngineSet.forEach(engine -> engine.addDialect(new SpringSecurityDialect()));
+//    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

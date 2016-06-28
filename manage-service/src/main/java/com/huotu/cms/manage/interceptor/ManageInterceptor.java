@@ -55,18 +55,16 @@ public class ManageInterceptor extends HandlerInterceptorAdapter {
                 Login login = (Login) authentication.getPrincipal();
                 if (login.currentOwnerId() != null) {
                     Set<Site> siteSet = siteService.findByOwnerIdAndDeleted(login.currentOwnerId(), false);
-                    if (login.currentSiteId() == null && !siteSet.isEmpty()) {
-                        login.updateSiteId(siteSet.iterator().next().getSiteId());
-                    } else if (login.currentSiteId() != null && siteSet.isEmpty()) {
-                        login.updateSiteId(null);
-                    }
                     modelAndView.addObject("siteSet", siteSet);
-                    if (login.currentSiteId() != null)
-                        modelAndView.addObject("manageSite", siteSet.stream()
-                                .filter(site -> site.getSiteId().equals(login.currentSiteId()))
-                                .findAny().orElse(null)
-                        );
-
+                    // 干嘛自动为用户设置?
+                    if (login.currentSiteId() != null) {
+                        Site manageSite = siteService.getSite(login.currentSiteId());
+                        if (siteSet.contains(manageSite)) {
+                            modelAndView.addObject("manageSite", manageSite);
+                        } else {
+                            login.updateSiteId(null);
+                        }
+                    }
                 } else if (login.currentSiteId() != null) {
                     login.updateSiteId(null);
                 }

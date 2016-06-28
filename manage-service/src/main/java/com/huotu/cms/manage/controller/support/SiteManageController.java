@@ -44,7 +44,7 @@ public abstract class SiteManageController<T, ID extends Serializable, PD, MD> e
             throw new RedirectException("/manage/site", "请先选择一个站点,再进行操作");
         }
         Site site = siteService.getSite(siteId);
-        if (site == null || login.siteManageable(site)) {
+        if (site == null || !login.siteManageable(site)) {
             throw new RedirectException("/manage/site", "你无权操作。");
         }
         return site;

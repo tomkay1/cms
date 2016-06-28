@@ -12,6 +12,7 @@ package com.huotu.hotcms.service.service;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.util.PageData;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
@@ -24,6 +25,13 @@ import java.util.Set;
  * @since 1.0
  */
 public interface RouteService {
+    /**
+     * 查找这个site下面所有的路由
+     *
+     * @param site 站点
+     * @return 路由集合
+     */
+    @Transactional(readOnly = true)
     Set<Route> getRoute(Site site);
 
     Route getRouteByRuleAndSite(Site site,String rule);

@@ -7,9 +7,8 @@
   ~ 2013-2016. All rights reserved.
   -->
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:ewp="http://ewp.jiangcai.me" lang="en">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,13 +16,13 @@
     <meta name="author" content="Hot Tech Neo">
     <title>CMS 模板系统</title>
 
-    <link rel="stylesheet" href="../assets/css/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../assets/css/edit.css">
-    <link rel="stylesheet" href="../assets/css/fontello.css">
+    <link rel="stylesheet" href="../../public/assets/css/bootstrap/css/bootstrap.min.css" ewp:href="/assets/css/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../public/assets/css/edit.css" ewp:href="/assets/css/edit.css">
+    <link rel="stylesheet" href="../../public/assets/css/fontello.css" ewp:href="/assets/css/fontello.css">
 
     <!--[if lt IE 9]>
-    <script src="../assets/libs/html5shiv.min.js"></script>
-    <script src="../assets/libs/respond.min.js"></script>
+    <script src="../../public/assets/libs/html5shiv.min.js" ewp:src="/assets/libs/html5shiv.min.js"></script>
+    <script src="../../public/assets/libs/respond.min.js" ewp:src="/assets/libs/respond.min.js"></script>
     <![endif]-->
 </head>
 
@@ -183,15 +182,18 @@
 </div>
 <div class="modal-backdrop" ></div>
 </body>
-<script src="../assets/seajs/sea.js"></script>
-<script src="../assets/seajs/seajs-preload.js"></script>
-<script src="../assets/seajs/seajs-css.js"></script>
-<script src="../assets/seajs/sea.config.js"></script>
+<script th:inline="javascript">
+    //var path = /*[[@{/manage/upload/fine}]]*/ null;
+</script>
+<script src="../../public/assets/seajs/sea.js" ewp:src="/assets/seajs/sea.js"></script>
+<script src="../../public/assets/seajs/seajs-preload.js" ewp:src="/assets/seajs/seajs-preload.js"></script>
+<script src="../../public/assets/seajs/seajs-css.js" ewp:src="/assets/seajs/seajs-css.js"></script>
+<script src="../../public/assets/seajs/sea.config.js" ewp:src="/assets/seajs/sea.config.js"></script>
 <script>
     seajs.use('main');
     seajs.use(['layer','editPJ', 'confMJ', 'dataHandle'],function (layer, editPage, confModule, dataHandle) {
         layer.config({
-            path: '../assets/libs/layer/'
+            path: '../../public/assets/libs/layer/'
         });
         editPage.init();
         confModule.init();

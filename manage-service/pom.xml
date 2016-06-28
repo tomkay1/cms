@@ -47,6 +47,11 @@
             <version>1.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.huotu.hotcms</groupId>
+            <artifactId>widget-service</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 

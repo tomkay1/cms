@@ -10,6 +10,7 @@
 package com.huotu.cms.manage.page;
 
 import me.jiangcai.bracket.test.BracketPage;
+import me.jiangcai.lib.test.page.AbstractPage;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jetbrains.annotations.NotNull;
@@ -17,6 +18,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.PageFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -160,5 +162,13 @@ public abstract class AbstractManagePage extends BracketPage {
                 }
             }
         }
+    }
+
+    <T extends AbstractPage> T initPage(Class<T> pageClass) {
+        T page = PageFactory.initElements(webDriver, pageClass);
+//        page.setResourceService(resourceService);
+        page.setTestInstance(getTestInstance());
+        page.validatePage();
+        return page;
     }
 }

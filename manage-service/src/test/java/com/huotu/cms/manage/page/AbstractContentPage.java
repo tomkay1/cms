@@ -20,7 +20,7 @@ import org.openqa.selenium.WebDriver;
 abstract class AbstractContentPage extends AbstractManagePage {
 
     AbstractContentPage(WebDriver webDriver) {
-        super(webDriver.switchTo().frame("content"));
+        super(webDriver.findElements(By.id("content")).isEmpty() ? webDriver : webDriver.switchTo().frame("content"));
     }
 
     /**

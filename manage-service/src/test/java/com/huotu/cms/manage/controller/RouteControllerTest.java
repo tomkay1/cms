@@ -83,6 +83,30 @@ public class RouteControllerTest extends ManageTest {
                 .isEmpty();
     }
 
+    @Test
+    public void update() throws Exception {
+        Owner owner = randomOwner();
+        Site site = randomSite(owner);
+        loginAsOwner(owner);
+        initPage(ManageMainPage.class).switchSite(site);
+
+        RoutePage page = addRoute();
+        RoutePage openPage = page.openAny();
+
+        Set<Route> routeSet = routeService.getRoute(site);
+        Route route = routeSet.stream().findAny().orElseThrow(() -> new IllegalStateException("似乎添加失败了。"));
+        openPage.checkRouteData(route);
+        Route routeData = randomRouteValue();
+        page = openPage.modifyRoute(routeData);
+
+        assertThat(route.getRule())
+                .isEqualTo(routeData.getRule());
+        assertThat(route.getTargetUri())
+                .isEqualTo(routeData.getTargetUri());
+        assertThat(route.getDescription())
+                .isEqualTo(routeData.getDescription());
+
+    }
 
     private RoutePage addRoute() {
         RoutePage page = initPage(ManageMainPage.class).toRoute();

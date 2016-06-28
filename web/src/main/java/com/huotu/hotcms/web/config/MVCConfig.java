@@ -34,6 +34,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.dialect.IDialect;
+import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
@@ -134,6 +135,12 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         private SpringTemplateEngine widgetTemplateEngine;
         @Autowired
         private SpringTemplateEngine htmlViewTemplateEngine;
+
+        @Autowired
+        public void setTemplateEngineSet(Set<SpringTemplateEngine> templateEngineSet) {
+            // 所有都增加安全方言
+            templateEngineSet.forEach(engine -> engine.addDialect(new SpringSecurityDialect()));
+        }
 
         @Bean
         public ViewResolver htmlViewResolver() {

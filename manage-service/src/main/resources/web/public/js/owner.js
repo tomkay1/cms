@@ -11,14 +11,6 @@
  * Created by CJ on 6/25/16.
  */
 
-// table
-jQuery('#ownerTable').dataTable({
-    language: {
-        url: 'http://resali.huobanplus.com/cdn/bracket/localisation/dataTable_zh_CN.json'
-    },
-    sPaginationType: "full_numbers"
-});
-
 // 几个动作
 $(function () {
     var customerIdChanger = $('#customerIdChanger');

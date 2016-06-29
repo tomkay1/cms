@@ -10,53 +10,69 @@
 
 <html xmlns:th="http://www.thymeleaf.org" xmlns:ewp="http://ewp.jiangcai.me"
       lang="en">
+<!--/*@thymesVar id="manageSite" type="com.huotu.hotcms.service.entity.Site"*/-->
 <head>
     <meta charset="UTF-8">
     <link href="http://resali.huobanplus.com/cdn/bracket/css/style.default.css" rel="stylesheet">
     <link href="http://resali.huobanplus.com/cdn/bracket/css/jquery.datatables.css" rel="stylesheet">
     <title>Owner</title>
 </head>
-<body class="mainpanel" id="fa-bars">
+<body class="mainpanel" id="fa-sitemap">
 <div class="pageheader">
-    <h2><i class="fa fa-bars"></i> 数据源 <span>管理当前站点的数据源</span></h2>
+    <h2><i class="fa fa-sitemap"></i> 网站架构 <span>管理当前站点所有页面</span></h2>
 </div>
 
 <div class="contentpanel">
-    <form id="categoryForm" action="index.html" method="POST" th:action="@{/manage/category}">
+    <form id="pageForm" action="index.html" method="POST" th:action="@{/manage/page}">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="panel-btns">
                     <a href="" class="panel-close">&times;</a>
                     <a href="" class="minimize">&minus;</a>
                 </div><!-- panel-btns -->
-                <h3 class="panel-title">新增数据源</h3>
-                <p>父级数据源可以不选择,按父级数据源搜索将可以搜索到相关所有数据内容</p>
+                <h3 class="panel-title">新增页面</h3>
+                <p>按照类型,可以分为普通页,索引页和内容页;一旦提交将无法再度修改这些属性</p>
             </div>
             <div class="panel-body">
 
                 <div class="form-horizontal form-bordered">
 
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">名称</label>
+                        <label class="col-sm-2 control-label">所属站点</label>
                         <div class="col-sm-2">
-                            <input name="name" title="名称" type="text" placeholder="数据源的名称"
+                            <input title="所属站点" type="text" readonly="readonly"
+                                   class="form-control" value="站点1"
+                                   th:value="${manageSite.name}"/>
+                        </div>
+                        <label class="col-sm-2 control-label">页面名称</label>
+                        <div class="col-sm-6">
+                            <input name="name" title="页面名称" type="text"
                                    class="form-control"/>
                         </div>
-                        <label class="col-sm-2 control-label">模型</label>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">页面类型</label>
                         <div class="col-sm-2">
-                            <select name="dataModelId" title="模型" class="form-control input-sm">
-                                <option>文章</option>
-                                <option>视频</option>
+                            <select name="typeId" title="页面类型" class="form-control input-sm">
+                                <option>普通</option>
+                                <option>数据索引</option>
+                                <option>数据内容</option>
                             </select>
-                            <span class="help-block">描述这个数据源的特性,不同特性的数据源可以录入不同的内容</span>
+                            <span class="help-block">数据索引页,可以展示内容列表;数据内容页可以展示内容;也可以在页面的控件中决定具体使用的页面</span>
                         </div>
-                        <label class="col-sm-2 control-label">父级</label>
+                        <label class="col-sm-2 control-label">数据源</label>
                         <div class="col-sm-2">
-                            <select name="dataTypeId" title="父级数据源" class="form-control input-sm">
-                                <option>无</option>
+                            <select name="dataTypeId" title="数据源" class="form-control input-sm">
                                 <option>新闻咨询</option>
                                 <option>成功案例</option>
                             </select>
+                            <span class="help-block">普通页面无需选择关联的数据源</span>
+                        </div>
+                        <label class="col-sm-2 control-label">URI</label>
+                        <div class="col-sm-2">
+                            <input name="uri" title="URI" type="text"
+                                   class="form-control"/>
+                            <span class="help-block">用于决定该页面的地址,应该以/开头;数据内容页的地址将会是URI/{id};对于普通页,数据索引页 URI是必须的</span>
                         </div>
                     </div>
                 </div>
@@ -81,18 +97,19 @@
                 <a href="" class="panel-close">&times;</a>
                 <a href="" class="minimize">&minus;</a>
             </div><!-- panel-btns -->
-            <h3 class="panel-title">数据源列表</h3>
-            <p></p>
+            <h3 class="panel-title">页面列表</h3>
+            <p>可以在此删除或者个性化页面</p>
         </div>
         <div class="panel-body">
             <div class="table-responsive">
                 <table class="table">
                     <thead>
                     <tr>
-                        <th>名称</th>
+                        <th>页面名称</th>
                         <th>创建时间</th>
-                        <th>模型</th>
-                        <th>父级</th>
+                        <th>类型</th>
+                        <th>URI</th>
+                        <th>数据源</th>
                         <th>&nbsp;</th>
                     </tr>
                     </thead>
@@ -101,12 +118,14 @@
                     <!--/*@thymesVar id="list" type="java.lang.Iterable<com.huotu.hotcms.service.entity.login.Owner>"*/-->
                     <tr th:each="owner,stats:${list}" class="odd" th:class="${stats.odd?'odd':'even'}"
                         th:attr="data-id=${owner.id}" data-id="456">
-                        <td th:text="${owner.username}">新闻资讯</td>
-                        <td>2016 06-20</td>
-                        <td th:text="${owner.customerId}">文章</td>
-                        <td>无</td>
+                        <td th:text="${owner.username}">首页</td>
+                        <td>2016 06-11</td>
+                        <td th:text="${owner.customerId}">普通</td>
+                        <td>/</td>
+                        <td>&nbsp;</td>
                         <td class="center">
-                            <a href="index.html" th:href="@{/manage/supper/as/${owner.id}}" target="_top" title="管理">
+                            <a href="../../edit/edit.html" th:href="@{/manage/page/${owner.id}}" target="_top"
+                               title="编辑">
                                 <i class="fa fa-pencil"></i>
                             </a>
                             <a href="index.html" class="delete" th:href="@{/manage/page/{id}/delete(id=${owner.id})}"
@@ -117,12 +136,13 @@
                     </tr>
 
                     <tr class="even" data-id="2" th:remove="all">
-                        <td>成功案例</td>
+                        <td>新闻资讯列表</td>
                         <td>2016 06-11</td>
-                        <td>文章</td>
-                        <td>无</td>
+                        <td>数据索引</td>
+                        <td>/news</td>
+                        <td>新闻资讯</td>
                         <td class="center">
-                            <a href="index.html" target="_top" title="编辑">
+                            <a href="../../edit/edit.html" target="_top" title="编辑">
                                 <i class="fa fa-pencil"></i>
                             </a>
                             <a href="index.html" class="delete"
@@ -132,12 +152,13 @@
                         </td>
                     </tr>
                     <tr class="odd" data-id="3" th:remove="all">
-                        <td>快讯</td>
+                        <td>新闻资讯内容</td>
                         <td>2016 06-11</td>
-                        <td>文章</td>
+                        <td>数据内容</td>
+                        <td>&nbsp;</td>
                         <td>新闻资讯</td>
                         <td class="center">
-                            <a href="index.html" target="_top" title="编辑">
+                            <a href="../../edit/edit.html" target="_top" title="编辑">
                                 <i class="fa fa-pencil"></i>
                             </a>
                             <a href="index.html" class="delete"
@@ -155,17 +176,18 @@
     </div>
 
 </div><!-- contentpanel -->
+
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-1.10.2.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-ui-1.10.3.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/bootstrap.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/toggles.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.cookies.js"></script>
 
-<script type="text/javascript" src="https://cdn.datatables.net/u/dt/dt-1.10.12/datatables.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/datatables/1.10.12/datatables.min.js"></script>
 <!--<script src="http://resali.huobanplus.com/cdn/bracket/js/custom.js"></script>-->
 <div ewp:replace="fragments/frame.html::#messageSection"></div>
 <script src="../../../public/bracket/js/frame.js" ewp:src="/bracket/js/frame.js"></script>
 <script src="../../../public/bracket/js/frame_custom.js" ewp:src="/bracket/js/frame_custom.js"></script>
-<!--<script src="../../../public/js/owner.js" ewp:src="/js/owner.js"></script>-->
+<script src="../../../public/js/page.js" ewp:src="/js/page.js"></script>
 </body>
 </html>

@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SitePage extends AbstractContentPage {
     private static final Log log = LogFactory.getLog(SitePage.class);
 
-    @FindBy(id = "fa-sitemap")
+    @FindBy(id = "fa-puzzle-piece")
     private WebElement body;
     @FindBy(id = "logo-uploader")
     private WebElement uploader;

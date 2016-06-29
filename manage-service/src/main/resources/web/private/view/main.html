@@ -27,7 +27,7 @@
     <script language="javascript" type="text/javascript">
         function resizeIframe(obj) {
             try {
-                console.error('content has changed', obj, obj.contentWindow, obj.contentWindow.document);
+//                console.error('content has changed', obj, obj.contentWindow, obj.contentWindow.document);
                 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
             } catch (e) {
                 console.error(e);
@@ -81,16 +81,23 @@
                 <li class="nav-parent"><a href=""><i class="fa fa-desktop"></i> <span>站点设置</span></a>
                     <ul class="children">
                         <li><a href="site/index.html" th:href="@{/manage/site}" target="content">
-                            <i class="fa fa-sitemap"></i> 站点管理</a></li>
+                            <i class="fa fa-puzzle-piece"></i> 站点管理</a></li>
+                        <li><a href="page/index.html" th:href="@{/manage/page}" target="content">
+                            <i class="fa fa-sitemap"></i> 网站架构</a></li>
                         <li><a href="route/index.html" th:href="@{/manage/route}" target="content">
                             <i class="fa fa-retweet"></i> 路由规则</a></li>
                     </ul>
                 </li>
                 <li>
-                    <a href="category/index.html" target="content"><i class="fa fa-bars"></i> <span>栏目管理</span></a>
+                    <a href="category/index.html" target="content"><i class="fa fa-bars"></i> <span>数据源</span></a>
                 </li>
-                <li>
-                    <a href="inner.html" target="content"><i class="fa fa-book"></i> <span>内容管理</span></a>
+                <li class="nav-parent"><a href=""><i class="fa fa-book"></i> <span>内容管理</span></a>
+                    <ul class="children">
+                        <li><a target="content">
+                            <i class="fa fa-tasks"></i> 文章</a></li>
+                        <li><a target="content">
+                            <i class="fa fa-film"></i> 视频</a></li>
+                    </ul>
                 </li>
             </ul>
 
@@ -149,7 +156,19 @@
                                                    class="siteSwitcher"
                                                    th:href="@{/manage/switch/{id}(id=${site.siteId})}"
                                                    th:text="${site.name}">
-                                                某个站点
+                                                站点1
+                                            </a>
+                                                <!--<span class="badge badge-success">new</span>-->
+                                            </h5>
+                                        </div>
+                                    </li>
+                                    <li class="new" th:remove="all">
+                                        <!--<div class="thumb"></a>-->
+                                        <!--</div>-->
+                                        <div class="desc">
+                                            <h5><a href="#"
+                                                   class="siteSwitcher">
+                                                站点2
                                             </a>
                                                 <!--<span class="badge badge-success">new</span>-->
                                             </h5>
@@ -296,31 +315,31 @@
 <!--/*@thymesVar id="_success" type="java.lang.String"*/-->
 <script th:inline="javascript" th:if="${_primary!=null}">
     $(function () {
-        var message = /*[[${_primary}]]*/'重要信息';
+        var message = /*[[${_primary}]]*/'原型测试重要信息(不会出现在应用中)';
         showPrimary('重要', message);
     });
 </script>
 <script th:inline="javascript" th:if="${_info!=null}">
     $(function () {
-        var message = /*[[${_info}]]*/'提示信息';
+        var message = /*[[${_info}]]*/'原型测试提示信息(不会出现在应用中)';
         showInfo('提示', message);
     });
 </script>
 <script th:inline="javascript" th:if="${_danger!=null}">
     $(function () {
-        var message = /*[[${_danger}]]*/'错误信息';
+        var message = /*[[${_danger}]]*/'原型测试错误信息(不会出现在应用中)';
         showDanger('错误', message);
     });
 </script>
 <script th:inline="javascript" th:if="${_warning!=null}">
     $(function () {
-        var message = /*[[${_warning}]]*/'警告信息';
+        var message = /*[[${_warning}]]*/'原型测试警告信息(不会出现在应用中)';
         showWarning('警告', message);
     });
 </script>
 <script th:inline="javascript" th:if="${_success!=null}">
     $(function () {
-        var message = /*[[${_success}]]*/'成功信息';
+        var message = /*[[${_success}]]*/'原型测试成功信息(不会出现在应用中)';
         showSuccess('成功', message);
     });
 </script>
@@ -330,7 +349,7 @@
     var siteSwitchUrl = /*[[@{/manage/switch/}]]*/ null;
     $(function () {
         var firstUrl = /*[[@{/manage/site}]]*/ "site/index.html";
-        console.log('start open ' + firstUrl);
+//        console.log('start open ' + firstUrl);
         $('#content').attr('src', firstUrl);
 
         // siteSwitcher

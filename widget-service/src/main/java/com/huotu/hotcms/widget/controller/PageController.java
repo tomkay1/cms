@@ -10,7 +10,9 @@
 package com.huotu.hotcms.widget.controller;
 
 import com.huotu.hotcms.widget.page.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -42,7 +44,10 @@ public interface PageController {
      * @return 拿到相应的界面
      * @see Page
      */
-    List<Page> getPageList(long ownerId) throws IOException;
+
+    @RequestMapping(value = "/manage/owners/{ownerId}/pages",method = RequestMethod.GET)
+    @ResponseBody
+    List<Page> getPageList(@PathVariable long ownerId) throws IOException;
 
 
     /**
@@ -51,39 +56,52 @@ public interface PageController {
      * @return 页面信息
      * @throws IOException 其他异常
      */
-    Page getPage(String pageId) throws IOException;
+
+    @RequestMapping(value = "/manage/pages/{pageId}",method = RequestMethod.GET)
+    @ResponseBody
+    Page getPage(@PathVariable String pageId) throws IOException;
 
     /**
      * <p>保存界面{@link Page}</p>
      * @param pageId 页面ID
      * @throws IOException 从request中读取请求体时异常
      */
-    void savePage(String pageId,HttpServletRequest request) throws IOException, URISyntaxException;
+
+    @RequestMapping(value = "/manage/pages/{pageId}",method = RequestMethod.PUT)
+    @ResponseStatus(code = HttpStatus.ACCEPTED)
+    void savePage(@PathVariable String pageId,HttpServletRequest request) throws IOException, URISyntaxException;
 
     /**
      * <p>添加页面{@link Page}</p>
      * @param ownerId 拥有者id
      * @throws IOException 从request中读取请求体时异常
      */
-    void addPage(long ownerId,HttpServletRequest request) throws IOException;
+    @RequestMapping(value = "/manage/owners/{ownerId}/pages",method = RequestMethod.POST)
+    @ResponseStatus(code = HttpStatus.ACCEPTED)
+    void addPage(@PathVariable long ownerId,HttpServletRequest request) throws IOException;
 
     /**
      * <p>删除界面{@link Page}</p>
      * @param pageId 页面ID
      */
-    void deletePage(String pageId,long ownerId) throws IOException;
+    @RequestMapping(value = "/manage/pages/{pageId}",method = RequestMethod.DELETE)
+    @ResponseStatus(code = HttpStatus.ACCEPTED)
+    void deletePage(@PathVariable String pageId,long ownerId) throws IOException;
 
     /**
      * 保存页面部分属性
      * @param pageId 页面ID
      * @param propertyName 要保存的属性名
      */
-    void savePagePartProperties(String pageId,String propertyName);
+    @RequestMapping(value = "/manage/pages/{pageId}/{propertyName}",method = RequestMethod.PUT)
+    @ResponseStatus(code = HttpStatus.ACCEPTED)
+    void savePagePartProperties(@PathVariable String pageId,@PathVariable String propertyName);
 
 
     /**
      * 跳转到CMS编辑界面，用于测试
      * @return url
      */
+    @RequestMapping("/manage/edit")
     String startEdit();
 }

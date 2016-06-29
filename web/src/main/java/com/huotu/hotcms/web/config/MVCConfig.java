@@ -16,6 +16,7 @@ import com.huotu.hotcms.service.thymeleaf.templateresolver.WidgetTemplateResolve
 import com.huotu.hotcms.web.interceptor.RouteInterceptor;
 import com.huotu.hotcms.web.interceptor.SiteResolver;
 import com.huotu.hotcms.web.util.ArrayUtil;
+import com.huotu.hotcms.widget.config.WidgetConfig;
 import me.jiangcai.lib.embedweb.host.WebHost;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;

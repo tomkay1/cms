@@ -34,23 +34,20 @@ public class PageControllerImpl implements PageController {
     private PageService pageService;
 
 
-    @RequestMapping(value = "/owners/{ownerId}/pages",method = RequestMethod.GET)
-    @ResponseBody
+
     @Override
-    public List<Page> getPageList(@PathVariable long ownerId) throws IOException {
+    public List<Page> getPageList(long ownerId) throws IOException {
         return null;
         //return pageService.getPageFromXMLConfig(ownerId,pageId);
     }
 
-    @RequestMapping(value = "/pages/{pageId}",method = RequestMethod.GET)
-    @ResponseBody
+
     @Override
-    public Page getPage(@PathVariable String pageId) throws IOException {
-        return null;
+    public Page getPage(String pageId) throws IOException {
+        return pageService.getPageFromXMLConfig(pageId);
     }
 
-    @RequestMapping(value = "/pages/{pageId}",method = RequestMethod.PUT)
-    @ResponseStatus(code = HttpStatus.ACCEPTED)
+
     @Override
     public void savePage(@PathVariable String pageId,HttpServletRequest request)
             throws IOException, URISyntaxException {
@@ -60,29 +57,27 @@ public class PageControllerImpl implements PageController {
         pageService.parsePageToXMlAndSave(page, pageId);
     }
 
-    @RequestMapping(value = "/owners/{ownerId}/pages",method = RequestMethod.POST)
-    @ResponseStatus(code = HttpStatus.ACCEPTED)
+
     @Override
     public void addPage(@PathVariable long ownerId,HttpServletRequest request) throws IOException {
         String pageJson=CharStreams.toString(request.getReader());
-
+        ObjectMapper objectMapper=new ObjectMapper();
+        Page page=objectMapper.readValue(pageJson, Page.class);
     }
 
-    @RequestMapping(value = "/pages/{pageId}",method = RequestMethod.DELETE)
-    @ResponseStatus(code = HttpStatus.ACCEPTED)
+
     @Override
     public void deletePage(@PathVariable String pageId,@RequestParam long ownerId) throws IOException {
         pageService.deletePage(ownerId, pageId);
     }
 
-    @RequestMapping(value = "/pages/{pageId}/{propertyName}",method = RequestMethod.PUT)
-    @ResponseStatus(code = HttpStatus.ACCEPTED)
+
     @Override
     public void savePagePartProperties(@PathVariable String pageId,@PathVariable String propertyName) {
 
     }
 
-    @RequestMapping("/manage/edit")
+
     @Override
     public String startEdit() {
         return "/edit/edit.html";

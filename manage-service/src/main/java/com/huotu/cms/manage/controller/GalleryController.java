@@ -36,7 +36,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by chendeyu on 2016/1/10.
@@ -140,30 +139,30 @@ public class GalleryController {
         return modelAndView;
     }
 
-    /**
-     * 修改图库
-     */
-    @RequestMapping("/updateGallery")
-    public ModelAndView updateGallery(@RequestParam(value = "id", defaultValue = "0") Long id, long ownerId) throws Exception {
-        ModelAndView modelAndView = new ModelAndView();
-        try {
-            modelAndView.setViewName("/view/contents/updateGallery.html");
-            Gallery gallery = galleryService.findById(id);
-            String logo_uri = "";
-            if (!StringUtils.isEmpty(gallery.getThumbUri())) {
-                logo_uri = resourceService.getResource(gallery.getThumbUri()).httpUrl().toString();
-            }
-            Category category = gallery.getCategory();
-            Integer modelType = category.getModelId();
-            Set<Category> categorys = categoryRepository.findBySite_Owner_IdAndModelId(ownerId, modelType);
-            modelAndView.addObject("logo_uri", logo_uri);
-            modelAndView.addObject("categorys", categorys);
-            modelAndView.addObject("gallery", gallery);
-        } catch (Exception ex) {
-            log.error(ex.getMessage());
-        }
-        return modelAndView;
-    }
+//    /**
+//     * 修改图库
+//     */
+//    @RequestMapping("/updateGallery")
+//    public ModelAndView updateGallery(@RequestParam(value = "id", defaultValue = "0") Long id, long ownerId) throws Exception {
+//        ModelAndView modelAndView = new ModelAndView();
+//        try {
+//            modelAndView.setViewName("/view/contents/updateGallery.html");
+//            Gallery gallery = galleryService.findById(id);
+//            String logo_uri = "";
+//            if (!StringUtils.isEmpty(gallery.getThumbUri())) {
+//                logo_uri = resourceService.getResource(gallery.getThumbUri()).httpUrl().toString();
+//            }
+//            Category category = gallery.getCategory();
+////            Integer modelType = category.getModelId();
+//            Set<Category> categorys = categoryRepository.findBySite_Owner_IdAndModelId(ownerId, modelType);
+//            modelAndView.addObject("logo_uri", logo_uri);
+//            modelAndView.addObject("categorys", categorys);
+//            modelAndView.addObject("gallery", gallery);
+//        } catch (Exception ex) {
+//            log.error(ex.getMessage());
+//        }
+//        return modelAndView;
+//    }
 
     /**
      * 修改图库

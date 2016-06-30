@@ -10,6 +10,8 @@
 package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.util.web.CookieUser;
+import com.huotu.hotcms.service.common.ContentType;
+import com.huotu.hotcms.service.common.EnumUtils;
 import com.huotu.hotcms.service.common.ModelType;
 import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.Category;
@@ -173,10 +175,7 @@ public class CategoryController {
                 category.setOrderWeight(orderWeight);
                 Category categoryParent = categoryService.getCategoryById(parentId);
                 category.setSite(site);
-                category.setParentIds(parentPath);
-                if (model >= 0) {
-                    category.setModelId(model);
-                }
+                category.setContentType(EnumUtils.valueOf(ContentType.class, model));
                 category.setParent(categoryParent);
                 category.setCreateTime(LocalDateTime.now());
                 category.setUpdateTime(LocalDateTime.now());
@@ -255,9 +254,7 @@ public class CategoryController {
                 Site site=category.getSite();
                 if (!routeService.isPatterBySiteAndRuleIgnore(site, rule, noRule)) {
                     category.setSite(site);
-                    if (modelId >= 0) {
-                        category.setModelId(modelId);
-                    }
+                    category.setContentType(EnumUtils.valueOf(ContentType.class, modelId));
                     category.setName(name);
                     category.setOrderWeight(orderWeight);
                     category.setUpdateTime(LocalDateTime.now());

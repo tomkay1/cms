@@ -283,12 +283,13 @@ public class SiteServiceImpl implements SiteService {
             newCategory.setSite(customerSite);
             newCategory.setParent(category.getParent());
             newCategory.setName(category.getName());
-            newCategory.setCustom(category.isCustom());
+//            newCategory.setCustom(category.isCustom());
             newCategory.setDeleted(category.isDeleted());
 //            newCategory.setRoute(category.getRoute());
-            newCategory.setModelId(category.getModelId());
+//            newCategory.setModelId(category.getModelId());
+            newCategory.setContentType(category.getContentType());
             newCategory.setOrderWeight(category.getOrderWeight());
-            newCategory.setParentIds(category.getParentIds());
+//            newCategory.setParentIds(category.getParentIds());
             newCategory.setCreateTime(category.getCreateTime());//这两个时间不确定是否要复制
             newCategory.setUpdateTime(category.getUpdateTime());
             category = categoryRepository.save(newCategory);

@@ -32,7 +32,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
-import java.util.Set;
 
 /**
  * Created by chendeyu on 2016/1/11.
@@ -93,36 +92,36 @@ public class VideoController {
         modelAndView.setViewName("/view/widget/addVideo.html");
         return modelAndView;
     }
-
-    /**
-     * 修改视频
-     *
-     * @param id
-     * @param ownerId
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping("/updateVideo")
-    public ModelAndView updateVideo(@RequestParam(value = "id", defaultValue = "0") Long id, long ownerId) throws Exception {
-        ModelAndView modelAndView = new ModelAndView();
-        try {
-            modelAndView.setViewName("/view/contents/updateVideo.html");
-            Video video = videoService.findById(id);
-            String logo_uri = "";
-            if (!StringUtils.isEmpty(video.getThumbUri())) {
-                logo_uri = resourceService.getResource(video.getThumbUri()).httpUrl().toString();
-            }
-            Category category = video.getCategory();
-            Integer modelType = category.getModelId();
-            Set<Category> categorys = categoryRepository.findBySite_Owner_IdAndModelId(ownerId, modelType);
-            modelAndView.addObject("logo_uri", logo_uri);
-            modelAndView.addObject("categorys", categorys);
-            modelAndView.addObject("video", video);
-        } catch (Exception ex) {
-            log.error(ex.getMessage());
-        }
-        return modelAndView;
-    }
+//
+//    /**
+//     * 修改视频
+//     *
+//     * @param id
+//     * @param ownerId
+//     * @return
+//     * @throws Exception
+//     */
+//    @RequestMapping("/updateVideo")
+//    public ModelAndView updateVideo(@RequestParam(value = "id", defaultValue = "0") Long id, long ownerId) throws Exception {
+//        ModelAndView modelAndView = new ModelAndView();
+//        try {
+//            modelAndView.setViewName("/view/contents/updateVideo.html");
+//            Video video = videoService.findById(id);
+//            String logo_uri = "";
+//            if (!StringUtils.isEmpty(video.getThumbUri())) {
+//                logo_uri = resourceService.getResource(video.getThumbUri()).httpUrl().toString();
+//            }
+//            Category category = video.getCategory();
+//            Integer modelType = category.getModelId();
+//            Set<Category> categorys = categoryRepository.findBySite_Owner_IdAndModelId(ownerId, modelType);
+//            modelAndView.addObject("logo_uri", logo_uri);
+//            modelAndView.addObject("categorys", categorys);
+//            modelAndView.addObject("video", video);
+//        } catch (Exception ex) {
+//            log.error(ex.getMessage());
+//        }
+//        return modelAndView;
+//    }
 
 
     /**

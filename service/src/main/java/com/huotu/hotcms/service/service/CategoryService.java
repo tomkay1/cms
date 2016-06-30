@@ -42,14 +42,6 @@ public interface CategoryService {
      */
     Boolean deleteCategory(Category category);
 
-    /**
-     * 设置栏目path 路径
-     *
-     * @param category 栏目对象
-     * @return
-     */
-    Boolean CategorySetParents(Category category);
-
     List<Category> getSpecifyCategories(String[] specifyIds);
 
     List<Category> getSubCategories(Long parenId, int size);
@@ -72,7 +64,4 @@ public interface CategoryService {
      */
     List<Category> findByRouteTypeAndParentId(CategoryForeachParam categoryForeachParam);
 
-    List<Category> findByParentIdsLike(String parentId);
-
-    String getCategoryParentIds(Long parentId);
 }

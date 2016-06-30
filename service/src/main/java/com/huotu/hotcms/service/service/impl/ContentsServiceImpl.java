@@ -10,16 +10,17 @@
 package com.huotu.hotcms.service.service.impl;
 
 import com.huotu.hotcms.service.entity.BaseEntity;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.repository.BaseEntityRepository;
 import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.service.ContentsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-/**
- * Created by chendeyu on 2016/1/12.
- */
+import javax.persistence.criteria.Predicate;
+
 @Service
 public class ContentsServiceImpl implements ContentsService {
 
@@ -32,8 +33,24 @@ public class ContentsServiceImpl implements ContentsService {
 
 
     @Override
-    public Iterable<BaseEntity> list(String title, Long siteId, Long category, Pageable pageable) {
-        return null;
+    public Iterable<BaseEntity> list(String title, Site site, Long category, Pageable pageable) {
+        Specification<BaseEntity> specification = (root, query, cb) -> {
+            Predicate predicate = cb.equal(root.get("category").get("site"), site);
+            if (title != null) {
+                Predicate titlePredicate = cb.or(cb.like(root.get("title"), "%" + title + "%")
+                        , cb.like(root.get("description"), "%" + title + "%"));
+                predicate = cb.and(titlePredicate, predicate);
+            }
+
+            if (category != null) {
+                predicate = cb.and(cb.equal(root.get("category").get("id"), category), predicate);
+            }
+            return predicate;
+        };
+
+        if (pageable == null)
+            return baseEntityRepository.findAll(specification);
+        return baseEntityRepository.findAll(specification, pageable);
     }
 
 //    @Override

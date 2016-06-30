@@ -10,6 +10,7 @@
 package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.entity.BaseEntity;
+import com.huotu.hotcms.service.entity.Site;
 import org.springframework.data.domain.Pageable;
 
 /**
@@ -21,12 +22,12 @@ public interface ContentsService {
      * 查找所有符合要求的内容
      *
      * @param title    标题满足like,可选
-     * @param siteId   所属站点,必选
+     * @param site   所属站点,必选
      * @param category 所属数据源,可选
      * @param pageable 是否要分页搜索可选
      * @return 结果循环
      */
-    Iterable<BaseEntity> list(String title, Long siteId, Long category, Pageable pageable);
+    Iterable<BaseEntity> list(String title, Site site, Long category, Pageable pageable);
 
 //    PageData<Contents> getPage(String title,Long siteId,Long category, int page, int pageSize);
 }

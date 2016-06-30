@@ -46,6 +46,12 @@ public class ManageMainPage extends AbstractFrameParentPage {
         return initPage(RoutePage.class);
     }
 
+    public CategoryPage toCategory() {
+        beforeDriver();
+        clickMenuByClass("fa-bars");
+        return initPage(CategoryPage.class);
+    }
+
     public void switchSite(Site site) {
         beforeDriver();
         // UI去点 可能会有Ajax 异步问题

@@ -12,6 +12,8 @@ package com.huotu.cms.manage.controller.support;
 import com.huotu.cms.manage.bracket.GritterUtils;
 import com.huotu.cms.manage.exception.RedirectException;
 import com.huotu.hotcms.service.entity.login.Login;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.data.jpa.domain.Specification;
@@ -20,6 +22,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,6 +39,8 @@ import java.io.Serializable;
  * @author CJ
  */
 public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
+
+    private static final Log log = LogFactory.getLog(CRUDController.class);
 
     @Autowired
     private JpaRepository<T, ID> jpaRepository;
@@ -85,11 +90,12 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @Transactional(readOnly = true)
-    public String open(@AuthenticationPrincipal Login login, @PathVariable("id") ID id, RedirectAttributes attributes) {
+    public String open(@AuthenticationPrincipal Login login, @PathVariable("id") ID id, Model model
+            , RedirectAttributes attributes) {
         T data = jpaRepository.getOne(id);
-        attributes.addAttribute("object", data);
+        model.addAttribute("object", data);
         try {
-            prepareOpen(login, data, attributes);
+            prepareOpen(login, data, model, attributes);
         } catch (RedirectException e) {
             GritterUtils.AddFlashDanger(e.getMessage(), attributes);
             return e.redirectViewName();
@@ -110,7 +116,7 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
             GritterUtils.AddFlashDanger(ex.getMessage(), attributes);
             return ex.redirectViewName();
         } catch (Exception ex) {
-            // TODO 有些异常我们应该另外处理
+            log.info("unknown exception on save", ex);
             GritterUtils.AddFlashDanger(ex.getMessage(), attributes);
         }
         return redirectIndexViewName();
@@ -118,19 +124,19 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
 
     @RequestMapping(method = RequestMethod.GET)
     @Transactional(readOnly = true)
-    public String index(@AuthenticationPrincipal Login login, RedirectAttributes attributes) {
+    public String index(@AuthenticationPrincipal Login login, Model model, RedirectAttributes attributes) {
         try {
             Specification<T> specification = prepareIndex(login, attributes);
             if (specification == null)
-                attributes.addAttribute("list", jpaRepository.findAll());
+                model.addAttribute("list", jpaRepository.findAll());
             else
-                attributes.addAttribute("list", jpaSpecificationExecutor.findAll(specification));
+                model.addAttribute("list", jpaSpecificationExecutor.findAll(specification));
 
         } catch (RedirectException ex) {
             GritterUtils.AddFlashDanger(ex.getMessage(), attributes);
             return ex.redirectViewName();
         } catch (Exception ex) {
-            // TODO 有些异常我们应该另外处理
+            log.info("unknown exception on index", ex);
             GritterUtils.AddDanger(ex.getMessage(), attributes);
         }
 //        if (searchText != null) {
@@ -201,7 +207,8 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
      * @param model 模型
      */
     @SuppressWarnings("WeakerAccess")
-    protected void prepareOpen(Login login, T data, RedirectAttributes model) throws RedirectException {
+    protected void prepareOpen(Login login, T data, Model model, RedirectAttributes attributes)
+            throws RedirectException {
 
     }
 
@@ -214,7 +221,8 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
      * @param extra      额外数据
      * @param attributes 空间
      */
-    protected abstract void prepareSave(Login login, T entity, T data, MD extra, RedirectAttributes attributes) throws RedirectException;
+    protected abstract void prepareSave(Login login, T entity, T data, MD extra, RedirectAttributes attributes)
+            throws RedirectException;
 
     /**
      * @return 打开一个资源的视图名称

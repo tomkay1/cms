@@ -32,6 +32,7 @@ import java.util.Collections;
 import java.util.Map;
 
 /**
+ * 此处如果选择依赖{@link SpringTemplateEngine widgetTemplateEngine}必然会形成循环依赖
  * Created by lhx on 2016/6/21.
  */
 @Service
@@ -40,9 +41,14 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
-    @Autowired
+//    @Autowired
     private SpringTemplateEngine widgetTemplateEngine;
 
+    private void checkEngine(){
+        if (widgetTemplateEngine==null){
+            widgetTemplateEngine = webApplicationContext.getBean("widgetTemplateEngine",SpringTemplateEngine.class);
+        }
+    }
 
     @Override
     public URI resourceURI(Widget widget, String resourceName) throws URISyntaxException, IOException {
@@ -67,6 +73,7 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
             style = widget.styles()[0];
         }
 
+        checkEngine();
         WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
                 , widget, style, webApplicationContext.getServletContext(), properties);
         WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();
@@ -78,6 +85,7 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
     @Override
     public String editorHTML(Widget widget, CMSContext cmsContext, ComponentProperties properties) {
         //构造控件专用的上下文
+        checkEngine();
         WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
                 , widget, null, webApplicationContext.getServletContext(), properties);
         WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();
@@ -100,6 +108,7 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
             style = component.getInstalledWidget().getWidget().styles()[0];
         }
 
+        checkEngine();
         WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
                 , component.getInstalledWidget().getWidget(), style, webApplicationContext.getServletContext(), component.getProperties());
         WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();

@@ -16,6 +16,7 @@ import com.huotu.hotcms.service.thymeleaf.templateresolver.WidgetTemplateResolve
 import com.huotu.hotcms.web.interceptor.RouteInterceptor;
 import com.huotu.hotcms.web.interceptor.SiteResolver;
 import com.huotu.hotcms.web.util.ArrayUtil;
+import com.huotu.hotcms.widget.config.WidgetConfig;
 import me.jiangcai.lib.embedweb.host.WebHost;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -34,6 +35,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.dialect.IDialect;
+import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
@@ -55,7 +57,6 @@ import java.util.Set;
         "com.huotu.hotcms.web.util.web",
         "com.huotu.hotcms.service.thymeleaf.expression",
         "com.huotu.hotcms.service.thymeleaf.service",
-        "com.huotu.hotcms.widget"
 })
 @Import({MVCConfig.MVCConfigLoader.class, JpaConfig.class, ServiceConfig.class, WebHost.class, ManageServiceSpringConfig.class})
 public class MVCConfig extends WebMvcConfigurerAdapter {
@@ -135,6 +136,12 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         private SpringTemplateEngine widgetTemplateEngine;
         @Autowired
         private SpringTemplateEngine htmlViewTemplateEngine;
+
+        @Autowired
+        public void setTemplateEngineSet(Set<SpringTemplateEngine> templateEngineSet) {
+            // 所有都增加安全方言
+            templateEngineSet.forEach(engine -> engine.addDialect(new SpringSecurityDialect()));
+        }
 
         @Bean
         public ViewResolver htmlViewResolver() {

@@ -32,7 +32,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/manage/notice")
@@ -82,31 +81,31 @@ public class NoticeController {
         modelAndView.setViewName("/view/widget/addNotice.html");
         return modelAndView;
     }
-
-    /**
-     * 修改公告
-     *
-     * @param id
-     * @param ownerId
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping("/updateNotice")
-    public ModelAndView updateNotice(@RequestParam(value = "id", defaultValue = "0") Long id, long ownerId) throws Exception {
-        ModelAndView modelAndView = new ModelAndView();
-        try {
-            modelAndView.setViewName("/view/contents/updateNotice.html");
-            Notice notice = noticeService.findById(id);
-            Category category = notice.getCategory();
-            Integer modelType = category.getModelId();
-            Set<Category> categorys = categoryRepository.findBySite_Owner_IdAndModelId(ownerId, modelType);
-            modelAndView.addObject("categorys", categorys);
-            modelAndView.addObject("notice", notice);
-        } catch (Exception ex) {
-            log.error(ex.getMessage());
-        }
-        return modelAndView;
-    }
+//
+//    /**
+//     * 修改公告
+//     *
+//     * @param id
+//     * @param ownerId
+//     * @return
+//     * @throws Exception
+//     */
+//    @RequestMapping("/updateNotice")
+//    public ModelAndView updateNotice(@RequestParam(value = "id", defaultValue = "0") Long id, long ownerId) throws Exception {
+//        ModelAndView modelAndView = new ModelAndView();
+//        try {
+//            modelAndView.setViewName("/view/contents/updateNotice.html");
+//            Notice notice = noticeService.findById(id);
+//            Category category = notice.getCategory();
+//            Integer modelType = category.getModelId();
+//            Set<Category> categorys = categoryRepository.findBySite_Owner_IdAndModelId(ownerId, modelType);
+//            modelAndView.addObject("categorys", categorys);
+//            modelAndView.addObject("notice", notice);
+//        } catch (Exception ex) {
+//            log.error(ex.getMessage());
+//        }
+//        return modelAndView;
+//    }
 
 
     /**

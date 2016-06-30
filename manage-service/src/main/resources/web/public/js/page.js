@@ -7,15 +7,11 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.hotcms.widget.util;
-
 /**
- * Created by wenqi on 2016/6/24.
+ * 关于页面的脚本
+ * Created by CJ on 6/27/16.
  */
+$(function () {
 
-/**
- * 用于本系统 对xml的相关操作，主要还是针对接口{@link com.huotu.hotcms.widget.page.PageElement}的反序列化
- */
-public class CMSXmlUtils {
-
-}
+    // TODO 表单校验
+});

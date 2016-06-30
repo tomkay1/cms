@@ -10,6 +10,7 @@
 package com.huotu.hotcms.widget.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 /**
@@ -19,6 +20,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  */
 @Configuration
 @EnableJpaRepositories("com.huotu.hotcms.widget.repository")
+@ImportResource({"classpath:spring_dev.xml", "classpath:spring_prod.xml"})
 public class WidgetJpaConfig {
 
 }

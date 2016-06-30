@@ -9,11 +9,9 @@
 
 package com.huotu.cms.manage.page;
 
-import me.jiangcai.lib.test.page.AbstractPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
 
@@ -32,15 +30,6 @@ public abstract class AbstractFrameParentPage extends AbstractManagePage {
         if (webDriver.findElements(By.id("content")).isEmpty())
             webDriver.switchTo().parentFrame();
     }
-
-    <T extends AbstractPage> T initPage(Class<T> pageClass) {
-        T page = PageFactory.initElements(webDriver, pageClass);
-//        page.setResourceService(resourceService);
-        page.setTestInstance(getTestInstance());
-        page.validatePage();
-        return page;
-    }
-
 
     public void clickLogout() {
         beforeDriver();

@@ -36,6 +36,11 @@ public class RoutePage extends AbstractContentPage {
 //        System.out.println(webDriver.getPageSource());
         assertThat(body.isDisplayed())
                 .isTrue();
+        try {
+            assertNoDanger();
+        } catch (InterruptedException e) {
+            throw new AssertionError(e);
+        }
     }
 
     public void addRoute(Route route) {
@@ -47,5 +52,65 @@ public class RoutePage extends AbstractContentPage {
         inputText(form, "description", route.getDescription());
         form.findElement(By.className("btn-primary")).click();
         reloadPageInfo();
+    }
+
+    /**
+     * 点击任意一个.delete
+     */
+    public void deleteAny() {
+        beforeDriver();
+        webDriver.findElements(By.className("delete"))
+                .stream().findAny().ifPresent(webElement -> {
+            webElement.click();
+            try {
+                webDriver.switchTo().alert().accept();
+            } catch (Throwable ignored) {
+            }
+        });
+    }
+
+    /**
+     * 打开任意的一个
+     *
+     * @return 刚打开的页面
+     */
+    public RoutePage openAny() {
+        beforeDriver();
+        webDriver.findElements(By.className("fa-pencil"))
+                .stream().findAny().ifPresent(webElement -> {
+            webElement.click();
+            try {
+                webDriver.switchTo().alert().accept();
+            } catch (Throwable ignored) {
+            }
+        });
+        return initPage(RoutePage.class);
+    }
+
+    /**
+     * 检查当前打开的值 是否跟传入的值一致
+     *
+     * @param route 传入Route
+     */
+    public void checkRouteData(Route route) {
+        checkInputText(form, "rule", route.getRule());
+        checkInputText(form, "description", route.getDescription());
+        checkInputText(form, "targetUri", route.getTargetUri());
+    }
+
+    private void checkInputText(WebElement form, String inputName, String value) {
+        assertThat(form.findElement(By.name(inputName)).getAttribute("value"))
+                .isEqualTo(value);
+    }
+
+    /**
+     * 修改route
+     *
+     * @param data 输入的数据
+     * @return 修改完成以后的页面
+     */
+    public RoutePage modifyRoute(Route data) {
+        addRoute(data);
+        return this;
     }
 }

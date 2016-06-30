@@ -15,7 +15,7 @@
  */
 
 $(function () {
-    var debug = true;
+    var debug = false;
 
     function resetTopMenuStatus() {
         var top = window.top;
@@ -49,7 +49,7 @@ $(function () {
         print('target:', target);
 
         if (target.size() == 0) {
-            console.error('找不到对应的Class');
+            console.error('找不到对应的Class', targetClass);
             return;
         }
         //先确定下它的上级菜单
@@ -68,6 +68,19 @@ $(function () {
     $('.delete').click(function () {
         return confirm('确实要删除么?');
     });
+
+    // 让.datatable 变成真的datatable
+    // table
+    var dataTable = $('table.table')
+    if (dataTable.size() > 0) {
+        dataTable.dataTable({
+            language: {
+                url: 'http://resali.huobanplus.com/cdn/bracket/localisation/dataTable_zh_CN.json'
+            },
+            sPaginationType: "full_numbers"
+        });
+    }
+
     // 让autoGrow class 可以自动增长
     var autoGrow = $('.autoGrow');
     if (autoGrow.size() > 0) {

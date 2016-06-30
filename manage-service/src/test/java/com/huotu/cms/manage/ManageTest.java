@@ -17,6 +17,7 @@ import com.huotu.cms.manage.page.ManageMainPage;
 import com.huotu.cms.manage.test.AuthController;
 import com.huotu.hotcms.service.common.CMSEnums;
 import com.huotu.hotcms.service.common.SiteType;
+import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
@@ -207,5 +208,16 @@ public abstract class ManageTest extends SpringWebTest {
             domains[i] = randomDomain();
         }
         return domains;
+    }
+
+    /**
+     * @return 随机创建的路由JO
+     */
+    protected Route randomRouteValue() {
+        Route route = new Route();
+        route.setDescription(UUID.randomUUID().toString());
+        route.setRule(UUID.randomUUID().toString());
+        route.setTargetUri(UUID.randomUUID().toString());
+        return route;
     }
 }

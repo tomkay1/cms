@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.service.repository;
 
+import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -49,18 +50,18 @@ public interface CategoryRepository extends JpaRepository<Category, Long>, JpaSp
     /**
      * 根据所有者,站点查询栏目
      */
-    List<Category> findBySite_Owner_IdAndSite_SiteIdAndDeletedAndModelIdNotNullOrderByOrderWeightDesc(long ownerId
+    List<Category> findBySite_Owner_IdAndSite_SiteIdAndDeletedAndContentTypeNotNullOrderByOrderWeightDesc(long ownerId
             , Long siteId, boolean deleted);
 
     /**
      * 根据所有者,模型,以及栏目名查询栏目
      */
-    Set<Category> findBySite_Owner_IdAndModelId(long ownerId, Integer modelType);
+    Set<Category> findBySite_Owner_IdAndContentType(long ownerId, ContentType contentType);
 
     /**
      * 根据站点查询栏目
      */
-    List<Category> findBySiteAndDeletedAndModelIdNotNullOrderByOrderWeightDesc(Site site, boolean deleted);
+    List<Category> findBySiteAndDeletedAndContentTypeNotNullOrderByOrderWeightDesc(Site site, boolean deleted);
 
     /**
      * 根据父栏目查询栏目
@@ -72,8 +73,4 @@ public interface CategoryRepository extends JpaRepository<Category, Long>, JpaSp
      */
     List<Category> findByParent_Id(Long parenId);
 
-    /**
-     * 根据父栏目查询栏目
-     */
-    List<Category> findByParentIdsContainingAndDeleted(String parentId, boolean deleted);
 }

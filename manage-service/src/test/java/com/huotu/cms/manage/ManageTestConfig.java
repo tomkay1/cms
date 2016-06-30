@@ -16,6 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
+import org.thymeleaf.spring4.SpringTemplateEngine;
+
+import java.util.Set;
 
 /**
  * @author CJ
@@ -24,6 +28,12 @@ import org.springframework.context.annotation.Import;
 @Import({ServiceConfig.class, ManageServiceSpringConfig.class})
 @ComponentScan("com.huotu.cms.manage.test")
 public class ManageTestConfig extends MockMVC {
+
+    @Autowired
+    public void setTemplateEngineSet(Set<SpringTemplateEngine> templateEngineSet) {
+        // 所有都增加安全方言
+        templateEngineSet.forEach(engine -> engine.addDialect(new SpringSecurityDialect()));
+    }
 
     @Autowired
     public void setManageServiceSpringConfig(ManageServiceSpringConfig manageServiceSpringConfig) {

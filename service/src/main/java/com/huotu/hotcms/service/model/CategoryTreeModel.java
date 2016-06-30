@@ -41,14 +41,15 @@ public class CategoryTreeModel extends Category {
     public static CategoryTreeModel ConvertToCategoryTreeModel(Category category){
         CategoryTreeModel categoryTreeModel = new CategoryTreeModel();
         categoryTreeModel.setCreateTime(category.getCreateTime());
-        categoryTreeModel.setCustom(category.isCustom());
+//        categoryTreeModel.setCustom(category.isCustom());
         categoryTreeModel.setDeleted(category.isDeleted());
+        categoryTreeModel.setContentType(category.getContentType());
         categoryTreeModel.setId(category.getId());
-        categoryTreeModel.setModelId(category.getModelId());
+//        categoryTreeModel.setModelId(category.getModelId());
         categoryTreeModel.setName(category.getName());
         categoryTreeModel.setOrderWeight(category.getOrderWeight());
         categoryTreeModel.setParent(category.getParent());
-        categoryTreeModel.setParentIds(category.getParentIds());
+//        categoryTreeModel.setParentIds(category.getParentIds());
 //        if(category.getRoute()!=null&&category.getRoute().getRouteType()!=null) {
 //            categoryTreeModel.setRouteType(category.getRoute().getRouteType().getCode());
 //        }
@@ -87,14 +88,15 @@ public class CategoryTreeModel extends Category {
         if (category != null) {
             CategoryTreeModel categoryTreeModel = new CategoryTreeModel();
             categoryTreeModel.setCreateTime(category.getCreateTime());
-            categoryTreeModel.setCustom(category.isCustom());
+//            categoryTreeModel.setCustom(category.isCustom());
             categoryTreeModel.setDeleted(category.isDeleted());
             categoryTreeModel.setId(category.getId());
-            categoryTreeModel.setModelId(category.getModelId());
+//            categoryTreeModel.setModelId(category.getModelId());
+            categoryTreeModel.setContentType(category.getContentType());
             categoryTreeModel.setName(category.getName());
             categoryTreeModel.setOrderWeight(category.getOrderWeight());
             categoryTreeModel.setParent(category.getParent());
-            categoryTreeModel.setParentIds(category.getParentIds());
+//            categoryTreeModel.setParentIds(category.getParentIds());
 //            if (category.getRoute() != null && category.getRoute().getRouteType() != null) {
 //                categoryTreeModel.setRouteType(category.getRoute().getRouteType().getCode());
 //            }

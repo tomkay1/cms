@@ -71,7 +71,7 @@ public abstract class SiteManageController<T, ID extends Serializable, PD, MD> e
     @SuppressWarnings({"WeakerAccess", "JavaDoc"})
     protected Specification<T> prepareIndex(Login login, Site site, RedirectAttributes attributes)
             throws RedirectException {
-        return (root, query, cb) -> cb.equal(root.get("site"), site);
+        return (root, query, cb) -> cb.equal(root.get("site").as(Site.class), site);
     }
 
     /**

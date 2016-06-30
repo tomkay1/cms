@@ -12,15 +12,8 @@ package com.huotu.hotcms.widget.repository;
 import com.huotu.hotcms.widget.entity.WidgetInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
-/**
- * Created by elvis on 2016/6/7.
- */
-@Repository
-public interface WidgetRepository extends JpaRepository<WidgetInfo, Long>,JpaSpecificationExecutor {
+public interface WidgetRepository extends JpaRepository<WidgetInfo, Long>, JpaSpecificationExecutor<WidgetInfo> {
 
 //    List<WidgetInfo> findByAuthor(String author);
 

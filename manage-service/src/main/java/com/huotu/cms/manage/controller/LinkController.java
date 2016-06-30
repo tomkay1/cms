@@ -34,7 +34,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
-import java.util.Set;
 
 /**
  * Created by chendeyu on 2016/1/6.
@@ -97,35 +96,35 @@ public class LinkController {
         return modelAndView;
     }
 
-    /**
-     * 修改链接
-     *
-     * @param id
-     * @param ownerId
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping("/updateLink")
-    public ModelAndView updateLink(@RequestParam(value = "id", defaultValue = "0") Long id, long ownerId) throws Exception {
-        ModelAndView modelAndView = new ModelAndView();
-        try {
-            modelAndView.setViewName("/view/contents/updateLink.html");
-            Link link = linkService.findById(id);
-            String logo_uri = "";
-            if (!StringUtils.isEmpty(link.getThumbUri())) {
-                logo_uri = resourceService.getResource(link.getThumbUri()).httpUrl().toString();
-            }
-            Category category = link.getCategory();
-            Integer modelType = category.getModelId();
-            Set<Category> categorys = categoryRepository.findBySite_Owner_IdAndModelId(ownerId, modelType);
-            modelAndView.addObject("logo_uri", logo_uri);
-            modelAndView.addObject("categorys", categorys);
-            modelAndView.addObject("link", link);
-        } catch (Exception ex) {
-            log.error(ex.getMessage());
-        }
-        return modelAndView;
-    }
+//    /**
+//     * 修改链接
+//     *
+//     * @param id
+//     * @param ownerId
+//     * @return
+//     * @throws Exception
+//     */
+//    @RequestMapping("/updateLink")
+//    public ModelAndView updateLink(@RequestParam(value = "id", defaultValue = "0") Long id, long ownerId) throws Exception {
+//        ModelAndView modelAndView = new ModelAndView();
+//        try {
+//            modelAndView.setViewName("/view/contents/updateLink.html");
+//            Link link = linkService.findById(id);
+//            String logo_uri = "";
+//            if (!StringUtils.isEmpty(link.getThumbUri())) {
+//                logo_uri = resourceService.getResource(link.getThumbUri()).httpUrl().toString();
+//            }
+//            Category category = link.getCategory();
+//            Integer modelType = category.getModelId();
+//            Set<Category> categorys = categoryRepository.findBySite_Owner_IdAndModelId(ownerId, modelType);
+//            modelAndView.addObject("logo_uri", logo_uri);
+//            modelAndView.addObject("categorys", categorys);
+//            modelAndView.addObject("link", link);
+//        } catch (Exception ex) {
+//            log.error(ex.getMessage());
+//        }
+//        return modelAndView;
+//    }
 
 
     /**

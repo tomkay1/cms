@@ -20,7 +20,7 @@ import org.openqa.selenium.WebDriver;
 abstract class AbstractContentPage extends AbstractManagePage {
 
     AbstractContentPage(WebDriver webDriver) {
-        super(webDriver.switchTo().frame("content"));
+        super(webDriver.findElements(By.id("content")).isEmpty() ? webDriver : webDriver.switchTo().frame("content"));
     }
 
     /**
@@ -29,5 +29,12 @@ abstract class AbstractContentPage extends AbstractManagePage {
     void beforeDriver() {
         if (!webDriver.findElements(By.id("content")).isEmpty())
             webDriver.switchTo().frame("content");
+    }
+
+    @Override
+    public void assertNoDanger() throws InterruptedException {
+        webDriver.switchTo().parentFrame();
+        super.assertNoDanger();
+        beforeDriver();
     }
 }

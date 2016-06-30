@@ -23,7 +23,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,7 +31,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
-import java.util.Set;
 
 /**
  * Created by chendeyu on 2016/1/11.
@@ -90,36 +88,36 @@ public class DownloadController {
         modelAndView.setViewName("/view/widget/addDownload.html");
         return modelAndView;
     }
-
-    /**
-     * 修改下载
-     *
-     * @param id
-     * @param ownerId
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping("/updateDownload")
-    public ModelAndView updateDownload(@RequestParam(value = "id", defaultValue = "0") Long id, long ownerId) throws Exception {
-        ModelAndView modelAndView = new ModelAndView();
-        try {
-            modelAndView.setViewName("/view/contents/updateDownload.html");
-            Download download = downloadService.findById(id);
-            Category category = download.getCategory();
-            Integer modelType = category.getModelId();
-            Set<Category> categorys = categoryRepository.findBySite_Owner_IdAndModelId(ownerId, modelType);
-            String downloadFile = "";
-            if (!StringUtils.isEmpty(download.getDownloadUrl())) {
-                downloadFile = resourceService.getResource(download.getDownloadUrl()).httpUrl().toString();
-            }
-            modelAndView.addObject("downloadFile", downloadFile);
-            modelAndView.addObject("categorys", categorys);
-            modelAndView.addObject("download", download);
-        } catch (Exception ex) {
-            log.error(ex.getMessage());
-        }
-        return modelAndView;
-    }
+//
+//    /**
+//     * 修改下载
+//     *
+//     * @param id
+//     * @param ownerId
+//     * @return
+//     * @throws Exception
+//     */
+//    @RequestMapping("/updateDownload")
+//    public ModelAndView updateDownload(@RequestParam(value = "id", defaultValue = "0") Long id, long ownerId) throws Exception {
+//        ModelAndView modelAndView = new ModelAndView();
+//        try {
+//            modelAndView.setViewName("/view/contents/updateDownload.html");
+//            Download download = downloadService.findById(id);
+//            Category category = download.getCategory();
+//            Integer modelType = category.getModelId();
+//            Set<Category> categorys = categoryRepository.findBySite_Owner_IdAndModelId(ownerId, modelType);
+//            String downloadFile = "";
+//            if (!StringUtils.isEmpty(download.getDownloadUrl())) {
+//                downloadFile = resourceService.getResource(download.getDownloadUrl()).httpUrl().toString();
+//            }
+//            modelAndView.addObject("downloadFile", downloadFile);
+//            modelAndView.addObject("categorys", categorys);
+//            modelAndView.addObject("download", download);
+//        } catch (Exception ex) {
+//            log.error(ex.getMessage());
+//        }
+//        return modelAndView;
+//    }
 
     /**
      * 保存下载模型

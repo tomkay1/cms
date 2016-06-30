@@ -36,7 +36,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
-import java.util.Set;
 
 /**
  * Created by chendeyu on 2016/1/6.
@@ -96,36 +95,36 @@ public class ArticleController {
         modelAndView.setViewName("/view/widget/addArticle.html");
         return modelAndView;
     }
-
-    /**
-     * 修改文章
-     *
-     * @param id
-     * @param ownerId
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping("/updateArticle")
-    public ModelAndView updateArticle(@RequestParam(value = "id", defaultValue = "0") Long id, long ownerId) throws Exception {
-        ModelAndView modelAndView = new ModelAndView();
-        try {
-            modelAndView.setViewName("/view/contents/updateArticle.html");
-            Article article = articleService.findById(id);
-            String logo_uri = "";
-            if (!StringUtils.isEmpty(article.getThumbUri())) {
-                logo_uri = resourceService.getResource(article.getThumbUri()).httpUrl().toString();
-            }
-            Category category = article.getCategory();
-            Integer modelType = category.getModelId();
-            Set<Category> categories = categoryRepository.findBySite_Owner_IdAndModelId(ownerId, modelType);
-            modelAndView.addObject("logo_uri", logo_uri);
-            modelAndView.addObject("categorys", categories);
-            modelAndView.addObject("article", article);
-        } catch (Exception ex) {
-            log.error(ex.getMessage());
-        }
-        return modelAndView;
-    }
+//
+//    /**
+//     * 修改文章
+//     *
+//     * @param id
+//     * @param ownerId
+//     * @return
+//     * @throws Exception
+//     */
+//    @RequestMapping("/updateArticle")
+//    public ModelAndView updateArticle(@RequestParam(value = "id", defaultValue = "0") Long id, long ownerId) throws Exception {
+//        ModelAndView modelAndView = new ModelAndView();
+//        try {
+//            modelAndView.setViewName("/view/contents/updateArticle.html");
+//            Article article = articleService.findById(id);
+//            String logo_uri = "";
+//            if (!StringUtils.isEmpty(article.getThumbUri())) {
+//                logo_uri = resourceService.getResource(article.getThumbUri()).httpUrl().toString();
+//            }
+//            Category category = article.getCategory();
+//            Integer modelType = category.getModelId();
+//            Set<Category> categories = categoryRepository.findBySite_Owner_IdAndModelId(ownerId, modelType);
+//            modelAndView.addObject("logo_uri", logo_uri);
+//            modelAndView.addObject("categorys", categories);
+//            modelAndView.addObject("article", article);
+//        } catch (Exception ex) {
+//            log.error(ex.getMessage());
+//        }
+//        return modelAndView;
+//    }
 
 
     /**

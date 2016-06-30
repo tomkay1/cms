@@ -10,10 +10,12 @@
 package com.huotu.cms.manage.config;
 
 import com.huotu.hotcms.service.entity.login.Login;
+import com.huotu.hotcms.widget.config.WidgetConfig;
 import me.jiangcai.lib.embedweb.EmbedWeb;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,7 +31,8 @@ import org.springframework.security.config.annotation.web.configurers.Expression
 @Configuration
 @EnableWebSecurity
 @Order(99)//毕竟不是老大 100就让给别人了
-@ComponentScan("com.huotu.cms.manage")
+@ComponentScan({"com.huotu.cms.manage"})
+@Import(WidgetConfig.class)
 public class ManageServiceSpringConfig extends WebSecurityConfigurerAdapter implements EmbedWeb {
 
     @Autowired
@@ -39,6 +42,19 @@ public class ManageServiceSpringConfig extends WebSecurityConfigurerAdapter impl
     public String name() {
         return "manage-service";
     }
+
+//    @PostConstruct
+//    public void init() {
+//        applicationContext.getBeansOfType(SpringTemplateEngine.class)
+//                .values().forEach(engine -> engine.addDialect(new SpringSecurityDialect()));
+//    }
+//
+//    @SuppressWarnings("SpringJavaAutowiringInspection")
+//    @Autowired
+//    public void setTemplateEngineSet(Set<SpringTemplateEngine> templateEngineSet) {
+//        // 所有都增加安全方言
+//        templateEngineSet.forEach(engine -> engine.addDialect(new SpringSecurityDialect()));
+//    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.service.entity;
 
+import com.huotu.hotcms.service.common.ContentType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -80,28 +81,34 @@ public class Category {
     private Category parent;
 
     /**
-     * 所有父级编号，用逗号分隔
+     * 正文类型
+     * 如果已设置 {@link #parent}则不应该再设置该项.
      */
-    @Column(name = "parentIds")
-    private String parentIds;
+    private ContentType contentType;
 
-    /**
-     * 是否自定义模型
-     */
-    @Column(name = "custom")
-    private boolean custom;
+//    /**
+//     * 所有父级编号，用逗号分隔
+//     */
+//    @Column(name = "parentIds")
+//    private String parentIds;
 
-    /**
-     * 系统数据类型ID/
-     * 0:文章
-     * 1：公告
-     * 2：视频
-     * 3：图库
-     * 4：下载
-     * 5：链接
-     */
-    @Column(name = "modelId")
-    private Integer modelId;
+//    /**
+//     * 是否自定义模型
+//     */
+//    @Column(name = "custom")
+//    private boolean custom;
+
+//    /**
+//     * 系统数据类型ID/
+//     * 0:文章
+//     * 1：公告
+//     * 2：视频
+//     * 3：图库
+//     * 4：下载
+//     * 5：链接
+//     */
+//    @Column(name = "modelId")
+//    private Integer modelId;
 
 
     /**

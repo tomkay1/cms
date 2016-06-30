@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -62,21 +61,59 @@ public class RouteControllerTest extends ManageTest {
         loginAsOwner(owner);
         initPage(ManageMainPage.class).switchSite(site);
 
-        RoutePage page = initPage(ManageMainPage.class).toRoute();
-        Route route = randomRouteValue();
-        page.addRoute(route);
+        addRoute();
 
         Set<Route> routeSet = routeService.getRoute(site);
         assertThat(routeSet)
                 .hasSize(1);
     }
 
-    private Route randomRouteValue() {
-        Route route = new Route();
-        route.setDescription(UUID.randomUUID().toString());
-        route.setRule(UUID.randomUUID().toString());
-        route.setTargetUri(UUID.randomUUID().toString());
-        return route;
+    @Test
+    public void delete() throws Exception {
+        Owner owner = randomOwner();
+        Site site = randomSite(owner);
+        loginAsOwner(owner);
+        initPage(ManageMainPage.class).switchSite(site);
+
+        RoutePage page = addRoute();
+        page.deleteAny();
+
+        Set<Route> routeSet = routeService.getRoute(site);
+        assertThat(routeSet)
+                .isEmpty();
+    }
+
+    @Test
+    public void update() throws Exception {
+        Owner owner = randomOwner();
+        Site site = randomSite(owner);
+        loginAsOwner(owner);
+        initPage(ManageMainPage.class).switchSite(site);
+
+        RoutePage page = addRoute();
+        RoutePage openPage = page.openAny();
+
+        Set<Route> routeSet = routeService.getRoute(site);
+        Route route = routeSet.stream().findAny().orElseThrow(() -> new IllegalStateException("似乎添加失败了。"));
+        openPage.checkRouteData(route);
+        Route routeData = randomRouteValue();
+        page = openPage.modifyRoute(routeData);
+
+        assertThat(route.getRule())
+                .isEqualTo(routeData.getRule());
+        assertThat(route.getTargetUri())
+                .isEqualTo(routeData.getTargetUri());
+        assertThat(route.getDescription())
+                .isEqualTo(routeData.getDescription());
+
+    }
+
+    private RoutePage addRoute() {
+        RoutePage page = initPage(ManageMainPage.class).toRoute();
+        Route route = randomRouteValue();
+        page.addRoute(route);
+        page.reloadPageInfo();
+        return page;
     }
 
 }

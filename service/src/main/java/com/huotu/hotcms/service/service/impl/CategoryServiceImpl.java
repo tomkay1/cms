@@ -244,55 +244,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Boolean CategorySetParents(Category category) {
-        Long categoryId=category.getId();
-        if(categoryId!=null) {
-            String categoryPath = category.getParentIds();
-            if (StringUtils.isEmpty(categoryPath)) {
-                category.setParentIds(categoryId.toString());
-            } else {
-                category.setParentIds(categoryPath + "|" + categoryId);
-            }
-            categoryRepository.saveAndFlush(category);
-        }
-        return true;
-    }
-    @Override
     public List<Category> getCategoryList(Category parent) {
         return categoryRepository.findByParentOrderByOrderWeightDesc(parent);
     }
 
-    @Override
-    public List<Category> findByParentIdsLike(String parentId) {
-        List<Category> categoryList=new ArrayList<>();
-        List<Category> categories=categoryRepository.findByParentIdsContainingAndDeleted(parentId, false);
-        for(Category category:categories){
-            if(category!=null){
-                if(category!=null){
-                    if(category.getModelId()!=null&&category.getModelId()<=5) {
-                        categoryList.add(category);
-                    }
-                }
-            }
-        }
-        return categoryList;
-    }
-
-    public String getCategoryParentIds(Long parentId){
-        String parentIds="";
-        List<Category> categories=categoryRepository.findByParentIdsContainingAndDeleted(parentId.toString(),false);
-        if(categories!=null){
-            for(Category category:categories){
-                if(category!=null){
-                    if(category.getModelId()!=null&&category.getModelId()<=5) {
-                        parentIds += category.getId() + ",";
-                    }
-                }
-            }
-        }
-        if(!StringUtils.isEmpty(parentIds)){
-            parentIds=parentIds.substring(0,parentIds.length()-1);
-        }
-        return parentIds;
-    }
 }

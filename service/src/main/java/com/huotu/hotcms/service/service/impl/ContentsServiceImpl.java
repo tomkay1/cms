@@ -9,9 +9,9 @@
 
 package com.huotu.hotcms.service.service.impl;
 
-import com.huotu.hotcms.service.entity.BaseEntity;
+import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.repository.BaseEntityRepository;
+import com.huotu.hotcms.service.repository.AbstractContentRepository;
 import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.service.ContentsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,15 +26,15 @@ public class ContentsServiceImpl implements ContentsService {
 
 
     @Autowired
-    BaseEntityRepository baseEntityRepository;
+    AbstractContentRepository abstractContentRepository;
 
     @Autowired
     CategoryService categoryService;
 
 
     @Override
-    public Iterable<BaseEntity> list(String title, Site site, Long category, Pageable pageable) {
-        Specification<BaseEntity> specification = (root, query, cb) -> {
+    public Iterable<AbstractContent> list(String title, Site site, Long category, Pageable pageable) {
+        Specification<AbstractContent> specification = (root, query, cb) -> {
             Predicate predicate = cb.equal(root.get("category").get("site"), site);
             if (title != null) {
                 Predicate titlePredicate = cb.or(cb.like(root.get("title"), "%" + title + "%")
@@ -49,8 +49,8 @@ public class ContentsServiceImpl implements ContentsService {
         };
 
         if (pageable == null)
-            return baseEntityRepository.findAll(specification);
-        return baseEntityRepository.findAll(specification, pageable);
+            return abstractContentRepository.findAll(specification);
+        return abstractContentRepository.findAll(specification, pageable);
     }
 
 //    @Override

@@ -9,7 +9,7 @@
 
 package com.huotu.hotcms.service.service.impl;
 
-import com.huotu.hotcms.service.entity.BaseEntity;
+import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.Video;
@@ -83,12 +83,12 @@ public class VideoServiceImpl implements VideoService {
                 log.error(e.getMessage());
             }
         }
-        Specification<Video> specification = BaseEntity.Specification(params, subCategories);
+        Specification<Video> specification = AbstractContent.Specification(params, subCategories);
         return videoRepository.findAll(specification, new PageRequest(pageIndex, pageSize, sort));
     }
 
     private Page<Video> getVideos(PageableForeachParam params, int pageIndex, int pageSize, Sort sort) {
-        Specification<Video> specification = BaseEntity.Specification(params);
+        Specification<Video> specification = AbstractContent.Specification(params);
         return videoRepository.findAll(specification, new PageRequest(pageIndex, pageSize, sort));
     }
 

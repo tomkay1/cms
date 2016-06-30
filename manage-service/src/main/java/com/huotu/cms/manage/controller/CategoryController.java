@@ -9,13 +9,17 @@
 
 package com.huotu.cms.manage.controller;
 
+import com.huotu.cms.manage.controller.support.SiteManageController;
+import com.huotu.cms.manage.exception.RedirectException;
 import com.huotu.cms.manage.util.web.CookieUser;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.common.EnumUtils;
 import com.huotu.hotcms.service.common.ModelType;
 import com.huotu.hotcms.service.common.RouteType;
+import com.huotu.hotcms.service.converter.CategoryFormatter;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.model.CategoryTreeModel;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.service.CategoryService;
@@ -27,11 +31,14 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
@@ -43,8 +50,10 @@ import java.util.Set;
  */
 @Controller
 @RequestMapping("/manage/category")
-public class CategoryController {
+public class CategoryController extends SiteManageController<Category, Long, Void, Void> {
     private static final Log log = LogFactory.getLog(CategoryController.class);
+
+
     @Autowired
     CategoryService categoryService;
     @Autowired
@@ -55,6 +64,8 @@ public class CategoryController {
     RouteService routeService;
     @Autowired
     private CookieUser cookieUser;
+    @Autowired
+    private CategoryFormatter categoryFormatter;
 
     /**
      * 栏目列表视图
@@ -272,5 +283,33 @@ public class CategoryController {
             result=new ResultView(ResultOptionEnum.FAILE.getCode(),ResultOptionEnum.FAILE.getValue(),null);
         }
         return  result;
+    }
+
+    @InitBinder
+    public void bind(WebDataBinder binder) {
+        if (binder.getObjectName().equals("parent")) {
+            binder.addCustomFormatter(categoryFormatter);
+        }
+    }
+
+    @Override
+    protected Category preparePersist(Login login, Site site, Category data, Void extra, RedirectAttributes attributes)
+            throws RedirectException {
+        return data;
+    }
+
+    @Override
+    protected String indexViewName() {
+        return "";
+    }
+
+    @Override
+    protected void prepareSave(Login login, Category entity, Category data, Void extra, RedirectAttributes attributes) throws RedirectException {
+
+    }
+
+    @Override
+    protected String openViewName() {
+        return null;
     }
 }

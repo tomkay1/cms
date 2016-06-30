@@ -182,13 +182,26 @@
 </div>
 <div class="modal-backdrop" ></div>
 </body>
+<!--suppress HtmlUnknownAttribute -->
+<div style="display: none" ewp:src="/assets/seajs/sea.js" src="../../public" id="EWPPath"></div>
 <script th:inline="javascript">
-    //var path = /*[[@{/manage/upload/fine}]]*/ null;
+    var path = /*[[@{/manage/upload/fine}]]*/ null;
+    var strHref=document.getElementById("EWPPath").getAttribute("src");
+    var mainHref = window.document.location.href;
+    var index=strHref.indexOf("public");
+    var host=window.location.host;
+    host+=strHref.substring(0,index)+"public";
+    var seajsPath="home";
+    console.log(seajsPath);
 </script>
 <script src="../../public/assets/seajs/sea.js" ewp:src="/assets/seajs/sea.js"></script>
 <script src="../../public/assets/seajs/seajs-preload.js" ewp:src="/assets/seajs/seajs-preload.js"></script>
 <script src="../../public/assets/seajs/seajs-css.js" ewp:src="/assets/seajs/seajs-css.js"></script>
 <script src="../../public/assets/seajs/sea.config.js" ewp:src="/assets/seajs/sea.config.js"></script>
+<script src="../../public/assets/libs/jquery-2.2.3.min.js" ewp:src="/assets/libs/jquery-2.2.3.min.js"></script>
+<script src="../../public/assets/libs/layer/layer.js" ewp:src="/assets/libs/layer/layer.js"></script>
+<script src="../../public/assets/js/page/mainPage" ewp:src="/assets/js/page/mainPage"></script>
+<script src="../../public/assets/libs/jquery-2.2.3.min.js" ewp:src="/assets/libs/jquery-2.2.3.min.js"></script>
 <script>
     seajs.use('main');
     seajs.use(['layer','editPJ', 'confMJ', 'dataHandle'],function (layer, editPage, confModule, dataHandle) {

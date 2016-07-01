@@ -9,7 +9,7 @@
 
 package com.huotu.hotcms.service.entity.login;
 
-import com.huotu.hotcms.service.entity.BaseEntity;
+import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Site;
@@ -57,7 +57,7 @@ public interface Login extends UserDetails {
      * @param content
      * @return true 表示可以管理这个正文
      */
-    boolean contentManageable(BaseEntity content);
+    boolean contentManageable(AbstractContent content);
 
     /**
      * @param category

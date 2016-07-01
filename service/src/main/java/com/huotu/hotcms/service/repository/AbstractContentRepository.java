@@ -9,14 +9,14 @@
 
 package com.huotu.hotcms.service.repository;
 
-import com.huotu.hotcms.service.entity.BaseEntity;
+import com.huotu.hotcms.service.entity.AbstractContent;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface BaseEntityRepository extends JpaRepository<BaseEntity, Long>, JpaSpecificationExecutor<BaseEntity> {
+public interface AbstractContentRepository extends JpaRepository<AbstractContent, Long>, JpaSpecificationExecutor<AbstractContent> {
     /**
      * 根据站点查询所有contents
      */

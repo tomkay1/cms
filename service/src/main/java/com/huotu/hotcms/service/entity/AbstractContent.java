@@ -37,11 +37,11 @@ import java.util.stream.Collectors;
  * 数据模型基类
  **/
 @Entity
-@Table(name = "cms_base_entity")
+@Table(name = "cms_bas_content")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Getter
 @Setter
-public abstract class BaseEntity {
+public abstract class AbstractContent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -97,7 +97,7 @@ public abstract class BaseEntity {
      * @return
      */
     @NotNull
-    public static <T extends BaseEntity> Specification<T> Specification(BaseForeachParam params) {
+    public static <T extends AbstractContent> Specification<T> Specification(BaseForeachParam params) {
         return (root, criteriaQuery, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (!StringUtils.isEmpty(params.getExcludeIds())) {
@@ -119,7 +119,7 @@ public abstract class BaseEntity {
      * @return
      */
     @NotNull
-    public static <T extends BaseEntity> Specification<T> Specification(BaseForeachParam params, List<Category> subCategories) {
+    public static <T extends AbstractContent> Specification<T> Specification(BaseForeachParam params, List<Category> subCategories) {
         return (root, criteriaQuery, cb) -> {
             List<Predicate> p1 = subCategories.stream().map(category -> cb.equal(root.get("category")
                     .as(Category.class), category)).collect(Collectors.toList());
@@ -145,7 +145,7 @@ public abstract class BaseEntity {
      * @param <T>     最终类型
      * @return 规格
      */
-    public static <T extends BaseEntity> Specification<T> Specification(long ownerId, String title, Boolean deleted) {
+    public static <T extends AbstractContent> Specification<T> Specification(long ownerId, String title, Boolean deleted) {
         return (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (!StringUtils.isEmpty(title)) {

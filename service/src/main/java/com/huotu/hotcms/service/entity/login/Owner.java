@@ -9,7 +9,7 @@
 
 package com.huotu.hotcms.service.entity.login;
 
-import com.huotu.hotcms.service.entity.BaseEntity;
+import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Site;
@@ -74,7 +74,7 @@ public class Owner extends AbstractLogin implements Serializable {
     }
 
     @Override
-    public boolean contentManageable(BaseEntity content) {
+    public boolean contentManageable(AbstractContent content) {
         return content.getCategory().getSite().getOwner().equals(this);
     }
 

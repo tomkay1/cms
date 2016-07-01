@@ -67,11 +67,11 @@ public class ManageServiceSpringConfig extends WebSecurityConfigurerAdapter impl
         // 在测试环境下 随意上传
         if (environment.acceptsProfiles("test") || environment.acceptsProfiles("development")) {
             registry = registry
-                    .anyRequest().permitAll();//不妨这样
-//                    .antMatchers("/manage/upload").permitAll()
-//                    .antMatchers("/manage/upload/fine").permitAll()
-//                    .antMatchers("/manage/pages").permitAll() //用于测试阶段页面服务
-//                    .antMatchers("/manage/owners").permitAll(); //用于测试阶段页面服务
+//                    .anyRequest().permitAll()//不妨这样  不要这样! 安全也是业务的一部分 同样需要测试,此处许可仅仅是为了原型测试。
+                    .antMatchers("/manage/upload").permitAll()
+                    .antMatchers("/manage/upload/fine").permitAll()
+                    .antMatchers("/manage/pages").permitAll() //用于测试阶段页面服务
+                    .antMatchers("/manage/owners").permitAll(); //用于测试阶段页面服务
         }
         registry
                 .antMatchers("/manage/**").hasRole(Login.Role_Manage_Value)

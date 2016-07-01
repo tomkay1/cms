@@ -278,7 +278,7 @@ public class CategoryController extends SiteManageController<Category, Long, Voi
 
     @InitBinder
     public void bind(WebDataBinder binder) {
-        if (binder.getObjectName().equals("parent")) {
+        if ("parent".equals(binder.getObjectName())) {
             binder.addCustomFormatter(categoryFormatter);
         }
     }

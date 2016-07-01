@@ -26,7 +26,11 @@ import lombok.Data;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT, visible = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Layout implements PageElement {
-    //标记
+
+    /**
+     * Layout的布局参数：比如12,6-6,4-4-4
+     */
+    private String layoutId;
 
     @JacksonXmlElementWrapper(useWrapping=false)
     private PageElement[] elements;

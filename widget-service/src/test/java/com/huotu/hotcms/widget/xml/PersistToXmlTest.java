@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.widget.xml;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.test.TestBase;
@@ -29,7 +30,8 @@ public class PersistToXmlTest extends TestBase {
         XmlMapper xmlMapper=new XmlMapper();
         String xmlString1=xmlMapper.writeValueAsString(page);
         System.out.println("xmlString1:"+xmlString1);
-
+//        ObjectMapper objectMapper=new ObjectMapper();
+//        String json=objectMapper.writeValueAsString(page);
         Page getPage=xmlMapper.readValue(xmlString1,Page.class);
 
         String xmlString2=xmlMapper.writeValueAsString(getPage);

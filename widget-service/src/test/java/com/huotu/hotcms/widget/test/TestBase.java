@@ -72,6 +72,8 @@ public class TestBase {
             isLayout=true;
 
         int nums = random.nextInt(4)+1;//生成PageElement的随机个数
+        //在实际环境中，肯定先存在layout,在layout中，拖入component
+        pageElementList.add(randomLayout());
         while (nums-- > 0) {
             if(isLayout)
                 pageElementList.add(randomLayout());
@@ -100,6 +102,7 @@ public class TestBase {
 
     private Layout randomLayout() {
         Layout layout = new Layout();
+        layout.setLayoutId(UUID.randomUUID().toString());
 
         List<PageElement> pageElementList = new ArrayList<>();
 

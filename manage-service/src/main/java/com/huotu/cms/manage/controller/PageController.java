@@ -48,7 +48,7 @@ public interface PageController {
 
     @RequestMapping(value = "/manage/owners/{ownerId}/pages",method = RequestMethod.GET)
     @ResponseBody
-    List<Page> getPageList(@PathVariable long ownerId) throws IOException;
+    List<Page> getPageList(@PathVariable("ownerId") long ownerId) throws IOException;
 
 
     /**
@@ -60,7 +60,7 @@ public interface PageController {
 
     @RequestMapping(value = "/manage/pages/{pageId}",method = RequestMethod.GET)
     @ResponseBody
-    Page getPage(@PathVariable String pageId) throws IOException;
+    Page getPage(@PathVariable("pageId") String pageId) throws IOException;
 
     /**
      * <p>保存界面{@link Page}</p>
@@ -70,7 +70,7 @@ public interface PageController {
 
     @RequestMapping(value = "/manage/pages/{pageId}",method = RequestMethod.PUT)
     @ResponseStatus(code = HttpStatus.ACCEPTED)
-    void savePage(@PathVariable String pageId, HttpServletRequest request) throws IOException, URISyntaxException;
+    void savePage(@PathVariable("pageId") String pageId, HttpServletRequest request) throws IOException, URISyntaxException;
 
     /**
      * <p>添加页面{@link Page}</p>
@@ -79,7 +79,7 @@ public interface PageController {
      */
     @RequestMapping(value = "/manage/owners/{ownerId}/pages",method = RequestMethod.POST)
     @ResponseStatus(code = HttpStatus.ACCEPTED)
-    void addPage(@PathVariable long ownerId, HttpServletRequest request) throws IOException;
+    void addPage(@PathVariable("ownerId") long ownerId, HttpServletRequest request) throws IOException;
 
     /**
      * <p>删除界面{@link Page}</p>
@@ -87,7 +87,7 @@ public interface PageController {
      */
     @RequestMapping(value = "/manage/pages/{pageId}",method = RequestMethod.DELETE)
     @ResponseStatus(code = HttpStatus.ACCEPTED)
-    void deletePage(@PathVariable String pageId, long ownerId) throws IOException;
+    void deletePage(@PathVariable("pageId") String pageId, long ownerId) throws IOException;
 
     /**
      * 保存页面部分属性
@@ -96,7 +96,7 @@ public interface PageController {
      */
     @RequestMapping(value = "/manage/pages/{pageId}/{propertyName}",method = RequestMethod.PUT)
     @ResponseStatus(code = HttpStatus.ACCEPTED)
-    void savePagePartProperties(@PathVariable String pageId, @PathVariable String propertyName);
+    void savePagePartProperties(@PathVariable("pageId") String pageId, @PathVariable("propertyName") String propertyName);
 
 
     /**

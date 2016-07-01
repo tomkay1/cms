@@ -7,10 +7,6 @@
  * 2013-2016. All rights reserved.
  */
 
-define(function(require, exports, module) {
-    require('../../css/slick/slick.css');
-    require('../../css/slick/slick-theme.css');
-    require('../../libs/slick.min.js');
 
     var Config = {
         init: function (url) {
@@ -25,7 +21,8 @@ define(function(require, exports, module) {
             });
         }
     };
-    exports.init = function () {
+var confModule = {};
+    confModule.init = function () {
         $(".common-conf .styles").slick({
             infinite: false,
             speed: 300,
@@ -36,4 +33,4 @@ define(function(require, exports, module) {
         //编辑器视图初始化
         Config.init('data/widget.json');//url
     };
-});
+confModule.init();

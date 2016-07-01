@@ -39,6 +39,7 @@ import com.huotu.hotcms.service.repository.RegionRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.repository.TemplateRepository;
 import com.huotu.hotcms.service.repository.VideoRepository;
+import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.service.HostService;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.util.HttpUtils;
@@ -76,22 +77,16 @@ public class SiteServiceImpl implements SiteService {
     private static final Log log = LogFactory.getLog(SiteServiceImpl.class);
     @Autowired
     SiteRepository siteRepository;
-
     @Autowired
     HostRepository hostRepository;
-
     @Autowired
     ConfigInfo configInfo;
-
     @Autowired
     ResourceService resourceService;
-
     @Autowired
     PageResolveService pageResolveService;
-
     @Autowired
     TemplateRepository templateRepository;
-
     @Autowired
     CategoryRepository categoryRepository;
     @Autowired
@@ -104,15 +99,14 @@ public class SiteServiceImpl implements SiteService {
     GalleryRepository galleryRepository;
     @Autowired
     LinkRepository linkRepository;
-
     @Autowired
     NoticeRepository noticeRepository;
     @Autowired
     VideoRepository videoRepository;
-
     @Autowired
     GalleryListRepository galleryListRepository;
-
+    @Autowired
+    private CategoryService categoryService;
     @Autowired
     private RegionRepository regionRepository;
     @Autowired
@@ -276,7 +270,7 @@ public class SiteServiceImpl implements SiteService {
         /*对Category的复制*/
         customerSite = siteRepository.findOne(customerSite.getSiteId());//确保查询的数据是完备的
 
-        List<Category> categories = categoryRepository.findBySite(templateSite);
+        List<Category> categories = categoryService.getCategories(templateSite);
         for (Category category : categories) {
             Category newCategory = new Category();
             newCategory.setSerial(SerialUtil.formatSerial(customerSite));

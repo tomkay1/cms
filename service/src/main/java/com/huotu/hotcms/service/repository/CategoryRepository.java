@@ -35,7 +35,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long>, JpaSp
      * @param site 站点
      * @return 所有栏目
      */
-    List<Category> findBySite(Site site);
+    List<Category> findBySiteOrderByOrderWeightDesc(Site site);
 
     /**
      * 根据站点查询栏目

@@ -47,14 +47,19 @@ public class CategoryServiceImpl implements CategoryService {
     RouteService routeService;
 
     @Override
+    public List<Category> getCategories(Site site) {
+        return categoryRepository.findBySiteOrderByOrderWeightDesc(site);
+    }
+
+    @Override
     public Category getCategoryById(Long id) {
         try {
             Category category = categoryRepository.getOne(id);
             return category;
-        }catch (Exception ex){
+        } catch (Exception ex) {
 
         }
-        return  null;
+        return null;
     }
 
     @Override
@@ -64,17 +69,17 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<Category> getCategoryBySiteAndDeletedAndNameContainingOrderByOrderWeightDesc(Site site,Boolean deleted,String name) {
-        List<Category> categories=null;
-        if(StringUtils.isEmpty(name)){
+    public List<Category> getCategoryBySiteAndDeletedAndNameContainingOrderByOrderWeightDesc(Site site, Boolean deleted, String name) {
+        List<Category> categories = null;
+        if (StringUtils.isEmpty(name)) {
             categories = categoryRepository.findBySiteAndDeletedOrderByOrderWeightDesc(site, deleted);
-        }else{
-            categories = categoryRepository.findBySiteAndDeletedAndNameContainingOrderByOrderWeightDesc(site,deleted,name);
+        } else {
+            categories = categoryRepository.findBySiteAndDeletedAndNameContainingOrderByOrderWeightDesc(site, deleted, name);
         }
-        for(Category category:categories){
-            if(category!=null){
+        for (Category category : categories) {
+            if (category != null) {
                 category.setSite(null);
-                category=setReleationEmpty(category);
+                category = setReleationEmpty(category);
             }
         }
         return categories;
@@ -83,7 +88,7 @@ public class CategoryServiceImpl implements CategoryService {
     public Category setReleationEmpty(Category category) {
         if (category != null) {
             Category parentCategory = category.getParent();
-            if(parentCategory!=null) {
+            if (parentCategory != null) {
                 parentCategory.setSite(null);
 //                parentCategory.setRoute(null);
                 category.setParent(parentCategory);
@@ -106,7 +111,7 @@ public class CategoryServiceImpl implements CategoryService {
             List<Predicate> predicates = categoryIds.stream().map(id -> cb.equal(root.get("id").as(Long.class), id)).collect(Collectors.toList());
             return cb.or(predicates.toArray(new Predicate[predicates.size()]));
         };
-        return categoryRepository.findAll(specification,new Sort(Sort.Direction.DESC,"orderWeight"));
+        return categoryRepository.findAll(specification, new Sort(Sort.Direction.DESC, "orderWeight"));
     }
 
     @Override
@@ -115,31 +120,31 @@ public class CategoryServiceImpl implements CategoryService {
         Sort sort = new Sort(Sort.Direction.DESC, "orderWeight");
         Specification<Category> specification = (root, query, cb) -> {
             List<Predicate> predicates;
-            if(!StringUtils.isEmpty(param.getExcludeIds())) {
+            if (!StringUtils.isEmpty(param.getExcludeIds())) {
                 List<String> ids = Arrays.asList(param.getExcludeIds());
                 List<Long> categoryIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
                 predicates = categoryIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
-            }else {
+            } else {
                 predicates = new ArrayList<>();
             }
-            predicates.add(cb.equal(root.get("site").get("siteId").as(Long.class),param.getSiteId()));
+            predicates.add(cb.equal(root.get("site").get("siteId").as(Long.class), param.getSiteId()));
             predicates.add(cb.equal(root.get("route").get("routeType").as(RouteType.class), param.getRouteType()));
-            predicates.add(cb.equal(root.get("deleted").as(Boolean.class),false));
+            predicates.add(cb.equal(root.get("deleted").as(Boolean.class), false));
             predicates.add(cb.equal(root.get("parent").as(Category.class), parent));
             return cb.and(predicates.toArray(new Predicate[predicates.size()]));
         };
-        return categoryRepository.findAll(specification,new PageRequest(0,param.getSize(),sort)).getContent();
+        return categoryRepository.findAll(specification, new PageRequest(0, param.getSize(), sort)).getContent();
     }
 
 
     @Override
-    public List<Category> getSubCategories(Long parenId,int size) {
+    public List<Category> getSubCategories(Long parenId, int size) {
         List<Category> categoryList = categoryRepository.findByParent_Id(parenId);
         int origionSize = categoryList.size();
-        if(size > origionSize - 1) {
+        if (size > origionSize - 1) {
             size = origionSize;
         }
-        return categoryList.subList(0,size);
+        return categoryList.subList(0, size);
     }
 
     @Override
@@ -150,22 +155,22 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryTreeModel> ConvertCategoryTreeByCategory(List<Category> categories) {
-        List<CategoryTreeModel> categoryTreeModels=new ArrayList<CategoryTreeModel>();
-        if(categories!=null&&categories.size()>0){
-            for(Category category : categories){
-                if(category!=null){
-                    if(category.getParent()==null){//父节点为空时
-                        if(!isExistsCategory(categoryTreeModels,category)){
+        List<CategoryTreeModel> categoryTreeModels = new ArrayList<CategoryTreeModel>();
+        if (categories != null && categories.size() > 0) {
+            for (Category category : categories) {
+                if (category != null) {
+                    if (category.getParent() == null) {//父节点为空时
+                        if (!isExistsCategory(categoryTreeModels, category)) {
                             categoryTreeModels.add(CategoryTreeModel.ConvertToCategoryTreeModel(category));
                         }
-                    }else{//父节点不为空
-                        Long index=getCategoryTreeId(categoryTreeModels, category.getParent());
-                        if(index!=null){//父节点存在则把该节点加入到父节点下面
-                            List<CategoryTreeModel> categoryTreeModels1 =insertCategoryTreeById(categoryTreeModels, index, CategoryTreeModel.ConvertToCategoryTreeModel(category));
-                            if(categoryTreeModels1!=null){
-                                categoryTreeModels=categoryTreeModels1;
+                    } else {//父节点不为空
+                        Long index = getCategoryTreeId(categoryTreeModels, category.getParent());
+                        if (index != null) {//父节点存在则把该节点加入到父节点下面
+                            List<CategoryTreeModel> categoryTreeModels1 = insertCategoryTreeById(categoryTreeModels, index, CategoryTreeModel.ConvertToCategoryTreeModel(category));
+                            if (categoryTreeModels1 != null) {
+                                categoryTreeModels = categoryTreeModels1;
                             }
-                        }else {
+                        } else {
                             CategoryTreeModel categoryTreeModel = CategoryTreeModel.ConvertToCategoryTreeModel(category.getParent());
                             categoryTreeModel.addChildren(category);
                             categoryTreeModels.add(categoryTreeModel);
@@ -177,16 +182,16 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryTreeModels;
     }
 
-    public Boolean isExistsCategory(List<CategoryTreeModel> categoryTreeModelList,Category category) {
-        if(categoryTreeModelList!=null){
-            for(CategoryTreeModel categoryTreeModel : categoryTreeModelList){
-                if(categoryTreeModel!=null&&categoryTreeModel.getId().equals(category.getId())){
+    public Boolean isExistsCategory(List<CategoryTreeModel> categoryTreeModelList, Category category) {
+        if (categoryTreeModelList != null) {
+            for (CategoryTreeModel categoryTreeModel : categoryTreeModelList) {
+                if (categoryTreeModel != null && categoryTreeModel.getId().equals(category.getId())) {
                     return true;
-                }else{
-                    boolean Flag=isExistsCategory(categoryTreeModel.getChildren(),category);
-                    if(Flag) {
+                } else {
+                    boolean Flag = isExistsCategory(categoryTreeModel.getChildren(), category);
+                    if (Flag) {
                         return Flag;
-                    }else{
+                    } else {
                         continue;
                     }
                 }
@@ -195,17 +200,17 @@ public class CategoryServiceImpl implements CategoryService {
         return false;
     }
 
-    public Long getCategoryTreeId(List<CategoryTreeModel> categoryTreeModelList,Category category){
-        if(categoryTreeModelList!=null){
-            for(Integer i=0;i<categoryTreeModelList.size();i++){
-                CategoryTreeModel categoryTreeModel=categoryTreeModelList.get(i);
-                if(categoryTreeModel!=null&&categoryTreeModel.getId().equals(category.getId())){
-                    return  categoryTreeModel.getId();
-                }else{
-                    Long id=getCategoryTreeId(categoryTreeModel.getChildren(),category);
-                    if(id!=null){
+    public Long getCategoryTreeId(List<CategoryTreeModel> categoryTreeModelList, Category category) {
+        if (categoryTreeModelList != null) {
+            for (Integer i = 0; i < categoryTreeModelList.size(); i++) {
+                CategoryTreeModel categoryTreeModel = categoryTreeModelList.get(i);
+                if (categoryTreeModel != null && categoryTreeModel.getId().equals(category.getId())) {
+                    return categoryTreeModel.getId();
+                } else {
+                    Long id = getCategoryTreeId(categoryTreeModel.getChildren(), category);
+                    if (id != null) {
                         return id;
-                    }else{
+                    } else {
                         continue;
                     }
                 }
@@ -214,19 +219,19 @@ public class CategoryServiceImpl implements CategoryService {
         return null;
     }
 
-    public List<CategoryTreeModel> insertCategoryTreeById(List<CategoryTreeModel> categoryTreeModelList,Long id,CategoryTreeModel categoryTree){
-        for(CategoryTreeModel categoryTreeModel : categoryTreeModelList) {
-            if(categoryTreeModel!=null&&categoryTreeModel.getId().equals(id)){
+    public List<CategoryTreeModel> insertCategoryTreeById(List<CategoryTreeModel> categoryTreeModelList, Long id, CategoryTreeModel categoryTree) {
+        for (CategoryTreeModel categoryTreeModel : categoryTreeModelList) {
+            if (categoryTreeModel != null && categoryTreeModel.getId().equals(id)) {
                 categoryTreeModel.addChildren(categoryTree);
                 return categoryTreeModelList;
-            }else {
-                if(categoryTreeModel.getChildren()!=null) {
+            } else {
+                if (categoryTreeModel.getChildren() != null) {
                     List<CategoryTreeModel> categoryTreeModelList1 = insertCategoryTreeById(categoryTreeModel.getChildren(), id, categoryTree);
-                    if(categoryTreeModelList1==null) {
+                    if (categoryTreeModelList1 == null) {
                         continue;
-                    }else{
+                    } else {
                         categoryTreeModel.setChildren(categoryTreeModelList1);
-                        return  categoryTreeModelList;
+                        return categoryTreeModelList;
                     }
                 }
             }

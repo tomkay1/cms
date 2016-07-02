@@ -9,7 +9,7 @@
 
 package com.huotu.hotcms.service.service.impl;
 
-import com.huotu.hotcms.service.entity.BaseEntity;
+import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Notice;
 import com.huotu.hotcms.service.model.NoticeCategory;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.NormalForeachParam;
@@ -43,7 +43,7 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     public PageData<NoticeCategory> getPage(long ownerId, String title, int page, int pageSize) {
         PageData<NoticeCategory> data = null;
-        Specification<Notice> specification = BaseEntity.Specification(ownerId, title, false);
+        Specification<Notice> specification = AbstractContent.Specification(ownerId, title, false);
 
         Page<Notice> pageData = noticeRepository.findAll(specification,new PageRequest(page - 1, pageSize));
         if (pageData != null) {

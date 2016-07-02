@@ -24,7 +24,7 @@ import javax.persistence.Table;
 @Table(name = "cms_notice")
 @Setter
 @Getter
-public class Notice extends BaseEntity {
+public class Notice extends AbstractContent {
 
 //    /**
 //     * 公告标题

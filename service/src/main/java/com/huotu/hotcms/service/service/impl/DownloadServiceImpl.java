@@ -9,7 +9,7 @@
 
 package com.huotu.hotcms.service.service.impl;
 
-import com.huotu.hotcms.service.entity.BaseEntity;
+import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Download;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.PageableForeachParam;
@@ -114,7 +114,7 @@ public class DownloadServiceImpl implements DownloadService {
 
     private Page<Download> getDownloads(PageableForeachParam params, int pageIndex, int pageSize, Sort sort) throws Exception {
         try {
-            Specification<Download> specification = BaseEntity.Specification(params);
+            Specification<Download> specification = AbstractContent.Specification(params);
             return downloadRepository.findAll(specification, new PageRequest(pageIndex, pageSize, sort));
         } catch (Exception ex) {
             throw new Exception("获得下载模型列表出现错误");
@@ -130,7 +130,7 @@ public class DownloadServiceImpl implements DownloadService {
                 log.error(e.getMessage());
             }
         }
-        Specification<Download> specification = BaseEntity.Specification(params, subCategories);
+        Specification<Download> specification = AbstractContent.Specification(params, subCategories);
         return downloadRepository.findAll(specification, new PageRequest(pageIndex, pageSize, sort));
     }
 

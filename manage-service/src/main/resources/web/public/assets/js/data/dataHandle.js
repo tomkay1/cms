@@ -7,9 +7,6 @@
  * 2013-2016. All rights reserved.
  */
 
-define(function(require, exports, module) {
-    require('../../libs/jquery.htmlClean.js');
-
     var DataHandle  = {
         createROOT: function (elements, url) {
             var json = {};
@@ -104,23 +101,27 @@ define(function(require, exports, module) {
         },
         //用于保存 数据时候，发起请求
         ajaxData: function (data, url) {
-            // $.ajax({
-            //     type: 'POST',
-            //     url: url,
-            //     data: data ,
-            //     success: function (msg) {
-            //         console.log(msg);
-            //     }
-            // });
+            data=JSON.stringify(data);
+            console.log(data);
+             $.ajax({
+                 type: 'PUT',
+                 url: url,
+                 data: data ,
+                 success: function (msg) {
+                     console.log(msg);
+                 }
+             });
         },
         init: function (url) {
             DataHandle.downloadLayoutSrc(url);
         }
     };
-    exports.init = function () {
-        var url = 'index.php';//save url
+var dataHandle = {};
+    dataHandle.init = function () {
+        var pageId=1;
+        var url = '/manage/pages/'+pageId;//save url
         $('#saveBtn').on('click', function () {
             DataHandle.init(url);
         });
     }
-});
+dataHandle.init();

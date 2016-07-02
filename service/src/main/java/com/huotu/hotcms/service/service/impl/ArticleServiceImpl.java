@@ -9,8 +9,8 @@
 
 package com.huotu.hotcms.service.service.impl;
 
+import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Article;
-import com.huotu.hotcms.service.entity.BaseEntity;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.ArticleCategory;
@@ -81,14 +81,14 @@ public class ArticleServiceImpl implements ArticleService {
                 log.error(e.getMessage());
             }
         }
-        Specification<Article> specification = BaseEntity.Specification(params, subCategories);
+        Specification<Article> specification = AbstractContent.Specification(params, subCategories);
         return articleRepository.findAll(specification, new PageRequest(pageIndex, pageSize, sort));
     }
 
 
     private Page<Article> getArticles(PageableForeachParam params, int pageIndex, int pageSize, Sort sort) throws Exception {
         try {
-            Specification<Article> specification = BaseEntity.Specification(params);
+            Specification<Article> specification = AbstractContent.Specification(params);
             return articleRepository.findAll(specification, new PageRequest(pageIndex, pageSize, sort));
         } catch (Exception ex) {
             throw new Exception("获得文章列表出现错误");
@@ -108,7 +108,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public PageData<ArticleCategory> getPage(long ownerId, String title, int page, int pageSize) {
         PageData<ArticleCategory> data = null;
-        Specification<Article> specification = BaseEntity.Specification(ownerId, title, false);
+        Specification<Article> specification = AbstractContent.Specification(ownerId, title, false);
 
         Page<Article> pageData = articleRepository.findAll(specification, new PageRequest(page - 1, pageSize));
         if (pageData != null) {

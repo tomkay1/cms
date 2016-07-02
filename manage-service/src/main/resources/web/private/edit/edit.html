@@ -20,6 +20,10 @@
     <link rel="stylesheet" href="../../public/assets/css/edit.css" ewp:href="/assets/css/edit.css">
     <link rel="stylesheet" href="../../public/assets/css/fontello.css" ewp:href="/assets/css/fontello.css">
 
+
+    <link rel="stylesheet" href="../../public/assets/css/slick/slick.css" ewp:href="/assets/css/slick/slick.css">
+    <link rel="stylesheet" href="../../public/assets/css/slick/slick-theme.css" ewp:href="/assets/css/slick/slick-theme.css">
+
     <!--[if lt IE 9]>
     <script src="../../public/assets/libs/html5shiv.min.js" ewp:src="/assets/libs/html5shiv.min.js"></script>
     <script src="../../public/assets/libs/respond.min.js" ewp:src="/assets/libs/respond.min.js"></script>
@@ -182,23 +186,26 @@
 </div>
 <div class="modal-backdrop" ></div>
 </body>
+<!--suppress HtmlUnknownAttribute -->
+<div style="display: none" ewp:src="/assets/seajs/sea.js" src="../../public" id="EWPPath"></div>
 <script th:inline="javascript">
-    //var path = /*[[@{/manage/upload/fine}]]*/ null;
-</script>
-<script src="../../public/assets/seajs/sea.js" ewp:src="/assets/seajs/sea.js"></script>
-<script src="../../public/assets/seajs/seajs-preload.js" ewp:src="/assets/seajs/seajs-preload.js"></script>
-<script src="../../public/assets/seajs/seajs-css.js" ewp:src="/assets/seajs/seajs-css.js"></script>
-<script src="../../public/assets/seajs/sea.config.js" ewp:src="/assets/seajs/sea.config.js"></script>
-<script>
-    seajs.use('main');
-    seajs.use(['layer','editPJ', 'confMJ', 'dataHandle'],function (layer, editPage, confModule, dataHandle) {
-        layer.config({
-            path: '../../public/assets/libs/layer/'
-        });
-        editPage.init();
-        confModule.init();
-        dataHandle.init();
-    });
+    var path = /*[[@{/manage/upload/fine}]]*/ null;
+    var strHref=document.getElementById("EWPPath").getAttribute("src");
+    var mainHref = window.document.location.href;
+    var index=strHref.indexOf("public");
+    var host=window.location.host;
+    host+=strHref.substring(0,index)+"public";
+    var seajsPath="home";
+    console.log(seajsPath);
 </script>
 
+<script src="../../public/assets/libs/jquery-2.2.3.min.js" ewp:src="/assets/libs/jquery-2.2.3.min.js"></script>
+<script src="../../public/assets/libs/jquery-ui.min.js" ewp:src="/assets/libs/jquery-ui.min.js"></script>
+<script src="../../public/assets/libs/jquery.htmlClean.js" ewp:src="/assets/libs/jquery.htmlClean.js"></script>
+<script src="../../public/assets/libs/layer/layer.js" ewp:src="/assets/libs/layer/layer.js"></script>
+<script src="../../public/assets/libs/slick.min.js" ewp:src="/assets/libs/slick.min.js"></script>
+<script src="../../public/assets/js/main.js" ewp:src="/assets/js/main.js"></script>
+<script src="../../public/assets/js/page/editPage.js" ewp:src="/assets/js/page/editPage.js"></script>
+<script src="../../public/assets/js/module/confModule.js" ewp:src="/assets/js/module/confModule.js"></script>
+<script src="../../public/assets/js/data/dataHandle.js" ewp:src="/assets/js/data/dataHandle.js"></script>
 </html>

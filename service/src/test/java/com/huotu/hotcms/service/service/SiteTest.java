@@ -56,6 +56,8 @@ public class SiteTest {
     TemplateRepository templateRepository;
     @Autowired
     CategoryRepository categoryRepository;
+    @Autowired
+    private CategoryService categoryService;
 
     @Test
     public void localTest() {
@@ -97,7 +99,7 @@ public class SiteTest {
         Template template=templateRepository.findOne(templateID);
         Site templateSite=template.getSite();
 
-        List<Category> categories=categoryRepository.findBySite(templateSite);
+        List<Category> categories = categoryService.getCategories(templateSite);
         try{
             for(Category category:categories){
                 category.setSerial(SerialUtil.formatSerial(customerSite));

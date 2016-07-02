@@ -9,7 +9,7 @@
 
 package com.huotu.hotcms.service.service.impl;
 
-import com.huotu.hotcms.service.entity.BaseEntity;
+import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Gallery;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.PageableForeachParam;
@@ -94,13 +94,13 @@ public class GalleryServiceImpl implements GalleryService {
                 log.error(e.getMessage());
             }
         }
-        Specification<Gallery> specification = BaseEntity.Specification(params, subCategories);
+        Specification<Gallery> specification = AbstractContent.Specification(params, subCategories);
         return galleryRepository.findAll(specification, new PageRequest(pageIndex, pageSize, sort));
     }
 
     private Page<Gallery> getGalleries(PageableForeachParam params, int pageIndex, int pageSize, Sort sort) throws Exception {
         try {
-            Specification<Gallery> specification = BaseEntity.Specification(params);
+            Specification<Gallery> specification = AbstractContent.Specification(params);
             return galleryRepository.findAll(specification, new PageRequest(pageIndex, pageSize, sort));
         } catch (Exception ex) {
             throw new Exception("获得图库列表出现错误");

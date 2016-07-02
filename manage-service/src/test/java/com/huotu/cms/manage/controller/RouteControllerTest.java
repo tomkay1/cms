@@ -9,12 +9,11 @@
 
 package com.huotu.cms.manage.controller;
 
-import com.huotu.cms.manage.ManageTest;
+import com.huotu.cms.manage.SiteManageTest;
 import com.huotu.cms.manage.page.ManageMainPage;
 import com.huotu.cms.manage.page.RoutePage;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.service.RouteService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,16 +27,14 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author CJ
  */
 @Transactional
-public class RouteControllerTest extends ManageTest {
+public class RouteControllerTest extends SiteManageTest {
 
     @Autowired
     private RouteService routeService;
 
     @Test
     public void index() throws Exception {
-        Owner owner = randomOwner();
-        Site site = randomSite(owner);
-        loginAsOwner(owner);
+        Site site = loginAsOwnerReturnSite();
 
         ManageMainPage mainPage = initPage(ManageMainPage.class);
 
@@ -47,8 +44,6 @@ public class RouteControllerTest extends ManageTest {
             throw new AssertionError("现在应该还看不到页面");
         } catch (Exception ignored) {
         }
-
-
         // 试下使用{{}}
         mainPage.switchSite(site);
         page = mainPage.toRoute();
@@ -56,10 +51,7 @@ public class RouteControllerTest extends ManageTest {
 
     @Test
     public void add() throws Exception {
-        Owner owner = randomOwner();
-        Site site = randomSite(owner);
-        loginAsOwner(owner);
-        initPage(ManageMainPage.class).switchSite(site);
+        Site site = loginAsSite();
 
         addRoute();
 
@@ -70,10 +62,7 @@ public class RouteControllerTest extends ManageTest {
 
     @Test
     public void delete() throws Exception {
-        Owner owner = randomOwner();
-        Site site = randomSite(owner);
-        loginAsOwner(owner);
-        initPage(ManageMainPage.class).switchSite(site);
+        Site site = loginAsSite();
 
         RoutePage page = addRoute();
         page.deleteAny();
@@ -85,10 +74,7 @@ public class RouteControllerTest extends ManageTest {
 
     @Test
     public void update() throws Exception {
-        Owner owner = randomOwner();
-        Site site = randomSite(owner);
-        loginAsOwner(owner);
-        initPage(ManageMainPage.class).switchSite(site);
+        Site site = loginAsSite();
 
         RoutePage page = addRoute();
         RoutePage openPage = page.openAny();

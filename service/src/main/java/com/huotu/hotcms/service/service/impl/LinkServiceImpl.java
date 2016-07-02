@@ -9,7 +9,7 @@
 
 package com.huotu.hotcms.service.service.impl;
 
-import com.huotu.hotcms.service.entity.BaseEntity;
+import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.model.LinkCategory;
@@ -51,7 +51,7 @@ public class LinkServiceImpl implements LinkService {
     @Override
     public PageData<LinkCategory> getPage(long ownerId, String title, int page, int pageSize) {
         PageData<LinkCategory> data = null;
-        Specification<Link> specification = BaseEntity.Specification(ownerId, title, false);
+        Specification<Link> specification = AbstractContent.Specification(ownerId, title, false);
 
         Page<Link> pageData = linkRepository.findAll(specification,new PageRequest(page - 1, pageSize));
         if (pageData != null) {
@@ -128,7 +128,7 @@ public class LinkServiceImpl implements LinkService {
 
     private Page<Link> getLinks(NormalForeachParam params, int pageIndex, int pageSize, Sort sort) throws Exception {
         try {
-            Specification<Link> specification = BaseEntity.Specification(params);
+            Specification<Link> specification = AbstractContent.Specification(params);
             return linkRepository.findAll(specification, new PageRequest(pageIndex, pageSize, sort));
         } catch (Exception ex) {
             throw new Exception("获得文章列表出现错误");
@@ -144,7 +144,7 @@ public class LinkServiceImpl implements LinkService {
                 log.error(e.getMessage());
             }
         }
-        Specification<Link> specification = BaseEntity.Specification(params, subCategories);
+        Specification<Link> specification = AbstractContent.Specification(params, subCategories);
         return linkRepository.findAll(specification, new PageRequest(pageIndex, pageSize, sort));
     }
 }

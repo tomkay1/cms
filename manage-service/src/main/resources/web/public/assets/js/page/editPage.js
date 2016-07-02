@@ -7,10 +7,6 @@
  * 2013-2016. All rights reserved.
  */
 
-define(function(require, exports, module) {
-    require('../../libs/jquery-ui.min.js');
-    require('../../libs/jquery.htmlClean.js');
-    
     var editFunc = {
         handleSaveLayout: function () {
             var e = $(".pageHTML").html();
@@ -192,7 +188,8 @@ define(function(require, exports, module) {
             });
         }
     };
-    exports.init = function () {
+var editPage = {};
+    editPage.init = function () {
         $(document.body).css("min-height", $(window).height() - 90);
         $(".pageHTML").css("min-height", $(window).height() - 160);
         $(".pageHTML, .pageHTML .column").sortable({
@@ -249,4 +246,4 @@ define(function(require, exports, module) {
         // 页面列表初始化
         Page.init('/');
     };
-});
+editPage.init();

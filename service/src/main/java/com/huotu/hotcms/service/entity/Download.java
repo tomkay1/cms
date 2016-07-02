@@ -24,7 +24,7 @@ import javax.persistence.Table;
 @Table(name = "cms_download")
 @Getter
 @Setter
-public class Download extends BaseEntity {
+public class Download extends AbstractContent {
 
 //    /**
 //     * 文件名称

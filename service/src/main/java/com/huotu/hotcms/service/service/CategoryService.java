@@ -16,11 +16,24 @@ import com.huotu.hotcms.service.model.thymeleaf.foreach.CategoryForeachParam;
 
 import java.util.List;
 
-/**
- * Created by chendeyu on 2015/12/31.
- */
 public interface CategoryService {
-    Category getCategoryById(Long id);
+
+    /**
+     * 获取指定站点所有数据源
+     * 应该是按照{@link Category#orderWeight}进行排序
+     *
+     * @param site 站点
+     * @return 数据源集合
+     */
+    List<Category> getCategories(Site site);
+
+    /**
+     * 拿到一个,拿不到就报错
+     *
+     * @param id pk
+     * @return 实例
+     */
+    Category get(long id);
 
     Boolean save(Category category);
 

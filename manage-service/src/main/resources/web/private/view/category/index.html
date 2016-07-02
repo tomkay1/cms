@@ -21,6 +21,8 @@
     <h2><i class="fa fa-bars"></i> 数据源 <span>管理当前站点的数据源</span></h2>
 </div>
 
+<!--/*@thymesVar id="list" type="java.lang.Iterable<com.huotu.hotcms.service.entity.Category>"*/-->
+
 <div class="contentpanel">
     <form id="categoryForm" action="index.html" method="POST" th:action="@{/manage/category}">
         <div class="panel panel-default">
@@ -45,17 +47,21 @@
                         <label class="col-sm-2 control-label">模型</label>
                         <div class="col-sm-2">
                             <select name="contentType" title="模型" class="form-control input-sm">
-                                <option>文章</option>
-                                <option>视频</option>
+                                <option value="0">文章</option>
+                                <option value="1">链接</option>
+                                <option value="2">视频</option>
+                                <option value="3">公告</option>
+                                <option value="4">图库</option>
+                                <option value="5">下载</option>
                             </select>
                             <span class="help-block">描述这个数据源的特性,不同特性的数据源可以录入不同的内容</span>
                         </div>
                         <label class="col-sm-2 control-label">父级</label>
                         <div class="col-sm-2">
-                            <select name="parent" title="父级数据源" class="form-control input-sm">
-                                <option>无</option>
-                                <option>新闻咨询</option>
-                                <option>成功案例</option>
+                            <select name="extra" title="父级数据源" class="form-control input-sm">
+                                <option value="">无</option>
+                                <option th:each="p:${list}" th:value="${p.id}" th:text="${p.name}">新闻咨询</option>
+                                <option th:remove="all">成功案例</option>
                             </select>
                         </div>
                     </div>
@@ -98,18 +104,16 @@
                     </thead>
                     <!--odd even-->
                     <tbody>
-                    <!--/*@thymesVar id="list" type="java.lang.Iterable<com.huotu.hotcms.service.entity.login.Owner>"*/-->
-                    <tr th:each="owner,stats:${list}" class="odd" th:class="${stats.odd?'odd':'even'}"
-                        th:attr="data-id=${owner.id}" data-id="456">
-                        <td th:text="${owner.username}">新闻资讯</td>
-                        <td>2016 06-20</td>
-                        <td th:text="${owner.customerId}">文章</td>
-                        <td>无</td>
+
+                    <tr th:each="category,stats:${list}" class="odd" th:class="${stats.odd?'odd':'even'}"
+                        th:attr="data-id=${category.id}" data-id="456">
+                        <td th:text="${category.name}">新闻资讯</td>
+                        <td th:text="${{category.getCreateTime()}}">2016 06-20</td>
+                        <td th:text="${category.contentType.value}">文章</td>
+                        <td th:text="${category.parent==null?'无':category.parent.name}">无</td>
                         <td class="center">
-                            <a href="index.html" th:href="@{/manage/supper/as/${owner.id}}" target="_top" title="管理">
-                                <i class="fa fa-pencil"></i>
-                            </a>
-                            <a href="index.html" class="delete" th:href="@{/manage/page/{id}/delete(id=${owner.id})}"
+                            <a href="index.html" class="delete"
+                               th:href="@{/manage/category/{id}/delete(id=${category.id})}"
                                target="_top" title="删除">
                                 <i class="fa fa-trash-o"></i>
                             </a>
@@ -122,9 +126,6 @@
                         <td>文章</td>
                         <td>无</td>
                         <td class="center">
-                            <a href="index.html" target="_top" title="编辑">
-                                <i class="fa fa-pencil"></i>
-                            </a>
                             <a href="index.html" class="delete"
                                target="_top" title="删除">
                                 <i class="fa fa-trash-o"></i>
@@ -137,9 +138,6 @@
                         <td>文章</td>
                         <td>新闻资讯</td>
                         <td class="center">
-                            <a href="index.html" target="_top" title="编辑">
-                                <i class="fa fa-pencil"></i>
-                            </a>
                             <a href="index.html" class="delete"
                                target="_top" title="删除">
                                 <i class="fa fa-trash-o"></i>
@@ -161,7 +159,7 @@
 <script src="http://resali.huobanplus.com/cdn/bracket/js/toggles.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.cookies.js"></script>
 
-<script type="text/javascript" src="https://cdn.datatables.net/u/dt/dt-1.10.12/datatables.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.datatables.min.js"></script>
 <!--<script src="http://resali.huobanplus.com/cdn/bracket/js/custom.js"></script>-->
 <div ewp:replace="fragments/frame.html::#messageSection"></div>
 <script src="../../../public/bracket/js/frame.js" ewp:src="/bracket/js/frame.js"></script>

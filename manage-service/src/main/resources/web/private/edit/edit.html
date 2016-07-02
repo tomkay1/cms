@@ -194,9 +194,12 @@
     var mainHref = window.document.location.href;
     var index=strHref.indexOf("public");
     var host=window.location.host;
+    var protocol=window.location.protocol;
     host+=strHref.substring(0,index)+"public";
-    var seajsPath="home";
-    console.log(seajsPath);
+    protocol= protocol+"//";
+    protocol+=host;
+    var srcPath=protocol;
+    console.log(srcPath);
 </script>
 
 <script src="../../public/assets/libs/jquery-2.2.3.min.js" ewp:src="/assets/libs/jquery-2.2.3.min.js"></script>

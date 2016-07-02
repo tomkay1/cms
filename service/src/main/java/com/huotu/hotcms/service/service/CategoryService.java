@@ -27,7 +27,13 @@ public interface CategoryService {
      */
     List<Category> getCategories(Site site);
 
-    Category getCategoryById(Long id);
+    /**
+     * 拿到一个,拿不到就报错
+     *
+     * @param id pk
+     * @return 实例
+     */
+    Category get(long id);
 
     Boolean save(Category category);
 

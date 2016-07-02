@@ -31,8 +31,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,7 +48,7 @@ import java.util.Set;
  */
 @Controller
 @RequestMapping("/manage/category")
-public class CategoryController extends SiteManageController<Category, Long, Void, Void> {
+public class CategoryController extends SiteManageController<Category, Long, Long, Void> {
     private static final Log log = LogFactory.getLog(CategoryController.class);
 
 
@@ -128,7 +126,7 @@ public class CategoryController extends SiteManageController<Category, Long, Voi
         ModelAndView modelAndView = new ModelAndView();
         try {
             modelAndView.setViewName("/view/section/addCategory.html");
-            Category category = categoryService.getCategoryById(id);
+            Category category = categoryService.get(id);
             if (category == null) {
                 Site site = siteService.getSite(siteId);
                 modelAndView.addObject("site", site);
@@ -151,7 +149,7 @@ public class CategoryController extends SiteManageController<Category, Long, Voi
     public ModelAndView updateCategory(@RequestParam(value = "id", defaultValue = "0") Long id) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/view/section/updateCategory.html");
-        Category category = categoryService.getCategoryById(id);
+        Category category = categoryService.get(id);
         modelAndView.addObject("category", category);
         modelAndView.addObject("modelTypes", ModelType.values());
         modelAndView.addObject("routeTypes", RouteType.values());
@@ -182,7 +180,7 @@ public class CategoryController extends SiteManageController<Category, Long, Voi
                 log.error("site-->" + site.hashCode());
                 category.setName(name);
                 category.setOrderWeight(orderWeight);
-                Category categoryParent = categoryService.getCategoryById(parentId);
+                Category categoryParent = categoryService.get(parentId);
                 category.setSite(site);
                 category.setContentType(EnumUtils.valueOf(ContentType.class, model));
                 category.setParent(categoryParent);
@@ -217,7 +215,7 @@ public class CategoryController extends SiteManageController<Category, Long, Voi
         ResultView result;
         try {
             if (cookieUser.isSupper(request)) {
-                Category category = categoryService.getCategoryById(id);
+                Category category = categoryService.get(id);
 //                if(category.getOwnerId().equals(cookieUser.getOwnerId(request))) {//删除的时候验证是否是删除同一商户下面的栏目，增强安全性
                 if (categoryService.deleteCategory(category)) {
                     result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
@@ -253,7 +251,7 @@ public class CategoryController extends SiteManageController<Category, Long, Voi
                                      @RequestParam(name = "routeType") Integer routeType) {
         ResultView result = null;
         try {
-            Category category = categoryService.getCategoryById(id);
+            Category category = categoryService.get(id);
             if (category != null) {
                 Site site = category.getSite();
                 if (!routeService.isPatterBySiteAndRuleIgnore(site, rule, noRule)) {
@@ -276,17 +274,21 @@ public class CategoryController extends SiteManageController<Category, Long, Voi
         return result;
     }
 
-    @InitBinder
-    public void bind(WebDataBinder binder) {
-        if ("parent".equals(binder.getObjectName())) {
-            binder.addCustomFormatter(categoryFormatter);
-        }
-    }
+//    @InitBinder
+//    public void bind(WebDataBinder binder) {
+//        if ("parent".equals(binder.getObjectName())) {
+//            binder.addCustomFormatter(categoryFormatter);
+//        }
+//    }
 
     @Override
-    protected Category preparePersist(Login login, Site site, Category data, Void extra, RedirectAttributes attributes)
+    protected Category preparePersist(Login login, Site site, Category data, Long extra, RedirectAttributes attributes)
             throws RedirectException {
         data.setSite(site);
+        data.setCreateTime(LocalDateTime.now());
+        if (extra != null) {
+            data.setParent(categoryService.get(extra));
+        }
         return data;
     }
 

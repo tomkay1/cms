@@ -31,6 +31,6 @@ var confModule = {};
         });
 
         //编辑器视图初始化
-        Config.init('data/widget.json');//url
+        Config.init('');//url
     };
 confModule.init();

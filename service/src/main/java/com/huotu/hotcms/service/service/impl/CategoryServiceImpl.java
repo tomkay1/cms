@@ -52,14 +52,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category getCategoryById(Long id) {
-        try {
-            Category category = categoryRepository.getOne(id);
-            return category;
-        } catch (Exception ex) {
-
-        }
-        return null;
+    public Category get(long id) {
+        return categoryRepository.getOne(id);
     }
 
     @Override

@@ -30,7 +30,7 @@ public class Layout implements PageElement {
     /**
      * Layout的布局参数：比如12,6-6,4-4-4
      */
-    private String layoutId;
+    private String value;
 
     @JacksonXmlElementWrapper(useWrapping=false)
     private PageElement[] elements;

@@ -9,6 +9,8 @@
 
 package com.huotu.cms.manage.page;
 
+import com.huotu.hotcms.service.entity.Category;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -39,5 +41,18 @@ public class CategoryPage extends AbstractContentPage {
         } catch (InterruptedException e) {
             throw new AssertionError(e);
         }
+    }
+
+    public void addCategory(Category category) {
+        beforeDriver();
+        assertThat(form.isDisplayed())
+                .isTrue();
+        inputText(form, "name", category.getName());
+        inputSelect(form, "contentType", category.getContentType().getValue().toString());
+        if (category.getParent() != null) {
+            inputSelect(form, "extra", category.getParent().getName());
+        }
+        form.findElement(By.className("btn-primary")).click();
+        reloadPageInfo();
     }
 }

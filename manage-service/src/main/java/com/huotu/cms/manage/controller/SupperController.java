@@ -9,7 +9,6 @@
 
 package com.huotu.cms.manage.controller;
 
-import com.huotu.cms.manage.authorize.annoation.AuthorizeRole;
 import com.huotu.cms.manage.bracket.GritterUtils;
 import com.huotu.cms.manage.controller.support.AbstractSiteSupperController;
 import com.huotu.cms.manage.util.web.CookieUser;
@@ -122,7 +121,6 @@ public class SupperController extends AbstractSiteSupperController {
      * @throws Exception
      */
     @RequestMapping("/siteList")
-    @AuthorizeRole(roleType = AuthorizeRole.Role.Supper)
     public ModelAndView siteList() throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/view/supper/siteList.html");
@@ -130,7 +128,6 @@ public class SupperController extends AbstractSiteSupperController {
     }
 
     @RequestMapping("/templateList")
-    @AuthorizeRole(roleType = AuthorizeRole.Role.Supper)
     public ModelAndView templateList() throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/view/supper/templateList.html");
@@ -144,7 +141,6 @@ public class SupperController extends AbstractSiteSupperController {
      * @throws Exception
      */
     @RequestMapping(value = "/addSite")
-    @AuthorizeRole(roleType = AuthorizeRole.Role.Supper)
     public ModelAndView addSite() throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/view/supper/addSite.html");
@@ -161,7 +157,6 @@ public class SupperController extends AbstractSiteSupperController {
      * @throws Exception
      */
     @RequestMapping("/addTemplate")
-    @AuthorizeRole(roleType = AuthorizeRole.Role.Supper)
     public ModelAndView addTemplate(long ownerId) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         List<Site> siteList = siteRepository.findByOwner_IdAndDeletedOrderBySiteIdDesc(ownerId, false);
@@ -265,7 +260,6 @@ public class SupperController extends AbstractSiteSupperController {
      * @throws Exception
      */
     @RequestMapping("/updateSite")
-    @AuthorizeRole(roleType = AuthorizeRole.Role.Supper)
     public ModelAndView updateSite(@RequestParam(value = "id", defaultValue = "0") Long id) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         try {
@@ -343,7 +337,6 @@ public class SupperController extends AbstractSiteSupperController {
      * @return
      */
     @RequestMapping(value = "/deleteSite", method = RequestMethod.POST)
-    @AuthorizeRole(roleType = AuthorizeRole.Role.Supper)
     @ResponseBody
     public ResultView deleteModel(@RequestParam(name = "id") Long id
             , HttpServletRequest request) {
@@ -367,7 +360,6 @@ public class SupperController extends AbstractSiteSupperController {
     }
 
     @RequestMapping(value = "/siteConfig")
-    @AuthorizeRole(roleType = AuthorizeRole.Role.Supper)
     public ModelAndView siteConfig(Long siteId) {
         ModelAndView modelAndView = new ModelAndView();
         try {
@@ -383,7 +375,6 @@ public class SupperController extends AbstractSiteSupperController {
     }
 
     @RequestMapping(value = "/saveConfig")
-    @AuthorizeRole(roleType = AuthorizeRole.Role.Supper)
     @ResponseBody
     public ResultView saveConfig(SiteConfig siteConfig, Long siteId) {
         ResultView resultView = null;

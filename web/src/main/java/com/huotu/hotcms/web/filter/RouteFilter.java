@@ -7,7 +7,7 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.hotcms.web.thefilter;
+package com.huotu.hotcms.web.filter;
 
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;

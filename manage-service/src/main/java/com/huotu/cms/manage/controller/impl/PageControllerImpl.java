@@ -12,13 +12,14 @@ package com.huotu.cms.manage.controller.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.CharStreams;
 import com.huotu.cms.manage.controller.PageController;
+import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.service.PageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -34,18 +35,21 @@ public class PageControllerImpl implements PageController {
     @Autowired
     private PageService pageService;
 
+    @Autowired
+    SiteRepository siteRepository;
+
 
 
     @Override
-    public List<Page> getPageList(long ownerId) throws IOException {
-        return null;
-        //return pageService.getPageFromXMLConfig(ownerId,pageId);
+    public List<Page> getPageList(Long siteId) throws IOException {
+        Site site=siteRepository.findOne(siteId);
+        return pageService.getPageList(site);
     }
 
 
     @Override
     public Page getPage(String pageId) throws IOException {
-        return pageService.getPageFromXMLConfig(pageId);
+        return pageService.getPage(pageId);
     }
 
 
@@ -55,7 +59,7 @@ public class PageControllerImpl implements PageController {
         String pageJson=CharStreams.toString(request.getReader());
         ObjectMapper objectMapper=new ObjectMapper();
         Page page=objectMapper.readValue(pageJson, Page.class);
-        pageService.parsePageToXMlAndSave(page, pageId);
+        pageService.savePage(page, pageId);
     }
 
 

@@ -6,7 +6,7 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.hotcms.widget.common;
+package com.huotu.hotcms.service.common;
 
 import com.huotu.hotcms.service.common.CommonEnum;
 

@@ -12,7 +12,9 @@ package com.huotu.hotcms.widget.service.impl;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.huotu.hotcms.service.common.ConfigInfo;
 import com.huotu.hotcms.service.entity.AbstractContent;
+import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.repository.PageRepository;
 import com.huotu.hotcms.service.service.ContentsService;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.page.Page;
@@ -41,6 +43,8 @@ public class PageServiceImpl implements PageService {
     private ResourceService resourceService;
     @Autowired
     private ConfigInfo configInfo;
+    @Autowired
+    private PageRepository pageRepository;
 
 
     @Override
@@ -73,7 +77,18 @@ public class PageServiceImpl implements PageService {
     }
 
     @Override
-    public Page findByPagePath(Site site, String pagePath) throws IOException {
+    public Page findBySiteAndPagePath(Site site, String pagePath) throws IllegalStateException {
+
+        return null;
+    }
+
+    @Override
+    public com.huotu.hotcms.service.entity.Page findBySiteAndPagePath(Long siteId, String pagePath) throws IOException {
+        return pageRepository.findByPagePath(pagePath,siteId);
+    }
+
+    @Override
+    public Page findByCategoryAndContent(Category category, AbstractContent content) {
         return null;
     }
 

@@ -9,6 +9,8 @@
 
 package com.huotu.hotcms.widget.service;
 
+import com.huotu.hotcms.service.entity.AbstractContent;
+import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.page.Page;
@@ -53,16 +55,33 @@ public interface PageService {
      */
     void deletePage(long ownerId, String pageId) throws IOException;
 
-    
+
     /**
      * <p>返回当前站点下指定pageUri的具体html</p>
      *
-     * @param pagePath   pagePath必须存在不能为空
-     * @param site      当前站点必须存在不能为空
-     * @return page
+     * @param pagePath pagePath必须存在不能为空
+     * @param site     当前站点必须存在不能为空
+     * @return {@link com.huotu.hotcms.widget.page.Page}
+     * @throws IllegalStateException 未找到page
+     */
+    Page findBySiteAndPagePath(Site site, String pagePath) throws IllegalStateException;
+
+    /**
+     * 查询当前站点下page实体信息
+     *
+     * @param pagePath 唯一标示
+     * @param siteId   站点id
+     * @return {@Link com.huotu.hotcms.service.entity.Page}
      * @throws IOException 其他异常
      */
-    Page findByPagePath(Site site, String pagePath) throws IOException;
+    com.huotu.hotcms.service.entity.Page findBySiteAndPagePath(Long siteId, String pagePath) throws IOException;
 
 
+    /**
+     * <p>查找当前站点下指定数据源和数据内容的page</p>
+     * @param category 数据源
+     * @param content  数据类容类型
+     * @return {@link com.huotu.hotcms.widget.page.Page}
+     */
+    Page findByCategoryAndContent(Category category, AbstractContent content);
 }

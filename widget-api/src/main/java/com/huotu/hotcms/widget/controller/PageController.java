@@ -9,14 +9,14 @@
 package com.huotu.hotcms.widget.controller;
 
 import com.huotu.hotcms.service.entity.AbstractContent;
-import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.repository.AbstractContentRepository;
-import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.WidgetResolveService;
 import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.page.PageElement;
 import com.huotu.hotcms.widget.service.PageService;
+import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Objects;
 
 /**
@@ -40,67 +41,63 @@ public class PageController {
     @Autowired
     private PageService pageService;
 
+
     @Autowired
     private WidgetResolveService widgetResolveService;
 
-    @Autowired
-    private CategoryService categoryService;
-
     @RequestMapping(method = RequestMethod.GET, value = {"/{pagePath}"})
-    public void page(@PathVariable("pagePath") String pagePath
-            , HttpServletRequest request, HttpServletResponse response) {
-        try {
-            CMSContext cmsContext = CMSContext.RequestContext();
-            //查找当前站点下指定pagePath的page
-            Page page = pageService.findByPagePath(cmsContext.getSite(), pagePath);
+    public void pageIndex(@PathVariable("pagePath") String pagePath, HttpServletResponse response) throws IOException {
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+        CMSContext cmsContext = CMSContext.RequestContext();
+        //查找当前站点下指定pagePath的page
+        Page page = pageService.findBySiteAndPagePath(cmsContext.getSite(), pagePath);
+        if (page != null) {
             //生成page htmlCode
             String html = "<div>";
             for (PageElement pageElement : page.getElements()) {
-                html = widgetResolveService.pageElementHTML(pageElement, cmsContext);
+                html += widgetResolveService.pageElementHTML(pageElement, cmsContext);
             }
             html += "</div>";
-
-            //查找页面数据源
-            Category category = page.getCategory();
-
-            //查找当前站点下指定数据源的page，且page类型为数据内容
-            AbstractContent content = null;
-
-        } catch (IOException e) {
-
+            out.write(html);
         }
-
-
     }
 
     @RequestMapping(method = RequestMethod.GET, value = {"/{pagePath}/{contentId}"})
-    public void page(@PathVariable("pagePath") String pagePath, @PathVariable("contentId") Long contentId
-            , HttpServletRequest request, HttpServletResponse response) {
-        try {
-            CMSContext cmsContext = CMSContext.RequestContext();
-            Page page = pageService.findByPagePath(cmsContext.getSite(), pagePath);
-            Category category = page.getCategory();
-            String html = "<div>";
-            for (PageElement pageElement : page.getElements()) {
-                html = widgetResolveService.pageElementHTML(pageElement, cmsContext);
+    public void pageContent(@PathVariable("pagePath") String pagePath, @PathVariable("contentId") Long contentId
+            , HttpServletResponse response) throws IllegalStateException, IOException {
+        response.setContentType("text/html;charset=utf-8");
+        PrintWriter out = response.getWriter();
+        CMSContext cmsContext = CMSContext.RequestContext();
+        Site site = cmsContext.getSite();
+        //查找数据内容
+        AbstractContent content = abstractContentRepository.findOne(contentId);
+        if (content != null) {
+            cmsContext.setAbstractContent(content);
+
+            //查找当前站点下指定pagePath的page
+            com.huotu.hotcms.service.entity.Page pageInfo = pageService.findBySiteAndPagePath(site.getSiteId()
+                    , pagePath);
+
+            if (pageInfo != null) {
+                //判断数据源
+                if (content.getCategory().getId().equals(pageInfo.getCategory().getId())) {
+                    Page page = pageService.findByCategoryAndContent(pageInfo.getCategory(), content);
+                    if (page != null) {
+                        PageElement[] elements = page.getElements();
+                        //生成page htmlCode
+                        String html = "<div>";
+                        for (int i = 0, l = elements.length; i < l; i++) {
+                            html += widgetResolveService.pageElementHTML(elements[i], cmsContext);
+                        }
+                        html += "</div>";
+                        out.write(html);
+                    }
+                }
             }
-            html += "</div>";
+        }//404 content is not existing or access defined.
 
-            AbstractContent content = abstractContentRepository.findOne(contentId);
-            if (content != null && Objects.equals(content.getCategory().getId(), category.getId())) {
 
-            }
-
-        } catch (IOException e) {
-        }
-
-//        Category category = null;// from pagePath
-//        assert (category != null);
-//        AbstractContent content = abstractContentRepository.findOne(contentId);// from Site category contentId
-
-//        404 if content is not existing or access defined.
-
-//        Page page = null;//
 
     }
 

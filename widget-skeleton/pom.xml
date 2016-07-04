@@ -29,7 +29,9 @@
         在本原型已install的maven环境中 可直接执行:
         &lt;br /&gt;
         mvn archetype:generate -DarchetypeGroupId=com.huotu.hotcms -DarchetypeArtifactId=widget-skeleton
-        -DarchetypeVersion=1.0-SNAPSHOT -DgroupId=your group -DartifactId=your artifactId
+        -DarchetypeVersion=1.0-SNAPSHOT
+        -DarchetypeRepository=http://repo.51flashmall.com:8081/nexus/content/groups/public
+        -DgroupId=your group -DartifactId=your artifactId
         &lt;br /&gt;
         即可获得一个控件的原型maven项目
         &lt;br /&gt;

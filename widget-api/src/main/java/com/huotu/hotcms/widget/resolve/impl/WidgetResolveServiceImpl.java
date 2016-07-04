@@ -15,6 +15,8 @@ import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetResolveService;
 import com.huotu.hotcms.widget.WidgetStyle;
+import com.huotu.hotcms.widget.page.Layout;
+import com.huotu.hotcms.widget.page.PageElement;
 import com.huotu.hotcms.widget.resolve.WidgetConfiguration;
 import com.huotu.hotcms.widget.resolve.WidgetContext;
 import org.apache.commons.logging.Log;
@@ -41,12 +43,12 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
-//    @Autowired
+    //    @Autowired
     private SpringTemplateEngine widgetTemplateEngine;
 
-    private void checkEngine(){
-        if (widgetTemplateEngine==null){
-            widgetTemplateEngine = webApplicationContext.getBean("widgetTemplateEngine",SpringTemplateEngine.class);
+    private void checkEngine() {
+        if (widgetTemplateEngine == null) {
+            widgetTemplateEngine = webApplicationContext.getBean("widgetTemplateEngine", SpringTemplateEngine.class);
         }
     }
 
@@ -96,6 +98,7 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
 
     @Override
     public String componentHTML(Component component, CMSContext cmsContext) {
+
         WidgetStyle style = null;
         for (WidgetStyle style1 : component.getInstalledWidget().getWidget().styles()) {
             if (style1.id().equals(component.getStyleId())) {
@@ -115,5 +118,50 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
         cmsContext.getWidgetConfigurationStack().push(widgetConfiguration);
         return widgetTemplateEngine.process(WidgetTemplateResolver.BROWSE
                 , Collections.singleton("div"), widgetContext);
+    }
+
+    @Override
+    public String pageElementHTML(PageElement pageElement, CMSContext cmsContext) {
+        String className;
+        if (pageElement instanceof Layout) {
+            //是一个布局界面
+            Layout layout = ((Layout) pageElement);
+            String[] columns = layout.getValue().split(",");
+            String html = "";
+            for (int i = 0, l = columns.length; i < l; i++) {
+                cmsContext.updateNextBootstrapLayoutColumn(Integer.parseInt(columns[i]));
+                className = cmsContext.getNextBootstrapClass();
+                html = "<div class=\"" + className + "\">";
+                PageElement[] childPageElement = layout.getElements();
+                if (childPageElement != null && childPageElement.length >= 0) {
+                    html += pageElementHTML(childPageElement[i], cmsContext);
+                }
+                html += "</div>";
+            }
+            return html;
+
+        } else {//是一个组件
+            Component component = (Component) pageElement;
+            WidgetStyle style = null;
+            for (WidgetStyle style1 : component.getInstalledWidget().getWidget().styles()) {
+                if (style1.id().equals(component.getStyleId())) {
+                    style = style1;
+                    break;
+                }
+            }
+            if (style == null) {
+                style = component.getInstalledWidget().getWidget().styles()[0];
+            }
+
+            checkEngine();
+            WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
+                    , component.getInstalledWidget().getWidget(), style, webApplicationContext.getServletContext()
+                    , component.getProperties());
+            WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();
+            cmsContext.getWidgetConfigurationStack().push(widgetConfiguration);
+            return widgetTemplateEngine.process(WidgetTemplateResolver.BROWSE
+                    , Collections.singleton("div"), widgetContext);
+        }
+
     }
 }

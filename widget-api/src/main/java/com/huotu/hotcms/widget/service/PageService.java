@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.widget.service;
 
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.page.Page;
 
@@ -31,24 +32,37 @@ public interface PageService {
      * @throws IOException
      */
     String generateHTML(Page page, CMSContext context) throws IOException;
-    //, TemplateException, ComponentPropertiesException
 
     void parsePageToXMlAndSave(Page page, String pageId) throws IOException, URISyntaxException;
+
     /**
      * 解析保存了{@link com.huotu.hotcms.widget.page.Page}信息的XML
+     *
      * @param pageId pageId
-     * @return  {@link com.huotu.hotcms.widget.page.Page}
+     * @return {@link com.huotu.hotcms.widget.page.Page}
      * @throws IOException 其他异常
      */
     Page getPageFromXMLConfig(String pageId) throws IOException;
 
     /**
      * 删除相关页面信息
-     * @param ownerId  ownerId
-     * @param pageId 页面ID
+     *
+     * @param ownerId ownerId
+     * @param pageId  页面ID
      * @throws IOException 其他异常
      */
-    void deletePage(long ownerId,String pageId) throws IOException;
+    void deletePage(long ownerId, String pageId) throws IOException;
+
+    
+    /**
+     * <p>返回当前站点下指定pageUri的具体html</p>
+     *
+     * @param pagePath   pagePath必须存在不能为空
+     * @param site      当前站点必须存在不能为空
+     * @return page
+     * @throws IOException 其他异常
+     */
+    Page findByPagePath(Site site, String pagePath) throws IOException;
 
 
 }

@@ -50,6 +50,8 @@
                 <include>**/*.properties</include>
                 <include>**/*.sql</include>
                 <include>**/*.xml</include>
+                <include>**/*.html</include>
+                <include>**/*.png</include>
             </includes>
         </fileSet>
         <fileSet filtered="true" packaged="true" encoding="UTF-8">

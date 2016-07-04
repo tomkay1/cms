@@ -11,6 +11,9 @@ package com.huotu.hotcms.widget.service.impl;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.huotu.hotcms.service.common.ConfigInfo;
+import com.huotu.hotcms.service.entity.AbstractContent;
+import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.service.ContentsService;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.service.PageService;
@@ -33,8 +36,9 @@ import java.nio.charset.Charset;
 public class PageServiceImpl implements PageService {
 
     @Autowired
+    ContentsService contentsService;
+    @Autowired
     private ResourceService resourceService;
-
     @Autowired
     private ConfigInfo configInfo;
 
@@ -61,10 +65,16 @@ public class PageServiceImpl implements PageService {
         XmlMapper xmlMapper=new XmlMapper();
         return xmlMapper.readValue(xml,Page.class);
     }
+
     @Override
     public void deletePage(long ownerId, String pageId) throws IOException {
         String path = configInfo.getPageConfig(pageId)+".xml";
         resourceService.deleteResource(path);
+    }
+
+    @Override
+    public Page findByPagePath(Site site, String pagePath) throws IOException {
+        return null;
     }
 
 

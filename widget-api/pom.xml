@@ -34,6 +34,11 @@
             <artifactId>service</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.huotu.huobanplus</groupId>
+            <artifactId>common-model</artifactId>
+            <version>${huobanplus.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

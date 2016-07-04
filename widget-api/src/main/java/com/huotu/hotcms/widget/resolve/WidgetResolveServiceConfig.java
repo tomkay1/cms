@@ -25,7 +25,7 @@ import java.util.Set;
  * @author CJ
  */
 @Configuration
-@ComponentScan({"com.huotu.hotcms.widget.resolve.impl", "com.huotu.hotcms.widget.resolve.thymeleaf"})
+@ComponentScan({"com.huotu.hotcms.widget.resolve.impl", "com.huotu.hotcms.widget.resolve.thymeleaf", "com.huotu.hotcms.widget.service"})
 public class WidgetResolveServiceConfig {
 
     @Autowired

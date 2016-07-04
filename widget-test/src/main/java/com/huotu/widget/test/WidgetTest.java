@@ -51,6 +51,7 @@ public abstract class WidgetTest extends SpringWebTest {
     @Autowired
     private WidgetHolder holder;
 
+
     @Override
     public void createMockMVC() {
         MockitoAnnotations.initMocks(this);
@@ -58,7 +59,9 @@ public abstract class WidgetTest extends SpringWebTest {
         if (context == null)
             return;
         DefaultMockMvcBuilder builder = webAppContextSetup(context);
-        builder.addFilter(new CMSFilter());
+        CMSFilter cmsFilter = new CMSFilter();
+        cmsFilter.setServletContext(context.getServletContext());
+        builder.addFilter(cmsFilter);
 //        if (springSecurityFilter != null) {
 //            builder = builder.addFilters(springSecurityFilter);
 //        }

@@ -62,15 +62,18 @@ public class CSSServiceImpl implements CSSService {
                 if (os.contains("Mac") || os.contains("Linux") || os.contains("linux") || os.contains("CentOS")) {
                     // 创建临时 .sh文件并赋予文件内容和执行权限
                     shellPath = Files.createTempFile("tempLess2css", ".sh");
-                    Files.copy(new ClassPathResource("less2css.sh").getInputStream(), shellPath, StandardCopyOption.REPLACE_EXISTING);
+                    Files.copy(new ClassPathResource("less2css.sh").getInputStream(), shellPath,
+                            StandardCopyOption.REPLACE_EXISTING);
                     Files.setPosixFilePermissions(shellPath, PosixFilePermissions.fromString("rwxrwx---"));
                     //执行生成sh脚本生成css文件
                     process = Runtime.getRuntime().exec("sh " + shellPath.toFile().getAbsolutePath() + " "
                             + lessPath.toFile().getAbsolutePath() + " " + cssPath.toFile().getAbsolutePath());
                 } else {
                     shellPath = Files.createTempFile("tempLess2css", ".bat");
-                    Files.copy(new ClassPathResource("less2css.bat").getInputStream(), shellPath, StandardCopyOption.REPLACE_EXISTING);
-                    process = Runtime.getRuntime().exec(shellPath.toFile().getAbsolutePath() + " " + lessPath.toFile().getAbsolutePath() + " "
+                    Files.copy(new ClassPathResource("less2css.bat").getInputStream(), shellPath,
+                            StandardCopyOption.REPLACE_EXISTING);
+                    process = Runtime.getRuntime().exec(shellPath.toFile().getAbsolutePath() + " "
+                            + lessPath.toFile().getAbsolutePath() + " "
                             + cssPath.toFile().getAbsolutePath());
                 }
                 try {

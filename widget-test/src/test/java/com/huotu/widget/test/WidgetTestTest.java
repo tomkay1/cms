@@ -18,13 +18,10 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 /**
  * @author CJ
  */
 public class WidgetTestTest extends WidgetTest {
-
 
     @Override
     protected boolean printPageSource() {
@@ -33,13 +30,9 @@ public class WidgetTestTest extends WidgetTest {
 
     @Override
     protected void editorWork(Widget widget, WebElement editor, Supplier<Map<String, Object>> currentWidgetProperties) {
-
     }
 
     @Override
     protected void browseWork(Widget widget, WidgetStyle style, Function<ComponentProperties, WebElement> uiChanger) {
-        WebElement div = uiChanger.apply(new ComponentProperties());
-        assertThat(div.getAttribute("align"))
-                .isEqualTo("right");
     }
 }

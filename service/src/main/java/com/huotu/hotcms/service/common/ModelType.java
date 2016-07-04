@@ -18,6 +18,8 @@ public enum ModelType implements CommonEnum {
     GALLERY(3,"图库模型"),
     DOWNLOAD(4,"下载模型"),
     LINK(5,"链接模型");
+//    PRODUCT(6, "产品模型"),
+//    LOGO(7, "LOGO模型");
 
     private int code;
     private String value;
@@ -27,7 +29,7 @@ public enum ModelType implements CommonEnum {
     }
 
     @Override
-    public Object getCode() {
+    public Integer getCode() {
         return code;
     }
 

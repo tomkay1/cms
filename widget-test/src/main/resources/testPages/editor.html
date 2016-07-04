@@ -8,11 +8,14 @@
   ~ 2013-2016. All rights reserved.
   -->
 
-<html xmlns:cms="http://cms.huobanplus.com" lang="en">
+<html xmlns:cms="http://cms.huobanplus.com" xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--/*@thymesVar id="widgetId" type="java.lang.String"*/-->
 <head>
     <meta charset="UTF-8">
     <title>Demo Editor</title>
     <script src="https://code.jquery.com/jquery-2.2.3.min.js" crossorigin="anonymous"></script>
+    <script th:src="@{/javascript/{id}(id=${widgetId})}"></script>
+
     <script>
         var _widgetProperties = {};
         function widgetProperties() {
@@ -22,9 +25,7 @@
 </head>
 <body>
 
-<!--/*@thymesVar id="widgetId" type="java.lang.String"*/-->
 <div id="editor">
-
     <!--${properties} should be supported-->
     <div cms:replaceEditor="${widgetId},${properties}"></div>
 </div>

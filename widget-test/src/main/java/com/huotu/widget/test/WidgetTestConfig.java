@@ -9,9 +9,12 @@
 
 package com.huotu.widget.test;
 
+import com.huotu.hotcms.service.config.ServiceConfig;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.loader.WidgetLoaderConfig;
 import com.huotu.hotcms.widget.resolve.WidgetResolveServiceConfig;
+import com.huotu.hotcms.widget.service.CMSDataSourceService;
+import com.huotu.widget.test.bean.CMSDataSourceServiceImpl;
 import com.huotu.widget.test.bean.WidgetHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -33,7 +36,7 @@ import java.util.Set;
  * @author CJ
  */
 @EnableWebMvc
-@Import({WidgetTestConfig.ViewResolver.class, WidgetResolveServiceConfig.class})
+@Import({WidgetTestConfig.ViewResolver.class, WidgetResolveServiceConfig.class, ServiceConfig.class})
 @ComponentScan("com.huotu.widget.test.bean")
 public class WidgetTestConfig extends WebMvcConfigurerAdapter {
 
@@ -48,6 +51,12 @@ public class WidgetTestConfig extends WebMvcConfigurerAdapter {
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
         registry.viewResolver(normalViewResolver);
+    }
+
+
+    @Bean
+    public CMSDataSourceService cmsDataSourceService() {
+        return new CMSDataSourceServiceImpl();
     }
 
 //    @Bean
@@ -66,6 +75,7 @@ public class WidgetTestConfig extends WebMvcConfigurerAdapter {
     static class ViewResolver {
         @Autowired
         private WidgetHolder widgetHolder;
+
         @Autowired
         private ApplicationContext applicationContext;
         //        @Autowired

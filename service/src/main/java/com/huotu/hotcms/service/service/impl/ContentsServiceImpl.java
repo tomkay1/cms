@@ -53,6 +53,12 @@ public class ContentsServiceImpl implements ContentsService {
         return abstractContentRepository.findAll(specification, pageable);
     }
 
+    @Override
+    public AbstractContent findById(Long contentId) {
+        return abstractContentRepository.findOne(contentId);
+    }
+
+
 //    @Override
 //    public PageData<Contents> getPage(String title, Long siteId, Long category, int page, int pageSize) {
 //        PageData<Contents> data = null;

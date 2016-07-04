@@ -9,6 +9,8 @@
 
 package com.huotu.hotcms.widget;
 
+import com.huotu.hotcms.widget.page.PageElement;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -60,4 +62,16 @@ public interface WidgetResolveService {
      * @return HTML Code
      */
     String componentHTML(Component component, CMSContext cmsContext);
+
+    /**
+     * 生成一个pageElement的完整HTML代码
+     * <p>
+     * 页面的生成者应该是通过调用这个方法获取每一个pageElement的HTML,技术上我们限定生成一个页面绝对不可以超过0.5s,假定一个页面转载了200个控件
+     * 也就是这个方法的响应时间不可以超过0.5/200s 也就是2.5ms</p>
+     *
+     * @param pageElement 页面节点
+     * @param cmsContext  上下文环境
+     * @return HTML Code
+     */
+    String pageElementHTML(PageElement pageElement, CMSContext cmsContext);
 }

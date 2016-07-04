@@ -16,11 +16,15 @@ import com.huotu.hotcms.widget.WidgetLocateService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.io.IOException;
 
 /**
  * 将几个常用动作 写成单独文件
@@ -55,16 +59,21 @@ public class WidgetViewController {
     @RequestMapping(method = RequestMethod.GET, value = {"/browse/{widgetName}/{styleId}"})
     public String browse(@PathVariable("widgetName") String widgetName
             ,@PathVariable("styleId") String styleId,Model model) {
-
         InstalledWidget widget = widgetLocateService.findWidget(widgetName);
         Component component = new Component();
         component.setProperties(currentProperties);
         component.setStyleId(styleId);
         component.setInstalledWidget(widget);
-
         model.addAttribute("component", component);
         return "browse";
     }
 
 
+    @RequestMapping(method = RequestMethod.GET, value = {"/javascript/{id}"})
+    @ResponseBody
+    public Resource javascript(@PathVariable("id") String widgetId, Model model) throws IOException {
+        InstalledWidget installedWidget = widgetLocateService.findWidget(widgetId);
+        Resource resource = installedWidget.getWidget().widgetJs();
+        return resource;
+    }
 }

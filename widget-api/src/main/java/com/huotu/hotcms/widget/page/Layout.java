@@ -28,7 +28,13 @@ import lombok.Data;
 public class Layout implements PageElement {
 
     /**
-     * Layout的布局参数：比如12,6-6,4-4-4
+     * 用逗号间隔的bootstrap栅格参数，总值必须为12
+     * <p>比如</p>
+     * <ul>
+     *     <li>12</li>
+     *     <li>1,11</li>
+     *     <li>4,6,2</li>
+     * </ul>
      */
     private String value;
 

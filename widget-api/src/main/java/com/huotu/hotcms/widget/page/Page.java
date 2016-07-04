@@ -10,6 +10,8 @@
 package com.huotu.hotcms.widget.page;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.widget.common.PageType;
 import lombok.Data;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -33,6 +35,18 @@ public class Page implements Serializable {
     private String pageIdentity;
 
     private String title;
+
+    /**
+     * 暂时定义
+     * page数据源
+     */
+    private Category category;
+
+    /**
+     * 暂时定义
+     * page类型
+     */
+    private PageType pageType;
 
     @JacksonXmlElementWrapper(useWrapping=false)
     private PageElement[] elements;

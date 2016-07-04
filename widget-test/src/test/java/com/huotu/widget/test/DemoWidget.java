@@ -63,7 +63,7 @@ public class DemoWidget implements Widget {
 
     @Override
     public Resource widgetJs() {
-        return null;
+        return new ClassPathResource("js/demoWidget.js");
     }
 
     @Override

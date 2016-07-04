@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
  * Created by wenqi on 2016/5/31.
  */
 @Configuration
-@ComponentScan(value = {"com.huotu.hotcms.widget.config"
+@ComponentScan(value = {"com.huotu.hotcms.widget.config", "com.huotu.hotcms.service.common"
         })
 public class TestConfig {
 }

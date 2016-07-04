@@ -9,11 +9,12 @@
 
 package com.huotu.hotcms.service.util;
 
-/**
- * Created by hzbc on 2016/6/16.
- */
 public class StaticResource {
 
+    /**
+     * @param path 请求路径
+     * @return true请求的资源为静态资源
+     */
     public static boolean isStaticResource(String path) {
         String staticResourceSuffix[] = {
                 ".js"
@@ -22,7 +23,7 @@ public class StaticResource {
                 , ".eot", ".svg", ".tff", ".woff"
         };
         for (String s : staticResourceSuffix) {
-            if(path.endsWith(s)){
+            if (path.endsWith(s)) {
                 return true;
             }
         }

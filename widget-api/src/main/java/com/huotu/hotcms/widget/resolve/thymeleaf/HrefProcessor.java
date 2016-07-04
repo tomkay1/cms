@@ -15,9 +15,7 @@ import com.huotu.hotcms.widget.support.ExpressionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.context.ITemplateContext;
-import org.thymeleaf.engine.AttributeDefinitions;
 import org.thymeleaf.engine.AttributeName;
-import org.thymeleaf.engine.IAttributeDefinitionsAware;
 import org.thymeleaf.model.IProcessableElementTag;
 import org.thymeleaf.processor.element.AbstractAttributeTagProcessor;
 import org.thymeleaf.processor.element.IElementTagProcessor;
@@ -32,20 +30,15 @@ import java.net.URISyntaxException;
  */
 @Component
 public class HrefProcessor extends AbstractAttributeTagProcessor implements IElementTagProcessor
-        , IAttributeDefinitionsAware, WidgetProcessor {
+        , WidgetProcessor {
     @Autowired
     WidgetResolveService widgetResolveService;
-    private AttributeDefinitions attributeDefinitions;
 
     public HrefProcessor() {
         super(TemplateMode.HTML, WidgetDialect.Prefix, null, true, "href", true, 10000, false);
     }
 
 
-    @Override
-    public void setAttributeDefinitions(AttributeDefinitions attributeDefinitions) {
-        this.attributeDefinitions = attributeDefinitions;
-    }
 
     @Override
     protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName
@@ -57,8 +50,9 @@ public class HrefProcessor extends AbstractAttributeTagProcessor implements IEle
             structureHandler.replaceAttribute(attributeName, attributeName.getAttributeName()
                     , widgetResolveService.resourceURI(widget, resourceName).toString());
         } catch (IOException | URISyntaxException e) {
-            structureHandler.replaceAttribute(attributeName, attributeName.getAttributeName()
-                    , attributeValue);
+            throw new IllegalStateException(e);
+//            structureHandler.replaceAttribute(attributeName, attributeName.getAttributeName()
+//                    , attributeValue);
         }
     }
 

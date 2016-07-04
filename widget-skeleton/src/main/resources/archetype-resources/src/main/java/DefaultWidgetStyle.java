@@ -9,21 +9,64 @@
 
 package ${package};
 
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import java.util.Locale;
 import com.huotu.hotcms.widget.Widget;
+import com.huotu.hotcms.widget.WidgetStyle;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import java.util.Locale;
 
 /**
  * @author CJ
  */
-public class WidgetInfo implements Widget{
+public class DefaultWidgetStyle implements WidgetStyle{
 
     @Override
-    public String groupId() {
-        return "${groupId}";
+    public String id() {
+        return "${artifactId}DefaultStyle";
     }
 
     @Override
-    public String widgetId() {
-        return "${artifactId}";
+    public String name() {
+        return "bootstrap 风格";
+    }
+
+    @Override
+    public String name(Locale locale) {
+        if (locale.equals(Locale.CHINESE)) {
+            return name();
+        }
+        return "bootstrap style ${artifactId}";
+    }
+
+    @Override
+    public String description() {
+        return "基于bootstrap样式的   ";
+    }
+
+    @Override
+    public String description(Locale locale) {
+        if (locale.equals(Locale.CHINESE)) {
+            return description();
+        }
+        return "Based on the bootstrap style by ${artifactId}";
+    }
+
+    @Override
+    public Resource thumbnail() {
+        return new ClassPathResource("/thumbnail/defaultStyleThumbnail.png", getClass().getClassLoader());
+    }
+
+    @Override
+    public Resource previewTemplate() {
+        return new ClassPathResource("/template/defaultStylePreviewTemplate.html", getClass().getClassLoader());
+    }
+
+    @Override
+    public Resource browseTemplate() {
+        return new ClassPathResource("/template/defaultStyleBrowseTemplate.html", getClass().getClassLoader());
     }
 
 }

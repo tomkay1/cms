@@ -29,5 +29,13 @@ public interface ContentsService {
      */
     Iterable<AbstractContent> list(String title, Site site, Long category, Pageable pageable);
 
+    /**
+     * 查找指定id的内容
+     *
+     * @param contentId
+     * @return
+     */
+    AbstractContent findById(Long contentId);
+
 //    PageData<Contents> getPage(String title,Long siteId,Long category, int page, int pageSize);
 }

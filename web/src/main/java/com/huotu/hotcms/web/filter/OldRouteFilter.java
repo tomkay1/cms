@@ -7,7 +7,7 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.hotcms.web.Filter;
+package com.huotu.hotcms.web.filter;
 
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
@@ -40,12 +40,13 @@ import java.util.Objects;
  * <p>
  * 解析过滤器
  * </p>
+ * 保留老代码而已
  *
  * @author xhl
  * @since 1.0.0
  */
-public class RouteFilter implements Filter {
-    private static final Log log = LogFactory.getLog(RouteFilter.class);
+public class OldRouteFilter implements Filter {
+    private static final Log log = LogFactory.getLog(OldRouteFilter.class);
     private static final String filter = "interim/join";
     private static final String manage = "/manage/";
     private static final String[] diy_filter = new String[]{"/shop", "/bind", "/template/0/", "/template/error/"

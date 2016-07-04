@@ -26,12 +26,15 @@ import java.io.Serializable;
  * @author CJ
  */
 @Data
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Page implements Serializable {
     /**
      * 该页面的唯一ID，字符串
      */
+    @XmlAttribute(name = "pageIdentity")
     private String pageIdentity;
 
+    @XmlAttribute(name = "title")
     private String title;
 
     @JacksonXmlElementWrapper(useWrapping=false)

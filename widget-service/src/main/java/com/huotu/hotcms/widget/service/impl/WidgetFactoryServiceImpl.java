@@ -245,7 +245,23 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
 
     @Override
     public InstalledWidget findWidget(String groupId, String widgetId, String version) {
-        return null;
+        WidgetInfo widgetInfo = widgetRepository.findByWidgetIdAndGroupIdAndVersion(widgetId, groupId, version);
+        InstalledWidget installedWidget = new InstalledWidget();
+        installedWidget.setType(widgetInfo.getType());
+        String realPath = getRealPath(widgetId, version);
+        try {
+            List<Class> classes = ClassLoaderUtil.loadJarWidgetClasss(realPath);
+            if (classes != null) {
+                for (Class classz : classes) {
+                    if (((Widget) classz.newInstance()).widgetId().equals(widgetId)) {
+                        installedWidget.setWidget((Widget) classz.newInstance());
+                    }
+                }
+            }
+        } catch (IllegalAccessException | InstantiationException | FormatException | IOException e) {
+            //throw new FormatException(e.toString());
+        }
+        return installedWidget;
     }
 
     @Override

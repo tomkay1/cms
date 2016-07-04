@@ -38,13 +38,13 @@
 //    @Override
 //    public List<Page> getPageList(long ownerId) throws IOException {
 //        return null;
-//        //return pageService.getPageFromXMLConfig(ownerId,pageId);
+//        //return pageService.getPage(ownerId,pageId);
 //    }
 //
 //
 //    @Override
 //    public Page getPage(String pageId) throws IOException {
-//        return pageService.getPageFromXMLConfig(pageId);
+//        return pageService.getPage(pageId);
 //    }
 //
 //

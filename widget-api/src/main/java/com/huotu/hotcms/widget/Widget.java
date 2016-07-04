@@ -101,7 +101,7 @@ public interface Widget {
 
 
     /**
-     * @return 编辑器的js资源
+     * @return 页面的js资源
      */
     Resource widgetJs();
 

@@ -30,6 +30,7 @@ public class ConfigInfo {
 
     @Autowired
     private Environment ev;
+
     @Value("${resources.site}")
     private String resourcesSiteLogo;
     @Value("${resources.video}")

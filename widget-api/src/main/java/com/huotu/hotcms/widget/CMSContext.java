@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.widget;
 
+import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.widget.resolve.WidgetConfiguration;
 import lombok.AllArgsConstructor;
@@ -56,6 +57,13 @@ public class CMSContext {
     private final HttpServletResponse response;
     private final Site site;
     private final Locale locale;
+    /**
+     * layout列比值
+     */
+    private Integer column = null;
+
+    private AbstractContent abstractContent;
+
 
     /**
      * 请求当前的CMS上下文
@@ -80,8 +88,28 @@ public class CMSContext {
      * @param site     当前站点
      */
     public static CMSContext PutContext(HttpServletRequest request, HttpServletResponse response, Site site) {
-        CMSContext cmsContext = new CMSContext(request, response, site, site.getRegion().getLocale());
+        CMSContext cmsContext = new CMSContext(request, response, site, site.getRegion().getLocale(), null,null);
         contexts.set(cmsContext);
         return cmsContext;
     }
+
+    /**
+     * 设置当前CMS列值
+     *
+     * @param column 可以为null
+     */
+    public void updateNextBootstrapLayoutColumn(Integer column) {
+        this.column = column;
+    }
+
+    /**
+     * 获取当前CMS列值
+     */
+    public String getNextBootstrapClass() {
+        CMSContext cmsContext = RequestContext();
+        return "col-sm-" + cmsContext.column;
+    }
+
+
+
 }

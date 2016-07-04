@@ -1,4 +1,3 @@
-
 /*
  * 版权所有:杭州火图科技有限公司
  * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
@@ -8,13 +7,10 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.hotcms.widget.page;
-
-
 /**
- * Created by hzbc on 2016/6/23.
+ * 过滤行为
+ * 参考 https://huobanplus.quip.com/A4lnAJatPVse
+ *
+ * @author CJ
  */
-
-public class PageElementDeserializer extends CMSDeserializer<PageElement> {
-
-}
+package com.huotu.hotcms.service.filter;

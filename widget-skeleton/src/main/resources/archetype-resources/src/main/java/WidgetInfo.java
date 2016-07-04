@@ -9,12 +9,25 @@
 
 package ${package};
 
+import java.util.Locale;
+import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.Widget;
+import com.huotu.hotcms.widget.WidgetStyle;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+
 
 /**
  * @author CJ
  */
 public class WidgetInfo implements Widget{
+    /*
+     * 指定风格的模板类型 如：html,text等
+     */
+    public static final String VALID_STYLE_TEMPLATE = "styleTemplate";
 
     @Override
     public String groupId() {
@@ -24,6 +37,76 @@ public class WidgetInfo implements Widget{
     @Override
     public String widgetId() {
         return "${artifactId}";
+    }
+
+
+    @Override
+    public String name(Locale locale) {
+        if (locale.equals(Locale.CHINESE)) {
+            return "${name}";
+        }
+        return "${artifactId}";
+    }
+
+    @Override
+    public String description() {
+        return "这是一个 ${name}，你可以对组件进行自定义修改。";
+    }
+
+    @Override
+    public String description(Locale locale) {
+        if (locale.equals(Locale.CHINESE)) {
+            return description();
+        }
+        return "This is a ${artifactId},  you can make custom change the component.";
+    }
+
+    @Override
+    public int dependBuild() {
+        return 0;
+    }
+
+    @Override
+    public WidgetStyle[] styles() {
+        return new WidgetStyle[]{new DefaultWidgetStyle()};
+    }
+
+
+    @Override
+    public Resource widgetJs() {
+        return new ClassPathResource("js/${artifactId}.js", getClass().getClassLoader());
+    }
+
+
+    @Override
+    public Map<String, Resource> publicResources() {
+        Map<String, Resource> map = new HashMap<>();
+        map.put("thumbnail/defaultStyleThumbnail.png",new ClassPathResource("thumbnail/defaultStyleThumbnail.png",getClass().getClassLoader()));
+        return map;
+    }
+
+    @Override
+    public void valid(String styleId, ComponentProperties componentProperties) throws IllegalArgumentException {
+        WidgetStyle[] widgetStyles = styles();
+        boolean flag = false;
+        if (widgetStyles == null || widgetStyles.length < 1) {
+            throw new IllegalArgumentException();
+        }
+        for (WidgetStyle ws : widgetStyles) {
+            if ((flag = ws.id().equals(styleId))) {
+                break;
+            }
+        }
+        if (!flag) {
+            throw new IllegalArgumentException();
+        }
+        //加入控件独有的属性验证
+
+    }
+
+    @Override
+    public Class springConfigClass() {
+        return null;
     }
 
 }

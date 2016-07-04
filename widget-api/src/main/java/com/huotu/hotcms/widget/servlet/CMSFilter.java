@@ -37,12 +37,11 @@ public class CMSFilter extends OncePerRequestFilter implements Filter {
 
     private static final Log log = LogFactory.getLog(CMSFilter.class);
 
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-
         WebApplicationContext context = WebApplicationContextUtils.findWebApplicationContext(getServletContext());
-
         try {
             Site site = context.getBean(SiteResolveService.class).getCurrentSite(request);
             CMSContext.PutContext(request, response, site);

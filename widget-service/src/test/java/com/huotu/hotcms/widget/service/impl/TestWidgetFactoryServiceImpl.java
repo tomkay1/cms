@@ -37,25 +37,26 @@ public class TestWidgetFactoryServiceImpl {
     @Autowired
     private WidgetFactoryService widgetFactoryService;
 
+
     @Test
     public void testInstallWidget() throws IOException, FormatException {
 
         String randomType = UUID.randomUUID().toString();
         // 安装一个demo控件
-        widgetFactoryService.installWidget("com.huotu.hotcms.widget.picCarousel", "picCarousel", "1.0-SNAPSHOT", randomType);
+        widgetFactoryService.installWidget("com.huotu.hotcms.widget.pagingWidget", "pagingWidget", "1.0-SNAPSHOT", randomType);
 
         // 校验列表,应当包含picBanner控件
-        assertWidgetListContainWidgetName("picCarousel", randomType);
+        assertWidgetListContainWidgetName("pagingWidget", randomType);
 
         //检验重新加载
         widgetFactoryService.reloadWidgets();
 
-        assertWidgetListContainWidgetName("picCarousel", randomType);
+        assertWidgetListContainWidgetName("pagingWidget", randomType);
 
         //更新控件
-        widgetFactoryService.updateWidget("com.huotu.hotcms.widget.picCarousel", "picCarousel", "1.0-SNAPSHOT", randomType);
+        widgetFactoryService.updateWidget("com.huotu.hotcms.widget.pagingWidget", "pagingWidget", "1.0-SNAPSHOT", randomType);
 
-        assertWidgetListContainWidgetName("picCarousel", randomType);
+        assertWidgetListContainWidgetName("pagingWidget", randomType);
     }
 
     private void assertWidgetListContainWidgetName(String widgetId, String type) throws IOException, FormatException {

@@ -12,6 +12,8 @@ package com.huotu.hotcms.service.converter;
 import com.huotu.hotcms.service.common.CommonEnum;
 import com.huotu.hotcms.service.common.EnumUtils;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.util.NumberUtils;
+import org.springframework.util.StringUtils;
 
 /**
  * @author CJ
@@ -26,7 +28,9 @@ public abstract class CommonEnumConverter<T extends CommonEnum> implements Conve
 
     @Override
     public T convert(String source) {
+        if (StringUtils.isEmpty(source))
+            return null;
         // 根据范型获取类型 算了麻烦 初始化过来吧
-        return EnumUtils.valueOf(enumClass, source);
+        return EnumUtils.valueOf(enumClass, NumberUtils.parseNumber(source, Integer.class));
     }
 }

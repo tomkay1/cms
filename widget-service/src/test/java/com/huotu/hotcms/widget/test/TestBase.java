@@ -102,7 +102,7 @@ public class TestBase {
 
     private Layout randomLayout() {
         Layout layout = new Layout();
-        layout.setLayoutId(UUID.randomUUID().toString());
+        layout.setValue(UUID.randomUUID().toString());
 
         List<PageElement> pageElementList = new ArrayList<>();
 

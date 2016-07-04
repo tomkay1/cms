@@ -14,6 +14,7 @@
     <meta charset="UTF-8">
     <link href="http://resali.huobanplus.com/cdn/bracket/css/style.default.css" rel="stylesheet">
     <link href="http://resali.huobanplus.com/cdn/bracket/css/jquery.datatables.css" rel="stylesheet">
+    <link href="../../../public/assets/css/customize.css" rel="stylesheet">
     <title>Owner</title>
 </head>
 <body class="mainpanel" id="fa-puzzle-piece">
@@ -24,19 +25,17 @@
 <div class="contentpanel">
     <form id="addSiteForm" sec:authorize="hasRole('OWNER')" action="index.html" method="post"
           th:action="@{/manage/site}">
-        <div class="panel panel-default">
+        <div class="panel panel-default close-panel">
             <div class="panel-heading">
                 <div class="panel-btns">
                     <a href="" class="panel-close">&times;</a>
-                    <a href="" class="minimize">&minus;</a>
+                    <a href="" class="minimize maximize">&plus;</a>
                 </div><!-- panel-btns -->
                 <h3 class="panel-title">新建网站</h3>
                 <p>为当前商户添加一个新网站</p>
             </div>
             <div class="panel-body">
-
                 <div class="form-horizontal form-bordered">
-
                     <div class="form-group">
                         <label class="col-sm-2 control-label">站点名称</label>
                         <div class="col-sm-2">
@@ -52,7 +51,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">站点描述</label>
                         <div class="col-sm-10">
-                            <textarea class="form-control autoGrow" name="description" rows="5" title="站点描述"></textarea>
+                            <textarea class="form-control" rows="4" title="站点描述" name="description"></textarea>
                         </div>
                     </div>
                     <div class="form-group">
@@ -123,50 +122,7 @@
             <p>可以选择删除,也可以修改站点的配置</p>
         </div>
         <div class="panel-body">
-            <div class="table-responsive">
-                <table class="table" id="ownerTable">
-                    <thead>
-                    <tr>
-                        <th>站点名称</th>
-                        <th>站点标题</th>
-                        <th>创建时间</th>
-                        <th>&nbsp;</th>
-                    </tr>
-                    </thead>
-                    <!--odd even-->
-                    <tbody>
-                    <!--/*@thymesVar id="list" type="java.lang.Iterable<com.huotu.hotcms.service.entity.Site>"*/-->
-                    <tr th:each="site,stats:${list}" class="odd" th:class="${stats.odd?'odd':'even'}"
-                        th:attr="data-id=${site.siteId}" data-id="456">
-                        <td class="actionWard" th:text="${site.name}">hello</td>
-                        <td class="actionAccess" th:text="${site.title}">如此标题</td>
-                        <td th:text="${site.createTime}">06-11</td>
-                        <td class="center">
-                            <a href="site.html" th:href="@{/manage/site/{id}(id=${site.siteId})}" title="编辑">
-                                <i class="fa fa-pencil"></i>
-                            </a>
-                            <a href="index.html" class="delete" th:href="@{/manage/site/{id}/delete(id=${site.siteId})}"
-                               target="_top" title="删除">
-                                <i class="fa fa-trash-o"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr class="even" th:remove="all" data-id="123">
-                        <td class="actionWard">hello2</td>
-                        <td class="actionAccess">标题2</td>
-                        <td>06-22</td>
-                        <td class="center">
-                            <a href="site.html" title="编辑">
-                                <i class="fa fa-pencil"></i>
-                            </a>
-                            <a href="index.html" class="delete" title="删除">
-                                <i class="fa fa-trash-o"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div><!-- table-responsive -->
+
         </div>
     </div>
 
@@ -204,7 +160,7 @@
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.cookies.js"></script>
 
 <script src="http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/jquery.fine-uploader.min.js"></script>
-<link rel="stylesheet" href="http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/fine-uploader.min.css"
+<link rel="stylesheet" href="http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/fine-uploader-new.min.css"
       property=""/>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.tagsinput.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.autogrow-textarea.js"></script>

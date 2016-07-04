@@ -52,18 +52,31 @@ jQuery(document).ready(function () {
     jQuery('.minimize').click(function () {
         var t = jQuery(this);
         var p = t.closest('.panel');
+        var h;
         if (!jQuery(this).hasClass('maximize')) {
-            p.find('.panel-body, .panel-footer').slideUp(200);
+            p.find('.panel-body').slideUp(0);
+            p.find('.panel-footer').slideUp(0, function () {
+                h = document.body.clientHeight;
+                resizeParentIframe(h);
+            });
             t.addClass('maximize');
             t.html('&plus;');
         } else {
-            p.find('.panel-body, .panel-footer').slideDown(200);
+            p.find('.panel-body, .panel-footer').slideDown(0);
+            p.find('.panel-footer').slideDown(0, function () {
+                h = document.body.clientHeight;
+                resizeParentIframe(h);
+            });
             t.removeClass('maximize');
             t.html('&minus;');
         }
         return false;
     });
 
+    // 动态改变父级 iframe 高度，在 元素 .minimize 点击事件里触发
+    function resizeParentIframe( height ) {
+        $(parent.document).find('iframe').height(height);
+    }
 
     // Add class everytime a mouse pointer hover over it
     jQuery('.nav-bracket > li').hover(function () {

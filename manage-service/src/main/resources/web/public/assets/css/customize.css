@@ -1,0 +1,10 @@
+.close-panel .panel-body,  .close-panel .panel-footer {
+    display: none;
+}
+textarea {
+    resize: none;
+}
+iframe{
+    width: 100%;
+    height: 100%;
+}

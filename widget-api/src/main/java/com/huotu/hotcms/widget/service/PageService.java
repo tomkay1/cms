@@ -69,13 +69,12 @@ public interface PageService {
     /**
      * 查询当前站点下page实体信息
      *
-     * @param pagePath 唯一标示
+     * @param pagePath 唯一标示 暂无实例
      * @param siteId   站点id
      * @return {@Link com.huotu.hotcms.service.entity.Page}
      * @throws IOException 其他异常
      */
     com.huotu.hotcms.service.entity.Page findBySiteAndPagePath(Long siteId, String pagePath) throws IOException;
-
 
     /**
      * <p>查找当前站点下指定数据源和数据内容的page</p>

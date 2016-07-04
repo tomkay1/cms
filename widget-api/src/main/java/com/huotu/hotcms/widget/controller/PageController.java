@@ -16,18 +16,15 @@ import com.huotu.hotcms.widget.WidgetResolveService;
 import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.page.PageElement;
 import com.huotu.hotcms.widget.service.PageService;
-import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Objects;
 
 /**
  * Created by lhx on 2016/7/2.
@@ -40,7 +37,6 @@ public class PageController {
 
     @Autowired
     private PageService pageService;
-
 
     @Autowired
     private WidgetResolveService widgetResolveService;
@@ -96,9 +92,7 @@ public class PageController {
                 }
             }
         }//404 content is not existing or access defined.
-
-
-
     }
+
 
 }

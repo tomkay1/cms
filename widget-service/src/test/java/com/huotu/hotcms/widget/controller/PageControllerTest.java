@@ -10,9 +10,16 @@
 package com.huotu.hotcms.widget.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.Link;
+import com.huotu.hotcms.service.repository.AbstractContentRepository;
+import com.huotu.hotcms.service.repository.CategoryRepository;
+import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.page.Page;
+import com.huotu.hotcms.service.repository.PageInfoRepository;
 import com.huotu.hotcms.widget.test.TestBase;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
 import java.util.UUID;
@@ -26,6 +33,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 public class PageControllerTest extends TestBase {
 
+    @Autowired
+    private AbstractContentRepository abstractContentRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    private PageInfoRepository pageInfoRepository;
     /**
      * 最基本的测试流
      */
@@ -100,6 +115,38 @@ public class PageControllerTest extends TestBase {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.length()").value(0));
+    }
+
+    /**
+     * 最基本的测试流
+     */
+    @Test
+    public void page() throws Exception {
+        String pagePath = "test";
+        mockMvc.perform(get("/_web/{pagePath}/", pagePath)
+                .accept(MediaType.TEXT_HTML)).andDo(print());
+
+        // Array of Page
+        long contentId = 1L;
+        com.huotu.hotcms.service.entity.Page page = new com.huotu.hotcms.service.entity.Page();
+        page.setTitle("test");
+        Link link = new Link();
+        link.setId(contentId);
+        Category category = new Category();
+        category.setId(1L);
+        category = categoryRepository.saveAndFlush(category);
+        link.setCategory(category);
+        page.setCategory(category);
+        page.setPagePath("test");
+        abstractContentRepository.saveAndFlush(link);
+        pageInfoRepository.saveAndFlush(page);
+        mockMvc.perform(get("/_web/{pagePath}/{contentId}", pagePath,contentId)
+                .accept(MediaType.TEXT_HTML)).andDo(print());
+
+//                .andExpect(status().isOk())
+//                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+
+
     }
 
 //    /**

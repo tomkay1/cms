@@ -16,8 +16,11 @@ import com.huotu.hotcms.widget.controller.TestWidget;
 import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.page.PageElement;
+import com.huotu.hotcms.widget.servlet.CMSFilter;
+import me.jiangcai.lib.test.SpringWebTest;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,15 +29,14 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.*;
 
-/**
- * Created by wenqi on 2016/5/31.
- */
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 /**
  * CMS单元测试基类
@@ -42,16 +44,24 @@ import java.util.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 @WebAppConfiguration
-public class TestBase {
-    protected final Random random = new Random();
-    protected final Logger logger = LoggerFactory.getLogger(TestBase.class);
-    protected MockMvc mockMvc;
-    @Autowired
-    private WebApplicationContext webApplication;
+public class TestBase extends SpringWebTest{
 
-    @Before
-    public final void initMockMvc() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplication).build();
+    @Override
+    public void createMockMVC() {
+        MockitoAnnotations.initMocks(this);
+        // ignore it, so it works in no-web fine.
+        if (context == null)
+            return;
+        DefaultMockMvcBuilder builder = webAppContextSetup(context);
+        builder.addFilters(new CMSFilter(context.getServletContext()));
+        if (springSecurityFilter != null) {
+            builder = builder.addFilters(springSecurityFilter);
+        }
+
+        if (mockMvcConfigurer != null) {
+            builder = builder.apply(mockMvcConfigurer);
+        }
+        mockMvc = builder.build();
     }
 
     /**

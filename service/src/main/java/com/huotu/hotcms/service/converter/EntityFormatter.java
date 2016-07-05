@@ -25,7 +25,7 @@ import java.util.Locale;
 public abstract class EntityFormatter<T, ID extends Serializable> implements Formatter<T> {
     @Autowired
     private JpaRepository<T, ID> jpaRepository;
-    @Autowired
+    @Autowired(required = false)
     private ConversionService conversionService;
 
     @Override
@@ -34,7 +34,8 @@ public abstract class EntityFormatter<T, ID extends Serializable> implements For
             return null;
         ParameterizedType idParameterizedType = (ParameterizedType) getClass().getGenericInterfaces()[1];
         @SuppressWarnings("unchecked") Class<ID> clazz = (Class<ID>) idParameterizedType.getRawType();
-
+        if(conversionService==null)
+            throw new IllegalStateException("conversionService can't be null");
         ID id = conversionService.convert(text, clazz);
         return jpaRepository.getOne(id);
     }

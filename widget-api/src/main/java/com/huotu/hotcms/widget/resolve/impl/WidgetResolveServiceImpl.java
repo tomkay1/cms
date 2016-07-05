@@ -142,25 +142,7 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
 
         } else {//是一个组件
             Component component = (Component) pageElement;
-            WidgetStyle style = null;
-            for (WidgetStyle style1 : component.getInstalledWidget().getWidget().styles()) {
-                if (style1.id().equals(component.getStyleId())) {
-                    style = style1;
-                    break;
-                }
-            }
-            if (style == null) {
-                style = component.getInstalledWidget().getWidget().styles()[0];
-            }
-
-            checkEngine();
-            WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
-                    , component.getInstalledWidget().getWidget(), style, webApplicationContext.getServletContext()
-                    , component.getProperties());
-            WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();
-            cmsContext.getWidgetConfigurationStack().push(widgetConfiguration);
-            return widgetTemplateEngine.process(WidgetTemplateResolver.BROWSE
-                    , Collections.singleton("div"), widgetContext);
+            return componentHTML(component,cmsContext);
         }
 
     }

@@ -9,8 +9,42 @@
 
 package com.huotu.hotcms.widget.entity;
 
+import com.huotu.hotcms.service.entity.Site;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
+
 /**
  * Created by hzbc on 2016/6/27.
- */ 
+ */
+
+/**
+ * 页面信息
+ */
+@Entity
+@Setter
+@Getter
 public class PageInfo {
+
+    /**
+     * 页面ID
+     */
+    @Id
+    private String pageId;
+
+    /**
+     * 站点ID
+     */
+    //@OneToMany
+    @Column(name = "siteId")
+    private long siteId;
+
+    /**
+     * 页面配置的xml数据
+     * @see  com.huotu.hotcms.widget.page.Page
+     */
+    @Lob
+    private byte[] pageSetting;
 }

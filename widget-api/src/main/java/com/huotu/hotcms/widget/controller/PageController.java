@@ -13,6 +13,7 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.repository.AbstractContentRepository;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.WidgetResolveService;
+import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.page.PageElement;
 import com.huotu.hotcms.widget.service.PageService;
@@ -23,11 +24,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Objects;
 
 /**
  * Created by lhx on 2016/7/2.
@@ -41,13 +40,12 @@ public class PageController {
     @Autowired
     private PageService pageService;
 
-
     @Autowired
     private WidgetResolveService widgetResolveService;
 
     @RequestMapping(method = RequestMethod.GET, value = {"/{pagePath}"})
-    public void pageIndex(@PathVariable("pagePath") String pagePath, HttpServletResponse response) throws IOException {
-        response.setContentType("text/html");
+    public void pageIndex(@PathVariable("pagePath") String pagePath, HttpServletResponse response) throws IOException, FormatException {
+        response.setContentType("text/html;charset=utf-8");
         PrintWriter out = response.getWriter();
         CMSContext cmsContext = CMSContext.RequestContext();
         //查找当前站点下指定pagePath的page
@@ -60,12 +58,16 @@ public class PageController {
             }
             html += "</div>";
             out.write(html);
+            return ;
         }
+        response.setStatus(HttpStatus.SC_NOT_FOUND);
+        out.write("404 page is not existing or access defined.");
     }
 
     @RequestMapping(method = RequestMethod.GET, value = {"/{pagePath}/{contentId}"})
     public void pageContent(@PathVariable("pagePath") String pagePath, @PathVariable("contentId") Long contentId
             , HttpServletResponse response) throws IllegalStateException, IOException {
+
         response.setContentType("text/html;charset=utf-8");
         PrintWriter out = response.getWriter();
         CMSContext cmsContext = CMSContext.RequestContext();
@@ -92,13 +94,14 @@ public class PageController {
                         }
                         html += "</div>";
                         out.write(html);
+                        return ;
                     }
                 }
             }
         }//404 content is not existing or access defined.
-
-
-
+        response.setStatus(HttpStatus.SC_NOT_FOUND);
+        out.write("404 content is not existing or access defined.");
     }
+
 
 }

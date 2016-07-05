@@ -37,7 +37,6 @@
         <li class="btn btn-default active" id="editBtn"><i class="icon-edit"></i>编辑</li>
         <li class="btn btn-default" id="previewBtn"><i class="icon-search"></i>预览</li>
         <li class="btn btn-default" id="clearBtn"><i class="icon-reply-all"></i>重做</li>
-        <li class="btn btn-default" id=""><i class="icon-doc-add"></i>新建</li>
     </ul>
     <ul class="list-unstyled pull-right">
         <li class="btn btn-danger" id="saveBtn">保存</li>
@@ -189,17 +188,7 @@
 <!--suppress HtmlUnknownAttribute -->
 <div style="display: none" ewp:src="/assets/seajs/sea.js" src="../../public" id="EWPPath"></div>
 <script th:inline="javascript">
-    var path = /*[[@{/manage/upload/fine}]]*/ null;
-    var strHref=document.getElementById("EWPPath").getAttribute("src");
-    var mainHref = window.document.location.href;
-    var index=strHref.indexOf("public");
-    var host=window.location.host;
-    var protocol=window.location.protocol;
-    host+=strHref.substring(0,index)+"public";
-    protocol= protocol+"//";
-    protocol+=host;
-    var srcPath=protocol;
-    console.log(srcPath);
+    // var path = /*[[@{/manage/upload/fine}]]*/ null;
 </script>
 
 <script src="../../public/assets/libs/jquery-2.2.3.min.js" ewp:src="/assets/libs/jquery-2.2.3.min.js"></script>

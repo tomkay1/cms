@@ -22,6 +22,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,6 +39,20 @@ public class CMSFilter extends OncePerRequestFilter implements Filter {
 
     private static final Log log = LogFactory.getLog(CMSFilter.class);
 
+    /**
+     * 这个构造是Servlet容器发起的
+     */
+    public CMSFilter() {
+    }
+
+    /**
+     * 在测试的情况下，我们无法调用{@link #init(FilterConfig)}所有需要额外构造参数
+     * @param context context
+     */
+    public CMSFilter(ServletContext context){
+        super();
+        setServletContext(context);
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

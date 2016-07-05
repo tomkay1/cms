@@ -54,16 +54,16 @@ jQuery(document).ready(function () {
         var p = t.closest('.panel');
         var h;
         if (!jQuery(this).hasClass('maximize')) {
-            p.find('.panel-body').slideUp(0);
-            p.find('.panel-footer').slideUp(0, function () {
+            p.find('.panel-footer').slideUp(200);
+            p.find('.panel-body').slideUp(200, function () {
                 h = document.body.clientHeight;
                 resizeParentIframe(h);
             });
             t.addClass('maximize');
             t.html('&plus;');
         } else {
-            p.find('.panel-body, .panel-footer').slideDown(0);
-            p.find('.panel-footer').slideDown(0, function () {
+            p.find('.panel-footer').slideDown(200);
+            p.find('.panel-body').slideDown(200, function () {
                 h = document.body.clientHeight;
                 resizeParentIframe(h);
             });

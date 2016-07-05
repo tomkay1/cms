@@ -10,9 +10,11 @@
 package com.huotu.hotcms.widget.page;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.huotu.hotcms.service.entity.Category;
 import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import java.io.Serializable;
 
 /**
@@ -24,12 +26,15 @@ import java.io.Serializable;
  * @author CJ
  */
 @Data
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Page implements Serializable {
     /**
      * 该页面的唯一ID，字符串
      */
+    @XmlAttribute(name = "pageIdentity")
     private String pageIdentity;
 
+    @XmlAttribute(name = "title")
     private String title;
 
     @JacksonXmlElementWrapper(useWrapping=false)

@@ -46,7 +46,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -235,7 +234,7 @@ public class SupperController extends AbstractSiteSupperController {
     @Transactional(value = "transactionManager")
     @ResponseBody
     public ResultView saveTemplate(Template template, long siteId) {
-        template.setSite(siteRepository.findOne(siteId));
+//        template.setSite(siteRepository.findOne(siteId));
         template.setCreateTime(LocalDateTime.now());
         template.setUpdateTime(LocalDateTime.now());
         template.setLauds(0);
@@ -252,49 +251,6 @@ public class SupperController extends AbstractSiteSupperController {
         return result;
     }
 
-    /**
-     * 修改站点页面
-     *
-     * @param id
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping("/updateSite")
-    public ModelAndView updateSite(@RequestParam(value = "id", defaultValue = "0") Long id) throws Exception {
-        ModelAndView modelAndView = new ModelAndView();
-        try {
-            modelAndView.setViewName("/view/supper/updateSite.html");
-            String logo_uri = "";
-            someThing(id, modelAndView, logo_uri);
-        } catch (Exception ex) {
-            log.error(ex.getMessage());
-        }
-        return modelAndView;
-    }
-
-    /**
-     * 获取站点
-     *
-     * @param ownerId
-     * @param name
-     * @param page
-     * @param pageSize
-     * @return
-     */
-    @RequestMapping(value = "/getSiteList")
-    @ResponseBody
-    public PageData<Site> getModelList(@RequestParam(name = "ownerId", required = false) long ownerId,
-                                       @RequestParam(name = "name", required = false) String name,
-                                       @RequestParam(name = "page", defaultValue = "1") int page,
-                                       @RequestParam(name = "pagesize", defaultValue = "20") int pageSize) {
-        PageData<Site> pageModel = null;
-        try {
-            pageModel = siteService.getPage(ownerId, name, page, pageSize);
-        } catch (Exception ex) {
-            log.error(ex.getMessage());
-        }
-        return pageModel;
-    }
 
     /**
      * 获取模板列表
@@ -327,36 +283,6 @@ public class SupperController extends AbstractSiteSupperController {
             log.error(ex.getMessage());
         }
         return pageModel;
-    }
-
-    /**
-     * 删除站点(管理员权限)
-     *
-     * @param id
-     * @param request
-     * @return
-     */
-    @RequestMapping(value = "/deleteSite", method = RequestMethod.POST)
-    @ResponseBody
-    public ResultView deleteModel(@RequestParam(name = "id") Long id
-            , HttpServletRequest request) {
-        ResultView result;
-        try {
-            if (cookieUser.isSupper(request)) {
-                Site site = siteService.getSite(id);
-                hostService.stopHookSite(site);
-//                site.setHosts(null);
-                site.setDeleted(true);
-                siteService.save(site);
-                result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
-            } else {
-                result = new ResultView(ResultOptionEnum.NO_LIMITS.getCode(), ResultOptionEnum.NO_LIMITS.getValue(), null);
-            }
-        } catch (Exception ex) {
-            log.error(ex.getMessage());
-            result = new ResultView(ResultOptionEnum.FAILE.getCode(), ResultOptionEnum.FAILE.getValue(), null);
-        }
-        return result;
     }
 
     @RequestMapping(value = "/siteConfig")

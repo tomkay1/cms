@@ -10,15 +10,10 @@
 package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.config.ServiceTestConfig;
-import com.huotu.hotcms.service.entity.Article;
-import com.huotu.hotcms.service.entity.Category;
-import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.entity.Template;
 import com.huotu.hotcms.service.repository.ArticleRepository;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.repository.TemplateRepository;
-import com.huotu.hotcms.service.util.SerialUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +24,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -78,39 +72,33 @@ public class SiteTest {
      */
     @Test
     public void testSiteCopy() throws Exception {
-        long templateID=3;
-        long siteId=71;
-        Site customerSite=siteRepository.findOne(siteId);
-        siteService.siteCopy(templateID,customerSite);
+//        long templateID=3;
+//        long siteId=71;
+//        Site customerSite=siteRepository.findOne(siteId);
+//        siteService.siteCopy(templateID,customerSite);
     }
 
-    @Test
-    public void testQuery(){
-        long siteID=4471;
-        Article templateSiteArticle=articleRepository.findArticleByCategory_Site_SiteId(siteID);
-        long id=templateSiteArticle.getId();
-    }
 
     @Test
     public void testDeepCopy(){
-        long templateID=3;
-        long siteId=71;
-        Site customerSite=siteRepository.findOne(siteId);
-        Template template=templateRepository.findOne(templateID);
-        Site templateSite=template.getSite();
-
-        List<Category> categories = categoryService.getCategories(templateSite);
-        try{
-            for(Category category:categories){
-                category.setSerial(SerialUtil.formatSerial(customerSite));
-                category.setSite(customerSite);
-                category.setId(null);
-                category.setSite(customerSite);
-                category=categoryRepository.save(category);
-            }
-        }catch (Throwable e){
-            e.printStackTrace();
-        }
+//        long templateID=3;
+//        long siteId=71;
+//        Site customerSite=siteRepository.findOne(siteId);
+//        Template template=templateRepository.findOne(templateID);
+//        Site templateSite=template.getSite();
+//
+//        List<Category> categories = categoryService.getCategories(templateSite);
+//        try{
+//            for(Category category:categories){
+//                category.setSerial(SerialUtil.formatSerial(customerSite));
+//                category.setSite(customerSite);
+//                category.setId(null);
+//                category.setSite(customerSite);
+//                category=categoryRepository.save(category);
+//            }
+//        }catch (Throwable e){
+//            e.printStackTrace();
+//        }
 
     }
 

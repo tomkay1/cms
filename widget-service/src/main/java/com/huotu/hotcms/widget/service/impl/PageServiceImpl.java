@@ -10,9 +10,6 @@
 package com.huotu.hotcms.widget.service.impl;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.huotu.hotcms.service.common.ConfigInfo;
-import com.huotu.hotcms.service.entity.AbstractContent;
-import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.repository.PageRepository;
 import com.huotu.hotcms.service.service.ContentsService;
@@ -21,17 +18,11 @@ import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.repository.PageInfoRepository;
 import com.huotu.hotcms.widget.service.PageService;
-import me.jiangcai.lib.resource.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StreamUtils;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URISyntaxException;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,11 +34,10 @@ public class PageServiceImpl implements PageService {
 
     @Autowired
     ContentsService contentsService;
-
+    @Autowired
+    PageRepository pageRepository;
     @Autowired
     private PageInfoRepository pageInfoRepository;
-
-    @Autowired PageRepository pageRepository;
     @Autowired
     private WidgetFactoryService widgetFactoryService;
 
@@ -76,7 +66,7 @@ public class PageServiceImpl implements PageService {
     }
 
     @Override
-    public void deletePage(long ownerId, String pageId) throws IOException {
+    public void deletePage(String pageId) throws IOException {
         pageInfoRepository.delete(pageId);
     }
 
@@ -117,11 +107,6 @@ public class PageServiceImpl implements PageService {
     }
 
     @Override
-    public Page findByPagePath(Site site, String pagePath) throws IOException {
-        return null;
-    }
-
-    @Override
     public List<Page> getPageList(long siteId) {
         List<PageInfo> pageInfos=pageInfoRepository.findBySiteId(siteId);
         List<Page> pages=new ArrayList<>();
@@ -131,17 +116,6 @@ public class PageServiceImpl implements PageService {
             page.setPageIdentity( pageInfo.getPageId());
         }
         return pages;
-    }
-
-    @Override
-    public com.huotu.hotcms.service.entity.Page findBySiteAndPagePath(Long siteId, String pagePath) throws IOException {
-        return pageRepository.findByPagePath(pagePath,siteId);
-    }
-
-    @Override
-    public Page findByCategoryAndContent(Category category, AbstractContent content) {
-        //todo 为了测试模拟的数据，@hzbc 请添加完整实现
-        return findBySiteAndPagePath(category.getSite(),"");
     }
 
 

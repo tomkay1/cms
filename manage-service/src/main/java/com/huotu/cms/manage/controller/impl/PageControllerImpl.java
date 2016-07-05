@@ -12,7 +12,6 @@ package com.huotu.cms.manage.controller.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.CharStreams;
 import com.huotu.cms.manage.controller.PageController;
-import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.service.PageService;
@@ -33,12 +32,9 @@ import java.util.List;
 public class PageControllerImpl implements PageController {
 
     @Autowired
-    private PageService pageService;
-
-    @Autowired
     SiteRepository siteRepository;
-
-
+    @Autowired
+    private PageService pageService;
 
     @Override
     public List<Page> getPageList(Long siteId) throws IOException {
@@ -73,7 +69,7 @@ public class PageControllerImpl implements PageController {
 
     @Override
     public void deletePage(@PathVariable String pageId,@RequestParam long ownerId) throws IOException {
-        pageService.deletePage(ownerId, pageId);
+        pageService.deletePage(pageId);
     }
 
 

@@ -9,13 +9,13 @@
 
 package com.huotu.hotcms.widget.service;
 
-import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.page.Page;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.util.List;
 
@@ -36,6 +36,15 @@ public interface PageService {
      */
     String generateHTML(Page page, CMSContext context) throws IOException;
 
+    /**
+     * @param outputStream
+     * @param page
+     * @param context
+     * @throws IOException
+     * @see #generateHTML(Page, CMSContext)
+     */
+    void generateHTML(OutputStream outputStream, Page page, CMSContext context) throws IOException;
+
     void savePage(Page page, String pageId) throws IOException, URISyntaxException;
 
     /**
@@ -50,34 +59,21 @@ public interface PageService {
     /**
      * 删除相关页面信息
      *
-     * @param ownerId ownerId
      * @param pageId  页面ID
      * @throws IOException 其他异常
      */
-    void deletePage(long ownerId, String pageId) throws IOException;
+    void deletePage(String pageId) throws IOException;
 
 
     /**
-     * <p>返回当前站点下指定pageUri的具体html</p>
+     * <p>返回当前站点下指定path的具体page</p>
      *
-     * @param pagePath pagePath必须存在不能为空
      * @param site     当前站点必须存在不能为空
+     * @param pagePath pagePath必须存在不能为空
      * @return {@link com.huotu.hotcms.widget.page.Page}
      * @throws IllegalStateException 未找到page
      */
-    Page findBySiteAndPagePath(Site site, String pagePath) throws IllegalStateException, IOException, FormatException;
-
-    /**
-     * 查询当前站点下page实体信息
-     *
-     * @param pagePath 唯一标示
-     * @return {@Link com.huotu.hotcms.service.entity.Page}
-     * @param pagePath   pagePath必须存在不能为空  1.html
-     * @param site      当前站点必须存在不能为空
-     * @return page
-     * @throws IOException 其他异常
-     */
-    Page findByPagePath(Site site, String pagePath) throws IOException;
+    Page findBySiteAndPagePath(Site site, String pagePath) throws IllegalStateException;
 
 
     /**
@@ -87,13 +83,12 @@ public interface PageService {
      */
     List<Page> getPageList(long siteId);
 
-    com.huotu.hotcms.service.entity.Page findBySiteAndPagePath(Long siteId, String pagePath) throws IOException;
-
     /**
-     * <p>查找当前站点下指定数据源和数据内容的page</p>
-     * @param category 数据源
-     * @param content  数据类容类型
-     * @return {@link com.huotu.hotcms.widget.page.Page}
+     *
+     * @param category 相关数据源
+     * @param path 请求的路径
+     * @return 最适用的内容页
      */
-    Page findByCategoryAndContent(Category category, AbstractContent content);
+    Page getClosetContentPage(Category category, String path);
+
 }

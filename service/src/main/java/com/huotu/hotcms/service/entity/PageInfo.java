@@ -18,27 +18,30 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+
 
 /**
  * Created by lhx on 2016/7/4.
  */
 @Entity
-@Table(name = "cms_page")
+@Table(name = "cms_pageInfo")
 @Getter
 @Setter
-public class Page {
+public class PageInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "pageId")
+    private Long pageId;
 
-    @Column(name = "pagePath" ,unique = true)
+    @Column(name = "pagePath", unique = true, length = 60)
     private String pagePath;
 
-    @Column(name = "title")
+    @Column(name = "title", length = 60)
     private String title;
 
     @ManyToOne
@@ -50,5 +53,10 @@ public class Page {
 
     @Column
     private PageType pageType;
+    /**
+     * 页面配置的xml数据
+     */
+    @Lob
+    private byte[] pageSetting;
 
 }

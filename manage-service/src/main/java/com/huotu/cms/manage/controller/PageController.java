@@ -9,6 +9,7 @@
 
 package com.huotu.cms.manage.controller;
 
+import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.widget.page.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -48,7 +49,7 @@ public interface PageController {
 
     @RequestMapping(value = "/manage/owners/{siteId}/pages",method = RequestMethod.GET)
     @ResponseBody
-    List<Page> getPageList(@PathVariable("siteId") Long siteId ) throws IOException;
+    List<PageInfo> getPageList(@PathVariable("siteId") Long siteId) throws IOException;
 
 
     /**
@@ -60,7 +61,7 @@ public interface PageController {
 
     @RequestMapping(value = "/manage/pages/{pageId}",method = RequestMethod.GET)
     @ResponseBody
-    Page getPage(@PathVariable("pageId") String pageId) throws IOException;
+    Page getPage(@PathVariable("pageId") Long pageId) throws IOException;
 
     /**
      * <p>保存界面{@link Page}</p>
@@ -70,7 +71,7 @@ public interface PageController {
 
     @RequestMapping(value = "/manage/pages/{pageId}",method = RequestMethod.PUT)
     @ResponseStatus(code = HttpStatus.ACCEPTED)
-    void savePage(@PathVariable("pageId") String pageId, HttpServletRequest request) throws IOException, URISyntaxException;
+    void savePage(@PathVariable("pageId") Long pageId, HttpServletRequest request) throws IOException, URISyntaxException;
 
     /**
      * <p>添加页面{@link Page}</p>
@@ -87,7 +88,7 @@ public interface PageController {
      */
     @RequestMapping(value = "/manage/pages/{pageId}",method = RequestMethod.DELETE)
     @ResponseStatus(code = HttpStatus.ACCEPTED)
-    void deletePage(@PathVariable("pageId") String pageId, long ownerId) throws IOException;
+    void deletePage(@PathVariable("pageId") Long pageId, long ownerId) throws IOException;
 
     /**
      * 保存页面部分属性
@@ -103,8 +104,8 @@ public interface PageController {
      * 跳转到CMS编辑界面，用于测试
      * @return url
      */
-    @RequestMapping("/manage/edit")
-    default ModelAndView startEdit(){
+    @RequestMapping("/manage/edit/{pageId}")
+    default ModelAndView startEdit(@PathVariable long pageId){
         return new ModelAndView("/edit/edit.html");
     }
 }

@@ -1,7 +1,6 @@
 /*
  * 版权所有:杭州火图科技有限公司
  * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
- *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
  * 2013-2016. All rights reserved.
@@ -13,9 +12,7 @@ import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.repository.AbstractContentRepository;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.WidgetResolveService;
-import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.page.Page;
-import com.huotu.hotcms.widget.page.PageElement;
 import com.huotu.hotcms.widget.service.PageService;
 import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 /**
  * Created by lhx on 2016/7/2.
@@ -44,67 +40,38 @@ public class PageController {
     private WidgetResolveService widgetResolveService;
 
     @RequestMapping(method = RequestMethod.GET, value = {"/{pagePath}"})
-    public void pageIndex(@PathVariable("pagePath") String pagePath, HttpServletResponse response) throws IOException, FormatException {
-        response.setContentType("text/html;charset=utf-8");
-        PrintWriter out = response.getWriter();
+    public void pageIndex(@PathVariable("pagePath") String pagePath, HttpServletResponse response) throws IOException {
         CMSContext cmsContext = CMSContext.RequestContext();
         //查找当前站点下指定pagePath的page
         Page page = pageService.findBySiteAndPagePath(cmsContext.getSite(), pagePath);
         if (page != null) {
-            //生成page htmlCode
-            String html = "<div>";
-            for (PageElement pageElement : page.getElements()) {
-                html += widgetResolveService.pageElementHTML(pageElement, cmsContext);
+            try {
+                pageService.generateHTML(response.getOutputStream(), page, cmsContext);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            html += "</div>";
-            out.write(html);
-            return ;
+            response.setContentType("text/html;charset=utf-8");
+            return;
         }
         response.setStatus(HttpStatus.SC_NOT_FOUND);
-        out.write("404 page is not existing or access defined.");
     }
 
     @RequestMapping(method = RequestMethod.GET, value = {"/{pagePath}/{contentId}"})
     public void pageContent(@PathVariable("pagePath") String pagePath, @PathVariable("contentId") Long contentId
             , HttpServletResponse response) throws IllegalStateException, IOException {
-
-
         CMSContext cmsContext = CMSContext.RequestContext();
         //查找数据内容
         AbstractContent content = abstractContentRepository.findOne(contentId);
         if (content != null) {
             cmsContext.setAbstractContent(content);
-
             //查找当前站点下指定pagePath的page
-            Page page = pageService.getClosetContentPage(content.getCategory(), pagePath);
+            Page page = pageService.getClosestContentPage(content.getCategory(), pagePath);
 
             pageService.generateHTML(response.getOutputStream(), page, cmsContext);
             response.setContentType("text/html;charset=utf-8");
             return;
-
-//            com.huotu.hotcms.service.entity.Page pageInfo = pageService.findBySiteAndPagePath(site.getSiteId()
-//                    , pagePath);
-//
-//            if (pageInfo != null) {
-//                //判断数据源
-//                if (content.getCategory().getId().equals(pageInfo.getCategory().getId())) {
-//                    Page page = pageService.findByCategoryAndContent(pageInfo.getCategory(), content);
-//                    if (page != null) {
-//                        PageElement[] elements = page.getElements();
-//                        //生成page htmlCode
-//                        String html = "<div>";
-//                        for (int i = 0, l = elements.length; i < l; i++) {
-//                            html += widgetResolveService.pageElementHTML(elements[i], cmsContext);
-//                        }
-//                        html += "</div>";
-//                        out.write(html);
-//                        return ;
-//                    }
-//                }
-//            }
         }//404 content is not existing or access defined.
         response.setStatus(HttpStatus.SC_NOT_FOUND);
-//        out.write("404 content is not existing or access defined.");
     }
 
 

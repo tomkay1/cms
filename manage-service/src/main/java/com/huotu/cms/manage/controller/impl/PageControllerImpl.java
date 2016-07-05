@@ -12,6 +12,8 @@ package com.huotu.cms.manage.controller.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.CharStreams;
 import com.huotu.cms.manage.controller.PageController;
+import com.huotu.hotcms.service.entity.PageInfo;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.service.PageService;
@@ -37,20 +39,20 @@ public class PageControllerImpl implements PageController {
     private PageService pageService;
 
     @Override
-    public List<Page> getPageList(Long siteId) throws IOException {
-        //Site site=siteRepository.findOne(siteId);
-        return pageService.getPageList(siteId);
+    public List<PageInfo> getPageList(Long siteId) throws IOException {
+        Site site=siteRepository.findOne(siteId);
+        return pageService.getPageList(site);
     }
 
 
     @Override
-    public Page getPage(String pageId) throws IOException {
+    public Page getPage(Long pageId) throws IOException {
         return pageService.getPage(pageId);
     }
 
 
     @Override
-    public void savePage(@PathVariable String pageId,HttpServletRequest request)
+    public void savePage(@PathVariable Long pageId,HttpServletRequest request)
             throws IOException, URISyntaxException {
         String pageJson=CharStreams.toString(request.getReader());
         ObjectMapper objectMapper=new ObjectMapper();
@@ -68,7 +70,7 @@ public class PageControllerImpl implements PageController {
 
 
     @Override
-    public void deletePage(@PathVariable String pageId,@RequestParam long ownerId) throws IOException {
+    public void deletePage(@PathVariable Long pageId,@RequestParam long ownerId) throws IOException {
         pageService.deletePage(pageId);
     }
 

@@ -1,7 +1,6 @@
 /*
  * 版权所有:杭州火图科技有限公司
  * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
- *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
  * 2013-2016. All rights reserved.
@@ -10,17 +9,22 @@
 package com.huotu.hotcms.widget.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.huotu.hotcms.service.common.PageType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
+import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.repository.AbstractContentRepository;
 import com.huotu.hotcms.service.repository.CategoryRepository;
-import com.huotu.hotcms.widget.entity.PageInfo;
-import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.service.repository.PageInfoRepository;
+import com.huotu.hotcms.widget.CMSContext;
+import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.test.TestBase;
+import org.apache.http.HttpStatus;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -121,32 +125,32 @@ public class PageControllerTest extends TestBase {
      * 最基本的测试流
      */
     @Test
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     public void page() throws Exception {
         String pagePath = "test";
-        mockMvc.perform(get("/_web/{pagePath}/", pagePath)
-                .accept(MediaType.TEXT_HTML)).andDo(print());
+        int code = mockMvc.perform(get("/_web/{pagePath}/", pagePath)
+                .accept(MediaType.TEXT_HTML)).andDo(print()).andReturn().getResponse().getStatus();
+        assert code == HttpStatus.SC_OK;
 
-        // Array of Page
         long contentId = 1L;
-        com.huotu.hotcms.service.entity.Page page = new com.huotu.hotcms.service.entity.Page();
-        page.setTitle("test");
+        Category category = new Category();
+        category.setSite(CMSContext.RequestContext().getSite());
+        category = categoryRepository.saveAndFlush(category);
         Link link = new Link();
         link.setId(contentId);
-        Category category = new Category();
-        category.setId(1L);
-        category = categoryRepository.saveAndFlush(category);
         link.setCategory(category);
-        page.setCategory(category);
-        page.setPagePath("test");
         abstractContentRepository.saveAndFlush(link);
-        pageInfoRepository.saveAndFlush(page);
-        mockMvc.perform(get("/_web/{pagePath}/{contentId}", pagePath,contentId)
-                .accept(MediaType.TEXT_HTML)).andDo(print());
+        PageInfo pageInfo = new PageInfo();
+        pageInfo.setTitle("test");
+        pageInfo.setCategory(category);
+        pageInfo.setPagePath("test");
+        pageInfo.setPageType(PageType.DataContent);
+        pageInfoRepository.saveAndFlush(pageInfo);
 
-//                .andExpect(status().isOk())
-//                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+        code = mockMvc.perform(get("/_web/{pagePath}/{contentId}", pagePath, contentId)
+                .accept(MediaType.TEXT_HTML)).andDo(print()).andReturn().getResponse().getStatus();
 
-
+        assert code == HttpStatus.SC_OK;
     }
 
 //    /**

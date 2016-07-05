@@ -59,4 +59,16 @@ public class ManageMainPage extends AbstractFrameParentPage {
         webDriver.get("http://localhost/manage/main");
         reloadPageInfo();
     }
+
+    /**
+     * 从主页跳转编辑界面
+     * @return
+     */
+    public EditPage toEditPage(long pageId){
+        beforeDriver();
+        webDriver.get("http://localhost/manage/edit/"+pageId);
+        return initPage(EditPage.class);
+    }
+
+
 }

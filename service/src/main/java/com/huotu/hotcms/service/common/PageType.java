@@ -8,7 +8,6 @@
 
 package com.huotu.hotcms.service.common;
 
-import com.huotu.hotcms.service.common.CommonEnum;
 
 /**
  * Created by lhx on 2016/7/4.

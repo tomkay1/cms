@@ -8,14 +8,21 @@
 
 package com.huotu.hotcms.service.repository;
 
-import com.huotu.hotcms.service.entity.Page;
+import com.huotu.hotcms.service.entity.PageInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * Created by lhx on 2016/7/5.
  */
 @Repository
-public interface PageInfoRepository extends JpaRepository<Page,Long>,JpaSpecificationExecutor<Page>{
+public interface PageInfoRepository extends JpaRepository<PageInfo, Long>, JpaSpecificationExecutor<PageInfo> {
+    List<PageInfo> findBySiteId(long siteId);
+
+    @Query("select p from PageInfo p  where  p.pagePath = ?1 and p.category.site.siteId = ?2")
+    PageInfo findByPagePath(String pagePath, Long siteId);
 }

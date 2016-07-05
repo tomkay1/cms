@@ -40,7 +40,7 @@ public class PageController {
     private WidgetResolveService widgetResolveService;
 
     @RequestMapping(method = RequestMethod.GET, value = {"/{pagePath}"})
-    public void pageIndex(@PathVariable("pagePath") String pagePath, HttpServletResponse response) {
+    public void pageIndex(@PathVariable("pagePath") String pagePath, HttpServletResponse response) throws IOException {
         CMSContext cmsContext = CMSContext.RequestContext();
         //查找当前站点下指定pagePath的page
         Page page = pageService.findBySiteAndPagePath(cmsContext.getSite(), pagePath);
@@ -65,7 +65,7 @@ public class PageController {
         if (content != null) {
             cmsContext.setAbstractContent(content);
             //查找当前站点下指定pagePath的page
-            Page page = pageService.getClosetContentPage(content.getCategory(), pagePath);
+            Page page = pageService.getClosestContentPage(content.getCategory(), pagePath);
 
             pageService.generateHTML(response.getOutputStream(), page, cmsContext);
             response.setContentType("text/html;charset=utf-8");

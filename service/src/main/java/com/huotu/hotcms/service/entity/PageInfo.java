@@ -52,13 +52,6 @@ public class PageInfo {
 
     @Column
     private PageType pageType;
-
-    /**
-     * 站点ID
-     */
-    @Column(name = "siteId")
-    private long siteId;
-
     /**
      * 页面配置的xml数据
      */

@@ -9,6 +9,7 @@
 package com.huotu.hotcms.widget.service;
 
 import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.page.Page;
@@ -46,7 +47,14 @@ public interface PageService {
     void generateHTML(OutputStream outputStream, Page page, CMSContext context) throws IOException;
 
 
-    void savePage(Page page, Long pageId) throws IOException, URISyntaxException;
+    /**
+     * 将Page的配置信息保存到与pageId 相关联的PageInfo中
+     * @param page  Page的配置信息
+     * @param pageId 页面ID
+     * @throws IOException jackson相关异常
+     * @throws URISyntaxException
+     */
+    void savePage(Page page, Long pageId) throws IOException;
 
     /**
      * 解析保存了{@link com.huotu.hotcms.widget.page.Page}信息的XML
@@ -74,15 +82,15 @@ public interface PageService {
      * @return {@link com.huotu.hotcms.widget.page.Page}
      * @throws IllegalStateException 未找到page
      */
-    Page findBySiteAndPagePath(Site site, String pagePath) throws IllegalStateException;
+    Page findBySiteAndPagePath(Site site, String pagePath) throws IllegalStateException, IOException;
 
 
     /**
      * 根绝站点读取Page列表
-     * @param siteId 站点ID
+     * @param site 站点
      * @return Page列表
      */
-    List<Page> getPageList(long siteId);
+    List<PageInfo> getPageList(Site site);
 
     /**
      *
@@ -90,6 +98,6 @@ public interface PageService {
      * @param path 请求的路径
      * @return 最适用的内容页
      */
-    Page getClosetContentPage(Category category, String path);
+    Page getClosestContentPage(Category category, String path);
 
 }

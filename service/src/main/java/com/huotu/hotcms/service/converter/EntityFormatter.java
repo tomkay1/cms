@@ -25,7 +25,7 @@ import java.util.Locale;
 public abstract class EntityFormatter<T, ID extends Serializable> implements Formatter<T> {
     @Autowired
     private JpaRepository<T, ID> jpaRepository;
-    @Autowired
+    @Autowired(required = false)
     private ConversionService conversionService;
 
     @Override

@@ -13,6 +13,7 @@ import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.widget.CMSContext;
+import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.page.Page;
 
 import java.io.IOException;
@@ -64,7 +65,7 @@ public interface PageService {
      * @return {@link com.huotu.hotcms.widget.page.Page}
      * @throws IllegalStateException 未找到page
      */
-    Page findBySiteAndPagePath(Site site, String pagePath) throws IllegalStateException;
+    Page findBySiteAndPagePath(Site site, String pagePath) throws IllegalStateException, IOException, FormatException;
 
     /**
      * 查询当前站点下page实体信息

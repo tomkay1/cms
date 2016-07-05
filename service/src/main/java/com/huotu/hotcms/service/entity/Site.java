@@ -19,6 +19,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -34,6 +36,7 @@ import java.util.Objects;
 @Table(name = "cms_site")
 @Setter
 @Getter
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Site {
 
     @Id

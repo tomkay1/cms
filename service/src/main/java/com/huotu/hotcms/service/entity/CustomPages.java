@@ -22,10 +22,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 
+/**
+ * @deprecated 准备删除, 无需该逻辑
+ */
 @Entity
 @Table(name = "cms_customPages")
 @Getter
 @Setter
+@Deprecated
 public class CustomPages {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

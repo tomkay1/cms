@@ -12,7 +12,6 @@ package com.huotu.hotcms.service.service.impl;
 import com.huotu.hotcms.service.common.ConfigInfo;
 import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Category;
-import com.huotu.hotcms.service.entity.CustomPages;
 import com.huotu.hotcms.service.entity.Download;
 import com.huotu.hotcms.service.entity.Gallery;
 import com.huotu.hotcms.service.entity.GalleryList;
@@ -42,28 +41,17 @@ import com.huotu.hotcms.service.repository.VideoRepository;
 import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.service.HostService;
 import com.huotu.hotcms.service.service.SiteService;
-import com.huotu.hotcms.service.util.HttpUtils;
-import com.huotu.hotcms.service.util.PageData;
 import com.huotu.hotcms.service.util.SerialUtil;
 import com.huotu.hotcms.service.util.StringUtil;
 import com.huotu.hotcms.service.widget.service.PageResolveService;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.codehaus.plexus.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.Predicate;
-import javax.xml.bind.JAXB;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -147,42 +135,8 @@ public class SiteServiceImpl implements SiteService {
     }
 
     @Override
-    public PageData<Site> getPage(long ownerId, String name, int page, int pageSize) {
-        PageData<Site> data = null;
-        Specification<Site> specification = (root, query, cb) -> {
-            List<Predicate> predicates = new ArrayList<>();
-            if (!StringUtils.isEmpty(name)) {
-                predicates.add(cb.like(root.get("name").as(String.class), "%" + name + "%"));
-            }
-            predicates.add(cb.equal(root.get("deleted").as(String.class), false));
-            predicates.add(cb.equal(root.get("owner").get("id").as(Long.class), ownerId));
-            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
-        };
-        Page<Site> pageData = siteRepository.findAll(specification, new PageRequest(page - 1, pageSize));
-        if (pageData != null) {
-            List<Site> site = pageData.getContent();
-//            for(Site site1 : site){
-//                site1.setHosts(null);
-//            }
-            data = new PageData<>();
-            data.setPageCount(pageData.getTotalPages());
-            data.setPageIndex(pageData.getNumber());
-            data.setPageSize(pageData.getSize());
-            data.setTotal(pageData.getTotalElements());
-            data.setRows(pageData.getContent().toArray(new Site[pageData.getContent().size()]));
-        }
-        return data;
-    }
-
-    @Override
     public Site getSite(long siteId) {
         return siteRepository.findOne(siteId);
-    }
-
-    @Override
-    public Boolean save(Site site) {
-        siteRepository.save(site);
-        return true;
     }
 
     @Override
@@ -191,22 +145,30 @@ public class SiteServiceImpl implements SiteService {
     }
 
 
+//    @Override
+//    public void siteCopy(long templateId, Site customerSite) throws Exception {
+//        //根据模板ID读取到相应的站点
+//        Template template = templateRepository.findOne(templateId);
+////        Site templateSite = template.getSite();
+//        List<CustomPages> customPages = customPagesRepository.findBySite(template);
+//        for (CustomPages customPage : customPages) {
+//            String templateResourceConfigUrl = configInfo.getResourcesConfig(template) + "/" + customPage.getId() + ".xml";
+//            URI url = resourceService.getResource(templateResourceConfigUrl).httpUrl().toURI();
+//            InputStream inputStream = HttpUtils.getInputStreamByUrl(url.toURL());
+//            WidgetPage widgetPage = JAXB.unmarshal(inputStream, WidgetPage.class);
+//            pageResolveService.createPageAndConfigByWidgetPage(widgetPage,
+//                    customerSite.getSiteId(), false);
+//        }
+//        createDefaultWidgetPage(template, customerSite);
+//        deepCopy(template, customerSite);
+//    }
+
     @Override
-    public void siteCopy(long templateId, Site customerSite) throws Exception {
-        //根据模板ID读取到相应的站点
-        Template template = templateRepository.findOne(templateId);
-        Site templateSite = template.getSite();
-        List<CustomPages> customPages = customPagesRepository.findBySite(templateSite);
-        for (CustomPages customPage : customPages) {
-            String templateResourceConfigUrl = configInfo.getResourcesConfig(templateSite) + "/" + customPage.getId() + ".xml";
-            URI url = resourceService.getResource(templateResourceConfigUrl).httpUrl().toURI();
-            InputStream inputStream = HttpUtils.getInputStreamByUrl(url.toURL());
-            WidgetPage widgetPage = JAXB.unmarshal(inputStream, WidgetPage.class);
-            pageResolveService.createPageAndConfigByWidgetPage(widgetPage,
-                    customerSite.getSiteId(), false);
+    public void siteCopy(Template template, Site targetSite, boolean removeFirst) {
+        if (removeFirst) {
+            //TODO 删除所有正文,数据源和页面
         }
-        createDefaultWidgetPage(templateSite, customerSite);
-        deepCopy(templateSite, customerSite);
+        deepCopy(template, targetSite);
     }
 
     @Override
@@ -289,23 +251,7 @@ public class SiteServiceImpl implements SiteService {
             category = categoryRepository.save(newCategory);
             itemsCopy(category, customerSite);
         }
-        /*自定义页面*/
-        List<CustomPages> customPages = customPagesRepository.findBySite(templateSite);
-        for (CustomPages customPage : customPages) {
-            if (customPage.isPublish()) {//只复制发布了的，不复制草稿箱中的
-                CustomPages newCustomPage = new CustomPages();
-                newCustomPage.setSerial(SerialUtil.formatSerial(customerSite));
-                newCustomPage.setName(customPage.getName());
-                newCustomPage.setOrderWeight(customPage.getOrderWeight());
-                newCustomPage.setCreateTime(customPage.getCreateTime());
-                newCustomPage.setDeleted(customPage.isDeleted());
-                newCustomPage.setDescription(customPage.getDescription());
-                newCustomPage.setHome(customPage.isHome());
-                newCustomPage.setSite(customerSite);
-                newCustomPage.setPublish(customPage.isPublish());
-                customPagesRepository.save(newCustomPage);
-            }
-        }
+        // TODO 页面的复制
     }
 
     /**

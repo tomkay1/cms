@@ -8,8 +8,10 @@
 
 package com.huotu.hotcms.service.repository;
 
+import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.entity.Site;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -18,7 +20,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * Created by lhx on 2016/7/5.
+ * Created by wenqi on 2016/7/5.
  */
 @Repository
 public interface PageInfoRepository extends JpaRepository<PageInfo, Long>, JpaSpecificationExecutor<PageInfo> {
@@ -33,8 +35,24 @@ public interface PageInfoRepository extends JpaRepository<PageInfo, Long>, JpaSp
     /**
      * 通过站点和路劲 查询page信息
      * @param site 站点
-     * @param pagePath 路径
+     * @param pagePath 路径,是唯一的
      * @return page信息
      */
-    PageInfo findByCategory_SiteAndSite_PagePath(Site site, String pagePath);
+    PageInfo findByCategory_SiteAndPagePath(Site site, String pagePath);
+
+    /**
+     * 通过数据源查询pageInfo列表
+     * @param category 数据源
+     * @return pageInfo列表
+     */
+    List<PageInfo> findByCategory(Category category);
+
+    /**
+     *通过path查询pageInfo列表
+     * @param pagePath path
+     * @return pageInfov
+     */
+    PageInfo findByPagePath(String pagePath);
+
+
 }

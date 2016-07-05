@@ -35,6 +35,7 @@ public class PageInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "pageId")
     private Long pageId;
 
     @Column(name = "pagePath", unique = true, length = 60)

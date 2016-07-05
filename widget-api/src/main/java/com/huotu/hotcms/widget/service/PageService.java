@@ -98,6 +98,6 @@ public interface PageService {
      * @param path 请求的路径
      * @return 最适用的内容页
      */
-    Page getClosestContentPage(Category category, String path);
+    Page getClosestContentPage(Category category, String path) throws IOException;
 
 }

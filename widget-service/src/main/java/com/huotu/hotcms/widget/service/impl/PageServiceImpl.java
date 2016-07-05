@@ -78,11 +78,11 @@ public class PageServiceImpl implements PageService {
 
     @Override
     public Page findBySiteAndPagePath(Site site, String pagePath) throws IllegalStateException {
-       PageInfo pageInfo= pageInfoRepository.findByCategory_SiteAndSite_PagePath(site, pagePath);
+        PageInfo pageInfo = pageInfoRepository.findByCategory_SiteAndPagePath(site, pagePath);
         try {
             return getPage(pageInfo.getPageId());
         } catch (IOException e) {
-            throw new IllegalStateException("解析page信息出错:"+e.getMessage());
+            throw new IllegalStateException("解析page信息出错:" + e.getMessage());
         }
     }
 
@@ -92,8 +92,16 @@ public class PageServiceImpl implements PageService {
     }
 
     @Override
-    public Page getClosestContentPage(Category category, String path) {
-        return null;
+    public Page getClosestContentPage(Category category, String path) throws IOException {
+        PageInfo pageInfo = pageInfoRepository.findByPagePath(path);
+        if (pageInfo != null && category.getId().equals(pageInfo.getCategory().getId())) {
+            return getPage(pageInfo.getPageId());
+        }
+        List<PageInfo> pageInfos = pageInfoRepository.findByCategory(category);
+        if (pageInfo == null)
+            throw new IllegalStateException("没有找到相应page");
+        pageInfo = pageInfos.get(0);
+        return getPage(pageInfo.getPageId());
     }
 
 

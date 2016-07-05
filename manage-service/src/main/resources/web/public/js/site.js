@@ -117,4 +117,10 @@ $(function () {
         onCancel: logoOnUpload,
         onValidate: logoOnUpload
     });
+
+    $(document.body).find('.site-items').on('mouseenter', function () {
+        $(this).children('.site-preview').stop().fadeIn();
+    }).on('mouseleave', function () {
+        $(this).children('.site-preview').stop().fadeOut();
+    });
 });

@@ -13,11 +13,11 @@ import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.widget.CMSContext;
-import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.page.Page;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 
 /**
  * 页面服务
@@ -36,7 +36,7 @@ public interface PageService {
      */
     String generateHTML(Page page, CMSContext context) throws IOException;
 
-    void parsePageToXMlAndSave(Page page, String pageId) throws IOException, URISyntaxException;
+    void savePage(Page page, String pageId) throws IOException, URISyntaxException;
 
     /**
      * 解析保存了{@link com.huotu.hotcms.widget.page.Page}信息的XML
@@ -45,7 +45,7 @@ public interface PageService {
      * @return {@link com.huotu.hotcms.widget.page.Page}
      * @throws IOException 其他异常
      */
-    Page getPageFromXMLConfig(String pageId) throws IOException;
+    Page getPage(String pageId) throws IOException;
 
     /**
      * 删除相关页面信息
@@ -70,11 +70,23 @@ public interface PageService {
     /**
      * 查询当前站点下page实体信息
      *
-     * @param pagePath 唯一标示 暂无实例
-     * @param siteId   站点id
+     * @param pagePath 唯一标示
      * @return {@Link com.huotu.hotcms.service.entity.Page}
+     * @param pagePath   pagePath必须存在不能为空  1.html
+     * @param site      当前站点必须存在不能为空
+     * @return page
      * @throws IOException 其他异常
      */
+    Page findByPagePath(Site site, String pagePath) throws IOException;
+
+
+    /**
+     * 根绝站点读取Page列表
+     * @param siteId 站点ID
+     * @return Page列表
+     */
+    List<Page> getPageList(long siteId);
+
     com.huotu.hotcms.service.entity.Page findBySiteAndPagePath(Long siteId, String pagePath) throws IOException;
 
     /**

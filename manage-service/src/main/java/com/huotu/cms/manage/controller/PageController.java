@@ -41,14 +41,14 @@ import java.util.List;
 public interface PageController {
     /**
      * <p>获取页面{@link Page}</p>
-     * @param ownerId 拥有者id
+     * @param siteId 站点ID
      * @return 拿到相应的界面
      * @see Page
      */
 
-    @RequestMapping(value = "/manage/owners/{ownerId}/pages",method = RequestMethod.GET)
+    @RequestMapping(value = "/manage/owners/{siteId}/pages",method = RequestMethod.GET)
     @ResponseBody
-    List<Page> getPageList(@PathVariable("ownerId") long ownerId) throws IOException;
+    List<Page> getPageList(@PathVariable("siteId") Long siteId ) throws IOException;
 
 
     /**

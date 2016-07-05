@@ -1,25 +1,92 @@
 <Page xmlns="">
-    <pageIdentity>65856050-38db-4273-bdac-22583f0ceb91</pageIdentity>
-    <title>45e11f5c-9595-416a-b890-f42b5e312c59</title>
+    <pageIdentity>ec26da31-6579-4ffe-8b03-2241a8324ad9</pageIdentity>
+    <title>0d9fe7e8-d329-4512-bc44-a5abeb1d2212</title>
     <elements>
-        <layout></layout>
+        <layout>
+            <value>81387f94-979b-442c-80bf-67ac49b92a31</value>
+        </layout>
     </elements>
     <elements>
         <layout>
+            <value>626aaaef-e3f2-45a7-9505-1b50e64f53e7</value>
             <elements>
-                <component>
-                    <widgetIdentity>07fc72e6-4890-4ccc-88d5-b1686bea9bf2</widgetIdentity>
-                    <installedWidget>
-                        <widget></widget>
-                        <type>8ea13fc1-e954-4159-b8e7-0737c322506e</type>
-                    </installedWidget>
-                    <styleId>c9543cd7-1d13-47af-b810-128f535722ba</styleId>
-                    <properties>
-                        <K>f38eec45-5faa-463a-9a1a-f9e8ea117192</K>
-                    </properties>
-                    <previewHTML>91f55fd0-8539-46ee-b763-227a10b1f493</previewHTML>
-                </component>
+                <layout>
+                    <value>8b0bdda4-6f41-4fd5-b405-25573a9f1d3b</value>
+                </layout>
             </elements>
         </layout>
     </elements>
+    <elements>
+        <layout>
+            <value>db00721f-99d3-48c4-a6f9-ae1bbe3d849f</value>
+        </layout>
+    </elements>
+    <elements>
+        <layout>
+            <value>20c4f1f4-76dd-4bb3-aad4-452d24dfe2f3</value>
+        </layout>
+    </elements>
+    <elements>
+        <layout>
+            <value>bbc92920-801b-47a8-838c-bbd1910044eb</value>
+        </layout>
+    </elements>
+</Page>
+
+<Page xmlns="">
+<pageIdentity>0b418320-260c-4615-b41e-398311f60180</pageIdentity>
+<title>9a24d64c-feb3-48c3-82dc-89da343fba77</title>
+<elements>
+    <layout>
+        <value>1fdbd20e-2121-4343-944b-482da1682613</value>
+        <elements>
+            <component>
+                <widgetIdentity>2d196df0-e27d-4e8d-bfc1-bf740c771c1a</widgetIdentity>
+                <styleId>43c461c8-c970-40d3-b7a4-a7c971089020</styleId>
+                <properties>
+                    <j>5192b4dd-8f0a-4a63-8804-93ae48ac1c55</j>
+                </properties>
+            </component>
+        </elements>
+    </layout>
+</elements>
+<elements>
+    <layout>
+        <value>7029a8ff-30ae-4cd9-bafe-4a1d2cf380d7</value>
+        <elements>
+            <layout>
+                <value>e2c5b753-c144-41aa-80b3-1954a5a01fb7</value>
+            </layout>
+        </elements>
+    </layout>
+</elements>
+<elements>
+    <layout>
+        <value>231d0b80-5742-4755-988f-4ffd0c0235a6</value>
+        <elements>
+            <component>
+                <widgetIdentity>24af6315-8fa6-4521-ac04-c590409a7009</widgetIdentity>
+                <styleId>d9cdbd0d-49ec-406e-8df9-77c3c9c8aa30</styleId>
+                <properties>
+                    <a>50f12451-619f-46a3-975c-b8663a48638b</a>
+                </properties>
+            </component>
+        </elements>
+    </layout>
+</elements>
+<elements>
+    <layout>
+        <value>e238ac26-131f-4fcf-b27a-344167075120</value>
+    </layout>
+</elements>
+<elements>
+    <layout>
+        <value>ae418b6d-03ca-40a8-809b-cd44ee63a4c9</value>
+        <elements>
+            <layout>
+                <value>fef33318-3c61-418d-bb49-24e8fc89d03c</value>
+            </layout>
+        </elements>
+    </layout>
+</elements>
 </Page>

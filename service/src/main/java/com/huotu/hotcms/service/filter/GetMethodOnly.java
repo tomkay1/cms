@@ -19,18 +19,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * 有时候站点会定义转发
- *
  * @author CJ
  */
 @Component
-public class SiteRedirectFilter implements FilterBehavioral {
+public class GetMethodOnly implements FilterBehavioral {
     @Override
     public FilterStatus doSiteFilter(Site site, HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        if (site.getRedirectUrl() != null) {
-            response.sendRedirect(site.getRedirectUrl());
-            return FilterStatus.STOP;
+        if (!request.getMethod().equalsIgnoreCase("GET")) {
+            return FilterStatus.CHAIN;
         }
         return FilterStatus.NEXT;
     }

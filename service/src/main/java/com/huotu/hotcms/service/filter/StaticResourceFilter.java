@@ -11,6 +11,7 @@ package com.huotu.hotcms.service.filter;
 
 import com.huotu.hotcms.service.FilterBehavioral;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.util.StaticResource;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 
@@ -19,18 +20,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * 有时候站点会定义转发
- *
  * @author CJ
  */
 @Component
-public class SiteRedirectFilter implements FilterBehavioral {
+public class StaticResourceFilter implements FilterBehavioral {
     @Override
     public FilterStatus doSiteFilter(Site site, HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        if (site.getRedirectUrl() != null) {
-            response.sendRedirect(site.getRedirectUrl());
-            return FilterStatus.STOP;
+        if (StaticResource.isStaticResource(request.getServletPath())) {
+            return FilterStatus.CHAIN;
         }
         return FilterStatus.NEXT;
     }

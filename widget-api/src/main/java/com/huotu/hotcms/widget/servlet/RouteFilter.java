@@ -7,7 +7,7 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.hotcms.web.filter;
+package com.huotu.hotcms.widget.servlet;
 
 import com.huotu.hotcms.service.FilterBehavioral;
 import com.huotu.hotcms.service.entity.Site;
@@ -28,12 +28,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * <p>
- * 解析过滤器
- * </p>
- *
- * @author xhl
- * @since 1.0.0
+ * 前端过滤器
  */
 public class RouteFilter extends OncePerRequestFilter {
     private static final Log log = LogFactory.getLog(RouteFilter.class);
@@ -50,8 +45,13 @@ public class RouteFilter extends OncePerRequestFilter {
                     .sorted(new OrderComparator()).collect(Collectors.toList());
 
             for (FilterBehavioral behavioral : behavioralList) {
-                if (!behavioral.doSiteFilter(site, request, response)) {
-                    return;
+                FilterBehavioral.FilterStatus status = behavioral.doSiteFilter(site, request, response);
+                switch (status) {
+                    case CHAIN:
+                        filterChain.doFilter(request, response);
+                        return;
+                    case STOP:
+                        return;
                 }
             }
 

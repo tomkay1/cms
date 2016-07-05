@@ -25,6 +25,7 @@ import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
+import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.OwnerRepository;
 import com.huotu.hotcms.service.repository.PageInfoRepository;
 import com.huotu.hotcms.service.service.SiteService;
@@ -78,6 +79,9 @@ public abstract class ManageTest extends SpringWebTest {
     @Qualifier("pageInfoRepository")
     @Autowired
     private PageInfoRepository pageInfoRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Before
     public void aboutTestOwner() {
@@ -239,6 +243,13 @@ public abstract class ManageTest extends SpringWebTest {
         return route;
     }
 
+    protected Category randomCategory(){
+        Category category=new Category();
+        category.setParent(null);
+        category.setSite(randomSite(randomOwner()));
+        return categoryRepository.saveAndFlush(category);
+    }
+
     /**
      * 创建一个随机的页面信息，包括页面配置
      * @return 页面信息
@@ -246,9 +257,7 @@ public abstract class ManageTest extends SpringWebTest {
      */
     public PageInfo randomPageInfo() throws JsonProcessingException {
         PageInfo pageInfo=new PageInfo();
-        Category category=new Category();
-        category.setSite(randomSite(randomOwner()));
-        pageInfo.setCategory(category);
+        pageInfo.setCategory(randomCategory());
         XmlMapper xmlMapper=new XmlMapper();
         byte[] pageXml=xmlMapper.writeValueAsString(randomPage()).getBytes();
         pageInfo.setPageSetting(pageXml);

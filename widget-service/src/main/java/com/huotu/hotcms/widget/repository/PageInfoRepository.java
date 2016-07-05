@@ -9,7 +9,6 @@
 
 package com.huotu.hotcms.widget.repository;
 
-import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -20,5 +19,7 @@ import java.util.List;
  * Created by hzbc on 2016/7/4.
  */
 public interface PageInfoRepository extends JpaRepository<PageInfo,String>,JpaSpecificationExecutor<PageInfo> {
-    public List<PageInfo> findBySite(Site site);
+    public List<PageInfo> findBySiteId(long siteId);
+
+    //public List<PageInfo> findBySite(Site site);
 }

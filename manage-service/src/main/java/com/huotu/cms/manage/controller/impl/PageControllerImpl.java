@@ -42,8 +42,8 @@ public class PageControllerImpl implements PageController {
 
     @Override
     public List<Page> getPageList(Long siteId) throws IOException {
-        Site site=siteRepository.findOne(siteId);
-        return pageService.getPageList(site);
+        //Site site=siteRepository.findOne(siteId);
+        return pageService.getPageList(siteId);
     }
 
 

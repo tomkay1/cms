@@ -90,8 +90,8 @@ public class PageServiceImpl implements PageService {
     }
 
     @Override
-    public List<Page> getPageList(Site site) {
-        List<PageInfo> pageInfos=pageInfoRepository.findBySite(site);
+    public List<Page> getPageList(long siteId) {
+        List<PageInfo> pageInfos=pageInfoRepository.findBySiteId(siteId);
         List<Page> pages=new ArrayList<>();
         Page page=null;
         for(PageInfo pageInfo:pageInfos){

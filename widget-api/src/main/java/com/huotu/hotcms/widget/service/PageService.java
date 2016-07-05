@@ -83,10 +83,10 @@ public interface PageService {
 
     /**
      * 根绝站点读取Page列表
-     * @param site 站点
+     * @param siteId 站点ID
      * @return Page列表
      */
-    List<Page> getPageList(Site site);
+    List<Page> getPageList(long siteId);
 
     com.huotu.hotcms.service.entity.Page findBySiteAndPagePath(Long siteId, String pagePath) throws IOException;
 

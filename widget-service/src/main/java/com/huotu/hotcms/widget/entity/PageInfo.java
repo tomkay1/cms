@@ -37,9 +37,9 @@ public class PageInfo {
     /**
      * 站点ID
      */
-    @OneToMany
+    //@OneToMany
     @Column(name = "siteId")
-    private Site site;
+    private long siteId;
 
     /**
      * 页面配置的xml数据

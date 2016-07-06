@@ -9,12 +9,14 @@
 
 package com.huotu.hotcms.widget.service.impl;
 
+import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetLocateService;
 import com.huotu.hotcms.widget.entity.WidgetInfo;
+import com.huotu.hotcms.widget.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.widget.exception.FormatException;
-import com.huotu.hotcms.widget.repository.WidgetRepository;
+import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import com.huotu.hotcms.widget.util.ClassLoaderUtil;
 import com.huotu.hotcms.widget.util.HttpClientUtil;
@@ -56,7 +58,8 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
     @Autowired
     private WebApplicationContext webApplicationContext;
     @Autowired
-    private WidgetRepository widgetRepository;
+    private WidgetInfoRepository widgetInfoRepository;
+
 
     /**
      * 得到jar 在本地存储的真实路径
@@ -115,29 +118,28 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
     /**
      * 已安装控件列表
      *
+     * @param owner
      * @return
      * @throws FormatException
      * @throws IOException
      */
     @Override
-    public List<InstalledWidget> widgetList() throws FormatException, IOException {
-        List<InstalledWidget> result = null;
-        List<WidgetInfo> all = widgetRepository.findAll();
-        if (all != null && all.size() > 0 && installedWidgets.size() <= 0) {
+    public List<InstalledWidget> widgetList(Owner owner) throws IOException, FormatException, IllegalAccessException
+            , InstantiationException {
+        List<InstalledWidget> result;
+        List<WidgetInfo> widgetInfos;
+        if (owner == null) {
+            widgetInfos = widgetInfoRepository.findAll();
+        } else {
+            widgetInfos = widgetInfoRepository.findByOwner(owner);
+        }
+        if (widgetInfos != null && widgetInfos.size() > 0 && installedWidgets.size() <= 0) {
             result = new ArrayList<>();
-            for (WidgetInfo widgetInfo : all) {
-                InstalledWidget installedWidget = new InstalledWidget();
+            for (WidgetInfo widgetInfo : widgetInfos) {
 
-                String realPath = getRealPath(widgetInfo.getWidgetId(), widgetInfo.getVersion());
-                try {
-                    Widget widget = (Widget) ClassLoaderUtil.loadJarConfig(realPath).newInstance();
-                    installedWidget.setWidget(widget);
-                    installedWidget.setType(widgetInfo.getType());
-                    result.add(installedWidget);
-                    installedWidgets.add(installedWidget);
-                } catch (InstantiationException | IllegalAccessException | FormatException e) {
-                    throw new FormatException(e.toString());
-                }
+                InstalledWidget installedWidget = getInstalledWidget(widgetInfo);
+                installedWidgets.add(installedWidget);
+                result.add(installedWidget);
             }
         } else {
             return installedWidgets;
@@ -146,15 +148,15 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
     }
 
     @Override
-    public void reloadWidgets() throws IOException, FormatException {
+    public void reloadWidgets() throws IOException, FormatException, InstantiationException, IllegalAccessException {
         installedWidgets.clear();
-        widgetList();
+        widgetList(null);
     }
 
     @Override
     public void installWidget(String groupId, String widgetId, String version, String type) throws IOException, FormatException {
         try {
-            String realPath = downloadJar(groupId,widgetId,version);
+            String realPath = downloadJar(groupId, widgetId, version);
             List<Class> classes = ClassLoaderUtil.loadJarWidgetClasss(realPath);
             if (classes != null) {
                 for (Class classz : classes) {
@@ -176,7 +178,8 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
         widgetInfo.setWidgetId(widget.widgetId());
         widgetInfo.setVersion(widget.version());
         widgetInfo.setType(type);
-        widgetRepository.save(widgetInfo);
+        widgetInfoRepository.save(widgetInfo);
+
 
     }
 
@@ -211,20 +214,12 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
 
     public void updateWidget(Widget widget) {
         throw new IllegalStateException("not support yet");
-//        WidgetInfo widgetInfo = widgetRepository.findByWidgetIdAndVersion(widget.widgetId(), widget.version());
-//        if (widgetInfo != null) {
-//            widgetInfo.setGroupId(widget.groupId());
-//            widgetInfo.setName(widget.name());
-//            widgetInfo.setDependBuild(widget.dependBuild() + "");
-//            widgetInfo.setAuthor(widget.author());
-//            widgetRepository.saveAndFlush(widgetInfo);
-//        }
     }
 
     @Override
     public void updateWidget(String groupId, String widgetId, String version, String type) throws IOException, FormatException {
         try {
-            String realPath = downloadJar(groupId,widgetId,version);
+            String realPath = downloadJar(groupId, widgetId, version);
             List<Class> classes = ClassLoaderUtil.loadJarWidgetClasss(realPath);
             if (classes != null) {
                 for (Class classz : classes) {
@@ -239,33 +234,49 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
 
 
     @Override
-    public List<WidgetInfo> getWidgetByOwerId(String owerID) {
-        return null;
+    public List<WidgetInfo> getWidgetByOwner(Owner owner) {
+        return widgetInfoRepository.findByOwner(owner);
     }
 
     @Override
     public InstalledWidget findWidget(String groupId, String widgetId, String version) {
-        WidgetInfo widgetInfo = widgetRepository.findByWidgetIdAndGroupIdAndVersion(widgetId, groupId, version);
-        InstalledWidget installedWidget = new InstalledWidget();
-        installedWidget.setType(widgetInfo.getType());
-        String realPath = getRealPath(widgetId, version);
-        try {
-            List<Class> classes = ClassLoaderUtil.loadJarWidgetClasss(realPath);
-            if (classes != null) {
-                for (Class classz : classes) {
-                    if (((Widget) classz.newInstance()).widgetId().equals(widgetId)) {
-                        installedWidget.setWidget((Widget) classz.newInstance());
-                    }
-                }
-            }
-        } catch (IllegalAccessException | InstantiationException | FormatException | IOException e) {
-            //throw new FormatException(e.toString());
-        }
-        return installedWidget;
+        WidgetIdentifier id = new WidgetIdentifier(groupId, widgetId, version);
+        WidgetInfo widgetInfo = widgetInfoRepository.findOne(id);
+        return getInstalledWidget(widgetInfo);
     }
 
     @Override
     public InstalledWidget findWidget(String identifier) {
-        return null;
+        WidgetInfo widgetInfo = widgetInfoRepository.findOne(WidgetIdentifier.valueOf(identifier));
+        return getInstalledWidget(widgetInfo);
+    }
+
+
+    /**
+     * <p>根据安装控件信息获得InstalledWidget</p>
+     *
+     * @param widgetInfo
+     * @return InstalledWidget
+     */
+    public InstalledWidget getInstalledWidget(WidgetInfo widgetInfo) {
+        List<Class> classes;
+        InstalledWidget installedWidget = null;
+        try {
+            classes = ClassLoaderUtil.loadJarWidgetClasss(getRealPath(widgetInfo.getWidgetId()
+                    , widgetInfo.getVersion()));
+            Widget widget;
+            for (Class classz : classes) {
+                widget = (Widget) classz.newInstance();
+                if (widget.widgetId().equals(widgetInfo.getWidgetId())
+                        && widget.version().equals(widgetInfo.getVersion())) {
+                    installedWidget = new InstalledWidget(widget);
+                    installedWidget.setType(widgetInfo.getType());
+                    installedWidget.setOwnerId(widgetInfo.getOwner().getId());
+                    installedWidget.setInstallWidgetId(widgetInfo.getWidgetId());
+                }
+            }
+        } catch (IllegalAccessException | InstantiationException | FormatException | IOException ignored) {
+        }
+        return installedWidget;
     }
 }

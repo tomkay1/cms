@@ -39,7 +39,7 @@ public class TestWidgetFactoryServiceImpl {
 
 
     @Test
-    public void testInstallWidget() throws IOException, FormatException {
+    public void testInstallWidget() throws IOException, FormatException, IllegalAccessException, InstantiationException {
 
         String randomType = UUID.randomUUID().toString();
         // 安装一个demo控件
@@ -59,8 +59,8 @@ public class TestWidgetFactoryServiceImpl {
         assertWidgetListContainWidgetName("pagingWidget", randomType);
     }
 
-    private void assertWidgetListContainWidgetName(String widgetId, String type) throws IOException, FormatException {
-        for (InstalledWidget widget : widgetFactoryService.widgetList()) {
+    private void assertWidgetListContainWidgetName(String widgetId, String type) throws IOException, FormatException, InstantiationException, IllegalAccessException {
+        for (InstalledWidget widget : widgetFactoryService.widgetList(null)) {
             if (type.equals(widget.getType())) {
                 assertThat(widget.getWidget().widgetId()).isEqualToIgnoringCase(widgetId);
                 return;

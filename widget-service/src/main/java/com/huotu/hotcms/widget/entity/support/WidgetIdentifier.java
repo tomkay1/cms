@@ -10,8 +10,10 @@
 package com.huotu.hotcms.widget.entity.support;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 
@@ -20,7 +22,9 @@ import java.io.Serializable;
  *
  * @author CJ
  */
-@Data
+@Setter
+@Getter
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 public class WidgetIdentifier implements Serializable {
@@ -30,4 +34,23 @@ public class WidgetIdentifier implements Serializable {
     private String widgetId;
     private String version;
 
+    /**
+     * @param identify groupId-widgetId:version
+     * @return
+     * @throws IllegalArgumentException identify不符合预定规则
+     */
+    public static WidgetIdentifier valueOf(String identify) throws IllegalArgumentException {
+        try {
+            String[] args = identify.split(":");
+            String[] groupIdAndWidgetId = args[0].split("-");
+            return new WidgetIdentifier(groupIdAndWidgetId[0], groupIdAndWidgetId[1], args[1]);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("参数不符合预定规则");
+        }
+    }
+
+    @Override
+    public String toString() {
+        return groupId + "-" + widgetId + ":" + version;
+    }
 }

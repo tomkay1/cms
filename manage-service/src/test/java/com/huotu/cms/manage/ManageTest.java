@@ -262,6 +262,7 @@ public abstract class ManageTest extends SpringWebTest {
     public PageInfo randomPageInfo() throws JsonProcessingException {
         PageInfo pageInfo=new PageInfo();
         pageInfo.setSite(randomSite(randomOwner()));
+        pageInfo.setCategory(randomCategory());
         XmlMapper xmlMapper=new XmlMapper();
         byte[] pageXml=xmlMapper.writeValueAsString(randomPage()).getBytes();
         pageInfo.setPageSetting(pageXml);

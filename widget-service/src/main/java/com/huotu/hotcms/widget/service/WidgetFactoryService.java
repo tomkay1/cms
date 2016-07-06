@@ -9,9 +9,7 @@
 
 package com.huotu.hotcms.widget.service;
 
-import com.huotu.hotcms.widget.CMSContext;
-import com.huotu.hotcms.widget.Component;
-import com.huotu.hotcms.widget.ComponentProperties;
+import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.entity.WidgetInfo;
@@ -42,16 +40,17 @@ public interface WidgetFactoryService {
 
     /**
      * @return 已安装控件列表
+     * @param owner
      */
     @Transactional(readOnly = true)
-    List<InstalledWidget> widgetList() throws FormatException, IOException;
+    List<InstalledWidget> widgetList(Owner owner) throws FormatException, IOException, IllegalAccessException, InstantiationException;
 
     /**
      * 重新载入控件
      */
     @PostConstruct
     @Transactional(readOnly = true)
-    void reloadWidgets() throws IOException, FormatException;
+    void reloadWidgets() throws IOException, FormatException, InstantiationException, IllegalAccessException;
 
     /**
      * 安装新的控件
@@ -110,6 +109,13 @@ public interface WidgetFactoryService {
     void updateWidget(String groupId, String widgetId, String version, String type) throws IOException, FormatException;
 
 
-    List<WidgetInfo> getWidgetByOwerId(String owerID);
+    /**
+     * 查询指定owner的安装列表
+     *
+     * @param owner
+     * @return
+     */
+    List<WidgetInfo> getWidgetByOwner(Owner owner);
+
 
 }

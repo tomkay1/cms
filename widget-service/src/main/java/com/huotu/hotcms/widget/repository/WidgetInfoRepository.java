@@ -9,15 +9,17 @@
 
 package com.huotu.hotcms.widget.repository;
 
+import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.widget.entity.WidgetInfo;
+import com.huotu.hotcms.widget.entity.support.WidgetIdentifier;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface WidgetRepository extends JpaRepository<WidgetInfo, Long>, JpaSpecificationExecutor<WidgetInfo> {
+import java.util.List;
 
-//    List<WidgetInfo> findByAuthor(String author);
+public interface WidgetInfoRepository extends JpaRepository<WidgetInfo, WidgetIdentifier>, JpaSpecificationExecutor<WidgetInfo> {
 
-    WidgetInfo findByWidgetIdAndVersion(String widgetId,String version);
+    List<WidgetInfo> findByOwner(Owner owner);
 
     WidgetInfo findByWidgetIdAndGroupIdAndVersion(String widgetId, String groupId, String version);
 }

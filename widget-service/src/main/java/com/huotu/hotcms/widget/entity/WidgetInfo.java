@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.widget.entity;
 
+import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.widget.entity.support.WidgetIdentifier;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +18,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -43,6 +46,10 @@ public class WidgetInfo {
 
     @Column(name = "type", length = 100)
     private String type;
+
+    @ManyToOne
+    @JoinColumn(name = "ownerId")
+    private Owner owner;
 
     /**
      * 数据包在资源系统中的路径

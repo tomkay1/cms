@@ -1,6 +1,7 @@
 /*
  * 版权所有:杭州火图科技有限公司
  * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
  * 2013-2016. All rights reserved.
@@ -8,19 +9,26 @@
 
 package com.huotu.hotcms.widget.controller;
 
+import com.huotu.hotcms.service.FilterBehavioral;
 import com.huotu.hotcms.service.entity.AbstractContent;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.repository.AbstractContentRepository;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.WidgetResolveService;
 import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.service.PageService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.Ordered;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -29,7 +37,10 @@ import java.io.IOException;
  */
 @Controller
 @RequestMapping(value = "/_web")
-public class PageController {
+public class PageController implements FilterBehavioral {
+
+    private static final Log log = LogFactory.getLog(PageController.class);
+
     @Autowired
     private AbstractContentRepository abstractContentRepository;
 
@@ -75,4 +86,23 @@ public class PageController {
     }
 
 
+    @Override
+    public FilterStatus doSiteFilter(Site site, HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        try {
+            String targetPath = "/_web" + request.getRequestURI();
+            log.debug("Forward to " + targetPath);
+            request.getRequestDispatcher(targetPath)
+                    .forward(request, response);
+        } catch (ServletException e) {
+            throw new IOException(e);
+        }
+        return FilterStatus.STOP;
+    }
+
+    @Override
+    public int getOrder() {
+        // 最低优先级 到了我这  就是改url了
+        return Ordered.LOWEST_PRECEDENCE;
+    }
 }

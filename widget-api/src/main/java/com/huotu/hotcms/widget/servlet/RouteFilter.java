@@ -19,6 +19,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,6 +33,15 @@ import java.util.stream.Collectors;
  */
 public class RouteFilter extends OncePerRequestFilter {
     private static final Log log = LogFactory.getLog(RouteFilter.class);
+
+    public RouteFilter() {
+        super();
+    }
+
+    public RouteFilter(ServletContext context) {
+        super();
+        setServletContext(context);
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

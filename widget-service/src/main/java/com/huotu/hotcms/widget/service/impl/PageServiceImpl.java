@@ -8,8 +8,6 @@
 
 package com.huotu.hotcms.widget.service.impl;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.PageInfo;
@@ -55,6 +53,7 @@ public class PageServiceImpl implements PageService {
         outputStream.write(htmlData, 0, htmlData.length);
     }
 
+
     @Override
     public void savePage(Page page, Long pageId) throws IOException {
         XmlMapper xmlMapper = new XmlMapper();
@@ -78,18 +77,20 @@ public class PageServiceImpl implements PageService {
     }
 
     @Override
-    public void deletePage(Long pageId) throws IOException {
+    public void deletePage(Long pageId) {
         pageInfoRepository.delete(pageId);
     }
 
     @Override
     public Page findBySiteAndPagePath(Site site, String pagePath) throws IllegalStateException {
-        PageInfo pageInfo = pageInfoRepository.findBySiteAndPagePath(site, pagePath);
+        Page page;
         try {
-            return getPage(pageInfo.getPageId());
+            PageInfo pageInfo = pageInfoRepository.findBySiteAndPagePath(site, pagePath);
+            page = getPage(pageInfo.getPageId());
         } catch (IOException e) {
-            throw new IllegalStateException("解析page信息出错:" + e.getMessage());
+            throw new IllegalStateException("解析page信息出错");
         }
+        return page;
     }
 
     @Override

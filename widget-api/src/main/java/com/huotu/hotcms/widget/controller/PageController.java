@@ -14,7 +14,6 @@ import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.repository.AbstractContentRepository;
 import com.huotu.hotcms.widget.CMSContext;
-import com.huotu.hotcms.widget.WidgetResolveService;
 import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.service.PageService;
 import org.apache.commons.logging.Log;
@@ -33,6 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * 用户获取page页面html Code 页面服务相关
  * Created by lhx on 2016/7/2.
  */
 @Controller
@@ -47,42 +47,44 @@ public class PageController implements FilterBehavioral {
     @Autowired
     private PageService pageService;
 
-    @Autowired
-    private WidgetResolveService widgetResolveService;
-
     @RequestMapping(method = RequestMethod.GET, value = {"/{pagePath}"})
-    public void pageIndex(@PathVariable("pagePath") String pagePath, HttpServletResponse response) throws IOException {
+    public void pageIndex(@PathVariable("pagePath") String pagePath, HttpServletResponse response) {
         CMSContext cmsContext = CMSContext.RequestContext();
         //查找当前站点下指定pagePath的page
-        Page page = pageService.findBySiteAndPagePath(cmsContext.getSite(), pagePath);
-        if (page != null) {
-            try {
+        try {
+            Page page = pageService.findBySiteAndPagePath(cmsContext.getSite(), pagePath);
+            if (page != null) {
                 pageService.generateHTML(response.getOutputStream(), page, cmsContext);
-            } catch (IOException e) {
-                e.printStackTrace();
+                response.setContentType("text/html;charset=utf-8");
+                return;
             }
-            response.setContentType("text/html;charset=utf-8");
-            return;
+        } catch (Exception e) {
+            response.setStatus(HttpStatus.SC_NOT_FOUND);
         }
-        response.setStatus(HttpStatus.SC_NOT_FOUND);
+
     }
 
     @RequestMapping(method = RequestMethod.GET, value = {"/{pagePath}/{contentId}"})
     public void pageContent(@PathVariable("pagePath") String pagePath, @PathVariable("contentId") Long contentId
-            , HttpServletResponse response) throws IllegalStateException, IOException {
-        CMSContext cmsContext = CMSContext.RequestContext();
-        //查找数据内容
-        AbstractContent content = abstractContentRepository.findOne(contentId);
-        if (content != null) {
-            cmsContext.setAbstractContent(content);
-            //查找当前站点下指定pagePath的page
-            Page page = pageService.getClosestContentPage(content.getCategory(), pagePath);
+            , HttpServletResponse response) {
+        try {
+            CMSContext cmsContext = CMSContext.RequestContext();
+            //查找数据内容
+            AbstractContent content = abstractContentRepository.findOne(contentId);
+            if (content != null) {
+                cmsContext.setAbstractContent(content);
+                //查找当前站点下指定数据源pagePath下最接近的page
+                Page page = pageService.getClosestContentPage(content.getCategory(), pagePath);
 
-            pageService.generateHTML(response.getOutputStream(), page, cmsContext);
-            response.setContentType("text/html;charset=utf-8");
-            return;
-        }//404 content is not existing or access defined.
-        response.setStatus(HttpStatus.SC_NOT_FOUND);
+                pageService.generateHTML(response.getOutputStream(), page, cmsContext);
+
+                response.setContentType("text/html;charset=utf-8");
+                return;
+            }//404 content is not existing or access defined.
+            response.setStatus(HttpStatus.SC_NOT_FOUND);
+        } catch (Exception e) {
+            response.setStatus(HttpStatus.SC_NOT_FOUND);
+        }
     }
 
 

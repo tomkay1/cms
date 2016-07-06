@@ -113,7 +113,8 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
 
         checkEngine();
         WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
-                , component.getInstalledWidget().getWidget(), style, webApplicationContext.getServletContext(), component.getProperties());
+                , component.getInstalledWidget().getWidget(), style, webApplicationContext.getServletContext()
+                , component.getProperties());
         WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();
         cmsContext.getWidgetConfigurationStack().push(widgetConfiguration);
         return widgetTemplateEngine.process(WidgetTemplateResolver.BROWSE
@@ -142,8 +143,17 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
 
         } else {//是一个组件
             Component component = (Component) pageElement;
+//            WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
+//                    , component.getInstalledWidget().getWidget(), style, webApplicationContext.getServletContext()
+//                    , component.getProperties());
+//            WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();
+//            cmsContext.getWidgetConfigurationStack().push(widgetConfiguration);
+//            return widgetTemplateEngine.process(WidgetTemplateResolver.BROWSE
+//                    , Collections.singleton("div"), widgetContext);
+
+
+
             return componentHTML(component,cmsContext);
         }
-
     }
 }

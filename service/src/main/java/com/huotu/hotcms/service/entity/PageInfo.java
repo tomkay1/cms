@@ -26,6 +26,7 @@ import java.time.LocalDateTime;
 
 
 /**
+ * 用与保存页面信息
  * Created by lhx on 2016/7/4.
  */
 @Entity
@@ -61,6 +62,7 @@ public class PageInfo {
 
     @Column(name = "pageType")
     private PageType pageType;
+
     /**
      * 页面配置的xml数据
      */

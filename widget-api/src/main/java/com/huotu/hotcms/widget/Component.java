@@ -32,7 +32,7 @@ public class Component implements PageElement {
 
     private String widgetIdentity;
 
-    @JsonIgnore(value = true)//在生成的xml中忽略该属性，true即为忽略
+    //@JsonIgnore(value = true)//在生成的xml中忽略该属性，true即为忽略
     private InstalledWidget installedWidget;
 
     private String styleId;

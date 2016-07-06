@@ -15,6 +15,8 @@ import com.huotu.hotcms.service.FilterBehavioral;
 import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +28,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 页面控制器
@@ -38,6 +42,9 @@ import java.util.List;
 @RequestMapping("/manage/page")
 public class PageInfoController extends SiteManageController<PageInfo, Long, Void, Void> implements FilterBehavioral {
 
+    private static final Log log = LogFactory.getLog(PageInfoController.class);
+
+    private final Pattern pattern = Pattern.compile("^/([_a-zA-Z0-9]+)(/.*)?$");
     /**
      * 保护的path,这些path是系统使用的
      */
@@ -80,21 +87,48 @@ public class PageInfoController extends SiteManageController<PageInfo, Long, Voi
     @Override
     public FilterStatus doSiteFilter(Site site, HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        String uri = request.getRequestURI();
-        String contextUri = uri.substring(request.getContextPath().length());
-        int first = contextUri.indexOf('/');
-        if (first == -1) {
-            if (protectedPath.contains(contextUri)) {
-                return FilterStatus.CHAIN;
-            } else
-                return FilterStatus.NEXT;
-        } else {
-            String firstUri = contextUri.substring(0, first - 1);
-            if (protectedPath.contains(contextUri)) {
-                return FilterStatus.CHAIN;
-            } else
-                return FilterStatus.NEXT;
+        String uri = request.getServletPath();
+
+        String contextUri;
+        if (uri.length() > 0)
+            contextUri = uri;
+        else {
+            contextUri = request.getRequestURI().substring(request.getContextPath().length());
         }
+
+        try {
+            String firstPath = firstPath(contextUri);
+
+            if (protectedPath.contains(firstPath)) {
+                return FilterStatus.CHAIN;
+            } else
+                return FilterStatus.NEXT;
+        } catch (IllegalStateException ex) {
+            log.debug("doSiteFilter", ex);
+            return FilterStatus.CHAIN;
+        }
+
+    }
+
+    /**
+     * 从uri中获取第一个path
+     * 比如uri=/foo/bar  应该获取foo
+     * uri=/foo   应该获取foo
+     * uri=       应该获取
+     * <a href="https://regexper.com/#%5E%5C%2F(%5B_a-zA-Z0-9%5D%2B)(%5C%2F.*)%3F%24">正则</a>
+     *
+     * @param uri
+     * @return path
+     */
+    private String firstPath(String uri) {
+        if (uri.length() == 0)
+            return uri;
+        if (uri.equals("/"))
+            return "";
+        Matcher matcher = pattern.matcher(uri);
+        if (!matcher.matches())
+            throw new IllegalStateException("Bad Content URI:" + uri);
+        return matcher.group(1);
     }
 
     @Override

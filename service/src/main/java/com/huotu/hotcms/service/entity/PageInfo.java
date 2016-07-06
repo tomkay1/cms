@@ -59,12 +59,13 @@ public class PageInfo {
     @Column(name = "createTime")
     private LocalDateTime createTime;
 
-    @Column
+    @Column(name = "pageType")
     private PageType pageType;
     /**
      * 页面配置的xml数据
      */
     @Lob
+    @Column(name = "pageSetting")
     private byte[] pageSetting;
 
 }

@@ -28,7 +28,7 @@
 
     <properties>
         <maven.deploy.skip>true</maven.deploy.skip>
-        <json-version>2.7.5</json-version>
+
     </properties>
 
     <dependencies>
@@ -65,26 +65,8 @@
             <version>1.4</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>${json-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <version>${json-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${json-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-xml</artifactId>
-            <version>${json-version}</version>
-        </dependency>
+
+
 
         <!-- 断言相关-->
         <dependency>

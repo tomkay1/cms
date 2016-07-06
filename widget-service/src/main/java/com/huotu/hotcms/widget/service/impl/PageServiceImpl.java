@@ -8,6 +8,8 @@
 
 package com.huotu.hotcms.widget.service.impl;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.PageInfo;
@@ -56,6 +58,7 @@ public class PageServiceImpl implements PageService {
     @Override
     public void savePage(Page page, Long pageId) throws IOException {
         XmlMapper xmlMapper = new XmlMapper();
+        xmlMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         String pageXml = xmlMapper.writeValueAsString(page);
         PageInfo pageInfo =pageInfoRepository.findOne(pageId);
         if(pageInfo==null) {

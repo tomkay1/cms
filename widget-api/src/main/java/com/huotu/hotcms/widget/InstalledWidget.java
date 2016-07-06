@@ -9,6 +9,8 @@
 
 package com.huotu.hotcms.widget;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 /**
@@ -17,10 +19,15 @@ import lombok.Data;
  * @author CJ
  */
 @Data
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public class InstalledWidget {
 
+    private Long installWidgetId;
+
+    @JsonIgnore(value = true)
     private Widget widget;
     // 其他属性 比如控件类型
+    @JsonIgnore(value = true)
     private String type;
 
 }

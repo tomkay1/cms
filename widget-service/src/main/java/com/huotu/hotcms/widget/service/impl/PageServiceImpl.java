@@ -58,7 +58,7 @@ public class PageServiceImpl implements PageService {
     @Override
     public void savePage(Page page, Long pageId) throws IOException {
         XmlMapper xmlMapper = new XmlMapper();
-        xmlMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+        //xmlMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         String pageXml = xmlMapper.writeValueAsString(page);
         PageInfo pageInfo =pageInfoRepository.findOne(pageId);
         if(pageInfo==null) {

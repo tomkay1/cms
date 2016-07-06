@@ -43,9 +43,6 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by cwb on 2015/12/30.
- */
 @Configuration
 @EnableWebMvc
 @ComponentScan({
@@ -142,7 +139,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         }
 
         @Bean
-        public ViewResolver htmlViewResolver() {
+        public ThymeleafViewResolver htmlViewResolver() {
             ThymeleafViewResolver resolver = new ThymeleafViewResolver();
             resolver.setTemplateEngine(htmlViewTemplateEngine);
             resolver.setContentType(MediaType.TEXT_HTML_VALUE + ";charset=UTF-8");
@@ -166,7 +163,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 //        }
 
         @Bean
-        public ViewResolver javascriptViewResolver() {
+        public ThymeleafViewResolver javascriptViewResolver() {
             ThymeleafViewResolver resolver = new ThymeleafViewResolver();
             resolver.setTemplateEngine(javascriptTemplateEngine);
             resolver.setContentType("application/javascript");
@@ -176,7 +173,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         }
 
         @Bean
-        public ViewResolver cssViewResolver() {
+        public ThymeleafViewResolver cssViewResolver() {
             ThymeleafViewResolver resolver = new ThymeleafViewResolver();
             resolver.setTemplateEngine(cssTemplateEngine);
             resolver.setContentType("text/css");

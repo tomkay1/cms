@@ -48,7 +48,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * <p>针对页面服务controller层{@link PageController}的单元测试</p>
+ * <p>针对页面服务controller层{@link FrontController}的单元测试</p>
  */
 public class PageControllerTest extends TestBase {
 

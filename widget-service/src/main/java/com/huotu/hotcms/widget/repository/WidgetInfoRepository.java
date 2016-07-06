@@ -17,9 +17,9 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 
-public interface WidgetInfoRepository extends JpaRepository<WidgetInfo, WidgetIdentifier>, JpaSpecificationExecutor<WidgetInfo> {
+public interface WidgetInfoRepository extends JpaRepository<WidgetInfo, WidgetIdentifier>
+        , JpaSpecificationExecutor<WidgetInfo> {
 
     List<WidgetInfo> findByOwner(Owner owner);
 
-    WidgetInfo findByWidgetIdAndGroupIdAndVersion(String widgetId, String groupId, String version);
 }

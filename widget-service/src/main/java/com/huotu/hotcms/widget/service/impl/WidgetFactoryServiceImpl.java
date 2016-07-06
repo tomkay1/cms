@@ -207,7 +207,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
                 }
             } finally {
                 if (bw != null) bw.close();
-                if (jarFile != null) jarFile.close();
+                jarFile.close();
             }
         }
     }
@@ -255,7 +255,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
     /**
      * <p>根据安装控件信息获得InstalledWidget</p>
      *
-     * @param widgetInfo
+     * @param widgetInfo 控件信息
      * @return InstalledWidget
      */
     public InstalledWidget getInstalledWidget(WidgetInfo widgetInfo) {

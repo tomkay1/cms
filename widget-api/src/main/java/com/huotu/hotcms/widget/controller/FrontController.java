@@ -37,9 +37,9 @@ import java.io.IOException;
  */
 @Controller
 @RequestMapping(value = "/_web")
-public class PageController implements FilterBehavioral {
+public class FrontController implements FilterBehavioral {
 
-    private static final Log log = LogFactory.getLog(PageController.class);
+    private static final Log log = LogFactory.getLog(FrontController.class);
 
     @Autowired
     private AbstractContentRepository abstractContentRepository;

@@ -1,6 +1,7 @@
 /*
  * 版权所有:杭州火图科技有限公司
  * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
  * 2013-2016. All rights reserved.
@@ -225,7 +226,7 @@ public class PageControllerTest extends TestBase {
             String randomType = UUID.randomUUID().toString();
             // 安装一个demo控件
             widgetFactoryService.installWidget("com.huotu.hotcms.widget.pagingWidget", "pagingWidget", "1.0-SNAPSHOT"
-                    , randomType);
+                    , randomType, null);
             installedWidgets = widgetFactoryService.widgetList(null);
             InstalledWidget installedWidget = installedWidgets != null
                     && installedWidgets.size() > 0 ? installedWidgets.get(0) : null;

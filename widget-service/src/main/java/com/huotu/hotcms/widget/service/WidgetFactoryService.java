@@ -15,32 +15,31 @@ import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.entity.WidgetInfo;
 import com.huotu.hotcms.widget.exception.FormatException;
 import org.springframework.transaction.annotation.Transactional;
-import org.xml.sax.SAXException;
 
 import javax.annotation.PostConstruct;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
 /**
+ * 控件工厂服务,可以在此管理控件。
+ *
  * @author CJ
  */
 public interface WidgetFactoryService {
 
     /**
-     * 下载widget jar文件
+     * 安装指定控件的jar包
      *
-     * @param groupId  分组id,参考maven
-     * @param version  版本
-     * @param widgetId 控件id
-     * @return realPath jar文件的安装路径
+     * @param info 控件信息
+     * @param data 可以未空表示需要自行下载
+     * @throws IOException
      */
-    String downloadJar(String groupId, String widgetId, String version) throws IOException, ParserConfigurationException, SAXException;
+    void setupJarFile(WidgetInfo info, InputStream data) throws IOException;
 
     /**
-     * @return 已安装控件列表
      * @param owner
+     * @return 已安装控件列表
      */
     @Transactional(readOnly = true)
     List<InstalledWidget> widgetList(Owner owner) throws FormatException, IOException, IllegalAccessException, InstantiationException;
@@ -58,12 +57,13 @@ public interface WidgetFactoryService {
      * 从私有Maven仓库 http://repo.51flashmall.com:8081/nexus/content/groups/public 自动获取</p>
      *
      * @param groupId  分组id,参考maven
-     * @param version  版本
      * @param widgetId 控件id
+     * @param version  版本
      * @param type     控件类型
+     * @param owner    专属商户
      */
     @Transactional
-    void installWidget(String groupId, String widgetId, String version, String type) throws IOException, FormatException;
+    void installWidget(String groupId, String widgetId, String version, String type, Owner owner) throws IOException, FormatException;
 
     /**
      * 以实例方式直接进行安装

@@ -243,6 +243,10 @@ public abstract class ManageTest extends SpringWebTest {
         return route;
     }
 
+    /**
+     *
+     * @return 随机创建的数据源
+     */
     protected Category randomCategory(){
         Category category=new Category();
         category.setParent(null);
@@ -257,7 +261,7 @@ public abstract class ManageTest extends SpringWebTest {
      */
     public PageInfo randomPageInfo() throws JsonProcessingException {
         PageInfo pageInfo=new PageInfo();
-        pageInfo.setCategory(randomCategory());
+        pageInfo.setSite(randomSite(randomOwner()));
         XmlMapper xmlMapper=new XmlMapper();
         byte[] pageXml=xmlMapper.writeValueAsString(randomPage()).getBytes();
         pageInfo.setPageSetting(pageXml);
@@ -267,7 +271,7 @@ public abstract class ManageTest extends SpringWebTest {
 
     private Page randomPage() {
         Page page = new Page();
-        page.setPageIdentity(UUID.randomUUID().toString());
+        page.setPageIdentity(random.nextLong());
         page.setTitle(UUID.randomUUID().toString());
 
         List<PageElement> pageElementList = new ArrayList<>();

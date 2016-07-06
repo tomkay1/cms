@@ -71,7 +71,7 @@ public class TestBase extends SpringWebTest{
      */
     protected Page randomPage() {
         Page page = new Page();
-        page.setPageIdentity(UUID.randomUUID().toString());
+        page.setPageIdentity(random.nextLong());
         page.setTitle(UUID.randomUUID().toString());
 
         List<PageElement> pageElementList = new ArrayList<>();

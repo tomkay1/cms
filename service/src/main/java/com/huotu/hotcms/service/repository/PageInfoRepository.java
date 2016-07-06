@@ -30,7 +30,7 @@ public interface PageInfoRepository extends JpaRepository<PageInfo, Long>, JpaSp
      * @param site 站点
      * @return PageInfo的列表
      */
-    List<PageInfo> findByCategory_Site(Site site);
+    List<PageInfo> findBySite(Site site);
 
     /**
      * 通过站点和路劲 查询page信息
@@ -38,7 +38,7 @@ public interface PageInfoRepository extends JpaRepository<PageInfo, Long>, JpaSp
      * @param pagePath 路径,是唯一的
      * @return page信息
      */
-    PageInfo findByCategory_SiteAndPagePath(Site site, String pagePath);
+    PageInfo findBySiteAndPagePath(Site site, String pagePath);
 
     /**
      * 通过数据源查询pageInfo列表

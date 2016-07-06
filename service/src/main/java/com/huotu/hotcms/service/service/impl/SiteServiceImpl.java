@@ -23,8 +23,6 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.Template;
 import com.huotu.hotcms.service.entity.Video;
 import com.huotu.hotcms.service.exception.NoSiteFoundException;
-import com.huotu.hotcms.service.model.widget.WidgetDefaultPage;
-import com.huotu.hotcms.service.model.widget.WidgetPage;
 import com.huotu.hotcms.service.repository.ArticleRepository;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.CustomPagesRepository;
@@ -43,15 +41,12 @@ import com.huotu.hotcms.service.service.HostService;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.util.SerialUtil;
 import com.huotu.hotcms.service.util.StringUtil;
-import com.huotu.hotcms.service.widget.service.PageResolveService;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -71,8 +66,6 @@ public class SiteServiceImpl implements SiteService {
     ConfigInfo configInfo;
     @Autowired
     ResourceService resourceService;
-    @Autowired
-    PageResolveService pageResolveService;
     @Autowired
     TemplateRepository templateRepository;
     @Autowired
@@ -378,32 +371,4 @@ public class SiteServiceImpl implements SiteService {
 
     }
 
-    /**
-     * 复制并创建公共界面
-     * <p>
-     * <em>目前默认公共界面如下：</em>
-     * <ul>
-     * <li>公共头部 {@link com.huotu.hotcms.service.model.widget.WidgetDefaultPage#head }</li>
-     * <li>搜索结果界面 {@link com.huotu.hotcms.service.model.widget.WidgetDefaultPage#search }</li>
-     * <li>公共尾部 {@link com.huotu.hotcms.service.model.widget.WidgetDefaultPage#bottom }</li>
-     * </ul>
-     * </p>
-     *
-     * @param templateSite 模板站点
-     * @param customerSite 用户站点
-     * @throws IOException        其他异常
-     * @throws URISyntaxException 其他异常
-     * @since v2.0
-     */
-    private void createDefaultWidgetPage(Site templateSite, Site customerSite)
-            throws IOException, URISyntaxException {
-
-        for (WidgetDefaultPage widgetDefaultPage : WidgetDefaultPage.values()) {
-            WidgetPage defaultWidgetPage = pageResolveService.getWidgetPageByConfig(widgetDefaultPage.name() + ".xml", templateSite);
-            if (defaultWidgetPage != null) {
-                pageResolveService.createDefaultPageConfigByWidgetPage(defaultWidgetPage,
-                        customerSite.getSiteId(), widgetDefaultPage.name());
-            }
-        }
-    }
 }

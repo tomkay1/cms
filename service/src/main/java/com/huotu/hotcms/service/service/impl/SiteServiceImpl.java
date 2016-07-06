@@ -25,7 +25,6 @@ import com.huotu.hotcms.service.entity.Video;
 import com.huotu.hotcms.service.exception.NoSiteFoundException;
 import com.huotu.hotcms.service.repository.ArticleRepository;
 import com.huotu.hotcms.service.repository.CategoryRepository;
-import com.huotu.hotcms.service.repository.CustomPagesRepository;
 import com.huotu.hotcms.service.repository.DownloadRepository;
 import com.huotu.hotcms.service.repository.GalleryListRepository;
 import com.huotu.hotcms.service.repository.GalleryRepository;
@@ -72,8 +71,6 @@ public class SiteServiceImpl implements SiteService {
     CategoryRepository categoryRepository;
     @Autowired
     ArticleRepository articleRepository;
-    @Autowired
-    CustomPagesRepository customPagesRepository;
     @Autowired
     DownloadRepository downloadRepository;
     @Autowired

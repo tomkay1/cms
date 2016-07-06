@@ -9,10 +9,6 @@
 
 package com.huotu.cms.manage.controller;
 
-/**
- * Created by wenqi on 2016/7/4.
- */
-
 import com.huotu.cms.manage.SiteManageTest;
 import com.huotu.cms.manage.page.EditPage;
 import com.huotu.cms.manage.page.ManageMainPage;

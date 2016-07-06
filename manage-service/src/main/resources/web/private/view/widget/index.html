@@ -60,8 +60,8 @@
                         </div>
                         <label class="col-sm-2 control-label">专享商户</label>
                         <div class="col-sm-4">
-                            <select name="extra" title="选择商户" class="form-control chosen-select">
-                                <option>无</option>
+                            <select name="ownerId" title="选择商户" class="form-control chosen-select">
+                                <option value="">无</option>
                                 <option th:each="owner:${@ownerRepository.findByEnabledTrue()}"
                                         th:value="${owner.id}" th:text="${owner.username}">
                                     商户1
@@ -147,13 +147,13 @@
                         <td>普通</td>
                         <td>&nbsp;</td>
                         <td class="center">
-                            <a href="index.html" th:href="@{/manage/route/{id}(id=${route.id})}" title="启用">
+                            <a href="index.html" title="启用">
                                 <i class="fa fa-play"></i>
                             </a>
-                            <a href="index.html" th:href="@{/manage/route/{id}(id=${route.id})}" title="编辑">
+                            <a href="index.html" title="编辑">
                                 <i class="fa fa-pencil"></i>
                             </a>
-                            <a href="index.html" class="delete" th:href="@{/manage/route/{id}/delete(id=${route.id})}"
+                            <a href="index.html" class="delete"
                                target="_top" title="删除">
                                 <i class="fa fa-trash-o"></i>
                             </a>
@@ -181,6 +181,6 @@
 <div ewp:replace="fragments/frame.html::#messageSection"></div>
 <script src="../../../public/bracket/js/frame.js" ewp:src="/bracket/js/frame.js"></script>
 <script src="../../../public/bracket/js/frame_custom.js" ewp:src="/bracket/js/frame_custom.js"></script>
-<script src="../../../public/js/route.js" ewp:src="/js/route.js"></script>
+<script src="../../../public/js/widget.js" ewp:src="/js/widget.js"></script>
 </body>
 </html>

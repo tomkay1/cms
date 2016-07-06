@@ -58,7 +58,6 @@ public class WidgetInfoController
 
         data.setCreateTime(LocalDateTime.now());
         data.setEnabled(true);
-        data.setType(extra.getType());
         if (extra.getOwnerId() != null) {
             data.setOwner(ownerRepository.getOne(extra.getOwnerId()));
         }
@@ -90,6 +89,5 @@ public class WidgetInfoController
     static class NewWidgetModel {
         private Long ownerId;
         private MultipartFile jar;
-        private String type;
     }
 }

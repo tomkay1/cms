@@ -22,9 +22,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-/**
- * Created by elvis on 2016/6/7.
- */
 @Entity
 @Table(name = "cms_widgetInfo")
 @Getter

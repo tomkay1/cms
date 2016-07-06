@@ -34,9 +34,7 @@
                 <p>上传或者从核心库安装一个控件</p>
             </div>
             <div class="panel-body">
-
                 <div class="form-horizontal form-bordered">
-
                     <div class="form-group">
                         <label class="col-sm-2 control-label">groupId</label>
                         <div class="col-sm-2">
@@ -52,6 +50,23 @@
                         <div class="col-sm-2">
                             <input name="version" title="version" type="text"
                                    class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">类型</label>
+                        <div class="col-sm-4">
+                            <input name="type" title="类型" type="text"
+                                   class="form-control"/>
+                        </div>
+                        <label class="col-sm-2 control-label">专享商户</label>
+                        <div class="col-sm-4">
+                            <select name="extra" title="选择商户" class="form-control chosen-select">
+                                <option>无</option>
+                                <option th:each="owner:${@ownerRepository.findByEnabledTrue()}"
+                                        th:value="${owner.id}" th:text="${owner.username}">
+                                    商户1
+                                </option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -96,6 +111,7 @@
                         <th>version</th>
                         <th>安装时间</th>
                         <th>启用状态</th>
+                        <th>类型</th>
                         <th>专享商户</th>
                         <th>&nbsp;</th>
                     </tr>
@@ -110,6 +126,7 @@
                         <td th:text="${route.description}">1.0-SNAPSHOT</td>
                         <td th:text="${route.createTime}">06-11</td>
                         <td>是</td>
+                        <td>普通</td>
                         <td>&nbsp;</td>
                         <td class="center">
                             <a href="index.html" th:href="@{/manage/route/{id}(id=${route.id})}" title="编辑">
@@ -127,6 +144,7 @@
                         <td>1.1</td>
                         <td>06-11</td>
                         <td>否</td>
+                        <td>普通</td>
                         <td>&nbsp;</td>
                         <td class="center">
                             <a href="index.html" th:href="@{/manage/route/{id}(id=${route.id})}" title="启用">
@@ -155,6 +173,7 @@
 <script src="http://resali.huobanplus.com/cdn/bracket/js/toggles.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.cookies.js"></script>
 
+<script src="http://resali.huobanplus.com/cdn/bracket/js/chosen.jquery.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/datatables/1.10.12/datatables.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.validate.min.js"></script>
 <script src="../../../public/js/jquery.validation.message-zh_cn.js"

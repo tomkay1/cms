@@ -47,8 +47,6 @@
             <artifactId>core</artifactId>
             <version>3.2.1</version>
         </dependency>
-
-
     </dependencies>
 
     <build>
@@ -58,6 +56,10 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.3</version>
                 <configuration>
+                    <packagingExcludes>
+                        %regex[_EWP\d+_.*],
+                        .ewp.properties
+                    </packagingExcludes>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>

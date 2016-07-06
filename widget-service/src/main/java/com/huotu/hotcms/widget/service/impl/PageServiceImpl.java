@@ -57,8 +57,11 @@ public class PageServiceImpl implements PageService {
     public void savePage(Page page, Long pageId) throws IOException {
         XmlMapper xmlMapper = new XmlMapper();
         String pageXml = xmlMapper.writeValueAsString(page);
-        PageInfo pageInfo = new PageInfo();
-        pageInfo.setPageId(pageId);
+        PageInfo pageInfo =pageInfoRepository.findOne(pageId);
+        if(pageInfo==null) {
+            pageInfo = new PageInfo();
+            pageInfo.setPageId(pageId);
+        }
         pageInfo.setPageSetting(pageXml.getBytes());
         pageInfoRepository.save(pageInfo);
     }
@@ -78,7 +81,7 @@ public class PageServiceImpl implements PageService {
 
     @Override
     public Page findBySiteAndPagePath(Site site, String pagePath) throws IllegalStateException {
-        PageInfo pageInfo = pageInfoRepository.findByCategory_SiteAndPagePath(site, pagePath);
+        PageInfo pageInfo = pageInfoRepository.findBySiteAndPagePath(site, pagePath);
         try {
             return getPage(pageInfo.getPageId());
         } catch (IOException e) {
@@ -88,7 +91,7 @@ public class PageServiceImpl implements PageService {
 
     @Override
     public List<PageInfo> getPageList(Site site) {
-        return pageInfoRepository.findByCategory_Site(site);
+        return pageInfoRepository.findBySite(site);
     }
 
     @Override

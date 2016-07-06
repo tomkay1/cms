@@ -53,6 +53,7 @@ public class PageInfo {
     private Category category;
 
     @ManyToOne(optional = false)
+    @Column(name = "siteId")
     private Site site;
 
     @Column(name = "createTime")

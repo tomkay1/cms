@@ -29,10 +29,11 @@ import java.io.Serializable;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Page implements Serializable {
     /**
-     * 该页面的唯一ID，字符串
+     * 该页面的唯一ID 与PageInfo的pageID保持一致
+     * @see com.huotu.hotcms.service.entity.PageInfo#pageId
      */
     @XmlAttribute(name = "pageIdentity")
-    private String pageIdentity;
+    private Long pageIdentity;
 
     @XmlAttribute(name = "title")
     private String title;

@@ -20,6 +20,7 @@ import lombok.Data;
 public class InstalledWidget {
 
     private final transient Widget widget;
+
     /**
      *
      */

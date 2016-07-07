@@ -9,12 +9,12 @@
 
 package com.huotu.hotcms.widget.service.impl;
 
+import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Owner;
+import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetLocateService;
-import com.huotu.hotcms.widget.entity.WidgetInfo;
-import com.huotu.hotcms.widget.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
@@ -46,7 +46,8 @@ import java.util.List;
 
 
 /**
- * Created by wenqi on 2016/6/2.
+ *
+ * Created by lhx on 2016/6/2.
  */
 @Service
 public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLocateService {
@@ -154,14 +155,14 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
     }
 
     @Override
-    public void installWidget(String groupId, String widgetId, String version, String type) throws IOException, FormatException {
+    public void installWidget(Owner owner, String groupId, String widgetId, String version, String type) throws IOException, FormatException {
         try {
             String realPath = downloadJar(groupId, widgetId, version);
             List<Class> classes = ClassLoaderUtil.loadJarWidgetClasss(realPath);
             if (classes != null) {
                 for (Class classz : classes) {
                     //加载jar
-                    installWidget((Widget) classz.newInstance(), type);
+                    installWidget(owner, (Widget) classz.newInstance(), type);
                 }
             }
         } catch (ParserConfigurationException | SAXException | InstantiationException
@@ -171,16 +172,15 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
 
     }
 
-    public void installWidget(Widget widget, String type) {
+    public void installWidget(Owner owner, Widget widget, String type) {
         //持久化相应的信息
         WidgetInfo widgetInfo = new WidgetInfo();
         widgetInfo.setGroupId(widget.groupId());
         widgetInfo.setWidgetId(widget.widgetId());
         widgetInfo.setVersion(widget.version());
         widgetInfo.setType(type);
+        widgetInfo.setOwner(owner);
         widgetInfoRepository.save(widgetInfo);
-
-
     }
 
 
@@ -260,7 +260,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
      */
     public InstalledWidget getInstalledWidget(WidgetInfo widgetInfo) {
         List<Class> classes;
-        InstalledWidget installedWidget = null;
+        InstalledWidget installedWidget;
         try {
             classes = ClassLoaderUtil.loadJarWidgetClasss(getRealPath(widgetInfo.getWidgetId()
                     , widgetInfo.getVersion()));
@@ -268,15 +268,20 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
             for (Class classz : classes) {
                 widget = (Widget) classz.newInstance();
                 if (widget.widgetId().equals(widgetInfo.getWidgetId())
+                        && widget.groupId().equals(widgetInfo.getGroupId())
                         && widget.version().equals(widgetInfo.getVersion())) {
+
                     installedWidget = new InstalledWidget(widget);
                     installedWidget.setType(widgetInfo.getType());
-                    installedWidget.setOwnerId(widgetInfo.getOwner().getId());
+                    if (widgetInfo.getOwner() != null) {
+                        installedWidget.setOwnerId(widgetInfo.getOwner().getId());
+                    }
                     installedWidget.setInstallWidgetId(widgetInfo.getWidgetId());
+                    return installedWidget;
                 }
             }
         } catch (IllegalAccessException | InstantiationException | FormatException | IOException ignored) {
         }
-        return installedWidget;
+        return null;
     }
 }

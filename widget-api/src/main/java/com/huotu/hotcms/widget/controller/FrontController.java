@@ -81,10 +81,10 @@ public class FrontController implements FilterBehavioral {
                 response.setContentType("text/html;charset=utf-8");
                 return;
             }//404 content is not existing or access defined.
-            response.setStatus(HttpStatus.SC_NOT_FOUND);
         } catch (Exception e) {
-            response.setStatus(HttpStatus.SC_NOT_FOUND);
+            e.printStackTrace();
         }
+        response.setStatus(HttpStatus.SC_NOT_FOUND);
     }
 
 

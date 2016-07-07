@@ -38,6 +38,9 @@ public class Layout implements PageElement {
      */
     private String value;
 
+    /**
+     * valued的split值决定有几个elements
+     */
     @JacksonXmlElementWrapper(useWrapping=false)
     private PageElement[] elements;
 }

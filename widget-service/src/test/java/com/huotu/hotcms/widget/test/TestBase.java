@@ -103,6 +103,7 @@ public class TestBase extends SpringWebTest{
         ComponentProperties componentProperties =new ComponentProperties();
         componentProperties.put(StringUtil.createRandomStr(random.nextInt(3)+1),UUID.randomUUID().toString());
         component.setProperties(componentProperties);
+        component.position=random.nextInt(12);
         InstalledWidget installedWidget=new InstalledWidget();
         installedWidget.setInstallWidgetId(random.nextLong());
         component.setInstalledWidget(installedWidget);
@@ -111,6 +112,7 @@ public class TestBase extends SpringWebTest{
 
     private Layout randomLayout() {
         Layout layout = new Layout();
+        layout.position=random.nextInt(12);
         layout.setValue(UUID.randomUUID().toString());
 
         List<PageElement> pageElementList = new ArrayList<>();

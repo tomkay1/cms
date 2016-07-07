@@ -10,7 +10,7 @@
 package com.huotu.hotcms.widget;
 
 import com.fasterxml.jackson.annotation.*;
-import com.huotu.hotcms.widget.page.PageElement;
+import com.huotu.hotcms.widget.page.AbstractPageElement;
 import lombok.Data;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -25,7 +25,7 @@ import org.apache.commons.logging.LogFactory;
 @JsonTypeName("component")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT, visible = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Component implements PageElement {
+public class Component extends AbstractPageElement {
 
     @JsonIgnore(value = true)
     private static final Log log = LogFactory.getLog(Component.class);

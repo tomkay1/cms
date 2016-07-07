@@ -38,7 +38,6 @@ public class EditPage extends AbstractContentPage {
     public void validatePage() {
         assertThat(body.isDisplayed()).isTrue();
     }
-
     /**
      * 加载组件列表
      */
@@ -50,6 +49,6 @@ public class EditPage extends AbstractContentPage {
      * 保存
      */
     public void save(){
-
+        savaBtn.click();
     }
 }

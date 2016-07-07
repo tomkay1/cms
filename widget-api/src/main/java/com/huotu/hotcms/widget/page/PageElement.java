@@ -29,5 +29,5 @@ import java.io.Serializable;
 })
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT, visible = true)
 public interface PageElement extends Serializable {
-
+       int position = 0;
 }

@@ -33,6 +33,7 @@ public class WidgetHolder implements WidgetLocateService {
 
     private final Set<Widget> widgetSet;
 
+
     public WidgetHolder() throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
         Properties properties = new Properties();
         ClassPathResource resource = new ClassPathResource("META-INF/widget.properties");
@@ -68,8 +69,7 @@ public class WidgetHolder implements WidgetLocateService {
     public InstalledWidget findWidget(String identifier) {
         for (Widget widget : widgetSet) {
             if (WidgetTestConfig.WidgetIdentity(widget).equals(identifier)) {
-                InstalledWidget widget1 = new InstalledWidget();
-                widget1.setWidget(widget);
+                InstalledWidget widget1 = new InstalledWidget(widget);
                 widget1.setType("test");
                 return widget1;
             }

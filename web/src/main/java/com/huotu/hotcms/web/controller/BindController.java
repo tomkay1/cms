@@ -48,7 +48,7 @@ import java.io.IOException;
 @Controller
 @RequestMapping(value = "/bind")
 public class BindController {
-    private static final Log log = LogFactory.getLog(ShopController.class);
+    private static final Log log = LogFactory.getLog(BindController.class);
 
     @Autowired
     private RegisterByWeixinService registerByWeixinService;

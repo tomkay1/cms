@@ -11,13 +11,18 @@ package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.entity.Template;
 import com.huotu.hotcms.service.exception.NoSiteFoundException;
-import com.huotu.hotcms.service.util.PageData;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Locale;
 import java.util.Set;
 
+/**
+ * 站点服务,rewrite by CJ
+ * <p>
+ * 提供面向站点的服务,
+ */
 public interface SiteService {
 
     /**
@@ -39,26 +44,22 @@ public interface SiteService {
     @Transactional(readOnly = true)
     Set<Site> findByOwnerIdAndDeleted(long ownerId, boolean deleted);
 
-    PageData<Site> getPage(long owner, String name, int page, int pageSize);
-
     /**
-     *
      * @param siteId 站点id
      * @return 如果没有找到返回null
      */
     @Transactional(readOnly = true)
     Site getSite(long siteId);
 
-    Boolean save(Site site);
-
     /**
      * 实现站点的可复制
      *
-     * @param templateId   模板ID
-     * @param customerSite 用户站点
-     * @since v2.0
+     * @param template    原模板
+     * @param targetSite  目标站点
+     * @param removeFirst 是否先行移除当前站点所有信息
      */
-    void siteCopy(long templateId, Site customerSite) throws Exception;
+    @Transactional
+    void siteCopy(Template template, Site targetSite, boolean removeFirst);
 
     /**
      * 新建站点

@@ -9,6 +9,8 @@
 
 package com.huotu.cms.manage;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.huotu.cms.manage.login.Manager;
@@ -17,16 +19,27 @@ import com.huotu.cms.manage.page.ManageMainPage;
 import com.huotu.cms.manage.test.AuthController;
 import com.huotu.hotcms.service.common.CMSEnums;
 import com.huotu.hotcms.service.common.SiteType;
+import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
+import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.OwnerRepository;
+import com.huotu.hotcms.service.repository.PageInfoRepository;
 import com.huotu.hotcms.service.service.SiteService;
+import com.huotu.hotcms.service.util.StringUtil;
+import com.huotu.hotcms.widget.Component;
+import com.huotu.hotcms.widget.ComponentProperties;
+import com.huotu.hotcms.widget.page.Layout;
+import com.huotu.hotcms.widget.page.Page;
+import com.huotu.hotcms.widget.page.PageElement;
 import me.jiangcai.lib.test.SpringWebTest;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -37,6 +50,8 @@ import org.springframework.test.web.servlet.htmlunit.webdriver.WebConnectionHtml
 import javax.servlet.http.Cookie;
 import java.lang.reflect.Array;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -60,6 +75,13 @@ public abstract class ManageTest extends SpringWebTest {
     private SiteService siteService;
     @Autowired
     private AuthController authController;
+
+    @Qualifier("pageInfoRepository")
+    @Autowired
+    private PageInfoRepository pageInfoRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Before
     public void aboutTestOwner() {
@@ -120,10 +142,12 @@ public abstract class ManageTest extends SpringWebTest {
      *
      * @param owner
      */
-    public void loginAsOwner(Owner owner) throws Exception {
+    public ManageMainPage loginAsOwner(Owner owner) throws Exception {
         Cookie cookie = new Cookie(CMSEnums.MallCookieKeyValue.CustomerID.name(), String.valueOf(owner.getCustomerId()));
 
         accessViaCookie(cookie, owner);
+
+        return initPage(ManageMainPage.class);
     }
 
     private void accessViaCookie(Cookie cookie, Login login) throws Exception {
@@ -170,7 +194,7 @@ public abstract class ManageTest extends SpringWebTest {
         driver.get("http://localhost/testLoginAs");
     }
 
-    public void loginAsManage() throws Exception {
+    public AdminPage loginAsManage() throws Exception {
         accessViaCookie(new Cookie(CMSEnums.CookieKeyValue.RoleID.name(), "-1"), new Manager());
 
 
@@ -181,6 +205,7 @@ public abstract class ManageTest extends SpringWebTest {
 
         driver.get("http://localhost/manage/main");
 //        System.out.println(driver.getPageSource());
+        return initPage(AdminPage.class);
     }
 
     /**
@@ -219,5 +244,93 @@ public abstract class ManageTest extends SpringWebTest {
         route.setRule(UUID.randomUUID().toString());
         route.setTargetUri(UUID.randomUUID().toString());
         return route;
+    }
+
+    /**
+     *
+     * @return 随机创建的数据源
+     */
+    protected Category randomCategory(){
+        Category category=new Category();
+        category.setParent(null);
+        category.setSite(randomSite(randomOwner()));
+        return categoryRepository.saveAndFlush(category);
+    }
+
+    /**
+     * 创建一个随机的页面信息，包括页面配置
+     * @return 页面信息
+     * @throws JsonProcessingException jackson相关序列化异常
+     */
+    public PageInfo randomPageInfo() throws JsonProcessingException {
+        PageInfo pageInfo=new PageInfo();
+        pageInfo.setSite(randomSite(randomOwner()));
+        pageInfo.setCategory(randomCategory());
+        XmlMapper xmlMapper=new XmlMapper();
+        byte[] pageXml=xmlMapper.writeValueAsString(randomPage()).getBytes();
+        pageInfo.setPageSetting(pageXml);
+        return pageInfoRepository.saveAndFlush(pageInfo);
+    }
+
+
+    private Page randomPage() {
+        Page page = new Page();
+        page.setPageIdentity(random.nextLong());
+        page.setTitle(UUID.randomUUID().toString());
+
+        List<PageElement> pageElementList = new ArrayList<>();
+        //PageElement 要么是Layout，要么是Component；二选一
+        int randomNum=random.nextInt(100)+1;
+        boolean isLayout=false;
+        if(randomNum%2==0)
+            isLayout=true;
+
+        int nums = random.nextInt(4)+1;//生成PageElement的随机个数
+        //在实际环境中，肯定先存在layout,在layout中，拖入component
+        pageElementList.add(randomLayout());
+        while (nums-- > 0) {
+            if(isLayout)
+                pageElementList.add(randomLayout());
+            else
+                pageElementList.add(randomComponent());
+        }
+        page.setElements(pageElementList.toArray(new PageElement[pageElementList.size()]));
+
+        return page;
+    }
+
+    private Component randomComponent() {
+        Component component=new Component();
+        component.setPreviewHTML(UUID.randomUUID().toString());
+        component.setStyleId(UUID.randomUUID().toString());
+        component.setWidgetIdentity(UUID.randomUUID().toString());
+        ComponentProperties componentProperties =new ComponentProperties();
+        componentProperties.put(StringUtil.createRandomStr(random.nextInt(3) + 1),UUID.randomUUID().toString());
+        component.setProperties(componentProperties);
+        return component;
+    }
+
+    private Layout randomLayout() {
+        Layout layout = new Layout();
+        layout.setValue(UUID.randomUUID().toString());
+
+        List<PageElement> pageElementList = new ArrayList<>();
+
+
+        //PageElement 要么是Layout，要么是Component；二选一
+        int randomNum=random.nextInt(10);
+        boolean isLayout=false;
+        if(randomNum%2==0)
+            isLayout=true;
+
+        int nums = random.nextInt(2);//生成PageElement的随机个数
+        while (nums-- > 0) {
+            if(isLayout)
+                pageElementList.add(randomLayout());
+            else
+                pageElementList.add(randomComponent());
+        }
+        layout.setElements(pageElementList.toArray(new PageElement[pageElementList.size()]));
+        return layout;
     }
 }

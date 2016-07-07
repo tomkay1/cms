@@ -70,6 +70,8 @@
         <io.version>2.4</io.version>
         <codec.version>1.10</codec.version>
         <assertj.version>3.3.0</assertj.version>
+
+        <json-version>2.7.5</json-version>
     </properties>
 
     <dependencyManagement>
@@ -153,11 +155,6 @@
             <version>${huobanplus.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-xml</artifactId>
-            <version>2.6.0</version>
-        </dependency>
-        <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.7</version>
@@ -177,6 +174,28 @@
             <groupId>ognl</groupId>
             <artifactId>ognl</artifactId>
             <version>3.1.7</version>
+        </dependency>
+
+        <!--Jackson 相关-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${json-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${json-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${json-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
+            <version>${json-version}</version>
         </dependency>
     </dependencies>
 

@@ -9,10 +9,15 @@
 
 package com.huotu.hotcms.web;
 
+import com.huotu.hotcms.widget.servlet.CMSFilter;
+import com.huotu.hotcms.widget.servlet.RouteFilter;
 import me.jiangcai.lib.test.SpringWebTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 /**
  * @author CJ
@@ -21,4 +26,20 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @WebAppConfiguration
 public abstract class WebTestBase extends SpringWebTest {
+
+    @Override
+    public void createMockMVC() {
+        super.createMockMVC();
+        DefaultMockMvcBuilder builder = webAppContextSetup(context);
+        builder.addFilter(new CMSFilter(context.getServletContext()));
+        builder.addFilter(new RouteFilter(context.getServletContext()));
+        if (springSecurityFilter != null) {
+            builder = builder.addFilters(springSecurityFilter);
+        }
+
+        if (mockMvcConfigurer != null) {
+            builder = builder.apply(mockMvcConfigurer);
+        }
+        mockMvc = builder.build();
+    }
 }

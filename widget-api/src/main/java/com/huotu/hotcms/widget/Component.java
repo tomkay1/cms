@@ -10,6 +10,11 @@
 package com.huotu.hotcms.widget;
 
 import com.fasterxml.jackson.annotation.*;
+import com.huotu.hotcms.widget.page.AbstractPageElement;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.huotu.hotcms.widget.page.PageElement;
 import lombok.Data;
 import org.apache.commons.logging.Log;
@@ -25,11 +30,14 @@ import org.apache.commons.logging.LogFactory;
 @JsonTypeName("component")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT, visible = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Component implements PageElement {
+public class Component extends AbstractPageElement {
 
     @JsonIgnore(value = true)
     private static final Log log = LogFactory.getLog(Component.class);
 
+    /**
+     * 语义等同{@link WidgetLocateService#findWidget(String)}中的identify
+     */
     private String widgetIdentity;
 
     @JsonIgnore(value = true)//在生成的xml中忽略该属性，true即为忽略
@@ -39,7 +47,7 @@ public class Component implements PageElement {
 
     private ComponentProperties properties;
 
-    @JsonIgnore(value = true)
+    //@JsonIgnore(value = true)
     private String previewHTML;
 
     public WidgetStyle currentStyle() {

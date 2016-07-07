@@ -9,8 +9,8 @@
 
 package com.huotu.hotcms.web.config;
 
-import com.huotu.hotcms.web.filter.RouteFilter;
 import com.huotu.hotcms.widget.servlet.CMSFilter;
+import com.huotu.hotcms.widget.servlet.RouteFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import javax.servlet.Filter;

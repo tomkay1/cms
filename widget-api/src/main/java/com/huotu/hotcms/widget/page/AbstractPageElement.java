@@ -7,26 +7,14 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.hotcms.widget;
-
-import lombok.Data;
+package com.huotu.hotcms.widget.page;
 
 /**
- * 已安装的控件,
- *
- * @author CJ
+ * Created by wenqi on 2016/7/7.
  */
-@Data
-public class InstalledWidget {
-
-    private final transient Widget widget;
-
+public abstract class AbstractPageElement implements PageElement {
     /**
-     *
+     * 平行页面元素在容器中的位置
      */
-    private String installWidgetId;
-    private Long ownerId;
-    private String type;
-
-
+    public int position;
 }

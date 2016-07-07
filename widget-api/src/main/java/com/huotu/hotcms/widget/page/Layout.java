@@ -25,7 +25,7 @@ import lombok.Data;
 @JsonTypeName("layout")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT, visible = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Layout implements PageElement {
+public class Layout extends AbstractPageElement {
 
     /**
      * 用逗号间隔的bootstrap栅格参数，总值必须为12
@@ -38,6 +38,9 @@ public class Layout implements PageElement {
      */
     private String value;
 
+    /**
+     * valued的split值决定有几个elements
+     */
     @JacksonXmlElementWrapper(useWrapping=false)
     private PageElement[] elements;
 }

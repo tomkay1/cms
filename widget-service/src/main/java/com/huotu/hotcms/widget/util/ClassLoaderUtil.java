@@ -9,27 +9,16 @@
 
 package com.huotu.hotcms.widget.util;
 
-/**
- * Created by elvis on 2016/6/2.
- */
-
 import com.huotu.hotcms.widget.exception.FormatException;
-import com.huotu.hotcms.widget.service.impl.CSSServiceImpl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
+import org.springframework.core.io.Resource;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -43,14 +32,19 @@ public final class ClassLoaderUtil {
 
     private static final Log log = LogFactory.getLog(ClassLoaderUtil.class);
 
-    /** URLClassLoader的addURL方法 */
+    /**
+     * URLClassLoader的addURL方法
+     */
     private static Method addURL = initAddMethod();
+    private static URLClassLoader system = (URLClassLoader) ClassLoader.getSystemClassLoader();
 
-    /** 初始化方法 */
-    private static final Method initAddMethod() {
+    /**
+     * 初始化方法
+     */
+    private static Method initAddMethod() {
         try {
             Method add = URLClassLoader.class
-                    .getDeclaredMethod("addURL", new Class[] { URL.class });
+                    .getDeclaredMethod("addURL", URL.class);
             add.setAccessible(true);
             return add;
         } catch (Exception e) {
@@ -59,8 +53,6 @@ public final class ClassLoaderUtil {
         return null;
     }
 
-    private static URLClassLoader system = (URLClassLoader) ClassLoader.getSystemClassLoader();
-
     public static URLClassLoader getSystem() {
         return system;
     }
@@ -68,7 +60,7 @@ public final class ClassLoaderUtil {
     /**
      * 循环遍历目录，找出所有的JAR包
      */
-    private static final void loopFiles(File file, List<File> files) {
+    private static void loopFiles(File file, List<File> files) {
         if (file.isDirectory()) {
             File[] tmps = file.listFiles();
             for (File tmp : tmps) {
@@ -86,12 +78,12 @@ public final class ClassLoaderUtil {
      * 加载JAR文件
      * </pre>
      *
-     * @param file
+     * @param jarUrl jar包的url
      */
-    public static final void loadJarFile(File file) {
+    private static void loadJarFile(URL jarUrl) {
         try {
-            addURL.invoke(system, new Object[] { file.toURI().toURL() });
-            log.info("加载JAR包：" + file.getAbsolutePath());
+            addURL.invoke(system, jarUrl);
+            log.info("Load：" + jarUrl);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -104,66 +96,39 @@ public final class ClassLoaderUtil {
      *
      * @param path
      */
-    public static final void loadJarPath(String path) {
-        List<File> files = new ArrayList<File>();
+    public static void loadJarPath(String path) throws MalformedURLException {
+        List<File> files = new ArrayList<>();
         File lib = new File(path);
         loopFiles(lib, files);
         for (File file : files) {
-            loadJarFile(file);
+            loadJarFile(file.toURI().toURL());
         }
     }
 
     /**
      * 按照路径加载jar
-     * @param path
+     *
+     * @param resource jar包资源
      */
-    public static Class loadJarConfig(String path) throws IOException, FormatException {
+    public static List<Class> loadJarWidgetClasses(Resource resource) throws IOException, FormatException {
 
-        File file = new File(path);
-        ClassLoaderUtil.loadJarFile(file);
-        Class<?> clazz = null;
-
-        Properties prop = new Properties();
-        InputStream in = ClassLoaderUtil.class.getResourceAsStream("/META-INF/widget.properties");
-
-        if(in==null){
-            throw new FormatException("this jar "+path+" format error");
-        }
-        prop.load(in);
-        //直接读取文件
-        String className = prop.getProperty("widgetClasses").trim();
-        try {
-            clazz = ClassLoaderUtil.getSystem().loadClass(className);
-        } catch (ClassNotFoundException e) {
-            throw new FormatException(e.toString());
-        }
-        return clazz;
-    }
-
-    /**
-     * 按照路径加载jar
-     * @param path
-     */
-    public static List<Class> loadJarWidgetClasss(String path) throws IOException, FormatException {
-
-        File file = new File(path);
-        ClassLoaderUtil.loadJarFile(file);
+        ClassLoaderUtil.loadJarFile(resource.getURL());
         List<Class> classes = null;
 
         Properties prop = new Properties();
         InputStream in = ClassLoaderUtil.class.getResourceAsStream("/META-INF/widget.properties");
 
-        if(in==null){
-            throw new FormatException("this jar "+path+" format error");
+        if (in == null) {
+            throw new FormatException("this jar " + resource.getFile() + " format error");
         }
         prop.load(in);
         //直接读取文件
         String classNameStr = prop.getProperty("widgetClasses").trim();
         try {
             String[] classNameArr = classNameStr.split(",");
-            if (classNameArr!=null && classNameArr.length>0){
+            if (classNameArr.length > 0) {
                 classes = new ArrayList<>();
-                for (String className : classNameArr){
+                for (String className : classNameArr) {
                     Class<?> clazz = ClassLoaderUtil.getSystem().loadClass(className);
                     classes.add(clazz);
                 }

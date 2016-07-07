@@ -1,7 +1,6 @@
 /*
  * 版权所有:杭州火图科技有限公司
  * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
- *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
  * 2013-2016. All rights reserved.
@@ -9,14 +8,14 @@
 
 package com.huotu.hotcms.widget.service;
 
-import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.page.Page;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
+import java.io.OutputStream;
 import java.util.List;
 
 /**
@@ -34,51 +33,54 @@ public interface PageService {
      * @return html
      * @throws IOException
      */
-    String generateHTML(Page page, CMSContext context) throws IOException;
+    String generateHTML(Page page, CMSContext context);
 
-    void savePage(Page page, String pageId) throws IOException, URISyntaxException;
+
+    /**生成一个页面的html
+     * @param outputStream
+     * @param page
+     * @param context
+     * @throws IOException
+     * @see #generateHTML(Page, CMSContext)
+     */
+    void generateHTML(OutputStream outputStream, Page page, CMSContext context) throws IOException;
+
+
+    /**
+     * 将Page的配置信息保存到与pageId 相关联的PageInfo中
+     * @param page  Page的配置信息
+     * @param pageId 页面ID
+     * @throws IOException jackson相关异常
+     */
+    void savePage(Page page, Long pageId) throws IOException;
 
     /**
      * 解析保存了{@link com.huotu.hotcms.widget.page.Page}信息的XML
      *
      * @param pageId pageId
      * @return {@link com.huotu.hotcms.widget.page.Page}
-     * @throws IOException 其他异常
+     * @throws IOException 获取page失败
      */
-    Page getPage(String pageId) throws IOException;
+    Page getPage(Long pageId) throws IOException;
 
     /**
      * 删除相关页面信息
      *
-     * @param ownerId ownerId
      * @param pageId  页面ID
-     * @throws IOException 其他异常
+     * @throws IOException 删除page失败
      */
-    void deletePage(long ownerId, String pageId) throws IOException;
+    void deletePage(Long pageId);
 
 
     /**
-     * <p>返回当前站点下指定pageUri的具体html</p>
+     * <p>返回当前站点下指定path的具体page</p>
      *
-     * @param pagePath pagePath必须存在不能为空
      * @param site     当前站点必须存在不能为空
+     * @param pagePath pagePath必须存在不能为空
      * @return {@link com.huotu.hotcms.widget.page.Page}
      * @throws IllegalStateException 未找到page
      */
     Page findBySiteAndPagePath(Site site, String pagePath) throws IllegalStateException;
-
-    /**
-     * 查询当前站点下page实体信息
-     *
-     * @param pagePath 唯一标示
-     * @param site   站点id
-     * @return {@Link com.huotu.hotcms.service.entity.Page}
-     * @param pagePath   pagePath必须存在不能为空  1.html
-     * @param site      当前站点必须存在不能为空
-     * @return page
-     * @throws IOException 其他异常
-     */
-    Page findByPagePath(Site site, String pagePath) throws IOException;
 
 
     /**
@@ -86,16 +88,16 @@ public interface PageService {
      * @param site 站点
      * @return Page列表
      */
-    List<Page> getPageList(Site site);
-
-    com.huotu.hotcms.service.entity.Page findBySiteAndPagePath(Long siteId, String pagePath) throws IOException;
-
+    List<PageInfo> getPageList(Site site);
 
     /**
-     * <p>查找当前站点下指定数据源和数据内容的page</p>
-     * @param category 数据源
-     * @param content  数据类容类型
-     * @return {@link com.huotu.hotcms.widget.page.Page}
+     * <p>返回path对应的界面如果存在返回界面</p>
+     * <p>>path如果不存在,查找指定数据源下的最接近的界面</p>
+     * @param category 相关数据源
+     * @param path 请求的路径
+     * @return 最适用的内容页
+     * @throws IOException 获取界面xml错误
      */
-    Page findByCategoryAndContent(Category category, AbstractContent content);
+    Page getClosestContentPage(Category category, String path) throws IOException;
+
 }

@@ -9,8 +9,7 @@
 
 package com.huotu.hotcms.service.entity;
 
-import com.huotu.hotcms.service.common.AuditStatus;
-import com.huotu.hotcms.service.common.MessageType;
+import com.huotu.hotcms.service.common.PageType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,70 +24,50 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 
+
 /**
- * 没搞明白这个是做什么的
- * Created by chendeyu on 2016/5/6.
+ * 用与保存页面信息
+ * Created by lhx on 2016/7/4.
  */
 @Entity
-@Table(name = "cms_message")
+@Table(name = "cms_pageInfo")
 @Getter
 @Setter
-public class Message {
+public class PageInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "pageId")
+    private Long pageId;
+
+    @Column(name = "pagePath", length = 60)
+    private String pagePath;
+
+    @Column(name = "title", length = 60)
+    private String title;
 
     /**
-     * 留言用户
+     * 可选的数据源
      */
     @ManyToOne
-    @JoinColumn(name = "guestId")
-    private Guest guestId;
+    @JoinColumn(name = "categoryId")
+    private Category category;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "siteId")
+    private Site site;
 
-    /**
-     * 创建时间
-     */
     @Column(name = "createTime")
     private LocalDateTime createTime;
 
-    /**
-     * 标题
-     */
-    @Column(name = "title",length = 50)
-    private String title;
-
+    @Column(name = "pageType")
+    private PageType pageType;
 
     /**
-     * 留言内容（富文本）
+     * 页面配置的xml数据
      */
     @Lob
-    @Column(name = "content")
-    private String content;
-
-    /**
-     * 管理员回复内容
-     */
-    @Column(name = "replyMessage")
-    private String replyMessage;
-
-
-    /**
-     * 审核状态
-     */
-    @Column(name = "auditStatus")
-    private AuditStatus auditStatus;
-
-
-    /**
-     * 评论所属模块
-     */
-    @Column(name = "messageType")
-    private MessageType messageType;
-
-
-
-
+    @Column(name = "pageSetting")
+    private byte[] pageSetting;
 
 }

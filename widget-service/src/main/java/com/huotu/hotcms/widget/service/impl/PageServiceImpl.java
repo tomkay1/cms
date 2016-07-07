@@ -1,7 +1,6 @@
 /*
  * 版权所有:杭州火图科技有限公司
  * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
- *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
  * 2013-2016. All rights reserved.
@@ -10,29 +9,20 @@
 package com.huotu.hotcms.widget.service.impl;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.huotu.hotcms.service.common.ConfigInfo;
-import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.repository.PageRepository;
-import com.huotu.hotcms.service.service.ContentsService;
+import com.huotu.hotcms.service.repository.PageInfoRepository;
 import com.huotu.hotcms.widget.CMSContext;
-import com.huotu.hotcms.widget.entity.PageInfo;
+import com.huotu.hotcms.widget.WidgetResolveService;
 import com.huotu.hotcms.widget.page.Page;
-import com.huotu.hotcms.widget.repository.PageInfoRepository;
+import com.huotu.hotcms.widget.page.PageElement;
 import com.huotu.hotcms.widget.service.PageService;
-import me.jiangcai.lib.resource.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StreamUtils;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
+import java.io.OutputStream;
 import java.util.List;
 
 /**
@@ -40,75 +30,88 @@ import java.util.List;
  */
 @Service
 public class PageServiceImpl implements PageService {
-
-    @Autowired
-    ContentsService contentsService;
-
-    @Autowired
+    @Autowired(required = false)
     private PageInfoRepository pageInfoRepository;
 
-    @Autowired PageRepository pageRepository;
-
+    @Autowired
+    private WidgetResolveService widgetResolveService;
 
     @Override
-    public String generateHTML(Page page, CMSContext context) throws IOException {
-        return null;
+    public String generateHTML(Page page, CMSContext context) {
+        PageElement[] elements = page.getElements();
+        String html = "<div>";
+        for (int i = 0, l = elements.length; i < l; i++) {
+            html += widgetResolveService.pageElementHTML(elements[i], context);
+        }
+        html += "</div>";
+        return html;
     }
 
     @Override
-    public void savePage(Page page, String pageId) throws IOException, URISyntaxException {
-        XmlMapper xmlMapper=new XmlMapper();
-        String pageXml=xmlMapper.writeValueAsString(page);
-        PageInfo pageInfo=new PageInfo();
-        pageInfo.setPageId(pageId);
+    public void generateHTML(OutputStream outputStream, Page page, CMSContext context) throws IOException {
+        String html = generateHTML(page, context);
+        byte[] htmlData = html.getBytes();
+        outputStream.write(htmlData, 0, htmlData.length);
+    }
+
+
+    @Override
+    public void savePage(Page page, Long pageId) throws IOException {
+        XmlMapper xmlMapper = new XmlMapper();
+        //xmlMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+        String pageXml = xmlMapper.writeValueAsString(page);
+        PageInfo pageInfo =pageInfoRepository.findOne(pageId);
+        if(pageInfo==null) {
+            pageInfo = new PageInfo();
+            pageInfo.setPageId(pageId);
+        }
         pageInfo.setPageSetting(pageXml.getBytes());
         pageInfoRepository.save(pageInfo);
     }
 
     @Override
-    public Page getPage(String pageId) throws IOException {
-        PageInfo pageInfo=pageInfoRepository.findOne(pageId);
-        String pageXml=new String(pageInfo.getPageSetting(),"utf-8");
-        XmlMapper xmlMapper=new XmlMapper();
-        return xmlMapper.readValue(pageXml,Page.class);
+    public Page getPage(Long pageId) throws IOException {
+        PageInfo pageInfo = pageInfoRepository.findOne(pageId);
+        String pageXml = new String(pageInfo.getPageSetting(), "utf-8");
+        XmlMapper xmlMapper = new XmlMapper();
+        return xmlMapper.readValue(pageXml, Page.class);
     }
 
     @Override
-    public void deletePage(long ownerId, String pageId) throws IOException {
+    public void deletePage(Long pageId) {
         pageInfoRepository.delete(pageId);
     }
 
     @Override
     public Page findBySiteAndPagePath(Site site, String pagePath) throws IllegalStateException {
-
-        return null;
-    }
-
-    @Override
-    public Page findByPagePath(Site site, String pagePath) throws IOException {
-        return null;
-    }
-
-    @Override
-    public List<Page> getPageList(Site site) {
-        List<PageInfo> pageInfos=pageInfoRepository.findBySite(site);
-        List<Page> pages=new ArrayList<>();
-        Page page=null;
-        for(PageInfo pageInfo:pageInfos){
-            page=new Page();
-            page.setPageIdentity( pageInfo.getPageId());
+        Page page = null;
+        try {
+            PageInfo pageInfo = pageInfoRepository.findBySiteAndPagePath(site, pagePath);
+            if (pageInfo != null) {
+                page = getPage(pageInfo.getPageId());
+            }
+        } catch (IOException e) {
+            throw new IllegalStateException("解析page信息出错");
         }
-        return pages;
+        return page;
     }
 
     @Override
-    public com.huotu.hotcms.service.entity.Page findBySiteAndPagePath(Long siteId, String pagePath) throws IOException {
-        return pageRepository.findByPagePath(pagePath,siteId);
+    public List<PageInfo> getPageList(Site site) {
+        return pageInfoRepository.findBySite(site);
     }
 
     @Override
-    public Page findByCategoryAndContent(Category category, AbstractContent content) {
-        return null;
+    public Page getClosestContentPage(Category category, String path) throws IOException {
+        PageInfo pageInfo = pageInfoRepository.findByPagePath(path);
+        if (pageInfo != null && category.getId().equals(pageInfo.getCategory().getId())) {
+            return getPage(pageInfo.getPageId());
+        }
+        List<PageInfo> pageInfos = pageInfoRepository.findByCategory(category);
+        if (pageInfo == null)
+            throw new IllegalStateException("没有找到相应page");
+        pageInfo = pageInfos.get(0);
+        return getPage(pageInfo.getPageId());
     }
 
 

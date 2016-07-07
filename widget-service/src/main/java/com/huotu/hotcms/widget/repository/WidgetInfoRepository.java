@@ -9,16 +9,21 @@
 
 package com.huotu.hotcms.widget.repository;
 
-import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.widget.entity.PageInfo;
+import com.huotu.hotcms.service.entity.WidgetInfo;
+import com.huotu.hotcms.service.entity.login.Owner;
+import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+
 /**
- * Created by hzbc on 2016/7/4.
+ * 持久化已安装的控件信息
  */
-public interface PageInfoRepository extends JpaRepository<PageInfo,String>,JpaSpecificationExecutor<PageInfo> {
-    public List<PageInfo> findBySite(Site site);
+@Repository
+public interface WidgetInfoRepository extends JpaRepository<WidgetInfo, WidgetIdentifier>
+        , JpaSpecificationExecutor<WidgetInfo> {
+    List<WidgetInfo> findByOwner(Owner owner);
 }

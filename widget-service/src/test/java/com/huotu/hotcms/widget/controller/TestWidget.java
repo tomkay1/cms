@@ -13,7 +13,7 @@ import java.util.UUID;
 /**
  * Created by hzbc on 2016/6/22.
  */
-public class TestWidget extends TestBase implements Widget  {
+public class TestWidget  implements Widget  {
     @Override
     public String groupId() {
         return UUID.randomUUID().toString();
@@ -41,7 +41,7 @@ public class TestWidget extends TestBase implements Widget  {
 
     @Override
     public int dependBuild() {
-        return random.nextInt(100);
+        return 0;
     }
 
     @Override

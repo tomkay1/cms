@@ -1,3 +1,12 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 package com.huotu.hotcms.widget.service;
 
 import com.huotu.hotcms.widget.util.ClassLoaderUtil;
@@ -6,8 +15,14 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 
@@ -37,7 +52,7 @@ public class ChangeAC {
      * 测试说明： 应该提供对应的jar在指定路径下   其中在包中有类centrelTest.ChangeAc//实现本地切换applicationContext 入参为applicationContext
      * 出参为AnnotationConfigApplicationContext
      */
-    public static void testJarChangeCTX(){
+    public static void testJarChangeCTX() throws MalformedURLException {
 
         ApplicationContext parent = new ClassPathXmlApplicationContext("spring-context.xml");//// FIXME: 2016/6/13
 
@@ -66,7 +81,7 @@ public class ChangeAC {
      * 从jar 中读取JavaConfig 配置类，然后改变ApplicationContext
      *测试说明： 应该提供对应的jar在指定路径下   其中在包中有类centrelTest.MVCConfig 为javaConfig配置类
      */
-    public static void testJarChangeCTX2(){
+    public static void testJarChangeCTX2() throws MalformedURLException {
 
         ApplicationContext parent = new FileSystemXmlApplicationContext("spring-context.xml");//// FIXME: 2016/6/13
 
@@ -162,7 +177,11 @@ public class ChangeAC {
     public static void privilegChangeAC(){
         AccessController.doPrivileged(new PrivilegedAction<String>() {
             public String run() {
-                testJarChangeCTX2();
+                try {
+                    testJarChangeCTX2();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
                 return null;
             }
         });

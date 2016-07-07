@@ -9,32 +9,44 @@
 
 package com.huotu.hotcms.widget.test;
 
+import com.huotu.hotcms.service.common.SiteType;
+import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.entity.login.Owner;
+import com.huotu.hotcms.service.exception.NoHostFoundException;
+import com.huotu.hotcms.service.exception.NoSiteFoundException;
+import com.huotu.hotcms.service.repository.CategoryRepository;
+import com.huotu.hotcms.service.repository.OwnerRepository;
+import com.huotu.hotcms.service.service.SiteService;
+import com.huotu.hotcms.service.thymeleaf.service.SiteResolveService;
 import com.huotu.hotcms.service.util.StringUtil;
-import com.huotu.hotcms.widget.*;
+import com.huotu.hotcms.widget.Component;
+import com.huotu.hotcms.widget.ComponentProperties;
+import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.config.TestConfig;
 import com.huotu.hotcms.widget.controller.TestWidget;
 import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.page.PageElement;
-import org.junit.Before;
+import com.huotu.hotcms.widget.servlet.CMSFilter;
+import me.jiangcai.lib.test.SpringWebTest;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.util.StringUtils;
-import org.springframework.web.context.WebApplicationContext;
+import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
 
-import java.util.*;
+import java.lang.reflect.Array;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
 
-/**
- * Created by wenqi on 2016/5/31.
- */
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 /**
  * CMS单元测试基类
@@ -42,16 +54,36 @@ import java.util.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 @WebAppConfiguration
-public class TestBase {
-    protected final Random random = new Random();
-    protected final Logger logger = LoggerFactory.getLogger(TestBase.class);
-    protected MockMvc mockMvc;
-    @Autowired
-    private WebApplicationContext webApplication;
+public class TestBase extends SpringWebTest{
 
-    @Before
-    public final void initMockMvc() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplication).build();
+    @Autowired
+    private OwnerRepository ownerRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    private SiteResolveService siteResolveService;
+
+    @Autowired
+    private SiteService siteService;
+
+    @Override
+    public void createMockMVC() {
+        MockitoAnnotations.initMocks(this);
+        // ignore it, so it works in no-web fine.
+        if (context == null)
+            return;
+        DefaultMockMvcBuilder builder = webAppContextSetup(context);
+        builder.addFilters(new CMSFilter(context.getServletContext()));
+        if (springSecurityFilter != null) {
+            builder = builder.addFilters(springSecurityFilter);
+        }
+
+        if (mockMvcConfigurer != null) {
+            builder = builder.apply(mockMvcConfigurer);
+        }
+        mockMvc = builder.build();
     }
 
     /**
@@ -61,7 +93,7 @@ public class TestBase {
      */
     protected Page randomPage() {
         Page page = new Page();
-        page.setPageIdentity(UUID.randomUUID().toString());
+        page.setPageIdentity(random.nextLong());
         page.setTitle(UUID.randomUUID().toString());
 
         List<PageElement> pageElementList = new ArrayList<>();
@@ -93,15 +125,17 @@ public class TestBase {
         ComponentProperties componentProperties =new ComponentProperties();
         componentProperties.put(StringUtil.createRandomStr(random.nextInt(3)+1),UUID.randomUUID().toString());
         component.setProperties(componentProperties);
+        component.position=random.nextInt(12);
         InstalledWidget installedWidget=new InstalledWidget();
+        installedWidget.setInstallWidgetId(random.nextLong());
         installedWidget.setType(UUID.randomUUID().toString());
-        installedWidget.setWidget(new TestWidget());
         component.setInstalledWidget(installedWidget);
         return component;
     }
 
     private Layout randomLayout() {
         Layout layout = new Layout();
+        layout.position=random.nextInt(12);
         layout.setValue(UUID.randomUUID().toString());
 
         List<PageElement> pageElementList = new ArrayList<>();
@@ -122,5 +156,66 @@ public class TestBase {
         }
         layout.setElements(pageElementList.toArray(new PageElement[pageElementList.size()]));
         return layout;
+    }
+
+    /**
+     * @return 新建的随机Owner
+     */
+    protected Owner randomOwner() {
+        Owner owner = new Owner();
+        owner.setEnabled(true);
+        owner.setCustomerId(Math.abs(random.nextInt()));
+        return ownerRepository.saveAndFlush(owner);
+    }
+
+    /**
+     * 建立一个随机的站点
+     *
+     * @param owner 所属
+     * @return 站点
+     */
+    protected Site randomSite(Owner owner) {
+        Site site = new Site();
+        site.setOwner(owner);
+        site.setName(UUID.randomUUID().toString());
+        site.setSiteType(SiteType.SITE_PC_WEBSITE);
+        site.setTitle(UUID.randomUUID().toString());
+        site.setCreateTime(LocalDateTime.now());
+        site.setEnabled(true);
+        site.setDescription(UUID.randomUUID().toString());
+        String[] domains = new String[]{"localhost"};//randomDomains();
+        site = siteService.newSite(domains, domains[0], site, Locale.CHINA);
+        try {
+            site = siteResolveService.getCurrentSite(request);
+        } catch (NoSiteFoundException e) {
+            e.printStackTrace();
+        } catch (NoHostFoundException e) {
+            e.printStackTrace();
+        }
+        return site;
+    }
+
+    protected String[] randomDomains() {
+        int size = 4 + random.nextInt(4);
+        String[] domains = (String[]) Array.newInstance(String.class, size);
+        for (int i = 0; i < domains.length; i++) {
+            domains[i] = randomDomain();
+        }
+        return domains;
+    }
+
+    protected String randomDomain() {
+        return RandomStringUtils.randomAlphabetic(random.nextInt(5) + 3)
+                + "."
+                + RandomStringUtils.randomAlphabetic(random.nextInt(5) + 3)
+                + "."
+                + RandomStringUtils.randomAlphabetic(random.nextInt(2) + 2);
+    }
+
+    protected Category randomCategory() {
+        Category category = new Category();
+        category.setParent(null);
+        category.setSite(randomSite(randomOwner()));
+        return categoryRepository.saveAndFlush(category);
     }
 }

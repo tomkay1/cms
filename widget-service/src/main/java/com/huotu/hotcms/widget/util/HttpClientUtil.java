@@ -20,14 +20,16 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
+import org.springframework.util.StreamUtils;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URLEncoder;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 作为http 请求发起的工具类
@@ -104,40 +106,13 @@ public class HttpClientUtil {
     /**
      * 下载jar 到本地
      *
-     * @param url  发起下载的url路径
-     * @param path path 存到本地的路径
+     * @param url          发起下载的url路径
+     * @param outputStream 输出目的地
      */
-    public boolean downloadJar(String url, String path) throws IOException {
-
-        //读取文件
-        CloseableHttpResponse response = null;
-        byte[] result = null;
-        response = get(url, new HashMap<>());
-        result = EntityUtils.toByteArray(response.getEntity());
-
-        // 写入文件
-        File f = new File(path);
-        // 创建文件路径
-        if (!f.getParentFile().exists()) {
-            f.getParentFile().mkdirs();
-        }
-        BufferedOutputStream bw = new BufferedOutputStream(new FileOutputStream(path));
-        bw.write(result);
-
-        //关闭连接
-        close(response);
-        return true;
-    }
-
-    //提供一个关闭连接和流的方法
-    //// TODO: 2016/6/7
-    public void close(CloseableHttpResponse response) throws IOException {
-        if (response != null) {
-            EntityUtils.consume(response.getEntity());
-            response.close();
-        }
-        if (httpClient != null) {
-            httpClient.close();
+    public void webGet(String url, OutputStream outputStream) throws IOException {
+        try (CloseableHttpResponse response = get(url, new HashMap<>())) {
+            StreamUtils.copy(response.getEntity().getContent(), outputStream);
         }
     }
+
 }

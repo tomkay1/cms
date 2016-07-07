@@ -11,18 +11,14 @@ package com.huotu.cms.manage.controller.common;
 
 import com.huotu.cms.manage.common.StringUtil;
 import com.huotu.hotcms.service.common.ConfigInfo;
-import com.huotu.hotcms.service.entity.WidgetMains;
 import com.huotu.hotcms.service.model.Result;
-import com.huotu.hotcms.service.service.WidgetService;
 import com.huotu.hotcms.service.util.HttpUtils;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
-import me.jiangcai.lib.resource.Resource;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.WritableResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,10 +29,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
-import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.net.URI;
 import java.util.Base64;
 import java.util.Date;
@@ -52,8 +46,6 @@ public class UploadController {
     private static final Log log = LogFactory.getLog(UploadController.class);
     @Autowired
     private ResourceService resourceService;
-    @Autowired
-    private WidgetService widgetService;
     @Autowired
     private ConfigInfo configInfo;
 
@@ -185,85 +177,85 @@ public class UploadController {
         return resultView;
     }
 
-    @RequestMapping(value = "/saveWidgetRead", method = RequestMethod.POST)
-    @ResponseBody
-    public ResultView saveWidgetRead(Long id, String content, String path) throws Exception {
-        if (id == null) {
-            throw new Exception("id 不能为空");
-        }
-        ResultView resultView = null;
-        Resource resource = resourceService.getResource(path);
-//        File file=new File(uri);
-        try {
-            WidgetMains widgetMains = widgetService.findWidgetMainsById(id);
-            widgetMains.setResourceUri(path);
-            widgetService.saveWidgetMains(widgetMains);
-            OutputStreamWriter write = new OutputStreamWriter(((WritableResource) resource).getOutputStream(), "UTF-8");
-            BufferedWriter writer = new BufferedWriter(write);
-            writer.write(content);
-            writer.close();
-            resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            resultView = new ResultView(ResultOptionEnum.SERVERFAILE.getCode(), e.getMessage(), null);
-        }
-        return resultView;
-    }
+//    @RequestMapping(value = "/saveWidgetRead", method = RequestMethod.POST)
+//    @ResponseBody
+//    public ResultView saveWidgetRead(Long id, String content, String path) throws Exception {
+//        if (id == null) {
+//            throw new Exception("id 不能为空");
+//        }
+//        ResultView resultView = null;
+//        Resource resource = resourceService.getResource(path);
+////        File file=new File(uri);
+//        try {
+//            WidgetMains widgetMains = widgetService.findWidgetMainsById(id);
+//            widgetMains.setResourceUri(path);
+//            widgetService.saveWidgetMains(widgetMains);
+//            OutputStreamWriter write = new OutputStreamWriter(((WritableResource) resource).getOutputStream(), "UTF-8");
+//            BufferedWriter writer = new BufferedWriter(write);
+//            writer.write(content);
+//            writer.close();
+//            resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
+//        } catch (Exception e) {
+//            log.error(e.getMessage());
+//            resultView = new ResultView(ResultOptionEnum.SERVERFAILE.getCode(), e.getMessage(), null);
+//        }
+//        return resultView;
+//    }
 
-    @RequestMapping(value = "/widgetUpLoadEdit", method = RequestMethod.POST)
-    @ResponseBody
-    public ResultView widgetUpLoadEdit(Long id, @RequestParam(value = "btnFile1", required = false) MultipartFile files) {
-        ResultView resultView = null;
-        try {
-            Date now = new Date();
-            String fileName = files.getOriginalFilename();
-            String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
-            if ("html".contains(suffix)) {
-                Long widgetId = Long.valueOf(id);
-                String path = configInfo.getResourcesWidget() + "/edit" + "/template_" + widgetId + "." + suffix;
-                URI uri = resourceService.uploadResource(path, files.getInputStream()).httpUrl().toURI();
-                String content = HttpUtils.getHtmlByUrl(uri.toURL());
-                Map<String, Object> map = new HashMap<String, Object>();
-//            WidgetMains widgetMains = widgetService.findWidgetMainsById(widgetId);//修改
+//    @RequestMapping(value = "/widgetUpLoadEdit", method = RequestMethod.POST)
+//    @ResponseBody
+//    public ResultView widgetUpLoadEdit(Long id, @RequestParam(value = "btnFile1", required = false) MultipartFile files) {
+//        ResultView resultView = null;
+//        try {
+//            Date now = new Date();
+//            String fileName = files.getOriginalFilename();
+//            String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
+//            if ("html".contains(suffix)) {
+//                Long widgetId = Long.valueOf(id);
+//                String path = configInfo.getResourcesWidget() + "/edit" + "/template_" + widgetId + "." + suffix;
+//                URI uri = resourceService.uploadResource(path, files.getInputStream()).httpUrl().toURI();
+//                String content = HttpUtils.getHtmlByUrl(uri.toURL());
+//                Map<String, Object> map = new HashMap<String, Object>();
+////            WidgetMains widgetMains = widgetService.findWidgetMainsById(widgetId);//修改
+////            widgetMains.setResourceEditUri(path);
+////            widgetService.saveWidgetMains(widgetMains);
+//                map.put("fileContent", content);
+//                map.put("fileUri", uri);
+//                map.put("fileUrl", path);
+//                resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), map);
+//            } else {
+//                resultView = new ResultView(ResultOptionEnum.FILE_FORMATTER_ERROR.getCode(), ResultOptionEnum.FILE_FORMATTER_ERROR.getValue(), null);
+//            }
+//        } catch (Exception e) {
+//            log.error(e.getMessage());
+//            resultView = new ResultView(ResultOptionEnum.SERVERFAILE.getCode(), e.getMessage(), null);
+//        }
+//        return resultView;
+//    }
+
+//    @RequestMapping(value = "/saveWidgetEdit", method = RequestMethod.POST)
+//    @ResponseBody
+//    public ResultView saveWidgetEdit(Long id, String content, String path) throws Exception {
+//        if (id == null) {
+//            throw new Exception("id 不能为空");
+//        }
+//        ResultView resultView = null;
+//        Resource resource = resourceService.getResource(path);
+//        try {
+//            WidgetMains widgetMains = widgetService.findWidgetMainsById(id);
 //            widgetMains.setResourceEditUri(path);
 //            widgetService.saveWidgetMains(widgetMains);
-                map.put("fileContent", content);
-                map.put("fileUri", uri);
-                map.put("fileUrl", path);
-                resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), map);
-            } else {
-                resultView = new ResultView(ResultOptionEnum.FILE_FORMATTER_ERROR.getCode(), ResultOptionEnum.FILE_FORMATTER_ERROR.getValue(), null);
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            resultView = new ResultView(ResultOptionEnum.SERVERFAILE.getCode(), e.getMessage(), null);
-        }
-        return resultView;
-    }
-
-    @RequestMapping(value = "/saveWidgetEdit", method = RequestMethod.POST)
-    @ResponseBody
-    public ResultView saveWidgetEdit(Long id, String content, String path) throws Exception {
-        if (id == null) {
-            throw new Exception("id 不能为空");
-        }
-        ResultView resultView = null;
-        Resource resource = resourceService.getResource(path);
-        try {
-            WidgetMains widgetMains = widgetService.findWidgetMainsById(id);
-            widgetMains.setResourceEditUri(path);
-            widgetService.saveWidgetMains(widgetMains);
-            OutputStreamWriter write = new OutputStreamWriter(((WritableResource) resource).getOutputStream(), "UTF-8");
-            BufferedWriter writer = new BufferedWriter(write);
-            writer.write(content);
-            writer.close();
-            resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            resultView = new ResultView(ResultOptionEnum.SERVERFAILE.getCode(), e.getMessage(), null);
-        }
-        return resultView;
-    }
+//            OutputStreamWriter write = new OutputStreamWriter(((WritableResource) resource).getOutputStream(), "UTF-8");
+//            BufferedWriter writer = new BufferedWriter(write);
+//            writer.write(content);
+//            writer.close();
+//            resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
+//        } catch (Exception e) {
+//            log.error(e.getMessage());
+//            resultView = new ResultView(ResultOptionEnum.SERVERFAILE.getCode(), e.getMessage(), null);
+//        }
+//        return resultView;
+//    }
 
 
     @RequestMapping(value = "/downloadUpLoad", method = RequestMethod.POST)

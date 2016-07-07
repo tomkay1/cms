@@ -9,7 +9,6 @@
 
 package com.huotu.hotcms.widget;
 
-
 /**
  * 控件定位服务
  *
@@ -19,8 +18,6 @@ public interface WidgetLocateService {
 
     /**
      * 定位一个控件
-     *
-     *
      * @param groupId
      * @param widgetId
      * @param version
@@ -31,7 +28,7 @@ public interface WidgetLocateService {
     /**
      * 定位一个控件
      *
-     * @param identifier 识别码
+     * @param identifier 识别码 { WidgetIdentifier.toString()}
      * @return 已安装控件实例
      */
     InstalledWidget findWidget(String identifier);

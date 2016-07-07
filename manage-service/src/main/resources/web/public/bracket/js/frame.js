@@ -91,4 +91,9 @@ $(function () {
     var inputTags = $('.inputTags');
     if (inputTags.size() > 0)
         inputTags.tagsInput({width: 'auto'});
+
+    // 让chosen-select可以自动处理
+    var chosenSelect = $('.chosen-select');
+    if (chosenSelect.size() > 0)
+        chosenSelect.chosen({'width': '100%', 'white-space': 'nowrap'});
 });

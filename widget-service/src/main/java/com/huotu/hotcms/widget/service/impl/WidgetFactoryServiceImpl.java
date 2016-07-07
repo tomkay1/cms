@@ -20,6 +20,7 @@ import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import com.huotu.hotcms.widget.util.ClassLoaderUtil;
 import com.huotu.hotcms.widget.util.HttpClientUtil;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -27,16 +28,15 @@ import org.apache.http.util.EntityUtils;
 import org.luffy.libs.libseext.XMLUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.WebApplicationContext;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,38 +55,23 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
     private static final Log log = LogFactory.getLog(CSSServiceImpl.class);
 
     private static final String PRIVATE_REPO = "http://repo.51flashmall.com:8081/nexus/content/groups/public/%s/%s/%s";
-    public List<InstalledWidget> installedWidgets = new ArrayList<>();
-    @Autowired
-    private WebApplicationContext webApplicationContext;
+    private List<InstalledWidget> installedWidgets = new ArrayList<>();
     @Autowired
     private WidgetInfoRepository widgetInfoRepository;
+    @Autowired
+    private ResourceService resourceService;
 
 
     /**
-     * 得到jar 在本地存储的真实路径
+     * 下载widget jar文件
      *
-     * @return
+     * @param groupId  分组id,参考maven
+     * @param version  版本
+     * @param widgetId 控件id
+     * @return 临时文件
      */
-    public String getRealPath(String widgetId, String version) {
-        String rootPath = webApplicationContext.getServletContext().getRealPath("");
-        String jarName = getJarName(widgetId, version);
-        String realPath = rootPath + "/" + jarName;
-        return realPath;
-    }
-
-    /**
-     * 得到jar 名称
-     *
-     * @param widgetId
-     * @param version
-     * @return
-     */
-    public String getJarName(String widgetId, String version) {
-        return widgetId + "-" + version + ".jar";
-    }
-
-    @Override
-    public String downloadJar(String groupId, String widgetId, String version) throws IOException, ParserConfigurationException, SAXException {
+    private File downloadJar(String groupId, String widgetId, String version) throws IOException
+            , ParserConfigurationException, SAXException {
         groupId = groupId.replace(".", "/");
         StringBuilder repoUrl = new StringBuilder(String.format(PRIVATE_REPO, groupId, widgetId, version));
         CloseableHttpResponse response = HttpClientUtil.getInstance().get(repoUrl + "/maven-metadata.xml", new HashMap<>());
@@ -107,13 +92,33 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
                 timeBuild = timeBuild + "-" + node.getTextContent();
             }
         }
-        String jarName = getJarName(widgetId, version.replace("SNAPSHOT", "") + timeBuild);
-        repoUrl.append("/");
-        repoUrl.append(jarName);
-        String realPath = getRealPath(widgetId, version);
+        File file = File.createTempFile("CMSWidget", ".jar");
+        file.deleteOnExit();
         //下载jar
-        HttpClientUtil.getInstance().downloadJar(repoUrl.toString(), realPath);
-        return realPath;
+        try (FileOutputStream outputStream = new FileOutputStream(file)) {
+            HttpClientUtil.getInstance().webGet(repoUrl.toString(), outputStream);
+        }
+
+        return file;
+    }
+
+    @Override
+    public void setupJarFile(WidgetInfo info, InputStream data) throws IOException {
+        String path = "widget/" + info.getIdentifier().toString() + ".jar";
+        if (data != null) {
+            resourceService.uploadResource(path, data);
+        } else {
+            try {
+                File file = downloadJar(info.getGroupId(), info.getWidgetId(), info.getVersion());
+                try (FileInputStream inputStream = new FileInputStream(file)) {
+                    resourceService.uploadResource(path, inputStream);
+                }
+                file.delete();
+            } catch (ParserConfigurationException | SAXException e) {
+                throw new IOException(e);
+            }
+        }
+        info.setPath(path);
     }
 
     /**
@@ -157,15 +162,28 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
     @Override
     public void installWidget(Owner owner, String groupId, String widgetId, String version, String type) throws IOException, FormatException {
         try {
-            String realPath = downloadJar(groupId, widgetId, version);
-            List<Class> classes = ClassLoaderUtil.loadJarWidgetClasss(realPath);
+            WidgetInfo widgetInfo = widgetInfoRepository.findOne(new WidgetIdentifier(groupId, widgetId, version));
+            if (widgetInfo == null) {
+                log.debug("New Widget " + groupId + "," + widgetId + ":" + version);
+                widgetInfo = new WidgetInfo();
+                widgetInfo.setGroupId(groupId);
+                widgetInfo.setWidgetId(widgetId);
+                widgetInfo.setVersion(version);
+            }
+            widgetInfo.setType(type);
+            widgetInfo.setOwner(owner);
+
+            setupJarFile(widgetInfo, null);
+            widgetInfoRepository.save(widgetInfo);
+
+            List<Class> classes = ClassLoaderUtil.loadJarWidgetClasses(resourceService.getResource(widgetInfo.getPath()));
             if (classes != null) {
-                for (Class classz : classes) {
+                for (Class clazz : classes) {
                     //加载jar
                     installWidget(owner, (Widget) classz.newInstance(), type);
                 }
             }
-        } catch (ParserConfigurationException | SAXException | InstantiationException
+        } catch (InstantiationException
                 | IllegalAccessException | FormatException e) {
             throw new FormatException(e.toString());
         }

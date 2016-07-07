@@ -8,7 +8,8 @@
   ~ 2013-2016. All rights reserved.
   -->
 
-<html xmlns:th="http://www.thymeleaf.org" xmlns:ewp="http://ewp.jiangcai.me" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:ewp="http://ewp.jiangcai.me" xmlns:sec="http://security.thymeleaf.org"
+      lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
@@ -28,7 +29,7 @@
         }
     </script>
 </head>
-<body>
+<body sec:authorize="hasRole('ROOT')">
 <!-- Preloader -->
 <div id="preloader">
     <div id="status">
@@ -75,7 +76,11 @@
                 <li>
                     <a href="inner.html" target="content"><i class="fa fa-suitcase"></i> <span>模板管理</span></a>
                 </li>
-                <li><a href="../widget/index.html" target="content"><i class="fa fa-asterisk"></i> <span>控件管理</span></a>
+                <li>
+                    <a href="../widget/index.html" th:href="@{/manage/widget}" target="content">
+                        <i class="fa fa-asterisk"></i>
+                        <span>控件管理</span>
+                    </a>
                 </li>
                 <li class="nav-parent"><a href=""><i class="fa fa-edit"></i> <span>系统设置</span></a>
                     <ul class="children">

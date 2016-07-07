@@ -21,10 +21,8 @@ import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 
-/**
- * Created by elvis on 2016/6/7.
- */
 @Entity
 @Table(name = "cms_widgetInfo")
 @Getter
@@ -32,25 +30,29 @@ import javax.persistence.Table;
 @IdClass(WidgetIdentifier.class)
 public class WidgetInfo {
 
+    /**
+     * 禁用还是做不到,但可以让商户看不到
+     */
+    private boolean enabled;
+    /**
+     * 站点创建时间
+     */
+    @Column(name = "createTime")
+    private LocalDateTime createTime;
     @Id
     @Column(name = "groupId", length = 50)
     private String groupId;
-
     @Id
     @Column(name = "widgetId", length = 50)
     private String widgetId;
-
     @Id
     @Column(name = "version", length = 50)
     private String version;
-
     @Column(name = "type", length = 100)
     private String type;
-
     @ManyToOne
     @JoinColumn(name = "ownerId")
     private Owner owner;
-
     /**
      * 数据包在资源系统中的路径
      *
@@ -58,6 +60,10 @@ public class WidgetInfo {
      */
     @Column(length = 100)
     private String path;
+
+    public WidgetIdentifier getIdentifier() {
+        return new WidgetIdentifier(groupId, widgetId, version);
+    }
 
 
 }

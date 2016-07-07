@@ -25,6 +25,7 @@ import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.config.TestConfig;
 import com.huotu.hotcms.widget.controller.TestWidget;
+import com.huotu.hotcms.widget.page.Empty;
 import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.page.PageElement;
@@ -92,6 +93,14 @@ public class TestBase extends SpringWebTest{
      * @return
      */
     protected Page randomPage() {
+//        String layout[]={"12","4,4,4","6,6","8,4","2,6,4"};//布局，可以再任意添加，保证数值相加等于12
+//        String randomLayout=layout[random.nextInt(layout.length)];
+//
+//        if(randomLayout.equals("12")){
+//
+//        }else{
+//            String randomLayoutArrays[]=randomLayout.split(",");
+//        }
         Page page = new Page();
         page.setPageIdentity(random.nextLong());
         page.setTitle(UUID.randomUUID().toString());
@@ -105,16 +114,24 @@ public class TestBase extends SpringWebTest{
 
         int nums = random.nextInt(4)+1;//生成PageElement的随机个数
         //在实际环境中，肯定先存在layout,在layout中，拖入component
-        pageElementList.add(randomLayout());
+//        pageElementList.add(randomLayout());
         while (nums-- > 0) {
-            if(isLayout)
+            if(isLayout) {
                 pageElementList.add(randomLayout());
-            else
+                pageElementList.add(randomEmpty());
+            }
+            else {
                 pageElementList.add(randomComponent());
+                pageElementList.add(randomEmpty());
+            }
         }
         page.setElements(pageElementList.toArray(new PageElement[pageElementList.size()]));
 
         return page;
+    }
+
+    private Empty randomEmpty(){
+        return new Empty();
     }
 
     private Component randomComponent() {
@@ -125,9 +142,8 @@ public class TestBase extends SpringWebTest{
         ComponentProperties componentProperties =new ComponentProperties();
         componentProperties.put(StringUtil.createRandomStr(random.nextInt(3)+1),UUID.randomUUID().toString());
         component.setProperties(componentProperties);
-        component.position=random.nextInt(12);
-        InstalledWidget installedWidget=new InstalledWidget();
-        installedWidget.setInstallWidgetId(random.nextLong());
+        InstalledWidget installedWidget=new InstalledWidget(new TestWidget());
+        installedWidget.setInstallWidgetId(UUID.randomUUID().toString());
         installedWidget.setType(UUID.randomUUID().toString());
         component.setInstalledWidget(installedWidget);
         return component;
@@ -135,7 +151,6 @@ public class TestBase extends SpringWebTest{
 
     private Layout randomLayout() {
         Layout layout = new Layout();
-        layout.position=random.nextInt(12);
         layout.setValue(UUID.randomUUID().toString());
 
         List<PageElement> pageElementList = new ArrayList<>();

@@ -9,42 +9,47 @@
 
 package com.huotu.hotcms.widget.service.impl;
 
+import com.huotu.hotcms.service.entity.WidgetInfo;
+import com.huotu.hotcms.service.entity.login.Owner;
+import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetLocateService;
-import com.huotu.hotcms.widget.entity.WidgetInfo;
 import com.huotu.hotcms.widget.exception.FormatException;
-import com.huotu.hotcms.widget.repository.WidgetRepository;
+import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import com.huotu.hotcms.widget.util.ClassLoaderUtil;
 import com.huotu.hotcms.widget.util.HttpClientUtil;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.luffy.libs.libseext.XMLUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.WebApplicationContext;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 
 /**
- * Created by wenqi on 2016/6/2.
+ *
+ * Created by lhx on 2016/6/2.
  */
 @Service
 public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLocateService {
@@ -52,40 +57,27 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
     private static final Log log = LogFactory.getLog(CSSServiceImpl.class);
 
     private static final String PRIVATE_REPO = "http://repo.51flashmall.com:8081/nexus/content/groups/public/%s/%s/%s";
-    public List<InstalledWidget> installedWidgets = new ArrayList<>();
+    private List<InstalledWidget> installedWidgets = new ArrayList<>();
     @Autowired
-    private WebApplicationContext webApplicationContext;
-    @Autowired
-    private WidgetRepository widgetRepository;
+    private WidgetInfoRepository widgetInfoRepository;
+    @Autowired(required = false)
+    private ResourceService resourceService;
+
 
     /**
-     * 得到jar 在本地存储的真实路径
+     * 下载widget jar文件
      *
-     * @return
+     * @param groupId  分组id,参考maven
+     * @param version  版本
+     * @param widgetId 控件id
+     * @return 临时文件
      */
-    public String getRealPath(String widgetId, String version) {
-        String rootPath = webApplicationContext.getServletContext().getRealPath("");
-        String jarName = getJarName(widgetId, version);
-        String realPath = rootPath + "/" + jarName;
-        return realPath;
-    }
-
-    /**
-     * 得到jar 名称
-     *
-     * @param widgetId
-     * @param version
-     * @return
-     */
-    public String getJarName(String widgetId, String version) {
-        return widgetId + "-" + version + ".jar";
-    }
-
-    @Override
-    public String downloadJar(String groupId, String widgetId, String version) throws IOException, ParserConfigurationException, SAXException {
+    private File downloadJar(String groupId, String widgetId, String version) throws IOException
+            , ParserConfigurationException, SAXException {
         groupId = groupId.replace(".", "/");
         StringBuilder repoUrl = new StringBuilder(String.format(PRIVATE_REPO, groupId, widgetId, version));
-        CloseableHttpResponse response = HttpClientUtil.getInstance().get(repoUrl + "/maven-metadata.xml", new HashMap<>());
+        CloseableHttpResponse response = HttpClientUtil.getInstance().get(repoUrl + "/maven-metadata.xml"
+                , new HashMap<>());
         byte[] result = EntityUtils.toByteArray(response.getEntity());
         String timeBuild = "";
         Document doc = XMLUtils.xml2doc(new ByteArrayInputStream(result));
@@ -103,41 +95,60 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
                 timeBuild = timeBuild + "-" + node.getTextContent();
             }
         }
-        String jarName = getJarName(widgetId, version.replace("SNAPSHOT", "") + timeBuild);
-        repoUrl.append("/");
-        repoUrl.append(jarName);
-        String realPath = getRealPath(widgetId, version);
+        File file = File.createTempFile("CMSWidget", ".jar");
+        file.deleteOnExit();
         //下载jar
-        HttpClientUtil.getInstance().downloadJar(repoUrl.toString(), realPath);
-        return realPath;
+        try (FileOutputStream outputStream = new FileOutputStream(file)) {
+            HttpClientUtil.getInstance().webGet(repoUrl.toString() + "/" + widgetId + "-" + (version.split("-")[0])
+                    + "-" + timeBuild + ".jar", outputStream);
+        }
+        return file;
+    }
+
+    @Override
+    public void setupJarFile(WidgetInfo info, InputStream data) throws IOException {
+        String path = "widget/" + UUID.randomUUID().toString() + ".jar";
+        if (data != null) {
+            resourceService.uploadResource(path, data);
+        } else {
+            try {
+                File file = downloadJar(info.getGroupId(), info.getWidgetId(), info.getVersion());
+                try (FileInputStream inputStream = new FileInputStream(file)) {
+                    resourceService.uploadResource(path, inputStream);
+                }
+                file.delete();
+            } catch (ParserConfigurationException | SAXException e) {
+                throw new IOException(e);
+            }
+        }
+        info.setPath(path);
     }
 
     /**
      * 已安装控件列表
      *
+     * @param owner
      * @return
      * @throws FormatException
      * @throws IOException
      */
     @Override
-    public List<InstalledWidget> widgetList() throws FormatException, IOException {
-        List<InstalledWidget> result = null;
-        List<WidgetInfo> all = widgetRepository.findAll();
-        if (all != null && all.size() > 0 && installedWidgets.size() <= 0) {
+    public List<InstalledWidget> widgetList(Owner owner) throws IOException, FormatException, IllegalAccessException
+            , InstantiationException {
+        List<InstalledWidget> result;
+        List<WidgetInfo> widgetInfos;
+        if (owner == null) {
+            widgetInfos = widgetInfoRepository.findAll();
+        } else {
+            widgetInfos = widgetInfoRepository.findByOwner(owner);
+        }
+        if (widgetInfos != null && widgetInfos.size() > 0 && installedWidgets.size() <= 0) {
             result = new ArrayList<>();
-            for (WidgetInfo widgetInfo : all) {
-                InstalledWidget installedWidget = new InstalledWidget();
+            for (WidgetInfo widgetInfo : widgetInfos) {
 
-                String realPath = getRealPath(widgetInfo.getWidgetId(), widgetInfo.getVersion());
-                try {
-                    Widget widget = (Widget) ClassLoaderUtil.loadJarConfig(realPath).newInstance();
-                    installedWidget.setWidget(widget);
-                    installedWidget.setType(widgetInfo.getType());
-                    result.add(installedWidget);
-                    installedWidgets.add(installedWidget);
-                } catch (InstantiationException | IllegalAccessException | FormatException e) {
-                    throw new FormatException(e.toString());
-                }
+                InstalledWidget installedWidget = getInstalledWidget(widgetInfo);
+                installedWidgets.add(installedWidget);
+                result.add(installedWidget);
             }
         } else {
             return installedWidgets;
@@ -146,38 +157,52 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
     }
 
     @Override
-    public void reloadWidgets() throws IOException, FormatException {
+    public void reloadWidgets() throws IOException, FormatException, InstantiationException, IllegalAccessException {
         installedWidgets.clear();
-        widgetList();
+        widgetList(null);
     }
 
     @Override
-    public void installWidget(String groupId, String widgetId, String version, String type) throws IOException, FormatException {
-        try {
-            String realPath = downloadJar(groupId,widgetId,version);
-            List<Class> classes = ClassLoaderUtil.loadJarWidgetClasss(realPath);
-            if (classes != null) {
-                for (Class classz : classes) {
-                    //加载jar
-                    installWidget((Widget) classz.newInstance(), type);
-                }
+    public void installWidget(Owner owner, String groupId, String widgetId, String version, String type)
+            throws IOException, FormatException {
+//        try {
+            WidgetInfo widgetInfo = widgetInfoRepository.findOne(new WidgetIdentifier(groupId, widgetId, version));
+            if (widgetInfo == null) {
+                log.debug("New Widget " + groupId + "," + widgetId + ":" + version);
+                widgetInfo = new WidgetInfo();
+                widgetInfo.setGroupId(groupId);
+                widgetInfo.setWidgetId(widgetId);
+                widgetInfo.setVersion(version);
             }
-        } catch (ParserConfigurationException | SAXException | InstantiationException
-                | IllegalAccessException | FormatException e) {
-            throw new FormatException(e.toString());
-        }
+            widgetInfo.setType(type);
+            widgetInfo.setOwner(owner);
+
+            setupJarFile(widgetInfo, null);
+            widgetInfoRepository.save(widgetInfo);
+
+//            List<Class> classes = ClassLoaderUtil.loadJarWidgetClasses(resourceService.getResource(widgetInfo.getPath()));
+//            if (classes != null) {
+//                for (Class clazz : classes) {
+//                    //加载jar
+//                    installWidget(owner, (Widget) clazz.newInstance(), type);
+//                }
+//            }
+//        } catch (InstantiationException
+//                | IllegalAccessException | FormatException e) {
+//            throw new FormatException(e.toString());
+//        }
 
     }
 
-    public void installWidget(Widget widget, String type) {
+    public void installWidget(Owner owner, Widget widget, String type) {
         //持久化相应的信息
         WidgetInfo widgetInfo = new WidgetInfo();
         widgetInfo.setGroupId(widget.groupId());
         widgetInfo.setWidgetId(widget.widgetId());
         widgetInfo.setVersion(widget.version());
         widgetInfo.setType(type);
-        widgetRepository.save(widgetInfo);
-
+        widgetInfo.setOwner(owner);
+        widgetInfoRepository.save(widgetInfo);
     }
 
 
@@ -187,45 +212,39 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
         //更新数据库信息
         updateWidget(widget);
         //替换jar包
-        if (jarFile != null) {
-            BufferedOutputStream bw = null;
-            try {
-                String realPath = getRealPath(widget.widgetId(), widget.version());
-                byte[] result = new byte[1024];
-                // 写入文件
-                File f = new File(realPath);
-                // 创建文件路径
-                if (!f.getParentFile().exists()) {
-                    f.getParentFile().mkdirs();
-                }
-                bw = new BufferedOutputStream(new FileOutputStream(realPath));
-                while (jarFile.read(result) != -1) {
-                    bw.write(result);
-                }
-            } finally {
-                if (bw != null) bw.close();
-                if (jarFile != null) jarFile.close();
-            }
-        }
+//        if (jarFile != null) {
+//            BufferedOutputStream bw = null;
+//            try {
+//                String realPath = getRealPath(widget.widgetId(), widget.version());
+//                byte[] result = new byte[1024];
+//                // 写入文件
+//                File f = new File(realPath);
+//                // 创建文件路径
+//                if (!f.getParentFile().exists()) {
+//                    f.getParentFile().mkdirs();
+//                }
+//                bw = new BufferedOutputStream(new FileOutputStream(realPath));
+//                while (jarFile.read(result) != -1) {
+//                    bw.write(result);
+//                }
+//            } finally {
+//                if (bw != null) bw.close();
+//                jarFile.close();
+//            }
+//        }
     }
 
     public void updateWidget(Widget widget) {
         throw new IllegalStateException("not support yet");
-//        WidgetInfo widgetInfo = widgetRepository.findByWidgetIdAndVersion(widget.widgetId(), widget.version());
-//        if (widgetInfo != null) {
-//            widgetInfo.setGroupId(widget.groupId());
-//            widgetInfo.setName(widget.name());
-//            widgetInfo.setDependBuild(widget.dependBuild() + "");
-//            widgetInfo.setAuthor(widget.author());
-//            widgetRepository.saveAndFlush(widgetInfo);
-//        }
     }
 
     @Override
-    public void updateWidget(String groupId, String widgetId, String version, String type) throws IOException, FormatException {
+    public void updateWidget(String groupId, String widgetId, String version, String type)
+            throws IOException, FormatException {
         try {
-            String realPath = downloadJar(groupId,widgetId,version);
-            List<Class> classes = ClassLoaderUtil.loadJarWidgetClasss(realPath);
+            File file = downloadJar(groupId, widgetId, version);
+            FileSystemResource fileSystemResource = new FileSystemResource(file);
+            List<Class> classes = ClassLoaderUtil.loadJarWidgetClasses(fileSystemResource);
             if (classes != null) {
                 for (Class classz : classes) {
                     updateWidget((Widget) classz.newInstance());
@@ -239,33 +258,55 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
 
 
     @Override
-    public List<WidgetInfo> getWidgetByOwerId(String owerID) {
-        return null;
+    public List<WidgetInfo> getWidgetByOwner(Owner owner) {
+        return widgetInfoRepository.findByOwner(owner);
     }
 
     @Override
     public InstalledWidget findWidget(String groupId, String widgetId, String version) {
-        WidgetInfo widgetInfo = widgetRepository.findByWidgetIdAndGroupIdAndVersion(widgetId, groupId, version);
-        InstalledWidget installedWidget = new InstalledWidget();
-        installedWidget.setType(widgetInfo.getType());
-        String realPath = getRealPath(widgetId, version);
-        try {
-            List<Class> classes = ClassLoaderUtil.loadJarWidgetClasss(realPath);
-            if (classes != null) {
-                for (Class classz : classes) {
-                    if (((Widget) classz.newInstance()).widgetId().equals(widgetId)) {
-                        installedWidget.setWidget((Widget) classz.newInstance());
-                    }
-                }
-            }
-        } catch (IllegalAccessException | InstantiationException | FormatException | IOException e) {
-            //throw new FormatException(e.toString());
-        }
-        return installedWidget;
+        WidgetIdentifier id = new WidgetIdentifier(groupId, widgetId, version);
+        WidgetInfo widgetInfo = widgetInfoRepository.findOne(id);
+        return getInstalledWidget(widgetInfo);
     }
 
     @Override
     public InstalledWidget findWidget(String identifier) {
+        WidgetInfo widgetInfo = widgetInfoRepository.findOne(WidgetIdentifier.valueOf(identifier));
+        return getInstalledWidget(widgetInfo);
+    }
+
+
+    /**
+     * <p>根据安装控件信息获得InstalledWidget</p>
+     *
+     * @param widgetInfo 控件信息
+     * @return InstalledWidget
+     */
+    public InstalledWidget getInstalledWidget(WidgetInfo widgetInfo) {
+        List<Class> classes;
+        InstalledWidget installedWidget;
+        try {
+            classes = ClassLoaderUtil.loadJarWidgetClasses(resourceService.getResource(widgetInfo.getPath()));
+            Widget widget;
+            for (Class classz : classes) {
+                widget = (Widget) classz.newInstance();
+                if (widget.widgetId().equals(widgetInfo.getWidgetId())
+                        && widget.groupId().equals(widgetInfo.getGroupId())
+                        && widget.version().equals(widgetInfo.getVersion())) {
+
+                    installedWidget = new InstalledWidget(widget);
+                    installedWidget.setType(widgetInfo.getType());
+                    if (widgetInfo.getOwner() != null) {
+                        installedWidget.setOwnerId(widgetInfo.getOwner().getId());
+                    }
+                    installedWidget.setInstallWidgetId(widgetInfo.getWidgetId());
+                    return installedWidget;
+                }
+            }
+        } catch (IllegalAccessException | InstantiationException | FormatException | IOException ignored) {
+        }
         return null;
     }
+
+
 }

@@ -44,4 +44,11 @@ public class AdminPage extends AbstractFrameParentPage {
         return initPage(OwnerPage.class);
     }
 
+    public WidgetPage toWidget() {
+        beforeDriver();
+        clickMenuByClass("fa-asterisk");
+        return initPage(WidgetPage.class);
+    }
+
+
 }

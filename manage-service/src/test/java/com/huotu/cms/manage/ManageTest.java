@@ -142,10 +142,12 @@ public abstract class ManageTest extends SpringWebTest {
      *
      * @param owner
      */
-    public void loginAsOwner(Owner owner) throws Exception {
+    public ManageMainPage loginAsOwner(Owner owner) throws Exception {
         Cookie cookie = new Cookie(CMSEnums.MallCookieKeyValue.CustomerID.name(), String.valueOf(owner.getCustomerId()));
 
         accessViaCookie(cookie, owner);
+
+        return initPage(ManageMainPage.class);
     }
 
     private void accessViaCookie(Cookie cookie, Login login) throws Exception {
@@ -192,7 +194,7 @@ public abstract class ManageTest extends SpringWebTest {
         driver.get("http://localhost/testLoginAs");
     }
 
-    public void loginAsManage() throws Exception {
+    public AdminPage loginAsManage() throws Exception {
         accessViaCookie(new Cookie(CMSEnums.CookieKeyValue.RoleID.name(), "-1"), new Manager());
 
 
@@ -203,6 +205,7 @@ public abstract class ManageTest extends SpringWebTest {
 
         driver.get("http://localhost/manage/main");
 //        System.out.println(driver.getPageSource());
+        return initPage(AdminPage.class);
     }
 
     /**
@@ -262,6 +265,7 @@ public abstract class ManageTest extends SpringWebTest {
     public PageInfo randomPageInfo() throws JsonProcessingException {
         PageInfo pageInfo=new PageInfo();
         pageInfo.setSite(randomSite(randomOwner()));
+        pageInfo.setCategory(randomCategory());
         XmlMapper xmlMapper=new XmlMapper();
         byte[] pageXml=xmlMapper.writeValueAsString(randomPage()).getBytes();
         pageInfo.setPageSetting(pageXml);

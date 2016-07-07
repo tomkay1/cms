@@ -1,6 +1,7 @@
 /*
  * 版权所有:杭州火图科技有限公司
  * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
  * 2013-2016. All rights reserved.
@@ -112,15 +113,15 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     public Iterable<Page> findWidgetPage() {
         Page page1 = new Page();
         page1.setTitle("首页");
-        page1.setPageIdentity("1");
+//        page1.setPageIdentity("1");
 
         Page page2 = new Page();
         page2.setTitle("新闻");
-        page2.setPageIdentity("2");
+//        page2.setPageIdentity("2");
 
         Page page3 = new Page();
         page3.setTitle("关于我们");
-        page3.setPageIdentity("3");
+//        page3.setPageIdentity("3");
 
         List<Page> list = new ArrayList<>();
         list.add(page1);

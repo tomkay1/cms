@@ -16,7 +16,6 @@ import com.huotu.hotcms.widget.page.Page;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URISyntaxException;
 import java.util.List;
 
 /**
@@ -52,7 +51,6 @@ public interface PageService {
      * @param page  Page的配置信息
      * @param pageId 页面ID
      * @throws IOException jackson相关异常
-     * @throws URISyntaxException
      */
     void savePage(Page page, Long pageId) throws IOException;
 
@@ -61,7 +59,7 @@ public interface PageService {
      *
      * @param pageId pageId
      * @return {@link com.huotu.hotcms.widget.page.Page}
-     * @throws IOException 其他异常
+     * @throws IOException 获取page失败
      */
     Page getPage(Long pageId) throws IOException;
 
@@ -69,9 +67,9 @@ public interface PageService {
      * 删除相关页面信息
      *
      * @param pageId  页面ID
-     * @throws IOException 其他异常
+     * @throws IOException 删除page失败
      */
-    void deletePage(Long pageId) throws IOException;
+    void deletePage(Long pageId);
 
 
     /**
@@ -82,7 +80,7 @@ public interface PageService {
      * @return {@link com.huotu.hotcms.widget.page.Page}
      * @throws IllegalStateException 未找到page
      */
-    Page findBySiteAndPagePath(Site site, String pagePath) throws IllegalStateException, IOException;
+    Page findBySiteAndPagePath(Site site, String pagePath) throws IllegalStateException;
 
 
     /**
@@ -93,10 +91,12 @@ public interface PageService {
     List<PageInfo> getPageList(Site site);
 
     /**
-     *
+     * <p>返回path对应的界面如果存在返回界面</p>
+     * <p>>path如果不存在,查找指定数据源下的最接近的界面</p>
      * @param category 相关数据源
      * @param path 请求的路径
      * @return 最适用的内容页
+     * @throws IOException 获取界面xml错误
      */
     Page getClosestContentPage(Category category, String path) throws IOException;
 

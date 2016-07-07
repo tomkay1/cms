@@ -10,7 +10,7 @@
 package com.huotu.hotcms.widget.page;
 
 /**
- * Created by hzbc on 2016/7/7.
+ * Created by wenqi on 2016/7/7.
  */
 public abstract class AbstractPageElement implements PageElement {
     /**

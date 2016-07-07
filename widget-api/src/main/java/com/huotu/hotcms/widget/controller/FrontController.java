@@ -37,11 +37,11 @@ import java.io.IOException;
  */
 @Controller
 @RequestMapping(value = "/_web")
-public class PageController implements FilterBehavioral {
+public class FrontController implements FilterBehavioral {
 
-    private static final Log log = LogFactory.getLog(PageController.class);
+    private static final Log log = LogFactory.getLog(FrontController.class);
 
-    @Autowired
+    @Autowired(required = false)
     private AbstractContentRepository abstractContentRepository;
 
     @Autowired
@@ -59,8 +59,9 @@ public class PageController implements FilterBehavioral {
                 return;
             }
         } catch (Exception e) {
-            response.setStatus(HttpStatus.SC_NOT_FOUND);
+            e.printStackTrace();
         }
+        response.setStatus(HttpStatus.SC_NOT_FOUND);
 
     }
 
@@ -80,11 +81,18 @@ public class PageController implements FilterBehavioral {
 
                 response.setContentType("text/html;charset=utf-8");
                 return;
+            } else {
+                Page page = pageService.findBySiteAndPagePath(cmsContext.getSite(), pagePath);
+                if (page != null) {
+                    pageService.generateHTML(response.getOutputStream(), page, cmsContext);
+                    response.setContentType("text/html;charset=utf-8");
+                    return;
+                }
             }//404 content is not existing or access defined.
-            response.setStatus(HttpStatus.SC_NOT_FOUND);
         } catch (Exception e) {
-            response.setStatus(HttpStatus.SC_NOT_FOUND);
+            e.printStackTrace();
         }
+        response.setStatus(HttpStatus.SC_NOT_FOUND);
     }
 
 

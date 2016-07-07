@@ -7,7 +7,7 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.hotcms.widget.entity.support;
+package com.huotu.hotcms.service.entity.support;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

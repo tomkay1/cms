@@ -52,7 +52,7 @@ public class ReplaceBrowseProcessor extends AbstractStandardExpressionAttributeT
             throw new IllegalStateException("replaceBrowse only support Component value");
         }
 
-        String htmlCode = widgetResolveService.componentHTML((com.huotu.hotcms.widget.Component) expressionResult
+        String htmlCode = widgetResolveService.pageElementHTML((com.huotu.hotcms.widget.Component) expressionResult
                 , CMSContext.RequestContext());
 
         structureHandler.replaceWith(htmlCode, false);

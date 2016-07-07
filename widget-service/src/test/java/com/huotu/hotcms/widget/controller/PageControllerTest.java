@@ -49,7 +49,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * <p>针对页面服务controller层{@link PageController}的单元测试</p>
+ * <p>针对页面服务controller层{@link FrontController}的单元测试</p>
  */
 public class PageControllerTest extends TestBase {
 
@@ -68,8 +68,10 @@ public class PageControllerTest extends TestBase {
 
     @Autowired
     private PageService pageService;
+
     @Autowired
     private OwnerRepository ownerRepository;
+
     @Autowired
     private SiteService siteService;
 
@@ -161,12 +163,12 @@ public class PageControllerTest extends TestBase {
         pageInitData(contentId, pagePath);
 
         //case 1存在的path
-        int code = mockMvc.perform(get("/_web/{pagePath}/", pagePath)
+        int code = mockMvc.perform(get("/_web/{pagePath}", pagePath)
                 .accept(MediaType.TEXT_HTML)).andDo(print()).andReturn().getResponse().getStatus();
         assert code == HttpStatus.SC_OK;
 
         //case 2不存在的path
-        code = mockMvc.perform(get("/_web/{pagePath}/", "1234")
+        code = mockMvc.perform(get("/_web/{pagePath}", "1234")
                 .accept(MediaType.TEXT_HTML)).andDo(print()).andReturn().getResponse().getStatus();
         assert code == HttpStatus.SC_NOT_FOUND;
 
@@ -175,15 +177,16 @@ public class PageControllerTest extends TestBase {
                 .accept(MediaType.TEXT_HTML)).andDo(print()).andReturn().getResponse().getStatus();
         assert code == HttpStatus.SC_OK;
 
-        //case 4不存在的contentId和存在的path
-        code = mockMvc.perform(get("/_web/{pagePath}/{contentId}", "123", pagePath)
-                .accept(MediaType.TEXT_HTML)).andDo(print()).andReturn().getResponse().getStatus();
-        assert code == HttpStatus.SC_OK;
-
-        //case 5不存在的contentId和不存在的path
+        //case 4不存在的contentId和不存在的path
         code = mockMvc.perform(get("/_web/{pagePath}/{contentId}", "sdfdsf", "1231")
                 .accept(MediaType.TEXT_HTML)).andDo(print()).andReturn().getResponse().getStatus();
         assert code == HttpStatus.SC_NOT_FOUND;
+
+        //case 5不存在的contentId和存在的path
+        code = mockMvc.perform(get("/_web/{pagePath}/{contentId}", pagePath, "123")
+                .accept(MediaType.TEXT_HTML)).andDo(print()).andReturn().getResponse().getStatus();
+        assert code == HttpStatus.SC_OK;
+
     }
 
     public void pageInitData(Long contentId, String pagePath) {
@@ -225,8 +228,8 @@ public class PageControllerTest extends TestBase {
         try {
             String randomType = UUID.randomUUID().toString();
             // 安装一个demo控件
-            widgetFactoryService.installWidget("com.huotu.hotcms.widget.pagingWidget", "pagingWidget", "1.0-SNAPSHOT"
-                    , randomType, null);
+            widgetFactoryService.installWidget(owner, "com.huotu.hotcms.widget.pagingWidget", "pagingWidget", "1.0-SNAPSHOT"
+                    , randomType);
             installedWidgets = widgetFactoryService.widgetList(null);
             InstalledWidget installedWidget = installedWidgets != null
                     && installedWidgets.size() > 0 ? installedWidgets.get(0) : null;
@@ -235,6 +238,7 @@ public class PageControllerTest extends TestBase {
                     ? installedWidget.getWidget().styles()[0].id() : null;
 
             component.setInstalledWidget(installedWidget);
+            component.setWidgetIdentity("com.huotu.hotcms.widget.pagingWidget-pagingWidget:1.0-SNAPSHOT");
             component.setStyleId(styleId);
             ComponentProperties properties = new ComponentProperties();
             properties.put("pageCount", 20);

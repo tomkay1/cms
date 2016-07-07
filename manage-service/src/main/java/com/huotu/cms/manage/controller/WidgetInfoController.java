@@ -11,10 +11,10 @@ package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.controller.support.CRUDController;
 import com.huotu.cms.manage.exception.RedirectException;
+import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Login;
+import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.service.repository.OwnerRepository;
-import com.huotu.hotcms.widget.entity.WidgetInfo;
-import com.huotu.hotcms.widget.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import lombok.Data;

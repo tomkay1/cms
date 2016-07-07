@@ -12,7 +12,9 @@ package com.huotu.hotcms.widget.resolve.impl;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.ComponentProperties;
+import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.Widget;
+import com.huotu.hotcms.widget.WidgetLocateService;
 import com.huotu.hotcms.widget.WidgetResolveService;
 import com.huotu.hotcms.widget.WidgetStyle;
 import com.huotu.hotcms.widget.page.Layout;
@@ -45,6 +47,11 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
 
     //    @Autowired
     private SpringTemplateEngine widgetTemplateEngine;
+
+    @Autowired
+    private WidgetLocateService widgetLocateService;
+
+
 
     private void checkEngine() {
         if (widgetTemplateEngine == null) {
@@ -96,30 +103,30 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
                 , Collections.singleton("div"), widgetContext);
     }
 
-    @Override
-    public String componentHTML(Component component, CMSContext cmsContext) {
-
-        WidgetStyle style = null;
-        for (WidgetStyle style1 : component.getInstalledWidget().getWidget().styles()) {
-            if (style1.id().equals(component.getStyleId())) {
-                style = style1;
-                break;
-            }
-        }
-
-        if (style == null) {
-            style = component.getInstalledWidget().getWidget().styles()[0];
-        }
-
-        checkEngine();
-        WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
-                , component.getInstalledWidget().getWidget(), style, webApplicationContext.getServletContext()
-                , component.getProperties());
-        WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();
-        cmsContext.getWidgetConfigurationStack().push(widgetConfiguration);
-        return widgetTemplateEngine.process(WidgetTemplateResolver.BROWSE
-                , Collections.singleton("div"), widgetContext);
-    }
+//    @Override
+//    public String componentHTML(Component component, CMSContext cmsContext) {
+//
+//        WidgetStyle style = null;
+//        for (WidgetStyle style1 : component.getInstalledWidget().getWidget().styles()) {
+//            if (style1.id().equals(component.getStyleId())) {
+//                style = style1;
+//                break;
+//            }
+//        }
+//
+//        if (style == null) {
+//            style = component.getInstalledWidget().getWidget().styles()[0];
+//        }
+//
+//        checkEngine();
+//        WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
+//                , component.getInstalledWidget().getWidget(), style, webApplicationContext.getServletContext()
+//                , component.getProperties());
+//        WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();
+//        cmsContext.getWidgetConfigurationStack().push(widgetConfiguration);
+//        return widgetTemplateEngine.process(WidgetTemplateResolver.BROWSE
+//                , Collections.singleton("div"), widgetContext);
+//    }
 
     @Override
     public String pageElementHTML(PageElement pageElement, CMSContext cmsContext) {
@@ -129,13 +136,13 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
             Layout layout = ((Layout) pageElement);
             String[] columns = layout.getValue().split(",");
             String html = "";
+            PageElement[] childPageElements = layout.getElements();
             for (int i = 0, l = columns.length; i < l; i++) {
                 cmsContext.updateNextBootstrapLayoutColumn(Integer.parseInt(columns[i]));
                 className = cmsContext.getNextBootstrapClass();
                 html = "<div class=\"" + className + "\">";
-                PageElement[] childPageElement = layout.getElements();
-                if (childPageElement != null && childPageElement.length >= 0) {
-                    html += pageElementHTML(childPageElement[i], cmsContext);
+                if (childPageElements != null && childPageElements.length >= 0 && i < childPageElements.length) {
+                    html += pageElementHTML(childPageElements[i], cmsContext);
                 }
                 html += "</div>";
             }
@@ -143,17 +150,29 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
 
         } else {//是一个组件
             Component component = (Component) pageElement;
-//            WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
-//                    , component.getInstalledWidget().getWidget(), style, webApplicationContext.getServletContext()
-//                    , component.getProperties());
-//            WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();
-//            cmsContext.getWidgetConfigurationStack().push(widgetConfiguration);
-//            return widgetTemplateEngine.process(WidgetTemplateResolver.BROWSE
-//                    , Collections.singleton("div"), widgetContext);
+            InstalledWidget installedWidget = widgetLocateService.findWidget(component.getWidgetIdentity());
+            component.setInstalledWidget(installedWidget);
 
+            WidgetStyle style = null;
+            for (WidgetStyle style1 : component.getInstalledWidget().getWidget().styles()) {
+                if (style1.id().equals(component.getStyleId())) {
+                    style = style1;
+                    break;
+                }
+            }
 
+            if (style == null) {
+                style = component.getInstalledWidget().getWidget().styles()[0];
+            }
 
-            return componentHTML(component,cmsContext);
+            checkEngine();
+            WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
+                    , component.getInstalledWidget().getWidget(), style, webApplicationContext.getServletContext()
+                    , component.getProperties());
+            WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();
+            cmsContext.getWidgetConfigurationStack().push(widgetConfiguration);
+            return widgetTemplateEngine.process(WidgetTemplateResolver.BROWSE
+                    , Collections.singleton("div"), widgetContext);
         }
     }
 }

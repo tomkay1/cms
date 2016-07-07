@@ -12,35 +12,17 @@ package com.huotu.hotcms.widget.page;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import lombok.Data;
-
 
 /**
- * 页面布局
- *
- * @author CJ
+ * Created by wenqi on 2016/7/7.
  */
-@Data
-@JsonTypeName("layout")
+
+/**
+ * 表示一个空的页面元素
+ */
+@JsonTypeName("empty")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT, visible = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Layout implements PageElement {
+public class Empty implements PageElement {
 
-    /**
-     * 用逗号间隔的bootstrap栅格参数，总值必须为12
-     * <p>比如</p>
-     * <ul>
-     *     <li>12</li>
-     *     <li>1,11</li>
-     *     <li>4,6,2</li>
-     * </ul>
-     */
-    private String value;
-
-    /**
-     * valued的split值决定有几个elements
-     */
-    @JacksonXmlElementWrapper(useWrapping=false)
-    private PageElement[] elements;
 }

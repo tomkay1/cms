@@ -14,11 +14,11 @@
     <meta charset="UTF-8">
     <link href="http://resali.huobanplus.com/cdn/bracket/css/style.default.css" rel="stylesheet">
     <link href="http://resali.huobanplus.com/cdn/bracket/css/jquery.datatables.css" rel="stylesheet">
-    <title>Owner</title>
+    <title>Article</title>
 </head>
-<body class="mainpanel" id="fa-bars">
+<body class="mainpanel" id="fa-tasks">
 <div class="pageheader">
-    <h2><i class="fa fa-bars"></i> 数据源 <span>管理当前站点的数据源</span></h2>
+    <h2><i class="fa fa-tasks"></i> 数据源 <span>管理当前站点的数据源</span></h2>
 </div>
 
 <div class="contentpanel">
@@ -42,14 +42,6 @@
                             <input name="name" title="名称" type="text" placeholder="数据源的名称"
                                    class="form-control"/>
                         </div>
-                        <label class="col-sm-2 control-label">模型</label>
-                        <div class="col-sm-2">
-                            <select name="contentType" title="模型" class="form-control">
-                                <option>文章</option>
-                                <option>视频</option>
-                            </select>
-                            <span class="help-block">描述这个数据源的特性,不同特性的数据源可以录入不同的内容</span>
-                        </div>
                         <label class="col-sm-2 control-label">父级</label>
                         <div class="col-sm-2">
                             <select name="parent" title="父级数据源" class="form-control">
@@ -58,6 +50,44 @@
                                 <option>成功案例</option>
                             </select>
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">标题</label>
+                        <div class="col-sm-2">
+                            <input name="title" title="标题" type="text" placeholder="文章标题"
+                                   class="form-control"/>
+                        </div>
+                        <label class="col-sm-2 control-label">描述</label>
+                        <div class="col-sm-2">
+                            <input name="description" title="描述" type="text" placeholder="文章描述"
+                                   class="form-control"/>
+                        </div>
+                        <label class="col-sm-2 control-label">作者</label>
+                        <div class="col-sm-2">
+                            <input name="author" title="作者" type="text" placeholder="文章作者"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">类型</label>
+                        <div class="col-sm-2">
+                            <input name="type" title="类型" type="text" placeholder="文章类型"
+                                   class="form-control"/>
+                        </div>
+                        <label class="col-sm-2 control-label">来源</label>
+                        <div class="col-sm-2">
+                            <input name="source" title="来源" type="text" placeholder="文章来源"
+                                   class="form-control"/>
+                        </div>
+                        <label class="col-sm-2 control-label">时间</label>
+                        <div class="col-sm-2">
+                            <input id="articleDate" name="date" title="时间" type="text" placeholder="文章时间"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">封面</label>
+                        <div class="col-sm-10" id="article-uploader"></div>
                     </div>
                 </div>
             </div><!-- panel-body -->
@@ -155,17 +185,26 @@
     </div>
 
 </div><!-- contentpanel -->
-<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-1.10.2.min.js"></script>
+
+<script th:inline="javascript">
+    var uploadFileUrl = /*[[@{/manage/upload/fine}]]*/ null;
+    var customerIdChangeUrl = /*[[@{/manage/supper/owner/$1/customerId}]]*/ null;
+</script>
+
+<script src="http://resali.huobanplus.com/cdn/jquery/1.9.1/jquery.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-ui-1.10.3.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/bootstrap.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/toggles.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.cookies.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.maskedinput.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/jquery.fine-uploader.min.js"></script>
+<link rel="stylesheet" href="http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/fine-uploader-new.min.css"
+      property=""/>
 
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.datatables.min.js"></script>
-<!--<script src="http://resali.huobanplus.com/cdn/bracket/js/custom.js"></script>-->
 <div ewp:replace="fragments/frame.html::#messageSection"></div>
 <script src="../../../public/bracket/js/frame.js" ewp:src="/bracket/js/frame.js"></script>
 <script src="../../../public/bracket/js/frame_custom.js" ewp:src="/bracket/js/frame_custom.js"></script>
-<!--<script src="../../../public/js/owner.js" ewp:src="/js/owner.js"></script>-->
+<script src="../../../public/js/content.js" ewp:src="/js/owner.js"></script>
 </body>
 </html>

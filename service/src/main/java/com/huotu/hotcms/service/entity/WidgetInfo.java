@@ -7,10 +7,10 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.hotcms.widget.entity;
+package com.huotu.hotcms.service.entity;
 
 import com.huotu.hotcms.service.entity.login.Owner;
-import com.huotu.hotcms.widget.entity.support.WidgetIdentifier;
+import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import lombok.Getter;
 import lombok.Setter;
 

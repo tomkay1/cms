@@ -22,7 +22,7 @@
 </div>
 
 <div class="contentpanel">
-    <form id="widgetForm" action="index.html" method="post"
+    <form id="widgetForm" action="index.html" method="post" enctype="multipart/form-data"
           th:action="@{/manage/widget}">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -72,7 +72,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">控件包</label>
                         <div class="col-sm-10">
-                            <input type="file" class="form-control" name="description" title="控件包"/>
+                            <input type="file" name="jar" class="form-control" title="控件包"/>
                             <span class="help-block">可选项,如果不上传文件系统将自动从核心库下载之。</span>
                         </div>
                     </div>
@@ -118,21 +118,22 @@
                     </thead>
                     <!--odd even-->
                     <tbody>
-                    <!--/*@thymesVar id="list" type="java.lang.Iterable<com.huotu.hotcms.service.entity.Route>"*/-->
-                    <tr th:each="route,stats:${list}" class="odd" th:class="${stats.odd?'odd':'even'}"
-                        th:attr="data-id=${route.id}" data-id="456">
-                        <td th:text="${route.rule}">com.huotu</td>
-                        <td th:text="${route.targetUri}">hello</td>
-                        <td th:text="${route.description}">1.0-SNAPSHOT</td>
-                        <td th:text="${route.createTime}">06-11</td>
+                    <!--/*@thymesVar id="list" type="java.lang.Iterable<com.huotu.hotcms.service.entity.WidgetInfo>"*/-->
+                    <tr th:each="widget,stats:${list}" class="odd" th:class="${stats.odd?'odd':'even'}"
+                        th:attr="data-id=${widget.identifier}" data-id="456">
+                        <td th:text="${widget.groupId}">com.huotu</td>
+                        <td th:text="${widget.widgetId}">hello</td>
+                        <td th:text="${widget.version}">1.0-SNAPSHOT</td>
+                        <td th:text="${{widget.createTime}}">06-11</td>
                         <td>是</td>
                         <td>普通</td>
                         <td>&nbsp;</td>
                         <td class="center">
-                            <a href="index.html" th:href="@{/manage/route/{id}(id=${route.id})}" title="编辑">
+                            <a href="index.html" th:href="@{/manage/widget/{id}(id=${widget.identifier})}" title="编辑">
                                 <i class="fa fa-pencil"></i>
                             </a>
-                            <a href="index.html" class="delete" th:href="@{/manage/route/{id}/delete(id=${route.id})}"
+                            <a href="index.html" class="delete"
+                               th:href="@{/manage/widget/{id}/delete(id=${widget.identifier})}"
                                target="_top" title="删除">
                                 <i class="fa fa-trash-o"></i>
                             </a>

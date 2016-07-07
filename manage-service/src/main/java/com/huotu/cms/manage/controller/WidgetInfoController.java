@@ -21,10 +21,14 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.NumberUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
@@ -35,7 +39,7 @@ import java.time.LocalDateTime;
 @RequestMapping("/manage/widget")
 @PreAuthorize("hasRole('ROOT')")
 public class WidgetInfoController
-        extends CRUDController<WidgetInfo, WidgetIdentifier, WidgetInfoController.NewWidgetModel, Void> {
+        extends CRUDController<WidgetInfo, WidgetIdentifier, HttpServletRequest, Void> {
 
     @Autowired
     private OwnerRepository ownerRepository;
@@ -43,6 +47,8 @@ public class WidgetInfoController
     private WidgetFactoryService widgetFactoryService;
     @Autowired
     private WidgetInfoRepository widgetInfoRepository;
+    @Autowired
+    private MultipartResolver multipartResolver;
 
     @Override
     protected String indexViewName() {
@@ -50,7 +56,7 @@ public class WidgetInfoController
     }
 
     @Override
-    protected WidgetInfo preparePersist(Login login, WidgetInfo data, NewWidgetModel extra
+    protected WidgetInfo preparePersist(Login login, WidgetInfo data, HttpServletRequest extra
             , RedirectAttributes attributes) throws RedirectException {
 
         if (widgetInfoRepository.findOne(data.getIdentifier()) != null)
@@ -58,12 +64,25 @@ public class WidgetInfoController
 
         data.setCreateTime(LocalDateTime.now());
         data.setEnabled(true);
-        if (extra.getOwnerId() != null) {
-            data.setOwner(ownerRepository.getOne(extra.getOwnerId()));
+
+        final String ownerIdParameter = extra.getParameter("ownerId");
+        if (ownerIdParameter != null && ownerIdParameter.length() > 0) {
+            Long ownerId = NumberUtils.parseNumber(ownerIdParameter, Long.class);
+            data.setOwner(ownerRepository.getOne(ownerId));
         }
         try {
-            if (extra.getJar() != null)
-                widgetFactoryService.setupJarFile(data, extra.getJar().getInputStream());
+            MultipartFile jar;
+            if (multipartResolver.isMultipart(extra)) {
+                MultipartHttpServletRequest multipartHttpServletRequest;
+                if (extra instanceof MultipartHttpServletRequest)
+                    multipartHttpServletRequest = (MultipartHttpServletRequest) extra;
+                else
+                    multipartHttpServletRequest = multipartResolver.resolveMultipart(extra);
+                jar = multipartHttpServletRequest.getFile("jar");
+            } else
+                jar = null;
+            if (jar != null)
+                widgetFactoryService.setupJarFile(data, jar.getInputStream());
             else
                 widgetFactoryService.setupJarFile(data, null);
         } catch (IOException e) {
@@ -88,6 +107,6 @@ public class WidgetInfoController
     @Data
     static class NewWidgetModel {
         private Long ownerId;
-        private MultipartFile jar;
+        private MultipartHttpServletRequest request;
     }
 }

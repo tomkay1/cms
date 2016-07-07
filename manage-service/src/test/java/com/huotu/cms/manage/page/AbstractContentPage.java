@@ -23,6 +23,12 @@ abstract class AbstractContentPage extends AbstractManagePage {
         super(webDriver.findElements(By.id("content")).isEmpty() ? webDriver : webDriver.switchTo().frame("content"));
     }
 
+    @Override
+    public void refresh() {
+        beforeDriver();
+        super.refresh();
+    }
+
     /**
      * 在使用driver之前总要确保已经switch到content
      */

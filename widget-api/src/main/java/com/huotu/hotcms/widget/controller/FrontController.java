@@ -41,7 +41,7 @@ public class FrontController implements FilterBehavioral {
 
     private static final Log log = LogFactory.getLog(FrontController.class);
 
-    @Autowired
+    @Autowired(required = false)
     private AbstractContentRepository abstractContentRepository;
 
     @Autowired
@@ -59,8 +59,9 @@ public class FrontController implements FilterBehavioral {
                 return;
             }
         } catch (Exception e) {
-            response.setStatus(HttpStatus.SC_NOT_FOUND);
+            e.printStackTrace();
         }
+        response.setStatus(HttpStatus.SC_NOT_FOUND);
 
     }
 
@@ -80,6 +81,13 @@ public class FrontController implements FilterBehavioral {
 
                 response.setContentType("text/html;charset=utf-8");
                 return;
+            } else {
+                Page page = pageService.findBySiteAndPagePath(cmsContext.getSite(), pagePath);
+                if (page != null) {
+                    pageService.generateHTML(response.getOutputStream(), page, cmsContext);
+                    response.setContentType("text/html;charset=utf-8");
+                    return;
+                }
             }//404 content is not existing or access defined.
         } catch (Exception e) {
             e.printStackTrace();

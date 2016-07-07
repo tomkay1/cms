@@ -163,12 +163,12 @@ public class PageControllerTest extends TestBase {
         pageInitData(contentId, pagePath);
 
         //case 1存在的path
-        int code = mockMvc.perform(get("/_web/{pagePath}/", pagePath)
+        int code = mockMvc.perform(get("/_web/{pagePath}", pagePath)
                 .accept(MediaType.TEXT_HTML)).andDo(print()).andReturn().getResponse().getStatus();
         assert code == HttpStatus.SC_OK;
 
         //case 2不存在的path
-        code = mockMvc.perform(get("/_web/{pagePath}/", "1234")
+        code = mockMvc.perform(get("/_web/{pagePath}", "1234")
                 .accept(MediaType.TEXT_HTML)).andDo(print()).andReturn().getResponse().getStatus();
         assert code == HttpStatus.SC_NOT_FOUND;
 

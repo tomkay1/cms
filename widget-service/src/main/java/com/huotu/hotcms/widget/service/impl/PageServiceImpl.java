@@ -30,8 +30,9 @@ import java.util.List;
  */
 @Service
 public class PageServiceImpl implements PageService {
-    @Autowired
+    @Autowired(required = false)
     private PageInfoRepository pageInfoRepository;
+
     @Autowired
     private WidgetResolveService widgetResolveService;
 
@@ -83,10 +84,12 @@ public class PageServiceImpl implements PageService {
 
     @Override
     public Page findBySiteAndPagePath(Site site, String pagePath) throws IllegalStateException {
-        Page page;
+        Page page = null;
         try {
             PageInfo pageInfo = pageInfoRepository.findBySiteAndPagePath(site, pagePath);
-            page = getPage(pageInfo.getPageId());
+            if (pageInfo != null) {
+                page = getPage(pageInfo.getPageId());
+            }
         } catch (IOException e) {
             throw new IllegalStateException("解析page信息出错");
         }

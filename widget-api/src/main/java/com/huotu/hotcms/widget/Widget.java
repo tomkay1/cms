@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.widget;
 
+import org.apache.http.entity.ContentType;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
@@ -99,9 +100,16 @@ public interface Widget {
         return new ClassPathResource("editor.html", getClass().getClassLoader());
     }
 
-
+    /**
+     * 组装这个控件所依赖的content
+     *
+     * @param contentType 正文类型 比如javascript或者css或者image
+     * @return 资源模板 具体模板技术自行实现。freemarker velocity
+     */
+    Resource widgetDependencyContent(ContentType contentType);
     /**
      * @return 页面的js资源
+     * @deprecated instead by {@link #widgetDependencyContent(ContentType)}
      */
     Resource widgetJs();
 

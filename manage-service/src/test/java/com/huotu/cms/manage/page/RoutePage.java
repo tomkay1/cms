@@ -55,39 +55,6 @@ public class RoutePage extends AbstractContentPage {
     }
 
     /**
-     * 点击任意一个.delete
-     */
-    public void deleteAny() {
-        beforeDriver();
-        webDriver.findElements(By.className("delete"))
-                .stream().findAny().ifPresent(webElement -> {
-            webElement.click();
-            try {
-                webDriver.switchTo().alert().accept();
-            } catch (Throwable ignored) {
-            }
-        });
-    }
-
-    /**
-     * 打开任意的一个
-     *
-     * @return 刚打开的页面
-     */
-    public RoutePage openAny() {
-        beforeDriver();
-        webDriver.findElements(By.className("fa-pencil"))
-                .stream().findAny().ifPresent(webElement -> {
-            webElement.click();
-            try {
-                webDriver.switchTo().alert().accept();
-            } catch (Throwable ignored) {
-            }
-        });
-        return initPage(RoutePage.class);
-    }
-
-    /**
      * 检查当前打开的值 是否跟传入的值一致
      *
      * @param route 传入Route

@@ -16,6 +16,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.util.Base64;
 
 /**
  * 控件唯一识别符
@@ -35,11 +37,19 @@ public class WidgetIdentifier implements Serializable {
     private String version;
 
     /**
-     * @param identify groupId-widgetId:version
+     * @param identify groupId-widgetId:version 也可能是Base64加密以后的{@link #toURIEncoded()}
      * @return
      * @throws IllegalArgumentException identify不符合预定规则
      */
     public static WidgetIdentifier valueOf(String identify) throws IllegalArgumentException {
+        try {
+            byte[] data = Base64.getUrlDecoder().decode(identify);
+            identify = new String(data, "UTF-8");
+        } catch (IllegalArgumentException ignored) {
+            //无所谓 那么继续
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalArgumentException(e);
+        }
         try {
             String[] args = identify.split(":");
             String[] groupIdAndWidgetId = args[0].split("-");
@@ -52,5 +62,15 @@ public class WidgetIdentifier implements Serializable {
     @Override
     public String toString() {
         return groupId + "-" + artifactId + ":" + version;
+    }
+
+    /**
+     * @return <pre>Base64.getUrlEncoder().encodeToString(data)</pre>
+     * @throws UnsupportedEncodingException
+     */
+    public String toURIEncoded() throws UnsupportedEncodingException {
+        byte[] data = toString().getBytes("UTF-8");
+        return Base64.getUrlEncoder().encodeToString(data);
+//        return URLEncoder.encode(toString(),"UTF-8");
     }
 }

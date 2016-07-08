@@ -77,7 +77,7 @@ public class RouteControllerTest extends SiteManageTest {
         Site site = loginAsSite();
 
         RoutePage page = addRoute();
-        RoutePage openPage = page.openAny();
+        RoutePage openPage = page.openOne(RoutePage.class, null);
 
         Set<Route> routeSet = routeService.getRoute(site);
         Route route = routeSet.stream().findAny().orElseThrow(() -> new IllegalStateException("似乎添加失败了。"));

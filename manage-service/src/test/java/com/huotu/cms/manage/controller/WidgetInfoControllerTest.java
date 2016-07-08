@@ -11,6 +11,7 @@ package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.ManageTest;
 import com.huotu.cms.manage.page.AdminPage;
+import com.huotu.cms.manage.page.WidgetEditPage;
 import com.huotu.cms.manage.page.WidgetPage;
 import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Owner;
@@ -19,6 +20,8 @@ import me.jiangcai.lib.resource.service.ResourceService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -85,8 +88,23 @@ public class WidgetInfoControllerTest extends ManageTest {
 //        assertThat(resourceService.getResource(widgetInfoRepository.getOne(widgetInfo3.getIdentifier()).getPath())
 //                .getInputStream()).hasSameContentAs(buffer);
 
-
         // ok 接下来是
+        // 编辑, 编辑的话 可以调整的是owner,type和enable 其他内容都是不可调整的
+
+        //选择一个作为测试
+        List<WidgetInfo> widgetInfoList = widgetInfoRepository.findAll();
+        WidgetInfo widgetInfo = widgetInfoList.get(random.nextInt(widgetInfoList.size()));
+        WidgetEditPage editPage = page.openOne(WidgetEditPage.class
+                , ele -> widgetInfo.getIdentifier().toString().equals(ele.getAttribute("data-id")));
+
+        String newType = randomDomain();
+        boolean enabled = random.nextBoolean();
+        page = editPage.change(null, newType, enabled);
+        assertThat(widgetInfo.getType())
+                .isEqualTo(newType);
+        assertThat(widgetInfo.isEnabled())
+                .isEqualTo(enabled);
+
     }
 
     private WidgetInfo randomWidgetInfoValue(Integer seed) {

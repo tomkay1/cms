@@ -43,8 +43,8 @@ public class WidgetInfo {
     @Column(name = "groupId", length = 50)
     private String groupId;
     @Id
-    @Column(name = "widgetId", length = 50)
-    private String widgetId;
+    @Column(name = "artifactId", length = 50)
+    private String artifactId;
     @Id
     @Column(name = "version", length = 50)
     private String version;
@@ -62,7 +62,7 @@ public class WidgetInfo {
     private String path;
 
     public WidgetIdentifier getIdentifier() {
-        return new WidgetIdentifier(groupId, widgetId, version);
+        return new WidgetIdentifier(groupId, artifactId, version);
     }
 
 

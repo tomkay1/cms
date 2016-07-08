@@ -14,11 +14,11 @@
     <meta charset="UTF-8">
     <link href="http://resali.huobanplus.com/cdn/bracket/css/style.default.css" rel="stylesheet">
     <link href="http://resali.huobanplus.com/cdn/bracket/css/jquery.datatables.css" rel="stylesheet">
-    <title>Route</title>
+    <title>控件包</title>
 </head>
 <body class="mainpanel" id="fa-asterisk">
 <div class="pageheader">
-    <h2><i class="fa fa-asterisk"></i> 控件管理 <span>管理所有控件,不建议非专业人士操作。</span></h2>
+    <h2><i class="fa fa-asterisk"></i> 控件包管理 <span>管理所有控件包,不建议非专业人士操作。</span></h2>
 </div>
 
 <div class="contentpanel">
@@ -30,8 +30,8 @@
                     <a href="" class="panel-close">&times;</a>
                     <a href="" class="minimize">&minus;</a>
                 </div><!-- panel-btns -->
-                <h3 class="panel-title">安装控件</h3>
-                <p>上传或者从核心库安装一个控件</p>
+                <h3 class="panel-title">安装控件包</h3>
+                <p>上传或者从核心库安装一个控件包</p>
             </div>
             <div class="panel-body">
                 <div class="form-horizontal form-bordered">
@@ -41,9 +41,9 @@
                             <input name="groupId" title="groupId" type="text"
                                    class="form-control"/>
                         </div>
-                        <label class="col-sm-2 control-label">widgetId</label>
+                        <label class="col-sm-2 control-label">artifactId</label>
                         <div class="col-sm-2">
-                            <input name="widgetId" title="widgetId" type="text"
+                            <input name="artifactId" title="artifactId" type="text"
                                    class="form-control"/>
                         </div>
                         <label class="col-sm-2 control-label">version</label>
@@ -98,19 +98,20 @@
                 <a href="" class="panel-close">&times;</a>
                 <a href="" class="minimize">&minus;</a>
             </div><!-- panel-btns -->
-            <h3 class="panel-title">控件列表</h3>
-            <p>可以管理和启用控件</p>
+            <h3 class="panel-title">控件包列表</h3>
+            <p>可以管理和启用控件包</p>
         </div>
         <div class="panel-body">
             <div class="table-responsive">
                 <table class="table" id="ownerTable">
                     <thead>
                     <tr>
-                        <th>groupId</th>
-                        <th>widgetId</th>
+                        <!--<th>groupId</th>-->
+                        <th>artifactId</th>
                         <th>version</th>
                         <th>安装时间</th>
-                        <th>启用状态</th>
+                        <th>启用</th>
+                        <th>运行</th>
                         <th>类型</th>
                         <th>专享商户</th>
                         <th>&nbsp;</th>
@@ -121,13 +122,14 @@
                     <!--/*@thymesVar id="list" type="java.lang.Iterable<com.huotu.hotcms.service.entity.WidgetInfo>"*/-->
                     <tr th:each="widget,stats:${list}" class="odd" th:class="${stats.odd?'odd':'even'}"
                         th:attr="data-id=${widget.identifier}" data-id="456">
-                        <td th:text="${widget.groupId}">com.huotu</td>
-                        <td th:text="${widget.widgetId}">hello</td>
+                        <!--<td th:text="${widget.groupId}">com.huotu</td>-->
+                        <td th:text="${widget.artifactId}">hello</td>
                         <td th:text="${widget.version}">1.0-SNAPSHOT</td>
                         <td th:text="${{widget.createTime}}">06-11</td>
-                        <td>是</td>
-                        <td>普通</td>
-                        <td>&nbsp;</td>
+                        <td th:text="${{widget.enabled}}">是</td>
+                        <td th:text="${@widgetFactoryServiceImpl.installedStatus(widget).isEmpty()?'否':'是'}">是</td>
+                        <td th:text="${widget.type}">普通</td>
+                        <td th:text="${widget.owner!=null?widget.owner.username:''}">&nbsp;</td>
                         <td class="center">
                             <a href="index.html" th:href="@{/manage/widget/{id}(id=${widget.identifier})}" title="编辑">
                                 <i class="fa fa-pencil"></i>
@@ -140,11 +142,12 @@
                         </td>
                     </tr>
                     <tr class="even" th:remove="all" data-id="123">
-                        <td>com.huotu</td>
+                        <!--<td>com.huotu</td>-->
                         <td>html</td>
                         <td>1.1</td>
                         <td>06-11</td>
                         <td>否</td>
+                        <td>是</td>
                         <td>普通</td>
                         <td>&nbsp;</td>
                         <td class="center">

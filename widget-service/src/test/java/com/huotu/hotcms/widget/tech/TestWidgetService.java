@@ -29,12 +29,12 @@
 //    }
 //
 //    @Override
-//    public void installWidget(String groupId, String widgetId, String version, String type) {
+//    public void installWidgetInfo(String groupId, String widgetId, String version, String type) {
 //
 //    }
 //
 ////    @Override
-////    public void installWidget(InputStream jarFile, String type) {
+////    public void installWidgetInfo(InputStream jarFile, String type) {
 ////
 ////    }
 //

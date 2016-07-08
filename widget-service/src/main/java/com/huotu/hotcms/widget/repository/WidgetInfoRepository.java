@@ -10,7 +10,6 @@
 package com.huotu.hotcms.widget.repository;
 
 import com.huotu.hotcms.service.entity.WidgetInfo;
-import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -25,5 +24,10 @@ import java.util.List;
 @Repository
 public interface WidgetInfoRepository extends JpaRepository<WidgetInfo, WidgetIdentifier>
         , JpaSpecificationExecutor<WidgetInfo> {
-    List<WidgetInfo> findByOwner(Owner owner);
+
+    /**
+     * @return 可用控件包
+     */
+    List<WidgetInfo> findByEnabledTrue();
+
 }

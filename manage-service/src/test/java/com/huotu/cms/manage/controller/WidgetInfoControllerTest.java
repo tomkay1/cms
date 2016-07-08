@@ -116,7 +116,7 @@ public class WidgetInfoControllerTest extends ManageTest {
         WidgetInfo info = new WidgetInfo();
         // com.huotu.hotcms.widget.pagingWidget  pagingWidget 1.0-SNAPSHOT
         info.setGroupId(widgetInfo[0]);
-        info.setWidgetId(widgetInfo[1]);
+        info.setArtifactId(widgetInfo[1]);
         info.setVersion("1.0-SNAPSHOT");
         info.setType(randomDomain());
         return info;

@@ -13,6 +13,7 @@ import com.huotu.hotcms.service.common.SiteType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Owner;
+import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.service.exception.NoHostFoundException;
 import com.huotu.hotcms.service.exception.NoSiteFoundException;
 import com.huotu.hotcms.service.repository.CategoryRepository;
@@ -143,7 +144,7 @@ public class TestBase extends SpringWebTest{
         componentProperties.put(StringUtil.createRandomStr(random.nextInt(3)+1),UUID.randomUUID().toString());
         component.setProperties(componentProperties);
         InstalledWidget installedWidget=new InstalledWidget(new TestWidget());
-        installedWidget.setInstallWidgetId(UUID.randomUUID().toString());
+        installedWidget.setIdentifier(new WidgetIdentifier());
         installedWidget.setType(UUID.randomUUID().toString());
         component.setInstalledWidget(installedWidget);
         return component;

@@ -65,7 +65,7 @@ public class WidgetPage extends AbstractContentPage {
 
     private void fillAddForm(WidgetInfo widgetInfo) {
         inputText(form, "groupId", widgetInfo.getGroupId());
-        inputText(form, "widgetId", widgetInfo.getWidgetId());
+        inputText(form, "artifactId", widgetInfo.getArtifactId());
         inputText(form, "version", widgetInfo.getVersion());
         inputText(form, "type", widgetInfo.getType());
     }

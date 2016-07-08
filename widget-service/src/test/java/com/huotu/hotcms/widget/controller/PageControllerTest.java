@@ -228,7 +228,7 @@ public class PageControllerTest extends TestBase {
         try {
             String randomType = UUID.randomUUID().toString();
             // 安装一个demo控件
-            widgetFactoryService.installWidget(owner, "com.huotu.hotcms.widget.pagingWidget", "pagingWidget", "1.0-SNAPSHOT"
+            widgetFactoryService.installWidgetInfo(owner, "com.huotu.hotcms.widget.pagingWidget", "pagingWidget", "1.0-SNAPSHOT"
                     , randomType);
             installedWidgets = widgetFactoryService.widgetList(null);
             InstalledWidget installedWidget = installedWidgets != null

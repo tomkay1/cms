@@ -42,7 +42,7 @@ public class TestWidgetFactoryServiceImpl {
     public void testInstallWidget() throws IOException, FormatException, IllegalAccessException, InstantiationException {
 
         String randomType = UUID.randomUUID().toString();
-        widgetFactoryService.installWidget(null, "com.huotu.hotcms.widget.pagingWidget", "pagingWidget", "1.0-SNAPSHOT", randomType);
+        widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.pagingWidget", "pagingWidget", "1.0-SNAPSHOT", randomType);
 
         // 校验列表,应当包含picBanner控件
         assertWidgetListContainWidgetName("pagingWidget", randomType);
@@ -53,7 +53,7 @@ public class TestWidgetFactoryServiceImpl {
         assertWidgetListContainWidgetName("pagingWidget", randomType);
 
         //更新控件
-        widgetFactoryService.updateWidget("com.huotu.hotcms.widget.pagingWidget", "pagingWidget", "1.0-SNAPSHOT", randomType);
+//        widgetFactoryService.primary("com.huotu.hotcms.widget.pagingWidget", "pagingWidget", "1.0-SNAPSHOT", randomType);
 
         assertWidgetListContainWidgetName("pagingWidget", randomType);
     }

@@ -31,7 +31,7 @@ public class WidgetIdentifier implements Serializable {
 
     private static final long serialVersionUID = -5647085640723572029L;
     private String groupId;
-    private String widgetId;
+    private String artifactId;
     private String version;
 
     /**
@@ -51,6 +51,6 @@ public class WidgetIdentifier implements Serializable {
 
     @Override
     public String toString() {
-        return groupId + "-" + widgetId + ":" + version;
+        return groupId + "-" + artifactId + ":" + version;
     }
 }

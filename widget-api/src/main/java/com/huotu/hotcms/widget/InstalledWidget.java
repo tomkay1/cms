@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.widget;
 
+import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import lombok.Data;
 
 /**
@@ -22,9 +23,9 @@ public class InstalledWidget {
     private final transient Widget widget;
 
     /**
-     *
+     * 所属的控件包的识别符,如果该控件不属于任何控件包则未null
      */
-    private String installWidgetId;
+    private WidgetIdentifier identifier;
     private Long ownerId;
     private String type;
 

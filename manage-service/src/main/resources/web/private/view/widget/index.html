@@ -131,7 +131,7 @@
                         <td th:text="${widget.type}">普通</td>
                         <td th:text="${widget.owner!=null?widget.owner.username:''}">&nbsp;</td>
                         <td class="center">
-                            <a href="index.html"
+                            <a href="widget.html"
                                th:href="@{/manage/widget/{id}(id=${widget.identifier.toURIEncoded()})}" title="编辑">
                                 <i class="fa fa-pencil"></i>
                             </a>
@@ -155,7 +155,7 @@
                             <a href="index.html" title="运行">
                                 <i class="fa fa-play"></i>
                             </a>
-                            <a href="index.html" title="编辑">
+                            <a href="widget.html" title="编辑">
                                 <i class="fa fa-pencil"></i>
                             </a>
                             <!--<a href="index.html" class="delete"-->

@@ -97,6 +97,8 @@ public class WidgetInfoControllerTest extends ManageTest {
         WidgetEditPage editPage = page.openOne(WidgetEditPage.class
                 , ele -> widgetInfo.getIdentifier().toString().equals(ele.getAttribute("data-id")));
 
+        editPage.assertObject(widgetInfo);
+
         String newType = randomDomain();
         boolean enabled = random.nextBoolean();
         page = editPage.change(null, newType, enabled);

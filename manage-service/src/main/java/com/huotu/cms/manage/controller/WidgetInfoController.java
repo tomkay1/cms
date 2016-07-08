@@ -17,7 +17,6 @@ import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.service.repository.OwnerRepository;
 import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -39,7 +38,7 @@ import java.time.LocalDateTime;
 @RequestMapping("/manage/widget")
 @PreAuthorize("hasRole('ROOT')")
 public class WidgetInfoController
-        extends CRUDController<WidgetInfo, WidgetIdentifier, HttpServletRequest, Void> {
+        extends CRUDController<WidgetInfo, WidgetIdentifier, HttpServletRequest, Long> {
 
     @Autowired
     private OwnerRepository ownerRepository;
@@ -94,19 +93,19 @@ public class WidgetInfoController
     }
 
     @Override
-    protected void prepareSave(Login login, WidgetInfo entity, WidgetInfo data, Void extra
+    protected void prepareSave(Login login, WidgetInfo entity, WidgetInfo data, Long extra
             , RedirectAttributes attributes) throws RedirectException {
-        throw new NoSuchMethodError("not support yet");
+        if (extra != null)
+            entity.setOwner(ownerRepository.getOne(extra));
+        else
+            entity.setOwner(null);
+        entity.setType(data.getType());
+        entity.setEnabled(data.isEnabled());
     }
 
     @Override
     protected String openViewName() {
-        throw new NoSuchMethodError("not support yet");
+        return "/view/widget/widget.html";
     }
 
-    @Data
-    static class NewWidgetModel {
-        private Long ownerId;
-        private MultipartHttpServletRequest request;
-    }
 }

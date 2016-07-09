@@ -34,7 +34,7 @@ import java.util.List;
 public class PageControllerImpl implements PageController {
 
     @Autowired
-    SiteRepository siteRepository;
+    private SiteRepository siteRepository;
     @Autowired
     private PageService pageService;
 

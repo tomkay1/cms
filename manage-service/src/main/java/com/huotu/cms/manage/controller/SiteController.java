@@ -19,6 +19,8 @@ import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.repository.OwnerRepository;
 import com.huotu.hotcms.service.service.SiteService;
 import lombok.Data;
+import me.jiangcai.lib.resource.Resource;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,8 @@ public class SiteController extends CRUDController<Site, Long, SiteController.Ab
 
     @Autowired
     private OwnerRepository ownerRepository;
+    @Autowired
+    private ResourceService resourceService;
 
     @Override
     protected String indexViewName() {
@@ -62,6 +66,12 @@ public class SiteController extends CRUDController<Site, Long, SiteController.Ab
         data.setSiteType(EnumUtils.valueOf(SiteType.class, extra.getSiteTypeId()));
 
         data = siteService.newSite(extra.getDomains(), extra.getHomeDomain(), data, Locale.CHINA);
+        if (extra.getTmpLogoPath() != null) {
+            Resource tmp = resourceService.getResource(extra.getTmpLogoPath());
+            if (tmp.exists()) {
+
+            }
+        }
         return data;
     }
 
@@ -72,7 +82,7 @@ public class SiteController extends CRUDController<Site, Long, SiteController.Ab
 
     @Override
     protected String openViewName() {
-        return "/view/site/open.html";
+        return "/view/site/site.html";
     }
 
     @Data
@@ -80,5 +90,6 @@ public class SiteController extends CRUDController<Site, Long, SiteController.Ab
         private int siteTypeId;
         private String[] domains;
         private String homeDomain;
+        private String tmpLogoPath;
     }
 }

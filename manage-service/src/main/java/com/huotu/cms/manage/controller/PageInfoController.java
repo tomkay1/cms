@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
 /**
  * 页面控制器
  * <p>
- * 还附带了一个功能{@link FilterBehavioral}可以进行选择过滤。
+ * 还附带了一个功能{@link FilterBehavioral}可以进行选择过滤。</p>
  *
  * @author CJ
  */

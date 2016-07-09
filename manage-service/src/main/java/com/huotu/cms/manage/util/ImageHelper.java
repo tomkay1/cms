@@ -11,7 +11,13 @@ package com.huotu.cms.manage.util;
 
 import me.jiangcai.lib.resource.service.ResourceService;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.UUID;
 
 /**
  * @author CJ
@@ -24,9 +30,16 @@ public class ImageHelper {
      * @param type            类型 比如png,jpg
      * @param resourceService 资源服务
      * @param data            原数据
+     * @return 资源path
      */
-    public static final void storeAsImage(String type, ResourceService resourceService, InputStream data) {
-
+    public static final String storeAsImage(String type, ResourceService resourceService, InputStream data)
+            throws IOException {
+        BufferedImage image = ImageIO.read(data);
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        ImageIO.write(image, type, buffer);
+        String path = UUID.randomUUID().toString() + "." + type;
+        resourceService.uploadResource(path, new ByteArrayInputStream(buffer.toByteArray()));
+        return path;
     }
 
 }

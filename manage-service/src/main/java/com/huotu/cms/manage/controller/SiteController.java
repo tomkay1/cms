@@ -11,6 +11,7 @@ package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.controller.support.CRUDController;
 import com.huotu.cms.manage.exception.RedirectException;
+import com.huotu.cms.manage.util.ImageHelper;
 import com.huotu.hotcms.service.common.EnumUtils;
 import com.huotu.hotcms.service.common.SiteType;
 import com.huotu.hotcms.service.entity.Site;
@@ -29,6 +30,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Locale;
 
@@ -69,7 +71,16 @@ public class SiteController extends CRUDController<Site, Long, SiteController.Ab
         if (extra.getTmpLogoPath() != null) {
             Resource tmp = resourceService.getResource(extra.getTmpLogoPath());
             if (tmp.exists()) {
-
+                try {
+                    String path = ImageHelper.storeAsImage("png", resourceService, tmp.getInputStream());
+                    data.setLogoUri(path);
+                } catch (IOException e) {
+                    throw new RedirectException("/manage/site", e.getMessage(), e);
+                }
+                try {
+                    resourceService.deleteResource(extra.getTmpLogoPath());
+                } catch (IOException ignored) {
+                }
             }
         }
         return data;

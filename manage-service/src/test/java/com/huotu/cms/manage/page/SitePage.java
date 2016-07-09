@@ -9,17 +9,24 @@
 
 package com.huotu.cms.manage.page;
 
+import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.htmlunit.HtmlUnitWebElement;
 import org.openqa.selenium.support.FindBy;
 import org.springframework.core.io.Resource;
 
+import java.awt.*;
+import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 /**
  * @author CJ
@@ -32,7 +39,7 @@ public class SitePage extends AbstractContentPage {
     @FindBy(id = "logo-uploader")
     private WebElement uploader;
     @FindBy(id = "addSiteForm")
-    private WebElement addSiteForm;
+    private WebElement form;
 
     public SitePage(WebDriver webDriver) {
         super(webDriver);
@@ -42,37 +49,83 @@ public class SitePage extends AbstractContentPage {
     public WebElement getBody() {
         return body;
     }
+
     @Override
     public void validatePage() {
-//        System.out.println(webDriver.getPageSource());
-        assertThat(body.isDisplayed()).isTrue();
+        normalValid();
     }
 
-    public void uploadLogo(String name, Resource resource) throws IOException {
-//        Path tempFile = Files.createTempFile(name,name);
-//        Files.copy(resource.getInputStream(),tempFile,REPLACE_EXISTING);
-//        tempFile.toFile().deleteOnExit();
+    public void uploadLogo(String name, Resource resource) throws IOException, AWTException, InterruptedException {
+        System.out.println(webDriver.getPageSource());
+        Path tempFile = Files.createTempFile(name, name);
+        Files.copy(resource.getInputStream(), tempFile, REPLACE_EXISTING);
+        tempFile.toFile().deleteOnExit();
+
+        System.out.println(uploader.isDisplayed());
+        System.out.println(uploader.findElement(By.className("qq-upload-button")).isDisplayed());
+
+        StringSelection stringSelection = new StringSelection(tempFile.toAbsolutePath().toString());
+        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
+        uploader.findElement(By.className("qq-upload-button")).click();
+
+//        Thread.sleep(1000);
+//        Robot robot = new Robot();
+//        click(robot, KeyEvent.VK_ENTER);
+//        robot.keyPress(KeyEvent.VK_CONTROL);
+//        robot.keyPress(KeyEvent.VK_V);
+//        robot.keyRelease(KeyEvent.VK_CONTROL);
+//        robot.keyRelease(KeyEvent.VK_V);
+//        click(robot, KeyEvent.VK_ENTER);
 //        WebElement uploaderFile = uploader.findElement(By.tagName("input"));
 //        uploaderFile.sendKeys(tempFile.toString());
+        System.out.println(webDriver.switchTo().activeElement());
+        webDriver.switchTo().activeElement().sendKeys(tempFile.toAbsolutePath().toString());
+        System.out.println(webDriver.getPageSource());
+//        uploader.findElement(By.className("qq-upload-button")).sendKeys(tempFile.toAbsolutePath().toString());
+        System.out.println();
     }
 
     public void addSite(String name, String title, String desc, String[] keywords, String logo, String typeName
             , String copyright, String[] domains, String homeDomain) {
         beforeDriver();
-        inputText(addSiteForm, "name", name);
-        inputText(addSiteForm, "title", title);
-        inputText(addSiteForm, "description", desc);
-        inputTags(addSiteForm, "keywords", keywords);
-        // TODO logo
-        inputSelect(addSiteForm, "siteTypeId", typeName);
-        inputText(addSiteForm, "copyright", copyright);
-        inputTags(addSiteForm, "domains", domains);
-        inputText(addSiteForm, "homeDomain", homeDomain);
+        // 先打开这个添加区域
+        WebElement panel = form.findElement(By.className("panel-default"));
+        if (panel.getAttribute("class").contains("close-panel")) {
+            panel.findElement(By.cssSelector("a.maximize")).click();
+        }
+
+//        uploadLogo("thumbnail.png",new ClassPathResource("thumbnail.png"));
+        inputHidden(form, "tmpLogoPath", logo);
+
+        inputText(form, "name", name);
+        inputText(form, "title", title);
+        inputText(form, "description", desc);
+        inputTags(form, "keywords", keywords);
+        inputSelect(form, "siteTypeId", typeName);
+        inputText(form, "copyright", copyright);
+        inputTags(form, "domains", domains);
+        inputText(form, "homeDomain", homeDomain);
 
         log.info("to click submit for add site.");
 //        System.out.println(webDriver.getPageSource());
-        addSiteForm.findElement(By.className("btn-primary")).click();
+        form.findElement(By.className("btn-primary")).click();
         reloadPageInfo();
+    }
+
+    private void inputHidden(WebElement form, String name, String value) {
+        WebElement input = form.findElement(By.name(name));
+        try {
+            Field field = HtmlUnitWebElement.class.getDeclaredField("element");
+            field.setAccessible(true);
+            HtmlInput htmlHiddenInput = (HtmlInput) field.get(input);
+            if (value == null)
+                htmlHiddenInput.setValueAttribute("");
+            else
+                htmlHiddenInput.setValueAttribute(value);
+        } catch (Exception ex) {
+            throw new IllegalStateException(ex);
+        }
+
     }
 
 

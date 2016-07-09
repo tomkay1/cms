@@ -15,6 +15,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -35,6 +36,11 @@ public abstract class AbstractManagePage extends BracketPage {
 
     public AbstractManagePage(WebDriver webDriver) {
         super(webDriver);
+    }
+
+    protected void printThisPage() {
+        System.err.println("url:" + webDriver.getCurrentUrl());
+        System.err.println(webDriver.getPageSource());
     }
 
     public void assertNoDanger() throws InterruptedException {
@@ -113,10 +119,16 @@ public abstract class AbstractManagePage extends BracketPage {
      * @param value       要输入的值
      */
     protected void inputText(WebElement formElement, String inputName, String value) {
-        WebElement input = formElement.findElement(By.name(inputName));
-        input.clear();
-        if (value != null)
-            input.sendKeys(value);
+        try {
+            WebElement input = formElement.findElement(By.name(inputName));
+            input.clear();
+            if (value != null)
+                input.sendKeys(value);
+        } catch (ElementNotVisibleException exception) {
+            printThisPage();
+            throw exception;
+        }
+
     }
 
     /**

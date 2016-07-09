@@ -27,6 +27,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -68,7 +69,7 @@ public class SiteController extends CRUDController<Site, Long, SiteController.Ab
         data.setSiteType(EnumUtils.valueOf(SiteType.class, extra.getSiteTypeId()));
 
         data = siteService.newSite(extra.getDomains(), extra.getHomeDomain(), data, Locale.CHINA);
-        if (extra.getTmpLogoPath() != null) {
+        if (!StringUtils.isEmpty(extra.getTmpLogoPath())) {
             Resource tmp = resourceService.getResource(extra.getTmpLogoPath());
             if (tmp.exists()) {
                 try {

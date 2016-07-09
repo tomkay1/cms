@@ -9,6 +9,7 @@
 
 package com.huotu.cms.manage.page;
 
+import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Owner;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -42,10 +43,34 @@ public class WidgetEditPage extends AbstractContentPage {
     }
 
     public WidgetPage change(Owner owner, String type, boolean enabled) {
+        System.out.println(webDriver.getPageSource());
         if (owner != null)
             inputSelect(form, "ownerId", owner.getUsername());
         inputText(form, "type", type);
+        if (owner == null) {
+            inputSelect(form, "extra", "无");
+        } else {
+            inputSelect(form, "extra", owner.getUsername());
+        }
+        inputChecked(form, "enabled", enabled);
         form.findElement(By.className("btn-primary")).click();
         return initPage(WidgetPage.class);
     }
+
+    /**
+     * 校验字段
+     *
+     * @param widgetInfo 期望值
+     */
+    public void assertObject(WidgetInfo widgetInfo) {
+        System.out.println(webDriver.getPageSource());
+        assertInputText(form, "groupId", widgetInfo.getGroupId());
+        assertInputText(form, "artifactId", widgetInfo.getArtifactId());
+        assertInputText(form, "version", widgetInfo.getVersion());
+        assertInputText(form, "type", widgetInfo.getType());
+        assertInputSelect(form, "extra", widgetInfo.getOwner() != null ? widgetInfo.getOwner().getUsername() : "无");
+        assertInputChecked(form, "enabled", widgetInfo.isEnabled());
+    }
+
+
 }

@@ -40,7 +40,6 @@ public class WidgetPage extends AbstractContentPage {
 
     @Override
     public void validatePage() {
-        System.out.println(webDriver.getPageSource());
         assertThat(body.isDisplayed())
                 .isTrue();
         try {

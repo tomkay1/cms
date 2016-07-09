@@ -9,11 +9,14 @@
 
 package com.huotu.cms.manage.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.cms.manage.ManageTest;
+import com.huotu.hotcms.widget.page.Page;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.util.StreamUtils;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.UUID;
@@ -87,5 +90,15 @@ public class PageControllerTest extends ManageTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.length()").value(0));
+    }
+
+    @Test
+    public void readJson() throws IOException {
+        InputStream is= this.getClass().getClassLoader().getResourceAsStream("page.json");
+        String pageJson= StreamUtils.copyToString(is, Charset.forName("utf-8"));
+        ObjectMapper objectMapper=new ObjectMapper();
+        Page page=objectMapper.readValue(pageJson, Page.class);
+
+
     }
 }

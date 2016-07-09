@@ -25,7 +25,8 @@ import java.io.Serializable;
  */
 @JsonSubTypes({
         @JsonSubTypes.Type(value = Layout.class,name = "layout"),
-        @JsonSubTypes.Type(value = Component.class,name = "component")
+        @JsonSubTypes.Type(value = Component.class,name = "component"),
+        @JsonSubTypes.Type(value = Empty.class,name = "empty")
 })
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT, visible = true)
 public interface PageElement extends Serializable {

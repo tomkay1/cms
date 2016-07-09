@@ -207,31 +207,6 @@
 
 </div><!-- contentpanel -->
 
-<div class="modal fade" id="customerIdChanger" tabindex="-1" role="dialog" aria-labelledby="customerIdChangerLabel"
-     aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="customerIdChangerLabel">关联伙伴商城</h4>
-            </div>
-            <div class="modal-body">
-                <p>如果当前商户已经关联商城号,执行操作将更改商户号,这个对于商城网站将带来极大影响,请务必慎重。</p>
-                <input name="customerId" title="商户号" type="text" placeholder="伙伴商城商户号"
-                       class="form-control" value="3447"
-                       th:value="${@environment.acceptsProfiles('test')?'3447':''}"/>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-white" data-dismiss="modal">不了</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">好的</button>
-            </div>
-        </div><!-- modal-content -->
-    </div><!-- modal-dialog -->
-</div><!-- modal -->
-<script th:inline="javascript">
-    var uploadFileUrl = /*[[@{/manage/upload/fine}]]*/ null;
-    var customerIdChangeUrl = /*[[@{/manage/supper/owner/$1/customerId}]]*/ null;
-</script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-1.10.2.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-ui-1.10.3.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/bootstrap.min.js"></script>

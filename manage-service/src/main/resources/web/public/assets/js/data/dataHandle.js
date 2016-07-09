@@ -15,6 +15,7 @@
             $.each(root, function (i, v) {
                 var child = {};
                 child.layout = $(v).data('layout');
+                child.empty= $(v).data('empty');
                 child.components = DataHandle.traversalDOM2Json(v);
                 data.push(child);
             });

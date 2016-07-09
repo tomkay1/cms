@@ -1,0 +1,31 @@
+{
+  "pageIdentity": "1",
+  "title": "81b20c9d-12d3-4a2a-a3c2-82f5fd6dd26e",
+  "elements": [
+    {
+      "layout": {
+        "value": "12",
+        "elements": [
+          {
+            "layout": {
+              "value": "4,4,4",
+              "elements": [
+                {
+                  "component": {
+                    "widgetIdentity": "df65a166-c7ca-4ff9-a082-02c3f0377d84",
+                    "styleId": "a0752249-0020-4c6d-b5df-0e4c534ff114",
+                    "properties": {
+                      "iQ": "3dcb7fbd-f891-4cf3-b234-5a32b378b605"
+                    },
+                    "empty": {},
+                    "empty": {}
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

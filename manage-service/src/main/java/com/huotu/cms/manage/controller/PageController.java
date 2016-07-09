@@ -41,13 +41,15 @@ import java.util.List;
 @Controller
 public interface PageController {
     /**
-     * <p>获取页面{@link Page}</p>
+     * <p>获取页面{@link PageInfo}</p>
      * @param siteId 站点ID
-     * @return 拿到相应的界面
+     * @return 拿到相应的界面信息列表
+     * @see PageInfo
      * @see Page
+     * @throws IOException 异常
      */
 
-    @RequestMapping(value = "/manage/owners/{siteId}/pages",method = RequestMethod.GET)
+    @RequestMapping(value = "/manage/{siteId}/pages",method = RequestMethod.GET)
     @ResponseBody
     List<PageInfo> getPageList(@PathVariable("siteId") Long siteId) throws IOException;
 
@@ -65,19 +67,19 @@ public interface PageController {
 
     /**
      * <p>保存界面{@link Page}</p>
-     * @param pageId 页面ID
      * @throws IOException 从request中读取请求体时异常
      */
 
-    @RequestMapping(value = "/manage/pages/{pageId}",method = RequestMethod.PUT)
+    @RequestMapping(value = "/manage/pages/{siteId}",method = RequestMethod.PUT)
     @ResponseStatus(code = HttpStatus.ACCEPTED)
-    void savePage(@PathVariable("pageId") Long pageId, HttpServletRequest request) throws IOException, URISyntaxException;
+    void savePage(HttpServletRequest request,@PathVariable Long siteId) throws IOException, URISyntaxException;
 
     /**
      * <p>添加页面{@link Page}</p>
      * @param ownerId 拥有者id
      * @throws IOException 从request中读取请求体时异常
      */
+    @Deprecated
     @RequestMapping(value = "/manage/owners/{ownerId}/pages",method = RequestMethod.POST)
     @ResponseStatus(code = HttpStatus.ACCEPTED)
     void addPage(@PathVariable("ownerId") long ownerId, HttpServletRequest request) throws IOException;

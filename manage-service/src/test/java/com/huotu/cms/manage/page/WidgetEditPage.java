@@ -16,8 +16,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 /**
  * @author CJ
  */
@@ -31,19 +29,16 @@ public class WidgetEditPage extends AbstractContentPage {
     }
 
     @Override
+    public WebElement getBody() {
+        return form;
+    }
+
+    @Override
     public void validatePage() {
-        System.out.println(webDriver.getPageSource());
-        assertThat(form.isDisplayed())
-                .isTrue();
-        try {
-            assertNoDanger();
-        } catch (InterruptedException e) {
-            throw new AssertionError(e);
-        }
+        normalValid();
     }
 
     public WidgetPage change(Owner owner, String type, boolean enabled) {
-        System.out.println(webDriver.getPageSource());
         if (owner != null)
             inputSelect(form, "ownerId", owner.getUsername());
         inputText(form, "type", type);
@@ -63,7 +58,6 @@ public class WidgetEditPage extends AbstractContentPage {
      * @param widgetInfo 期望值
      */
     public void assertObject(WidgetInfo widgetInfo) {
-        System.out.println(webDriver.getPageSource());
         assertInputText(form, "groupId", widgetInfo.getGroupId());
         assertInputText(form, "artifactId", widgetInfo.getArtifactId());
         assertInputText(form, "version", widgetInfo.getVersion());

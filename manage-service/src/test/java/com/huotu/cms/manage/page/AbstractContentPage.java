@@ -13,8 +13,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * iframe子页面
@@ -25,6 +28,27 @@ abstract class AbstractContentPage extends AbstractManagePage {
 
     AbstractContentPage(WebDriver webDriver) {
         super(webDriver.findElements(By.id("content")).isEmpty() ? webDriver : webDriver.switchTo().frame("content"));
+    }
+
+    /**
+     * @return 就是页面中的body元素
+     */
+    public abstract WebElement getBody();
+
+    protected void normalValid() {
+        try {
+            assertThat(getBody().isDisplayed())
+                    .isTrue();
+        } catch (RuntimeException ex) {
+            System.out.println(webDriver.getPageSource());
+            throw ex;
+        }
+
+        try {
+            assertNoDanger();
+        } catch (InterruptedException e) {
+            throw new AssertionError(e);
+        }
     }
 
     @Override
@@ -49,21 +73,16 @@ abstract class AbstractContentPage extends AbstractManagePage {
     }
 
     /**
-     * 打开任意的一个
+     * 点击table中的一个row中的fa-pencil
      *
-     * @return 刚打开的页面
+     * @param nextPageClass 刷新完成的页面的Class
+     * @param rowFilter     只有符合条件的row会被操作;可选项
+     * @param <T>           新页面的类型
+     * @return 新页面实例
+     * @see #consumeElementInTable(Class, Predicate, Consumer)
      */
-    public <T extends AbstractManagePage> T openOne(Class<T> clazz, Predicate<WebElement> predicate) {
-        beforeDriver();
-        WebElement table = webDriver.findElement(By.cssSelector("table.table"));
-
-        // fa-pencil
-        //
-        Stream<WebElement> stream = table.findElements(By.cssSelector("tbody>tr")).stream();
-        if (predicate != null)
-            stream = stream.filter(predicate);
-
-        stream.findAny().ifPresent(webElement -> {
+    public <T extends AbstractManagePage> T clickElementInTable(Class<T> nextPageClass, Predicate<WebElement> rowFilter) {
+        return consumeElementInTable(nextPageClass, rowFilter, webElement -> {
 
             webElement.findElement(By.className("fa-pencil")).click();
             try {
@@ -71,7 +90,30 @@ abstract class AbstractContentPage extends AbstractManagePage {
             } catch (Throwable ignored) {
             }
         });
-        return initPage(clazz);
+    }
+
+    /**
+     * 操作table中的一个row
+     *
+     * @param nextPageClass 刷新完成的页面的Class
+     * @param rowFilter     只有符合条件的row会被操作;可选项
+     * @param rowConsumer   处理这个row
+     * @param <T>           新页面的类型
+     * @return 新页面实例
+     */
+    public <T extends AbstractManagePage> T consumeElementInTable(Class<T> nextPageClass, Predicate<WebElement> rowFilter
+            , Consumer<WebElement> rowConsumer) {
+        beforeDriver();
+        WebElement table = webDriver.findElement(By.cssSelector("table.table"));
+
+        // fa-pencil
+        //
+        Stream<WebElement> stream = table.findElements(By.cssSelector("tbody>tr")).stream();
+        if (rowFilter != null)
+            stream = stream.filter(rowFilter);
+
+        stream.findAny().ifPresent(rowConsumer);
+        return initPage(nextPageClass);
     }
 
     /**

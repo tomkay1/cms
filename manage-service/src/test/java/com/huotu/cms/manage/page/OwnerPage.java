@@ -30,6 +30,11 @@ public class OwnerPage extends AbstractContentPage {
     }
 
     @Override
+    public WebElement getBody() {
+        return webDriver.findElement(By.tagName("body"));
+    }
+
+    @Override
     public void validatePage() {
         assertThat(addOwnerForm.isDisplayed());
     }

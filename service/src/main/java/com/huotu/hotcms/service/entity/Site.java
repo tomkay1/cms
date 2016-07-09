@@ -43,108 +43,91 @@ public class Site {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "siteId")
     private Long siteId;
-
     /**
      * 是否上架
      */
     private boolean enabled;
-
     /**
      * 是否已删除,做什么用?
      */
     @Column(name = "deleted")
     private boolean deleted = false;
-
     /**
      * 所有主体
      */
     @ManyToOne
     @JoinColumn(name = "ownerId")
     private Owner owner;
-
     /**
      * 跳转地址,表示这个站点并不是由CMS系统维护(如果是的话,整个系统就会瘫痪。所有这个地址并不应该开放给普通用户管理。),需要跳转至目标地址
      */
     @Column(length = 100)
     private String redirectUrl;
-
     /**
      * 站点名称
      */
     @Column(name = "name", length = 100)
     private String name;
-
     /**
      * 标题，填写有助于搜索引擎优化
      */
     @Column(name = "title", length = 200)
     private String title;
-
     /**
      * 关键字，填写有助于搜索引擎优化
      */
     @Column(name = "keywords")
     private String keywords;
-
     /**
      * 描述，填写有助于搜索引擎优化
      */
     @Column(name = "description")
     private String description;
-
     /**
      * 站点logo
      */
     @Column(name = "logoUri")
     private String logoUri;
-
     /**
      * 版权信息
      */
     @Column(name = "copyright")
     @Lob
     private String copyright;
-
     /**
      * 是否自定义模板
      * ? 做什么用?
      */
     @Column(name = "custom")
     private boolean custom = false;
-
     /**
      * 自定义模板根路径
      * ? 做什么用?
      */
     @Column(name = "customViewUrl")
     private String customTemplateUrl;
-
     /**
      * 站点是否个性化
      * ? 做什么用?
      */
     @Column(name = "personalise")
     private boolean personalise;
-
     /**
      * 资源根路径(可以CDN方式读取缓存)
      * ? 做什么用?
      */
     @Column(name = "resourceUrl")
     private String resourceUrl;
-
     /**
      * 站点创建时间
      */
     @Column(name = "createTime")
     private LocalDateTime createTime;
-
     /**
      * 站点更新时间
      */
     @Column(name = "updateTime")
     private LocalDateTime updateTime;
-
     /**
      * 网站类型(pc 商城or pc shop)
      */
@@ -156,6 +139,13 @@ public class Site {
     @ManyToOne(optional = false)
     @JoinColumn(name = "regionId")
     private Region region;
+
+    /**
+     * @return 是否允许上架
+     */
+    public boolean isAbleToRun() {
+        return true;
+    }
 
     @Override
     public boolean equals(Object o) {

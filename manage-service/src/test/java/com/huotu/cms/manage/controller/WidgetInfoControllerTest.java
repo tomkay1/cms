@@ -16,8 +16,11 @@ import com.huotu.cms.manage.page.WidgetPage;
 import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
+import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +37,8 @@ public class WidgetInfoControllerTest extends ManageTest {
 
     @Autowired
     private WidgetInfoRepository widgetInfoRepository;
+    @Autowired
+    private WidgetFactoryService widgetFactoryService;
     @Autowired
     private ResourceService resourceService;
 
@@ -94,7 +99,7 @@ public class WidgetInfoControllerTest extends ManageTest {
         //选择一个作为测试
         List<WidgetInfo> widgetInfoList = widgetInfoRepository.findAll();
         WidgetInfo widgetInfo = widgetInfoList.get(random.nextInt(widgetInfoList.size()));
-        WidgetEditPage editPage = page.openOne(WidgetEditPage.class
+        WidgetEditPage editPage = page.clickElementInTable(WidgetEditPage.class
                 , ele -> widgetInfo.getIdentifier().toString().equals(ele.getAttribute("data-id")));
 
         editPage.assertObject(widgetInfo);
@@ -106,6 +111,29 @@ public class WidgetInfoControllerTest extends ManageTest {
                 .isEqualTo(newType);
         assertThat(widgetInfo.isEnabled())
                 .isEqualTo(enabled);
+
+        //找一个没在运行的家伙
+        WidgetInfo idleWidgetInfo = widgetInfoList.stream()
+                .filter(widgetInfo3 -> widgetFactoryService.installedStatus(widgetInfo3).isEmpty())
+                .findAny().orElseThrow(() -> new AssertionError("需要存在一个没运行的控件"));
+
+        page = page.consumeElementInTable(WidgetPage.class
+                , ele -> idleWidgetInfo.getIdentifier().toString().equals(ele.getAttribute("data-id"))
+                , row -> {
+                    WebElement toPlayer = row.findElement(By.className("fa-play"));
+                    assertThat(toPlayer.isDisplayed())
+                            .isTrue();
+                    toPlayer.click();
+                });
+
+        // 页面上来看应该是在运行了
+        page.consumeElementInTable(WidgetPage.class
+                , ele -> idleWidgetInfo.getIdentifier().toString().equals(ele.getAttribute("data-id"))
+                , row -> assertThat(row.findElements(By.className("fa-play")))
+                        .isEmpty());
+
+        assertThat(widgetFactoryService.installedStatus(idleWidgetInfo))
+                .isNotEmpty();
 
     }
 

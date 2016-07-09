@@ -9,19 +9,24 @@
 
 package com.huotu.cms.manage.controller;
 
+import com.huotu.cms.manage.bracket.GritterUtils;
 import com.huotu.cms.manage.controller.support.CRUDController;
 import com.huotu.cms.manage.exception.RedirectException;
 import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.service.repository.OwnerRepository;
+import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.NumberUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartResolver;
@@ -48,6 +53,20 @@ public class WidgetInfoController
     private WidgetInfoRepository widgetInfoRepository;
     @Autowired
     private MultipartResolver multipartResolver;
+
+    @RequestMapping(value = "/{id}/install", method = RequestMethod.GET)
+    @Transactional
+    public String install(@PathVariable("id") WidgetIdentifier id, RedirectAttributes attributes) {
+        WidgetInfo widgetInfo = widgetInfoRepository.getOne(id);
+        try {
+            widgetFactoryService.installWidgetInfo(widgetInfo);
+            GritterUtils.AddSuccess("完成", attributes);
+        } catch (IOException | FormatException e) {
+            GritterUtils.AddFlashDanger(e.getLocalizedMessage(), attributes);
+        }
+
+        return redirectIndexViewName();
+    }
 
     @Override
     protected String indexViewName() {

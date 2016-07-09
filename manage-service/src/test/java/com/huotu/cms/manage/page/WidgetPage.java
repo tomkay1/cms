@@ -22,8 +22,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 /**
  * @author CJ
  */
@@ -39,14 +37,13 @@ public class WidgetPage extends AbstractContentPage {
     }
 
     @Override
+    public WebElement getBody() {
+        return body;
+    }
+
+    @Override
     public void validatePage() {
-        assertThat(body.isDisplayed())
-                .isTrue();
-        try {
-            assertNoDanger();
-        } catch (InterruptedException e) {
-            throw new AssertionError(e);
-        }
+        normalValid();
     }
 
     /**

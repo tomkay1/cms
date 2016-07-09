@@ -30,8 +30,13 @@ public class EditPage extends AbstractContentPage {
     @FindBy(id="confBtn")
     private WebElement savaBtn;
 
-    EditPage(WebDriver webDriver) {
+    public EditPage(WebDriver webDriver) {
         super(webDriver);
+    }
+
+    @Override
+    public WebElement getBody() {
+        return body;
     }
 
     @Override

@@ -74,8 +74,22 @@ public interface WidgetFactoryService {
      * @throws FormatException 控件包违约
      */
     @Transactional
-    void installWidgetInfo(Owner owner, String groupId, String artifactId, String version, String type) throws IOException
-            , FormatException;
+    void installWidgetInfo(Owner owner, String groupId, String artifactId, String version, String type)
+            throws IOException, FormatException;
+
+    /**
+     * 安装新的控件包
+     * <p>
+     * 从私有Maven仓库 http://repo.51flashmall.com:8081/nexus/content/groups/public 自动获取</p>
+     * <p>这个安装将是持久化的</p>
+     *
+     * @param widgetInfo 控件包的信息
+     * @throws IOException     获取控件包资源时发生意外
+     * @throws FormatException 控件包违约
+     */
+    @Transactional
+    void installWidgetInfo(WidgetInfo widgetInfo)
+            throws IOException, FormatException;
 
     /**
      * 以实例方式直接进行安装

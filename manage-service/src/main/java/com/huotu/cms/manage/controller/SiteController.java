@@ -30,20 +30,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.time.LocalDateTime;
 import java.util.Locale;
 
-@Data
-class AboutNewSite {
-    private int siteTypeId;
-    private String[] domains;
-    private String homeDomain;
-}
-
 /**
  * Created by chendeyu on 2015/12/24.
  * 全面重写 by CJ
  */
 @Controller
 @RequestMapping("/manage/site")
-public class SiteController extends CRUDController<Site, Long, AboutNewSite, Void> {
+public class SiteController extends CRUDController<Site, Long, SiteController.AboutNewSite, Void> {
 
     private static final Log log = LogFactory.getLog(SiteController.class);
 
@@ -82,4 +75,10 @@ public class SiteController extends CRUDController<Site, Long, AboutNewSite, Voi
         return "/view/site/open.html";
     }
 
+    @Data
+    static class AboutNewSite {
+        private int siteTypeId;
+        private String[] domains;
+        private String homeDomain;
+    }
 }

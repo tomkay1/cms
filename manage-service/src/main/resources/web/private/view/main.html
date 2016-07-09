@@ -19,7 +19,7 @@
     <title>内容管理-火图CMS内容管理系统</title>
     <link href="http://resali.huobanplus.com/cdn/bracket/css/style.default.css" rel="stylesheet">
     <link href="http://resali.huobanplus.com/cdn/bracket/css/jquery.datatables.css" rel="stylesheet">
-    <link href="../../public/assets/css/customize.css" rel="stylesheet">
+    <link href="../../public/assets/css/customize.css" ewp:href="/assets/css/customize.css" rel="stylesheet">
     <link href="http://resali.huobanplus.com/cdn/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -256,7 +256,7 @@
             <span class="qq-upload-drop-area-text-selector"></span>
         </div>
         <div class="qq-upload-button-selector qq-upload-button">
-            <div>选择文件,或者拖拽至此</div>
+            <div>选择文件</div>
         </div>
             <span class="qq-drop-processing-selector qq-drop-processing">
                 <span>处理中</span>
@@ -327,6 +327,9 @@
 <link href="http://resali.huobanplus.com/cdn/bracket/css/jquery.gritter.css" rel="stylesheet" property=""/>
 <script src="../../public/bracket/js/gritter.js" ewp:src="/bracket/js/gritter.js"></script>
 
+<script th:inline="javascript">
+    $.cmsUploaderUrl = /*[[@{/manage/upload/fine}]]*/ null;
+</script>
 <!--/*@thymesVar id="_primary" type="java.lang.String"*/-->
 <!--/*@thymesVar id="_info" type="java.lang.String"*/-->
 <!--/*@thymesVar id="_danger" type="java.lang.String"*/-->

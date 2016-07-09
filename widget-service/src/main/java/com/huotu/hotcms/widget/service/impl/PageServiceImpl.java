@@ -13,6 +13,7 @@ import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.repository.PageInfoRepository;
+import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.WidgetResolveService;
 import com.huotu.hotcms.widget.page.Page;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -35,6 +37,9 @@ public class PageServiceImpl implements PageService {
 
     @Autowired
     private WidgetResolveService widgetResolveService;
+
+    @Autowired
+    SiteRepository siteRepository;
 
     @Override
     public String generateHTML(Page page, CMSContext context) {
@@ -56,14 +61,16 @@ public class PageServiceImpl implements PageService {
 
 
     @Override
-    public void savePage(Page page, Long pageId) throws IOException {
+    public void savePage(Page page,Long siteId) throws IOException {
         XmlMapper xmlMapper = new XmlMapper();
         //xmlMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         String pageXml = xmlMapper.writeValueAsString(page);
-        PageInfo pageInfo =pageInfoRepository.findOne(pageId);
+        PageInfo pageInfo =pageInfoRepository.findOne(page.getPageIdentity());
         if(pageInfo==null) {
+
             pageInfo = new PageInfo();
-            pageInfo.setPageId(pageId);
+            pageInfo.setCreateTime(LocalDateTime.now());
+            pageInfo.setSite(siteRepository.findOne(siteId));
         }
         pageInfo.setPageSetting(pageXml.getBytes());
         pageInfoRepository.save(pageInfo);

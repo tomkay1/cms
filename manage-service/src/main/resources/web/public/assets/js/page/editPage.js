@@ -84,7 +84,7 @@
                     }
                 });
                 if (e == 12 && !n) {
-                    $(this).parent().next().children().attr('data-layout', r.join('-'));
+                    $(this).parent().next().children().attr('data-layout-value', r.join(','));
                     $(this).parent().next().children().html(t);
                     $(this).parent().prev().show()
                 } else {

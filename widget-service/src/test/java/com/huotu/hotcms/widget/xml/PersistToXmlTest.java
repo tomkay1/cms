@@ -33,6 +33,7 @@ public class PersistToXmlTest extends TestBase {
         ObjectMapper objectMapper=new ObjectMapper();
         String json=objectMapper.writeValueAsString(page);
         Page getPage=xmlMapper.readValue(xmlString1,Page.class);
+        Page page1=objectMapper.readValue(json, Page.class);
 
         String xmlString2=xmlMapper.writeValueAsString(getPage);
         System.out.println("xmlString2:"+xmlString2);

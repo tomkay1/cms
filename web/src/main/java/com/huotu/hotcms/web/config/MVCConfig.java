@@ -190,6 +190,8 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
             private Set<IDialect> dialectSet;
             @Autowired
             private Environment environment;
+//            @Autowired
+//            private ResourceDialect resourceDialect;
 
             SpringTemplateEngine templateEngine(ITemplateResolver templateResolver) {
                 SpringTemplateEngine engine = new SpringTemplateEngine();

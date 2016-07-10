@@ -12,6 +12,7 @@ package com.huotu.cms.manage;
 import com.huotu.cms.manage.config.ManageServiceSpringConfig;
 import com.huotu.hotcms.service.config.ServiceConfig;
 import me.jiangcai.lib.embedweb.ewp.MockMVC;
+import me.jiangcai.lib.resource.thymeleaf.ResourceDialect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -30,9 +31,18 @@ import java.util.Set;
 public class ManageTestConfig extends MockMVC {
 
     @Autowired
+    private ResourceDialect resourceDialect;
+
+    @Autowired
     public void setTemplateEngineSet(Set<SpringTemplateEngine> templateEngineSet) {
         // 所有都增加安全方言
-        templateEngineSet.forEach(engine -> engine.addDialect(new SpringSecurityDialect()));
+        templateEngineSet.forEach(engine
+                        -> {
+                    engine.addDialect(new SpringSecurityDialect());
+                    engine.addDialect(resourceDialect);
+                }
+        );
+
     }
 
     @Autowired

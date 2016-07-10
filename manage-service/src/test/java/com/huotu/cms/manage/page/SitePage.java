@@ -57,6 +57,7 @@ public class SitePage extends AbstractContentPage {
     @Override
     public void validatePage() {
         normalValid();
+//        System.out.println(webDriver.getPageSource());
     }
 
     public void uploadLogo(String name, Resource resource) throws IOException {
@@ -150,45 +151,51 @@ public class SitePage extends AbstractContentPage {
 
     public Condition<? super WebElement> siteElementCondition(Site site) {
         return new Condition<>(webElement -> {
-            boolean result = true;
-            WebElement image = webElement.findElement(By.tagName("img"));
-            String imageSrc = image.getAttribute("src");
+            try {
+                WebElement image = webElement.findElement(By.tagName("img"));
+                String imageSrc = image.getAttribute("src");
 
-            if (site.getLogoUri() == null) {
-                assertThat(imageSrc)
-                        .contains(site.getName());
-            } else {
-                assertThat(imageSrc)
-                        .endsWith(site.getLogoUri());
+                if (site.getLogoUri() == null) {
+                    assertThat(imageSrc)
+                            .contains(site.getName());
+                } else {
+                    assertThat(imageSrc)
+                            .endsWith(site.getLogoUri());
+                }
+
+                //应该存在上架 或者下架的button
+                List<WebElement> buttons = webElement.findElements(By.tagName("button"));
+                String exceptedButtonName = site.isEnabled() ? "下架" : "上架";
+                String badButtonName = site.isEnabled() ? "上架" : "下架";
+                assertThat(buttons)
+                        .haveAtLeast(1, new Condition<>(button
+                                -> button.getText().contains(exceptedButtonName), "需要一个" + exceptedButtonName))
+                        .doNotHave(new Condition<>(button
+                                -> button.getText().contains(badButtonName), "不要" + badButtonName));
+
+                // site-alert 下方显示的名字
+                WebElement alert = webElement.findElement(By.className("site-alert"));
+                if (site.isAbleToRun()) {
+                    assertThat(alert.getAttribute("class"))
+                            .contains("text-success");
+                    assertThat(alert.getText())
+                            .contains(site.getName());
+                } else {
+                    assertThat(alert.getAttribute("class"))
+                            .contains("text-danger");
+                }
+
+                //预览按钮
+                List<WebElement> previews = webElement.findElements(By.className("site-preview"));
+                if (site.isAbleToRun() && site.isEnabled())
+                    assertThat(previews).isNotEmpty();
+                else
+                    assertThat(previews).isEmpty();
+
+            } catch (RuntimeException ex) {
+                printThisPage();
+                throw ex;
             }
-
-            //应该存在上架 或者下架的button
-            List<WebElement> buttons = webElement.findElements(By.tagName("button"));
-            assertThat(buttons)
-                    .have(new Condition<>(button
-                            -> button.getText().equals(site.isEnabled() ? "下架" : "上架"), "需要有存在button"))
-                    .doNotHave(new Condition<>(button
-                            -> button.getText().equals(site.isEnabled() ? "上架" : "下架"), "需要有存在button"));
-
-            // site-alert 下方显示的名字
-            WebElement alert = webElement.findElement(By.className("site-alert"));
-            if (site.isAbleToRun()) {
-                assertThat(alert.getAttribute("class"))
-                        .contains("text-success");
-                assertThat(alert.getText())
-                        .contains(site.getName());
-            } else {
-                assertThat(alert.getAttribute("class"))
-                        .contains("text-danger");
-            }
-
-            //预览按钮
-            List<WebElement> previews = webElement.findElements(By.className("site-preview"));
-            if (site.isAbleToRun() && site.isEnabled())
-                assertThat(previews).isNotEmpty();
-            else
-                assertThat(previews).isEmpty();
-
             // 如果site存在logo则路径需是那个
             return true;
         }, "显示信息不正确");

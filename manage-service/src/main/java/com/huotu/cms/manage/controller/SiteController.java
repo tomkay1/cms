@@ -25,6 +25,7 @@ import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -52,6 +53,13 @@ public class SiteController extends CRUDController<Site, Long, SiteController.Ab
     private OwnerRepository ownerRepository;
     @Autowired
     private ResourceService resourceService;
+
+    @Override
+    protected Specification<Site> prepareIndex(Login login, RedirectAttributes attributes) throws RedirectException {
+        return (root, query, cb)
+                -> cb.and(cb.isFalse(root.get("deleted")), cb.equal(root.get("owner").get("id")
+                , login.currentOwnerId()));
+    }
 
     @Override
     protected String indexViewName() {

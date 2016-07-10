@@ -10,23 +10,27 @@
 package com.huotu.cms.manage.page;
 
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
+import com.huotu.hotcms.service.entity.Site;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.assertj.core.api.Condition;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitWebElement;
 import org.openqa.selenium.support.FindBy;
 import org.springframework.core.io.Resource;
+import org.springframework.util.StringUtils;
 
-import java.awt.*;
-import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.function.Predicate;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author CJ
@@ -55,7 +59,7 @@ public class SitePage extends AbstractContentPage {
         normalValid();
     }
 
-    public void uploadLogo(String name, Resource resource) throws IOException, AWTException, InterruptedException {
+    public void uploadLogo(String name, Resource resource) throws IOException {
         System.out.println(webDriver.getPageSource());
         Path tempFile = Files.createTempFile(name, name);
         Files.copy(resource.getInputStream(), tempFile, REPLACE_EXISTING);
@@ -64,8 +68,8 @@ public class SitePage extends AbstractContentPage {
         System.out.println(uploader.isDisplayed());
         System.out.println(uploader.findElement(By.className("qq-upload-button")).isDisplayed());
 
-        StringSelection stringSelection = new StringSelection(tempFile.toAbsolutePath().toString());
-        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
+//        StringSelection stringSelection = new StringSelection(tempFile.toAbsolutePath().toString());
+//        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
         uploader.findElement(By.className("qq-upload-button")).click();
 
 //        Thread.sleep(1000);
@@ -129,4 +133,64 @@ public class SitePage extends AbstractContentPage {
     }
 
 
+    public List<WebElement> list() {
+        beforeDriver();
+        // .panel-body>.row>div
+        // //*[@id="fa-puzzle-piece"]/div[2]/div/div[2]/div/div[1]
+
+        return webDriver.findElements(By.cssSelector(".panel-body>.row>div"));
+    }
+
+    public Predicate<? super WebElement> findSiteElement(Site site) {
+        return webElement -> {
+            String id = webElement.getAttribute("data-id");
+            return !StringUtils.isEmpty(id) && site.getSiteId().toString().equals(id);
+        };
+    }
+
+    public Condition<? super WebElement> siteElementCondition(Site site) {
+        return new Condition<>(webElement -> {
+            boolean result = true;
+            WebElement image = webElement.findElement(By.tagName("img"));
+            String imageSrc = image.getAttribute("src");
+
+            if (site.getLogoUri() == null) {
+                assertThat(imageSrc)
+                        .contains(site.getName());
+            } else {
+                assertThat(imageSrc)
+                        .endsWith(site.getLogoUri());
+            }
+
+            //应该存在上架 或者下架的button
+            List<WebElement> buttons = webElement.findElements(By.tagName("button"));
+            assertThat(buttons)
+                    .have(new Condition<>(button
+                            -> button.getText().equals(site.isEnabled() ? "下架" : "上架"), "需要有存在button"))
+                    .doNotHave(new Condition<>(button
+                            -> button.getText().equals(site.isEnabled() ? "上架" : "下架"), "需要有存在button"));
+
+            // site-alert 下方显示的名字
+            WebElement alert = webElement.findElement(By.className("site-alert"));
+            if (site.isAbleToRun()) {
+                assertThat(alert.getAttribute("class"))
+                        .contains("text-success");
+                assertThat(alert.getText())
+                        .contains(site.getName());
+            } else {
+                assertThat(alert.getAttribute("class"))
+                        .contains("text-danger");
+            }
+
+            //预览按钮
+            List<WebElement> previews = webElement.findElements(By.className("site-preview"));
+            if (site.isAbleToRun() && site.isEnabled())
+                assertThat(previews).isNotEmpty();
+            else
+                assertThat(previews).isEmpty();
+
+            // 如果site存在logo则路径需是那个
+            return true;
+        }, "显示信息不正确");
+    }
 }

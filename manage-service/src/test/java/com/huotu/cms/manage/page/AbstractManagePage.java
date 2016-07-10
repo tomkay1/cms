@@ -38,7 +38,7 @@ public abstract class AbstractManagePage extends BracketPage {
         super(webDriver);
     }
 
-    protected void printThisPage() {
+    public void printThisPage() {
         System.err.println("url:" + webDriver.getCurrentUrl());
         System.err.println(webDriver.getPageSource());
     }

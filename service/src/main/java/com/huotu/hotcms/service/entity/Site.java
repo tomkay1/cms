@@ -9,6 +9,8 @@
 
 package com.huotu.hotcms.service.entity;
 
+import com.huotu.hotcms.service.Auditable;
+import com.huotu.hotcms.service.Enabled;
 import com.huotu.hotcms.service.common.SiteType;
 import com.huotu.hotcms.service.entity.login.Owner;
 import lombok.Getter;
@@ -37,7 +39,7 @@ import java.util.Objects;
 @Setter
 @Getter
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Site {
+public class Site implements Auditable, Enabled {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

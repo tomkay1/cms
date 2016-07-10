@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.service.entity;
 
+import com.huotu.hotcms.service.Auditable;
 import com.huotu.hotcms.service.common.PageType;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,7 +34,7 @@ import java.time.LocalDateTime;
 @Table(name = "cms_pageInfo")
 @Getter
 @Setter
-public class PageInfo {
+public class PageInfo implements Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,6 +60,9 @@ public class PageInfo {
 
     @Column(name = "createTime")
     private LocalDateTime createTime;
+
+    @Column(name = "updateTime")
+    private LocalDateTime updateTime;
 
     @Column(name = "pageType")
     private PageType pageType;

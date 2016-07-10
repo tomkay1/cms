@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.service.entity;
 
+import com.huotu.hotcms.service.Auditable;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,7 +29,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Table(name = "cms_template_type")
-public class TemplateType {
+public class TemplateType implements Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

@@ -9,11 +9,19 @@
 
 package com.huotu.hotcms.service.entity;
 
+import com.huotu.hotcms.service.Auditable;
 import com.huotu.hotcms.service.common.ContentType;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 /**
@@ -24,7 +32,7 @@ import java.time.LocalDateTime;
 @Table(name = "cms_category")
 @Setter
 @Getter
-public class Category {
+public class Category implements Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

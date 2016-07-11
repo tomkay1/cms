@@ -23,6 +23,7 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,7 +45,12 @@ public class TestWidgetFactoryServiceImpl {
     public void testInstallWidget() throws IOException, FormatException, IllegalAccessException, InstantiationException, ParserConfigurationException, SAXException {
 
         String randomType = UUID.randomUUID().toString();
+        List<InstalledWidget> oldInstalledWidgetList = widgetFactoryService.widgetList(null);
+
         widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.pagingWidget", "pagingWidget", "1.0-SNAPSHOT", randomType);
+
+        List<InstalledWidget> installedWidgetList = widgetFactoryService.widgetList(null);
+        System.out.println(installedWidgetList);
 
         // 校验列表,应当包含picBanner控件
         assertWidgetListContainWidgetName("pagingWidget", randomType);

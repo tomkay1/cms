@@ -47,10 +47,11 @@ $(function () {
             },
             copyright: {
                 required: true
-            },
-            regionId: {
-                selrequired: "-1"
             }
+            // ,
+            // regionId: {
+            //     selrequired: "-1"
+            // }
         },
         messages: {
             name: {
@@ -74,15 +75,16 @@ $(function () {
             },
             keywords: {
                 maxlength: "站点关键字不能超过200个字符"
-            },
-            regionId: {
-                selrequired: "请选择地区"
             }
+            // ,
+            // regionId: {
+            //     selrequired: "请选择地区"
+            // }
         }
     });
 
     $.cmsUploader($('#logo-uploader'), function (path) {
-        console.log('new path:' + path);
+        $('input[name=tmpLogoPath]', addSiteForm).val(path);
     }, {
         allowedExtensions: ['jpeg', 'jpg', 'png', 'bmp'],
         itemLimit: 1,

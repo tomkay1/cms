@@ -36,7 +36,8 @@ public class ManageMainPage extends AbstractFrameParentPage {
 
     public SitePage toSite() {
         beforeDriver();
-        clickMenuByClass("fa-sitemap");
+        clickMenuByClass("fa-puzzle-piece");
+//        clickMenuByClass("fa-sitemap");
         return initPage(SitePage.class);
     }
 

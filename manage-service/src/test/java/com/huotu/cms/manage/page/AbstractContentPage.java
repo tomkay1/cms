@@ -39,8 +39,8 @@ abstract class AbstractContentPage extends AbstractManagePage {
         try {
             assertThat(getBody().isDisplayed())
                     .isTrue();
-        } catch (RuntimeException ex) {
-            System.out.println(webDriver.getPageSource());
+        } catch (Throwable ex) {
+            printThisPage();
             throw ex;
         }
 

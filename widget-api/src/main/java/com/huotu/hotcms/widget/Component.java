@@ -18,6 +18,8 @@ import lombok.Data;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import java.util.Map;
+
 
 /**
  * 组件
@@ -40,6 +42,13 @@ public class Component implements PageElement {
 
     @JsonIgnore(value = true)//在生成的xml中忽略该属性，true即为忽略
     private InstalledWidget installedWidget;
+
+    /**
+     * 浏览视图的w:class 值对
+     * 组件 key=w:class模板值 ,value=生成的value替换w:class模板值
+     */
+    private Map<String, String> styleClassNames;
+
 
     private String styleId;
 

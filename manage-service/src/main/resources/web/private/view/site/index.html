@@ -9,6 +9,7 @@
   -->
 
 <html xmlns:th="http://www.thymeleaf.org" xmlns:ewp="http://ewp.jiangcai.me" xmlns:sec="http://security.thymeleaf.org"
+      xmlns:res="http://resource.jiangcai.me"
       lang="en">
 <head>
     <meta charset="UTF-8">
@@ -62,6 +63,7 @@
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">站点LOGO</label>
+                        <input type="hidden" name="tmpLogoPath"/>
                         <div class="col-sm-10" id="logo-uploader"></div>
                     </div>
                     <div class="form-group">
@@ -112,6 +114,8 @@
         </div>
     </form>
 
+    <!--/*@thymesVar id="list" type="java.lang.Iterable<com.huotu.hotcms.service.entity.Site>"*/-->
+
     <div class="panel panel-default">
         <div class="panel-heading">
             <div class="panel-btns">
@@ -123,7 +127,49 @@
         </div>
         <div class="panel-body">
             <div class="row">
-                <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2 clearfix">
+                <div th:each="site,status:${list}" class="col-xs-12 col-sm-4 col-md-3 col-lg-2 clearfix"
+                     data-id="123" th:attr="data-id=${site.siteId}">
+                    <div class="site-items">
+                        <img th:if="${site.logoUri!=null}" src="http://placehold.it/228x178?text=CMS"
+                             res:src="${site.logoUri}"
+                             style="display: none" th:attr="style=''"
+                             alt="..." th:alt="${site.name}"/>
+                        <img th:if="${site.logoUri==null}" src="http://placehold.it/228x178?text=CMS"
+                             th:src="@{http://placehold.it/228x178(text=${site.name})}"
+                             alt="..." th:alt="${site.name}">
+                        <div class="clearfix row operate-group">
+                            <button type="button" href="index.html"
+                                    th:href="@{/manage/site/{id}(id=${site.siteId})}"
+                                    class="link-button operate-btn btn-white col-xs-4">编辑
+                            </button>
+                            <button type="button" href="index.html"
+                                    th:if="${!site.enabled}"
+                                    th:href="@{/manage/site/{id}/enabled(id=${site.siteId})}"
+                                    class="link-button operate-btn btn-white col-xs-4">上架
+                            </button>
+                            <button type="button" href="index.html"
+                                    th:if="${site.enabled}"
+                                    th:href="@{/manage/site/{id}/enabled(id=${site.siteId})}"
+                                    style="display: none" th:attr="style=''"
+                                    class="link-button operate-btn btn-white col-xs-4">下架
+                            </button>
+                            <button type="button" href="index.html"
+                                    th:href="@{/manage/site/{id}/delete(id=${site.siteId})}"
+                                    class="link-button delete operate-btn btn-white col-xs-4">删除
+                            </button>
+                        </div>
+                        <div th:if="${!site.ableToRun}" class="site-alert text-danger">完善信息</div>
+                        <div th:if="${site.ableToRun}" class="site-alert text-success"
+                             style="display: none" th:attr="style=''"
+                             th:text="${site.name}">我的站点名字
+                        </div>
+                        <div th:if="${site.ableToRun && site.enabled}" class="site-preview">
+                            <a href="../main.html" target="_blank" th:href="@{/(simulateSite=${site.siteId})}"
+                               class="preview-btn btn btn-success">预览</a>
+                        </div>
+                    </div>
+                </div>
+                <div th:remove="all" class="col-xs-12 col-sm-4 col-md-3 col-lg-2 clearfix">
                     <div class="site-items">
                         <img src="http://placehold.it/228x178?text=CMS" alt="...">
                         <div class="clearfix row operate-group">
@@ -134,18 +180,7 @@
                         <div class="site-alert text-danger">完善信息</div>
                     </div>
                 </div>
-                <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2 clearfix">
-                    <div class="site-items">
-                        <img src="http://placehold.it/228x178?text=CMS" alt="...">
-                        <div class="clearfix row operate-group">
-                            <button type="button" class="operate-btn btn-white col-xs-4">编辑</button>
-                            <button type="button" class="operate-btn btn-white col-xs-4">上架</button>
-                            <button type="button" class="operate-btn btn-white col-xs-4">删除</button>
-                        </div>
-                        <div class="site-alert text-danger">完善信息</div>
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2 clearfix">
+                <div th:remove="all" class="col-xs-12 col-sm-4 col-md-3 col-lg-2 clearfix">
                     <div class="site-items">
                         <img src="http://placehold.it/228x178?text=CMS" alt="...">
                         <div class="clearfix row operate-group">
@@ -159,7 +194,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2 clearfix">
+                <div th:remove="all" class="col-xs-12 col-sm-4 col-md-3 col-lg-2 clearfix">
                     <div class="site-items">
                         <img src="http://placehold.it/228x178?text=CMS" alt="...">
                         <div class="clearfix row operate-group">
@@ -173,7 +208,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2 clearfix">
+                <div th:remove="all" class="col-xs-12 col-sm-4 col-md-3 col-lg-2 clearfix">
                     <div class="site-items">
                         <img src="http://placehold.it/228x178?text=CMS" alt="...">
                         <div class="clearfix row operate-group">
@@ -187,7 +222,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2 clearfix">
+                <div th:remove="all" class="col-xs-12 col-sm-4 col-md-3 col-lg-2 clearfix">
                     <div class="site-items">
                         <img src="http://placehold.it/228x178?text=CMS" alt="...">
                         <div class="clearfix row operate-group">

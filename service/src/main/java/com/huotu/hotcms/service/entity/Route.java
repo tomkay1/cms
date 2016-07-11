@@ -9,6 +9,8 @@
 
 package com.huotu.hotcms.service.entity;
 
+import com.huotu.hotcms.service.Auditable;
+import com.huotu.hotcms.service.Enabled;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,7 +33,7 @@ import java.time.LocalDateTime;
 @Table(name = "cms_route")
 @Setter
 @Getter
-public class Route {
+public class Route implements Auditable, Enabled {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

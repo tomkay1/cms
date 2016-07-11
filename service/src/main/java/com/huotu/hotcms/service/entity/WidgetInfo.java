@@ -9,6 +9,8 @@
 
 package com.huotu.hotcms.service.entity;
 
+import com.huotu.hotcms.service.Auditable;
+import com.huotu.hotcms.service.Enabled;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import lombok.Getter;
@@ -28,7 +30,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @IdClass(WidgetIdentifier.class)
-public class WidgetInfo {
+public class WidgetInfo implements Enabled, Auditable {
 
     /**
      * 禁用还是做不到,但可以让商户看不到
@@ -48,6 +50,7 @@ public class WidgetInfo {
     @Id
     @Column(name = "version", length = 50)
     private String version;
+
     @Column(name = "type", length = 100)
     private String type;
     @ManyToOne
@@ -65,5 +68,13 @@ public class WidgetInfo {
         return new WidgetIdentifier(groupId, artifactId, version);
     }
 
+    @Override
+    public LocalDateTime getUpdateTime() {
+        return null;
+    }
 
+    @Override
+    public void setUpdateTime(LocalDateTime updateTime) {
+
+    }
 }

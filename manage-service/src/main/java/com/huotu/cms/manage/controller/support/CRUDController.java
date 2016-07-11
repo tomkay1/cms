@@ -11,6 +11,8 @@ package com.huotu.cms.manage.controller.support;
 
 import com.huotu.cms.manage.bracket.GritterUtils;
 import com.huotu.cms.manage.exception.RedirectException;
+import com.huotu.hotcms.service.Auditable;
+import com.huotu.hotcms.service.Enabled;
 import com.huotu.hotcms.service.entity.login.Login;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -30,8 +32,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
+ * 更好的支持{@link com.huotu.hotcms.service.Enabled}以及{@link com.huotu.hotcms.service.Auditable}
+ *
  * @param <T>  资源类型
  * @param <ID> 资源主键类型
  * @param <PD> 持久时共同请求的额外数据
@@ -47,11 +52,16 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
     @Autowired
     private JpaSpecificationExecutor<T> jpaSpecificationExecutor;
 
+
     @RequestMapping(method = RequestMethod.POST)
     @Transactional
     public String add(@AuthenticationPrincipal Login login, T data, PD extra, RedirectAttributes attributes) {
         try {
             data = preparePersist(login, data, extra, attributes);
+
+            if (data instanceof Auditable) {
+                ((Auditable) data).setCreateTime(LocalDateTime.now());
+            }
 
             jpaRepository.save(data);
 
@@ -72,6 +82,25 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
     public void doDelete(@AuthenticationPrincipal Login login, @PathVariable("id") ID id) throws RedirectException {
         prepareRemove(login, id);
         jpaRepository.delete(id);
+    }
+
+    @RequestMapping(value = "/{id}/enable", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Transactional
+    public void toggleEnable(@PathVariable("id") ID id) {
+        T data = jpaRepository.getOne(id);
+        if (data instanceof Enabled) {
+            ((Enabled) data).setEnabled(!((Enabled) data).isEnabled());
+            log.info("" + data + " Toggle to " + ((Enabled) data).isEnabled());
+        } else
+            throw new NoSuchMethodError();
+    }
+
+    @RequestMapping(value = "/{id}/enable", method = RequestMethod.GET)
+    @Transactional
+    public String toggleEnableGet(@PathVariable("id") ID id) {
+        toggleEnable(id);
+        return redirectIndexViewName();
     }
 
     // 用这种方式,必然是需要302回主界面
@@ -110,6 +139,9 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
         T entity = jpaRepository.getOne(id);
         try {
             prepareSave(login, entity, data, extra, attributes);
+            if (entity instanceof Auditable) {
+                ((Auditable) entity).setUpdateTime(LocalDateTime.now());
+            }
             jpaRepository.save(entity);
             GritterUtils.AddFlashSuccess("保存成功", attributes);
         } catch (RedirectException ex) {

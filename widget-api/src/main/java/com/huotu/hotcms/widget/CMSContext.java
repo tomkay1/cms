@@ -107,7 +107,7 @@ public class CMSContext {
      */
     public String getNextBootstrapClass() {
         CMSContext cmsContext = RequestContext();
-        return "col-sm-" + cmsContext.column;
+        return "col-md-" + cmsContext.column;
     }
 
 

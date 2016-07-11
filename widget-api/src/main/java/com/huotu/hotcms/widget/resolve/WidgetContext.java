@@ -42,28 +42,30 @@ public class WidgetContext extends WebEngineContext {
      * instead). This is therefore mostly an <b>internal</b> implementation, and users should have no reason
      * to ever call this constructor except in very specific integration/extension scenarios.
      * </p>
-     *
      * @param engine         我们所用的专用引擎
-     * @param servletContext the servlet context object.
      * @param context        CMS上下文不可为空
-     * @param properties     控件属性,可选;在模板中可以直接使用${properties}获得属性
      * @param widget         控件实例不可为空
      * @param style          控件风格可选
+     * @param servletContext the servlet context object.
+     * @param properties     控件属性,可选;在模板中可以直接使用${properties}获得属性
+     * @param styleClassNames 控件的样式属性，可选null
      */
     public WidgetContext(SpringTemplateEngine engine, CMSContext context, Widget widget, WidgetStyle style
-            , ServletContext servletContext, ComponentProperties properties) {
+            , ServletContext servletContext, ComponentProperties properties, Map<String, String> styleClassNames) {
         // TODO 后期考虑到缓存,性能巴拉巴拉的时候 可能需要定制 TemplateData
 
-        super(new WidgetConfiguration(engine.getConfiguration(), widget, style), null, null, context.getRequest()
-                , context.getResponse(), servletContext
-                , context.getLocale(), FromComponentProperties(widget,style,properties));
+        super(new WidgetConfiguration(engine.getConfiguration(), widget, style, styleClassNames), null, null
+                , context.getRequest(), context.getResponse(), servletContext
+                , context.getLocale(), FromComponentProperties(widget, style, properties, styleClassNames));
     }
 
-    private static Map<String, Object> FromComponentProperties(Widget widget,WidgetStyle style,ComponentProperties properties) {
+    private static Map<String, Object> FromComponentProperties(Widget widget, WidgetStyle style
+            , ComponentProperties properties, Map<String, String> styleClassNames) {
         Map<String,Object> variables = new HashMap<>();
         variables.put("widget",widget);
         variables.put("style",style);
         variables.put("properties",properties);
+        variables.put("styleClassNames", styleClassNames);
         return variables;
     }
 }

@@ -15,7 +15,7 @@
  */
 
 $(function () {
-    var debug = false;
+    var debug = true;
 
     var print = function () {
         if (debug)
@@ -65,8 +65,26 @@ $(function () {
     resetTopMenuStatus();
 
     // 让delete class 具备确认能力
-    $('.delete').click(function () {
+    function followTheLink() {
+        var link = $(this).attr('href');
+        print('link button link:', link);
+        location.href = link;
+    }
+
+    var linkButtons = $('.link-button');
+
+    linkButtons.not('.delete').click(function () {
+        followTheLink.call(this);
+    });
+
+    $('.delete').not('.link-button').click(function () {
         return confirm('确实要删除么?');
+    });
+
+    linkButtons.filter('.delete').click(function () {
+        if (confirm('确实要删除么?')) {
+            followTheLink.call(this);
+        }
     });
 
     // 让.datatable 变成真的datatable

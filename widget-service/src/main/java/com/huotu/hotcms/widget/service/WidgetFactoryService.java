@@ -15,8 +15,10 @@ import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.exception.FormatException;
 import org.springframework.transaction.annotation.Transactional;
+import org.xml.sax.SAXException;
 
 import javax.annotation.PostConstruct;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -57,7 +59,7 @@ public interface WidgetFactoryService {
      */
     @PostConstruct
     @Transactional(readOnly = true)
-    void reloadWidgets() throws IOException, FormatException;
+    void reloadWidgets() throws IOException, FormatException, ParserConfigurationException, SAXException;
 
     /**
      * 安装新的控件包
@@ -75,7 +77,7 @@ public interface WidgetFactoryService {
      */
     @Transactional
     void installWidgetInfo(Owner owner, String groupId, String artifactId, String version, String type)
-            throws IOException, FormatException;
+            throws IOException, FormatException, ParserConfigurationException, SAXException;
 
     /**
      * 安装新的控件包
@@ -89,7 +91,7 @@ public interface WidgetFactoryService {
      */
     @Transactional
     void installWidgetInfo(WidgetInfo widgetInfo)
-            throws IOException, FormatException;
+            throws IOException, FormatException, ParserConfigurationException, SAXException;
 
     /**
      * 以实例方式直接进行安装

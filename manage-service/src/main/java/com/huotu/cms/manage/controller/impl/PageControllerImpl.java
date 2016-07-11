@@ -34,7 +34,7 @@ import java.util.List;
 public class PageControllerImpl implements PageController {
 
     @Autowired
-    SiteRepository siteRepository;
+    private SiteRepository siteRepository;
     @Autowired
     private PageService pageService;
 
@@ -52,12 +52,12 @@ public class PageControllerImpl implements PageController {
 
 
     @Override
-    public void savePage(@PathVariable Long pageId,HttpServletRequest request)
+    public void savePage(HttpServletRequest request, Long siteId)
             throws IOException, URISyntaxException {
         String pageJson=CharStreams.toString(request.getReader());
         ObjectMapper objectMapper=new ObjectMapper();
         Page page=objectMapper.readValue(pageJson, Page.class);
-        pageService.savePage(page, pageId);
+        pageService.savePage(page,siteId);
     }
 
 

@@ -32,8 +32,12 @@ public class CategoryPage extends AbstractContentPage {
     }
 
     @Override
+    public WebElement getBody() {
+        return body;
+    }
+
+    @Override
     public void validatePage() {
-        System.out.println(webDriver.getPageSource());
         assertThat(body.isDisplayed())
                 .isTrue();
         try {

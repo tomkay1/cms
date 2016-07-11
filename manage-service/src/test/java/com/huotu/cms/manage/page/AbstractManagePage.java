@@ -15,6 +15,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -28,12 +29,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author CJ
  */
+@SuppressWarnings("WeakerAccess")
 public abstract class AbstractManagePage extends BracketPage {
 
     private static final Log log = LogFactory.getLog(AbstractManagePage.class);
 
     public AbstractManagePage(WebDriver webDriver) {
         super(webDriver);
+    }
+
+    public void printThisPage() {
+        System.err.println("url:" + webDriver.getCurrentUrl());
+        System.err.println(webDriver.getPageSource());
     }
 
     public void assertNoDanger() throws InterruptedException {
@@ -112,10 +119,16 @@ public abstract class AbstractManagePage extends BracketPage {
      * @param value       要输入的值
      */
     protected void inputText(WebElement formElement, String inputName, String value) {
-        WebElement input = formElement.findElement(By.name(inputName));
-        input.clear();
-        if (value != null)
-            input.sendKeys(value);
+        try {
+            WebElement input = formElement.findElement(By.name(inputName));
+            input.clear();
+            if (value != null)
+                input.sendKeys(value);
+        } catch (ElementNotVisibleException exception) {
+            printThisPage();
+            throw exception;
+        }
+
     }
 
     /**
@@ -192,5 +205,75 @@ public abstract class AbstractManagePage extends BracketPage {
         page.setTestInstance(getTestInstance());
         page.validatePage();
         return page;
+    }
+
+    protected void inputChecked(WebElement form, String name, boolean checked) {
+        WebElement input = form.findElement(By.name(name));
+        if (checked && inputChecked(input))
+            return;
+        if (!checked && !inputChecked(input))
+            return;
+        input.click();
+    }
+
+    private boolean inputChecked(WebElement input) {
+        String checked = input.getAttribute("checked");
+        if (checked == null)
+            return false;
+        return checked.equalsIgnoreCase("checked") || checked.equalsIgnoreCase("true");
+    }
+
+    /**
+     * 校验指定表单中的checked应该是期望的值
+     *
+     * @param form    表单
+     * @param name    input name
+     * @param checked 期望值
+     */
+    protected void assertInputChecked(WebElement form, String name, boolean checked) {
+        WebElement input = form.findElement(By.name(name));
+        assertThat(inputChecked(input))
+                .isEqualTo(checked);
+    }
+
+    /**
+     * 校验指定表单中的select应该是这个label
+     *
+     * @param form  表单
+     * @param name  input name
+     * @param label 期望值
+     * @see #inputSelect(WebElement, String, String)
+     */
+    protected void assertInputSelect(WebElement form, String name, String label) {
+        WebElement input = form.findElement(By.name(name));
+        // chosen-single
+        if (!input.isDisplayed()) {
+
+            WebElement container = form.findElements(By.className("chosen-container"))
+                    .stream()
+                    .filter(webElement -> webElement.getAttribute("title") != null && webElement.getAttribute("title")
+                            .equals(input.getAttribute("title")))
+                    .findAny().orElseThrow(() -> new IllegalStateException("使用了chosen-select,但没看到chosen-container"));
+
+            assertThat(container.findElement(By.className("chosen-single")).getText())
+                    .isEqualTo(label);
+        } else {
+            assertThat(input.getText())
+                    .isEqualTo(label);
+        }
+    }
+
+    /**
+     * 校验指定表单里的某个input需是该值
+     *
+     * @param form  表单
+     * @param name  input name
+     * @param value 期望值
+     * @see #inputText(WebElement, String, String)
+     */
+    protected void assertInputText(WebElement form, String name, String value) {
+        WebElement input = form.findElement(By.name(name));
+        assertThat(input.getAttribute("value"))
+                .isEqualTo(value);
     }
 }

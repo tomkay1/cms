@@ -18,17 +18,12 @@ import com.huotu.hotcms.widget.WidgetResolveService;
 import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.page.PageElement;
 import com.huotu.hotcms.widget.service.PageService;
-import me.jiangcai.lib.resource.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by hzbc on 2016/6/24.
@@ -43,6 +38,9 @@ public class PageServiceImpl implements PageService {
 
     @Autowired
     private ResourceService resourceService;
+
+    @Autowired
+    SiteRepository siteRepository;
 
     @Override
     public String generateHTML(Page page, CMSContext context) {
@@ -66,14 +64,15 @@ public class PageServiceImpl implements PageService {
 
 
     @Override
-    public void savePage(Page page, Long pageId) throws IOException {
+    public void savePage(Page page,Long siteId) throws IOException {
         XmlMapper xmlMapper = new XmlMapper();
         //xmlMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         String pageXml = xmlMapper.writeValueAsString(page);
         PageInfo pageInfo = pageInfoRepository.findOne(pageId);
         if (pageInfo == null) {
             pageInfo = new PageInfo();
-            pageInfo.setPageId(pageId);
+            pageInfo.setCreateTime(LocalDateTime.now());
+            pageInfo.setSite(siteRepository.findOne(siteId));
         }
 
         //删除控件旧的css样式表

@@ -32,6 +32,10 @@ public class RoutePage extends AbstractContentPage {
     }
 
     @Override
+    public WebElement getBody() {
+        return body;
+    }
+    @Override
     public void validatePage() {
 //        System.out.println(webDriver.getPageSource());
         assertThat(body.isDisplayed())
@@ -52,39 +56,6 @@ public class RoutePage extends AbstractContentPage {
         inputText(form, "description", route.getDescription());
         form.findElement(By.className("btn-primary")).click();
         reloadPageInfo();
-    }
-
-    /**
-     * 点击任意一个.delete
-     */
-    public void deleteAny() {
-        beforeDriver();
-        webDriver.findElements(By.className("delete"))
-                .stream().findAny().ifPresent(webElement -> {
-            webElement.click();
-            try {
-                webDriver.switchTo().alert().accept();
-            } catch (Throwable ignored) {
-            }
-        });
-    }
-
-    /**
-     * 打开任意的一个
-     *
-     * @return 刚打开的页面
-     */
-    public RoutePage openAny() {
-        beforeDriver();
-        webDriver.findElements(By.className("fa-pencil"))
-                .stream().findAny().ifPresent(webElement -> {
-            webElement.click();
-            try {
-                webDriver.switchTo().alert().accept();
-            } catch (Throwable ignored) {
-            }
-        });
-        return initPage(RoutePage.class);
     }
 
     /**

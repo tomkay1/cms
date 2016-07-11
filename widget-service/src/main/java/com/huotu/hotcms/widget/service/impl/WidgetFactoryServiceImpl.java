@@ -168,6 +168,30 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
     }
 
     @Override
+    public void installWidgetInfo(WidgetInfo widgetInfo) throws IOException, FormatException {
+
+        setupJarFile(widgetInfo, null);
+        widgetInfoRepository.save(widgetInfo);
+
+        if (widgetInfo.getPath() == null)
+            throw new IllegalStateException("无法获取控件包资源");
+        try {
+
+            List<Class> classes = ClassLoaderUtil.loadJarWidgetClasses(resourceService.getResource(widgetInfo.getPath()));
+            if (classes != null) {
+                for (Class clazz : classes) {
+                    //加载jar
+                    installWidget(widgetInfo.getOwner(), (Widget) clazz.newInstance(), widgetInfo.getType())
+                            .setIdentifier(widgetInfo.getIdentifier());
+                }
+            }
+        } catch (InstantiationException
+                | IllegalAccessException | FormatException e) {
+            throw new FormatException(e.toString());
+        }
+    }
+
+    @Override
     public void installWidgetInfo(Owner owner, String groupId, String artifactId, String version, String type)
             throws IOException, FormatException {
 //        try {
@@ -184,26 +208,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
         widgetInfo.setType(type);
         widgetInfo.setOwner(owner);
 
-        setupJarFile(widgetInfo, null);
-        widgetInfoRepository.save(widgetInfo);
-
-        if (widgetInfo.getPath() == null)
-            throw new IllegalStateException("无法获取控件包资源");
-        try {
-
-            List<Class> classes = ClassLoaderUtil.loadJarWidgetClasses(resourceService.getResource(widgetInfo.getPath()));
-            if (classes != null) {
-                for (Class clazz : classes) {
-                    //加载jar
-                    installWidget(owner, (Widget) clazz.newInstance(), type)
-                            .setIdentifier(widgetInfo.getIdentifier());
-                }
-            }
-        } catch (InstantiationException
-                | IllegalAccessException | FormatException e) {
-            throw new FormatException(e.toString());
-        }
-
+        installWidgetInfo(widgetInfo);
     }
 
     public InstalledWidget installWidget(Owner owner, Widget widget, String type) {

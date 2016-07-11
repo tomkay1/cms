@@ -14,30 +14,45 @@
             var root = $(elements).children();
             $.each(root, function (i, v) {
                 var child = {};
-                child.layout = $(v).data('layout');
-                child.components = DataHandle.traversalDOM2Json(v);
+                child.layout = {};
+                child.layout.value = $(v).attr('data-layout-value');
+                child.layout.elements = DataHandle.traversalDOM2Json(v);
                 data.push(child);
             });
+            json.pageIdentity = '1-12-2';
+            json.title = 'test';
             json.elements = data;
             DataHandle.ajaxData(json, url);
         },
         traversalDOM2Json: function (elements) {
-            var result = []
-            var children = $(elements).children().children();
-            $.each(children, function (i, v) {
-                result.push(DataHandle.distinguishDOMType(v));
+            var result = [];
+            var key = {};
+            var ele = $(elements).children();
+            $.each(ele, function (i, v) {
+                var html = $.trim($(v).html());
+                if ( html == '') {
+                    key.empty = {};
+                    result.push(key);
+                } else {
+                    var children = $(this).children();
+                    $.each(children, function (i, v) {
+                        result.push(DataHandle.distinguishDOMType(v));
+                    });
+                }
             });
             return result;
         },
         distinguishDOMType: function (elements) {
             var childJSON = {};
             if ( $(elements).hasClass('row') ) {
-                childJSON.layout = $(elements).data('layout');
-                childJSON.components = DataHandle.traversalDOM2Json(elements);
+                childJSON.layout = {};
+                childJSON.layout.value = $(elements).attr('data-layout-value');
+                childJSON.layout.elements = DataHandle.traversalDOM2Json(elements);
             } else {
-                childJSON.widgetIdentity = $(elements).data('widgetIdentity');
-                childJSON.style = 0;
-                childJSON.properties = {};
+                childJSON.component = {};
+                childJSON.component.widgetIdentity = $(elements).attr('data-widgetIdentity');
+                childJSON.component.styleId = $(elements).attr('data-styleId');
+                childJSON.component.properties = {};
             }
             return childJSON;
         },

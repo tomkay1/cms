@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.service.entity.login;
 
+import com.huotu.hotcms.service.Enabled;
 import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Host;
@@ -37,7 +38,7 @@ import java.util.Objects;
 @Table(name = "cms_owner", uniqueConstraints = {@UniqueConstraint(columnNames = {"customerId"})})
 @Getter
 @Setter
-public class Owner extends AbstractLogin implements Serializable {
+public class Owner extends AbstractLogin implements Serializable, Enabled {
 
     private static final long serialVersionUID = 4886150755976285080L;
     /**

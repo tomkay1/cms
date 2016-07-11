@@ -15,7 +15,12 @@
  */
 
 $(function () {
-    var debug = false;
+    var debug = true;
+
+    var print = function () {
+        if (debug)
+            console.log.apply(console, arguments);
+    };
 
     function resetTopMenuStatus() {
         var top = window.top;
@@ -27,11 +32,6 @@ $(function () {
             console.error('所在frame页面并不支持jQuery');
             return;
         }
-
-        var print = function () {
-            if (debug)
-                console.log.apply(console, arguments);
-        };
 
         var menuUl = top.$('.nav').not('.mb30').not('.nav-justified');
         print('found menu:', menuUl);
@@ -65,8 +65,26 @@ $(function () {
     resetTopMenuStatus();
 
     // 让delete class 具备确认能力
-    $('.delete').click(function () {
+    function followTheLink() {
+        var link = $(this).attr('href');
+        print('link button link:', link);
+        location.href = link;
+    }
+
+    var linkButtons = $('.link-button');
+
+    linkButtons.not('.delete').click(function () {
+        followTheLink.call(this);
+    });
+
+    $('.delete').not('.link-button').click(function () {
         return confirm('确实要删除么?');
+    });
+
+    linkButtons.filter('.delete').click(function () {
+        if (confirm('确实要删除么?')) {
+            followTheLink.call(this);
+        }
     });
 
     // 让.datatable 变成真的datatable
@@ -96,4 +114,48 @@ $(function () {
     var chosenSelect = $('.chosen-select');
     if (chosenSelect.size() > 0)
         chosenSelect.chosen({'width': '100%', 'white-space': 'nowrap'});
+
+    // 文件上传者
+    /**
+     * 使用该方法需要在iframe页面中 初始化$.cmsUploaderUrl 如果是原型环境该url需为null
+     * 同时也需要存在id为qq-template的上传模板
+     * @param ui 需要变成uploader的jquery集合
+     * @param uploadedPathConsumer CMS的uploader会在响应中给予path,这就是上传以后的path;原型环境也会杜撰一个path执行
+     * @param validation 是否允许该文件的的校验 http://docs.fineuploader.com/branch/master/api/options.html#validation
+     */
+    $.cmsUploader = function (ui, uploadedPathConsumer, validation) {
+        var request;
+        if (!top.$.cmsUploaderUrl) {
+            request = {};
+        } else {
+            request = {
+                inputName: 'file',
+                endpoint: top.$.cmsUploaderUrl
+            };
+        }
+        ui.fineUploader({
+            template: top.$('#qq-template').get(0),
+            request: request,
+            thumbnails: {
+                placeholders: {
+                    waitingPath: 'http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/placeholders/waiting-generic.png',
+                    notAvailablePath: 'http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/placeholders/not_available-generic.png'
+                }
+            },
+            validation: validation,
+            callbacks: {
+                onComplete: function (id, name, responseJSON) {
+                    print('onComplete', id, name, responseJSON);
+                    if (responseJSON.newUuid)
+                        uploadedPathConsumer(responseJSON.newUuid);
+                },
+                onValidate: function (data, buttonContainer) {
+                    print('onValidate', top.$.cmsUploaderUrl, data);
+                    if (!top.$.cmsUploaderUrl) { //原型
+                        uploadedPathConsumer(data.name);
+                    }
+                }
+            }
+        });
+    }
 });

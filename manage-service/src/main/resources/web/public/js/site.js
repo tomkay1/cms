@@ -47,10 +47,11 @@ $(function () {
             },
             copyright: {
                 required: true
-            },
-            regionId: {
-                selrequired: "-1"
             }
+            // ,
+            // regionId: {
+            //     selrequired: "-1"
+            // }
         },
         messages: {
             name: {
@@ -74,48 +75,20 @@ $(function () {
             },
             keywords: {
                 maxlength: "站点关键字不能超过200个字符"
-            },
-            regionId: {
-                selrequired: "请选择地区"
             }
+            // ,
+            // regionId: {
+            //     selrequired: "请选择地区"
+            // }
         }
     });
 
-
-    function logoUploaded(id, name, responseJSON) {
-        // newUuid is the path
-        console.log(responseJSON.newUuid);
-    }
-
-    function logoOnUpload() {
-        //maybe in protype
-        console.log('logoOnUpload');
-        console.log.apply(console, arguments);
-    }
-
-    $('#logo-uploader').fineUploader({
-        template: top.$('#qq-template').get(0),
-        request: {
-            inputName: 'file',
-            // endpoint: 'http://mycms.51flashmall.com:8080/manage/upload/fine'
-            endpoint: uploadFileUrl
-        },
-        thumbnails: {
-            placeholders: {
-                waitingPath: 'http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/placeholders/waiting-generic.png',
-                notAvailablePath: 'http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/placeholders/not_available-generic.png'
-            }
-        },
-        validation: {
-            allowedExtensions: ['jpeg', 'jpg', 'png', 'bmp'],
-            itemLimit: 1,
-            sizeLimit: 3 * 1024 * 1024
-        },
-        onComplete: logoUploaded,
-        onError: logoOnUpload,
-        onSubmit: logoOnUpload,
-        onCancel: logoOnUpload,
-        onValidate: logoOnUpload
+    $.cmsUploader($('#logo-uploader'), function (path) {
+        $('input[name=tmpLogoPath]', addSiteForm).val(path);
+    }, {
+        allowedExtensions: ['jpeg', 'jpg', 'png', 'bmp'],
+        itemLimit: 1,
+        sizeLimit: 3 * 1024 * 1024
     });
 
     $(document.body).find('.site-items').on('mouseenter', function () {

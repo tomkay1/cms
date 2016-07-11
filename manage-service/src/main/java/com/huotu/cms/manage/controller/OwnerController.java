@@ -52,15 +52,6 @@ public class OwnerController extends CRUDController<Owner, Long, Void, Void> {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @RequestMapping(value = "/{id}/enable", method = RequestMethod.PUT)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Transactional
-    public void toggleEnable(@PathVariable("id") long id) {
-        Owner owner = ownerRepository.getOne(id);
-        owner.setEnabled(!owner.isEnabled());
-        log.info("Owner " + owner + " Toggle to " + owner.isEnabled());
-    }
-
     @RequestMapping(value = "/{id}/customerId", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional

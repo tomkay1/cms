@@ -40,7 +40,10 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StreamUtils;
 
+import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -81,83 +84,6 @@ public class PageControllerTest extends TestBase {
 
     @Autowired
     private SiteService siteService;
-
-    /**
-     * 最基本的测试流
-     */
-    @Test
-    public void flow() throws Exception {
-        //首先确保虚拟出来的ownerId 并没有存在任何页面
-        long ownerId = 200 + random.nextInt(20000);
-        mockMvc.perform(get("/owners/{ownerId}/pages", ownerId)
-                .accept(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk())
-//                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.length()").value(0));
-
-        // Array of Page
-        mockMvc.perform(get("/sites/{siteId}/pages", ownerId)
-                .accept(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk())
-//                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.length()").value(0));
-
-        // TODO 在其他逻辑都完成以后 应该创建随机数量的页面,以确保每一项属性
-        // 创建一个page
-        Page page = randomPage();
-        String json = JSON.toJSONString(page);
-
-        // 新建Page
-        mockMvc.perform(post("/sites/{siteId}/pages", page.getPageIdentity())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(json))
-                .andExpect(status().isCreated())
-                .andReturn().getResponse().getRedirectedUrl();
-
-        // 保存它 save
-
-        String pageHref = mockMvc.perform(put("/pages/{pageId}", page.getPageIdentity())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(json))
-                .andExpect(status().isCreated())
-                .andReturn().getResponse().getRedirectedUrl();
-
-        // 单独获取
-        mockMvc.perform(get(pageHref).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-        // TODO 更多数据校验 以确保返回的数据 是之前创建的Page
-//                .andExpect()
-        ;
-
-        //保存页面部分属性
-        String propertyName = UUID.randomUUID().toString();
-        mockMvc.perform(delete("/pages/{pageId}/{propertyName}", page.getPageIdentity(), propertyName)).andDo(print())
-                .andExpect(status().isAccepted())
-                .andReturn();
-
-
-        mockMvc.perform(get("/owners/{ownerId}/pages", ownerId)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.length()").value(1))
-        // https://github.com/jayway/JsonPath
-        // TODO 更多数据校验 以确保返回的数据 是之前创建的Page
-//        .andExpect(jsonPath("$.[0]").value(..))
-        ;
-
-        // 删除
-        mockMvc.perform(delete(pageHref))
-                .andExpect(status().isNoContent());
-        // 现在长度应该是0
-        mockMvc.perform(get("/owners/{ownerId}/pages", ownerId)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.length()").value(0));
-    }
-
     /**
      * 最基本的测试流
      */

@@ -28,11 +28,13 @@ import org.apache.http.util.EntityUtils;
 import org.luffy.libs.libseext.XMLUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import javax.annotation.PostConstruct;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -153,6 +155,8 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
                 .collect(Collectors.toList());
     }
 
+    @PostConstruct
+    @Transactional(readOnly = true)
     @Override
     public synchronized void reloadWidgets() throws IOException, FormatException {
         installedWidgets.clear();

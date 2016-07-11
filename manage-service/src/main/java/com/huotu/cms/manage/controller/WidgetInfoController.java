@@ -155,13 +155,11 @@ public class WidgetInfoController
     public List<WidgetModel> getWidgetInfos() throws IOException {
         if(environment.acceptsProfiles("test")){
             Owner owner=ownerRepository.findAll().get(0);
-            if(widgetFactoryService.widgetList(owner).size()==0){
-                try {
-                    widgetFactoryService.installWidgetInfo(owner,"com.huotu.hotcms.widget.pagingWidget", "pagingWidget"
-                            , "1.0-SNAPSHOT", UUID.randomUUID().toString());
-                } catch (FormatException e) {
-                    e.printStackTrace();
-                }
+            try {
+                widgetFactoryService.installWidgetInfo(owner,"com.huotu.hotcms.widget.picCarousel", "picCarousel"
+                        , "1.0-SNAPSHOT", UUID.randomUUID().toString());
+            } catch (FormatException e) {
+                e.printStackTrace();
             }
         }
         List<InstalledWidget> installedWidgets= widgetFactoryService.widgetList(null);

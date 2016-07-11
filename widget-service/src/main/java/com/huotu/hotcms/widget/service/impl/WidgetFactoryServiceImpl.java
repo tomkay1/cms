@@ -158,7 +158,8 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
     }
 
     @Override
-    public synchronized void reloadWidgets() throws IOException, FormatException {
+    public synchronized void reloadWidgets() throws IOException, FormatException, ParserConfigurationException
+            , SAXException {
         installedWidgets.clear();
         //载入控件
         for (WidgetInfo widgetInfo : widgetInfoRepository.findByEnabledTrue()) {
@@ -168,9 +169,11 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
     }
 
     @Override
-    public void installWidgetInfo(WidgetInfo widgetInfo) throws IOException, FormatException {
+    public void installWidgetInfo(WidgetInfo widgetInfo) throws IOException, FormatException
+            , ParserConfigurationException, SAXException {
 
-        setupJarFile(widgetInfo, null);
+        setupJarFile(widgetInfo, new FileInputStream(downloadJar(widgetInfo.getGroupId(), widgetInfo.getArtifactId()
+                , widgetInfo.getVersion())));
         widgetInfoRepository.save(widgetInfo);
 
         if (widgetInfo.getPath() == null)
@@ -193,7 +196,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
 
     @Override
     public void installWidgetInfo(Owner owner, String groupId, String artifactId, String version, String type)
-            throws IOException, FormatException {
+            throws IOException, FormatException, ParserConfigurationException, SAXException {
 //        try {
         WidgetInfo widgetInfo = widgetInfoRepository.findOne(new WidgetIdentifier(groupId, artifactId, version));
         if (widgetInfo == null) {

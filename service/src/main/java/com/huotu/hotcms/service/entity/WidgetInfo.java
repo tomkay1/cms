@@ -50,6 +50,7 @@ public class WidgetInfo implements Enabled, Auditable {
     @Id
     @Column(name = "version", length = 50)
     private String version;
+
     @Column(name = "type", length = 100)
     private String type;
     @ManyToOne

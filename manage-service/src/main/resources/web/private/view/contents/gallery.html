@@ -14,15 +14,16 @@
     <meta charset="UTF-8">
     <link href="http://resali.huobanplus.com/cdn/bracket/css/style.default.css" rel="stylesheet">
     <link href="http://resali.huobanplus.com/cdn/bracket/css/jquery.datatables.css" rel="stylesheet">
-    <title>Article</title>
+    <link href="../../public/assets/css/customize.css" ewp:href="/assets/css/customize.css" rel="stylesheet">
+    <title>Gallery</title>
 </head>
-<body class="mainpanel" id="fa-tasks">
+<body class="mainpanel" id="fa-picture-o">
 <div class="pageheader">
-    <h2><i class="fa fa-tasks"></i> 文章模型 <span>管理文章数据源</span></h2>
+    <h2><i class="fa fa-picture-o"></i> 图库模型 <span>管理图库数据源</span></h2>
 </div>
 
 <div class="contentpanel">
-    <form id="categoryForm" action="index.html" method="POST" th:action="@{/manage/category}">
+    <form id="galleryForm" action="index.html" method="POST" th:action="@{/manage/category}">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="panel-btns">
@@ -42,53 +43,29 @@
                             <input name="name" title="名称" type="text" placeholder="数据源的名称"
                                    class="form-control"/>
                         </div>
-                        <label class="col-sm-2 control-label">父级</label>
-                        <div class="col-sm-2">
-                            <select name="parent" title="父级数据源" class="form-control">
-                                <option>无</option>
-                                <option>新闻咨询</option>
-                                <option>成功案例</option>
-                            </select>
-                        </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">标题</label>
                         <div class="col-sm-2">
-                            <input name="title" title="标题" type="text" placeholder="文章标题"
+                            <input name="title" title="标题" type="text" placeholder="图库标题"
                                    class="form-control"/>
                         </div>
-                        <label class="col-sm-2 control-label">作者</label>
+                        <label class="col-sm-2 control-label">链接</label>
                         <div class="col-sm-2">
-                            <input name="author" title="作者" type="text" placeholder="文章作者"
-                                   class="form-control"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">类型</label>
-                        <div class="col-sm-2">
-                            <input name="type" title="类型" type="text" placeholder="文章类型"
-                                   class="form-control"/>
-                        </div>
-                        <label class="col-sm-2 control-label">来源</label>
-                        <div class="col-sm-2">
-                            <input name="source" title="来源" type="text" placeholder="文章来源"
-                                   class="form-control"/>
-                        </div>
-                        <label class="col-sm-2 control-label">时间</label>
-                        <div class="col-sm-2">
-                            <input id="articleDate" name="date" title="时间" type="text" placeholder="文章时间"
+                            <input name="description" title="链接" type="text" placeholder="图库链接"
                                    class="form-control"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">描述</label>
-                        <div class="col-sm-10">
-                            <textarea class="form-control" rows="4" title="描述" name="description"></textarea>
+                        <div class="col-sm-6">
+                            <input name="description" title="描述" type="text" placeholder="图库描述"
+                                   class="form-control"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">封面</label>
-                        <div class="col-sm-10" id="article-uploader"></div>
+                        <div class="col-sm-10" id="gallery-uploader"></div>
                     </div>
                 </div>
             </div><!-- panel-body -->

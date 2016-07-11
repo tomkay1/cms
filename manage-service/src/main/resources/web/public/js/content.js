@@ -26,7 +26,7 @@ function logoOnUpload() {
     console.log.apply(console, arguments);
 }
 
-$('#article-uploader').fineUploader({
+$('#article-uploader, #link-uploader, #video-uploader, #gallery-uploader, #download-uploader').fineUploader({
     template: top.$('#qq-template').get(0),
     request: {
         inputName: 'file',

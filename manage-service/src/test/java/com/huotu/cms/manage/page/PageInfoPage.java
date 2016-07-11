@@ -34,6 +34,7 @@ public class PageInfoPage extends AbstractContentPage {
 
     @Override
     public void validatePage() {
+        System.out.println(webDriver.getPageSource());
         normalValid();
     }
 }

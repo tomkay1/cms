@@ -14,27 +14,41 @@ import com.huotu.cms.manage.controller.support.CRUDController;
 import com.huotu.cms.manage.exception.RedirectException;
 import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Login;
+import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.service.repository.OwnerRepository;
+import com.huotu.hotcms.widget.*;
 import com.huotu.hotcms.widget.exception.FormatException;
+import com.huotu.hotcms.widget.model.WidgetModel;
+import com.huotu.hotcms.widget.model.WidgetStyleModel;
 import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.NumberUtils;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.xml.sax.SAXException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author CJ
@@ -54,12 +68,16 @@ public class WidgetInfoController
     @Autowired
     private MultipartResolver multipartResolver;
 
+    @Autowired
+    private WidgetResolveService widgetResolveService;
+
+
     @RequestMapping(value = "/{id}/install", method = RequestMethod.GET)
     @Transactional
     public String install(@PathVariable("id") WidgetIdentifier id, RedirectAttributes attributes) {
         WidgetInfo widgetInfo = widgetInfoRepository.getOne(id);
         try {
-            widgetFactoryService.installWidgetInfo(widgetInfo);
+                widgetFactoryService.installWidgetInfo(widgetInfo);
             GritterUtils.AddSuccess("完成", attributes);
         } catch (IOException | FormatException e) {
             GritterUtils.AddFlashDanger(e.getLocalizedMessage(), attributes);
@@ -125,6 +143,50 @@ public class WidgetInfoController
     @Override
     protected String openViewName() {
         return "/view/widget/widget.html";
+    }
+
+
+    @Autowired
+    Environment environment;
+
+
+    @ResponseBody
+    @RequestMapping(value = "/widgets",method = RequestMethod.GET,produces = "application/json; charset=UTF-8")
+    public List<WidgetModel> getWidgetInfos() throws IOException {
+        if(environment.acceptsProfiles("test")){
+            Owner owner=ownerRepository.findAll().get(0);
+            try {
+                widgetFactoryService.installWidgetInfo(owner,"com.huotu.hotcms.widget.picCarousel", "picCarousel"
+                        , "1.0-SNAPSHOT", UUID.randomUUID().toString());
+            } catch (FormatException e) {
+                e.printStackTrace();
+            }
+        }
+        List<InstalledWidget> installedWidgets= widgetFactoryService.widgetList(null);
+        Widget widget;
+        List<WidgetModel> widgetModels=new ArrayList<>();
+        for(InstalledWidget installedWidget:installedWidgets){
+            WidgetModel widgetModel=new WidgetModel();
+            widget= installedWidget.getWidget();
+            widgetModel.setLocallyName(widget.name());
+            widgetModel.setEditorHTML(widgetResolveService.editorHTML(widget,CMSContext.RequestContext(), null));
+            widgetModel.setIdentity(widget.widgetId());
+            widgetModel.setThumbnail(widget.thumbnail().getURL().toString());
+            WidgetStyle [] widgetStyles=widget.styles();
+
+            WidgetStyleModel [] widgetStyleModels=new WidgetStyleModel[widgetStyles.length];
+
+            for (int i=0;i<widgetStyles.length;i++){
+                WidgetStyleModel widgetStyleModel=new WidgetStyleModel();
+                widgetStyleModel.setThumbnail(widgetStyles[i].thumbnail().getURI().toString());
+                widgetStyleModel.setLocallyName(widgetStyles[i].name());
+                widgetStyleModel.setPreviewHTML(widgetResolveService.previewHTML(widget,widgetStyles[i].id(),CMSContext.RequestContext(),null));
+                widgetStyleModels[i]=widgetStyleModel;
+            }
+            widgetModel.setStyles(widgetStyleModels);
+            widgetModels.add(widgetModel);
+        }
+        return  widgetModels;
     }
 
 }

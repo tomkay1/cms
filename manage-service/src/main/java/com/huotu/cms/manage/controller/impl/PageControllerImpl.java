@@ -41,6 +41,8 @@ public class PageControllerImpl implements PageController {
     @Override
     public List<PageInfo> getPageList(Long siteId) throws IOException {
         Site site=siteRepository.findOne(siteId);
+        if(site==null)
+            throw new IllegalStateException("读取到的站点为空");
         return pageService.getPageList(site);
     }
 
@@ -76,7 +78,7 @@ public class PageControllerImpl implements PageController {
 
 
     @Override
-    public void savePagePartProperties(@PathVariable String pageId,@PathVariable String propertyName) {
-
+    public void savePagePartProperties(@PathVariable Long pageId,@PathVariable String propertyName) throws IOException {
+        Page page=getPage(pageId);
     }
 }

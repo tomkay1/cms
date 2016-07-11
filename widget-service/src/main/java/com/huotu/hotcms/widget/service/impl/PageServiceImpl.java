@@ -13,34 +13,38 @@ import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.repository.PageInfoRepository;
+import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.WidgetResolveService;
 import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.page.PageElement;
 import com.huotu.hotcms.widget.service.PageService;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by hzbc on 2016/6/24.
  */
 @Service
 public class PageServiceImpl implements PageService {
-    @Autowired(required = false)
-    private PageInfoRepository pageInfoRepository;
-
-    @Autowired
-    private WidgetResolveService widgetResolveService;
-
-    @Autowired
-    private ResourceService resourceService;
-
     @Autowired
     SiteRepository siteRepository;
+    @Autowired(required = false)
+    private PageInfoRepository pageInfoRepository;
+    @Autowired
+    private WidgetResolveService widgetResolveService;
+    @Autowired
+    private ResourceService resourceService;
 
     @Override
     public String generateHTML(Page page, CMSContext context) {
@@ -68,7 +72,7 @@ public class PageServiceImpl implements PageService {
         XmlMapper xmlMapper = new XmlMapper();
         //xmlMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         String pageXml = xmlMapper.writeValueAsString(page);
-        PageInfo pageInfo = pageInfoRepository.findOne(pageId);
+        PageInfo pageInfo = pageInfoRepository.findOne(page.getPageIdentity());
         if (pageInfo == null) {
             pageInfo = new PageInfo();
             pageInfo.setCreateTime(LocalDateTime.now());

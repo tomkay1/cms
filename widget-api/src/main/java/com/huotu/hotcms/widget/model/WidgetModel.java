@@ -31,6 +31,6 @@ public class WidgetModel {
      * 编辑视图
      */
     private String editorHTML;
-    private WidgetStyleModel styles;
+    private WidgetStyleModel[] styles;
 
 }

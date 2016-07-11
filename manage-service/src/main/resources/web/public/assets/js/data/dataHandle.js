@@ -142,3 +142,7 @@ var dataHandle = {};
         });
     }
 dataHandle.init();
+
+function widgetProperties(params){
+    return {};
+}

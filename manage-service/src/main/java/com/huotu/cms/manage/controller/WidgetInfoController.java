@@ -46,6 +46,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -150,15 +151,17 @@ public class WidgetInfoController
 
 
     @ResponseBody
-    @RequestMapping(value = "/widgets",method = RequestMethod.GET)
+    @RequestMapping(value = "/widgets",method = RequestMethod.GET,produces = "application/json; charset=UTF-8")
     public List<WidgetModel> getWidgetInfos() throws IOException {
         if(environment.acceptsProfiles("test")){
             Owner owner=ownerRepository.findAll().get(0);
-            try {
-                widgetFactoryService.installWidgetInfo(owner,"com.huotu.hotcms.widget.pagingWidget", "pagingWidget"
-                        , "1.0-SNAPSHOT", UUID.randomUUID().toString());
-            } catch (FormatException e) {
-                e.printStackTrace();
+            if(widgetFactoryService.widgetList(owner).size()==0){
+                try {
+                    widgetFactoryService.installWidgetInfo(owner,"com.huotu.hotcms.widget.pagingWidget", "pagingWidget"
+                            , "1.0-SNAPSHOT", UUID.randomUUID().toString());
+                } catch (FormatException e) {
+                    e.printStackTrace();
+                }
             }
         }
         List<InstalledWidget> installedWidgets= widgetFactoryService.widgetList(null);
@@ -171,18 +174,22 @@ public class WidgetInfoController
             widgetModel.setEditorHTML(StreamUtils.copyToString(widget.editorTemplate().getInputStream()
                     , Charset.forName("utf-8")));
             widgetModel.setIdentity(widget.widgetId());
-            widgetModel.setThumbnail(widget.thumbnail().getURI().toString());
-            WidgetStyleModel widgetStyleModel=new WidgetStyleModel();
+            widgetModel.setThumbnail(widget.thumbnail().getURL().toString());
             WidgetStyle [] widgetStyles=widget.styles();
-            for (WidgetStyle widgetStyle:widgetStyles){
-                widgetStyleModel.setThumbnail(widgetStyle.thumbnail().getURI().toString());
-                widgetStyleModel.setLocallyName(widgetStyle.name());
-                widgetStyleModel.setPreviewHTML(StreamUtils.copyToString(widgetStyle.previewTemplate().getInputStream()
+
+            WidgetStyleModel [] widgetStyleModels=new WidgetStyleModel[widgetStyles.length];
+
+            for (int i=0;i<widgetStyles.length;i++){
+                WidgetStyleModel widgetStyleModel=new WidgetStyleModel();
+                widgetStyleModel.setThumbnail(widgetStyles[i].thumbnail().getURI().toString());
+                widgetStyleModel.setLocallyName(widgetStyles[i].name());
+                widgetStyleModel.setPreviewHTML(StreamUtils.copyToString(widgetStyles[i].previewTemplate().getInputStream()
                         , Charset.forName("utf-8")));
-                widgetStyleModel.setBrowseHTML(StreamUtils.copyToString(widgetStyle.browseTemplate().getInputStream()
+                widgetStyleModel.setBrowseHTML(StreamUtils.copyToString(widgetStyles[i].browseTemplate().getInputStream()
                         , Charset.forName("utf-8")));
+                widgetStyleModels[i]=widgetStyleModel;
             }
-            widgetModel.setStyles(widgetStyleModel);
+            widgetModel.setStyles(widgetStyleModels);
             widgetModels.add(widgetModel);
         }
         return  widgetModels;

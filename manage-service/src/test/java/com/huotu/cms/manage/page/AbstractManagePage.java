@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
@@ -40,6 +41,7 @@ public abstract class AbstractManagePage extends BracketPage {
 
     public void printThisPage() {
         System.err.println("url:" + webDriver.getCurrentUrl());
+        System.err.println("page:" + this);
         System.err.println(webDriver.getPageSource());
     }
 
@@ -183,16 +185,17 @@ public abstract class AbstractManagePage extends BracketPage {
     private void clickElement(WebElement element) {
         try {
             element.findElement(By.tagName("a")).click();
-        } catch (Exception ignored) {
+        } catch (NoSuchElementException ignored) {
             //noinspection EmptyCatchBlock
             try {
                 element.findElement(By.tagName("button")).click();
-            } catch (Exception ignored1) {
+            } catch (NoSuchElementException ignored1) {
                 //noinspection EmptyCatchBlock
                 try {
                     element.findElement(By.tagName("img")).click();
-                } catch (Exception ignored2) {
-                    log.warn("找不到里面的可点击目标,将直接点击自身");
+                } catch (NoSuchElementException ignored2) {
+                    log.warn("找不到里面的可点击目标,将直接点击自身", ignored2);
+                    printThisPage();
                     element.click();
                 }
             }

@@ -11,6 +11,7 @@
     var Config = {
         init: function (url) {
             $.getJSON(url, function(result){
+                console.log(result)
                 var parent = $('#configuration').find('.conf-body');
                 $.each(result, function (i, v) {
                     var child = $('<div class="common-conf"></div>');

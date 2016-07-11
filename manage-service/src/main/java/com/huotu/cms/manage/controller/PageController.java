@@ -61,7 +61,8 @@ public interface PageController {
      * @throws IOException 其他异常
      */
 
-    @RequestMapping(value = "/manage/pages/{pageId}",method = RequestMethod.GET)
+    @RequestMapping(value = "/manage/pages/{pageId}",method = RequestMethod.GET
+            ,produces = "application/json; charset=UTF-8")
     @ResponseBody
     Page getPage(@PathVariable("pageId") Long pageId) throws IOException;
 

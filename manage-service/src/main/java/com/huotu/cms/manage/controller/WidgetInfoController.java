@@ -169,8 +169,7 @@ public class WidgetInfoController
             WidgetModel widgetModel=new WidgetModel();
             widget= installedWidget.getWidget();
             widgetModel.setLocallyName(widget.name());
-            widgetModel.setEditorHTML(StreamUtils.copyToString(widget.editorTemplate().getInputStream()
-                    , Charset.forName("utf-8")));
+            widgetModel.setEditorHTML(widgetResolveService.editorHTML(widget,CMSContext.RequestContext(), null));
             widgetModel.setIdentity(widget.widgetId());
             widgetModel.setThumbnail(widget.thumbnail().getURL().toString());
             WidgetStyle [] widgetStyles=widget.styles();
@@ -181,10 +180,7 @@ public class WidgetInfoController
                 WidgetStyleModel widgetStyleModel=new WidgetStyleModel();
                 widgetStyleModel.setThumbnail(widgetStyles[i].thumbnail().getURI().toString());
                 widgetStyleModel.setLocallyName(widgetStyles[i].name());
-                widgetStyleModel.setPreviewHTML(StreamUtils.copyToString(widgetStyles[i].previewTemplate().getInputStream()
-                        , Charset.forName("utf-8")));
-                widgetStyleModel.setBrowseHTML(StreamUtils.copyToString(widgetStyles[i].browseTemplate().getInputStream()
-                        , Charset.forName("utf-8")));
+                widgetStyleModel.setPreviewHTML(widgetResolveService.previewHTML(widget,widgetStyles[i].id(),CMSContext.RequestContext(),null));
                 widgetStyleModels[i]=widgetStyleModel;
             }
             widgetModel.setStyles(widgetStyleModels);

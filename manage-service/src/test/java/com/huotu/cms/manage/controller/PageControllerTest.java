@@ -11,8 +11,11 @@ package com.huotu.cms.manage.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.cms.manage.ManageTest;
+import com.huotu.hotcms.service.entity.PageInfo;
+import com.huotu.hotcms.service.repository.PageInfoRepository;
 import com.huotu.hotcms.widget.page.Page;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.util.StreamUtils;
 
@@ -33,6 +36,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Created by hzbc on 2016/7/9.
  */
 public class PageControllerTest extends ManageTest {
+
+    @Autowired
+    private PageInfoRepository pageInfoRepository;
+
     @Test
     public void flow() throws Exception {
         //首先确保虚拟出来的siteId 并没有存在任何页面
@@ -98,7 +105,16 @@ public class PageControllerTest extends ManageTest {
         String pageJson= StreamUtils.copyToString(is, Charset.forName("utf-8"));
         ObjectMapper objectMapper=new ObjectMapper();
         Page page=objectMapper.readValue(pageJson, Page.class);
+    }
 
+    @Test
+    public void testGetPage() throws Exception {
+        PageInfo pageInfo=pageInfoRepository.findAll().get(0);
 
+        mockMvc.perform(get("/manage/pages/{pageId}", pageInfo.getPageId())
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.length()").value(1));
     }
 }

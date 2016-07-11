@@ -19,7 +19,7 @@
                 child.layout.elements = DataHandle.traversalDOM2Json(v);
                 data.push(child);
             });
-            json.pageIdentity = '1-12-2';
+            json.pageIdentity = '1';
             json.title = 'test';
             json.elements = data;
             DataHandle.ajaxData(json, url);
@@ -135,8 +135,8 @@
     };
 var dataHandle = {};
     dataHandle.init = function () {
-        var pageId=1;
-        var url = '/manage/pages/'+pageId;//save url
+        var siteID=1;
+        var url = '/manage/pages/'+siteID;//save url
         $('#saveBtn').on('click', function () {
             DataHandle.init(url);
         });

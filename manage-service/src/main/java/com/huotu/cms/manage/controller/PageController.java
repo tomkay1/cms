@@ -72,7 +72,7 @@ public interface PageController {
 
     @RequestMapping(value = "/manage/pages/{siteId}",method = RequestMethod.PUT)
     @ResponseStatus(code = HttpStatus.ACCEPTED)
-    void savePage(HttpServletRequest request,@PathVariable Long siteId) throws IOException, URISyntaxException;
+    void savePage(HttpServletRequest request,@PathVariable("siteId") Long siteId) throws IOException, URISyntaxException;
 
     /**
      * <p>添加页面{@link Page}</p>
@@ -99,7 +99,7 @@ public interface PageController {
      */
     @RequestMapping(value = "/manage/pages/{pageId}/{propertyName}",method = RequestMethod.PUT)
     @ResponseStatus(code = HttpStatus.ACCEPTED)
-    void savePagePartProperties(@PathVariable("pageId") String pageId, @PathVariable("propertyName") String propertyName);
+    void savePagePartProperties(@PathVariable("pageId") Long pageId, @PathVariable("propertyName") String propertyName) throws IOException;
 
 
     /**
@@ -107,7 +107,7 @@ public interface PageController {
      * @return url
      */
     @RequestMapping("/manage/edit/{pageId}")
-    default ModelAndView startEdit(@PathVariable long pageId){
+    default ModelAndView startEdit(@PathVariable("pageId") long pageId){
         return new ModelAndView("/edit/edit.html");
     }
 }

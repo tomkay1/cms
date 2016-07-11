@@ -19,7 +19,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -39,7 +41,7 @@ public class TestWidgetFactoryServiceImpl {
 
 
     @Test
-    public void testInstallWidget() throws IOException, FormatException, IllegalAccessException, InstantiationException {
+    public void testInstallWidget() throws IOException, FormatException, IllegalAccessException, InstantiationException, ParserConfigurationException, SAXException {
 
         String randomType = UUID.randomUUID().toString();
         widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.pagingWidget", "pagingWidget", "1.0-SNAPSHOT", randomType);

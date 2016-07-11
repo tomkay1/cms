@@ -107,7 +107,9 @@
                     ["aria-hidden"],
                     ["data-slide-to"],
                     ["data-slide"],
-                    ["data-layout"]
+                    ["data-layout"],
+                    ["data-layout-value"],
+                    ["data-styleId"]
                 ]
             });
             var root = $('<div></div>');

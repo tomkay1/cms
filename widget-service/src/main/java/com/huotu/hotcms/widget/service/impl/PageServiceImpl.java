@@ -18,12 +18,17 @@ import com.huotu.hotcms.widget.WidgetResolveService;
 import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.page.PageElement;
 import com.huotu.hotcms.widget.service.PageService;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by hzbc on 2016/6/24.
@@ -36,12 +41,17 @@ public class PageServiceImpl implements PageService {
     @Autowired
     private WidgetResolveService widgetResolveService;
 
+    @Autowired
+    private ResourceService resourceService;
+
     @Override
     public String generateHTML(Page page, CMSContext context) {
         PageElement[] elements = page.getElements();
-        String html = "<div>";
+        String html = "<div class=\"container\">";
         for (int i = 0, l = elements.length; i < l; i++) {
+            html += "<div class=\"row\">";
             html += widgetResolveService.pageElementHTML(elements[i], context);
+            html += "</div>";
         }
         html += "</div>";
         return html;
@@ -60,13 +70,34 @@ public class PageServiceImpl implements PageService {
         XmlMapper xmlMapper = new XmlMapper();
         //xmlMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         String pageXml = xmlMapper.writeValueAsString(page);
-        PageInfo pageInfo =pageInfoRepository.findOne(pageId);
-        if(pageInfo==null) {
+        PageInfo pageInfo = pageInfoRepository.findOne(pageId);
+        if (pageInfo == null) {
             pageInfo = new PageInfo();
             pageInfo.setPageId(pageId);
         }
+
+        //删除控件旧的css样式表
+        if (pageInfo.getResourceKey() != null) {
+            resourceService.deleteResource(pageInfo.getResourceKey() + "/" + pageInfo.getPageId() + ".css");
+        }
+        //保存最新控件信息
+        String resourceKey = UUID.randomUUID().toString();
+        pageInfo.setResourceKey(resourceKey);
         pageInfo.setPageSetting(pageXml.getBytes());
         pageInfoRepository.save(pageInfo);
+        //生成page的css样式表
+        PageElement[] elements = page.getElements();
+        Path path = Files.createTempFile("tempCss", ".css");
+        OutputStream out = Files.newOutputStream(path);
+        for (int i = 0, l = elements.length; i < l; i++) {
+            //生成组件css
+            widgetResolveService.componentCSS(CMSContext.RequestContext(), elements[i], out);
+        }
+        //上传最新的page css样式表到资源服务
+        InputStream data = Files.newInputStream(path);
+        resourceService.uploadResource(resourceKey + "/" + pageInfo.getPageId() + ".css", data);
+        Files.deleteIfExists(path);
+
     }
 
     @Override

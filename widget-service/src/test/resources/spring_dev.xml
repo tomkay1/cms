@@ -18,7 +18,7 @@
         <property name="packagesToScan">
             <array>
                 <value>com.huotu.hotcms.service.entity</value>
-                <value>com.huotu.hotcms.widget.entity</value>
+                <!--<value>com.huotu.hotcms.widget.entity</value>-->
                 <value>com.huotu.hotcms.service.config</value>
             </array>
         </property>

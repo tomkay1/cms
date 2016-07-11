@@ -47,6 +47,10 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+
+/**
+ * Created by lhx on 2016/6/2.
+ */
 @Service
 public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLocateService {
 
@@ -126,6 +130,14 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
         info.setPath(path);
     }
 
+    /**
+     * 已安装控件列表
+     *
+     * @param owner
+     * @return
+     * @throws FormatException
+     * @throws IOException
+     */
     @Override
     public List<InstalledWidget> widgetList(Owner owner) {
         return installedWidgets.stream()

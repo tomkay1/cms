@@ -107,6 +107,7 @@ public interface Widget {
      * @return 资源模板 具体模板技术自行实现。freemarker velocity
      */
     Resource widgetDependencyContent(ContentType contentType);
+
     /**
      * @return 页面的js资源
      * @deprecated instead by {@link #widgetDependencyContent(ContentType)}

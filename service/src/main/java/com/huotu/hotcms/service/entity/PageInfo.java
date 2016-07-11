@@ -64,6 +64,12 @@ public class PageInfo {
     private PageType pageType;
 
     /**
+     * 每次随机生成
+     */
+    @Column(name = "resourceKey", length = 60)
+    private String resourceKey;
+
+    /**
      * 页面配置的xml数据
      */
     @Lob

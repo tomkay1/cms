@@ -51,7 +51,8 @@ public class UploadController {
 
     @RequestMapping(value = "/resourceUpload", method = RequestMethod.POST)
     @ResponseBody
-    public ResultView resourceUpload(Integer ownerId, @RequestParam(value = "file", required = false) MultipartFile files, HttpServletRequest request) {
+    public ResultView resourceUpload(Integer ownerId, @RequestParam(value = "file", required = false) MultipartFile files
+            , HttpServletRequest request) {
         ResultView resultView = null;
         try {
             //todo 验证权限
@@ -66,7 +67,8 @@ public class UploadController {
             Map<String, Object> map = new HashMap<>();
             map.put("fileUrl", uri);
             map.put("fileUri", path);
-            resultView = new ResultView(ResultOptionEnum.RESOURCE_OK.getCode(), ResultOptionEnum.RESOURCE_OK.getValue(), map);
+            resultView = new ResultView(ResultOptionEnum.RESOURCE_OK.getCode()
+                    , ResultOptionEnum.RESOURCE_OK.getValue(), map);
         } catch (Exception e) {
             log.error(e.getMessage());
             resultView = new ResultView(ResultOptionEnum.RESOURCE_ERROR.getCode(), e.getMessage(), null);
@@ -85,7 +87,8 @@ public class UploadController {
 //          }
             resourceService.deleteResource(fileUri);
             Map<String, Object> map = new HashMap<>();
-            resultView = new ResultView(ResultOptionEnum.RESOURCE_OK.getCode(), ResultOptionEnum.RESOURCE_OK.getValue(), null);
+            resultView = new ResultView(ResultOptionEnum.RESOURCE_OK.getCode()
+                    , ResultOptionEnum.RESOURCE_OK.getValue(), null);
         } catch (Exception e) {
             log.error(e.getMessage());
             resultView = new ResultView(ResultOptionEnum.RESOURCE_ERROR.getCode(), e.getMessage(), null);
@@ -103,14 +106,16 @@ public class UploadController {
             String fileName = files.getOriginalFilename();
             String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
             if ("jpg, jpeg,png,gif,bmp".contains(suffix)) {
-                String path = configInfo.getResourcesSiteLogo(ownerId) + "/" + StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + suffix;
+                String path = configInfo.getResourcesSiteLogo(ownerId) + "/" + StringUtil.DateFormat(now
+                        , "yyyyMMddHHmmSS") + "." + suffix;
                 URI uri = resourceService.uploadResource(path, files.getInputStream()).httpUrl().toURI();
                 Map<String, Object> map = new HashMap<String, Object>();
                 map.put("fileUrl", uri);
                 map.put("fileUri", path);
                 resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), map);
             } else {
-                resultView = new ResultView(ResultOptionEnum.FILE_FORMATTER_ERROR.getCode(), ResultOptionEnum.FILE_FORMATTER_ERROR.getValue(), null);
+                resultView = new ResultView(ResultOptionEnum.FILE_FORMATTER_ERROR.getCode()
+                        , ResultOptionEnum.FILE_FORMATTER_ERROR.getValue(), null);
             }
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -128,7 +133,8 @@ public class UploadController {
             String fileName = files.getOriginalFilename();
             String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
             if ("jpg, jpeg,png,gif,bmp".contains(suffix)) {
-                String path = configInfo.getResourceWidgetImg() + "/" + StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + suffix;
+                String path = configInfo.getResourceWidgetImg() + "/" + StringUtil.DateFormat(now, "yyyyMMddHHmmSS")
+                        + "." + suffix;
                 URI uri = resourceService.uploadResource(path, files.getInputStream()).httpUrl().toURI();
                 BufferedImage sourceImg = javax.imageio.ImageIO.read(files.getInputStream());
                 Map<String, Object> map = new HashMap<>();
@@ -138,7 +144,8 @@ public class UploadController {
                 map.put("height", sourceImg.getHeight());
                 resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), map);
             } else {
-                resultView = new ResultView(ResultOptionEnum.FILE_FORMATTER_ERROR.getCode(), ResultOptionEnum.FILE_FORMATTER_ERROR.getValue(), null);
+                resultView = new ResultView(ResultOptionEnum.FILE_FORMATTER_ERROR.getCode()
+                        , ResultOptionEnum.FILE_FORMATTER_ERROR.getValue(), null);
             }
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -168,7 +175,8 @@ public class UploadController {
                 map.put("fileUrl", path);
                 resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), map);
             } else {
-                resultView = new ResultView(ResultOptionEnum.FILE_FORMATTER_ERROR.getCode(), ResultOptionEnum.FILE_FORMATTER_ERROR.getValue(), null);
+                resultView = new ResultView(ResultOptionEnum.FILE_FORMATTER_ERROR.getCode()
+                        , ResultOptionEnum.FILE_FORMATTER_ERROR.getValue(), null);
             }
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -267,14 +275,16 @@ public class UploadController {
             String fileName = files.getOriginalFilename();
             String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
             if ("txt,zip,jar,docx,doc,xlsx".contains(suffix)) {
-                String path = configInfo.getResourcesDownload(ownerId) + "/" + StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + suffix;
+                String path = configInfo.getResourcesDownload(ownerId) + "/" +
+                        StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + suffix;
                 URI uri = resourceService.uploadResource(path, files.getInputStream()).httpUrl().toURI();
                 Map<String, Object> map = new HashMap<String, Object>();
                 map.put("fileUrl", uri);
                 map.put("fileUri", path);
                 resultView = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), map);
             } else {
-                resultView = new ResultView(ResultOptionEnum.FILE_FORMATTER_ERROR.getCode(), ResultOptionEnum.FILE_FORMATTER_ERROR.getValue(), null);
+                resultView = new ResultView(ResultOptionEnum.FILE_FORMATTER_ERROR.getCode()
+                        , ResultOptionEnum.FILE_FORMATTER_ERROR.getValue(), null);
             }
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -286,16 +296,19 @@ public class UploadController {
 
     @RequestMapping(value = "/kindeditorUpload", method = RequestMethod.POST)
     @ResponseBody
-    public Result fileUploadUeImage(long ownerId, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception {
+    public Result fileUploadUeImage(long ownerId, MultipartHttpServletRequest multipartHttpServletRequest)
+            throws Exception {
         Result result = new Result();
         Date now = new Date();
         MultipartFile file = multipartHttpServletRequest.getFile("imgFile");
 //        String[] img =configInfo.getResourcesUeditor().split("/");
         //取得扩展名
-        String fileExt = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1).toLowerCase();
+        String fileExt = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1)
+                .toLowerCase();
 //        String path =img[0]+"/"+3447+"/"+img[2]+"/"+ StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + fileExt;
 
-        String path = configInfo.getResourcesUeditor(ownerId) + "/" + StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + fileExt;
+        String path = configInfo.getResourcesUeditor(ownerId) + "/" + StringUtil.DateFormat(now, "yyyyMMddHHmmSS")
+                + "." + fileExt;
 
         URI uri = resourceService.uploadResource(path, file.getInputStream()).httpUrl().toURI();
         result.setError(0);
@@ -319,7 +332,8 @@ public class UploadController {
 //            String path =img[0]+"/"+3447+"/"+img[2]+"/"+ StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + "png";
             Date now = new Date();
 //            String fileExt = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1).toLowerCase();
-            String path = configInfo.getResourcesUeditor(ownerId) + "/" + StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + ".png";
+            String path = configInfo.getResourcesUeditor(ownerId) + "/" + StringUtil.DateFormat(now, "yyyyMMddHHmmSS")
+                    + ".png";
             //上传至服务器
 //            String fileName = StaticResourceService.RICHTEXT_UPLOAD + UUID.randomUUID().toString() + ".png";
             URI uri = resourceService.uploadResource(path, bais).httpUrl().toURI();

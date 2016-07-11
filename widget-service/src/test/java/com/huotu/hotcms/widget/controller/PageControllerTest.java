@@ -22,6 +22,7 @@ import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.OwnerRepository;
 import com.huotu.hotcms.service.repository.PageInfoRepository;
 import com.huotu.hotcms.service.service.SiteService;
+import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.InstalledWidget;
@@ -36,14 +37,18 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -52,6 +57,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * <p>针对页面服务controller层{@link FrontController}的单元测试</p>
  */
 public class PageControllerTest extends TestBase {
+    @Autowired(required = false)
+    protected MockHttpServletResponse response;
 
     @Autowired
     private AbstractContentRepository abstractContentRepository;
@@ -165,32 +172,31 @@ public class PageControllerTest extends TestBase {
         //case 1存在的path
         int code = mockMvc.perform(get("/_web/{pagePath}", pagePath)
                 .accept(MediaType.TEXT_HTML)).andDo(print()).andReturn().getResponse().getStatus();
-        assert code == HttpStatus.SC_OK;
+        assertThat(HttpStatus.SC_OK).as("存在的path").isEqualTo(code);
 
         //case 2不存在的path
         code = mockMvc.perform(get("/_web/{pagePath}", "1234")
                 .accept(MediaType.TEXT_HTML)).andDo(print()).andReturn().getResponse().getStatus();
-        assert code == HttpStatus.SC_NOT_FOUND;
+        assertThat(HttpStatus.SC_NOT_FOUND).as("不存在的path").isEqualTo(code);
 
         //case 3存在的contentId和存在的Path
         code = mockMvc.perform(get("/_web/{pagePath}/{contentId}", pagePath, contentId)
                 .accept(MediaType.TEXT_HTML)).andDo(print()).andReturn().getResponse().getStatus();
-        assert code == HttpStatus.SC_OK;
+        assertThat(HttpStatus.SC_OK).as("存在的contentId和存在的Path").isEqualTo(code);
 
         //case 4不存在的contentId和不存在的path
         code = mockMvc.perform(get("/_web/{pagePath}/{contentId}", "sdfdsf", "1231")
                 .accept(MediaType.TEXT_HTML)).andDo(print()).andReturn().getResponse().getStatus();
-        assert code == HttpStatus.SC_NOT_FOUND;
+        assertThat(HttpStatus.SC_NOT_FOUND).as("不存在的contentId和不存在的path").isEqualTo(code);
 
         //case 5不存在的contentId和存在的path
         code = mockMvc.perform(get("/_web/{pagePath}/{contentId}", pagePath, "123")
                 .accept(MediaType.TEXT_HTML)).andDo(print()).andReturn().getResponse().getStatus();
-        assert code == HttpStatus.SC_OK;
+        assertThat(HttpStatus.SC_OK).as("不存在的contentId和存在的path").isEqualTo(code);
 
     }
 
     public void pageInitData(Long contentId, String pagePath) {
-
         Owner owner = ownerRepository.findOne(1L);
         Site site = new Site();
         site.setOwner(owner);
@@ -200,7 +206,7 @@ public class PageControllerTest extends TestBase {
         site.setCreateTime(LocalDateTime.now());
         site.setEnabled(true);
         site.setDescription(UUID.randomUUID().toString());
-        String[] domains = new String[]{"localhost"};//randomDomains();
+        String[] domains = new String[]{"localhost"};
         site = siteService.newSite(domains, domains[0], site, Locale.CHINA);
 
         Category category = new Category();
@@ -220,7 +226,6 @@ public class PageControllerTest extends TestBase {
         pageInfo.setSite(category.getSite());
         pageInfo = pageInfoRepository.saveAndFlush(pageInfo);
 
-        //todo 为了测试模拟的数据，@hzbc 请添加完整实现
         Layout layoutElement = new Layout();
         layoutElement.setValue("12");
         Component component = new Component();
@@ -236,10 +241,12 @@ public class PageControllerTest extends TestBase {
             assert installedWidget != null;
             String styleId = installedWidget.getWidget().styles() != null
                     ? installedWidget.getWidget().styles()[0].id() : null;
-
             component.setInstalledWidget(installedWidget);
             component.setWidgetIdentity("com.huotu.hotcms.widget.pagingWidget-pagingWidget:1.0-SNAPSHOT");
             component.setStyleId(styleId);
+            Map<String, String> styleClassNames = new HashMap<>();
+            styleClassNames.put("page", UUID.randomUUID().toString().replace("-", ""));
+            component.setStyleClassNames(styleClassNames);
             ComponentProperties properties = new ComponentProperties();
             properties.put("pageCount", 20);
             properties.put("pagingTColor", "#000000");
@@ -250,11 +257,13 @@ public class PageControllerTest extends TestBase {
             page.setTitle("test");
             page.setPageIdentity(pageInfo.getPageId());
             page.setElements(new PageElement[]{layoutElement});
+            CMSContext.PutContext(request, response, site);
             pageService.savePage(page, pageInfo.getPageId());
         } catch (Exception e) {
             e.printStackTrace();
             throw new IllegalStateException("查找控件列表失败");
         }
+
     }
 
 //    /**

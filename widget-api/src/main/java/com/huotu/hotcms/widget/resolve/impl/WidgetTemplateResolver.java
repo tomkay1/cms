@@ -13,6 +13,7 @@ import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetStyle;
 import com.huotu.hotcms.widget.resolve.WidgetConfiguration;
+import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -42,6 +43,7 @@ public class WidgetTemplateResolver extends AbstractTemplateResolver {
     public static final String EDITOR = "EDITOR";
     public static final String PREVIEW = "PREVIEW";
     public static final String BROWSE = "BROWSE";
+    public static final String CSS = "CSS";
 
 
     @Autowired
@@ -59,6 +61,9 @@ public class WidgetTemplateResolver extends AbstractTemplateResolver {
         switch (template) {
             case EDITOR:
                 return new SpringResourceTemplateResource(widget.editorTemplate(), "UTF-8");
+            case CSS:
+                return new SpringResourceTemplateResource(widget.widgetDependencyContent(ContentType.create("text/css"))
+                        , "UTF-8");
             case PREVIEW:
                 // TODO previewTemplate 支持空
                 return new SpringResourceTemplateResource(style.previewTemplate(), "UTF-8");

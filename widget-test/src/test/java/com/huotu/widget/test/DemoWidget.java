@@ -12,6 +12,7 @@ package com.huotu.widget.test;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetStyle;
+import org.apache.http.entity.ContentType;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
@@ -59,6 +60,11 @@ public class DemoWidget implements Widget {
         map.put("thumbnail.png", new ClassPathResource("thumbnail.png", getClass().getClassLoader()));
         map.put("other/thumbnail.png", new ClassPathResource("thumbnail.png", getClass().getClassLoader()));
         return map;
+    }
+
+    @Override
+    public Resource widgetDependencyContent(ContentType contentType) {
+        return null;
     }
 
     @Override

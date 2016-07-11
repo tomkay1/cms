@@ -12,17 +12,20 @@ package com.huotu.cms.manage.controller;
 import com.huotu.cms.manage.controller.support.SiteManageController;
 import com.huotu.cms.manage.exception.RedirectException;
 import com.huotu.cms.manage.service.PageFilterBehavioral;
+import com.huotu.hotcms.service.common.EnumUtils;
+import com.huotu.hotcms.service.common.PageType;
+import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
+import com.huotu.hotcms.service.repository.CategoryRepository;
+import lombok.Data;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.time.LocalDateTime;
 
 /**
  * 页面控制器
@@ -31,27 +34,35 @@ import java.time.LocalDateTime;
  */
 @Controller
 @RequestMapping("/manage/page")
-public class PageInfoController extends SiteManageController<PageInfo, Long, Void, Void> {
+public class PageInfoController extends SiteManageController<PageInfo, Long, PageInfoController.AddPageInfoModel, Void> {
 
     private static final Log log = LogFactory.getLog(PageInfoController.class);
-
+    @Autowired
+    private CategoryRepository categoryRepository;
     @Autowired
     private PageFilterBehavioral pageFilterBehavioral;
 
     @Override
-    protected PageInfo preparePersist(Login login, Site site, PageInfo data, Void extra, RedirectAttributes attributes)
+    protected PageInfo preparePersist(Login login, Site site, PageInfo data, AddPageInfoModel extra, RedirectAttributes attributes)
             throws RedirectException {
         if (data.getPagePath() != null && !pageFilterBehavioral.ableToUse(data.getPagePath())) {
             throw new RedirectException("/manage/page", "这个路径无法使用。");
         }
-        data.setCreateTime(LocalDateTime.now());
         data.setSite(site);
+        data.setPageType(EnumUtils.valueOf(PageType.class, extra.getTypeId()));
+        if (extra.getDataTypeId() != null && extra.getDataTypeId() > 0) {
+            Category category = categoryRepository.getOne(extra.getDataTypeId());
+            if (!category.getSite().equals(site)) {
+                throw new RedirectException("/manage/page", "无法选用" + category.getName() + "作为数据源。");
+            }
+            data.setCategory(category);
+        }
         return data;
     }
 
     @Override
     protected String indexViewName() {
-        return "/views/page/index.html";
+        return "/view/page/index.html";
     }
 
     @Override
@@ -63,6 +74,12 @@ public class PageInfoController extends SiteManageController<PageInfo, Long, Voi
     @Override
     protected String openViewName() {
         return null;
+    }
+
+    @Data
+    static class AddPageInfoModel {
+        private Long typeId;
+        private Long dataTypeId;
     }
 
 

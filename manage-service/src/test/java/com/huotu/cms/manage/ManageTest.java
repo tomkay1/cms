@@ -18,6 +18,7 @@ import com.huotu.cms.manage.page.AdminPage;
 import com.huotu.cms.manage.page.ManageMainPage;
 import com.huotu.cms.manage.test.AuthController;
 import com.huotu.hotcms.service.common.CMSEnums;
+import com.huotu.hotcms.service.common.PageType;
 import com.huotu.hotcms.service.common.SiteType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.PageInfo;
@@ -251,10 +252,24 @@ public abstract class ManageTest extends SpringWebTest {
      * @return 随机创建的数据源
      */
     protected Category randomCategory(){
+        Site site = randomSite(randomOwner());
+        return randomCategory(site);
+    }
+
+    protected Category randomCategory(Site site) {
         Category category=new Category();
         category.setParent(null);
-        category.setSite(randomSite(randomOwner()));
+        category.setSite(site);
+        category.setName(UUID.randomUUID().toString());
         return categoryRepository.saveAndFlush(category);
+    }
+
+    protected PageInfo randomPageInfoValue() {
+        PageInfo pageInfo = new PageInfo();
+        pageInfo.setPagePath(UUID.randomUUID().toString());
+        pageInfo.setTitle(UUID.randomUUID().toString());
+        pageInfo.setPageType(PageType.values()[random.nextInt(PageType.values().length)]);
+        return pageInfo;
     }
 
     /**

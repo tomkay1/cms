@@ -12,9 +12,12 @@ package com.huotu.hotcms.widget.exception;
 /**
  * Created by elvis on 2016/6/7.
  */
-public class FormatException extends Exception  {
-    public FormatException(String msg)
-    {
+public class FormatException extends Exception {
+    public FormatException(String msg) {
         super(msg);
+    }
+
+    public FormatException(String message, Throwable cause) {
+        super(message, cause);
     }
 }

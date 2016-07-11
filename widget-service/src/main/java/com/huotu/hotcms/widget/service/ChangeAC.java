@@ -9,20 +9,12 @@
 
 package com.huotu.hotcms.widget.service;
 
-import com.huotu.hotcms.widget.util.ClassLoaderUtil;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Method;
-import java.net.MalformedURLException;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 
@@ -46,63 +38,63 @@ public class ChangeAC {
 //        t.sayHello();
     }*/
 
-
-    /**
-     * 把ApplicationContext 传入到jar 再返回的思路
-     * 测试说明： 应该提供对应的jar在指定路径下   其中在包中有类centrelTest.ChangeAc//实现本地切换applicationContext 入参为applicationContext
-     * 出参为AnnotationConfigApplicationContext
-     */
-    public static void testJarChangeCTX() throws MalformedURLException {
-
-        ApplicationContext parent = new ClassPathXmlApplicationContext("spring-context.xml");//// FIXME: 2016/6/13
-
-        ClassLoaderUtil.loadJarPath("E:/WorkSpace/MapSDKLibrary/libs/");//// FIXME: 2016/6/13
-        Class<?> clazz = null;
-        try {
-            clazz = ClassLoaderUtil.getSystem().loadClass("centrelTest.ChangeAc");
-            Method method = clazz.getDeclaredMethod("testLocalChangeCTX",ApplicationContext.class);
-            System.out.println(method.getParameterCount());
-            Object invoke = method.invoke(ApplicationContext.class,parent);
-            if(invoke instanceof AnnotationConfigApplicationContext){
-                System.out.println("ok");
-                AnnotationConfigApplicationContext newCtx = (AnnotationConfigApplicationContext) invoke;
-                Object demoTest = newCtx.getBean("demoTest");
-
-                System.out.println(demoTest);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
-    /**
-     * 从jar 中读取JavaConfig 配置类，然后改变ApplicationContext
-     *测试说明： 应该提供对应的jar在指定路径下   其中在包中有类centrelTest.MVCConfig 为javaConfig配置类
-     */
-    public static void testJarChangeCTX2() throws MalformedURLException {
-
-        ApplicationContext parent = new FileSystemXmlApplicationContext("spring-context.xml");//// FIXME: 2016/6/13
-
-        ClassLoaderUtil.loadJarPath("E:/WorkSpace/MapSDKLibrary/libs/");//// FIXME: 2016/6/13
-        Class<?> clazz = null;
-        try {
-            clazz = ClassLoaderUtil.getSystem().loadClass("centrelTest.MVCConfig");
-            Method method = clazz.getDeclaredMethod("sayHello");
-            method.invoke(null);
-            AnnotationConfigApplicationContext newApplicationContext = new AnnotationConfigApplicationContext(clazz);
-            newApplicationContext.setParent(null);
-            //   newApplicationContext.refresh();
-            //  newApplicationContext.register(clazz);
-            newApplicationContext.start();
-            Object t = newApplicationContext.getBean("demoTest");
-            System.out.println(t);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
+//
+//    /**
+//     * 把ApplicationContext 传入到jar 再返回的思路
+//     * 测试说明： 应该提供对应的jar在指定路径下   其中在包中有类centrelTest.ChangeAc//实现本地切换applicationContext 入参为applicationContext
+//     * 出参为AnnotationConfigApplicationContext
+//     */
+//    public static void testJarChangeCTX() throws MalformedURLException {
+//
+//        ApplicationContext parent = new ClassPathXmlApplicationContext("spring-context.xml");//// FIXME: 2016/6/13
+//
+//        ClassLoaderUtil.loadJarPath("E:/WorkSpace/MapSDKLibrary/libs/");//// FIXME: 2016/6/13
+//        Class<?> clazz = null;
+//        try {
+//            clazz = ClassLoaderUtil.getSystem().loadClass("centrelTest.ChangeAc");
+//            Method method = clazz.getDeclaredMethod("testLocalChangeCTX",ApplicationContext.class);
+//            System.out.println(method.getParameterCount());
+//            Object invoke = method.invoke(ApplicationContext.class,parent);
+//            if(invoke instanceof AnnotationConfigApplicationContext){
+//                System.out.println("ok");
+//                AnnotationConfigApplicationContext newCtx = (AnnotationConfigApplicationContext) invoke;
+//                Object demoTest = newCtx.getBean("demoTest");
+//
+//                System.out.println(demoTest);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//    }
+//
+//    /**
+//     * 从jar 中读取JavaConfig 配置类，然后改变ApplicationContext
+//     *测试说明： 应该提供对应的jar在指定路径下   其中在包中有类centrelTest.MVCConfig 为javaConfig配置类
+//     */
+//    public static void testJarChangeCTX2() throws MalformedURLException {
+//
+//        ApplicationContext parent = new FileSystemXmlApplicationContext("spring-context.xml");//// FIXME: 2016/6/13
+//
+//        ClassLoaderUtil.loadJarPath("E:/WorkSpace/MapSDKLibrary/libs/");//// FIXME: 2016/6/13
+//        Class<?> clazz = null;
+//        try {
+//            clazz = ClassLoaderUtil.getSystem().loadClass("centrelTest.MVCConfig");
+//            Method method = clazz.getDeclaredMethod("sayHello");
+//            method.invoke(null);
+//            AnnotationConfigApplicationContext newApplicationContext = new AnnotationConfigApplicationContext(clazz);
+//            newApplicationContext.setParent(null);
+//            //   newApplicationContext.refresh();
+//            //  newApplicationContext.register(clazz);
+//            newApplicationContext.start();
+//            Object t = newApplicationContext.getBean("demoTest");
+//            System.out.println(t);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
 
     public static void openSecurity(){
         System.out.println("Preparation step : turn on system permission check...");
@@ -177,11 +169,11 @@ public class ChangeAC {
     public static void privilegChangeAC(){
         AccessController.doPrivileged(new PrivilegedAction<String>() {
             public String run() {
-                try {
-                    testJarChangeCTX2();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
+//                try {
+////                    testJarChangeCTX2();
+//                } catch (MalformedURLException e) {
+//                    e.printStackTrace();
+//                }
                 return null;
             }
         });
@@ -203,7 +195,7 @@ public class ChangeAC {
         //非权限方式测试
         //testLocalChangeCTX();
         //testJarChangeCTX();
-        testJarChangeCTX2();
+//        testJarChangeCTX2();
 
         // writeFile();
         //readFile();

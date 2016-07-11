@@ -71,15 +71,19 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
      * @param widgetId 控件id
      * @return 临时文件
      */
-    private File downloadJar(String groupId, String widgetId, String version) throws IOException
-            , ParserConfigurationException, SAXException {
+    private File downloadJar(String groupId, String widgetId, String version) throws IOException {
         groupId = groupId.replace(".", "/");
         StringBuilder repoUrl = new StringBuilder(String.format(PRIVATE_REPO, groupId, widgetId, version));
         CloseableHttpResponse response = HttpClientUtil.getInstance().get(repoUrl + "/maven-metadata.xml"
                 , new HashMap<>());
         byte[] result = EntityUtils.toByteArray(response.getEntity());
         String timeBuild = "";
-        Document doc = XMLUtils.xml2doc(new ByteArrayInputStream(result));
+        Document doc;
+        try {
+            doc = XMLUtils.xml2doc(new ByteArrayInputStream(result));
+        } catch (SAXException | ParserConfigurationException e) {
+            throw new IOException(e);
+        }
         NodeList nodeList = doc.getElementsByTagName("timestamp");
         NodeList buildNumber = doc.getElementsByTagName("buildNumber");
         if (nodeList != null) {
@@ -116,16 +120,12 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
         if (data != null) {
             resourceService.uploadResource(path, data);
         } else {
-            try {
-                File file = downloadJar(info.getGroupId(), info.getArtifactId(), info.getVersion());
-                try (FileInputStream inputStream = new FileInputStream(file)) {
-                    resourceService.uploadResource(path, inputStream);
-                }
-                //noinspection ResultOfMethodCallIgnored
-                file.delete();
-            } catch (ParserConfigurationException | SAXException e) {
-                throw new IOException(e);
+            File file = downloadJar(info.getGroupId(), info.getArtifactId(), info.getVersion());
+            try (FileInputStream inputStream = new FileInputStream(file)) {
+                resourceService.uploadResource(path, inputStream);
             }
+            //noinspection ResultOfMethodCallIgnored
+            file.delete();
         }
         info.setPath(path);
     }
@@ -158,8 +158,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
     }
 
     @Override
-    public synchronized void reloadWidgets() throws IOException, FormatException, ParserConfigurationException
-            , SAXException {
+    public synchronized void reloadWidgets() throws IOException, FormatException {
         installedWidgets.clear();
         //载入控件
         for (WidgetInfo widgetInfo : widgetInfoRepository.findByEnabledTrue()) {
@@ -169,8 +168,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
     }
 
     @Override
-    public void installWidgetInfo(WidgetInfo widgetInfo) throws IOException, FormatException
-            , ParserConfigurationException, SAXException {
+    public void installWidgetInfo(WidgetInfo widgetInfo) throws IOException, FormatException {
 
         setupJarFile(widgetInfo, new FileInputStream(downloadJar(widgetInfo.getGroupId(), widgetInfo.getArtifactId()
                 , widgetInfo.getVersion())));
@@ -196,7 +194,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
 
     @Override
     public void installWidgetInfo(Owner owner, String groupId, String artifactId, String version, String type)
-            throws IOException, FormatException, ParserConfigurationException, SAXException {
+            throws IOException, FormatException {
 //        try {
         WidgetInfo widgetInfo = widgetInfoRepository.findOne(new WidgetIdentifier(groupId, artifactId, version));
         if (widgetInfo == null) {

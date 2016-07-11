@@ -41,6 +41,13 @@ public class ManageMainPage extends AbstractFrameParentPage {
         return initPage(SitePage.class);
     }
 
+    public PageInfoPage toPageInfo() {
+        beforeDriver();
+        clickMenuByClass("fa-sitemap");
+        return initPage(PageInfoPage.class);
+    }
+
+
     public RoutePage toRoute() {
         beforeDriver();
         clickMenuByClass("fa-retweet");

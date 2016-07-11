@@ -35,7 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration(classes = TestConfig.class)
 @WebAppConfiguration
 @Transactional
-public class TestWidgetFactoryServiceImpl {
+public class TestWidgetFactoryService {
 
     @Autowired
     private WidgetFactoryService widgetFactoryService;
@@ -45,6 +45,8 @@ public class TestWidgetFactoryServiceImpl {
     public void testInstallWidget() throws IOException, FormatException, IllegalAccessException, InstantiationException, ParserConfigurationException, SAXException {
 
         String randomType = UUID.randomUUID().toString();
+        widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.pagingWidget", "pagingWidget"
+                , "1.0-SNAPSHOT", randomType);
         List<InstalledWidget> oldInstalledWidgetList = widgetFactoryService.widgetList(null);
 
         widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.pagingWidget", "pagingWidget", "1.0-SNAPSHOT", randomType);
@@ -61,12 +63,13 @@ public class TestWidgetFactoryServiceImpl {
         assertWidgetListContainWidgetName("pagingWidget", randomType);
 
         //更新控件
-//        widgetFactoryService.primary("com.huotu.hotcms.widget.pagingWidget", "pagingWidget", "1.0-SNAPSHOT", randomType);
+        //widgetFactoryService.primary("com.huotu.hotcms.widget.pagingWidget", "pagingWidget", "1.0-SNAPSHOT", randomType);
 
         assertWidgetListContainWidgetName("pagingWidget", randomType);
     }
 
-    private void assertWidgetListContainWidgetName(String widgetId, String type) throws IOException, FormatException, InstantiationException, IllegalAccessException {
+    private void assertWidgetListContainWidgetName(String widgetId, String type) throws IOException, FormatException
+            , InstantiationException, IllegalAccessException {
         for (InstalledWidget widget : widgetFactoryService.widgetList(null)) {
             if (type.equals(widget.getType())) {
                 assertThat(widget.getWidget().widgetId()).isEqualToIgnoringCase(widgetId);

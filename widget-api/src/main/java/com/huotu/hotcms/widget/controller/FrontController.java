@@ -63,7 +63,7 @@ public class FrontController implements FilterBehavioral {
     private AbstractContentRepository abstractContentRepository;
     @Autowired
     private PageService pageService;
-    @Autowired
+    @Autowired(required = false)
     private PageInfoRepository pageInfoRepository;
 
     @RequestMapping(method = RequestMethod.GET, value = {"/{pagePath}"})

@@ -9,7 +9,6 @@
 
 package com.huotu.hotcms.widget.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.huotu.hotcms.service.common.PageType;
 import com.huotu.hotcms.service.common.SiteType;
 import com.huotu.hotcms.service.entity.Category;
@@ -40,10 +39,6 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StreamUtils;
-
-import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -54,12 +49,11 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * <p>针对页面服务controller层{@link FrontController}的单元测试</p>
  */
-public class PageControllerTest extends TestBase {
+public class TestFontController extends TestBase {
     @Autowired(required = false)
     protected MockHttpServletResponse response;
 
@@ -159,8 +153,8 @@ public class PageControllerTest extends TestBase {
         try {
             String randomType = UUID.randomUUID().toString();
             // 安装一个demo控件
-            widgetFactoryService.installWidgetInfo(owner, "com.huotu.hotcms.widget.pagingWidget", "pagingWidget", "1.0-SNAPSHOT"
-                    , randomType);
+            widgetFactoryService.installWidgetInfo(owner, "com.huotu.hotcms.widget.pagingWidget", "pagingWidget"
+                    , "1.0-SNAPSHOT", randomType);
             installedWidgets = widgetFactoryService.widgetList(null);
             InstalledWidget installedWidget = installedWidgets != null
                     && installedWidgets.size() > 0 ? installedWidgets.get(0) : null;

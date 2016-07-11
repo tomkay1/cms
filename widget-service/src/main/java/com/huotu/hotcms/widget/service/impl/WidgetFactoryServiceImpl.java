@@ -60,6 +60,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
     private final List<InstalledWidget> installedWidgets = new ArrayList<>();
     @Autowired
     private WidgetInfoRepository widgetInfoRepository;
+
     @Autowired(required = false)
     private ResourceService resourceService;
 
@@ -115,7 +116,6 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
                 log.debug("WidgetInfo " + info + "'s Package is existing.");
             return;
         }
-
         String path = "widget/" + UUID.randomUUID().toString() + ".jar";
         if (data != null) {
             resourceService.uploadResource(path, data);
@@ -124,7 +124,6 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
             try (FileInputStream inputStream = new FileInputStream(file)) {
                 resourceService.uploadResource(path, inputStream);
             }
-            //noinspection ResultOfMethodCallIgnored
             file.delete();
         }
         info.setPath(path);
@@ -132,18 +131,15 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
 
     /**
      * 已安装控件列表
-     *
      * @param owner
      * @return
-     * @throws FormatException
-     * @throws IOException
      */
     @Override
     public List<InstalledWidget> widgetList(Owner owner) {
         return installedWidgets.stream()
                 // 过滤掉不要的控件
-                .filter(widget -> owner == null || widget.getOwnerId() == null || widget.getOwnerId().equals(owner.getId()))
-                .collect(Collectors.toList());
+                .filter(widget -> owner == null || widget.getOwnerId() == null
+                        || widget.getOwnerId().equals(owner.getId())).collect(Collectors.toList());
     }
 
     @Override
@@ -153,7 +149,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
 
     private List<InstalledWidget> installedStatus(WidgetIdentifier identifier) {
         return installedWidgets.stream()
-                .filter(widget -> widget.getIdentifier().equals(identifier))
+                .filter(widget -> widget.getIdentifier().toString().equals(identifier.toString()))
                 .collect(Collectors.toList());
     }
 
@@ -177,7 +173,6 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
         if (widgetInfo.getPath() == null)
             throw new IllegalStateException("无法获取控件包资源");
         try {
-
             List<Class> classes = ClassLoaderUtil.loadJarWidgetClasses(resourceService.getResource(widgetInfo.getPath()));
             if (classes != null) {
                 for (Class clazz : classes) {
@@ -195,7 +190,6 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
     @Override
     public void installWidgetInfo(Owner owner, String groupId, String artifactId, String version, String type)
             throws IOException, FormatException {
-//        try {
         WidgetInfo widgetInfo = widgetInfoRepository.findOne(new WidgetIdentifier(groupId, artifactId, version));
         if (widgetInfo == null) {
             log.debug("New Widget " + groupId + "," + artifactId + ":" + version);
@@ -223,7 +217,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
         return installedWidget;
     }
 
-
+    @Override
     public void updateWidget(Widget widget) {
         throw new IllegalStateException("not support yet");
     }

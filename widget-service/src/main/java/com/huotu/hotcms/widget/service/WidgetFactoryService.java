@@ -38,6 +38,7 @@ public interface WidgetFactoryService {
     void setupJarFile(WidgetInfo info, InputStream data) throws IOException;
 
     /**
+     * 当前owner已安装的控件列表
      * @param owner 专享商户可为空表示所有控件
      * @return 已安装控件列表
      */

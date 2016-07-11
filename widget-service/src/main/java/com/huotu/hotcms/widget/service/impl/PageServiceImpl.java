@@ -37,13 +37,13 @@ import java.util.UUID;
  */
 @Service
 public class PageServiceImpl implements PageService {
-    @Autowired
+    @Autowired(required = false)
     SiteRepository siteRepository;
     @Autowired(required = false)
     private PageInfoRepository pageInfoRepository;
     @Autowired
     private WidgetResolveService widgetResolveService;
-    @Autowired
+    @Autowired(required = false)
     private ResourceService resourceService;
 
     @Override

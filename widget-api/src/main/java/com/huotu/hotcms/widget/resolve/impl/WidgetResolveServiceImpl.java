@@ -21,6 +21,7 @@ import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.PageElement;
 import com.huotu.hotcms.widget.resolve.WidgetConfiguration;
 import com.huotu.hotcms.widget.resolve.WidgetContext;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.entity.ContentType;
@@ -53,6 +54,9 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
     @Autowired
     private WidgetLocateService widgetLocateService;
 
+    @Autowired
+    private ResourceService resourceService;
+
 
     private void checkEngine() {
         if (widgetTemplateEngine == null) {
@@ -63,11 +67,12 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
     @Override
     public URI resourceURI(Widget widget, String resourceName) throws URISyntaxException, IOException {
         Map<String, Resource> publicResources = widget.publicResources();
-        Resource resource = publicResources.get(resourceName);
-        return resource.getURI();
-//        if (resource!=null)
-//            return new URI(webApplicationContext.getServletContext().getRealPath("/")+"/"+resourceName);
-//        return null;
+        if (publicResources.containsKey(resourceName)) {
+            Resource resource = resourceService.getResource("widget/" + widget.groupId() + widget.widgetId()
+                    + widget.version() + "/" + resourceName);
+            return resource.getURI();
+        }
+        return null;
     }
 
     @Override
@@ -82,7 +87,6 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
         if (style == null) {
             style = widget.styles()[0];
         }
-
         checkEngine();
         WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
                 , widget, style, webApplicationContext.getServletContext(), properties, null);

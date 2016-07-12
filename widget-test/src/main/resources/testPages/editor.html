@@ -14,14 +14,13 @@
     <meta charset="UTF-8">
     <title>Demo Editor</title>
     <script src="https://code.jquery.com/jquery-2.2.3.min.js" crossorigin="anonymous"></script>
-    <script th:src="@{/javascript/{id}(id=${widgetId})}"></script>
-
     <script>
         var _widgetProperties = {};
         function widgetProperties() {
             return _widgetProperties;
         }
     </script>
+    <script th:src="@{/javascript/{id}(id=${widgetId})}"></script>
 </head>
 <body>
 

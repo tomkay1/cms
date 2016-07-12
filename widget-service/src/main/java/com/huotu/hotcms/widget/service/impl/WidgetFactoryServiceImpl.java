@@ -27,6 +27,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.luffy.libs.libseext.XMLUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.Document;
@@ -46,6 +47,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -133,6 +135,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
 
     /**
      * 已安装控件列表
+     *
      * @param owner
      * @return
      */
@@ -180,9 +183,17 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
             List<Class> classes = ClassLoaderUtil.loadJarWidgetClasses(resourceService.getResource(widgetInfo.getPath()));
             if (classes != null) {
                 for (Class clazz : classes) {
+                    Widget widget = (Widget) clazz.newInstance();
                     //加载jar
-                    installWidget(widgetInfo.getOwner(), (Widget) clazz.newInstance(), widgetInfo.getType())
+                    installWidget(widgetInfo.getOwner(), widget, widgetInfo.getType())
                             .setIdentifier(widgetInfo.getIdentifier());
+                    //上传控件资源
+                    Map<String, Resource> publicResources = widget.publicResources();
+                    if (publicResources != null && publicResources.isEmpty()) {
+                        for (Map.Entry<String, Resource> entry : publicResources.entrySet())
+                            resourceService.uploadResource("widget/" + widget.groupId() + widget.widgetId() + widget.version() + "/"
+                                    + entry.getKey(), entry.getValue().getInputStream());
+                    }
                 }
             }
         } catch (InstantiationException

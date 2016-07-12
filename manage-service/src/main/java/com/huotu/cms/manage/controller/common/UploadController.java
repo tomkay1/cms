@@ -11,14 +11,17 @@ package com.huotu.cms.manage.controller.common;
 
 import com.huotu.cms.manage.common.StringUtil;
 import com.huotu.hotcms.service.common.ConfigInfo;
+import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.model.Result;
 import com.huotu.hotcms.service.util.HttpUtils;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;
+import com.huotu.hotcms.widget.CMSContext;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,7 +30,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -36,6 +38,7 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by chendeyu on 2016/1/7.
@@ -43,32 +46,41 @@ import java.util.Map;
 @Controller
 @RequestMapping("/manage/cms")
 public class UploadController {
+
     private static final Log log = LogFactory.getLog(UploadController.class);
+
     @Autowired
     private ResourceService resourceService;
+
     @Autowired
     private ConfigInfo configInfo;
 
+
+    /**
+     * 上传永久资源,
+     *
+     * @param login
+     * @param files
+     * @return
+     */
     @RequestMapping(value = "/resourceUpload", method = RequestMethod.POST)
-    @ResponseBody
-    public ResultView resourceUpload(Integer ownerId, @RequestParam(value = "file", required = false) MultipartFile files
-            , HttpServletRequest request) {
-        ResultView resultView = null;
+    public ResultView resourceUpload(@AuthenticationPrincipal Login login
+            , @RequestParam(value = "file", required = false) MultipartFile files) {
+        ResultView resultView;
         try {
-            //todo 验证权限
-//           if (){
-//                resultView = new ResultView(ResultOptionEnum.RESOURCE_PERMISSION_ERROR.getCode(), ResultOptionEnum.RESOURCE_PERMISSION_ERROR.getValue(), null);
-//           }
-            Date now = new Date();
-            String fileName = files.getOriginalFilename();
-            String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
-            String path = ownerId + "/" + StringUtil.DateFormat(now, "yyyyMMddHHmmSS") + "." + suffix;
-            URI uri = resourceService.uploadResource(path, files.getInputStream()).httpUrl().toURI();
-            Map<String, Object> map = new HashMap<>();
-            map.put("fileUrl", uri);
-            map.put("fileUri", path);
-            resultView = new ResultView(ResultOptionEnum.RESOURCE_OK.getCode()
-                    , ResultOptionEnum.RESOURCE_OK.getValue(), map);
+            if (login.siteManageable(CMSContext.RequestContext().getSite())) {
+                String fileName = files.getOriginalFilename();
+                String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
+                String path = "page/resource/" + UUID.randomUUID().toString() + "." + suffix;
+                URI uri = resourceService.uploadResource(path, files.getInputStream()).httpUrl().toURI();
+                Map<String, Object> map = new HashMap<>();
+                map.put("fileUri", uri);
+                resultView = new ResultView(ResultOptionEnum.RESOURCE_OK.getCode()
+                        , ResultOptionEnum.RESOURCE_OK.getValue(), map);
+            } else {
+                resultView = new ResultView(ResultOptionEnum.RESOURCE_PERMISSION_ERROR.getCode()
+                        , ResultOptionEnum.RESOURCE_PERMISSION_ERROR.getValue(), null);
+            }
         } catch (Exception e) {
             log.error(e.getMessage());
             resultView = new ResultView(ResultOptionEnum.RESOURCE_ERROR.getCode(), e.getMessage(), null);
@@ -76,19 +88,28 @@ public class UploadController {
         return resultView;
     }
 
+
+    /**
+     * 删除永久资源
+     *
+     * @param login
+     * @param fileUri
+     * @return
+     */
     @RequestMapping(value = "/deleteResource", method = RequestMethod.POST)
     @ResponseBody
-    public ResultView deleteResource(Integer ownerId, @RequestParam(value = "fileUri", required = false) String fileUri) {
-        ResultView resultView = null;
+    public ResultView deleteResource(@AuthenticationPrincipal Login login
+            , @RequestParam(value = "fileUri", required = false) String fileUri) {
+        ResultView resultView;
         try {
-            //todo 验证权限
-//          if (){
-//                resultView = new ResultView(ResultOptionEnum.RESOURCE_PERMISSION_ERROR.getCode(), ResultOptionEnum.RESOURCE_PERMISSION_ERROR.getValue(), null);
-//          }
-            resourceService.deleteResource(fileUri);
-            Map<String, Object> map = new HashMap<>();
-            resultView = new ResultView(ResultOptionEnum.RESOURCE_OK.getCode()
-                    , ResultOptionEnum.RESOURCE_OK.getValue(), null);
+            if (login.siteManageable(CMSContext.RequestContext().getSite())) {
+                resourceService.deleteResource(fileUri);
+                resultView = new ResultView(ResultOptionEnum.RESOURCE_OK.getCode()
+                        , ResultOptionEnum.RESOURCE_OK.getValue(), null);
+            } else {
+                resultView = new ResultView(ResultOptionEnum.RESOURCE_PERMISSION_ERROR.getCode()
+                        , ResultOptionEnum.RESOURCE_PERMISSION_ERROR.getValue(), null);
+            }
         } catch (Exception e) {
             log.error(e.getMessage());
             resultView = new ResultView(ResultOptionEnum.RESOURCE_ERROR.getCode(), e.getMessage(), null);

@@ -9,6 +9,7 @@
 
 package com.huotu.cms.manage.page;
 
+import com.huotu.cms.manage.page.support.AbstractContentPage;
 import com.huotu.hotcms.service.entity.Category;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -38,13 +39,7 @@ public class CategoryPage extends AbstractContentPage {
 
     @Override
     public void validatePage() {
-        assertThat(body.isDisplayed())
-                .isTrue();
-        try {
-            assertNoDanger();
-        } catch (InterruptedException e) {
-            throw new AssertionError(e);
-        }
+        normalValid();
     }
 
     public void addCategory(Category category) {

@@ -7,7 +7,7 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.cms.manage.page;
+package com.huotu.cms.manage.page.support;
 
 import me.jiangcai.bracket.test.BracketPage;
 import me.jiangcai.lib.test.page.AbstractPage;
@@ -35,7 +35,7 @@ public abstract class AbstractManagePage extends BracketPage {
 
     private static final Log log = LogFactory.getLog(AbstractManagePage.class);
 
-    public AbstractManagePage(WebDriver webDriver) {
+    protected AbstractManagePage(WebDriver webDriver) {
         super(webDriver);
     }
 
@@ -202,7 +202,7 @@ public abstract class AbstractManagePage extends BracketPage {
         }
     }
 
-    <T extends AbstractPage> T initPage(Class<T> pageClass) {
+    protected <T extends AbstractPage> T initPage(Class<T> pageClass) {
         T page = PageFactory.initElements(webDriver, pageClass);
 //        page.setResourceService(resourceService);
         page.setTestInstance(getTestInstance());

@@ -9,6 +9,7 @@
 
 package com.huotu.cms.manage.page;
 
+import com.huotu.cms.manage.page.support.AbstractFrameParentPage;
 import com.huotu.hotcms.service.entity.login.Owner;
 import org.openqa.selenium.WebDriver;
 

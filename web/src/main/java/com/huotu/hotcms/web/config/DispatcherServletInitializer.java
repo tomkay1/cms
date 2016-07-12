@@ -11,6 +11,7 @@ package com.huotu.hotcms.web.config;
 
 import com.huotu.hotcms.widget.servlet.CMSFilter;
 import com.huotu.hotcms.widget.servlet.RouteFilter;
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import javax.servlet.Filter;
@@ -39,6 +40,8 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
 
     @Override
     protected Filter[] getServletFilters() {
-        return new Filter[]{new CMSFilter(), new RouteFilter()};
+        return new Filter[]{new CMSFilter(), new RouteFilter(),new CharacterEncodingFilter("utf-8")};
     }
+
+
 }

@@ -17,7 +17,7 @@ import java.util.function.BiConsumer;
 /**
  * @author CJ
  */
-public interface EntityTest<T> {
+public interface CRUDTest<T> {
 
     Collection<T> list();
 

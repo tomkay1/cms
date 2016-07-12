@@ -11,7 +11,7 @@ package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.SiteManageTest;
 import com.huotu.cms.manage.controller.support.CRUDHelper;
-import com.huotu.cms.manage.controller.support.EntityTest;
+import com.huotu.cms.manage.controller.support.CRUDTest;
 import com.huotu.cms.manage.page.ManageMainPage;
 import com.huotu.cms.manage.page.PageInfoPage;
 import com.huotu.cms.manage.page.support.AbstractCRUDPage;
@@ -41,7 +41,7 @@ public class PageInfoControllerTest extends SiteManageTest {
 
         ManageMainPage manageMainPage = initPage(ManageMainPage.class);
 
-        CRUDHelper.flow(manageMainPage.toPage(PageInfoPage.class), new EntityTest<PageInfo>() {
+        CRUDHelper.flow(manageMainPage.toPage(PageInfoPage.class), new CRUDTest<PageInfo>() {
             @Override
             public Collection<PageInfo> list() {
                 return pageInfoRepository.findBySite(site);

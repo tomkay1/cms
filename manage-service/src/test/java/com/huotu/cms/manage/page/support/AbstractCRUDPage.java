@@ -66,6 +66,7 @@ public abstract class AbstractCRUDPage<T> extends AbstractContentPage {
      */
     public <X extends AbstractCRUDPage<T>> X addEntityAndSubmit(T value
             , BiConsumer<AbstractCRUDPage<T>, T> otherDataSubmitter) {
+        beforeDriver();
         fillValueToForm(value);
         if (otherDataSubmitter != null) {
             otherDataSubmitter.accept(this, value);

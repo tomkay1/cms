@@ -68,8 +68,8 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
     public URI resourceURI(Widget widget, String resourceName) throws URISyntaxException, IOException {
         Map<String, org.springframework.core.io.Resource> publicResources = widget.publicResources();
         if (publicResources.containsKey(resourceName)) {
-            Resource resource = resourceService.getResource("widget/" + widget.groupId() + widget.widgetId()
-                    + widget.version() + "/" + resourceName);
+            Resource resource = resourceService.getResource("widget/" + widget.groupId() + "-" + widget.widgetId()
+                    + "-" + widget.version() + "/" + resourceName);
             return resource.httpUrl().toURI();
         }
         return null;

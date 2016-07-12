@@ -189,9 +189,10 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
                             .setIdentifier(widgetInfo.getIdentifier());
                     //上传控件资源
                     Map<String, Resource> publicResources = widget.publicResources();
-                    if (publicResources != null && publicResources.isEmpty()) {
+                    if (publicResources != null) {
                         for (Map.Entry<String, Resource> entry : publicResources.entrySet())
-                            resourceService.uploadResource("widget/" + widget.groupId() + widget.widgetId() + widget.version() + "/"
+                            resourceService.uploadResource("widget/" + widget.groupId() + "-" + widget.widgetId()
+                                    + "-" + widget.version() + "/"
                                     + entry.getKey(), entry.getValue().getInputStream());
                     }
                 }

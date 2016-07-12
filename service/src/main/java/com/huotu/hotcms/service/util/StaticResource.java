@@ -20,7 +20,7 @@ public class StaticResource {
                 ".js"
                 , ".css"
                 , ".png", ".jpg", ".jpeg", ".gif"
-                , ".eot", ".svg", ".tff", ".woff"
+                , ".eot", ".svg", ".tff", ".woff", "map", "woff2"
         };
         for (String s : staticResourceSuffix) {
             if (path.endsWith(s)) {

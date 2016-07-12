@@ -14,10 +14,13 @@ import com.huotu.cms.manage.controller.support.CRUDController;
 import com.huotu.cms.manage.exception.RedirectException;
 import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Login;
-import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.service.repository.OwnerRepository;
-import com.huotu.hotcms.widget.*;
+import com.huotu.hotcms.widget.CMSContext;
+import com.huotu.hotcms.widget.InstalledWidget;
+import com.huotu.hotcms.widget.Widget;
+import com.huotu.hotcms.widget.WidgetResolveService;
+import com.huotu.hotcms.widget.WidgetStyle;
 import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.model.WidgetModel;
 import com.huotu.hotcms.widget.model.WidgetStyleModel;
@@ -29,7 +32,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.NumberUtils;
-import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,15 +40,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.xml.sax.SAXException;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -60,6 +58,8 @@ public class WidgetInfoController
         extends CRUDController<WidgetInfo, WidgetIdentifier, HttpServletRequest, Long> {
 
     @Autowired
+    Environment environment;
+    @Autowired
     private OwnerRepository ownerRepository;
     @Autowired
     private WidgetFactoryService widgetFactoryService;
@@ -67,10 +67,8 @@ public class WidgetInfoController
     private WidgetInfoRepository widgetInfoRepository;
     @Autowired
     private MultipartResolver multipartResolver;
-
     @Autowired
     private WidgetResolveService widgetResolveService;
-
 
     @RequestMapping(value = "/{id}/install", method = RequestMethod.GET)
     @Transactional
@@ -145,18 +143,12 @@ public class WidgetInfoController
         return "/view/widget/widget.html";
     }
 
-
-    @Autowired
-    Environment environment;
-
-
     @ResponseBody
     @RequestMapping(value = "/widgets",method = RequestMethod.GET,produces = "application/json; charset=UTF-8")
-    public List<WidgetModel> getWidgetInfos() throws IOException {
+    public List<WidgetModel> getWidgetInfo() throws IOException {
         if(environment.acceptsProfiles("test")){
-            Owner owner=ownerRepository.findAll().get(0);
             try {
-                widgetFactoryService.installWidgetInfo(owner,"com.huotu.hotcms.widget.picCarousel", "picCarousel"
+                widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
                         , "1.0-SNAPSHOT", UUID.randomUUID().toString());
             } catch (FormatException e) {
                 e.printStackTrace();

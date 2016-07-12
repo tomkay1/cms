@@ -21,12 +21,12 @@ import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.PageElement;
 import com.huotu.hotcms.widget.resolve.WidgetConfiguration;
 import com.huotu.hotcms.widget.resolve.WidgetContext;
+import me.jiangcai.lib.resource.Resource;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 import org.thymeleaf.spring4.SpringTemplateEngine;
@@ -66,11 +66,11 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
 
     @Override
     public URI resourceURI(Widget widget, String resourceName) throws URISyntaxException, IOException {
-        Map<String, Resource> publicResources = widget.publicResources();
+        Map<String, org.springframework.core.io.Resource> publicResources = widget.publicResources();
         if (publicResources.containsKey(resourceName)) {
-            Resource resource = resourceService.getResource("widget/" + widget.groupId() + widget.widgetId()
-                    + widget.version() + "/" + resourceName);
-            return resource.getURI();
+            Resource resource = resourceService.getResource("widget/" + widget.groupId() + "-" + widget.widgetId()
+                    + "-" + widget.version() + "/" + resourceName);
+            return resource.httpUrl().toURI();
         }
         return null;
     }

@@ -26,8 +26,10 @@ import com.huotu.hotcms.widget.model.WidgetModel;
 import com.huotu.hotcms.widget.model.WidgetStyleModel;
 import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.Resource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,10 +45,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+import java.util.Map;
 
 /**
  * @author CJ
@@ -70,12 +73,15 @@ public class WidgetInfoController
     @Autowired
     private WidgetResolveService widgetResolveService;
 
+    @Autowired(required = false)
+    private ResourceService resourceService;
+
     @RequestMapping(value = "/{id}/install", method = RequestMethod.GET)
     @Transactional
     public String install(@PathVariable("id") WidgetIdentifier id, RedirectAttributes attributes) {
         WidgetInfo widgetInfo = widgetInfoRepository.getOne(id);
         try {
-                widgetFactoryService.installWidgetInfo(widgetInfo);
+            widgetFactoryService.installWidgetInfo(widgetInfo);
             GritterUtils.AddSuccess("完成", attributes);
         } catch (IOException | FormatException e) {
             GritterUtils.AddFlashDanger(e.getLocalizedMessage(), attributes);
@@ -144,42 +150,55 @@ public class WidgetInfoController
     }
 
     @ResponseBody
-    @RequestMapping(value = "/widgets",method = RequestMethod.GET,produces = "application/json; charset=UTF-8")
-    public List<WidgetModel> getWidgetInfo() throws IOException {
-        if(environment.acceptsProfiles("test")){
+    @RequestMapping(value = "/widgets", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
+    public List<WidgetModel> getWidgetInfo() throws IOException, URISyntaxException {
+        if (environment.acceptsProfiles("test")) {
             try {
                 widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
-                        , "1.0-SNAPSHOT", UUID.randomUUID().toString());
+                        , "1.0-SNAPSHOT", "picCarousel");
             } catch (FormatException e) {
                 e.printStackTrace();
             }
         }
-        List<InstalledWidget> installedWidgets= widgetFactoryService.widgetList(null);
+        List<InstalledWidget> installedWidgets = widgetFactoryService.widgetList(null);
         Widget widget;
-        List<WidgetModel> widgetModels=new ArrayList<>();
-        for(InstalledWidget installedWidget:installedWidgets){
-            WidgetModel widgetModel=new WidgetModel();
-            widget= installedWidget.getWidget();
+        List<WidgetModel> widgetModels = new ArrayList<>();
+        for (InstalledWidget installedWidget : installedWidgets) {
+            WidgetModel widgetModel = new WidgetModel();
+            widget = installedWidget.getWidget();
             widgetModel.setLocallyName(widget.name());
-            widgetModel.setEditorHTML(widgetResolveService.editorHTML(widget,CMSContext.RequestContext(), null));
+            widgetModel.setEditorHTML(widgetResolveService.editorHTML(widget, CMSContext.RequestContext(), null));
             widgetModel.setIdentity(widget.widgetId());
-            widgetModel.setScriptHref("TODO");
+
+            for (Map.Entry<String, Resource> entry : widget.publicResources().entrySet()) {
+                if (entry.getKey().endsWith(".js")) {
+                    widgetModel.setScriptHref(resourceService.getResource("widget/" + widget.groupId() + "-"
+                                    + widget.widgetId() + "-" + widget.version() + "/" + entry.getKey())
+                                    .httpUrl().toURI().toString() + ","
+                    );
+                }
+            }
+            if (widgetModel.getScriptHref() != null && widgetModel.getScriptHref().length() > 0) {
+                widgetModel.setScriptHref(widgetModel.getScriptHref().substring(0
+                        , widgetModel.getScriptHref().length() - 1));
+            }
+
             widgetModel.setThumbnail(widget.thumbnail().getURL().toString());
-            WidgetStyle [] widgetStyles=widget.styles();
+            WidgetStyle[] widgetStyles = widget.styles();
 
-            WidgetStyleModel [] widgetStyleModels=new WidgetStyleModel[widgetStyles.length];
+            WidgetStyleModel[] widgetStyleModels = new WidgetStyleModel[widgetStyles.length];
 
-            for (int i=0;i<widgetStyles.length;i++){
-                WidgetStyleModel widgetStyleModel=new WidgetStyleModel();
+            for (int i = 0; i < widgetStyles.length; i++) {
+                WidgetStyleModel widgetStyleModel = new WidgetStyleModel();
                 widgetStyleModel.setThumbnail(widgetStyles[i].thumbnail().getURI().toString());
                 widgetStyleModel.setLocallyName(widgetStyles[i].name());
-                widgetStyleModel.setPreviewHTML(widgetResolveService.previewHTML(widget,widgetStyles[i].id(),CMSContext.RequestContext(),null));
-                widgetStyleModels[i]=widgetStyleModel;
+                widgetStyleModel.setPreviewHTML(widgetResolveService.previewHTML(widget, widgetStyles[i].id(), CMSContext.RequestContext(), null));
+                widgetStyleModels[i] = widgetStyleModel;
             }
             widgetModel.setStyles(widgetStyleModels);
             widgetModels.add(widgetModel);
         }
-        return  widgetModels;
+        return widgetModels;
     }
 
 }

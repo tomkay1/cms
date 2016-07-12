@@ -44,10 +44,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -61,7 +62,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
     private static final Log log = LogFactory.getLog(WidgetFactoryServiceImpl.class);
 
     private static final String PRIVATE_REPO = "http://repo.51flashmall.com:8081/nexus/content/groups/public/%s/%s/%s";
-    private final List<InstalledWidget> installedWidgets = new ArrayList<>();
+    private final Set<InstalledWidget> installedWidgets = new HashSet<>();
     @Autowired
     private WidgetInfoRepository widgetInfoRepository;
 
@@ -172,6 +173,8 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
 
     @Override
     public void installWidgetInfo(WidgetInfo widgetInfo) throws IOException, FormatException {
+
+        // TODO: 如果该控件包已安装控件 这个过程应该被忽略
 
         setupJarFile(widgetInfo, new FileInputStream(downloadJar(widgetInfo.getGroupId(), widgetInfo.getArtifactId()
                 , widgetInfo.getVersion())));

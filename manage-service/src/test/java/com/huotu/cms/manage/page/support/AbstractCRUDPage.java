@@ -13,6 +13,7 @@ import org.assertj.core.api.Condition;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.springframework.core.annotation.AnnotationUtils;
 
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -30,13 +31,12 @@ public abstract class AbstractCRUDPage<T> extends AbstractContentPage {
     private final String formId;
 
     /**
-     * @param bodyId    body的id
      * @param formId    form的id
      * @param webDriver driver
      */
-    protected AbstractCRUDPage(String bodyId, String formId, WebDriver webDriver) {
+    protected AbstractCRUDPage(String formId, WebDriver webDriver) {
         super(webDriver);
-        this.bodyId = bodyId;
+        this.bodyId = AnnotationUtils.findAnnotation(getClass(), BodyId.class).value();
         this.formId = formId;
     }
 
@@ -65,10 +65,10 @@ public abstract class AbstractCRUDPage<T> extends AbstractContentPage {
      * @return 添加以后的页面
      */
     public <X extends AbstractCRUDPage<T>> X addEntityAndSubmit(T value
-            , BiConsumer<AbstractCRUDPage<T>, WebElement> otherDataSubmitter) {
+            , BiConsumer<AbstractCRUDPage<T>, T> otherDataSubmitter) {
         fillValueToForm(value);
         if (otherDataSubmitter != null) {
-            otherDataSubmitter.accept(this, getForm());
+            otherDataSubmitter.accept(this, value);
         }
         getForm().findElement(By.className("btn-primary")).click();
         return (X) initPage(getClass());

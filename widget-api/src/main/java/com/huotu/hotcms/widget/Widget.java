@@ -15,7 +15,6 @@ import org.springframework.core.io.Resource;
 
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * 请参考<a href="https://huobanplus.quip.com/KngdAAGxtKSQ">控件技术标准</a>
@@ -33,19 +32,6 @@ public interface Widget {
      */
     static String WidgetIdentity(Widget widget) {
         return widget.groupId() + "." + widget.widgetId() + ":" + widget.version();
-    }
-
-    static boolean equals(Widget widget, Object o) {
-        if (widget == o) return true;
-        if (!(o instanceof InstalledWidget)) return false;
-        Widget that = (Widget) o;
-        return Objects.equals(widget.groupId(), that.groupId()) &&
-                Objects.equals(widget.widgetId(), that.widgetId()) &&
-                Objects.equals(widget.version(), that.version());
-    }
-
-    static int hashCode(Widget widget) {
-        return Objects.hash(widget.groupId(), widget.widgetId(), widget.version());
     }
 
     String groupId();
@@ -69,6 +55,7 @@ public interface Widget {
     default String version() {
         return getClass().getPackage().getImplementationVersion();
     }
+
 
     /**
      * 接口提供了默认返货读取头信息中的产品信息

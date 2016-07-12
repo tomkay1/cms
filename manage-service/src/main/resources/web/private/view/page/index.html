@@ -53,7 +53,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">页面类型</label>
                         <div class="col-sm-2">
-                            <select name="typeId" title="页面类型" class="form-control">
+                            <select name="pageType" title="页面类型" class="form-control">
                                 <!--suppress ThymeleafVariablesResolveInspection -->
                                 <option value="0"
                                         th:each="pageType:${T(com.huotu.hotcms.service.common.PageType).values()}"
@@ -67,7 +67,7 @@
                         </div>
                         <label class="col-sm-2 control-label">数据源</label>
                         <div class="col-sm-2">
-                            <select name="dataTypeId" title="数据源" class="form-control">
+                            <select name="extra" title="数据源" class="form-control">
                                 <option value="">无</option>
                                 <option th:each="category,status:${@categoryRepository.findBySiteOrderByOrderWeightDesc(manageSite)}"
                                         th:value="${category.id}"

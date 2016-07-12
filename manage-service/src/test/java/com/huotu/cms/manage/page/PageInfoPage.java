@@ -33,6 +33,7 @@ public class PageInfoPage extends AbstractCRUDPage<PageInfo> {
 
     @Override
     protected void fillValueToForm(PageInfo value) {
+        WebElement form = getForm();
         inputText(form, "title", value.getTitle());
         inputSelect(form, "typeId", value.getPageType().getValue().toString());
         if (value.getCategory() == null) {

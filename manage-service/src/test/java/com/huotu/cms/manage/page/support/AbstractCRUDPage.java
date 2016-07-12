@@ -26,8 +26,8 @@ import java.util.function.Predicate;
  */
 public abstract class AbstractCRUDPage<T> extends AbstractContentPage {
 
-    protected WebElement form;
-    private WebElement body;
+    private final String bodyId;
+    private final String formId;
 
     /**
      * @param bodyId    body的id
@@ -36,8 +36,8 @@ public abstract class AbstractCRUDPage<T> extends AbstractContentPage {
      */
     protected AbstractCRUDPage(String bodyId, String formId, WebDriver webDriver) {
         super(webDriver);
-        body = webDriver.findElement(By.id(bodyId));
-        form = webDriver.findElement(By.id(formId));
+        this.bodyId = bodyId;
+        this.formId = formId;
     }
 
     @Override
@@ -47,7 +47,13 @@ public abstract class AbstractCRUDPage<T> extends AbstractContentPage {
 
     @Override
     public WebElement getBody() {
-        return body;
+        beforeDriver();
+        return webDriver.findElement(By.id(bodyId));
+    }
+
+    public WebElement getForm() {
+        beforeDriver();
+        return webDriver.findElement(By.id(formId));
     }
 
     /**
@@ -62,9 +68,9 @@ public abstract class AbstractCRUDPage<T> extends AbstractContentPage {
             , BiConsumer<AbstractCRUDPage<T>, WebElement> otherDataSubmitter) {
         fillValueToForm(value);
         if (otherDataSubmitter != null) {
-            otherDataSubmitter.accept(this, form);
+            otherDataSubmitter.accept(this, getForm());
         }
-        form.findElement(By.className("btn-primary")).click();
+        getForm().findElement(By.className("btn-primary")).click();
         return (X) initPage(getClass());
     }
 
@@ -83,7 +89,7 @@ public abstract class AbstractCRUDPage<T> extends AbstractContentPage {
     public List<WebElement> listTableRows() {
         beforeDriver();
         // //*[@id="DataTables_Table_0"]/tbody/tr[1]
-        return body.findElements(By.cssSelector("tbody>tr"));
+        return getBody().findElements(By.cssSelector("tbody>tr"));
     }
 
     /**

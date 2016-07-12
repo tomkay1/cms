@@ -12,6 +12,8 @@ package com.huotu.cms.manage.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.cms.manage.ManageTest;
 import com.huotu.hotcms.service.entity.PageInfo;
+import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.repository.PageInfoRepository;
 import com.huotu.hotcms.widget.page.Page;
 import org.junit.Test;
@@ -24,13 +26,9 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.UUID;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Created by hzbc on 2016/7/9.
@@ -43,7 +41,9 @@ public class PageControllerTest extends ManageTest {
     @Test
     public void flow() throws Exception {
         //首先确保虚拟出来的siteId 并没有存在任何页面
-        long siteId = 200 + random.nextInt(20000);
+        Owner owner = randomOwner();
+        Site site = randomSite(owner);
+        long siteId = site.getSiteId();
         mockMvc.perform(get("/manage/{siteId}/pages", siteId)
                 .accept(MediaType.APPLICATION_JSON))
 
@@ -110,6 +110,7 @@ public class PageControllerTest extends ManageTest {
     @Test
     public void testGetPage() throws Exception {
         PageInfo pageInfo=pageInfoRepository.findAll().get(0);
+        // TODO 没有创建页面的过程。  why why why?
 
         mockMvc.perform(get("/manage/pages/{pageId}", pageInfo.getPageId())
                 .accept(MediaType.APPLICATION_JSON))

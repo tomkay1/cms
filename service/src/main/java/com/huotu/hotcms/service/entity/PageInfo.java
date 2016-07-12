@@ -64,7 +64,7 @@ public class PageInfo implements Auditable {
     @Column(name = "updateTime")
     private LocalDateTime updateTime;
 
-    @Column(name = "pageType")
+    @Column(name = "pageType", nullable = false)
     private PageType pageType;
 
     /**

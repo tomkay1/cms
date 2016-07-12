@@ -144,6 +144,7 @@ public class WidgetInfoController
     }
 
     @ResponseBody
+    @PreAuthorize("hasRole('" + Login.Role_Manage_Value + "')")
     @RequestMapping(value = "/widgets",method = RequestMethod.GET,produces = "application/json; charset=UTF-8")
     public List<WidgetModel> getWidgetInfo() throws IOException {
         if(environment.acceptsProfiles("test")){

@@ -285,7 +285,6 @@ public class CategoryController extends SiteManageController<Category, Long, Lon
     protected Category preparePersist(Login login, Site site, Category data, Long extra, RedirectAttributes attributes)
             throws RedirectException {
         data.setSite(site);
-        data.setCreateTime(LocalDateTime.now());
         if (extra != null) {
             data.setParent(categoryService.get(extra));
         }

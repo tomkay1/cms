@@ -10,6 +10,8 @@
 package com.huotu.cms.manage.controller.support;
 
 import com.huotu.cms.manage.page.support.AbstractCRUDPage;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openqa.selenium.WebElement;
 
 import java.util.Collection;
@@ -24,16 +26,28 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class CRUDHelper {
 
+    private static final Log log = LogFactory.getLog(CRUDHelper.class);
+
     public static <T> void flow(AbstractCRUDPage<T> page, CRUDTest<T> testInstance) {
-        // 当前数据
-        Collection<T> currentList = testInstance.list();
         //先添加一个
         T randomValue = testInstance.randomValue();
+        // 当前数据
+        Collection<T> currentList = testInstance.list();
+
+        page.refresh();
 
         AbstractCRUDPage<T> page2 = page.addEntityAndSubmit(randomValue, testInstance.customAddFunction());
 
-        assertThat(testInstance.list())
-                .hasSize(currentList.size() + 1);
+        assertThat(testInstance.list().size())
+                .isGreaterThan(currentList.size());
+
+        Collection<T> allList = testInstance.list();
+        allList.removeAll(currentList);
+        // 剩下的应该就是新增的元素了 如果存在多个 就表示这个单体数据测试无法进行
+        if (allList.size() == 1) {
+            log.info("only one Entity added, run assertCreation");
+            testInstance.assertCreation(allList.iterator().next(), randomValue);
+        }
 
         // 数据测试
         List<WebElement> list = page2.listTableRows();

@@ -54,12 +54,12 @@ public class PageControllerImpl implements PageController {
 
 
     @Override
-    public void savePage(HttpServletRequest request, Long siteId)
+    public void savePage(HttpServletRequest request, Long pageId)
             throws IOException, URISyntaxException {
         String pageJson=CharStreams.toString(request.getReader());
         ObjectMapper objectMapper=new ObjectMapper();
         Page page=objectMapper.readValue(pageJson, Page.class);
-        pageService.savePage(page,siteId);
+        pageService.savePage(page,pageId);
     }
 
 

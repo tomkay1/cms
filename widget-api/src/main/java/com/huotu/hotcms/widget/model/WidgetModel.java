@@ -18,6 +18,7 @@ import lombok.Setter;
 
 /**
  * WidgetInfo的模型类，用于页面获取已安装Widget列表时使用
+ * <p>文档参考：https://quip.com/bU07AX3W15KE</p>
  * @see com.huotu.hotcms.widget.Widget
  */
 @Setter
@@ -31,6 +32,7 @@ public class WidgetModel {
      * 编辑视图
      */
     private String editorHTML;
+    private String scriptHref;
     private WidgetStyleModel[] styles;
 
 }

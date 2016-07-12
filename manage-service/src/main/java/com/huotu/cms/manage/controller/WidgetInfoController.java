@@ -163,6 +163,7 @@ public class WidgetInfoController
             widgetModel.setLocallyName(widget.name());
             widgetModel.setEditorHTML(widgetResolveService.editorHTML(widget,CMSContext.RequestContext(), null));
             widgetModel.setIdentity(widget.widgetId());
+            widgetModel.setScriptHref("TODO");
             widgetModel.setThumbnail(widget.thumbnail().getURL().toString());
             WidgetStyle [] widgetStyles=widget.styles();
 

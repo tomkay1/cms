@@ -119,6 +119,9 @@
         //用于保存 数据时候，发起请求
         ajaxData: function (data, url) {
             data=JSON.stringify(data);
+            if(savePage==null){
+                layer.alert(data);
+            }
             console.log(data);
              $.ajax({
                  type: 'PUT',
@@ -135,8 +138,10 @@
     };
 var dataHandle = {};
     dataHandle.init = function () {
-        var siteID=1;
-        var url = '/manage/pages/'+siteID;//save url
+        var strHref = window.document.location.href;
+        var pageId=strHref.substring(strHref.lastIndexOf("/")+1);
+        console.log(pageId)
+        var url = savePage+pageId;//save url
         $('#saveBtn').on('click', function () {
             DataHandle.init(url);
         });

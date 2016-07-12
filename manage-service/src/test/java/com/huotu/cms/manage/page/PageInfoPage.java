@@ -88,10 +88,9 @@ public class PageInfoPage extends AbstractContentPage {
                         .haveAtLeastOne(new Condition<>(td
                                 -> td.getText().contains(pageInfo.getPagePath()), "需显示类型"));
 
-                if (pageInfo.getPageType() != null)
-                    assertThat(tds)
-                            .haveAtLeastOne(new Condition<>(td
-                                    -> td.getText().contains(pageInfo.getPageType().getValue().toString()), "需显示路径"));
+                assertThat(tds)
+                        .haveAtLeastOne(new Condition<>(td
+                                -> td.getText().contains(pageInfo.getPageType().getValue().toString()), "需显示路径"));
 
                 if (pageInfo.getCategory() != null)
                     assertThat(tds)

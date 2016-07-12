@@ -78,7 +78,7 @@ public class PageInfoController extends SiteManageController<PageInfo, Long, Pag
 
     @Data
     static class AddPageInfoModel {
-        private Long typeId;
+        private int typeId;
         private Long dataTypeId;
     }
 

@@ -98,21 +98,21 @@
                     </thead>
                     <!--odd even-->
                     <tbody>
-                    <!--/*@thymesVar id="list" type="java.lang.Iterable<com.huotu.hotcms.service.entity.login.Owner>"*/-->
-                    <tr th:each="owner,stats:${list}" class="odd" th:class="${stats.odd?'odd':'even'}"
-                        th:attr="data-id=${owner.id}" data-id="456">
-                        <td th:text="${owner.username}">新闻资讯</td>
-                        <td>2016 06-20</td>
-                        <td th:text="${owner.customerId}">文章</td>
-                        <td>无</td>
+                    <!--/*@thymesVar id="list" type="java.lang.Iterable<com.huotu.hotcms.service.entity.Category>"*/-->
+                    <tr th:each="category,stats:${list}" class="odd" th:class="${stats.odd?'odd':'even'}"
+                        th:attr="data-id=${category.id}" data-id="456">
+                        <td th:text="${category.name}">新闻资讯</td>
+                        <td th:text="${{category.createTime}}">2016 06-20</td>
+                        <td th:text="${category.contentType.value}">文章</td>
+                        <td th:text="${category.parent!=null?category.parent.name:'无'}">无</td>
                         <td class="center">
-                            <a href="index.html" th:href="@{/manage/supper/as/${owner.id}}" target="_top" title="管理">
-                                <i class="fa fa-pencil"></i>
-                            </a>
-                            <a href="index.html" class="delete" th:href="@{/manage/page/{id}/delete(id=${owner.id})}"
-                               target="_top" title="删除">
-                                <i class="fa fa-trash-o"></i>
-                            </a>
+                            <!--<a href="index.html" th:href="@{/manage/supper/as/${owner.id}}" target="_top" title="管理">-->
+                            <!--<i class="fa fa-pencil"></i>-->
+                            <!--</a>-->
+                            <!--<a href="index.html" class="delete" th:href="@{/manage/page/{id}/delete(id=${owner.id})}"-->
+                            <!--target="_top" title="删除">-->
+                            <!--<i class="fa fa-trash-o"></i>-->
+                            <!--</a>-->
                         </td>
                     </tr>
 

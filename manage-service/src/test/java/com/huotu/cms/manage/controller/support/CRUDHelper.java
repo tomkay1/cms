@@ -24,23 +24,23 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class CRUDHelper {
 
-    public static <T> void flow(AbstractCRUDPage<T> page, EntityTest<T> entityTest) {
+    public static <T> void flow(AbstractCRUDPage<T> page, CRUDTest<T> testInstance) {
         // 当前数据
-        Collection<T> currentList = entityTest.list();
+        Collection<T> currentList = testInstance.list();
         //先添加一个
-        T randomValue = entityTest.randomValue();
+        T randomValue = testInstance.randomValue();
 
-        AbstractCRUDPage<T> page2 = page.addEntityAndSubmit(randomValue, entityTest.customAddFunction());
+        AbstractCRUDPage<T> page2 = page.addEntityAndSubmit(randomValue, testInstance.customAddFunction());
 
-        assertThat(entityTest.list())
+        assertThat(testInstance.list())
                 .hasSize(currentList.size() + 1);
 
         // 数据测试
         List<WebElement> list = page2.listTableRows();
         assertThat(list)
-                .hasSize(entityTest.list().size());
+                .hasSize(testInstance.list().size());
 
-        for (T value : entityTest.list()) {
+        for (T value : testInstance.list()) {
             WebElement rowElement = list.stream()
                     .filter(page2.findRow(value))
                     .findAny().orElseThrow(() -> {

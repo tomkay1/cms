@@ -14,9 +14,12 @@ import com.huotu.cms.manage.ManageTest;
 import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.repository.PageInfoRepository;
 import com.huotu.hotcms.widget.page.Page;
+import org.apache.commons.httpclient.Header;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.util.StreamUtils;
 
 import java.io.IOException;
@@ -117,4 +120,13 @@ public class PageControllerTest extends ManageTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.length()").value(1));
     }
+
+    @Test
+    public void testGetWidgets() throws Exception {
+        MockHttpServletResponse response= mockMvc.perform(get("/manage/widget/widgets")
+                .accept(MediaType.APPLICATION_JSON)).andReturn().getResponse();
+        String redirectUrl=response.getHeader("Location");//获取重定向后的地址
+        mockMvc.perform(get(redirectUrl)).andReturn();
+    }
+
 }

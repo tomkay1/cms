@@ -281,6 +281,7 @@ public abstract class ManageTest extends SpringWebTest {
         PageInfo pageInfo=new PageInfo();
         pageInfo.setSite(randomSite(randomOwner()));
         pageInfo.setCategory(randomCategory());
+        pageInfo.setPageType(PageType.DataContent);
         XmlMapper xmlMapper=new XmlMapper();
         byte[] pageXml=xmlMapper.writeValueAsString(randomPage()).getBytes();
         pageInfo.setPageSetting(pageXml);

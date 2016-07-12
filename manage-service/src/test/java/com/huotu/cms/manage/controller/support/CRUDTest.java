@@ -19,9 +19,26 @@ import java.util.function.BiConsumer;
  */
 public interface CRUDTest<T> {
 
+    /**
+     * @return 业务层的相关业务数据
+     */
     Collection<T> list();
 
+    /**
+     * @return 随机的业务数据
+     */
     T randomValue();
 
+    /**
+     * @return 除了page还有别的表单操作么?
+     */
     BiConsumer<AbstractCRUDPage<T>, T> customAddFunction();
+
+    /**
+     * 检查新增的数据是否正确
+     *
+     * @param entity 来自JPA
+     * @param data   数据
+     */
+    void assertCreation(T entity, T data);
 }

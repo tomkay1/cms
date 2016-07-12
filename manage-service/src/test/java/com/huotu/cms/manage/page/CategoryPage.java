@@ -60,7 +60,12 @@ public class CategoryPage extends AbstractCRUDPage<Category> {
             assertThat(tds)
                     .haveAtLeastOne(new Condition<>(td -> td.getText().contains(value.getName()), "需显示数据源名称"));
             assertThat(tds)
-                    .haveAtLeastOne(new Condition<>(td -> td.getText().contains(value.getName()), "需显示数据源名称"));
+                    .haveAtLeastOne(new Condition<>(td
+                            -> td.getText().contains(value.getContentType().getValue().toString()), "需显示数据源模型"));
+            if (value.getParent() != null)
+                assertThat(tds)
+                        .haveAtLeastOne(new Condition<>(td
+                                -> td.getText().contains(value.getParent().getName()), "需显示数据源父级"));
 
             return true;
         };

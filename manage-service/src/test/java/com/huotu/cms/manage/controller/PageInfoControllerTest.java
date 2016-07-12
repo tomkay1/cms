@@ -26,6 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.function.BiConsumer;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 /**
  * @author CJ
  */
@@ -58,6 +60,18 @@ public class PageInfoControllerTest extends SiteManageTest {
             @Override
             public BiConsumer<AbstractCRUDPage<PageInfo>, PageInfo> customAddFunction() {
                 return null;
+            }
+
+            @Override
+            public void assertCreation(PageInfo entity, PageInfo data) {
+                assertThat(entity.getCategory())
+                        .isEqualTo(data.getCategory());
+                assertThat(entity.getTitle())
+                        .isEqualToIgnoringCase(data.getTitle());
+                assertThat(entity.getPageType())
+                        .isEqualByComparingTo(data.getPageType());
+                assertThat(entity.getPagePath())
+                        .isEqualTo(data.getPagePath());
             }
         });
 

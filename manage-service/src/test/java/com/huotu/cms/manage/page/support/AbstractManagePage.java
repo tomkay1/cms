@@ -66,7 +66,7 @@ public abstract class AbstractManagePage extends BracketPage {
         return messages;
     }
 
-    protected void inputSelect(WebElement formElement, String inputName, String label) {
+    public void inputSelect(WebElement formElement, String inputName, String label) {
         WebElement input = formElement.findElement(By.name(inputName));
 
         if (input.getAttribute("class") != null && input.getAttribute("class").contains("chosen-select")) {
@@ -100,7 +100,7 @@ public abstract class AbstractManagePage extends BracketPage {
         }
     }
 
-    protected void inputTags(WebElement formElement, String inputName, String[] values) {
+    public void inputTags(WebElement formElement, String inputName, String[] values) {
         WebElement input = formElement.findElement(By.name(inputName));
         input.clear();
         String id = input.getAttribute("id");
@@ -120,7 +120,7 @@ public abstract class AbstractManagePage extends BracketPage {
      * @param inputName   input的name
      * @param value       要输入的值
      */
-    protected void inputText(WebElement formElement, String inputName, String value) {
+    public void inputText(WebElement formElement, String inputName, String value) {
         try {
             WebElement input = formElement.findElement(By.name(inputName));
             input.clear();

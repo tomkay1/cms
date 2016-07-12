@@ -68,15 +68,14 @@ public class PageServiceImpl implements PageService {
 
 
     @Override
-    public void savePage(Page page,Long siteId) throws IOException {
+    public void savePage(Page page,Long pageId) throws IOException {
         XmlMapper xmlMapper = new XmlMapper();
         //xmlMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         String pageXml = xmlMapper.writeValueAsString(page);
-        PageInfo pageInfo = pageInfoRepository.findOne(page.getPageIdentity());
+        PageInfo pageInfo = pageInfoRepository.findOne(pageId);
         if (pageInfo == null) {
             pageInfo = new PageInfo();
             pageInfo.setCreateTime(LocalDateTime.now());
-            pageInfo.setSite(siteRepository.findOne(siteId));
         }
 
         //删除控件旧的css样式表

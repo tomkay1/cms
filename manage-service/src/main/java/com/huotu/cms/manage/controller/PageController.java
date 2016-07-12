@@ -67,13 +67,13 @@ public interface PageController {
     Page getPage(@PathVariable("pageId") Long pageId) throws IOException;
 
     /**
-     * <p>保存界面{@link Page}</p>
+     * <p>保存界面{@link Page}信息到pageId相关的{@link PageInfo}中</p>
      * @throws IOException 从request中读取请求体时异常
      */
 
-    @RequestMapping(value = "/manage/pages/{siteId}",method = RequestMethod.PUT)
+    @RequestMapping(value = "/manage/pages/{pageId}",method = RequestMethod.PUT)
     @ResponseStatus(code = HttpStatus.ACCEPTED)
-    void savePage(HttpServletRequest request,@PathVariable("siteId") Long siteId) throws IOException, URISyntaxException;
+    void savePage(HttpServletRequest request,@PathVariable("pageId") Long pageID) throws IOException, URISyntaxException;
 
     /**
      * <p>添加页面{@link Page}</p>
@@ -107,7 +107,7 @@ public interface PageController {
      * 跳转到CMS编辑界面，用于测试
      * @return url
      */
-    @RequestMapping("/manage/edit/{pageId}")
+    @RequestMapping("/manage/page/edit/{pageId}")
     default ModelAndView startEdit(@PathVariable("pageId") long pageId){
         return new ModelAndView("/edit/edit.html");
     }

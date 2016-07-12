@@ -244,6 +244,6 @@ var editPage = {};
         editFunc.init();
 
         // 页面列表初始化
-        Page.init('/manage/widget/widgets');
+        Page.init(initPath);
     };
 editPage.init();

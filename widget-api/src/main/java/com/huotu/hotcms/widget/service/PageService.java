@@ -49,10 +49,10 @@ public interface PageService {
     /**
      * 保存某站点下编辑的界面信息
      * @param page  Page的配置信息
-     * @param siteId 站点
+     * @param pageId 站点
      * @throws IOException jackson相关异常
      */
-    void savePage(Page page,Long siteId) throws IOException;
+    void savePage(Page page,Long pageId) throws IOException;
 
     /**
      * 解析保存了{@link com.huotu.hotcms.widget.page.Page}信息的XML

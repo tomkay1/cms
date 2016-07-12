@@ -34,7 +34,7 @@
       {
         "locallyName":"carousel-1",
         "thumbnail": "test-1.png",
-        "previewHTML": "<img src=\"http://placehold.it/200x150?text=Test2\">"
+        "previewHTML": "<img src=\"http://placehold.it/200x150?text=Test2\" data-styleId='0'>"
       }
     ]
   },

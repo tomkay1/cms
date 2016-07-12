@@ -9,6 +9,7 @@
 
 package com.huotu.cms.manage.page;
 
+import com.huotu.cms.manage.page.support.AbstractContentPage;
 import com.huotu.hotcms.service.entity.Route;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

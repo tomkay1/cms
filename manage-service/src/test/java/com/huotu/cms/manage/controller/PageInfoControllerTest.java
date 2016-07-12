@@ -47,7 +47,9 @@ public class PageInfoControllerTest extends SiteManageTest {
         PageInfoPage page = manageMainPage.toPageInfo();
 
         PageInfo randomPageInfoValue = randomPageInfoValue();
-        PageInfoPage listPage = page.addPage(randomPageInfoValue, category);
+        randomPageInfoValue.setCategory(category);
+
+        PageInfoPage listPage = page.addEntityAndSubmit(randomPageInfoValue, null);
 
         // 也能找到这个页面
         // 1 是确保站点的数量 2 是确保站点的信息 所以必须逐个检查。

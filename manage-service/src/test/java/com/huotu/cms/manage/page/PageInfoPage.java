@@ -9,13 +9,12 @@
 
 package com.huotu.cms.manage.page;
 
-import com.huotu.hotcms.service.entity.Category;
+import com.huotu.cms.manage.page.support.AbstractCRUDPage;
 import com.huotu.hotcms.service.entity.PageInfo;
 import org.assertj.core.api.Condition;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -26,46 +25,23 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author CJ
  */
-public class PageInfoPage extends AbstractContentPage {
-
-    @FindBy(id = "fa-sitemap")
-    private WebElement body;
-    @FindBy(id = "pageForm")
-    private WebElement form;
+public class PageInfoPage extends AbstractCRUDPage<PageInfo> {
 
     public PageInfoPage(WebDriver webDriver) {
-        super(webDriver);
+        super("fa-sitemap", "pageForm", webDriver);
     }
 
     @Override
-    public WebElement getBody() {
-        return body;
-    }
-
-    @Override
-    public void validatePage() {
-//        System.out.println(webDriver.getPageSource());
-        normalValid();
-    }
-
-    public PageInfoPage addPage(PageInfo value, Category category) {
+    protected void fillValueToForm(PageInfo value) {
+        WebElement form = getForm();
         inputText(form, "title", value.getTitle());
         inputSelect(form, "typeId", value.getPageType().getValue().toString());
-        if (category == null) {
+        if (value.getCategory() == null) {
             inputSelect(form, "dataTypeId", "无");
         } else {
-            inputSelect(form, "dataTypeId", category.getName());
+            inputSelect(form, "dataTypeId", value.getCategory().getName());
         }
-
         inputText(form, "pagePath", value.getPagePath());
-        form.findElement(By.className("btn-primary")).click();
-        return initPage(PageInfoPage.class);
-    }
-
-    public List<WebElement> listTableRows() {
-        beforeDriver();
-        // //*[@id="DataTables_Table_0"]/tbody/tr[1]
-        return body.findElements(By.cssSelector("tbody>tr"));
     }
 
     public Predicate<? super WebElement> findRow(PageInfo pageInfo) {
@@ -75,33 +51,34 @@ public class PageInfoPage extends AbstractContentPage {
         };
     }
 
-    public Condition<? super WebElement> rowCondition(PageInfo pageInfo) {
-        return new Condition<>(row -> {
+    @Override
+    protected Predicate<WebElement> rowPredicate(PageInfo value) {
+        return row -> {
             try {
                 // 找到名字 也就算了
                 List<WebElement> tds = row.findElements(By.tagName("td"));
                 assertThat(tds)
                         .haveAtLeastOne(new Condition<>(td
-                                -> td.getText().contains(pageInfo.getTitle()), "需显示标题"));
+                                -> td.getText().contains(value.getTitle()), "需显示标题"));
 
                 assertThat(tds)
                         .haveAtLeastOne(new Condition<>(td
-                                -> td.getText().contains(pageInfo.getPagePath()), "需显示类型"));
+                                -> td.getText().contains(value.getPagePath()), "需显示类型"));
 
                 assertThat(tds)
                         .haveAtLeastOne(new Condition<>(td
-                                -> td.getText().contains(pageInfo.getPageType().getValue().toString()), "需显示路径"));
+                                -> td.getText().contains(value.getPageType().getValue().toString()), "需显示路径"));
 
-                if (pageInfo.getCategory() != null)
+                if (value.getCategory() != null)
                     assertThat(tds)
                             .haveAtLeastOne(new Condition<>(td
-                                    -> td.getText().contains(pageInfo.getCategory().getName()), "需显示数据源名"));
+                                    -> td.getText().contains(value.getCategory().getName()), "需显示数据源名"));
 
             } catch (RuntimeException ex) {
                 printThisPage();
                 throw ex;
             }
             return true;
-        }, "");
+        };
     }
 }

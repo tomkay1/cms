@@ -10,6 +10,7 @@
 package com.huotu.cms.manage.page;
 
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
+import com.huotu.cms.manage.page.support.AbstractContentPage;
 import com.huotu.hotcms.service.entity.Site;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

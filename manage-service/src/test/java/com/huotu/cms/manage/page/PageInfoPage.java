@@ -10,6 +10,7 @@
 package com.huotu.cms.manage.page;
 
 import com.huotu.cms.manage.page.support.AbstractCRUDPage;
+import com.huotu.cms.manage.page.support.BodyId;
 import com.huotu.hotcms.service.entity.PageInfo;
 import org.assertj.core.api.Condition;
 import org.openqa.selenium.By;
@@ -25,10 +26,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author CJ
  */
+@BodyId("fa-sitemap")
 public class PageInfoPage extends AbstractCRUDPage<PageInfo> {
 
     public PageInfoPage(WebDriver webDriver) {
-        super("fa-sitemap", "pageForm", webDriver);
+        super("pageForm", webDriver);
     }
 
     @Override

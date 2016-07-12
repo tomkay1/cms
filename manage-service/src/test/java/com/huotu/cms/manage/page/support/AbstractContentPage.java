@@ -7,7 +7,7 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.cms.manage.page;
+package com.huotu.cms.manage.page.support;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -24,9 +24,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author CJ
  */
-abstract class AbstractContentPage extends AbstractManagePage {
+public abstract class AbstractContentPage extends AbstractManagePage {
 
-    AbstractContentPage(WebDriver webDriver) {
+    protected AbstractContentPage(WebDriver webDriver) {
         super(webDriver.findElements(By.id("content")).isEmpty() ? webDriver : webDriver.switchTo().frame("content"));
     }
 
@@ -60,7 +60,7 @@ abstract class AbstractContentPage extends AbstractManagePage {
     /**
      * 在使用driver之前总要确保已经switch到content
      */
-    void beforeDriver() {
+    protected void beforeDriver() {
         if (!webDriver.findElements(By.id("content")).isEmpty())
             webDriver.switchTo().frame("content");
     }

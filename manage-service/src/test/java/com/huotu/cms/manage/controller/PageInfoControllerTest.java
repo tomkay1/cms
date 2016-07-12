@@ -10,18 +10,21 @@
 package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.SiteManageTest;
+import com.huotu.cms.manage.controller.support.CRUDHelper;
+import com.huotu.cms.manage.controller.support.CRUDTest;
 import com.huotu.cms.manage.page.ManageMainPage;
 import com.huotu.cms.manage.page.PageInfoPage;
+import com.huotu.cms.manage.page.support.AbstractCRUDPage;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.repository.PageInfoRepository;
 import org.junit.Test;
-import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.function.BiConsumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -38,39 +41,39 @@ public class PageInfoControllerTest extends SiteManageTest {
     public void flow() throws Exception {
         Site site = loginAsSite();
 
-        // 添加一个数据源 用于测试
-        Category category = random.nextBoolean() ? randomCategory(site) : null;
-        List<PageInfo> oldPageInfoList = pageInfoRepository.findBySite(site);
-
         ManageMainPage manageMainPage = initPage(ManageMainPage.class);
 
-        PageInfoPage page = manageMainPage.toPageInfo();
+        CRUDHelper.flow(manageMainPage.toPage(PageInfoPage.class), new CRUDTest<PageInfo>() {
+            @Override
+            public Collection<PageInfo> list() {
+                return pageInfoRepository.findBySite(site);
+            }
 
-        PageInfo randomPageInfoValue = randomPageInfoValue();
-        PageInfoPage listPage = page.addPage(randomPageInfoValue, category);
+            @Override
+            public PageInfo randomValue() {
+                Category category = random.nextBoolean() ? randomCategory(site) : null;
+                PageInfo randomPageInfoValue = randomPageInfoValue();
+                randomPageInfoValue.setCategory(category);
+                return randomPageInfoValue;
+            }
 
-        // 也能找到这个页面
-        // 1 是确保站点的数量 2 是确保站点的信息 所以必须逐个检查。
-        List<PageInfo> pageInfoList = pageInfoRepository.findBySite(site);
+            @Override
+            public BiConsumer<AbstractCRUDPage<PageInfo>, PageInfo> customAddFunction() {
+                return null;
+            }
 
-        assertThat(pageInfoList)
-                .hasSize(oldPageInfoList.size() + 1);
-
-        List<WebElement> list = listPage.listTableRows();
-        assertThat(list)
-                .hasSize(pageInfoList.size());
-
-        for (PageInfo pageInfo : pageInfoList) {
-            WebElement rowElement = list.stream()
-                    .filter(listPage.findRow(pageInfo))
-                    .findAny().orElseThrow(() -> {
-                        listPage.printThisPage();
-                        return new IllegalStateException("应该显示该页面" + pageInfo.getPageId());
-                    });
-            assertThat(rowElement)
-                    .is(listPage.rowCondition(pageInfo));
-        }
-
+            @Override
+            public void assertCreation(PageInfo entity, PageInfo data) {
+                assertThat(entity.getCategory())
+                        .isEqualTo(data.getCategory());
+                assertThat(entity.getTitle())
+                        .isEqualToIgnoringCase(data.getTitle());
+                assertThat(entity.getPageType())
+                        .isEqualByComparingTo(data.getPageType());
+                assertThat(entity.getPagePath())
+                        .isEqualTo(data.getPagePath());
+            }
+        });
 
     }
 

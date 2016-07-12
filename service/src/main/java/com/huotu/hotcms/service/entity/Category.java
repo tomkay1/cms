@@ -85,6 +85,7 @@ public class Category implements Auditable {
      * 正文类型
      * 如果已设置 {@link #parent}则不应该再设置该项.
      */
+    @Column(nullable = false)
     private ContentType contentType;
 
 //    /**

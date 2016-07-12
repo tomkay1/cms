@@ -10,6 +10,7 @@
 
 <html xmlns:th="http://www.thymeleaf.org" xmlns:ewp="http://ewp.jiangcai.me"
       lang="en">
+<!--/*@thymesVar id="manageSite" type="com.huotu.hotcms.service.entity.Site"*/-->
 <head>
     <meta charset="UTF-8">
     <link href="http://resali.huobanplus.com/cdn/bracket/css/style.default.css" rel="stylesheet">
@@ -45,17 +46,26 @@
                         <label class="col-sm-2 control-label">模型</label>
                         <div class="col-sm-2">
                             <select name="contentType" title="模型" class="form-control">
-                                <option>文章</option>
-                                <option>视频</option>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option value="0"
+                                        th:each="pageType:${T(com.huotu.hotcms.service.common.ContentType).values()}"
+                                        th:value="${pageType.getCode()}"
+                                        th:text="${pageType.getValue().toString()}">文章
+                                </option>
+                                <option th:remove="all">视频</option>
                             </select>
                             <span class="help-block">描述这个数据源的特性,不同特性的数据源可以录入不同的内容</span>
                         </div>
                         <label class="col-sm-2 control-label">父级</label>
                         <div class="col-sm-2">
-                            <select name="parent" title="父级数据源" class="form-control">
-                                <option>无</option>
-                                <option>新闻咨询</option>
-                                <option>成功案例</option>
+                            <select name="extra" title="父级数据源" class="form-control">
+                                <option value="">无</option>
+                                <option th:each="category,status:${@categoryRepository.findBySiteOrderByOrderWeightDesc(manageSite)}"
+                                        th:value="${category.id}"
+                                        th:text="${category.name}">
+                                    新闻咨询
+                                </option>
+                                <option th:remove="all">成功案例</option>
                             </select>
                         </div>
                     </div>
@@ -98,21 +108,21 @@
                     </thead>
                     <!--odd even-->
                     <tbody>
-                    <!--/*@thymesVar id="list" type="java.lang.Iterable<com.huotu.hotcms.service.entity.login.Owner>"*/-->
-                    <tr th:each="owner,stats:${list}" class="odd" th:class="${stats.odd?'odd':'even'}"
-                        th:attr="data-id=${owner.id}" data-id="456">
-                        <td th:text="${owner.username}">新闻资讯</td>
-                        <td>2016 06-20</td>
-                        <td th:text="${owner.customerId}">文章</td>
-                        <td>无</td>
+                    <!--/*@thymesVar id="list" type="java.lang.Iterable<com.huotu.hotcms.service.entity.Category>"*/-->
+                    <tr th:each="category,stats:${list}" class="odd" th:class="${stats.odd?'odd':'even'}"
+                        th:attr="data-id=${category.id}" data-id="456">
+                        <td th:text="${category.name}">新闻资讯</td>
+                        <td th:text="${{category.createTime}}">2016 06-20</td>
+                        <td th:text="${category.contentType.value}">文章</td>
+                        <td th:text="${category.parent!=null?category.parent.name:'无'}">无</td>
                         <td class="center">
-                            <a href="index.html" th:href="@{/manage/supper/as/${owner.id}}" target="_top" title="管理">
-                                <i class="fa fa-pencil"></i>
-                            </a>
-                            <a href="index.html" class="delete" th:href="@{/manage/page/{id}/delete(id=${owner.id})}"
-                               target="_top" title="删除">
-                                <i class="fa fa-trash-o"></i>
-                            </a>
+                            <!--<a href="index.html" th:href="@{/manage/supper/as/${owner.id}}" target="_top" title="管理">-->
+                            <!--<i class="fa fa-pencil"></i>-->
+                            <!--</a>-->
+                            <!--<a href="index.html" class="delete" th:href="@{/manage/page/{id}/delete(id=${owner.id})}"-->
+                            <!--target="_top" title="删除">-->
+                            <!--<i class="fa fa-trash-o"></i>-->
+                            <!--</a>-->
                         </td>
                     </tr>
 

@@ -10,8 +10,11 @@
 package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.SiteManageTest;
+import com.huotu.cms.manage.controller.support.CRUDHelper;
+import com.huotu.cms.manage.controller.support.CRUDTest;
 import com.huotu.cms.manage.page.CategoryPage;
 import com.huotu.cms.manage.page.ManageMainPage;
+import com.huotu.cms.manage.page.support.AbstractCRUDPage;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
@@ -20,8 +23,9 @@ import com.huotu.hotcms.service.service.CategoryService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.UUID;
+import java.util.function.BiConsumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -41,36 +45,49 @@ public class CategoryControllerTest extends SiteManageTest {
 
         ManageMainPage mainPage = initPage(ManageMainPage.class);
 
-        CategoryPage page;
         try {
-            page = mainPage.toCategory();
+            mainPage.toPage(CategoryPage.class);
             throw new AssertionError("现在应该还看不到页面");
         } catch (Exception ignored) {
         }
         // 试下使用{{}}
         mainPage.switchSite(site);
-        page = mainPage.toCategory();
+        mainPage.toPage(CategoryPage.class);
     }
 
     @Test
     public void add() throws Exception {
         Site site = loginAsSite();
+        ManageMainPage mainPage = initPage(ManageMainPage.class);
 
-        addCategory(site);
 
-        List<Category> categoryList = categoryService.getCategories(site);
-        assertThat(categoryList)
-                .isNotEmpty();
-    }
+        CRUDHelper.flow(mainPage.toPage(CategoryPage.class), new CRUDTest<Category>() {
+            @Override
+            public Collection<Category> list() {
+                return categoryService.getCategories(site);
+            }
 
-    private CategoryPage addCategory(Site site) {
-        Category category = randomCategoryValue(site);
-        CategoryPage page = initPage(ManageMainPage.class).toCategory();
-        if (category.getParent() != null)
-            page.refresh();// 如果酱紫的话 需要可以选择父级
-        page.addCategory(category);
-        page.reloadPageInfo();
-        return page;
+            @Override
+            public Category randomValue() {
+                return randomCategoryValue(site);
+            }
+
+            @Override
+            public BiConsumer<AbstractCRUDPage<Category>, Category> customAddFunction() {
+                return null;
+            }
+
+            @Override
+            public void assertCreation(Category entity, Category data) {
+                assertThat(entity.getParent())
+                        .isEqualTo(data.getParent());
+                assertThat(entity.getContentType())
+                        .isEqualByComparingTo(data.getContentType());
+                assertThat(entity.getName())
+                        .isEqualTo(data.getName());
+            }
+        });
+
     }
 
     private Category randomCategoryValue(Site site) {

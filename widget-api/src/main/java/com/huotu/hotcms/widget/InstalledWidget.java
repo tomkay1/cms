@@ -10,14 +10,20 @@
 package com.huotu.hotcms.widget;
 
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.util.Objects;
 
 /**
  * 已安装的控件,
  *
  * @author CJ
  */
-@Data
+@Setter
+@Getter
+@ToString
 public class InstalledWidget {
 
     private final transient Widget widget;
@@ -29,5 +35,25 @@ public class InstalledWidget {
     private Long ownerId;
     private String type;
 
+    public InstalledWidget(Widget widget) {
+        this.widget = widget;
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof InstalledWidget)) return false;
+        InstalledWidget that = (InstalledWidget) o;
+        return Objects.equals(widget.groupId(), that.widget.groupId()) &&
+                Objects.equals(widget.widgetId(), that.widget.widgetId()) &&
+                Objects.equals(widget.version(), that.widget.version()) &&
+                Objects.equals(identifier, that.identifier) &&
+                Objects.equals(ownerId, that.ownerId) &&
+                Objects.equals(type, that.type);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(widget.groupId(), widget.widgetId(), widget.version(), identifier, ownerId, type);
+    }
 }

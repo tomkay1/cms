@@ -7,7 +7,7 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.cms.manage.page;
+package com.huotu.cms.manage.page.support;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -19,14 +19,14 @@ import java.util.List;
  * @author CJ
  */
 public abstract class AbstractFrameParentPage extends AbstractManagePage {
-    AbstractFrameParentPage(WebDriver webDriver) {
+    protected AbstractFrameParentPage(WebDriver webDriver) {
         super(webDriver);
     }
 
     /**
      * 在使用driver之前总要确保已经switch到parent
      */
-    void beforeDriver() {
+    protected void beforeDriver() {
         if (webDriver.findElements(By.id("content")).isEmpty())
             webDriver.switchTo().parentFrame();
     }

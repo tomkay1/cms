@@ -67,6 +67,13 @@ public abstract class AbstractCRUDPage<T> extends AbstractContentPage {
     public <X extends AbstractCRUDPage<T>> X addEntityAndSubmit(T value
             , BiConsumer<AbstractCRUDPage<T>, T> otherDataSubmitter) {
         beforeDriver();
+
+        // 先打开这个添加区域
+        WebElement panel = getForm().findElement(By.className("panel-default"));
+        if (panel.getAttribute("class").contains("close-panel")) {
+            panel.findElement(By.cssSelector("a.maximize")).click();
+        }
+
         fillValueToForm(value);
         if (otherDataSubmitter != null) {
             otherDataSubmitter.accept(this, value);

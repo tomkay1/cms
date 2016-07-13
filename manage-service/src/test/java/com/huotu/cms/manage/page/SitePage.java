@@ -10,7 +10,8 @@
 package com.huotu.cms.manage.page;
 
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
-import com.huotu.cms.manage.page.support.AbstractContentPage;
+import com.huotu.cms.manage.page.support.AbstractCRUDPage;
+import com.huotu.cms.manage.page.support.BodyId;
 import com.huotu.hotcms.service.entity.Site;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -36,29 +37,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author CJ
  */
-public class SitePage extends AbstractContentPage {
+@BodyId("fa-puzzle-piece")
+public class SitePage extends AbstractCRUDPage<Site> {
     private static final Log log = LogFactory.getLog(SitePage.class);
 
-    @FindBy(id = "fa-puzzle-piece")
-    private WebElement body;
     @FindBy(id = "logo-uploader")
     private WebElement uploader;
-    @FindBy(id = "addSiteForm")
-    private WebElement form;
 
     public SitePage(WebDriver webDriver) {
-        super(webDriver);
-    }
-
-    @Override
-    public WebElement getBody() {
-        return body;
-    }
-
-    @Override
-    public void validatePage() {
-        normalValid();
-//        System.out.println(webDriver.getPageSource());
+        super("addSiteForm", webDriver);
     }
 
     public void uploadLogo(String name, Resource resource) throws IOException {
@@ -200,5 +187,33 @@ public class SitePage extends AbstractContentPage {
             // 如果site存在logo则路径需是那个
             return true;
         }, "显示信息不正确");
+    }
+
+    @Override
+    protected void fillValueToForm(Site value) {
+        WebElement form = getForm();
+//        uploadLogo("thumbnail.png",new ClassPathResource("thumbnail.png"));
+        inputHidden(form, "tmpLogoPath", logo);
+        inputTags(form, "domains", domains);
+        inputText(form, "homeDomain", homeDomain);
+
+        inputText(form, "name", value.getName());
+        inputText(form, "title", value.getTitle());
+        inputText(form, "description", value.getDescription());
+        inputTags(form, "keywords", value.getKeywords().split(","));
+        inputSelect(form, "siteType", value.getSiteType().getValue().toString());
+        inputText(form, "copyright", value.getCopyright());
+
+        log.info("to click submit for add site.");
+    }
+
+    @Override
+    public Predicate<? super WebElement> findRow(Site value) {
+        return null;
+    }
+
+    @Override
+    protected Predicate<WebElement> rowPredicate(Site value) {
+        return null;
     }
 }

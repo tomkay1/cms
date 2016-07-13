@@ -30,4 +30,13 @@ public interface WidgetInfoRepository extends JpaRepository<WidgetInfo, WidgetId
      */
     List<WidgetInfo> findByEnabledTrue();
 
+    /**
+     * 获取group,artifactId 相等的并且是可用的控件信息列表
+     *
+     * @param groupId
+     * @param artifactId
+     * @return
+     */
+    List<WidgetInfo> findByGroupIdAndArtifactIdAndEnabledTrue(String groupId, String artifactId);
+
 }

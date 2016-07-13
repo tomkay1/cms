@@ -18,7 +18,6 @@
         <property name="packagesToScan">
             <array>
                 <value>com.huotu.hotcms.service.entity</value>
-                <value>com.huotu.hotcms.widget.entity</value>
                 <value>com.huotu.hotcms.service.config</value>
             </array>
         </property>
@@ -30,7 +29,7 @@
         </property>
         <property name="jpaPropertyMap">
             <map>
-                <entry key="javax.persistence.schema-generation.database.action" value="create"/>
+                <entry key="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
                 <entry key="eclipselink.weaving" value="false"/>
                 <entry key="eclipselink.logging.level" value="FINE"/>
             </map>

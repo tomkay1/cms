@@ -100,4 +100,11 @@ public interface PageService {
      */
     Page getClosestContentPage(Category category, String path) throws IOException;
 
+    /**
+     * 返回所有page
+     *
+     * @return
+     */
+    List<Page> findAll() throws IOException;
+
 }

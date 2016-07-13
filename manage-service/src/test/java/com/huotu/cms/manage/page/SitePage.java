@@ -9,7 +9,6 @@
 
 package com.huotu.cms.manage.page;
 
-import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.huotu.cms.manage.page.support.AbstractCRUDPage;
 import com.huotu.cms.manage.page.support.BodyId;
 import com.huotu.hotcms.service.entity.Site;
@@ -19,13 +18,11 @@ import org.assertj.core.api.Condition;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.htmlunit.HtmlUnitWebElement;
 import org.openqa.selenium.support.FindBy;
 import org.springframework.core.io.Resource;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -78,51 +75,23 @@ public class SitePage extends AbstractCRUDPage<Site> {
         System.out.println();
     }
 
-    public void addSite(String name, String title, String desc, String[] keywords, String logo, String typeName
-            , String copyright, String[] domains, String homeDomain) {
-        beforeDriver();
-        // 先打开这个添加区域
-        WebElement panel = form.findElement(By.className("panel-default"));
-        if (panel.getAttribute("class").contains("close-panel")) {
-            panel.findElement(By.cssSelector("a.maximize")).click();
-        }
-
+    @Override
+    protected void fillValueToForm(Site value) {
+        WebElement form = getForm();
 //        uploadLogo("thumbnail.png",new ClassPathResource("thumbnail.png"));
-        inputHidden(form, "tmpLogoPath", logo);
 
-        inputText(form, "name", name);
-        inputText(form, "title", title);
-        inputText(form, "description", desc);
-        inputTags(form, "keywords", keywords);
-        inputSelect(form, "siteTypeId", typeName);
-        inputText(form, "copyright", copyright);
-        inputTags(form, "domains", domains);
-        inputText(form, "homeDomain", homeDomain);
+        inputText(form, "name", value.getName());
+        inputText(form, "title", value.getTitle());
+        inputText(form, "description", value.getDescription());
+        inputTags(form, "keywords", value.getKeywords().split(","));
+        inputSelect(form, "siteType", value.getSiteType().getValue().toString());
+        inputText(form, "copyright", value.getCopyright());
 
         log.info("to click submit for add site.");
-//        System.out.println(webDriver.getPageSource());
-        form.findElement(By.className("btn-primary")).click();
-        reloadPageInfo();
     }
 
-    private void inputHidden(WebElement form, String name, String value) {
-        WebElement input = form.findElement(By.name(name));
-        try {
-            Field field = HtmlUnitWebElement.class.getDeclaredField("element");
-            field.setAccessible(true);
-            HtmlInput htmlHiddenInput = (HtmlInput) field.get(input);
-            if (value == null)
-                htmlHiddenInput.setValueAttribute("");
-            else
-                htmlHiddenInput.setValueAttribute(value);
-        } catch (Exception ex) {
-            throw new IllegalStateException(ex);
-        }
-
-    }
-
-
-    public List<WebElement> list() {
+    @Override
+    public List<WebElement> listTableRows() {
         beforeDriver();
         // .panel-body>.row>div
         // //*[@id="fa-puzzle-piece"]/div[2]/div/div[2]/div/div[1]
@@ -130,15 +99,17 @@ public class SitePage extends AbstractCRUDPage<Site> {
         return webDriver.findElements(By.cssSelector(".panel-body>.row>div"));
     }
 
-    public Predicate<? super WebElement> findSiteElement(Site site) {
+    @Override
+    public Predicate<? super WebElement> findRow(Site value) {
         return webElement -> {
             String id = webElement.getAttribute("data-id");
-            return !StringUtils.isEmpty(id) && site.getSiteId().toString().equals(id);
+            return !StringUtils.isEmpty(id) && value.getSiteId().toString().equals(id);
         };
     }
 
-    public Condition<? super WebElement> siteElementCondition(Site site) {
-        return new Condition<>(webElement -> {
+    @Override
+    protected Predicate<WebElement> rowPredicate(Site site) {
+        return webElement -> {
             try {
                 WebElement image = webElement.findElement(By.tagName("img"));
                 String imageSrc = image.getAttribute("src");
@@ -186,34 +157,6 @@ public class SitePage extends AbstractCRUDPage<Site> {
             }
             // 如果site存在logo则路径需是那个
             return true;
-        }, "显示信息不正确");
-    }
-
-    @Override
-    protected void fillValueToForm(Site value) {
-        WebElement form = getForm();
-//        uploadLogo("thumbnail.png",new ClassPathResource("thumbnail.png"));
-        inputHidden(form, "tmpLogoPath", logo);
-        inputTags(form, "domains", domains);
-        inputText(form, "homeDomain", homeDomain);
-
-        inputText(form, "name", value.getName());
-        inputText(form, "title", value.getTitle());
-        inputText(form, "description", value.getDescription());
-        inputTags(form, "keywords", value.getKeywords().split(","));
-        inputSelect(form, "siteType", value.getSiteType().getValue().toString());
-        inputText(form, "copyright", value.getCopyright());
-
-        log.info("to click submit for add site.");
-    }
-
-    @Override
-    public Predicate<? super WebElement> findRow(Site value) {
-        return null;
-    }
-
-    @Override
-    protected Predicate<WebElement> rowPredicate(Site value) {
-        return null;
+        };
     }
 }

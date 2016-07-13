@@ -10,6 +10,7 @@
 package com.huotu.cms.manage.controller.support;
 
 import com.huotu.cms.manage.page.support.AbstractCRUDPage;
+import com.huotu.hotcms.service.Auditable;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openqa.selenium.WebElement;
@@ -46,7 +47,12 @@ public class CRUDHelper {
         // 剩下的应该就是新增的元素了 如果存在多个 就表示这个单体数据测试无法进行
         if (allList.size() == 1) {
             log.info("only one Entity added, run assertCreation");
-            testInstance.assertCreation(allList.iterator().next(), randomValue);
+            T entity = allList.iterator().next();
+            if (entity instanceof Auditable) {
+                assertThat(((Auditable) entity).getCreateTime())
+                        .isNotNull();
+            }
+            testInstance.assertCreation(entity, randomValue);
         }
 
         // 数据测试

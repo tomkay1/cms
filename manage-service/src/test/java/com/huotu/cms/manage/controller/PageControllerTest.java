@@ -24,6 +24,7 @@ import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import com.jayway.jsonpath.JsonPath;
 import org.apache.commons.httpclient.Header;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -144,6 +145,13 @@ public class PageControllerTest extends ManageTest {
                 .andExpect(jsonPath("$.length()").value(1));
     }
 
+
+    /**
+     * 对widget json进行校验
+     * <i>此测试权限真心蛋疼</i>
+     * @see #testJsonPath()
+     * @throws Exception
+     */
     @Test
     public void testGetWidgets() throws Exception {
 
@@ -158,9 +166,25 @@ public class PageControllerTest extends ManageTest {
                 .andExpect(status().isFound())
                 .andReturn();
         String widgetJson=result.getResponse().getContentAsString();
-        String identity=JsonPath.parse(widgetJson).read("$.store.identity[0]",String.class);//校验是否存在identity
+        //identity的格式:<groupId>-<widgetId>:<version>
+        //此处校验逻辑为：先检索出所有的identity，如果存在groupId和widgetId 一致，但有两个版本号的，视为bug！
+        List<String> identities=JsonPath.read(widgetJson,"$.identity[*]");
 
-
+    }
+    @Test
+    public void testJsonPath() throws IOException {
+        //直接从文件读出
+        InputStream is= this.getClass().getClassLoader().getResourceAsStream("widget.json");
+        String widgetJson= StreamUtils.copyToString(is, Charset.forName("utf-8"));
+        List<String> identities=JsonPath.read(widgetJson,"$..identity");
+        for (int i = 0; i <identities.size() ; i++) {
+            for (int j = i+1; j <=identities.size() ; j++) {
+                if(identities.get(i).split(":")[0].equals(identities.get(j).split(":")[0])){
+                    //断言为真，就表明json符合要求
+                    Assert.assertEquals(identities.get(i).split(":")[1].equals(identities.get(j).split(":")[1]),true);
+                }
+            }
+        }
     }
 
 }

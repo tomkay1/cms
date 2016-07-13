@@ -24,8 +24,8 @@
 </div>
 
 <div class="contentpanel">
-    <form id="addSiteForm" sec:authorize="hasRole('OWNER')" action="index.html" method="post"
-          th:action="@{/manage/site}">
+    <form id="updateSiteForm" sec:authorize="hasRole('OWNER')" action="index.html" method="post"
+          th:action="@{/manage/site/{siteID}(siteID=${object.siteId})}">
         <div class="panel panel-default close-panel">
             <div class="panel-heading">
                 <div class="panel-btns">

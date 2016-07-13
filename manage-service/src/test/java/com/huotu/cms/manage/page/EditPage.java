@@ -10,45 +10,49 @@
 package com.huotu.cms.manage.page;
 
 import com.huotu.cms.manage.page.support.AbstractContentPage;
+import com.huotu.cms.manage.page.support.AbstractManagePage;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by wenqi on 2016/7/4.
  */
-public class EditPage extends AbstractContentPage {
+public class EditPage extends AbstractManagePage {
 
     private static final Log log = LogFactory.getLog(EditPage.class);
 
     @FindBy(id = "edit")
     private WebElement body;
 
-    @FindBy(id="confBtn")
+    @FindBy(id="saveBtn")
     private WebElement savaBtn;
 
     public EditPage(WebDriver webDriver) {
         super(webDriver);
     }
-
-    @Override
-    public WebElement getBody() {
-        return body;
-    }
-
     @Override
     public void validatePage() {
         assertThat(body.isDisplayed()).isTrue();
     }
+
     /**
      * 加载组件列表
+     * @return  widget json
      */
-    public void loadWidget(){
-
+    public String loadWidget(){
+//        webDriver.navigate().to("http://localhost/manage/widget/widgets");
+//        By container= By.id("widgetLists");
+//        WebDriverWait wait = new WebDriverWait(webDriver, 2);
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(container));
+        return null;
     }
 
     /**

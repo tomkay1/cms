@@ -52,7 +52,9 @@ public class ManageMainPage extends AbstractFrameParentPage {
         } catch (NullPointerException ex) {
             throw new IllegalStateException("必须标注BodyId 否则找不到相对的链接:" + pageClazz);
         }
-        return initPage(pageClazz);
+        T page = initPage(pageClazz);
+        page.setMainPage(this);
+        return page;
     }
 
     public SitePage toSite() {

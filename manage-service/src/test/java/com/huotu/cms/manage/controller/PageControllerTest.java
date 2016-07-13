@@ -11,19 +11,37 @@ package com.huotu.cms.manage.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.cms.manage.ManageTest;
+import com.huotu.cms.manage.login.Manager;
+import com.huotu.cms.manage.service.SecurityService;
+import com.huotu.hotcms.service.common.CMSEnums;
 import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Owner;
+import com.huotu.hotcms.service.repository.OwnerRepository;
 import com.huotu.hotcms.service.repository.PageInfoRepository;
+import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.page.Page;
+import com.huotu.hotcms.widget.service.WidgetFactoryService;
+import com.jayway.jsonpath.JsonPath;
+import org.apache.commons.httpclient.Header;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.util.StreamUtils;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.List;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -37,6 +55,13 @@ public class PageControllerTest extends ManageTest {
 
     @Autowired
     private PageInfoRepository pageInfoRepository;
+
+    @Autowired
+    private WidgetFactoryService widgetFactoryService;
+
+    @Autowired
+    private  OwnerRepository ownerRepository;
+
 
     @Test
     public void flow() throws Exception {
@@ -109,13 +134,33 @@ public class PageControllerTest extends ManageTest {
 
     @Test
     public void testGetPage() throws Exception {
-        PageInfo pageInfo=pageInfoRepository.findAll().get(0);
-        // TODO 没有创建页面的过程。  why why why?
-
+        PageInfo pageInfo=pageInfoRepository.findAll().get(0);//先查找一个已存在的PageInfo
+        if(pageInfo==null) //如果不存在就随机创建一个，新创建的PageInfo已经初始化页面信息
+            pageInfo=randomPageInfo();
         mockMvc.perform(get("/manage/pages/{pageId}", pageInfo.getPageId())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.length()").value(1));
     }
+
+    @Test
+    public void testGetWidgets() throws Exception {
+
+        /*先确保存在已安装的控件*/
+        List<InstalledWidget> installedWidgets= widgetFactoryService.widgetList(null);
+        if(installedWidgets.size()==0){
+            widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
+                    , "1.0-SNAPSHOT", "picCarousel");
+        }
+        loginAsManage();
+        MvcResult result = mockMvc.perform(get("/manage/widget/widgets"))
+                .andExpect(status().isFound())
+                .andReturn();
+        String widgetJson=result.getResponse().getContentAsString();
+        String identity=JsonPath.parse(widgetJson).read("$.store.identity[0]",String.class);//校验是否存在identity
+
+
+    }
+
 }

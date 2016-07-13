@@ -12,8 +12,6 @@ package com.huotu.cms.manage.controller;
 import com.huotu.cms.manage.controller.support.CRUDController;
 import com.huotu.cms.manage.exception.RedirectException;
 import com.huotu.cms.manage.util.ImageHelper;
-import com.huotu.hotcms.service.common.EnumUtils;
-import com.huotu.hotcms.service.common.SiteType;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
@@ -29,11 +27,12 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.Locale;
 
 /**
@@ -73,8 +72,6 @@ public class SiteController extends CRUDController<Site, Long, SiteController.Ab
             throw new AccessDeniedException("无法访问。");
         Owner owner = ownerRepository.getOne(login.currentOwnerId());
         data.setOwner(owner);
-        data.setCreateTime(LocalDateTime.now());
-        data.setSiteType(EnumUtils.valueOf(SiteType.class, extra.getSiteTypeId()));
 
         data = siteService.newSite(extra.getDomains(), extra.getHomeDomain(), data, Locale.CHINA);
         if (!StringUtils.isEmpty(extra.getTmpLogoPath())) {
@@ -107,7 +104,6 @@ public class SiteController extends CRUDController<Site, Long, SiteController.Ab
 
     @Data
     static class AboutNewSite {
-        private int siteTypeId;
         private String[] domains;
         private String homeDomain;
         private String tmpLogoPath;

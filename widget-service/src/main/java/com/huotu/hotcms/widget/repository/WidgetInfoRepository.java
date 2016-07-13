@@ -39,4 +39,5 @@ public interface WidgetInfoRepository extends JpaRepository<WidgetInfo, WidgetId
      */
     List<WidgetInfo> findByGroupIdAndArtifactIdAndEnabledTrue(String groupId, String artifactId);
 
+
 }

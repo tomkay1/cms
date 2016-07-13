@@ -15,7 +15,11 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.repository.PageInfoRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.widget.CMSContext;
+import com.huotu.hotcms.widget.Component;
+import com.huotu.hotcms.widget.InstalledWidget;
+import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetResolveService;
+import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.page.PageElement;
 import com.huotu.hotcms.widget.service.PageService;
@@ -77,6 +81,8 @@ public class PageServiceImpl implements PageService {
         if (pageInfo == null) {
             pageInfo = new PageInfo();
             pageInfo.setCreateTime(LocalDateTime.now());
+        } else {
+            pageInfo.setUpdateTime(LocalDateTime.now());
         }
 
         //删除控件旧的css样式表
@@ -161,6 +167,41 @@ public class PageServiceImpl implements PageService {
         }
         return pageList;
     }
+
+    @Override
+    public void updatePageComponent(Page page, InstalledWidget installedWidget) throws IllegalStateException {
+        PageElement[] pageElements = page.getElements();
+        for (PageElement pageElement : pageElements) {
+            updateComponent(pageElement, installedWidget);
+        }
+
+        try {
+            savePage(page, page.getPageIdentity());
+        } catch (IOException e) {
+            throw new IllegalStateException("更新控件组件，保存界面错误" + e.getMessage());
+        }
+
+    }
+
+    private void updateComponent(PageElement element, InstalledWidget installedWidget) {
+        if (element instanceof Layout) {
+            Layout layout = (Layout) element;
+            for (PageElement pageElement : layout.getElements()) {
+                updateComponent(pageElement, installedWidget);
+            }
+        } else if (element instanceof Component) {
+            Component component = (Component) element;
+            Widget comWidget = component.getInstalledWidget().getWidget();
+            Widget widget = installedWidget.getWidget();
+            //同一个控件不同版本才进行更新
+            if (comWidget.groupId().equals(widget.groupId()) && comWidget.widgetId().equals(widget.widgetId())
+                    && !comWidget.version().equals(widget.version())) {
+                component.setInstalledWidget(installedWidget);
+                component.setWidgetIdentity(installedWidget.getIdentifier().toString());
+            }
+        }
+    }
+
 
 
 }

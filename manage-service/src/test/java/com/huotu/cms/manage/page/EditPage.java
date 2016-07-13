@@ -10,6 +10,7 @@
 package com.huotu.cms.manage.page;
 
 import com.huotu.cms.manage.page.support.AbstractContentPage;
+import com.huotu.cms.manage.page.support.AbstractManagePage;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openqa.selenium.By;

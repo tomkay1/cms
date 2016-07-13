@@ -268,6 +268,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
 
             //不支持的界面，和具体组件
             Map<Long, Page> notSupportPage = new HashMap<>();
+            Map<Long, Page> supportPage = new HashMap<>();
             List<Page> pageList = pageService.findAll();
             if (pageList != null && pageList.size() > 0) {
                 for (int i = 0, l = pageList.size(); i < l; i++) {
@@ -276,7 +277,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
                     PageElement[] elements = page.getElements();
                     Set<Component> notSupportComponent = new HashSet<>();
                     for (int e = 0, s = elements.length; e < s; e++) {
-                        parimaryUtil(elements[i], installedWidget, notSupportComponent);
+                        parimaryUtil(elements[i], installedWidget, notSupportComponent, supportPage, page);
                     }
                     if (notSupportComponent.size() > 0) {
                         if (ignoreError) {
@@ -287,31 +288,34 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
                     }
                 }
             }
-            //忽略时修改page
-            if (ignoreError) {
-                if (pageList != null && pageList.size() > 0) {
-                    for (Page page : pageList) {
-                        if (notSupportPage.get(page.getPageIdentity()) != null) {
-                            break;
-                        }
-                        //更新页面
-                        pageService.updatePageComponent(page, installedWidget);
+
+            if (pageList != null && pageList.size() > 0) {
+                for (Page page : pageList) {
+                    if (notSupportPage.get(page.getPageIdentity()) != null) {
+                        break;
                     }
+                    if (supportPage.get(page.getPageIdentity()) == null) {
+                        break;
+                    }
+                    //更新页面
+                    pageService.updatePageComponent(page, installedWidget);
                 }
-                //更新控件
-                updateWidget(installedWidget.getWidget());
             }
+            //更新控件
+            updateWidget(installedWidget.getWidget());
         }
     }
 
     /**
      * 检查primary控件包
      * <p>验证控件包是否支持组件属性参数</p>
-     *
      * @param installedWidget     控件包的安装控件
      * @param notSupportComponent 不支持当前控件包已安装的控件
+     * @param supportPage
+     * @param page
      */
-    private void parimaryUtil(PageElement pageElement, InstalledWidget installedWidget, Set<Component> notSupportComponent) {
+    private void parimaryUtil(PageElement pageElement, InstalledWidget installedWidget
+            , Set<Component> notSupportComponent, Map<Long, Page> supportPage, Page page) {
         if (pageElement instanceof Component) {
             Component component = (Component) pageElement;
             component.setInstalledWidget(findWidget(component.getWidgetIdentity()));
@@ -321,17 +325,18 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
                 //同一个控件不同版本才进行验证
                 if (widget1.groupId().equals(widget2.groupId()) && widget1.widgetId().equals(widget2.widgetId())
                         && !widget1.version().equals(widget2.version())) {
-
                     installedWidget.getWidget().valid(component.getStyleId(), component.getProperties());
+                    supportPage.put(page.getPageIdentity(), page);
                 }
             } catch (IllegalArgumentException e) {
                 log.info("不支持的页面组件" + component.getWidgetIdentity() + ":" + e.getMessage());
                 notSupportComponent.add(component);
+                supportPage.remove(page.getPageIdentity());
             }
         } else if (pageElement instanceof Layout) {
             Layout layout = (Layout) pageElement;
             for (PageElement element : layout.getElements()) {
-                parimaryUtil(element, installedWidget, notSupportComponent);
+                parimaryUtil(element, installedWidget, notSupportComponent, supportPage, page);
             }
         }
     }

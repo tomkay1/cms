@@ -29,6 +29,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -145,6 +146,20 @@ public class PageServiceImpl implements PageService {
             throw new IllegalStateException("没有找到相应page");
         pageInfo = pageInfos.get(0);
         return getPage(pageInfo.getPageId());
+    }
+
+    @Override
+    public List<Page> findAll() throws IOException {
+        List<PageInfo> pageInfoList = pageInfoRepository.findAll();
+        List<Page> pageList = null;
+        if (pageInfoList != null && pageInfoList.size() > 0) {
+            pageList = new ArrayList<>();
+            for (int i = 0, l = pageInfoList.size(); i < l; i++) {
+                PageInfo pageInfo = pageInfoList.get(i);
+                pageList.add(getPage(pageInfo.getPageId()));
+            }
+        }
+        return pageList;
     }
 
 

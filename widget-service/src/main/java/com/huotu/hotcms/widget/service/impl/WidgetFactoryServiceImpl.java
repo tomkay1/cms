@@ -12,11 +12,16 @@ package com.huotu.hotcms.widget.service.impl;
 import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
+import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetLocateService;
 import com.huotu.hotcms.widget.exception.FormatException;
+import com.huotu.hotcms.widget.page.Layout;
+import com.huotu.hotcms.widget.page.Page;
+import com.huotu.hotcms.widget.page.PageElement;
 import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
+import com.huotu.hotcms.widget.service.PageService;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import com.huotu.hotcms.widget.util.ClassLoaderUtil;
 import com.huotu.hotcms.widget.util.HttpClientUtil;
@@ -68,6 +73,9 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
 
     @Autowired(required = false)
     private ResourceService resourceService;
+
+    @Autowired
+    private PageService pageService;
 
     /**
      * 下载widget jar文件
@@ -239,13 +247,79 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
 
     @Override
     public void updateWidget(Widget widget) {
-        throw new IllegalStateException("not support yet");
+        //控件列表，版本不一致
+        List<WidgetInfo> widgetInfoList = widgetInfoRepository.findByGroupIdAndArtifactIdAndEnabledTrue(
+                widget.groupId(), widget.widgetId());
+        for (WidgetInfo widgetInfo : widgetInfoList) {
+            primary(widgetInfo);
+        }
     }
 
     @Override
-    public void primary(WidgetInfo widgetInfo) {
-        throw new IllegalStateException("not support yet");
+    public void primary(WidgetInfo widgetInfo) throws IllegalStateException {
+        InstalledWidget installedWidget = findWidget(widgetInfo.getGroupId(), widgetInfo.getArtifactId()
+                , widgetInfo.getVersion());
+        try {
+            List<Page> pageList = pageService.findAll();
+
+            //不支持的界面，和具体组件
+            Map<Page, Set<Component>> notSupportPage = new HashMap<>();
+            if (pageList != null && pageList.size() > 0) {
+                for (int i = 0, l = pageList.size(); i < l; i++) {
+                    //检查所有界面使用该组件的参数是否合法，如果不合法添加到不支持的界面中
+                    Page page = pageList.get(i);
+                    PageElement[] elements = page.getElements();
+                    Set<Component> notSupportComponent = new HashSet<>();
+                    for (int e = 0, s = elements.length; e < s; e++) {
+                        parimaryUtil(elements[i], installedWidget, notSupportComponent);
+                    }
+                    if (notSupportComponent.size() > 0) {
+                        notSupportPage.put(page, notSupportComponent);
+                    }
+                }
+                //判断是否有不支持的组件属性
+                if (notSupportPage.size() > 0) {
+                    throw new IllegalStateException("not support yet");
+                }
+            }
+        } catch (IOException e) {
+            throw new IllegalStateException("页面获取出现异常，not support yet");
+        }
     }
+
+
+    /**
+     * 检查primary控件包
+     * <p>验证控件包是否支持组件属性参数</p>
+     *
+     * @param installedWidget     控件包的安装控件
+     * @param notSupportComponent 不支持当前控件包已安装的控件
+     */
+    private void parimaryUtil(PageElement pageElement, InstalledWidget installedWidget, Set<Component> notSupportComponent) {
+        if (pageElement instanceof Component) {
+            Component component = (Component) pageElement;
+            component.setInstalledWidget(findWidget(component.getWidgetIdentity()));
+            try {
+                Widget widget1 = component.getInstalledWidget().getWidget();
+                Widget widget2 = installedWidget.getWidget();
+                //同一个控件不同版本才进行验证
+                if (widget1.groupId().equals(widget2.groupId()) && widget1.widgetId().equals(widget2.widgetId())
+                        && !widget1.version().equals(widget2.version())) {
+
+                    installedWidget.getWidget().valid(component.getStyleId(), component.getProperties());
+                }
+            } catch (IllegalArgumentException e) {
+                log.info("不支持的页面组件");
+                notSupportComponent.add(component);
+            }
+        } else if (pageElement instanceof Layout) {
+            Layout layout = (Layout) pageElement;
+            for (PageElement element : layout.getElements()) {
+                parimaryUtil(element, installedWidget, notSupportComponent);
+            }
+        }
+    }
+
 
     @Override
     public InstalledWidget findWidget(String groupId, String widgetId, String version) {

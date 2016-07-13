@@ -72,4 +72,5 @@ public class Component implements PageElement {
         return installedWidget.getWidget().styles()[0];
     }
 
+
 }

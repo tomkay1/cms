@@ -9,6 +9,7 @@
 
 package com.huotu.cms.manage.page.support;
 
+import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import me.jiangcai.bracket.test.BracketPage;
 import me.jiangcai.lib.test.page.AbstractPage;
 import org.apache.commons.logging.Log;
@@ -20,8 +21,10 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.htmlunit.HtmlUnitWebElement;
 import org.openqa.selenium.support.PageFactory;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -278,5 +281,20 @@ public abstract class AbstractManagePage extends BracketPage {
         WebElement input = form.findElement(By.name(name));
         assertThat(input.getAttribute("value"))
                 .isEqualTo(value);
+    }
+
+    public void inputHidden(WebElement form, String name, String value) {
+        WebElement input = form.findElement(By.name(name));
+        try {
+            Field field = HtmlUnitWebElement.class.getDeclaredField("element");
+            field.setAccessible(true);
+            HtmlInput htmlHiddenInput = (HtmlInput) field.get(input);
+            if (value == null)
+                htmlHiddenInput.setValueAttribute("");
+            else
+                htmlHiddenInput.setValueAttribute(value);
+        } catch (Exception ex) {
+            throw new IllegalStateException(ex);
+        }
     }
 }

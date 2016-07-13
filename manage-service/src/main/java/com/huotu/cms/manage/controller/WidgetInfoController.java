@@ -150,7 +150,8 @@ public class WidgetInfoController
     }
 
     @ResponseBody
-    @RequestMapping(value = "/widgets", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
+    @PreAuthorize("hasRole('" + Login.Role_Manage_Value + "')")
+    @RequestMapping(value = "/widgets",method = RequestMethod.GET,produces = "application/json; charset=UTF-8")
     public List<WidgetModel> getWidgetInfo() throws IOException, URISyntaxException {
         if (environment.acceptsProfiles("test")) {
             try {

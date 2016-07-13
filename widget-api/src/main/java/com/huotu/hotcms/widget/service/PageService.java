@@ -12,6 +12,7 @@ import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.widget.CMSContext;
+import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.page.Page;
 
 import java.io.IOException;
@@ -106,5 +107,14 @@ public interface PageService {
      * @return
      */
     List<Page> findAll() throws IOException;
+
+    /**
+     * 更新page，并清除缓存
+     *
+     * @param page
+     * @param installedWidget 更新的组件
+     * @throws IllegalStateException
+     */
+    void updatePageComponent(Page page, InstalledWidget installedWidget) throws IllegalStateException;
 
 }

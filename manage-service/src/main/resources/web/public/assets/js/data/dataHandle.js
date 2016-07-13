@@ -50,8 +50,9 @@
                 childJSON.layout.elements = DataHandle.traversalDOM2Json(elements);
             } else {
                 childJSON.component = {};
-                childJSON.component.widgetIdentity = $(elements).attr('data-widgetIdentity');
-                childJSON.component.styleId = $(elements).attr('data-styleId');
+                childJSON.component.widgetIdentity = $(elements).attr('data-widgetidentity');
+                childJSON.component.id = $(elements).attr('id');
+                childJSON.component.styleId = $(elements).attr('data-styleid');
                 childJSON.component.properties = {};
             }
             return childJSON;
@@ -109,7 +110,8 @@
                     ["data-slide"],
                     ["data-layout"],
                     ["data-layout-value"],
-                    ["data-styleId"]
+                    ["data-widgetidentity"],
+                    ["data-styleid"]
                 ]
             });
             var root = $('<div></div>');
@@ -136,7 +138,7 @@
             DataHandle.downloadLayoutSrc(url);
         }
     };
-var dataHandle = {};
+    var dataHandle = {};
     dataHandle.init = function () {
         var strHref = window.document.location.href;
         var pageId=strHref.substring(strHref.lastIndexOf("/")+1);
@@ -145,7 +147,7 @@ var dataHandle = {};
         $('#saveBtn').on('click', function () {
             DataHandle.init(url);
         });
-    }
+    };
 dataHandle.init();
 
 function widgetProperties(params){

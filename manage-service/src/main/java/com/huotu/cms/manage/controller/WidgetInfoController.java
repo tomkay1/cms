@@ -171,6 +171,7 @@ public class WidgetInfoController
             widgetModel.setEditorHTML(widgetResolveService.editorHTML(widget, CMSContext.RequestContext(), null));
             widgetModel.setIdentity(widget.widgetId());
 
+            //获取js资源uri
             for (Map.Entry<String, Resource> entry : widget.publicResources().entrySet()) {
                 if (entry.getKey().endsWith(".js")) {
                     widgetModel.setScriptHref(resourceService.getResource("widget/" + widget.groupId() + "-"
@@ -182,7 +183,7 @@ public class WidgetInfoController
             if (widgetModel.getScriptHref() != null && widgetModel.getScriptHref().length() > 0) {
                 widgetModel.setScriptHref(widgetModel.getScriptHref().substring(0
                         , widgetModel.getScriptHref().length() - 1));
-            }
+            }//
 
             widgetModel.setThumbnail(widget.thumbnail().getURL().toString());
             WidgetStyle[] widgetStyles = widget.styles();

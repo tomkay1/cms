@@ -122,8 +122,9 @@ public interface WidgetFactoryService {
      *
      * @param widgetInfo 控件包
      * @see #updateWidget(Widget)
+     * @throws IllegalStateException 不支持的控件包，检查后不兼容旧版本
      */
-    void primary(WidgetInfo widgetInfo);
+    void primary(WidgetInfo widgetInfo) throws IllegalStateException;
 
 //    /**
 //     * 更新已安装的控件

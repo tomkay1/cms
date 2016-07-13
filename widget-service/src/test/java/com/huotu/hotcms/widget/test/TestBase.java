@@ -138,6 +138,7 @@ public class TestBase extends SpringWebTest{
     private Component randomComponent() {
         Component component=new Component();
         component.setPreviewHTML(UUID.randomUUID().toString());
+        component.setId(UUID.randomUUID().toString());
         component.setStyleId(UUID.randomUUID().toString());
         component.setWidgetIdentity(UUID.randomUUID().toString());
         ComponentProperties componentProperties =new ComponentProperties();

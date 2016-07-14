@@ -115,15 +115,13 @@
                                          th:src="@{http://placehold.it/228x178(text=${template.name})}"
                                          alt="..." th:alt="${template.name}">
                                     <div class="clearfix row operate-group">
-                                        <button type="button" href="site.html"
+                                        <button type="button"
                                                 th:text="'预览('+${{template.scans}}+')'"
-                                                th:href="@{/manage/site/{id}(id=${template.siteId})}"
-                                                class="link-button operate-btn btn-white col-xs-6">预览(100)
+                                                class="operate-btn btn-white col-xs-6 template-preview">
+                                            预览(100)
                                         </button>
-                                        <button type="button" href="index.html"
-                                                th:if="${!template.enabled}"
-                                                th:href="@{/manage/site/{id}/enabled(id=${template.siteId})}"
-                                                class="link-button operate-btn btn-white col-xs-6">使用
+                                        <button type="button"
+                                                class="operate-btn btn-white col-xs-6 template-use">使用
                                         </button>
                                     </div>
                                     <div class="site-alert text-success"
@@ -146,8 +144,11 @@
                                 <div class="site-items">
                                     <img src="http://placehold.it/228x178?text=CMS" alt="...">
                                     <div class="clearfix row operate-group">
-                                        <button type="button" class="operate-btn btn-white col-xs-6">预览(100)</button>
-                                        <button type="button" class="operate-btn btn-white col-xs-6">使用</button>
+                                        <button type="button" class="operate-btn btn-white col-xs-6 template-preview">
+                                            预览(100)
+                                        </button>
+                                        <button type="button" class="operate-btn btn-white col-xs-6 template-use">使用
+                                        </button>
                                     </div>
                                     <div class="site-alert text-success">
                                         <span>我的模板名称</span>
@@ -165,8 +166,11 @@
                                 <div class="site-items">
                                     <img src="http://placehold.it/228x178?text=CMS" alt="...">
                                     <div class="clearfix row operate-group">
-                                        <button type="button" class="operate-btn btn-white col-xs-6">预览(140)</button>
-                                        <button type="button" class="operate-btn btn-white col-xs-6">使用</button>
+                                        <button type="button" class="operate-btn btn-white col-xs-6 template-preview">
+                                            预览(140)
+                                        </button>
+                                        <button type="button" class="operate-btn btn-white col-xs-6 template-use">使用
+                                        </button>
                                     </div>
                                     <div class="site-alert text-success">
                                         <span>我的模板名称</span>
@@ -184,8 +188,11 @@
                                 <div class="site-items">
                                     <img src="http://placehold.it/228x178?text=CMS" alt="...">
                                     <div class="clearfix row operate-group">
-                                        <button type="button" class="operate-btn btn-white col-xs-6">预览(107)</button>
-                                        <button type="button" class="operate-btn btn-white col-xs-6">使用</button>
+                                        <button type="button" class="operate-btn btn-white col-xs-6 template-preview">
+                                            预览(107)
+                                        </button>
+                                        <button type="button" class="operate-btn btn-white col-xs-6 template-use">使用
+                                        </button>
                                     </div>
                                     <div class="site-alert text-success">
                                         <span>我的模板名称</span>
@@ -220,6 +227,34 @@
     </form>
 </div><!-- contentpanel -->
 
+<div class="modal fade" id="useTemplateModal" tabindex="-1" role="dialog" aria-labelledby="useTemplateModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="useTemplateModalLabel">使用模板</h4>
+            </div>
+            <div class="modal-body">
+                <p>你可以选择使用模板的方式。</p>
+                <label>
+                    <input name="type" type="radio" value="0"/>
+                    加载模式:将该模板内容加载到站点中。
+                </label>
+                <label>
+                    <input name="type" type="radio" value="1"/>
+                    覆盖模式:删除站点所有内容（包括页面,数据源,内容等等）再加载模板内容
+                </label>
+                <p class="warning">操作将是不可逆的!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">不了</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">好的</button>
+            </div>
+        </div><!-- modal-content -->
+    </div><!-- modal-dialog -->
+</div><!-- modal -->
+
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-1.10.2.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-ui-1.10.3.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/bootstrap.min.js"></script>
@@ -236,7 +271,6 @@
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.validate.min.js"></script>
 <script src="../../../public/js/jquery.validation.message-zh_cn.js"
         ewp:src="/js/jquery.validation.message-zh_cn.js"></script>
-<!--<script src="http://resali.huobanplus.com/cdn/bracket/js/custom.js"></script>-->
 <div ewp:replace="fragments/frame.html::#messageSection"></div>
 <script src="../../../public/bracket/js/frame.js" ewp:src="/bracket/js/frame.js"></script>
 <script src="../../../public/bracket/js/frame_custom.js" ewp:src="/bracket/js/frame_custom.js"></script>

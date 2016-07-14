@@ -13,6 +13,8 @@
  */
 $(function () {
 
+    var useTemplateModal = $('#useTemplateModal');
+
     var addSiteForm = $('#addSiteForm');
 
     addSiteForm.validate({
@@ -107,6 +109,16 @@ $(function () {
         var span = $('span', this);
         var newVal = parseInt(span.text()) + padding;
         span.text(newVal);
+    });
+    //  使用模板的时候
+    $('.template-use').click(function () {
+        // 需要弹出一个对话框 确认使用的级别
+        useTemplateModal.modal();
+    });
+    $('.template-preview').click(function () {
+        // 效果应该是等同点击附近的 a
+        $(this).closest('.site-items').find('a').get(0).click();
+        return false;
     });
 
     $(document.body).find('.site-items').on('mouseenter', function () {

@@ -292,7 +292,7 @@ public abstract class ManageTest extends SpringWebTest {
     }
 
 
-    private Page randomPage() {
+    protected Page randomPage() {
         Page page = new Page();
         page.setPageIdentity(random.nextLong());
         page.setTitle(UUID.randomUUID().toString());

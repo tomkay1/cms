@@ -143,6 +143,8 @@ public class TestBase extends SpringWebTest{
         component.setWidgetIdentity(UUID.randomUUID().toString());
         ComponentProperties componentProperties =new ComponentProperties();
         componentProperties.put(StringUtil.createRandomStr(random.nextInt(3)+1),UUID.randomUUID().toString());
+        componentProperties.put("TestArray",new String[]{UUID.randomUUID().toString(),UUID.randomUUID().toString()
+                ,UUID.randomUUID().toString()});
         component.setProperties(componentProperties);
         InstalledWidget installedWidget=new InstalledWidget(new TestWidget());
         installedWidget.setIdentifier(new WidgetIdentifier());

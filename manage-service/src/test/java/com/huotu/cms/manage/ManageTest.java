@@ -10,6 +10,7 @@
 package com.huotu.cms.manage;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
@@ -283,9 +284,9 @@ public abstract class ManageTest extends SpringWebTest {
         pageInfo.setSite(randomSite(randomOwner()));
         pageInfo.setCategory(randomCategory());
         pageInfo.setPageType(PageType.DataContent);
-        XmlMapper xmlMapper=new XmlMapper();
-        byte[] pageXml=xmlMapper.writeValueAsString(randomPage()).getBytes();
-        pageInfo.setPageSetting(pageXml);
+        ObjectMapper objectMapper=new ObjectMapper();
+        byte[] pageJson=objectMapper.writeValueAsString(randomPage()).getBytes();
+        pageInfo.setPageSetting(pageJson);
         return pageInfoRepository.saveAndFlush(pageInfo);
     }
 

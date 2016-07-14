@@ -17,7 +17,6 @@ import com.huotu.cms.manage.page.AdminPage;
 import com.huotu.cms.manage.page.ManageMainPage;
 import com.huotu.cms.manage.page.SitePage;
 import com.huotu.cms.manage.page.support.AbstractCRUDPage;
-import com.huotu.hotcms.service.common.SiteType;
 import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Owner;
@@ -113,7 +112,7 @@ public class SiteControllerTest extends ManageTest {
                 site.setTitle(UUID.randomUUID().toString());
                 site.setDescription(UUID.randomUUID().toString());
                 site.setCopyright(UUID.randomUUID().toString());
-                site.setSiteType(SiteType.values()[random.nextInt(SiteType.values().length)]);
+//                site.setSiteType(SiteType.values()[random.nextInt(SiteType.values().length)]);
 
                 String[] stringArrays = randomDomains();
                 String[] keywords = randomArray(stringArrays, 1);
@@ -146,7 +145,7 @@ public class SiteControllerTest extends ManageTest {
                 assertThat(entity.getCopyright())
                         .isEqualTo(data.getCopyright());
                 assertThat(entity.getSiteType())
-                        .isEqualByComparingTo(data.getSiteType());
+                        .isEqualTo(data.getSiteType());
 
                 if (logo != null) {
                     try {

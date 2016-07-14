@@ -19,11 +19,14 @@ import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.repository.OwnerRepository;
 import com.huotu.hotcms.service.repository.PageInfoRepository;
+import com.huotu.hotcms.service.repository.SiteRepository;
+import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -33,6 +36,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StreamUtils;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -56,8 +61,13 @@ public class PageControllerTest extends ManageTest {
     private WidgetFactoryService widgetFactoryService;
 
     @Autowired
-    private  OwnerRepository ownerRepository;
+    private HttpServletRequest request;
 
+    @Autowired
+    private HttpServletResponse response;
+
+    @Autowired
+    private SiteRepository siteRepository;
 
     @Test
     public void flow() throws Exception {
@@ -74,8 +84,8 @@ public class PageControllerTest extends ManageTest {
 //      Page page = randomPage();
 //      String json = JSON.toJSONString(page);
 //      创建一个page,page应该是从界面上put上来的,此处从测试类路劲下的page.json中获取
-        InputStream is= this.getClass().getClassLoader().getResourceAsStream("page.json");
-        String pageJson= StreamUtils.copyToString(is, Charset.forName("utf-8"));
+        InputStream is = this.getClass().getClassLoader().getResourceAsStream("page.json");
+        String pageJson = StreamUtils.copyToString(is, Charset.forName("utf-8"));
 
         // 保存它 save
         String pageHref = mockMvc.perform(put("/manage/pages/{siteId}", siteId)
@@ -85,7 +95,7 @@ public class PageControllerTest extends ManageTest {
                 .andReturn().getResponse().getRedirectedUrl();
 
         // 单独获取 pageID为1的原因是json中保存的
-        mockMvc.perform(get("/manage/pages/{pageId}",1).accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/manage/pages/{pageId}", 1).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
 //                .andExpect()
@@ -119,77 +129,58 @@ public class PageControllerTest extends ManageTest {
                 .andExpect(jsonPath("$.length()").value(0));
     }
 
-    @Test
-    public void readJson() throws IOException {
-        InputStream is= this.getClass().getClassLoader().getResourceAsStream("page.json");
-        String pageJson= StreamUtils.copyToString(is, Charset.forName("utf-8"));
-        ObjectMapper objectMapper=new ObjectMapper();
-        Page page=objectMapper.readValue(pageJson, Page.class);
-    }
-
-    @Test
-    public void testGetPage() throws Exception {
-        PageInfo pageInfo=pageInfoRepository.findAll().get(0);//先查找一个已存在的PageInfo
-        if(pageInfo==null) //如果不存在就随机创建一个，新创建的PageInfo已经初始化页面信息
-            pageInfo=randomPageInfo();
-        mockMvc.perform(get("/manage/pages/{pageId}", pageInfo.getPageId())
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.length()").value(1));
-    }
-
-
     /**
      * 对widget json进行校验
-     * @see #testJsonPath()
+     *
      * @throws Exception
      */
     @Test
     public void testGetWidgets() throws Exception {
 
         /*先确保存在已安装的控件*/
-        List<InstalledWidget> installedWidgets= widgetFactoryService.widgetList(null);
-        if(installedWidgets.size()==0){
+        List<InstalledWidget> installedWidgets = widgetFactoryService.widgetList(null);
+        if (installedWidgets.size() == 0) {
             widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
                     , "1.0-SNAPSHOT", "picCarousel");
         }
-
         Cookie cookie = new Cookie(CMSEnums.CookieKeyValue.RoleID.name(), "-1");
-
-        MvcResult result=accessViaCookie(cookie, new Manager(), "/manage/widget/widgets");
-        String widgetJson=result.getResponse().getContentAsString();
-        Assert.assertTrue(widgetJson!=null&&widgetJson.length()!=0);
+        MvcResult result = accessViaCookie(cookie, new Manager(), "/manage/widget/widgets");
+        String widgetJson = result.getResponse().getContentAsString();
+        Assert.assertTrue(widgetJson != null && widgetJson.length() != 0);
         //identity的格式:<groupId>-<widgetId>:<version>
         //此处校验逻辑为：先检索出所有的identity，如果存在groupId和widgetId 一致，但有两个版本号的，视为bug！
-        List<String> identities=JsonPath.read(widgetJson,"$..identity");
-        Assert.assertTrue(identities.size()!=0);
-        for (int i = 0; i <identities.size() ; i++) {
-            for (int j = i+1; j <=identities.size()-1 ; j++) {
-                if(identities.get(i).split(":")[0].equals(identities.get(j).split(":")[0])){
+        List<String> identities = JsonPath.read(widgetJson, "$..identity");
+        Assert.assertTrue(identities.size() != 0);
+        for (int i = 0; i < identities.size(); i++) {
+            for (int j = i + 1; j <= identities.size() - 1; j++) {
+                if (identities.get(i).split(":")[0].equals(identities.get(j).split(":")[0])) {
                     //断言为真，就表明json符合要求
-                    Assert.assertEquals(identities.get(i).split(":")[1].equals(identities.get(j).split(":")[1]),true);
-                }
-            }
-        }
-    }
-    @Test
-    public void testJsonPath() throws IOException {
-        //直接从文件读出
-        InputStream is= this.getClass().getClassLoader().getResourceAsStream("widget.json");
-        String widgetJson= StreamUtils.copyToString(is, Charset.forName("utf-8"));
-        List<String> identities=JsonPath.read(widgetJson,"$..identity");
-        for (int i = 0; i <identities.size() ; i++) {
-            for (int j = i+1; j <=identities.size()-1 ; j++) {
-                if(identities.get(i).split(":")[0].equals(identities.get(j).split(":")[0])){
-                    //断言为真，就表明json符合要求
-                    Assert.assertEquals(identities.get(i).split(":")[1].equals(identities.get(j).split(":")[1]),true);
+                    Assert.assertEquals(identities.get(i).split(":")[1].equals(identities.get(j).split(":")[1]), true);
                 }
             }
         }
     }
 
-    private MvcResult accessViaCookie(Cookie cookie, Login login,String url) throws Exception {
+    @Before
+    public void putCMSContext() {
+        List<Site> sites = siteRepository.findAll();
+        Site site = null;
+        if (sites.size() != 0)
+            site = sites.get(0);
+        else
+            site = randomSite(randomOwner());
+        CMSContext.PutContext(request, response, site);
+    }
+
+    /**
+     * 完善
+     * @param cookie
+     * @param login
+     * @param url
+     * @return
+     * @throws Exception
+     */
+    private MvcResult accessViaCookie(Cookie cookie, Login login, String url) throws Exception {
         MvcResult result = mockMvc.perform(get(url)
                 .cookie(cookie))
                 .andExpect(status().isFound())
@@ -197,19 +188,19 @@ public class PageControllerTest extends ManageTest {
 
         session = (MockHttpSession) result.getRequest().getSession(true);
 
-        String redirectedUrl =  mockMvc.perform(get(result.getResponse().getRedirectedUrl())
-                        .cookie(cookie)
-                        .session(session))
+        String redirectedUrl = mockMvc.perform(get(result.getResponse().getRedirectedUrl())
+                .cookie(cookie)
+                .session(session))
                 .andExpect(status().isFound())
                 .andReturn().getResponse().getRedirectedUrl();
 
         while (true) {
             result = mockMvc.perform(get(redirectedUrl).session(session)).andReturn();
-            if (result.getResponse().getStatus() == 200){
+            if (result.getResponse().getStatus() == 200) {
                 session = (MockHttpSession) result.getRequest().getSession(true);
                 return mockMvc.perform(get(url)
-                .cookie(cookie)
-                .session(session))
+                        .cookie(cookie)
+                        .session(session))
                         .andExpect(status().isOk())
                         .andReturn();
             }

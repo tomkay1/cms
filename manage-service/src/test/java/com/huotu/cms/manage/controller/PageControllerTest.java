@@ -75,11 +75,6 @@ public class PageControllerTest extends ManageTest {
     @Autowired
     private SiteRepository siteRepository;
 
-
-    @Autowired
-    private OwnerRepository ownerRepository;
-
-
     @Test
     public void flow() throws Exception {
         //首先确保虚拟出来的siteId 并没有存在任何页面
@@ -140,32 +135,10 @@ public class PageControllerTest extends ManageTest {
                 .andExpect(jsonPath("$.length()").value(0));
     }
 
-    @Test
-    public void readJson() throws IOException {
-        InputStream is = this.getClass().getClassLoader().getResourceAsStream("page.json");
-        String pageJson = StreamUtils.copyToString(is, Charset.forName("utf-8"));
-        ObjectMapper objectMapper = new ObjectMapper();
-        Page page = objectMapper.readValue(pageJson, Page.class);
-    }
-
-    @Test
-    public void testGetPage() throws Exception {
-        PageInfo pageInfo = pageInfoRepository.findAll().get(0);//先查找一个已存在的PageInfo
-        if (pageInfo == null) //如果不存在就随机创建一个，新创建的PageInfo已经初始化页面信息
-            pageInfo = randomPageInfo();
-        mockMvc.perform(get("/manage/pages/{pageId}", pageInfo.getPageId())
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.length()").value(1));
-    }
-
-
     /**
      * 对widget json进行校验
      *
      * @throws Exception
-     * @see #testJsonPath()
      */
     @Test
     public void testGetWidgets() throws Exception {
@@ -176,9 +149,7 @@ public class PageControllerTest extends ManageTest {
             widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
                     , "1.0-SNAPSHOT", "picCarousel");
         }
-
         Cookie cookie = new Cookie(CMSEnums.CookieKeyValue.RoleID.name(), "-1");
-
         MvcResult result = accessViaCookie(cookie, new Manager(), "/manage/widget/widgets");
         String widgetJson = result.getResponse().getContentAsString();
         Assert.assertTrue(widgetJson != null && widgetJson.length() != 0);
@@ -186,22 +157,6 @@ public class PageControllerTest extends ManageTest {
         //此处校验逻辑为：先检索出所有的identity，如果存在groupId和widgetId 一致，但有两个版本号的，视为bug！
         List<String> identities = JsonPath.read(widgetJson, "$..identity");
         Assert.assertTrue(identities.size() != 0);
-        for (int i = 0; i < identities.size(); i++) {
-            for (int j = i + 1; j <= identities.size() - 1; j++) {
-                if (identities.get(i).split(":")[0].equals(identities.get(j).split(":")[0])) {
-                    //断言为真，就表明json符合要求
-                    Assert.assertEquals(identities.get(i).split(":")[1].equals(identities.get(j).split(":")[1]), true);
-                }
-            }
-        }
-    }
-
-    @Test
-    public void testJsonPath() throws IOException {
-        //直接从文件读出
-        InputStream is = this.getClass().getClassLoader().getResourceAsStream("widget.json");
-        String widgetJson = StreamUtils.copyToString(is, Charset.forName("utf-8"));
-        List<String> identities = JsonPath.read(widgetJson, "$..identity");
         for (int i = 0; i < identities.size(); i++) {
             for (int j = i + 1; j <= identities.size() - 1; j++) {
                 if (identities.get(i).split(":")[0].equals(identities.get(j).split(":")[0])) {
@@ -223,6 +178,14 @@ public class PageControllerTest extends ManageTest {
         CMSContext.PutContext(request, response, site);
     }
 
+    /**
+     * 完善
+     * @param cookie
+     * @param login
+     * @param url
+     * @return
+     * @throws Exception
+     */
     private MvcResult accessViaCookie(Cookie cookie, Login login, String url) throws Exception {
         MvcResult result = mockMvc.perform(get(url)
                 .cookie(cookie))

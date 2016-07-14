@@ -26,13 +26,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author CJ
  */
-@Transactional
 public class RouteControllerTest extends SiteManageTest {
 
     @Autowired
     private RouteService routeService;
 
     @Test
+    @Transactional
     public void index() throws Exception {
         Site site = loginAsOwnerReturnSite();
 
@@ -50,6 +50,7 @@ public class RouteControllerTest extends SiteManageTest {
     }
 
     @Test
+    @Transactional
     public void add() throws Exception {
         Site site = loginAsSite();
 
@@ -61,6 +62,7 @@ public class RouteControllerTest extends SiteManageTest {
     }
 
     @Test
+    @Transactional
     public void delete() throws Exception {
         Site site = loginAsSite();
 
@@ -73,6 +75,7 @@ public class RouteControllerTest extends SiteManageTest {
     }
 
     @Test
+    @Transactional
     public void update() throws Exception {
         Site site = loginAsSite();
 

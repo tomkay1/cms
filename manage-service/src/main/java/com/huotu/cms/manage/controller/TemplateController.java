@@ -30,7 +30,7 @@ import java.io.IOException;
  */
 @Controller
 @RequestMapping("/manage/template")
-@PreAuthorize("hasRole('ROOT')")
+@PreAuthorize("hasRole('" + Login.Role_Template_Value + "')")
 public class TemplateController extends CRUDController<Template, Long, String, String> {
 
     @Autowired

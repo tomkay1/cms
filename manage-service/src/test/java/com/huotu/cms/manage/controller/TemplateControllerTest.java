@@ -12,6 +12,10 @@ package com.huotu.cms.manage.controller;
 import com.huotu.cms.manage.ManageTest;
 import com.huotu.cms.manage.controller.support.CRUDHelper;
 import com.huotu.cms.manage.controller.support.CRUDTest;
+import com.huotu.cms.manage.page.CategoryPage;
+import com.huotu.cms.manage.page.ManageMainPage;
+import com.huotu.cms.manage.page.PageInfoPage;
+import com.huotu.cms.manage.page.SitePage;
 import com.huotu.cms.manage.page.TemplatePage;
 import com.huotu.cms.manage.page.support.AbstractCRUDPage;
 import com.huotu.hotcms.service.entity.Template;
@@ -65,6 +69,24 @@ public class TemplateControllerTest extends ManageTest {
             }
         });
 
+        //找一个条记录 并且打开编辑
+        page.refresh();
+
+        page = page.openResource(page.listTableRows().stream()
+                .findFirst().orElseThrow(IllegalStateException::new));
+
+        ManageMainPage forTemplatePage = page.manageTemplate();
+
+        try {
+//            forTemplatePage.printThisPage();
+            forTemplatePage.toPage(SitePage.class);
+            forTemplatePage.printThisPage();
+            throw new AssertionError("应该是看不到站点管理的");
+        } catch (Exception ignored) {
+            //yes
+        }
+        forTemplatePage.toPage(PageInfoPage.class);
+        forTemplatePage.toPage(CategoryPage.class);
     }
 
 }

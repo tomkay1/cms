@@ -12,7 +12,6 @@ package com.huotu.cms.manage.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.cms.manage.ManageTest;
 import com.huotu.cms.manage.login.Manager;
-import com.huotu.cms.manage.service.SecurityService;
 import com.huotu.hotcms.service.common.CMSEnums;
 import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.entity.Site;
@@ -26,7 +25,6 @@ import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import com.jayway.jsonpath.JsonPath;
-import org.apache.commons.httpclient.Header;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,11 +38,11 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StreamUtils;
 
 import javax.faces.event.PostValidateEvent;
@@ -68,6 +66,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created by hzbc on 2016/7/9.
  */
+@Transactional
 public class PageControllerTest extends ManageTest {
 
     private static final String URL = "url";

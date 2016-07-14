@@ -22,6 +22,7 @@ import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.service.CategoryService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -40,6 +41,7 @@ public class CategoryControllerTest extends SiteManageTest {
     private CategoryRepository categoryRepository;
 
     @Test
+    @Transactional
     public void index() throws Exception {
         Site site = loginAsOwnerReturnSite();
 
@@ -56,6 +58,7 @@ public class CategoryControllerTest extends SiteManageTest {
     }
 
     @Test
+    @Transactional
     public void add() throws Exception {
         Site site = loginAsSite();
         ManageMainPage mainPage = initPage(ManageMainPage.class);

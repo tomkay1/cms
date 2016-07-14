@@ -126,5 +126,26 @@ public abstract class AbstractCRUDPage<T> extends AbstractContentPage {
         return new Condition<>(rowPredicate(value), "此元素不符合" + value);
     }
 
+    /**
+     * 打开这个element所指引的编辑网页
+     *
+     * @param webElement 元素row
+     * @param <X>        当前类型
+     * @return 新的页面
+     */
+    public final <X extends AbstractCRUDPage<T>> X openResource(WebElement webElement) {
+        howToOpenResource(webElement);
+        try {
+            webDriver.switchTo().alert().accept();
+        } catch (Throwable ignored) {
+        }
+        @SuppressWarnings("unchecked")
+        Class<X> clazz = (Class<X>) getClass();
+        return initPage(clazz);
+    }
 
+    @SuppressWarnings("WeakerAccess")
+    protected void howToOpenResource(WebElement webElement) {
+        webElement.findElement(By.className("fa-pencil")).click();
+    }
 }

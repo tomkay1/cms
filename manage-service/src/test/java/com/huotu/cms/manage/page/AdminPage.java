@@ -9,9 +9,12 @@
 
 package com.huotu.cms.manage.page;
 
+import com.huotu.cms.manage.page.support.AbstractContentPage;
 import com.huotu.cms.manage.page.support.AbstractFrameParentPage;
+import com.huotu.cms.manage.page.support.BodyId;
 import com.huotu.hotcms.service.entity.login.Owner;
 import org.openqa.selenium.WebDriver;
+import org.springframework.core.annotation.AnnotationUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,6 +33,25 @@ public class AdminPage extends AbstractFrameParentPage {
     public void validatePage() {
         assertThat(webDriver.getTitle())
                 .contains("后台管理");
+    }
+
+    /**
+     * 去指定页面
+     *
+     * @param pageClazz 页面的类型
+     * @param <T>       类型参数
+     * @return 新页面实例
+     */
+    public <T extends AbstractContentPage> T toPage(Class<? extends T> pageClazz) {
+        beforeDriver();
+        try {
+            clickMenuByClass(AnnotationUtils.findAnnotation(pageClazz, BodyId.class).value());
+        } catch (NullPointerException ex) {
+            throw new IllegalStateException("必须标注BodyId 否则找不到相对的链接:" + pageClazz);
+        }
+        T page = initPage(pageClazz);
+        page.setAdminPage(this);
+        return page;
     }
 
     public ManageMainPage toMainPage(Owner owner) {

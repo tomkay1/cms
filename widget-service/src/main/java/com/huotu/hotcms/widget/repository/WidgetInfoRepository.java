@@ -13,7 +13,6 @@ import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -21,7 +20,7 @@ import java.util.List;
 /**
  * 持久化已安装的控件信息
  */
-@Repository
+//@Repository
 public interface WidgetInfoRepository extends JpaRepository<WidgetInfo, WidgetIdentifier>
         , JpaSpecificationExecutor<WidgetInfo> {
 

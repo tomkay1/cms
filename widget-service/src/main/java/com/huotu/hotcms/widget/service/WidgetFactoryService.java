@@ -116,7 +116,7 @@ public interface WidgetFactoryService {
      * @param widget 控件
      */
     @Transactional
-    void updateWidget(Widget widget);
+    void updateWidget(Widget widget) throws IOException, FormatException;
 
     /**
      * 以此控件包为主,禁用同控件的其他控件包和控件。
@@ -127,7 +127,7 @@ public interface WidgetFactoryService {
      * @throws IOException 查找列表page列表失败等
      * @see #updateWidget(Widget)
      */
-    void primary(WidgetInfo widgetInfo, boolean ignoreError) throws IllegalStateException, IOException;
+    void primary(WidgetInfo widgetInfo, boolean ignoreError) throws IllegalStateException, IOException, FormatException;
 
 //    /**
 //     * 更新已安装的控件

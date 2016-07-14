@@ -44,10 +44,13 @@ import java.util.UUID;
 public class PageServiceImpl implements PageService {
     @Autowired(required = false)
     SiteRepository siteRepository;
+
     @Autowired(required = false)
     private PageInfoRepository pageInfoRepository;
+
     @Autowired
     private WidgetResolveService widgetResolveService;
+
     @Autowired(required = false)
     private ResourceService resourceService;
 
@@ -73,8 +76,8 @@ public class PageServiceImpl implements PageService {
 
 
     @Override
-    public void savePage(Page page,Long pageId) throws IOException {
-        ObjectMapper objectMapper=new ObjectMapper();
+    public void savePage(Page page, Long pageId) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
         String pageJson = objectMapper.writeValueAsString(page);
         PageInfo pageInfo = pageInfoRepository.findOne(pageId);
         if (pageInfo == null) {
@@ -105,14 +108,13 @@ public class PageServiceImpl implements PageService {
         InputStream data = Files.newInputStream(path);
         resourceService.uploadResource(resourceKey + "/" + pageInfo.getPageId() + ".css", data);
         Files.deleteIfExists(path);
-
     }
 
     @Override
     public Page getPage(Long pageId) throws IOException {
         PageInfo pageInfo = pageInfoRepository.findOne(pageId);
         String pageJson = new String(pageInfo.getPageSetting(), "utf-8");
-        ObjectMapper objectMapper=new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(pageJson, Page.class);
     }
 
@@ -181,6 +183,12 @@ public class PageServiceImpl implements PageService {
         }
     }
 
+    /**
+     * 更新page的component
+     *
+     * @param element
+     * @param installedWidget 更新的控件
+     */
     private void updateComponent(PageElement element, InstalledWidget installedWidget) {
         if (element instanceof Layout) {
             Layout layout = (Layout) element;
@@ -199,7 +207,6 @@ public class PageServiceImpl implements PageService {
             }
         }
     }
-
 
 
 }

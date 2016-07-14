@@ -9,8 +9,6 @@
 
 package com.huotu.cms.manage.page.support;
 
-import com.huotu.cms.manage.page.AdminPage;
-import com.huotu.cms.manage.page.ManageMainPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -29,26 +27,18 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public abstract class AbstractContentPage extends AbstractManagePage {
 
-    private ManageMainPage mainPage;
-    private AdminPage adminPage;
+    private AbstractFrameParentPage parentPage;
+
     protected AbstractContentPage(WebDriver webDriver) {
         super(webDriver.findElements(By.id("content")).isEmpty() ? webDriver : webDriver.switchTo().frame("content"));
     }
 
-    public ManageMainPage getMainPage() {
-        return mainPage;
+    public AbstractFrameParentPage getParentPage() {
+        return parentPage;
     }
 
-    public void setMainPage(ManageMainPage mainPage) {
-        this.mainPage = mainPage;
-    }
-
-    public AdminPage getAdminPage() {
-        return adminPage;
-    }
-
-    public void setAdminPage(AdminPage adminPage) {
-        this.adminPage = adminPage;
+    public void setParentPage(AbstractFrameParentPage parentPage) {
+        this.parentPage = parentPage;
     }
 
     /**
@@ -74,8 +64,8 @@ public abstract class AbstractContentPage extends AbstractManagePage {
 
     @Override
     public void refresh() {
-        if (mainPage != null && AnnotationUtils.findAnnotation(getClass(), BodyId.class) != null) {
-            mainPage.toPage(getClass());
+        if (parentPage != null && AnnotationUtils.findAnnotation(getClass(), BodyId.class) != null) {
+            parentPage.toPage(getClass());
             reloadPageInfo();
             return;
         }

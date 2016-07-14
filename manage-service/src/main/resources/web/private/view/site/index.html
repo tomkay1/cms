@@ -16,7 +16,7 @@
     <link href="http://resali.huobanplus.com/cdn/bracket/css/style.default.css" rel="stylesheet">
     <link href="http://resali.huobanplus.com/cdn/bracket/css/jquery.datatables.css" rel="stylesheet">
     <link href="../../../public/assets/css/customize.css" ewp:href="/assets/css/customize.css" rel="stylesheet">
-    <title>Owner</title>
+    <title>Site</title>
 </head>
 <body class="mainpanel" id="fa-puzzle-piece">
 <div class="pageheader">
@@ -26,7 +26,7 @@
 <div class="contentpanel">
     <form id="addSiteForm" sec:authorize="hasRole('OWNER')" action="index.html" method="post"
           th:action="@{/manage/site}">
-        <div class="panel panel-default close-panel">
+        <div class="panel panel-default close-panel open-panel">
             <div class="panel-heading">
                 <div class="panel-btns">
                     <a href="" class="panel-close">&times;</a>
@@ -138,7 +138,7 @@
                              th:src="@{http://placehold.it/228x178(text=${site.name})}"
                              alt="..." th:alt="${site.name}">
                         <div class="clearfix row operate-group">
-                            <button type="button" href="index.html"
+                            <button type="button" href="site.html"
                                     th:href="@{/manage/site/{id}(id=${site.siteId})}"
                                     class="link-button operate-btn btn-white col-xs-4">编辑
                             </button>

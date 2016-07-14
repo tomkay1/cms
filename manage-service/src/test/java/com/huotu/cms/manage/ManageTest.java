@@ -11,7 +11,6 @@ package com.huotu.cms.manage;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.huotu.cms.manage.login.Manager;
@@ -19,6 +18,7 @@ import com.huotu.cms.manage.page.AdminPage;
 import com.huotu.cms.manage.page.ManageMainPage;
 import com.huotu.cms.manage.test.AuthController;
 import com.huotu.hotcms.service.common.CMSEnums;
+import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.common.PageType;
 import com.huotu.hotcms.service.common.SiteType;
 import com.huotu.hotcms.service.entity.Category;
@@ -263,6 +263,7 @@ public abstract class ManageTest extends SpringWebTest {
         category.setParent(null);
         category.setSite(site);
         category.setName(UUID.randomUUID().toString());
+        category.setContentType(ContentType.values()[random.nextInt(ContentType.values().length)]);
         return categoryRepository.saveAndFlush(category);
     }
 

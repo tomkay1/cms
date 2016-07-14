@@ -16,6 +16,7 @@ import org.springframework.web.method.annotation.RequestParamMethodArgumentResol
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.mvc.method.annotation.ServletModelAttributeMethodProcessor;
+import org.springframework.web.servlet.mvc.method.annotation.ServletRequestMethodArgumentResolver;
 
 /**
  * 这种一种丑陋的解决方案,但至少解决了。
@@ -28,17 +29,23 @@ public class MethodParameterFixedResolver implements HandlerMethodArgumentResolv
             = new RequestParamMethodArgumentResolver(true);
     private final ServletModelAttributeMethodProcessor servletModelAttributeMethodProcessor
             = new ServletModelAttributeMethodProcessor(true);
+    private final ServletRequestMethodArgumentResolver servletRequestMethodArgumentResolver
+            = new ServletRequestMethodArgumentResolver();
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         return parameter.hasParameterAnnotation(MethodParameterFixed.class)
                 && (requestParamMethodArgumentResolver.supportsParameter(parameter)
-                || servletModelAttributeMethodProcessor.supportsParameter(parameter));
+                || servletModelAttributeMethodProcessor.supportsParameter(parameter)
+                || servletRequestMethodArgumentResolver.supportsParameter(parameter));
     }
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer
             , NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+        if (servletRequestMethodArgumentResolver.supportsParameter(parameter))
+            return servletRequestMethodArgumentResolver.resolveArgument(parameter, mavContainer, webRequest
+                    , binderFactory);
         Class clazz = parameter.getParameterType();
         if (Number.class.isAssignableFrom(clazz))
             return requestParamMethodArgumentResolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);

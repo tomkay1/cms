@@ -113,15 +113,12 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     public Iterable<Page> findWidgetPage() {
         Page page1 = new Page();
         page1.setTitle("首页");
-//        page1.setPageIdentity("1");
 
         Page page2 = new Page();
         page2.setTitle("新闻");
-//        page2.setPageIdentity("2");
 
         Page page3 = new Page();
         page3.setTitle("关于我们");
-//        page3.setPageIdentity("3");
 
         List<Page> list = new ArrayList<>();
         list.add(page1);

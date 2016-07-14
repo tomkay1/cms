@@ -41,6 +41,7 @@ public class Category implements Auditable {
     /**
      * 序列号
      */
+    @Column(name = "serial", length = 100)
     private String serial;
 
     /**
@@ -70,9 +71,8 @@ public class Category implements Auditable {
     /**
      * 栏目名称
      */
-    @Column(name = "name")
+    @Column(name = "name", length = 60)
     private String name;
-
 
     /**
      * 父级栏目
@@ -81,12 +81,20 @@ public class Category implements Auditable {
     @JoinColumn(name = "parentId")
     private Category parent;
 
+
     /**
      * 正文类型
      * 如果已设置 {@link #parent}则不应该再设置该项.
      */
-    @Column(nullable = false)
+    @Column(name = "contentType")
     private ContentType contentType;
+
+    /**
+     * 所属站点
+     */
+    @ManyToOne
+    @JoinColumn(name = "siteId")
+    private Site site;
 
 //    /**
 //     * 所有父级编号，用逗号分隔
@@ -112,12 +120,5 @@ public class Category implements Auditable {
 //    @Column(name = "modelId")
 //    private Integer modelId;
 
-
-    /**
-     * 所属站点
-     */
-    @ManyToOne
-    @JoinColumn(name = "siteId")
-    private Site site;
 
 }

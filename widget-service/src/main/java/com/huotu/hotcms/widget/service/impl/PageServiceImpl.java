@@ -180,7 +180,6 @@ public class PageServiceImpl implements PageService {
         } catch (IOException e) {
             throw new IllegalStateException("更新控件组件，保存界面错误" + e.getMessage());
         }
-
     }
 
     private void updateComponent(PageElement element, InstalledWidget installedWidget) {

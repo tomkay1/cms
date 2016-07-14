@@ -16,6 +16,7 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.huotu.cms.manage.login.Manager;
 import com.huotu.cms.manage.page.AdminPage;
 import com.huotu.cms.manage.page.ManageMainPage;
+import com.huotu.cms.manage.page.support.AbstractCRUDPage;
 import com.huotu.cms.manage.test.AuthController;
 import com.huotu.hotcms.service.common.CMSEnums;
 import com.huotu.hotcms.service.common.ContentType;
@@ -41,12 +42,14 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.Resource;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.htmlunit.webdriver.MockMvcHtmlUnitDriverBuilder;
 import org.springframework.test.web.servlet.htmlunit.webdriver.WebConnectionHtmlUnitDriver;
+import org.springframework.util.StreamUtils;
 
 import javax.servlet.http.Cookie;
 import java.lang.reflect.Array;
@@ -56,6 +59,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -350,5 +354,22 @@ public abstract class ManageTest extends SpringWebTest {
         }
         layout.setElements(pageElementList.toArray(new PageElement[pageElementList.size()]));
         return layout;
+    }
+
+    /**
+     * 上传文件
+     *
+     * @param page     操作的页面
+     * @param name     隐藏字段的名称
+     * @param resource 需要上传的资源
+     */
+    protected void uploadResource(AbstractCRUDPage<?> page, String name, Resource resource) throws Exception {
+        String path = mockMvc.perform(fileUpload("/manage/upload")
+                .file("file", StreamUtils.copyToByteArray(resource.getInputStream()))
+                .session(session)
+        ).andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        page.inputHidden(page.getForm(), name, path);
     }
 }

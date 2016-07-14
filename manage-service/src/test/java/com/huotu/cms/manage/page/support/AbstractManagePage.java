@@ -23,6 +23,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitWebElement;
 import org.openqa.selenium.support.PageFactory;
+import org.springframework.core.io.Resource;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -296,5 +297,16 @@ public abstract class AbstractManagePage extends BracketPage {
         } catch (Exception ex) {
             throw new IllegalStateException(ex);
         }
+    }
+
+    /**
+     * 上传文件
+     *
+     * @param form     成功后将值写入的form
+     * @param name     隐藏字段的名称
+     * @param resource 需要上传的资源
+     */
+    public void uploadResource(WebElement form, String name, Resource resource) {
+
     }
 }

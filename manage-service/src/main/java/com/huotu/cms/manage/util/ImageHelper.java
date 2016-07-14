@@ -10,6 +10,7 @@
 package com.huotu.cms.manage.util;
 
 import me.jiangcai.lib.resource.service.ResourceService;
+import org.springframework.core.io.Resource;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -32,7 +33,7 @@ public class ImageHelper {
      * @param data            原数据
      * @return 资源path
      */
-    public static final String storeAsImage(String type, ResourceService resourceService, InputStream data)
+    public static String storeAsImage(String type, ResourceService resourceService, InputStream data)
             throws IOException {
         BufferedImage image = ImageIO.read(data);
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
@@ -42,4 +43,14 @@ public class ImageHelper {
         return path;
     }
 
+    public static void assertSame(Resource resource, Resource resource1) {
+        try {
+            BufferedImage image1 = ImageIO.read(resource.getInputStream());
+
+            BufferedImage image2 = ImageIO.read(resource1.getInputStream());
+            assert image1.getWidth() == image2.getWidth() && image1.getHeight() == image2.getHeight();
+        } catch (IOException ex) {
+            throw new AssertionError(ex);
+        }
+    }
 }

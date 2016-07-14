@@ -9,14 +9,11 @@
 
 package com.huotu.cms.manage.page;
 
-import com.huotu.cms.manage.page.support.AbstractContentPage;
 import com.huotu.cms.manage.page.support.AbstractFrameParentPage;
-import com.huotu.cms.manage.page.support.BodyId;
 import com.huotu.hotcms.service.entity.Site;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openqa.selenium.WebDriver;
-import org.springframework.core.annotation.AnnotationUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -38,49 +35,11 @@ public class ManageMainPage extends AbstractFrameParentPage {
                 .contains("内容管理");
     }
 
-    /**
-     * 去指定页面
-     *
-     * @param pageClazz 页面的类型
-     * @param <T>       类型参数
-     * @return 新页面实例
-     */
-    public <T extends AbstractContentPage> T toPage(Class<? extends T> pageClazz) {
-        beforeDriver();
-        try {
-            clickMenuByClass(AnnotationUtils.findAnnotation(pageClazz, BodyId.class).value());
-        } catch (NullPointerException ex) {
-            throw new IllegalStateException("必须标注BodyId 否则找不到相对的链接:" + pageClazz);
-        }
-        T page = initPage(pageClazz);
-        page.setMainPage(this);
-        return page;
-    }
-
-    public SitePage toSite() {
-        beforeDriver();
-        clickMenuByClass("fa-puzzle-piece");
-//        clickMenuByClass("fa-sitemap");
-        return initPage(SitePage.class);
-    }
-
-    public PageInfoPage toPageInfo() {
-        beforeDriver();
-        clickMenuByClass("fa-sitemap");
-        return initPage(PageInfoPage.class);
-    }
-
 
     public RoutePage toRoute() {
         beforeDriver();
         clickMenuByClass("fa-retweet");
         return initPage(RoutePage.class);
-    }
-
-    public CategoryPage toCategory() {
-        beforeDriver();
-        clickMenuByClass("fa-bars");
-        return initPage(CategoryPage.class);
     }
 
     public void switchSite(Site site) {

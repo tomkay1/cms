@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.widget.test;
 
+import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.common.SiteType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
@@ -233,6 +234,7 @@ public class TestBase extends SpringWebTest{
 
     protected Category randomCategory() {
         Category category = new Category();
+        category.setContentType(ContentType.values()[random.nextInt(ContentType.values().length)]);
         category.setParent(null);
         category.setSite(randomSite(randomOwner()));
         return categoryRepository.saveAndFlush(category);

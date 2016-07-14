@@ -91,6 +91,24 @@ $(function () {
         sizeLimit: 3 * 1024 * 1024
     });
 
+    // 点赞的时候
+    $('.template-lauds').click(function () {
+        //  fa-thumbs-o-up fa-thumbs-up   o是没有
+        var i = $('i', this);
+        var padding;
+        if (i.hasClass('fa-thumbs-o-up')) {
+            padding = 1;
+        } else {
+            padding = -1;
+        }
+
+        i.toggleClass('fa-thumbs-o-up');
+        i.toggleClass('fa-thumbs-up');
+        var span = $('span', this);
+        var newVal = parseInt(span.text()) + padding;
+        span.text(newVal);
+    });
+
     $(document.body).find('.site-items').on('mouseenter', function () {
         $(this).children('.site-preview').stop().fadeIn();
     }).on('mouseleave', function () {

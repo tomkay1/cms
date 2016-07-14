@@ -16,11 +16,12 @@
     <link href="http://resali.huobanplus.com/cdn/bracket/css/style.default.css" rel="stylesheet">
     <link href="http://resali.huobanplus.com/cdn/bracket/css/jquery.datatables.css" rel="stylesheet">
     <link href="../../../public/assets/css/customize.css" ewp:href="/assets/css/customize.css" rel="stylesheet">
-    <title>Owner</title>
+    <link href="../../../public/css/site.css" ewp:href="/css/site.css" rel="stylesheet">
+    <title>EditSite</title>
 </head>
 <body class="mainpanel" id="fa-puzzle-piece">
 <div class="pageheader">
-    <h2><i class="fa fa-puzzle-piece"></i> 站点管理 <span>管理所有站点的地方</span></h2>
+    <h2><i class="fa fa-puzzle-piece"></i> 站点管理 <span>修改站点信息</span></h2>
 </div>
 
 <!--/*@thymesVar id="object" type="com.huotu.hotcms.service.entity.Site"*/-->
@@ -37,61 +38,172 @@
                 <p>站点信息发生变化时做一定修改</p>
             </div>
             <div class="panel-body">
-                <div class="form-horizontal form-bordered">
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">站点名称</label>
-                        <div class="col-sm-2">
-                            <input name="name" title="站点名称" type="text" placeholder="作用于识别站点"
-                                   class="form-control" th:value="${object.name}"/>
-                        </div>
-                        <label class="col-sm-2 control-label">站点标题</label>
-                        <div class="col-sm-6">
-                            <input name="title" title="站点标题" type="text"
-                                   class="form-control" th:value="${object.title}"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">站点描述</label>
-                        <div class="col-sm-10">
+                <ul class="nav nav-tabs nav-justified">
+                    <li class="active"><a href="#common" data-toggle="tab"><strong>常用</strong></a></li>
+                    <li><a href="#template" data-toggle="tab"><strong>模板</strong></a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="common">
+                        <div class="form-horizontal form-bordered">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">站点名称</label>
+                                <div class="col-sm-2">
+                                    <input name="name" title="站点名称" type="text" placeholder="作用于识别站点"
+                                           class="form-control" th:value="${object.name}"/>
+                                </div>
+                                <label class="col-sm-2 control-label">站点标题</label>
+                                <div class="col-sm-6">
+                                    <input name="title" title="站点标题" type="text"
+                                           class="form-control" th:value="${object.title}"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">站点描述</label>
+                                <div class="col-sm-10">
                             <textarea class="form-control" rows="4" title="站点描述" name="description"
                                       th:value="${object.description}"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">站点关键字</label>
+                                <div class="col-sm-10">
+                                    <input name="keywords" class="form-control inputTags" value="" title="站点关键字"
+                                           th:value="${object.keywords}"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">站点LOGO</label>
+                                <img res:src="${object.logoUri}" src="">
+                                <input type="hidden" name="tmpLogoPath"/>
+                                <div class="col-sm-10" id="logo-uploader"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">版权信息</label>
+                                <div class="col-sm-10">
+                                    <input name="copyright" title="版权信息" type="text"
+                                           class="form-control" th:value="${object.copyright}"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">域名</label>
+                                <div class="col-sm-10">
+                                    <input name="domains" class="form-control inputTags" value="" title="域名"/>
+                                    <span class="help-block">域名不包含"/"结尾,例如huobanplus.com,www.huobanplus.com</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">主推域名</label>
+                                <div class="col-sm-6">
+                                    <input name="homeDomain" class="form-control" value="" title="主推域名"/>
+                                    <span class="help-block">主推域名必须为域名里面的某一个,并且只能设置一个主推域名</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">站点关键字</label>
-                        <div class="col-sm-10">
-                            <input name="keywords" class="form-control inputTags" value="" title="站点关键字"
-                                   th:value="${object.keywords}"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">站点LOGO</label>
-                        <img res:src="${object.logoUri}" src="">
-                        <input type="hidden" name="tmpLogoPath"/>
-                        <div class="col-sm-10" id="logo-uploader"></div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">版权信息</label>
-                        <div class="col-sm-10">
-                            <input name="copyright" title="版权信息" type="text"
-                                   class="form-control" th:value="${object.copyright}"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">域名</label>
-                        <div class="col-sm-10">
-                            <input name="domains" class="form-control inputTags" value="" title="域名"/>
-                            <span class="help-block">域名不包含"/"结尾,例如huobanplus.com,www.huobanplus.com</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">主推域名</label>
-                        <div class="col-sm-6">
-                            <input name="homeDomain" class="form-control" value="" title="主推域名"/>
-                            <span class="help-block">主推域名必须为域名里面的某一个,并且只能设置一个主推域名</span>
+                    <div class="tab-pane" id="template">
+                        <h4>请选择要使用的模板</h4>
+                        <div class="row">
+                            <div th:each="template,status:${@templateRepository.findByEnabledTrue()}"
+                                 class="col-xs-12 col-sm-4 col-md-3 col-lg-2 clearfix"
+                                 data-id="123" th:attr="data-id=${template.siteId}">
+                                <div class="site-items">
+                                    <img th:if="${template.logoUri!=null}" src="http://placehold.it/228x178?text=CMS"
+                                         res:src="${site.logoUri}"
+                                         style="display: none" th:attr="style=''"
+                                         alt="..." th:alt="${template.name}"/>
+                                    <img th:if="${template.logoUri==null}" src="http://placehold.it/228x178?text=CMS"
+                                         th:src="@{http://placehold.it/228x178(text=${template.name})}"
+                                         alt="..." th:alt="${template.name}">
+                                    <div class="clearfix row operate-group">
+                                        <button type="button" href="site.html"
+                                                th:text="'预览('+${{template.scans}}+')'"
+                                                th:href="@{/manage/site/{id}(id=${template.siteId})}"
+                                                class="link-button operate-btn btn-white col-xs-6">预览(100)
+                                        </button>
+                                        <button type="button" href="index.html"
+                                                th:if="${!template.enabled}"
+                                                th:href="@{/manage/site/{id}/enabled(id=${template.siteId})}"
+                                                class="link-button operate-btn btn-white col-xs-6">使用
+                                        </button>
+                                    </div>
+                                    <div class="site-alert text-success"
+                                         th:text="${template.name}">
+                                        <!--a-->
+                                        <span>我的模板名称</span>
+                                        <span class="template-lauds">
+                                            <i class="fa fa-thumbs-up"></i>
+                                            <span th:text="${{template.lauds}}">99</span>
+                                        </span>
+                                    </div>
+                                    <div th:if="${template.ableToRun && template.enabled}" class="site-preview">
+                                        <a href="../main.html" target="_blank"
+                                           th:href="@{/(simulateSite=${template.siteId})}"
+                                           class="preview-btn btn btn-success">预览</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div th:remove="all" class="col-xs-12 col-sm-4 col-md-3 col-lg-2 clearfix">
+                                <div class="site-items">
+                                    <img src="http://placehold.it/228x178?text=CMS" alt="...">
+                                    <div class="clearfix row operate-group">
+                                        <button type="button" class="operate-btn btn-white col-xs-6">预览(100)</button>
+                                        <button type="button" class="operate-btn btn-white col-xs-6">使用</button>
+                                    </div>
+                                    <div class="site-alert text-success">
+                                        <span>我的模板名称</span>
+                                        <span class="template-lauds">
+                                            <i class="fa fa-thumbs-up"></i>
+                                            <span>101</span>
+                                        </span>
+                                    </div>
+                                    <div class="site-preview">
+                                        <a href="#" class="preview-btn btn btn-success">预览</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div th:remove="all" class="col-xs-12 col-sm-4 col-md-3 col-lg-2 clearfix">
+                                <div class="site-items">
+                                    <img src="http://placehold.it/228x178?text=CMS" alt="...">
+                                    <div class="clearfix row operate-group">
+                                        <button type="button" class="operate-btn btn-white col-xs-6">预览(140)</button>
+                                        <button type="button" class="operate-btn btn-white col-xs-6">使用</button>
+                                    </div>
+                                    <div class="site-alert text-success">
+                                        <span>我的模板名称</span>
+                                        <span class="template-lauds">
+                                            <i class="fa fa-thumbs-up"></i>
+                                            <span>101</span>
+                                        </span>
+                                    </div>
+                                    <div class="site-preview">
+                                        <a href="#" class="preview-btn btn btn-success">预览</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div th:remove="all" class="col-xs-12 col-sm-4 col-md-3 col-lg-2 clearfix">
+                                <div class="site-items">
+                                    <img src="http://placehold.it/228x178?text=CMS" alt="...">
+                                    <div class="clearfix row operate-group">
+                                        <button type="button" class="operate-btn btn-white col-xs-6">预览(107)</button>
+                                        <button type="button" class="operate-btn btn-white col-xs-6">使用</button>
+                                    </div>
+                                    <div class="site-alert text-success">
+                                        <span>我的模板名称</span>
+                                        <span class="template-lauds">
+                                            <i class="fa fa-thumbs-up"></i>
+                                            <span>101</span>
+                                        </span>
+                                    </div>
+                                    <div class="site-preview">
+                                        <a href="#" class="preview-btn btn btn-success">预览</a>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
+
             </div><!-- panel-body -->
 
             <div class="panel-footer">

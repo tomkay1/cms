@@ -17,6 +17,7 @@ import com.huotu.hotcms.widget.exception.FormatException;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -36,6 +37,16 @@ public interface WidgetFactoryService {
      * @throws IOException
      */
     void setupJarFile(WidgetInfo info, InputStream data) throws IOException;
+
+    /**
+     * 下载widget jar文件
+     *
+     * @param groupId  分组id,参考maven
+     * @param version  版本
+     * @param widgetId 控件id
+     * @return 临时文件
+     */
+    public File downloadJar(String groupId, String widgetId, String version) throws IOException;
 
     /**
      * 当前owner已安装的控件列表

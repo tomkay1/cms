@@ -46,6 +46,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -88,6 +89,7 @@ public class TestWidgetFactoryService extends TestBase {
     public void testInstallWidget() throws IOException, FormatException, IllegalAccessException
             , InstantiationException, InterruptedException {
 
+
         //*********************************case1 安装控件校验控件是否存在控件列表中******************************
         String randomType = UUID.randomUUID().toString();
         widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
@@ -95,11 +97,11 @@ public class TestWidgetFactoryService extends TestBase {
         assertWidgetListContainWidgetName("picCarousel", "1.0-SNAPSHOT", randomType);
 
 
-        //***case2 检验重新加载后，之前安装的控件有没有被正确加载
+        //*********************************case2 检验重新加载后，之前安装的控件有没有被正确加载*********************
         widgetFactoryService.reloadWidgets();
         assertWidgetListContainWidgetName("picCarousel", "1.0-SNAPSHOT", randomType);
 
-        //*********************************case3 设置主控件包不忽略错误 ，安装新版本控件******************************
+        //*********************************case3 设置主控件包不忽略错误 ，安装新版本控件****************************
         String randomType2 = UUID.randomUUID().toString();
         widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
                 , "2.0-SNAPSHOT", randomType2);
@@ -209,6 +211,12 @@ public class TestWidgetFactoryService extends TestBase {
         assertThat(list.size()).isEqualTo(1);
         assertThat(list.get(0).getVersion()).as("组件忽略更新，禁用其他低版本的组件").isEqualToIgnoringCase("2.0-SNAPSHOT");
 
+    }
+
+    @Test
+    public void testDownloadJar() throws IOException {
+        File file = widgetFactoryService.downloadJar("com.huotu.widget.friendshipLink", "friendshipLink", "1.0-SNAPSHOT");
+        assertThat(file).as("file不等于空,下载成功").isNotNull();
     }
 
     public void validPageElements(PageElement pageElement, WidgetInfo widgetInfo) {

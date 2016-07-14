@@ -85,7 +85,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
      * @param widgetId 控件id
      * @return 临时文件
      */
-    private File downloadJar(String groupId, String widgetId, String version) throws IOException {
+    public File downloadJar(String groupId, String widgetId, String version) throws IOException {
         groupId = groupId.replace(".", "/");
         StringBuilder repoUrl = new StringBuilder(String.format(PRIVATE_REPO, groupId, widgetId, version));
         CloseableHttpResponse response = HttpClientUtil.getInstance().get(repoUrl + "/maven-metadata.xml"

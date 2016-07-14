@@ -28,20 +28,35 @@ import com.jayway.jsonpath.JsonPath;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StreamUtils;
 
+import javax.faces.event.PostValidateEvent;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -53,6 +68,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @Transactional
 public class PageControllerTest extends ManageTest {
+
+    private static final String URL = "url";
+    private static final String PARAM = "param";
+    private static final String CONTENT = "content";
+    private static final String MEDIATYPE = "mediaType";
+    private static final String METHOD="method";
 
     @Autowired
     private PageInfoRepository pageInfoRepository;
@@ -69,64 +90,74 @@ public class PageControllerTest extends ManageTest {
     @Autowired
     private SiteRepository siteRepository;
 
+    private Logger logger = LoggerFactory.getLogger(PageControllerTest.class);
+
     @Test
     public void flow() throws Exception {
         //首先确保虚拟出来的siteId 并没有存在任何页面
         Owner owner = randomOwner();
         Site site = randomSite(owner);
         long siteId = site.getSiteId();
-        mockMvc.perform(get("/manage/{siteId}/pages", siteId)
-                .accept(MediaType.APPLICATION_JSON))
+        Cookie cookie = new Cookie(CMSEnums.CookieKeyValue.RoleID.name(), "-1");
+        Map<String, String> map = new HashMap<>();
+        map.put(URL, "/manage/{siteId}/pages");
+        map.put(PARAM, String.valueOf(siteId));
+        map.put(METHOD, HttpMethod.GET.name());
+        MvcResult result = accessViaCookie(cookie, map);
+        Assert.assertTrue(result.getResponse().getContentType().contains("application/json"));
+        int length = JsonPath.read(result.getResponse().getContentAsString(), "$.length()");
+        Assert.assertTrue(0 == length);
 
-                .andExpect(status().isOk());
-//                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-//                .andExpect(jsonPath("$.length()").value(0));//exception:json can not be null or empty
-//      Page page = randomPage();
-//      String json = JSON.toJSONString(page);
-//      创建一个page,page应该是从界面上put上来的,此处从测试类路劲下的page.json中获取
-        InputStream is = this.getClass().getClassLoader().getResourceAsStream("page.json");
-        String pageJson = StreamUtils.copyToString(is, Charset.forName("utf-8"));
+        //随机创建一个Page
+        Page page = randomPage();
+        PageInfo pageInfo = randomPageInfo();
+        ObjectMapper objectMapper = new ObjectMapper();
+        String pageJson = objectMapper.writeValueAsString(page);
+        map.clear();
+        map.put(URL, "/manage/{siteId}/pages");
+        map.put(PARAM, String.valueOf(pageInfo.getPageId()));
+        map.put(CONTENT, pageJson);
+        map.put(MEDIATYPE, MediaType.APPLICATION_JSON.toString());
+        map.put(METHOD, HttpMethod.PUT.name());
+        result = accessViaCookie(cookie, map);
+        Assert.assertTrue(result.getResponse().getContentType().contains("application/json"));
+        length = JsonPath.read(result.getResponse().getContentAsString(), "$.length()");
+        Assert.assertTrue(length > 0);
 
-        // 保存它 save
-        String pageHref = mockMvc.perform(put("/manage/pages/{siteId}", siteId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(pageJson))
-                .andExpect(status().isCreated())
-                .andReturn().getResponse().getRedirectedUrl();
+        //获取上面保存的页面信息
+        map.put(URL, "/manage/pages/{pageId}");
+        map.put(PARAM, String.valueOf(pageInfo.getPageId()));
+        map.put(MEDIATYPE, MediaType.APPLICATION_JSON.toString());
+        map.put(METHOD, HttpMethod.GET.name());
+        result = accessViaCookie(cookie, map);
+        Assert.assertTrue(result.getResponse().getContentType().contains("application/json"));
+        pageJson = result.getResponse().getContentAsString();
+        length = JsonPath.read(pageJson, "$.length()");
+        Assert.assertTrue(length > 0);
 
-        // 单独获取 pageID为1的原因是json中保存的
-        mockMvc.perform(get("/manage/pages/{pageId}", 1).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-//                .andExpect()
-        ;
-
-        //保存页面部分属性
-        String propertyName = UUID.randomUUID().toString();
-        mockMvc.perform(put("/manage/pages/{pageId}/{propertyName}", 1, propertyName)).andDo(print())
-                .andExpect(status().isAccepted())
-                .andReturn();
+        //校验Page信息
+        Page getPage = objectMapper.readValue(pageJson, Page.class);
+        Assert.assertTrue(page.equals(getPage));
 
 
-        mockMvc.perform(get("/manage/owners/{ownerId}/pages", siteId)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.length()").value(1))
-        // https://github.com/jayway/JsonPath
-        // TODO 更多数据校验 以确保返回的数据 是之前创建的Page
-//        .andExpect(jsonPath("$.[0]").value(..))
-        ;
+        //删除
+        map.clear();
+        map.put(URL, "/manage/pages/{pageId}");
+        map.put(PARAM, String.valueOf(pageInfo.getPageId()));
+        map.put(METHOD, HttpMethod.DELETE.name());
+        result = accessViaCookie(cookie, map);
 
-        // 删除
-        mockMvc.perform(delete(pageHref))
-                .andExpect(status().isNoContent());
+
         // 现在长度应该是0
-        mockMvc.perform(get("/manage/owners/{ownerId}/pages", siteId)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.length()").value(0));
+        map.put(URL, "/manage/pages/{pageId}");
+        map.put(PARAM, String.valueOf(pageInfo.getPageId()));
+        map.put(MEDIATYPE, MediaType.APPLICATION_JSON.toString());
+        map.put(METHOD, HttpMethod.GET.name());
+        result = accessViaCookie(cookie, map);
+        Assert.assertTrue(result.getResponse().getContentType().contains("application/json"));
+        pageJson = result.getResponse().getContentAsString();
+        length = JsonPath.read(pageJson, "$.length()");
+        Assert.assertTrue(length == 0);
     }
 
     /**
@@ -144,8 +175,11 @@ public class PageControllerTest extends ManageTest {
                     , "1.0-SNAPSHOT", "picCarousel");
         }
         Cookie cookie = new Cookie(CMSEnums.CookieKeyValue.RoleID.name(), "-1");
-        MvcResult result = accessViaCookie(cookie, new Manager(), "/manage/widget/widgets");
+        Map<String, String> map = new HashMap<>();
+        map.put(URL, "/manage/widget/widgets");
+        MvcResult result = accessViaCookie(cookie, map);
         String widgetJson = result.getResponse().getContentAsString();
+        logger.info("获取到的json：" + widgetJson);
         Assert.assertTrue(widgetJson != null && widgetJson.length() != 0);
         //identity的格式:<groupId>-<widgetId>:<version>
         //此处校验逻辑为：先检索出所有的identity，如果存在groupId和widgetId 一致，但有两个版本号的，视为bug！
@@ -173,15 +207,27 @@ public class PageControllerTest extends ManageTest {
     }
 
     /**
-     * 完善
-     * @param cookie
-     * @param login
-     * @param url
-     * @return
+     * 通过伪造cookie验证权限
+     *
+     * @param cookie 模拟个Cookie
+     * @param map    参数map
+     * @return MvcResult
      * @throws Exception
      */
-    private MvcResult accessViaCookie(Cookie cookie, Login login, String url) throws Exception {
-        MvcResult result = mockMvc.perform(get(url)
+    private MvcResult accessViaCookie(Cookie cookie, Map<String, String> map) throws Exception {
+
+        String url = map.get(URL);
+        String params = map.get(PARAM);
+        String content = map.get(CONTENT);
+        if(content==null)
+            content="";
+        String mediaType = map.get(MEDIATYPE);
+        if(mediaType==null)
+            mediaType=MediaType.ALL_VALUE;
+        String method=map.get(METHOD);
+        HttpMethod httpMethod=HttpMethod.valueOf(method);
+
+        MvcResult result = mockMvc.perform(get(map.get("url"), map.get("param"))
                 .cookie(cookie))
                 .andExpect(status().isFound())
                 .andReturn();
@@ -198,9 +244,11 @@ public class PageControllerTest extends ManageTest {
             result = mockMvc.perform(get(redirectedUrl).session(session)).andReturn();
             if (result.getResponse().getStatus() == 200) {
                 session = (MockHttpSession) result.getRequest().getSession(true);
-                return mockMvc.perform(get(url)
+                return mockMvc.perform(get(url, params)
                         .cookie(cookie)
-                        .session(session))
+                        .session(session)
+                        .content(content)
+                        .accept(mediaType))
                         .andExpect(status().isOk())
                         .andReturn();
             }
@@ -210,5 +258,7 @@ public class PageControllerTest extends ManageTest {
                 throw new IllegalStateException("why ?" + result.getResponse().getStatus());
         }
     }
+
+
 
 }

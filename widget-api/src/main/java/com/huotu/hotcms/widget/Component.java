@@ -40,6 +40,11 @@ public class Component implements PageElement {
      */
     private String widgetIdentity;
 
+    /**
+     * 如果界面上存在同样的组件，要拿ID去标识
+     */
+    private String id;
+
     @JsonIgnore(value = true)//在生成的xml中忽略该属性，true即为忽略
     private InstalledWidget installedWidget;
 

@@ -65,13 +65,13 @@ public class ManageServiceSpringConfig extends WebSecurityConfigurerAdapter impl
         ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = http.authorizeRequests();
 
         // 在测试环境下 随意上传
-        if (environment.acceptsProfiles("test") || environment.acceptsProfiles("development")) {
+        if (environment.acceptsProfiles("test") || environment.acceptsProfiles("development")) {//测试阶段或者开发阶段
             registry = registry
 //                    .anyRequest().permitAll()//不妨这样  不要这样! 安全也是业务的一部分 同样需要测试,此处许可仅仅是为了原型测试。
                     .antMatchers("/manage/upload").permitAll()
                     .antMatchers("/manage/upload/fine").permitAll()
-                    .antMatchers("/manage/pages").permitAll() //用于测试阶段页面服务
-                    .antMatchers("/manage/owners").permitAll(); //用于测试阶段页面服务
+                    .antMatchers("/manage/widget/widgets").permitAll()
+                    .antMatchers("/manage/owners").permitAll();
         }
         registry
                 .antMatchers("/manage/**").hasRole(Login.Role_Manage_Value)

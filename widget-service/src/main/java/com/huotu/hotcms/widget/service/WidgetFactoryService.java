@@ -39,6 +39,7 @@ public interface WidgetFactoryService {
 
     /**
      * 当前owner已安装的控件列表
+     *
      * @param owner 专享商户可为空表示所有控件
      * @return 已安装控件列表
      */
@@ -120,11 +121,13 @@ public interface WidgetFactoryService {
     /**
      * 以此控件包为主,禁用同控件的其他控件包和控件。
      *
-     * @param widgetInfo 控件包
-     * @see #updateWidget(Widget)
+     * @param widgetInfo  控件包
+     * @param ignoreError 忽略错误 true 忽略，false 不忽略
      * @throws IllegalStateException 不支持的控件包，检查后不兼容旧版本
+     * @throws IOException 查找列表page列表失败等
+     * @see #updateWidget(Widget)
      */
-    void primary(WidgetInfo widgetInfo) throws IllegalStateException;
+    void primary(WidgetInfo widgetInfo, boolean ignoreError) throws IllegalStateException, IOException;
 
 //    /**
 //     * 更新已安装的控件

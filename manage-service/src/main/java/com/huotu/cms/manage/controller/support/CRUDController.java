@@ -87,7 +87,7 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
         jpaRepository.delete(id);
     }
 
-    @RequestMapping(value = "/{id}/enable", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}/enabled", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
     public void toggleEnable(@PathVariable("id") ID id) {
@@ -99,7 +99,7 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
             throw new NoSuchMethodError();
     }
 
-    @RequestMapping(value = "/{id}/enable", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/enabled", method = RequestMethod.GET)
     @Transactional
     public String toggleEnableGet(@PathVariable("id") ID id) {
         toggleEnable(id);

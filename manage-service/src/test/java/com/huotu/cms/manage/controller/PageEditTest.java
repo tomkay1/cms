@@ -26,22 +26,14 @@ public class PageEditTest extends SiteManageTest {
      * 测试页面上点击“保存”功能
      */
     @Test
-    public void save() throws Exception {
+    public void flow() throws Exception {
 
         Site site = loginAsSite();
         long siteID=site.getSiteId();
         ManageMainPage manageMainPage = initPage(ManageMainPage.class);
         PageInfo pageInfo=randomPageInfo();
         EditPage editPage=manageMainPage.toEditPage(pageInfo.getPageId());
+        editPage.loadWidget();
         editPage.save();
     }
-
-    /**
-     * edit.html 页面在初始化加载的时候，会默认加载组件列表
-     */
-    @Test
-    public void init(){
-        EditPage editPage=initPage(EditPage.class);
-    }
-
 }

@@ -151,7 +151,7 @@ public abstract class ManageTest extends SpringWebTest {
         return initPage(ManageMainPage.class);
     }
 
-    private void accessViaCookie(Cookie cookie, Login login) throws Exception {
+    protected void accessViaCookie(Cookie cookie, Login login) throws Exception {
         MvcResult result = mockMvc.perform(get("/manage/")
                 .cookie(cookie))
                 .andExpect(status().isFound())
@@ -161,6 +161,7 @@ public abstract class ManageTest extends SpringWebTest {
 
         String url = mockMvc.perform(get(result.getResponse().getRedirectedUrl())
                 .cookie(cookie)
+
                 .session(session)
         )
                 .andExpect(status().isFound())
@@ -281,6 +282,7 @@ public abstract class ManageTest extends SpringWebTest {
         PageInfo pageInfo=new PageInfo();
         pageInfo.setSite(randomSite(randomOwner()));
         pageInfo.setCategory(randomCategory());
+        pageInfo.setPageType(PageType.DataContent);
         XmlMapper xmlMapper=new XmlMapper();
         byte[] pageXml=xmlMapper.writeValueAsString(randomPage()).getBytes();
         pageInfo.setPageSetting(pageXml);

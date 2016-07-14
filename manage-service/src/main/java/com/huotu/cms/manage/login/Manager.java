@@ -83,6 +83,7 @@ public class Manager extends AbstractLogin implements Serializable {
 //        return Collections.singleton(new SimpleGrantedAuthority(Role_Manage));
         return CollectionUtils.mutliSet(
                 new SimpleGrantedAuthority("ROLE_ROOT")
+                , new SimpleGrantedAuthority(Role_Template)
                 , new SimpleGrantedAuthority(Role_Manage)
                 , new SimpleGrantedAuthority(Role_AS)
                 , new SimpleGrantedAuthority(Role_ManageOwner)

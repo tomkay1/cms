@@ -32,7 +32,9 @@
                 </div><!-- panel-btns -->
                 <h3 class="panel-title">更新模板</h3>
                 <p>
-                    <a href="../main.html" target="_blank">当然,你还可以点此调整模板的各种资源,比如页面,数据源等等……</a>
+                    <a href="../main.html" th:href="@{/manage/main(simulateSite=${object.siteId})}" target="_top"
+                       name="toManage">
+                        当然,你还可以点此调整模板的各种资源,比如页面,数据源等等……</a>
                 </p>
             </div>
             <div class="panel-body">

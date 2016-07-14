@@ -59,4 +59,16 @@ public class TemplatePage extends AbstractCRUDPage<Template> {
             return true;
         };
     }
+
+    /**
+     * 开始管理这个模板
+     *
+     * @return 管理模板的页面
+     */
+    public ManageMainPage manageTemplate() {
+        beforeDriver();
+        webDriver.findElement(By.name("toManage"))
+                .click();
+        return initPage(ManageMainPage.class);
+    }
 }

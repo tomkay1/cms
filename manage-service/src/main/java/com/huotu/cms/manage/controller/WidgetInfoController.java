@@ -169,7 +169,8 @@ public class WidgetInfoController
             widget = installedWidget.getWidget();
             widgetModel.setLocallyName(widget.name());
             widgetModel.setEditorHTML(widgetResolveService.editorHTML(widget, CMSContext.RequestContext(), null));
-            widgetModel.setIdentity(widget.widgetId());
+            //<groupId>-<widgetId>:<version>
+            widgetModel.setIdentity(widget.groupId()+"-"+widget.widgetId()+":"+widget.version());
 
             //获取js资源uri
             for (Map.Entry<String, Resource> entry : widget.publicResources().entrySet()) {

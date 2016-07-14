@@ -93,7 +93,6 @@ public class PageControllerTest extends ManageTest {
         mockMvc.perform(get("/manage/pages/{pageId}",1).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-        // TODO 更多数据校验 以确保返回的数据 是之前创建的Page
 //                .andExpect()
         ;
 
@@ -148,7 +147,6 @@ public class PageControllerTest extends ManageTest {
 
     /**
      * 对widget json进行校验
-     * <i>此测试权限真心蛋疼</i>
      * @see #testJsonPath()
      * @throws Exception
      */
@@ -168,7 +166,7 @@ public class PageControllerTest extends ManageTest {
         String widgetJson=result.getResponse().getContentAsString();
         //identity的格式:<groupId>-<widgetId>:<version>
         //此处校验逻辑为：先检索出所有的identity，如果存在groupId和widgetId 一致，但有两个版本号的，视为bug！
-        List<String> identities=JsonPath.read(widgetJson,"$.identity[*]");
+        List<String> identities=JsonPath.read(widgetJson,"$..identity");
 
     }
     @Test

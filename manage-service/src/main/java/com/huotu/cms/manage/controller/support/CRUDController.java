@@ -9,6 +9,7 @@
 
 package com.huotu.cms.manage.controller.support;
 
+import com.huotu.cms.manage.MethodParameterFixed;
 import com.huotu.cms.manage.bracket.GritterUtils;
 import com.huotu.cms.manage.exception.RedirectException;
 import com.huotu.hotcms.service.Auditable;
@@ -55,7 +56,8 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
 
     @RequestMapping(method = RequestMethod.POST)
     @Transactional
-    public String add(@AuthenticationPrincipal Login login, T data, PD extra, RedirectAttributes attributes) {
+    public String add(@AuthenticationPrincipal Login login, @MethodParameterFixed T data
+            , @MethodParameterFixed PD extra, RedirectAttributes attributes) {
         try {
             data = preparePersist(login, data, extra, attributes);
 
@@ -71,6 +73,7 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
             return ex.redirectViewName();
         } catch (Exception ex) {
             // TODO 有些异常我们应该另外处理
+            log.warn("Unknown Exception on Add", ex);
             GritterUtils.AddFlashDanger(ex.getMessage(), attributes);
         }
         return redirectIndexViewName();
@@ -84,7 +87,7 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
         jpaRepository.delete(id);
     }
 
-    @RequestMapping(value = "/{id}/enable", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}/enabled", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
     public void toggleEnable(@PathVariable("id") ID id) {
@@ -96,7 +99,7 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
             throw new NoSuchMethodError();
     }
 
-    @RequestMapping(value = "/{id}/enable", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/enabled", method = RequestMethod.GET)
     @Transactional
     public String toggleEnableGet(@PathVariable("id") ID id) {
         toggleEnable(id);
@@ -134,8 +137,8 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     @Transactional
-    public String save(@AuthenticationPrincipal Login login, @PathVariable("id") ID id, T data, MD extra
-            , RedirectAttributes attributes) {
+    public String save(@AuthenticationPrincipal Login login, @PathVariable("id") ID id, @MethodParameterFixed T data
+            , @MethodParameterFixed MD extra, RedirectAttributes attributes) {
         T entity = jpaRepository.getOne(id);
         try {
             prepareSave(login, entity, data, extra, attributes);

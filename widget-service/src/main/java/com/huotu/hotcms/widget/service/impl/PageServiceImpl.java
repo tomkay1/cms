@@ -8,7 +8,7 @@
 
 package com.huotu.hotcms.widget.service.impl;
 
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.entity.Site;
@@ -74,9 +74,8 @@ public class PageServiceImpl implements PageService {
 
     @Override
     public void savePage(Page page,Long pageId) throws IOException {
-        XmlMapper xmlMapper = new XmlMapper();
-        //xmlMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-        String pageXml = xmlMapper.writeValueAsString(page);
+        ObjectMapper objectMapper=new ObjectMapper();
+        String pageJson = objectMapper.writeValueAsString(page);
         PageInfo pageInfo = pageInfoRepository.findOne(pageId);
         if (pageInfo == null) {
             pageInfo = new PageInfo();
@@ -92,7 +91,7 @@ public class PageServiceImpl implements PageService {
         //保存最新控件信息
         String resourceKey = UUID.randomUUID().toString();
         pageInfo.setResourceKey(resourceKey);
-        pageInfo.setPageSetting(pageXml.getBytes());
+        pageInfo.setPageSetting(pageJson.getBytes());
         pageInfoRepository.save(pageInfo);
         //生成page的css样式表
         PageElement[] elements = page.getElements();
@@ -112,9 +111,9 @@ public class PageServiceImpl implements PageService {
     @Override
     public Page getPage(Long pageId) throws IOException {
         PageInfo pageInfo = pageInfoRepository.findOne(pageId);
-        String pageXml = new String(pageInfo.getPageSetting(), "utf-8");
-        XmlMapper xmlMapper = new XmlMapper();
-        return xmlMapper.readValue(pageXml, Page.class);
+        String pageJson = new String(pageInfo.getPageSetting(), "utf-8");
+        ObjectMapper objectMapper=new ObjectMapper();
+        return objectMapper.readValue(pageJson, Page.class);
     }
 
     @Override

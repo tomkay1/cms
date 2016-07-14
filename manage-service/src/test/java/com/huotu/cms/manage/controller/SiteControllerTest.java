@@ -90,8 +90,8 @@ public class SiteControllerTest extends ManageTest {
     private void addSite(Owner owner, ManageMainPage mainPage) throws IOException, InterruptedException {
 
         CRUDHelper.flow(mainPage.toPage(SitePage.class), new CRUDTest<Site>() {
-            public String[] domains;
-            public String logo;
+            String[] domains;
+            String logo;
 
             @Override
             public Collection<Site> list() {
@@ -131,6 +131,7 @@ public class SiteControllerTest extends ManageTest {
                         page.inputHidden(form, "tmpLogoPath", logo);
                     page.inputTags(form, "domains", domains);
                     page.inputText(form, "homeDomain", domains[0]);
+                    System.out.println("done");
                 };
             }
 

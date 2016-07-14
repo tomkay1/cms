@@ -30,7 +30,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.UUID;
 import java.util.function.BiConsumer;
@@ -82,7 +81,7 @@ public class SiteControllerTest extends ManageTest {
 
     }
 
-    private void addSite(Owner owner, ManageMainPage mainPage) throws IOException, InterruptedException {
+    private void addSite(Owner owner, ManageMainPage mainPage) throws Exception {
 
         CRUDHelper.flow(mainPage.toPage(SitePage.class), new CRUDTest<Site>() {
             String[] domains;

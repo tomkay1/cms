@@ -37,7 +37,8 @@ public class TemplatePage extends AbstractCRUDPage<Template> {
     @Override
     protected void fillValueToForm(Template value) {
         WebElement form = getForm();
-        inputText(form, "name", value.getName());
+        if (value.getSiteId() == null)//insert only
+            inputText(form, "name", value.getName());
         //类型不管了 以后可能就不要的呢
     }
 

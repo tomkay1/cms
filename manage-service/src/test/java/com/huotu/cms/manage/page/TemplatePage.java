@@ -37,7 +37,8 @@ public class TemplatePage extends AbstractCRUDPage<Template> {
     @Override
     protected void fillValueToForm(Template value) {
         WebElement form = getForm();
-        inputText(form, "name", value.getName());
+        if (value.getSiteId() == null)//insert only
+            inputText(form, "name", value.getName());
         //类型不管了 以后可能就不要的呢
     }
 
@@ -58,5 +59,17 @@ public class TemplatePage extends AbstractCRUDPage<Template> {
                     -> td.getText().contains(String.valueOf(value.getLauds())), "显示点赞数"));
             return true;
         };
+    }
+
+    /**
+     * 开始管理这个模板
+     *
+     * @return 管理模板的页面
+     */
+    public ManageMainPage manageTemplate() {
+        beforeDriver();
+        webDriver.findElement(By.name("toManage"))
+                .click();
+        return initPage(ManageMainPage.class);
     }
 }

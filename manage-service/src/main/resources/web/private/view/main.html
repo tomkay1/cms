@@ -11,6 +11,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:ewp="http://ewp.jiangcai.me" lang="en">
 <!--/*@thymesVar id="logout" type="java.lang.String"*/-->
 <!--/*@thymesVar id="mallManageUrl" type="java.lang.String"*/-->
+<!--/*@thymesVar id="manageSite" type="com.huotu.hotcms.service.entity.Site"*/-->
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
@@ -82,7 +83,8 @@
             <ul class="nav nav-pills nav-stacked nav-bracket">
                 <li class="nav-parent"><a href=""><i class="fa fa-desktop"></i> <span>站点设置</span></a>
                     <ul class="children">
-                        <li><a href="site/index.html" th:href="@{/manage/site}" target="content">
+                        <li><a href="site/index.html" th:if="${manageSite==null}" th:href="@{/manage/site}"
+                               target="content">
                             <i class="fa fa-puzzle-piece"></i> 站点管理</a></li>
                         <li><a href="page/index.html" th:href="@{/manage/page}" target="content">
                             <i class="fa fa-sitemap"></i> 网站架构</a></li>
@@ -158,7 +160,6 @@
                 <ul class="headermenu">
                     <li>
                         <div class="btn-group">
-                            <!--/*@thymesVar id="manageSite" type="com.huotu.hotcms.service.entity.Site"*/-->
                             <button class="btn btn-default dropdown-toggle tp-icon" data-toggle="dropdown">
                                 <i class="glyphicon glyphicon-list"></i>
                                 <span id="currentSiteSpan"
@@ -370,8 +371,14 @@
     var siteSwitchUrl = /*[[@{/manage/switch/}]]*/ null;
     $(function () {
         var firstUrl = /*[[@{/manage/site}]]*/ "site/index.html";
+        var pageUrl = /*[[@{/manage/page}]]*/ "page/index.html";
+        var useFirst = /*[[${manageSite==null}]]*/ true;
+
 //        console.log('start open ' + firstUrl);
-        $('#content').attr('src', firstUrl);
+        if (useFirst)
+            $('#content').attr('src', firstUrl);
+        else
+            $('#content').attr('src', pageUrl);
 
         // siteSwitcher
         $('.siteSwitcher').click(function () {

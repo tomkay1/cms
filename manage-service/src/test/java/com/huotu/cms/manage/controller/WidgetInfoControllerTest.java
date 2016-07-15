@@ -126,7 +126,7 @@ public class WidgetInfoControllerTest extends ManageTest {
 
     }
 
-    private void addWidgetInfo(WidgetPage widgetPage) {
+    private void addWidgetInfo(WidgetPage widgetPage) throws Exception {
         CRUDHelper.flow(widgetPage, new CRUDTest<WidgetInfo>() {
             @Override
             public Collection<WidgetInfo> list() {

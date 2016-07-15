@@ -102,8 +102,6 @@ public class CMSEnums {
         UserVersion
 
     }
-
-
     public enum MallCookieKeyValue
     {
         /*

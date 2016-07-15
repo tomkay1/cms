@@ -13,6 +13,8 @@
  */
 $(function () {
 
+    var useTemplateModal = $('#useTemplateModal');
+
     var addSiteForm = $('#addSiteForm');
 
     addSiteForm.validate({
@@ -89,6 +91,34 @@ $(function () {
         allowedExtensions: ['jpeg', 'jpg', 'png', 'bmp'],
         itemLimit: 1,
         sizeLimit: 3 * 1024 * 1024
+    });
+
+    // 点赞的时候
+    $('.template-lauds').click(function () {
+        //  fa-thumbs-o-up fa-thumbs-up   o是没有
+        var i = $('i', this);
+        var padding;
+        if (i.hasClass('fa-thumbs-o-up')) {
+            padding = 1;
+        } else {
+            padding = -1;
+        }
+
+        i.toggleClass('fa-thumbs-o-up');
+        i.toggleClass('fa-thumbs-up');
+        var span = $('span', this);
+        var newVal = parseInt(span.text()) + padding;
+        span.text(newVal);
+    });
+    //  使用模板的时候
+    $('.template-use').click(function () {
+        // 需要弹出一个对话框 确认使用的级别
+        useTemplateModal.modal();
+    });
+    $('.template-preview').click(function () {
+        // 效果应该是等同点击附近的 a
+        $(this).closest('.site-items').find('a').get(0).click();
+        return false;
     });
 
     $(document.body).find('.site-items').on('mouseenter', function () {

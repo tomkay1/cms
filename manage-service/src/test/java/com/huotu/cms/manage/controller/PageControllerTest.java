@@ -11,69 +11,76 @@ package com.huotu.cms.manage.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.cms.manage.ManageTest;
-import com.huotu.cms.manage.login.Manager;
-import com.huotu.cms.manage.service.SecurityService;
 import com.huotu.hotcms.service.common.CMSEnums;
 import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
-import com.huotu.hotcms.service.repository.OwnerRepository;
-import com.huotu.hotcms.service.repository.PageInfoRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
-import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
+import com.huotu.hotcms.widget.servlet.CMSFilter;
 import com.jayway.jsonpath.JsonPath;
-import org.apache.commons.httpclient.Header;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
+import org.mockito.MockitoAnnotations;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.ApplicationContext;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.util.StreamUtils;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
+import java.util.Map;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 /**
  * Created by hzbc on 2016/7/9.
  */
+@Transactional
 public class PageControllerTest extends ManageTest {
 
-    @Autowired
-    private PageInfoRepository pageInfoRepository;
+    private static final String URL = "url";
+    private static final String PARAM = "param";
+    private static final String CONTENT = "content";
+    private static final String MEDIATYPE = "mediaType";
+    private static final String METHOD = "method";
 
     @Autowired
     private WidgetFactoryService widgetFactoryService;
 
-    @Autowired
-    private HttpServletRequest request;
+    private Logger logger = LoggerFactory.getLogger(PageControllerTest.class);
 
-    @Autowired
-    private HttpServletResponse response;
+    @Override
+    public void createMockMVC() {
+        MockitoAnnotations.initMocks(this);
+        // ignore it, so it works in no-web fine.
+        if (context == null)
+            return;
+        DefaultMockMvcBuilder builder = webAppContextSetup(context);
+        builder.addFilter(new CMSFilter(servletContext));
+        if (springSecurityFilter != null) {
+            builder = builder.addFilters(springSecurityFilter);
+        }
 
-    @Autowired
-    private SiteRepository siteRepository;
+        if (mockMvcConfigurer != null) {
+            builder = builder.apply(mockMvcConfigurer);
+        }
+        mockMvc = builder.build();
+    }
 
     @Test
     public void flow() throws Exception {
@@ -81,58 +88,55 @@ public class PageControllerTest extends ManageTest {
         Owner owner = randomOwner();
         Site site = randomSite(owner);
         long siteId = site.getSiteId();
-        mockMvc.perform(get("/manage/{siteId}/pages", siteId)
-                .accept(MediaType.APPLICATION_JSON))
+        loginAsOwner(owner);
 
-                .andExpect(status().isOk());
-//                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-//                .andExpect(jsonPath("$.length()").value(0));//exception:json can not be null or empty
-//      Page page = randomPage();
-//      String json = JSON.toJSONString(page);
-//      创建一个page,page应该是从界面上put上来的,此处从测试类路劲下的page.json中获取
-        InputStream is = this.getClass().getClassLoader().getResourceAsStream("page.json");
-        String pageJson = StreamUtils.copyToString(is, Charset.forName("utf-8"));
-
-        // 保存它 save
-        String pageHref = mockMvc.perform(put("/manage/pages/{siteId}", siteId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(pageJson))
-                .andExpect(status().isCreated())
-                .andReturn().getResponse().getRedirectedUrl();
-
-        // 单独获取 pageID为1的原因是json中保存的
-        mockMvc.perform(get("/manage/pages/{pageId}", 1).accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(
+                get("/manage/" + siteId + "/pages")
+                        .session(session))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-//                .andExpect()
-        ;
+                .andExpect(jsonPath("$.length()").value(0))
+                .andDo(print());
 
-        //保存页面部分属性
-        String propertyName = UUID.randomUUID().toString();
-        mockMvc.perform(put("/manage/pages/{pageId}/{propertyName}", 1, propertyName)).andDo(print())
-                .andExpect(status().isAccepted())
+
+        //随机创建一个Page
+        Page page = randomPage();
+        PageInfo pageInfo = randomPageInfo();
+        ObjectMapper objectMapper = new ObjectMapper();
+        String pageJson = objectMapper.writeValueAsString(page);
+       mockMvc.perform(put("/manage/{siteId}/pages", siteId)
+                .session(session)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(pageJson))
+                .andExpect(status().isOk());
+
+        //获取上面保存的页面信息
+
+        MvcResult result=  mockMvc.perform(get("/manage/pages/{pageId}", pageInfo.getPageId())
+                .session(session))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn();
 
+        pageJson=result.getResponse().getContentAsString();
+        //校验Page信息
+        Page getPage = objectMapper.readValue(pageJson, Page.class);
+        Assert.assertTrue(page.equals(getPage));
 
-        mockMvc.perform(get("/manage/owners/{ownerId}/pages", siteId)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.length()").value(1))
-        // https://github.com/jayway/JsonPath
-        // TODO 更多数据校验 以确保返回的数据 是之前创建的Page
-//        .andExpect(jsonPath("$.[0]").value(..))
-        ;
 
-        // 删除
-        mockMvc.perform(delete(pageHref))
-                .andExpect(status().isNoContent());
+        //删除
+
+        mockMvc.perform(delete("/manage/pages/{pageId}",pageInfo).session(session))
+                .andExpect(status().isOk());
+
+
         // 现在长度应该是0
-        mockMvc.perform(get("/manage/owners/{ownerId}/pages", siteId)
-                .accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/manage/pages/{pageId}", pageInfo.getPageId())
+                .session(session))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.length()").value(0));
+                .andExpect(jsonPath("$.length()").value(0))
+                .andReturn();
     }
 
     /**
@@ -143,78 +147,42 @@ public class PageControllerTest extends ManageTest {
     @Test
     public void testGetWidgets() throws Exception {
 
+        Owner owner = randomOwner();
+        loginAsOwner(owner);
+
         /*先确保存在已安装的控件*/
         List<InstalledWidget> installedWidgets = widgetFactoryService.widgetList(null);
         if (installedWidgets.size() == 0) {
             widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
                     , "1.0-SNAPSHOT", "picCarousel");
         }
-        Cookie cookie = new Cookie(CMSEnums.CookieKeyValue.RoleID.name(), "-1");
-        MvcResult result = accessViaCookie(cookie, new Manager(), "/manage/widget/widgets");
+        MvcResult result =mockMvc.perform(get("/manage/widget/widgets").session(session))
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
         String widgetJson = result.getResponse().getContentAsString();
+        logger.info("获取到的json：" + widgetJson);
         Assert.assertTrue(widgetJson != null && widgetJson.length() != 0);
         //identity的格式:<groupId>-<widgetId>:<version>
         //此处校验逻辑为：先检索出所有的identity，如果存在groupId和widgetId 一致，但有两个版本号的，视为bug！
         List<String> identities = JsonPath.read(widgetJson, "$..identity");
         Assert.assertTrue(identities.size() != 0);
+
+        //json中不应该出现同一个组件
         for (int i = 0; i < identities.size(); i++) {
             for (int j = i + 1; j <= identities.size() - 1; j++) {
-                if (identities.get(i).split(":")[0].equals(identities.get(j).split(":")[0])) {
-                    //断言为真，就表明json符合要求
-                    Assert.assertEquals(identities.get(i).split(":")[1].equals(identities.get(j).split(":")[1]), true);
-                }
+                Assert.assertEquals(identities.get(i).split(":")[0].equals(identities.get(j).split(":")[0]), false);
             }
         }
-    }
-
-    @Before
-    public void putCMSContext() {
-        List<Site> sites = siteRepository.findAll();
-        Site site = null;
-        if (sites.size() != 0)
-            site = sites.get(0);
-        else
-            site = randomSite(randomOwner());
-        CMSContext.PutContext(request, response, site);
-    }
-
-    /**
-     * 完善
-     * @param cookie
-     * @param login
-     * @param url
-     * @return
-     * @throws Exception
-     */
-    private MvcResult accessViaCookie(Cookie cookie, Login login, String url) throws Exception {
-        MvcResult result = mockMvc.perform(get(url)
-                .cookie(cookie))
-                .andExpect(status().isFound())
-                .andReturn();
-
-        session = (MockHttpSession) result.getRequest().getSession(true);
-
-        String redirectedUrl = mockMvc.perform(get(result.getResponse().getRedirectedUrl())
-                .cookie(cookie)
-                .session(session))
-                .andExpect(status().isFound())
-                .andReturn().getResponse().getRedirectedUrl();
-
-        while (true) {
-            result = mockMvc.perform(get(redirectedUrl).session(session)).andReturn();
-            if (result.getResponse().getStatus() == 200) {
-                session = (MockHttpSession) result.getRequest().getSession(true);
-                return mockMvc.perform(get(url)
-                        .cookie(cookie)
-                        .session(session))
-                        .andExpect(status().isOk())
-                        .andReturn();
-            }
-            if (result.getResponse().getStatus() == 302)
-                redirectedUrl = result.getResponse().getRedirectedUrl();
-            else
-                throw new IllegalStateException("why ?" + result.getResponse().getStatus());
-        }
+        //json组件版本不应该有高低
+//        for (int i = 0; i < identities.size(); i++) {
+//            for (int j = i + 1; j <= identities.size() - 1; j++) {
+//                if (identities.get(i).split(":")[0].equals(identities.get(j).split(":")[0])) {
+//                    //断言为真，就表明json符合要求
+//                    Assert.assertEquals(identities.get(i).split(":")[1].equals(identities.get(j).split(":")[1]), true);
+//                }
+//            }
+//        }
     }
 
 }

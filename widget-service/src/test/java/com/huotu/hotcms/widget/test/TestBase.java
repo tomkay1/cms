@@ -10,7 +10,6 @@
 package com.huotu.hotcms.widget.test;
 
 import com.huotu.hotcms.service.common.ContentType;
-import com.huotu.hotcms.service.common.SiteType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Owner;
@@ -198,7 +197,7 @@ public class TestBase extends SpringWebTest{
         Site site = new Site();
         site.setOwner(owner);
         site.setName(UUID.randomUUID().toString());
-        site.setSiteType(SiteType.SITE_PC_WEBSITE);
+//        site.setSiteType(SiteType.SITE_PC_WEBSITE);
         site.setTitle(UUID.randomUUID().toString());
         site.setCreateTime(LocalDateTime.now());
         site.setEnabled(true);

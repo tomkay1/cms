@@ -32,7 +32,9 @@
                 </div><!-- panel-btns -->
                 <h3 class="panel-title">更新模板</h3>
                 <p>
-                    <a href="../main.html" target="_blank">当然,你还可以点此调整模板的各种资源,比如页面,数据源等等……</a>
+                    <a href="../main.html" th:href="@{/manage/main(simulateSite=${object.siteId})}" target="_top"
+                       name="toManage">
+                        当然,你还可以点此调整模板的各种资源,比如页面,数据源等等……</a>
                 </p>
             </div>
             <div class="panel-body">
@@ -42,6 +44,7 @@
                         <label class="col-sm-2 control-label">模板名称</label>
                         <div class="col-sm-4">
                             <input readonly="readonly" name="name" title="模板名称" type="text" placeholder="用于识别模板"
+                                   th:value="${object.name}"
                                    class="form-control"/>
                         </div>
                         <label class="col-sm-2 control-label">模板类型</label>

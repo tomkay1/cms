@@ -239,7 +239,7 @@ public class SupperController extends AbstractSiteSupperController {
         template.setUpdateTime(LocalDateTime.now());
         template.setLauds(0);
         template.setScans(0);
-        template.setPreviewTimes(0);
+//        template.setPreviewTimes(0);
         ResultView result = null;
         try {
             templateRepository.save(template);

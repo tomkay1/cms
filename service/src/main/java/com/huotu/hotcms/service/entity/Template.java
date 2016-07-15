@@ -28,12 +28,6 @@ import javax.persistence.Table;
 public class Template extends Site {
 
     /**
-     * 预览量
-     */
-    @Column(name = "previewTimes")
-    private int previewTimes;
-
-    /**
      * 浏览量
      */
     @Column(name = "scans")

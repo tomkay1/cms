@@ -113,20 +113,13 @@ public class PageControllerTest extends ManageTest {
                 .andReturn();
 
         pageJson=result.getResponse().getContentAsString();
-        //校验Page信息
+        //校验Page信息,并不能直接拿前后得到的Page对象进行比较
+        //因为在后续返回的Page中并没有InstallWidget的信息，为null，与randomPage生成的Page肯定不一致
         Page getPage = objectMapper.readValue(pageJson, Page.class);
-        //Assert.assertTrue(page.equals(getPage));
-        if(!page.equals(getPage)){
-            logger.error("不一致");
-        }
-
-
+        Assert.assertTrue(page.getPageIdentity().equals(getPage.getPageIdentity()));
         //删除
-
         mockMvc.perform(delete("/manage/pages/{pageId}",pageInfo.getPageId()).session(session))
                 .andExpect(status().isAccepted());
-
-
         // 删掉之后，页面应该不存在
         mockMvc.perform(get("/manage/pages/{pageId}", pageInfo.getPageId())
                 .session(session))

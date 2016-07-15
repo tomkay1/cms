@@ -11,6 +11,7 @@ package com.huotu.hotcms.widget.service;
 
 import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Owner;
+import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.exception.FormatException;
@@ -127,7 +128,7 @@ public interface WidgetFactoryService {
      * @throws IOException 查找列表page列表失败等
      * @see #updateWidget(Widget)
      */
-    void primary(WidgetInfo widgetInfo, boolean ignoreError) throws IllegalStateException, IOException;
+    void primary(WidgetInfo widgetInfo, boolean ignoreError) throws IllegalStateException, IOException, PageNotFoundException;
 
 //    /**
 //     * 更新已安装的控件

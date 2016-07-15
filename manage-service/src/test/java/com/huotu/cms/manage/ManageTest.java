@@ -18,15 +18,14 @@ import com.huotu.cms.manage.page.AdminPage;
 import com.huotu.cms.manage.page.ManageMainPage;
 import com.huotu.cms.manage.page.support.AbstractCRUDPage;
 import com.huotu.cms.manage.test.AuthController;
+import com.huotu.cms.manage.test.TestWidget;
 import com.huotu.hotcms.service.common.CMSEnums;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.common.PageType;
-import com.huotu.hotcms.service.entity.Category;
-import com.huotu.hotcms.service.entity.PageInfo;
-import com.huotu.hotcms.service.entity.Route;
-import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.entity.*;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
+import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.OwnerRepository;
 import com.huotu.hotcms.service.repository.PageInfoRepository;
@@ -34,9 +33,12 @@ import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.util.StringUtil;
 import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.ComponentProperties;
+import com.huotu.hotcms.widget.InstalledWidget;
+import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.page.PageElement;
+import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import me.jiangcai.lib.test.SpringWebTest;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
@@ -52,6 +54,7 @@ import org.springframework.test.web.servlet.htmlunit.webdriver.WebConnectionHtml
 import org.springframework.util.StreamUtils;
 
 import javax.servlet.http.Cookie;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -87,6 +90,9 @@ public abstract class ManageTest extends SpringWebTest {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private WidgetFactoryService widgetFactoryService;
 
     @Before
     public void aboutTestOwner() {
@@ -283,7 +289,7 @@ public abstract class ManageTest extends SpringWebTest {
      * @return 页面信息
      * @throws JsonProcessingException jackson相关序列化异常
      */
-    public PageInfo randomPageInfo() throws JsonProcessingException {
+    public PageInfo randomPageInfo() throws IOException, FormatException {
         PageInfo pageInfo=new PageInfo();
         pageInfo.setSite(randomSite(randomOwner()));
         pageInfo.setCategory(randomCategory());
@@ -295,7 +301,7 @@ public abstract class ManageTest extends SpringWebTest {
     }
 
 
-    protected Page randomPage() {
+    protected Page randomPage() throws IOException, FormatException {
         Page page = new Page();
         page.setPageIdentity(random.nextLong());
         page.setTitle(UUID.randomUUID().toString());
@@ -321,18 +327,38 @@ public abstract class ManageTest extends SpringWebTest {
         return page;
     }
 
-    private Component randomComponent() {
+    private Component randomComponent() throws IOException, FormatException {
         Component component=new Component();
         component.setPreviewHTML(UUID.randomUUID().toString());
         component.setStyleId(UUID.randomUUID().toString());
-        component.setWidgetIdentity(UUID.randomUUID().toString());
+        String groupId="com.huotu.hotcms.widget.picCarousel";
+        String widgetId="picCarousel";
+        String version="1.0-SNAPSHOT";
+        component.setWidgetIdentity(groupId+"-"+widgetId+":"+version);
         ComponentProperties componentProperties =new ComponentProperties();
         componentProperties.put(StringUtil.createRandomStr(random.nextInt(3) + 1),UUID.randomUUID().toString());
         component.setProperties(componentProperties);
+        InstalledWidget installedWidget=null;
+        List<InstalledWidget> installedWidgets=widgetFactoryService.widgetList(null);
+        if(installedWidgets==null||installedWidgets.size()==0){
+            widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
+                    , "1.0-SNAPSHOT", "picCarousel");
+            installedWidgets=widgetFactoryService.widgetList(null);
+        }
+        WidgetIdentifier widgetIdentifier=null;
+        for(InstalledWidget installedWidget1:installedWidgets){
+            widgetIdentifier=installedWidget1.getIdentifier();
+            if(groupId.equals(widgetIdentifier.getGroupId())&&widgetId.equals(widgetIdentifier.getArtifactId())&&
+                    version.equals(widgetIdentifier.getVersion())){
+                installedWidget=installedWidget1;
+                break;
+            }
+        }
+        component.setInstalledWidget(installedWidget);
         return component;
     }
 
-    private Layout randomLayout() {
+    private Layout randomLayout() throws IOException, FormatException {
         Layout layout = new Layout();
         layout.setValue(UUID.randomUUID().toString());
 

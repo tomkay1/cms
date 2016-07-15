@@ -9,14 +9,17 @@
 
 package com.huotu.hotcms.web.interceptor;
 
+import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.web.util.ApiResult;
 import com.huotu.hotcms.web.util.ResultCodeEnum;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,5 +40,4 @@ public class ManageExceptionInterceptor {
         log.warn("unknown exception", e);
         return ApiResult.resultWith(ResultCodeEnum.SYSTEM_BAD_REQUEST, e.getMessage(), null);
     }
-
 }

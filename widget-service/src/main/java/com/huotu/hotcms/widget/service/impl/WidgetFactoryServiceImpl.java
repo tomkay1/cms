@@ -12,6 +12,7 @@ package com.huotu.hotcms.widget.service.impl;
 import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
+import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.Widget;
@@ -259,7 +260,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
     }
 
     @Override
-    public void primary(WidgetInfo widgetInfo, boolean ignoreError) throws IllegalStateException, IOException {
+    public void primary(WidgetInfo widgetInfo, boolean ignoreError) throws IllegalStateException, IOException, PageNotFoundException {
         List<InstalledWidget> installedWidgetList = installedStatus(widgetInfo);
         if (installedWidgetList != null && installedWidgetList.size() > 0) {
 

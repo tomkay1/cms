@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * <p>CMS系统模板相关</p>
  * <p>针对界面:/view/site/site.html 上的点赞，使用，预览功能</p>
+ *
  * @see com.huotu.hotcms.service.entity.Template
  * @see TemplateController
  */
@@ -34,13 +35,31 @@ public class CMSTemplateController {
 
     /**
      * 点赞功能
-     * @param siteId 一个模板其实是个站点，此处对应模板的ID
+     *
+     * @param siteId     一个模板其实是个站点，此处对应模板的ID
      * @param customerId 商户ID
      */
-    @RequestMapping(value = "/laud/{siteId}",method = RequestMethod.PUT,produces = "application/json; charset=UTF-8")
+    @RequestMapping(value = "/laud/{siteId}", method = RequestMethod.PUT, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public boolean laud(@PathVariable("siteId") long siteId,@RequestParam("customerId") long customerId){
-        return templateService.laud(siteId,customerId);
+    public boolean laud(@PathVariable("siteId") long siteId, @RequestParam("customerId") long customerId) {
+        return templateService.laud(siteId, customerId);
+    }
+
+    /**
+     * 站点使用
+     *
+     * @param templateSiteID 模板站点ID
+     * @param customerSiteId 商户站点ID
+     * @param mode           使用模式：
+     *                       <ul>
+     *                       <li>0为加载模式</li>
+     *                       <li>1为替换模式</li>
+     *                       </ul>
+     */
+    @RequestMapping("/use/{templateSiteID}/{customerSiteId}")
+    public void use(@PathVariable("templateSiteID") long templateSiteID
+            , @PathVariable("customerSiteId") long customerSiteId, @RequestParam("mode") int mode) {
+        templateService.use(templateSiteID, customerSiteId, mode);
     }
 
 }

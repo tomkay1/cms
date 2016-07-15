@@ -19,9 +19,22 @@ package com.huotu.hotcms.service.service;
 public interface TemplateService {
     /**
      * 点赞
-     * @param siteId 站点ID，也就是模板的ID
+     *
+     * @param siteId     站点ID，也就是模板的ID
      * @param customerId 用户ID
      * @return 是否点赞成功，存在网络异常，服务器异常等失误情况
      */
     boolean laud(long siteId, long customerId);
+
+    /**
+     * 使用
+     *
+     * @param templateSiteID 模板站点ID
+     * @param customerSiteId 商户站点ID
+     * @param mode           模式<ul>
+     *                       <li>0为加载模式 - 针对Category,Page,Content的复制</li>
+     *                       <li>1为替换模式 - 清空原有数据，然后进行复制</li>
+     *                       </ul>
+     */
+    void use(long templateSiteID, long customerSiteId, int mode);
 }

@@ -9,11 +9,15 @@
 
 package com.huotu.hotcms.service.service.impl;
 
-import com.huotu.hotcms.service.repository.TemplateRepository;
+import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.repository.*;
 import com.huotu.hotcms.service.service.TemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Created by wenqi on 2016/7/15.
@@ -24,10 +28,46 @@ public class TempalteServiceImpl implements TemplateService {
     @Autowired
     private TemplateRepository templateRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private PageInfoRepository pageInfoRepository;
+    @Autowired
+    private AbstractContentRepository abstractContentRepository;
+    @Autowired
+    private SiteRepository siteRepository;
+
     //使用Redis
     @Override
     @Transactional
     public boolean laud(long siteId, long customerId) {
         return false;
+    }
+
+    @Override
+    public void use(long templateSiteID, long customerSiteId, int mode) {
+        Site templateSite=siteRepository.findOne(templateSiteID);
+        Site customerSite=siteRepository.findOne(customerSiteId);
+        if(1==mode){
+            delete(customerSite);
+        }
+        copy(templateSite,customerSite);
+    }
+
+    /**
+     * 删掉原先站点下的数据
+     * @param customerSite
+     */
+    private void delete(Site customerSite) {
+
+    }
+
+    /**
+     * 复制
+     * @param templateSite 模板站点
+     * @param customerSite 商户站点
+     */
+    private void copy(Site templateSite,Site customerSite){
+        List<Category> categories=categoryRepository.findBySite(templateSite);
     }
 }

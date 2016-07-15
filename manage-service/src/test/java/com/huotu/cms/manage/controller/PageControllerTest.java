@@ -76,9 +76,6 @@ public class PageControllerTest extends ManageTest {
     private static final String METHOD="method";
 
     @Autowired
-    private PageInfoRepository pageInfoRepository;
-
-    @Autowired
     private WidgetFactoryService widgetFactoryService;
 
     @Autowired
@@ -99,9 +96,9 @@ public class PageControllerTest extends ManageTest {
         Site site = randomSite(owner);
         long siteId = site.getSiteId();
         Cookie cookie = new Cookie(CMSEnums.CookieKeyValue.RoleID.name(), "-1");
-        Map<String, String> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put(URL, "/manage/{siteId}/pages");
-        map.put(PARAM, String.valueOf(siteId));
+        map.put(PARAM, siteId);
         map.put(METHOD, HttpMethod.GET.name());
         MvcResult result = accessViaCookie(cookie, map);
         Assert.assertTrue(result.getResponse().getContentType().contains("application/json"));
@@ -115,7 +112,7 @@ public class PageControllerTest extends ManageTest {
         String pageJson = objectMapper.writeValueAsString(page);
         map.clear();
         map.put(URL, "/manage/{siteId}/pages");
-        map.put(PARAM, String.valueOf(pageInfo.getPageId()));
+        map.put(PARAM, pageInfo.getPageId());
         map.put(CONTENT, pageJson);
         map.put(MEDIATYPE, MediaType.APPLICATION_JSON.toString());
         map.put(METHOD, HttpMethod.PUT.name());
@@ -143,14 +140,14 @@ public class PageControllerTest extends ManageTest {
         //删除
         map.clear();
         map.put(URL, "/manage/pages/{pageId}");
-        map.put(PARAM, String.valueOf(pageInfo.getPageId()));
+        map.put(PARAM, pageInfo.getPageId());
         map.put(METHOD, HttpMethod.DELETE.name());
         result = accessViaCookie(cookie, map);
 
 
         // 现在长度应该是0
         map.put(URL, "/manage/pages/{pageId}");
-        map.put(PARAM, String.valueOf(pageInfo.getPageId()));
+        map.put(PARAM, pageInfo.getPageId());
         map.put(MEDIATYPE, MediaType.APPLICATION_JSON.toString());
         map.put(METHOD, HttpMethod.GET.name());
         result = accessViaCookie(cookie, map);
@@ -175,7 +172,7 @@ public class PageControllerTest extends ManageTest {
                     , "1.0-SNAPSHOT", "picCarousel");
         }
         Cookie cookie = new Cookie(CMSEnums.CookieKeyValue.RoleID.name(), "-1");
-        Map<String, String> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put(URL, "/manage/widget/widgets");
         MvcResult result = accessViaCookie(cookie, map);
         String widgetJson = result.getResponse().getContentAsString();
@@ -214,22 +211,39 @@ public class PageControllerTest extends ManageTest {
      * @return MvcResult
      * @throws Exception
      */
-    private MvcResult accessViaCookie(Cookie cookie, Map<String, String> map) throws Exception {
+    private MvcResult accessViaCookie(Cookie cookie, Map<String, Object> map) throws Exception {
 
-        String url = map.get(URL);
-        String params = map.get(PARAM);
-        String content = map.get(CONTENT);
+        String url = (String) map.get(URL);
+        Object params = map.get(PARAM);
+        String content = (String) map.get(CONTENT);
         if(content==null)
             content="";
-        String mediaType = map.get(MEDIATYPE);
+        String mediaType = (String) map.get(MEDIATYPE);
         if(mediaType==null)
             mediaType=MediaType.ALL_VALUE;
-        String method=map.get(METHOD);
+        String method= (String) map.get(METHOD);
         HttpMethod httpMethod=HttpMethod.valueOf(method);
 
-        MvcResult result = mockMvc.perform(get(map.get("url"), map.get("param"))
-                .cookie(cookie))
-                .andExpect(status().isFound())
+        MockHttpServletRequestBuilder builder=null;
+
+        switch (httpMethod){
+            case GET:
+                builder=get(url, params).cookie(cookie);
+                break;
+            case POST:
+                builder=post(url, params).content(content).accept(mediaType);
+                break;
+            case PUT:
+                builder=put(url, params).content(content).accept(mediaType);
+                break;
+            case DELETE:
+                builder=delete(url, params).content(content).accept(mediaType);
+        }
+
+
+
+
+        MvcResult result = mockMvc.perform(builder)
                 .andReturn();
 
         session = (MockHttpSession) result.getRequest().getSession(true);
@@ -244,12 +258,7 @@ public class PageControllerTest extends ManageTest {
             result = mockMvc.perform(get(redirectedUrl).session(session)).andReturn();
             if (result.getResponse().getStatus() == 200) {
                 session = (MockHttpSession) result.getRequest().getSession(true);
-                return mockMvc.perform(get(url, params)
-                        .cookie(cookie)
-                        .session(session)
-                        .content(content)
-                        .accept(mediaType))
-                        .andExpect(status().isOk())
+                return mockMvc.perform(builder.session(session))
                         .andReturn();
             }
             if (result.getResponse().getStatus() == 302)

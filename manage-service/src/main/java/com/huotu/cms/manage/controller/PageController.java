@@ -49,7 +49,7 @@ public interface PageController {
      * @throws IOException 异常
      */
 
-    @RequestMapping(value = "/manage/{siteId}/pages",method = RequestMethod.GET)
+    @RequestMapping(value = "/manage/{siteId}/pages",method = RequestMethod.GET,produces = "application/json; charset=UTF-8")
     @ResponseBody
     List<PageInfo> getPageList(@PathVariable("siteId") Long siteId) throws IOException;
 

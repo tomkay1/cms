@@ -40,6 +40,12 @@ public class Template extends Site {
     private int lauds;
 
     /**
+     * 使用数
+     */
+    @Column(name="useNumber")
+    private int useNumber;
+
+    /**
      * 模板类型，eg: 汽车行业，服装行业...
      */
     @ManyToOne

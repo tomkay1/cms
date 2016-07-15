@@ -11,57 +11,39 @@ package com.huotu.cms.manage.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.cms.manage.ManageTest;
-import com.huotu.cms.manage.login.Manager;
 import com.huotu.hotcms.service.common.CMSEnums;
 import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
-import com.huotu.hotcms.service.repository.OwnerRepository;
-import com.huotu.hotcms.service.repository.PageInfoRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
-import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
+import com.huotu.hotcms.widget.servlet.CMSFilter;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
+import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StreamUtils;
 
-import javax.faces.event.PostValidateEvent;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 /**
  * Created by hzbc on 2016/7/9.
@@ -78,16 +60,32 @@ public class PageControllerTest extends ManageTest {
     @Autowired
     private WidgetFactoryService widgetFactoryService;
 
-    @Autowired
-    private HttpServletRequest request;
-
-    @Autowired
-    private HttpServletResponse response;
-
+    //    @Autowired
+//    private HttpServletRequest request;
+//
+//    @Autowired
+//    private HttpServletResponse response;
     @Autowired
     private SiteRepository siteRepository;
-
     private Logger logger = LoggerFactory.getLogger(PageControllerTest.class);
+
+    @Override
+    public void createMockMVC() {
+        MockitoAnnotations.initMocks(this);
+        // ignore it, so it works in no-web fine.
+        if (context == null)
+            return;
+        DefaultMockMvcBuilder builder = webAppContextSetup(context);
+        builder.addFilter(new CMSFilter(servletContext));
+        if (springSecurityFilter != null) {
+            builder = builder.addFilters(springSecurityFilter);
+        }
+
+        if (mockMvcConfigurer != null) {
+            builder = builder.apply(mockMvcConfigurer);
+        }
+        mockMvc = builder.build();
+    }
 
     @Test
     public void flow() throws Exception {
@@ -95,6 +93,13 @@ public class PageControllerTest extends ManageTest {
         Owner owner = randomOwner();
         Site site = randomSite(owner);
         long siteId = site.getSiteId();
+        loginAsOwner(owner);
+
+        mockMvc.perform(
+                get("/manage/" + siteId + "/pages")
+                        .session(session)
+        ).andDo(print());
+
         Cookie cookie = new Cookie(CMSEnums.CookieKeyValue.RoleID.name(), "-1");
         Map<String, Object> map = new HashMap<>();
         map.put(URL, "/manage/{siteId}/pages");
@@ -192,16 +197,16 @@ public class PageControllerTest extends ManageTest {
         }
     }
 
-    @Before
-    public void putCMSContext() {
-        List<Site> sites = siteRepository.findAll();
-        Site site = null;
-        if (sites.size() != 0)
-            site = sites.get(0);
-        else
-            site = randomSite(randomOwner());
-        CMSContext.PutContext(request, response, site);
-    }
+//    @Before
+//    public void putCMSContext() {
+//        List<Site> sites = siteRepository.findAll();
+//        Site site = null;
+//        if (sites.size() != 0)
+//            site = sites.get(0);
+//        else
+//            site = randomSite(randomOwner());
+//        CMSContext.PutContext(request, response, site);
+//    }
 
     /**
      * 通过伪造cookie验证权限

@@ -42,6 +42,8 @@ import java.util.Map;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
@@ -55,18 +57,11 @@ public class PageControllerTest extends ManageTest {
     private static final String PARAM = "param";
     private static final String CONTENT = "content";
     private static final String MEDIATYPE = "mediaType";
-    private static final String METHOD="method";
+    private static final String METHOD = "method";
 
     @Autowired
     private WidgetFactoryService widgetFactoryService;
 
-    //    @Autowired
-//    private HttpServletRequest request;
-//
-//    @Autowired
-//    private HttpServletResponse response;
-    @Autowired
-    private SiteRepository siteRepository;
     private Logger logger = LoggerFactory.getLogger(PageControllerTest.class);
 
     @Override
@@ -97,69 +92,51 @@ public class PageControllerTest extends ManageTest {
 
         mockMvc.perform(
                 get("/manage/" + siteId + "/pages")
-                        .session(session)
-        ).andDo(print());
+                        .session(session))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.length()").value(0))
+                .andDo(print());
 
-        Cookie cookie = new Cookie(CMSEnums.CookieKeyValue.RoleID.name(), "-1");
-        Map<String, Object> map = new HashMap<>();
-        map.put(URL, "/manage/{siteId}/pages");
-        map.put(PARAM, siteId);
-        map.put(METHOD, HttpMethod.GET.name());
-        MvcResult result = accessViaCookie(cookie, map);
-        Assert.assertTrue(result.getResponse().getContentType().contains("application/json"));
-        int length = JsonPath.read(result.getResponse().getContentAsString(), "$.length()");
-        Assert.assertTrue(0 == length);
 
         //随机创建一个Page
         Page page = randomPage();
         PageInfo pageInfo = randomPageInfo();
         ObjectMapper objectMapper = new ObjectMapper();
         String pageJson = objectMapper.writeValueAsString(page);
-        map.clear();
-        map.put(URL, "/manage/{siteId}/pages");
-        map.put(PARAM, pageInfo.getPageId());
-        map.put(CONTENT, pageJson);
-        map.put(MEDIATYPE, MediaType.APPLICATION_JSON.toString());
-        map.put(METHOD, HttpMethod.PUT.name());
-        result = accessViaCookie(cookie, map);
-        Assert.assertTrue(result.getResponse().getContentType().contains("application/json"));
-        length = JsonPath.read(result.getResponse().getContentAsString(), "$.length()");
-        Assert.assertTrue(length > 0);
+       mockMvc.perform(put("/manage/{siteId}/pages", siteId)
+                .session(session)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(pageJson))
+                .andExpect(status().isOk());
 
         //获取上面保存的页面信息
-        map.put(URL, "/manage/pages/{pageId}");
-        map.put(PARAM, String.valueOf(pageInfo.getPageId()));
-        map.put(MEDIATYPE, MediaType.APPLICATION_JSON.toString());
-        map.put(METHOD, HttpMethod.GET.name());
-        result = accessViaCookie(cookie, map);
-        Assert.assertTrue(result.getResponse().getContentType().contains("application/json"));
-        pageJson = result.getResponse().getContentAsString();
-        length = JsonPath.read(pageJson, "$.length()");
-        Assert.assertTrue(length > 0);
 
+        MvcResult result=  mockMvc.perform(get("/manage/pages/{pageId}", pageInfo.getPageId())
+                .session(session))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        pageJson=result.getResponse().getContentAsString();
         //校验Page信息
         Page getPage = objectMapper.readValue(pageJson, Page.class);
         Assert.assertTrue(page.equals(getPage));
 
 
         //删除
-        map.clear();
-        map.put(URL, "/manage/pages/{pageId}");
-        map.put(PARAM, pageInfo.getPageId());
-        map.put(METHOD, HttpMethod.DELETE.name());
-        result = accessViaCookie(cookie, map);
+
+        mockMvc.perform(delete("/manage/pages/{pageId}",pageInfo).session(session))
+                .andExpect(status().isOk());
 
 
         // 现在长度应该是0
-        map.put(URL, "/manage/pages/{pageId}");
-        map.put(PARAM, pageInfo.getPageId());
-        map.put(MEDIATYPE, MediaType.APPLICATION_JSON.toString());
-        map.put(METHOD, HttpMethod.GET.name());
-        result = accessViaCookie(cookie, map);
-        Assert.assertTrue(result.getResponse().getContentType().contains("application/json"));
-        pageJson = result.getResponse().getContentAsString();
-        length = JsonPath.read(pageJson, "$.length()");
-        Assert.assertTrue(length == 0);
+        mockMvc.perform(get("/manage/pages/{pageId}", pageInfo.getPageId())
+                .session(session))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.length()").value(0))
+                .andReturn();
     }
 
     /**
@@ -170,16 +147,19 @@ public class PageControllerTest extends ManageTest {
     @Test
     public void testGetWidgets() throws Exception {
 
+        Owner owner = randomOwner();
+        loginAsOwner(owner);
+
         /*先确保存在已安装的控件*/
         List<InstalledWidget> installedWidgets = widgetFactoryService.widgetList(null);
         if (installedWidgets.size() == 0) {
             widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
                     , "1.0-SNAPSHOT", "picCarousel");
         }
-        Cookie cookie = new Cookie(CMSEnums.CookieKeyValue.RoleID.name(), "-1");
-        Map<String, Object> map = new HashMap<>();
-        map.put(URL, "/manage/widget/widgets");
-        MvcResult result = accessViaCookie(cookie, map);
+        MvcResult result =mockMvc.perform(get("/manage/widget/widgets").session(session))
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
         String widgetJson = result.getResponse().getContentAsString();
         logger.info("获取到的json：" + widgetJson);
         Assert.assertTrue(widgetJson != null && widgetJson.length() != 0);
@@ -187,92 +167,22 @@ public class PageControllerTest extends ManageTest {
         //此处校验逻辑为：先检索出所有的identity，如果存在groupId和widgetId 一致，但有两个版本号的，视为bug！
         List<String> identities = JsonPath.read(widgetJson, "$..identity");
         Assert.assertTrue(identities.size() != 0);
+
+        //json中不应该出现同一个组件
         for (int i = 0; i < identities.size(); i++) {
             for (int j = i + 1; j <= identities.size() - 1; j++) {
-                if (identities.get(i).split(":")[0].equals(identities.get(j).split(":")[0])) {
-                    //断言为真，就表明json符合要求
-                    Assert.assertEquals(identities.get(i).split(":")[1].equals(identities.get(j).split(":")[1]), true);
-                }
+                Assert.assertEquals(identities.get(i).split(":")[0].equals(identities.get(j).split(":")[0]), false);
             }
         }
+        //json组件版本不应该有高低
+//        for (int i = 0; i < identities.size(); i++) {
+//            for (int j = i + 1; j <= identities.size() - 1; j++) {
+//                if (identities.get(i).split(":")[0].equals(identities.get(j).split(":")[0])) {
+//                    //断言为真，就表明json符合要求
+//                    Assert.assertEquals(identities.get(i).split(":")[1].equals(identities.get(j).split(":")[1]), true);
+//                }
+//            }
+//        }
     }
-
-//    @Before
-//    public void putCMSContext() {
-//        List<Site> sites = siteRepository.findAll();
-//        Site site = null;
-//        if (sites.size() != 0)
-//            site = sites.get(0);
-//        else
-//            site = randomSite(randomOwner());
-//        CMSContext.PutContext(request, response, site);
-//    }
-
-    /**
-     * 通过伪造cookie验证权限
-     *
-     * @param cookie 模拟个Cookie
-     * @param map    参数map
-     * @return MvcResult
-     * @throws Exception
-     */
-    private MvcResult accessViaCookie(Cookie cookie, Map<String, Object> map) throws Exception {
-
-        String url = (String) map.get(URL);
-        Object params = map.get(PARAM);
-        String content = (String) map.get(CONTENT);
-        if(content==null)
-            content="";
-        String mediaType = (String) map.get(MEDIATYPE);
-        if(mediaType==null)
-            mediaType=MediaType.ALL_VALUE;
-        String method= (String) map.get(METHOD);
-        HttpMethod httpMethod=HttpMethod.valueOf(method);
-
-        MockHttpServletRequestBuilder builder=null;
-
-        switch (httpMethod){
-            case GET:
-                builder=get(url, params).cookie(cookie);
-                break;
-            case POST:
-                builder=post(url, params).content(content).accept(mediaType);
-                break;
-            case PUT:
-                builder=put(url, params).content(content).accept(mediaType);
-                break;
-            case DELETE:
-                builder=delete(url, params).content(content).accept(mediaType);
-        }
-
-
-
-
-        MvcResult result = mockMvc.perform(builder)
-                .andReturn();
-
-        session = (MockHttpSession) result.getRequest().getSession(true);
-
-        String redirectedUrl = mockMvc.perform(get(result.getResponse().getRedirectedUrl())
-                .cookie(cookie)
-                .session(session))
-                .andExpect(status().isFound())
-                .andReturn().getResponse().getRedirectedUrl();
-
-        while (true) {
-            result = mockMvc.perform(get(redirectedUrl).session(session)).andReturn();
-            if (result.getResponse().getStatus() == 200) {
-                session = (MockHttpSession) result.getRequest().getSession(true);
-                return mockMvc.perform(builder.session(session))
-                        .andReturn();
-            }
-            if (result.getResponse().getStatus() == 302)
-                redirectedUrl = result.getResponse().getRedirectedUrl();
-            else
-                throw new IllegalStateException("why ?" + result.getResponse().getStatus());
-        }
-    }
-
-
 
 }

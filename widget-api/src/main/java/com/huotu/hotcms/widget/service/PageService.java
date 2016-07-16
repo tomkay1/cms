@@ -11,6 +11,7 @@ package com.huotu.hotcms.widget.service;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.page.Page;
@@ -57,12 +58,16 @@ public interface PageService {
 
     /**
      * 解析保存了{@link com.huotu.hotcms.widget.page.Page}信息的XML
+     * <p>
+     *     如果页面不存在，返回404
+     * </p>
      *
      * @param pageId pageId
      * @return {@link com.huotu.hotcms.widget.page.Page}
      * @throws IOException 获取page失败
+     * @throws PageNotFoundException 页面不存在
      */
-    Page getPage(Long pageId) throws IOException;
+    Page getPage(Long pageId) throws IOException,PageNotFoundException;
 
     /**
      * 删除相关页面信息
@@ -81,7 +86,7 @@ public interface PageService {
      * @return {@link com.huotu.hotcms.widget.page.Page}
      * @throws IllegalStateException 未找到page
      */
-    Page findBySiteAndPagePath(Site site, String pagePath) throws IllegalStateException;
+    Page findBySiteAndPagePath(Site site, String pagePath) throws IllegalStateException, PageNotFoundException;
 
 
     /**
@@ -99,14 +104,14 @@ public interface PageService {
      * @return 最适用的内容页
      * @throws IOException 获取界面xml错误
      */
-    Page getClosestContentPage(Category category, String path) throws IOException;
+    Page getClosestContentPage(Category category, String path) throws IOException, PageNotFoundException;
 
     /**
      * 返回所有page
      *
      * @return
      */
-    List<Page> findAll() throws IOException;
+    List<Page> findAll() throws IOException, PageNotFoundException;
 
     /**
      * 更新page，并清除缓存

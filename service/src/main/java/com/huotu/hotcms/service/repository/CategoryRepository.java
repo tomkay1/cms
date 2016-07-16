@@ -22,6 +22,13 @@ import java.util.Set;
 public interface CategoryRepository extends JpaRepository<Category, Long>, JpaSpecificationExecutor<Category> {
 
     /**
+     * 根据站点查询数据源
+     * @param templateSite 站点
+     * @return
+     */
+    List<Category> findBySite(Site templateSite);
+
+    /**
      * 根据序列号和站点信息进行查询
      *
      * @param serial 序列号
@@ -73,5 +80,6 @@ public interface CategoryRepository extends JpaRepository<Category, Long>, JpaSp
      * 根据父栏目查询栏目
      */
     List<Category> findByParent_Id(Long parenId);
+
 
 }

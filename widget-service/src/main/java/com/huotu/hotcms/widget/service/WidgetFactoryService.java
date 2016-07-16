@@ -17,7 +17,6 @@ import com.huotu.hotcms.widget.exception.FormatException;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -138,7 +137,7 @@ public interface WidgetFactoryService {
      * @throws IOException 查找列表page列表失败等
      * @see #updateWidget(Widget)
      */
-    void primary(WidgetInfo widgetInfo, boolean ignoreError) throws IllegalStateException, IOException, FormatException;
+    void primary(WidgetInfo widgetInfo, boolean ignoreError) throws IllegalStateException, IOException, PageNotFoundException;
 
 //    /**
 //     * 更新已安装的控件

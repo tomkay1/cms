@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.service.repository.PageInfoRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.widget.CMSContext;
@@ -111,8 +112,10 @@ public class PageServiceImpl implements PageService {
     }
 
     @Override
-    public Page getPage(Long pageId) throws IOException {
+    public Page getPage(Long pageId) throws IOException, PageNotFoundException {
         PageInfo pageInfo = pageInfoRepository.findOne(pageId);
+        if(pageInfo==null)
+            throw new PageNotFoundException("页面ID为"+pageId+"的页面不存在");
         String pageJson = new String(pageInfo.getPageSetting(), "utf-8");
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(pageJson, Page.class);
@@ -124,7 +127,7 @@ public class PageServiceImpl implements PageService {
     }
 
     @Override
-    public Page findBySiteAndPagePath(Site site, String pagePath) throws IllegalStateException {
+    public Page findBySiteAndPagePath(Site site, String pagePath) throws IllegalStateException, PageNotFoundException {
         Page page = null;
         try {
             PageInfo pageInfo = pageInfoRepository.findBySiteAndPagePath(site, pagePath);
@@ -143,7 +146,7 @@ public class PageServiceImpl implements PageService {
     }
 
     @Override
-    public Page getClosestContentPage(Category category, String path) throws IOException {
+    public Page getClosestContentPage(Category category, String path) throws IOException, PageNotFoundException {
         PageInfo pageInfo = pageInfoRepository.findByPagePath(path);
         if (pageInfo != null && category.getId().equals(pageInfo.getCategory().getId())) {
             return getPage(pageInfo.getPageId());
@@ -156,7 +159,7 @@ public class PageServiceImpl implements PageService {
     }
 
     @Override
-    public List<Page> findAll() throws IOException {
+    public List<Page> findAll() throws IOException, PageNotFoundException {
         List<PageInfo> pageInfoList = pageInfoRepository.findAll();
         List<Page> pageList = null;
         if (pageInfoList != null && pageInfoList.size() > 0) {

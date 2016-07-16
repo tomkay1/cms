@@ -153,15 +153,18 @@ public class WidgetInfoController
     @PreAuthorize("hasRole('" + Login.Role_Manage_Value + "')")
     @RequestMapping(value = "/widgets",method = RequestMethod.GET,produces = "application/json; charset=UTF-8")
     public List<WidgetModel> getWidgetInfo() throws IOException, URISyntaxException {
+        List<InstalledWidget> installedWidgets=widgetFactoryService.widgetList(null);
         if (environment.acceptsProfiles("test")) {
             try {
-                widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
-                        , "1.0-SNAPSHOT", "picCarousel");
+                if(installedWidgets==null && installedWidgets.size()==0) {
+                    widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
+                            , "1.0-SNAPSHOT", "picCarousel");
+                }
             } catch (FormatException e) {
                 e.printStackTrace();
             }
         }
-        List<InstalledWidget> installedWidgets = widgetFactoryService.widgetList(null);
+        installedWidgets = widgetFactoryService.widgetList(null);
         Widget widget;
         List<WidgetModel> widgetModels = new ArrayList<>();
         for (InstalledWidget installedWidget : installedWidgets) {

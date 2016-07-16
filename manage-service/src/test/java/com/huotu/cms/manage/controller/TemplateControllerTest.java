@@ -19,22 +19,29 @@ import com.huotu.cms.manage.page.SitePage;
 import com.huotu.cms.manage.page.TemplatePage;
 import com.huotu.cms.manage.page.support.AbstractCRUDPage;
 import com.huotu.cms.manage.util.ImageHelper;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.Template;
+import com.huotu.hotcms.service.entity.login.Owner;
+import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.repository.TemplateRepository;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.beans.PropertyDescriptor;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * @author CJ
@@ -45,6 +52,8 @@ public class TemplateControllerTest extends ManageTest {
     private TemplateRepository templateRepository;
     @Autowired
     private ResourceService resourceService;
+    @Autowired
+    private SiteRepository siteRepository;
 
     @Test
     @Transactional
@@ -118,6 +127,19 @@ public class TemplateControllerTest extends ManageTest {
         }
         forTemplatePage.toPage(PageInfoPage.class);
         forTemplatePage.toPage(CategoryPage.class);
+    }
+
+    @Test
+    public void testLaud() throws Exception {
+        Owner owner=randomOwner();
+        Site site=randomSite(owner);
+        loginAsOwner(owner);
+        MvcResult result=mockMvc.perform(put("/manage/template/laud/{siteId}", site.getSiteId())
+                .param("customerId", String.valueOf(owner.getCustomerId()))
+                .session(session))
+                .andExpect(status().isOk())
+                .andReturn();
+        String response=result.getResponse().getContentAsString();
     }
 
 }

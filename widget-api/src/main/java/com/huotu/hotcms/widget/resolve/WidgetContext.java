@@ -43,7 +43,8 @@ public class WidgetContext extends WebEngineContext {
      * instead). This is therefore mostly an <b>internal</b> implementation, and users should have no reason
      * to ever call this constructor except in very specific integration/extension scenarios.
      * </p>
-     *  @param engine         我们所用的专用引擎
+     *
+     * @param engine         我们所用的专用引擎
      * @param context        CMS上下文不可为空
      * @param widget         控件实例不可为空
      * @param style          控件风格可选
@@ -55,7 +56,9 @@ public class WidgetContext extends WebEngineContext {
             , ServletContext servletContext, Component component, ComponentProperties properties) {
         // TODO 后期考虑到缓存,性能巴拉巴拉的时候 可能需要定制 TemplateData
 
-        super(new WidgetConfiguration(engine.getConfiguration(), widget, style, component.getStyleClassNames()), null, null
+        super(new WidgetConfiguration(engine.getConfiguration(), widget, style
+                , component == null ? null : component.getStyleClassNames())
+                , null, null
                 , context.getRequest(), context.getResponse(), servletContext
                 , context.getLocale(), FromComponentProperties(widget, style, properties, component));
     }
@@ -66,8 +69,10 @@ public class WidgetContext extends WebEngineContext {
         variables.put("widget", widget);
         variables.put("style", style);
         variables.put("properties", properties);
-        variables.put("styleClassNames", component.getStyleClassNames());
-        variables.put("componentId", component.getId());
+        if (component != null) {
+            variables.put("styleClassNames", component.getStyleClassNames());
+            variables.put("componentId", component.getId());
+        }
         return variables;
     }
 }

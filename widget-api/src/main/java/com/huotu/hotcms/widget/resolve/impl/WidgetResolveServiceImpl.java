@@ -134,21 +134,25 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
             //是一个组件
             //todo 添加组件的class :col-md-*
             Component component = (Component) pageElement;
-            InstalledWidget installedWidget = widgetLocateService.findWidget(component.getWidgetIdentity());
+            InstalledWidget installedWidget = component.getInstalledWidget() != null ? component.getInstalledWidget()
+                    : widgetLocateService.findWidget(component.getWidgetIdentity());
             component.setInstalledWidget(installedWidget);
             WidgetStyle style = null;
-            for (WidgetStyle style1 : component.getInstalledWidget().getWidget().styles()) {
-                if (style1.id().equals(component.getStyleId())) {
-                    style = style1;
-                    break;
+            if (installedWidget != null) {
+                for (WidgetStyle style1 : component.getInstalledWidget().getWidget().styles()) {
+                    if (style1.id().equals(component.getStyleId())) {
+                        style = style1;
+                        break;
+                    }
                 }
-            }
-            if (style == null) {
-                style = component.getInstalledWidget().getWidget().styles()[0];
+                if (style == null) {
+                    style = component.getInstalledWidget().getWidget().styles()[0];
+                }
             }
             checkEngine();
             WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
-                    , component.getInstalledWidget().getWidget(), style, webApplicationContext.getServletContext()
+                    , installedWidget != null ? component.getInstalledWidget().getWidget() : null, style
+                    , webApplicationContext.getServletContext()
                     , component, component.getProperties());
             WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();
             cmsContext.getWidgetConfigurationStack().push(widgetConfiguration);
@@ -178,7 +182,8 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
             Component component = (Component) pageElement;
             InstalledWidget installedWidget = widgetLocateService.findWidget(component.getWidgetIdentity());
             component.setInstalledWidget(installedWidget);
-            if (installedWidget.getWidget().widgetDependencyContent(ContentType.create("text/css")) != null) {
+            if (installedWidget != null &&
+                    installedWidget.getWidget().widgetDependencyContent(ContentType.create("text/css")) != null) {
                 WidgetStyle style = null;
                 for (WidgetStyle style1 : component.getInstalledWidget().getWidget().styles()) {
                     if (style1.id().equals(component.getStyleId())) {

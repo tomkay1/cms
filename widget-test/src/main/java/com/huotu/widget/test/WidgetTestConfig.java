@@ -26,9 +26,11 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.dialect.IDialect;
+import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
+import org.thymeleaf.templatemode.TemplateMode;
 
 import java.util.Set;
 
@@ -43,6 +45,9 @@ public class WidgetTestConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private ThymeleafViewResolver normalViewResolver;
 
+    @Autowired
+    private ThymeleafViewResolver javascriptThymeleafViewResolver;
+
 
     public static String WidgetIdentity(Widget widget) {
         return widget.widgetId().replace('-', '.');
@@ -51,6 +56,7 @@ public class WidgetTestConfig extends WebMvcConfigurerAdapter {
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
         registry.viewResolver(normalViewResolver);
+        registry.viewResolver(javascriptThymeleafViewResolver);
     }
 
 
@@ -78,8 +84,7 @@ public class WidgetTestConfig extends WebMvcConfigurerAdapter {
 
         @Autowired
         private ApplicationContext applicationContext;
-        //        @Autowired
-//        private WidgetTemplateResolver widgetTemplateResolver;
+
         @Autowired
         private Set<IDialect> dialectSet;
 
@@ -102,8 +107,36 @@ public class WidgetTestConfig extends WebMvcConfigurerAdapter {
             resolver.setCharacterEncoding("UTF-8");
             resolver.setContentType("text/html;charset=UTF-8");
             resolver.setTemplateEngine(engine);
-
+            resolver.setOrder(3);
             return resolver;
         }
+
+        @Bean
+        public ThymeleafViewResolver javascriptThymeleafViewResolver() {
+
+            SpringResourceTemplateResolver rootTemplateResolver =
+                    new SpringResourceTemplateResolver();
+            rootTemplateResolver.setCheckExistence(true);
+            rootTemplateResolver.setPrefix("/_resources/testWidget/js/");
+            rootTemplateResolver.setApplicationContext(applicationContext);
+            rootTemplateResolver.setTemplateMode(TemplateMode.JAVASCRIPT);
+            rootTemplateResolver.setCharacterEncoding("UTF-8");
+
+            SpringTemplateEngine engine = new SpringTemplateEngine();
+            engine.addDialect(new SpringSecurityDialect());
+            engine.setTemplateResolver(rootTemplateResolver);
+
+            ThymeleafViewResolver resolver = new ThymeleafViewResolver();
+            resolver.setOrder(2);
+            resolver.setCharacterEncoding("UTF-8");
+            resolver.setTemplateEngine(engine);
+            resolver.setApplicationContext(applicationContext);
+            resolver.setViewNames(new String[]{"*.js", "*.JS"});
+            resolver.setContentType("application/javascript");
+            return resolver;
+        }
+
+
     }
+
 }

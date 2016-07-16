@@ -13,18 +13,19 @@ import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.WidgetLocateService;
+import com.huotu.hotcms.widget.WidgetStyle;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * 将几个常用动作 写成单独文件
@@ -40,7 +41,11 @@ public class WidgetViewController {
     @Autowired
     private WidgetLocateService widgetLocateService;
 
+
     private ComponentProperties currentProperties;
+
+    @Autowired
+    private ResourceService resourceService;
 
     public ComponentProperties getCurrentProperties() {
         return currentProperties;
@@ -59,21 +64,35 @@ public class WidgetViewController {
     @RequestMapping(method = RequestMethod.GET, value = {"/browse/{widgetName}/{styleId}"})
     public String browse(@PathVariable("widgetName") String widgetName
             ,@PathVariable("styleId") String styleId,Model model) {
-        InstalledWidget widget = widgetLocateService.findWidget(widgetName);
+        InstalledWidget installedWidget = widgetLocateService.findWidget(widgetName);
+
         Component component = new Component();
-        component.setProperties(currentProperties);
+        component.setProperties((ComponentProperties) currentProperties.get("properties"));
+        component.setId((String) currentProperties.get("componentId"));
         component.setStyleId(styleId);
-        component.setInstalledWidget(widget);
+        component.setInstalledWidget(installedWidget);
+        component.setStyleClassNames((Map<String, String>) currentProperties.get("styleClassNames"));
+        if (installedWidget != null) {
+            model.addAttribute("widget", installedWidget.getWidget());
+            for (WidgetStyle style : installedWidget.getWidget().styles()) {
+                if (style.id().equals(styleId)) {
+                    model.addAttribute("style", installedWidget.getWidget().styles()[0]);
+                    break;
+                }
+            }
+        }
         model.addAttribute("component", component);
         return "browse";
     }
 
 
-    @RequestMapping(method = RequestMethod.GET, value = {"/javascript/{id}"})
-    @ResponseBody
-    public Resource javascript(@PathVariable("id") String widgetId, Model model) throws IOException {
+    @RequestMapping(method = RequestMethod.GET, value = {"/javascript/{id}"}, produces = "application/javascript")
+    public String javascript(@PathVariable("id") String widgetId) throws IOException {
         InstalledWidget installedWidget = widgetLocateService.findWidget(widgetId);
-        Resource resource = installedWidget.getWidget().widgetJs();
-        return resource;
+        resourceService.uploadResource("testWidget/js/" + widgetId + ".js"
+                , installedWidget.getWidget().widgetJs().getInputStream());
+        return widgetId + ".js";
     }
+
+
 }

@@ -33,6 +33,13 @@ public interface PageInfoRepository extends JpaRepository<PageInfo, Long>, JpaSp
     List<PageInfo> findBySite(Site site);
 
     /**
+     * 删除某站点下所有页面数据
+     * @param site 站点
+     * @return 受影响行数
+     */
+    Long deleteBySite(Site site);
+
+    /**
      * 通过站点和路劲 查询page信息
      * @param site 站点
      * @param pagePath 路径,是唯一的

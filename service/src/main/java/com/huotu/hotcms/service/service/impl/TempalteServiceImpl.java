@@ -9,10 +9,10 @@
 
 package com.huotu.hotcms.service.service.impl;
 
-import com.huotu.hotcms.service.entity.Category;
-import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.entity.*;
 import com.huotu.hotcms.service.repository.*;
 import com.huotu.hotcms.service.service.TemplateService;
+import com.huotu.hotcms.service.util.SerialUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +23,7 @@ import java.util.List;
  * Created by wenqi on 2016/7/15.
  */
 @Service
+@Transactional
 public class TempalteServiceImpl implements TemplateService {
 
     @Autowired
@@ -33,13 +34,27 @@ public class TempalteServiceImpl implements TemplateService {
     @Autowired
     private PageInfoRepository pageInfoRepository;
     @Autowired
-    private AbstractContentRepository abstractContentRepository;
-    @Autowired
     private SiteRepository siteRepository;
+    @Autowired
+    private ArticleRepository articleRepository;
+    @Autowired
+    private DownloadRepository downloadRepository;
+    @Autowired
+    private GalleryRepository galleryRepository;
+    @Autowired
+    private  LinkRepository linkRepository;
+    @Autowired
+    private NoticeRepository noticeRepository;
+    @Autowired
+    private  VideoRepository videoRepository;
+    @Autowired
+    private  GalleryListRepository galleryListRepository;
+
+    @Autowired
+    private AbstractContentRepository abstractContentRepository;
 
     //使用Redis
     @Override
-    @Transactional
     public boolean laud(long siteId, long customerId) {
         return false;
     }
@@ -58,16 +73,136 @@ public class TempalteServiceImpl implements TemplateService {
      * 删掉原先站点下的数据
      * @param customerSite
      */
+
     private void delete(Site customerSite) {
-
+        List<Category> categories=categoryRepository.findBySite(customerSite);
+        if(categories.isEmpty())
+            throw new IllegalStateException("目前系统中还没有数据源");
+        //删除内容
+        for(Category category:categories){
+            articleRepository.deleteByCategory(category);
+            downloadRepository.deleteByCategory(category);
+            linkRepository.deleteByCategory(category);
+            noticeRepository.deleteByCategory(category);
+            videoRepository.deleteByCategory(category);
+            List<Gallery> galleries = galleryRepository.findByCategory(category);
+            galleries.forEach(galleryListRepository::deleteByGallery);
+            galleryRepository.deleteByCategory(category);
+        }
+        //删除数据源
+        categoryRepository.deleteBySite(customerSite);
+        //删除页面数据
+        pageInfoRepository.deleteBySite(customerSite);
     }
-
     /**
      * 复制
      * @param templateSite 模板站点
      * @param customerSite 商户站点
      */
-    private void copy(Site templateSite,Site customerSite){
+    private void copy(Site templateSite, Site customerSite) {
         List<Category> categories=categoryRepository.findBySite(templateSite);
+        Category copyCategory=null;
+        AbstractContent copyContent=null;
+        //数据源复制
+        for(Category category:categories){
+            copyCategory= category.copy();
+            copyCategory.setSite(customerSite);
+            copyCategory.setSerial(SerialUtil.formatSerial(customerSite));
+            categoryRepository.save(copyCategory);
+            //Page信息的复制
+            copyPageInfo(category,copyCategory,customerSite);
+            //对内容的复制
+            copyContent(category,copyCategory,customerSite);
+        }
+    }
+
+    /**
+     *  把模板站点下的页面数据进行复制
+     * @param templateCategory 模板站点的数据源
+     * @param copyCategory 复制到商户站点的数据源
+     * @param customerSite 商户站点
+     */
+    private void copyPageInfo(Category templateCategory,Category copyCategory,Site customerSite){
+        List<PageInfo> pageInfoList=pageInfoRepository.findByCategory(templateCategory);
+        PageInfo copyPageInfo=null;
+        for(PageInfo pageInfo:pageInfoList){
+            copyPageInfo=pageInfo.copy();
+            copyPageInfo.setSite(customerSite);
+            copyPageInfo.setCategory(copyCategory);
+            pageInfoRepository.save(copyPageInfo);
+        }
+    }
+
+    /**
+     * 对模板站点的内容数据进行复制
+     * @param templateCategory 模板站点的数据源
+     * @param copyCategory 复制到商户站点的数据源
+     * @param customerSite 商户站点
+     */
+    private void copyContent(Category templateCategory,Category copyCategory,Site customerSite){
+        //对Article的复制
+        List<Article> articles=articleRepository.findByCategory(templateCategory);
+        Article newArticle=null;
+        for(Article article:articles){
+            newArticle=article.copy();
+            newArticle.setCategory(copyCategory);
+            newArticle.setSerial(SerialUtil.formatSerial(customerSite));
+            abstractContentRepository.save(newArticle);
+        }
+        //下载模型复制
+        List<Download> downloads = downloadRepository.findByCategory(templateCategory);
+        Download d =null;
+        for (Download download : downloads) {
+            d = download.copy();
+            d.setSerial(SerialUtil.formatSerial(customerSite));
+            d.setCategory(copyCategory);
+            abstractContentRepository.save(d);
+        }
+        //图库模型复制
+        List<Gallery> galleries = galleryRepository.findByCategory(templateCategory);
+        Gallery g =null;
+        GalleryList galleryList =null;
+        for (Gallery gallery : galleries) {
+            g = gallery.copy();
+            g.setCategory(copyCategory);
+            g.setSerial(SerialUtil.formatSerial(customerSite));
+            g = abstractContentRepository.save(g);
+            //图库集合复制
+            List<GalleryList> galleryLists = galleryListRepository.findByGallery(gallery);
+            for (GalleryList gl : galleryLists) {
+                galleryList = gl.copy();
+                galleryList.setGallery(g);
+                galleryList.setSite(customerSite);
+                galleryList.setSerial(SerialUtil.formatSerial(customerSite));
+                galleryListRepository.save(galleryList);
+            }
+        }
+        //链接模型复制
+        List<Link> links = linkRepository.findByCategory(templateCategory);
+        Link link1 =null;
+        for (Link link : links) {
+            link1 = link.copy();
+            link1.setSerial(SerialUtil.formatSerial(customerSite));
+            link1.setCategory(copyCategory);
+            abstractContentRepository.save(link1);
+        }
+        //公告模型复制
+        List<Notice> notices = noticeRepository.findByCategory(templateCategory);
+        Notice notice1=null;
+        for (Notice notice : notices) {
+            notice1 = notice.copy(customerSite,copyCategory);
+            notice1.setCategory(copyCategory);
+            notice1.setSerial(SerialUtil.formatSerial(customerSite));
+            abstractContentRepository.save(notice1);
+        }
+        //视频模型复制
+        List<Video> videos = videoRepository.findByCategory(templateCategory);
+        Video v=null;
+        for (Video video : videos) {
+            v = video.copy();
+            v.setSerial(SerialUtil.formatSerial(customerSite));
+            v.setCategory(copyCategory);
+            abstractContentRepository.save(v);
+        }
     }
 }

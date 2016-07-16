@@ -22,6 +22,9 @@ import java.util.Set;
  * 站点服务,rewrite by CJ
  * <p>
  * 提供面向站点的服务,
+ *
+ * 模板站点的相关操作依据：
+ * @see com.huotu.hotcms.service.service.TemplateService
  */
 public interface SiteService {
 
@@ -50,17 +53,6 @@ public interface SiteService {
      */
     @Transactional(readOnly = true)
     Site getSite(long siteId);
-
-    /**
-     * 实现站点的可复制
-     *
-     * @param template    原模板
-     * @param targetSite  目标站点
-     * @param removeFirst 是否先行移除当前站点所有信息
-     */
-    @Transactional
-    void siteCopy(Template template, Site targetSite, boolean removeFirst);
-
     /**
      * 新建站点
      *

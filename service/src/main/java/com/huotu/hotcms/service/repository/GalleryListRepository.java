@@ -18,4 +18,6 @@ import java.util.List;
 
 public interface GalleryListRepository extends JpaRepository<GalleryList, Long>, JpaSpecificationExecutor<GalleryList> {
     List<GalleryList> findByGallery(Gallery gallery);
+
+    Long deleteByGallery(Gallery gallery);
 }

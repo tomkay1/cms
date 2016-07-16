@@ -18,7 +18,6 @@ import com.huotu.cms.manage.page.AdminPage;
 import com.huotu.cms.manage.page.ManageMainPage;
 import com.huotu.cms.manage.page.support.AbstractCRUDPage;
 import com.huotu.cms.manage.test.AuthController;
-import com.huotu.cms.manage.test.TestWidget;
 import com.huotu.hotcms.service.common.CMSEnums;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.common.PageType;
@@ -26,9 +25,7 @@ import com.huotu.hotcms.service.entity.*;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
-import com.huotu.hotcms.service.repository.CategoryRepository;
-import com.huotu.hotcms.service.repository.OwnerRepository;
-import com.huotu.hotcms.service.repository.PageInfoRepository;
+import com.huotu.hotcms.service.repository.*;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.util.StringUtil;
 import com.huotu.hotcms.widget.Component;
@@ -84,6 +81,9 @@ public abstract class ManageTest extends SpringWebTest {
     @Autowired
     private AuthController authController;
 
+    @Autowired
+    private TemplateRepository templateRepository;
+
     @Qualifier("pageInfoRepository")
     @Autowired
     private PageInfoRepository pageInfoRepository;
@@ -93,6 +93,17 @@ public abstract class ManageTest extends SpringWebTest {
 
     @Autowired
     private WidgetFactoryService widgetFactoryService;
+
+    @Autowired
+    private ArticleRepository articleRepository;
+
+    @Autowired
+    private DownloadRepository downloadRepository;
+
+    @Autowired
+    private GalleryListRepository galleryListRepository;
+    @Autowired
+    private GalleryRepository galleryRepository;
 
     @Before
     public void aboutTestOwner() {
@@ -146,6 +157,44 @@ public abstract class ManageTest extends SpringWebTest {
         site.setDescription(UUID.randomUUID().toString());
         String[] domains = randomDomains();
         return siteService.newSite(domains, domains[0], site, Locale.CHINA);
+    }
+
+    /**
+     * 随机一个站点并关联数据源和内容
+     * @return
+     */
+    protected Site randomSiteAndData(Owner owner){
+        Site site=randomSite(owner);
+        Category category=randomCategory(site);
+        randomArticle(category);
+        randomDownload(category);
+        Gallery gallery=randomGallery(category);
+        randomGalleryList(gallery);
+        return site;
+    }
+
+    /**
+     * 随机一个模板
+     * @return
+     */
+    protected Template randomTemplate(){
+        Template template=new Template();
+        template.setUpdateTime(LocalDateTime.now());
+        template.setTitle(UUID.randomUUID().toString());
+        template.setName(UUID.randomUUID().toString());
+        TemplateType templateType=new TemplateType();
+        templateType.setIndustry(UUID.randomUUID().toString());
+        template.setTemplateType(templateType);
+        template.setCopyright(UUID.randomUUID().toString());
+        template.setDeleted(false);
+        template.setEnabled(true);
+        template= templateRepository.saveAndFlush(template);
+        Category category=randomCategory(template);
+        randomArticle(category);
+        randomDownload(category);
+        Gallery gallery=randomGallery(category);
+        randomGalleryList(gallery);
+        return template;
     }
 
     /**
@@ -258,6 +307,7 @@ public abstract class ManageTest extends SpringWebTest {
         return route;
     }
 
+
     /**
      *
      * @return 随机创建的数据源
@@ -275,6 +325,35 @@ public abstract class ManageTest extends SpringWebTest {
         category.setContentType(ContentType.values()[random.nextInt(ContentType.values().length)]);
         return categoryRepository.saveAndFlush(category);
     }
+
+    protected Article randomArticle(Category category){
+        Article article=new Article();
+        article.setAuthor(UUID.randomUUID().toString());
+        article.setCategory(category);
+        return articleRepository.saveAndFlush(article);
+    }
+
+    protected Download randomDownload(Category category){
+        Download download=new Download();
+        download.setDownloadUrl(UUID.randomUUID().toString());
+        download.setCategory(category);
+        return downloadRepository.saveAndFlush(download);
+    }
+
+    protected GalleryList randomGalleryList(Gallery gallery){
+        GalleryList galleryList=new GalleryList();
+        galleryList.setGallery(gallery);
+        galleryList.setCreateTime(LocalDateTime.now());
+        return galleryListRepository.saveAndFlush(galleryList);
+    }
+
+    protected Gallery randomGallery(Category category){
+        Gallery gallery=new Gallery();
+        gallery.setCategory(category);
+        gallery.setContent(UUID.randomUUID().toString());
+        return galleryRepository.saveAndFlush(gallery);
+    }
+
 
     protected PageInfo randomPageInfoValue() {
         PageInfo pageInfo = new PageInfo();

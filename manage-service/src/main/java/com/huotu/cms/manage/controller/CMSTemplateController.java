@@ -15,6 +15,7 @@ package com.huotu.cms.manage.controller;
 
 import com.huotu.hotcms.service.service.TemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,7 +57,8 @@ public class CMSTemplateController {
      *                       <li>1为替换模式</li>
      *                       </ul>
      */
-    @RequestMapping("/use/{templateSiteID}/{customerSiteId}")
+    @RequestMapping(value = "/use/{templateSiteID}/{customerSiteId}",method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
     public void use(@PathVariable("templateSiteID") long templateSiteID
             , @PathVariable("customerSiteId") long customerSiteId, @RequestParam("mode") int mode) {
         templateService.use(templateSiteID, customerSiteId, mode);

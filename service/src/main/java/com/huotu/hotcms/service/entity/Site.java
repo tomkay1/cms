@@ -142,6 +142,10 @@ public class Site implements Auditable, Enabled {
     @JoinColumn(name = "regionId")
     private Region region;
 
+
+//    @Column(name = "mode")
+//    private int mode = -1;
+
     /**
      * @return 是否允许上架
      */

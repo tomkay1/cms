@@ -40,6 +40,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -142,4 +143,18 @@ public class TemplateControllerTest extends ManageTest {
         String response=result.getResponse().getContentAsString();
     }
 
+    @Test
+    public void testUse() throws Exception {
+        Template template=randomTemplate();
+        Owner owner=randomOwner();
+        Site site=randomSiteAndData(owner);
+        loginAsOwner(owner);
+        String mode=String.valueOf(random.nextInt(2));
+        mockMvc.perform(post("/manage/template/use/{templateSiteID}/{customerSiteId}",template.getSiteId(),site.getSiteId())
+                .param("mode","1")
+        .session(session))
+                .andExpect(status().isOk())
+                .andReturn();
+
+    }
 }

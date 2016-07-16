@@ -21,4 +21,7 @@ import java.util.List;
  */
 public interface NoticeRepository extends JpaRepository<Notice, Long>, JpaSpecificationExecutor<Notice> {
     List<Notice> findByCategory(Category category);
+
+    Long deleteByCategory(Category category);
+
 }

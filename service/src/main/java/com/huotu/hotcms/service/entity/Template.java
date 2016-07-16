@@ -12,10 +12,7 @@ package com.huotu.hotcms.service.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * 模板信息,模板也就是一个站点
@@ -48,7 +45,7 @@ public class Template extends Site {
     /**
      * 模板类型，eg: 汽车行业，服装行业...
      */
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private TemplateType templateType;
 
 

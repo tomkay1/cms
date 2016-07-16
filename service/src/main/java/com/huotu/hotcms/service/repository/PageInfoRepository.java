@@ -11,18 +11,15 @@ package com.huotu.hotcms.service.repository;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.entity.Site;
-import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * Created by wenqi on 2016/7/5.
  */
-@Repository
+//@Repository
 public interface PageInfoRepository extends JpaRepository<PageInfo, Long>, JpaSpecificationExecutor<PageInfo> {
 
     /**

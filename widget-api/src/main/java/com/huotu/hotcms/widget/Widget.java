@@ -31,7 +31,7 @@ public interface Widget {
      * @return 唯一id
      */
     static String WidgetIdentity(Widget widget) {
-        return widget.groupId() + "." + widget.widgetId() + ":" + widget.version();
+        return widget.groupId() + "-" + widget.widgetId() + ":" + widget.version();
     }
 
     String groupId();
@@ -53,7 +53,7 @@ public interface Widget {
      * @return 控件版本
      */
     default String version() {
-        return getClass().getPackage().getImplementationVersion();
+        return this.getClass().getPackage().getImplementationVersion();
     }
 
 

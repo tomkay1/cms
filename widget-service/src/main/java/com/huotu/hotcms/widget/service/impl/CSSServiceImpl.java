@@ -13,11 +13,15 @@ import com.huotu.hotcms.widget.PageTheme;
 import com.huotu.hotcms.widget.service.CSSService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
 
+import javax.annotation.PostConstruct;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -33,6 +37,32 @@ import java.nio.file.attribute.PosixFilePermissions;
 @Service
 public class CSSServiceImpl implements CSSService {
     private static final Log log = LogFactory.getLog(CSSServiceImpl.class);
+
+    @PostConstruct
+    public void init() {
+        //--case4-- mainColor为null生成的css是否符合与预期用户定义less样式
+        ByteArrayOutputStream byteOut1 = new ByteArrayOutputStream();
+        try {
+            convertCss(new PageTheme() {
+                @Override
+                public String mainColor() {
+                    return null;
+                }
+
+                @Override
+                public Resource customLess() {
+                    String less = "@spanColor:#111;span{color:@spanColor}";
+                    return new ByteArrayResource(less.getBytes());
+                }
+            }, byteOut1);
+            String css = byteOut1.toString();
+            if (!css.contains("span") && !css.contains("color: #111")) {
+                throw new Exception("请安装nodeJs环境，否则可能会引起风险");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void convertCss(PageTheme theme, OutputStream outputStream) throws IOException, IllegalArgumentException {

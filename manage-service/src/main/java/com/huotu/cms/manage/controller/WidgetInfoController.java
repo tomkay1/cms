@@ -198,7 +198,8 @@ public class WidgetInfoController
                 WidgetStyleModel widgetStyleModel = new WidgetStyleModel();
                 widgetStyleModel.setThumbnail(widgetStyles[i].thumbnail().getURI().toString());
                 widgetStyleModel.setLocallyName(widgetStyles[i].name());
-                widgetStyleModel.setPreviewHTML(widgetResolveService.previewHTML(widget, widgetStyles[i].id(), CMSContext.RequestContext(), null));
+                widgetStyleModel.setPreviewHTML(widgetResolveService.previewHTML(widget, widgetStyles[i].id()
+                        , CMSContext.RequestContext(), null));
                 widgetStyleModels[i] = widgetStyleModel;
             }
             widgetModel.setStyles(widgetStyleModels);

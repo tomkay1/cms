@@ -42,6 +42,7 @@ public class GalleryList implements Auditable {
     /**
      * 序列号
      */
+    @Column(name = "serial", length = 100)
     private String serial;
 
     /**
@@ -53,13 +54,13 @@ public class GalleryList implements Auditable {
     /**
      * 图片规格大小,比如：98x100
      * */
-    @Column(name = "size")
+    @Column(name = "size", length = 20)
     private String size;
 
     /**
      * 图片
      */
-    @Column(name = "thumbUri")
+    @Column(name = "thumbUri", length = 100)
     private String thumbUri;
 
 

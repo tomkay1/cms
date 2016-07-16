@@ -13,6 +13,8 @@ import com.huotu.hotcms.service.entity.*;
 import com.huotu.hotcms.service.repository.*;
 import com.huotu.hotcms.service.service.TemplateService;
 import com.huotu.hotcms.service.util.SerialUtil;
+import me.jiangcai.lib.resource.Resource;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,6 +55,9 @@ public class TempalteServiceImpl implements TemplateService {
     @Autowired
     private AbstractContentRepository abstractContentRepository;
 
+    @Autowired
+    private ResourceService resourceService;
+
     //使用Redis
     @Override
     public boolean laud(long siteId, long customerId) {
@@ -73,7 +78,6 @@ public class TempalteServiceImpl implements TemplateService {
      * 删掉原先站点下的数据
      * @param customerSite
      */
-
     private void delete(Site customerSite) {
         List<Category> categories=categoryRepository.findBySite(customerSite);
         if(categories.isEmpty())
@@ -88,12 +92,36 @@ public class TempalteServiceImpl implements TemplateService {
             List<Gallery> galleries = galleryRepository.findByCategory(category);
             galleries.forEach(galleryListRepository::deleteByGallery);
             galleryRepository.deleteByCategory(category);
+            //静态资源删除
+            deleteStaticResource(category);
         }
         //删除数据源
         categoryRepository.deleteBySite(customerSite);
         //删除页面数据
         pageInfoRepository.deleteBySite(customerSite);
     }
+
+    /**
+     * 删除的同时，如果有静态资源，也一并删除
+     * @param category 数据源
+     */
+    private void deleteStaticResource(Category category) {
+
+
+
+    }
+
+    /**
+     * 在复制的同时，对静态也做一份copy，并返回复制后资源的地址
+     * @param resourcePath 要复制的资源的地址
+     * @return 复制后资源的地址
+     */
+    private String copyStaticResource(String resourcePath){
+        Resource resource= resourceService.getResource(resourcePath);
+//        resourceService.uploadResource()
+        return null;
+    }
+
     /**
      * 复制
      * @param templateSite 模板站点
@@ -145,6 +173,8 @@ public class TempalteServiceImpl implements TemplateService {
         Article newArticle=null;
         for(Article article:articles){
             newArticle=article.copy();
+            if(newArticle.getThumbUri()!=null&&newArticle.getThumbUri()!="")
+                newArticle.setThumbUri(copyStaticResource(newArticle.getThumbUri()));
             newArticle.setCategory(copyCategory);
             newArticle.setSerial(SerialUtil.formatSerial(customerSite));
             abstractContentRepository.save(newArticle);

@@ -160,14 +160,15 @@
                 <ul class="headermenu">
                     <li>
                         <div class="btn-group">
-                            <button class="btn btn-default dropdown-toggle tp-icon" data-toggle="dropdown">
+                            <button class="btn btn-default dropdown-toggle tp-icon site-dropdown"
+                                    data-toggle="dropdown">
                                 <i class="glyphicon glyphicon-list"></i>
                                 <span id="currentSiteSpan"
                                       th:text="${manageSite==null?'请选择操作站点':manageSite.name}">我的站点</span>
                             </button>
                             <div class="dropdown-menu dropdown-menu-head pull-right">
                                 <h5 class="title">选择站点进行操作</h5>
-                                <ul class="dropdown-list user-list">
+                                <ul class="dropdown-list user-list site-list">
                                     <!--/*@thymesVar id="siteSet" type="java.lang.Iterable<com.huotu.hotcms.service.entity.Site>"*/-->
                                     <li class="new" th:each="site:${siteSet}">
                                         <!--<div class="thumb"></a>-->
@@ -369,6 +370,7 @@
 <script th:inline="javascript">
     /*<![CDATA[*/
     var siteSwitchUrl = /*[[@{/manage/switch/}]]*/ null;
+    var testMode = /*[[${@environment.acceptsProfiles('test')}]]*/ true;
     $(function () {
         var firstUrl = /*[[@{/manage/site}]]*/ "site/index.html";
         var pageUrl = /*[[@{/manage/page}]]*/ "page/index.html";
@@ -396,6 +398,7 @@
             if (href != '#') {
                 $.ajax({
                     url: href,
+                    async: !testMode,
                     success: success
                 });
             } else

@@ -32,6 +32,20 @@ public abstract class AbstractFrameParentPage extends AbstractManagePage {
             webDriver.switchTo().parentFrame();
     }
 
+    @Override
+    public void assertNoDanger() throws InterruptedException {
+        webDriver.switchTo().parentFrame();
+        super.assertNoDanger();
+        beforeDriver();
+    }
+
+    @Override
+    public void closeDanger() throws InterruptedException {
+        webDriver.switchTo().parentFrame();
+        super.closeDanger();
+        beforeDriver();
+    }
+
     public void clickLogout() {
         beforeDriver();
         // 点击最后一个dropdown

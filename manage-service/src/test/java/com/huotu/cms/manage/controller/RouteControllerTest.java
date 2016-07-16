@@ -43,6 +43,7 @@ public class RouteControllerTest extends SiteManageTest {
             page = mainPage.toRoute();
             throw new AssertionError("现在应该还看不到页面");
         } catch (Exception ignored) {
+            mainPage.closeDanger();
         }
         // 试下使用{{}}
         mainPage.switchSite(site);

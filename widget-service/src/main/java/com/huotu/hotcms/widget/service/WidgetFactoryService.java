@@ -11,7 +11,6 @@ package com.huotu.hotcms.widget.service;
 
 import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Owner;
-import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.exception.FormatException;
@@ -37,6 +36,16 @@ public interface WidgetFactoryService {
      * @throws IOException
      */
     void setupJarFile(WidgetInfo info, InputStream data) throws IOException;
+
+    /**
+     * 下载widget jar文件
+     *
+     * @param groupId  分组id,参考maven
+     * @param version  版本
+     * @param widgetId 控件id
+     * @return 临时文件
+     */
+    public File downloadJar(String groupId, String widgetId, String version) throws IOException;
 
     /**
      * 当前owner已安装的控件列表
@@ -117,7 +126,7 @@ public interface WidgetFactoryService {
      * @param widget 控件
      */
     @Transactional
-    void updateWidget(Widget widget);
+    void updateWidget(Widget widget) throws IOException, FormatException;
 
     /**
      * 以此控件包为主,禁用同控件的其他控件包和控件。

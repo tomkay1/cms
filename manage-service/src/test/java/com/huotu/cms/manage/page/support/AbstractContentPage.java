@@ -88,6 +88,13 @@ public abstract class AbstractContentPage extends AbstractManagePage {
         beforeDriver();
     }
 
+    @Override
+    public void closeDanger() throws InterruptedException {
+        webDriver.switchTo().parentFrame();
+        super.closeDanger();
+        beforeDriver();
+    }
+
     /**
      * 点击table中的一个row中的fa-pencil
      *

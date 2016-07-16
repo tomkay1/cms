@@ -20,6 +20,7 @@ import java.util.List;
 /**
  * 持久化已安装的控件信息
  */
+//@Repository
 public interface WidgetInfoRepository extends JpaRepository<WidgetInfo, WidgetIdentifier>
         , JpaSpecificationExecutor<WidgetInfo> {
 

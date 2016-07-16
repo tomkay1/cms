@@ -9,6 +9,7 @@
 
 package com.huotu.widget.test.bean;
 
+import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetLocateService;
@@ -71,6 +72,7 @@ public class WidgetHolder implements WidgetLocateService {
             if (WidgetTestConfig.WidgetIdentity(widget).equals(identifier)) {
                 InstalledWidget widget1 = new InstalledWidget(widget);
                 widget1.setType("test");
+                widget1.setIdentifier(WidgetIdentifier.valueOf(Widget.WidgetIdentity(widget)));
                 return widget1;
             }
         }

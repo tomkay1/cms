@@ -43,7 +43,13 @@ public abstract class AbstractManagePage extends BracketPage {
         super(webDriver);
     }
 
+    /**
+     * 在操作webdriver之前 必须调用
+     */
+    protected abstract void beforeDriver();
+
     public void printThisPage() {
+        beforeDriver();
         System.err.println("url:" + webDriver.getCurrentUrl());
         System.err.println("page:" + this);
         System.err.println(webDriver.getPageSource());
@@ -55,6 +61,25 @@ public abstract class AbstractManagePage extends BracketPage {
         List<String> messages = getGritterMessage("growl-danger");
         assertThat(messages)
                 .isEmpty();
+    }
+
+    public void closeDanger() throws InterruptedException {
+        closeGritterMessage("growl-danger");
+    }
+
+    private void closeGritterMessage(String typeClass) throws InterruptedException {
+        while (true) {
+            List<WebElement> elements = webDriver.findElements(By.className(typeClass));
+            if (elements.isEmpty())
+                break;
+            for (WebElement message : elements) {
+                WebElement close = message.findElement(By.className("gritter-close"));
+                if (close.isDisplayed())
+                    close.click();
+            }
+            Thread.sleep(100);
+        }
+
     }
 
     @NotNull

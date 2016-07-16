@@ -10,6 +10,7 @@
 package com.huotu.hotcms.service.entity;
 
 import com.huotu.hotcms.service.common.ArticleSource;
+import com.huotu.hotcms.service.util.SerialUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,6 +18,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 /**
  * 文章模型
@@ -77,6 +79,28 @@ public class Article extends AbstractContent {
      * **/
     @Column(name="isSystem")
     private boolean system = false;
+
+    @Override
+    public Article copy() {
+        Article article=new Article();
+        article.setAuthor(author);
+        article.setContent(content);
+        article.setCategory(getCategory());
+        article.setSerial(SerialUtil.formatSerial(getCategory().getSite()));
+        article.setSystem(system);
+        article.setThumbUri(thumbUri);
+        article.setCreateTime(LocalDateTime.now());
+        article.setArticleSource(articleSource);
+        article.setOrderWeight(getOrderWeight());
+        article.setDeleted(isDeleted());
+        article.setUpdateTime(LocalDateTime.now());
+        article.setDescription(getDescription());
+        article.setTitle(getTitle());
+        article.setSerial(getSerial());
+        article.setCategory(getCategory());
+        return article;
+    }
+
 
 //    /**
 //     * 所属栏目

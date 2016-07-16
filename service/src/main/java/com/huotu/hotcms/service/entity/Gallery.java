@@ -16,6 +16,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 /**
  * 图库模型
@@ -46,6 +47,23 @@ public class Gallery extends AbstractContent {
      */
     @Column(name = "linkUrl")
     private String linkUrl;
+
+    @Override
+    public Gallery copy() {
+        Gallery gallery=new Gallery();
+        gallery.setContent(content);
+        gallery.setThumbUri(thumbUri);
+        gallery.setOrderWeight(getOrderWeight());
+        gallery.setTitle(getTitle());
+        gallery.setSerial(getSerial());
+        gallery.setCategory(getCategory());
+        gallery.setDeleted(isDeleted());
+        gallery.setLinkUrl(linkUrl);
+        gallery.setCreateTime(LocalDateTime.now());
+        gallery.setUpdateTime(LocalDateTime.now());
+        gallery.setDescription(getDescription());
+        return gallery;
+    }
 
 //    /**
 //     * 所属栏目

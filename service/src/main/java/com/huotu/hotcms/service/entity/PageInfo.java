@@ -10,6 +10,7 @@
 package com.huotu.hotcms.service.entity;
 
 import com.huotu.hotcms.service.Auditable;
+import com.huotu.hotcms.service.Copyable;
 import com.huotu.hotcms.service.common.PageType;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,6 +25,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 
 /**
@@ -34,7 +36,7 @@ import java.time.LocalDateTime;
 @Table(name = "cms_pageInfo")
 @Getter
 @Setter
-public class PageInfo implements Auditable {
+public class PageInfo implements Auditable,Copyable<PageInfo> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -80,4 +82,18 @@ public class PageInfo implements Auditable {
     @Column(name = "pageSetting")
     private byte[] pageSetting;
 
+    @Override
+    public PageInfo copy() {
+        PageInfo pageInfo=new PageInfo();
+        pageInfo.setCategory(category);
+        pageInfo.setUpdateTime(LocalDateTime.now());
+        pageInfo.setCreateTime(LocalDateTime.now());
+        pageInfo.setTitle(title);
+        pageInfo.setResourceKey(UUID.randomUUID().toString());
+        pageInfo.setPageSetting(pageSetting);
+        pageInfo.setPagePath(pagePath);
+        pageInfo.setPageType(pageType);
+        pageInfo.setSite(site);
+        return pageInfo;
+    }
 }

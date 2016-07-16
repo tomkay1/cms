@@ -9,12 +9,14 @@
 
 package com.huotu.hotcms.service.entity;
 
+import com.huotu.hotcms.service.util.SerialUtil;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 /**
  * 公告模型
@@ -26,17 +28,31 @@ import javax.persistence.Table;
 @Getter
 public class Notice extends AbstractContent {
 
-//    /**
-//     * 公告标题
-//     */
-//    private String title;
-
     /**
      * 公告内容
      * 应当是富文本
      */
     @Lob
     private String content;
+
+    @Override
+    public Notice copy() {
+        Notice notice=new Notice();
+        notice.setContent(content);
+        notice.setUpdateTime(LocalDateTime.now());
+        notice.setOrderWeight(getOrderWeight());
+        notice.setDeleted(isDeleted());
+        notice.setCreateTime(LocalDateTime.now());
+        notice.setTitle(getTitle());
+        return notice;
+    }
+
+    public Notice copy(Site site, Category category) {
+        Notice notice=copy();
+        notice.setSerial(SerialUtil.formatSerial(site));
+        notice.setCategory(category);
+        return notice;
+    }
 
 
 //    /**

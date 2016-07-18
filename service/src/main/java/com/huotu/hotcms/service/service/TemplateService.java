@@ -13,6 +13,8 @@ package com.huotu.hotcms.service.service;
  * Created by wenqi on 2016/7/15.
  */
 
+import java.io.IOException;
+
 /**
  * 模板站点的相关操作
  */
@@ -36,5 +38,5 @@ public interface TemplateService {
      *                       <li>1为替换模式 - 清空原有数据，然后进行复制</li>
      *                       </ul>
      */
-    void use(long templateSiteID, long customerSiteId, int mode);
+    void use(long templateSiteID, long customerSiteId, int mode) throws IOException;
 }

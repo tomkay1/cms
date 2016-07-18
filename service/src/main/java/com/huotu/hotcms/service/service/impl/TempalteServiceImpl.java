@@ -19,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -65,7 +67,7 @@ public class TempalteServiceImpl implements TemplateService {
     }
 
     @Override
-    public void use(long templateSiteID, long customerSiteId, int mode) {
+    public void use(long templateSiteID, long customerSiteId, int mode) throws IOException {
         Site templateSite=siteRepository.findOne(templateSiteID);
         Site customerSite=siteRepository.findOne(customerSiteId);
         if(1==mode){
@@ -75,13 +77,13 @@ public class TempalteServiceImpl implements TemplateService {
     }
 
     /**
-     * 删掉原先站点下的数据
-     * @param customerSite
+     * 删掉要使用模板站点的商户站点下的数据
+     * @param customerSite 商户站点
      */
-    private void delete(Site customerSite) {
+    private void delete(Site customerSite) throws IOException {
         List<Category> categories=categoryRepository.findBySite(customerSite);
         if(categories.isEmpty())
-            throw new IllegalStateException("目前系统中还没有数据源");
+            throw new IllegalStateException("目前该商户站点ID为"+customerSite.getSiteId()+"的站点还没有数据源！");
         //删除内容
         for(Category category:categories){
             articleRepository.deleteByCategory(category);
@@ -93,7 +95,7 @@ public class TempalteServiceImpl implements TemplateService {
             galleries.forEach(galleryListRepository::deleteByGallery);
             galleryRepository.deleteByCategory(category);
             //静态资源删除
-            deleteStaticResource(category);
+            deleteStaticResourceByCategory(category);
         }
         //删除数据源
         categoryRepository.deleteBySite(customerSite);
@@ -105,19 +107,61 @@ public class TempalteServiceImpl implements TemplateService {
      * 删除的同时，如果有静态资源，也一并删除
      * @param category 数据源
      */
-    private void deleteStaticResource(Category category) {
-
-
-
+    private void deleteStaticResourceByCategory(Category category) throws IOException {
+        List<Article> articles=articleRepository.findByCategory(category);
+        for(Article article:articles){
+            if(article.getThumbUri()!=null){
+                deleteStaticResourceByPath(article.getThumbUri());
+            }
+        }
+        List<Download> downloads=downloadRepository.findByCategory(category);
+        for(Download download:downloads){
+            if(download.getDownloadUrl()!=null)
+                deleteStaticResourceByPath(download.getDownloadUrl());
+        }
+        List<Gallery> galleries = galleryRepository.findByCategory(category);
+        List<GalleryList> galleryLists =null;
+        for(Gallery gallery:galleries){
+            if(gallery.getThumbUri()!=null)
+                deleteStaticResourceByPath(gallery.getThumbUri());
+            galleryLists=galleryListRepository.findByGallery(gallery);
+            for(GalleryList galleryList:galleryLists){
+                if(galleryList.getThumbUri()!=null)
+                    deleteStaticResourceByPath(galleryList.getThumbUri());
+            }
+        }
+        List<Link> links=linkRepository.findByCategory(category);
+        for(Link link:links){
+            if(link.getThumbUri()!=null){
+                deleteStaticResourceByPath(link.getThumbUri());
+            }
+        }
+        List<Video> videos=videoRepository.findByCategory(category);
+        for(Video video:videos){
+            if(video.getThumbUri()!=null)
+                deleteStaticResourceByPath(video.getThumbUri());
+            if(video.getVideoUrl()!=null)
+                deleteStaticResourceByPath(video.getVideoUrl());
+        }
     }
 
     /**
-     * 在复制的同时，对静态也做一份copy，并返回复制后资源的地址
+     * 通过资源所在地址，删除资源
+     * @param resourcePath 资源地址
+     */
+    private void deleteStaticResourceByPath(String resourcePath) throws IOException {
+        resourceService.deleteResource(resourcePath);
+    }
+
+    /**
+     * 在复制的同时，对静态资源也做一份copy，并返回复制后资源的地址
      * @param resourcePath 要复制的资源的地址
      * @return 复制后资源的地址
      */
-    private String copyStaticResource(String resourcePath){
+    private String copyStaticResource(String resourcePath) throws IOException {
         Resource resource= resourceService.getResource(resourcePath);
+        InputStream is=resource.getInputStream();
+        resourceService.uploadResource("",is);
 //        resourceService.uploadResource()
         return null;
     }
@@ -127,7 +171,7 @@ public class TempalteServiceImpl implements TemplateService {
      * @param templateSite 模板站点
      * @param customerSite 商户站点
      */
-    private void copy(Site templateSite, Site customerSite) {
+    private void copy(Site templateSite, Site customerSite) throws IOException {
         List<Category> categories=categoryRepository.findBySite(templateSite);
         Category copyCategory=null;
         AbstractContent copyContent=null;
@@ -167,7 +211,7 @@ public class TempalteServiceImpl implements TemplateService {
      * @param copyCategory 复制到商户站点的数据源
      * @param customerSite 商户站点
      */
-    private void copyContent(Category templateCategory,Category copyCategory,Site customerSite){
+    private void copyContent(Category templateCategory,Category copyCategory,Site customerSite) throws IOException {
         //对Article的复制
         List<Article> articles=articleRepository.findByCategory(templateCategory);
         Article newArticle=null;
@@ -192,13 +236,14 @@ public class TempalteServiceImpl implements TemplateService {
         List<Gallery> galleries = galleryRepository.findByCategory(templateCategory);
         Gallery g =null;
         GalleryList galleryList =null;
+        List<GalleryList> galleryLists =null;
         for (Gallery gallery : galleries) {
             g = gallery.copy();
             g.setCategory(copyCategory);
             g.setSerial(SerialUtil.formatSerial(customerSite));
             g = abstractContentRepository.save(g);
             //图库集合复制
-            List<GalleryList> galleryLists = galleryListRepository.findByGallery(gallery);
+            galleryLists = galleryListRepository.findByGallery(gallery);
             for (GalleryList gl : galleryLists) {
                 galleryList = gl.copy();
                 galleryList.setGallery(g);

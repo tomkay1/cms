@@ -33,6 +33,11 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.beans.PropertyDescriptor;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -156,5 +161,14 @@ public class TemplateControllerTest extends ManageTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
+    }
+
+    @Test
+    public void uploadTest() throws IOException, URISyntaxException {
+      URL url= getClass().getClassLoader().getResource("page.json");
+       URI uri= url.toURI();
+//        resourceService.uploadResource("",is);
+        Resource resource= resourceService.getResource(uri.getPath());
+        InputStream inputStream=resource.getInputStream();
     }
 }

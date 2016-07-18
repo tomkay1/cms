@@ -19,6 +19,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 /**
  * <p>CMS系统模板相关</p>
  * <p>针对界面:/view/site/site.html 上的点赞，使用，预览功能</p>
@@ -60,7 +62,7 @@ public class CMSTemplateController {
     @RequestMapping(value = "/use/{templateSiteID}/{customerSiteId}",method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public void use(@PathVariable("templateSiteID") long templateSiteID
-            , @PathVariable("customerSiteId") long customerSiteId, @RequestParam("mode") int mode) {
+            , @PathVariable("customerSiteId") long customerSiteId, @RequestParam("mode") int mode) throws IOException {
         templateService.use(templateSiteID, customerSiteId, mode);
     }
 

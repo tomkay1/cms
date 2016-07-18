@@ -19,6 +19,7 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
+import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.service.repository.AbstractContentRepository;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.OwnerRepository;
@@ -87,7 +88,7 @@ public class TestWidgetFactoryService extends TestBase {
 
     @Test
     public void testInstallWidget() throws IOException, FormatException, IllegalAccessException
-            , InstantiationException, InterruptedException {
+            , InstantiationException, InterruptedException, PageNotFoundException {
 
 
         //*********************************case1 安装控件校验控件是否存在控件列表中******************************

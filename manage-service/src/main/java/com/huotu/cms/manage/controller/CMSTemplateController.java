@@ -55,7 +55,7 @@ public class CMSTemplateController {
      * @param customerSiteId 商户站点ID
      * @param mode           使用模式：
      *                       <ul>
-     *                       <li>0为加载模式</li>
+     *                       <li>0为追加模式</li>
      *                       <li>1为替换模式</li>
      *                       </ul>
      */

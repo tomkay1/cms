@@ -154,9 +154,9 @@ public class TemplateControllerTest extends ManageTest {
         Owner owner=randomOwner();
         Site site=randomSiteAndData(owner);
         loginAsOwner(owner);
-        String mode=String.valueOf(random.nextInt(2));
+        String mode=String.valueOf(random.nextInt(2));//随机0或者1,0代表追加模式，1代表替换模式
         mockMvc.perform(post("/manage/template/use/{templateSiteID}/{customerSiteId}",template.getSiteId(),site.getSiteId())
-                .param("mode","1")
+                .param("mode",mode)
         .session(session))
                 .andExpect(status().isOk())
                 .andReturn();

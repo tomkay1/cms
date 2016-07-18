@@ -18,6 +18,7 @@ import me.jiangcai.lib.resource.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -217,7 +218,7 @@ public class TempalteServiceImpl implements TemplateService {
         Article newArticle=null;
         for(Article article:articles){
             newArticle=article.copy();
-            if(newArticle.getThumbUri()!=null&&newArticle.getThumbUri()!="")
+            if(!StringUtils.isEmpty(newArticle.getThumbUri()))
                 newArticle.setThumbUri(copyStaticResource(newArticle.getThumbUri()));
             newArticle.setCategory(copyCategory);
             newArticle.setSerial(SerialUtil.formatSerial(customerSite));
@@ -228,6 +229,9 @@ public class TempalteServiceImpl implements TemplateService {
         Download d =null;
         for (Download download : downloads) {
             d = download.copy();
+            if(!StringUtils.isEmpty(download.getDownloadUrl())){
+                d.setDownloadUrl(copyStaticResource(download.getDownloadUrl()));
+            }
             d.setSerial(SerialUtil.formatSerial(customerSite));
             d.setCategory(copyCategory);
             abstractContentRepository.save(d);
@@ -241,12 +245,16 @@ public class TempalteServiceImpl implements TemplateService {
             g = gallery.copy();
             g.setCategory(copyCategory);
             g.setSerial(SerialUtil.formatSerial(customerSite));
+            if(!StringUtils.isEmpty(gallery.getThumbUri()))
+                g.setThumbUri(copyStaticResource(gallery.getThumbUri()));
             g = abstractContentRepository.save(g);
             //图库集合复制
             galleryLists = galleryListRepository.findByGallery(gallery);
             for (GalleryList gl : galleryLists) {
                 galleryList = gl.copy();
                 galleryList.setGallery(g);
+                if(!StringUtils.isEmpty(galleryList.getThumbUri()))
+                    galleryList.setThumbUri(copyStaticResource(galleryList.getThumbUri()));
                 galleryList.setSite(customerSite);
                 galleryList.setSerial(SerialUtil.formatSerial(customerSite));
                 galleryListRepository.save(galleryList);
@@ -259,6 +267,9 @@ public class TempalteServiceImpl implements TemplateService {
             link1 = link.copy();
             link1.setSerial(SerialUtil.formatSerial(customerSite));
             link1.setCategory(copyCategory);
+            if(!StringUtils.isEmpty(link1.getThumbUri())){
+                link1.setThumbUri(copyStaticResource(link1.getThumbUri()));
+            }
             abstractContentRepository.save(link1);
         }
         //公告模型复制
@@ -277,6 +288,10 @@ public class TempalteServiceImpl implements TemplateService {
             v = video.copy();
             v.setSerial(SerialUtil.formatSerial(customerSite));
             v.setCategory(copyCategory);
+            if(!StringUtils.isEmpty(v.getThumbUri()))
+                v.setThumbUri(copyStaticResource(v.getThumbUri()));
+            if(!StringUtils.isEmpty(v.getVideoUrl()))
+                v.setVideoUrl(copyStaticResource(v.getVideoUrl()));
             abstractContentRepository.save(v);
         }
     }

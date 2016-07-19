@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.test.annotation.Rollback;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -14,7 +15,7 @@ import java.io.IOException;
 /**
  * Created by lhx on 2016/6/3.
  */
-
+@Rollback(true)
 public class CSSServiceImplTest extends TestBase {
     @Autowired
     CSSService cssService;

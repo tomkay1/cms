@@ -57,7 +57,8 @@ public class CSSServiceImpl implements CSSService {
             }, byteOut1);
             String css = byteOut1.toString();
             if (!css.contains("span") && !css.contains("color: #111")) {
-                throw new Exception("请安装nodeJs环境，否则可能会引起风险");
+                throw new Exception("没有发现nodeJs环境，可能会影响系统功能:" +
+                        "{@Link com.huotu.hotcms.widget.service.impl.CSSService.convertCss}");
             }
         } catch (Exception e) {
             e.printStackTrace();

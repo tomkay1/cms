@@ -23,6 +23,7 @@ import org.springframework.util.StringUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by wenqi on 2016/7/15.
@@ -162,9 +163,9 @@ public class TempalteServiceImpl implements TemplateService {
     private String copyStaticResource(String resourcePath) throws IOException {
         Resource resource= resourceService.getResource(resourcePath);
         InputStream is=resource.getInputStream();
-        resourceService.uploadResource("",is);
-//        resourceService.uploadResource()
-        return null;
+        String path = "upload/" + UUID.randomUUID().toString();//直接上传到新地址？
+        resourceService.uploadResource(path, is);
+        return path;
     }
 
     /**

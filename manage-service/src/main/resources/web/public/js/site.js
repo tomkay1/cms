@@ -13,6 +13,8 @@
  */
 $(function () {
 
+
+
     var useTemplateModal = $('#useTemplateModal');
 
     var addSiteForm = $('#addSiteForm');
@@ -96,6 +98,16 @@ $(function () {
     // 点赞的时候
     $('.template-lauds').click(function () {
         //  fa-thumbs-o-up fa-thumbs-up   o是没有
+        //$.ajax({
+        //    url:'',
+        //    type:'post',
+        //    dataType:'json',
+        //    success:function(data){
+        //        if(data){
+        //        }
+        //    }
+        //})
+
         var i = $('i', this);
         var padding;
         if (i.hasClass('fa-thumbs-o-up')) {

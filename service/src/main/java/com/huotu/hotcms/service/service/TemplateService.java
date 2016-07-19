@@ -24,9 +24,10 @@ public interface TemplateService {
      *
      * @param siteId     站点ID，也就是模板的ID
      * @param customerId 用户ID
+     * @param behavior
      * @return 是否点赞成功，存在网络异常，服务器异常等失误情况
      */
-    boolean laud(long siteId, long customerId);
+    boolean laud(long siteId, long customerId, int behavior);
 
     /**
      * 使用
@@ -39,4 +40,21 @@ public interface TemplateService {
      *                       </ul>
      */
     void use(long templateSiteID, long customerSiteId, int mode) throws IOException;
+
+
+    /**
+     * 获取点赞数
+     * @param siteId 站点ID，也就是模板的ID
+     * @param customerId 用户ID
+     * @return 点赞数
+     */
+    int laudNumber(long siteId, long customerId);
+
+    /**
+     * 是否点赞
+     * @param siteId siteId 站点ID，也就是模板的ID
+     * @param customerId customerId 用户ID
+     * @return 是否已点赞
+     */
+    boolean isLauded(long siteId, long customerId);
 }

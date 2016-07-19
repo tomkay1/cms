@@ -82,7 +82,7 @@ public class PreviewTest extends ManageTest {
 
         // 执行预览
 
-        driver.get("http://localhost/?simulateSite" + site.getSiteId());
+        driver.get("http://localhost/?simulateSite=" + site.getSiteId());
 
         assertThat(driver.getTitle())
                 .isEqualTo(indexPage.getTitle());

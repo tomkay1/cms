@@ -48,6 +48,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.htmlunit.webdriver.MockMvcHtmlUnitDriverBuilder;
 import org.springframework.test.web.servlet.htmlunit.webdriver.WebConnectionHtmlUnitDriver;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StreamUtils;
 
 import javax.servlet.http.Cookie;
@@ -181,7 +182,7 @@ public abstract class ManageTest extends SpringWebTest {
         Template template=new Template();
         template.setUpdateTime(LocalDateTime.now());
         template.setTitle(UUID.randomUUID().toString());
-        template.setName(UUID.randomUUID().toString());
+        template.setName(StringUtil.createRandomStr(5));
         TemplateType templateType=new TemplateType();
         templateType.setIndustry(UUID.randomUUID().toString());
         template.setTemplateType(templateType);
@@ -415,9 +416,10 @@ public abstract class ManageTest extends SpringWebTest {
         String widgetId="picCarousel";
         String version="1.0-SNAPSHOT";
         component.setWidgetIdentity(groupId+"-"+widgetId+":"+version);
-        ComponentProperties componentProperties =new ComponentProperties();
-        componentProperties.put(StringUtil.createRandomStr(random.nextInt(3) + 1),UUID.randomUUID().toString());
-        component.setProperties(componentProperties);
+        ComponentProperties properties =new ComponentProperties();
+        properties.put("maxImgUrl", new String[]{"1.jpg", "2.jpg", "3.jpg", "4.jpg"});
+        properties.put("minImgUrl", new String[]{"1.jpg", "2.jpg", "3.jpg", "4.jpg"});
+        properties.put("styleTemplate", "html");
         InstalledWidget installedWidget=null;
         List<InstalledWidget> installedWidgets=widgetFactoryService.widgetList(null);
         if(installedWidgets==null||installedWidgets.size()==0){

@@ -25,6 +25,7 @@ import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.repository.TemplateRepository;
 import me.jiangcai.lib.resource.service.ResourceService;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -47,6 +48,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -142,12 +144,20 @@ public class TemplateControllerTest extends ManageTest {
         Owner owner=randomOwner();
         Site site=randomSite(owner);
         loginAsOwner(owner);
-        MvcResult result=mockMvc.perform(put("/manage/template/laud/{siteId}", site.getSiteId())
+        //点赞测试
+        mockMvc.perform(put("/manage/template/laud/{siteId}", site.getSiteId())
                 .param("customerId", String.valueOf(owner.getCustomerId()))
+                .param("behavior","1")
                 .session(session))
                 .andExpect(status().isOk())
                 .andReturn();
-        String response=result.getResponse().getContentAsString();
+        //取消点赞测试
+        mockMvc.perform(put("/manage/template/laud/{siteId}", site.getSiteId())
+                .param("customerId", String.valueOf(owner.getCustomerId()))
+                .param("behavior","0")
+                .session(session))
+                .andExpect(status().isOk())
+                .andReturn();
     }
 
     @Test
@@ -169,5 +179,10 @@ public class TemplateControllerTest extends ManageTest {
     public void uploadTest() throws IOException, URISyntaxException {
         InputStream inputStream= getClass().getClassLoader().getResourceAsStream("page.json");
         me.jiangcai.lib.resource.Resource resource=  resourceService.uploadResource("upload",inputStream);
+    }
+
+    @Test
+    public void createTemplate(){
+        Template template=randomTemplate();
     }
 }

@@ -12,7 +12,6 @@ package com.huotu.hotcms.service.service.impl;
 import com.huotu.hotcms.service.entity.*;
 import com.huotu.hotcms.service.repository.*;
 import com.huotu.hotcms.service.service.TemplateService;
-import com.huotu.hotcms.service.util.SerialUtil;
 import me.jiangcai.lib.resource.Resource;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,15 +21,13 @@ import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by wenqi on 2016/7/15.
  */
 @Service
-@Transactional
-public class TempalteServiceImpl implements TemplateService {
+public class TemplateServiceImpl implements TemplateService {
 
     @Autowired
     private TemplateRepository templateRepository;
@@ -62,20 +59,54 @@ public class TempalteServiceImpl implements TemplateService {
     @Autowired
     private ResourceService resourceService;
 
+    /*Map<siteId$customerId,laudNumber>*/
+    private Map<String,Integer> laudMap=new HashMap<>();
+
     //使用Redis
     @Override
-    public boolean laud(long siteId, long customerId) {
-        return false;
+    public boolean laud(long siteId, long customerId, int behavior) {
+        //目前只是简单实现
+        try{ //点赞数据储存应该使用其他技术
+            String key=siteId+"$"+customerId;
+            int laudNum=laudNumber(siteId,customerId);
+            if(1==behavior){//点赞
+                laudMap.put(key,laudNum+1);
+            }else{
+                laudMap.put(key,laudNum-1);
+            }
+            return true;
+        }catch (Exception e){//其他异常
+            return false;
+        }
     }
 
     @Override
     public void use(long templateSiteID, long customerSiteId, int mode) throws IOException {
-        Site templateSite = siteRepository.findOne(templateSiteID);
+        Template templateSite = templateRepository.findOne(templateSiteID);
         Site customerSite = siteRepository.findOne(customerSiteId);
         if (1 == mode) {
             delete(customerSite);
         }
         copy(templateSite, customerSite);
+        templateSite.setUseNumber(templateSite.getUseNumber()+1);//使用数+1
+        templateRepository.save(templateSite);
+    }
+
+    @Override
+    public int laudNumber(long siteId, long customerId) {
+        //目前只是简单实现
+        String key=siteId+"$"+customerId;
+        return laudMap.get(key)==null?100:laudMap.get(key);
+    }
+
+    @Override
+    public boolean isLauded(long siteId, long customerId) {
+        //目前只是简单实现
+
+        int a=new Random().nextInt(10);
+        if(a%2==0)
+            return true;
+        return false;
     }
 
     /**
@@ -114,37 +145,37 @@ public class TempalteServiceImpl implements TemplateService {
     private void deleteStaticResourceByCategory(Category category) throws IOException {
         List<Article> articles = articleRepository.findByCategory(category);
         for (Article article : articles) {
-            if (article.getThumbUri() != null) {
+            if (!StringUtils.isEmpty(article.getThumbUri())) {
                 deleteStaticResourceByPath(article.getThumbUri());
             }
         }
         List<Download> downloads = downloadRepository.findByCategory(category);
         for (Download download : downloads) {
-            if (download.getDownloadUrl() != null)
+            if (!StringUtils.isEmpty(download.getDownloadUrl() ))
                 deleteStaticResourceByPath(download.getDownloadUrl());
         }
         List<Gallery> galleries = galleryRepository.findByCategory(category);
         List<GalleryList> galleryLists = null;
         for (Gallery gallery : galleries) {
-            if (gallery.getThumbUri() != null)
+            if (!StringUtils.isEmpty(gallery.getThumbUri()))
                 deleteStaticResourceByPath(gallery.getThumbUri());
             galleryLists = galleryListRepository.findByGallery(gallery);
             for (GalleryList galleryList : galleryLists) {
-                if (galleryList.getThumbUri() != null)
+                if (!StringUtils.isEmpty(galleryList.getThumbUri()))
                     deleteStaticResourceByPath(galleryList.getThumbUri());
             }
         }
         List<Link> links = linkRepository.findByCategory(category);
         for (Link link : links) {
-            if (link.getThumbUri() != null) {
+            if (!StringUtils.isEmpty(link.getThumbUri())) {
                 deleteStaticResourceByPath(link.getThumbUri());
             }
         }
         List<Video> videos = videoRepository.findByCategory(category);
         for (Video video : videos) {
-            if (video.getThumbUri() != null)
+            if (!StringUtils.isEmpty(video.getThumbUri()))
                 deleteStaticResourceByPath(video.getThumbUri());
-            if (video.getVideoUrl() != null)
+            if (!StringUtils.isEmpty(video.getVideoUrl()))
                 deleteStaticResourceByPath(video.getVideoUrl());
         }
     }

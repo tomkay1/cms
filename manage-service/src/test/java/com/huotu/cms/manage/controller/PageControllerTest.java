@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
@@ -76,7 +77,9 @@ public class PageControllerTest extends ManageTest {
         mockMvc = builder.build();
     }
 
+
     @Test
+    @Rollback
     public void flow() throws Exception {
         //首先确保虚拟出来的siteId 并没有存在任何页面
         Owner owner = randomOwner();

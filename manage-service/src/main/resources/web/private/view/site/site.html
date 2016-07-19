@@ -124,12 +124,11 @@
                                                 class="operate-btn btn-white col-xs-6 template-use">使用(999+)
                                         </button>
                                     </div>
-                                    <div class="site-alert text-success"
-                                         th:text="${template.name}">
+                                    <div class="site-alert text-success">
                                         <!--a-->
-                                        <span>我的模板名称</span>
+                                        <span th:text="${template.name}">我的模板名称</span>
                                         <span class="template-lauds">
-                                            <i class="fa fa-thumbs-up"></i>
+                                            <i th:class="${@templateServiceImpl.isLauded(${object.siteId},${template.siteId})==true?'fa fa-thumbs-up':'fa fa-thumbs-o-up'}"></i>
                                             <span th:text="${{template.lauds}}">99</span>
                                         </span>
                                     </div>

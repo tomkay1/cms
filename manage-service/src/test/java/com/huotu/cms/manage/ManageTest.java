@@ -335,8 +335,9 @@ public abstract class ManageTest extends SpringWebTest {
 
     protected Download randomDownload(Category category){
         Download download=new Download();
-        download.setDownloadUrl(UUID.randomUUID().toString());
         download.setCategory(category);
+        download.setTitle(UUID.randomUUID().toString());
+        download.setDescription(UUID.randomUUID().toString());
         return downloadRepository.saveAndFlush(download);
     }
 

@@ -101,6 +101,14 @@ public class Article extends AbstractContent {
         return article;
     }
 
+    @Override
+    public Article copy(Site site, Category category) {
+        Article article=copy();
+        article.setSerial(SerialUtil.formatSerial(site));
+        article.setCategory(category);
+        return article;
+    }
+
 
 //    /**
 //     * 所属栏目

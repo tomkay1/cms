@@ -13,6 +13,9 @@ package com.huotu.hotcms.service;
  * Created by wenqi on 2016/7/16.
  */
 
+import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.Site;
+
 /**
  * 可复制的
  * @param <T> 可复制的数据类型
@@ -23,4 +26,13 @@ public interface Copyable<T> {
      * @return T
      */
     T copy();
+
+    /**
+     * <p>在很多内容的复制的时候，需要用到商户站点和复制后的数据源
+     * 如果用不到该方法,请直接使用该接口下面的copy()方法</p>
+     * @param site 商户站点 如果没有，则为null
+     * @param category 复制后的数据源 如果没有，则为null
+     * @return 复制后的数据
+     */
+    T copy(Site site,Category category);
 }

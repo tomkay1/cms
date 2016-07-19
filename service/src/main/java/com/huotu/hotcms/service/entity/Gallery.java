@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.service.entity;
 
+import com.huotu.hotcms.service.util.SerialUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -62,6 +63,14 @@ public class Gallery extends AbstractContent {
         gallery.setCreateTime(LocalDateTime.now());
         gallery.setUpdateTime(LocalDateTime.now());
         gallery.setDescription(getDescription());
+        return gallery;
+    }
+
+    @Override
+    public Gallery copy(Site site, Category category) {
+        Gallery gallery=copy();
+        gallery.setSerial(SerialUtil.formatSerial(site));
+        gallery.setCategory(category);
         return gallery;
     }
 

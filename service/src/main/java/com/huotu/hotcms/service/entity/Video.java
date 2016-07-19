@@ -81,6 +81,14 @@ public class Video extends AbstractContent {
         return video;
     }
 
+    @Override
+    public Video copy(Site site, Category category) {
+        Video video=copy();
+        video.setSerial(SerialUtil.formatSerial(site));
+        video.setCategory(category);
+        return video;
+    }
+
 //    /**
 //     * 所属栏目
 //     */

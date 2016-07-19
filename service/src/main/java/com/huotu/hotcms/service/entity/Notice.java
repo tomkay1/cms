@@ -47,6 +47,7 @@ public class Notice extends AbstractContent {
         return notice;
     }
 
+    @Override
     public Notice copy(Site site, Category category) {
         Notice notice=copy();
         notice.setSerial(SerialUtil.formatSerial(site));

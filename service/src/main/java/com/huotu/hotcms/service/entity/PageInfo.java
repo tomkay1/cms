@@ -96,4 +96,9 @@ public class PageInfo implements Auditable,Copyable<PageInfo> {
         pageInfo.setSite(site);
         return pageInfo;
     }
+
+    @Override
+    public PageInfo copy(Site site, Category category) {
+        return copy();
+    }
 }

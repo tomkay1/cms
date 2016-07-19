@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.service.entity;
 
+import com.huotu.hotcms.service.util.SerialUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -61,6 +62,14 @@ public class Download extends AbstractContent {
         download.setUpdateTime(LocalDateTime.now());
         download.setCreateTime(LocalDateTime.now());
         download.setDescription(getDescription());
+        return download;
+    }
+
+    @Override
+    public Download copy(Site site, Category category) {
+        Download download=copy();
+        download.setSerial(SerialUtil.formatSerial(site));
+        download.setCategory(category);
         return download;
     }
 

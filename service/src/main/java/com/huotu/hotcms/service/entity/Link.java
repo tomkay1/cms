@@ -65,6 +65,14 @@ public class Link extends AbstractContent {
         return link;
     }
 
+    @Override
+    public Link copy(Site site, Category category) {
+        Link link=copy();
+        link.setCategory(category);
+        link.setSerial(SerialUtil.formatSerial(site));
+        return link;
+    }
+
 //    /**
 //     * 所属栏目
 //     */

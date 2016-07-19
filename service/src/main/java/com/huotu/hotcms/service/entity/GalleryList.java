@@ -10,6 +10,8 @@
 package com.huotu.hotcms.service.entity;
 
 import com.huotu.hotcms.service.Auditable;
+import com.huotu.hotcms.service.Copyable;
+import com.huotu.hotcms.service.util.SerialUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,7 +29,7 @@ import java.time.LocalDateTime;
 @Table(name = "cms_galleryList")
 @Getter
 @Setter
-public class GalleryList implements Auditable {
+public class GalleryList implements Auditable,Copyable<GalleryList> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -88,5 +90,27 @@ public class GalleryList implements Auditable {
      */
     @Column(name = "updateTime")
     private LocalDateTime updateTime;
+
+    @Override
+    public GalleryList copy() {
+        GalleryList galleryList=new GalleryList();
+        galleryList.setDeleted(isDeleted());
+        galleryList.setSerial(serial);
+        galleryList.setOrderWeight(orderWeight);
+        galleryList.setThumbUri(thumbUri);
+        galleryList.setCreateTime(LocalDateTime.now());
+        galleryList.setGallery(gallery);
+        galleryList.setSite(site);
+        galleryList.setUpdateTime(LocalDateTime.now());
+        return galleryList;
+    }
+
+    @Override
+    public GalleryList copy(Site site, Category category) {
+        GalleryList galleryList=copy();
+        galleryList.setSerial(SerialUtil.formatSerial(site));
+        galleryList.setSite(site);
+        return galleryList;
+    }
 
 }

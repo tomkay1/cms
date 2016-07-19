@@ -13,7 +13,9 @@ import com.huotu.cms.manage.page.support.AbstractFrameParentPage;
 import com.huotu.hotcms.service.entity.Site;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -45,9 +47,21 @@ public class ManageMainPage extends AbstractFrameParentPage {
     public void switchSite(Site site) {
         beforeDriver();
         // UI去点 可能会有Ajax 异步问题
-        webDriver.get("http://localhost/manage/switch/" + site.getSiteId());
-        webDriver.get("http://localhost/manage/main");
-        reloadPageInfo();
+
+        WebElement siteList = webDriver.findElement(By.cssSelector("ul.site-list"));
+        if (!siteList.isDisplayed()) {
+            webDriver.findElement(By.cssSelector("button.site-dropdown")).click();
+        }
+//        webDriver.get("http://localhost/manage/switch/" + site.getSiteId());
+//        webDriver.get("http://localhost/manage/main");
+        for (WebElement link : siteList.findElements(By.cssSelector("a.siteSwitcher"))) {
+            if (link.getText().contains(site.getName())) {
+                link.click();
+                reloadPageInfo();
+                return;
+            }
+        }
+        throw new IllegalStateException("页面上找不到站点" + site);
     }
 
     /**

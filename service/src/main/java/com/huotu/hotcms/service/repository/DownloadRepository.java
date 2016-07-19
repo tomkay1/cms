@@ -23,4 +23,11 @@ public interface DownloadRepository extends JpaRepository<Download, Long>, JpaSp
      * @return 下载模型
      */
     List<Download> findByCategory(Category category);
+
+    /**
+     * 删除相关数据源下的Download 数据
+     * @param category
+     * @return
+     */
+    Long deleteByCategory(Category category);
 }

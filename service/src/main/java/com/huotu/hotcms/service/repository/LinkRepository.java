@@ -20,4 +20,6 @@ public interface LinkRepository extends JpaRepository<Link, Long>, JpaSpecificat
     List<Link> findByIdInAndDeletedOrderByOrderWeight(List<Long> specifyIds, boolean b);
 
     List<Link> findByCategory(Category category);
+
+    Long deleteByCategory(Category category);
 }

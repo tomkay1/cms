@@ -51,6 +51,7 @@ public class CategoryControllerTest extends SiteManageTest {
             mainPage.toPage(CategoryPage.class);
             throw new AssertionError("现在应该还看不到页面");
         } catch (Exception ignored) {
+            mainPage.closeDanger();
         }
         // 试下使用{{}}
         mainPage.switchSite(site);

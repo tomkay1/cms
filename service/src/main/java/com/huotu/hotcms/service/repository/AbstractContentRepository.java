@@ -10,6 +10,7 @@
 package com.huotu.hotcms.service.repository;
 
 import com.huotu.hotcms.service.entity.AbstractContent;
+import com.huotu.hotcms.service.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -81,4 +82,11 @@ public interface AbstractContentRepository extends JpaRepository<AbstractContent
                 "select g.title,g.description,c.name,g.id,c.modelId,g.createTime from cms_gallery g left join cms_category c on g.categoryId=c.id where g.deleted=false and c.siteId = ?1 and c.deleted=false and c.id in(?2) and g.title like %?3%) as t",nativeQuery = true)
         List<Object[]> findContentsSizeBySiteIdAndCategoryIdsAndName(Long siteId,String categoryId,String name);
 
+
+    /**
+     * 通过数据源查找内容
+     * @param category 数据源
+     * @return 内容
+     */
+    List<AbstractContent> findByCategory(Category category);
 }

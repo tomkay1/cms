@@ -9,12 +9,14 @@
 
 package com.huotu.hotcms.service.entity;
 
+import com.huotu.hotcms.service.util.SerialUtil;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 /**
  * 链接模型
@@ -49,6 +51,27 @@ public class Link extends AbstractContent {
      */
     @Column(name = "linkUrl")
     private String linkUrl;
+
+    @Override
+    public Link copy() {
+        Link link=new Link();
+        link.setThumbUri(thumbUri);
+        link.setDescription(getDescription());
+        link.setOrderWeight(getOrderWeight());
+        link.setTitle(getTitle());
+        link.setCreateTime(LocalDateTime.now());
+        link.setUpdateTime(LocalDateTime.now());
+        link.setDeleted(isDeleted());
+        return link;
+    }
+
+    @Override
+    public Link copy(Site site, Category category) {
+        Link link=copy();
+        link.setCategory(category);
+        link.setSerial(SerialUtil.formatSerial(site));
+        return link;
+    }
 
 //    /**
 //     * 所属栏目

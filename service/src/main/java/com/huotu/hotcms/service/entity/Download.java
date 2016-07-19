@@ -9,12 +9,14 @@
 
 package com.huotu.hotcms.service.entity;
 
+import com.huotu.hotcms.service.util.SerialUtil;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 /**
  * 下载模型
@@ -50,7 +52,28 @@ public class Download extends AbstractContent {
     @Column(name = "downloads")
     private int downloads;
 
-//    /**
+    @Override
+    public Download copy() {
+        Download download=new Download();
+        download.setDownloadUrl(downloadUrl);
+        download.setTitle(getTitle());
+        download.setDeleted(isDeleted());
+        download.setOrderWeight(getOrderWeight());
+        download.setUpdateTime(LocalDateTime.now());
+        download.setCreateTime(LocalDateTime.now());
+        download.setDescription(getDescription());
+        return download;
+    }
+
+    @Override
+    public Download copy(Site site, Category category) {
+        Download download=copy();
+        download.setSerial(SerialUtil.formatSerial(site));
+        download.setCategory(category);
+        return download;
+    }
+
+    //    /**
 //    * 所属栏目
 //    */
 //    @Basic

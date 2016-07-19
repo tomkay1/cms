@@ -13,6 +13,8 @@ package com.huotu.hotcms.service.service;
  * Created by wenqi on 2016/7/15.
  */
 
+import java.io.IOException;
+
 /**
  * 模板站点的相关操作
  */
@@ -32,9 +34,9 @@ public interface TemplateService {
      * @param templateSiteID 模板站点ID
      * @param customerSiteId 商户站点ID
      * @param mode           模式<ul>
-     *                       <li>0为加载模式 - 针对Category,Page,Content的复制</li>
+     *                       <li>0为追加模式 - 保持现有数据，再将模板站点下的Category,Page,Content复制到该站点中</li>
      *                       <li>1为替换模式 - 清空原有数据，然后进行复制</li>
      *                       </ul>
      */
-    void use(long templateSiteID, long customerSiteId, int mode);
+    void use(long templateSiteID, long customerSiteId, int mode) throws IOException;
 }

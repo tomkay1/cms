@@ -31,8 +31,15 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StreamUtils;
 
 import java.beans.PropertyDescriptor;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -40,6 +47,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -142,4 +150,24 @@ public class TemplateControllerTest extends ManageTest {
         String response=result.getResponse().getContentAsString();
     }
 
+    @Test
+    public void testUse() throws Exception {
+        Template template=randomTemplate();
+        Owner owner=randomOwner();
+        Site site=randomSiteAndData(owner);
+        loginAsOwner(owner);
+        String mode=String.valueOf(random.nextInt(2));//随机0或者1,0代表追加模式，1代表替换模式
+        mockMvc.perform(post("/manage/template/use/{templateSiteID}/{customerSiteId}",template.getSiteId(),site.getSiteId())
+                .param("mode",mode)
+        .session(session))
+                .andExpect(status().isOk())
+                .andReturn();
+
+    }
+
+    @Test
+    public void uploadTest() throws IOException, URISyntaxException {
+        InputStream inputStream= getClass().getClassLoader().getResourceAsStream("page.json");
+        me.jiangcai.lib.resource.Resource resource=  resourceService.uploadResource("upload",inputStream);
+    }
 }

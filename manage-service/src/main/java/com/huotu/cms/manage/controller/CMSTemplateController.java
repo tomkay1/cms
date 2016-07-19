@@ -15,8 +15,11 @@ package com.huotu.cms.manage.controller;
 
 import com.huotu.hotcms.service.service.TemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 /**
  * <p>CMS系统模板相关</p>
@@ -52,13 +55,14 @@ public class CMSTemplateController {
      * @param customerSiteId 商户站点ID
      * @param mode           使用模式：
      *                       <ul>
-     *                       <li>0为加载模式</li>
+     *                       <li>0为追加模式</li>
      *                       <li>1为替换模式</li>
      *                       </ul>
      */
-    @RequestMapping("/use/{templateSiteID}/{customerSiteId}")
+    @RequestMapping(value = "/use/{templateSiteID}/{customerSiteId}",method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
     public void use(@PathVariable("templateSiteID") long templateSiteID
-            , @PathVariable("customerSiteId") long customerSiteId, @RequestParam("mode") int mode) {
+            , @PathVariable("customerSiteId") long customerSiteId, @RequestParam("mode") int mode) throws IOException {
         templateService.use(templateSiteID, customerSiteId, mode);
     }
 

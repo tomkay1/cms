@@ -10,7 +10,9 @@
 package com.huotu.hotcms.service.entity;
 
 import com.huotu.hotcms.service.Auditable;
+import com.huotu.hotcms.service.Copyable;
 import com.huotu.hotcms.service.common.ContentType;
+import com.huotu.hotcms.service.util.SerialUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,7 +34,7 @@ import java.time.LocalDateTime;
 @Table(name = "cms_category")
 @Setter
 @Getter
-public class Category implements Auditable {
+public class Category implements Auditable,Copyable<Category> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -119,6 +121,27 @@ public class Category implements Auditable {
 //     */
 //    @Column(name = "modelId")
 //    private Integer modelId;
+    
+    @Override
+    public Category copy() {
+        Category category=new Category();
+        category.setCreateTime(LocalDateTime.now());
+        category.setContentType(contentType);
+        category.setSerial(serial);
+        category.setOrderWeight(orderWeight);
+        category.setParent(parent);
+        category.setSite(site);
+        category.setUpdateTime(LocalDateTime.now());
+        category.setDeleted(isDeleted());
+        category.setName(name);
+        return category;
+    }
 
-
+    @Override
+    public Category copy(Site site, Category category) {
+        Category category1=copy();
+        category1.setSerial(SerialUtil.formatSerial(site));
+        category1.setSite(site);
+        return category1;
+    }
 }

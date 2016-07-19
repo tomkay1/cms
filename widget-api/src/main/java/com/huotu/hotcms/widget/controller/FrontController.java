@@ -43,11 +43,20 @@ import java.io.IOException;
 public class FrontController implements FilterBehavioral {
 
     private static final Log log = LogFactory.getLog(FrontController.class);
-    private static final String htmlHeader = "<!DOCTYPE html>\n" +
+    private static final String htmlFooter = "\n</body>\n" +
+            "    <script src=\"http://resali.huobanplus.com/cdn/jquery/1.9.1/jquery.min.js\"></script>\n" +
+            "    <script src=\"http://resali.huobanplus.com/cdn/bootstrap/3.3.6/bootstrap.min.js\"></script>\n" +
+            "    </html>";
+    private static String htmlHeader = "<!DOCTYPE html>\n" +
             "    <html lang=\"en\" xmlns:th=\"http://www.thymeleaf.org\">\n" +
             "    <head>\n" +
             "    <meta charset=\"utf-8\"></meta>\n" +
-            "    <title>Document</title>\n" +
+            "    <meta http-equiv=\"x-ua-compatible\" content=\"IE=edge,chrome=1\">\n" +
+            "    <meta name=\"author\" content=\"Neo\">\n" +
+            "    <meta name=\"viewport\" content=\"width=device-width,initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no\">\n" +
+            "    <meta name=\"keywords\" content=\"%s\">\n" +
+            "    <meta name=\"description\" content=\"%s\">\n" +
+            "    <title>%s</title>\n" +
             "\n" +
             "    <link rel=\"stylesheet\" href=\"http://resali.huobanplus.com/cdn/bootstrap/3.3.6/css/bootstrap.min.css\">\n" +
             "    <link rel=\"stylesheet\" href=\"css/index.css\">\n" +
@@ -55,10 +64,6 @@ public class FrontController implements FilterBehavioral {
             "\n" +
             "    </head>\n" +
             "    <body>\n";
-    private static final String htmlFooter = "\n</body>\n" +
-            "    <script src=\"http://resali.huobanplus.com/cdn/jquery/1.9.1/jquery.min.js\"></script>\n" +
-            "    <script src=\"http://resali.huobanplus.com/cdn/bootstrap/3.3.6/bootstrap.min.js\"></script>\n" +
-            "    </html>";
     @Autowired(required = false)
     private AbstractContentRepository abstractContentRepository;
     @Autowired
@@ -110,10 +115,13 @@ public class FrontController implements FilterBehavioral {
     }
 
 
-    private void generateHtml(HttpServletResponse response, Page page, CMSContext cmsContext, Model model) throws IOException {
+    private void generateHtml(HttpServletResponse response, Page page, CMSContext cmsContext, Model model)
+            throws IOException {
         PageInfo pageInfo = pageInfoRepository.findOne(page.getPageIdentity());
         model.addAttribute("resourceKey", pageInfo.getResourceKey());
         model.addAttribute("pageId", pageInfo.getPageId());
+        htmlHeader = String.format(htmlHeader, pageInfo.getSite().getKeywords(), pageInfo.getSite().getDescription()
+                , pageInfo.getTitle());
         response.getOutputStream().write(htmlHeader.getBytes(), 0, htmlHeader.getBytes().length);
         pageService.generateHTML(response.getOutputStream(), page, cmsContext);
         response.getOutputStream().write(htmlFooter.getBytes(), 0, htmlFooter.getBytes().length);
@@ -139,4 +147,6 @@ public class FrontController implements FilterBehavioral {
         // 最低优先级 到了我这  就是改url了
         return Ordered.LOWEST_PRECEDENCE;
     }
+
+
 }

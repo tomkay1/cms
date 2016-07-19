@@ -37,7 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.transaction.annotation.Isolation;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -54,6 +54,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 /**
  * <p>针对页面服务controller层{@link FrontController}的单元测试</p>
  */
+@Transactional
+@Rollback(true)
 public class TestFontController extends TestBase {
     @Autowired(required = false)
     protected MockHttpServletResponse response;
@@ -83,7 +85,6 @@ public class TestFontController extends TestBase {
      * 最基本的测试流
      */
     @Test
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     public void page() throws Exception {
         long contentId = 1L;
         String pagePath = "test";

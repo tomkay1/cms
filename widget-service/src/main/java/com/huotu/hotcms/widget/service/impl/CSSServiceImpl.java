@@ -39,29 +39,25 @@ public class CSSServiceImpl implements CSSService {
     private static final Log log = LogFactory.getLog(CSSServiceImpl.class);
 
     @PostConstruct
-    public void init() {
+    public void init() throws Exception {
         //--case4-- mainColor为null生成的css是否符合与预期用户定义less样式
         ByteArrayOutputStream byteOut1 = new ByteArrayOutputStream();
-        try {
-            convertCss(new PageTheme() {
-                @Override
-                public String mainColor() {
-                    return null;
-                }
-
-                @Override
-                public Resource customLess() {
-                    String less = "@spanColor:#111;span{color:@spanColor}";
-                    return new ByteArrayResource(less.getBytes());
-                }
-            }, byteOut1);
-            String css = byteOut1.toString();
-            if (!css.contains("span") && !css.contains("color: #111")) {
-                throw new Exception("没有发现nodeJs环境，可能会影响系统功能:" +
-                        "{@Link com.huotu.hotcms.widget.service.impl.CSSService.convertCss}");
+        convertCss(new PageTheme() {
+            @Override
+            public String mainColor() {
+                return null;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+            @Override
+            public Resource customLess() {
+                String less = "@spanColor:#111;span{color:@spanColor}";
+                return new ByteArrayResource(less.getBytes());
+            }
+        }, byteOut1);
+        String css = byteOut1.toString();
+        if (!css.contains("span") && !css.contains("color: #111")) {
+            throw new Exception("Not found in the nodeJs environment, may affect the system function" +
+                    ",Please install nodeJs and add the less module for NodeJs");
         }
     }
 

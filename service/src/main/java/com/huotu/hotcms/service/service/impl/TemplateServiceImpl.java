@@ -63,11 +63,11 @@ public class TemplateServiceImpl implements TemplateService {
 
     //使用Redis
     @Override
-    public boolean laud(long siteId, String name, int behavior) {
+    public boolean laud(long siteId, long ownerId, int behavior) {
         //目前只是简单实现
         try{ //点赞数据储存应该使用其他技术
-            String key=siteId+"$"+ name;
-            int laudNum=laudNumber(siteId, name);
+            String key=siteId+"$"+ ownerId;
+            int laudNum=laudNumber(siteId, ownerId);
             if(1==behavior){//点赞
                 laudMap.put(key,laudNum+1);
             }else{
@@ -92,16 +92,16 @@ public class TemplateServiceImpl implements TemplateService {
     }
 
     @Override
-    public int laudNumber(long siteId, String name) {
+    public int laudNumber(long siteId, long ownerId) {
         //目前只是简单实现
-        String key=siteId+"$"+ name;
+        String key=siteId+"$"+ ownerId;
         return laudMap.get(key)==null?100:laudMap.get(key);
     }
 
     @Override
-    public boolean isLauded(long siteId, String name) {
+    public boolean isLauded(long siteId, long ownerId) {
         //目前只是简单实现
-        String key=siteId+"$"+ name;
+        String key=siteId+"$"+ ownerId;
         return laudMap.get(key)!=null;
     }
 

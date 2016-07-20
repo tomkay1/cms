@@ -128,9 +128,9 @@
                                         <!--a-->
                                         <span th:text="${template.name}">我的模板名称</span>
                                         <span class="template-lauds">
-                                            <i class="fa fa-thumbs-up"></i>
+                                            <i class="fa fa-thumbs-up" th:class="${@templateServiceImpl.isLauded({template.siteId},{#authentication.details.root?-1:#authentication.details.currentOwnerId})}==true?'fa fa-thumbs-up':'fa fa-thumbs-o-up'"></i>
                                             <span th:text="${{template.lauds}}">99</span>
-                                            <span class="laudSpan" th:text="${template.siteId}" style="display:none"></span>
+                                            <div class="laudSpan" th:text="${template.siteId}" style="display:none"></div>
                                         </span>
                                     </div>
                                     <div th:if="${template.ableToRun && template.enabled}" class="site-preview">
@@ -255,7 +255,8 @@
     </div><!-- modal-dialog -->
 </div><!-- modal -->
 <script th:inline="javascript">
-var name = /*[[@{#authentication.name}]]*/ "test";
+    var currentOwnerId = /*[[${#authentication.details.root?-1:#authentication.details.currentOwnerId}]]*/ "-999";   //如果是超级管理员，ownerId则为-1
+    var laudUrl=/*[[@{/manage/template/laud/}]]*/ "index.html?rnd=";
 </script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-1.10.2.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-ui-1.10.3.min.js"></script>

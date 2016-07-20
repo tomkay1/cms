@@ -128,8 +128,9 @@
                                         <!--a-->
                                         <span th:text="${template.name}">我的模板名称</span>
                                         <span class="template-lauds">
-                                            <i th:class="${@templateServiceImpl.isLauded(${object.siteId},${template.siteId})==true?'fa fa-thumbs-up':'fa fa-thumbs-o-up'}"></i>
+                                            <i class="fa fa-thumbs-up"></i>
                                             <span th:text="${{template.lauds}}">99</span>
+                                            <span class="laudSpan" th:text="${template.siteId}" style="display:none"></span>
                                         </span>
                                     </div>
                                     <div th:if="${template.ableToRun && template.enabled}" class="site-preview">
@@ -253,7 +254,9 @@
         </div><!-- modal-content -->
     </div><!-- modal-dialog -->
 </div><!-- modal -->
-
+<script th:inline="javascript">
+var name = /*[[@{#authentication.name}]]*/ "test";
+</script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-1.10.2.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-ui-1.10.3.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/bootstrap.min.js"></script>

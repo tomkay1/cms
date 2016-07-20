@@ -16,7 +16,6 @@ import me.jiangcai.lib.resource.Resource;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
@@ -64,11 +63,11 @@ public class TemplateServiceImpl implements TemplateService {
 
     //使用Redis
     @Override
-    public boolean laud(long siteId, long customerId, int behavior) {
+    public boolean laud(long siteId, String name, int behavior) {
         //目前只是简单实现
         try{ //点赞数据储存应该使用其他技术
-            String key=siteId+"$"+customerId;
-            int laudNum=laudNumber(siteId,customerId);
+            String key=siteId+"$"+ name;
+            int laudNum=laudNumber(siteId, name);
             if(1==behavior){//点赞
                 laudMap.put(key,laudNum+1);
             }else{
@@ -93,20 +92,17 @@ public class TemplateServiceImpl implements TemplateService {
     }
 
     @Override
-    public int laudNumber(long siteId, long customerId) {
+    public int laudNumber(long siteId, String name) {
         //目前只是简单实现
-        String key=siteId+"$"+customerId;
+        String key=siteId+"$"+ name;
         return laudMap.get(key)==null?100:laudMap.get(key);
     }
 
     @Override
-    public boolean isLauded(long siteId, long customerId) {
+    public boolean isLauded(long siteId, String name) {
         //目前只是简单实现
-
-        int a=new Random().nextInt(10);
-        if(a%2==0)
-            return true;
-        return false;
+        String key=siteId+"$"+ name;
+        return laudMap.get(key)!=null;
     }
 
     /**

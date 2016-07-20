@@ -23,11 +23,11 @@ public interface TemplateService {
      * 点赞
      *
      * @param siteId     站点ID，也就是模板的ID
-     * @param customerId 用户ID
-     * @param behavior
+     * @param name 当前登录用户的用户名  -用户名应该是唯一的
+     * @param behavior 用户行为，1表示点赞，0表示取消赞
      * @return 是否点赞成功，存在网络异常，服务器异常等失误情况
      */
-    boolean laud(long siteId, long customerId, int behavior);
+    boolean laud(long siteId, String name, int behavior);
 
     /**
      * 使用
@@ -44,17 +44,19 @@ public interface TemplateService {
 
     /**
      * 获取点赞数
+     * @param name 用户ID
      * @param siteId 站点ID，也就是模板的ID
-     * @param customerId 用户ID
+     * @param name
      * @return 点赞数
      */
-    int laudNumber(long siteId, long customerId);
+    int laudNumber(long siteId, String name);
 
     /**
      * 是否点赞
+     * @param name customerId 用户ID
      * @param siteId siteId 站点ID，也就是模板的ID
-     * @param customerId customerId 用户ID
+     * @param name
      * @return 是否已点赞
      */
-    boolean isLauded(long siteId, long customerId);
+    boolean isLauded(long siteId, String name);
 }

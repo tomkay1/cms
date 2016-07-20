@@ -9,20 +9,24 @@
 
 package com.huotu.cms.manage.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.cms.manage.ManageTest;
 import com.huotu.hotcms.service.common.PageType;
 import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.repository.PageInfoRepository;
+import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.servlet.CMSFilter;
 import com.huotu.hotcms.widget.servlet.RouteFilter;
+import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
 
+import java.io.IOException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -58,7 +62,8 @@ public class PreviewTest extends ManageTest {
         mockMvc = builder.build();
     }
 
-    public void access() {
+    @Test
+    public void access() throws IOException, FormatException {
         // 创建一个站点
         Owner owner = randomOwner();
         Site site = randomSite(owner);
@@ -77,7 +82,8 @@ public class PreviewTest extends ManageTest {
         indexPage.setTitle(randomDomain());
 
         String linkName = randomDomain();//给链接的名字
-        // TODO 这里需要给这个页面增加一个控件 这个控件就是显示一个链接,连接到其他页面
+        ObjectMapper objectMapper=new ObjectMapper();
+        indexPage.setPageSetting(objectMapper.writeValueAsBytes(randomPage()));
         pageInfoRepository.saveAndFlush(indexPage);
 
         // 执行预览

@@ -29,6 +29,12 @@ public interface ArticleRepository extends JpaRepository<Article, Long>, JpaSpec
      */
     List<Article> findByCategory(Category category);
 
+    /**
+     * 删除该数据源下所有的文章数据
+     * @param category
+     * @return
+     */
+    Long deleteByCategory(Category category);
 
     /**
      * 根绝siteID 查询文章

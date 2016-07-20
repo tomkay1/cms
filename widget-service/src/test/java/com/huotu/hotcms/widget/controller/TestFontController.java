@@ -9,8 +9,8 @@
 
 package com.huotu.hotcms.widget.controller;
 
+import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.common.PageType;
-import com.huotu.hotcms.service.common.SiteType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.PageInfo;
@@ -39,6 +39,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -47,7 +48,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 /**
@@ -121,7 +122,7 @@ public class TestFontController extends TestBase {
         Site site = new Site();
         site.setOwner(owner);
         site.setName(UUID.randomUUID().toString());
-        site.setSiteType(SiteType.SITE_PC_WEBSITE);
+//        site.setSiteType(SiteType.SITE_PC_WEBSITE);
         site.setTitle(UUID.randomUUID().toString());
         site.setCreateTime(LocalDateTime.now());
         site.setEnabled(true);
@@ -130,6 +131,7 @@ public class TestFontController extends TestBase {
         site = siteService.newSite(domains, domains[0], site, Locale.CHINA);
 
         Category category = new Category();
+        category.setContentType(ContentType.values()[random.nextInt(ContentType.values().length)]);
         category.setParent(null);
         category.setSite(site);
         categoryRepository.saveAndFlush(category);

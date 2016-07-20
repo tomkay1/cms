@@ -9,12 +9,14 @@
 
 package com.huotu.hotcms.service.entity;
 
+import com.huotu.hotcms.service.util.SerialUtil;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 /**
  * 视频模型
@@ -61,6 +63,31 @@ public class Video extends AbstractContent {
      */
     @Column(name = "playTimes")
     private int playTimes;
+
+    @Override
+    public Video copy() {
+        Video video=new Video();
+        video.setThumbUri(thumbUri);
+        video.setVideoUrl(videoUrl);
+        video.setTitle(getTitle());
+        video.setOutLinkUrl(outLinkUrl);
+        video.setDescription(getDescription());
+        video.setCreateTime(LocalDateTime.now());
+        video.setDeleted(isDeleted());
+        video.setOrderWeight(getOrderWeight());
+        video.setUpdateTime(LocalDateTime.now());
+        video.setCategory(getCategory());
+        video.setSerial(getSerial());
+        return video;
+    }
+
+    @Override
+    public Video copy(Site site, Category category) {
+        Video video=copy();
+        video.setSerial(SerialUtil.formatSerial(site));
+        video.setCategory(category);
+        return video;
+    }
 
 //    /**
 //     * 所属栏目

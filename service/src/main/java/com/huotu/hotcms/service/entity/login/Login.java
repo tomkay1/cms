@@ -22,6 +22,12 @@ import org.springframework.security.core.userdetails.UserDetails;
  */
 public interface Login extends UserDetails {
 
+    String Role_Template_Value = "TEMPLATE";
+    /**
+     * 可管理模板权限
+     */
+    String Role_Template = "ROLE_" + Role_Template_Value;
+
     String Role_Manage_Value = "MANAGE";
     /**
      * 可管理正文权限

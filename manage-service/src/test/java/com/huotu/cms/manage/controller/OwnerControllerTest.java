@@ -91,7 +91,7 @@ public class OwnerControllerTest extends ManageTest {
         Owner owner = randomOwner();
 
         mockMvc.perform(
-                put("/manage/supper/owner/{id}/enable", String.valueOf(owner.getId()))
+                put("/manage/supper/owner/{id}/enabled", String.valueOf(owner.getId()))
                         .session(session))
                 .andExpect(status().isNoContent());
 
@@ -99,7 +99,7 @@ public class OwnerControllerTest extends ManageTest {
                 .isFalse();
 
         mockMvc.perform(
-                put("/manage/supper/owner/{id}/enable", String.valueOf(owner.getId()))
+                put("/manage/supper/owner/{id}/enabled", String.valueOf(owner.getId()))
                         .session(session))
                 .andExpect(status().isNoContent());
 

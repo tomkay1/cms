@@ -9,7 +9,7 @@
 
 package com.huotu.hotcms.widget.test;
 
-import com.huotu.hotcms.service.common.SiteType;
+import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Owner;
@@ -25,7 +25,6 @@ import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.config.TestConfig;
-import com.huotu.hotcms.widget.controller.TestWidget;
 import com.huotu.hotcms.widget.page.Empty;
 import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.Page;
@@ -143,6 +142,8 @@ public class TestBase extends SpringWebTest{
         component.setWidgetIdentity(UUID.randomUUID().toString());
         ComponentProperties componentProperties =new ComponentProperties();
         componentProperties.put(StringUtil.createRandomStr(random.nextInt(3)+1),UUID.randomUUID().toString());
+        componentProperties.put("TestArray",new String[]{UUID.randomUUID().toString(),UUID.randomUUID().toString()
+                ,UUID.randomUUID().toString()});
         component.setProperties(componentProperties);
         InstalledWidget installedWidget=new InstalledWidget(new TestWidget());
         installedWidget.setIdentifier(new WidgetIdentifier());
@@ -195,7 +196,7 @@ public class TestBase extends SpringWebTest{
         Site site = new Site();
         site.setOwner(owner);
         site.setName(UUID.randomUUID().toString());
-        site.setSiteType(SiteType.SITE_PC_WEBSITE);
+//        site.setSiteType(SiteType.SITE_PC_WEBSITE);
         site.setTitle(UUID.randomUUID().toString());
         site.setCreateTime(LocalDateTime.now());
         site.setEnabled(true);
@@ -231,6 +232,7 @@ public class TestBase extends SpringWebTest{
 
     protected Category randomCategory() {
         Category category = new Category();
+        category.setContentType(ContentType.values()[random.nextInt(ContentType.values().length)]);
         category.setParent(null);
         category.setSite(randomSite(randomOwner()));
         return categoryRepository.saveAndFlush(category);

@@ -11,6 +11,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:ewp="http://ewp.jiangcai.me" lang="en">
 <!--/*@thymesVar id="logout" type="java.lang.String"*/-->
 <!--/*@thymesVar id="mallManageUrl" type="java.lang.String"*/-->
+<!--/*@thymesVar id="manageSite" type="com.huotu.hotcms.service.entity.Site"*/-->
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
@@ -82,7 +83,8 @@
             <ul class="nav nav-pills nav-stacked nav-bracket">
                 <li class="nav-parent"><a href=""><i class="fa fa-desktop"></i> <span>站点设置</span></a>
                     <ul class="children">
-                        <li><a href="site/index.html" th:href="@{/manage/site}" target="content">
+                        <li><a href="site/index.html" th:if="${manageSite==null}" th:href="@{/manage/site}"
+                               target="content">
                             <i class="fa fa-puzzle-piece"></i> 站点管理</a></li>
                         <li><a href="page/index.html" th:href="@{/manage/page}" target="content">
                             <i class="fa fa-sitemap"></i> 网站架构</a></li>
@@ -158,15 +160,15 @@
                 <ul class="headermenu">
                     <li>
                         <div class="btn-group">
-                            <!--/*@thymesVar id="manageSite" type="com.huotu.hotcms.service.entity.Site"*/-->
-                            <button class="btn btn-default dropdown-toggle tp-icon" data-toggle="dropdown">
+                            <button class="btn btn-default dropdown-toggle tp-icon site-dropdown"
+                                    data-toggle="dropdown">
                                 <i class="glyphicon glyphicon-list"></i>
                                 <span id="currentSiteSpan"
                                       th:text="${manageSite==null?'请选择操作站点':manageSite.name}">我的站点</span>
                             </button>
                             <div class="dropdown-menu dropdown-menu-head pull-right">
                                 <h5 class="title">选择站点进行操作</h5>
-                                <ul class="dropdown-list user-list">
+                                <ul class="dropdown-list user-list site-list">
                                     <!--/*@thymesVar id="siteSet" type="java.lang.Iterable<com.huotu.hotcms.service.entity.Site>"*/-->
                                     <li class="new" th:each="site:${siteSet}">
                                         <!--<div class="thumb"></a>-->
@@ -245,6 +247,28 @@
 
 </section>
 
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-1.10.2.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-migrate-1.2.1.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-ui-1.10.3.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/bootstrap.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/modernizr.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.sparkline.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/toggles.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/retina.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.cookies.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/flot/flot.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/flot/flot.resize.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/morris.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/raphael-2.1.0.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.datatables.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/chosen.jquery.min.js"></script>
+<script src="../../public/bracket/js/iframe_custom.js" ewp:src="/bracket/js/iframe_custom.js"></script>
+<!--gritter-->
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.gritter.min.js"></script>
+<!--<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.util.js"></script>-->
+<link href="http://resali.huobanplus.com/cdn/bracket/css/jquery.gritter.css" rel="stylesheet" property=""/>
+<script src="../../public/bracket/js/gritter.js" ewp:src="/bracket/js/gritter.js"></script>
+
 <!--共享的文件上传模板-->
 <script type="text/template" id="qq-template">
     <div class="qq-uploader-selector qq-uploader" qq-drop-area-text="拖拽至此">
@@ -304,29 +328,6 @@
         </dialog>
     </div>
 </script>
-
-<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-1.10.2.min.js"></script>
-<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-migrate-1.2.1.min.js"></script>
-<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-ui-1.10.3.min.js"></script>
-<script src="http://resali.huobanplus.com/cdn/bracket/js/bootstrap.min.js"></script>
-<script src="http://resali.huobanplus.com/cdn/bracket/js/modernizr.min.js"></script>
-<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.sparkline.min.js"></script>
-<script src="http://resali.huobanplus.com/cdn/bracket/js/toggles.min.js"></script>
-<script src="http://resali.huobanplus.com/cdn/bracket/js/retina.min.js"></script>
-<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.cookies.js"></script>
-<script src="http://resali.huobanplus.com/cdn/bracket/js/flot/flot.min.js"></script>
-<script src="http://resali.huobanplus.com/cdn/bracket/js/flot/flot.resize.min.js"></script>
-<script src="http://resali.huobanplus.com/cdn/bracket/js/morris.min.js"></script>
-<script src="http://resali.huobanplus.com/cdn/bracket/js/raphael-2.1.0.min.js"></script>
-<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.datatables.min.js"></script>
-<script src="http://resali.huobanplus.com/cdn/bracket/js/chosen.jquery.min.js"></script>
-<script src="../../public/bracket/js/iframe_custom.js" ewp:src="/bracket/js/iframe_custom.js"></script>
-<!--gritter-->
-<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.gritter.min.js"></script>
-<!--<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.util.js"></script>-->
-<link href="http://resali.huobanplus.com/cdn/bracket/css/jquery.gritter.css" rel="stylesheet" property=""/>
-<script src="../../public/bracket/js/gritter.js" ewp:src="/bracket/js/gritter.js"></script>
-
 <script th:inline="javascript">
     $.cmsUploaderUrl = /*[[@{/manage/upload/fine}]]*/ null;
 </script>
@@ -369,10 +370,17 @@
 <script th:inline="javascript">
     /*<![CDATA[*/
     var siteSwitchUrl = /*[[@{/manage/switch/}]]*/ null;
+    var testMode = /*[[${@environment.acceptsProfiles('test')}]]*/ true;
     $(function () {
         var firstUrl = /*[[@{/manage/site}]]*/ "site/index.html";
+        var pageUrl = /*[[@{/manage/page}]]*/ "page/index.html";
+        var useFirst = /*[[${manageSite==null}]]*/ true;
+
 //        console.log('start open ' + firstUrl);
-        $('#content').attr('src', firstUrl);
+        if (useFirst)
+            $('#content').attr('src', firstUrl);
+        else
+            $('#content').attr('src', pageUrl);
 
         // siteSwitcher
         $('.siteSwitcher').click(function () {
@@ -390,6 +398,7 @@
             if (href != '#') {
                 $.ajax({
                     url: href,
+                    async: !testMode,
                     success: success
                 });
             } else

@@ -9,8 +9,15 @@
 
 package com.huotu.cms.manage.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.io.CharStreams;
 import com.huotu.hotcms.service.entity.PageInfo;
+import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.exception.PageNotFoundException;
+import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.widget.page.Page;
+import com.huotu.hotcms.widget.service.PageService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -39,7 +46,13 @@ import java.util.List;
  * @since v2.0
  */
 @Controller
-public interface PageController {
+public class PageController {
+
+    @Autowired
+    private SiteRepository siteRepository;
+    @Autowired
+    private PageService pageService;
+
     /**
      * <p>获取页面{@link PageInfo}</p>
      * @param siteId 站点ID
@@ -48,10 +61,14 @@ public interface PageController {
      * @see Page
      * @throws IOException 异常
      */
-
-    @RequestMapping(value = "/manage/{siteId}/pages",method = RequestMethod.GET)
+    @RequestMapping(value = "/manage/{siteId}/pages",method = RequestMethod.GET,produces = "application/json; charset=UTF-8")
     @ResponseBody
-    List<PageInfo> getPageList(@PathVariable("siteId") Long siteId) throws IOException;
+    List<PageInfo> getPageList(@PathVariable("siteId") Long siteId) throws IOException{
+        Site site=siteRepository.findOne(siteId);
+        if(site==null)
+            throw new IllegalStateException("读取到的站点为空");
+        return pageService.getPageList(site);
+    }
 
 
     /**
@@ -60,11 +77,12 @@ public interface PageController {
      * @return 页面信息
      * @throws IOException 其他异常
      */
-
     @RequestMapping(value = "/manage/pages/{pageId}",method = RequestMethod.GET
             ,produces = "application/json; charset=UTF-8")
     @ResponseBody
-    Page getPage(@PathVariable("pageId") Long pageId) throws IOException;
+    Page getPage(@PathVariable("pageId") Long pageId) throws IOException,PageNotFoundException {
+        return pageService.getPage(pageId);
+    }
 
     /**
      * <p>保存界面{@link Page}信息到pageId相关的{@link PageInfo}中</p>
@@ -73,7 +91,12 @@ public interface PageController {
 
     @RequestMapping(value = "/manage/pages/{pageId}",method = RequestMethod.PUT)
     @ResponseStatus(code = HttpStatus.ACCEPTED)
-    void savePage(HttpServletRequest request,@PathVariable("pageId") Long pageID) throws IOException, URISyntaxException;
+    void savePage(HttpServletRequest request,@PathVariable("pageId") Long pageID) throws IOException, URISyntaxException{
+        String pageJson= CharStreams.toString(request.getReader());
+        ObjectMapper objectMapper=new ObjectMapper();
+        Page page=objectMapper.readValue(pageJson, Page.class);
+        pageService.savePage(page,pageID);
+    }
 
     /**
      * <p>添加页面{@link Page}</p>
@@ -83,7 +106,11 @@ public interface PageController {
     @Deprecated
     @RequestMapping(value = "/manage/owners/{ownerId}/pages",method = RequestMethod.POST)
     @ResponseStatus(code = HttpStatus.ACCEPTED)
-    void addPage(@PathVariable("ownerId") long ownerId, HttpServletRequest request) throws IOException;
+    void addPage(@PathVariable("ownerId") long ownerId, HttpServletRequest request) throws IOException{
+        String pageJson=CharStreams.toString(request.getReader());
+        ObjectMapper objectMapper=new ObjectMapper();
+        Page page=objectMapper.readValue(pageJson, Page.class);
+    }
 
     /**
      * <p>删除界面{@link Page}</p>
@@ -91,7 +118,9 @@ public interface PageController {
      */
     @RequestMapping(value = "/manage/pages/{pageId}",method = RequestMethod.DELETE)
     @ResponseStatus(code = HttpStatus.ACCEPTED)
-    void deletePage(@PathVariable("pageId") Long pageId, long ownerId) throws IOException;
+    void deletePage(@PathVariable("pageId") Long pageId) throws IOException{
+        pageService.deletePage(pageId);
+    }
 
     /**
      * 保存页面部分属性
@@ -100,7 +129,10 @@ public interface PageController {
      */
     @RequestMapping(value = "/manage/pages/{pageId}/{propertyName}",method = RequestMethod.PUT)
     @ResponseStatus(code = HttpStatus.ACCEPTED)
-    void savePagePartProperties(@PathVariable("pageId") Long pageId, @PathVariable("propertyName") String propertyName) throws IOException;
+    void savePagePartProperties(@PathVariable("pageId") Long pageId, @PathVariable("propertyName") String propertyName)
+            throws IOException, PageNotFoundException {
+        Page page=getPage(pageId);
+    }
 
 
     /**
@@ -108,7 +140,7 @@ public interface PageController {
      * @return url
      */
     @RequestMapping("/manage/page/edit/{pageId}")
-    default ModelAndView startEdit(@PathVariable("pageId") long pageId){
+    ModelAndView startEdit(@PathVariable("pageId") long pageId){
         return new ModelAndView("/edit/edit.html");
     }
 }

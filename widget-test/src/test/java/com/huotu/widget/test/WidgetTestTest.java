@@ -30,6 +30,7 @@ public class WidgetTestTest extends WidgetTest {
 
     @Override
     protected void editorWork(Widget widget, WebElement editor, Supplier<Map<String, Object>> currentWidgetProperties) {
+
     }
 
     @Override

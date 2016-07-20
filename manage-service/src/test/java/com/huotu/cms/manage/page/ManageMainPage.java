@@ -9,14 +9,13 @@
 
 package com.huotu.cms.manage.page;
 
-import com.huotu.cms.manage.page.support.AbstractContentPage;
 import com.huotu.cms.manage.page.support.AbstractFrameParentPage;
-import com.huotu.cms.manage.page.support.BodyId;
 import com.huotu.hotcms.service.entity.Site;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.springframework.core.annotation.AnnotationUtils;
+import org.openqa.selenium.WebElement;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -38,38 +37,6 @@ public class ManageMainPage extends AbstractFrameParentPage {
                 .contains("内容管理");
     }
 
-    /**
-     * 去指定页面
-     *
-     * @param pageClazz 页面的类型
-     * @param <T>       类型参数
-     * @return 新页面实例
-     */
-    public <T extends AbstractContentPage> T toPage(Class<? extends T> pageClazz) {
-        beforeDriver();
-        try {
-            clickMenuByClass(AnnotationUtils.findAnnotation(pageClazz, BodyId.class).value());
-        } catch (NullPointerException ex) {
-            throw new IllegalStateException("必须标注BodyId 否则找不到相对的链接:" + pageClazz);
-        }
-        T page = initPage(pageClazz);
-        page.setMainPage(this);
-        return page;
-    }
-
-    public SitePage toSite() {
-        beforeDriver();
-        clickMenuByClass("fa-puzzle-piece");
-//        clickMenuByClass("fa-sitemap");
-        return initPage(SitePage.class);
-    }
-
-    public PageInfoPage toPageInfo() {
-        beforeDriver();
-        clickMenuByClass("fa-sitemap");
-        return initPage(PageInfoPage.class);
-    }
-
 
     public RoutePage toRoute() {
         beforeDriver();
@@ -77,18 +44,24 @@ public class ManageMainPage extends AbstractFrameParentPage {
         return initPage(RoutePage.class);
     }
 
-    public CategoryPage toCategory() {
-        beforeDriver();
-        clickMenuByClass("fa-bars");
-        return initPage(CategoryPage.class);
-    }
-
     public void switchSite(Site site) {
         beforeDriver();
         // UI去点 可能会有Ajax 异步问题
-        webDriver.get("http://localhost/manage/switch/" + site.getSiteId());
-        webDriver.get("http://localhost/manage/main");
-        reloadPageInfo();
+
+        WebElement siteList = webDriver.findElement(By.cssSelector("ul.site-list"));
+        if (!siteList.isDisplayed()) {
+            webDriver.findElement(By.cssSelector("button.site-dropdown")).click();
+        }
+//        webDriver.get("http://localhost/manage/switch/" + site.getSiteId());
+//        webDriver.get("http://localhost/manage/main");
+        for (WebElement link : siteList.findElements(By.cssSelector("a.siteSwitcher"))) {
+            if (link.getText().contains(site.getName())) {
+                link.click();
+                reloadPageInfo();
+                return;
+            }
+        }
+        throw new IllegalStateException("页面上找不到站点" + site);
     }
 
     /**

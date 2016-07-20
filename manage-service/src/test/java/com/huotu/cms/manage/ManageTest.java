@@ -10,45 +10,49 @@
 package com.huotu.cms.manage;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.huotu.cms.manage.login.Manager;
 import com.huotu.cms.manage.page.AdminPage;
 import com.huotu.cms.manage.page.ManageMainPage;
+import com.huotu.cms.manage.page.support.AbstractCRUDPage;
 import com.huotu.cms.manage.test.AuthController;
 import com.huotu.hotcms.service.common.CMSEnums;
+import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.common.PageType;
-import com.huotu.hotcms.service.common.SiteType;
-import com.huotu.hotcms.service.entity.Category;
-import com.huotu.hotcms.service.entity.PageInfo;
-import com.huotu.hotcms.service.entity.Route;
-import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.entity.*;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
-import com.huotu.hotcms.service.repository.CategoryRepository;
-import com.huotu.hotcms.service.repository.OwnerRepository;
-import com.huotu.hotcms.service.repository.PageInfoRepository;
+import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
+import com.huotu.hotcms.service.repository.*;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.util.StringUtil;
 import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.ComponentProperties;
+import com.huotu.hotcms.widget.InstalledWidget;
+import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.page.PageElement;
+import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import me.jiangcai.lib.test.SpringWebTest;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.Resource;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.htmlunit.webdriver.MockMvcHtmlUnitDriverBuilder;
 import org.springframework.test.web.servlet.htmlunit.webdriver.WebConnectionHtmlUnitDriver;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StreamUtils;
 
 import javax.servlet.http.Cookie;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -56,6 +60,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -77,12 +82,29 @@ public abstract class ManageTest extends SpringWebTest {
     @Autowired
     private AuthController authController;
 
+    @Autowired
+    private TemplateRepository templateRepository;
+
     @Qualifier("pageInfoRepository")
     @Autowired
     private PageInfoRepository pageInfoRepository;
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private WidgetFactoryService widgetFactoryService;
+
+    @Autowired
+    private ArticleRepository articleRepository;
+
+    @Autowired
+    private DownloadRepository downloadRepository;
+
+    @Autowired
+    private GalleryListRepository galleryListRepository;
+    @Autowired
+    private GalleryRepository galleryRepository;
 
     @Before
     public void aboutTestOwner() {
@@ -129,13 +151,51 @@ public abstract class ManageTest extends SpringWebTest {
         Site site = new Site();
         site.setOwner(owner);
         site.setName(UUID.randomUUID().toString());
-        site.setSiteType(SiteType.SITE_PC_WEBSITE);
+//        site.setSiteType(SiteType.SITE_PC_WEBSITE);
         site.setTitle(UUID.randomUUID().toString());
         site.setCreateTime(LocalDateTime.now());
         site.setEnabled(true);
         site.setDescription(UUID.randomUUID().toString());
         String[] domains = randomDomains();
         return siteService.newSite(domains, domains[0], site, Locale.CHINA);
+    }
+
+    /**
+     * 随机一个站点并关联数据源和内容
+     * @return
+     */
+    protected Site randomSiteAndData(Owner owner){
+        Site site=randomSite(owner);
+        Category category=randomCategory(site);
+        randomArticle(category);
+        randomDownload(category);
+        Gallery gallery=randomGallery(category);
+        randomGalleryList(gallery);
+        return site;
+    }
+
+    /**
+     * 随机一个模板
+     * @return
+     */
+    protected Template randomTemplate(){
+        Template template=new Template();
+        template.setUpdateTime(LocalDateTime.now());
+        template.setTitle(UUID.randomUUID().toString());
+        template.setName(StringUtil.createRandomStr(5));
+        TemplateType templateType=new TemplateType();
+        templateType.setIndustry(UUID.randomUUID().toString());
+        template.setTemplateType(templateType);
+        template.setCopyright(UUID.randomUUID().toString());
+        template.setDeleted(false);
+        template.setEnabled(true);
+        template= templateRepository.saveAndFlush(template);
+        Category category=randomCategory(template);
+        randomArticle(category);
+        randomDownload(category);
+        Gallery gallery=randomGallery(category);
+        randomGalleryList(gallery);
+        return template;
     }
 
     /**
@@ -248,6 +308,7 @@ public abstract class ManageTest extends SpringWebTest {
         return route;
     }
 
+
     /**
      *
      * @return 随机创建的数据源
@@ -262,8 +323,39 @@ public abstract class ManageTest extends SpringWebTest {
         category.setParent(null);
         category.setSite(site);
         category.setName(UUID.randomUUID().toString());
+        category.setContentType(ContentType.values()[random.nextInt(ContentType.values().length)]);
         return categoryRepository.saveAndFlush(category);
     }
+
+    protected Article randomArticle(Category category){
+        Article article=new Article();
+        article.setAuthor(UUID.randomUUID().toString());
+        article.setCategory(category);
+        return articleRepository.saveAndFlush(article);
+    }
+
+    protected Download randomDownload(Category category){
+        Download download=new Download();
+        download.setCategory(category);
+        download.setTitle(UUID.randomUUID().toString());
+        download.setDescription(UUID.randomUUID().toString());
+        return downloadRepository.saveAndFlush(download);
+    }
+
+    protected GalleryList randomGalleryList(Gallery gallery){
+        GalleryList galleryList=new GalleryList();
+        galleryList.setGallery(gallery);
+        galleryList.setCreateTime(LocalDateTime.now());
+        return galleryListRepository.saveAndFlush(galleryList);
+    }
+
+    protected Gallery randomGallery(Category category){
+        Gallery gallery=new Gallery();
+        gallery.setCategory(category);
+        gallery.setContent(UUID.randomUUID().toString());
+        return galleryRepository.saveAndFlush(gallery);
+    }
+
 
     protected PageInfo randomPageInfoValue() {
         PageInfo pageInfo = new PageInfo();
@@ -278,19 +370,19 @@ public abstract class ManageTest extends SpringWebTest {
      * @return 页面信息
      * @throws JsonProcessingException jackson相关序列化异常
      */
-    public PageInfo randomPageInfo() throws JsonProcessingException {
+    public PageInfo randomPageInfo() throws IOException, FormatException {
         PageInfo pageInfo=new PageInfo();
         pageInfo.setSite(randomSite(randomOwner()));
         pageInfo.setCategory(randomCategory());
         pageInfo.setPageType(PageType.DataContent);
-        XmlMapper xmlMapper=new XmlMapper();
-        byte[] pageXml=xmlMapper.writeValueAsString(randomPage()).getBytes();
-        pageInfo.setPageSetting(pageXml);
+        ObjectMapper objectMapper=new ObjectMapper();
+        byte[] pageJson=objectMapper.writeValueAsString(randomPage()).getBytes();
+        pageInfo.setPageSetting(pageJson);
         return pageInfoRepository.saveAndFlush(pageInfo);
     }
 
 
-    private Page randomPage() {
+    protected Page randomPage() throws IOException, FormatException {
         Page page = new Page();
         page.setPageIdentity(random.nextLong());
         page.setTitle(UUID.randomUUID().toString());
@@ -316,18 +408,39 @@ public abstract class ManageTest extends SpringWebTest {
         return page;
     }
 
-    private Component randomComponent() {
+    private Component randomComponent() throws IOException, FormatException {
         Component component=new Component();
         component.setPreviewHTML(UUID.randomUUID().toString());
         component.setStyleId(UUID.randomUUID().toString());
-        component.setWidgetIdentity(UUID.randomUUID().toString());
-        ComponentProperties componentProperties =new ComponentProperties();
-        componentProperties.put(StringUtil.createRandomStr(random.nextInt(3) + 1),UUID.randomUUID().toString());
-        component.setProperties(componentProperties);
+        String groupId="com.huotu.hotcms.widget.picCarousel";
+        String widgetId="picCarousel";
+        String version="1.0-SNAPSHOT";
+        component.setWidgetIdentity(groupId+"-"+widgetId+":"+version);
+        ComponentProperties properties =new ComponentProperties();
+        properties.put("maxImgUrl", new String[]{"1.jpg", "2.jpg", "3.jpg", "4.jpg"});
+        properties.put("minImgUrl", new String[]{"1.jpg", "2.jpg", "3.jpg", "4.jpg"});
+        properties.put("styleTemplate", "html");
+        InstalledWidget installedWidget=null;
+        List<InstalledWidget> installedWidgets=widgetFactoryService.widgetList(null);
+        if(installedWidgets==null||installedWidgets.size()==0){
+            widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
+                    , "1.0-SNAPSHOT", "picCarousel");
+            installedWidgets=widgetFactoryService.widgetList(null);
+        }
+        WidgetIdentifier widgetIdentifier=null;
+        for(InstalledWidget installedWidget1:installedWidgets){
+            widgetIdentifier=installedWidget1.getIdentifier();
+            if(groupId.equals(widgetIdentifier.getGroupId())&&widgetId.equals(widgetIdentifier.getArtifactId())&&
+                    version.equals(widgetIdentifier.getVersion())){
+                installedWidget=installedWidget1;
+                break;
+            }
+        }
+        component.setInstalledWidget(installedWidget);
         return component;
     }
 
-    private Layout randomLayout() {
+    private Layout randomLayout() throws IOException, FormatException {
         Layout layout = new Layout();
         layout.setValue(UUID.randomUUID().toString());
 
@@ -349,5 +462,22 @@ public abstract class ManageTest extends SpringWebTest {
         }
         layout.setElements(pageElementList.toArray(new PageElement[pageElementList.size()]));
         return layout;
+    }
+
+    /**
+     * 上传文件
+     *
+     * @param page     操作的页面
+     * @param name     隐藏字段的名称
+     * @param resource 需要上传的资源
+     */
+    protected void uploadResource(AbstractCRUDPage<?> page, String name, Resource resource) throws Exception {
+        String path = mockMvc.perform(fileUpload("/manage/upload")
+                .file("file", StreamUtils.copyToByteArray(resource.getInputStream()))
+                .session(session)
+        ).andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        page.inputHidden(page.getForm(), name, path);
     }
 }

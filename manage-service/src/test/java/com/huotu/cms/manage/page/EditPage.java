@@ -9,16 +9,12 @@
 
 package com.huotu.cms.manage.page;
 
-import com.huotu.cms.manage.page.support.AbstractContentPage;
 import com.huotu.cms.manage.page.support.AbstractManagePage;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -38,6 +34,12 @@ public class EditPage extends AbstractManagePage {
     public EditPage(WebDriver webDriver) {
         super(webDriver);
     }
+
+    @Override
+    protected void beforeDriver() {
+
+    }
+
     @Override
     public void validatePage() {
         assertThat(body.isDisplayed()).isTrue();

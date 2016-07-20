@@ -10,14 +10,13 @@
 package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.ManageTest;
-import com.huotu.cms.manage.controller.common.ResourceController;
 import com.huotu.cms.manage.controller.support.CRUDHelper;
 import com.huotu.cms.manage.controller.support.CRUDTest;
 import com.huotu.cms.manage.page.AdminPage;
 import com.huotu.cms.manage.page.ManageMainPage;
 import com.huotu.cms.manage.page.SitePage;
 import com.huotu.cms.manage.page.support.AbstractCRUDPage;
-import com.huotu.hotcms.service.common.SiteType;
+import com.huotu.cms.manage.util.ImageHelper;
 import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Owner;
@@ -28,11 +27,9 @@ import org.junit.Test;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.UUID;
 import java.util.function.BiConsumer;
@@ -44,13 +41,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class SiteControllerTest extends ManageTest {
 
-
     @Autowired
     private SiteRepository siteRepository;
     @Autowired
     private HostRepository hostRepository;
-    @Autowired
-    private ResourceController resourceController;
     @Autowired
     private ResourceService resourceService;
 
@@ -87,11 +81,12 @@ public class SiteControllerTest extends ManageTest {
 
     }
 
-    private void addSite(Owner owner, ManageMainPage mainPage) throws IOException, InterruptedException {
+    private void addSite(Owner owner, ManageMainPage mainPage) throws Exception {
 
         CRUDHelper.flow(mainPage.toPage(SitePage.class), new CRUDTest<Site>() {
-            public String[] domains;
-            public String logo;
+            String[] domains;
+            //            String logo;
+            Resource logoResource;
 
             @Override
             public Collection<Site> list() {
@@ -100,20 +95,17 @@ public class SiteControllerTest extends ManageTest {
 
             @Override
             public Site randomValue() {
-                try {
-                    logo = random.nextBoolean()
-                            ? resourceController.uploadTempResource(new ClassPathResource("thumbnail.png").getInputStream())
-                            : null;
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                logoResource = random.nextBoolean() ? null : new ClassPathResource("thumbnail.png");
+//                    logo = random.nextBoolean()
+//                            ? resourceController.uploadTempResource(new ClassPathResource("thumbnail.png").getInputStream())
+//                            : null;
                 Site site = new Site();
 
                 site.setName(UUID.randomUUID().toString());
                 site.setTitle(UUID.randomUUID().toString());
                 site.setDescription(UUID.randomUUID().toString());
                 site.setCopyright(UUID.randomUUID().toString());
-                site.setSiteType(SiteType.values()[random.nextInt(SiteType.values().length)]);
+//                site.setSiteType(SiteType.values()[random.nextInt(SiteType.values().length)]);
 
                 String[] stringArrays = randomDomains();
                 String[] keywords = randomArray(stringArrays, 1);
@@ -127,10 +119,17 @@ public class SiteControllerTest extends ManageTest {
             public BiConsumer<AbstractCRUDPage<Site>, Site> customAddFunction() {
                 return (page, site) -> {
                     WebElement form = page.getForm();
-                    if (logo != null)
-                        page.inputHidden(form, "tmpLogoPath", logo);
+                    if (logoResource != null) {
+                        try {
+                            uploadResource(page, "tmpLogoPath", logoResource);
+                        } catch (Exception ignored) {
+                        }
+                    }
+//                    if (logo != null)
+//                        page.inputHidden(form, "tmpLogoPath", logo);
                     page.inputTags(form, "domains", domains);
                     page.inputText(form, "homeDomain", domains[0]);
+                    System.out.println("done");
                 };
             }
 
@@ -145,19 +144,21 @@ public class SiteControllerTest extends ManageTest {
                 assertThat(entity.getCopyright())
                         .isEqualTo(data.getCopyright());
                 assertThat(entity.getSiteType())
-                        .isEqualByComparingTo(data.getSiteType());
+                        .isEqualTo(data.getSiteType());
 
-                if (logo != null) {
-                    try {
-                        BufferedImage image = ImageIO.read(resourceService.getResource(entity.getLogoUri()).getInputStream());
-                        BufferedImage image1 = ImageIO.read(new ClassPathResource("thumbnail.png").getInputStream());
-                        assertThat(image.getWidth())
-                                .isEqualTo(image1.getWidth());
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
-
+                if (logoResource != null) {
+                    ImageHelper.assertSame(resourceService.getResource(entity.getLogoUri()), logoResource);
                 }
+//                if (logo != null) {
+//                    try {
+//                        BufferedImage image = ImageIO.read(resourceService.getResource(entity.getLogoUri()).getInputStream());
+//                        BufferedImage image1 = ImageIO.read(new ClassPathResource("thumbnail.png").getInputStream());
+//                        assertThat(image.getWidth())
+//                                .isEqualTo(image1.getWidth());
+//                    } catch (IOException ex) {
+//                        throw new RuntimeException(ex);
+//                    }
+//                }
 
                 for (String domain : domains) {
                     Host host = hostRepository.findByDomain(domain);

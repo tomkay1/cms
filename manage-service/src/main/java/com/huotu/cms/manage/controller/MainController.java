@@ -16,6 +16,7 @@ import com.huotu.hotcms.service.common.ConfigInfo;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.repository.OwnerRepository;
+import com.huotu.hotcms.service.service.SiteService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -48,6 +50,8 @@ public class MainController {
     private OwnerRepository ownerRepository;
     @Autowired
     private SecurityService securityService;
+    @Autowired
+    private SiteService siteService;
 
     @RequestMapping("/login")
     public String loginPage(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
@@ -74,13 +78,21 @@ public class MainController {
     }
 
     @RequestMapping({"/index", ""})
-    public String index(@AuthenticationPrincipal Login login, Model model) throws Exception {
+    public String index(@AuthenticationPrincipal Login login, @RequestParam(required = false) Long site
+            , Model model) throws Exception {
+        if (site != null && login.siteManageable(siteService.getSite(site))) {
+            // 禁止它使用登出动作
+            login.updateSiteId(site);
+            model.addAttribute("logout", "/manage/main");
+            return "/view/main.html";
+        }
         if (login.isRoot() && login.currentOwnerId() == null)
             return "redirect:/manage/supper";
         if (login.isRoot()) {
             model.addAttribute("logout", "/manage/supper");
         } else
             model.addAttribute("logout", "/logout");
+        login.updateSiteId(null);
         return "/view/main.html";
     }
 

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<!--
+  ~ 版权所有:杭州火图科技有限公司
+  ~ 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+  ~
+  ~ (c) Copyright Hangzhou Hot Technology Co., Ltd.
+  ~ Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+  ~ 2013-2016. All rights reserved.
+  -->
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:ewp="http://ewp.jiangcai.me"
+      lang="en">
+<!--/*@thymesVar id="object" type="com.huotu.hotcms.service.entity.Template"*/-->
+<head>
+    <meta charset="UTF-8">
+    <link href="http://resali.huobanplus.com/cdn/bracket/css/style.default.css" rel="stylesheet">
+    <link href="http://resali.huobanplus.com/cdn/bracket/css/jquery.datatables.css" rel="stylesheet">
+    <title>Template</title>
+</head>
+<body class="mainpanel" id="fa-suitcase">
+<div class="pageheader">
+    <h2><i class="fa fa-suitcase"></i> 模板管理 <span>更新模板</span></h2>
+</div>
+
+<div class="contentpanel">
+    <form id="templateForm" action="index.html" method="POST" th:action="@{/manage/template/{id}(id=${object.siteId})}">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-btns">
+                    <a href="" class="panel-close">&times;</a>
+                    <a href="" class="minimize">&minus;</a>
+                </div><!-- panel-btns -->
+                <h3 class="panel-title">更新模板</h3>
+                <p>
+                    <a href="../main.html" th:href="@{/manage/main(site=${object.siteId})}" target="_top"
+                       name="toManage">
+                        当然,你还可以点此调整模板的各种资源,比如页面,数据源等等……</a>
+                </p>
+            </div>
+            <div class="panel-body">
+
+                <div class="form-horizontal form-bordered">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">模板名称</label>
+                        <div class="col-sm-4">
+                            <input readonly="readonly" name="name" title="模板名称" type="text" placeholder="用于识别模板"
+                                   th:value="${object.name}"
+                                   class="form-control"/>
+                        </div>
+                        <label class="col-sm-2 control-label">模板类型</label>
+                        <div class="col-sm-4">
+                            <select readonly="" name="siteType" class="form-control input-sm" title="模板类型">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option value="0"
+                                        th:each="siteType:${T(com.huotu.hotcms.service.common.SiteType).values()}"
+                                        th:value="${siteType.getCode()}"
+                                        th:text="${siteType.getValue().toString()}">PC
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">模板缩略图</label>
+                        <input type="hidden" name="extra"/>
+                        <div class="col-sm-10" id="logo-uploader"></div>
+                    </div>
+                </div>
+            </div><!-- panel-body -->
+
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <button class="btn btn-primary">Submit</button>
+                        &nbsp;
+                        <button class="btn btn-default">Cancel</button>
+                    </div>
+                </div>
+            </div><!-- panel-footer -->
+
+        </div>
+    </form>
+
+</div><!-- contentpanel -->
+
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-1.10.2.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-ui-1.10.3.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/bootstrap.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/toggles.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.cookies.js"></script>
+
+<script src="http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/jquery.fine-uploader.min.js"></script>
+<link rel="stylesheet" href="http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/fine-uploader-new.min.css"
+      property=""/>
+<script src="http://resali.huobanplus.com/cdn/datatables/1.10.12/datatables.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.validate.min.js"></script>
+<script src="../../../public/js/jquery.validation.message-zh_cn.js"
+        ewp:src="/js/jquery.validation.message-zh_cn.js"></script>
+<div ewp:replace="fragments/frame.html::#messageSection"></div>
+<script src="../../../public/bracket/js/frame.js" ewp:src="/bracket/js/frame.js"></script>
+<script src="../../../public/bracket/js/frame_custom.js" ewp:src="/bracket/js/frame_custom.js"></script>
+<script src="../../../public/js/template.js" ewp:src="/js/template.js"></script>
+</body>
+</html>

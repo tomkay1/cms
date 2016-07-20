@@ -153,15 +153,18 @@ public class WidgetInfoController
     @PreAuthorize("hasRole('" + Login.Role_Manage_Value + "')")
     @RequestMapping(value = "/widgets",method = RequestMethod.GET,produces = "application/json; charset=UTF-8")
     public List<WidgetModel> getWidgetInfo() throws IOException, URISyntaxException {
+        List<InstalledWidget> installedWidgets=widgetFactoryService.widgetList(null);
         if (environment.acceptsProfiles("test")) {
             try {
-                widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
-                        , "1.0-SNAPSHOT", "picCarousel");
+                if(installedWidgets==null && installedWidgets.size()==0) {
+                    widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
+                            , "1.0-SNAPSHOT", "picCarousel");
+                }
             } catch (FormatException e) {
                 e.printStackTrace();
             }
         }
-        List<InstalledWidget> installedWidgets = widgetFactoryService.widgetList(null);
+        installedWidgets = widgetFactoryService.widgetList(null);
         Widget widget;
         List<WidgetModel> widgetModels = new ArrayList<>();
         for (InstalledWidget installedWidget : installedWidgets) {
@@ -169,7 +172,8 @@ public class WidgetInfoController
             widget = installedWidget.getWidget();
             widgetModel.setLocallyName(widget.name());
             widgetModel.setEditorHTML(widgetResolveService.editorHTML(widget, CMSContext.RequestContext(), null));
-            widgetModel.setIdentity(widget.widgetId());
+            //<groupId>-<widgetId>:<version>
+            widgetModel.setIdentity(widget.groupId()+"-"+widget.widgetId()+":"+widget.version());
 
             //获取js资源uri
             for (Map.Entry<String, Resource> entry : widget.publicResources().entrySet()) {
@@ -194,7 +198,8 @@ public class WidgetInfoController
                 WidgetStyleModel widgetStyleModel = new WidgetStyleModel();
                 widgetStyleModel.setThumbnail(widgetStyles[i].thumbnail().getURI().toString());
                 widgetStyleModel.setLocallyName(widgetStyles[i].name());
-                widgetStyleModel.setPreviewHTML(widgetResolveService.previewHTML(widget, widgetStyles[i].id(), CMSContext.RequestContext(), null));
+                widgetStyleModel.setPreviewHTML(widgetResolveService.previewHTML(widget, widgetStyles[i].id()
+                        , CMSContext.RequestContext(), null));
                 widgetStyleModels[i] = widgetStyleModel;
             }
             widgetModel.setStyles(widgetStyleModels);

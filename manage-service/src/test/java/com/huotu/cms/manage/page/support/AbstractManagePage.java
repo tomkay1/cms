@@ -23,6 +23,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitWebElement;
 import org.openqa.selenium.support.PageFactory;
+import org.springframework.core.io.Resource;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -42,7 +43,13 @@ public abstract class AbstractManagePage extends BracketPage {
         super(webDriver);
     }
 
+    /**
+     * 在操作webdriver之前 必须调用
+     */
+    protected abstract void beforeDriver();
+
     public void printThisPage() {
+        beforeDriver();
         System.err.println("url:" + webDriver.getCurrentUrl());
         System.err.println("page:" + this);
         System.err.println(webDriver.getPageSource());
@@ -54,6 +61,25 @@ public abstract class AbstractManagePage extends BracketPage {
         List<String> messages = getGritterMessage("growl-danger");
         assertThat(messages)
                 .isEmpty();
+    }
+
+    public void closeDanger() throws InterruptedException {
+        closeGritterMessage("growl-danger");
+    }
+
+    private void closeGritterMessage(String typeClass) throws InterruptedException {
+        while (true) {
+            List<WebElement> elements = webDriver.findElements(By.className(typeClass));
+            if (elements.isEmpty())
+                break;
+            for (WebElement message : elements) {
+                WebElement close = message.findElement(By.className("gritter-close"));
+                if (close.isDisplayed())
+                    close.click();
+            }
+            Thread.sleep(100);
+        }
+
     }
 
     @NotNull
@@ -296,5 +322,16 @@ public abstract class AbstractManagePage extends BracketPage {
         } catch (Exception ex) {
             throw new IllegalStateException(ex);
         }
+    }
+
+    /**
+     * 上传文件
+     *
+     * @param form     成功后将值写入的form
+     * @param name     隐藏字段的名称
+     * @param resource 需要上传的资源
+     */
+    public void uploadResource(WebElement form, String name, Resource resource) {
+
     }
 }

@@ -10,9 +10,12 @@
 package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.ManageTest;
+import com.huotu.cms.manage.controller.support.CRUDHelper;
+import com.huotu.cms.manage.controller.support.CRUDTest;
 import com.huotu.cms.manage.page.AdminPage;
 import com.huotu.cms.manage.page.WidgetEditPage;
 import com.huotu.cms.manage.page.WidgetPage;
+import com.huotu.cms.manage.page.support.AbstractCRUDPage;
 import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
@@ -24,7 +27,9 @@ import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -47,28 +52,12 @@ public class WidgetInfoControllerTest extends ManageTest {
     public void flow() throws Exception {
         AdminPage adminPage = loginAsManage();
 
-        WidgetPage page = adminPage.toWidget();
+        WidgetPage page = adminPage.toPage(WidgetPage.class);
+        addWidgetInfo(page);
+        addWidgetInfo(page);
 
-        // 以不同的方式添加控件
-        WidgetInfo widgetInfo1 = randomWidgetInfoValue(0);
-        page = page.addWidgetWithoutOwnerAndJar(widgetInfo1);
-
-        assertThat(widgetInfoRepository.getOne(widgetInfo1.getIdentifier()))
-                .isNotNull();
-        assertThat(widgetInfoRepository.getOne(widgetInfo1.getIdentifier()).getType())
-                .isEqualTo(widgetInfo1.getType());
-
-        // 设置了专享商户的
-        WidgetInfo widgetInfo2 = randomWidgetInfoValue(1);
-        Owner owner = randomOwner();
         page.refresh();
-        page = page.addWidgetWithOwner(widgetInfo2, owner);
-        assertThat(widgetInfoRepository.getOne(widgetInfo2.getIdentifier()))
-                .isNotNull();
-        assertThat(widgetInfoRepository.getOne(widgetInfo2.getIdentifier()).getType())
-                .isEqualTo(widgetInfo2.getType());
-        assertThat(widgetInfoRepository.getOne(widgetInfo2.getIdentifier()).getOwner())
-                .isEqualTo(owner);
+//        WidgetPage page = adminPage.toWidget();
 
         // 既设置了专享商户 又上传了jar包的
 //        WidgetInfo widgetInfo3 = randomWidgetInfoValue(2);
@@ -137,6 +126,47 @@ public class WidgetInfoControllerTest extends ManageTest {
 
     }
 
+    private void addWidgetInfo(WidgetPage widgetPage) throws Exception {
+        CRUDHelper.flow(widgetPage, new CRUDTest<WidgetInfo>() {
+            @Override
+            public Collection<WidgetInfo> list() {
+                return widgetInfoRepository.findAll();
+            }
+
+            @Override
+            public WidgetInfo randomValue() {
+                for (int i = 0; i < 4; i++) {
+                    WidgetInfo info = randomWidgetInfoValue(i);
+                    if (widgetInfoRepository.findOne(info.getIdentifier()) == null)
+                        return info;
+                }
+                throw new IllegalStateException("没有可用的控件了!");
+            }
+
+            @Override
+            public BiConsumer<AbstractCRUDPage<WidgetInfo>, WidgetInfo> customAddFunction() {
+                // 是否要上传jar?
+                return null;
+            }
+
+            @Override
+            public void assertCreation(WidgetInfo entity, WidgetInfo data) {
+                assertThat(entity.getType())
+                        .isEqualTo(data.getType());
+                assertThat(entity.getCreateTime())
+                        .isNotNull();
+                assertThat(entity.getArtifactId())
+                        .isEqualTo(data.getArtifactId());
+                assertThat(entity.getGroupId())
+                        .isEqualTo(data.getGroupId());
+                assertThat(entity.getOwner())
+                        .isEqualTo(data.getOwner());
+                assertThat(entity.getVersion())
+                        .isEqualTo(data.getVersion());
+            }
+        });
+    }
+
     private WidgetInfo randomWidgetInfoValue(Integer seed) {
         String[][] widgets = new String[][]{
                 new String[]{
@@ -168,6 +198,12 @@ public class WidgetInfoControllerTest extends ManageTest {
         info.setArtifactId(widgetInfo[1]);
         info.setVersion("1.0-SNAPSHOT");
         info.setType(randomDomain());
+
+        if (random.nextBoolean()) {
+            Owner owner = randomOwner();
+            info.setOwner(owner);
+        }
+
         return info;
     }
 

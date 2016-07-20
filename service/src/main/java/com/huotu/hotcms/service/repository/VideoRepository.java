@@ -18,4 +18,7 @@ import java.util.List;
 
 public interface VideoRepository extends JpaRepository<Video, Long>, JpaSpecificationExecutor<Video> {
     List<Video> findByCategory(Category category);
+
+    Long deleteByCategory(Category category);
+
 }

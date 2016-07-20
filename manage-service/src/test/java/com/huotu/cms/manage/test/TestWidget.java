@@ -7,7 +7,7 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.hotcms.widget.controller;
+package com.huotu.cms.manage.test;
 
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.Widget;
@@ -22,7 +22,7 @@ import java.util.UUID;
 /**
  * Created by hzbc on 2016/6/22.
  */
-public class TestWidget  implements Widget  {
+public class TestWidget implements Widget  {
     @Override
     public String groupId() {
         return UUID.randomUUID().toString();

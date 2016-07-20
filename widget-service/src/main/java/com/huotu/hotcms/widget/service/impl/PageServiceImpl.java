@@ -8,10 +8,11 @@
 
 package com.huotu.hotcms.widget.service.impl;
 
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.service.repository.PageInfoRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.widget.CMSContext;
@@ -44,10 +45,13 @@ import java.util.UUID;
 public class PageServiceImpl implements PageService {
     @Autowired(required = false)
     SiteRepository siteRepository;
+
     @Autowired(required = false)
     private PageInfoRepository pageInfoRepository;
+
     @Autowired
     private WidgetResolveService widgetResolveService;
+
     @Autowired(required = false)
     private ResourceService resourceService;
 
@@ -73,10 +77,9 @@ public class PageServiceImpl implements PageService {
 
 
     @Override
-    public void savePage(Page page,Long pageId) throws IOException {
-        XmlMapper xmlMapper = new XmlMapper();
-        //xmlMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-        String pageXml = xmlMapper.writeValueAsString(page);
+    public void savePage(Page page, Long pageId) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String pageJson = objectMapper.writeValueAsString(page);
         PageInfo pageInfo = pageInfoRepository.findOne(pageId);
         if (pageInfo == null) {
             pageInfo = new PageInfo();
@@ -92,7 +95,7 @@ public class PageServiceImpl implements PageService {
         //保存最新控件信息
         String resourceKey = UUID.randomUUID().toString();
         pageInfo.setResourceKey(resourceKey);
-        pageInfo.setPageSetting(pageXml.getBytes());
+        pageInfo.setPageSetting(pageJson.getBytes());
         pageInfoRepository.save(pageInfo);
         //生成page的css样式表
         PageElement[] elements = page.getElements();
@@ -106,15 +109,16 @@ public class PageServiceImpl implements PageService {
         InputStream data = Files.newInputStream(path);
         resourceService.uploadResource(resourceKey + "/" + pageInfo.getPageId() + ".css", data);
         Files.deleteIfExists(path);
-
     }
 
     @Override
-    public Page getPage(Long pageId) throws IOException {
+    public Page getPage(Long pageId) throws IOException, PageNotFoundException {
         PageInfo pageInfo = pageInfoRepository.findOne(pageId);
-        String pageXml = new String(pageInfo.getPageSetting(), "utf-8");
-        XmlMapper xmlMapper = new XmlMapper();
-        return xmlMapper.readValue(pageXml, Page.class);
+        if(pageInfo==null)
+            throw new PageNotFoundException("页面ID为"+pageId+"的页面不存在");
+        String pageJson = new String(pageInfo.getPageSetting(), "utf-8");
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(pageJson, Page.class);
     }
 
     @Override
@@ -123,7 +127,7 @@ public class PageServiceImpl implements PageService {
     }
 
     @Override
-    public Page findBySiteAndPagePath(Site site, String pagePath) throws IllegalStateException {
+    public Page findBySiteAndPagePath(Site site, String pagePath) throws IllegalStateException, PageNotFoundException {
         Page page = null;
         try {
             PageInfo pageInfo = pageInfoRepository.findBySiteAndPagePath(site, pagePath);
@@ -142,7 +146,7 @@ public class PageServiceImpl implements PageService {
     }
 
     @Override
-    public Page getClosestContentPage(Category category, String path) throws IOException {
+    public Page getClosestContentPage(Category category, String path) throws IOException, PageNotFoundException {
         PageInfo pageInfo = pageInfoRepository.findByPagePath(path);
         if (pageInfo != null && category.getId().equals(pageInfo.getCategory().getId())) {
             return getPage(pageInfo.getPageId());
@@ -155,7 +159,7 @@ public class PageServiceImpl implements PageService {
     }
 
     @Override
-    public List<Page> findAll() throws IOException {
+    public List<Page> findAll() throws IOException, PageNotFoundException {
         List<PageInfo> pageInfoList = pageInfoRepository.findAll();
         List<Page> pageList = null;
         if (pageInfoList != null && pageInfoList.size() > 0) {
@@ -180,9 +184,14 @@ public class PageServiceImpl implements PageService {
         } catch (IOException e) {
             throw new IllegalStateException("更新控件组件，保存界面错误" + e.getMessage());
         }
-
     }
 
+    /**
+     * 更新page的component
+     *
+     * @param element
+     * @param installedWidget 更新的控件
+     */
     private void updateComponent(PageElement element, InstalledWidget installedWidget) {
         if (element instanceof Layout) {
             Layout layout = (Layout) element;
@@ -201,7 +210,6 @@ public class PageServiceImpl implements PageService {
             }
         }
     }
-
 
 
 }

@@ -22,6 +22,7 @@ import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.service.CategoryService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -40,6 +41,7 @@ public class CategoryControllerTest extends SiteManageTest {
     private CategoryRepository categoryRepository;
 
     @Test
+    @Transactional
     public void index() throws Exception {
         Site site = loginAsOwnerReturnSite();
 
@@ -49,6 +51,7 @@ public class CategoryControllerTest extends SiteManageTest {
             mainPage.toPage(CategoryPage.class);
             throw new AssertionError("现在应该还看不到页面");
         } catch (Exception ignored) {
+            mainPage.closeDanger();
         }
         // 试下使用{{}}
         mainPage.switchSite(site);
@@ -56,6 +59,7 @@ public class CategoryControllerTest extends SiteManageTest {
     }
 
     @Test
+    @Transactional
     public void add() throws Exception {
         Site site = loginAsSite();
         ManageMainPage mainPage = initPage(ManageMainPage.class);

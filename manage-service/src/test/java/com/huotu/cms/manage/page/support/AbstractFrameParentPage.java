@@ -12,6 +12,7 @@ package com.huotu.cms.manage.page.support;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.springframework.core.annotation.AnnotationUtils;
 
 import java.util.List;
 
@@ -31,6 +32,20 @@ public abstract class AbstractFrameParentPage extends AbstractManagePage {
             webDriver.switchTo().parentFrame();
     }
 
+    @Override
+    public void assertNoDanger() throws InterruptedException {
+        webDriver.switchTo().parentFrame();
+        super.assertNoDanger();
+        beforeDriver();
+    }
+
+    @Override
+    public void closeDanger() throws InterruptedException {
+        webDriver.switchTo().parentFrame();
+        super.closeDanger();
+        beforeDriver();
+    }
+
     public void clickLogout() {
         beforeDriver();
         // 点击最后一个dropdown
@@ -42,5 +57,24 @@ public abstract class AbstractFrameParentPage extends AbstractManagePage {
             if (i.isDisplayed())
                 i.click();
         });
+    }
+
+    /**
+     * 去指定页面
+     *
+     * @param pageClazz 页面的类型
+     * @param <T>       类型参数
+     * @return 新页面实例
+     */
+    public <T extends AbstractContentPage> T toPage(Class<? extends T> pageClazz) {
+        beforeDriver();
+        try {
+            clickMenuByClass(AnnotationUtils.findAnnotation(pageClazz, BodyId.class).value());
+        } catch (NullPointerException ex) {
+            throw new IllegalStateException("必须标注BodyId 否则找不到相对的链接:" + pageClazz);
+        }
+        T page = initPage(pageClazz);
+        page.setParentPage(this);
+        return page;
     }
 }

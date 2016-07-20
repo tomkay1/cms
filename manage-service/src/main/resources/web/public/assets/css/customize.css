@@ -1,4 +1,4 @@
-.close-panel .panel-body,  .close-panel .panel-footer {
+.open-panel .panel-body,  .open-panel .panel-footer {
     display: none;
 }
 textarea {

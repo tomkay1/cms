@@ -12,6 +12,7 @@ package com.huotu.hotcms.widget.service.impl;
 import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
+import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.Widget;
@@ -85,7 +86,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
      * @param widgetId 控件id
      * @return 临时文件
      */
-    private File downloadJar(String groupId, String widgetId, String version) throws IOException {
+    public File downloadJar(String groupId, String widgetId, String version) throws IOException {
         groupId = groupId.replace(".", "/");
         StringBuilder repoUrl = new StringBuilder(String.format(PRIVATE_REPO, groupId, widgetId, version));
         CloseableHttpResponse response = HttpClientUtil.getInstance().get(repoUrl + "/maven-metadata.xml"
@@ -243,9 +244,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
     }
 
     @Override
-    public void updateWidget(Widget widget) {
-        installWidget(null, widget, UUID.randomUUID().toString());
-
+    public void updateWidget(Widget widget) throws IOException, FormatException {
         //查找控件
         List<WidgetInfo> widgetInfoList = widgetInfoRepository.findByGroupIdAndArtifactIdAndEnabledTrue(widget.groupId()
                 , widget.widgetId());
@@ -259,7 +258,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
     }
 
     @Override
-    public void primary(WidgetInfo widgetInfo, boolean ignoreError) throws IllegalStateException, IOException {
+    public void primary(WidgetInfo widgetInfo, boolean ignoreError) throws IllegalStateException, IOException, PageNotFoundException {
         List<InstalledWidget> installedWidgetList = installedStatus(widgetInfo);
         if (installedWidgetList != null && installedWidgetList.size() > 0) {
 
@@ -277,7 +276,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
                     PageElement[] elements = page.getElements();
                     Set<Component> notSupportComponent = new HashSet<>();
                     for (int e = 0, s = elements.length; e < s; e++) {
-                        parimaryUtil(elements[i], installedWidget, notSupportComponent, supportPage, page);
+                        parimaryUtil(elements[e], installedWidget, notSupportComponent, supportPage, page);
                     }
                     if (notSupportComponent.size() > 0) {
                         if (ignoreError) {
@@ -302,7 +301,11 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
                 }
             }
             //更新控件
-            updateWidget(installedWidget.getWidget());
+            try {
+                updateWidget(installedWidget.getWidget());
+            } catch (FormatException e) {
+                throw new IllegalStateException("更新完成,重新加载控件列表失败");
+            }
         }
     }
 

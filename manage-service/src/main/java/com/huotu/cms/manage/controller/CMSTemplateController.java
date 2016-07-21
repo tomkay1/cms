@@ -40,7 +40,7 @@ public class CMSTemplateController {
      * @param ownerId ownerId
      * @param behavior 用户行为。1表示点赞，0表示取消赞
      */
-    @RequestMapping(value = "/laud/{siteId}", method = RequestMethod.PUT, produces = "application/json; charset=UTF-8")
+    @RequestMapping(value = "/laud/{siteId}", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public boolean laud(@PathVariable("siteId") long siteId, @RequestParam("ownerId") long ownerId
             ,@RequestParam("behavior") int behavior) {

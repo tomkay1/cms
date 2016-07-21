@@ -97,37 +97,41 @@ $(function () {
     $('.template-lauds').click(function () {
         //  fa-thumbs-o-up fa-thumbs-up   o是没有
         var behavior;//用户行为，点赞或者取消
-
+        var _this = $(this);
         if ($(this).find(".fa-thumbs-up").length == 0)
             behavior = 1;
         else
             behavior = 0;
 
 
-        alert(currentOwnerId);
         if(currentOwnerId==-1)//超级管理员，不参与点赞
             return;
+            //alert("admin");
 
         if(laudUrl.indexOf("index")==-1){//如果不是静态界面测试 查看laudUrl的值
             $.ajax({
                 url: laudUrl + $(this).find(".laudSpan").text(),
-                type: 'put',
+                type: 'post',
                 dataType: 'json',
                 data: {
                     ownerId: currentOwnerId,
                     behavior: behavior
                 },
                 success: function (data) {
-                    var span = $('span', this);
+                    var span = $('span', _this);
                     var newVal;
                     if(data){
-                        newVal = parseInt(span.text()) +1;
-                        $(this).find("i").attr("class","fa fa-thumbs-o-up");
+                        if(behavior==1){
+                            newVal = parseInt(span.text()) +1;
+                           _this.find("i").attr("class","fa fa-thumbs-up");
+                        }else{
+                            newVal = parseInt(span.text()) -1;
+                            _this.find("i").attr("class","fa fa-thumbs-o-up");
+                        }
+                        span.text(newVal);
                     }else{
-                        newVal = parseInt(span.text()) -1;
-                        $(this).find("i").attr("class","fa fa-thumbs-up")
+                        layer.alert("服务器异常...");
                     }
-                    span.text(newVal);
                 }
             })
         }else{

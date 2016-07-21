@@ -107,6 +107,7 @@ var editFunc = {
             $('#configuration').stop().animate({
                 right: 0
             },500);
+            createStore($(this));
         });
     },
     closeConfig: function () {
@@ -164,6 +165,7 @@ var Page = {
         $.getJSON(url, function(result){
             var parent = $('#configuration').find('.conf-body');
             $.each(result, function (i, v) {
+                dynamicLoading.js(v.scriptHref);
                 // 组件列表渲染
                 $('#widgetLists').append(Page.widgetHTML.join(' '));
                 $('#widgetLists .setting').eq(i).attr('data-target', v.identity);
@@ -191,6 +193,7 @@ var Page = {
             },
             stop: function (e, t) {
                 var oId = t.helper.find('.view').children().eq(0).attr('id');
+                console.log(oId)
                 editFunc.handleJsIds(oId);
             }
         });

@@ -752,3 +752,12 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
     background: none;
 }
 
+.scrollDiv {
+    height: 300px;
+    overflow-y: auto;
+}
+
+.ajax-file-upload-preview {
+    float: left;
+    margin-right: 10px;
+}

@@ -20,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.Serializable;
+import java.util.Vector;
 
 /**
  * 管理站点内容的控制器,需要当前登录操作人员已经选择好站点
@@ -34,8 +35,7 @@ public abstract class SiteManageController<T, ID extends Serializable, PD, MD> e
     @Override
     protected final Specification<T> prepareIndex(Login login, Model model, RedirectAttributes attributes) throws RedirectException {
         Site site = checkSite(login);
-
-        return prepareIndex(login, site, null, attributes);
+        return prepareIndex(login, site, model, attributes);
     }
 
     @NotNull

@@ -13,8 +13,6 @@
  */
 $(function () {
 
-
-
     var useTemplateModal = $('#useTemplateModal');
 
     var addSiteForm = $('#addSiteForm');
@@ -98,29 +96,59 @@ $(function () {
     // 点赞的时候
     $('.template-lauds').click(function () {
         //  fa-thumbs-o-up fa-thumbs-up   o是没有
-        //$.ajax({
-        //    url:'',
-        //    type:'post',
-        //    dataType:'json',
-        //    success:function(data){
-        //        if(data){
-        //        }
-        //    }
-        //})
+        var behavior;//用户行为，点赞或者取消
+        var _this = $(this);
+        if ($(this).find(".fa-thumbs-up").length == 0)
+            behavior = 1;
+        else
+            behavior = 0;
 
-        var i = $('i', this);
-        var padding;
-        if (i.hasClass('fa-thumbs-o-up')) {
-            padding = 1;
-        } else {
-            padding = -1;
+
+        if(currentOwnerId==-1)//超级管理员，不参与点赞
+            return;
+            //alert("admin");
+
+        if(laudUrl.indexOf("index")==-1){//如果不是静态界面测试 查看laudUrl的值
+            $.ajax({
+                url: laudUrl + $(this).find(".laudSpan").text(),
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    ownerId: currentOwnerId,
+                    behavior: behavior
+                },
+                success: function (data) {
+                    var span = $('span', _this);
+                    var newVal;
+                    if(data){
+                        if(behavior==1){
+                            newVal = parseInt(span.text()) +1;
+                           _this.find("i").attr("class","fa fa-thumbs-up");
+                        }else{
+                            newVal = parseInt(span.text()) -1;
+                            _this.find("i").attr("class","fa fa-thumbs-o-up");
+                        }
+                        span.text(newVal);
+                    }else{
+                        layer.alert("服务器异常...");
+                    }
+                }
+            })
+        }else{
+            var i = $('i', this);
+            var padding;
+            if (i.hasClass('fa-thumbs-o-up')) {
+                padding = 1;
+            } else {
+                padding = -1;
+            }
+
+            i.toggleClass('fa-thumbs-o-up');
+            i.toggleClass('fa-thumbs-up');
+            var span = $('span', this);
+            var newVal = parseInt(span.text()) + padding;
+            span.text(newVal);
         }
-
-        i.toggleClass('fa-thumbs-o-up');
-        i.toggleClass('fa-thumbs-up');
-        var span = $('span', this);
-        var newVal = parseInt(span.text()) + padding;
-        span.text(newVal);
     });
     //  使用模板的时候
     $('.template-use').click(function () {

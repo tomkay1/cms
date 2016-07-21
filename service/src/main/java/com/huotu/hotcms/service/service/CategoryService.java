@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.service.service;
 
+import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.CategoryTreeModel;
@@ -77,4 +78,12 @@ public interface CategoryService {
      */
     List<Category> findByRouteTypeAndParentId(CategoryForeachParam categoryForeachParam);
 
+    /**
+     * 查找指定站点指定模型的数据源
+     *
+     * @param site
+     * @param contentType
+     * @return
+     */
+    Iterable<Category> getCategoriesForContentType(Site site, ContentType contentType);
 }

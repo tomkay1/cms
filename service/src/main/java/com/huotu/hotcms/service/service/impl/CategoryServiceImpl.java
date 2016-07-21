@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.service.service.impl;
 
+import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
@@ -38,13 +39,13 @@ import java.util.stream.Collectors;
 public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
-    CategoryRepository categoryRepository;
+    private CategoryRepository categoryRepository;
 
 //    @Autowired
 //    CategoryService categoryService;
 
     @Autowired
-    RouteService routeService;
+    private RouteService routeService;
 
     @Override
     public List<Category> getCategories(Site site) {
@@ -128,6 +129,11 @@ public class CategoryServiceImpl implements CategoryService {
             return cb.and(predicates.toArray(new Predicate[predicates.size()]));
         };
         return categoryRepository.findAll(specification, new PageRequest(0, param.getSize(), sort)).getContent();
+    }
+
+    @Override
+    public Iterable<Category> getCategoriesForContentType(Site site, ContentType contentType) {
+        return categoryRepository.findBySiteAndContentType(site, contentType);
     }
 
 

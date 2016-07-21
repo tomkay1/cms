@@ -161,7 +161,7 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
     @Transactional(readOnly = true)
     public String index(@AuthenticationPrincipal Login login, Model model, RedirectAttributes attributes) {
         try {
-            Specification<T> specification = prepareIndex(login, null, attributes);
+            Specification<T> specification = prepareIndex(login, model, attributes);
             if (specification == null)
                 model.addAttribute("list", jpaRepository.findAll());
             else

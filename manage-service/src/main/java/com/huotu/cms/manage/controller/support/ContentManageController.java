@@ -12,10 +12,12 @@ package com.huotu.cms.manage.controller.support;
 import com.huotu.cms.manage.exception.RedirectException;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.AbstractContent;
+import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.huotu.hotcms.service.model.ContentExtra;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -27,7 +29,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * @param <ED> extra model 提交数据（包括新增,修改）MVC系统额外数据
  * @author CJ
  */
-public abstract class ContentManageController<T extends AbstractContent, ED>
+public abstract class ContentManageController<T extends AbstractContent, ED extends ContentExtra>
         extends SiteManageController<T, Long, ED, ED> {
 
     @Autowired
@@ -55,4 +57,11 @@ public abstract class ContentManageController<T extends AbstractContent, ED>
         super.prepareOpen(login, data, model, attributes);
     }
 
+    /**
+     * 当前Category 根据  extra data 获取 Category
+     * @return
+     */
+    protected  Category currentCategory(){
+        return  null;
+    }
 }

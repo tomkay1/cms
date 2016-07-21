@@ -161,7 +161,7 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
     @Transactional(readOnly = true)
     public String index(@AuthenticationPrincipal Login login, Model model, RedirectAttributes attributes) {
         try {
-            Specification<T> specification = prepareIndex(login, attributes);
+            Specification<T> specification = prepareIndex(login, null, attributes);
             if (specification == null)
                 model.addAttribute("list", jpaRepository.findAll());
             else
@@ -188,12 +188,12 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
 
     /**
      * @param login      当前操作者的身份
-     * @param attributes 空间
-     * @return 搜索规格, null表示无规格要求
+     * @param model      模型
+     * @param attributes 空间  @return 搜索规格, null表示无规格要求
      * @throws RedirectException 需要转发到其他地址
      */
     @SuppressWarnings("WeakerAccess")
-    protected Specification<T> prepareIndex(Login login, RedirectAttributes attributes) throws RedirectException {
+    protected Specification<T> prepareIndex(Login login, Model model, RedirectAttributes attributes) throws RedirectException {
         return null;
     }
 

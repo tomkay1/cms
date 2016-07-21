@@ -14,7 +14,10 @@ import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
+import com.huotu.hotcms.service.service.CategoryService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -27,14 +30,29 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public abstract class ContentManageController<T extends AbstractContent, ED>
         extends SiteManageController<T, Long, ED, ED> {
 
+    @Autowired
+    private CategoryService categoryService;
+
     /**
      * @return 这个内容的模型
      */
     protected abstract ContentType contentType();
 
     @Override
-    protected Specification<T> prepareIndex(Login login, Site site, RedirectAttributes attributes)
+    protected Specification<T> prepareIndex(Login login, Site site, Model model, RedirectAttributes attributes)
             throws RedirectException {
+        forCategoryList(site, model);
         return (root, query, cb) -> cb.equal(root.get("category").get("site").as(Site.class), site);
     }
+
+    private void forCategoryList(Site site, Model model) {
+        model.addAttribute("categories", categoryService.getCategoriesForContentType(site, contentType()));
+    }
+
+    @Override
+    protected void prepareOpen(Login login, T data, Model model, RedirectAttributes attributes) throws RedirectException {
+        forCategoryList(data.getCategory().getSite(), model);
+        super.prepareOpen(login, data, model, attributes);
+    }
+
 }

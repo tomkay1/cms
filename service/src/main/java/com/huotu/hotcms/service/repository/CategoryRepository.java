@@ -88,6 +88,8 @@ public interface CategoryRepository extends JpaRepository<Category, Long>, JpaSp
      */
     List<Category> findByParent_Id(Long parenId);
 
+    List<Category> findBySiteAndContentType(Site site, ContentType contentType);
+
 
 
 

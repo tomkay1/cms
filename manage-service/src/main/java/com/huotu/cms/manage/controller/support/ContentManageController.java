@@ -10,6 +10,7 @@
 package com.huotu.cms.manage.controller.support;
 
 import com.huotu.cms.manage.exception.RedirectException;
+import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
@@ -25,6 +26,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  */
 public abstract class ContentManageController<T extends AbstractContent, ED>
         extends SiteManageController<T, Long, ED, ED> {
+
+    /**
+     * @return 这个内容的模型
+     */
+    protected abstract ContentType contentType();
 
     @Override
     protected Specification<T> prepareIndex(Login login, Site site, RedirectAttributes attributes)

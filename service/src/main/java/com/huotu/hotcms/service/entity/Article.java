@@ -80,6 +80,12 @@ public class Article extends AbstractContent {
     @Column(name="isSystem")
     private boolean system = false;
 
+    /**
+     * 文章类型
+     */
+    @Column(name = "type")
+    private String type;
+
     @Override
     public Article copy() {
         Article article=new Article();

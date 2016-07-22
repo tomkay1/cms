@@ -67,7 +67,7 @@ public class TemplateController extends CRUDController<Template, Long, String, S
     }
 
     @Override
-    protected void prepareSave(Login login, Template entity, Template data, String extra, RedirectAttributes attributes)
+    protected void prepareUpdate(Login login, Template entity, Template data, String extra, RedirectAttributes attributes)
             throws RedirectException {
         updateLogo(entity, extra);
     }

@@ -192,9 +192,11 @@ public class TemplateServiceImpl implements TemplateService {
      * @return 复制后资源的地址
      */
     private String copyStaticResource(String resourcePath) throws IOException {
+        int dotPosition=resourcePath.lastIndexOf(".");
+        String suffix=resourcePath.substring(dotPosition);
         Resource resource = resourceService.getResource(resourcePath);
         InputStream is = resource.getInputStream();
-        String path = "upload/" + UUID.randomUUID().toString();//直接上传到新地址？
+        String path = "upload/" + UUID.randomUUID().toString()+suffix;//直接上传到新地址？
         resourceService.uploadResource(path, is);
         return path;
     }

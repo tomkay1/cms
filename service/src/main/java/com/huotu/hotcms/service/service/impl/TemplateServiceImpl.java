@@ -67,7 +67,7 @@ public class TemplateServiceImpl implements TemplateService {
         //目前只是简单实现
         try{ //点赞数据储存应该使用其他技术
             String key=siteId+"$"+ ownerId;
-            int laudNum=laudNumber(siteId, ownerId);
+            int laudNum=10;
             if(1==behavior){//点赞
                 laudMap.put(key,laudNum+1);
             }else{
@@ -90,14 +90,6 @@ public class TemplateServiceImpl implements TemplateService {
         templateSite.setUseNumber(templateSite.getUseNumber()+1);//使用数+1
         templateRepository.save(templateSite);
     }
-
-    @Override
-    public int laudNumber(long siteId, long ownerId) {
-        //目前只是简单实现
-        String key=siteId+"$"+ ownerId;
-        return laudMap.get(key)==null?100:laudMap.get(key);
-    }
-
     @Override
     public boolean isLauded(long siteId, long ownerId) {
         //目前只是简单实现
@@ -151,7 +143,7 @@ public class TemplateServiceImpl implements TemplateService {
                 deleteStaticResourceByPath(download.getDownloadUrl());
         }
         List<Gallery> galleries = galleryRepository.findByCategory(category);
-        List<GalleryList> galleryLists = null;
+        List<GalleryList> galleryLists;
         for (Gallery gallery : galleries) {
             if (!StringUtils.isEmpty(gallery.getThumbUri()))
                 deleteStaticResourceByPath(gallery.getThumbUri());
@@ -209,8 +201,7 @@ public class TemplateServiceImpl implements TemplateService {
      */
     private void copy(Site templateSite, Site customerSite) throws IOException {
         List<Category> categories = categoryRepository.findBySite(templateSite);
-        Category copyCategory = null;
-        AbstractContent copyContent = null;
+        Category copyCategory;
         //数据源复制
         for (Category category : categories) {
             copyCategory = category.copy(customerSite, null);
@@ -231,7 +222,7 @@ public class TemplateServiceImpl implements TemplateService {
      */
     private void copyPageInfo(Category templateCategory, Category copyCategory, Site customerSite) {
         List<PageInfo> pageInfoList = pageInfoRepository.findByCategory(templateCategory);
-        PageInfo copyPageInfo = null;
+        PageInfo copyPageInfo;
         for (PageInfo pageInfo : pageInfoList) {
             copyPageInfo = pageInfo.copy();
             copyPageInfo.setSite(customerSite);
@@ -250,7 +241,7 @@ public class TemplateServiceImpl implements TemplateService {
     private void copyContent(Category templateCategory, Category copyCategory, Site customerSite) throws IOException {
         //对Article的复制
         List<Article> articles = articleRepository.findByCategory(templateCategory);
-        Article newArticle = null;
+        Article newArticle;
         for (Article article : articles) {
             newArticle = article.copy(customerSite, copyCategory);
             if (!StringUtils.isEmpty(newArticle.getThumbUri()))
@@ -259,7 +250,7 @@ public class TemplateServiceImpl implements TemplateService {
         }
         //下载模型复制
         List<Download> downloads = downloadRepository.findByCategory(templateCategory);
-        Download d = null;
+        Download d;
         for (Download download : downloads) {
             d = download.copy(customerSite, copyCategory);
             if (!StringUtils.isEmpty(download.getDownloadUrl())) {
@@ -268,9 +259,9 @@ public class TemplateServiceImpl implements TemplateService {
             }
             //图库模型复制
             List<Gallery> galleries = galleryRepository.findByCategory(templateCategory);
-            Gallery g = null;
-            GalleryList galleryList = null;
-            List<GalleryList> galleryLists = null;
+            Gallery g;
+            GalleryList galleryList;
+            List<GalleryList> galleryLists;
             for (Gallery gallery : galleries) {
                 g = gallery.copy(customerSite, copyCategory);
                 if (!StringUtils.isEmpty(gallery.getThumbUri()))
@@ -288,7 +279,7 @@ public class TemplateServiceImpl implements TemplateService {
             }
             //链接模型复制
             List<Link> links = linkRepository.findByCategory(templateCategory);
-            Link link1 = null;
+            Link link1;
             for (Link link : links) {
                 link1 = link.copy(customerSite, copyCategory);
                 if (!StringUtils.isEmpty(link1.getThumbUri())) {
@@ -298,14 +289,14 @@ public class TemplateServiceImpl implements TemplateService {
             }
             //公告模型复制
             List<Notice> notices = noticeRepository.findByCategory(templateCategory);
-            Notice notice1 = null;
+            Notice notice1;
             for (Notice notice : notices) {
                 notice1 = notice.copy(customerSite, copyCategory);
                 abstractContentRepository.save(notice1);
             }
             //视频模型复制
             List<Video> videos = videoRepository.findByCategory(templateCategory);
-            Video v = null;
+            Video v;
             for (Video video : videos) {
                 v = video.copy(customerSite, copyCategory);
                 if (!StringUtils.isEmpty(v.getThumbUri()))

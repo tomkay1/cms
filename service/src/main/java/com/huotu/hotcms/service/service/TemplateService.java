@@ -43,15 +43,6 @@ public interface TemplateService {
 
 
     /**
-     * 获取点赞数
-     * @param ownerId ownerId
-     * @param siteId 站点ID，也就是模板的ID
-     * @param ownerId
-     * @return 点赞数
-     */
-    int laudNumber(long siteId, long ownerId);
-
-    /**
      * 是否点赞
      * @param ownerId ownerId
      * @param siteId siteId 站点ID，也就是模板的ID

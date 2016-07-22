@@ -43,7 +43,7 @@ public class ArticleController extends ContentManageController<Article,ContentEx
 
     @Override
     protected String openViewName() {
-        return null;
+        return "/view/contents/articleOpen.html";
     }
 
     @Override

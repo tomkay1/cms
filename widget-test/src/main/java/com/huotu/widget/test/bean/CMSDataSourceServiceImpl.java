@@ -14,7 +14,7 @@ import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Gallery;
 import com.huotu.hotcms.service.entity.GalleryList;
 import com.huotu.hotcms.service.entity.Link;
-import com.huotu.hotcms.widget.page.Page;
+import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.service.CMSDataSourceService;
 
 import java.util.ArrayList;
@@ -110,22 +110,21 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     }
 
     @Override
-    public Iterable<Page> findWidgetPage() {
-        Page page1 = new Page();
+    public Iterable<PageInfo> findWidgetPage() {
+        PageInfo page1 = new PageInfo();
         page1.setTitle("首页");
 
-        Page page2 = new Page();
+        PageInfo page2 = new PageInfo();
         page2.setTitle("新闻");
 
-        Page page3 = new Page();
+        PageInfo page3 = new PageInfo();
         page3.setTitle("关于我们");
 
-        List<Page> list = new ArrayList<>();
+        List<PageInfo> list = new ArrayList<>();
         list.add(page1);
         list.add(page2);
         list.add(page3);
-        Iterable<Page> iterable = list::iterator;
-        return iterable;
+        return list;
     }
 
 

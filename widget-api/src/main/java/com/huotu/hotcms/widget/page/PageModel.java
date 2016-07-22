@@ -11,6 +11,7 @@ package com.huotu.hotcms.widget.page;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.huotu.hotcms.widget.entity.PageInfo;
 import lombok.Data;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -19,23 +20,20 @@ import javax.xml.bind.annotation.XmlAttribute;
 import java.io.Serializable;
 
 /**
- * 页面
- * <p>
- * 包含布局,页面控件,SEO等信息
- * </p>
+ * 系统和外部(比如我们的拖拽工具)页面的交互格式
  *
  * @author CJ
  */
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Page implements Serializable {
+public class PageModel implements Serializable {
     /**
      * 该页面的唯一ID 与PageInfo的pageID保持一致
      * 如果未null表示该页面尚未持久化
      *
-     * @see com.huotu.hotcms.service.entity.PageInfo#pageId
+     * @see PageInfo#pageId
      */
-//    @XmlAttribute(name = "pageIdentity")
+    @XmlAttribute(name = "pageIdentity")
     @JsonIgnore
     private Long pageIdentity;
 

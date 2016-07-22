@@ -27,8 +27,8 @@ import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.config.TestConfig;
 import com.huotu.hotcms.widget.page.Empty;
 import com.huotu.hotcms.widget.page.Layout;
-import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.page.PageElement;
+import com.huotu.hotcms.widget.page.PageLayout;
 import com.huotu.hotcms.widget.servlet.CMSFilter;
 import me.jiangcai.lib.test.SpringWebTest;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -88,24 +88,13 @@ public class TestBase extends SpringWebTest {
         mockMvc = builder.build();
     }
 
-    /**
-     * 生成随机的测试{@link com.huotu.hotcms.widget.page.Page}数据
-     *
-     * @return
-     */
-    protected Page randomPage() {
-        Page page = new Page();
-//        page.setPageIdentity(random.nextLong());
-        page.setTitle(UUID.randomUUID().toString());
-
+    protected PageLayout randomPageLayout() {
         List<Layout> pageElementList = new ArrayList<>();
         int number = random.nextInt(4) + 1;//生成PageElement的随机个数
         while (number-- > 0)
             pageElementList.add(randomLayout());
 
-        page.setElements(pageElementList.toArray(new Layout[pageElementList.size()]));
-
-        return page;
+        return new PageLayout(pageElementList.toArray(new Layout[pageElementList.size()]));
     }
 
     private Empty randomEmpty() {

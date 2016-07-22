@@ -17,9 +17,9 @@ import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetLocateService;
+import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.page.Layout;
-import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.page.PageElement;
 import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
 import com.huotu.hotcms.widget.service.PageService;
@@ -266,21 +266,24 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
                     , widgetInfo.getVersion());
 
             //不支持的界面，和具体组件
-            Map<Long, Page> notSupportPage = new HashMap<>();
-            Map<Long, Page> supportPage = new HashMap<>();
-            List<Page> pageList = pageService.findAll();
+            Map<Long, PageInfo> notSupportPage = new HashMap<>();
+            Map<Long, PageInfo> supportPage = new HashMap<>();
+            List<PageInfo> pageList = pageService.findAll();
             if (pageList != null && pageList.size() > 0) {
-                for (int i = 0, l = pageList.size(); i < l; i++) {
+                for (PageInfo page : pageList) {
                     //检查所有界面使用该组件的参数是否合法，如果不合法添加到不支持的界面中
-                    Page page = pageList.get(i);
-                    PageElement[] elements = page.getElements();
+                    PageElement[] elements;
+                    if (page.getLayout() != null)
+                        elements = page.getLayout().getElements();
+                    else
+                        elements = new PageElement[0];
                     Set<Component> notSupportComponent = new HashSet<>();
-                    for (int e = 0, s = elements.length; e < s; e++) {
-                        parimaryUtil(elements[e], installedWidget, notSupportComponent, supportPage, page);
+                    for (PageElement element : elements) {
+                        parimaryUtil(element, installedWidget, notSupportComponent, supportPage, page);
                     }
                     if (notSupportComponent.size() > 0) {
                         if (ignoreError) {
-                            notSupportPage.put(page.getPageIdentity(), page);
+                            notSupportPage.put(page.getPageId(), page);
                         } else {
                             throw new IllegalStateException("安装的控件不能满足旧版本控件的参数异常");
                         }
@@ -289,11 +292,11 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
             }
 
             if (pageList != null && pageList.size() > 0) {
-                for (Page page : pageList) {
-                    if (notSupportPage.get(page.getPageIdentity()) != null) {
+                for (PageInfo page : pageList) {
+                    if (notSupportPage.get(page.getPageId()) != null) {
                         break;
                     }
-                    if (supportPage.get(page.getPageIdentity()) == null) {
+                    if (supportPage.get(page.getPageId()) == null) {
                         break;
                     }
                     //更新页面
@@ -312,13 +315,14 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
     /**
      * 检查primary控件包
      * <p>验证控件包是否支持组件属性参数</p>
+     *
      * @param installedWidget     控件包的安装控件
      * @param notSupportComponent 不支持当前控件包已安装的控件
      * @param supportPage
      * @param page
      */
     private void parimaryUtil(PageElement pageElement, InstalledWidget installedWidget
-            , Set<Component> notSupportComponent, Map<Long, Page> supportPage, Page page) {
+            , Set<Component> notSupportComponent, Map<Long, PageInfo> supportPage, PageInfo page) {
         if (pageElement instanceof Component) {
             Component component = (Component) pageElement;
             component.setInstalledWidget(findWidget(component.getWidgetIdentity()));
@@ -329,12 +333,12 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
                 if (widget1.groupId().equals(widget2.groupId()) && widget1.widgetId().equals(widget2.widgetId())
                         && !widget1.version().equals(widget2.version())) {
                     installedWidget.getWidget().valid(component.getStyleId(), component.getProperties());
-                    supportPage.put(page.getPageIdentity(), page);
+                    supportPage.put(page.getPageId(), page);
                 }
             } catch (IllegalArgumentException e) {
                 log.info("不支持的页面组件" + component.getWidgetIdentity() + ":" + e.getMessage());
                 notSupportComponent.add(component);
-                supportPage.remove(page.getPageIdentity());
+                supportPage.remove(page.getPageId());
             }
         } else if (pageElement instanceof Layout) {
             Layout layout = (Layout) pageElement;

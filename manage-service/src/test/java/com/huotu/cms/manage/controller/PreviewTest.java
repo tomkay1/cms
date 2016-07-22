@@ -9,14 +9,13 @@
 
 package com.huotu.cms.manage.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.cms.manage.ManageTest;
 import com.huotu.hotcms.service.common.PageType;
-import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Owner;
-import com.huotu.hotcms.service.repository.PageInfoRepository;
+import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.exception.FormatException;
+import com.huotu.hotcms.widget.repository.PageInfoRepository;
 import com.huotu.hotcms.widget.servlet.CMSFilter;
 import com.huotu.hotcms.widget.servlet.RouteFilter;
 import org.junit.Test;
@@ -82,8 +81,9 @@ public class PreviewTest extends ManageTest {
         indexPage.setTitle(randomDomain());
 
         String linkName = randomDomain();//给链接的名字
-        ObjectMapper objectMapper=new ObjectMapper();
-        indexPage.setPageSetting(objectMapper.writeValueAsBytes(randomPage()));
+        addLinkToPage(indexPage, linkName, anotherPage);
+//        ObjectMapper objectMapper=new ObjectMapper();
+//        indexPage.setPageSetting(objectMapper.writeValueAsBytes(randomPage()));
         pageInfoRepository.saveAndFlush(indexPage);
 
         // 执行预览
@@ -104,6 +104,11 @@ public class PreviewTest extends ManageTest {
 
         assertThat(driver.getTitle())
                 .isEqualTo(anotherPage.getTitle());
+    }
+
+
+    private void addLinkToPage(PageInfo page, String linkName, PageInfo toPage) {
+
     }
 
 }

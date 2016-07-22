@@ -7,15 +7,19 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.hotcms.service.entity;
+package com.huotu.hotcms.widget.entity;
 
 import com.huotu.hotcms.service.Auditable;
 import com.huotu.hotcms.service.Copyable;
 import com.huotu.hotcms.service.common.PageType;
+import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.widget.page.PageLayout;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,6 +29,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 
@@ -75,12 +80,34 @@ public class PageInfo implements Auditable,Copyable<PageInfo> {
     @Column(name = "resourceKey", length = 60)
     private String resourceKey;
 
+//    /**
+//     * 页面配置的xml数据
+//     */
+//    @Lob
+//    @Column(name = "pageSetting")
+//    private byte[] pageSetting;
     /**
      * 页面配置的xml数据
      */
+    @Convert(converter = PageLayoutConverter.class)
     @Lob
-    @Column(name = "pageSetting")
-    private byte[] pageSetting;
+    private PageLayout layout;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PageInfo)) return false;
+        PageInfo pageInfo = (PageInfo) o;
+        return Objects.equals(pageId, pageInfo.pageId) &&
+                Objects.equals(pagePath, pageInfo.pagePath) &&
+                Objects.equals(title, pageInfo.title) &&
+                pageType == pageInfo.pageType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pageId, pagePath, title, pageType);
+    }
 
     @Override
     public PageInfo copy() {
@@ -90,7 +117,8 @@ public class PageInfo implements Auditable,Copyable<PageInfo> {
         pageInfo.setCreateTime(LocalDateTime.now());
         pageInfo.setTitle(title);
         pageInfo.setResourceKey(UUID.randomUUID().toString());
-        pageInfo.setPageSetting(pageSetting);
+//        pageInfo.setPageSetting(pageSetting);
+        pageInfo.setLayout(layout);
         pageInfo.setPagePath(pagePath);
         pageInfo.setPageType(pageType);
         pageInfo.setSite(site);

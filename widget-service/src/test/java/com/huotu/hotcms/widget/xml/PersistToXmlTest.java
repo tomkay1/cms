@@ -10,7 +10,7 @@
 package com.huotu.hotcms.widget.xml;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.huotu.hotcms.widget.page.Page;
+import com.huotu.hotcms.widget.page.PageLayout;
 import com.huotu.hotcms.widget.test.TestBase;
 import org.junit.Test;
 
@@ -27,11 +27,13 @@ public class PersistToXmlTest extends TestBase {
 
     @Test
     public void testToXml() throws IOException {
-        Page page=randomPage();
-        ObjectMapper objectMapper=new ObjectMapper();
-        String json=objectMapper.writeValueAsString(page);
+        PageLayout page = randomPageLayout();
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(page);
 
-        Page page1 = objectMapper.readValue(json, Page.class);
+        System.out.println(json);
+        PageLayout page1 = objectMapper.readValue(json, PageLayout.class);
+        System.out.println(objectMapper.writeValueAsString(page1));
         assertThat(page1).isEqualTo(page);
     }
 }

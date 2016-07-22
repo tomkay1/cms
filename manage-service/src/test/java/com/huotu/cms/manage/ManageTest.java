@@ -10,7 +10,6 @@
 package com.huotu.cms.manage;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.huotu.cms.manage.login.Manager;
@@ -26,7 +25,6 @@ import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Download;
 import com.huotu.hotcms.service.entity.Gallery;
 import com.huotu.hotcms.service.entity.GalleryList;
-import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.Template;
@@ -40,17 +38,18 @@ import com.huotu.hotcms.service.repository.DownloadRepository;
 import com.huotu.hotcms.service.repository.GalleryListRepository;
 import com.huotu.hotcms.service.repository.GalleryRepository;
 import com.huotu.hotcms.service.repository.OwnerRepository;
-import com.huotu.hotcms.service.repository.PageInfoRepository;
 import com.huotu.hotcms.service.repository.TemplateRepository;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.util.StringUtil;
 import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.InstalledWidget;
+import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.page.Layout;
-import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.page.PageElement;
+import com.huotu.hotcms.widget.page.PageLayout;
+import com.huotu.hotcms.widget.repository.PageInfoRepository;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import me.jiangcai.lib.test.SpringWebTest;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -180,38 +179,40 @@ public abstract class ManageTest extends SpringWebTest {
 
     /**
      * 随机一个站点并关联数据源和内容
+     *
      * @return
      */
-    protected Site randomSiteAndData(Owner owner){
-        Site site=randomSite(owner);
-        Category category=randomCategory(site);
+    protected Site randomSiteAndData(Owner owner) {
+        Site site = randomSite(owner);
+        Category category = randomCategory(site);
         randomArticle(category);
         randomDownload(category);
-        Gallery gallery=randomGallery(category);
+        Gallery gallery = randomGallery(category);
         randomGalleryList(gallery);
         return site;
     }
 
     /**
      * 随机一个模板
+     *
      * @return
      */
-    protected Template randomTemplate(){
-        Template template=new Template();
+    protected Template randomTemplate() {
+        Template template = new Template();
         template.setUpdateTime(LocalDateTime.now());
         template.setTitle(UUID.randomUUID().toString());
         template.setName(StringUtil.createRandomStr(5));
-        TemplateType templateType=new TemplateType();
+        TemplateType templateType = new TemplateType();
         templateType.setIndustry(UUID.randomUUID().toString());
         template.setTemplateType(templateType);
         template.setCopyright(UUID.randomUUID().toString());
         template.setDeleted(false);
         template.setEnabled(true);
-        template= templateRepository.saveAndFlush(template);
-        Category category=randomCategory(template);
+        template = templateRepository.saveAndFlush(template);
+        Category category = randomCategory(template);
         randomArticle(category);
         randomDownload(category);
-        Gallery gallery=randomGallery(category);
+        Gallery gallery = randomGallery(category);
         randomGalleryList(gallery);
         return template;
     }
@@ -328,16 +329,15 @@ public abstract class ManageTest extends SpringWebTest {
 
 
     /**
-     *
      * @return 随机创建的数据源
      */
-    protected Category randomCategory(){
+    protected Category randomCategory() {
         Site site = randomSite(randomOwner());
         return randomCategory(site);
     }
 
     protected Category randomCategory(Site site) {
-        Category category=new Category();
+        Category category = new Category();
         category.setParent(null);
         category.setSite(site);
         category.setName(UUID.randomUUID().toString());
@@ -345,30 +345,30 @@ public abstract class ManageTest extends SpringWebTest {
         return categoryRepository.saveAndFlush(category);
     }
 
-    protected Article randomArticle(Category category){
-        Article article=new Article();
+    protected Article randomArticle(Category category) {
+        Article article = new Article();
         article.setAuthor(UUID.randomUUID().toString());
         article.setCategory(category);
         return articleRepository.saveAndFlush(article);
     }
 
-    protected Download randomDownload(Category category){
-        Download download=new Download();
+    protected Download randomDownload(Category category) {
+        Download download = new Download();
         download.setCategory(category);
         download.setTitle(UUID.randomUUID().toString());
         download.setDescription(UUID.randomUUID().toString());
         return downloadRepository.saveAndFlush(download);
     }
 
-    protected GalleryList randomGalleryList(Gallery gallery){
-        GalleryList galleryList=new GalleryList();
+    protected GalleryList randomGalleryList(Gallery gallery) {
+        GalleryList galleryList = new GalleryList();
         galleryList.setGallery(gallery);
         galleryList.setCreateTime(LocalDateTime.now());
         return galleryListRepository.saveAndFlush(galleryList);
     }
 
-    protected Gallery randomGallery(Category category){
-        Gallery gallery=new Gallery();
+    protected Gallery randomGallery(Category category) {
+        Gallery gallery = new Gallery();
         gallery.setCategory(category);
         gallery.setContent(UUID.randomUUID().toString());
         return galleryRepository.saveAndFlush(gallery);
@@ -385,70 +385,57 @@ public abstract class ManageTest extends SpringWebTest {
 
     /**
      * 创建一个随机的页面信息，包括页面配置
+     *
      * @return 页面信息
      * @throws JsonProcessingException jackson相关序列化异常
      */
     public PageInfo randomPageInfo() throws IOException, FormatException {
-        PageInfo pageInfo=new PageInfo();
+        PageInfo pageInfo = new PageInfo();
         pageInfo.setSite(randomSite(randomOwner()));
         pageInfo.setCategory(randomCategory());
         pageInfo.setPageType(PageType.DataContent);
-        ObjectMapper objectMapper=new ObjectMapper();
-        byte[] pageJson=objectMapper.writeValueAsString(randomPage()).getBytes();
-        pageInfo.setPageSetting(pageJson);
+        pageInfo.setLayout(randomPageLayout());
         return pageInfoRepository.saveAndFlush(pageInfo);
     }
 
-
-    /**
-     * 生成随机的测试{@link com.huotu.hotcms.widget.page.Page}数据
-     *
-     * @return
-     */
-    protected Page randomPage() throws IOException, FormatException {
-        Page page = new Page();
-//        page.setPageIdentity(random.nextLong());
-        page.setTitle(UUID.randomUUID().toString());
-
+    protected PageLayout randomPageLayout() throws IOException, FormatException {
         List<Layout> pageElementList = new ArrayList<>();
         int number = random.nextInt(4) + 1;//生成PageElement的随机个数
         while (number-- > 0)
             pageElementList.add(randomLayout());
 
-        page.setElements(pageElementList.toArray(new Layout[pageElementList.size()]));
-
-        return page;
+        return new PageLayout(pageElementList.toArray(new Layout[pageElementList.size()]));
     }
 
     private Component randomComponent() throws IOException, FormatException {
-        Component component=new Component();
+        Component component = new Component();
         component.setPreviewHTML(UUID.randomUUID().toString());
 //        component.setStyleId(UUID.randomUUID().toString());
-        String groupId="com.huotu.hotcms.widget.friendshipLink";
-        String widgetId="friendshipLink";
-        String version="1.0-SNAPSHOT";
-        component.setWidgetIdentity(groupId+"-"+widgetId+":"+version);
-        ComponentProperties properties =new ComponentProperties();
-        Map map=new HashMap<>();
-        List list=new ArrayList<>();
-        map.put("title",UUID.randomUUID().toString());
-        map.put("url","/wtf");
+        String groupId = "com.huotu.hotcms.widget.friendshipLink";
+        String widgetId = "friendshipLink";
+        String version = "1.0-SNAPSHOT";
+        component.setWidgetIdentity(groupId + "-" + widgetId + ":" + version);
+        ComponentProperties properties = new ComponentProperties();
+        Map map = new HashMap<>();
+        List list = new ArrayList<>();
+        map.put("title", UUID.randomUUID().toString());
+        map.put("url", "/wtf");
         list.add(map);
-        properties.put("linkList",list);
+        properties.put("linkList", list);
         properties.put("styleTemplate", "html");
-        InstalledWidget installedWidget=null;
-        List<InstalledWidget> installedWidgets=widgetFactoryService.widgetList(null);
-        if(installedWidgets==null||installedWidgets.size()==0){
+        InstalledWidget installedWidget = null;
+        List<InstalledWidget> installedWidgets = widgetFactoryService.widgetList(null);
+        if (installedWidgets == null || installedWidgets.size() == 0) {
             widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
                     , "1.0-SNAPSHOT", "picCarousel");
-            installedWidgets=widgetFactoryService.widgetList(null);
+            installedWidgets = widgetFactoryService.widgetList(null);
         }
-        WidgetIdentifier widgetIdentifier=null;
-        for(InstalledWidget installedWidget1:installedWidgets){
-            widgetIdentifier=installedWidget1.getIdentifier();
-            if(groupId.equals(widgetIdentifier.getGroupId())&&widgetId.equals(widgetIdentifier.getArtifactId())&&
-                    version.equals(widgetIdentifier.getVersion())){
-                installedWidget=installedWidget1;
+        WidgetIdentifier widgetIdentifier = null;
+        for (InstalledWidget installedWidget1 : installedWidgets) {
+            widgetIdentifier = installedWidget1.getIdentifier();
+            if (groupId.equals(widgetIdentifier.getGroupId()) && widgetId.equals(widgetIdentifier.getArtifactId()) &&
+                    version.equals(widgetIdentifier.getVersion())) {
+                installedWidget = installedWidget1;
                 break;
             }
         }

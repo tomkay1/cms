@@ -1,6 +1,7 @@
 /*
  * 版权所有:杭州火图科技有限公司
  * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
  * 2013-2016. All rights reserved.
@@ -12,7 +13,7 @@ import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Gallery;
 import com.huotu.hotcms.service.entity.GalleryList;
 import com.huotu.hotcms.service.entity.Link;
-import com.huotu.hotcms.widget.page.Page;
+import com.huotu.hotcms.widget.entity.PageInfo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -71,5 +72,5 @@ public interface CMSDataSourceService {
      *
      * @return 返回当前站点的可循环的Iterable<Page>
      */
-    Iterable<Page> findWidgetPage();
+    Iterable<PageInfo> findWidgetPage();
 }

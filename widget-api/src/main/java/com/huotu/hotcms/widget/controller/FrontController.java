@@ -11,13 +11,12 @@ package com.huotu.hotcms.widget.controller;
 
 import com.huotu.hotcms.service.FilterBehavioral;
 import com.huotu.hotcms.service.entity.AbstractContent;
-import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.service.repository.AbstractContentRepository;
-import com.huotu.hotcms.service.repository.PageInfoRepository;
 import com.huotu.hotcms.widget.CMSContext;
-import com.huotu.hotcms.widget.page.Page;
+import com.huotu.hotcms.widget.entity.PageInfo;
+import com.huotu.hotcms.widget.repository.PageInfoRepository;
 import com.huotu.hotcms.widget.service.PageService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -88,7 +87,7 @@ public class FrontController implements FilterBehavioral {
             throws PageNotFoundException, IOException {
         CMSContext cmsContext = CMSContext.RequestContext();
         //查找当前站点下指定pagePath的page
-        Page page = pageService.findBySiteAndPagePath(cmsContext.getSite(), pagePath);
+        PageInfo page = pageService.findBySiteAndPagePath(cmsContext.getSite(), pagePath);
         if (page != null) {
             generateHtml(response, page, cmsContext, model);
             return;
@@ -106,11 +105,11 @@ public class FrontController implements FilterBehavioral {
         if (content != null) {
             cmsContext.setAbstractContent(content);
             //查找当前站点下指定数据源pagePath下最接近的page
-            Page page = pageService.getClosestContentPage(content.getCategory(), pagePath);
+            PageInfo page = pageService.getClosestContentPage(content.getCategory(), pagePath);
             generateHtml(response, page, cmsContext, model);
             return;
         } else {
-            Page page = pageService.findBySiteAndPagePath(cmsContext.getSite(), pagePath);
+            PageInfo page = pageService.findBySiteAndPagePath(cmsContext.getSite(), pagePath);
             if (page != null) {
                 generateHtml(response, page, cmsContext, model);
                 return;
@@ -120,15 +119,14 @@ public class FrontController implements FilterBehavioral {
     }
 
 
-    private void generateHtml(HttpServletResponse response, Page page, CMSContext cmsContext, Model model)
+    private void generateHtml(HttpServletResponse response, PageInfo pageInfo, CMSContext cmsContext, Model model)
             throws IOException {
-        PageInfo pageInfo = pageInfoRepository.findOne(page.getPageIdentity());
         model.addAttribute("resourceKey", pageInfo.getResourceKey());
         model.addAttribute("pageId", pageInfo.getPageId());
         htmlHeader = String.format(htmlHeader, pageInfo.getSite().getKeywords(), pageInfo.getSite().getDescription()
                 , pageInfo.getTitle());
         response.getOutputStream().write(htmlHeader.getBytes(), 0, htmlHeader.getBytes().length);
-        pageService.generateHTML(response.getOutputStream(), page, cmsContext);
+        pageService.generateHTML(response.getOutputStream(), pageInfo, cmsContext);
         response.getOutputStream().write(htmlFooter.getBytes(), 0, htmlFooter.getBytes().length);
         response.setContentType("text/html;charset=utf-8");
     }

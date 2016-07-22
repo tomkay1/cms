@@ -15,7 +15,6 @@ import com.huotu.hotcms.service.common.SiteType;
 import com.huotu.hotcms.service.config.ServiceConfig;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
-import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Owner;
@@ -24,16 +23,16 @@ import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.service.repository.AbstractContentRepository;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.OwnerRepository;
-import com.huotu.hotcms.service.repository.PageInfoRepository;
 import com.huotu.hotcms.service.service.SiteService;
-import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.InstalledWidget;
+import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.page.Layout;
-import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.page.PageElement;
+import com.huotu.hotcms.widget.page.PageLayout;
+import com.huotu.hotcms.widget.repository.PageInfoRepository;
 import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
 import com.huotu.hotcms.widget.service.PageService;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
@@ -66,7 +65,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Import(ServiceConfig.class)
 @WebAppConfiguration
 @Transactional
-@Rollback(true)
+@Rollback()
 public class TestWidgetFactoryService extends TestBase {
 
     @Autowired
@@ -136,8 +135,12 @@ public class TestWidgetFactoryService extends TestBase {
         WidgetInfo widgetInfo = widgetInfoRepository.findOne(installedWidget.getIdentifier());
         widgetFactoryService.primary(widgetInfo, false);
         PageInfo pageInfo = pageInfoRepository.findByPagePath(pagePath);
-        Page page = pageService.getPage(pageInfo.getPageId());
-        PageElement[] pageElements = page.getElements();
+        PageInfo page = pageService.getPage(pageInfo.getPageId());
+        PageElement[] pageElements;
+        if (page.getLayout() != null)
+            pageElements = page.getLayout().getElements();
+        else
+            pageElements = new PageElement[0];
         for (PageElement element : pageElements) {
             validPageElements(element, widgetInfo);
         }
@@ -204,7 +207,11 @@ public class TestWidgetFactoryService extends TestBase {
         widgetInfo = widgetInfoRepository.findOne(installedWidget.getIdentifier());
         pageInfo = pageInfoRepository.findByPagePath(pagePath);
         page = pageService.getPage(pageInfo.getPageId());
-        pageElements = page.getElements();
+//        PageElement[] pageElements;
+        if (page.getLayout() != null)
+            pageElements = page.getLayout().getElements();
+        else
+            pageElements = new PageElement[0];
         for (PageElement element : pageElements) {
             validPageElements(element, widgetInfo);
         }
@@ -293,12 +300,14 @@ public class TestWidgetFactoryService extends TestBase {
 
             component.setProperties(properties);
             layoutElement.setElements(new PageElement[]{component});
-            Page page = new Page();
-            page.setTitle("testPicCarousel");
-            page.setPageIdentity(pageInfo.getPageId());
-            page.setElements(new Layout[]{layoutElement});
-            CMSContext.PutContext(request, response, site);
-            pageService.savePage(page, pageInfo.getPageId());
+
+            pageInfo.setLayout(new PageLayout(new Layout[]{layoutElement}));
+//            Page page = new Page();
+//            page.setTitle("testPicCarousel");
+//            page.setPageIdentity(pageInfo.getPageId());
+//            page.setElements(new Layout[]{layoutElement});
+//            CMSContext.PutContext(request, response, site);
+            pageService.savePage(null, pageInfo.getPageId());
         } catch (Exception e) {
             e.printStackTrace();
             throw new IllegalStateException("查找控件列表失败");

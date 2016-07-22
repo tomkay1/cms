@@ -125,7 +125,7 @@
                     </thead>
                     <!--odd even-->
                     <tbody>
-                    <!--/*@thymesVar id="list" type="java.lang.Iterable<com.huotu.hotcms.service.entity.PageInfo>"*/-->
+                    <!--/*@thymesVar id="list" type="java.lang.Iterable<com.huotu.hotcms.widget.entity.PageInfo>"*/-->
                     <tr th:each="page,stats:${list}" class="odd" th:class="${stats.odd?'odd':'even'}"
                         th:attr="data-id=${page.pageId}" data-id="456">
                         <td th:text="${page.title}">首页</td>

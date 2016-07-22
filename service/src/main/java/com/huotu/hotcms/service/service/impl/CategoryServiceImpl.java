@@ -13,11 +13,14 @@ import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.common.RouteType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.exception.BadCategoryInfoException;
 import com.huotu.hotcms.service.model.CategoryTreeModel;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.CategoryForeachParam;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.service.RouteService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -27,16 +30,16 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.Predicate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Created by xhl on 2015/12/31.
- */
 @Service
 public class CategoryServiceImpl implements CategoryService {
+
+    private static final Log log = LogFactory.getLog(CategoryServiceImpl.class);
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -134,6 +137,51 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Iterable<Category> getCategoriesForContentType(Site site, ContentType contentType) {
         return categoryRepository.findBySiteAndContentType(site, contentType);
+    }
+
+    @Override
+    public Category getCategoryByNameAndParent(Site site, String name, Long parentCategoryId, ContentType type)
+            throws BadCategoryInfoException {
+        List<Category> list = categoryRepository.findBySiteAndDeletedAndNameContainingOrderByOrderWeightDesc(site
+                , false, name);
+
+        if (list.isEmpty()) {
+            Category category = new Category();
+            category.setContentType(type);
+            category.setSite(site);
+            category.setCreateTime(LocalDateTime.now());
+            category.setName(name);
+            if (parentCategoryId != null) {
+                Category parent = categoryRepository.getOne(parentCategoryId);
+                if (!parent.getSite().equals(site)) {
+                    throw new BadCategoryInfoException(parent, (Category) null);
+                }
+                if (parent.getContentType() != type)
+                    throw new BadCategoryInfoException(parent, type);
+                category.setParent(parent);
+            }
+            return categoryRepository.save(category);
+        }
+
+        if (list.size() > 1 && log.isWarnEnabled()) {
+            log.warn(site + " has more than 1 category for name:" + name);
+        }
+
+        Category category = list.get(0);
+
+        if (parentCategoryId == null) {
+            if (category.getParent() != null)
+                throw new BadCategoryInfoException(category, (Category) null);
+        } else {
+            Category parent = categoryRepository.getOne(parentCategoryId);
+            if (!parent.equals(category.getParent()))
+                throw new BadCategoryInfoException(category, parent);
+        }
+
+        if (category.getContentType() != type)
+            throw new BadCategoryInfoException(category, type);
+
+        return category;
     }
 
 

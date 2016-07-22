@@ -12,8 +12,10 @@ package com.huotu.hotcms.service.service;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.exception.BadCategoryInfoException;
 import com.huotu.hotcms.service.model.CategoryTreeModel;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.CategoryForeachParam;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -86,4 +88,18 @@ public interface CategoryService {
      * @return
      */
     Iterable<Category> getCategoriesForContentType(Site site, ContentType contentType);
+
+    /**
+     * 找到指定名字的数据源
+     *
+     * @param site             特定站点
+     * @param name             指定的名字
+     * @param parentCategoryId 父级数据源,可以为null表示不设置父级,同样需要符合模型要求
+     * @param type             要求的模型
+     * @return 必然会返回一个实例, 如果没有也会根据情况创建
+     * @throws BadCategoryInfoException 如果指定名字的数据源已存在,并且不符合要求的父级数据源和模型
+     */
+    @Transactional
+    Category getCategoryByNameAndParent(Site site, String name, Long parentCategoryId, ContentType type)
+            throws BadCategoryInfoException;
 }

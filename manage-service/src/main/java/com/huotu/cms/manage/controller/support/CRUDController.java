@@ -220,7 +220,11 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
      */
     @SuppressWarnings("WeakerAccess")
     protected String redirectIndexViewName() {
-        return "redirect:" + AnnotationUtils.findAnnotation(getClass(), RequestMapping.class).value()[0];
+        return "redirect:" + rootUri();
+    }
+
+    protected String rootUri() {
+        return AnnotationUtils.findAnnotation(getClass(), RequestMapping.class).value()[0];
     }
 
     /**

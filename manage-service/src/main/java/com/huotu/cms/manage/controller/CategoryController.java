@@ -297,7 +297,7 @@ public class CategoryController extends SiteManageController<Category, Long, Lon
     }
 
     @Override
-    protected void prepareSave(Login login, Category entity, Category data, Void extra, RedirectAttributes attributes)
+    protected void prepareUpdate(Login login, Category entity, Category data, Void extra, RedirectAttributes attributes)
             throws RedirectException {
         // 允许修改的东西其实并不多 就让他可以修改名字吧。
         entity.setName(data.getName());

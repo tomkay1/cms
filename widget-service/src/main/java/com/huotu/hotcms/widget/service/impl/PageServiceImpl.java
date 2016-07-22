@@ -1,6 +1,7 @@
 /*
  * 版权所有:杭州火图科技有限公司
  * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
  * 2013-2016. All rights reserved.
@@ -114,11 +115,13 @@ public class PageServiceImpl implements PageService {
     @Override
     public Page getPage(Long pageId) throws IOException, PageNotFoundException {
         PageInfo pageInfo = pageInfoRepository.findOne(pageId);
-        if(pageInfo==null)
-            throw new PageNotFoundException("页面ID为"+pageId+"的页面不存在");
+        if (pageInfo == null)
+            throw new PageNotFoundException("页面ID为" + pageId + "的页面不存在");
         String pageJson = new String(pageInfo.getPageSetting(), "utf-8");
         ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(pageJson, Page.class);
+        Page page = objectMapper.readValue(pageJson, Page.class);
+        page.setPageIdentity(pageInfo.getPageId());
+        return page;
     }
 
     @Override
@@ -128,16 +131,14 @@ public class PageServiceImpl implements PageService {
 
     @Override
     public Page findBySiteAndPagePath(Site site, String pagePath) throws IllegalStateException, PageNotFoundException {
-        Page page = null;
         try {
             PageInfo pageInfo = pageInfoRepository.findBySiteAndPagePath(site, pagePath);
-            if (pageInfo != null) {
-                page = getPage(pageInfo.getPageId());
-            }
+            if (pageInfo == null)
+                throw new PageNotFoundException();
+            return getPage(pageInfo.getPageId());
         } catch (IOException e) {
-            throw new IllegalStateException("解析page信息出错");
+            throw new IllegalStateException("解析page信息出错", e);
         }
-        return page;
     }
 
     @Override

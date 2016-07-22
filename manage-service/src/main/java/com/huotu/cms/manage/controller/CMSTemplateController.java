@@ -9,10 +9,6 @@
 
 package com.huotu.cms.manage.controller;
 
-/**
- * Created by wenqi on 2016/7/15.
- */
-
 import com.huotu.hotcms.service.service.TemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +23,7 @@ import java.io.IOException;
  *
  * @see com.huotu.hotcms.service.entity.Template
  * @see TemplateController
+ * @author wenqi
  */
 @Controller
 @RequestMapping("/manage/template")
@@ -40,12 +37,20 @@ public class CMSTemplateController {
      * 点赞功能
      *
      * @param siteId     一个模板其实是个站点，此处对应模板的ID
-     * @param customerId 商户ID
+     * @param ownerId ownerId
+     * @param behavior 用户行为。1表示点赞，0表示取消赞
      */
-    @RequestMapping(value = "/laud/{siteId}", method = RequestMethod.PUT, produces = "application/json; charset=UTF-8")
+    @RequestMapping(value = "/laud/{siteId}", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public boolean laud(@PathVariable("siteId") long siteId, @RequestParam("customerId") long customerId) {
-        return templateService.laud(siteId, customerId);
+    public boolean laud(@PathVariable("siteId") long siteId, @RequestParam("ownerId") long ownerId
+            ,@RequestParam("behavior") int behavior) {
+        return templateService.laud(siteId, ownerId,behavior );
+    }
+
+    @RequestMapping(value = "/isLauded",method = RequestMethod.GET,produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public boolean isLauded(@RequestParam("ownerId") long ownerId,@RequestParam("templateSiteId")long templateSiteId){
+        return templateService.isLauded(templateSiteId,ownerId);
     }
 
     /**

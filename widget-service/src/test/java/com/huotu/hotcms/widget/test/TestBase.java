@@ -102,7 +102,7 @@ public class TestBase extends SpringWebTest{
 //            String randomLayoutArrays[]=randomLayout.split(",");
 //        }
         Page page = new Page();
-        page.setPageIdentity(random.nextLong());
+//        page.setPageIdentity(random.nextLong());
         page.setTitle(UUID.randomUUID().toString());
 
         List<PageElement> pageElementList = new ArrayList<>();

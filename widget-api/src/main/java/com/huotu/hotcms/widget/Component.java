@@ -14,11 +14,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.huotu.hotcms.widget.page.PageElement;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.util.Map;
+import java.util.Objects;
 
 
 /**
@@ -26,13 +29,15 @@ import java.util.Map;
  *
  * @author CJ
  */
-@Data
+@Setter
+@Getter
+@ToString
 @JsonTypeName("component")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT, visible = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Component implements PageElement {
 
-    @JsonIgnore(value = true)
+    @JsonIgnore
     private static final Log log = LogFactory.getLog(Component.class);
 
     /**
@@ -45,7 +50,7 @@ public class Component implements PageElement {
      */
     private String id;
 
-    @JsonIgnore(value = true)//在生成的xml中忽略该属性，true即为忽略
+    @JsonIgnore//在生成的xml中忽略该属性，true即为忽略
     private InstalledWidget installedWidget;
 
     /**
@@ -77,5 +82,20 @@ public class Component implements PageElement {
         return installedWidget.getWidget().styles()[0];
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Component)) return false;
+        Component component = (Component) o;
+        return Objects.equals(widgetIdentity, component.widgetIdentity) &&
+                Objects.equals(id, component.id) &&
+                Objects.equals(styleClassNames, component.styleClassNames) &&
+                Objects.equals(styleId, component.styleId) &&
+                Objects.equals(properties, component.properties);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(widgetIdentity, id, styleClassNames, styleId, properties);
+    }
 }

@@ -14,15 +14,17 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * Created by wenqi on 2016/7/7.
- */
-
-/**
  * 表示一个空的页面元素
+ *
+ * @author wenqi
  */
 @JsonTypeName("empty")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT, visible = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Empty implements PageElement {
 
+    @Override
+    public boolean equals(Object obj) {
+        return obj != null && obj instanceof Empty;
+    }
 }

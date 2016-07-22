@@ -141,7 +141,7 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
             , @MethodParameterFixed MD extra, RedirectAttributes attributes) {
         T entity = jpaRepository.getOne(id);
         try {
-            prepareSave(login, entity, data, extra, attributes);
+            prepareUpdate(login, entity, data, extra, attributes);
             if (entity instanceof Auditable) {
                 ((Auditable) entity).setUpdateTime(LocalDateTime.now());
             }
@@ -161,7 +161,7 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
     @Transactional(readOnly = true)
     public String index(@AuthenticationPrincipal Login login, Model model, RedirectAttributes attributes) {
         try {
-            Specification<T> specification = prepareIndex(login, attributes);
+            Specification<T> specification = prepareIndex(login, model, attributes);
             if (specification == null)
                 model.addAttribute("list", jpaRepository.findAll());
             else
@@ -188,12 +188,12 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
 
     /**
      * @param login      当前操作者的身份
-     * @param attributes 空间
-     * @return 搜索规格, null表示无规格要求
+     * @param model      模型
+     * @param attributes 空间  @return 搜索规格, null表示无规格要求
      * @throws RedirectException 需要转发到其他地址
      */
     @SuppressWarnings("WeakerAccess")
-    protected Specification<T> prepareIndex(Login login, RedirectAttributes attributes) throws RedirectException {
+    protected Specification<T> prepareIndex(Login login, Model model, RedirectAttributes attributes) throws RedirectException {
         return null;
     }
 
@@ -220,7 +220,11 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
      */
     @SuppressWarnings("WeakerAccess")
     protected String redirectIndexViewName() {
-        return "redirect:" + AnnotationUtils.findAnnotation(getClass(), RequestMapping.class).value()[0];
+        return "redirect:" + rootUri();
+    }
+
+    protected String rootUri() {
+        return AnnotationUtils.findAnnotation(getClass(), RequestMapping.class).value()[0];
     }
 
     /**
@@ -248,15 +252,14 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
     }
 
     /**
-     * 保存之前
-     *
-     * @param login      当前操作者的身份
+     * 更新之前
+     *  @param login      当前操作者的身份
      * @param entity     数据
      * @param data       用户请求的数据
      * @param extra      额外数据
      * @param attributes 空间
      */
-    protected abstract void prepareSave(Login login, T entity, T data, MD extra, RedirectAttributes attributes)
+    protected abstract void prepareUpdate(Login login, T entity, T data, MD extra, RedirectAttributes attributes)
             throws RedirectException;
 
     /**

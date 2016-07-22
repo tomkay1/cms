@@ -107,6 +107,7 @@ var editFunc = {
             $('#configuration').stop().animate({
                 right: 0
             },500);
+            createStore($(this));
         });
     },
     closeConfig: function () {
@@ -162,13 +163,22 @@ var Page = {
     ],
     init: function (url) {
         $.getJSON(url, function(result){
+            var parent = $('#configuration').find('.conf-body');
             $.each(result, function (i, v) {
+                dynamicLoading.js(v.scriptHref);
+                // 组件列表渲染
                 $('#widgetLists').append(Page.widgetHTML.join(' '));
                 $('#widgetLists .setting').eq(i).attr('data-target', v.identity);
                 $('#widgetLists .preview p').eq(i).html(v.locallyName);
                 $('#widgetLists .view').eq(i).append(v.styles[0].previewHTML);
                 $('#widgetLists .view').eq(i).children().eq(0).attr('data-widgetidentity', v.identity);
                 $('#widgetLists .view').eq(i).children().eq(0).attr('data-styleid', 0);
+                //编辑器视图渲染
+                var child = $('<div class="common-conf"></div>');
+                child.attr('id', v['identity']);
+                child.append(v['editorHTML']);
+                parent.append(child);
+
             });
             Page.draggable();
         });
@@ -183,12 +193,17 @@ var Page = {
             },
             stop: function (e, t) {
                 var oId = t.helper.find('.view').children().eq(0).attr('id');
+                console.log(oId)
                 editFunc.handleJsIds(oId);
             }
         });
     }
 };
+
 var editPage = {};
+
+
+
 editPage.init = function () {
     $(document.body).css("min-height", $(window).height() - 90);
     $(".pageHTML").css("min-height", $(window).height() - 160);
@@ -204,7 +219,7 @@ editPage.init = function () {
         drag: function (e, t) {
             t.helper.width(400);
         },
-        stop: function (e, t) {
+        stop: function () {
             $(".pageHTML .column").sortable({
                 opacity: .35,
                 connectWith: ".column"
@@ -240,9 +255,18 @@ editPage.init = function () {
             layer.close(index);
         });
     });
+    $(".common-conf .styles").slick({
+        infinite: false,
+        speed: 300,
+        slidesToShow: 4,
+        slidesToScroll: 4
+    });
 
     editFunc.init();
-
     Page.init(initPath);
 };
+
 editPage.init();
+
+
+

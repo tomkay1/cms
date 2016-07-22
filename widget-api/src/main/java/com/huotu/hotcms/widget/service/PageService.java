@@ -1,6 +1,7 @@
 /*
  * 版权所有:杭州火图科技有限公司
  * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
  * 2013-2016. All rights reserved.
@@ -84,7 +85,8 @@ public interface PageService {
      * @param site     当前站点必须存在不能为空
      * @param pagePath pagePath必须存在不能为空
      * @return {@link com.huotu.hotcms.widget.page.Page}
-     * @throws IllegalStateException 未找到page
+     * @throws IllegalStateException 解析错误
+     * @throws PageNotFoundException 页面没找到
      */
     Page findBySiteAndPagePath(Site site, String pagePath) throws IllegalStateException, PageNotFoundException;
 

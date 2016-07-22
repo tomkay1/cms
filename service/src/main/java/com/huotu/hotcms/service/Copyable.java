@@ -33,6 +33,7 @@ public interface Copyable<T> {
      * @param site 商户站点 如果没有，则为null
      * @param category 复制后的数据源 如果没有，则为null
      * @return 复制后的数据
+     * @see #copy()
      */
     T copy(Site site,Category category);
 }

@@ -16,9 +16,11 @@ import com.huotu.hotcms.service.service.SiteService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.Serializable;
+import java.util.Vector;
 
 /**
  * 管理站点内容的控制器,需要当前登录操作人员已经选择好站点
@@ -31,10 +33,9 @@ public abstract class SiteManageController<T, ID extends Serializable, PD, MD> e
     private SiteService siteService;
 
     @Override
-    protected final Specification<T> prepareIndex(Login login, RedirectAttributes attributes) throws RedirectException {
+    protected final Specification<T> prepareIndex(Login login, Model model, RedirectAttributes attributes) throws RedirectException {
         Site site = checkSite(login);
-
-        return prepareIndex(login, site, attributes);
+        return prepareIndex(login, site, model, attributes);
     }
 
     @NotNull
@@ -64,12 +65,13 @@ public abstract class SiteManageController<T, ID extends Serializable, PD, MD> e
      *
      * @param login
      * @param site       当前站点
+     * @param model
      * @param attributes
      * @return
-     * @see CRUDController#prepareIndex(Login, RedirectAttributes)
+     * @see CRUDController#prepareIndex(Login, Model, RedirectAttributes)
      */
     @SuppressWarnings({"WeakerAccess", "JavaDoc"})
-    protected Specification<T> prepareIndex(Login login, Site site, RedirectAttributes attributes)
+    protected Specification<T> prepareIndex(Login login, Site site, Model model, RedirectAttributes attributes)
             throws RedirectException {
         return (root, query, cb) -> cb.equal(root.get("site").as(Site.class), site);
     }

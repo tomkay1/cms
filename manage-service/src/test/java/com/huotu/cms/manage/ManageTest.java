@@ -21,11 +21,27 @@ import com.huotu.cms.manage.test.AuthController;
 import com.huotu.hotcms.service.common.CMSEnums;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.common.PageType;
-import com.huotu.hotcms.service.entity.*;
+import com.huotu.hotcms.service.entity.Article;
+import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.Download;
+import com.huotu.hotcms.service.entity.Gallery;
+import com.huotu.hotcms.service.entity.GalleryList;
+import com.huotu.hotcms.service.entity.PageInfo;
+import com.huotu.hotcms.service.entity.Route;
+import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.entity.Template;
+import com.huotu.hotcms.service.entity.TemplateType;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
-import com.huotu.hotcms.service.repository.*;
+import com.huotu.hotcms.service.repository.ArticleRepository;
+import com.huotu.hotcms.service.repository.CategoryRepository;
+import com.huotu.hotcms.service.repository.DownloadRepository;
+import com.huotu.hotcms.service.repository.GalleryListRepository;
+import com.huotu.hotcms.service.repository.GalleryRepository;
+import com.huotu.hotcms.service.repository.OwnerRepository;
+import com.huotu.hotcms.service.repository.PageInfoRepository;
+import com.huotu.hotcms.service.repository.TemplateRepository;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.util.StringUtil;
 import com.huotu.hotcms.widget.Component;
@@ -55,8 +71,10 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
@@ -181,7 +199,7 @@ public abstract class ManageTest extends SpringWebTest {
         Template template=new Template();
         template.setUpdateTime(LocalDateTime.now());
         template.setTitle(UUID.randomUUID().toString());
-        template.setName(UUID.randomUUID().toString());
+        template.setName(StringUtil.createRandomStr(5));
         TemplateType templateType=new TemplateType();
         templateType.setIndustry(UUID.randomUUID().toString());
         template.setTemplateType(templateType);
@@ -383,7 +401,7 @@ public abstract class ManageTest extends SpringWebTest {
 
     protected Page randomPage() throws IOException, FormatException {
         Page page = new Page();
-        page.setPageIdentity(random.nextLong());
+//        page.setPageIdentity(random.nextLong());
         page.setTitle(UUID.randomUUID().toString());
 
         List<PageElement> pageElementList = new ArrayList<>();
@@ -411,13 +429,18 @@ public abstract class ManageTest extends SpringWebTest {
         Component component=new Component();
         component.setPreviewHTML(UUID.randomUUID().toString());
         component.setStyleId(UUID.randomUUID().toString());
-        String groupId="com.huotu.hotcms.widget.picCarousel";
-        String widgetId="picCarousel";
+        String groupId="com.huotu.hotcms.widget.friendshipLink";
+        String widgetId="friendshipLink";
         String version="1.0-SNAPSHOT";
         component.setWidgetIdentity(groupId+"-"+widgetId+":"+version);
-        ComponentProperties componentProperties =new ComponentProperties();
-        componentProperties.put(StringUtil.createRandomStr(random.nextInt(3) + 1),UUID.randomUUID().toString());
-        component.setProperties(componentProperties);
+        ComponentProperties properties =new ComponentProperties();
+        Map map=new HashMap<>();
+        List list=new ArrayList<>();
+        map.put("title",UUID.randomUUID().toString());
+        map.put("url","/wtf");
+        list.add(map);
+        properties.put("linkList",list);
+        properties.put("styleTemplate", "html");
         InstalledWidget installedWidget=null;
         List<InstalledWidget> installedWidgets=widgetFactoryService.widgetList(null);
         if(installedWidgets==null||installedWidgets.size()==0){

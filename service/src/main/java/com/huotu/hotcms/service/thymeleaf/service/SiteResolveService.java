@@ -19,6 +19,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.NumberUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
@@ -61,6 +62,15 @@ public class SiteResolveService {
      * @throws NoHostFoundException 找不到主机
      */
     public Site getCurrentSite(HttpServletRequest request) throws NoSiteFoundException, NoHostFoundException {
+
+        if (request.getParameter("simulateSite") != null) {
+            long id = NumberUtils.parseNumber(request.getParameter("simulateSite"), Long.class);
+            Site site = siteService.getSite(id);
+            log.debug("preview as " + site);
+            if (site != null)
+                return site;
+        }
+
         String domain = request.getServerName();
         Host host = hostService.getHost(domain);
         if (host == null) {

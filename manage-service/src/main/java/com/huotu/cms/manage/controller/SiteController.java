@@ -26,10 +26,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
@@ -54,7 +53,7 @@ public class SiteController extends CRUDController<Site, Long, SiteController.Ab
     private ResourceService resourceService;
 
     @Override
-    protected Specification<Site> prepareIndex(Login login, RedirectAttributes attributes) throws RedirectException {
+    protected Specification<Site> prepareIndex(Login login, Model model, RedirectAttributes attributes) throws RedirectException {
         return (root, query, cb)
                 -> cb.and(cb.isFalse(root.get("deleted")), cb.equal(root.get("owner").get("id")
                 , login.currentOwnerId()));
@@ -93,7 +92,7 @@ public class SiteController extends CRUDController<Site, Long, SiteController.Ab
     }
 
     @Override
-    protected void prepareSave(Login login, Site entity, Site data, Void extra, RedirectAttributes attributes) throws RedirectException {
+    protected void prepareUpdate(Login login, Site entity, Site data, Void extra, RedirectAttributes attributes) throws RedirectException {
         System.out.println(entity);
     }
 

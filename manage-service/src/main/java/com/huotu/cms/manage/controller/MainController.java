@@ -78,11 +78,11 @@ public class MainController {
     }
 
     @RequestMapping({"/index", ""})
-    public String index(@AuthenticationPrincipal Login login, @RequestParam(required = false) Long simulateSite
+    public String index(@AuthenticationPrincipal Login login, @RequestParam(required = false) Long site
             , Model model) throws Exception {
-        if (simulateSite != null && login.siteManageable(siteService.getSite(simulateSite))) {
+        if (site != null && login.siteManageable(siteService.getSite(site))) {
             // 禁止它使用登出动作
-            login.updateSiteId(simulateSite);
+            login.updateSiteId(site);
             model.addAttribute("logout", "/manage/main");
             return "/view/main.html";
         }

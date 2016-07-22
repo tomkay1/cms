@@ -120,7 +120,6 @@ public class PageServiceImpl implements PageService {
         String pageJson = new String(pageInfo.getPageSetting(), "utf-8");
         ObjectMapper objectMapper = new ObjectMapper();
         Page page = objectMapper.readValue(pageJson, Page.class);
-        // TODO 准确的说是 pageSetting 并没有必要保存id
         page.setPageIdentity(pageInfo.getPageId());
         return page;
     }

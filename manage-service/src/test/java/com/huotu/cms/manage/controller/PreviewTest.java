@@ -90,6 +90,7 @@ public class PreviewTest extends ManageTest {
 
         driver.get("http://localhost/?simulateSite=" + site.getSiteId());
 
+        System.out.println(driver.getPageSource());
         assertThat(driver.getTitle())
                 .isEqualTo(indexPage.getTitle());
 

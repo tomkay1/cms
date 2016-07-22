@@ -21,11 +21,27 @@ import com.huotu.cms.manage.test.AuthController;
 import com.huotu.hotcms.service.common.CMSEnums;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.common.PageType;
-import com.huotu.hotcms.service.entity.*;
+import com.huotu.hotcms.service.entity.Article;
+import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.Download;
+import com.huotu.hotcms.service.entity.Gallery;
+import com.huotu.hotcms.service.entity.GalleryList;
+import com.huotu.hotcms.service.entity.PageInfo;
+import com.huotu.hotcms.service.entity.Route;
+import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.entity.Template;
+import com.huotu.hotcms.service.entity.TemplateType;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
-import com.huotu.hotcms.service.repository.*;
+import com.huotu.hotcms.service.repository.ArticleRepository;
+import com.huotu.hotcms.service.repository.CategoryRepository;
+import com.huotu.hotcms.service.repository.DownloadRepository;
+import com.huotu.hotcms.service.repository.GalleryListRepository;
+import com.huotu.hotcms.service.repository.GalleryRepository;
+import com.huotu.hotcms.service.repository.OwnerRepository;
+import com.huotu.hotcms.service.repository.PageInfoRepository;
+import com.huotu.hotcms.service.repository.TemplateRepository;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.util.StringUtil;
 import com.huotu.hotcms.widget.Component;
@@ -48,14 +64,18 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.htmlunit.webdriver.MockMvcHtmlUnitDriverBuilder;
 import org.springframework.test.web.servlet.htmlunit.webdriver.WebConnectionHtmlUnitDriver;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StreamUtils;
 
 import javax.servlet.http.Cookie;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -381,7 +401,7 @@ public abstract class ManageTest extends SpringWebTest {
 
     protected Page randomPage() throws IOException, FormatException {
         Page page = new Page();
-        page.setPageIdentity(random.nextLong());
+//        page.setPageIdentity(random.nextLong());
         page.setTitle(UUID.randomUUID().toString());
 
         List<PageElement> pageElementList = new ArrayList<>();

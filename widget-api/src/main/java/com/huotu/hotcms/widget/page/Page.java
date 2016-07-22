@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.widget.page;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import lombok.Data;
 
@@ -30,9 +31,11 @@ import java.io.Serializable;
 public class Page implements Serializable {
     /**
      * 该页面的唯一ID 与PageInfo的pageID保持一致
+     * 如果未null表示该页面尚未持久化
      * @see com.huotu.hotcms.service.entity.PageInfo#pageId
      */
-    @XmlAttribute(name = "pageIdentity")
+//    @XmlAttribute(name = "pageIdentity")
+    @JsonIgnore
     private Long pageIdentity;
 
     @XmlAttribute(name = "title")

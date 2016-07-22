@@ -20,17 +20,17 @@ import com.huotu.hotcms.widget.service.PageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
-
-/**
- * Created by wenqi on 2016/5/27.
- */
 
 /**
  *<b>页面管理服务</b>
@@ -95,21 +95,8 @@ public class PageController {
         String pageJson= CharStreams.toString(request.getReader());
         ObjectMapper objectMapper=new ObjectMapper();
         Page page=objectMapper.readValue(pageJson, Page.class);
+        page.setPageIdentity(pageID);
         pageService.savePage(page,pageID);
-    }
-
-    /**
-     * <p>添加页面{@link Page}</p>
-     * @param ownerId 拥有者id
-     * @throws IOException 从request中读取请求体时异常
-     */
-    @Deprecated
-    @RequestMapping(value = "/manage/owners/{ownerId}/pages",method = RequestMethod.POST)
-    @ResponseStatus(code = HttpStatus.ACCEPTED)
-    void addPage(@PathVariable("ownerId") long ownerId, HttpServletRequest request) throws IOException{
-        String pageJson=CharStreams.toString(request.getReader());
-        ObjectMapper objectMapper=new ObjectMapper();
-        Page page=objectMapper.readValue(pageJson, Page.class);
     }
 
     /**
@@ -141,6 +128,7 @@ public class PageController {
      */
     @RequestMapping("/manage/page/edit/{pageId}")
     ModelAndView startEdit(@PathVariable("pageId") long pageId){
+        // TODO BUG  可能需要更多的处理
         return new ModelAndView("/edit/edit.html");
     }
 }

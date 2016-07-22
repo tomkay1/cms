@@ -25,7 +25,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
@@ -41,7 +40,7 @@ import java.util.UUID;
 @Table(name = "cms_pageInfo")
 @Getter
 @Setter
-public class PageInfo implements Auditable,Copyable<PageInfo> {
+public class PageInfo implements Auditable, Copyable<PageInfo> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -80,17 +79,11 @@ public class PageInfo implements Auditable,Copyable<PageInfo> {
     @Column(name = "resourceKey", length = 60)
     private String resourceKey;
 
-//    /**
-//     * 页面配置的xml数据
-//     */
-//    @Lob
-//    @Column(name = "pageSetting")
-//    private byte[] pageSetting;
     /**
      * 页面配置的xml数据
      */
     @Convert(converter = PageLayoutConverter.class)
-    @Lob
+    @Column(columnDefinition = "text")//略嫌糟糕
     private PageLayout layout;
 
     @Override
@@ -111,7 +104,7 @@ public class PageInfo implements Auditable,Copyable<PageInfo> {
 
     @Override
     public PageInfo copy() {
-        PageInfo pageInfo=new PageInfo();
+        PageInfo pageInfo = new PageInfo();
         pageInfo.setCategory(category);
         pageInfo.setUpdateTime(LocalDateTime.now());
         pageInfo.setCreateTime(LocalDateTime.now());

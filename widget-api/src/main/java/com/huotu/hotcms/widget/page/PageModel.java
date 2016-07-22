@@ -9,7 +9,6 @@
 
 package com.huotu.hotcms.widget.page;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import lombok.Data;
@@ -34,7 +33,6 @@ public class PageModel implements Serializable {
      * @see PageInfo#pageId
      */
     @XmlAttribute(name = "pageIdentity")
-    @JsonIgnore
     private Long pageIdentity;
 
     @XmlAttribute(name = "title")

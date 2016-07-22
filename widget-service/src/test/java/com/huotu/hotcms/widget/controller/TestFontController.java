@@ -179,7 +179,7 @@ public class TestFontController extends TestBase {
             Page page = new Page();
             page.setTitle("test");
             page.setPageIdentity(pageInfo.getPageId());
-            page.setElements(new PageElement[]{layoutElement});
+            page.setElements(new Layout[]{layoutElement});
             CMSContext.PutContext(request, response, site);
             pageService.savePage(page, pageInfo.getPageId());
         } catch (Exception e) {

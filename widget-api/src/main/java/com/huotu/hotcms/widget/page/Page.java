@@ -32,6 +32,7 @@ public class Page implements Serializable {
     /**
      * 该页面的唯一ID 与PageInfo的pageID保持一致
      * 如果未null表示该页面尚未持久化
+     *
      * @see com.huotu.hotcms.service.entity.PageInfo#pageId
      */
 //    @XmlAttribute(name = "pageIdentity")
@@ -41,6 +42,9 @@ public class Page implements Serializable {
     @XmlAttribute(name = "title")
     private String title;
 
-    @JacksonXmlElementWrapper(useWrapping=false)
-    private PageElement[] elements;
+    /**
+     * 作为页面它只可拥有布局,不可以直接拥有组件。
+     */
+    @JacksonXmlElementWrapper(useWrapping = false)
+    private Layout[] elements;
 }

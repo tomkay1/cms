@@ -76,6 +76,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -399,28 +400,22 @@ public abstract class ManageTest extends SpringWebTest {
     }
 
 
+    /**
+     * 生成随机的测试{@link com.huotu.hotcms.widget.page.Page}数据
+     *
+     * @return
+     */
     protected Page randomPage() throws IOException, FormatException {
         Page page = new Page();
 //        page.setPageIdentity(random.nextLong());
         page.setTitle(UUID.randomUUID().toString());
 
-        List<PageElement> pageElementList = new ArrayList<>();
-        //PageElement 要么是Layout，要么是Component；二选一
-        int randomNum=random.nextInt(100)+1;
-        boolean isLayout=false;
-        if(randomNum%2==0)
-            isLayout=true;
+        List<Layout> pageElementList = new ArrayList<>();
+        int number = random.nextInt(4) + 1;//生成PageElement的随机个数
+        while (number-- > 0)
+            pageElementList.add(randomLayout());
 
-        int nums = random.nextInt(4)+1;//生成PageElement的随机个数
-        //在实际环境中，肯定先存在layout,在layout中，拖入component
-        pageElementList.add(randomLayout());
-        while (nums-- > 0) {
-            if(isLayout)
-                pageElementList.add(randomLayout());
-            else
-                pageElementList.add(randomComponent());
-        }
-        page.setElements(pageElementList.toArray(new PageElement[pageElementList.size()]));
+        page.setElements(pageElementList.toArray(new Layout[pageElementList.size()]));
 
         return page;
     }
@@ -428,7 +423,7 @@ public abstract class ManageTest extends SpringWebTest {
     private Component randomComponent() throws IOException, FormatException {
         Component component=new Component();
         component.setPreviewHTML(UUID.randomUUID().toString());
-        component.setStyleId(UUID.randomUUID().toString());
+//        component.setStyleId(UUID.randomUUID().toString());
         String groupId="com.huotu.hotcms.widget.friendshipLink";
         String widgetId="friendshipLink";
         String version="1.0-SNAPSHOT";
@@ -461,26 +456,51 @@ public abstract class ManageTest extends SpringWebTest {
         return component;
     }
 
+    /**
+     * @param size 1 or 2 or 3
+     * @return 12 or 1:11 or 1:1:10
+     */
+    private String randomLayoutValue(int size) {
+        int remaining = 12;
+        StringBuilder stringBuilder = new StringBuilder();
+        Consumer<Integer> newLayout = (value) -> {
+            if (stringBuilder.length() != 0)
+                stringBuilder.append(',');
+            stringBuilder.append(value);
+        };
+        while (size-- > 0) {
+            //此时size表示剩下还有几次
+            if (size == 0) {
+                newLayout.accept(remaining);
+                return stringBuilder.toString();
+            }
+            //那么至少保证下次还有
+            int value = random.nextInt(remaining - size) + 1;
+            remaining -= value;
+            newLayout.accept(value);
+        }
+        throw new InternalError("WTF? Bite me");
+    }
+
     private Layout randomLayout() throws IOException, FormatException {
         Layout layout = new Layout();
-        layout.setValue(UUID.randomUUID().toString());
+        //先决定数量
+        int size = random.nextInt(3) + 1;
+        //再决定分列式 比如 x:y:z
+        layout.setValue(randomLayoutValue(size));
 
         List<PageElement> pageElementList = new ArrayList<>();
 
-
-        //PageElement 要么是Layout，要么是Component；二选一
-        int randomNum=random.nextInt(10);
-        boolean isLayout=false;
-        if(randomNum%2==0)
-            isLayout=true;
-
-        int nums = random.nextInt(2);//生成PageElement的随机个数
-        while (nums-- > 0) {
-            if(isLayout)
+        while (size-- > 0) {
+            //PageElement 要么是Layout，要么是Component；二选一 好像不用管了
+            // 大部分情况都是组件了 不然得循环好久呢
+            boolean isLayout = random.nextFloat() < 0.1f;
+            if (isLayout)
                 pageElementList.add(randomLayout());
             else
                 pageElementList.add(randomComponent());
         }
+
         layout.setElements(pageElementList.toArray(new PageElement[pageElementList.size()]));
         return layout;
     }

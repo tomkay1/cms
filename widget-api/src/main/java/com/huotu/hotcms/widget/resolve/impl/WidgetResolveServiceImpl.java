@@ -145,9 +145,9 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
                         break;
                     }
                 }
-                if (style == null) {
-                    style = component.getInstalledWidget().getWidget().styles()[0];
-                }
+            }
+            if (style == null) {
+                style = component.getInstalledWidget().getWidget().styles()[0];
             }
             checkEngine();
             WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext

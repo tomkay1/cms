@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
@@ -55,7 +56,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 @WebAppConfiguration
-public class TestBase extends SpringWebTest{
+public class TestBase extends SpringWebTest {
 
     @Autowired
     private OwnerRepository ownerRepository;
@@ -93,85 +94,89 @@ public class TestBase extends SpringWebTest{
      * @return
      */
     protected Page randomPage() {
-//        String layout[]={"12","4,4,4","6,6","8,4","2,6,4"};//布局，可以再任意添加，保证数值相加等于12
-//        String randomLayout=layout[random.nextInt(layout.length)];
-//
-//        if(randomLayout.equals("12")){
-//
-//        }else{
-//            String randomLayoutArrays[]=randomLayout.split(",");
-//        }
         Page page = new Page();
 //        page.setPageIdentity(random.nextLong());
         page.setTitle(UUID.randomUUID().toString());
 
-        List<PageElement> pageElementList = new ArrayList<>();
-        //PageElement 要么是Layout，要么是Component；二选一
-        int randomNum=random.nextInt(100)+1;
-        boolean isLayout=false;
-        if(randomNum%2==0)
-            isLayout=true;
+        List<Layout> pageElementList = new ArrayList<>();
+        int number = random.nextInt(4) + 1;//生成PageElement的随机个数
+        while (number-- > 0)
+            pageElementList.add(randomLayout());
 
-        int nums = random.nextInt(4)+1;//生成PageElement的随机个数
-        //在实际环境中，肯定先存在layout,在layout中，拖入component
-//        pageElementList.add(randomLayout());
-        while (nums-- > 0) {
-            if(isLayout) {
-                pageElementList.add(randomLayout());
-                pageElementList.add(randomEmpty());
-            }
-            else {
-                pageElementList.add(randomComponent());
-                pageElementList.add(randomEmpty());
-            }
-        }
-        page.setElements(pageElementList.toArray(new PageElement[pageElementList.size()]));
+        page.setElements(pageElementList.toArray(new Layout[pageElementList.size()]));
 
         return page;
     }
 
-    private Empty randomEmpty(){
+    private Empty randomEmpty() {
         return new Empty();
     }
 
-    private Component randomComponent() {
-        Component component=new Component();
+    private PageElement randomComponent() {
+        if (random.nextBoolean())
+            return randomEmpty();
+        Component component = new Component();
         component.setPreviewHTML(UUID.randomUUID().toString());
         component.setId(UUID.randomUUID().toString());
-        component.setStyleId(UUID.randomUUID().toString());
+//        component.setStyleId(UUID.randomUUID().toString());
         component.setWidgetIdentity(UUID.randomUUID().toString());
-        ComponentProperties componentProperties =new ComponentProperties();
-        componentProperties.put(StringUtil.createRandomStr(random.nextInt(3)+1),UUID.randomUUID().toString());
-        componentProperties.put("TestArray",new String[]{UUID.randomUUID().toString(),UUID.randomUUID().toString()
-                ,UUID.randomUUID().toString()});
+        ComponentProperties componentProperties = new ComponentProperties();
+        componentProperties.put(StringUtil.createRandomStr(random.nextInt(3) + 1), UUID.randomUUID().toString());
+        componentProperties.put("TestArray", new String[]{UUID.randomUUID().toString(), UUID.randomUUID().toString()
+                , UUID.randomUUID().toString()});
         component.setProperties(componentProperties);
-        InstalledWidget installedWidget=new InstalledWidget(new TestWidget());
+        InstalledWidget installedWidget = new InstalledWidget(new TestWidget());
         installedWidget.setIdentifier(new WidgetIdentifier());
         installedWidget.setType(UUID.randomUUID().toString());
         component.setInstalledWidget(installedWidget);
         return component;
     }
 
+    /**
+     * @param size 1 or 2 or 3
+     * @return 12 or 1:11 or 1:1:10
+     */
+    private String randomLayoutValue(int size) {
+        int remaining = 12;
+        StringBuilder stringBuilder = new StringBuilder();
+        Consumer<Integer> newLayout = (value) -> {
+            if (stringBuilder.length() != 0)
+                stringBuilder.append(',');
+            stringBuilder.append(value);
+        };
+        while (size-- > 0) {
+            //此时size表示剩下还有几次
+            if (size == 0) {
+                newLayout.accept(remaining);
+                return stringBuilder.toString();
+            }
+            //那么至少保证下次还有
+            int value = random.nextInt(remaining - size) + 1;
+            remaining -= value;
+            newLayout.accept(value);
+        }
+        throw new InternalError("WTF? Bite me");
+    }
+
     private Layout randomLayout() {
         Layout layout = new Layout();
-        layout.setValue(UUID.randomUUID().toString());
+        //先决定数量
+        int size = random.nextInt(3) + 1;
+        //再决定分列式 比如 x:y:z
+        layout.setValue(randomLayoutValue(size));
 
         List<PageElement> pageElementList = new ArrayList<>();
 
-
-        //PageElement 要么是Layout，要么是Component；二选一
-        int randomNum=random.nextInt(10);
-        boolean isLayout=false;
-        if(randomNum%2==0)
-            isLayout=true;
-
-        int nums = random.nextInt(2);//生成PageElement的随机个数
-        while (nums-- > 0) {
-            if(isLayout)
+        while (size-- > 0) {
+            //PageElement 要么是Layout，要么是Component；二选一 好像不用管了
+            // 大部分情况都是组件了 不然得循环好久呢
+            boolean isLayout = random.nextFloat() < 0.1f;
+            if (isLayout)
                 pageElementList.add(randomLayout());
             else
                 pageElementList.add(randomComponent());
         }
+
         layout.setElements(pageElementList.toArray(new PageElement[pageElementList.size()]));
         return layout;
     }

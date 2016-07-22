@@ -92,7 +92,7 @@ public class SiteController extends CRUDController<Site, Long, SiteController.Ab
     }
 
     @Override
-    protected void prepareSave(Login login, Site entity, Site data, Void extra, RedirectAttributes attributes) throws RedirectException {
+    protected void prepareUpdate(Login login, Site entity, Site data, Void extra, RedirectAttributes attributes) throws RedirectException {
         System.out.println(entity);
     }
 

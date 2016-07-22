@@ -63,7 +63,7 @@ public class PageInfoController extends SiteManageController<PageInfo, Long, Lon
     }
 
     @Override
-    protected void prepareSave(Login login, PageInfo entity, PageInfo data, Void extra, RedirectAttributes attributes)
+    protected void prepareUpdate(Login login, PageInfo entity, PageInfo data, Void extra, RedirectAttributes attributes)
             throws RedirectException {
         throw new NoSuchMethodError("no support for save category");
     }

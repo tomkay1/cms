@@ -36,7 +36,7 @@ public class ArticleController extends ContentManageController<Article,ContentEx
     }
 
     @Override
-    protected void prepareSave(Login login, Article entity, Article data, ContentExtra extra
+    protected void prepareUpdate(Login login, Article entity, Article data, ContentExtra extra
             , RedirectAttributes attributes) throws RedirectException {
 
     }
@@ -54,6 +54,6 @@ public class ArticleController extends ContentManageController<Article,ContentEx
     @Override
     protected Article preparePersistContext(Login login, Site site, Article data, ContentExtra extra
             , RedirectAttributes attributes) throws RedirectException {
-        return null;
+        return data;
     }
 }

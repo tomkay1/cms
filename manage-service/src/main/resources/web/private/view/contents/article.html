@@ -29,7 +29,7 @@
                     <a href="" class="panel-close">&times;</a>
                     <a href="" class="minimize">&minus;</a>
                 </div><!-- panel-btns -->
-                <h3 class="panel-title">新增数据源</h3>
+                <h3 class="panel-title">新增文章数据源</h3>
                 <p>父级数据源可以不选择,按父级数据源搜索将可以搜索到相关所有数据内容</p>
             </div>
             <div class="panel-body">
@@ -44,7 +44,6 @@
                         </div>
                         <label class="col-sm-2 control-label">父级</label>
                         <div class="col-sm-2">
-                            <div th:if="${#lists.isEmpty(categories)}" th:text="暂无数据源"></div>
                             <select name="parentCategoryId" title="父级数据源" class="form-control" >
                                 <option th:each="category:${categories}" th:value="${category.id}" th:text="${category.name}">无</option>
                                 <option th:remove="all">新闻咨询</option>
@@ -92,6 +91,7 @@
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">封面</label>
+                        <input type="hidden" name="thumbUri" id="thumbUri" />
                         <div class="col-sm-10" id="article-uploader"></div>
                     </div>
                 </div>
@@ -190,12 +190,6 @@
     </div>
 
 </div><!-- contentpanel -->
-
-<script th:inline="javascript">
-    var uploadFileUrl = /*[[@{/manage/upload/fine}]]*/ null;
-    var customerIdChangeUrl = /*[[@{/manage/supper/owner/$1/customerId}]]*/ null;
-</script>
-
 <script src="http://resali.huobanplus.com/cdn/jquery/1.9.1/jquery.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-ui-1.10.3.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/bootstrap.min.js"></script>

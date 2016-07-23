@@ -43,6 +43,14 @@
                             <input name="name" title="名称" type="text" placeholder="数据源的名称"
                                    class="form-control"/>
                         </div>
+                        <label class="col-sm-2 control-label">父级</label>
+                        <div class="col-sm-2">
+                            <select name="parentCategoryId" title="父级数据源" class="form-control" >
+                                <option th:each="category:${categories}" th:value="${category.id}" th:text="${category.name}">无</option>
+                                <option th:remove="all">新闻咨询</option>
+                                <option th:remove="all">成功案例</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">标题</label>

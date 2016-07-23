@@ -74,11 +74,13 @@ public class ResourceController {
     @ResponseBody
     public Object fineUpload(MultipartFile file) {
         try {
+            String name=  file.getOriginalFilename();
+            String suffix=name.substring(name.lastIndexOf("."));
             try (InputStream inputStream = file.getInputStream()) {
                 String path = uploadTempResource(inputStream);
                 HashMap<String, Object> body = new HashMap<>();
                 body.put("success", true);
-                body.put("newUuid", path);
+                body.put("newUuid", path+suffix);
                 return body;
             }
         } catch (Exception ex) {

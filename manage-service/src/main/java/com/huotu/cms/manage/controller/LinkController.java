@@ -9,9 +9,15 @@
 
 package com.huotu.cms.manage.controller;
 
+import com.huotu.cms.manage.controller.support.ContentManageController;
+import com.huotu.cms.manage.exception.RedirectException;
 import com.huotu.cms.manage.util.web.CookieUser;
+import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
+import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.entity.login.Login;
+import com.huotu.hotcms.service.model.ContentExtra;
 import com.huotu.hotcms.service.model.LinkCategory;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.LinkRepository;
@@ -31,183 +37,43 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 
 /**
- * Created by chendeyu on 2016/1/6.
+ * @author wenqi
  */
 @Controller
 @RequestMapping("/manage/link")
-public class LinkController {
+public class LinkController extends ContentManageController<Link,ContentExtra> {
     private static final Log log = LogFactory.getLog(LinkController.class);
 
-    @Autowired
-    private LinkService linkService;
-
-    @Autowired
-    private LinkRepository linkRepository;
-
-    @Autowired
-    private ResourceService resourceService;
-
-    @Autowired
-    private CategoryRepository categoryRepository;
-    @Autowired
-    private CookieUser cookieUser;
-
-    /**
-     * 链接列表页面
-     *
-     * @param id
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping("/linkList")
-    public ModelAndView linkList(@RequestParam(value = "id", defaultValue = "0") Long id) throws Exception {
-        ModelAndView modelAndView = new ModelAndView();
-        try {
-            modelAndView.setViewName("/view/contents/linkList.html");
-            Link link = linkService.findById(id);
-            String logo_uri = "";
-            if (!StringUtils.isEmpty(link.getThumbUri())) {
-                logo_uri = resourceService.getResource(link.getThumbUri()).httpUrl().toString();
-            }
-            modelAndView.addObject("logo_uri", logo_uri);
-            modelAndView.addObject("link", link);
-        } catch (Exception ex) {
-            log.error(ex.getMessage());
-        }
-        return modelAndView;
+    @Override
+    protected ContentType contentType() {
+        return ContentType.Link;
     }
 
-
-    /**
-     * 添加链接
-     *
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping(value = "/addLink")
-    public ModelAndView addLink() throws Exception {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("/view/widget/addLink.html");
-        return modelAndView;
+    @Override
+    protected Link preparePersistContext(Login login, Site site, Link data, ContentExtra extra
+            , RedirectAttributes attributes) throws RedirectException {
+        return data;
     }
 
-//    /**
-//     * 修改链接
-//     *
-//     * @param id
-//     * @param ownerId
-//     * @return
-//     * @throws Exception
-//     */
-//    @RequestMapping("/updateLink")
-//    public ModelAndView updateLink(@RequestParam(value = "id", defaultValue = "0") Long id, long ownerId) throws Exception {
-//        ModelAndView modelAndView = new ModelAndView();
-//        try {
-//            modelAndView.setViewName("/view/contents/updateLink.html");
-//            Link link = linkService.findById(id);
-//            String logo_uri = "";
-//            if (!StringUtils.isEmpty(link.getThumbUri())) {
-//                logo_uri = resourceService.getResource(link.getThumbUri()).httpUrl().toString();
-//            }
-//            Category category = link.getCategory();
-//            Integer modelType = category.getModelId();
-//            Set<Category> categorys = categoryRepository.findBySite_Owner_IdAndModelId(ownerId, modelType);
-//            modelAndView.addObject("logo_uri", logo_uri);
-//            modelAndView.addObject("categorys", categorys);
-//            modelAndView.addObject("link", link);
-//        } catch (Exception ex) {
-//            log.error(ex.getMessage());
-//        }
-//        return modelAndView;
-//    }
-
-
-    /**
-     * 保存链接
-     *
-     * @param link
-     * @param categoryId
-     * @return
-     */
-    @RequestMapping(value = "/saveLink", method = RequestMethod.POST)
-    @Transactional(value = "transactionManager")
-    @ResponseBody
-    public ResultView saveLink(Link link, Long categoryId) {
-        ResultView result;
-        try {
-            Long id = link.getId();
-            Category category = categoryRepository.getOne(categoryId);
-            if (id != null) {
-                Link linkOld = linkService.findById(link.getId());
-                link.setCreateTime(linkOld.getCreateTime());
-                link.setUpdateTime(LocalDateTime.now());
-            } else {
-                link.setCreateTime(LocalDateTime.now());
-                link.setUpdateTime(LocalDateTime.now());
-            }
-            link.setCategory(category);
-            linkService.saveLink(link);
-            result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
-        } catch (Exception ex) {
-            log.error(ex.getMessage());
-            result = new ResultView(ResultOptionEnum.FAILE.getCode(), ResultOptionEnum.FAILE.getValue(), null);
-        }
-        return result;
+    @Override
+    protected String indexViewName() {
+        return "/view/contents/link.html";
     }
 
+    @Override
+    protected void prepareUpdate(Login login, Link entity, Link data, ContentExtra extra
+            , RedirectAttributes attributes) throws RedirectException {
 
-    /**
-     * 获取链接链表页内容
-     *
-     * @param ownerId
-     * @param title
-     * @param page
-     * @param pageSize
-     * @return
-     */
-    @RequestMapping(value = "/getLinkList")
-    @ResponseBody
-    public PageData<LinkCategory> getLinkList(@RequestParam(name = "ownerId") long ownerId,
-                                              @RequestParam(name = "title", required = false) String title,
-                                              @RequestParam(name = "page", required = true, defaultValue = "1") int page,
-                                              @RequestParam(name = "pagesize", required = true, defaultValue = "20") int pageSize) {
-        return linkService.getPage(ownerId, title, page, pageSize);
     }
 
-    /**
-     * 删除(管理员权限)
-     *
-     * @param id
-     * @param ownerId
-     * @param request
-     * @return
-     */
-    @RequestMapping(value = "/deleteLink", method = RequestMethod.POST)
-    @ResponseBody
-    public ResultView deleteLink(@RequestParam(name = "id", defaultValue = "0") Long id, long ownerId
-            , HttpServletRequest request) {
-        ResultView result = null;
-        try {
-            if (cookieUser.getOwnerId(request) == ownerId) {
-                Link link = linkService.findById(id);
-                linkRepository.delete(link);
-//                link.setDeleted(true);
-//                linkService.saveLink(link);
-                result = new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), null);
-            } else {
-                result = new ResultView(ResultOptionEnum.NO_LIMITS.getCode(), ResultOptionEnum.NO_LIMITS.getValue(), null);
-            }
-        } catch (Exception ex) {
-            log.error(ex.getMessage());
-            result = new ResultView(ResultOptionEnum.FAILE.getCode(), ResultOptionEnum.FAILE.getValue(), null);
-        }
-        return result;
+    @Override
+    protected String openViewName() {
+        return "/view/contents/linkOpen.html";
     }
-
-
 }

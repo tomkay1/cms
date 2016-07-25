@@ -104,7 +104,7 @@
                         <h4>请选择要使用的模板</h4>
                         <div class="row">
                             <div th:each="template,status:${@templateRepository.findByEnabledTrue()}"
-                                 class="col-xs-12 col-sm-4 col-md-3 col-lg-2 clearfix"
+                                 class="col-xs-12 col-sm-4 col-md-3 col-lg-2 clearfix template-site"
                                  data-id="123" th:attr="data-id=${template.siteId}">
                                 <div class="site-items">
                                     <img th:if="${template.logoUri!=null}" src="http://placehold.it/228x178?text=CMS"
@@ -121,7 +121,7 @@
                                             预览(100)
                                         </button>
                                         <button type="button"
-                                                class="operate-btn btn-white col-xs-6 template-use">使用(999+)
+                                                class="operate-btn btn-white col-xs-6 template-use" th:text="'使用('+${{template.useNumber}}+')'">使用(999+)
                                         </button>
                                     </div>
                                     <div class="site-alert text-success">
@@ -140,7 +140,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div th:remove="all" class="col-xs-12 col-sm-4 col-md-3 col-lg-2 clearfix">
+                            <div th:remove="all" class="col-xs-12 col-sm-4 col-md-3 col-lg-2 clearfix template-site"  data-id="345">
                                 <div class="site-items">
                                     <img src="http://placehold.it/228x178?text=CMS" alt="...">
                                     <div class="clearfix row operate-group">
@@ -162,7 +162,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div th:remove="all" class="col-xs-12 col-sm-4 col-md-3 col-lg-2 clearfix">
+                            <div th:remove="all" class="col-xs-12 col-sm-4 col-md-3 col-lg-2 clearfix template-site">
                                 <div class="site-items">
                                     <img src="http://placehold.it/228x178?text=CMS" alt="...">
                                     <div class="clearfix row operate-group">
@@ -184,7 +184,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div th:remove="all" class="col-xs-12 col-sm-4 col-md-3 col-lg-2 clearfix">
+                            <div th:remove="all" class="col-xs-12 col-sm-4 col-md-3 col-lg-2 clearfix template-site">
                                 <div class="site-items">
                                     <img src="http://placehold.it/228x178?text=CMS" alt="...">
                                     <div class="clearfix row operate-group">
@@ -249,7 +249,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">不了</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">好的</button>
+                <button type="button" class="btn btn-primary" id="confirmBtn" data-dismiss="modal">好的</button>
             </div>
         </div><!-- modal-content -->
     </div><!-- modal-dialog -->
@@ -257,6 +257,7 @@
 <script th:inline="javascript">
     var currentOwnerId = /*[[${#authentication.details.root?-1:#authentication.details.currentOwnerId}]]*/ "-999";   //如果是超级管理员，ownerId则为-1
     var laudUrl=/*[[@{/manage/template/laud/}]]*/ "index.html?rnd=";
+    var customerSiteId=/*[[${object.siteId}]]*/ null;
 </script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-1.10.2.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-ui-1.10.3.min.js"></script>

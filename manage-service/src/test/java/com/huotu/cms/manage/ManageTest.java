@@ -46,9 +46,7 @@ import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.exception.FormatException;
-import com.huotu.hotcms.widget.page.Layout;
-import com.huotu.hotcms.widget.page.PageElement;
-import com.huotu.hotcms.widget.page.PageLayout;
+import com.huotu.hotcms.widget.page.*;
 import com.huotu.hotcms.widget.repository.PageInfoRepository;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import me.jiangcai.lib.test.SpringWebTest;
@@ -507,5 +505,9 @@ public abstract class ManageTest extends SpringWebTest {
                 .andReturn().getResponse().getContentAsString();
 
         page.inputHidden(page.getForm(), name, path);
+    }
+
+    public void a(){
+        //json
     }
 }

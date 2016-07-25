@@ -231,4 +231,27 @@ public class TestBase extends SpringWebTest {
         category.setSite(randomSite(randomOwner()));
         return categoryRepository.saveAndFlush(category);
     }
+
+    /**
+     * 生成老常需要的测试json
+     * @return
+     */
+    protected PageLayout randomNeoTestPageModel(){
+        PageLayout pageLayout=new PageLayout();
+        Layout layout=new Layout();
+        layout.setValue("6,6");
+        Component componentA=new Component();
+        componentA.setId(UUID.randomUUID().toString());
+        componentA.setStyleId(UUID.randomUUID().toString());
+        Component componentB=new Component();
+        componentB.setId(UUID.randomUUID().toString());
+        componentB.setStyleId(UUID.randomUUID().toString());
+        Layout layout1=new Layout();
+        layout1.setValue("12");
+        Empty empty=new Empty();
+        layout1.setElements(new PageElement[]{empty});
+        layout.setElements(new PageElement[]{componentA,componentB,layout1});
+        pageLayout.setElements(new Layout[]{layout});
+        return pageLayout;
+    }
 }

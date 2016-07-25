@@ -279,7 +279,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
                         elements = new PageElement[0];
                     Set<Component> notSupportComponent = new HashSet<>();
                     for (PageElement element : elements) {
-                        parimaryUtil(element, installedWidget, notSupportComponent, supportPage, page);
+                        primarUtil(element, installedWidget, notSupportComponent, supportPage, page);
                     }
                     if (notSupportComponent.size() > 0) {
                         if (ignoreError) {
@@ -324,7 +324,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
      * @param supportPage
      * @param page
      */
-    private void parimaryUtil(PageElement pageElement, InstalledWidget installedWidget
+    private void primarUtil(PageElement pageElement, InstalledWidget installedWidget
             , Set<Component> notSupportComponent, Map<Long, PageInfo> supportPage, PageInfo page) {
         if (pageElement instanceof Component) {
             Component component = (Component) pageElement;
@@ -348,7 +348,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
         } else if (pageElement instanceof Layout) {
             Layout layout = (Layout) pageElement;
             for (PageElement element : layout.getElements()) {
-                parimaryUtil(element, installedWidget, notSupportComponent, supportPage, page);
+                primarUtil(element, installedWidget, notSupportComponent, supportPage, page);
             }
         }
     }

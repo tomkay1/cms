@@ -118,11 +118,8 @@ public class FrontController implements FilterBehavioral {
 
     private void generateHtml(HttpServletResponse response, PageInfo pageInfo, CMSContext cmsContext, Model model)
             throws IOException {
-
         String content = pageService.generateHTML(pageInfo, cmsContext);
-
         VelocityContext context = new VelocityContext();
-
         context.put("keywords", pageInfo.getSite().getKeywords());
         context.put("description", pageInfo.getSite().getDescription());
         context.put("title", pageInfo.getTitle());

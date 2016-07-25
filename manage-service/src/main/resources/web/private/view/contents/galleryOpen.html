@@ -21,21 +21,21 @@
 </head>
 <body class="mainpanel" id="fa-puzzle-piece">
 <div class="pageheader">
-    <h2><i class="fa fa-puzzle-piece"></i> 链接管理 <span>修改链接信息</span></h2>
+    <h2><i class="fa fa-puzzle-piece"></i> 图库管理 <span>修改图库信息</span></h2>
 </div>
 
 <!--/*@thymesVar id="object" type="com.huotu.hotcms.service.entity.Site"*/-->
 <div class="contentpanel">
-    <form id="updateSiteForm" sec:authorize="hasRole('MANAGE')" action="link.html" method="post"
-          th:action="@{/manage/link/{id}(id=${object.id})}">
+    <form id="updateSiteForm" sec:authorize="hasRole('MANAGE')" action="gallery.html" method="post"
+          th:action="@{/manage/gallery/{id}(id=${object.id})}">
         <div class="panel panel-default close-panel">
             <div class="panel-heading">
                 <div class="panel-btns">
                     <a href="" class="panel-close">&times;</a>
                     <a href="" class="minimize maximize">&minus;</a>
                 </div><!-- panel-btns -->
-                <h3 class="panel-title">修改文章信息</h3>
-                <p>文章信息发生变化时做一定修改</p>
+                <h3 class="panel-title">修改图库信息</h3>
+                <p>图库信息发生变化时做一定修改</p>
             </div>
             <div class="panel-body">
                 <div class="tab-content">
@@ -55,8 +55,8 @@
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">描述</label>
-                                <div class="col-sm-2">
-                                    <input name="description" title="描述" type="text" placeholder="描述"
+                                <div class="col-sm-6">
+                                    <input name="description" title="描述" type="text" placeholder="图库描述"
                                            class="form-control" th:value="${object.description}"/>
                                 </div>
                             </div>

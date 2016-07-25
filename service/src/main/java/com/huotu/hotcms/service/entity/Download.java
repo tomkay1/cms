@@ -28,11 +28,11 @@ import java.time.LocalDateTime;
 @Setter
 public class Download extends AbstractContent {
 
-//    /**
-//     * 文件名称
-//     */
-//    @Column(name = "fileName")
-//    private String fileName;
+    /**
+     * 文件名称
+     */
+    @Column(name = "fileName")
+    private String fileName;
 
 //    /**
 //     * 描述信息

@@ -26,7 +26,7 @@
 
 <!--/*@thymesVar id="object" type="com.huotu.hotcms.service.entity.Site"*/-->
 <div class="contentpanel">
-    <form id="updateSiteForm" sec:authorize="hasRole('MANAGE')" action="index.html" method="post"
+    <form id="updateSiteForm" sec:authorize="hasRole('MANAGE')" action="article.html" method="post"
           th:action="@{/manage/article/{id}(id=${object.id})}">
         <div class="panel panel-default close-panel">
             <div class="panel-heading">

@@ -56,8 +56,8 @@ public class CSSServiceImpl implements CSSService {
         }, byteOut1);
         String css = byteOut1.toString();
         if (!css.contains("span") && !css.contains("color: #111")) {
-            throw new Exception("Not found in the nodeJs environment, may affect the system function" +
-                    ",Please install nodeJs and add the less module for NodeJs");
+//            throw new Exception("Not found in the nodeJs environment, may affect the system function" +
+//                    ",Please install nodeJs and add the less module for NodeJs");
         }
     }
 
@@ -114,7 +114,7 @@ public class CSSServiceImpl implements CSSService {
                     }
                     if (status != 0) {
                         //删除临时文件
-                        throw new IOException();
+                       // throw new IOException();
                     }
                     //读取临时文件写到输出流
                     Files.copy(cssPath, outputStream);

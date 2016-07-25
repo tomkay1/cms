@@ -121,10 +121,10 @@
                         <td th:text="${link.linkUrl}">文章</td>
                         <td th:text="${link.category.parent.name}">无</td>
                         <td class="center">
-                            <a href="index.html" th:href="@{/manage/link/{id}(id=${link.id})}" target="_top" title="管理">
+                            <a href="linkOpen.html" th:href="@{/manage/link/{id}(id=${link.id})}" target="_top" title="管理">
                                 <i class="fa fa-pencil"></i>
                             </a>
-                            <a href="index.html" class="delete" th:href="@{/manage/link/{id}/delete(id=${link.id})}"
+                            <a href="link.html" class="delete" th:href="@{/manage/link/{id}/delete(id=${link.id})}"
                                target="_top" title="删除">
                                 <i class="fa fa-trash-o"></i>
                             </a>

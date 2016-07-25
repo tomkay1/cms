@@ -141,10 +141,10 @@
                         <td th:text="${article.type}">普通文章</td>
                         <td th:text="${article.category.parent.name}">无</td>
                         <td class="center">
-                            <a href="index.html" th:href="@{/manage/article/{id}(id=${article.id})}" target="_top" title="管理">
+                            <a href="articleOpen.html" th:href="@{/manage/article/{id}(id=${article.id})}" target="_top" title="管理">
                                 <i class="fa fa-pencil"></i>
                             </a>
-                            <a href="index.html" class="delete" th:href="@{/manage/article/{id}/delete(id=${article.id})}"
+                            <a href="article.html" class="delete" th:href="@{/manage/article/{id}/delete(id=${article.id})}"
                                target="_top" title="删除">
                                 <i class="fa fa-trash-o"></i>
                             </a>

@@ -111,7 +111,7 @@ public class PageServiceImpl implements PageService {
                 }
                 //上传最新的page css样式表到资源服务
                 try (InputStream data = Files.newInputStream(path)) {
-                    resourceService.uploadResource(resourceKey + "/" + pageInfo.getPageId() + ".css", data);
+                    resourceService.uploadResource(pageInfo.getPageCssResourcePath(), data);
                 }
             }
 

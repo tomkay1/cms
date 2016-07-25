@@ -17,6 +17,7 @@ import com.huotu.hotcms.service.repository.AbstractContentRepository;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.service.PageService;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpStatus;
@@ -38,7 +39,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import java.net.URISyntaxException;
 
 /**
  * 用户获取page页面html Code 页面服务相关
@@ -55,8 +55,8 @@ public class FrontController implements FilterBehavioral {
     private AbstractContentRepository abstractContentRepository;
     @Autowired
     private PageService pageService;
-    @Autowired(required = false)
-    private PageInfoRepository pageInfoRepository;
+    @Autowired
+    private ResourceService resourceService;
 
     public FrontController() throws IOException {
         try (InputStream propertiesFile = new ClassPathResource("/front/velocity.properties").getInputStream()) {
@@ -127,7 +127,7 @@ public class FrontController implements FilterBehavioral {
         context.put("description", pageInfo.getSite().getDescription());
         context.put("title", pageInfo.getTitle());
         context.put("globalCssURI", "/css/index.css");
-        context.put("pageCssURI", "/" + pageInfo.getResourceKey() + "/" + pageInfo.getPageId() + ".css");
+        context.put("pageCssURI", resourceService.getResource(pageInfo.getPageCssResourcePath()).httpUrl());
         context.put("content", content);
 
         htmlTemplate.merge(context, response.getWriter());

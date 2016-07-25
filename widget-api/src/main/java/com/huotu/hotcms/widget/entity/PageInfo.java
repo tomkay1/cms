@@ -121,4 +121,11 @@ public class PageInfo implements Auditable, Copyable<PageInfo> {
     public PageInfo copy(Site site, Category category) {
         return copy();
     }
+
+    /**
+     * @return ..
+     */
+    public String getPageCssResourcePath() {
+        return "page/resource/css/" + resourceKey + "/" + pageId + ".css";
+    }
 }

@@ -84,7 +84,7 @@ public class PreviewTest extends ManageTest {
 
     @Test
     @Transactional
-    public void access() throws IOException, FormatException {
+    public void access() throws Exception {
         // 创建一个站点
         Owner owner = randomOwner();
         Site site = randomSite(owner);
@@ -111,6 +111,9 @@ public class PreviewTest extends ManageTest {
 //        indexPage.setPageSetting(objectMapper.writeValueAsBytes(randomPage()));
 
         // 执行预览
+
+//        mockMvc.perform(get("/_web?simulateSite=" + site.getSiteId()))
+//                .andDo(print());
 
         driver.get("http://localhost/?simulateSite=" + site.getSiteId());
 

@@ -130,10 +130,11 @@ public class FrontController implements FilterBehavioral {
         context.put("pageCssURI", resourceService.getResource(pageInfo.getPageCssResourcePath()).httpUrl());
         context.put("content", content);
 
+        response.setContentType("text/html;charset=utf-8");
+
         htmlTemplate.merge(context, response.getWriter());
         response.getWriter().flush();
 
-        response.setContentType("text/html;charset=utf-8");
     }
 
     @Override

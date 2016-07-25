@@ -36,8 +36,6 @@ public class WidgetIdentifier implements Serializable {
     private String artifactId;
     private String version;
 
-
-
     /**
      * @param identify groupId-widgetId:version 也可能是Base64加密以后的{@link #toURIEncoded()}
      * @return

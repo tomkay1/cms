@@ -40,9 +40,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Created by hzbc on 2016/6/24.
- */
 @Service
 public class PageServiceImpl implements PageService {
     @Autowired(required = false)
@@ -82,16 +79,11 @@ public class PageServiceImpl implements PageService {
             writer.append("</div>");
         }
         writer.append("</div>");
-//        String html = generateHTML(page, context);
-//        byte[] htmlData = html.getBytes();
-//        outputStream.write(htmlData, 0, htmlData.length);
     }
 
 
     @Override
     public void savePage(PageModel page, Long pageId) throws IOException {
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        String pageJson = objectMapper.writeValueAsString(page);
         PageInfo pageInfo = pageInfoRepository.getOne(pageId);
         pageInfo.setUpdateTime(LocalDateTime.now());
         //删除控件旧的css样式表
@@ -101,24 +93,34 @@ public class PageServiceImpl implements PageService {
         //保存最新控件信息
         String resourceKey = UUID.randomUUID().toString();
         pageInfo.setResourceKey(resourceKey);
-        pageInfo.setLayout(new PageLayout(page.getElements()));
+        if (page != null && page.getElements() != null)
+            pageInfo.setLayout(new PageLayout(page.getElements()));
 
         // TODO 还需要修改什么么?
 
 //        pageInfo.setPageSetting(pageJson.getBytes());
         pageInfoRepository.save(pageInfo);
         //生成page的css样式表
-        PageElement[] elements = page.getElements();
+        PageElement[] elements = pageInfo.getLayout().getElements();
         Path path = Files.createTempFile("tempCss", ".css");
-        OutputStream out = Files.newOutputStream(path);
-        for (PageElement element : elements) {
-            //生成组件css
-            widgetResolveService.componentCSS(CMSContext.RequestContext(), element, out);
+        try {
+            try (OutputStream out = Files.newOutputStream(path)) {
+                for (PageElement element : elements) {
+                    //生成组件css
+                    widgetResolveService.componentCSS(CMSContext.RequestContext(), element, out);
+                }
+                //上传最新的page css样式表到资源服务
+                try (InputStream data = Files.newInputStream(path)) {
+                    resourceService.uploadResource(resourceKey + "/" + pageInfo.getPageId() + ".css", data);
+                }
+            }
+
+        } finally {
+            //noinspection ThrowFromFinallyBlock
+            Files.deleteIfExists(path);
         }
-        //上传最新的page css样式表到资源服务
-        InputStream data = Files.newInputStream(path);
-        resourceService.uploadResource(resourceKey + "/" + pageInfo.getPageId() + ".css", data);
-        Files.deleteIfExists(path);
+
+
     }
 
     @Override
@@ -135,11 +137,12 @@ public class PageServiceImpl implements PageService {
     }
 
     @Override
-    public PageInfo findBySiteAndPagePath(Site site, String pagePath) throws IllegalStateException, PageNotFoundException {
+    public PageInfo findBySiteAndPagePath(Site site, String pagePath) throws IllegalStateException
+            , PageNotFoundException {
         PageInfo pageInfo = pageInfoRepository.findBySiteAndPagePath(site, pagePath);
         if (pageInfo == null)
             throw new PageNotFoundException();
-        return getPage(pageInfo.getPageId());
+        return pageInfo;
     }
 
     @Override
@@ -151,7 +154,7 @@ public class PageServiceImpl implements PageService {
     public PageInfo getClosestContentPage(Category category, String path) throws IOException, PageNotFoundException {
         PageInfo pageInfo = pageInfoRepository.findByPagePath(path);
         if (pageInfo != null && category.getId().equals(pageInfo.getCategory().getId())) {
-            return getPage(pageInfo.getPageId());
+            return pageInfo;
         }
         List<PageInfo> pageInfos = pageInfoRepository.findByCategory(category);
         if (pageInfo == null)

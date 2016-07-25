@@ -15,7 +15,6 @@ import lombok.Data;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 import java.io.Serializable;
 
 /**
@@ -32,10 +31,10 @@ public class PageModel implements Serializable {
      *
      * @see PageInfo#pageId
      */
-    @XmlAttribute(name = "pageIdentity")
+//    @XmlAttribute(name = "pageIdentity")
     private Long pageIdentity;
 
-    @XmlAttribute(name = "title")
+    //    @XmlAttribute(name = "title")
     private String title;
 
     /**

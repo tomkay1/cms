@@ -17,15 +17,13 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-/**
- * Created by wenqi on 2016/7/15.
- */
 @ControllerAdvice
 public class ExceptionInterceptor {
     private static final Log log = LogFactory.getLog(ExceptionInterceptor.class);
+
     @ExceptionHandler(PageNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public void pageNotFound(PageNotFoundException e){
-        log.error(e.getMessage());
+    public void pageNotFound(PageNotFoundException e) {
+        log.warn("Page Not Found :" + e.getLocalizedMessage(), e);
     }
 }

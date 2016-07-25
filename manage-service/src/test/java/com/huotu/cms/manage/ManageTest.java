@@ -31,7 +31,6 @@ import com.huotu.hotcms.service.entity.Template;
 import com.huotu.hotcms.service.entity.TemplateType;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
-import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.service.repository.ArticleRepository;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.DownloadRepository;
@@ -41,11 +40,12 @@ import com.huotu.hotcms.service.repository.OwnerRepository;
 import com.huotu.hotcms.service.repository.TemplateRepository;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.util.StringUtil;
-import com.huotu.hotcms.widget.Component;
-import com.huotu.hotcms.widget.ComponentProperties;
-import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.exception.FormatException;
+import com.huotu.hotcms.widget.page.Empty;
+import com.huotu.hotcms.widget.page.Layout;
+import com.huotu.hotcms.widget.page.PageElement;
+import com.huotu.hotcms.widget.page.PageLayout;
 import com.huotu.hotcms.widget.page.*;
 import com.huotu.hotcms.widget.repository.PageInfoRepository;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
@@ -68,10 +68,8 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -405,40 +403,42 @@ public abstract class ManageTest extends SpringWebTest {
         return new PageLayout(pageElementList.toArray(new Layout[pageElementList.size()]));
     }
 
-    private Component randomComponent() throws IOException, FormatException {
-        Component component = new Component();
-        component.setPreviewHTML(UUID.randomUUID().toString());
-//        component.setStyleId(UUID.randomUUID().toString());
-        String groupId = "com.huotu.hotcms.widget.friendshipLink";
-        String widgetId = "friendshipLink";
-        String version = "1.0-SNAPSHOT";
-        component.setWidgetIdentity(groupId + "-" + widgetId + ":" + version);
-        ComponentProperties properties = new ComponentProperties();
-        Map map = new HashMap<>();
-        List list = new ArrayList<>();
-        map.put("title", UUID.randomUUID().toString());
-        map.put("url", "/wtf");
-        list.add(map);
-        properties.put("linkList", list);
-        properties.put("styleTemplate", "html");
-        InstalledWidget installedWidget = null;
-        List<InstalledWidget> installedWidgets = widgetFactoryService.widgetList(null);
-        if (installedWidgets == null || installedWidgets.size() == 0) {
-            widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
-                    , "1.0-SNAPSHOT", "picCarousel");
-            installedWidgets = widgetFactoryService.widgetList(null);
-        }
-        WidgetIdentifier widgetIdentifier = null;
-        for (InstalledWidget installedWidget1 : installedWidgets) {
-            widgetIdentifier = installedWidget1.getIdentifier();
-            if (groupId.equals(widgetIdentifier.getGroupId()) && widgetId.equals(widgetIdentifier.getArtifactId()) &&
-                    version.equals(widgetIdentifier.getVersion())) {
-                installedWidget = installedWidget1;
-                break;
-            }
-        }
-        component.setInstalledWidget(installedWidget);
-        return component;
+    private PageElement randomComponent() throws IOException, FormatException {
+        //得预创才可以
+        return new Empty();
+//        Component component = new Component();
+//        component.setPreviewHTML(UUID.randomUUID().toString());
+////        component.setStyleId(UUID.randomUUID().toString());
+//        String groupId = "com.huotu.hotcms.widget.friendshipLink";
+//        String widgetId = "friendshipLink";
+//        String version = "1.0-SNAPSHOT";
+//        component.setWidgetIdentity(groupId + "-" + widgetId + ":" + version);
+//        ComponentProperties properties = new ComponentProperties();
+//        Map map = new HashMap<>();
+//        List list = new ArrayList<>();
+//        map.put("title", UUID.randomUUID().toString());
+//        map.put("url", "/wtf");
+//        list.add(map);
+//        properties.put("linkList", list);
+//        properties.put("styleTemplate", "html");
+//        InstalledWidget installedWidget = null;
+//        List<InstalledWidget> installedWidgets = widgetFactoryService.widgetList(null);
+//        if (installedWidgets == null || installedWidgets.size() == 0) {
+//            widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
+//                    , "1.0-SNAPSHOT", "picCarousel");
+//            installedWidgets = widgetFactoryService.widgetList(null);
+//        }
+//        WidgetIdentifier widgetIdentifier = null;
+//        for (InstalledWidget installedWidget1 : installedWidgets) {
+//            widgetIdentifier = installedWidget1.getIdentifier();
+//            if (groupId.equals(widgetIdentifier.getGroupId()) && widgetId.equals(widgetIdentifier.getArtifactId()) &&
+//                    version.equals(widgetIdentifier.getVersion())) {
+//                installedWidget = installedWidget1;
+//                break;
+//            }
+//        }
+//        component.setInstalledWidget(installedWidget);
+//        return component;
     }
 
     /**
@@ -505,9 +505,5 @@ public abstract class ManageTest extends SpringWebTest {
                 .andReturn().getResponse().getContentAsString();
 
         page.inputHidden(page.getForm(), name, path);
-    }
-
-    public void a(){
-        //json
     }
 }

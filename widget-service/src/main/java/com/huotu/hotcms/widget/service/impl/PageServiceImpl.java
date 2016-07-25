@@ -88,7 +88,7 @@ public class PageServiceImpl implements PageService {
         pageInfo.setUpdateTime(LocalDateTime.now());
         //删除控件旧的css样式表
         if (pageInfo.getResourceKey() != null) {
-            resourceService.deleteResource(pageInfo.getResourceKey() + "/" + pageInfo.getPageId() + ".css");
+            resourceService.deleteResource(pageInfo.getPageCssResourcePath());
         }
         //保存最新控件信息
         String resourceKey = UUID.randomUUID().toString();

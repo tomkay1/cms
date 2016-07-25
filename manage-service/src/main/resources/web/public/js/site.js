@@ -150,10 +150,27 @@ $(function () {
             span.text(newVal);
         }
     });
+    var templateSiteId;
     //  使用模板的时候
     $('.template-use').click(function () {
+        templateSiteId= $(this).parents(".template-site").attr("data-id");
         // 需要弹出一个对话框 确认使用的级别
         useTemplateModal.modal();
+    });
+    $('#confirmBtn').click(function(){
+        var type=$(".modal-body").find("input[name='type']:checked").val();
+        if(customerSiteId==null)//原型测试环境
+            return;
+        $.ajax({
+            url:'/manage/template/use/'+templateSiteId+'/'+customerSiteId,
+            data:{
+                mode:type
+            },
+            type:'post',
+            success:function(data){//应该是iframe内跳转
+                window.location.href="/manage/site";
+            }
+        })
     });
     $('.template-preview').click(function () {
         // 效果应该是等同点击附近的 a

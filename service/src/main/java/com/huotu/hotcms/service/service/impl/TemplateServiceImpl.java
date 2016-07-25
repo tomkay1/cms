@@ -108,6 +108,7 @@ public class TemplateServiceImpl implements TemplateService {
         }
         copy(templateSite, customerSite);
         templateSite.setUseNumber(templateSite.getUseNumber() + 1);//使用数+1
+        templateSite.setEnabled(true);
         templateRepository.save(templateSite);
     }
 
@@ -126,7 +127,7 @@ public class TemplateServiceImpl implements TemplateService {
     private void delete(Site customerSite) throws IOException {
         List<Category> categories = categoryRepository.findBySite(customerSite);
         if (categories.isEmpty())
-            throw new IllegalStateException("目前该商户站点ID为" + customerSite.getSiteId() + "的站点还没有数据源！");
+            return;
         //删除内容
         for (Category category : categories) {
             articleRepository.deleteByCategory(category);

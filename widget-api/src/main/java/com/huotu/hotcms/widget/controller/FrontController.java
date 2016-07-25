@@ -16,7 +16,6 @@ import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.service.repository.AbstractContentRepository;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.entity.PageInfo;
-import com.huotu.hotcms.widget.repository.PageInfoRepository;
 import com.huotu.hotcms.widget.service.PageService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -39,6 +38,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.net.URISyntaxException;
 
 /**
  * 用户获取page页面html Code 页面服务相关

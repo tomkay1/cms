@@ -46,6 +46,7 @@ import com.huotu.hotcms.widget.page.Empty;
 import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.PageElement;
 import com.huotu.hotcms.widget.page.PageLayout;
+import com.huotu.hotcms.widget.page.*;
 import com.huotu.hotcms.widget.repository.PageInfoRepository;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import me.jiangcai.lib.test.SpringWebTest;
@@ -167,7 +168,6 @@ public abstract class ManageTest extends SpringWebTest {
         site.setTitle(UUID.randomUUID().toString());
         site.setCreateTime(LocalDateTime.now());
         site.setEnabled(true);
-        site.setKeywords(String.join(",", (CharSequence[]) randomDomains()));
         site.setDescription(UUID.randomUUID().toString());
         String[] domains = randomDomains();
         return siteService.newSite(domains, domains[0], site, Locale.CHINA);

@@ -95,7 +95,6 @@ public class CSSServiceImplTest extends TestBase {
                 Assert.assertEquals("断言程序case4生成css与预期结果不一致", 0, 1);
             }
         } catch (Exception e) {
-            e.printStackTrace();
             Assert.assertEquals("断言程序case4抛出异常错误", 0, 1);
         }
 

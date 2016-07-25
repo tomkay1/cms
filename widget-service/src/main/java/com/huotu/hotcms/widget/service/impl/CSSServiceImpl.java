@@ -41,9 +41,11 @@ public class CSSServiceImpl implements CSSService {
     @PostConstruct
     public void init() throws Exception {
         //--case4-- mainColor为null生成的css是否符合与预期用户定义less样式
+        System.out.println(System.getenv("path"));
         ByteArrayOutputStream byteOut1 = new ByteArrayOutputStream();
         convertCss(new PageTheme() {
             @Override
+
             public String mainColor() {
                 return null;
             }

@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.widget.xml;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.widget.page.PageLayout;
 import com.huotu.hotcms.widget.test.TestBase;
@@ -35,5 +36,13 @@ public class PersistToXmlTest extends TestBase {
         PageLayout page1 = objectMapper.readValue(json, PageLayout.class);
         System.out.println(objectMapper.writeValueAsString(page1));
         assertThat(page1).isEqualTo(page);
+    }
+
+    @Test
+    public void testNeo() throws JsonProcessingException {
+        PageLayout pageLayout=randomNeoTestPageModel();
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(pageLayout);
+        System.out.println(json);
     }
 }

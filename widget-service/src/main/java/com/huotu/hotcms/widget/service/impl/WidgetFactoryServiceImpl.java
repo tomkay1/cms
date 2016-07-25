@@ -330,13 +330,15 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
             Component component = (Component) pageElement;
             component.setInstalledWidget(findWidget(component.getWidgetIdentity()));
             try {
-                Widget widget1 = component.getInstalledWidget().getWidget();
-                Widget widget2 = installedWidget.getWidget();
-                //同一个控件不同版本才进行验证
-                if (widget1.groupId().equals(widget2.groupId()) && widget1.widgetId().equals(widget2.widgetId())
-                        && !widget1.version().equals(widget2.version())) {
-                    installedWidget.getWidget().valid(component.getStyleId(), component.getProperties());
-                    supportPage.put(page.getPageId(), page);
+                if ( component.getInstalledWidget()!=null) {
+                    Widget widget1 = component.getInstalledWidget().getWidget();
+                    Widget widget2 = installedWidget.getWidget();
+                    //同一个控件不同版本才进行验证
+                    if (widget1.groupId().equals(widget2.groupId()) && widget1.widgetId().equals(widget2.widgetId())
+                            && !widget1.version().equals(widget2.version())) {
+                        installedWidget.getWidget().valid(component.getStyleId(), component.getProperties());
+                        supportPage.put(page.getPageId(), page);
+                    }
                 }
             } catch (IllegalArgumentException e) {
                 log.info("不支持的页面组件" + component.getWidgetIdentity() + ":" + e.getMessage());

@@ -53,9 +53,9 @@ public class FrontController implements FilterBehavioral {
     private final Template htmlTemplate;
     @Autowired(required = false)
     private AbstractContentRepository abstractContentRepository;
-    @Autowired
+    @Autowired(required = false)
     private PageService pageService;
-    @Autowired
+    @Autowired(required = false)
     private ResourceService resourceService;
 
     public FrontController() throws IOException {
@@ -129,11 +129,11 @@ public class FrontController implements FilterBehavioral {
         context.put("globalCssURI", "/css/index.css");
         context.put("pageCssURI", resourceService.getResource(pageInfo.getPageCssResourcePath()).httpUrl());
         context.put("content", content);
-
+        response.setContentType("text/html;charset=utf-8");
         htmlTemplate.merge(context, response.getWriter());
         response.getWriter().flush();
 
-        response.setContentType("text/html;charset=utf-8");
+
     }
 
     @Override

@@ -108,13 +108,7 @@ public class TestWidgetFactoryService extends TestBase {
 
         //*********************************case3 设置主控件包不忽略错误 ，安装新版本控件****************************
         List<InstalledWidget> installedWidgets = widgetFactoryService.widgetList(null);
-        InstalledWidget installedWidget = null;
-        for (InstalledWidget installedWidget1 : installedWidgets) {
-            if (installedWidget1.getWidget().version().equals("1.0-SNAPSHOT")) {
-                installedWidget = installedWidget1;
-                break;
-            }
-        }
+        InstalledWidget installedWidget = getInstalledWidget(installedWidgets, "1.0-SNAPSHOT");
         assertThat(installedWidget).as("等于null").isNotNull();
         String pagePath = "testPagePath";
         ComponentProperties properties = new ComponentProperties();
@@ -129,12 +123,7 @@ public class TestWidgetFactoryService extends TestBase {
                 , "2.0-SNAPSHOT", randomType2);
         assertWidgetListContainWidgetName("picCarousel", "2.0-SNAPSHOT", randomType2);
         installedWidgets = widgetFactoryService.widgetList(null);
-        for (InstalledWidget installedWidget1 : installedWidgets) {
-            if (installedWidget1.getWidget().version().equals("2.0-SNAPSHOT")) {
-                installedWidget = installedWidget1;
-                break;
-            }
-        }
+        installedWidget = getInstalledWidget(installedWidgets, "2.0-SNAPSHOT");
         assert installedWidget != null;
         WidgetInfo widgetInfo = widgetInfoRepository.findOne(installedWidget.getIdentifier());
         widgetFactoryService.primary(widgetInfo, false);
@@ -153,20 +142,11 @@ public class TestWidgetFactoryService extends TestBase {
         String pagePath2 = "testPagePath2";
         ComponentProperties properties2 = new ComponentProperties();
         properties2.put("styleTemplate", "html");
-        for (InstalledWidget installedWidget1 : installedWidgets) {
-            if (installedWidget1.getType().equals(randomType)) {
-                installedWidget = installedWidget1;
-                break;
-            }
-        }
+        installedWidget = getInstalledWidget(installedWidgets, "1.0-SNAPSHOT");
+
         pageInitData(pagePath2, installedWidget, properties2);
         try {
-            for (InstalledWidget installedWidget1 : installedWidgets) {
-                if (installedWidget1.getType().equals(randomType2)) {
-                    installedWidget = installedWidget1;
-                    break;
-                }
-            }
+            installedWidget = getInstalledWidget(installedWidgets, "2.0-SNAPSHOT");
             widgetInfo = widgetInfoRepository.findOne(installedWidget.getIdentifier());
             widgetFactoryService.primary(widgetInfo, false);
             assertThat(0).as("参数验证失败，应当出现异常").isEqualTo(1);
@@ -175,12 +155,7 @@ public class TestWidgetFactoryService extends TestBase {
         }
 
         //***************************************case5 安装主控件包，忽略错误***************************************
-        for (InstalledWidget installedWidget1 : installedWidgets) {
-            if (installedWidget1.getType().equals(randomType)) {
-                installedWidget = installedWidget1;
-                break;
-            }
-        }
+        installedWidget = getInstalledWidget(installedWidgets, "1.0-SNAPSHOT");
         assertThat(installedWidget).as("等于null").isNotNull();
         pagePath = "testPagePath3";
         ComponentProperties properties3 = new ComponentProperties();
@@ -189,21 +164,11 @@ public class TestWidgetFactoryService extends TestBase {
         properties3.put("minImgUrl", new String[]{"1.jpg", "2.jpg", "3.jpg", "4.jpg"});
         properties3.put("styleTemplate", "html");
         pageInitData(pagePath, installedWidget, properties3);
-        for (InstalledWidget installedWidget1 : installedWidgets) {
-            if (installedWidget1.getType().equals(randomType2)) {
-                installedWidget = installedWidget1;
-                break;
-            }
-        }
+        installedWidget = getInstalledWidget(installedWidgets, "2.0-SNAPSHOT");
         widgetInfo = widgetInfoRepository.findOne(installedWidget.getIdentifier());
         widgetFactoryService.primary(widgetInfo, true);
 
-        for (InstalledWidget installedWidget1 : installedWidgets) {
-            if (installedWidget1.getType().equals(randomType)) {
-                installedWidget = installedWidget1;
-                break;
-            }
-        }
+        installedWidget = getInstalledWidget(installedWidgets, "1.0-SNAPSHOT");
         widgetInfo = widgetInfoRepository.findOne(installedWidget.getIdentifier());
         pageInfo = pageInfoRepository.findByPagePath(pagePath);
         if (pageInfo.getLayout() != null)
@@ -220,6 +185,15 @@ public class TestWidgetFactoryService extends TestBase {
         assertThat(list.size()).isEqualTo(1);
         assertThat(list.get(0).getVersion()).as("组件忽略更新，禁用其他低版本的组件").isEqualToIgnoringCase("2.0-SNAPSHOT");
 
+    }
+
+    private InstalledWidget getInstalledWidget(List<InstalledWidget> installedWidgets, String version) {
+        for (InstalledWidget installedWidget1 : installedWidgets) {
+            if (installedWidget1.getWidget().version().equals(version)) {
+                return installedWidget1;
+            }
+        }
+        return null;
     }
 
     @Test
@@ -242,8 +216,8 @@ public class TestWidgetFactoryService extends TestBase {
         }
     }
 
-    private void assertWidgetListContainWidgetName(String widgetId, String version, String type) throws IOException, FormatException
-            , InstantiationException, IllegalAccessException {
+    private void assertWidgetListContainWidgetName(String widgetId, String version, String type) throws IOException
+            , FormatException , InstantiationException, IllegalAccessException {
         for (InstalledWidget widget : widgetFactoryService.widgetList(null)) {
             if (type.equals(widget.getType())) {
                 assertThat(widget.getWidget().widgetId()).isEqualToIgnoringCase(widgetId);

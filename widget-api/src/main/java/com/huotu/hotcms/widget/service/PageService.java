@@ -18,7 +18,7 @@ import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.page.PageModel;
 
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.Writer;
 import java.util.List;
 
 /**
@@ -42,13 +42,13 @@ public interface PageService {
     /**
      * 生成一个页面的html
      *
-     * @param outputStream
+     * @param writer
      * @param page
      * @param context
      * @throws IOException
      * @see #generateHTML(PageInfo, CMSContext)
      */
-    void generateHTML(OutputStream outputStream, PageInfo page, CMSContext context) throws IOException;
+    void generateHTML(Writer writer, PageInfo page, CMSContext context) throws IOException;
 
 
     /**

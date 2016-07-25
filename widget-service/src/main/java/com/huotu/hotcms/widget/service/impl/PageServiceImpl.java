@@ -32,6 +32,8 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -57,26 +59,32 @@ public class PageServiceImpl implements PageService {
 
     @Override
     public String generateHTML(PageInfo page, CMSContext context) {
+        StringWriter writer = new StringWriter();
+        try {
+            generateHTML(writer, page, context);
+        } catch (IOException e) {
+            throw new IllegalStateException("Mem IO", e);
+        }
+        return writer.toString();
+    }
+
+    @Override
+    public void generateHTML(Writer writer, PageInfo page, CMSContext context) throws IOException {
         PageElement[] elements;
         if (page.getLayout() != null)
             elements = page.getLayout().getElements();
         else
             elements = new PageElement[0];
-        String html = "<div class=\"container\">";
+        writer.append("<div class=\"container\">");
         for (PageElement element : elements) {
-            html += "<div class=\"row\">";
-            html += widgetResolveService.pageElementHTML(element, context);
-            html += "</div>";
+            writer.append("<div class=\"row\">");
+            widgetResolveService.pageElementHTML(element, context, writer);
+            writer.append("</div>");
         }
-        html += "</div>";
-        return html;
-    }
-
-    @Override
-    public void generateHTML(OutputStream outputStream, PageInfo page, CMSContext context) throws IOException {
-        String html = generateHTML(page, context);
-        byte[] htmlData = html.getBytes();
-        outputStream.write(htmlData, 0, htmlData.length);
+        writer.append("</div>");
+//        String html = generateHTML(page, context);
+//        byte[] htmlData = html.getBytes();
+//        outputStream.write(htmlData, 0, htmlData.length);
     }
 
 
@@ -109,7 +117,7 @@ public class PageServiceImpl implements PageService {
         }
         //上传最新的page css样式表到资源服务
         InputStream data = Files.newInputStream(path);
-        resourceService.uploadResource(resourceKey + "/" + pageInfo.getPageId() + ".css", data);
+        resourceService.uploadResource("page/resource/css/" + resourceKey + "/" + pageInfo.getPageId() + ".css", data);
         Files.deleteIfExists(path);
     }
 
@@ -159,16 +167,14 @@ public class PageServiceImpl implements PageService {
 
     @Override
     public void updatePageComponent(PageInfo page, InstalledWidget installedWidget) throws IllegalStateException {
-        PageElement[] pageElements = page.getLayout().getElements();
+        Layout[] pageElements = page.getLayout().getElements();
         for (PageElement pageElement : pageElements) {
             updateComponent(pageElement, installedWidget);
         }
-
-        try {
-            savePage(null, page.getPageId());
-        } catch (IOException e) {
-            throw new IllegalStateException("更新控件组件，保存界面错误" + e.getMessage());
-        }
+        PageLayout pageLayout = new PageLayout();
+        pageLayout.setElements(pageElements);
+        page.setLayout(pageLayout);
+        pageInfoRepository.saveAndFlush(page);
     }
 
     /**

@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
 @Configuration
-@ComponentScan({"com.huotu.hotcms.service"})
+@ComponentScan({"com.huotu.hotcms.service", "com"})
 @EnableTransactionManagement
 @ImportResource({"classpath:spring_dev.xml","classpath:spring_prod.xml"})
 @Import({CommonClientSpringConfig.class, MinMallSDKConfig.class, ResourceSpringConfig.class})

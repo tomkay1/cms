@@ -60,23 +60,24 @@ public class UploadController {
      * 上传永久资源,
      *
      * @param login
-     * @param files
+     * @param file
      * @return
      */
     @RequestMapping(value = "/resourceUpload", method = RequestMethod.POST)
     public ResultView resourceUpload(@AuthenticationPrincipal Login login
-            , @RequestParam(value = "file", required = false) MultipartFile files) {
+            , @RequestParam(value = "file", required = false) MultipartFile file) {
+
         ResultView resultView;
         try {
             if (login.siteManageable(CMSContext.RequestContext().getSite())) {
-                String fileName = files.getOriginalFilename();
+                String fileName = file.getOriginalFilename();
                 String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
-                String path = "page/resource/" + UUID.randomUUID().toString() + "." + suffix;
-                URI uri = resourceService.uploadResource(path, files.getInputStream()).httpUrl().toURI();
+                String path = "page/resource/img/" + UUID.randomUUID().toString() + "." + suffix;
+                URI uri = resourceService.uploadResource(path, file.getInputStream()).httpUrl().toURI();
                 Map<String, Object> map = new HashMap<>();
                 map.put("fileUri", uri);
-                resultView = new ResultView(ResultOptionEnum.RESOURCE_OK.getCode()
-                        , ResultOptionEnum.RESOURCE_OK.getValue(), map);
+                resultView = new ResultView(ResultOptionEnum.OK.getCode()
+                        , ResultOptionEnum.OK.getValue(), map);
             } else {
                 resultView = new ResultView(ResultOptionEnum.RESOURCE_PERMISSION_ERROR.getCode()
                         , ResultOptionEnum.RESOURCE_PERMISSION_ERROR.getValue(), null);
@@ -96,16 +97,19 @@ public class UploadController {
      * @param fileUri
      * @return
      */
-    @RequestMapping(value = "/deleteResource", method = RequestMethod.POST)
+    @RequestMapping(value = "/deleteResource", method = RequestMethod.DELETE)
     @ResponseBody
     public ResultView deleteResource(@AuthenticationPrincipal Login login
             , @RequestParam(value = "fileUri", required = false) String fileUri) {
         ResultView resultView;
         try {
+
             if (login.siteManageable(CMSContext.RequestContext().getSite())) {
                 resourceService.deleteResource(fileUri);
-                resultView = new ResultView(ResultOptionEnum.RESOURCE_OK.getCode()
-                        , ResultOptionEnum.RESOURCE_OK.getValue(), null);
+                Map<String, Object> map = new HashMap<>();
+                map.put("fileUri", fileUri);
+                resultView = new ResultView(ResultOptionEnum.OK.getCode()
+                        , ResultOptionEnum.OK.getValue(), map);
             } else {
                 resultView = new ResultView(ResultOptionEnum.RESOURCE_PERMISSION_ERROR.getCode()
                         , ResultOptionEnum.RESOURCE_PERMISSION_ERROR.getValue(), null);

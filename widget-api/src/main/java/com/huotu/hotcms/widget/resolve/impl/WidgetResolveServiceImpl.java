@@ -23,6 +23,7 @@ import com.huotu.hotcms.widget.resolve.WidgetConfiguration;
 import com.huotu.hotcms.widget.resolve.WidgetContext;
 import me.jiangcai.lib.resource.Resource;
 import me.jiangcai.lib.resource.service.ResourceService;
+import org.apache.commons.io.output.StringBuilderWriter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.entity.ContentType;
@@ -33,6 +34,7 @@ import org.thymeleaf.spring4.SpringTemplateEngine;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.Writer;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
@@ -77,17 +79,7 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
 
     @Override
     public String previewHTML(Widget widget, String styleId, CMSContext cmsContext, ComponentProperties properties) {
-        WidgetStyle style = null;
-        for (WidgetStyle style1 : widget.styles()) {
-            if (style1.id().equals(styleId)) {
-                style = style1;
-                break;
-            }
-        }
-        if (style == null) {
-            style = widget.styles()[0];
-        }
-        checkEngine();
+        WidgetStyle style = getWidgetStyle(widget, styleId);
         WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
                 , widget, style, webApplicationContext.getServletContext(), null, properties);
         WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();
@@ -95,6 +87,7 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
         return widgetTemplateEngine.process(WidgetTemplateResolver.PREVIEW
                 , Collections.singleton("div"), widgetContext);
     }
+
 
     @Override
     public String editorHTML(Widget widget, CMSContext cmsContext, ComponentProperties properties) {
@@ -109,60 +102,60 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
                 , Collections.singleton("div"), widgetContext);
     }
 
-
     @Override
-    public String pageElementHTML(PageElement pageElement, CMSContext cmsContext) {
+    public void pageElementHTML(PageElement pageElement, CMSContext cmsContext, Writer writer) throws IOException {
         String className;
         if (pageElement instanceof Layout) {
             //是一个布局界面
             Layout layout = ((Layout) pageElement);
             String[] columns = layout.getValue().split(",");
-            String html = "";
             PageElement[] childPageElements = layout.getElements();
             for (int i = 0, l = columns.length; i < l; i++) {
                 cmsContext.updateNextBootstrapLayoutColumn(Integer.parseInt(columns[i]));
                 className = cmsContext.getNextBootstrapClass();
-                html = "<div class=\"" + className + "\">";
+                writer.append("<div class=\"").append(className).append("\">");
                 if (childPageElements != null && childPageElements.length >= 0 && i < childPageElements.length) {
-                    html += pageElementHTML(childPageElements[i], cmsContext);
+                    pageElementHTML(childPageElements[i], cmsContext, writer);
                 }
-                html += "</div>";
+                writer.append("</div>");
             }
-            return html;
-
         } else if (pageElement instanceof Component) {
             //是一个组件
-            //todo 添加组件的class :col-md-*
             Component component = (Component) pageElement;
             InstalledWidget installedWidget = component.getInstalledWidget() != null ? component.getInstalledWidget()
                     : widgetLocateService.findWidget(component.getWidgetIdentity());
             component.setInstalledWidget(installedWidget);
             WidgetStyle style = null;
             if (installedWidget != null) {
-                for (WidgetStyle style1 : component.getInstalledWidget().getWidget().styles()) {
-                    if (style1.id().equals(component.getStyleId())) {
-                        style = style1;
-                        break;
-                    }
-                }
+                style = getWidgetStyle(installedWidget.getWidget(), component.getStyleId());
             }
-            if (style == null) {
-                style = component.getInstalledWidget().getWidget().styles()[0];
-            }
-            checkEngine();
+
             WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
                     , installedWidget != null ? component.getInstalledWidget().getWidget() : null, style
                     , webApplicationContext.getServletContext()
                     , component, component.getProperties());
             WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();
             cmsContext.getWidgetConfigurationStack().push(widgetConfiguration);
-            return widgetTemplateEngine.process(WidgetTemplateResolver.BROWSE
-                    , Collections.singleton("div"), widgetContext);
+            widgetTemplateEngine.process(WidgetTemplateResolver.BROWSE
+                    , Collections.singleton("div"), widgetContext, writer);
         } else {
             //占位组件
-            return "<div> </div>";
+            writer.append("<div> </div>");
         }
 
+    }
+
+    @Override
+    public String pageElementHTML(PageElement pageElement, CMSContext cmsContext) {
+        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilderWriter writer = new StringBuilderWriter(stringBuilder);
+        try {
+            pageElementHTML(pageElement, cmsContext, writer);
+        } catch (IOException e) {
+            // working in mem. so never happen
+            throw new IllegalStateException("Mem IO", e);
+        }
+        return stringBuilder.toString();
     }
 
     @Override
@@ -184,17 +177,7 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
             component.setInstalledWidget(installedWidget);
             if (installedWidget != null &&
                     installedWidget.getWidget().widgetDependencyContent(ContentType.create("text/css")) != null) {
-                WidgetStyle style = null;
-                for (WidgetStyle style1 : component.getInstalledWidget().getWidget().styles()) {
-                    if (style1.id().equals(component.getStyleId())) {
-                        style = style1;
-                        break;
-                    }
-                }
-                if (style == null) {
-                    style = component.getInstalledWidget().getWidget().styles()[0];
-                }
-                checkEngine();
+                WidgetStyle style = getWidgetStyle(component.getInstalledWidget().getWidget(), component.getStyleId());
                 WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
                         , component.getInstalledWidget().getWidget(), style, webApplicationContext.getServletContext()
                         , component, component.getProperties());
@@ -206,5 +189,20 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
         }
     }
 
+
+    private WidgetStyle getWidgetStyle(Widget widget, String styleId) {
+        WidgetStyle style = null;
+        for (WidgetStyle style1 : widget.styles()) {
+            if (style1.id().equals(styleId)) {
+                style = style1;
+                break;
+            }
+        }
+        if (style == null) {
+            style = widget.styles()[0];
+        }
+        checkEngine();
+        return style;
+    }
 
 }

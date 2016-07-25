@@ -199,9 +199,7 @@ public class TestBase extends SpringWebTest {
         site = siteService.newSite(domains, domains[0], site, Locale.CHINA);
         try {
             site = siteResolveService.getCurrentSite(request);
-        } catch (NoSiteFoundException e) {
-            e.printStackTrace();
-        } catch (NoHostFoundException e) {
+        } catch (NoHostFoundException | NoSiteFoundException e) {
             e.printStackTrace();
         }
         return site;

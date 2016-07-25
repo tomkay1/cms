@@ -77,11 +77,6 @@
             <artifactId>prettytime</artifactId>
             <version>3.2.5.Final</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity</artifactId>
-            <version>1.7</version>
-        </dependency>
         <!--<dependency>-->
             <!--<groupId>com.huotu.hotcms</groupId>-->
             <!--<artifactId>widget-service</artifactId>-->

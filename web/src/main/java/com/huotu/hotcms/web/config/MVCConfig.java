@@ -10,7 +10,6 @@
 package com.huotu.hotcms.web.config;
 
 import com.huotu.cms.manage.config.ManageServiceSpringConfig;
-import com.huotu.hotcms.service.config.JpaConfig;
 import com.huotu.hotcms.service.config.ServiceConfig;
 import com.huotu.hotcms.web.interceptor.RouteInterceptor;
 import com.huotu.hotcms.web.interceptor.SiteResolver;
@@ -49,11 +48,9 @@ import java.util.Set;
         "com.huotu.hotcms.web.service",
         "com.huotu.hotcms.web.controller",
         "com.huotu.hotcms.web.interceptor",
-        "com.huotu.hotcms.web.util.web",
-        "com.huotu.hotcms.service.thymeleaf.expression",
-        "com.huotu.hotcms.service.thymeleaf.service",
+        "com.huotu.hotcms.web.util.web"
 })
-@Import({MVCConfig.MVCConfigLoader.class, JpaConfig.class, ServiceConfig.class, WebHost.class, ManageServiceSpringConfig.class})
+@Import({MVCConfig.MVCConfigLoader.class, ServiceConfig.class, WebHost.class, ManageServiceSpringConfig.class})
 public class MVCConfig extends WebMvcConfigurerAdapter {
 
     private static final String UTF8 = "UTF-8";

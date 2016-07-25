@@ -21,8 +21,12 @@ import com.huotu.hotcms.widget.service.PageService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpStatus;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +37,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 /**
  * 用户获取page页面html Code 页面服务相关
@@ -43,33 +49,24 @@ import java.io.IOException;
 public class FrontController implements FilterBehavioral {
 
     private static final Log log = LogFactory.getLog(FrontController.class);
-    private static final String htmlFooter = "\n</body>\n" +
-            "    <script src=\"http://resali.huobanplus.com/cdn/jquery/1.9.1/jquery.min.js\"></script>\n" +
-            "    <script src=\"http://resali.huobanplus.com/cdn/bootstrap/3.3.6/bootstrap.min.js\"></script>\n" +
-            "    </html>";
-    private static String htmlHeader = "<!DOCTYPE html>\n" +
-            "    <html lang=\"en\" xmlns:th=\"http://www.thymeleaf.org\">\n" +
-            "    <head>\n" +
-            "    <meta charset=\"utf-8\"></meta>\n" +
-            "    <meta http-equiv=\"x-ua-compatible\" content=\"IE=edge,chrome=1\">\n" +
-            "    <meta name=\"author\" content=\"Neo\">\n" +
-            "    <meta name=\"viewport\" content=\"width=device-width,initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no\">\n" +
-            "    <meta name=\"keywords\" content=\"%s\">\n" +
-            "    <meta name=\"description\" content=\"%s\">\n" +
-            "    <title>%s</title>\n" +
-            "\n" +
-            "    <link rel=\"stylesheet\" href=\"http://resali.huobanplus.com/cdn/bootstrap/3.3.6/css/bootstrap.min.css\">\n" +
-            "    <link rel=\"stylesheet\" href=\"css/index.css\">\n" +
-            "    <link rel=\"stylesheet\" th:href=\"@{${resourceKey}/${pageId}.css}\">\n" +
-            "\n" +
-            "    </head>\n" +
-            "    <body>\n";
+
+    private final Template htmlTemplate;
     @Autowired(required = false)
     private AbstractContentRepository abstractContentRepository;
     @Autowired
     private PageService pageService;
     @Autowired(required = false)
     private PageInfoRepository pageInfoRepository;
+
+    public FrontController() throws IOException {
+        try (InputStream propertiesFile = new ClassPathResource("/front/velocity.properties").getInputStream()) {
+            Properties properties = new Properties();
+            properties.load(propertiesFile);
+            Velocity.init(properties);
+        }
+
+        htmlTemplate = Velocity.getTemplate("/front/html.vm");
+    }
 
     /**
      * 用于支持首页的浏览
@@ -121,13 +118,21 @@ public class FrontController implements FilterBehavioral {
 
     private void generateHtml(HttpServletResponse response, PageInfo pageInfo, CMSContext cmsContext, Model model)
             throws IOException {
-        model.addAttribute("resourceKey", pageInfo.getResourceKey());
-        model.addAttribute("pageId", pageInfo.getPageId());
-        htmlHeader = String.format(htmlHeader, pageInfo.getSite().getKeywords(), pageInfo.getSite().getDescription()
-                , pageInfo.getTitle());
-        response.getOutputStream().write(htmlHeader.getBytes(), 0, htmlHeader.getBytes().length);
-        pageService.generateHTML(response.getOutputStream(), pageInfo, cmsContext);
-        response.getOutputStream().write(htmlFooter.getBytes(), 0, htmlFooter.getBytes().length);
+
+        String content = pageService.generateHTML(pageInfo, cmsContext);
+
+        VelocityContext context = new VelocityContext();
+
+        context.put("keywords", pageInfo.getSite().getKeywords());
+        context.put("description", pageInfo.getSite().getDescription());
+        context.put("title", pageInfo.getTitle());
+        context.put("globalCssURI", "/css/index.css");
+        context.put("pageCssURI", "/" + pageInfo.getResourceKey() + "/" + pageInfo.getPageId() + ".css");
+        context.put("content", content);
+
+        htmlTemplate.merge(context, response.getWriter());
+        response.getWriter().flush();
+
         response.setContentType("text/html;charset=utf-8");
     }
 

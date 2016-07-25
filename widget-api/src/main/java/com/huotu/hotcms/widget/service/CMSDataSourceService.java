@@ -13,7 +13,6 @@ import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Gallery;
 import com.huotu.hotcms.service.entity.GalleryList;
 import com.huotu.hotcms.service.entity.Link;
-import com.huotu.hotcms.widget.entity.PageInfo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -72,5 +71,5 @@ public interface CMSDataSourceService {
      *
      * @return 返回当前站点的可循环的Iterable<Page>
      */
-    String findWidgetPage();
+    String findSitePage();
 }

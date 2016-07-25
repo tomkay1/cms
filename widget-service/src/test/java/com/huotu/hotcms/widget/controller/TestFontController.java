@@ -26,6 +26,7 @@ import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.PageElement;
+import com.huotu.hotcms.widget.page.PageModel;
 import com.huotu.hotcms.widget.repository.PageInfoRepository;
 import com.huotu.hotcms.widget.service.PageService;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
@@ -184,15 +185,15 @@ public class TestFontController extends TestBase {
             component.setProperties(properties);
             layoutElement.setElements(new PageElement[]{component});
 
-//            pageInfo.setLayout(new PageLayout(new Layout[]{layoutElement}));
-//            PageInfo page = new PageInfo();
-//            page.setTitle("test");
-//            page.setPageIdentity(pageInfo.getPageId());
-//            page.setElements(new Layout[]{layoutElement});
+            PageModel pageModel = new PageModel();
+            pageModel.setElements(new Layout[]{layoutElement});
+            pageModel.setPageIdentity(pageInfo.getPageId());
+
             CMSContext.PutContext(request, response, site);
-            pageService.savePage(null, pageInfo.getPageId());
+
+            pageService.savePage(pageModel, pageInfo.getPageId());
         } catch (Exception e) {
-            throw new IllegalStateException("查找控件列表失败", e);
+            throw new IllegalStateException("error", e);
         }
 
     }

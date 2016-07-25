@@ -293,14 +293,17 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
 
             if (pageList != null && pageList.size() > 0) {
                 for (PageInfo page : pageList) {
-                    if (notSupportPage.get(page.getPageId()) != null) {
+                    if (notSupportPage.size() > 0 && notSupportPage.get(page.getPageId()) != null) {
                         break;
                     }
-                    if (supportPage.get(page.getPageId()) == null) {
+                    if (supportPage.get(page.getPageId()) != null) {
+                        if (ignoreError || notSupportPage.size() == 0) {
+                            //更新页面
+                            pageService.updatePageComponent(page, installedWidget);
+                        }
                         break;
                     }
-                    //更新页面
-                    pageService.updatePageComponent(page, installedWidget);
+
                 }
             }
             //更新控件

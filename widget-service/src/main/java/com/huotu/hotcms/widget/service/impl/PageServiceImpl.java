@@ -167,16 +167,14 @@ public class PageServiceImpl implements PageService {
 
     @Override
     public void updatePageComponent(PageInfo page, InstalledWidget installedWidget) throws IllegalStateException {
-        PageElement[] pageElements = page.getLayout().getElements();
+        Layout[] pageElements = page.getLayout().getElements();
         for (PageElement pageElement : pageElements) {
             updateComponent(pageElement, installedWidget);
         }
-
-        try {
-            savePage(null, page.getPageId());
-        } catch (IOException e) {
-            throw new IllegalStateException("更新控件组件，保存界面错误" + e.getMessage());
-        }
+        PageLayout pageLayout = new PageLayout();
+        pageLayout.setElements(pageElements);
+        page.setLayout(pageLayout);
+        pageInfoRepository.saveAndFlush(page);
     }
 
     /**

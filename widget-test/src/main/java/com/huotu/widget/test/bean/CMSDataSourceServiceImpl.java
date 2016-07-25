@@ -15,9 +15,8 @@ import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Gallery;
 import com.huotu.hotcms.service.entity.GalleryList;
 import com.huotu.hotcms.service.entity.Link;
-import com.huotu.hotcms.widget.entity.PageInfo;
-import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.model.NavbarPageInfoModel;
+import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.service.CMSDataSourceService;
 
 import java.util.ArrayList;
@@ -111,6 +110,7 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
         list.add(category2);
         return list;
     }
+
 
     @Override
     public String findSitePage() {

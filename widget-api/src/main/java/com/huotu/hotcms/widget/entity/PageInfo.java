@@ -48,6 +48,7 @@ public class PageInfo implements Auditable, Copyable<PageInfo> {
     @ManyToOne
     @JoinColumn(name = "parentPageId")
     PageInfo parent;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pageId")
@@ -76,6 +77,7 @@ public class PageInfo implements Auditable, Copyable<PageInfo> {
      */
     @Column(name = "resourceKey", length = 60)
     private String resourceKey;
+
     /**
      * 页面配置的xml数据
      */

@@ -32,6 +32,8 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -57,26 +59,32 @@ public class PageServiceImpl implements PageService {
 
     @Override
     public String generateHTML(PageInfo page, CMSContext context) {
+        StringWriter writer = new StringWriter();
+        try {
+            generateHTML(writer, page, context);
+        } catch (IOException e) {
+            throw new IllegalStateException("Mem IO", e);
+        }
+        return writer.toString();
+    }
+
+    @Override
+    public void generateHTML(Writer writer, PageInfo page, CMSContext context) throws IOException {
         PageElement[] elements;
         if (page.getLayout() != null)
             elements = page.getLayout().getElements();
         else
             elements = new PageElement[0];
-        String html = "<div class=\"container\">";
+        writer.append("<div class=\"container\">");
         for (PageElement element : elements) {
-            html += "<div class=\"row\">";
-            html += widgetResolveService.pageElementHTML(element, context);
-            html += "</div>";
+            writer.append("<div class=\"row\">");
+            widgetResolveService.pageElementHTML(element, context, writer);
+            writer.append("</div>");
         }
-        html += "</div>";
-        return html;
-    }
-
-    @Override
-    public void generateHTML(OutputStream outputStream, PageInfo page, CMSContext context) throws IOException {
-        String html = generateHTML(page, context);
-        byte[] htmlData = html.getBytes();
-        outputStream.write(htmlData, 0, htmlData.length);
+        writer.append("</div>");
+//        String html = generateHTML(page, context);
+//        byte[] htmlData = html.getBytes();
+//        outputStream.write(htmlData, 0, htmlData.length);
     }
 
 

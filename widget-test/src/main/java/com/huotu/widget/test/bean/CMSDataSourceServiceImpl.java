@@ -9,12 +9,15 @@
 
 package com.huotu.widget.test.bean;
 
+import com.alibaba.fastjson.JSONObject;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Gallery;
 import com.huotu.hotcms.service.entity.GalleryList;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.widget.entity.PageInfo;
+import com.huotu.hotcms.service.entity.PageInfo;
+import com.huotu.hotcms.service.model.NavbarPageInfoModel;
 import com.huotu.hotcms.widget.service.CMSDataSourceService;
 
 import java.util.ArrayList;
@@ -110,21 +113,69 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     }
 
     @Override
-    public Iterable<PageInfo> findWidgetPage() {
-        PageInfo page1 = new PageInfo();
-        page1.setTitle("首页");
+    public String findSitePage() {
+        PageInfo pageInfo1 = new PageInfo();
+        pageInfo1.setTitle("首页");
+        pageInfo1.setPagePath("");
+        pageInfo1.setPageId(1L);
 
-        PageInfo page2 = new PageInfo();
-        page2.setTitle("新闻");
+        PageInfo pageInfo2 = new PageInfo();
+        pageInfo2.setTitle("新闻");
+        pageInfo2.setPagePath("xw");
+        pageInfo2.setPageId(2L);
 
-        PageInfo page3 = new PageInfo();
-        page3.setTitle("关于我们");
+        PageInfo gjxw = new PageInfo();
+        gjxw.setTitle("国际新闻");
+        gjxw.setPagePath("gjxw");
+        gjxw.setPageId(22L);
+        gjxw.setParent(pageInfo2);
+
+        PageInfo gnxw = new PageInfo();
+        gnxw.setTitle("国内新闻");
+        gnxw.setParent(pageInfo2);
+        gnxw.setPageId(23L);
+        gnxw.setPagePath("gnxw");
+
+        PageInfo zjxw = new PageInfo();
+        zjxw.setTitle("浙江新闻");
+        zjxw.setParent(gnxw);
+        zjxw.setPageId(231L);
+        zjxw.setPagePath("zjxw");
+
+        PageInfo pageInfo3 = new PageInfo();
+        pageInfo3.setTitle("关于我们");
+        pageInfo3.setPagePath("guwm");
+        pageInfo3.setPageId(3L);
 
         List<PageInfo> list = new ArrayList<>();
-        list.add(page1);
-        list.add(page2);
-        list.add(page3);
-        return list;
+        list.add(pageInfo1);
+        list.add(gjxw);
+        list.add(pageInfo2);
+        list.add(pageInfo3);
+        list.add(gnxw);
+        list.add(zjxw);
+
+        List<NavbarPageInfoModel> navbarPageInfoModels = new ArrayList<>();
+        for (PageInfo pageInfo : list) {
+            NavbarPageInfoModel navbarPageInfoModel = new NavbarPageInfoModel();
+            navbarPageInfoModel.setText(pageInfo.getTitle());
+            navbarPageInfoModel.setHref(pageInfo.getPagePath());
+            navbarPageInfoModel.setPageId(pageInfo.getPageId());
+            navbarPageInfoModel.setParentId(pageInfo.getParent() != null ? pageInfo.getParent().getPageId() : 0);
+            navbarPageInfoModels.add(navbarPageInfoModel);
+        }
+        List<NavbarPageInfoModel> rootTrees = new ArrayList<>();
+        for (NavbarPageInfoModel navbarPageInfoModel : navbarPageInfoModels) {
+            if (navbarPageInfoModel.getParentId() == 0) {
+                rootTrees.add(navbarPageInfoModel);
+            }
+            for (NavbarPageInfoModel t : navbarPageInfoModels) {
+                if (t.getParentId() == navbarPageInfoModel.getPageId()) {
+                    navbarPageInfoModel.getNodes().add(t);
+                }
+            }
+        }
+        return JSONObject.toJSONString(rootTrees);
     }
 
 

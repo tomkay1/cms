@@ -72,5 +72,5 @@ public interface CMSDataSourceService {
      *
      * @return 返回当前站点的可循环的Iterable<Page>
      */
-    Iterable<PageInfo> findWidgetPage();
+    String findWidgetPage();
 }

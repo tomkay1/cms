@@ -309,8 +309,7 @@ public class TestWidgetFactoryService extends TestBase {
 //            CMSContext.PutContext(request, response, site);
             pageService.savePage(null, pageInfo.getPageId());
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new IllegalStateException("查找控件列表失败");
+            throw new IllegalStateException("查找控件列表失败", e);
         }
     }
 

@@ -18,6 +18,8 @@ import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.repository.PageInfoRepository;
 import com.huotu.hotcms.widget.service.PageService;
+import me.jiangcai.lib.resource.Resource;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpStatus;
@@ -33,6 +35,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 /**
  * 用户获取page页面html Code 页面服务相关
@@ -48,9 +51,9 @@ public class FrontController implements FilterBehavioral {
             "    <script src=\"http://resali.huobanplus.com/cdn/bootstrap/3.3.6/bootstrap.min.js\"></script>\n" +
             "    </html>";
     private static String htmlHeader = "<!DOCTYPE html>\n" +
-            "    <html lang=\"en\" xmlns:th=\"http://www.thymeleaf.org\">\n" +
+            "    <html lang=\"en\" >\n" +
             "    <head>\n" +
-            "    <meta charset=\"utf-8\"></meta>\n" +
+            "    <meta charset=\"utf-8\"/>\n" +
             "    <meta http-equiv=\"x-ua-compatible\" content=\"IE=edge,chrome=1\">\n" +
             "    <meta name=\"author\" content=\"Neo\">\n" +
             "    <meta name=\"viewport\" content=\"width=device-width,initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no\">\n" +
@@ -60,16 +63,18 @@ public class FrontController implements FilterBehavioral {
             "\n" +
             "    <link rel=\"stylesheet\" href=\"http://resali.huobanplus.com/cdn/bootstrap/3.3.6/css/bootstrap.min.css\">\n" +
             "    <link rel=\"stylesheet\" href=\"css/index.css\">\n" +
-            "    <link rel=\"stylesheet\" th:href=\"@{${resourceKey}/${pageId}.css}\">\n" +
+            "    <link rel=\"stylesheet\" href=\"%s\">\n" +
             "\n" +
             "    </head>\n" +
             "    <body>\n";
     @Autowired(required = false)
     private AbstractContentRepository abstractContentRepository;
-    @Autowired
+    @Autowired(required = false)
     private PageService pageService;
     @Autowired(required = false)
     private PageInfoRepository pageInfoRepository;
+    @Autowired(required = false)
+    private ResourceService resourceService;
 
     /**
      * 用于支持首页的浏览
@@ -78,13 +83,14 @@ public class FrontController implements FilterBehavioral {
      * @param model
      */
     @RequestMapping(method = RequestMethod.GET, value = {"", "/"})
-    public void pageIndex(HttpServletResponse response, Model model) throws IOException, PageNotFoundException {
+    public void pageIndex(HttpServletResponse response, Model model) throws IOException, PageNotFoundException
+            , URISyntaxException {
         pageIndex("", response, model);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = {"/{pagePath}"})
     public void pageIndex(@PathVariable("pagePath") String pagePath, HttpServletResponse response, Model model)
-            throws PageNotFoundException, IOException {
+            throws PageNotFoundException, IOException, URISyntaxException {
         CMSContext cmsContext = CMSContext.RequestContext();
         //查找当前站点下指定pagePath的page
         PageInfo page = pageService.findBySiteAndPagePath(cmsContext.getSite(), pagePath);
@@ -98,7 +104,7 @@ public class FrontController implements FilterBehavioral {
 
     @RequestMapping(method = RequestMethod.GET, value = {"/{pagePath}/{contentId}"})
     public void pageContent(@PathVariable("pagePath") String pagePath, @PathVariable("contentId") Long contentId
-            , HttpServletResponse response, Model model) throws IOException, PageNotFoundException {
+            , HttpServletResponse response, Model model) throws IOException, PageNotFoundException, URISyntaxException {
         CMSContext cmsContext = CMSContext.RequestContext();
         //查找数据内容
         AbstractContent content = abstractContentRepository.findOne(contentId);
@@ -123,11 +129,21 @@ public class FrontController implements FilterBehavioral {
             throws IOException {
         model.addAttribute("resourceKey", pageInfo.getResourceKey());
         model.addAttribute("pageId", pageInfo.getPageId());
+    private void generateHtml(HttpServletResponse response, Page page, CMSContext cmsContext, Model model)
+            throws IOException, URISyntaxException {
+        PageInfo pageInfo = pageInfoRepository.findOne(page.getPageIdentity());
+
+        String path = "page/resource/css/" + pageInfo.getResourceKey() + "/" + pageInfo.getPageId() + ".css";
+        Resource resource = resourceService.getResource(path);
         htmlHeader = String.format(htmlHeader, pageInfo.getSite().getKeywords(), pageInfo.getSite().getDescription()
                 , pageInfo.getTitle());
         response.getOutputStream().write(htmlHeader.getBytes(), 0, htmlHeader.getBytes().length);
         pageService.generateHTML(response.getOutputStream(), pageInfo, cmsContext);
         response.getOutputStream().write(htmlFooter.getBytes(), 0, htmlFooter.getBytes().length);
+                , pageInfo.getTitle(), resource.httpUrl().toURI().toString());
+        String htmlContent = pageService.generateHTML(page, cmsContext);
+        String pagehtml = htmlHeader + htmlContent + htmlFooter;
+        response.getOutputStream().write(pagehtml.getBytes(), 0, pagehtml.getBytes().length);
         response.setContentType("text/html;charset=utf-8");
     }
 

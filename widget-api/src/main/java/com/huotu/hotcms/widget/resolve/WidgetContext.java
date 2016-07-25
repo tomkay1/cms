@@ -20,6 +20,7 @@ import org.thymeleaf.context.IEngineContext;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.context.WebEngineContext;
 import org.thymeleaf.spring4.SpringTemplateEngine;
+import org.thymeleaf.spring4.naming.SpringContextVariableNames;
 
 import javax.servlet.ServletContext;
 import java.util.HashMap;
@@ -55,15 +56,17 @@ public class WidgetContext extends WebEngineContext {
     public WidgetContext(SpringTemplateEngine engine, CMSContext context, Widget widget, WidgetStyle style
             , ServletContext servletContext, Component component, ComponentProperties properties) {
         // TODO 后期考虑到缓存,性能巴拉巴拉的时候 可能需要定制 TemplateData
+        // 某些属性需要传染下去 比如来自CMSContext
+
 
         super(new WidgetConfiguration(engine.getConfiguration(), widget, style
                 , component == null ? null : component.getStyleClassNames())
                 , null, null
                 , context.getRequest(), context.getResponse(), servletContext
-                , context.getLocale(), FromComponentProperties(widget, style, properties, component));
+                , context.getLocale(), FromComponentProperties(context, widget, style, properties, component));
     }
 
-    private static Map<String, Object> FromComponentProperties(Widget widget, WidgetStyle style
+    private static Map<String, Object> FromComponentProperties(CMSContext context, Widget widget, WidgetStyle style
             , ComponentProperties properties, Component component) {
         Map<String, Object> variables = new HashMap<>();
         variables.put("widget", widget);
@@ -73,6 +76,12 @@ public class WidgetContext extends WebEngineContext {
             variables.put("styleClassNames", component.getStyleClassNames());
             variables.put("componentId", component.getId());
         }
+        // "thymeleaf::EvaluationContext" ->
+        // "springMacroRequestContext" ->
+        // "springRequestContext" ->
+//        variables.
+        context.widgetContextVariables(variables);
+        variables.put(SpringContextVariableNames.SPRING_REQUEST_CONTEXT, context.getRequestContext());
         return variables;
     }
 }

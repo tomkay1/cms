@@ -12,19 +12,23 @@ package com.huotu.hotcms.widget.config;
 import com.huotu.hotcms.widget.loader.WidgetLoaderConfig;
 import com.huotu.hotcms.widget.page.PageInfoResolver;
 import com.huotu.hotcms.widget.resolve.WidgetResolveServiceConfig;
+import com.huotu.hotcms.widget.service.CMSRequestDataValueProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.support.RequestDataValueProcessor;
 
 import java.util.List;
 
 @Configuration
 @ComponentScan({"com.huotu.hotcms.widget.page"
         , "com.huotu.hotcms.widget.controller"
+//        , "com.huotu.hotcms.widget.service"
 })
 @Import({WidgetLoaderConfig.class, WidgetResolveServiceConfig.class, WidgetJpaConfig.class})
 @EnableWebMvc
@@ -32,6 +36,12 @@ public class WidgetConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
     private PageInfoResolver pageInfoResolver;
+
+    @Bean
+    public RequestDataValueProcessor
+    requestDataValueProcessor() {
+        return new CMSRequestDataValueProcessor();
+    }
 
     @Override
     public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> returnValueHandlers) {

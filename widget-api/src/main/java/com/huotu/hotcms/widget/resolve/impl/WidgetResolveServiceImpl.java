@@ -134,6 +134,8 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
                     , installedWidget != null ? component.getInstalledWidget().getWidget() : null, style
                     , webApplicationContext.getServletContext()
                     , component, component.getProperties());
+//            RequestContextHolder.currentRequestAttributes();
+//            RequestContext.WEB_APPLICATION_CONTEXT_ATTRIBUTE;
             WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();
             cmsContext.getWidgetConfigurationStack().push(widgetConfiguration);
             widgetTemplateEngine.process(WidgetTemplateResolver.BROWSE

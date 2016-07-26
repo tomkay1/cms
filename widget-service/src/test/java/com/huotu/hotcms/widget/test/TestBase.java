@@ -166,7 +166,7 @@ public class TestBase extends SpringWebTest {
                 pageElementList.add(randomComponent());
         }
 
-        layout.setElements(pageElementList.toArray(new PageElement[pageElementList.size()]));
+        layout.setParallelElements(pageElementList.toArray(new PageElement[pageElementList.size()]));
         return layout;
     }
 
@@ -248,9 +248,9 @@ public class TestBase extends SpringWebTest {
         Layout layout1 = new Layout();
         layout1.setValue("12");
         Empty empty = new Empty();
-        layout1.setElements(new PageElement[]{empty});
-        layout.setElements(new PageElement[]{componentA, componentB, layout1});
-        pageLayout.setElements(new Layout[]{layout});
+        layout1.setParallelElements(new PageElement[]{empty});
+        layout.setParallelElements(new PageElement[]{componentA, componentB, layout1});
+        pageLayout.setRoot(new Layout[]{layout});
         return pageLayout;
     }
 }

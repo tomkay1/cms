@@ -128,11 +128,7 @@ public class TestWidgetFactoryService extends TestBase {
         WidgetInfo widgetInfo = widgetInfoRepository.findOne(installedWidget.getIdentifier());
         widgetFactoryService.primary(widgetInfo, false);
         PageInfo pageInfo = pageInfoRepository.findByPagePath(pagePath);
-        PageElement[] pageElements;
-        if (pageInfo.getLayout() != null)
-            pageElements = pageInfo.getLayout().getElements();
-        else
-            pageElements = new PageElement[0];
+        Layout[] pageElements = PageLayout.NoNullLayout(pageInfo.getLayout());
         for (PageElement element : pageElements) {
             validPageElements(element, widgetInfo);
         }
@@ -171,10 +167,9 @@ public class TestWidgetFactoryService extends TestBase {
         installedWidget = getInstalledWidget(installedWidgets, "1.0-SNAPSHOT");
         widgetInfo = widgetInfoRepository.findOne(installedWidget.getIdentifier());
         pageInfo = pageInfoRepository.findByPagePath(pagePath);
-        if (pageInfo.getLayout() != null)
-            pageElements = pageInfo.getLayout().getElements();
-        else
-            pageElements = new PageElement[0];
+
+        pageElements = PageLayout.NoNullLayout(pageInfo.getLayout());
+
         for (PageElement element : pageElements) {
             validPageElements(element, widgetInfo);
         }
@@ -204,10 +199,8 @@ public class TestWidgetFactoryService extends TestBase {
 
     public void validPageElements(PageElement pageElement, WidgetInfo widgetInfo) {
         if (pageElement instanceof Layout) {
-            PageElement[] layoutElement = ((Layout) pageElement).getElements();
-            for (PageElement element : layoutElement) {
+            for (PageElement element : ((Layout) pageElement).elements())
                 validPageElements(element, widgetInfo);
-            }
         } else if (pageElement instanceof Component) {
             Component component = (Component) pageElement;
             assertThat(new WidgetIdentifier(widgetInfo.getGroupId(), widgetInfo.getArtifactId()
@@ -217,7 +210,7 @@ public class TestWidgetFactoryService extends TestBase {
     }
 
     private void assertWidgetListContainWidgetName(String widgetId, String version, String type) throws IOException
-            , FormatException , InstantiationException, IllegalAccessException {
+            , FormatException, InstantiationException, IllegalAccessException {
         for (InstalledWidget widget : widgetFactoryService.widgetList(null)) {
             if (type.equals(widget.getType())) {
                 assertThat(widget.getWidget().widgetId()).isEqualToIgnoringCase(widgetId);
@@ -268,7 +261,7 @@ public class TestWidgetFactoryService extends TestBase {
             component.setStyleId(styleId);
             component.setId(UUID.randomUUID().toString());
             component.setProperties(properties);
-            layoutElement.setElements(new PageElement[]{component});
+            layoutElement.setParallelElements(new PageElement[]{component});
 
             pageInfo.setLayout(new PageLayout(new Layout[]{layoutElement}));
             pageInfo = pageInfoRepository.saveAndFlush(pageInfo);

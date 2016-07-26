@@ -23,6 +23,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Empty implements PageElement {
 
+
+    private static final long serialVersionUID = 8677129589467368884L;
+
     @Override
     public boolean equals(Object obj) {
         return obj != null && obj instanceof Empty;

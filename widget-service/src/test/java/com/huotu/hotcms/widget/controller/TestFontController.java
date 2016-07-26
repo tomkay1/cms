@@ -183,7 +183,7 @@ public class TestFontController extends TestBase {
             properties.put("pagingTColor", "#000000");
             properties.put("pagingHColor", "#000000");
             component.setProperties(properties);
-            layoutElement.setElements(new PageElement[]{component});
+            layoutElement.setParallelElements(new PageElement[]{component});
 
             PageModel pageModel = new PageModel();
             pageModel.setElements(new Layout[]{layoutElement});

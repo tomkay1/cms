@@ -86,4 +86,9 @@ public class DemoWidget implements Widget {
     public Class springConfigClass() {
         return null;
     }
+
+    @Override
+    public ComponentProperties defaultProperties() {
+        return null;
+    }
 }

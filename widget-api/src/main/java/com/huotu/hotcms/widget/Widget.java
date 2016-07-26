@@ -140,5 +140,11 @@ public interface Widget {
      */
     Class springConfigClass();
 
+    /**
+     * 获取控件默认参数
+     * @return 默认参数列表
+     */
+    ComponentProperties defaultProperties();
+
 
 }

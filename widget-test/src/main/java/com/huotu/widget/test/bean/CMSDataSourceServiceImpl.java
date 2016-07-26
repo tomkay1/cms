@@ -15,9 +15,11 @@ import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Gallery;
 import com.huotu.hotcms.service.entity.GalleryList;
 import com.huotu.hotcms.service.entity.Link;
+import com.huotu.hotcms.service.model.CollapseArtcleCategory;
 import com.huotu.hotcms.service.model.NavbarPageInfoModel;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.service.CMSDataSourceService;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,20 +97,163 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     }
 
     @Override
-    public List<Category> findByArticleCategorys() {
+    public List<Category> findByParentArticleCategorys() {
         Category category1 = new Category();
-        category1.setId(1L);
+        category1.setId(666L);
         category1.setContentType(ContentType.Article);
         category1.setName("文章类型1");
 
         Category category2 = new Category();
-        category2.setId(2L);
+        category2.setId(888L);
         category2.setContentType(ContentType.Article);
         category2.setName("文章类型2");
         List<Category> list = new ArrayList<>();
         list.add(category1);
         list.add(category2);
         return list;
+    }
+
+    @Override
+    public String findByChildrenArticleCategory(Long parentId) {
+        Category parent = new Category();
+        parent.setId(parentId);
+        parent.setName("文章类型1");
+        parent.setContentType(ContentType.Article);
+
+        Category category1 = new Category();
+        category1.setId(1L);
+        category1.setContentType(ContentType.Article);
+        category1.setName("文章类型1-1");
+        category1.setParent(parent);
+        Category category12 = new Category();
+        category12.setId(12L);
+        category12.setContentType(ContentType.Article);
+        category12.setName("文章类型1-2");
+        category12.setParent(category1);
+        Category category13 = new Category();
+        category13.setId(13L);
+        category13.setContentType(ContentType.Article);
+        category13.setName("文章类型1-3");
+        category13.setParent(category12);
+
+        Category category2 = new Category();
+        category2.setId(2L);
+        category2.setContentType(ContentType.Article);
+        category2.setName("文章类型1-2-1");
+        category2.setParent(parent);
+        Category category21 = new Category();
+        category21.setId(21L);
+        category21.setContentType(ContentType.Article);
+        category21.setName("文章类型1-2-2");
+        category21.setParent(category2);
+
+        Category category3 = new Category();
+        category3.setId(3L);
+        category3.setContentType(ContentType.Article);
+        category3.setName("文章类型1-3-1");
+        category3.setParent(parent);
+
+        List<Category> list = new ArrayList<>();
+        list.add(category1);
+        list.add(category12);
+        list.add(category13);
+        list.add(category2);
+        list.add(category21);
+        list.add(category3);
+
+        List<CollapseArtcleCategory> collapseArtcleCategories = new ArrayList<>();
+        for (Category category : list) {
+            CollapseArtcleCategory collapseArtcleCategory = new CollapseArtcleCategory();
+            collapseArtcleCategory.setText(category.getName());
+            collapseArtcleCategory.setHref(category.getSerial());
+            collapseArtcleCategory.setCategoryId(category.getId());
+            collapseArtcleCategory.setParentId(category.getParent() != null ? category.getParent().getId() : 0);
+            collapseArtcleCategories.add(collapseArtcleCategory);
+        }
+        List<CollapseArtcleCategory> rootTrees = new ArrayList<>();
+        for (CollapseArtcleCategory collapseArtcleCategory : collapseArtcleCategories) {
+            if (collapseArtcleCategory.getParentId() == 0) {
+                rootTrees.add(collapseArtcleCategory);
+            }
+            for (CollapseArtcleCategory t : collapseArtcleCategories) {
+                if (t.getParentId() == collapseArtcleCategory.getCategoryId()) {
+                    collapseArtcleCategory.getNodes().add(t);
+                }
+            }
+        }
+        return JSONObject.toJSONString(rootTrees);
+    }
+
+    @Test
+    public void testFindByChildrenArticleCategory(){
+        Category parent = new Category();
+        parent.setId(666L);
+        parent.setName("文章类型1");
+        parent.setContentType(ContentType.Article);
+
+        Category category1 = new Category();
+        category1.setId(1L);
+        category1.setContentType(ContentType.Article);
+        category1.setName("文章类型1-1");
+        category1.setParent(parent);
+        Category category12 = new Category();
+        category12.setId(12L);
+        category12.setContentType(ContentType.Article);
+        category12.setName("文章类型1-2");
+        category12.setParent(category1);
+        Category category13 = new Category();
+        category13.setId(13L);
+        category13.setContentType(ContentType.Article);
+        category13.setName("文章类型1-3");
+        category13.setParent(category12);
+
+        Category category2 = new Category();
+        category2.setId(2L);
+        category2.setContentType(ContentType.Article);
+        category2.setName("文章类型1-2-1");
+        category2.setParent(parent);
+        Category category21 = new Category();
+        category21.setId(21L);
+        category21.setContentType(ContentType.Article);
+        category21.setName("文章类型1-2-2");
+        category21.setParent(category2);
+
+        Category category3 = new Category();
+        category3.setId(3L);
+        category3.setContentType(ContentType.Article);
+        category3.setName("文章类型1-3-1");
+        category3.setParent(parent);
+
+        List<Category> list = new ArrayList<>();
+        list.add(category1);
+        list.add(category12);
+        list.add(category13);
+        list.add(category2);
+        list.add(category21);
+        list.add(category3);
+
+        List<CollapseArtcleCategory> collapseArtcleCategories = new ArrayList<>();
+        for (Category category : list) {
+            CollapseArtcleCategory collapseArtcleCategory = new CollapseArtcleCategory();
+            collapseArtcleCategory.setText(category.getName());
+            collapseArtcleCategory.setHref(category.getSerial());
+            collapseArtcleCategory.setCategoryId(category.getId());
+            collapseArtcleCategory.setParentId(category.getParent() != null ? category.getParent().getId() : 0);
+            collapseArtcleCategories.add(collapseArtcleCategory);
+        }
+        List<CollapseArtcleCategory> rootTrees = new ArrayList<>();
+        for (CollapseArtcleCategory collapseArtcleCategory : collapseArtcleCategories) {
+            if (collapseArtcleCategory.getParentId() == 666) {
+                rootTrees.add(collapseArtcleCategory);
+            }
+            for (CollapseArtcleCategory t : collapseArtcleCategories) {
+                if (t.getParentId() == collapseArtcleCategory.getCategoryId()) {
+                    collapseArtcleCategory.getNodes().add(t);
+                }
+            }
+        }
+        JSONObject.toJSONString(rootTrees);
+
     }
 
 

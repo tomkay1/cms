@@ -40,36 +40,41 @@ public interface CMSDataSourceService {
      */
     List<GalleryList> findByGalleryList(Long galleryId);
 
-
     /**
-     * <p>查询当前站点下所有可用的链接数据源</p>
+     * <p>查询当前站点下所有可用的链接模型数据源</p>
      *
      * @return 返回当前站点下所有链接模型的栏目（数据源）
      */
     List<Category> findByLinkCategory();
 
+    /**
+     * <p>查询当前站点下所有可用的文章模型，且为一级分类的数据源</p>
+     *
+     * @return 返回当前站点下所有一级 文章模型的数据源
+     */
+    List<Category> findByParentArticleCategorys();
+
 
     /**
-     * <p>查询指定链接数据源下的所有连接模型</p>
+     * <p>查询当前站点下所有可用的文章模型，且为指定父级数据源的子级</p>
+     * @param parentId 父元素id
+     * @return 子元素列表 json
+     */
+    String findByChildrenArticleCategory(Long parentId);
+
+    /**
+     * <p>查询当前站点可用page列表</p>
+     *
+     * @return 返回当前站点json Page
+     */
+    String findSitePage();
+
+    /**
+     * <p>查询指定链接数据源下的所有链接模型</p>
      *
      * @param categoryId 栏目id（链接模型的数据源id）
      * @return 返回指定链接数据源下的全部链接模型
      */
     List<Link> findByLinks(Long categoryId);
 
-
-    /**
-     * <p>查询当前站点下所有可用的文章模型，且为一级分类的数据源</p>
-     *
-     * @return 返回当前站点下所有一级（没有父级）文章模型的栏目（数据源）
-     */
-    List<Category> findByArticleCategorys();
-
-
-    /**
-     * <p>查询当前站点可用page列表</p>
-     *
-     * @return 返回当前站点的可循环的Iterable<Page>
-     */
-    String findSitePage();
 }

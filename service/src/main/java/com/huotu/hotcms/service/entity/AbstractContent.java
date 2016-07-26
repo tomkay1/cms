@@ -78,11 +78,13 @@ public abstract class AbstractContent implements Auditable,Copyable<AbstractCont
      */
     @Column(name = "createTime")
     private LocalDateTime createTime;
+
     /**
      * 更新时间
      */
     @Column(name = "updateTime")
     private LocalDateTime updateTime;
+
     /**
      * 数据所属栏目
      */

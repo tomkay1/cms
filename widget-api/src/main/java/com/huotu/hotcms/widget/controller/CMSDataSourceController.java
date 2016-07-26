@@ -3,6 +3,7 @@ package com.huotu.hotcms.widget.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -20,6 +21,7 @@ public class CMSDataSourceController {
      *          例如{code=200,message="Success",data=[...]},{code=403,message="fail",data=[]}
      */
     @RequestMapping(value = "/CMSDataSource/{parentId}")
+    @ResponseBody
     public void findByAllChildren(Long parentId, Model model, HttpServletResponse response){
 
     }

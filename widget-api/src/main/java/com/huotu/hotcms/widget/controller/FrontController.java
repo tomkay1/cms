@@ -32,6 +32,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -64,7 +65,6 @@ public class FrontController implements FilterBehavioral {
             properties.load(propertiesFile);
             Velocity.init(properties);
         }
-
         htmlTemplate = Velocity.getTemplate("/front/html.vm");
     }
 
@@ -90,7 +90,6 @@ public class FrontController implements FilterBehavioral {
     @RequestMapping(method = RequestMethod.GET, value = {"/{pagePath}/{contentId}"})
     public PageInfo pageContent(@PathVariable("pagePath") String pagePath, @PathVariable("contentId") Long contentId
             , Model model) throws IOException, PageNotFoundException {
-        ModelAndView modelAndView;
         CMSContext cmsContext = CMSContext.RequestContext();
         model.addAttribute("time", System.currentTimeMillis());
         //查找数据内容

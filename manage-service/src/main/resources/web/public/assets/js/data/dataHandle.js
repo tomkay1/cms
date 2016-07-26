@@ -21,7 +21,7 @@ var DataHandle  = {
             var child = {};
             child.layout = {};
             child.layout.value = $(v).attr('data-layout-value');
-            child.layout.elements = DataHandle.traversalDOM2Json(v);
+            child.layout.elementGroups = DataHandle.traversalDOM2Json(v);
             data.push(child);
         });
         json.root = data;
@@ -54,7 +54,7 @@ var DataHandle  = {
         if ( $(elements).hasClass('row') ) {
             childJSON.layout = {};
             childJSON.layout.value = $(elements).attr('data-layout-value');
-            childJSON.layout.elements = DataHandle.traversalDOM2Json(elements);
+            childJSON.layout.elementGroups = DataHandle.traversalDOM2Json(elements);
         } else {
             childJSON.component = {};
             childJSON.component.widgetIdentity = $(elements).attr('data-widgetidentity');
@@ -217,7 +217,7 @@ var CreatePage = {
             var column = $('<div class="column ui-sortable"></div>');
             var col = 'col-md-' + v;
             column.addClass(col);
-            column.html( CreatePage.createColumnDom( data.elements[i] ) );
+            column.html( CreatePage.createColumnDom( data.elementGroups[i] ) );
             container.append(column);
         });
         return container.html();

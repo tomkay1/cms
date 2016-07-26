@@ -44,7 +44,8 @@ public class PageFilterBehavioral implements FilterBehavioral {
             "bind",
             "interim",
             "shop",
-            "admin"
+            "admin",
+            "dataSource"
     );
 
     /**

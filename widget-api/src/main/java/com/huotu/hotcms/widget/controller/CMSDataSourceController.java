@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  * 查询数据源接口
  * Created by lhx on 2016/7/26.
  */
-@Controller("/_web")
+@Controller("/dataSource")
 public class CMSDataSourceController {
 
     /**
@@ -29,7 +29,7 @@ public class CMSDataSourceController {
      * @return json 返回当前parentId 的所有子级元素
      *          例如{code=200,message="Success",data=[...]},{code=403,message="fail",data=[]}
      */
-    @RequestMapping(value = "/CMSDataSource/{parentId}")
+    @RequestMapping(value = "/findGallery/{parentId}")
     @ResponseBody
     public void findByAllChildren(Long parentId, Model model, HttpServletResponse response){
 

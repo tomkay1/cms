@@ -9,14 +9,15 @@
 
 package com.huotu.hotcms.widget.xml;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.huotu.hotcms.widget.page.Page;
+import com.huotu.hotcms.widget.page.PageLayout;
 import com.huotu.hotcms.widget.test.TestBase;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * 测试一系列将页面信息保存到xml 和 把xml解析成相应的类的过程
@@ -27,8 +28,21 @@ public class PersistToXmlTest extends TestBase {
 
     @Test
     public void testToXml() throws IOException {
-        Page page=randomPage();
-        ObjectMapper objectMapper=new ObjectMapper();
-        String json=objectMapper.writeValueAsString(page);
+        PageLayout page = randomPageLayout();
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(page);
+
+        System.out.println(json);
+        PageLayout page1 = objectMapper.readValue(json, PageLayout.class);
+        System.out.println(objectMapper.writeValueAsString(page1));
+        assertThat(page1).isEqualTo(page);
+    }
+
+    @Test
+    public void testNeo() throws JsonProcessingException {
+        PageLayout pageLayout=randomNeoTestPageModel();
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(pageLayout);
+        System.out.println(json);
     }
 }

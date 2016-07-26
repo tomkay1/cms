@@ -13,10 +13,10 @@ import com.huotu.cms.manage.controller.support.SiteManageController;
 import com.huotu.cms.manage.exception.RedirectException;
 import com.huotu.cms.manage.service.PageFilterBehavioral;
 import com.huotu.hotcms.service.entity.Category;
-import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.repository.CategoryRepository;
+import com.huotu.hotcms.widget.entity.PageInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +63,7 @@ public class PageInfoController extends SiteManageController<PageInfo, Long, Lon
     }
 
     @Override
-    protected void prepareSave(Login login, PageInfo entity, PageInfo data, Void extra, RedirectAttributes attributes)
+    protected void prepareUpdate(Login login, PageInfo entity, PageInfo data, Void extra, RedirectAttributes attributes)
             throws RedirectException {
         throw new NoSuchMethodError("no support for save category");
     }

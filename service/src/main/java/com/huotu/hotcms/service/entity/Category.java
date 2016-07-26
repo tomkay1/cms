@@ -25,6 +25,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * 栏目节点
@@ -121,7 +122,29 @@ public class Category implements Auditable,Copyable<Category> {
 //     */
 //    @Column(name = "modelId")
 //    private Integer modelId;
-    
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Category)) return false;
+        Category category = (Category) o;
+        return orderWeight == category.orderWeight &&
+                deleted == category.deleted &&
+                Objects.equals(id, category.id) &&
+                Objects.equals(serial, category.serial) &&
+                Objects.equals(createTime, category.createTime) &&
+                Objects.equals(updateTime, category.updateTime) &&
+                Objects.equals(name, category.name) &&
+                contentType == category.contentType &&
+                Objects.equals(site, category.site);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, serial, orderWeight, deleted, createTime, updateTime, name, contentType, site);
+    }
+
     @Override
     public Category copy() {
         Category category=new Category();

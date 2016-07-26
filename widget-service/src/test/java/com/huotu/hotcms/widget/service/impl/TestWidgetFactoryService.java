@@ -9,12 +9,12 @@
 
 package com.huotu.hotcms.widget.service.impl;
 
+import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.common.PageType;
 import com.huotu.hotcms.service.common.SiteType;
 import com.huotu.hotcms.service.config.ServiceConfig;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
-import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Owner;
@@ -23,16 +23,18 @@ import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.service.repository.AbstractContentRepository;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.OwnerRepository;
-import com.huotu.hotcms.service.repository.PageInfoRepository;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.InstalledWidget;
+import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.page.Layout;
-import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.page.PageElement;
+import com.huotu.hotcms.widget.page.PageLayout;
+import com.huotu.hotcms.widget.page.PageModel;
+import com.huotu.hotcms.widget.repository.PageInfoRepository;
 import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
 import com.huotu.hotcms.widget.service.PageService;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
@@ -41,6 +43,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -64,6 +67,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Import(ServiceConfig.class)
 @WebAppConfiguration
 @Transactional
+@Rollback()
 public class TestWidgetFactoryService extends TestBase {
 
     @Autowired
@@ -103,19 +107,8 @@ public class TestWidgetFactoryService extends TestBase {
         assertWidgetListContainWidgetName("picCarousel", "1.0-SNAPSHOT", randomType);
 
         //*********************************case3 设置主控件包不忽略错误 ，安装新版本控件****************************
-        String randomType2 = UUID.randomUUID().toString();
-        widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
-                , "2.0-SNAPSHOT", randomType2);
-        assertWidgetListContainWidgetName("picCarousel", "2.0-SNAPSHOT", randomType2);
-
         List<InstalledWidget> installedWidgets = widgetFactoryService.widgetList(null);
-        InstalledWidget installedWidget = null;
-        for (InstalledWidget installedWidget1 : installedWidgets) {
-            if (installedWidget1.getType().equals(randomType)) {
-                installedWidget = installedWidget1;
-                break;
-            }
-        }
+        InstalledWidget installedWidget = getInstalledWidget(installedWidgets, "1.0-SNAPSHOT");
         assertThat(installedWidget).as("等于null").isNotNull();
         String pagePath = "testPagePath";
         ComponentProperties properties = new ComponentProperties();
@@ -123,43 +116,37 @@ public class TestWidgetFactoryService extends TestBase {
         properties.put("minImgUrl", new String[]{"1.jpg", "2.jpg", "3.jpg", "4.jpg"});
         properties.put("styleTemplate", "html");
         pageInitData(pagePath, installedWidget, properties);
-        for (InstalledWidget installedWidget1 : installedWidgets) {
-            if (installedWidget1.getType().equals(randomType2)) {
-                installedWidget = installedWidget1;
-                break;
-            }
-        }
+
+
+        String randomType2 = UUID.randomUUID().toString();
+        widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
+                , "2.0-SNAPSHOT", randomType2);
+        assertWidgetListContainWidgetName("picCarousel", "2.0-SNAPSHOT", randomType2);
+        installedWidgets = widgetFactoryService.widgetList(null);
+        installedWidget = getInstalledWidget(installedWidgets, "2.0-SNAPSHOT");
         assert installedWidget != null;
         WidgetInfo widgetInfo = widgetInfoRepository.findOne(installedWidget.getIdentifier());
         widgetFactoryService.primary(widgetInfo, false);
         PageInfo pageInfo = pageInfoRepository.findByPagePath(pagePath);
-        Page page = pageService.getPage(pageInfo.getPageId());
-        PageElement[] pageElements = page.getElements();
+        PageElement[] pageElements;
+        if (pageInfo.getLayout() != null)
+            pageElements = pageInfo.getLayout().getElements();
+        else
+            pageElements = new PageElement[0];
         for (PageElement element : pageElements) {
             validPageElements(element, widgetInfo);
         }
         assertThat(1).as("验证成功，没有出现异常，并找到页面中修改的组件").isEqualTo(1);
 
         //**********************************case4 设置主控件包不忽略错误 ，安装新版本控件****************************
-        pagePath = "testPagePath2";
-        properties = new ComponentProperties();
-        properties.put("styleTemplate", "html");
-        for (InstalledWidget installedWidget1 : installedWidgets) {
-            if (installedWidget1.getType().equals(randomType)) {
-                installedWidget = installedWidget1;
-                break;
-            }
-        }
-        pageInitData(pagePath, installedWidget, properties);
+        String pagePath2 = "testPagePath2";
+        ComponentProperties properties2 = new ComponentProperties();
+        properties2.put("styleTemplate", "html");
+        installedWidget = getInstalledWidget(installedWidgets, "1.0-SNAPSHOT");
 
+        pageInitData(pagePath2, installedWidget, properties2);
         try {
-            for (InstalledWidget installedWidget1 : installedWidgets) {
-                if (installedWidget1.getType().equals(randomType2)) {
-                    installedWidget = installedWidget1;
-                    break;
-                }
-            }
-            assert installedWidget != null;
+            installedWidget = getInstalledWidget(installedWidgets, "2.0-SNAPSHOT");
             widgetInfo = widgetInfoRepository.findOne(installedWidget.getIdentifier());
             widgetFactoryService.primary(widgetInfo, false);
             assertThat(0).as("参数验证失败，应当出现异常").isEqualTo(1);
@@ -168,40 +155,26 @@ public class TestWidgetFactoryService extends TestBase {
         }
 
         //***************************************case5 安装主控件包，忽略错误***************************************
-        for (InstalledWidget installedWidget1 : installedWidgets) {
-            if (installedWidget1.getType().equals(randomType)) {
-                installedWidget = installedWidget1;
-                break;
-            }
-        }
+        installedWidget = getInstalledWidget(installedWidgets, "1.0-SNAPSHOT");
         assertThat(installedWidget).as("等于null").isNotNull();
         pagePath = "testPagePath3";
-        ComponentProperties properties2 = new ComponentProperties();
-        properties.put("maxImgUrl", new String[]{"1.jpg", "2.jpg", "3.jpg", "4.jpg"});
-        properties.put("minImgUrl", new String[]{"1.jpg", "2.jpg", "3.jpg", "4.jpg"});
-        properties.put("styleTemplate", "html");
-        pageInitData(pagePath, installedWidget, properties2);
-        for (InstalledWidget installedWidget1 : installedWidgets) {
-            if (installedWidget1.getType().equals(randomType2)) {
-                installedWidget = installedWidget1;
-                break;
-            }
-        }
-        assert installedWidget != null;
+        ComponentProperties properties3 = new ComponentProperties();
+
+        properties3.put("maxImgUrl", new String[]{"1.jpg", "2.jpg", "3.jpg", "4.jpg"});
+        properties3.put("minImgUrl", new String[]{"1.jpg", "2.jpg", "3.jpg", "4.jpg"});
+        properties3.put("styleTemplate", "html");
+        pageInitData(pagePath, installedWidget, properties3);
+        installedWidget = getInstalledWidget(installedWidgets, "2.0-SNAPSHOT");
         widgetInfo = widgetInfoRepository.findOne(installedWidget.getIdentifier());
         widgetFactoryService.primary(widgetInfo, true);
 
-
-        for (InstalledWidget installedWidget1 : installedWidgets) {
-            if (installedWidget1.getType().equals(randomType)) {
-                installedWidget = installedWidget1;
-                break;
-            }
-        }
+        installedWidget = getInstalledWidget(installedWidgets, "1.0-SNAPSHOT");
         widgetInfo = widgetInfoRepository.findOne(installedWidget.getIdentifier());
         pageInfo = pageInfoRepository.findByPagePath(pagePath);
-        page = pageService.getPage(pageInfo.getPageId());
-        pageElements = page.getElements();
+        if (pageInfo.getLayout() != null)
+            pageElements = pageInfo.getLayout().getElements();
+        else
+            pageElements = new PageElement[0];
         for (PageElement element : pageElements) {
             validPageElements(element, widgetInfo);
         }
@@ -212,6 +185,15 @@ public class TestWidgetFactoryService extends TestBase {
         assertThat(list.size()).isEqualTo(1);
         assertThat(list.get(0).getVersion()).as("组件忽略更新，禁用其他低版本的组件").isEqualToIgnoringCase("2.0-SNAPSHOT");
 
+    }
+
+    private InstalledWidget getInstalledWidget(List<InstalledWidget> installedWidgets, String version) {
+        for (InstalledWidget installedWidget1 : installedWidgets) {
+            if (installedWidget1.getWidget().version().equals(version)) {
+                return installedWidget1;
+            }
+        }
+        return null;
     }
 
     @Test
@@ -234,8 +216,8 @@ public class TestWidgetFactoryService extends TestBase {
         }
     }
 
-    private void assertWidgetListContainWidgetName(String widgetId, String version, String type) throws IOException, FormatException
-            , InstantiationException, IllegalAccessException {
+    private void assertWidgetListContainWidgetName(String widgetId, String version, String type) throws IOException
+            , FormatException , InstantiationException, IllegalAccessException {
         for (InstalledWidget widget : widgetFactoryService.widgetList(null)) {
             if (type.equals(widget.getType())) {
                 assertThat(widget.getWidget().widgetId()).isEqualToIgnoringCase(widgetId);
@@ -263,6 +245,7 @@ public class TestWidgetFactoryService extends TestBase {
         category.setParent(null);
         category.setSite(site);
         category.setSerial(UUID.randomUUID().toString());
+        category.setContentType(ContentType.Article);
         categoryRepository.saveAndFlush(category);
 
         Link link = new Link();
@@ -274,8 +257,6 @@ public class TestWidgetFactoryService extends TestBase {
         pageInfo.setPagePath(pagePath);
         pageInfo.setPageType(PageType.DataContent);
         pageInfo.setSite(category.getSite());
-        pageInfo = pageInfoRepository.saveAndFlush(pageInfo);
-
         Layout layoutElement = new Layout();
         layoutElement.setValue("12");
         Component component = new Component();
@@ -286,18 +267,19 @@ public class TestWidgetFactoryService extends TestBase {
             component.setWidgetIdentity(installedWidget.getIdentifier().toString());
             component.setStyleId(styleId);
             component.setId(UUID.randomUUID().toString());
-
             component.setProperties(properties);
             layoutElement.setElements(new PageElement[]{component});
-            Page page = new Page();
-            page.setTitle("testPicCarousel");
-            page.setPageIdentity(pageInfo.getPageId());
-            page.setElements(new PageElement[]{layoutElement});
+
+            pageInfo.setLayout(new PageLayout(new Layout[]{layoutElement}));
+            pageInfo = pageInfoRepository.saveAndFlush(pageInfo);
+            PageModel pageModel = new PageModel();
+            pageModel.setTitle("testPicCarousel");
+            pageModel.setPageIdentity(pageInfo.getPageId());
+            pageModel.setElements(new Layout[]{layoutElement});
             CMSContext.PutContext(request, response, site);
-            pageService.savePage(page, pageInfo.getPageId());
+            pageService.savePage(pageModel, pageInfo.getPageId());
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new IllegalStateException("查找控件列表失败");
+            throw new IllegalStateException("查找控件列表失败", e);
         }
     }
 

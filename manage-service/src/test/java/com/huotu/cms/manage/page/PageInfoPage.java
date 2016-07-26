@@ -11,7 +11,7 @@ package com.huotu.cms.manage.page;
 
 import com.huotu.cms.manage.page.support.AbstractCRUDPage;
 import com.huotu.cms.manage.page.support.BodyId;
-import com.huotu.hotcms.service.entity.PageInfo;
+import com.huotu.hotcms.widget.entity.PageInfo;
 import org.assertj.core.api.Condition;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

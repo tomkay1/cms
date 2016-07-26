@@ -1,6 +1,7 @@
 /*
  * 版权所有:杭州火图科技有限公司
  * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
  * 2013-2016. All rights reserved.
@@ -8,21 +9,21 @@
 
 package com.huotu.hotcms.widget.service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.service.entity.Category;
-import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.exception.PageNotFoundException;
-import com.huotu.hotcms.service.repository.PageInfoRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetResolveService;
+import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.page.Layout;
-import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.page.PageElement;
+import com.huotu.hotcms.widget.page.PageLayout;
+import com.huotu.hotcms.widget.page.PageModel;
+import com.huotu.hotcms.widget.repository.PageInfoRepository;
 import com.huotu.hotcms.widget.service.PageService;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,16 +32,14 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Created by hzbc on 2016/6/24.
- */
 @Service
 public class PageServiceImpl implements PageService {
     @Autowired(required = false)
@@ -56,69 +55,80 @@ public class PageServiceImpl implements PageService {
     private ResourceService resourceService;
 
     @Override
-    public String generateHTML(Page page, CMSContext context) {
-        PageElement[] elements = page.getElements();
-        String html = "<div class=\"container\">";
-        for (int i = 0, l = elements.length; i < l; i++) {
-            html += "<div class=\"row\">";
-            html += widgetResolveService.pageElementHTML(elements[i], context);
-            html += "</div>";
+    public String generateHTML(PageInfo page, CMSContext context) {
+        StringWriter writer = new StringWriter();
+        try {
+            generateHTML(writer, page, context);
+        } catch (IOException e) {
+            throw new IllegalStateException("Mem IO", e);
         }
-        html += "</div>";
-        return html;
+        return writer.toString();
     }
 
     @Override
-    public void generateHTML(OutputStream outputStream, Page page, CMSContext context) throws IOException {
-        String html = generateHTML(page, context);
-        byte[] htmlData = html.getBytes();
-        outputStream.write(htmlData, 0, htmlData.length);
+    public void generateHTML(Writer writer, PageInfo page, CMSContext context) throws IOException {
+        PageElement[] elements;
+        if (page.getLayout() != null)
+            elements = page.getLayout().getElements();
+        else
+            elements = new PageElement[0];
+        writer.append("<div class=\"container\">");
+        for (PageElement element : elements) {
+            writer.append("<div class=\"row\">");
+            widgetResolveService.pageElementHTML(element, context, writer);
+            writer.append("</div>");
+        }
+        writer.append("</div>");
     }
 
 
     @Override
-    public void savePage(Page page, Long pageId) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String pageJson = objectMapper.writeValueAsString(page);
-        PageInfo pageInfo = pageInfoRepository.findOne(pageId);
-        if (pageInfo == null) {
-            pageInfo = new PageInfo();
-            pageInfo.setCreateTime(LocalDateTime.now());
-        } else {
-            pageInfo.setUpdateTime(LocalDateTime.now());
-        }
-
+    public void savePage(PageModel page, Long pageId) throws IOException {
+        PageInfo pageInfo = pageInfoRepository.getOne(pageId);
+        pageInfo.setUpdateTime(LocalDateTime.now());
         //删除控件旧的css样式表
         if (pageInfo.getResourceKey() != null) {
-            resourceService.deleteResource(pageInfo.getResourceKey() + "/" + pageInfo.getPageId() + ".css");
+            resourceService.deleteResource(pageInfo.getPageCssResourcePath());
         }
         //保存最新控件信息
         String resourceKey = UUID.randomUUID().toString();
         pageInfo.setResourceKey(resourceKey);
-        pageInfo.setPageSetting(pageJson.getBytes());
+        if (page != null && page.getElements() != null)
+            pageInfo.setLayout(new PageLayout(page.getElements()));
+
+        // TODO 还需要修改什么么?
+
+//        pageInfo.setPageSetting(pageJson.getBytes());
         pageInfoRepository.save(pageInfo);
         //生成page的css样式表
-        PageElement[] elements = page.getElements();
+        PageElement[] elements = pageInfo.getLayout().getElements();
         Path path = Files.createTempFile("tempCss", ".css");
-        OutputStream out = Files.newOutputStream(path);
-        for (int i = 0, l = elements.length; i < l; i++) {
-            //生成组件css
-            widgetResolveService.componentCSS(CMSContext.RequestContext(), elements[i], out);
+        try {
+            try (OutputStream out = Files.newOutputStream(path)) {
+                for (PageElement element : elements) {
+                    //生成组件css
+                    widgetResolveService.componentCSS(CMSContext.RequestContext(), element, out);
+                }
+                //上传最新的page css样式表到资源服务
+                try (InputStream data = Files.newInputStream(path)) {
+                    resourceService.uploadResource(pageInfo.getPageCssResourcePath(), data);
+                }
+            }
+
+        } finally {
+            //noinspection ThrowFromFinallyBlock
+            Files.deleteIfExists(path);
         }
-        //上传最新的page css样式表到资源服务
-        InputStream data = Files.newInputStream(path);
-        resourceService.uploadResource(resourceKey + "/" + pageInfo.getPageId() + ".css", data);
-        Files.deleteIfExists(path);
+
+
     }
 
     @Override
-    public Page getPage(Long pageId) throws IOException, PageNotFoundException {
+    public PageInfo getPage(Long pageId) throws PageNotFoundException {
         PageInfo pageInfo = pageInfoRepository.findOne(pageId);
-        if(pageInfo==null)
-            throw new PageNotFoundException("页面ID为"+pageId+"的页面不存在");
-        String pageJson = new String(pageInfo.getPageSetting(), "utf-8");
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(pageJson, Page.class);
+        if (pageInfo == null)
+            throw new PageNotFoundException("页面ID为" + pageId + "的页面不存在");
+        return pageInfo;
     }
 
     @Override
@@ -127,17 +137,12 @@ public class PageServiceImpl implements PageService {
     }
 
     @Override
-    public Page findBySiteAndPagePath(Site site, String pagePath) throws IllegalStateException, PageNotFoundException {
-        Page page = null;
-        try {
-            PageInfo pageInfo = pageInfoRepository.findBySiteAndPagePath(site, pagePath);
-            if (pageInfo != null) {
-                page = getPage(pageInfo.getPageId());
-            }
-        } catch (IOException e) {
-            throw new IllegalStateException("解析page信息出错");
-        }
-        return page;
+    public PageInfo findBySiteAndPagePath(Site site, String pagePath) throws IllegalStateException
+            , PageNotFoundException {
+        PageInfo pageInfo = pageInfoRepository.findBySiteAndPagePath(site, pagePath);
+        if (pageInfo == null)
+            throw new PageNotFoundException();
+        return pageInfo;
     }
 
     @Override
@@ -146,10 +151,10 @@ public class PageServiceImpl implements PageService {
     }
 
     @Override
-    public Page getClosestContentPage(Category category, String path) throws IOException, PageNotFoundException {
+    public PageInfo getClosestContentPage(Category category, String path) throws IOException, PageNotFoundException {
         PageInfo pageInfo = pageInfoRepository.findByPagePath(path);
         if (pageInfo != null && category.getId().equals(pageInfo.getCategory().getId())) {
-            return getPage(pageInfo.getPageId());
+            return pageInfo;
         }
         List<PageInfo> pageInfos = pageInfoRepository.findByCategory(category);
         if (pageInfo == null)
@@ -159,31 +164,20 @@ public class PageServiceImpl implements PageService {
     }
 
     @Override
-    public List<Page> findAll() throws IOException, PageNotFoundException {
-        List<PageInfo> pageInfoList = pageInfoRepository.findAll();
-        List<Page> pageList = null;
-        if (pageInfoList != null && pageInfoList.size() > 0) {
-            pageList = new ArrayList<>();
-            for (int i = 0, l = pageInfoList.size(); i < l; i++) {
-                PageInfo pageInfo = pageInfoList.get(i);
-                pageList.add(getPage(pageInfo.getPageId()));
-            }
-        }
-        return pageList;
+    public List<PageInfo> findAll() {
+        return pageInfoRepository.findAll();
     }
 
     @Override
-    public void updatePageComponent(Page page, InstalledWidget installedWidget) throws IllegalStateException {
-        PageElement[] pageElements = page.getElements();
+    public void updatePageComponent(PageInfo page, InstalledWidget installedWidget) throws IllegalStateException {
+        Layout[] pageElements = page.getLayout().getElements();
         for (PageElement pageElement : pageElements) {
             updateComponent(pageElement, installedWidget);
         }
-
-        try {
-            savePage(page, page.getPageIdentity());
-        } catch (IOException e) {
-            throw new IllegalStateException("更新控件组件，保存界面错误" + e.getMessage());
-        }
+        PageLayout pageLayout = new PageLayout();
+        pageLayout.setElements(pageElements);
+        page.setLayout(pageLayout);
+        pageInfoRepository.saveAndFlush(page);
     }
 
     /**

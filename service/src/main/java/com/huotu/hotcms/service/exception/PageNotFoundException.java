@@ -9,14 +9,17 @@
 
 package com.huotu.hotcms.service.exception;
 
-/**
- * Created by wenqi on 2016/7/15.
- */
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * 页面不存在异常，返回404
  */
+@ResponseStatus(HttpStatus.NOT_FOUND)
 public class PageNotFoundException extends Exception {
+
+    public PageNotFoundException() {
+    }
 
     public PageNotFoundException(String msg){
         super(msg);

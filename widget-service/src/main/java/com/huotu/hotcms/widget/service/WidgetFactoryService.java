@@ -47,7 +47,7 @@ public interface WidgetFactoryService {
      * @param widgetId 控件id
      * @return 临时文件
      */
-    public File downloadJar(String groupId, String widgetId, String version) throws IOException;
+    File downloadJar(String groupId, String widgetId, String version) throws IOException;
 
     /**
      * 当前owner已安装的控件列表

@@ -12,8 +12,8 @@ package com.huotu.cms.manage.controller;
 import com.huotu.cms.manage.SiteManageTest;
 import com.huotu.cms.manage.page.EditPage;
 import com.huotu.cms.manage.page.ManageMainPage;
-import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.widget.entity.PageInfo;
 import org.junit.Test;
 
 

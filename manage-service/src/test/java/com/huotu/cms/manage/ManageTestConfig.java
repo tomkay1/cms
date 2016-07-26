@@ -42,7 +42,6 @@ public class ManageTestConfig extends MockMVC {
                     engine.addDialect(resourceDialect);
                 }
         );
-
     }
 
     @Autowired

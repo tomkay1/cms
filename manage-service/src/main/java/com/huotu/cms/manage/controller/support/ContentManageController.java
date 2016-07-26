@@ -12,12 +12,12 @@ package com.huotu.cms.manage.controller.support;
 import com.huotu.cms.manage.exception.RedirectException;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.AbstractContent;
-import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
+import com.huotu.hotcms.service.exception.BadCategoryInfoException;
+import com.huotu.hotcms.service.model.ContentExtra;
 import com.huotu.hotcms.service.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.huotu.hotcms.service.model.ContentExtra;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -52,16 +52,25 @@ public abstract class ContentManageController<T extends AbstractContent, ED exte
     }
 
     @Override
-    protected void prepareOpen(Login login, T data, Model model, RedirectAttributes attributes) throws RedirectException {
+    protected void prepareOpen(Login login, T data, Model model, RedirectAttributes attributes)
+            throws RedirectException {
         forCategoryList(data.getCategory().getSite(), model);
         super.prepareOpen(login, data, model, attributes);
     }
 
-    /**
-     * 当前Category 根据  extra data 获取 Category
-     * @return
-     */
-    protected  Category currentCategory(){
-        return  null;
+    @Override
+    protected final T preparePersist(Login login, Site site, T data, ED extra, RedirectAttributes attributes)
+            throws RedirectException {
+        try {
+            data.setCategory(categoryService.getCategoryByNameAndParent(site, extra.getCategoryName()
+                    , extra.getParentCategoryId(), contentType()));
+            // TODO 还有更多共享的内容,比如创建者巴拉巴拉的
+        } catch (BadCategoryInfoException e) {
+            throw new RedirectException(rootUri(), "该数据源已存在，并且不符合你要求。", e);
+        }
+        return preparePersistContext(login, site, data, extra, attributes);
     }
+
+    protected abstract T preparePersistContext(Login login, Site site, T data, ED extra, RedirectAttributes attributes)
+            throws RedirectException;
 }

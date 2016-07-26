@@ -13,16 +13,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Demo Editor</title>
-    <script src="http://resali.huobanplus.com/cdn/jquery/3.0.0/jquery.js" crossorigin="anonymous"></script>
-    <script src="http://resali.huobanplus.com/cdn/layer/2.3/layer.js" crossorigin="anonymous"></script>
 
-    <script>
-        var _widgetProperties = {};
-        function widgetProperties() {
-            return _widgetProperties;
-        }
-    </script>
-    <script th:src="@{/javascript/{id}(id=${widgetId})}"></script>
+    <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/jquery-upload-file/4.0.10/css/uploadfile.css">
+    <link rel="stylesheet"
+          href="http://resali.huobanplus.com/cdn/bootstrap-treeview/1.2.0/css/bootstrap-treeview.min.css">
+
+
 </head>
 <body>
 
@@ -31,6 +27,16 @@
     <div cms:replaceEditor="${widgetId},${properties}"></div>
 </div>
 
-
+<script src="http://resali.huobanplus.com/cdn/jquery/3.0.0/jquery.js" crossorigin="anonymous"></script>
+<script src="http://resali.huobanplus.com/cdn/layer/2.3/layer.js" crossorigin="anonymous"></script>
+<script src="http://resali.huobanplus.com/cdn/jquery-upload-file/4.0.10/jquery.uploadfile.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bootstrap-treeview/1.2.0/bootstrap-treeview.min.js"></script>
+<script>
+    var _widgetProperties = {};
+    function widgetProperties() {
+        return _widgetProperties;
+    }
+</script>
+<script th:src="@{/javascript/{id}(id=${widgetId})}"></script>
 </body>
 </html>

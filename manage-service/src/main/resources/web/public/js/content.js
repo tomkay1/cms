@@ -18,6 +18,7 @@ $('#articleDate').mask('9999-99-99');
 function logoUploaded(id, name, responseJSON) {
     // newUuid is the path
     console.log(responseJSON.newUuid);
+    $("#thumbUri").val(responseJSON.newUuid);
 }
 
 function logoOnUpload() {
@@ -27,6 +28,7 @@ function logoOnUpload() {
 }
 
 $('#article-uploader, #link-uploader, #video-uploader, #gallery-uploader, #download-uploader').fineUploader({
+    debug:true,
     template: top.$('#qq-template').get(0),
     request: {
         inputName: 'file',
@@ -44,9 +46,11 @@ $('#article-uploader, #link-uploader, #video-uploader, #gallery-uploader, #downl
         itemLimit: 1,
         sizeLimit: 3 * 1024 * 1024
     },
-    onComplete: logoUploaded,
-    onError: logoOnUpload,
-    onSubmit: logoOnUpload,
-    onCancel: logoOnUpload,
-    onValidate: logoOnUpload
+    callbacks:{
+        onComplete: logoUploaded,
+        onError: logoOnUpload,
+        onSubmit: logoOnUpload,
+        onCancel: logoOnUpload,
+        onValidate: logoOnUpload
+    }
 });

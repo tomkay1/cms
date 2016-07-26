@@ -13,19 +13,25 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * 页面布局
  *
  * @author CJ
  */
-@Data
+@ToString
+@Setter
+@Getter
 @JsonTypeName("layout")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT, visible = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Layout implements PageElement {
+public class Layout implements PageElement, ElementContext {
 
     /**
      * 用逗号间隔的bootstrap栅格参数，总值必须为12
@@ -43,4 +49,18 @@ public class Layout implements PageElement {
      */
     @JacksonXmlElementWrapper(useWrapping=false)
     private PageElement[] elements;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Layout)) return false;
+        Layout layout = (Layout) o;
+        return Objects.equals(value, layout.value) &&
+                Arrays.equals(elements, layout.elements);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value, elements);
+    }
 }

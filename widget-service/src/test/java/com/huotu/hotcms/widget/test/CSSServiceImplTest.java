@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.test.annotation.Rollback;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -14,7 +15,7 @@ import java.io.IOException;
 /**
  * Created by lhx on 2016/6/3.
  */
-
+@Rollback(true)
 public class CSSServiceImplTest extends TestBase {
     @Autowired
     CSSService cssService;
@@ -94,7 +95,6 @@ public class CSSServiceImplTest extends TestBase {
                 Assert.assertEquals("断言程序case4生成css与预期结果不一致", 0, 1);
             }
         } catch (Exception e) {
-            e.printStackTrace();
             Assert.assertEquals("断言程序case4抛出异常错误", 0, 1);
         }
 

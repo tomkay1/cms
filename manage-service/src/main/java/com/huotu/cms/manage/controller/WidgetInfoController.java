@@ -134,7 +134,7 @@ public class WidgetInfoController
     }
 
     @Override
-    protected void prepareSave(Login login, WidgetInfo entity, WidgetInfo data, Long extra
+    protected void prepareUpdate(Login login, WidgetInfo entity, WidgetInfo data, Long extra
             , RedirectAttributes attributes) throws RedirectException {
         if (extra != null)
             entity.setOwner(ownerRepository.getOne(extra));

@@ -18,10 +18,12 @@ import lombok.Setter;
 import lombok.ToString;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.web.servlet.support.RequestContext;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Stack;
 
 /**
@@ -88,7 +90,7 @@ public class CMSContext {
      * @param site     当前站点
      */
     public static CMSContext PutContext(HttpServletRequest request, HttpServletResponse response, Site site) {
-        CMSContext cmsContext = new CMSContext(request, response, site, site.getRegion().getLocale(), null,null);
+        CMSContext cmsContext = new CMSContext(request, response, site, site.getRegion().getLocale(), null, null);
         contexts.set(cmsContext);
         return cmsContext;
     }
@@ -111,5 +113,13 @@ public class CMSContext {
     }
 
 
+    public RequestContext getRequestContext() {
+        return new RequestContext(request, response, request.getServletContext(), null);
+    }
 
+    public void widgetContextVariables(Map<String, Object> variables) {
+//        if (request.getParameter("simulateSite") != null) {
+//            variables.put("simulateSite", request.getParameter("simulateSite"));
+//        }
+    }
 }

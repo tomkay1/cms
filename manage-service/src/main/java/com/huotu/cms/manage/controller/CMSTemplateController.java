@@ -47,12 +47,6 @@ public class CMSTemplateController {
         return templateService.laud(siteId, ownerId,behavior );
     }
 
-    @RequestMapping(value = "/isLauded",method = RequestMethod.GET,produces = "application/json; charset=UTF-8")
-    @ResponseBody
-    public boolean isLauded(@RequestParam("ownerId") long ownerId,@RequestParam("templateSiteId")long templateSiteId){
-        return templateService.isLauded(templateSiteId,ownerId);
-    }
-
     /**
      * 站点使用
      *

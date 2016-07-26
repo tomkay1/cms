@@ -68,7 +68,7 @@ public class RouteController extends SiteManageController<Route, Long, Void, Voi
     }
 
     @Override
-    protected void prepareSave(Login login, Route entity, Route data, Void extra, RedirectAttributes attributes)
+    protected void prepareUpdate(Login login, Route entity, Route data, Void extra, RedirectAttributes attributes)
             throws RedirectException {
         if (!login.siteManageable(entity.getSite()))
             throw new AccessDeniedException("你无权更改。");

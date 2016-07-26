@@ -27,7 +27,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class Link extends AbstractContent {
-//
+
 //    /**
 //     * 标题
 //     */

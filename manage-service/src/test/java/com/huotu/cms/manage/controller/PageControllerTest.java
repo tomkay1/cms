@@ -11,13 +11,12 @@ package com.huotu.cms.manage.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.cms.manage.ManageTest;
-import com.huotu.hotcms.service.common.CMSEnums;
-import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Owner;
-import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.widget.InstalledWidget;
-import com.huotu.hotcms.widget.page.Page;
+import com.huotu.hotcms.widget.entity.PageInfo;
+import com.huotu.hotcms.widget.page.PageLayout;
+import com.huotu.hotcms.widget.page.PageModel;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import com.huotu.hotcms.widget.servlet.CMSFilter;
 import com.jayway.jsonpath.JsonPath;
@@ -27,25 +26,18 @@ import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.Cookie;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 /**
@@ -97,10 +89,17 @@ public class PageControllerTest extends ManageTest {
 
 
         //随机创建一个Page
-        Page page = randomPage();
         PageInfo pageInfo = randomPageInfo();
+
+
+        PageLayout page = randomPageLayout();
+        PageModel model = new PageModel();
+        model.setElements(page.getElements());
+        model.setTitle(pageInfo.getTitle());
+        model.setPageIdentity(pageInfo.getPageId());
+
         ObjectMapper objectMapper = new ObjectMapper();
-        String pageJson = objectMapper.writeValueAsString(page);
+        String pageJson = objectMapper.writeValueAsString(model);
         //保存
        mockMvc.perform(put("/manage/pages/{pageId}", pageInfo.getPageId())
                 .session(session)
@@ -118,8 +117,11 @@ public class PageControllerTest extends ManageTest {
         pageJson=result.getResponse().getContentAsString();
         //校验Page信息,并不能直接拿前后得到的Page对象进行比较
         //因为在后续返回的Page中并没有InstallWidget的信息，为null，与randomPage生成的Page肯定不一致
-        Page getPage = objectMapper.readValue(pageJson, Page.class);
-        Assert.assertTrue(page.getPageIdentity().equals(getPage.getPageIdentity()));
+        PageModel getPage = objectMapper.readValue(pageJson, PageModel.class);
+        assertThat(getPage)
+                .isEqualTo(model);
+
+//        Assert.assertTrue(page.getPageIdentity().equals(getPage.getPageIdentity()));
         //删除
         mockMvc.perform(delete("/manage/pages/{pageId}",pageInfo.getPageId()).session(session))
                 .andExpect(status().isAccepted());

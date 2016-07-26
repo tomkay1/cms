@@ -67,7 +67,7 @@ public class OwnerController extends CRUDController<Owner, Long, Void, Void> {
     }
 
     @Override
-    protected void prepareSave(Login login, Owner entity, Owner data, Void extra, RedirectAttributes attributes) throws RedirectException {
+    protected void prepareUpdate(Login login, Owner entity, Owner data, Void extra, RedirectAttributes attributes) throws RedirectException {
 
     }
 

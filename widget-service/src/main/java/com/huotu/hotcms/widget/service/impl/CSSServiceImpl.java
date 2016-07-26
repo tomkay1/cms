@@ -39,28 +39,27 @@ public class CSSServiceImpl implements CSSService {
     private static final Log log = LogFactory.getLog(CSSServiceImpl.class);
 
     @PostConstruct
-    public void init() {
+    public void init() throws Exception {
         //--case4-- mainColor为null生成的css是否符合与预期用户定义less样式
+        System.out.println(System.getenv("path"));
         ByteArrayOutputStream byteOut1 = new ByteArrayOutputStream();
-        try {
-            convertCss(new PageTheme() {
-                @Override
-                public String mainColor() {
-                    return null;
-                }
+        convertCss(new PageTheme() {
+            @Override
 
-                @Override
-                public Resource customLess() {
-                    String less = "@spanColor:#111;span{color:@spanColor}";
-                    return new ByteArrayResource(less.getBytes());
-                }
-            }, byteOut1);
-            String css = byteOut1.toString();
-            if (!css.contains("span") && !css.contains("color: #111")) {
-                throw new Exception("请安装nodeJs环境，否则可能会引起风险");
+            public String mainColor() {
+                return null;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+            @Override
+            public Resource customLess() {
+                String less = "@spanColor:#111;span{color:@spanColor}";
+                return new ByteArrayResource(less.getBytes());
+            }
+        }, byteOut1);
+        String css = byteOut1.toString();
+        if (!css.contains("span") && !css.contains("color: #111")) {
+//            throw new Exception("Not found in the nodeJs environment, may affect the system function" +
+//                    ",Please install nodeJs and add the less module for NodeJs");
         }
     }
 
@@ -117,7 +116,7 @@ public class CSSServiceImpl implements CSSService {
                     }
                     if (status != 0) {
                         //删除临时文件
-                        throw new IOException();
+                       // throw new IOException();
                     }
                     //读取临时文件写到输出流
                     Files.copy(cssPath, outputStream);

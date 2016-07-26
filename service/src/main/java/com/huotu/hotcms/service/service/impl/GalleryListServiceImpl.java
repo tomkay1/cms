@@ -9,7 +9,7 @@
 
 package com.huotu.hotcms.service.service.impl;
 
-import com.huotu.hotcms.service.entity.GalleryList;
+import com.huotu.hotcms.service.entity.GalleryItem;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.GalleryForeachParam;
 import com.huotu.hotcms.service.repository.GalleryListRepository;
 import com.huotu.hotcms.service.service.GalleryListService;
@@ -40,8 +40,8 @@ public class GalleryListServiceImpl implements GalleryListService {
 
 
     @Override
-    public Page<GalleryList> getPage(long ownerId, Long galleryId, int page, int pageSize) throws URISyntaxException {
-        Specification<GalleryList> specification = (root, query, cb) -> {
+    public Page<GalleryItem> getPage(long ownerId, Long galleryId, int page, int pageSize) throws URISyntaxException {
+        Specification<GalleryItem> specification = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(cb.equal(root.get("deleted").as(String.class), false));
             predicates.add(cb.equal(root.get("site").get("owner").get("id").as(Long.class), ownerId));
@@ -54,19 +54,19 @@ public class GalleryListServiceImpl implements GalleryListService {
 
 
     @Override
-    public Boolean saveGalleryList(GalleryList galleryList) {
-        galleryListRepository.save(galleryList);
+    public Boolean saveGalleryList(GalleryItem galleryItem) {
+        galleryListRepository.save(galleryItem);
         return true;
     }
 
     @Override
-    public GalleryList findGalleryListById(Long id) {
+    public GalleryItem findGalleryListById(Long id) {
         return galleryListRepository.findOne(id);
     }
 
     @Override
-    public Page<GalleryList> getGalleryList(GalleryForeachParam foreachParam) throws Exception {
-        Specification<GalleryList> specification = (root, query, cb) -> {
+    public Page<GalleryItem> getGalleryList(GalleryForeachParam foreachParam) throws Exception {
+        Specification<GalleryItem> specification = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(cb.equal(root.get("deleted").as(String.class), false));
             predicates.add(cb.equal(root.get("gallery").get("id").as(Long.class), foreachParam.getGalleryId()));

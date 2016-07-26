@@ -13,21 +13,21 @@ import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.common.PageType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
-import com.huotu.hotcms.service.entity.PageInfo;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.repository.AbstractContentRepository;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.OwnerRepository;
-import com.huotu.hotcms.service.repository.PageInfoRepository;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.InstalledWidget;
+import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.page.Layout;
-import com.huotu.hotcms.widget.page.Page;
 import com.huotu.hotcms.widget.page.PageElement;
+import com.huotu.hotcms.widget.page.PageModel;
+import com.huotu.hotcms.widget.repository.PageInfoRepository;
 import com.huotu.hotcms.widget.service.PageService;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import com.huotu.hotcms.widget.test.TestBase;
@@ -37,7 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.transaction.annotation.Isolation;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -54,6 +54,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 /**
  * <p>针对页面服务controller层{@link FrontController}的单元测试</p>
  */
+@Transactional
+@Rollback(true)
 public class TestFontController extends TestBase {
     @Autowired(required = false)
     protected MockHttpServletResponse response;
@@ -83,42 +85,49 @@ public class TestFontController extends TestBase {
      * 最基本的测试流
      */
     @Test
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     public void page() throws Exception {
         long contentId = 1L;
         String pagePath = "test";
         //构造数据
         pageInitData(contentId, pagePath);
-
+        MockHttpServletResponse response = mockMvc.perform(get("/_web/{pagePath}", pagePath)
+                .accept(MediaType.TEXT_HTML)).andDo(print()).andReturn().getResponse();
         //case 1存在的path
-        int code = mockMvc.perform(get("/_web/{pagePath}", pagePath)
-                .accept(MediaType.TEXT_HTML)).andDo(print()).andReturn().getResponse().getStatus();
-        assertThat(HttpStatus.SC_OK).as("存在的path").isEqualTo(code);
+        int code = response.getStatus();
+        assertThat(code).as("存在的path").isEqualTo(HttpStatus.SC_OK);
+        String html = response.getContentAsString();
+        PageInfo pageInfo = pageInfoRepository.findByPagePath(pagePath);
+        assertThat(html.contains(pageInfo.getTitle())).as("包含tilte").isEqualTo(true);
+
 
         //case 2不存在的path
         code = mockMvc.perform(get("/_web/{pagePath}", "1234")
                 .accept(MediaType.TEXT_HTML)).andDo(print()).andReturn().getResponse().getStatus();
-        assertThat(HttpStatus.SC_NOT_FOUND).as("不存在的path").isEqualTo(code);
+        assertThat(code).as("不存在的path").isEqualTo(HttpStatus.SC_NOT_FOUND);
 
         //case 3存在的contentId和存在的Path
         code = mockMvc.perform(get("/_web/{pagePath}/{contentId}", pagePath, contentId)
                 .accept(MediaType.TEXT_HTML)).andDo(print()).andReturn().getResponse().getStatus();
-        assertThat(HttpStatus.SC_OK).as("存在的contentId和存在的Path").isEqualTo(code);
+        assertThat(code).as("存在的contentId和存在的Path").isEqualTo(HttpStatus.SC_OK);
 
         //case 4不存在的contentId和不存在的path
         code = mockMvc.perform(get("/_web/{pagePath}/{contentId}", "sdfdsf", "1231")
                 .accept(MediaType.TEXT_HTML)).andDo(print()).andReturn().getResponse().getStatus();
-        assertThat(HttpStatus.SC_NOT_FOUND).as("不存在的contentId和不存在的path").isEqualTo(code);
+        assertThat(code).as("不存在的contentId和不存在的path").isEqualTo(HttpStatus.SC_NOT_FOUND);
+
 
         //case 5不存在的contentId和存在的path
         code = mockMvc.perform(get("/_web/{pagePath}/{contentId}", pagePath, "123")
                 .accept(MediaType.TEXT_HTML)).andDo(print()).andReturn().getResponse().getStatus();
-        assertThat(HttpStatus.SC_OK).as("不存在的contentId和存在的path").isEqualTo(code);
+        assertThat(code).as("不存在的contentId和存在的path").isEqualTo(HttpStatus.SC_OK);
 
     }
 
+
     public void pageInitData(Long contentId, String pagePath) {
         Owner owner = ownerRepository.findOne(1L);
+        if (owner == null)
+            owner = randomOwner();
         Site site = new Site();
         site.setOwner(owner);
         site.setName(UUID.randomUUID().toString());
@@ -175,15 +184,16 @@ public class TestFontController extends TestBase {
             properties.put("pagingHColor", "#000000");
             component.setProperties(properties);
             layoutElement.setElements(new PageElement[]{component});
-            Page page = new Page();
-            page.setTitle("test");
-            page.setPageIdentity(pageInfo.getPageId());
-            page.setElements(new PageElement[]{layoutElement});
+
+            PageModel pageModel = new PageModel();
+            pageModel.setElements(new Layout[]{layoutElement});
+            pageModel.setPageIdentity(pageInfo.getPageId());
+
             CMSContext.PutContext(request, response, site);
-            pageService.savePage(page, pageInfo.getPageId());
+
+            pageService.savePage(pageModel, pageInfo.getPageId());
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new IllegalStateException("查找控件列表失败");
+            throw new IllegalStateException("error", e);
         }
 
     }

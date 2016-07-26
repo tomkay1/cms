@@ -1,4 +1,13 @@
 <!doctype html>
+<!--
+  ~ 版权所有:杭州火图科技有限公司
+  ~ 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+  ~
+  ~ (c) Copyright Hangzhou Hot Technology Co., Ltd.
+  ~ Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+  ~ 2013-2016. All rights reserved.
+  -->
+
 <html>
 <head>
     <meta charset="utf-8">
@@ -41,11 +50,16 @@
             <a th:href="${request.rootUri}+'/brand'" title="品牌中心">品牌中心</a>&nbsp;><i class="jieshao">&nbsp;新闻资讯</i>
         </p>
         <p style="height:17px"></p>
-        <ul data-galleryList-foreach="galleryList" data-param-pagesize="8" >
-            <li style="float:left"><i class=" cj-font-c"><a th:href="${request.rootUri}+'/new/'+${galleryList.id}+'.html'"  data-th-text="${galleryList.id}">永春2009秋冬产品订货会圆满闭幕</a> </i></li>
-            <li style="float:right" class="cj-time-a" data-time-format="${galleryList.createTime}" data-param-format="yyyy-MM-dd">2015-07-25</li>
+        <ul data-galleryItem-foreach="galleryItem" data-param-pagesize="8">
+            <li style="float:left"><i class=" cj-font-c"><a
+                    th:href="${request.rootUri}+'/new/'+${galleryItem.id}+'.html'" data-th-text="${galleryItem.id}">永春2009秋冬产品订货会圆满闭幕</a>
+            </i></li>
+            <li style="float:right" class="cj-time-a" data-time-format="${galleryItem.createTime}"
+                data-param-format="yyyy-MM-dd">2015-07-25
+            </li>
             <p style="clear:both"></p>
-            <img src="http://www.test.com/images/c1.jpg" data-th-src="${galleryList.thumbUri}" style="width:233px;height:233px;"/>
+            <img src="http://www.test.com/images/c1.jpg" data-th-src="${galleryItem.thumbUri}"
+                 style="width:233px;height:233px;"/>
             <p style="clear:both;margin-bottom: 25px;" class="xiannext-b"></p>
         </ul>
         <p style="clear:both;"></p>

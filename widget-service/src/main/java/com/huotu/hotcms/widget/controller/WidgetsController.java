@@ -12,9 +12,6 @@ package com.huotu.hotcms.widget.controller;
 import com.alibaba.fastjson.JSONArray;
 import org.springframework.stereotype.Controller;
 
-/**
- * Created by elvis on 2016/6/7.
- */
 @Controller
 public interface WidgetsController {
 

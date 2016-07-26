@@ -15,7 +15,8 @@ package com.huotu.hotcms.service.common;
  * @author CJ
  */
 public enum ContentType implements CommonEnum {
-    Article(0, "文章", "富文本内容"), Link(1, "链接", "链接内容"), Video(2, "视频", "视频内容"), Notice(3, "公告", "类似文章内容"), Gallery(4, "图库", "图片内容"), Download(5, "下载", "任意提供下载的内容");
+    Article(0, "文章", "富文本内容"), Link(1, "链接", "链接内容"), Video(2, "视频", "视频内容")
+    , Notice(3, "公告", "类似文章内容"), Gallery(4, "图库", "图片内容"), Download(5, "下载", "任意提供下载的内容");
 
     private final int code;
     private final String value;

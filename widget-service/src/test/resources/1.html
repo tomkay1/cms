@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!--
+  ~ 版权所有:杭州火图科技有限公司
+  ~ 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+  ~
+  ~ (c) Copyright Hangzhou Hot Technology Co., Ltd.
+  ~ Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+  ~ 2013-2016. All rights reserved.
+  -->
+
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Document</title>
+
+    <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" th:href="@{${resourceKey}/${pageId}.css}">
+
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div>
+                <div>分页控件浏览视图</div>
+                <a class="59d6efb0320240039d69ed2765b80d3b">首页</a>
+                <a class="59d6efb0320240039d69ed2765b80d3b">上一页</a>
+                <a class="59d6efb0320240039d69ed2765b80d3b">[1]</a>
+                <a class="59d6efb0320240039d69ed2765b80d3b">[2]</a>
+                <a class="59d6efb0320240039d69ed2765b80d3b">下一页</a>
+                <a class="59d6efb0320240039d69ed2765b80d3b">尾页</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="http://resali.huobanplus.com/cdn/jquery/1.9.1/jquery.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bootstrap/3.3.6/bootstrap.min.js"></script>
+</html>

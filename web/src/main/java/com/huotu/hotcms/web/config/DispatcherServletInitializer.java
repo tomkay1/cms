@@ -16,10 +16,6 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 
 import javax.servlet.Filter;
 
-
-/**
- * Created by Administrator on 2015/12/16.
- */
 public class DispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
@@ -40,7 +36,7 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
 
     @Override
     protected Filter[] getServletFilters() {
-        return new Filter[]{new CMSFilter(), new RouteFilter(),new CharacterEncodingFilter("utf-8")};
+        return new Filter[]{new CharacterEncodingFilter("utf-8"), new CMSFilter(), new RouteFilter()};
     }
 
 

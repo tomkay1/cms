@@ -23,14 +23,14 @@
 </div>
 
 <div class="contentpanel">
-    <form id="noticeForm" action="index.html" method="POST" th:action="@{/manage/category}">
+    <form id="noticeForm" action="index.html" method="POST" th:action="@{/manage/notice}">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="panel-btns">
                     <a href="" class="panel-close">&times;</a>
                     <a href="" class="minimize">&minus;</a>
                 </div><!-- panel-btns -->
-                <h3 class="panel-title">新增数据源</h3>
+                <h3 class="panel-title">新增公告数据源</h3>
                 <p>父级数据源可以不选择,按父级数据源搜索将可以搜索到相关所有数据内容</p>
             </div>
             <div class="panel-body">
@@ -40,8 +40,16 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">名称</label>
                         <div class="col-sm-2">
-                            <input name="name" title="名称" type="text" placeholder="数据源的名称"
+                            <input name="categoryName" title="名称" type="text" placeholder="数据源的名称"
                                    class="form-control"/>
+                        </div>
+                        <label class="col-sm-2 control-label">父级</label>
+                        <div class="col-sm-2">
+                            <select name="parentCategoryId" title="父级数据源" class="form-control" >
+                                <option th:each="category:${categories}" th:value="${category.id}" th:text="${category.name}">无</option>
+                                <option th:remove="all">新闻咨询</option>
+                                <option th:remove="all">成功案例</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -59,7 +67,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">公告内容</label>
                         <div class="col-sm-10">
-                            <textarea class="form-control" rows="4" title="公告内容" name="description"></textarea>
+                            <textarea class="form-control" rows="4" title="公告内容" name="content"></textarea>
                         </div>
                     </div>
                 </div>
@@ -92,7 +100,7 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th>名称</th>
+                        <th>标题</th>
                         <th>创建时间</th>
                         <th>模型</th>
                         <th>父级</th>
@@ -101,18 +109,18 @@
                     </thead>
                     <!--odd even-->
                     <tbody>
-                    <!--/*@thymesVar id="list" type="java.lang.Iterable<com.huotu.hotcms.service.entity.login.Owner>"*/-->
-                    <tr th:each="owner,stats:${list}" class="odd" th:class="${stats.odd?'odd':'even'}"
-                        th:attr="data-id=${owner.id}" data-id="456">
-                        <td th:text="${owner.username}">新闻资讯</td>
-                        <td>2016 06-20</td>
-                        <td th:text="${owner.customerId}">文章</td>
-                        <td>无</td>
+                    <!--/*@thymesVar id="list" type="java.lang.Iterable<com.huotu.hotcms.service.entity.Notice>"*/-->
+                    <tr th:each="notice,stats:${list}" class="odd" th:class="${stats.odd?'odd':'even'}"
+                        th:attr="data-id=${notice.id}" data-id="456">
+                        <td th:text="${notice.title}">新闻资讯</td>
+                        <td th:text="${{notice.createTime}}">2016 06-20</td>
+                        <td>公告</td>
+                        <td th:text="${notice.category.parent.name}">无</td>
                         <td class="center">
-                            <a href="index.html" th:href="@{/manage/supper/as/${owner.id}}" target="_top" title="管理">
+                            <a href="noticeOpen.html" th:href="@{/manage/notice/${id}(id=${notice.id})}" target="_top" title="管理">
                                 <i class="fa fa-pencil"></i>
                             </a>
-                            <a href="index.html" class="delete" th:href="@{/manage/page/{id}/delete(id=${owner.id})}"
+                            <a href="notice.html" class="delete" th:href="@{/manage/notice/{id}/delete(id=${notice.id})}"
                                target="_top" title="删除">
                                 <i class="fa fa-trash-o"></i>
                             </a>
@@ -178,6 +186,6 @@
 <div ewp:replace="fragments/frame.html::#messageSection"></div>
 <script src="../../../public/bracket/js/frame.js" ewp:src="/bracket/js/frame.js"></script>
 <script src="../../../public/bracket/js/frame_custom.js" ewp:src="/bracket/js/frame_custom.js"></script>
-<script src="../../../public/js/content.js" ewp:src="/js/owner.js"></script>
+<script src="../../../public/js/content.js" ewp:src="/js/content.js"></script>
 </body>
 </html>

@@ -10,9 +10,9 @@
 package com.huotu.cms.manage.interceptor;
 
 import com.huotu.cms.manage.service.SecurityService;
-import com.huotu.hotcms.service.common.ConfigInfo;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
+import com.huotu.hotcms.service.service.ConfigInfo;
 import com.huotu.hotcms.service.service.SiteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;

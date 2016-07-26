@@ -23,10 +23,18 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
 @Configuration
-@ComponentScan({"com.huotu.hotcms.service", "com"})
+@ComponentScan({
+        "com.huotu.hotcms.service.converter"
+        , "com.huotu.hotcms.service.interceptor"
+        , "com.huotu.hotcms.service.service"
+        , "com.huotu.hotcms.service.thymeleaf"
+        , "com.huotu.hotcms.service.widget.service"
+        , "com.huotu.hotcms.service.filter"
+})
 @EnableTransactionManagement
-@ImportResource({"classpath:spring_dev.xml","classpath:spring_prod.xml"})
-@Import({CommonClientSpringConfig.class, MinMallSDKConfig.class, ResourceSpringConfig.class})
+@ImportResource({"classpath:spring_dev.xml", "classpath:spring_prod.xml"})
+@Import({CommonClientSpringConfig.class, MinMallSDKConfig.class, ResourceSpringConfig.class, JpaConfig.class,})
+//@EnableWebMvc
 public class ServiceConfig {
 
     @Bean

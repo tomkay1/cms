@@ -7,16 +7,9 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.hotcms.widget.controller;
-
-import com.alibaba.fastjson.JSONArray;
-import org.springframework.stereotype.Controller;
-
-@Controller
-public interface WidgetsController {
-
-
-    JSONArray getWidgets(String ownerId);
-
-
-}
+/**
+ * 为了实现service需要增加的一些MVC拦截器
+ *
+ * @author CJ
+ */
+package com.huotu.hotcms.service.interceptor;

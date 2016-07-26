@@ -18,6 +18,7 @@ import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.ComponentProperties;
+import com.huotu.hotcms.widget.WidgetResolveService;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.page.Layout;
@@ -37,6 +38,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,6 +64,10 @@ public class PreviewTest extends ManageTest {
     private WidgetFactoryService widgetFactoryService;
     @Autowired
     private WidgetInfoRepository widgetInfoRepository;
+    @Autowired
+    private WidgetResolveService widgetResolveService;
+    @Autowired
+    private HttpServletResponse response;
 
     // 需要应用跟web项目一样的filter
     @Override
@@ -107,6 +113,12 @@ public class PreviewTest extends ManageTest {
 
         String linkName = randomDomain();//给链接的名字
         addLinkToPage(indexPage, linkName, anotherPage);
+//
+//        Component debugIt = (Component) indexPage.getLayout().getElements()[0].getElements()[0];
+//        String previeCode = widgetResolveService.previewHTML(debugIt.getInstalledWidget().getWidget(),debugIt.getStyleId()
+//                ,CMSContext.RequestContext(),debugIt.getProperties());
+//        System.out.println(previeCode);
+
 //        ObjectMapper objectMapper=new ObjectMapper();
 //        indexPage.setPageSetting(objectMapper.writeValueAsBytes(randomPage()));
 
@@ -130,6 +142,7 @@ public class PreviewTest extends ManageTest {
 
         System.out.println(driver.getPageSource());
 
+
         assertThat(driver.getTitle())
                 .isEqualTo(anotherPage.getTitle());
     }
@@ -138,7 +151,7 @@ public class PreviewTest extends ManageTest {
         try {
             CMSContext.RequestContext();
         } catch (IllegalStateException ignored) {
-            CMSContext.PutContext(request, null, page.getSite());
+            CMSContext.PutContext(request, response, page.getSite());
         }
         pageService.savePage(null, page.getPageId());
     }

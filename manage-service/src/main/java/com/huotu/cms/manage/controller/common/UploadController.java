@@ -10,9 +10,9 @@
 package com.huotu.cms.manage.controller.common;
 
 import com.huotu.cms.manage.common.StringUtil;
-import com.huotu.hotcms.service.common.ConfigInfo;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.model.Result;
+import com.huotu.hotcms.service.service.ConfigInfo;
 import com.huotu.hotcms.service.util.HttpUtils;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.service.util.ResultView;

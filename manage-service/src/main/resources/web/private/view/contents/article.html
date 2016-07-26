@@ -139,7 +139,7 @@
                         <td th:text="${article.title}">新闻资讯</td>
                         <td th:text="${{article.createTime}}">2016 06-20</td>
                         <td th:text="${article.type}">普通文章</td>
-                        <td th:text="${article.category.parent.name}">无</td>
+                        <td th:text="${article.category.parent==null?'无':article.category.parent.name}">无</td>
                         <td class="center">
                             <a href="articleOpen.html" th:href="@{/manage/article/{id}(id=${article.id})}" target="_top" title="管理">
                                 <i class="fa fa-pencil"></i>
@@ -188,7 +188,10 @@
             </div><!-- table-responsive -->
         </div>
     </div>
-
+    <script th:inline="javascript">
+        var uploadFileUrl = /*[[@{/manage/upload/fine}]]*/ null;
+        var customerIdChangeUrl = /*[[@{/manage/supper/owner/$1/customerId}]]*/ null;
+    </script>
 </div><!-- contentpanel -->
 <script src="http://resali.huobanplus.com/cdn/jquery/1.9.1/jquery.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-ui-1.10.3.min.js"></script>

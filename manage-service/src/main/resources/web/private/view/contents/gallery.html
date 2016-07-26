@@ -120,7 +120,7 @@
                         <td th:text="${gallery.title}">新闻资讯</td>
                         <td th:text="${{gallery.createTime}}">2016 06-20</td>
                         <td>图库</td>
-                        <td th:text="${gallery.category.parent.name}">无</td>
+                        <td th:text="${gallery.category.parent==null?'无':article.category.parent.name}">无</td>
                         <td class="center">
                             <a href="galleryOpen.html" th:href="@{/manage/gallery/{id}(id=${gallery.id})}" target="_top" title="管理">
                                 <i class="fa fa-pencil"></i>

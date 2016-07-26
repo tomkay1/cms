@@ -81,7 +81,7 @@ var editFunc = {
                 }
             });
             if (e == 12 && !n) {
-                $(this).parent().next().children().attr('data-layout', r.join('-'));
+                $(this).parent().next().children().attr('data-layout', r.join(','));
                 $(this).parent().next().children().html(t);
                 $(this).parent().prev().show()
             } else {
@@ -101,10 +101,11 @@ var editFunc = {
     settingElement: function () {
         $('.pageHTML').on("click", ".setting", function () {
             $('.modal-backdrop').fadeIn();
-            $('#configuration').show();
+            var ele = $('#configuration');
+            ele.show();
             var id = $(this).data('target');
             $('#' + id).show();
-            $('#configuration').stop().animate({
+            ele.stop().animate({
                 right: 0
             },500);
             createStore($(this));
@@ -112,8 +113,9 @@ var editFunc = {
     },
     closeConfig: function () {
         $('#cancelBtn').click(function () {
-            var w = $('#configuration').width();
-            $('#configuration').stop().animate({
+            var ele = $('#configuration');
+            var w = ele.width();
+            ele.stop().animate({
                 right: -w
             },500, function () {
                 $('.common-conf').hide();
@@ -167,12 +169,13 @@ var Page = {
             $.each(result, function (i, v) {
                 dynamicLoading.js(v.scriptHref);
                 // 组件列表渲染
-                $('#widgetLists').append(Page.widgetHTML.join(' '));
-                $('#widgetLists .setting').eq(i).attr('data-target', v.identity);
-                $('#widgetLists .preview p').eq(i).html(v.locallyName);
-                $('#widgetLists .view').eq(i).append(v.styles[0].previewHTML);
-                $('#widgetLists .view').eq(i).children().eq(0).attr('data-widgetidentity', v.identity);
-                $('#widgetLists .view').eq(i).children().eq(0).attr('data-styleid', 0);
+                var element = $('#widgetLists');
+                element.append(Page.widgetHTML.join('\n'));
+                element.find('.setting').eq(i).attr('data-target', v.identity);
+                element.find('.preview p').eq(i).html(v.locallyName);
+                element.find('.view').eq(i).append(v.styles[0].previewHTML);
+                element.find('.view').eq(i).children().eq(0).attr('data-widgetidentity', v.identity);
+                element.find('.view').eq(i).children().eq(0).attr('data-styleid', 0);
                 //编辑器视图渲染
                 var child = $('<div class="common-conf"></div>');
                 child.attr('id', v['identity']);

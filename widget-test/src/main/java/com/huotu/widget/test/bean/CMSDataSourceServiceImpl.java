@@ -13,7 +13,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Gallery;
-import com.huotu.hotcms.service.entity.GalleryList;
+import com.huotu.hotcms.service.entity.GalleryItem;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.model.CollapseArtcleCategory;
 import com.huotu.hotcms.service.model.NavbarPageInfoModel;
@@ -30,7 +30,7 @@ import java.util.List;
 public class CMSDataSourceServiceImpl implements CMSDataSourceService {
 
     @Override
-    public List<Gallery> findByGallery() {
+    public List<Gallery> findGallery() {
         List<Gallery> list = new ArrayList<>();
         Gallery gallery1 = new Gallery();
         gallery1.setTitle("新闻图片列表");
@@ -44,25 +44,25 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     }
 
     @Override
-    public List<GalleryList> findByGalleryList(Long galleryId) {
+    public List<GalleryItem> findGalleryItem(Long galleryId) {
         Gallery gallery = new Gallery();
         gallery.setId(galleryId);
-        List<GalleryList> list = new ArrayList<>();
-        GalleryList galleryList1 = new GalleryList();
-        galleryList1.setGallery(gallery);
-        galleryList1.setId(1L);
-        galleryList1.setThumbUri("http://placehold.it/106x82?text=galleryList1");
-        GalleryList galleryList2 = new GalleryList();
-        galleryList2.setGallery(gallery);
-        galleryList2.setId(2L);
-        galleryList2.setThumbUri("http://placehold.it/106x82?text=galleryList2");
-        list.add(galleryList1);
-        list.add(galleryList2);
+        List<GalleryItem> list = new ArrayList<>();
+        GalleryItem galleryItem1 = new GalleryItem();
+        galleryItem1.setGallery(gallery);
+        galleryItem1.setId(1L);
+        galleryItem1.setThumbUri("http://placehold.it/106x82?text=galleryItem1");
+        GalleryItem galleryItem2 = new GalleryItem();
+        galleryItem2.setGallery(gallery);
+        galleryItem2.setId(2L);
+        galleryItem2.setThumbUri("http://placehold.it/106x82?text=galleryItem2");
+        list.add(galleryItem1);
+        list.add(galleryItem2);
         return list;
     }
 
     @Override
-    public List<Category> findByLinkCategory() {
+    public List<Category> findLinkCategory() {
         Category category1 = new Category();
         category1.setId(1L);
         category1.setContentType(ContentType.Link);
@@ -79,7 +79,7 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     }
 
     @Override
-    public List<Link> findByLinks(Long categoryId) {
+    public List<Link> findLink(Long categoryId) {
         List<Link> list = new ArrayList<>();
         Link link1 = new Link();
         link1.setId(1L);
@@ -97,7 +97,7 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     }
 
     @Override
-    public List<Category> findByParentArticleCategorys() {
+    public List<Category> findParentArticleCategorys() {
         Category category1 = new Category();
         category1.setId(666L);
         category1.setContentType(ContentType.Article);
@@ -114,7 +114,7 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     }
 
     @Override
-    public String findByChildrenArticleCategory(Long parentId) {
+    public String findChildrenArticleCategory(Long parentId) {
         Category parent = new Category();
         parent.setId(parentId);
         parent.setName("文章类型1");

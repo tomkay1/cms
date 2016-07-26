@@ -29,7 +29,7 @@ import java.time.LocalDateTime;
 @Table(name = "cms_galleryList")
 @Getter
 @Setter
-public class GalleryList implements Auditable,Copyable<GalleryList> {
+public class GalleryItem implements Auditable, Copyable<GalleryItem> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -92,25 +92,25 @@ public class GalleryList implements Auditable,Copyable<GalleryList> {
     private LocalDateTime updateTime;
 
     @Override
-    public GalleryList copy() {
-        GalleryList galleryList=new GalleryList();
-        galleryList.setDeleted(isDeleted());
-        galleryList.setSerial(serial);
-        galleryList.setOrderWeight(orderWeight);
-        galleryList.setThumbUri(thumbUri);
-        galleryList.setCreateTime(LocalDateTime.now());
-        galleryList.setGallery(gallery);
-        galleryList.setSite(site);
-        galleryList.setUpdateTime(LocalDateTime.now());
-        return galleryList;
+    public GalleryItem copy() {
+        GalleryItem galleryItem = new GalleryItem();
+        galleryItem.setDeleted(isDeleted());
+        galleryItem.setSerial(serial);
+        galleryItem.setOrderWeight(orderWeight);
+        galleryItem.setThumbUri(thumbUri);
+        galleryItem.setCreateTime(LocalDateTime.now());
+        galleryItem.setGallery(gallery);
+        galleryItem.setSite(site);
+        galleryItem.setUpdateTime(LocalDateTime.now());
+        return galleryItem;
     }
 
     @Override
-    public GalleryList copy(Site site, Category category) {
-        GalleryList galleryList=copy();
-        galleryList.setSerial(SerialUtil.formatSerial(site));
-        galleryList.setSite(site);
-        return galleryList;
+    public GalleryItem copy(Site site, Category category) {
+        GalleryItem galleryItem = copy();
+        galleryItem.setSerial(SerialUtil.formatSerial(site));
+        galleryItem.setSite(site);
+        return galleryItem;
     }
 
 }

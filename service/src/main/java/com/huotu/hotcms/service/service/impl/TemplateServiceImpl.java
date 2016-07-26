@@ -13,7 +13,7 @@ import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Download;
 import com.huotu.hotcms.service.entity.Gallery;
-import com.huotu.hotcms.service.entity.GalleryList;
+import com.huotu.hotcms.service.entity.GalleryItem;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Notice;
 import com.huotu.hotcms.service.entity.Site;
@@ -166,14 +166,14 @@ public class TemplateServiceImpl implements TemplateService {
                 deleteStaticResourceByPath(download.getDownloadUrl());
         }
         List<Gallery> galleries = galleryRepository.findByCategory(category);
-        List<GalleryList> galleryLists;
+        List<GalleryItem> galleryItems;
         for (Gallery gallery : galleries) {
             if (!StringUtils.isEmpty(gallery.getThumbUri()))
                 deleteStaticResourceByPath(gallery.getThumbUri());
-            galleryLists = galleryListRepository.findByGallery(gallery);
-            for (GalleryList galleryList : galleryLists) {
-                if (!StringUtils.isEmpty(galleryList.getThumbUri()))
-                    deleteStaticResourceByPath(galleryList.getThumbUri());
+            galleryItems = galleryListRepository.findByGallery(gallery);
+            for (GalleryItem galleryItem : galleryItems) {
+                if (!StringUtils.isEmpty(galleryItem.getThumbUri()))
+                    deleteStaticResourceByPath(galleryItem.getThumbUri());
             }
         }
         List<Link> links = linkRepository.findByCategory(category);
@@ -286,21 +286,21 @@ public class TemplateServiceImpl implements TemplateService {
             //图库模型复制
             List<Gallery> galleries = galleryRepository.findByCategory(templateCategory);
             Gallery g;
-            GalleryList galleryList;
-            List<GalleryList> galleryLists;
+            GalleryItem galleryItem;
+            List<GalleryItem> galleryItems;
             for (Gallery gallery : galleries) {
                 g = gallery.copy(customerSite, copyCategory);
                 if (!StringUtils.isEmpty(gallery.getThumbUri()))
                     g.setThumbUri(copyStaticResource(gallery.getThumbUri()));
                 g = abstractContentRepository.save(g);
                 //图库集合复制
-                galleryLists = galleryListRepository.findByGallery(gallery);
-                for (GalleryList gl : galleryLists) {
-                    galleryList = gl.copy(customerSite, copyCategory);
-                    galleryList.setGallery(g);
-                    if (!StringUtils.isEmpty(galleryList.getThumbUri()))
-                        galleryList.setThumbUri(copyStaticResource(galleryList.getThumbUri()));
-                    galleryListRepository.save(galleryList);
+                galleryItems = galleryListRepository.findByGallery(gallery);
+                for (GalleryItem gl : galleryItems) {
+                    galleryItem = gl.copy(customerSite, copyCategory);
+                    galleryItem.setGallery(g);
+                    if (!StringUtils.isEmpty(galleryItem.getThumbUri()))
+                        galleryItem.setThumbUri(copyStaticResource(galleryItem.getThumbUri()));
+                    galleryListRepository.save(galleryItem);
                 }
             }
             //链接模型复制

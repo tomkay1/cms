@@ -9,18 +9,13 @@
 
 package com.huotu.hotcms.service.service;
 
-/**
- * Created by chendeyu on 2016/1/10.
- */
-
-import com.huotu.hotcms.service.entity.GalleryList;
+import com.huotu.hotcms.service.entity.GalleryItem;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.GalleryForeachParam;
 import org.springframework.data.domain.Page;
 
 import java.net.URISyntaxException;
 
 public interface GalleryListService {
-
 
     /**
      * 获取gallery的分页
@@ -32,11 +27,11 @@ public interface GalleryListService {
      * @return
      * @throws URISyntaxException
      */
-    Page<GalleryList> getPage(long ownerId, Long galleryId, int page, int pageSize) throws URISyntaxException;
+    Page<GalleryItem> getPage(long ownerId, Long galleryId, int page, int pageSize) throws URISyntaxException;
 
-    Boolean saveGalleryList(GalleryList galleryList);
+    Boolean saveGalleryList(GalleryItem galleryItem);
 
-    GalleryList findGalleryListById(Long id);
+    GalleryItem findGalleryListById(Long id);
 
-    Page<GalleryList> getGalleryList(GalleryForeachParam foreachParam) throws Exception;
+    Page<GalleryItem> getGalleryList(GalleryForeachParam foreachParam) throws Exception;
 }

@@ -24,7 +24,7 @@ import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Download;
 import com.huotu.hotcms.service.entity.Gallery;
-import com.huotu.hotcms.service.entity.GalleryList;
+import com.huotu.hotcms.service.entity.GalleryItem;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.Template;
@@ -356,11 +356,11 @@ public abstract class ManageTest extends SpringWebTest {
         return downloadRepository.saveAndFlush(download);
     }
 
-    protected GalleryList randomGalleryList(Gallery gallery) {
-        GalleryList galleryList = new GalleryList();
-        galleryList.setGallery(gallery);
-        galleryList.setCreateTime(LocalDateTime.now());
-        return galleryListRepository.saveAndFlush(galleryList);
+    protected GalleryItem randomGalleryList(Gallery gallery) {
+        GalleryItem galleryItem = new GalleryItem();
+        galleryItem.setGallery(gallery);
+        galleryItem.setCreateTime(LocalDateTime.now());
+        return galleryListRepository.saveAndFlush(galleryItem);
     }
 
     protected Gallery randomGallery(Category category) {

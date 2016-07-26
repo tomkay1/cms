@@ -17,6 +17,7 @@ public class CMSDataSourceController {
      * 根据parent 的contentType 来决定查询的数据类型{Link@CMSDataSourceService}
      * @param parentId 数据源id
      * @return json 返回当前parentId 的所有子级元素
+     *          例如{code=200,message="Success",data=[...]},{code=403,message="fail",data=[]}
      */
     @RequestMapping(value = "/CMSDataSource/{parentId}")
     public void findByAllChildren(Long parentId, Model model, HttpServletResponse response){

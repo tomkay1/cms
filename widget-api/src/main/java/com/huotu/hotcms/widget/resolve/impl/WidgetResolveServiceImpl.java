@@ -109,13 +109,15 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
             //是一个布局界面
             Layout layout = ((Layout) pageElement);
             String[] columns = layout.getValue().split(",");
-            PageElement[] childPageElements = layout.getElements();
+            PageElement[][] childPageElements = layout.getElementGroups();
             for (int i = 0, l = columns.length; i < l; i++) {
                 cmsContext.updateNextBootstrapLayoutColumn(Integer.parseInt(columns[i]));
                 className = cmsContext.getNextBootstrapClass();
                 writer.append("<div class=\"").append(className).append("\">");
                 if (childPageElements != null && childPageElements.length >= 0 && i < childPageElements.length) {
-                    pageElementHTML(childPageElements[i], cmsContext, writer);
+                    for (PageElement pageElement1 : childPageElements[i]) {
+                        pageElementHTML(pageElement1, cmsContext, writer);
+                    }
                 }
                 writer.append("</div>");
             }
@@ -165,12 +167,8 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
         if (pageElement instanceof Layout) {
             //是一个布局界面
             Layout layout = ((Layout) pageElement);
-            String[] columns = layout.getValue().split(",");
-            PageElement[] childPageElements = layout.getElements();
-            for (int i = 0, l = columns.length; i < l; i++) {
-                if (childPageElements != null && childPageElements.length >= 0 && i < childPageElements.length) {
-                    componentCSS(cmsContext, childPageElements[i], out);
-                }
+            for (PageElement pageElement1 : layout.elements()) {
+                componentCSS(cmsContext, pageElement1, out);
             }
         } else if (pageElement instanceof Component) {
             //是一个组件

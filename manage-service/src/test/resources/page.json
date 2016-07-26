@@ -1,33 +1,52 @@
 {
-  "pageIdentity": "1",
-  "title": "81b20c9d-12d3-4a2a-a3c2-82f5fd6dd26e",
-  "elements": [
+  "root": [
     {
       "layout": {
-        "value": "12",
-        "elements": [
-          {
-            "layout": {
-              "value": "4,4,4",
-              "elements": [
-                {
-                  "component": {
-                    "widgetIdentity": "df65a166-c7ca-4ff9-a082-02c3f0377d84",
-                    "styleId": "a0752249-0020-4c6d-b5df-0e4c534ff114",
-                    "properties": {
-                      "iQ": "3dcb7fbd-f891-4cf3-b234-5a32b378b605"
-                    }
-                  }
+        "value": "7,2,3",
+        "elementGroups": [
+          [
+            {
+              "component": {
+                "widgetIdentity": "6aae7fd8-9e39-4422-b98d-31827779bb76",
+                "id": "6b49c96f-3839-47ae-890c-af601bad50bf",
+                "styleClassNames": null,
+                "styleId": null,
+                "properties": {
+                  "Qxh": "df2008cd-c12c-4653-a014-fd6b4f96d72d",
+                  "TestArray": [
+                    "333c7d41-4c3f-4906-9eb9-a84639023fa1",
+                    "674a074c-863b-45f5-bc88-18b2f5e8ed8d",
+                    "483fa9a5-8b11-4e54-9a4b-318576771813"
+                  ]
                 },
-                {
-                  "empty": {}
-                },
-                {
-                  "empty": {}
-                }
-              ]
+                "previewHTML": "a7f009a9-265b-4ea5-9376-184003457f9d"
+              }
             }
-          }
+          ],
+          [
+            {
+              "component": {
+                "widgetIdentity": "996fceed-9484-4cf2-84bc-997bea7a39cc",
+                "id": "47f23cb3-0a69-44d8-b556-7d0fbb7cf835",
+                "styleClassNames": null,
+                "styleId": null,
+                "properties": {
+                  "TestArray": [
+                    "72136ea7-8da1-4dfc-ba25-f763e0de5ac7",
+                    "426778bd-0e5e-4da3-9e8f-80fc8cd21ff7",
+                    "7df07d0f-78ad-49bf-8c90-57f667e5074b"
+                  ],
+                  "Cqx": "e92e62cc-fd23-43b1-acca-148df30d0eda"
+                },
+                "previewHTML": "9860cdbe-a54b-4d03-abdd-f349c09344f2"
+              }
+            }
+          ],
+          [
+            {
+              "empty": {}
+            }
+          ]
         ]
       }
     }

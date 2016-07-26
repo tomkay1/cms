@@ -21,6 +21,7 @@ import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.PageElement;
+import com.huotu.hotcms.widget.page.PageLayout;
 import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
 import com.huotu.hotcms.widget.service.PageService;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
@@ -58,10 +59,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-
-/**
- * Created by lhx on 2016/6/2.
- */
 @Service
 public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLocateService {
 
@@ -272,11 +269,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
             if (pageList != null && pageList.size() > 0) {
                 for (PageInfo page : pageList) {
                     //检查所有界面使用该组件的参数是否合法，如果不合法添加到不支持的界面中
-                    PageElement[] elements;
-                    if (page.getLayout() != null)
-                        elements = page.getLayout().getElements();
-                    else
-                        elements = new PageElement[0];
+                    Layout[] elements = PageLayout.NoNullLayout(page.getLayout());
                     Set<Component> notSupportComponent = new HashSet<>();
                     for (PageElement element : elements) {
                         primarUtil(element, installedWidget, notSupportComponent, supportPage, page);
@@ -330,7 +323,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
             Component component = (Component) pageElement;
             component.setInstalledWidget(findWidget(component.getWidgetIdentity()));
             try {
-                if ( component.getInstalledWidget()!=null) {
+                if (component.getInstalledWidget() != null) {
                     Widget widget1 = component.getInstalledWidget().getWidget();
                     Widget widget2 = installedWidget.getWidget();
                     //同一个控件不同版本才进行验证
@@ -347,9 +340,8 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
             }
         } else if (pageElement instanceof Layout) {
             Layout layout = (Layout) pageElement;
-            for (PageElement element : layout.getElements()) {
+            for (PageElement element : layout.elements())
                 primarUtil(element, installedWidget, notSupportComponent, supportPage, page);
-            }
         }
     }
 

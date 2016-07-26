@@ -37,8 +37,10 @@ import java.util.Objects;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Component implements PageElement {
 
+
     @JsonIgnore
     private static final Log log = LogFactory.getLog(Component.class);
+    private static final long serialVersionUID = 2465181654018260345L;
 
     /**
      * 语义等同{@link WidgetLocateService#findWidget(String)}中的identify

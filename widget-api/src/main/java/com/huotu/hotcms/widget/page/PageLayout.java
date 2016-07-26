@@ -36,22 +36,35 @@ public class PageLayout implements Serializable {
 
     private static final long serialVersionUID = 5975200980037195706L;
 
+    private static final Layout[] VoidLayouts = new Layout[0];
     /**
      * 作为页面它只可拥有布局,不可以直接拥有组件。
      */
     @JacksonXmlElementWrapper(useWrapping = false)
-    private Layout[] elements;
+    private Layout[] root;
+
+    /**
+     * @param pageLayout 页面布局
+     * @return 一个不可能为null的布局数组
+     */
+    public static Layout[] NoNullLayout(PageLayout pageLayout) {
+        if (pageLayout == null)
+            return VoidLayouts;
+        if (pageLayout.root == null)
+            return VoidLayouts;
+        return pageLayout.root;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof PageLayout)) return false;
         PageLayout that = (PageLayout) o;
-        return Arrays.equals(elements, that.elements);
+        return Arrays.equals(root, that.root);
     }
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(elements);
+        return Arrays.hashCode(root);
     }
 }

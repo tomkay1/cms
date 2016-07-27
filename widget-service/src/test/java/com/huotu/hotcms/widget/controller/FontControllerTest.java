@@ -26,6 +26,7 @@ import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.PageElement;
+import com.huotu.hotcms.widget.page.PageLayout;
 import com.huotu.hotcms.widget.page.PageModel;
 import com.huotu.hotcms.widget.repository.PageInfoRepository;
 import com.huotu.hotcms.widget.service.PageService;
@@ -50,13 +51,14 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * <p>针对页面服务controller层{@link FrontController}的单元测试</p>
  */
 @Transactional
-@Rollback(true)
-public class TestFontController extends TestBase {
+@Rollback
+public class FontControllerTest extends TestBase {
     @Autowired(required = false)
     protected MockHttpServletResponse response;
 
@@ -81,6 +83,26 @@ public class TestFontController extends TestBase {
 
     @Autowired
     private SiteService siteService;
+
+    /**
+     * 预览css的测试
+     */
+    @Test
+    public void previewCSS() throws Exception {
+        //找一个不存在的Page
+        long noExistingPage = Math.abs(random.nextLong());
+        while (pageInfoRepository.findOne(noExistingPage) != null)
+            noExistingPage = Math.abs(random.nextLong());
+
+        mockMvc.perform(get("/preview/{pageId}/1.css", String.valueOf(noExistingPage)))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+
+        //建立一个Page
+        PageInfo pageInfo = new PageInfo();
+        PageLayout layout = randomPageLayout();
+    }
+
     /**
      * 最基本的测试流
      */

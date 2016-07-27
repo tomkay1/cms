@@ -101,9 +101,13 @@ public class TestBase extends SpringWebTest {
         return new Empty();
     }
 
+    //建立一系列已经建立好的控件以及默认属性
+    
+
     private PageElement randomComponent() {
         if (random.nextBoolean())
             return randomEmpty();
+
         Component component = new Component();
         component.setPreviewHTML(UUID.randomUUID().toString());
         component.setId(UUID.randomUUID().toString());

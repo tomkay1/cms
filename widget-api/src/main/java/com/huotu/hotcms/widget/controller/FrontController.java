@@ -15,57 +15,96 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.service.repository.AbstractContentRepository;
 import com.huotu.hotcms.widget.CMSContext;
+import com.huotu.hotcms.widget.Component;
+import com.huotu.hotcms.widget.WidgetResolveService;
 import com.huotu.hotcms.widget.entity.PageInfo;
+import com.huotu.hotcms.widget.page.Layout;
+import com.huotu.hotcms.widget.page.PageElement;
+import com.huotu.hotcms.widget.page.PageLayout;
 import com.huotu.hotcms.widget.service.PageService;
-import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.http.HttpStatus;
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 
 /**
  * 用户获取page页面html Code 页面服务相关
+ * <p>新增preview相关</p>
  * Created by lhx on 2016/7/2.
  */
 @Controller
-@RequestMapping(value = "/_web")
 public class FrontController implements FilterBehavioral {
 
     private static final Log log = LogFactory.getLog(FrontController.class);
 
-    private final Template htmlTemplate;
     @Autowired(required = false)
     private AbstractContentRepository abstractContentRepository;
     @Autowired
     private PageService pageService;
     @Autowired
-    private ResourceService resourceService;
+    private WidgetResolveService widgetResolveService;
 
-    public FrontController() throws IOException {
-        try (InputStream propertiesFile = new ClassPathResource("/front/velocity.properties").getInputStream()) {
-            Properties properties = new Properties();
-            properties.load(propertiesFile);
-            Velocity.init(properties);
+    /**
+     * 参考<a href="https://huobanplus.quip.com/Y9mVAeo9KnTh">可用的CSS 资源</a>
+     *
+     * @param pageId 页面id
+     * @param id     组件id
+     * @return css内容
+     * @throws IOException
+     */
+    @RequestMapping(method = RequestMethod.GET, value = {"/preview/{pageId}/{id}.css"}, produces = "text/css")
+    public ResponseEntity previewCss(@PathVariable("pageId") long pageId, @PathVariable("id") String id) throws IOException {
+        try {
+            PageInfo pageInfo = pageService.getPage(pageId);
+
+            // 寻找控件了
+            for (Layout layout : PageLayout.NoNullLayout(pageInfo.getLayout())) {
+                Component component = findComponent(layout, id);
+                if (component != null) {
+                    ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+                    widgetResolveService.componentCSS(CMSContext.RequestContext(), component, buffer);
+                    return ResponseEntity
+                            .ok()
+                            .contentType(MediaType.parseMediaType("text/css"))
+                            .body(buffer.toByteArray());
+                }
+            }
+
+            return ResponseEntity.notFound().build();
+
+        } catch (PageNotFoundException e) {
+            return ResponseEntity.notFound().build();
         }
-        htmlTemplate = Velocity.getTemplate("/front/html.vm");
+    }
+
+    private Component findComponent(PageElement element, String id) {
+        if (element instanceof Component) {
+            if (id.equals(((Component) element).getId())) {
+                return (Component) element;
+            }
+            return null;
+        }
+        if (element instanceof Layout) {
+            for (PageElement element1 : ((Layout) element).elements()) {
+                Component component = findComponent(element1, id);
+                if (component != null)
+                    return component;
+            }
+        }
+        return null;
     }
 
     /**
@@ -73,12 +112,12 @@ public class FrontController implements FilterBehavioral {
      *
      * @param model
      */
-    @RequestMapping(method = RequestMethod.GET, value = {"", "/"})
+    @RequestMapping(method = RequestMethod.GET, value = {"/_web", "/_web/"})
     public PageInfo pageIndex(Model model) throws IOException, PageNotFoundException {
         return pageIndex("", model);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = {"/{pagePath}"})
+    @RequestMapping(method = RequestMethod.GET, value = {"/_web/{pagePath}"})
     public PageInfo pageIndex(@PathVariable("pagePath") String pagePath, Model model)
             throws PageNotFoundException, IOException {
         CMSContext cmsContext = CMSContext.RequestContext();
@@ -87,7 +126,7 @@ public class FrontController implements FilterBehavioral {
         return pageService.findBySiteAndPagePath(cmsContext.getSite(), pagePath);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = {"/{pagePath}/{contentId}"})
+    @RequestMapping(method = RequestMethod.GET, value = {"/_web/{pagePath}/{contentId}"})
     public PageInfo pageContent(@PathVariable("pagePath") String pagePath, @PathVariable("contentId") Long contentId
             , Model model) throws IOException, PageNotFoundException {
         CMSContext cmsContext = CMSContext.RequestContext();

@@ -44,7 +44,6 @@ import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.util.StringUtil;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.Component;
-import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.page.Empty;
@@ -562,7 +561,7 @@ public abstract class ManageTest extends SpringWebTest {
         component.setWidgetIdentity(new WidgetIdentifier(groupId, widgetId, version).toString());
         component.setInstalledWidget(widgetFactoryService.installedStatus(widgetInfoRepository.getOne(
                 new WidgetIdentifier(groupId, widgetId, version))).get(0));
-        component.setProperties(new ComponentProperties());
+        component.setProperties(component.getInstalledWidget().getWidget().defaultProperties());
         return component;
     }
 

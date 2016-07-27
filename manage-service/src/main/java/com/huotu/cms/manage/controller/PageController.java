@@ -138,7 +138,7 @@ public class PageController {
 
 
     /**
-     * 跳转到CMS编辑界面，用于测试
+     * 跳转到CMS编辑界面
      *
      * @return url
      */

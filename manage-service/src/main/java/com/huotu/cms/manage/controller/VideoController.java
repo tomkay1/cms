@@ -22,6 +22,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDateTime;
+
 /**
  * @author wenqi
  */
@@ -50,6 +52,7 @@ public class VideoController extends ContentManageController<Video,ContentExtra>
         entity.setTitle(data.getTitle());
         entity.setOutLinkUrl(data.getOutLinkUrl());
         entity.setDescription(data.getDescription());
+        entity.setUpdateTime(LocalDateTime.now());
     }
 
     @Override

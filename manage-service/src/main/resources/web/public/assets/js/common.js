@@ -5,16 +5,87 @@
  * GlobalID 全局参数，用于存储当前操作组件的唯一 ID
  */
 var GlobalID;
-function createStore(ele) {
-    GlobalID= $(ele).siblings('.view').children().attr('id');
-    store.set(GlobalID, { properties : {} });
-};
+
 
 function widgetProperties( id ) {
-    console.log(id);
     return store.get(id) || {};
 };
 
+/**
+ * 组件数据控制逻辑
+ * createStore: 初始化GlobalID
+ * setStroe: 设置操作组件的 properties 本地数据存储
+ * getGlobalFunc: 获取GlobalID
+ * initFunc: 动态调用组件初始化方法
+ * saveFunc：动态调用组件保存方法
+ */
+var widgetHandle = {
+    createStore: function (ele) {
+        GlobalID = $(ele).siblings('.view').children().attr('id');
+        widgetHandle.initFunc(GlobalID);
+    },
+    setStroe: function (id, data) {
+        if ( data ) {
+            store.set(GlobalID, { properties : data });
+        }
+    },
+    getGlobalFunc: function (id) {
+        if ( !id ) return false;
+        var arr = id.split('-');
+        return window[arr[0]];
+    },
+    initFunc: function (id) {
+        var fn = widgetHandle.getGlobalFunc(id);
+        if( fn && typeof fn.init === 'function' ) {
+            fn.init(id);
+        }
+    },
+    saveFunc: function (id) {
+        var fn = widgetHandle.getGlobalFunc(id);
+        var path = '/preview/PageID/'+id+'.css';
+        dynamicLoading.css(path);
+        if( fn && typeof fn.saveCompoent === 'function' ) {
+            var properties = fn.saveCompoent();
+            if( properties !== null ) {
+                widgetHandle.setStroe(GlobalID, properties);
+                updataCompoentPreview(id, properties);
+            }
+        }
+    }
+};
+
+function updataCompoentPreview(globalID, properties) {
+    var ele = $('#' + globalID);
+    var widgetId = ele.data('widgetidentity');
+    var styleId = ele.data('styleid');
+    $.ajax({
+        type: 'POST',
+        url: '/previewHTML',
+        dataType: 'html',
+        data: {
+            widgetidentity: widgetId,
+            styleId: styleId,
+            properties: properties
+        },
+        success: function (json) {
+            if (json.statusCode == '200') {
+                ele.html(json.body);
+                editFunc.closeFunc();
+                layer.msg("操作成功", {time: 2000});
+            }
+            if (json.statusCode == '403') {
+                layer.msg("没有权限", {time: 2000});
+            }
+            if (json.statusCode == '502') {
+                ayer.msg("没有权限", {time: 2000});
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(errorThrown);
+            layer.msg("服务器错误,请稍后再试", {time: 2000});
+        }
+    });
+}
 /**
 * 动态加载组件的 JS文件
 * @type {{css: dynamicLoading.css, js: dynamicLoading.js}}
@@ -24,7 +95,21 @@ var dynamicLoading = {
         if( !path || path.length === 0){
             console.error('参数 "path" 是必需的！');
         }
-        // Todo
+        var exist = false;
+        var ele = $('link');
+        $.each(ele, function (i, v) {
+            var href = $(v).attr('href');
+            if ( href.indexOf(path) != -1 ) {
+                exist = true;
+                $(v).attr('href', path + '?t=' + +new Date());
+            }
+        });
+        if (!exist) {
+            var lastElement = ele.last();
+            var link = $('<link>');
+            link.attr({'rel': 'stylesheet', 'href': path + '?t=' + +new Date()});
+            lastElement.after(link);
+        }
     },
     js: function(path){
         if( !path || path.length === 0){

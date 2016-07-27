@@ -61,16 +61,15 @@
                                 </div>
                                 <label class="col-sm-2 control-label">来源</label>
                                 <div class="col-sm-2">
-                                    <span th:value="${object.articleSource}">1</span>
                                     <select name="articleSource" title="文章来源" class="form-control" disabled>
-                                        <option th:if="${object.articleSource=='ORIGINAL'}" th:selected="selected">原创</option>
-                                        <option th:if="${object.articleSource=='REPRINT'}" th:selected="selected">转载</option>
+                                        <option th:if="${object.articleSource.code==1}" th:selected="selected">原创</option>
+                                        <option th:if="${object.articleSource.code==0}" th:selected="selected">转载</option>
                                     </select>
                                 </div>
                                 <label class="col-sm-2 control-label">时间</label>
                                 <div class="col-sm-2">
                                     <input id="articleDate" name="createTime" title="时间" type="text" placeholder="文章时间"
-                                           class="form-control" th:value="${object.createTime}"/>
+                                           class="form-control" th:value="${#temporals.format(object.createTime,'yyyy-MM-dd')}"/>
                                 </div>
                             </div>
                             <div class="form-group">

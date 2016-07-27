@@ -118,7 +118,7 @@
                     <tr th:each="video,stats:${list}" class="odd" th:class="${stats.odd?'odd':'even'}"
                         th:attr="data-id=${video.id}" data-id="456">
                         <td th:text="${video.title}">新闻资讯</td>
-                        <td th:text="${{video.createTime}}">2016 06-20</td>
+                        <td th:text="${#temporals.format(video.createTime,'yyyy-MM-dd HH:mm')}">2016 06-20</td>
                         <td >视频</td>
                         <td th:text="${video.category.parent.name}">无</td>
                         <td class="center">

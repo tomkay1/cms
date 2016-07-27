@@ -118,7 +118,7 @@
                     <tr th:each="gallery,stats:${list}" class="odd" th:class="${stats.odd?'odd':'even'}"
                         th:attr="data-id=${gallery.id}" data-id="456">
                         <td th:text="${gallery.title}">新闻资讯</td>
-                        <td th:text="${{gallery.createTime}}">2016 06-20</td>
+                        <td th:text="${#temporals.format(gallery.createTime,'yyyy-MM-dd HH:mm')}">2016 06-20</td>
                         <td>图库</td>
                         <td th:text="${gallery.category.parent==null?'无':article.category.parent.name}">无</td>
                         <td class="center">

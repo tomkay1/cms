@@ -144,8 +144,31 @@ public abstract class AbstractCRUDPage<T> extends AbstractContentPage {
         return initPage(clazz);
     }
 
+    /**
+     * 删除操作
+     * @param webElement
+     * @param <X>
+     * @return
+     */
+    public final <X extends AbstractCRUDPage<T>> X deleteResource(WebElement webElement) {
+        toDelete(webElement);
+        try {
+            webDriver.switchTo().alert().accept();
+        } catch (Throwable ignored) {
+        }
+        @SuppressWarnings("unchecked")
+        Class<X> clazz = (Class<X>) getClass();
+        return initPage(clazz);
+    }
+
+
+
     @SuppressWarnings("WeakerAccess")
     protected void howToOpenResource(WebElement webElement) {
         webElement.findElement(By.className("fa-pencil")).click();
+    }
+
+    protected void toDelete(WebElement webElement){
+        webElement.findElement(By.className("fa-trash-o")).click();
     }
 }

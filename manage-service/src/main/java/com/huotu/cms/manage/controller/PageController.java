@@ -91,7 +91,7 @@ public class PageController {
         PageModel pageModel = new PageModel();
         pageModel.setPageIdentity(page.getPageId());
         if (page.getLayout() != null)
-            pageModel.setElements(page.getLayout().getElements());
+            pageModel.setRoot(page.getLayout().getRoot());
         pageModel.setTitle(page.getTitle());
         return pageModel;
     }

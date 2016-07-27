@@ -486,7 +486,7 @@ public abstract class ManageTest extends SpringWebTest {
                 pageElementList.add(randomComponent());
         }
 
-        layout.setElements(pageElementList.toArray(new PageElement[pageElementList.size()]));
+        layout.setParallelElements(pageElementList.toArray(new PageElement[pageElementList.size()]));
         return layout;
     }
 

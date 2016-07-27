@@ -268,7 +268,7 @@ public class TestWidgetFactoryService extends TestBase {
             PageModel pageModel = new PageModel();
             pageModel.setTitle("testPicCarousel");
             pageModel.setPageIdentity(pageInfo.getPageId());
-            pageModel.setElements(new Layout[]{layoutElement});
+            pageModel.setRoot(new Layout[]{layoutElement});
             CMSContext.PutContext(request, response, site);
             pageService.savePage(pageModel, pageInfo.getPageId());
         } catch (Exception e) {

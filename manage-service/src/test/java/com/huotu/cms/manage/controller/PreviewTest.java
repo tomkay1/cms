@@ -177,7 +177,7 @@ public class PreviewTest extends ManageTest {
     private void updatePageElement(PageInfo page, Component component) throws IOException {
         Layout layout = new Layout();
         layout.setValue("12");
-        layout.setElements(new PageElement[]{component});
+        layout.setParallelElements(new PageElement[]{component});
         page.setLayout(new PageLayout(new Layout[]{layout}));
         updatePage(page);
     }

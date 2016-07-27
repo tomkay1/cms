@@ -15,9 +15,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-/**
- * Created by cwb on 2015/12/24.
- */
 public interface HostRepository extends JpaRepository<Host,Long> {
     Host findByDomain(String domain);
 

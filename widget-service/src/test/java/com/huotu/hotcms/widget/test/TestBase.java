@@ -12,6 +12,7 @@ package com.huotu.hotcms.widget.test;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.service.exception.NoHostFoundException;
@@ -23,12 +24,14 @@ import com.huotu.hotcms.service.thymeleaf.service.SiteResolveService;
 import com.huotu.hotcms.service.util.StringUtil;
 import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.ComponentProperties;
-import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.config.TestConfig;
+import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.page.Empty;
 import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.PageElement;
 import com.huotu.hotcms.widget.page.PageLayout;
+import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
+import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import com.huotu.hotcms.widget.servlet.CMSFilter;
 import me.jiangcai.lib.test.SpringWebTest;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -40,6 +43,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -58,17 +62,31 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @WebAppConfiguration
 public class TestBase extends SpringWebTest {
 
+    //建立一系列已经建立好的控件以及默认属性
+    WidgetIdentifier[] preparedWidgets = new WidgetIdentifier[]{
+            new WidgetIdentifier("com.huotu.hotcms.widget.pagingWidget",
+                    "pagingWidget", "1.0-SNAPSHOT")
+            , new WidgetIdentifier("com.huotu.hotcms.widget.picCarousel",
+            "picCarousel", "1.0-SNAPSHOT")
+            , new WidgetIdentifier("com.huotu.hotcms.widget.productList",
+            "productList", "1.0-SNAPSHOT")
+            , new WidgetIdentifier("com.huotu.hotcms.widget.picBanner",
+            "picBanner", "1.0-SNAPSHOT")
+            , new WidgetIdentifier("com.huotu.hotcms.widget.friendshipLink",
+            "friendshipLink", "1.0-SNAPSHOT")
+    };
     @Autowired
     private OwnerRepository ownerRepository;
-
     @Autowired
     private CategoryRepository categoryRepository;
-
     @Autowired
     private SiteResolveService siteResolveService;
-
     @Autowired
     private SiteService siteService;
+    @Autowired
+    private WidgetFactoryService widgetFactoryService;
+    @Autowired
+    private WidgetInfoRepository widgetInfoRepository;
 
     @Override
     public void createMockMVC() {
@@ -88,7 +106,48 @@ public class TestBase extends SpringWebTest {
         mockMvc = builder.build();
     }
 
-    protected PageLayout randomPageLayout() {
+    /**
+     * 保证这个控件必然存在
+     *
+     * @param groupId
+     * @param widgetId
+     * @param version
+     * @throws IOException
+     * @throws FormatException
+     */
+    protected void assertWidget(String groupId, String widgetId, String version) throws IOException, FormatException {
+        WidgetInfo info = widgetInfoRepository.findOne(new WidgetIdentifier(groupId, widgetId, version));
+        if (info == null) {
+            widgetFactoryService.installWidgetInfo(null, groupId, widgetId, version, "foo");
+            info = widgetInfoRepository.getOne(new WidgetIdentifier(groupId, widgetId, version));
+        }
+
+        if (widgetFactoryService.installedStatus(info).isEmpty()) {
+            widgetFactoryService.installWidgetInfo(info);
+        }
+    }
+
+    /**
+     * 整一个组件出来,默认属性是空
+     *
+     * @param groupId
+     * @param widgetId
+     * @param version
+     * @return
+     * @throws IOException
+     * @throws FormatException
+     */
+    protected Component makeComponent(String groupId, String widgetId, String version) throws IOException, FormatException {
+        assertWidget(groupId, widgetId, version);
+        Component component = new Component();
+        component.setWidgetIdentity(new WidgetIdentifier(groupId, widgetId, version).toString());
+        component.setInstalledWidget(widgetFactoryService.installedStatus(widgetInfoRepository.getOne(
+                new WidgetIdentifier(groupId, widgetId, version))).get(0));
+        component.setProperties(component.getInstalledWidget().getWidget().defaultProperties());
+        return component;
+    }
+
+    protected PageLayout randomPageLayout() throws IOException, FormatException {
         List<Layout> pageElementList = new ArrayList<>();
         int number = random.nextInt(4) + 1;//生成PageElement的随机个数
         while (number-- > 0)
@@ -101,23 +160,19 @@ public class TestBase extends SpringWebTest {
         return new Empty();
     }
 
-    private PageElement randomComponent() {
+    private PageElement randomComponent() throws IOException, FormatException {
         if (random.nextBoolean())
             return randomEmpty();
-        Component component = new Component();
-        component.setPreviewHTML(UUID.randomUUID().toString());
-        component.setId(UUID.randomUUID().toString());
-//        component.setStyleId(UUID.randomUUID().toString());
-        component.setWidgetIdentity(UUID.randomUUID().toString());
-        ComponentProperties componentProperties = new ComponentProperties();
+
+        WidgetIdentifier widgetIdentifier = preparedWidgets[random.nextInt(preparedWidgets.length)];
+        Component component = makeComponent(widgetIdentifier.getGroupId(), widgetIdentifier.getArtifactId()
+                , widgetIdentifier.getVersion());
+
+        ComponentProperties componentProperties = component.getProperties();
         componentProperties.put(StringUtil.createRandomStr(random.nextInt(3) + 1), UUID.randomUUID().toString());
         componentProperties.put("TestArray", new String[]{UUID.randomUUID().toString(), UUID.randomUUID().toString()
                 , UUID.randomUUID().toString()});
-        component.setProperties(componentProperties);
-        InstalledWidget installedWidget = new InstalledWidget(new TestWidget());
-        installedWidget.setIdentifier(new WidgetIdentifier());
-        installedWidget.setType(UUID.randomUUID().toString());
-        component.setInstalledWidget(installedWidget);
+
         return component;
     }
 
@@ -147,7 +202,7 @@ public class TestBase extends SpringWebTest {
         throw new InternalError("WTF? Bite me");
     }
 
-    private Layout randomLayout() {
+    private Layout randomLayout() throws IOException, FormatException {
         Layout layout = new Layout();
         //先决定数量
         int size = random.nextInt(3) + 1;

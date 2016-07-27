@@ -13,7 +13,7 @@ import com.huotu.hotcms.service.entity.GalleryItem;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.GalleryForeachParam;
-import com.huotu.hotcms.service.service.GalleryListService;
+import com.huotu.hotcms.service.service.GalleryItemService;
 import com.huotu.hotcms.service.thymeleaf.expression.DialectAttributeFactory;
 import com.huotu.hotcms.service.util.PatternMatchUtil;
 import org.apache.commons.logging.Log;
@@ -32,7 +32,7 @@ public class GalleryItemForeachProcessor {
 
     private static Log log = LogFactory.getLog(GalleryItemForeachProcessor.class);
     @Autowired
-    private GalleryListService galleryListService;
+    private GalleryItemService galleryItemService;
 
     @Autowired
     private DialectAttributeFactory dialectAttributeFactory;
@@ -51,7 +51,7 @@ public class GalleryItemForeachProcessor {
                 galleryListForeachParam.setGalleryId(PatternMatchUtil.getUrlIdByLongType(selvertUrl
                         , PatternMatchUtil.urlParamRegexp));
             }
-            galleries = galleryListService.getGalleryList(galleryListForeachParam);
+            galleries = galleryItemService.getGalleryItem(galleryListForeachParam);
             //图片路径处理
 //            Site site = (Site)VariableExpression.getVariable(context,"site");
             Site site=(Site)context.getVariable("site");

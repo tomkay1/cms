@@ -108,20 +108,29 @@ var editFunc = {
             ele.stop().animate({
                 right: 0
             },500);
-            createStore($(this));
+            // 创建当前操作组件的数据
+            widgetHandle.createStore($(this));
+        });
+    },
+    saveConfig: function () {
+        $('#confBtn').click(function () {
+            widgetHandle.saveFunc(GlobalID);
         });
     },
     closeConfig: function () {
         $('#cancelBtn').click(function () {
-            var ele = $('#configuration');
-            var w = ele.width();
-            ele.stop().animate({
-                right: -w
-            },500, function () {
-                $('.common-conf').hide();
-                $('#configuration').hide();
-                $('.modal-backdrop').fadeOut();
-            });
+            editFunc.closeFunc();
+        });
+    },
+    closeFunc: function () {
+        var ele = $('#configuration');
+        var w = ele.width();
+        ele.stop().animate({
+            right: -w
+        },500, function () {
+            $('.common-conf').hide();
+            $('#configuration').hide();
+            $('.modal-backdrop').fadeOut();
         });
     },
     clearDemo: function() {
@@ -139,6 +148,7 @@ var editFunc = {
     init: function () {
         editFunc.removeElement();
         editFunc.settingElement();
+        editFunc.saveConfig();
         editFunc.closeConfig();
         editFunc.gridSystemGenerator();
     }
@@ -196,7 +206,6 @@ var Page = {
             },
             stop: function (e, t) {
                 var oId = t.helper.find('.view').children().eq(0).attr('id');
-                console.log(oId)
                 editFunc.handleJsIds(oId);
             }
         });

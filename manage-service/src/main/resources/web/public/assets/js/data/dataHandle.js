@@ -189,15 +189,16 @@ var CreatePage = {
         $.ajax({
             type: 'GET',
             url: url,
-            success: function (page) {
-                if (page) {
-                    CreatePage.createTopLayout(jsonPage);
+            dataType: 'json',
+            success: function (pageJson) {
+                if (!$.isEmptyObject(pageJson)) {
+                    CreatePage.createTopLayout(pageJson);
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(errorThrown);
             }
-        })
+        });
     },
     createTopLayout: function (data) {
         var pageData = data.root;
@@ -263,9 +264,9 @@ var CreatePage = {
 var dataHandle = {};
 dataHandle.init = function () {
     var strHref = window.document.location.href;
-    var pageId=strHref.substring(strHref.lastIndexOf("/")+1);
-    console.log(pageId)
-    var url = savePage+pageId;//save url
+    var pageId = strHref.substring(strHref.lastIndexOf("/")+1);
+
+    var url = savePage + pageId;//save url
     $('#saveBtn').on('click', function () {
         DataHandle.init(url);
     });

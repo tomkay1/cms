@@ -48,14 +48,11 @@ public class WidgetConfiguration  implements IEngineConfiguration {
     private final IEngineConfiguration configuration;
     private final Widget widget;
     private final WidgetStyle style;
-    private final Map<String, String> styleClassNames;
 
-    public WidgetConfiguration(IEngineConfiguration configuration, Widget widget, WidgetStyle style
-            , Map<String, String> styleClassNames) {
+    public WidgetConfiguration(IEngineConfiguration configuration, Widget widget, WidgetStyle style ) {
         this.configuration = configuration;
         this.widget = widget;
         this.style = style;
-        this.styleClassNames = styleClassNames;
     }
 
     @Override
@@ -196,7 +193,5 @@ public class WidgetConfiguration  implements IEngineConfiguration {
         return widget;
     }
 
-    public Map<String, String> getStyleClassNames() {
-        return styleClassNames;
-    }
+
 }

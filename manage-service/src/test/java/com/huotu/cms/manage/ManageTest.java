@@ -29,17 +29,21 @@ import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.Template;
 import com.huotu.hotcms.service.entity.TemplateType;
+import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
+import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.service.repository.ArticleRepository;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.DownloadRepository;
-import com.huotu.hotcms.service.repository.GalleryListRepository;
+import com.huotu.hotcms.service.repository.GalleryItemRepository;
 import com.huotu.hotcms.service.repository.GalleryRepository;
 import com.huotu.hotcms.service.repository.OwnerRepository;
 import com.huotu.hotcms.service.repository.TemplateRepository;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.util.StringUtil;
+import com.huotu.hotcms.widget.CMSContext;
+import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.page.Empty;
@@ -47,6 +51,8 @@ import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.PageElement;
 import com.huotu.hotcms.widget.page.PageLayout;
 import com.huotu.hotcms.widget.repository.PageInfoRepository;
+import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
+import com.huotu.hotcms.widget.service.PageService;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import me.jiangcai.lib.test.SpringWebTest;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -63,6 +69,7 @@ import org.springframework.test.web.servlet.htmlunit.webdriver.WebConnectionHtml
 import org.springframework.util.StreamUtils;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.time.LocalDateTime;
@@ -90,23 +97,24 @@ public abstract class ManageTest extends SpringWebTest {
     protected OwnerRepository ownerRepository;
     protected Owner testOwner;
     @Autowired
+    protected PageService pageService;
+    @Autowired(required = false)
+    protected HttpServletResponse response;
+    @Autowired
+    protected WidgetInfoRepository widgetInfoRepository;
+    @Autowired
+    protected WidgetFactoryService widgetFactoryService;
+    @Autowired
     private SiteService siteService;
     @Autowired
     private AuthController authController;
-
     @Autowired
     private TemplateRepository templateRepository;
-
     @Qualifier("pageInfoRepository")
     @Autowired
     private PageInfoRepository pageInfoRepository;
-
     @Autowired
     private CategoryRepository categoryRepository;
-
-    @Autowired
-    private WidgetFactoryService widgetFactoryService;
-
     @Autowired
     private ArticleRepository articleRepository;
 
@@ -114,7 +122,7 @@ public abstract class ManageTest extends SpringWebTest {
     private DownloadRepository downloadRepository;
 
     @Autowired
-    private GalleryListRepository galleryListRepository;
+    private GalleryItemRepository galleryItemRepository;
     @Autowired
     private GalleryRepository galleryRepository;
 
@@ -184,7 +192,7 @@ public abstract class ManageTest extends SpringWebTest {
         randomArticle(category);
         randomDownload(category);
         Gallery gallery = randomGallery(category);
-        randomGalleryList(gallery);
+        randomGalleryItem(gallery);
         return site;
     }
 
@@ -209,7 +217,7 @@ public abstract class ManageTest extends SpringWebTest {
         randomArticle(category);
         randomDownload(category);
         Gallery gallery = randomGallery(category);
-        randomGalleryList(gallery);
+        randomGalleryItem(gallery);
         return template;
     }
 
@@ -356,11 +364,11 @@ public abstract class ManageTest extends SpringWebTest {
         return downloadRepository.saveAndFlush(download);
     }
 
-    protected GalleryItem randomGalleryList(Gallery gallery) {
+    protected GalleryItem randomGalleryItem(Gallery gallery) {
         GalleryItem galleryItem = new GalleryItem();
         galleryItem.setGallery(gallery);
         galleryItem.setCreateTime(LocalDateTime.now());
-        return galleryListRepository.saveAndFlush(galleryItem);
+        return galleryItemRepository.saveAndFlush(galleryItem);
     }
 
     protected Gallery randomGallery(Category category) {
@@ -505,5 +513,76 @@ public abstract class ManageTest extends SpringWebTest {
                 .andReturn().getResponse().getContentAsString();
 
         page.inputHidden(page.getForm(), name, path);
+    }
+
+    /**
+     * 更新一个页面,保证临时数据的生成
+     *
+     * @param page 页面
+     * @throws IOException
+     */
+    protected void updatePage(PageInfo page) throws IOException {
+        try {
+            CMSContext.RequestContext();
+        } catch (IllegalStateException ignored) {
+            CMSContext.PutContext(request, response, page.getSite());
+        }
+        pageService.savePage(null, page.getPageId());
+    }
+
+    /**
+     * 让这个页面,只有一个组件
+     *
+     * @param page      指定页面
+     * @param component 指定组件
+     * @throws IOException
+     */
+    protected void updatePageElement(PageInfo page, Component component) throws IOException {
+        Layout layout = new Layout();
+        layout.setValue("12");
+        layout.setParallelElements(new PageElement[]{component});
+        page.setLayout(new PageLayout(new Layout[]{layout}));
+        updatePage(page);
+    }
+
+    /**
+     * 整一个组件出来,默认属性是空
+     *
+     * @param groupId
+     * @param widgetId
+     * @param version
+     * @return
+     * @throws IOException
+     * @throws FormatException
+     */
+    protected Component makeComponent(String groupId, String widgetId, String version) throws IOException, FormatException {
+        assertWidget(groupId, widgetId, version);
+        Component component = new Component();
+        component.setWidgetIdentity(new WidgetIdentifier(groupId, widgetId, version).toString());
+        component.setInstalledWidget(widgetFactoryService.installedStatus(widgetInfoRepository.getOne(
+                new WidgetIdentifier(groupId, widgetId, version))).get(0));
+        component.setProperties(component.getInstalledWidget().getWidget().defaultProperties());
+        return component;
+    }
+
+    /**
+     * 保证这个控件必然存在
+     *
+     * @param groupId
+     * @param widgetId
+     * @param version
+     * @throws IOException
+     * @throws FormatException
+     */
+    protected void assertWidget(String groupId, String widgetId, String version) throws IOException, FormatException {
+        WidgetInfo info = widgetInfoRepository.findOne(new WidgetIdentifier(groupId, widgetId, version));
+        if (info == null) {
+            widgetFactoryService.installWidgetInfo(null, groupId, widgetId, version, "foo");
+            info = widgetInfoRepository.getOne(new WidgetIdentifier(groupId, widgetId, version));
+        }
+
+        if (widgetFactoryService.installedStatus(info).isEmpty()) {
+            widgetFactoryService.installWidgetInfo(info);
+        }
     }
 }

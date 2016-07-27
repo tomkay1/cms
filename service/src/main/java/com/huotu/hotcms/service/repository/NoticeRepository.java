@@ -16,9 +16,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 
-/**
- * Created by chendeyu on 2016/1/5.
- */
 public interface NoticeRepository extends JpaRepository<Notice, Long>, JpaSpecificationExecutor<Notice> {
     List<Notice> findByCategory(Category category);
 

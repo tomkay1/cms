@@ -111,9 +111,9 @@
                     <tr th:each="download,stats:${list}" class="odd" th:class="${stats.odd?'odd':'even'}"
                         th:attr="data-id=${download.id}" data-id="456">
                         <td th:text="${download.fileName}">新闻资讯</td>
-                        <td th:text="${{download.createTime}}">2016 06-20</td>
+                        <td th:text="${#temporals.format(download.createTime,'yyyy-MM-dd HH:mm')}">2016 06-20</td>
                         <td>下载</td>
-                        <td th:text="${download.category.parent.name}">无</td>
+                        <td th:text="${download.category.parent==null?'无':download.category.parent.name}">无</td>
                         <td class="center">
                             <a href="downloadOpen.html" th:href="@{/manage/download/{id}(id=${download.id})}" target="_top" title="管理">
                                 <i class="fa fa-pencil"></i>

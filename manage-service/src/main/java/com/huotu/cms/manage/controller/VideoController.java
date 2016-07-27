@@ -47,7 +47,9 @@ public class VideoController extends ContentManageController<Video,ContentExtra>
 
     @Override
     protected void prepareUpdate(Login login, Video entity, Video data, ContentExtra extra, RedirectAttributes attributes) throws RedirectException {
-
+        entity.setTitle(data.getTitle());
+        entity.setOutLinkUrl(data.getOutLinkUrl());
+        entity.setDescription(data.getDescription());
     }
 
     @Override

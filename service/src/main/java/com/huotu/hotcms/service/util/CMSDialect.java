@@ -13,7 +13,7 @@ import com.huotu.hotcms.service.thymeleaf.dialect.ArticleDialect;
 import com.huotu.hotcms.service.thymeleaf.dialect.CategoryDialect;
 import com.huotu.hotcms.service.thymeleaf.dialect.DownloadDialect;
 import com.huotu.hotcms.service.thymeleaf.dialect.GalleryDialect;
-import com.huotu.hotcms.service.thymeleaf.dialect.GalleryListDialect;
+import com.huotu.hotcms.service.thymeleaf.dialect.GalleryItemDialect;
 import com.huotu.hotcms.service.thymeleaf.dialect.LinkDialect;
 import com.huotu.hotcms.service.thymeleaf.dialect.NoticeDialect;
 import com.huotu.hotcms.service.thymeleaf.dialect.OldWidgetDialect;
@@ -59,7 +59,7 @@ public class CMSDialect {
         dialectList.add(new NoticeDialect());
         dialectList.add(new DownloadDialect());
         dialectList.add(new GalleryDialect());
-        dialectList.add(new GalleryListDialect());
+        dialectList.add(new GalleryItemDialect());
         dialectList.add(new TimeDialect());
         dialectList.add(new OldWidgetDialect());
     }

@@ -103,6 +103,8 @@ public class FrontController implements FilterBehavioral {
         }
     }
 
+
+
     @Override
     public FilterStatus doSiteFilter(Site site, HttpServletRequest request, HttpServletResponse response)
             throws IOException {

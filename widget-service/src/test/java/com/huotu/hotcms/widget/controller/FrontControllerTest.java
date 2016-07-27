@@ -44,10 +44,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -60,7 +58,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @Transactional
 @Rollback
-public class FontControllerTest extends TestBase {
+public class FrontControllerTest extends TestBase {
     @Autowired(required = false)
     protected MockHttpServletResponse response;
 

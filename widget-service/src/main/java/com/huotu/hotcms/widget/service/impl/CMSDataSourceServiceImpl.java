@@ -9,12 +9,16 @@
 
 package com.huotu.hotcms.widget.service.impl;
 
+import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Gallery;
 import com.huotu.hotcms.service.entity.GalleryItem;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.repository.CategoryRepository;
+import com.huotu.hotcms.service.repository.GalleryItemRepository;
 import com.huotu.hotcms.service.repository.GalleryRepository;
+import com.huotu.hotcms.service.repository.LinkRepository;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.service.CMSDataSourceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +34,12 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
 
     @Autowired
     private GalleryRepository galleryRepository;
+    @Autowired
+    private GalleryItemRepository galleryItemRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private LinkRepository linkRepository;
 
     @Override
     public List<Gallery> findGallery() {
@@ -39,31 +49,31 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
 
     @Override
     public List<GalleryItem> findGalleryItem(Long galleryId) {
-        return null;
+        return galleryItemRepository.findByGallery(galleryRepository.getOne(galleryId));
     }
 
     @Override
     public List<Category> findLinkCategory() {
-        return null;
+        return categoryRepository.findBySiteAndContentType(CMSContext.RequestContext().getSite(), ContentType.Link);
     }
 
     @Override
     public List<Category> findParentArticleCategorys() {
-        return null;
+        return categoryRepository.findBySiteAndParent(CMSContext.RequestContext().getSite(), null);
     }
 
     @Override
     public String findChildrenArticleCategory(Long parentId) {
-        return null;
+        throw new NoSuchMethodError("不会写。。");
     }
 
     @Override
     public String findSitePage() {
-        return null;
+        throw new NoSuchMethodError("不会写。。");
     }
 
     @Override
     public List<Link> findLink(Long categoryId) {
-        return null;
+        return linkRepository.findByCategory_id(categoryId);
     }
 }

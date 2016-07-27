@@ -15,8 +15,6 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
-import com.huotu.hotcms.service.exception.NoHostFoundException;
-import com.huotu.hotcms.service.exception.NoSiteFoundException;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.OwnerRepository;
 import com.huotu.hotcms.service.service.SiteService;
@@ -252,11 +250,11 @@ public class TestBase extends SpringWebTest {
         site.setDescription(UUID.randomUUID().toString());
         String[] domains = randomDomains();
         site = siteService.newSite(domains, domains[0], site, Locale.CHINA);
-        try {
-            site = siteResolveService.getCurrentSite(request);
-        } catch (NoHostFoundException | NoSiteFoundException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            site = siteResolveService.getCurrentSite(request);
+//        } catch (NoHostFoundException | NoSiteFoundException e) {
+//            e.printStackTrace();
+//        }
         return site;
     }
 
@@ -287,7 +285,7 @@ public class TestBase extends SpringWebTest {
         return randomCategory(site, contentType, null);
     }
 
-    private Category randomCategory(Site site, ContentType contentType, Category parent) {
+    protected Category randomCategory(Site site, ContentType contentType, Category parent) {
         Category category = new Category();
         category.setContentType(contentType);
         category.setParent(parent);

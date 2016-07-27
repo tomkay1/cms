@@ -35,6 +35,12 @@ public interface AbstractContentRepository<T extends AbstractContent, ID extends
      */
     List<T> findByCategory(Category category);
 
+    /**
+     * @param category 数据源
+     * @return 按数据源查找
+     */
+    List<T> findByCategory_id(Long category);
+
     Page<T> findByCategory(Category category, Pageable pageable);
 
     /**

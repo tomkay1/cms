@@ -57,10 +57,7 @@ public class WidgetContext extends WebEngineContext {
             , ServletContext servletContext, Component component, ComponentProperties properties) {
         // TODO 后期考虑到缓存,性能巴拉巴拉的时候 可能需要定制 TemplateData
         // 某些属性需要传染下去 比如来自CMSContext
-
-
-        super(new WidgetConfiguration(engine.getConfiguration(), widget, style
-                , component == null ? null : component.getStyleClassNames())
+        super(new WidgetConfiguration(engine.getConfiguration(), widget, style)
                 , null, null
                 , context.getRequest(), context.getResponse(), servletContext
                 , context.getLocale(), FromComponentProperties(context, widget, style, properties, component));
@@ -73,7 +70,6 @@ public class WidgetContext extends WebEngineContext {
         variables.put("style", style);
         variables.put("properties", properties);
         if (component != null) {
-            variables.put("styleClassNames", component.getStyleClassNames());
             variables.put("componentId", component.getId());
         }
         // "thymeleaf::EvaluationContext" ->

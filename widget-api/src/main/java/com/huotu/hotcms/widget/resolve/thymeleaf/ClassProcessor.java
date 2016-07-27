@@ -31,10 +31,6 @@ public class ClassProcessor extends AbstractAttributeTagProcessor implements IEl
     @Override
     protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName
             , String attributeValue, IElementTagStructureHandler structureHandler) {
-        Map<String, String> styleClassNames = (Map<String, String>) context.getVariable("styleClassNames");
-        String value = styleClassNames.get(attributeValue);
-        structureHandler.replaceAttribute(attributeName, attributeName.getAttributeName()
-                , value);
 
     }
 

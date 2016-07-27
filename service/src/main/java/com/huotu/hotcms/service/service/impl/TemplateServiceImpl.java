@@ -23,7 +23,7 @@ import com.huotu.hotcms.service.repository.AbstractContentRepository;
 import com.huotu.hotcms.service.repository.ArticleRepository;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.DownloadRepository;
-import com.huotu.hotcms.service.repository.GalleryListRepository;
+import com.huotu.hotcms.service.repository.GalleryItemRepository;
 import com.huotu.hotcms.service.repository.GalleryRepository;
 import com.huotu.hotcms.service.repository.LinkRepository;
 import com.huotu.hotcms.service.repository.NoticeRepository;
@@ -70,7 +70,7 @@ public class TemplateServiceImpl implements TemplateService {
     @Autowired
     private VideoRepository videoRepository;
     @Autowired
-    private GalleryListRepository galleryListRepository;
+    private GalleryItemRepository galleryItemRepository;
 
     @Autowired
     private AbstractContentRepository abstractContentRepository;
@@ -136,7 +136,7 @@ public class TemplateServiceImpl implements TemplateService {
             noticeRepository.deleteByCategory(category);
             videoRepository.deleteByCategory(category);
             List<Gallery> galleries = galleryRepository.findByCategory(category);
-            galleries.forEach(galleryListRepository::deleteByGallery);
+            galleries.forEach(galleryItemRepository::deleteByGallery);
             galleryRepository.deleteByCategory(category);
             //静态资源删除
             deleteStaticResourceByCategory(category);
@@ -170,7 +170,7 @@ public class TemplateServiceImpl implements TemplateService {
         for (Gallery gallery : galleries) {
             if (!StringUtils.isEmpty(gallery.getThumbUri()))
                 deleteStaticResourceByPath(gallery.getThumbUri());
-            galleryItems = galleryListRepository.findByGallery(gallery);
+            galleryItems = galleryItemRepository.findByGallery(gallery);
             for (GalleryItem galleryItem : galleryItems) {
                 if (!StringUtils.isEmpty(galleryItem.getThumbUri()))
                     deleteStaticResourceByPath(galleryItem.getThumbUri());
@@ -294,13 +294,13 @@ public class TemplateServiceImpl implements TemplateService {
                     g.setThumbUri(copyStaticResource(gallery.getThumbUri()));
                 g = abstractContentRepository.save(g);
                 //图库集合复制
-                galleryItems = galleryListRepository.findByGallery(gallery);
+                galleryItems = galleryItemRepository.findByGallery(gallery);
                 for (GalleryItem gl : galleryItems) {
                     galleryItem = gl.copy(customerSite, copyCategory);
                     galleryItem.setGallery(g);
                     if (!StringUtils.isEmpty(galleryItem.getThumbUri()))
                         galleryItem.setThumbUri(copyStaticResource(galleryItem.getThumbUri()));
-                    galleryListRepository.save(galleryItem);
+                    galleryItemRepository.save(galleryItem);
                 }
             }
             //链接模型复制

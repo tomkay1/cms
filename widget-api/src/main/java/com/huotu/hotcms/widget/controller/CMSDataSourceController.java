@@ -31,7 +31,7 @@ public class CMSDataSourceController {
      */
     @RequestMapping(value = "/findGallery/{parentId}")
     @ResponseBody
-    public void findByAllChildren(Long parentId, Model model, HttpServletResponse response){
+    public void findAllChildren(Long parentId, Model model, HttpServletResponse response){
 
     }
 }

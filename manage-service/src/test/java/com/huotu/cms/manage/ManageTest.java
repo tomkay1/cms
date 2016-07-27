@@ -34,7 +34,7 @@ import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.repository.ArticleRepository;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.DownloadRepository;
-import com.huotu.hotcms.service.repository.GalleryListRepository;
+import com.huotu.hotcms.service.repository.GalleryItemRepository;
 import com.huotu.hotcms.service.repository.GalleryRepository;
 import com.huotu.hotcms.service.repository.OwnerRepository;
 import com.huotu.hotcms.service.repository.TemplateRepository;
@@ -114,7 +114,7 @@ public abstract class ManageTest extends SpringWebTest {
     private DownloadRepository downloadRepository;
 
     @Autowired
-    private GalleryListRepository galleryListRepository;
+    private GalleryItemRepository galleryItemRepository;
     @Autowired
     private GalleryRepository galleryRepository;
 
@@ -184,7 +184,7 @@ public abstract class ManageTest extends SpringWebTest {
         randomArticle(category);
         randomDownload(category);
         Gallery gallery = randomGallery(category);
-        randomGalleryList(gallery);
+        randomGalleryItem(gallery);
         return site;
     }
 
@@ -209,7 +209,7 @@ public abstract class ManageTest extends SpringWebTest {
         randomArticle(category);
         randomDownload(category);
         Gallery gallery = randomGallery(category);
-        randomGalleryList(gallery);
+        randomGalleryItem(gallery);
         return template;
     }
 
@@ -356,11 +356,11 @@ public abstract class ManageTest extends SpringWebTest {
         return downloadRepository.saveAndFlush(download);
     }
 
-    protected GalleryItem randomGalleryList(Gallery gallery) {
+    protected GalleryItem randomGalleryItem(Gallery gallery) {
         GalleryItem galleryItem = new GalleryItem();
         galleryItem.setGallery(gallery);
         galleryItem.setCreateTime(LocalDateTime.now());
-        return galleryListRepository.saveAndFlush(galleryItem);
+        return galleryItemRepository.saveAndFlush(galleryItem);
     }
 
     protected Gallery randomGallery(Category category) {

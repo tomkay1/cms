@@ -13,6 +13,7 @@ import com.huotu.cms.manage.page.support.AbstractCRUDPage;
 import com.huotu.hotcms.service.Auditable;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.assertj.core.api.Condition;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.BeanUtils;
 
@@ -33,14 +34,30 @@ public class CRUDHelper {
     private static final Log log = LogFactory.getLog(CRUDHelper.class);
 
     public static <T> void flow(AbstractCRUDPage<T> page, CRUDTest<T> testInstance) throws Exception {
+        page.assertNoDanger();
         //先添加一个
         T randomValue = testInstance.randomValue();
         // 当前数据
         Collection<T> currentList = testInstance.list();
 
         page.refresh();
+        page.assertNoDanger();
 
         AbstractCRUDPage<T> page2 = page.addEntityAndSubmit(randomValue, testInstance.customAddFunction());
+        String error = testInstance.errorMessageAfterAdd(randomValue);
+        if (error == null)
+            page2.assertNoDanger();
+        else {
+            try {
+                page2.assertDanger().haveAtLeastOne(new Condition<>((input) -> input.contains(error), "应该拥有这个错误。"));
+            } finally {
+                //noinspection ThrowFromFinallyBlock
+                page2.closeDanger();
+            }
+            assertThat(testInstance.list().size())
+                    .isEqualTo(currentList.size());
+            return;
+        }
 
         assertThat(testInstance.list().size())
                 .isGreaterThan(currentList.size());
@@ -82,6 +99,7 @@ public class CRUDHelper {
                         .orElseThrow(() -> new IllegalStateException("新增的资源没有在列表中被发现。"));
 
                 AbstractCRUDPage<T> editPage = page2.openResource(row);
+                editPage.assertNoDanger();
 
                 // 允许修改的字段
                 PropertyDescriptor[] allPropertyDescriptors = BeanUtils.getPropertyDescriptors(entity.getClass());
@@ -108,6 +126,7 @@ public class CRUDHelper {
 
                 //准备提交toModify
                 AbstractCRUDPage<T> afterModifyPage = editPage.addEntityAndSubmit(toModify, testInstance.customAddFunction());
+                afterModifyPage.assertNoDanger();
 
                 if (entity instanceof Auditable) {
                     assertThat(((Auditable) entity).getUpdateTime())

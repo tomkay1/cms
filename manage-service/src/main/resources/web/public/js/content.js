@@ -12,7 +12,7 @@
  * Created by Neo on 7/7/16.
  */
 
-$('#articleDate').mask('9999-99-99');
+//$('#articleDate').mask('9999-99-99');
 
 
 function logoUploaded(id, name, responseJSON) {

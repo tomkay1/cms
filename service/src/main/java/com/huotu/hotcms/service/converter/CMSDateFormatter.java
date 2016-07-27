@@ -29,7 +29,7 @@ public class CMSDateFormatter implements Formatter<LocalDateTime>   {
 
     @Override
     public LocalDateTime parse(String text, Locale locale) throws ParseException {
-        Date date=new SimpleDateFormat("yyyy-MM-dd").parse(text);
+        Date date=new SimpleDateFormat("MM/dd/yyyy").parse(text);
         Instant instant = Instant.ofEpochMilli(date.getTime());
         return LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
     }

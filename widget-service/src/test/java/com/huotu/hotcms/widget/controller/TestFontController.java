@@ -186,7 +186,7 @@ public class TestFontController extends TestBase {
             layoutElement.setParallelElements(new PageElement[]{component});
 
             PageModel pageModel = new PageModel();
-            pageModel.setElements(new Layout[]{layoutElement});
+            pageModel.setRoot(new Layout[]{layoutElement});
             pageModel.setPageIdentity(pageInfo.getPageId());
 
             CMSContext.PutContext(request, response, site);

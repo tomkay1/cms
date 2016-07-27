@@ -94,7 +94,7 @@ public class PageControllerTest extends ManageTest {
 
         PageLayout page = randomPageLayout();
         PageModel model = new PageModel();
-        model.setElements(page.getElements());
+        model.setRoot(page.getRoot());
         model.setTitle(pageInfo.getTitle());
         model.setPageIdentity(pageInfo.getPageId());
 

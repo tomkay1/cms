@@ -91,8 +91,8 @@ public class PageServiceImpl implements PageService {
         pageInfo.setResourceKey(resourceKey);
 
         // TODO 合法性检查,包括自动添加Empty
-        if (page != null && page.getElements() != null)
-            pageInfo.setLayout(new PageLayout(page.getElements()));
+        if (page != null && page.getRoot() != null)
+            pageInfo.setLayout(new PageLayout(page.getRoot()));
 
         // TODO 还需要修改什么么?
 

@@ -120,7 +120,7 @@
                         <td th:text="${video.title}">新闻资讯</td>
                         <td th:text="${#temporals.format(video.createTime,'yyyy-MM-dd HH:mm')}">2016 06-20</td>
                         <td >视频</td>
-                        <td th:text="${video.category.parent.name}">无</td>
+                        <td th:text="${video.category.parent==null?'无':video.category.parent.name}">无</td>
                         <td class="center">
                             <a href="videoOpen.html" th:href="@{/manage/video/{id}(id=${video.id})}" target="_top" title="管理">
                                 <i class="fa fa-pencil"></i>

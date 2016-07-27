@@ -75,7 +75,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">内容</label>
                                 <div class="col-sm-10">
-                                    <textarea class="form-control" rows="4" title="内容" name="content" th:value="${object.content}"></textarea>
+                                    <textarea class="form-control" rows="4" title="内容" name="content" th:inline="text">[[${object.content}]]</textarea>
                                 </div>
                             </div>
                         </div>

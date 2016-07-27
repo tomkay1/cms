@@ -115,7 +115,7 @@
                         <td th:text="${notice.title}">新闻资讯</td>
                         <td th:text="${#temporals.format(notice.createTime,'yyyy-MM-dd HH:mm')}">2016 06-20</td>
                         <td>公告</td>
-                        <td th:text="${notice.category.parent.name}">无</td>
+                        <td th:text="${notice.category.parent==null?'无':notice.category.parent.name}">无</td>
                         <td class="center">
                             <a href="noticeOpen.html" th:href="@{/manage/notice/{id}(id=${notice.id})}"  title="管理">
                                 <i class="fa fa-pencil"></i>

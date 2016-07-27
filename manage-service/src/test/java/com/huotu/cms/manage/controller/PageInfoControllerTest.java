@@ -15,6 +15,7 @@ import com.huotu.cms.manage.controller.support.CRUDTest;
 import com.huotu.cms.manage.page.ManageMainPage;
 import com.huotu.cms.manage.page.PageInfoPage;
 import com.huotu.cms.manage.page.support.AbstractCRUDPage;
+import com.huotu.cms.manage.service.PageFilterBehavioral;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.widget.entity.PageInfo;
@@ -43,39 +44,88 @@ public class PageInfoControllerTest extends SiteManageTest {
 
         ManageMainPage manageMainPage = initPage(ManageMainPage.class);
 
-        CRUDHelper.flow(manageMainPage.toPage(PageInfoPage.class), new CRUDTest<PageInfo>() {
-            @Override
-            public Collection<PageInfo> list() {
-                return pageInfoRepository.findBySite(site);
-            }
+        CRUDHelper.flow(manageMainPage.toPage(PageInfoPage.class), new PageInfoCRUDTest(site));
 
+        // 现在测试添加敏感uri
+        CRUDHelper.flow(manageMainPage.toPage(PageInfoPage.class), new PageInfoCRUDTest(site) {
             @Override
             public PageInfo randomValue() {
-                Category category = random.nextBoolean() ? randomCategory(site) : null;
-                PageInfo randomPageInfoValue = randomPageInfoValue();
-                randomPageInfoValue.setCategory(category);
-                return randomPageInfoValue;
+                PageInfo info = super.randomValue();
+                info.setPagePath(PageFilterBehavioral.protectedPath.stream()
+                        .findAny().orElseThrow(IllegalStateException::new));
+                return info;
             }
 
             @Override
-            public BiConsumer<AbstractCRUDPage<PageInfo>, PageInfo> customAddFunction() {
-                return null;
-            }
-
-            @Override
-            public void assertCreation(PageInfo entity, PageInfo data) {
-                assertThat(entity.getCategory())
-                        .isEqualTo(data.getCategory());
-                assertThat(entity.getTitle())
-                        .isEqualToIgnoringCase(data.getTitle());
-                assertThat(entity.getPageType())
-                        .isEqualByComparingTo(data.getPageType());
-                assertThat(entity.getPagePath())
-                        .isEqualTo(data.getPagePath());
+            public String errorMessageAfterAdd(PageInfo data) {
+//                return null;
+                return "无法使用";
             }
         });
 
+        PageInfo pageInfo = new PageInfoCRUDTest(site).randomValue();
+//        现在测试下添加相同的链接
+        CRUDHelper.flow(manageMainPage.toPage(PageInfoPage.class), new OnePagePageInfoCRUDTest(site, pageInfo));
+        CRUDHelper.flow(manageMainPage.toPage(PageInfoPage.class), new OnePagePageInfoCRUDTest(site, pageInfo) {
+            @Override
+            public String errorMessageAfterAdd(PageInfo data) {
+                return "无法使用";
+            }
+        });
+
+
+    }
+
+    private class OnePagePageInfoCRUDTest extends PageInfoCRUDTest {
+        private final PageInfo pageInfo;
+
+        public OnePagePageInfoCRUDTest(Site site, PageInfo pageInfo) {
+            super(site);
+            this.pageInfo = pageInfo;
+        }
+
+        @Override
+        public PageInfo randomValue() {
+            return pageInfo;
+        }
     }
 
 
+    private class PageInfoCRUDTest implements CRUDTest<PageInfo> {
+        private final Site site;
+
+        PageInfoCRUDTest(Site site) {
+            this.site = site;
+        }
+
+        @Override
+        public Collection<PageInfo> list() {
+            return pageInfoRepository.findBySite(site);
+        }
+
+        @Override
+        public PageInfo randomValue() {
+            Category category = random.nextBoolean() ? randomCategory(site) : null;
+            PageInfo randomPageInfoValue = randomPageInfoValue();
+            randomPageInfoValue.setCategory(category);
+            return randomPageInfoValue;
+        }
+
+        @Override
+        public BiConsumer<AbstractCRUDPage<PageInfo>, PageInfo> customAddFunction() {
+            return null;
+        }
+
+        @Override
+        public void assertCreation(PageInfo entity, PageInfo data) {
+            assertThat(entity.getCategory())
+                    .isEqualTo(data.getCategory());
+            assertThat(entity.getTitle())
+                    .isEqualToIgnoringCase(data.getTitle());
+            assertThat(entity.getPageType())
+                    .isEqualByComparingTo(data.getPageType());
+            assertThat(entity.getPagePath())
+                    .isEqualTo(data.getPagePath());
+        }
+    }
 }

@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 /**
  * 具备一个添加form和一个展示数据列表的div
  *
@@ -42,7 +44,15 @@ public abstract class AbstractCRUDPage<T> extends AbstractContentPage {
 
     @Override
     public void validatePage() {
-        normalValid();
+        // 无法使用
+//        normalValid();
+        try {
+            assertThat(getBody().isDisplayed())
+                    .isTrue();
+        } catch (Throwable ex) {
+            printThisPage();
+            throw ex;
+        }
     }
 
     @Override

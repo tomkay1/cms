@@ -29,6 +29,7 @@
         <Logger name="com.gargoylesoftware.htmlunit" level="error"/>
         <Logger name="org.springframework.web" level="debug"/>
         <Logger name="org.springframework.security" level="info"/>
+        <Logger name="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping" level="info"/>
         <Root level="info">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="ServerDailyRollingFile"/>

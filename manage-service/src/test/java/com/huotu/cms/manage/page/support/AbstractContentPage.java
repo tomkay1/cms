@@ -9,11 +9,13 @@
 
 package com.huotu.cms.manage.page.support;
 
+import org.assertj.core.api.AbstractListAssert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.springframework.core.annotation.AnnotationUtils;
 
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -86,6 +88,16 @@ public abstract class AbstractContentPage extends AbstractManagePage {
         webDriver.switchTo().parentFrame();
         super.assertNoDanger();
         beforeDriver();
+    }
+
+    @Override
+    public AbstractListAssert<?, ? extends List<? extends String>, String> assertDanger() throws InterruptedException {
+        try {
+            webDriver.switchTo().parentFrame();
+            return super.assertDanger();
+        } finally {
+            beforeDriver();
+        }
     }
 
     @Override

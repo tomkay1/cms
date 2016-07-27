@@ -1,0 +1,41 @@
+{
+  // 根元素
+  "root": [
+    {
+      // 根元素下只有布局
+      "layout": {
+        // 布局字符
+        "value": "7,5",
+        // 分组的元素  它的长度必然是布局字符所规定的
+        "elementGroups": [
+          // 页面元素组 可能会有多个
+          [
+            {
+              // 支持 component or layout layout规则参考上面
+              "component": {
+                // 形似 <groupId>-<widgetId>:<version> 该值等同于《页面初始化JSON数据规格》中提到的 widgets JSON 中的identity
+                "widgetIdentity": "6aae7fd8-9e39-4422-b98d-31827779bb76",
+                // 组件的id
+                "id": "6b49c96f-3839-47ae-890c-af601bad50bf",
+                "styleClassNames": null,
+                // 所选择的样式
+                "styleId": null,
+                // 组件属性
+                "properties": {
+                },
+                // 该控件的编辑视图 ,这个属性是一种特殊属性,只有服务端响应中会出现,客户端不必将该属性发往服务端
+                "previewHTML": "a7f009a9-265b-4ea5-9376-184003457f9d"
+              }
+            }
+          ],
+          [
+            //  对了 还可能是empty 服务端应当支持自动补齐功能
+            {
+              "empty": {}
+            }
+          ]
+        ]
+      }
+    }
+  ]
+}

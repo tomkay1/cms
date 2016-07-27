@@ -67,13 +67,9 @@ public class PageServiceImpl implements PageService {
 
     @Override
     public void generateHTML(Writer writer, PageInfo page, CMSContext context) throws IOException {
-        PageElement[] elements;
-        if (page.getLayout() != null)
-            elements = page.getLayout().getElements();
-        else
-            elements = new PageElement[0];
+        Layout[] layouts = PageLayout.NoNullLayout(page.getLayout());
         writer.append("<div class=\"container\">");
-        for (PageElement element : elements) {
+        for (PageElement element : layouts) {
             writer.append("<div class=\"row\">");
             widgetResolveService.pageElementHTML(element, context, writer);
             writer.append("</div>");
@@ -93,6 +89,8 @@ public class PageServiceImpl implements PageService {
         //保存最新控件信息
         String resourceKey = UUID.randomUUID().toString();
         pageInfo.setResourceKey(resourceKey);
+
+        // TODO 合法性检查,包括自动添加Empty
         if (page != null && page.getElements() != null)
             pageInfo.setLayout(new PageLayout(page.getElements()));
 
@@ -101,7 +99,7 @@ public class PageServiceImpl implements PageService {
 //        pageInfo.setPageSetting(pageJson.getBytes());
         pageInfoRepository.save(pageInfo);
         //生成page的css样式表
-        PageElement[] elements = pageInfo.getLayout().getElements();
+        PageElement[] elements = PageLayout.NoNullLayout(pageInfo.getLayout());
         Path path = Files.createTempFile("tempCss", ".css");
         try {
             try (OutputStream out = Files.newOutputStream(path)) {
@@ -170,12 +168,11 @@ public class PageServiceImpl implements PageService {
 
     @Override
     public void updatePageComponent(PageInfo page, InstalledWidget installedWidget) throws IllegalStateException {
-        Layout[] pageElements = page.getLayout().getElements();
-        for (PageElement pageElement : pageElements) {
+        Layout[] layouts = PageLayout.NoNullLayout(page.getLayout());
+        for (PageElement pageElement : layouts) {
             updateComponent(pageElement, installedWidget);
         }
-        PageLayout pageLayout = new PageLayout();
-        pageLayout.setElements(pageElements);
+        PageLayout pageLayout = new PageLayout(layouts);
         page.setLayout(pageLayout);
         pageInfoRepository.saveAndFlush(page);
     }
@@ -189,9 +186,8 @@ public class PageServiceImpl implements PageService {
     private void updateComponent(PageElement element, InstalledWidget installedWidget) {
         if (element instanceof Layout) {
             Layout layout = (Layout) element;
-            for (PageElement pageElement : layout.getElements()) {
+            for (PageElement pageElement : layout.elements())
                 updateComponent(pageElement, installedWidget);
-            }
         } else if (element instanceof Component) {
             Component component = (Component) element;
             Widget comWidget = component.getInstalledWidget().getWidget();

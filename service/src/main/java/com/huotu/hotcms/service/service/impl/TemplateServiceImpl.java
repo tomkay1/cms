@@ -19,9 +19,9 @@ import com.huotu.hotcms.service.entity.Notice;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.Template;
 import com.huotu.hotcms.service.entity.Video;
-import com.huotu.hotcms.service.repository.AbstractContentRepository;
 import com.huotu.hotcms.service.repository.ArticleRepository;
 import com.huotu.hotcms.service.repository.CategoryRepository;
+import com.huotu.hotcms.service.repository.ContentRepository;
 import com.huotu.hotcms.service.repository.DownloadRepository;
 import com.huotu.hotcms.service.repository.GalleryItemRepository;
 import com.huotu.hotcms.service.repository.GalleryRepository;
@@ -73,7 +73,7 @@ public class TemplateServiceImpl implements TemplateService {
     private GalleryItemRepository galleryItemRepository;
 
     @Autowired
-    private AbstractContentRepository abstractContentRepository;
+    private ContentRepository contentRepository;
 
     @Autowired
     private ResourceService resourceService;
@@ -272,7 +272,7 @@ public class TemplateServiceImpl implements TemplateService {
             newArticle = article.copy(customerSite, copyCategory);
             if (!StringUtils.isEmpty(newArticle.getThumbUri()))
                 newArticle.setThumbUri(copyStaticResource(newArticle.getThumbUri()));
-            abstractContentRepository.save(newArticle);
+            contentRepository.save(newArticle);
         }
         //下载模型复制
         List<Download> downloads = downloadRepository.findByCategory(templateCategory);
@@ -281,7 +281,7 @@ public class TemplateServiceImpl implements TemplateService {
             d = download.copy(customerSite, copyCategory);
             if (!StringUtils.isEmpty(download.getDownloadUrl())) {
                 d.setDownloadUrl(copyStaticResource(download.getDownloadUrl()));
-                abstractContentRepository.save(d);
+                contentRepository.save(d);
             }
             //图库模型复制
             List<Gallery> galleries = galleryRepository.findByCategory(templateCategory);
@@ -292,7 +292,7 @@ public class TemplateServiceImpl implements TemplateService {
                 g = gallery.copy(customerSite, copyCategory);
                 if (!StringUtils.isEmpty(gallery.getThumbUri()))
                     g.setThumbUri(copyStaticResource(gallery.getThumbUri()));
-                g = abstractContentRepository.save(g);
+                g = contentRepository.save(g);
                 //图库集合复制
                 galleryItems = galleryItemRepository.findByGallery(gallery);
                 for (GalleryItem gl : galleryItems) {
@@ -311,14 +311,14 @@ public class TemplateServiceImpl implements TemplateService {
                 if (!StringUtils.isEmpty(link1.getThumbUri())) {
                     link1.setThumbUri(copyStaticResource(link1.getThumbUri()));
                 }
-                abstractContentRepository.save(link1);
+                contentRepository.save(link1);
             }
             //公告模型复制
             List<Notice> notices = noticeRepository.findByCategory(templateCategory);
             Notice notice1;
             for (Notice notice : notices) {
                 notice1 = notice.copy(customerSite, copyCategory);
-                abstractContentRepository.save(notice1);
+                contentRepository.save(notice1);
             }
             //视频模型复制
             List<Video> videos = videoRepository.findByCategory(templateCategory);
@@ -329,7 +329,7 @@ public class TemplateServiceImpl implements TemplateService {
                     v.setThumbUri(copyStaticResource(v.getThumbUri()));
                 if (!StringUtils.isEmpty(v.getVideoUrl()))
                     v.setVideoUrl(copyStaticResource(v.getVideoUrl()));
-                abstractContentRepository.save(v);
+                contentRepository.save(v);
             }
         }
     }

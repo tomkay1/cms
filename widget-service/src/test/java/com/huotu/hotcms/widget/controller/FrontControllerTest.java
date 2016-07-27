@@ -16,8 +16,8 @@ import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.model.NavbarPageInfoModel;
-import com.huotu.hotcms.service.repository.AbstractContentRepository;
 import com.huotu.hotcms.service.repository.CategoryRepository;
+import com.huotu.hotcms.service.repository.ContentRepository;
 import com.huotu.hotcms.service.repository.OwnerRepository;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.widget.CMSContext;
@@ -63,7 +63,7 @@ public class FrontControllerTest extends TestBase {
     protected MockHttpServletResponse response;
 
     @Autowired
-    private AbstractContentRepository abstractContentRepository;
+    private ContentRepository contentRepository;
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -170,7 +170,7 @@ public class FrontControllerTest extends TestBase {
         Link link = new Link();
         link.setId(contentId);
         link.setCategory(category);
-        abstractContentRepository.saveAndFlush(link);
+        contentRepository.saveAndFlush(link);
         PageInfo pageInfo = new PageInfo();
         pageInfo.setTitle("test");
         pageInfo.setCategory(category);

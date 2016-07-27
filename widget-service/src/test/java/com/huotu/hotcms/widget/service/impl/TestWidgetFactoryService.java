@@ -20,8 +20,8 @@ import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.service.exception.PageNotFoundException;
-import com.huotu.hotcms.service.repository.AbstractContentRepository;
 import com.huotu.hotcms.service.repository.CategoryRepository;
+import com.huotu.hotcms.service.repository.ContentRepository;
 import com.huotu.hotcms.service.repository.OwnerRepository;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.widget.CMSContext;
@@ -83,7 +83,7 @@ public class TestWidgetFactoryService extends TestBase {
     @Autowired
     private CategoryRepository categoryRepository;
     @Autowired
-    private AbstractContentRepository abstractContentRepository;
+    private ContentRepository contentRepository;
     @Autowired
     private PageInfoRepository pageInfoRepository;
     @Autowired
@@ -243,7 +243,7 @@ public class TestWidgetFactoryService extends TestBase {
 
         Link link = new Link();
         link.setCategory(category);
-        abstractContentRepository.saveAndFlush(link);
+        contentRepository.saveAndFlush(link);
         PageInfo pageInfo = new PageInfo();
         pageInfo.setTitle("test");
         pageInfo.setCategory(category);

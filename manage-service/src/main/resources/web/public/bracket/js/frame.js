@@ -110,6 +110,12 @@ $(function () {
     if (inputTags.size() > 0)
         inputTags.tagsInput({width: 'auto'});
 
+
+    var datepicker=$('.cms-datepicker');
+    if(datepicker.size()>0)
+        datepicker.datepicker();
+
+
     // 让chosen-select可以自动处理
     var chosenSelect = $('.chosen-select');
     if (chosenSelect.size() > 0)

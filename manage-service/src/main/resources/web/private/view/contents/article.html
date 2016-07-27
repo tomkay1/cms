@@ -74,13 +74,12 @@
                             <select name="articleSource" title="文章来源" class="form-control">
                                 <option th:value="ORIGINAL">原创</option>
                                 <option th:value="REPRINT">转载</option>
-
                             </select>
                         </div>
                         <label class="col-sm-2 control-label">时间</label>
                         <div class="col-sm-2">
-                            <input id="articleDate" name="createTime" title="时间" type="text" placeholder="文章时间"
-                                   class="form-control"/>
+                            <input  name="createTime" title="时间" type="text" placeholder="文章时间"
+                                   class="form-control cms-datepicker"/>
                         </div>
                     </div>
                     <div class="form-group">
@@ -137,15 +136,15 @@
                     <tr th:each="article,stats:${list}" class="odd" th:class="${stats.odd?'odd':'even'}"
                         th:attr="data-id=${article.id}" data-id="456">
                         <td th:text="${article.title}">新闻资讯</td>
-                        <td th:text="${{article.createTime}}">2016 06-20</td>
+                        <td th:text="${#temporals.format(article.createTime,'yyyy-MM-dd HH:mm')}">2016 06-20</td>
                         <td th:text="${article.type}">普通文章</td>
                         <td th:text="${article.category.parent==null?'无':article.category.parent.name}">无</td>
                         <td class="center">
-                            <a href="articleOpen.html" th:href="@{/manage/article/{id}(id=${article.id})}" target="_top" title="管理">
+                            <a href="articleOpen.html" th:href="@{/manage/article/{id}(id=${article.id})}" title="管理">
                                 <i class="fa fa-pencil"></i>
                             </a>
                             <a href="article.html" class="delete" th:href="@{/manage/article/{id}/delete(id=${article.id})}"
-                               target="_top" title="删除">
+                               title="删除">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                         </td>
@@ -157,11 +156,11 @@
                         <td>文章</td>
                         <td>无</td>
                         <td class="center">
-                            <a href="index.html" target="_top" title="编辑">
+                            <a href="articleOpen.html"  title="编辑">
                                 <i class="fa fa-pencil"></i>
                             </a>
-                            <a href="index.html" class="delete"
-                               target="_top" title="删除">
+                            <a href="article.html" class="delete"
+                                title="删除">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                         </td>
@@ -172,11 +171,11 @@
                         <td>文章</td>
                         <td>新闻资讯</td>
                         <td class="center">
-                            <a href="index.html" target="_top" title="编辑">
+                            <a href="articleOpen.html"  title="编辑">
                                 <i class="fa fa-pencil"></i>
                             </a>
-                            <a href="index.html" class="delete"
-                               target="_top" title="删除">
+                            <a href="article.html" class="delete"
+                               title="删除">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                         </td>

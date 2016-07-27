@@ -117,9 +117,9 @@
                     <tr th:each="link,stats:${list}" class="odd" th:class="${stats.odd?'odd':'even'}"
                         th:attr="data-id=${link.id}" data-id="456">
                         <td th:text="${link.title}">新闻资讯</td>
-                        <td th:text="${{link.createTime}}">2016 06-20</td>
+                        <td th:text="${#temporals.format(link.createTime,'yyyy-MM-dd HH:mm')}">2016 06-20</td>
                         <td th:text="${link.linkUrl}">文章</td>
-                        <td th:text="${link.category.parent.name}">无</td>
+                        <td th:text="${link.category.parent==null?'无':link.category.parent.name}">无</td>
                         <td class="center">
                             <a href="linkOpen.html" th:href="@{/manage/link/{id}(id=${link.id})}" target="_top" title="管理">
                                 <i class="fa fa-pencil"></i>

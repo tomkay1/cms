@@ -38,7 +38,11 @@ public class ArticleController extends ContentManageController<Article,ContentEx
     @Override
     protected void prepareUpdate(Login login, Article entity, Article data, ContentExtra extra
             , RedirectAttributes attributes) throws RedirectException {
-
+        entity.setContent(data.getContent());
+        entity.setCreateTime(data.getCreateTime());
+        entity.setType(data.getType());
+        entity.setTitle(data.getTitle());
+        entity.setAuthor(data.getAuthor());
     }
 
     @Override

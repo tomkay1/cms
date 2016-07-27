@@ -11,6 +11,7 @@ package com.huotu.hotcms.web.config;
 
 import com.huotu.cms.manage.config.ManageServiceSpringConfig;
 import com.huotu.hotcms.service.config.ServiceConfig;
+import com.huotu.hotcms.service.converter.CMSDateFormatter;
 import com.huotu.hotcms.web.interceptor.RouteInterceptor;
 import com.huotu.hotcms.web.interceptor.SiteResolver;
 import com.huotu.hotcms.web.util.ArrayUtil;
@@ -22,6 +23,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
+import org.springframework.format.Formatter;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.http.MediaType;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.ViewResolver;
@@ -32,6 +35,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.dialect.IDialect;
+import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
@@ -66,6 +70,20 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
     private ThymeleafViewResolver javascriptViewResolver;
     @Autowired
     private ThymeleafViewResolver cssViewResolver;
+
+    @Autowired
+    private CMSDateFormatter cmsDateFormatter;
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        super.addFormatters(registry);
+        registry.addFormatter(cmsDateFormatter);
+    }
+
+//    @Bean
+//    public Formatter cmsDateFormatter(){
+//        return new CMSDateFormatter();
+//    }
 
     /**
      * 允许访问静态资源
@@ -194,6 +212,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
             SpringTemplateEngine templateEngine(ITemplateResolver templateResolver) {
                 SpringTemplateEngine engine = new SpringTemplateEngine();
                 engine.setTemplateResolver(templateResolver);
+                engine.addDialect(new Java8TimeDialect());
                 dialectSet.forEach(engine::addDialect);
                 return engine;
             }

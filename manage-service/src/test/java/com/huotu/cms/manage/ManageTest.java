@@ -334,7 +334,7 @@ public abstract class ManageTest extends SpringWebTest {
 
     protected Category randomCategory(Site site) {
         Category category = new Category();
-        category.setParent(null);
+        category.setParent(randomCategory());
         category.setSite(site);
         category.setName(UUID.randomUUID().toString());
         category.setContentType(ContentType.values()[random.nextInt(ContentType.values().length)]);

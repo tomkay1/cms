@@ -49,6 +49,7 @@ import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -170,7 +171,7 @@ public class WidgetInfoController
         for (InstalledWidget installedWidget : installedWidgets) {
             WidgetModel widgetModel = new WidgetModel();
             widget = installedWidget.getWidget();
-            widgetModel.setLocallyName(widget.name());
+            widgetModel.setLocallyName(widget.name(Locale.CHINA));
             widgetModel.setEditorHTML(widgetResolveService.editorHTML(widget, CMSContext.RequestContext(), null));
             //<groupId>-<widgetId>:<version>
             widgetModel.setIdentity(widget.groupId()+"-"+widget.widgetId()+":"+widget.version());

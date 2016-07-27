@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 /**
  * 具备一个添加form和一个展示数据列表的div
  *
@@ -42,7 +44,15 @@ public abstract class AbstractCRUDPage<T> extends AbstractContentPage {
 
     @Override
     public void validatePage() {
-        normalValid();
+        // 无法使用
+//        normalValid();
+        try {
+            assertThat(getBody().isDisplayed())
+                    .isTrue();
+        } catch (Throwable ex) {
+            printThisPage();
+            throw ex;
+        }
     }
 
     @Override
@@ -144,8 +154,31 @@ public abstract class AbstractCRUDPage<T> extends AbstractContentPage {
         return initPage(clazz);
     }
 
+    /**
+     * 删除操作
+     * @param webElement
+     * @param <X>
+     * @return
+     */
+    public final <X extends AbstractCRUDPage<T>> X deleteResource(WebElement webElement) {
+        toDelete(webElement);
+        try {
+            webDriver.switchTo().alert().accept();
+        } catch (Throwable ignored) {
+        }
+        @SuppressWarnings("unchecked")
+        Class<X> clazz = (Class<X>) getClass();
+        return initPage(clazz);
+    }
+
+
+
     @SuppressWarnings("WeakerAccess")
     protected void howToOpenResource(WebElement webElement) {
         webElement.findElement(By.className("fa-pencil")).click();
+    }
+
+    protected void toDelete(WebElement webElement){
+        webElement.findElement(By.className("fa-trash-o")).click();
     }
 }

@@ -15,7 +15,7 @@ import org.springframework.data.domain.Page;
 
 import java.net.URISyntaxException;
 
-public interface GalleryListService {
+public interface GalleryItemService {
 
     /**
      * 获取gallery的分页
@@ -29,9 +29,9 @@ public interface GalleryListService {
      */
     Page<GalleryItem> getPage(long ownerId, Long galleryId, int page, int pageSize) throws URISyntaxException;
 
-    Boolean saveGalleryList(GalleryItem galleryItem);
+    Boolean saveGalleryItem(GalleryItem galleryItem);
 
-    GalleryItem findGalleryListById(Long id);
+    GalleryItem findGalleryItemById(Long id);
 
-    Page<GalleryItem> getGalleryList(GalleryForeachParam foreachParam) throws Exception;
+    Page<GalleryItem> getGalleryItem(GalleryForeachParam foreachParam) throws Exception;
 }

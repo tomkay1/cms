@@ -11,8 +11,8 @@ package com.huotu.hotcms.service.service.impl;
 
 import com.huotu.hotcms.service.entity.GalleryItem;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.GalleryForeachParam;
-import com.huotu.hotcms.service.repository.GalleryListRepository;
-import com.huotu.hotcms.service.service.GalleryListService;
+import com.huotu.hotcms.service.repository.GalleryItemRepository;
+import com.huotu.hotcms.service.service.GalleryItemService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +31,12 @@ import java.util.List;
  * Created by chendeyu on 2016/1/10.
  */
 @Service
-public class GalleryListServiceImpl implements GalleryListService {
+public class GalleryItemServiceImpl implements GalleryItemService {
 
-    private static Log log = LogFactory.getLog(GalleryListServiceImpl.class);
+    private static Log log = LogFactory.getLog(GalleryItemServiceImpl.class);
 
     @Autowired
-    private GalleryListRepository galleryListRepository;
+    private GalleryItemRepository galleryItemRepository;
 
 
     @Override
@@ -48,31 +48,31 @@ public class GalleryListServiceImpl implements GalleryListService {
             predicates.add(cb.equal(root.get("gallery").get("id").as(Long.class), galleryId));
             return cb.and(predicates.toArray(new Predicate[predicates.size()]));
         };
-        return galleryListRepository.findAll(specification, new PageRequest(page - 1, pageSize
+        return galleryItemRepository.findAll(specification, new PageRequest(page - 1, pageSize
                 , new Sort(Sort.Direction.DESC, "orderWeight")));
     }
 
 
     @Override
-    public Boolean saveGalleryList(GalleryItem galleryItem) {
-        galleryListRepository.save(galleryItem);
+    public Boolean saveGalleryItem(GalleryItem galleryItem) {
+        galleryItemRepository.save(galleryItem);
         return true;
     }
 
     @Override
-    public GalleryItem findGalleryListById(Long id) {
-        return galleryListRepository.findOne(id);
+    public GalleryItem findGalleryItemById(Long id) {
+        return galleryItemRepository.findOne(id);
     }
 
     @Override
-    public Page<GalleryItem> getGalleryList(GalleryForeachParam foreachParam) throws Exception {
+    public Page<GalleryItem> getGalleryItem(GalleryForeachParam foreachParam) throws Exception {
         Specification<GalleryItem> specification = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(cb.equal(root.get("deleted").as(String.class), false));
             predicates.add(cb.equal(root.get("gallery").get("id").as(Long.class), foreachParam.getGalleryId()));
             return cb.and(predicates.toArray(new Predicate[predicates.size()]));
         };
-        return galleryListRepository.findAll(specification, new PageRequest(foreachParam.getPageNo() - 1
+        return galleryItemRepository.findAll(specification, new PageRequest(foreachParam.getPageNo() - 1
                 , foreachParam.getPageSize(), new Sort(Sort.Direction.DESC, "orderWeight")));
     }
 }

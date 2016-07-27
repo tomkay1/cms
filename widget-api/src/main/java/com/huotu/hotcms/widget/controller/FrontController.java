@@ -101,7 +101,6 @@ public class FrontController implements FilterBehavioral {
         } else {
             return pageService.findBySiteAndPagePath(cmsContext.getSite(), pagePath);
         }
-
     }
 
     @Override

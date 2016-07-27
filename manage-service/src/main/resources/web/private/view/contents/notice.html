@@ -113,15 +113,15 @@
                     <tr th:each="notice,stats:${list}" class="odd" th:class="${stats.odd?'odd':'even'}"
                         th:attr="data-id=${notice.id}" data-id="456">
                         <td th:text="${notice.title}">新闻资讯</td>
-                        <td th:text="${{notice.createTime}}">2016 06-20</td>
+                        <td th:text="${#temporals.format(notice.createTime,'yyyy-MM-dd HH:mm')}">2016 06-20</td>
                         <td>公告</td>
-                        <td th:text="${notice.category.parent.name}">无</td>
+                        <td th:text="${notice.category.parent==null?'无':notice.category.parent.name}">无</td>
                         <td class="center">
-                            <a href="noticeOpen.html" th:href="@{/manage/notice/${id}(id=${notice.id})}" target="_top" title="管理">
+                            <a href="noticeOpen.html" th:href="@{/manage/notice/{id}(id=${notice.id})}"  title="管理">
                                 <i class="fa fa-pencil"></i>
                             </a>
                             <a href="notice.html" class="delete" th:href="@{/manage/notice/{id}/delete(id=${notice.id})}"
-                               target="_top" title="删除">
+                               title="删除">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                         </td>
@@ -133,11 +133,10 @@
                         <td>文章</td>
                         <td>无</td>
                         <td class="center">
-                            <a href="index.html" target="_top" title="编辑">
+                            <a href="index.html"  title="编辑">
                                 <i class="fa fa-pencil"></i>
                             </a>
-                            <a href="index.html" class="delete"
-                               target="_top" title="删除">
+                            <a href="notice.html" class="delete" title="删除">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                         </td>
@@ -148,11 +147,10 @@
                         <td>文章</td>
                         <td>新闻资讯</td>
                         <td class="center">
-                            <a href="index.html" target="_top" title="编辑">
+                            <a href="notice.html" title="编辑">
                                 <i class="fa fa-pencil"></i>
                             </a>
-                            <a href="index.html" class="delete"
-                               target="_top" title="删除">
+                            <a href="index.html" class="delete" title="删除">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                         </td>

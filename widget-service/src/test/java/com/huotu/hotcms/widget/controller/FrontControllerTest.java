@@ -15,6 +15,7 @@ import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Owner;
+import com.huotu.hotcms.service.model.NavbarPageInfoModel;
 import com.huotu.hotcms.service.repository.AbstractContentRepository;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.OwnerRepository;
@@ -26,6 +27,7 @@ import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.PageElement;
+import com.huotu.hotcms.widget.page.PageLayout;
 import com.huotu.hotcms.widget.page.PageModel;
 import com.huotu.hotcms.widget.repository.PageInfoRepository;
 import com.huotu.hotcms.widget.service.PageService;
@@ -41,22 +43,22 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * <p>针对页面服务controller层{@link FrontController}的单元测试</p>
  */
 @Transactional
-@Rollback(true)
-public class TestFontController extends TestBase {
+@Rollback
+public class FrontControllerTest extends TestBase {
     @Autowired(required = false)
     protected MockHttpServletResponse response;
 
@@ -81,6 +83,26 @@ public class TestFontController extends TestBase {
 
     @Autowired
     private SiteService siteService;
+
+    /**
+     * 预览css的测试
+     */
+    @Test
+    public void previewCSS() throws Exception {
+        //找一个不存在的Page
+        long noExistingPage = Math.abs(random.nextLong());
+        while (pageInfoRepository.findOne(noExistingPage) != null)
+            noExistingPage = Math.abs(random.nextLong());
+
+        mockMvc.perform(get("/preview/{pageId}/1.css", String.valueOf(noExistingPage)))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+
+        //建立一个Page
+        PageInfo pageInfo = new PageInfo();
+        PageLayout layout = randomPageLayout();
+    }
+
     /**
      * 最基本的测试流
      */
@@ -164,7 +186,7 @@ public class TestFontController extends TestBase {
         try {
             String randomType = UUID.randomUUID().toString();
             // 安装一个demo控件
-            widgetFactoryService.installWidgetInfo(owner, "com.huotu.hotcms.widget.pagingWidget", "pagingWidget"
+            widgetFactoryService.installWidgetInfo(owner, "com.huotu.hotcms.widget.topNavigation", "topNavigation"
                     , "1.0-SNAPSHOT", randomType);
             installedWidgets = widgetFactoryService.widgetList(null);
             InstalledWidget installedWidget = installedWidgets != null
@@ -173,24 +195,82 @@ public class TestFontController extends TestBase {
             String styleId = installedWidget.getWidget().styles() != null
                     ? installedWidget.getWidget().styles()[0].id() : null;
             component.setInstalledWidget(installedWidget);
-            component.setWidgetIdentity("com.huotu.hotcms.widget.pagingWidget-pagingWidget:1.0-SNAPSHOT");
+            component.setWidgetIdentity("com.huotu.hotcms.widget.topNavigation-topNavigation:1.0-SNAPSHOT");
+            component.setId(UUID.randomUUID().toString());
             component.setStyleId(styleId);
-            Map<String, String> styleClassNames = new HashMap<>();
-            styleClassNames.put("page", UUID.randomUUID().toString().replace("-", ""));
-            component.setStyleClassNames(styleClassNames);
             ComponentProperties properties = new ComponentProperties();
-            properties.put("pageCount", 20);
             properties.put("pagingTColor", "#000000");
             properties.put("pagingHColor", "#000000");
+            properties.put("logoFileUri", "http://www.baidu.com");
+            PageInfo pageInfo1 = new PageInfo();
+            pageInfo1.setTitle("首页");
+            pageInfo1.setPagePath("");
+            pageInfo1.setPageId(1L);
+
+            PageInfo pageInfo2 = new PageInfo();
+            pageInfo2.setTitle("新闻");
+            pageInfo2.setPagePath("xw");
+            pageInfo2.setPageId(2L);
+
+            PageInfo gjxw = new PageInfo();
+            gjxw.setTitle("国际新闻");
+            gjxw.setPagePath("gjxw");
+            gjxw.setPageId(22L);
+            gjxw.setParent(pageInfo2);
+
+            PageInfo gnxw = new PageInfo();
+            gnxw.setTitle("国内新闻");
+            gnxw.setParent(pageInfo2);
+            gnxw.setPageId(23L);
+            gnxw.setPagePath("gnxw");
+
+            PageInfo zjxw = new PageInfo();
+            zjxw.setTitle("浙江新闻");
+            zjxw.setParent(gnxw);
+            zjxw.setPageId(231L);
+            zjxw.setPagePath("zjxw");
+
+            PageInfo pageInfo3 = new PageInfo();
+            pageInfo3.setTitle("关于我们");
+            pageInfo3.setPagePath("guwm");
+            pageInfo3.setPageId(3L);
+
+            List<PageInfo> list = new ArrayList<>();
+            list.add(pageInfo1);
+            list.add(gjxw);
+            list.add(pageInfo2);
+            list.add(pageInfo3);
+            list.add(gnxw);
+            list.add(zjxw);
+
+            List<NavbarPageInfoModel> navbarPageInfoModels = new ArrayList<>();
+            for (PageInfo info : list) {
+                NavbarPageInfoModel navbarPageInfoModel = new NavbarPageInfoModel();
+                navbarPageInfoModel.setText(info.getTitle());
+                navbarPageInfoModel.setHref(info.getPagePath());
+                navbarPageInfoModel.setPageId(info.getPageId());
+                navbarPageInfoModel.setParentId(info.getParent() != null ? info.getParent().getPageId() : 0);
+                navbarPageInfoModels.add(navbarPageInfoModel);
+            }
+            List<NavbarPageInfoModel> rootTrees = new ArrayList<>();
+            for (NavbarPageInfoModel navbarPageInfoModel : navbarPageInfoModels) {
+                if (navbarPageInfoModel.getParentId() == 0) {
+                    rootTrees.add(navbarPageInfoModel);
+                }
+                for (NavbarPageInfoModel t : navbarPageInfoModels) {
+                    if (t.getParentId() == navbarPageInfoModel.getPageId()) {
+                        navbarPageInfoModel.getNodes().add(t);
+                    }
+                }
+            }
+            properties.put("pageIds",navbarPageInfoModels);
             component.setProperties(properties);
             layoutElement.setParallelElements(new PageElement[]{component});
 
             PageModel pageModel = new PageModel();
-            pageModel.setElements(new Layout[]{layoutElement});
+            pageModel.setRoot(new Layout[]{layoutElement});
             pageModel.setPageIdentity(pageInfo.getPageId());
-
             CMSContext.PutContext(request, response, site);
-
             pageService.savePage(pageModel, pageInfo.getPageId());
         } catch (Exception e) {
             throw new IllegalStateException("error", e);

@@ -11,6 +11,7 @@ package com.huotu.hotcms.widget.xml;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.page.PageLayout;
 import com.huotu.hotcms.widget.test.TestBase;
 import org.junit.Test;
@@ -27,7 +28,7 @@ public class PersistToXmlTest extends TestBase {
 
 
     @Test
-    public void testToXml() throws IOException {
+    public void testToXml() throws IOException, FormatException {
         PageLayout page = randomPageLayout();
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(page);

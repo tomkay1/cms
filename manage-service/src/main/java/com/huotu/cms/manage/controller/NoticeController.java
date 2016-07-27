@@ -51,7 +51,8 @@ public class NoticeController extends ContentManageController<Notice,ContentExtr
     }
 
     @Override
-    protected Notice preparePersistContext(Login login, Site site, Notice data, ContentExtra extra, RedirectAttributes attributes) throws RedirectException {
+    protected Notice preparePersistContext(Login login, Site site, Notice data, ContentExtra extra
+            , RedirectAttributes attributes) throws RedirectException {
         return data;
     }
 
@@ -61,8 +62,11 @@ public class NoticeController extends ContentManageController<Notice,ContentExtr
     }
 
     @Override
-    protected void prepareUpdate(Login login, Notice entity, Notice data, ContentExtra extra, RedirectAttributes attributes) throws RedirectException {
-
+    protected void prepareUpdate(Login login, Notice entity, Notice data, ContentExtra extra
+            , RedirectAttributes attributes) throws RedirectException {
+        entity.setTitle(data.getTitle());
+        entity.setDescription(data.getDescription());
+        entity.setContent(data.getContent());
     }
 
     @Override

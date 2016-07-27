@@ -202,6 +202,7 @@ function uploadForm (obj) {
         },
     });
 };
+
 /**
  *
  * @param congruent [Boolean] 是否启用完全相等

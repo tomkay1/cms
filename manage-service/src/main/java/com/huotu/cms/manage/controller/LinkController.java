@@ -69,6 +69,9 @@ public class LinkController extends ContentManageController<Link,ContentExtra> {
     @Override
     protected void prepareUpdate(Login login, Link entity, Link data, ContentExtra extra
             , RedirectAttributes attributes) throws RedirectException {
+        entity.setTitle(data.getTitle());
+        entity.setLinkUrl(data.getLinkUrl());
+        entity.setDescription(data.getDescription());
 
     }
 

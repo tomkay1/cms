@@ -24,7 +24,7 @@ import java.util.Set;
  * Created by chendeyu on 2016/3/23.
  */
 @Component
-public class GalleryListDialect extends AbstractProcessorDialect{
+public class GalleryItemDialect extends AbstractProcessorDialect{
 
     public static String NAME = "GalleryItem";
     public static  String PREFIX = "galleryList";
@@ -32,16 +32,16 @@ public class GalleryListDialect extends AbstractProcessorDialect{
     @Autowired
     private ForeachProcessorService foreachProcessorService;
 
-    public GalleryListDialect() {
+    public GalleryItemDialect() {
         super(NAME,PREFIX,PROCESSOR_PRECEDENCE);
     }
 
     @Override
     public Set<IProcessor> getProcessors(String dialectPrefix) {
-        return createGalleryListProcessorSet(this, dialectPrefix);
+        return createGalleryItemProcessorSet(this, dialectPrefix);
     }
 
-    private Set<IProcessor> createGalleryListProcessorSet(final IProcessorDialect dialect, final String dialectPrefix) {
+    private Set<IProcessor> createGalleryItemProcessorSet(final IProcessorDialect dialect, final String dialectPrefix) {
         final Set<IProcessor> processors = new LinkedHashSet<>();
         processors.add(new ForeachProcessor(dialect, dialectPrefix, foreachProcessorService));
         return processors;

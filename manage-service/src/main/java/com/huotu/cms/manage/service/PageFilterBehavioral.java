@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,21 +33,21 @@ import java.util.regex.Pattern;
 @Service
 public class PageFilterBehavioral implements FilterBehavioral {
 
-    private static final Log log = LogFactory.getLog(PageFilterBehavioral.class);
-
-    private final Pattern pattern = Pattern.compile("^/([_a-zA-Z0-9]+)(/.*)?$");
     /**
      * 保护的path,这些path是系统使用的
      */
-    private List<String> protectedPath = Arrays.asList("_web",
+    public static final List<String> protectedPath = Collections.unmodifiableList(Arrays.asList("_web",
             "manage",
             "web",
             "bind",
             "interim",
             "shop",
             "admin",
-            "dataSource"
-    );
+            "dataSource",
+            "preview"
+    ));
+    private static final Log log = LogFactory.getLog(PageFilterBehavioral.class);
+    private final Pattern pattern = Pattern.compile("^/([_a-zA-Z0-9]+)(/.*)?$");
 
     /**
      * @param pagePath path

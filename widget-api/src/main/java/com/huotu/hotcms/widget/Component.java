@@ -55,12 +55,6 @@ public class Component implements PageElement {
     @JsonIgnore//在生成的xml中忽略该属性，true即为忽略
     private InstalledWidget installedWidget;
 
-    /**
-     * 浏览视图的w:class 值对
-     * 组件 key=w:class模板值 ,value=生成的value替换w:class模板值
-     */
-    private Map<String, String> styleClassNames;
-
 
     private String styleId;
 
@@ -91,13 +85,12 @@ public class Component implements PageElement {
         Component component = (Component) o;
         return Objects.equals(widgetIdentity, component.widgetIdentity) &&
                 Objects.equals(id, component.id) &&
-                Objects.equals(styleClassNames, component.styleClassNames) &&
                 Objects.equals(styleId, component.styleId) &&
                 Objects.equals(properties, component.properties);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(widgetIdentity, id, styleClassNames, styleId, properties);
+        return Objects.hash(widgetIdentity, id, styleId, properties);
     }
 }

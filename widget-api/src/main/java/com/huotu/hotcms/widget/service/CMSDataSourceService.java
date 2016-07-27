@@ -54,7 +54,6 @@ public interface CMSDataSourceService {
      */
     List<Category> findParentArticleCategorys();
 
-
     /**
      * <p>查询当前站点下所有可用的文章模型，且为指定数据源的（包括间接）子级</p>
      *

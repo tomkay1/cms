@@ -15,8 +15,10 @@ import com.huotu.cms.manage.service.PageFilterBehavioral;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
+import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.widget.entity.PageInfo;
+import com.huotu.hotcms.widget.service.PageService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,8 @@ public class PageInfoController extends SiteManageController<PageInfo, Long, Lon
     private CategoryRepository categoryRepository;
     @Autowired
     private PageFilterBehavioral pageFilterBehavioral;
+    @Autowired
+    private PageService pageService;
 
     @Override
     protected PageInfo preparePersist(Login login, Site site, PageInfo data, Long extra, RedirectAttributes attributes)
@@ -45,8 +49,18 @@ public class PageInfoController extends SiteManageController<PageInfo, Long, Lon
         if (data.getPagePath() != null && !pageFilterBehavioral.ableToUse(data.getPagePath())) {
             throw new RedirectException("/manage/page", "这个路径无法使用。");
         }
+        // 看看有没有同地址的页面
+        if (data.getPagePath() == null) {
+            data.setPagePath("");
+        }
+        try {
+            pageService.findBySiteAndPagePath(site, data.getPagePath());
+            throw new RedirectException("/manage/page", "这个路径无法使用。");
+        } catch (PageNotFoundException ignored) {
+            //情况正常继续
+        }
+
         data.setSite(site);
-//        data.setPageType(EnumUtils.valueOf(PageType.class, extra.getTypeId()));
         if (extra != null && extra > 0) {
             Category category = categoryRepository.getOne(extra);
             if (!category.getSite().equals(site)) {

@@ -65,7 +65,8 @@ public class DownloadController extends ContentManageController<Download,Content
 
     @Override
     protected void prepareUpdate(Login login, Download entity, Download data, ContentExtra extra, RedirectAttributes attributes) throws RedirectException {
-
+        entity.setFileName(data.getFileName());
+        entity.setDescription(data.getDescription());
     }
 
     @Override

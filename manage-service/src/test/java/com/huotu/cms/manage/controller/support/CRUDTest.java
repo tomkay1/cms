@@ -72,4 +72,14 @@ public interface CRUDTest<T> {
     default Predicate<? super PropertyDescriptor> editableProperty() throws Exception {
         return (x) -> true;
     }
+
+    /**
+     * 在提交新增数据表单以后期望看到的是错误的情况
+     *
+     * @param data 提交的数据
+     * @return 错误描述, 如果返回null 表示没有错误 流程继续
+     */
+    default String errorMessageAfterAdd(T data) {
+        return null;
+    }
 }

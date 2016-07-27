@@ -142,7 +142,8 @@ public interface Widget {
 
     /**
      * 获取控件默认参数
-     * @return 默认参数列表
+     *
+     * @return 这个方法总是返回新建的实例而且从不为null, 即它的结果可以直接用于分发。
      */
     ComponentProperties defaultProperties();
 

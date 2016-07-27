@@ -14,6 +14,7 @@ import me.jiangcai.bracket.test.BracketPage;
 import me.jiangcai.lib.test.page.AbstractPage;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.assertj.core.api.AbstractListAssert;
 import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotVisibleException;
@@ -61,6 +62,12 @@ public abstract class AbstractManagePage extends BracketPage {
         List<String> messages = getGritterMessage("growl-danger");
         assertThat(messages)
                 .isEmpty();
+    }
+
+    public AbstractListAssert<?, ? extends List<? extends String>, String> assertDanger() throws InterruptedException {
+        Thread.sleep(100);
+        List<String> messages = getGritterMessage("growl-danger");
+        return assertThat(messages);
     }
 
     public void closeDanger() throws InterruptedException {

@@ -16,7 +16,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 
-public interface GalleryListRepository extends JpaRepository<GalleryItem, Long>, JpaSpecificationExecutor<GalleryItem> {
+public interface GalleryItemRepository extends JpaRepository<GalleryItem, Long>, JpaSpecificationExecutor<GalleryItem> {
     List<GalleryItem> findByGallery(Gallery gallery);
 
     Long deleteByGallery(Gallery gallery);

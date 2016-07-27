@@ -71,7 +71,6 @@ public class WidgetViewController {
         component.setId((String) currentProperties.get("componentId"));
         component.setStyleId(styleId);
         component.setInstalledWidget(installedWidget);
-        component.setStyleClassNames((Map<String, String>) currentProperties.get("styleClassNames"));
         if (installedWidget != null) {
             model.addAttribute("widget", installedWidget.getWidget());
             for (WidgetStyle style : installedWidget.getWidget().styles()) {

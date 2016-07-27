@@ -23,7 +23,7 @@
 </div>
 
 <div class="contentpanel">
-    <form id="downloadForm" action="index.html" method="POST" th:action="@{/manage/category}">
+    <form id="downloadForm" action="index.html" method="POST" th:action="@{/manage/download}">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="panel-btns">
@@ -40,7 +40,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">名称</label>
                         <div class="col-sm-2">
-                            <input name="name" title="名称" type="text" placeholder="数据源的名称"
+                            <input name="categoryName" title="名称" type="text" placeholder="数据源的名称"
                                    class="form-control"/>
                         </div>
                         <label class="col-sm-2 control-label">父级</label>
@@ -65,7 +65,8 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">上传</label>
+                        <label class="col-sm-2 control-label">上传文件</label>
+                        <input type="hidden" name="downloadUrl" id="downloadUrl" />
                         <div class="col-sm-10" id="download-uploader"></div>
                     </div>
                 </div>
@@ -115,11 +116,11 @@
                         <td>下载</td>
                         <td th:text="${download.category.parent==null?'无':download.category.parent.name}">无</td>
                         <td class="center">
-                            <a href="downloadOpen.html" th:href="@{/manage/download/{id}(id=${download.id})}" target="_top" title="管理">
+                            <a href="downloadOpen.html" th:href="@{/manage/download/{id}(id=${download.id})}"  title="管理">
                                 <i class="fa fa-pencil"></i>
                             </a>
                             <a href="download.html" class="delete" th:href="@{/manage/download/{id}/delete(id=${download.id})}"
-                               target="_top" title="删除">
+                               title="删除">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                         </td>
@@ -131,11 +132,11 @@
                         <td>文章</td>
                         <td>无</td>
                         <td class="center">
-                            <a href="index.html" target="_top" title="编辑">
+                            <a href="index.html" title="编辑">
                                 <i class="fa fa-pencil"></i>
                             </a>
                             <a href="index.html" class="delete"
-                               target="_top" title="删除">
+                                title="删除">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                         </td>
@@ -146,11 +147,11 @@
                         <td>文章</td>
                         <td>新闻资讯</td>
                         <td class="center">
-                            <a href="index.html" target="_top" title="编辑">
+                            <a href="index.html"  title="编辑">
                                 <i class="fa fa-pencil"></i>
                             </a>
                             <a href="index.html" class="delete"
-                               target="_top" title="删除">
+                               title="删除">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                         </td>
@@ -185,5 +186,6 @@
 <script src="../../../public/bracket/js/frame.js" ewp:src="/bracket/js/frame.js"></script>
 <script src="../../../public/bracket/js/frame_custom.js" ewp:src="/bracket/js/frame_custom.js"></script>
 <script src="../../../public/js/content.js" ewp:src="/js/content.js"></script>
+
 </body>
 </html>

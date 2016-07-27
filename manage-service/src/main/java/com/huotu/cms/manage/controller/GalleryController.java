@@ -22,6 +22,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDateTime;
+
 /**
  * Created by chendeyu on 2016/1/10.
  */
@@ -51,6 +53,7 @@ public class GalleryController extends ContentManageController<Gallery,ContentEx
         entity.setTitle(data.getTitle());
         entity.setLinkUrl(data.getLinkUrl());
         entity.setDescription(data.getDescription());
+        entity.setUpdateTime(LocalDateTime.now());
     }
 
     @Override

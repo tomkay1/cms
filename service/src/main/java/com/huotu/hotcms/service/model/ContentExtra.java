@@ -25,4 +25,9 @@ public class ContentExtra {
      * 父类数据源ID
      */
     private Long parentCategoryId;
+
+    /**
+     * 原先缩略图地址
+     */
+    private String oldThumbUri;
 }

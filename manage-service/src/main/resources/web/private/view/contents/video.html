@@ -45,6 +45,8 @@
                         <label class="col-sm-2 control-label">父级</label>
                         <div class="col-sm-2">
                             <select name="parentCategoryId" title="父级数据源" class="form-control" >
+                                <!--/*@thymesVar id="categories" type="java.lang.Iterable<com.huotu.hotcms.service.entity.Category>"*/-->
+                                <!--/*@thymesVar id="category" type="com.huotu.hotcms.service.entity.Category"*/-->
                                 <option th:each="category:${categories}" th:value="${category.id}" th:text="${category.name}">无</option>
                                 <option th:remove="all">新闻咨询</option>
                                 <option th:remove="all">成功案例</option>

@@ -72,6 +72,7 @@ public class LinkController extends ContentManageController<Link,ContentExtra> {
         entity.setTitle(data.getTitle());
         entity.setLinkUrl(data.getLinkUrl());
         entity.setDescription(data.getDescription());
+        entity.setUpdateTime(LocalDateTime.now());
 
     }
 

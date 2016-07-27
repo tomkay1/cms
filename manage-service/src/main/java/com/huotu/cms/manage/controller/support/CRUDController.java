@@ -72,7 +72,6 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
             GritterUtils.AddFlashDanger(ex.getMessage(), attributes);
             return ex.redirectViewName();
         } catch (Exception ex) {
-            // TODO 有些异常我们应该另外处理
             log.warn("Unknown Exception on Add", ex);
             GritterUtils.AddFlashDanger(ex.getMessage(), attributes);
         }

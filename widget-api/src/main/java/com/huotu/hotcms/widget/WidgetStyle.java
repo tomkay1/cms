@@ -20,20 +20,46 @@ import java.util.Locale;
  */
 public interface WidgetStyle {
 
+    /**
+     * @return 这个样式的id, 将反应在 {@link Component#styleId}
+     */
     String id();
 
+    /**
+     * @return 样式名称
+     */
     String name();
 
+    /**
+     * @param locale 区域
+     * @return 本地化样式名称
+     */
     String name(Locale locale);
 
+    /**
+     * @return 样式描述
+     */
     String description();
 
+    /**
+     * @param locale 区域
+     * @return 本地化样式描述
+     */
     String description(Locale locale);
 
+    /**
+     * @return 样式缩略图, 格式需符合106*82 不可为null
+     */
     Resource thumbnail();
 
+    /**
+     * @return 预览模板, 既在编辑器中所见模板, 可以为null
+     */
     Resource previewTemplate();
 
+    /**
+     * @return 浏览模板, 既最终模板, 必须存在不然爆炸
+     */
     Resource browseTemplate();
 
 }

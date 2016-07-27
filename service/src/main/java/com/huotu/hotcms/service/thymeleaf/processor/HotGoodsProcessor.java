@@ -46,21 +46,6 @@ public class HotGoodsProcessor extends AbstractAttributeTagProcessor {
         this.goodsService = goodsService;
     }
 
-    //TODO Thymeleaf 3.0.0beta01 版本 稳定后移除
-//    @Override
-//    protected void doProcess(ITemplateContext context,
-//                             IProcessableElementTag tag,
-//                             AttributeName attributeName,
-//                             String attributeValue,
-//                             String attributeTemplateName,
-//                             int attributeLine, int attributeCol,
-//                             IElementTagStructureHandler structureHandler) {
-//        final Object iteratedValue;
-//        iteratedValue = invokeHogGoodsService(tag, context);
-//        structureHandler.iterateElement(attributeValue, null, iteratedValue);
-//    }
-
-
     @Override
     protected void doProcess(ITemplateContext context,
                              IProcessableElementTag tag,

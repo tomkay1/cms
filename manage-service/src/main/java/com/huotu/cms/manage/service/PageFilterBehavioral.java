@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * 最终前端-页面 过滤行为
@@ -54,8 +55,19 @@ public class PageFilterBehavioral implements FilterBehavioral {
      * @return 是否允许用户使用指定的pagePath
      */
     public boolean ableToUse(String pagePath) {
-        // TODO  需要更加细致的比如 manage/ admin/都是不可以的
-        return !protectedPath.contains(pagePath);
+        if (protectedPath.contains(pagePath))
+            return false;
+        for (String path : protectedPath) {
+            try {
+                Pattern pattern = Pattern.compile("^" + path + "(/|/.*)$");
+                Matcher matcher = pattern.matcher(pagePath);
+                if (matcher.matches())
+                    return false;
+            } catch (PatternSyntaxException ignored) {
+                // 没事
+            }
+        }
+        return true;
     }
 
     @Override

@@ -48,7 +48,7 @@ public class SiteResolveService {
      * @return 语言方位
      */
     public Locale localeFromRequest(HttpServletRequest request) {
-        // TODO
+        // TODO 这个方法不应该存在,应该使用Spring MVC的 Locale解决方案
         // String languageParam = PatternMatchUtil.getLangParam(request);
         return request.getLocale();
     }

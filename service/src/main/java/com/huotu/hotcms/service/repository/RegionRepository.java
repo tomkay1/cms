@@ -19,6 +19,6 @@ public interface RegionRepository extends JpaRepository<Region, Locale>, JpaSpec
 
     Region findByRegionCodeIgnoreCase(String regionCode);
 
-    Region findByLangCodeAndRegionCodeIgnoreCase(String langCode,String regionCode);
+    Region findByLangCodeAndRegionCodeIgnoreCase(String langCode, String regionCode);
 
 }

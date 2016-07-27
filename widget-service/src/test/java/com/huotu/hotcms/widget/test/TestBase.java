@@ -250,7 +250,7 @@ public class TestBase extends SpringWebTest {
         site.setCreateTime(LocalDateTime.now());
         site.setEnabled(true);
         site.setDescription(UUID.randomUUID().toString());
-        String[] domains = new String[]{"localhost"};//randomDomains();
+        String[] domains = randomDomains();
         site = siteService.newSite(domains, domains[0], site, Locale.CHINA);
         try {
             site = siteResolveService.getCurrentSite(request);
@@ -278,10 +278,20 @@ public class TestBase extends SpringWebTest {
     }
 
     protected Category randomCategory() {
+        Site site = randomSite(randomOwner());
+        ContentType contentType = ContentType.values()[random.nextInt(ContentType.values().length)];
+        return randomCategory(site, contentType, null);
+    }
+
+    protected Category randomCategory(Site site, ContentType contentType) {
+        return randomCategory(site, contentType, null);
+    }
+
+    private Category randomCategory(Site site, ContentType contentType, Category parent) {
         Category category = new Category();
-        category.setContentType(ContentType.values()[random.nextInt(ContentType.values().length)]);
-        category.setParent(null);
-        category.setSite(randomSite(randomOwner()));
+        category.setContentType(contentType);
+        category.setParent(parent);
+        category.setSite(site);
         return categoryRepository.saveAndFlush(category);
     }
 

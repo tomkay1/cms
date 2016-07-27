@@ -34,8 +34,7 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     @Override
     public List<Gallery> findGallery() {
         Site site = CMSContext.RequestContext().getSite();
-//        galleryRepository.f
-        return null;
+        return galleryRepository.findByCategory_site(site);
     }
 
     @Override

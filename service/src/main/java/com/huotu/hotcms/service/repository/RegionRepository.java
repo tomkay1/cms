@@ -15,9 +15,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.Locale;
 
-/**
- * Created by cwb on 2015/12/24.
- */
 public interface RegionRepository extends JpaRepository<Region, Locale>, JpaSpecificationExecutor<Region> {
 
     Region findByRegionCodeIgnoreCase(String regionCode);

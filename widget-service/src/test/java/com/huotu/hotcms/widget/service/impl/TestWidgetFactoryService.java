@@ -70,7 +70,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Rollback()
 public class TestWidgetFactoryService extends TestBase {
 
-    @Autowired
+    @Autowired(required = false)
     HttpServletResponse response;
     @Autowired
     private WidgetFactoryService widgetFactoryService;

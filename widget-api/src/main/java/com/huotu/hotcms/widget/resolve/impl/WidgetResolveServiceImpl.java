@@ -108,7 +108,7 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
         if (pageElement instanceof Layout) {
             //是一个布局界面
             Layout layout = ((Layout) pageElement);
-            String[] columns = layout.getValue().split(",");
+            String[] columns = layout.columns();
             PageElement[][] childPageElements = layout.getElementGroups();
             for (int i = 0, l = columns.length; i < l; i++) {
                 cmsContext.updateNextBootstrapLayoutColumn(Integer.parseInt(columns[i]));

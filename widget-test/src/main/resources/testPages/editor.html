@@ -36,6 +36,7 @@
 <div id="editor">
     <!--${properties} should be supported-->
     <div cms:replaceEditor="${widgetId},${properties}"></div>
+    <button id="editorSaver">Save me!</button>
 </div>
 
 <script th:inline="javascript">
@@ -65,6 +66,24 @@
     function widgetProperties() {
         return _widgetProperties;
     }
+
+    var _successProperties;
+    var _failedMessage;
+
+    $('#editorSaver').click(function () {
+        // fetch right scope of component
+        var scope = null;
+        _failedMessage = null;
+        scope.saveCompoent({
+            onSuccess: function (ps) {
+                console.log('you got me', ps);
+                _successProperties = ps;
+            },
+            onFailed: function (msg) {
+                _failedMessage = msg;
+            }
+        });
+    });
 </script>
 <script th:src="@{/javascript/{id}(id=${widgetId})}"></script>
 </body>

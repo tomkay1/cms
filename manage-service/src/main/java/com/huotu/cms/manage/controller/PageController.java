@@ -145,6 +145,7 @@ public class PageController {
     @RequestMapping("/manage/page/edit/{pageId}")
     public String startEdit(@PathVariable("pageId") long pageId, Model model) throws PageNotFoundException {
         model.addAttribute("pageInfo", pageService.getPage(pageId));
+        model.addAttribute("pageId",pageId);
         return "/edit/edit.html";
     }
 }

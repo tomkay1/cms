@@ -14,12 +14,17 @@ import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetStyle;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.web.servlet.support.RequestContext;
+import org.springframework.web.servlet.view.AbstractTemplateView;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.context.IContext;
 import org.thymeleaf.context.IEngineContext;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.context.WebEngineContext;
 import org.thymeleaf.spring4.SpringTemplateEngine;
+import org.thymeleaf.spring4.expression.ThymeleafEvaluationContext;
 import org.thymeleaf.spring4.naming.SpringContextVariableNames;
 
 import javax.servlet.ServletContext;
@@ -76,7 +81,21 @@ public class WidgetContext extends WebEngineContext {
         // "springRequestContext" ->
 //        variables.
         context.widgetContextVariables(variables);
-        variables.put(SpringContextVariableNames.SPRING_REQUEST_CONTEXT, context.getRequestContext());
+        RequestContext context1 = context.getRequestContext();
+        variables.put(SpringContextVariableNames.SPRING_REQUEST_CONTEXT, context1);
+        variables.put(AbstractTemplateView.SPRING_MACRO_REQUEST_CONTEXT_ATTRIBUTE, context1);
+
+        final ConversionService conversionService =
+                (ConversionService) context.getRequest().getAttribute(ConversionService.class.getName()); // might be null!
+
+        final ThymeleafEvaluationContext evaluationContext =
+                new ThymeleafEvaluationContext(WebApplicationContextUtils.findWebApplicationContext(
+                        context.getRequest().getServletContext())
+                        , conversionService);
+        variables.put(ThymeleafEvaluationContext.THYMELEAF_EVALUATION_CONTEXT_CONTEXT_VARIABLE_NAME, evaluationContext);
+
+//        ThymeleafView # renderFragment
+
         return variables;
     }
 }

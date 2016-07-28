@@ -96,6 +96,37 @@ function updataCompoentPreview(globalID, properties) {
         }
     });
 }
+
+function getDataSource(url, parentID) {
+    var dataSource = null;
+    $.ajax({
+        type: 'POST',
+        url: url,
+        dataType: 'json',
+        data: {
+            parentID: parentID
+        },
+        success: function (json) {
+            if (json.statusCode == '200') {
+                dataSource = json.body;
+                return dataSource;
+            }
+            if (json.statusCode == '204') {
+                layer.msg('没有找到数据', {time: 2000});
+                return dataSource;
+            }
+            if (json.statusCode == '502') {
+                layer.msg('服务器错误,请稍后再试', {time: 2000});
+                return dataSource;
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(errorThrown);
+            layer.msg('服务器错误,请稍后再试', {time: 2000});
+            return dataSource;
+        }
+    });
+}
 /**
 * 动态加载组件的 JS文件
 * @type {{css: dynamicLoading.css, js: dynamicLoading.js}}
@@ -234,3 +265,14 @@ function verifySize(congruent, vWidth, vHeight, callback) {
         if ( !vWidth === true && !vHeight === true ) callback();
     }
 };
+
+$('div[id^="picCarousel"]').swiper({
+    pagination: '.swiper-pagination',
+    autoplay : 5000,
+    slidesPerView: 1,
+    paginationClickable: true,
+    observer: true,
+    observeParents: true,
+    updateOnImagesReady : true,
+    loop: true
+});

@@ -153,12 +153,12 @@ public class WidgetInfoController
 
     @ResponseBody
     @PreAuthorize("hasRole('" + Login.Role_Manage_Value + "')")
-    @RequestMapping(value = "/widgets",method = RequestMethod.GET,produces = "application/json; charset=UTF-8")
+    @RequestMapping(value = "/widgets", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
     public List<WidgetModel> getWidgetInfo() throws IOException, URISyntaxException {
-        List<InstalledWidget> installedWidgets=widgetFactoryService.widgetList(null);
+        List<InstalledWidget> installedWidgets = widgetFactoryService.widgetList(null);
         if (environment.acceptsProfiles("test")) {
             try {
-                if(installedWidgets==null && installedWidgets.size()==0) {
+                if (installedWidgets == null && installedWidgets.size() == 0) {
                     widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
                             , "1.0-SNAPSHOT", "picCarousel");
                 }
@@ -173,40 +173,42 @@ public class WidgetInfoController
             WidgetModel widgetModel = new WidgetModel();
             widget = installedWidget.getWidget();
             widgetModel.setLocallyName(widget.name(Locale.CHINA));
-            WidgetStyle[] widgetStyles= widget.styles();
-            String styleModel="<div>\n" +
+            WidgetStyle[] widgetStyles = widget.styles();
+            String styleModel = "<div>\n" +
                     "            <h3>\n" +
                     "                <i class=\"icon-puzzle\"></i><b></b>选择组件样式\n" +
                     "            </h3>\n" +
-                    "            <div class=\"styles\">\n" +
-                    "              %s "+
+                    "            <div class=\"swiper-container styles\">\n" +
+                    "              %s " +
                     "            </div>\n" +
+                    "<div class=\"swiper-button-next\"></div>\n" +
+                    "<div class=\"swiper-button-prev\"></div>\n"+
                     "        </div>\n";
 
-            String item="<div class=\"style-item\">\n" +
-                    "<div class=\"item-box\">"+
-                    "<img src=\"%s\">\n"+
+            String item = "<div class=\"swiper-wrapper\">\n" +
+                    "<div class=\"swiper-slide\">" +
+                    "<img class=\"center-block\" src=\"%s\">\n" +
                     "<p>默认</p>\n" +
                     "</div>\n" +
                     "</div>\n";
-            String prefix="widget/" + widget.groupId() + "-" + widget.widgetId()
+            String prefix = "widget/" + widget.groupId() + "-" + widget.widgetId()
                     + "-" + widget.version() + "/";
-            StringBuilder sb=new StringBuilder();
-            for (WidgetStyle widgetStyle:widgetStyles){
-                URI src=resourceService.getResource(prefix+((ClassPathResource)widgetStyle.thumbnail()).getPath()).httpUrl().toURI();
-                sb.append(String.format(item,src));
+            StringBuilder sb = new StringBuilder();
+            for (WidgetStyle widgetStyle : widgetStyles) {
+                URI src = resourceService.getResource(prefix + ((ClassPathResource) widgetStyle.thumbnail()).getPath()).httpUrl().toURI();
+                sb.append(String.format(item, src));
             }
-            styleModel=String.format(styleModel,sb.toString());
-            widgetModel.setEditorHTML(styleModel+widgetResolveService.editorHTML(widget, CMSContext.RequestContext(), null));
+            styleModel = String.format(styleModel, sb.toString());
+            widgetModel.setEditorHTML(styleModel + widgetResolveService.editorHTML(widget, CMSContext.RequestContext(), null));
             //<groupId>-<widgetId>:<version>
-            widgetModel.setIdentity(widget.groupId()+"-"+widget.widgetId()+":"+widget.version());
+            widgetModel.setIdentity(widget.groupId() + "-" + widget.widgetId() + ":" + widget.version());
 
             //获取js资源uri
             for (Map.Entry<String, Resource> entry : widget.publicResources().entrySet()) {
                 if (entry.getKey().endsWith(".js")) {
                     widgetModel.setScriptHref(resourceService.getResource("widget/" + widget.groupId() + "-"
-                                    + widget.widgetId() + "-" + widget.version() + "/" + entry.getKey())
-                                    .httpUrl().toURI().toString() + ","
+                            + widget.widgetId() + "-" + widget.version() + "/" + entry.getKey())
+                            .httpUrl().toURI().toString() + ","
                     );
                 }
             }

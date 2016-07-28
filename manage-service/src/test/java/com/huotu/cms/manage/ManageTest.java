@@ -61,6 +61,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MvcResult;
@@ -296,6 +297,7 @@ public abstract class ManageTest extends SpringWebTest {
     /**
      * @return 新建的随机Owner
      */
+    @Rollback
     protected Owner randomOwner() {
         Owner owner = new Owner();
         owner.setEnabled(true);

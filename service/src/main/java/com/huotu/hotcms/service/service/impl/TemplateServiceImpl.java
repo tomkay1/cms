@@ -33,6 +33,8 @@ import com.huotu.hotcms.service.repository.VideoRepository;
 import com.huotu.hotcms.service.service.TemplateService;
 import me.jiangcai.lib.resource.Resource;
 import me.jiangcai.lib.resource.service.ResourceService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +54,7 @@ import java.util.UUID;
 @Service
 public class TemplateServiceImpl implements TemplateService {
 
-    private Logger logger= LoggerFactory.getLogger(TemplateServiceImpl.class);
+    private static Log logger= LogFactory.getLog(TemplateServiceImpl.class);
 
     @Autowired
     private TemplateRepository templateRepository;

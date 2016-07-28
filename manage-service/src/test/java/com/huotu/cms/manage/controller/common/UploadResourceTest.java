@@ -16,7 +16,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.mock.web.MockMultipartFile;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class UploadResourceTest extends ManageTest {
@@ -27,7 +27,7 @@ public class UploadResourceTest extends ManageTest {
         Resource resource = new ClassPathResource("thumbnail.png");
 
         mockMvc.perform(
-                post("/manage/cms/resourceUpload"
+                fileUpload("/manage/cms/resourceUpload"
                         , new MockMultipartFile("file", resource.getInputStream())).session(session)
         ).andExpect(status().isOk());
     }

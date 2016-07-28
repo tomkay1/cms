@@ -26,18 +26,18 @@ import com.huotu.hotcms.widget.model.WidgetModel;
 import com.huotu.hotcms.widget.model.WidgetStyleModel;
 import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
+import com.sun.jndi.toolkit.url.Uri;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.NumberUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartResolver;
@@ -45,6 +45,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -172,7 +173,31 @@ public class WidgetInfoController
             WidgetModel widgetModel = new WidgetModel();
             widget = installedWidget.getWidget();
             widgetModel.setLocallyName(widget.name(Locale.CHINA));
-            widgetModel.setEditorHTML(widgetResolveService.editorHTML(widget, CMSContext.RequestContext(), null));
+            WidgetStyle[] widgetStyles= widget.styles();
+            String styleModel="<div>\n" +
+                    "            <h3>\n" +
+                    "                <i class=\"icon-puzzle\"></i><b></b>选择组件样式\n" +
+                    "            </h3>\n" +
+                    "            <div class=\"styles\">\n" +
+                    "              %s "+
+                    "            </div>\n" +
+                    "        </div>\n";
+
+            String item="<div class=\"style-item\">\n" +
+                    "<div class=\"item-box\">"+
+                    "<img src=\"%s\">\n"+
+                    "<p>默认</p>\n" +
+                    "</div>\n" +
+                    "</div>\n";
+            String prefix="widget/" + widget.groupId() + "-" + widget.widgetId()
+                    + "-" + widget.version() + "/";
+            StringBuilder sb=new StringBuilder();
+            for (WidgetStyle widgetStyle:widgetStyles){
+                URI src=resourceService.getResource(prefix+((ClassPathResource)widgetStyle.thumbnail()).getPath()).httpUrl().toURI();
+                sb.append(String.format(item,src));
+            }
+            styleModel=String.format(styleModel,sb.toString());
+            widgetModel.setEditorHTML(styleModel+widgetResolveService.editorHTML(widget, CMSContext.RequestContext(), null));
             //<groupId>-<widgetId>:<version>
             widgetModel.setIdentity(widget.groupId()+"-"+widget.widgetId()+":"+widget.version());
 
@@ -191,8 +216,6 @@ public class WidgetInfoController
             }//
 
             widgetModel.setThumbnail(widget.thumbnail().getURL().toString());
-            WidgetStyle[] widgetStyles = widget.styles();
-
             WidgetStyleModel[] widgetStyleModels = new WidgetStyleModel[widgetStyles.length];
 
             for (int i = 0; i < widgetStyles.length; i++) {
@@ -200,7 +223,7 @@ public class WidgetInfoController
                 widgetStyleModel.setThumbnail(widgetStyles[i].thumbnail().getURI().toString());
                 widgetStyleModel.setLocallyName(widgetStyles[i].name());
                 widgetStyleModel.setPreviewHTML(widgetResolveService.previewHTML(widget, widgetStyles[i].id()
-                        , CMSContext.RequestContext(), null));
+                        , CMSContext.RequestContext(), widget.defaultProperties()));
                 widgetStyleModels[i] = widgetStyleModel;
             }
             widgetModel.setStyles(widgetStyleModels);

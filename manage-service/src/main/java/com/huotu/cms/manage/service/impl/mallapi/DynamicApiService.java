@@ -9,7 +9,6 @@
 
 package com.huotu.cms.manage.service.impl.mallapi;
 
-import com.huotu.hotcms.service.service.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
@@ -24,8 +23,8 @@ import org.springframework.stereotype.Service;
 @Profile("container")
 public class DynamicApiService extends AbstractApiService {
 
-    @Autowired
-    private void setEnv(ConfigService configService, Environment env) {
-        this.serviceRoot = env.getProperty("huotu.mallApi", "http://mallapi." + configService.getMallDomain());
-    }
+//    @Autowired
+//    private void setEnv(ConfigService configService, Environment env) {
+//        this.serviceRoot = env.getProperty("huotu.mallApi", "http://mallapi." + configService.getMallDomain());
+//    }
 }

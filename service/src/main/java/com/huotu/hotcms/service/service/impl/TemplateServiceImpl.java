@@ -84,14 +84,18 @@ public class TemplateServiceImpl implements TemplateService {
     //使用Redis
     @Override
     public boolean laud(long siteId, long ownerId, int behavior) {
+        Template template=templateRepository.findOne(siteId);
         try { //TODO 使用Redis
             String key = siteId + "$" + ownerId;
             int laudNum = 10;
             if (1 == behavior) {//点赞
+                template.setLauds(template.getLauds()+1);
                 laudMap.put(key, laudNum + 1);
             } else {
+                template.setLauds(template.getLauds()-1);
                 laudMap.put(key, laudNum - 1);
             }
+            templateRepository.save(template);
             return true;
         } catch (Exception e) {//其他异常
             return false;

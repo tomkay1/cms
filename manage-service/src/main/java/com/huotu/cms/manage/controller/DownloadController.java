@@ -71,15 +71,15 @@ public class DownloadController extends ContentManageController<Download,Content
         entity.setFileName(data.getFileName());
         entity.setDescription(data.getDescription());
         entity.setUpdateTime(LocalDateTime.now());
-        entity.setDownloadUrl(data.getDownloadUrl());
-        String oldThumbUri=extra.getOldThumbUri();
-        if(!StringUtils.isEmpty(oldThumbUri)){
-            try {
-                resourceService.deleteResource(oldThumbUri);
-            } catch (IOException e) {//删除资源失败，但是这个异常可以不用做处理，因为只是资源删除
-                log.error("删除资源失败，原因是："+e.getMessage());
-            }
-        }
+//        entity.setDownloadUrl(data.getDownloadUrl());
+//        String oldThumbUri=extra.getOldResourcesUri();
+//        if(!StringUtils.isEmpty(oldThumbUri)){
+//            try {
+//                resourceService.deleteResource(oldThumbUri);
+//            } catch (IOException e) {//删除资源失败，但是这个异常可以不用做处理，因为只是资源删除
+//                log.error("删除资源失败，原因是："+e.getMessage());
+//            }
+//        }
     }
 
     @Override

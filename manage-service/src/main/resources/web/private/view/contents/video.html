@@ -75,6 +75,7 @@
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">缩略图</label>
+                        <input type="hidden" name="videoUrl" id="videoUrl" />
                         <div class="col-sm-9" id="video-uploader"></div>
                     </div>
                 </div>
@@ -124,11 +125,11 @@
                         <td >视频</td>
                         <td th:text="${video.category.parent==null?'无':video.category.parent.name}">无</td>
                         <td class="center">
-                            <a href="videoOpen.html" th:href="@{/manage/video/{id}(id=${video.id})}" target="_top" title="管理">
+                            <a href="videoOpen.html" th:href="@{/manage/video/{id}(id=${video.id})}"  title="管理">
                                 <i class="fa fa-pencil"></i>
                             </a>
                             <a href="video.html" class="delete" th:href="@{/manage/video/{id}/delete(id=${video.id})}"
-                               target="_top" title="删除">
+                                title="删除">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                         </td>
@@ -140,11 +141,11 @@
                         <td>文章</td>
                         <td>无</td>
                         <td class="center">
-                            <a href="index.html" target="_top" title="编辑">
+                            <a href="index.html"  title="编辑">
                                 <i class="fa fa-pencil"></i>
                             </a>
                             <a href="index.html" class="delete"
-                               target="_top" title="删除">
+                                title="删除">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                         </td>
@@ -155,11 +156,11 @@
                         <td>文章</td>
                         <td>新闻资讯</td>
                         <td class="center">
-                            <a href="index.html" target="_top" title="编辑">
+                            <a href="index.html"  title="编辑">
                                 <i class="fa fa-pencil"></i>
                             </a>
                             <a href="index.html" class="delete"
-                               target="_top" title="删除">
+                                title="删除">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                         </td>

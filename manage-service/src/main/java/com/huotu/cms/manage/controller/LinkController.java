@@ -40,6 +40,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 /**
@@ -49,6 +50,9 @@ import java.time.LocalDateTime;
 @RequestMapping("/manage/link")
 public class LinkController extends ContentManageController<Link,ContentExtra> {
     private static final Log log = LogFactory.getLog(LinkController.class);
+
+    @Autowired
+    private ResourceService resourceService;
 
     @Override
     protected ContentType contentType() {
@@ -69,10 +73,19 @@ public class LinkController extends ContentManageController<Link,ContentExtra> {
     @Override
     protected void prepareUpdate(Login login, Link entity, Link data, ContentExtra extra
             , RedirectAttributes attributes) throws RedirectException {
+        String oldThumbUri=extra.getOldResourcesUri();
         entity.setTitle(data.getTitle());
         entity.setLinkUrl(data.getLinkUrl());
         entity.setDescription(data.getDescription());
         entity.setUpdateTime(LocalDateTime.now());
+        entity.setThumbUri(data.getThumbUri());
+        if(!StringUtils.isEmpty(oldThumbUri)){
+            try {
+                resourceService.deleteResource(oldThumbUri);
+            } catch (IOException e) {
+                log.error("删除资源失败，原因是："+e.getMessage());
+            }
+        }
 
     }
 

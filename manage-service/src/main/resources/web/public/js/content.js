@@ -53,7 +53,10 @@ $('#article-uploader, #link-uploader, #video-uploader, #gallery-uploader').fineU
         onComplete: function (id, name, response) {
             console.log(response);
             if(response.success){
-                $("#thumbUri").val(response.newUuid);
+                if($("#thumbUri").size()>0)
+                    $("#thumbUri").val(response.newUuid);
+                else if($("#videoUrl").size()>0)
+                    $("#videoUrl").val(response.newUuid);
             }
         },
         onError: logoOnUpload,

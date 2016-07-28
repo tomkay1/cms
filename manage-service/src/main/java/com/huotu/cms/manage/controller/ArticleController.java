@@ -53,7 +53,7 @@ public class ArticleController extends ContentManageController<Article,ContentEx
         entity.setTitle(data.getTitle());
         entity.setAuthor(data.getAuthor());
         entity.setThumbUri(data.getThumbUri());
-        String oldThumbUri=extra.getOldThumbUri();
+        String oldThumbUri=extra.getOldResourcesUri();
         if(!StringUtils.isEmpty(oldThumbUri)){
             try {
                 resourceService.deleteResource(oldThumbUri);

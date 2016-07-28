@@ -29,5 +29,5 @@ public class ContentExtra {
     /**
      * 原先缩略图地址
      */
-    private String oldThumbUri;
+    private String oldResourcesUri;
 }

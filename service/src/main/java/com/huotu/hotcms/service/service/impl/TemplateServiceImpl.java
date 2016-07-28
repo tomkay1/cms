@@ -35,8 +35,6 @@ import me.jiangcai.lib.resource.Resource;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -54,7 +52,7 @@ import java.util.UUID;
 @Service
 public class TemplateServiceImpl implements TemplateService {
 
-    private static Log logger= LogFactory.getLog(TemplateServiceImpl.class);
+    private static final Log log = LogFactory.getLog(TemplateServiceImpl.class);
 
     @Autowired
     private TemplateRepository templateRepository;
@@ -104,7 +102,7 @@ public class TemplateServiceImpl implements TemplateService {
             templateRepository.save(template);
             return true;
         } catch (Exception e) {
-            logger.error("点赞失败，原因是："+e.getMessage());
+            log.warn("Unexpected", e);
             return false;
         }
     }

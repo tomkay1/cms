@@ -267,11 +267,14 @@ editPage.init = function () {
             layer.close(index);
         });
     });
-    $(".common-conf .styles").slick({
-        infinite: false,
-        speed: 300,
-        slidesToShow: 4,
-        slidesToScroll: 4
+    $('.swiper-container.styles').swiper({
+        nextButton: '.swiper-button-next',
+        prevButton: '.swiper-button-prev',
+        slidesPerView: 4,
+        paginationClickable: true,
+        observer: true,
+        observeParents: true,
+        updateOnImagesReady : true
     });
 
     editFunc.init();

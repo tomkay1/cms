@@ -9,14 +9,18 @@
 
 package com.huotu.hotcms.service.service;
 
+import com.huotu.hotcms.service.CMSDataVersion;
 import com.huotu.hotcms.service.common.SiteType;
 import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.repository.HostRepository;
 import com.huotu.hotcms.service.repository.OwnerRepository;
-import com.huotu.hotcms.service.repository.RegionRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
+import me.jiangcai.lib.upgrade.VersionUpgrade;
+import me.jiangcai.lib.upgrade.service.UpgradeService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -34,8 +38,10 @@ import java.util.Locale;
 @Service
 public class InitService {
 
+    private static final Log log = LogFactory.getLog(InitService.class);
+
     @Autowired
-    private RegionRepository regionRepository;
+    private UpgradeService upgradeService;
     @Autowired
     private SiteRepository siteRepository;
     @Autowired
@@ -50,6 +56,14 @@ public class InitService {
     @Transactional
     @PostConstruct
     public void init() {
+
+        // 系统升级
+        upgradeService.systemUpgrade(new VersionUpgrade<CMSDataVersion>() {
+            @Override
+            public void upgradeToVersion(CMSDataVersion version) throws Exception {
+                log.debug(" to version:" + version);
+            }
+        });
 
         if (environment.acceptsProfiles("test")) {
             // 应当构造 localhost host for localhost site

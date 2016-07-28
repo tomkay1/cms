@@ -62,9 +62,10 @@ public class TestBase extends SpringWebTest {
 
     //建立一系列已经建立好的控件以及默认属性
     WidgetIdentifier[] preparedWidgets = new WidgetIdentifier[]{
-            new WidgetIdentifier("com.huotu.hotcms.widget.pagingWidget",
-                    "pagingWidget", "1.0-SNAPSHOT")
-            , new WidgetIdentifier("com.huotu.hotcms.widget.picCarousel",
+//            new WidgetIdentifier("com.huotu.hotcms.widget.pagingWidget",
+//                    "pagingWidget", "1.0-SNAPSHOT")
+//            ,
+            new WidgetIdentifier("com.huotu.hotcms.widget.picCarousel",
             "picCarousel", "1.0-SNAPSHOT")
             , new WidgetIdentifier("com.huotu.hotcms.widget.productList",
             "productList", "1.0-SNAPSHOT")

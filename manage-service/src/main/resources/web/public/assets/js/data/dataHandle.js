@@ -60,7 +60,7 @@ var DataHandle  = {
             childJSON.component.widgetIdentity = $(elements).attr('data-widgetidentity');
             childJSON.component.id = $(elements).attr('id');
             childJSON.component.styleId = $(elements).attr('data-styleid');
-            childJSON.component.properties = {};
+            childJSON.component.properties = wsCache.get($(elements).attr('id')).properties;
         }
         return childJSON;
     },
@@ -241,6 +241,7 @@ var CreatePage = {
         return container.html();
     },
     createComponent: function (data) {
+        wsCache.set(data.id, { 'properties' : data.properties });
         var container = $('<div></div>');
         container.append(DOM.component.join('\n'));
         container.children('.box').children('span.setting').attr('data-target', data.widgetIdentity);
@@ -263,17 +264,11 @@ var CreatePage = {
 
 var dataHandle = {};
 dataHandle.init = function () {
-    var strHref = window.document.location.href;
-    var pageId = strHref.substring(strHref.lastIndexOf("/")+1);
-
     var url = savePage + pageId;//save url
+    if ( !pageId == -999 ) CreatePage.init(url);
     $('#saveBtn').on('click', function () {
         DataHandle.init(url);
-    });
-
-    // 请求页面的地址，服务器端填写
-    var pageUrl;
-    CreatePage.init(pageUrl);
+    })
 };
 dataHandle.init();
 

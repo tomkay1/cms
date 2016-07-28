@@ -90,11 +90,8 @@ public class PageServiceImpl implements PageService {
         String resourceKey = UUID.randomUUID().toString();
         pageInfo.setResourceKey(resourceKey);
 
-        // TODO 合法性检查,包括自动添加Empty
-        if (page != null && page.getRoot() != null)
-            pageInfo.setLayout(new PageLayout(page.getRoot()));
-
-        // TODO 还需要修改什么么?
+        if (page != null)//如果没有传model过来 不应该改变布局
+            pageInfo.setLayout(PageLayout.FromWeb(PageLayout.NoNullLayout(page)));
 
 //        pageInfo.setPageSetting(pageJson.getBytes());
         pageInfoRepository.save(pageInfo);

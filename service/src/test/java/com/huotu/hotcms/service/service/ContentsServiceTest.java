@@ -15,8 +15,8 @@ import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.Video;
-import com.huotu.hotcms.service.repository.AbstractContentRepository;
 import com.huotu.hotcms.service.repository.CategoryRepository;
+import com.huotu.hotcms.service.repository.ContentRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +39,7 @@ public class ContentsServiceTest extends TestBase {
     @Autowired
     private SiteRepository siteRepository;
     @Autowired
-    private AbstractContentRepository abstractContentRepository;
+    private ContentRepository contentRepository;
 
     @Test
     public void list() throws Exception {
@@ -60,12 +60,12 @@ public class ContentsServiceTest extends TestBase {
         article.setCategory(category1);
         article.setTitle(UUID.randomUUID().toString());
         article.setContent(UUID.randomUUID().toString());
-        abstractContentRepository.save(article);
+        contentRepository.save(article);
 
         Video video = new Video();
         video.setCategory(category2);
         video.setTitle(UUID.randomUUID().toString());
-        abstractContentRepository.save(video);
+        contentRepository.save(video);
 
         // 添加不同的模型 不同的category 再一起搜索 好吧 就这么干
         assertThat(contentsService.list(null, site, null, null))

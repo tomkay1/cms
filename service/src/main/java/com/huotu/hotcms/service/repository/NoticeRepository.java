@@ -9,16 +9,9 @@
 
 package com.huotu.hotcms.service.repository;
 
-import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Notice;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import com.huotu.hotcms.service.repositoryi.AbstractContentRepository;
 
-import java.util.List;
-
-public interface NoticeRepository extends JpaRepository<Notice, Long>, JpaSpecificationExecutor<Notice> {
-    List<Notice> findByCategory(Category category);
-
-    Long deleteByCategory(Category category);
+public interface NoticeRepository extends AbstractContentRepository<Notice, Long> {
 
 }

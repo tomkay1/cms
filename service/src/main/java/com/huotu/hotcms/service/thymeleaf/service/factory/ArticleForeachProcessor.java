@@ -66,32 +66,7 @@ public class ArticleForeachProcessor {
 //                }
 //            }
             articleForeachParam=dialectAttributeFactory.getForeachParamByRequest(request, articleForeachParam);
-            //TODO 代码重构，以下部分为1.0版本,这里保留是为了后面出现问题遗留,后面测试没问题后，直接移除
-//            if(articleForeachParam.getPageNo() == null) {
-//                if(StringUtils.isEmpty(request.getParameter("pageNo"))) {
-//                    articleForeachParam.setPageNo(DEFAULT_PAGE_NO);
-//                }else {
-//                    int pageNo = Integer.parseInt(request.getParameter("pageNo"));
-//                    if(pageNo < 1) {
-//                        throw new Exception("页码小于1");
-//                    }
-//                    articleForeachParam.setPageNo(pageNo);
-//                }
-//            }
-//            if(articleForeachParam.getPageSize() == null) {
-//                if(StringUtils.isEmpty(request.getParameter("pageSize"))) {
-//                    articleForeachParam.setPageSize(DEFAULT_PAGE_SIZE);
-//                }else {
-//                    int pageSize = Integer.parseInt(request.getParameter("pageSize"));
-//                    if(pageSize < 1) {
-//                        throw new Exception("请求数据列表容量小于1");
-//                    }
-//                    articleForeachParam.setPageSize(pageSize);
-//                }
-//            }
-//            if(articleForeachParam.getPageNumber() == null) {
-//                articleForeachParam.setPageNumber(DEFAULT_PAGE_NUMBER);
-//            }
+
             articles = articleService.getArticleList(articleForeachParam);
             dialectAttributeFactory.setPageList(articleForeachParam,articles,context);
             //图片路径处理

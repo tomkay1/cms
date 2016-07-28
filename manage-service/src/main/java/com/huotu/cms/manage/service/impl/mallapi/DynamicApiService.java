@@ -9,8 +9,7 @@
 
 package com.huotu.cms.manage.service.impl.mallapi;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import com.huotu.hotcms.service.service.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
@@ -18,19 +17,15 @@ import org.springframework.stereotype.Service;
 
 /**
  * 本地测试的对接MallApi接口
+ *
  * @author xhl
  */
 @Service
 @Profile("container")
-public class DynamicApiService extends  AbstractApiService {
-
-    private static final Log log = LogFactory.getLog(DynamicApiService.class);
+public class DynamicApiService extends AbstractApiService {
 
     @Autowired
-    private void setEnv(Environment env) {
-        this.serviceRoot = env.getProperty("huotu.mallApi", "http://mallapi.51flashmall.com");
-        if (this.serviceRoot == null) {
-            throw new IllegalStateException("请设置huotu.mallApi");
-        }
+    private void setEnv(ConfigService configService, Environment env) {
+        this.serviceRoot = env.getProperty("huotu.mallApi", "http://mallapi." + configService.getMallDomain());
     }
 }

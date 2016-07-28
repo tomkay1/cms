@@ -11,7 +11,7 @@ package com.huotu.hotcms.service.service.impl;
 
 import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.repository.AbstractContentRepository;
+import com.huotu.hotcms.service.repository.ContentRepository;
 import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.service.ContentsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class ContentsServiceImpl implements ContentsService {
 
 
     @Autowired
-    AbstractContentRepository abstractContentRepository;
+    ContentRepository contentRepository;
 
     @Autowired
     CategoryService categoryService;
@@ -49,13 +49,13 @@ public class ContentsServiceImpl implements ContentsService {
         };
 
         if (pageable == null)
-            return abstractContentRepository.findAll(specification);
-        return abstractContentRepository.findAll(specification, pageable);
+            return contentRepository.findAll(specification);
+        return contentRepository.findAll(specification, pageable);
     }
 
     @Override
     public AbstractContent findById(Long contentId) {
-        return abstractContentRepository.findOne(contentId);
+        return contentRepository.findOne(contentId);
     }
 
 

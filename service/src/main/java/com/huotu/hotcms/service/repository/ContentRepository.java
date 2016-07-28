@@ -14,9 +14,10 @@ import com.huotu.hotcms.service.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+
 import java.util.List;
 
-public interface AbstractContentRepository extends JpaRepository<AbstractContent, Long>, JpaSpecificationExecutor<AbstractContent> {
+public interface ContentRepository extends JpaRepository<AbstractContent, Long>, JpaSpecificationExecutor<AbstractContent> {
     /**
      * 根据站点查询所有contents
      */

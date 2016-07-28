@@ -15,6 +15,7 @@ import com.huotu.cms.manage.page.ManageMainPage;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import org.junit.Test;
+import org.springframework.transaction.annotation.Transactional;
 
 
 /**
@@ -26,6 +27,7 @@ public class PageEditTest extends SiteManageTest {
      * 测试页面上点击“保存”功能
      */
     @Test
+    @Transactional
     public void flow() throws Exception {
 
         Site site = loginAsSite();

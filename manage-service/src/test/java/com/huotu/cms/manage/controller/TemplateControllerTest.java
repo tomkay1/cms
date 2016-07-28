@@ -25,30 +25,22 @@ import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.repository.TemplateRepository;
 import me.jiangcai.lib.resource.service.ResourceService;
-import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StreamUtils;
 
 import java.beans.PropertyDescriptor;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -140,6 +132,7 @@ public class TemplateControllerTest extends ManageTest {
     }
 
     @Test
+    @Transactional
     public void testLaud() throws Exception {
         Owner owner=randomOwner();
         Site site=randomSite(owner);
@@ -161,6 +154,7 @@ public class TemplateControllerTest extends ManageTest {
     }
 
     @Test
+    @Transactional
     public void testUse() throws Exception {
         Template template=randomTemplate();
         Owner owner=randomOwner();
@@ -176,12 +170,14 @@ public class TemplateControllerTest extends ManageTest {
     }
 
     @Test
+    @Transactional
     public void uploadTest() throws IOException, URISyntaxException {
         InputStream inputStream= getClass().getClassLoader().getResourceAsStream("page.json");
         me.jiangcai.lib.resource.Resource resource=  resourceService.uploadResource("upload",inputStream);
     }
 
     @Test
+    @Transactional
     public void createTemplate(){
         Template template=randomTemplate();
     }

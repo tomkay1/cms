@@ -39,7 +39,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -57,7 +56,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * <p>针对页面服务controller层{@link FrontController}的单元测试</p>
  */
 @Transactional
-@Rollback
 public class FrontControllerTest extends TestBase {
     @Autowired(required = false)
     protected MockHttpServletResponse response;

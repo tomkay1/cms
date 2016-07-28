@@ -16,6 +16,8 @@ import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.util.ImageHelper;
 import me.jiangcai.lib.resource.Resource;
 import me.jiangcai.lib.resource.service.ResourceService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -32,6 +34,8 @@ import java.io.IOException;
 @RequestMapping("/manage/template")
 @PreAuthorize("hasRole('" + Login.Role_Template_Value + "')")
 public class TemplateController extends CRUDController<Template, Long, String, String> {
+
+    private static Log log = LogFactory.getLog(TemplateController.class);
 
     @Autowired
     private ResourceService resourceService;
@@ -60,6 +64,7 @@ public class TemplateController extends CRUDController<Template, Long, String, S
                     }
                     data.setLogoUri(newPath);
                 } catch (IOException e) {
+                    log.warn("Unknown Exception",e);
                     throw new RedirectException("/manage/template", e.getMessage());
                 }
             }

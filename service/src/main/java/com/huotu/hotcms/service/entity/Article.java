@@ -33,7 +33,7 @@ import java.time.LocalDateTime;
 @Table(name = "cms_article")
 @Getter
 @Setter
-public class Article extends AbstractContent implements ImagesOwner {
+public class Article extends AbstractContent{
 
     /**
      * 缩略图的path

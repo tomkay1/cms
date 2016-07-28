@@ -12,10 +12,13 @@ package com.huotu.hotcms.service.entity;
 import com.huotu.hotcms.service.util.SerialUtil;
 import lombok.Getter;
 import lombok.Setter;
+import me.jiangcai.lib.resource.service.ResourceService;
 
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 
 /**
@@ -53,6 +56,17 @@ public class Notice extends AbstractContent {
         notice.setSerial(SerialUtil.formatSerial(site));
         notice.setCategory(category);
         return notice;
+    }
+
+    @Override
+    public String[] getImagePaths() {
+        return new String[]{null};
+    }
+
+    @Override
+    public void updateImage(int index, ResourceService resourceService, InputStream stream) throws IOException
+            , IllegalArgumentException {
+
     }
 
 

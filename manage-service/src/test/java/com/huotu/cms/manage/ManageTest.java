@@ -344,7 +344,8 @@ public abstract class ManageTest extends SpringWebTest {
 
     protected Category randomCategory(Site site) {
         Category category = new Category();
-        category.setParent(randomCategory());
+        if (random.nextBoolean())
+            category.setParent(randomCategory(site));
         category.setSite(site);
         category.setName(UUID.randomUUID().toString());
         category.setContentType(ContentType.values()[random.nextInt(ContentType.values().length)]);
@@ -395,10 +396,10 @@ public abstract class ManageTest extends SpringWebTest {
      * @return 页面信息
      * @throws JsonProcessingException jackson相关序列化异常
      */
-    public PageInfo randomPageInfo() throws IOException, FormatException {
+    public PageInfo randomPageInfo(Site site) throws IOException, FormatException {
         PageInfo pageInfo = new PageInfo();
-        pageInfo.setSite(randomSite(randomOwner()));
-        pageInfo.setCategory(randomCategory());
+        pageInfo.setSite(site);
+        pageInfo.setCategory(randomCategory(site));
         pageInfo.setPageType(PageType.DataContent);
         pageInfo.setLayout(randomPageLayout());
         return pageInfoRepository.saveAndFlush(pageInfo);

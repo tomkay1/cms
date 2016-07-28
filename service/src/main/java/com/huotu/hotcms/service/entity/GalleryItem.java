@@ -26,7 +26,7 @@ import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "cms_galleryList")
+@Table(name = "cms_galleryItem")
 @Getter
 @Setter
 public class GalleryItem implements Auditable, Copyable<GalleryItem> {

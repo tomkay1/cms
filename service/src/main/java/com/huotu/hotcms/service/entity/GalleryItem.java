@@ -34,12 +34,12 @@ public class GalleryItem implements Auditable, Copyable<GalleryItem> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    /**
-     * 站点ID
-     */
-    @ManyToOne
-    @JoinColumn(name = "siteId")
-    private Site site;
+//    /**
+//     * 站点ID
+//     */
+//    @ManyToOne
+//    @JoinColumn(name = "siteId")
+//    private Site site;
 
     /**
      * 序列号
@@ -100,7 +100,7 @@ public class GalleryItem implements Auditable, Copyable<GalleryItem> {
         galleryItem.setThumbUri(thumbUri);
         galleryItem.setCreateTime(LocalDateTime.now());
         galleryItem.setGallery(gallery);
-        galleryItem.setSite(site);
+//        galleryItem.setSite(site);
         galleryItem.setUpdateTime(LocalDateTime.now());
         return galleryItem;
     }
@@ -109,7 +109,7 @@ public class GalleryItem implements Auditable, Copyable<GalleryItem> {
     public GalleryItem copy(Site site, Category category) {
         GalleryItem galleryItem = copy();
         galleryItem.setSerial(SerialUtil.formatSerial(site));
-        galleryItem.setSite(site);
+//        galleryItem.setSite(site);
         return galleryItem;
     }
 

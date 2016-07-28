@@ -10,28 +10,10 @@
 package com.huotu.hotcms.service.repository;
 
 import com.huotu.hotcms.service.entity.Article;
-import com.huotu.hotcms.service.entity.Category;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import com.huotu.hotcms.service.repositoryi.AbstractContentRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
-
-public interface ArticleRepository extends JpaRepository<Article, Long>, JpaSpecificationExecutor<Article> {
-
-    /**
-     * 查找栏目下所有的文章
-     * @param category 栏目
-     * @return 所有的文章
-     */
-    List<Article> findByCategory(Category category);
-
-    /**
-     * 删除该数据源下所有的文章数据
-     * @param category
-     * @return
-     */
-    Long deleteByCategory(Category category);
+public interface ArticleRepository extends AbstractContentRepository<Article, Long> {
 
     /**
      * 根绝siteID 查询文章

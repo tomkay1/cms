@@ -28,23 +28,12 @@ import java.time.LocalDateTime;
 @Setter
 public class Video extends AbstractContent {
 
-//    /**
-//     * 视频名称
-//     */
-//    @Column(name = "title")
-//    private String title;
 
     /**
      * 缩略图uri
      */
     @Column(name = "thumbUri")
     private String thumbUri;
-
-//    /**
-//     * 描述信息
-//     */
-//    @Column(name = "description")
-//    private String description;
 
     /**
      * 内部储存地址

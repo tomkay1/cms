@@ -55,6 +55,21 @@ public class PageLayout implements Serializable {
         return pageLayout.root;
     }
 
+    /**
+     * 来自web的数据,可能会有一些对齐的问题
+     *
+     * @param root 编辑器提供的
+     * @return 有效的PageLayout
+     */
+    public static PageLayout FromWeb(Layout[] root) {
+        PageLayout layout = new PageLayout();
+        layout.root = new Layout[root.length];
+        for (int i = 0; i < root.length; i++) {
+            layout.root[i] = Layout.FromWeb(root[i]);
+        }
+        return layout;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

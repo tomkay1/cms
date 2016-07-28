@@ -31,8 +31,7 @@ import java.time.LocalDateTime;
 public class Article extends AbstractContent {
 
     /**
-     * 缩略图
-     * TODO path? url?
+     * 缩略图的path
      */
     @Column(name = "thumbUri", length = 200)
     private String thumbUri;

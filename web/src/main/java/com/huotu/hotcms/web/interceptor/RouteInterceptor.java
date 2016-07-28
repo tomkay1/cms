@@ -94,7 +94,6 @@ public class RouteInterceptor extends HandlerInterceptorAdapter {
 //                    if (route.getRouteType().getCode().equals(RouteType.ARTICLE_CONTENT.getCode())) {
 //                        Article article = articleResolveService.getArticleBySiteAndRequest(site, request);
 //                        if (article != null) {
-//                            // TODO 必须是自己站点的 这个逻辑对么?
 //                            if (article.getCategory().getSite().getSiteId().equals(site.getSiteId())) {
 //                                modelAndView.addObject("article", article);
 //                                modelAndView.setViewName(resourcePath + route.getTemplate());

@@ -114,7 +114,6 @@ public abstract class AbstractManagePage extends BracketPage {
                     .findAny().orElseThrow(() -> new IllegalStateException("使用了chosen-select,但没看到chosen-container"));
 
             container.click();
-            // TODO 还是不完善的 基本可用 要是数据不是太多的话。
             for (WebElement element : container.findElements(By.cssSelector("li.active-result"))) {
                 if (label.equals(element.getText())) {
                     element.click();

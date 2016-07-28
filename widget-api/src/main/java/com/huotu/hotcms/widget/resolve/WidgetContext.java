@@ -55,7 +55,6 @@ public class WidgetContext extends WebEngineContext {
      */
     public WidgetContext(SpringTemplateEngine engine, CMSContext context, Widget widget, WidgetStyle style
             , ServletContext servletContext, Component component, ComponentProperties properties) {
-        // TODO 后期考虑到缓存,性能巴拉巴拉的时候 可能需要定制 TemplateData
         // 某些属性需要传染下去 比如来自CMSContext
         super(new WidgetConfiguration(engine.getConfiguration(), widget, style)
                 , null, null

@@ -19,13 +19,13 @@ import com.huotu.hotcms.widget.service.PageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -138,13 +138,13 @@ public class PageController {
 
 
     /**
-     * 跳转到CMS编辑界面，用于测试
+     * 跳转到CMS编辑界面
      *
      * @return url
      */
     @RequestMapping("/manage/page/edit/{pageId}")
-    public ModelAndView startEdit(@PathVariable("pageId") long pageId) {
-        // TODO BUG  可能需要更多的处理
-        return new ModelAndView("/edit/edit.html");
+    public String startEdit(@PathVariable("pageId") long pageId, Model model) throws PageNotFoundException {
+        model.addAttribute("pageInfo", pageService.getPage(pageId));
+        return "/edit/edit.html";
     }
 }

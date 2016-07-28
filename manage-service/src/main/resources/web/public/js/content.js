@@ -16,9 +16,11 @@
 
 
 function logoUploaded(id, name, responseJSON) {
-    // newUuid is the path
+    if(responseJSON.success){
+        $("#thumbUri").val(responseJSON.newUuid);
+    }
     console.log(responseJSON.newUuid);
-    $("#thumbUri").val(responseJSON.newUuid);
+    // newUuid is the path
 }
 
 function logoOnUpload() {
@@ -27,7 +29,8 @@ function logoOnUpload() {
     console.log.apply(console, arguments);
 }
 
-$('#article-uploader, #link-uploader, #video-uploader, #gallery-uploader, #download-uploader').fineUploader({
+//noinspection JSUnresolvedFunction
+$('#article-uploader, #link-uploader, #video-uploader, #gallery-uploader').fineUploader({
     debug:true,
     template: top.$('#qq-template').get(0),
     request: {
@@ -47,7 +50,43 @@ $('#article-uploader, #link-uploader, #video-uploader, #gallery-uploader, #downl
         sizeLimit: 3 * 1024 * 1024
     },
     callbacks:{
-        onComplete: logoUploaded,
+        onComplete: function (id, name, response) {
+            console.log(response);
+            if(response.success){
+                if($("#thumbUri").size()>0)
+                    $("#thumbUri").val(response.newUuid);
+                else if($("#videoUrl").size()>0)
+                    $("#videoUrl").val(response.newUuid);
+            }
+        },
+        onError: logoOnUpload,
+        onSubmit: logoOnUpload,
+        onCancel: logoOnUpload,
+        onValidate: logoOnUpload
+    }
+});
+
+$('#download-uploader').fineUploader({
+    debug:true,
+    template: top.$('#qq-template').get(0),
+    request: {
+        inputName: 'file',
+        // endpoint: 'http://mycms.51flashmall.com:8080/manage/upload/fine'
+        endpoint: uploadFileUrl
+    },
+    thumbnails: {
+        placeholders: {
+            waitingPath: 'http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/placeholders/waiting-generic.png',
+            notAvailablePath: 'http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/placeholders/not_available-generic.png'
+        }
+    },
+    callbacks:{
+        onComplete: function (id, name, response) {
+            console.log(response);
+            if(response.success){
+                $("#downloadUrl").val(response.newUuid);
+            }
+        },
         onError: logoOnUpload,
         onSubmit: logoOnUpload,
         onCancel: logoOnUpload,

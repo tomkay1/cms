@@ -9,10 +9,6 @@
 
 package com.huotu.hotcms.service.service;
 
-/**
- * Created by wenqi on 2016/7/15.
- */
-
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
@@ -24,13 +20,13 @@ public interface TemplateService {
     /**
      * 点赞
      *
-     * @param siteId     站点ID，也就是模板的ID
-     * @param ownerId 当前登录用户的用户名  -用户名应该是唯一的
-     * @param behavior 用户行为，1表示点赞，0表示取消赞
+     * @param templateId 模板的ID
+     * @param ownerId    当前登录用户的用户名  -用户名应该是唯一的
+     * @param behavior   用户行为，1表示点赞，0表示取消赞
      * @return 是否点赞成功，存在网络异常，服务器异常等失误情况
      */
     @Transactional
-    boolean laud(long siteId, long ownerId, int behavior);
+    boolean laud(long templateId, long ownerId, int behavior);
 
     /**
      * 使用
@@ -47,9 +43,10 @@ public interface TemplateService {
 
     /**
      * 是否点赞
-     * @param ownerId ownerId
-     * @param siteId siteId 站点ID，也就是模板的ID
+     *
+     * @param ownerId    ownerId
+     * @param templateId templateId 模板的ID
      * @return 是否已点赞
      */
-    boolean isLauded(long siteId, long ownerId);
+    boolean isLauded(long templateId, long ownerId);
 }

@@ -108,7 +108,7 @@
                                  data-id="123" th:attr="data-id=${template.siteId}">
                                 <div class="site-items">
                                     <img th:if="${template.logoUri!=null}" src="http://placehold.it/228x178?text=CMS"
-                                         res:src="${site.logoUri}"
+                                         res:src="${template.logoUri}"
                                          style="display: none" th:attr="style=''"
                                          alt="..." th:alt="${template.name}"/>
                                     <img th:if="${template.logoUri==null}" src="http://placehold.it/228x178?text=CMS"
@@ -121,16 +121,17 @@
                                             预览(100)
                                         </button>
                                         <button type="button"
-                                                class="operate-btn btn-white col-xs-6 template-use" th:text="'使用('+${{template.useNumber}}+')'">使用(999+)
+                                                class="operate-btn btn-white col-xs-6 template-use"
+                                                th:text="'使用('+${{template.useNumber}}+')'">使用(999+)
                                         </button>
                                     </div>
                                     <div class="site-alert text-success">
                                         <!--a-->
                                         <span th:text="${template.name}">我的模板名称</span>
                                         <span class="template-lauds">
-                                            <i class="fa fa-thumbs-up" th:class="${@templateServiceImpl.isLauded({template.siteId},{#authentication.details.root?-1:#authentication.details.currentOwnerId})}==true?'fa fa-thumbs-up':'fa fa-thumbs-o-up'"></i>
+                                            <i class="fa fa-thumbs-up"
+                                               th:class="${@templateServiceImpl.isLauded({template.siteId},{#authentication.details.root?-1:#authentication.details.currentOwnerId()})}==true?'fa fa-thumbs-up':'fa fa-thumbs-o-up'"></i>
                                             <span th:text="${{template.lauds}}">99</span>
-                                            <div class="laudSpan" th:text="${template.siteId}" style="display:none"></div>
                                         </span>
                                     </div>
                                     <div th:if="${template.ableToRun && template.enabled}" class="site-preview">
@@ -140,14 +141,16 @@
                                     </div>
                                 </div>
                             </div>
-                            <div th:remove="all" class="col-xs-12 col-sm-4 col-md-3 col-lg-2 clearfix template-site"  data-id="345">
+                            <div th:remove="all" class="col-xs-12 col-sm-4 col-md-3 col-lg-2 clearfix template-site"
+                                 data-id="345">
                                 <div class="site-items">
                                     <img src="http://placehold.it/228x178?text=CMS" alt="...">
                                     <div class="clearfix row operate-group">
                                         <button type="button" class="operate-btn btn-white col-xs-6 template-preview">
                                             预览(100)
                                         </button>
-                                        <button type="button" class="operate-btn btn-white col-xs-6 template-use">使用(999+)
+                                        <button type="button" class="operate-btn btn-white col-xs-6 template-use">
+                                            使用(999+)
                                         </button>
                                     </div>
                                     <div class="site-alert text-success">
@@ -169,7 +172,8 @@
                                         <button type="button" class="operate-btn btn-white col-xs-6 template-preview">
                                             预览(140)
                                         </button>
-                                        <button type="button" class="operate-btn btn-white col-xs-6 template-use">使用(999+)
+                                        <button type="button" class="operate-btn btn-white col-xs-6 template-use">
+                                            使用(999+)
                                         </button>
                                     </div>
                                     <div class="site-alert text-success">
@@ -191,7 +195,8 @@
                                         <button type="button" class="operate-btn btn-white col-xs-6 template-preview">
                                             预览(107)
                                         </button>
-                                        <button type="button" class="operate-btn btn-white col-xs-6 template-use">使用(999+)
+                                        <button type="button" class="operate-btn btn-white col-xs-6 template-use">
+                                            使用(999+)
                                         </button>
                                     </div>
                                     <div class="site-alert text-success">
@@ -255,9 +260,10 @@
     </div><!-- modal-dialog -->
 </div><!-- modal -->
 <script th:inline="javascript">
-    var currentOwnerId = /*[[${#authentication.details.root?-1:#authentication.details.currentOwnerId}]]*/ "-999";   //如果是超级管理员，ownerId则为-1
-    var laudUrl=/*[[@{/manage/template/laud/}]]*/ "index.html?rnd=";
-    var customerSiteId=/*[[${object.siteId}]]*/ null;
+    var currentOwnerId = /*[[${#authentication.details.root?-1:#authentication.details.currentOwnerId()}]]*/ "-999";
+    //如果是超级管理员，ownerId则为-1
+    var laudUrl = /*[[@{/manage/template/laud/}]]*/ null;
+    var customerSiteId = /*[[${object.siteId}]]*/ null;
 </script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-1.10.2.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-ui-1.10.3.min.js"></script>

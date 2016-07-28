@@ -159,4 +159,46 @@ public class SitePage extends AbstractCRUDPage<Site> {
             return true;
         };
     }
+
+    /**
+     * @return 模板列表
+     */
+    public List<WebElement> listTemplateRows() {
+        beforeDriver();
+        WebElement root = webDriver.findElement(By.id("template"));
+        if (!root.isDisplayed()) {
+            // 点击下呗
+            webDriver.findElements(By.tagName("li"))
+                    .stream()
+                    .filter((ele) -> {
+                        List<WebElement> as = ele.findElements(By.tagName("a"));
+                        return !as.isEmpty() && as.get(0).getText().equals("模板");
+                    })
+                    .peek(System.out::println)
+                    .findAny()
+                    .orElseThrow(() -> new IllegalStateException("没有找到显示模板的按钮"))
+                    .findElement(By.tagName("a")).click();
+        }
+        assertThat(root.isDisplayed())
+                .as("模板tab打不开")
+                .isTrue();
+
+        return root.findElements(By.cssSelector("div.template-site"));
+    }
+
+    /**
+     * 点赞 或者取消赞
+     *
+     * @param templateRow 模板
+     */
+    public void laud(WebElement templateRow) {
+        WebElement lauds = templateRow.findElement(By.className("template-lauds"));
+        // fa-thumbs-up
+        boolean state = lauds.findElements(By.className("fa-thumbs-up")).isEmpty();
+        String text = lauds.getText();
+
+        lauds.findElement(By.tagName("span")).click();
+        assertThat(lauds.findElements(By.className("fa-thumbs-up")).isEmpty())
+                .isEqualTo(!state);
+    }
 }

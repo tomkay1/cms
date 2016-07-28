@@ -48,6 +48,7 @@ public class TemplateController extends CRUDController<Template, Long, String, S
     @Override
     protected Template preparePersist(Login login, Template data, String extra, RedirectAttributes attributes)
             throws RedirectException {
+        data.setEnabled(true);// 第一次添加的模板 总是有效的吧
         updateLogo(data, extra);
         return data;
     }

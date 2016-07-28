@@ -169,10 +169,10 @@ public class WidgetInfoControllerTest extends ManageTest {
 
     private WidgetInfo randomWidgetInfoValue(Integer seed) {
         String[][] widgets = new String[][]{
-                new String[]{
-                        "com.huotu.hotcms.widget.pagingWidget",
-                        "pagingWidget"
-                },
+//                new String[]{
+//                        "com.huotu.hotcms.widget.pagingWidget",
+//                        "pagingWidget"
+//                },
                 new String[]{
                         "com.huotu.hotcms.widget.picCarousel",
                         "picCarousel"

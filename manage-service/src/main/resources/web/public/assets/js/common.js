@@ -1,14 +1,21 @@
 /**
  * Created by Neo on 2016/7/21.
  */
+
+/* 使用 sessionStorage 存储操作数据*/
+var wsCache = new WebStorageCache({storage: 'sessionStorage'});
+/* 判断是支持本地存储，如果不能无法完成后续操作*/
+if (!wsCache.isSupported()) {
+    layer.alert('您的浏览器无法支持页面功能，推荐使用360极速浏览器，再页面进行操作。');
+}
+
 /**
  * GlobalID 全局参数，用于存储当前操作组件的唯一 ID
  */
 var GlobalID;
 
-
 function widgetProperties( id ) {
-    return store.get(id) || {};
+    return wsCache.get(id) || {};
 };
 
 /**
@@ -22,11 +29,14 @@ function widgetProperties( id ) {
 var widgetHandle = {
     createStore: function (ele) {
         GlobalID = $(ele).siblings('.view').children().attr('id');
+        widgetHandle.setStroe(GlobalID);
         widgetHandle.initFunc(GlobalID);
     },
     setStroe: function (id, data) {
         if ( data ) {
-            store.set(GlobalID, { properties : data });
+            wsCache.set(GlobalID, { 'properties' : data });
+        } else {
+            wsCache.set(GlobalID, { 'properties' : {} });
         }
     },
     getGlobalFunc: function (id) {
@@ -71,18 +81,18 @@ function updataCompoentPreview(globalID, properties) {
             if (json.statusCode == '200') {
                 ele.html(json.body);
                 editFunc.closeFunc();
-                layer.msg("操作成功", {time: 2000});
+                layer.msg('操作成功', {time: 2000});
             }
             if (json.statusCode == '403') {
-                layer.msg("没有权限", {time: 2000});
+                layer.msg('没有权限', {time: 2000});
             }
             if (json.statusCode == '502') {
-                ayer.msg("没有权限", {time: 2000});
+                ayer.msg('服务器错误,请稍后再试', {time: 2000});
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log(errorThrown);
-            layer.msg("服务器错误,请稍后再试", {time: 2000});
+            layer.msg('服务器错误,请稍后再试', {time: 2000});
         }
     });
 }

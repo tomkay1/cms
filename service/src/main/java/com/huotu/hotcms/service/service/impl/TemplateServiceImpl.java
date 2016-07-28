@@ -84,8 +84,7 @@ public class TemplateServiceImpl implements TemplateService {
     //使用Redis
     @Override
     public boolean laud(long siteId, long ownerId, int behavior) {
-        //目前只是简单实现
-        try { //点赞数据储存应该使用其他技术
+        try { //TODO 使用Redis
             String key = siteId + "$" + ownerId;
             int laudNum = 10;
             if (1 == behavior) {//点赞

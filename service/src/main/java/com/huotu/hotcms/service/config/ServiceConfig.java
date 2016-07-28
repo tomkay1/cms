@@ -12,6 +12,7 @@ package com.huotu.hotcms.service.config;
 import com.huotu.huobanplus.sdk.common.CommonClientSpringConfig;
 import com.huotu.huobanplus.sdk.mall.MinMallSDKConfig;
 import me.jiangcai.lib.resource.ResourceSpringConfig;
+import me.jiangcai.lib.upgrade.UpgradeSpringConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -33,7 +34,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 })
 @EnableTransactionManagement
 @ImportResource({"classpath:spring_dev.xml", "classpath:spring_prod.xml"})
-@Import({CommonClientSpringConfig.class, MinMallSDKConfig.class, ResourceSpringConfig.class, JpaConfig.class,})
+@Import({CommonClientSpringConfig.class, MinMallSDKConfig.class, ResourceSpringConfig.class, UpgradeSpringConfig.class
+        , JpaConfig.class,})
 //@EnableWebMvc
 public class ServiceConfig {
 

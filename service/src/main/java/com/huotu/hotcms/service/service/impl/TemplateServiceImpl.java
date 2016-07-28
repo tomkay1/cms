@@ -33,6 +33,10 @@ import com.huotu.hotcms.service.repository.VideoRepository;
 import com.huotu.hotcms.service.service.TemplateService;
 import me.jiangcai.lib.resource.Resource;
 import me.jiangcai.lib.resource.service.ResourceService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -49,6 +53,8 @@ import java.util.UUID;
  */
 @Service
 public class TemplateServiceImpl implements TemplateService {
+
+    private static Log logger= LogFactory.getLog(TemplateServiceImpl.class);
 
     @Autowired
     private TemplateRepository templateRepository;
@@ -87,7 +93,7 @@ public class TemplateServiceImpl implements TemplateService {
         Template template=templateRepository.findOne(siteId);
         try { //TODO 使用Redis
             String key = siteId + "$" + ownerId;
-            int laudNum = 10;
+            int laudNum = template.getLauds();
             if (1 == behavior) {//点赞
                 template.setLauds(template.getLauds()+1);
                 laudMap.put(key, laudNum + 1);
@@ -97,7 +103,8 @@ public class TemplateServiceImpl implements TemplateService {
             }
             templateRepository.save(template);
             return true;
-        } catch (Exception e) {//其他异常
+        } catch (Exception e) {
+            logger.error("点赞失败，原因是："+e.getMessage());
             return false;
         }
     }

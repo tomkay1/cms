@@ -23,6 +23,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.dialect.IDialect;
@@ -48,9 +49,15 @@ public class WidgetTestConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private ThymeleafViewResolver javascriptThymeleafViewResolver;
 
-
     public static String WidgetIdentity(Widget widget) {
         return widget.widgetId().replace('-', '.');
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        super.addResourceHandlers(registry);
+        registry.addResourceHandler("/manage-resources/**")
+                .addResourceLocations("classpath:/web/public/");
     }
 
     @Override

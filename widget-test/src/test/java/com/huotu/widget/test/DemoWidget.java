@@ -89,6 +89,6 @@ public class DemoWidget implements Widget {
 
     @Override
     public ComponentProperties defaultProperties() {
-        return null;
+        return new ComponentProperties();
     }
 }

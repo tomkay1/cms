@@ -22,13 +22,24 @@ public interface CategoryRepository extends JpaRepository<Category, Long>, JpaSp
 
     /**
      * 根据站点查询数据源
+     *
      * @param site 站点
      * @return
      */
     List<Category> findBySite(Site site);
 
     /**
+     * 根据站点父级数据源查询数据源
+     *
+     * @param site   站点
+     * @param parent 父级数据源,支持null
+     * @return
+     */
+    List<Category> findBySiteAndParent(Site site, Category parent);
+
+    /**
      * 删除相应站点下的数据源
+     *
      * @param site
      * @return
      */
@@ -88,8 +99,6 @@ public interface CategoryRepository extends JpaRepository<Category, Long>, JpaSp
     List<Category> findByParent_Id(Long parenId);
 
     List<Category> findBySiteAndContentType(Site site, ContentType contentType);
-
-
 
 
 }

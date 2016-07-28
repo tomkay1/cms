@@ -9,16 +9,9 @@
 
 package com.huotu.hotcms.service.repository;
 
-import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Gallery;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import com.huotu.hotcms.service.repositoryi.AbstractContentRepository;
 
-import java.util.List;
+public interface GalleryRepository extends AbstractContentRepository<Gallery, Long> {
 
-public interface GalleryRepository extends JpaRepository<Gallery, Long>, JpaSpecificationExecutor<Gallery> {
-
-    List<Gallery> findByCategory(Category category);
-
-    Long deleteByCategory(Category category);
 }

@@ -20,8 +20,8 @@ import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.service.exception.PageNotFoundException;
-import com.huotu.hotcms.service.repository.AbstractContentRepository;
 import com.huotu.hotcms.service.repository.CategoryRepository;
+import com.huotu.hotcms.service.repository.ContentRepository;
 import com.huotu.hotcms.service.repository.OwnerRepository;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.widget.CMSContext;
@@ -43,7 +43,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -67,10 +66,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Import(ServiceConfig.class)
 @WebAppConfiguration
 @Transactional
-@Rollback()
 public class TestWidgetFactoryService extends TestBase {
 
-    @Autowired
+    @Autowired(required = false)
     HttpServletResponse response;
     @Autowired
     private WidgetFactoryService widgetFactoryService;
@@ -83,7 +81,7 @@ public class TestWidgetFactoryService extends TestBase {
     @Autowired
     private CategoryRepository categoryRepository;
     @Autowired
-    private AbstractContentRepository abstractContentRepository;
+    private ContentRepository contentRepository;
     @Autowired
     private PageInfoRepository pageInfoRepository;
     @Autowired
@@ -243,7 +241,7 @@ public class TestWidgetFactoryService extends TestBase {
 
         Link link = new Link();
         link.setCategory(category);
-        abstractContentRepository.saveAndFlush(link);
+        contentRepository.saveAndFlush(link);
         PageInfo pageInfo = new PageInfo();
         pageInfo.setTitle("test");
         pageInfo.setCategory(category);

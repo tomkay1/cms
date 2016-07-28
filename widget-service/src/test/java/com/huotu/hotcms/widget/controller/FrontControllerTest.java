@@ -17,8 +17,8 @@ import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.model.NavbarPageInfoModel;
-import com.huotu.hotcms.service.repository.AbstractContentRepository;
 import com.huotu.hotcms.service.repository.CategoryRepository;
+import com.huotu.hotcms.service.repository.ContentRepository;
 import com.huotu.hotcms.service.repository.OwnerRepository;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.widget.CMSContext;
@@ -41,15 +41,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -61,13 +58,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * <p>针对页面服务controller层{@link FrontController}的单元测试</p>
  */
 @Transactional
-@Rollback
-public class FontControllerTest extends TestBase {
+public class FrontControllerTest extends TestBase {
     @Autowired(required = false)
     protected MockHttpServletResponse response;
 
     @Autowired
-    private AbstractContentRepository abstractContentRepository;
+    private ContentRepository contentRepository;
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -182,7 +178,7 @@ public class FontControllerTest extends TestBase {
         Link link = new Link();
         link.setId(contentId);
         link.setCategory(category);
-        abstractContentRepository.saveAndFlush(link);
+        contentRepository.saveAndFlush(link);
         PageInfo pageInfo = new PageInfo();
         pageInfo.setTitle("test");
         pageInfo.setCategory(category);

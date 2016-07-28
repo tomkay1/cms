@@ -67,6 +67,7 @@ public class NoticeController extends ContentManageController<Notice,ContentExtr
         entity.setTitle(data.getTitle());
         entity.setDescription(data.getDescription());
         entity.setContent(data.getContent());
+        entity.setUpdateTime(LocalDateTime.now());
     }
 
     @Override

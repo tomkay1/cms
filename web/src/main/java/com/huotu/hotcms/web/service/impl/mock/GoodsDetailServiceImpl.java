@@ -12,9 +12,9 @@ package com.huotu.hotcms.web.service.impl.mock;
 
 import com.alibaba.fastjson.JSON;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.service.ConfigService;
 import com.huotu.hotcms.service.thymeleaf.service.SiteResolveService;
 import com.huotu.hotcms.service.widget.model.GoodsDetail;
-import com.huotu.hotcms.web.service.ConfigService;
 import com.huotu.hotcms.web.service.GoodsDetailService;
 import com.huotu.huobanplus.common.entity.GoodsImage;
 import com.huotu.huobanplus.common.entity.Merchant;

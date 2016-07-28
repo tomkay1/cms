@@ -66,32 +66,6 @@ public class DialectAttributeFactory {
      */
     public <T> T getForeachParam(IProcessableElementTag elementTag, Class<T> t) throws Exception {
         T obj = t.newInstance();
-        //TODO Thymeleaf 3.0.0beta01 版本,稳定后移除
-//        IElementAttributes elementAttributes = elementTag.getAttributes();
-//        List<AttributeName> attributeNames = elementAttributes.getAllAttributeNames();
-//        for (AttributeName attr : attributeNames) {
-//            String paramValue = elementAttributes.getValue(attr);
-//            Field field =getField(attr.getAttributeName(),obj);
-//            if(field!=null) {
-//                field.setAccessible(true);
-//                Class<?> classType = field.getType();
-//                if (classType == Integer.class) {
-//                    field.set(obj, Integer.parseInt(paramValue));
-//                } else if (classType == Long.class) {
-//                    field.set(obj, Long.parseLong(paramValue));
-//                } else if (classType == Double.class) {
-//                    field.set(obj, Double.parseDouble(paramValue));
-//                } else if (classType == String.class) {
-//                    field.set(obj, paramValue);
-//                } else if (classType == String[].class) {
-//                    field.set(obj, paramValue.split(","));
-//                } else if (classType == RouteType.class) {
-//                    field.set(obj, EnumUtils.valueOf(RouteType.class, Integer.parseInt(paramValue)));
-//                } else {
-//                    field.set(obj, paramValue);
-//                }
-//            }
-//        }
         IAttribute[] attributes= elementTag.getAllAttributes();
         for (IAttribute attr : attributes) {
             String paramValue = attr.getValue();

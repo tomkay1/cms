@@ -153,6 +153,7 @@ public abstract class WidgetTest extends SpringWebTest {
     /**
      * 浏览视图的测试
      * 通过设置属性改变预览视图
+     *
      * @param widget    控件
      * @param style     样式
      * @param uiChanger 更改后的预览视图
@@ -201,6 +202,20 @@ public abstract class WidgetTest extends SpringWebTest {
             });
         }
 
+        // 默认属性的测试
+        ComponentProperties componentProperties = widget.defaultProperties();
+        assertThat(componentProperties)
+                .as("控件默认属性")
+                .isNotNull();
+        // 通过给分发用属性增加一个额外属性 再跟原始值比较;很显然不应该影响
+        String randomKey = randomEmailAddress();
+        String randomValue = randomEmailAddress();
+        componentProperties.put(randomKey, randomValue);
+        assertThat(widget.defaultProperties().get(randomKey))
+                .as("对默认属性的修改不会影响全局")
+                .isNotEqualTo(randomValue);
+
+        // 缩略图测试
         assertThat(widget.thumbnail())
                 .isNotNull();
         assertThat(widget.thumbnail().isReadable())
@@ -222,6 +237,7 @@ public abstract class WidgetTest extends SpringWebTest {
 
     /**
      * 样式基本属性测试
+     *
      * @param widgetStyle
      */
     protected void stylePropertiesFor(WidgetStyle widgetStyle) {

@@ -43,6 +43,8 @@ public class Layout implements PageElement {
      * <li>1,11</li>
      * <li>4,6,2</li>
      * </ul>
+     *
+     * @see #columns()
      */
     private String value;
 //
@@ -57,6 +59,39 @@ public class Layout implements PageElement {
      */
     @JacksonXmlElementWrapper(useWrapping = false)
     private PageElement[][] elementGroups;
+
+    /**
+     * 来自web的数据,可能会有一些对齐的问题
+     *
+     * @param layout 编辑器提供的
+     * @return 有效的Layout
+     */
+    static Layout FromWeb(Layout layout) {
+        Layout value = new Layout();
+        value.value = layout.value;
+        value.elementGroups = new PageElement[value.columns().length][];
+        for (int i = 0; i < value.elementGroups.length; i++) {
+            //检测输入方是否输入了足够的数据
+            PageElement[] newGroup;
+            if (layout.elementGroups.length > i) {
+                newGroup = new PageElement[layout.elementGroups[i].length];
+                for (int j = 0; j < newGroup.length; j++) {
+                    PageElement newPageElement;
+                    PageElement src = layout.elementGroups[i][j];
+                    if (src instanceof Layout) {
+                        newPageElement = FromWeb((Layout) src);
+                    } else
+                        newPageElement = src;
+                    newGroup[j] = newPageElement;
+                }
+            } else {
+                newGroup = new PageElement[]{new Empty()};
+            }
+            value.elementGroups[i] = newGroup;
+        }
+
+        return value;
+    }
 
     /**
      * 所谓平行元素就是每一个group里只有一个元素的结构
@@ -94,5 +129,12 @@ public class Layout implements PageElement {
     @Override
     public int hashCode() {
         return Objects.hash(value, elementGroups);
+    }
+
+    /**
+     * @return 每一个column的占位数字
+     */
+    public String[] columns() {
+        return value.split(",");
     }
 }

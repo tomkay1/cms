@@ -13,7 +13,7 @@ import com.huotu.hotcms.service.FilterBehavioral;
 import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.exception.PageNotFoundException;
-import com.huotu.hotcms.service.repository.AbstractContentRepository;
+import com.huotu.hotcms.service.repository.ContentRepository;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.InstalledWidget;
@@ -55,7 +55,7 @@ public class FrontController implements FilterBehavioral {
     private static final Log log = LogFactory.getLog(FrontController.class);
 
     @Autowired(required = false)
-    private AbstractContentRepository abstractContentRepository;
+    private ContentRepository contentRepository;
     @Autowired
     private PageService pageService;
     @Autowired
@@ -138,7 +138,7 @@ public class FrontController implements FilterBehavioral {
         CMSContext cmsContext = CMSContext.RequestContext();
         model.addAttribute("time", System.currentTimeMillis());
         //查找数据内容
-        AbstractContent content = abstractContentRepository.findOne(contentId);
+        AbstractContent content = contentRepository.findOne(contentId);
         if (content != null) {
             cmsContext.setAbstractContent(content);
             //查找当前站点下指定数据源pagePath下最接近的page

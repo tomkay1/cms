@@ -65,8 +65,8 @@ public class WidgetTemplateResolver extends AbstractTemplateResolver {
                 return new SpringResourceTemplateResource(widget.widgetDependencyContent(ContentType.create("text/css"))
                         , "UTF-8");
             case PREVIEW:
-                // TODO previewTemplate 支持空
-                return new SpringResourceTemplateResource(style.previewTemplate(), "UTF-8");
+                return new SpringResourceTemplateResource(style.previewTemplate() != null ? style.previewTemplate()
+                        : style.browseTemplate(), "UTF-8");
             case BROWSE:
                 return new SpringResourceTemplateResource(style.browseTemplate(), "UTF-8");
         }

@@ -16,11 +16,17 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.Video;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.model.ContentExtra;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
 
 /**
  * @author wenqi
@@ -29,6 +35,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/manage/video")
 public class VideoController extends ContentManageController<Video,ContentExtra> {
     private static final Log log = LogFactory.getLog(SiteController.class);
+
+    @Autowired
+    private ResourceService resourceService;
 
     @Override
     protected ContentType contentType() {
@@ -50,6 +59,16 @@ public class VideoController extends ContentManageController<Video,ContentExtra>
         entity.setTitle(data.getTitle());
         entity.setOutLinkUrl(data.getOutLinkUrl());
         entity.setDescription(data.getDescription());
+        entity.setUpdateTime(LocalDateTime.now());
+        String oldThumbUri=extra.getOldResourcesUri();
+        entity.setThumbUri(data.getThumbUri());
+        if(!StringUtils.isEmpty(oldThumbUri)){
+            try {
+                resourceService.deleteResource(oldThumbUri);
+            } catch (IOException e) {
+                log.error("删除资源失败，原因是："+e.getMessage());
+            }
+        }
     }
 
     @Override

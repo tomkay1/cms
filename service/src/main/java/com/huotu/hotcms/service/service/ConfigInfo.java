@@ -15,21 +15,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-
-/**
- * Created by xhl on 2015/12/23.
- */
 @Component
 public class ConfigInfo {
-    private String outLoginUrl = "";
+    private final String outLoginUrl;
 
-    private String mallManageUrl = "";
+    private final String mallManageUrl;
 
-    private String mallSupperUrl = "";
-
-    @Autowired
-    private Environment ev;
+    private final String mallSupperUrl;
 
     @Value("${resources.site}")
     private String resourcesSiteLogo;
@@ -51,11 +43,13 @@ public class ConfigInfo {
     @Value("${resources.page}")
     private String pageConfig;
 
-    @PostConstruct
-    public void InitConfigInfo() {
-        this.outLoginUrl = ev.getProperty("cms.loginUrl", "http://manager.51flashmall.com");
-        this.mallManageUrl = ev.getProperty("huobanmall.mallManageUrl", "http://pdmall.51flashmall.com/home.aspx");
-        this.mallSupperUrl = ev.getProperty("huobanmall.mallSupperUrl", "http://manager.51flashmall.com/home.aspx?customerid=%s");
+    @Autowired
+    public ConfigInfo(ConfigService configService, Environment environment) {
+        this.outLoginUrl = environment.getProperty("cms.loginUrl", "http://manager." + configService.getMallDomain());
+        this.mallManageUrl = environment.getProperty("huobanmall.mallManageUrl", "http://pdmall."
+                + configService.getMallDomain() + "/home.aspx");
+        this.mallSupperUrl = environment.getProperty("huobanmall.mallSupperUrl", "http://manager."
+                + configService.getMallDomain() + "/home.aspx?customerid=%s");
     }
 
     public String getResourcesSiteLogo(long ownerId) {
@@ -83,7 +77,7 @@ public class ConfigInfo {
     }
 
     public String getPageConfig(String pageId) {
-        return String.format(pageConfig,pageId);
+        return String.format(pageConfig, pageId);
     }
 
     /**

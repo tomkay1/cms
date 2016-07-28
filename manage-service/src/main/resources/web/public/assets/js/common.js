@@ -34,9 +34,9 @@ var widgetHandle = {
     },
     setStroe: function (id, data) {
         if ( data ) {
-            wsCache.set(GlobalID, { 'properties' : data });
+            wsCache.set(id, { 'properties' : data });
         } else {
-            wsCache.set(GlobalID, { 'properties' : {} });
+            wsCache.set(id, { 'properties' : {} });
         }
     },
     getGlobalFunc: function (id) {
@@ -56,7 +56,7 @@ var widgetHandle = {
         dynamicLoading.css(path);
         if( fn && typeof fn.saveCompoent === 'function' ) {
             var properties = fn.saveCompoent();
-            if( properties !== null ) {
+            if( properties !== null && !$.isEmptyObject(properties)) {
                 widgetHandle.setStroe(GlobalID, properties);
                 updataCompoentPreview(id, properties);
             }
@@ -173,7 +173,7 @@ var dynamicLoading = {
  * @param obj.maxFileCount [Number] 限制上传的图片数量，不限制参数为 -1
  * @param obj.uploadUrl [String] 上传图片接口地址
  * @param obj.successCallback [Function] 上传成功后回调函数
- * @param obj.deleteUrl [String] 删除图片接口地址
+ * @param obj.deleteUrl [String] 删除图片接口地址. 为空就与 uploadUrl同一值
  * @param obj.deleteCallback [Function] 删除成功后回调函数
  * @param obj.isCongruent [Boolean] 是否启用完全相等
  */
@@ -185,7 +185,7 @@ function uploadForm (obj) {
         maxFileCount = obj.maxFileCount || -1,
         uploadUrl = obj.uploadUrl,
         successCallback = obj.successCallback || function () {},
-        deleteUrl = obj.deleteUrl,
+        deleteUrl = obj.deleteUrl || obj.uploadUrl,
         deleteCallback = obj.deleteCallback || function () {},
         sign = obj.isCongruent || false;
 

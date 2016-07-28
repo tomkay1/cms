@@ -7,7 +7,7 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.cms.manage.util;
+package com.huotu.hotcms.service.util;
 
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.springframework.core.io.Resource;

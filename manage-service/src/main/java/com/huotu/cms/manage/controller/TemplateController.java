@@ -11,9 +11,9 @@ package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.controller.support.CRUDController;
 import com.huotu.cms.manage.exception.RedirectException;
-import com.huotu.cms.manage.util.ImageHelper;
 import com.huotu.hotcms.service.entity.Template;
 import com.huotu.hotcms.service.entity.login.Login;
+import com.huotu.hotcms.service.util.ImageHelper;
 import me.jiangcai.lib.resource.Resource;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;

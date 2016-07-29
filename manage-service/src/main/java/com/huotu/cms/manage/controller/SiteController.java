@@ -11,12 +11,12 @@ package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.controller.support.CRUDController;
 import com.huotu.cms.manage.exception.RedirectException;
-import com.huotu.cms.manage.util.ImageHelper;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.repository.OwnerRepository;
 import com.huotu.hotcms.service.service.SiteService;
+import com.huotu.hotcms.service.util.ImageHelper;
 import lombok.Data;
 import me.jiangcai.lib.resource.Resource;
 import me.jiangcai.lib.resource.service.ResourceService;

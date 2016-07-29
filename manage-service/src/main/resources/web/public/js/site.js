@@ -96,6 +96,7 @@ $(function () {
     // 点赞的时候
     $('.template-lauds').click(function () {
         //  fa-thumbs-o-up fa-thumbs-up   o是没有
+        var templateId = $(this).closest('.template-site').attr('data-id');
         var behavior;//用户行为，点赞或者取消
         var _this = $(this);
         if ($(this).find(".fa-thumbs-up").length == 0)
@@ -103,39 +104,11 @@ $(function () {
         else
             behavior = 0;
 
-
-        if(currentOwnerId==-1)//超级管理员，不参与点赞
+        if (currentOwnerId == -1)//超级管理员，不参与点赞
             return;
-            //alert("admin");
-
-        if(laudUrl.indexOf("index")==-1){//如果不是静态界面测试 查看laudUrl的值
-            $.ajax({
-                url: laudUrl + $(this).find(".laudSpan").text(),
-                type: 'post',
-                dataType: 'json',
-                data: {
-                    ownerId: currentOwnerId,
-                    behavior: behavior
-                },
-                success: function (data) {
-                    var span = $('span', _this);
-                    var newVal;
-                    if(data){
-                        if(behavior==1){
-                            newVal = parseInt(span.text()) +1;
-                           _this.find("i").attr("class","fa fa-thumbs-up");
-                        }else{
-                            newVal = parseInt(span.text()) -1;
-                            _this.find("i").attr("class","fa fa-thumbs-o-up");
-                        }
-                        span.text(newVal);
-                    }else{
-                        layer.alert("服务器异常...");
-                    }
-                }
-            })
-        }else{
-            var i = $('i', this);
+        //alert("admin");
+        var success = function () {
+            var i = $('i', _this);
             var padding;
             if (i.hasClass('fa-thumbs-o-up')) {
                 padding = 1;
@@ -145,30 +118,45 @@ $(function () {
 
             i.toggleClass('fa-thumbs-o-up');
             i.toggleClass('fa-thumbs-up');
-            var span = $('span', this);
+            var span = $('span', _this);
             var newVal = parseInt(span.text()) + padding;
             span.text(newVal);
+        };
+
+        if (laudUrl != null) {//如果不是静态界面测试 查看laudUrl的值
+            $.ajax({
+                url: laudUrl + templateId,
+                type: 'post',
+                contentType: 'application/json',
+                // dataType: 'json',
+                async: !top.testMode,
+                data: '' + behavior,
+                success: success
+            })
+        } else {
+            console.log('templateId', templateId, top.testMode);
+            success();
         }
     });
     var templateSiteId;
     //  使用模板的时候
     $('.template-use').click(function () {
-        templateSiteId= $(this).parents(".template-site").attr("data-id");
+        templateSiteId = $(this).parents(".template-site").attr("data-id");
         // 需要弹出一个对话框 确认使用的级别
         useTemplateModal.modal();
     });
-    $('#confirmBtn').click(function(){
-        var type=$(".modal-body").find("input[name='type']:checked").val();
-        if(customerSiteId==null)//原型测试环境
+    $('#confirmBtn').click(function () {
+        var type = $(".modal-body").find("input[name='type']:checked").val();
+        if (customerSiteId == null)//原型测试环境
             return;
         $.ajax({
-            url:'/manage/template/use/'+templateSiteId+'/'+customerSiteId,
-            data:{
-                mode:type
+            url: '/manage/template/use/' + templateSiteId + '/' + customerSiteId,
+            data: {
+                mode: type
             },
-            type:'post',
-            success:function(data){//应该是iframe内跳转
-                window.location.href="/manage/site";
+            type: 'post',
+            success: function (data) {//应该是iframe内跳转
+                window.location.href = "/manage/site";
             }
         })
     });

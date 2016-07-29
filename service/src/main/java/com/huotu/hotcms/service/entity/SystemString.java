@@ -14,12 +14,14 @@ import lombok.Data;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * 系统字符串,是指可工程化维护的系统参数
  *
  * @author CJ
  */
+@Table(name = "cms_systemString")
 @Entity
 @Data
 public class SystemString {

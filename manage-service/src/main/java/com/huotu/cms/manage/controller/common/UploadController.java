@@ -64,6 +64,7 @@ public class UploadController {
      * @return
      */
     @RequestMapping(value = "/resourceUpload", method = RequestMethod.POST)
+    @ResponseBody
     public ResultView resourceUpload(@AuthenticationPrincipal Login login
             , @RequestParam(value = "file", required = false) MultipartFile file) {
 

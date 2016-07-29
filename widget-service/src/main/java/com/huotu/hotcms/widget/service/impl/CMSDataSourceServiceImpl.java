@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * @author CJ
  */
-@Service
+@Service("cmsDataSourceService")
 public class CMSDataSourceServiceImpl implements CMSDataSourceService {
 
     @Autowired

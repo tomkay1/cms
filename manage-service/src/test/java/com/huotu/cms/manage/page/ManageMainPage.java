@@ -71,7 +71,7 @@ public class ManageMainPage extends AbstractFrameParentPage {
      */
     public EditPage toEditPage(long pageId) {
         beforeDriver();
-        webDriver.get("http://localhost/manage/edit/" + pageId);
+        webDriver.get("http://localhost/manage/page/edit/" + pageId);
         return initPage(EditPage.class);
     }
 

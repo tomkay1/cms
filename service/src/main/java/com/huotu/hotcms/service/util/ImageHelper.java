@@ -7,7 +7,7 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.cms.manage.util;
+package com.huotu.hotcms.service.util;
 
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.springframework.core.io.Resource;
@@ -35,12 +35,17 @@ public class ImageHelper {
      */
     public static String storeAsImage(String type, ResourceService resourceService, InputStream data)
             throws IOException {
-        BufferedImage image = ImageIO.read(data);
-        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-        ImageIO.write(image, type, buffer);
-        String path = UUID.randomUUID().toString() + "." + type;
-        resourceService.uploadResource(path, new ByteArrayInputStream(buffer.toByteArray()));
-        return path;
+        try{
+            BufferedImage image = ImageIO.read(data);
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            ImageIO.write(image, type, buffer);
+            String path = UUID.randomUUID().toString() + "." + type;
+            resourceService.uploadResource(path, new ByteArrayInputStream(buffer.toByteArray()));
+            return path;
+        }finally {
+            //noinspection ThrowFromFinallyBlock
+            data.close();
+        }
     }
 
     public static void assertSame(Resource resource, Resource resource1) {

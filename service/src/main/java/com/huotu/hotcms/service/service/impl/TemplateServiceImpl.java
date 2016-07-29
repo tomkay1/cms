@@ -35,8 +35,6 @@ import me.jiangcai.lib.resource.Resource;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -48,13 +46,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-/**
- * Created by wenqi on 2016/7/15.
- */
 @Service
 public class TemplateServiceImpl implements TemplateService {
 
-    private static Log logger= LogFactory.getLog(TemplateServiceImpl.class);
+    private static final Log log = LogFactory.getLog(TemplateServiceImpl.class);
 
     @Autowired
     private TemplateRepository templateRepository;
@@ -84,27 +79,28 @@ public class TemplateServiceImpl implements TemplateService {
     @Autowired
     private ResourceService resourceService;
 
-    /*Map<siteId$customerId,laudNumber>*/
-    private Map<String, Integer> laudMap = new HashMap<>();
+    private Map<String, Boolean> laudMap = new HashMap<>();
 
     //使用Redis
     @Override
-    public boolean laud(long siteId, long ownerId, int behavior) {
-        Template template=templateRepository.findOne(siteId);
-        try { //TODO 使用Redis
-            String key = siteId + "$" + ownerId;
-            int laudNum = template.getLauds();
+    public boolean laud(long templateId, long ownerId, int behavior) {
+        if (behavior == 1 && isLauded(templateId, ownerId))
+            return false;
+        Template template = templateRepository.findOne(templateId);
+        try {
+            String key = templateId + "$" + ownerId;
+//            int laudNum = template.getLauds();
             if (1 == behavior) {//点赞
-                template.setLauds(template.getLauds()+1);
-                laudMap.put(key, laudNum + 1);
+                template.setLauds(template.getLauds() + 1);
+                laudMap.put(key, true);
             } else {
-                template.setLauds(template.getLauds()-1);
-                laudMap.put(key, laudNum - 1);
+                template.setLauds(template.getLauds() - 1);
+                laudMap.remove(key);
             }
             templateRepository.save(template);
             return true;
         } catch (Exception e) {
-            logger.error("点赞失败，原因是："+e.getMessage());
+            log.warn("Unexpected", e);
             return false;
         }
     }
@@ -123,9 +119,9 @@ public class TemplateServiceImpl implements TemplateService {
     }
 
     @Override
-    public boolean isLauded(long siteId, long ownerId) {
+    public boolean isLauded(long templateId, long ownerId) {
         //目前只是简单实现
-        String key = siteId + "$" + ownerId;
+        String key = templateId + "$" + ownerId;
         return laudMap.get(key) != null;
     }
 

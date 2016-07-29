@@ -27,7 +27,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,7 +70,6 @@ public class PageControllerTest extends ManageTest {
 
 
     @Test
-    @Rollback
     public void flow() throws Exception {
         //首先确保虚拟出来的siteId 并没有存在任何页面
         Owner owner = randomOwner();
@@ -89,7 +87,7 @@ public class PageControllerTest extends ManageTest {
 
 
         //随机创建一个Page
-        PageInfo pageInfo = randomPageInfo();
+        PageInfo pageInfo = randomPageInfo(site);
 
 
         PageLayout page = randomPageLayout();
@@ -146,6 +144,7 @@ public class PageControllerTest extends ManageTest {
         /*先确保存在已安装的控件*/
         List<InstalledWidget> installedWidgets = widgetFactoryService.widgetList(null);
         if (installedWidgets.size() == 0) {
+
             widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
                     , "1.0-SNAPSHOT", "picCarousel");
         }

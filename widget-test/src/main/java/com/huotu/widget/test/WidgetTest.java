@@ -129,9 +129,20 @@ public abstract class WidgetTest extends SpringWebTest {
 
         driver.get("http://localhost/editor/" + WidgetTestConfig.WidgetIdentity(widget));
         editorWork(widget, driver.findElement(By.id("editor")).findElement(By.tagName("div")), () -> {
+            driver.findElement(By.id("editorSaver")).click();
+
             if (driver instanceof JavascriptExecutor) {
-                return (Map) ((JavascriptExecutor) driver).executeScript("return widgetProperties($('#editor'))");
+                String failedMessage = (String) ((JavascriptExecutor) driver).executeScript("return _failedMessage");
+                if (failedMessage != null)
+                    throw new IllegalStateException(failedMessage);
             }
+            if (driver instanceof JavascriptExecutor) {
+                return (Map) ((JavascriptExecutor) driver).executeScript("return _successProperties");
+            }
+//
+//            if (driver instanceof JavascriptExecutor) {
+//                return (Map) ((JavascriptExecutor) driver).executeScript("return widgetProperties($('#editor'))");
+//            }
             throw new IllegalStateException("no JavascriptExecutor driver");
         });
     }
@@ -143,7 +154,7 @@ public abstract class WidgetTest extends SpringWebTest {
      *
      * @param widget                  控件
      * @param editor                  编辑器element
-     * @param currentWidgetProperties 可以从浏览器中获取当前控件属性
+     * @param currentWidgetProperties 可以从浏览器中获取当前控件属性,如果当前属性不被接收调用这个supplier会抛出IllegalStateException
      * @see JavascriptExecutor#executeScript(String, Object...)
      */
     @SuppressWarnings("WeakerAccess")

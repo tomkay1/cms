@@ -12,9 +12,11 @@ package com.huotu.cms.manage.test;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetStyle;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.http.entity.ContentType;
 import org.springframework.core.io.Resource;
 
+import java.io.IOException;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
@@ -84,7 +86,8 @@ public class TestWidget implements Widget  {
     }
 
     @Override
-    public ComponentProperties defaultProperties() {
+    public ComponentProperties defaultProperties(ResourceService resourceService) throws IOException {
         return null;
     }
+
 }

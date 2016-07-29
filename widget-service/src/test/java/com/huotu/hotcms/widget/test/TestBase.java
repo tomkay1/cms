@@ -11,11 +11,17 @@ package com.huotu.hotcms.widget.test;
 
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.Gallery;
+import com.huotu.hotcms.service.entity.GalleryItem;
+import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.service.repository.CategoryRepository;
+import com.huotu.hotcms.service.repository.GalleryItemRepository;
+import com.huotu.hotcms.service.repository.GalleryRepository;
+import com.huotu.hotcms.service.repository.LinkRepository;
 import com.huotu.hotcms.service.repository.OwnerRepository;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.thymeleaf.service.SiteResolveService;
@@ -31,8 +37,10 @@ import com.huotu.hotcms.widget.page.PageLayout;
 import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import com.huotu.hotcms.widget.servlet.CMSFilter;
+import me.jiangcai.lib.resource.service.ResourceService;
 import me.jiangcai.lib.test.SpringWebTest;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,6 +94,15 @@ public class TestBase extends SpringWebTest {
     private WidgetFactoryService widgetFactoryService;
     @Autowired
     private WidgetInfoRepository widgetInfoRepository;
+    @Autowired
+    private GalleryRepository galleryRepository;
+    @Autowired
+    private GalleryItemRepository galleryItemRepository;
+    @Autowired
+    private LinkRepository linkRepository;
+
+    @Autowired
+    private ResourceService resourceService;
 
     @Override
     public void createMockMVC() {
@@ -142,7 +159,7 @@ public class TestBase extends SpringWebTest {
         component.setWidgetIdentity(new WidgetIdentifier(groupId, widgetId, version).toString());
         component.setInstalledWidget(widgetFactoryService.installedStatus(widgetInfoRepository.getOne(
                 new WidgetIdentifier(groupId, widgetId, version))).get(0));
-        component.setProperties(component.getInstalledWidget().getWidget().defaultProperties());
+        component.setProperties(component.getInstalledWidget().getWidget().defaultProperties(resourceService));
         return component;
     }
 
@@ -316,5 +333,36 @@ public class TestBase extends SpringWebTest {
         layout.setParallelElements(new PageElement[]{componentA, componentB, layout1});
         pageLayout.setRoot(new Layout[]{layout});
         return pageLayout;
+    }
+
+    @NotNull
+    protected GalleryItem randomGalleryItem(Gallery gallery) {
+        GalleryItem item = new GalleryItem();
+        item.setCreateTime(LocalDateTime.now());
+        item.setGallery(gallery);
+        return galleryItemRepository.save(item);
+    }
+
+    protected Gallery randomGallery(Site site) {
+        return randomGallery(randomCategory(site, ContentType.Gallery));
+    }
+
+    protected Gallery randomGallery(Category category) {
+        Gallery gallery = new Gallery();
+        gallery.setCategory(category);
+        gallery = galleryRepository.saveAndFlush(gallery);
+        return gallery;
+    }
+
+    @NotNull
+    protected Link randomLink(Site site) {
+        return randomLink(randomCategory(site, ContentType.Link));
+    }
+
+    @NotNull
+    protected Link randomLink(Category category) {
+        Link link = new Link();
+        link.setCategory(category);
+        return linkRepository.save(link);
     }
 }

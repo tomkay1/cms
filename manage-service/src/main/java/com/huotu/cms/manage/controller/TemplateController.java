@@ -49,33 +49,24 @@ public class TemplateController extends CRUDController<Template, Long, String, S
     protected Template preparePersist(Login login, Template data, String extra, RedirectAttributes attributes)
             throws RedirectException {
         data.setEnabled(true);// 第一次添加的模板 总是有效的吧
-        updateLogo(data, extra);
+        try {
+            uploadTempImageToOwner(data,extra);
+        } catch (IOException e) {
+            log.warn("图片转存异常："+e.getMessage());
+        }
         return data;
     }
 
-    private void updateLogo(Template data, String extra) throws RedirectException {
-        if (!StringUtils.isEmpty(extra)) {
-            Resource tmp = resourceService.getResource(extra);
-            if (tmp.exists()) {
-                try {
-                    String newPath = ImageHelper.storeAsImage("png", resourceService, tmp.getInputStream());
-                    resourceService.deleteResource(extra);
-                    if (data.getLogoUri() != null) {
-                        resourceService.deleteResource(data.getLogoUri());
-                    }
-                    data.setLogoUri(newPath);
-                } catch (IOException e) {
-                    log.warn("Unknown Exception",e);
-                    throw new RedirectException("/manage/template", e.getMessage());
-                }
-            }
-        }
-    }
+
 
     @Override
     protected void prepareUpdate(Login login, Template entity, Template data, String extra, RedirectAttributes attributes)
             throws RedirectException {
-        updateLogo(entity, extra);
+        try {
+            uploadTempImageToOwner(data,extra);
+        } catch (IOException e) {
+            log.warn("图片转存异常："+e.getMessage());
+        }
     }
 
     @Override

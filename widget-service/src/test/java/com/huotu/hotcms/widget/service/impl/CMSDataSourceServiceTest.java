@@ -27,7 +27,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,17 +62,17 @@ public class CMSDataSourceServiceTest extends TestBase {
 
     @Test
     public void category() {
-        assertThat(cmsDataSourceService.findParentArticleCategorys())
+        assertThat(cmsDataSourceService.findParentArticleCategory())
                 .isEmpty();
 
         Category category = randomCategory(site, ContentType.Link);
-        assertThat(cmsDataSourceService.findParentArticleCategorys())
+        assertThat(cmsDataSourceService.findParentArticleCategory())
                 .contains(category);
 
         // 再弄一个子集
         Category sub = randomCategory(site, ContentType.Link, category);
 
-        assertThat(cmsDataSourceService.findParentArticleCategorys())
+        assertThat(cmsDataSourceService.findParentArticleCategory())
                 .contains(category)
                 .doesNotContain(sub);
     }
@@ -93,9 +92,7 @@ public class CMSDataSourceServiceTest extends TestBase {
         List<Link> linkList = new ArrayList<>();
         int count = random.nextInt(10) + 2;
         while (count-- > 0) {
-            Link link = new Link();
-            link.setCategory(category);
-            linkList.add(linkRepository.save(link));
+            linkList.add(randomLink(category));
         }
 
         assertThat(cmsDataSourceService.findLink(category.getId()))
@@ -107,9 +104,7 @@ public class CMSDataSourceServiceTest extends TestBase {
         assertThat(cmsDataSourceService.findGallery())
                 .isEmpty();
         Category category = randomCategory(site, ContentType.Gallery);
-        Gallery gallery = new Gallery();
-        gallery.setCategory(category);
-        galleryRepository.save(gallery);
+        Gallery gallery = randomGallery(category);
         assertThat(cmsDataSourceService.findGallery())
                 .contains(gallery);
 
@@ -118,9 +113,7 @@ public class CMSDataSourceServiceTest extends TestBase {
                 .isEmpty();
 
         //
-        Gallery gallery2 = new Gallery();
-        gallery2.setCategory(category);
-        galleryRepository.saveAndFlush(gallery2);
+        Gallery gallery2 = randomGallery(category);
 
         assertThat(cmsDataSourceService.findGalleryItem(gallery2.getId()))
                 .isEmpty();
@@ -128,15 +121,12 @@ public class CMSDataSourceServiceTest extends TestBase {
         List<GalleryItem> itemList = new ArrayList<>();
         int count = random.nextInt(10) + 2;
         while (count-- > 0) {
-            GalleryItem item = new GalleryItem();
-            item.setCreateTime(LocalDateTime.now());
-            item.setGallery(gallery2);
-
-            itemList.add(galleryItemRepository.save(item));
+            itemList.add(randomGalleryItem(gallery2));
         }
 
         assertThat(cmsDataSourceService.findGalleryItem(gallery2.getId()))
                 .containsAll(itemList);
     }
+
 
 }

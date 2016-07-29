@@ -14,9 +14,11 @@ import com.huotu.hotcms.service.model.CollapseArtcleCategory;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetStyle;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.http.entity.ContentType;
 import org.springframework.core.io.Resource;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -88,8 +90,9 @@ public class TestWidget implements Widget  {
     }
 
     @Override
-    public ComponentProperties defaultProperties() {
-
+    public ComponentProperties defaultProperties(ResourceService resourceService) throws IOException {
         return null;
     }
+
+
 }

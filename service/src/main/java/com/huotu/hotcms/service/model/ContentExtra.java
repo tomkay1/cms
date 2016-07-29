@@ -30,4 +30,9 @@ public class ContentExtra {
      * 原先缩略图地址
      */
     private String oldResourcesUri;
+
+    /**
+     * 临时上传地址
+     */
+    private String tempPath;
 }

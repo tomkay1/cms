@@ -15,8 +15,11 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.service.repository.ContentRepository;
 import com.huotu.hotcms.widget.CMSContext;
-import com.huotu.hotcms.widget.Component;
+import com.huotu.hotcms.widget.ComponentProperties;
+import com.huotu.hotcms.widget.InstalledWidget;
+import com.huotu.hotcms.widget.WidgetLocateService;
 import com.huotu.hotcms.widget.WidgetResolveService;
+import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.PageElement;
@@ -33,6 +36,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -56,6 +60,8 @@ public class FrontController implements FilterBehavioral {
     private PageService pageService;
     @Autowired
     private WidgetResolveService widgetResolveService;
+    @Autowired
+    WidgetLocateService widgetLocateService;
 
     /**
      * 参考<a href="https://huobanplus.quip.com/Y9mVAeo9KnTh">可用的CSS 资源</a>
@@ -139,6 +145,31 @@ public class FrontController implements FilterBehavioral {
             return pageService.getClosestContentPage(content.getCategory(), pagePath);
         } else {
             return pageService.findBySiteAndPagePath(cmsContext.getSite(), pagePath);
+        }
+    }
+
+    /**
+     * 获取指定控件,指定样式,的控件预览视图htmlCode
+     *
+     * 成功：状态200，并返回控件 priviewHtml Code
+     * 失败：状态404 无htmlCode
+     * @param widgetIdentifier {@link com.huotu.hotcms.service.entity.support.WidgetIdentifier}
+     * @param styleId          样式id
+     * @param properties       控件参数
+     */
+    @RequestMapping(value = "/previewHtml", method = RequestMethod.GET)
+    public ResponseEntity previewHtml(@RequestParam(required = false) String widgetIdentifier
+            , @RequestParam(required = false) String styleId
+            , @RequestParam(required = false) ComponentProperties properties) {
+        try{
+            InstalledWidget installedWidget = widgetLocateService.findWidget(widgetIdentifier);
+            installedWidget.getWidget().valid(styleId,properties);
+            String previewHTML = widgetResolveService.previewHTML(installedWidget.getWidget(), styleId
+                    , CMSContext.RequestContext(), properties);
+            return ResponseEntity.ok().contentType(MediaType.parseMediaType("text/html"))
+                    .body(previewHTML.getBytes());
+        }catch (Exception e){
+            return ResponseEntity.notFound().build();
         }
     }
 

@@ -52,7 +52,7 @@ public interface CMSDataSourceService {
      *
      * @return 返回当前站点下所有一级 文章模型的数据源
      */
-    List<Category> findParentArticleCategorys();
+    List<Category> findParentArticleCategory();
 
     /**
      * <p>查询当前站点下所有可用的文章模型，且为指定数据源的（包括间接）子级</p>

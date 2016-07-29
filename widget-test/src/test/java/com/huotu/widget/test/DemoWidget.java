@@ -12,6 +12,7 @@ package com.huotu.widget.test;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetStyle;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.http.entity.ContentType;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -26,7 +27,7 @@ import java.util.Map;
 public class DemoWidget implements Widget {
     @Override
     public String groupId() {
-        return "foo";
+        return "com.huotu.foo";
     }
 
     @Override
@@ -88,7 +89,7 @@ public class DemoWidget implements Widget {
     }
 
     @Override
-    public ComponentProperties defaultProperties() {
+    public ComponentProperties defaultProperties(ResourceService resourceService) {
         return new ComponentProperties();
     }
 }

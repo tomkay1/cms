@@ -34,6 +34,7 @@ import com.huotu.hotcms.widget.service.PageService;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import com.huotu.hotcms.widget.test.TestBase;
 import org.apache.http.HttpStatus;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -141,6 +142,14 @@ public class FrontControllerTest extends TestBase {
                 .accept(MediaType.TEXT_HTML)).andDo(print()).andReturn().getResponse().getStatus();
         assertThat(code).as("不存在的contentId和存在的path").isEqualTo(HttpStatus.SC_OK);
 
+//        //case 6 测试组件的预览视图
+//        code = mockMvc.perform(get("/previewHtml")
+//                .param("widgetIdentifier","com.huotu.hotcms.widget.topNavigation-topNavigation:1.0-SNAPSHOT")
+//                .param("styleId","topNavigationDefaultStyle")
+//                .param("properties", String.valueOf(getComponentProperties()))
+//                .accept(MediaType.TEXT_HTML)).andDo(print()).andReturn().getResponse().getStatus();
+//        assertThat(code).as("存在preview").isEqualTo(HttpStatus.SC_OK);
+
     }
 
 
@@ -196,72 +205,7 @@ public class FrontControllerTest extends TestBase {
             component.setWidgetIdentity("com.huotu.hotcms.widget.topNavigation-topNavigation:1.0-SNAPSHOT");
             component.setId(UUID.randomUUID().toString());
             component.setStyleId(styleId);
-            ComponentProperties properties = new ComponentProperties();
-            properties.put("pagingTColor", "#000000");
-            properties.put("pagingHColor", "#000000");
-            properties.put("logoFileUri", "http://www.baidu.com");
-            PageInfo pageInfo1 = new PageInfo();
-            pageInfo1.setTitle("首页");
-            pageInfo1.setPagePath("");
-            pageInfo1.setPageId(1L);
-
-            PageInfo pageInfo2 = new PageInfo();
-            pageInfo2.setTitle("新闻");
-            pageInfo2.setPagePath("xw");
-            pageInfo2.setPageId(2L);
-
-            PageInfo gjxw = new PageInfo();
-            gjxw.setTitle("国际新闻");
-            gjxw.setPagePath("gjxw");
-            gjxw.setPageId(22L);
-            gjxw.setParent(pageInfo2);
-
-            PageInfo gnxw = new PageInfo();
-            gnxw.setTitle("国内新闻");
-            gnxw.setParent(pageInfo2);
-            gnxw.setPageId(23L);
-            gnxw.setPagePath("gnxw");
-
-            PageInfo zjxw = new PageInfo();
-            zjxw.setTitle("浙江新闻");
-            zjxw.setParent(gnxw);
-            zjxw.setPageId(231L);
-            zjxw.setPagePath("zjxw");
-
-            PageInfo pageInfo3 = new PageInfo();
-            pageInfo3.setTitle("关于我们");
-            pageInfo3.setPagePath("guwm");
-            pageInfo3.setPageId(3L);
-
-            List<PageInfo> list = new ArrayList<>();
-            list.add(pageInfo1);
-            list.add(gjxw);
-            list.add(pageInfo2);
-            list.add(pageInfo3);
-            list.add(gnxw);
-            list.add(zjxw);
-
-            List<NavbarPageInfoModel> navbarPageInfoModels = new ArrayList<>();
-            for (PageInfo info : list) {
-                NavbarPageInfoModel navbarPageInfoModel = new NavbarPageInfoModel();
-                navbarPageInfoModel.setText(info.getTitle());
-                navbarPageInfoModel.setHref(info.getPagePath());
-                navbarPageInfoModel.setPageId(info.getPageId());
-                navbarPageInfoModel.setParentId(info.getParent() != null ? info.getParent().getPageId() : 0);
-                navbarPageInfoModels.add(navbarPageInfoModel);
-            }
-            List<NavbarPageInfoModel> rootTrees = new ArrayList<>();
-            for (NavbarPageInfoModel navbarPageInfoModel : navbarPageInfoModels) {
-                if (navbarPageInfoModel.getParentId() == 0) {
-                    rootTrees.add(navbarPageInfoModel);
-                }
-                for (NavbarPageInfoModel t : navbarPageInfoModels) {
-                    if (t.getParentId() == navbarPageInfoModel.getPageId()) {
-                        navbarPageInfoModel.getNodes().add(t);
-                    }
-                }
-            }
-            properties.put("pageIds",navbarPageInfoModels);
+            ComponentProperties properties = getComponentProperties();
             component.setProperties(properties);
             layoutElement.setParallelElements(new PageElement[]{component});
 
@@ -274,6 +218,77 @@ public class FrontControllerTest extends TestBase {
             throw new IllegalStateException("error", e);
         }
 
+    }
+
+    @NotNull
+    private ComponentProperties getComponentProperties() {
+        ComponentProperties properties = new ComponentProperties();
+        properties.put("pagingTColor", "#000000");
+        properties.put("pagingHColor", "#000000");
+        properties.put("logoFileUri", "http://www.baidu.com");
+        PageInfo pageInfo1 = new PageInfo();
+        pageInfo1.setTitle("首页");
+        pageInfo1.setPagePath("");
+        pageInfo1.setPageId(1L);
+
+        PageInfo pageInfo2 = new PageInfo();
+        pageInfo2.setTitle("新闻");
+        pageInfo2.setPagePath("xw");
+        pageInfo2.setPageId(2L);
+
+        PageInfo gjxw = new PageInfo();
+        gjxw.setTitle("国际新闻");
+        gjxw.setPagePath("gjxw");
+        gjxw.setPageId(22L);
+        gjxw.setParent(pageInfo2);
+
+        PageInfo gnxw = new PageInfo();
+        gnxw.setTitle("国内新闻");
+        gnxw.setParent(pageInfo2);
+        gnxw.setPageId(23L);
+        gnxw.setPagePath("gnxw");
+
+        PageInfo zjxw = new PageInfo();
+        zjxw.setTitle("浙江新闻");
+        zjxw.setParent(gnxw);
+        zjxw.setPageId(231L);
+        zjxw.setPagePath("zjxw");
+
+        PageInfo pageInfo3 = new PageInfo();
+        pageInfo3.setTitle("关于我们");
+        pageInfo3.setPagePath("guwm");
+        pageInfo3.setPageId(3L);
+
+        List<PageInfo> list = new ArrayList<>();
+        list.add(pageInfo1);
+        list.add(gjxw);
+        list.add(pageInfo2);
+        list.add(pageInfo3);
+        list.add(gnxw);
+        list.add(zjxw);
+
+        List<NavbarPageInfoModel> navbarPageInfoModels = new ArrayList<>();
+        for (PageInfo info : list) {
+            NavbarPageInfoModel navbarPageInfoModel = new NavbarPageInfoModel();
+            navbarPageInfoModel.setText(info.getTitle());
+            navbarPageInfoModel.setHref(info.getPagePath());
+            navbarPageInfoModel.setPageId(info.getPageId());
+            navbarPageInfoModel.setParentId(info.getParent() != null ? info.getParent().getPageId() : 0);
+            navbarPageInfoModels.add(navbarPageInfoModel);
+        }
+        List<NavbarPageInfoModel> rootTrees = new ArrayList<>();
+        for (NavbarPageInfoModel navbarPageInfoModel : navbarPageInfoModels) {
+            if (navbarPageInfoModel.getParentId() == 0) {
+                rootTrees.add(navbarPageInfoModel);
+            }
+            for (NavbarPageInfoModel t : navbarPageInfoModels) {
+                if (t.getParentId() == navbarPageInfoModel.getPageId()) {
+                    navbarPageInfoModel.getNodes().add(t);
+                }
+            }
+        }
+        properties.put("pageIds",navbarPageInfoModels);
+        return properties;
     }
 
 //    /**

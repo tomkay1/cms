@@ -15,6 +15,7 @@ import com.huotu.hotcms.widget.WidgetStyle;
 import com.huotu.hotcms.widget.servlet.CMSFilter;
 import com.huotu.widget.test.bean.WidgetHolder;
 import com.huotu.widget.test.bean.WidgetViewController;
+import me.jiangcai.lib.resource.service.ResourceService;
 import me.jiangcai.lib.test.SpringWebTest;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
@@ -50,6 +51,9 @@ public abstract class WidgetTest extends SpringWebTest {
 
     @Autowired
     private WidgetHolder holder;
+
+    @Autowired(required = false)
+    private ResourceService resourceService;
 
 
     @Override
@@ -128,9 +132,9 @@ public abstract class WidgetTest extends SpringWebTest {
                     .andDo(print());
 
         driver.get("http://localhost/editor/" + WidgetTestConfig.WidgetIdentity(widget));
+        driver.findElement(By.id("editorInit")).click();
         editorWork(widget, driver.findElement(By.id("editor")).findElement(By.tagName("div")), () -> {
             driver.findElement(By.id("editorSaver")).click();
-
             if (driver instanceof JavascriptExecutor) {
                 String failedMessage = (String) ((JavascriptExecutor) driver).executeScript("return _failedMessage");
                 if (failedMessage != null)
@@ -139,10 +143,7 @@ public abstract class WidgetTest extends SpringWebTest {
             if (driver instanceof JavascriptExecutor) {
                 return (Map) ((JavascriptExecutor) driver).executeScript("return _successProperties");
             }
-//
-//            if (driver instanceof JavascriptExecutor) {
-//                return (Map) ((JavascriptExecutor) driver).executeScript("return widgetProperties($('#editor'))");
-//            }
+
             throw new IllegalStateException("no JavascriptExecutor driver");
         });
     }
@@ -179,11 +180,17 @@ public abstract class WidgetTest extends SpringWebTest {
      */
     @Test
     public void properties() throws IOException {
-        holder.getWidgetSet().forEach(this::propertiesFor);
+        holder.getWidgetSet().forEach((widget) -> {
+            try {
+                propertiesFor(widget);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @SuppressWarnings("WeakerAccess")
-    protected void propertiesFor(Widget widget) {
+    protected void propertiesFor(Widget widget) throws IOException {
 
 
         assertThat(widget.description())
@@ -214,7 +221,7 @@ public abstract class WidgetTest extends SpringWebTest {
         }
 
         // 默认属性的测试
-        ComponentProperties componentProperties = widget.defaultProperties();
+        ComponentProperties componentProperties = widget.defaultProperties(resourceService);
         assertThat(componentProperties)
                 .as("控件默认属性")
                 .isNotNull();
@@ -222,7 +229,7 @@ public abstract class WidgetTest extends SpringWebTest {
         String randomKey = randomEmailAddress();
         String randomValue = randomEmailAddress();
         componentProperties.put(randomKey, randomValue);
-        assertThat(widget.defaultProperties().get(randomKey))
+        assertThat(widget.defaultProperties(resourceService).get(randomKey))
                 .as("对默认属性的修改不会影响全局")
                 .isNotEqualTo(randomValue);
 

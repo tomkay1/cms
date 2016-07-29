@@ -11,6 +11,7 @@ package com.huotu.hotcms.service.entity;
 
 import com.huotu.hotcms.service.Auditable;
 import com.huotu.hotcms.service.Enabled;
+import com.huotu.hotcms.service.ImagesOwner;
 import com.huotu.hotcms.service.common.SiteType;
 import com.huotu.hotcms.service.entity.login.Owner;
 import lombok.Getter;

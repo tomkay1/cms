@@ -73,20 +73,15 @@ public class LinkController extends ContentManageController<Link,ContentExtra> {
     @Override
     protected void prepareUpdate(Login login, Link entity, Link data, ContentExtra extra
             , RedirectAttributes attributes) throws RedirectException {
-        String oldThumbUri=extra.getOldResourcesUri();
         entity.setTitle(data.getTitle());
-        entity.setLinkUrl(data.getLinkUrl());
         entity.setDescription(data.getDescription());
         entity.setUpdateTime(LocalDateTime.now());
-        entity.setThumbUri(data.getThumbUri());
-        if(!StringUtils.isEmpty(oldThumbUri)){
-            try {
-                resourceService.deleteResource(oldThumbUri);
-            } catch (IOException e) {
-                log.error("删除资源失败，原因是："+e.getMessage());
-            }
+        entity.setLinkUrl(data.getLinkUrl());
+        try {
+            uploadTempImageToOwner(entity,extra.getTempPath());
+        } catch (IOException e) {
+            log.warn("图片转存异常："+e.getMessage());
         }
-
     }
 
     @Override

@@ -209,6 +209,9 @@ public class TemplateControllerTest extends SiteManageTest {
             assertThat(entity.getName())
                     .isEqualTo(data.getName());
             if (logoResource != null) {
+                assertThat(entity.getLogoUri())
+                        .as("缩略图需存在")
+                        .isNotNull();
                 ImageHelper.assertSame(resourceService.getResource(entity.getLogoUri()), logoResource);
             }
         }

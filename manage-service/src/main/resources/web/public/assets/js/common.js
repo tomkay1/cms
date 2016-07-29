@@ -52,7 +52,8 @@ var widgetHandle = {
     },
     saveFunc: function (id) {
         var fn = widgetHandle.getGlobalFunc(id);
-        var path = '/preview/PageID/'+id+'.css';
+        var path = '/preview/' + pageId + '/' + id + '.css';
+
         dynamicLoading.css(path);
         if( fn && typeof fn.saveCompoent === 'function' ) {
             var properties = fn.saveCompoent();

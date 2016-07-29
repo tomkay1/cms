@@ -54,6 +54,7 @@ import com.huotu.hotcms.widget.repository.PageInfoRepository;
 import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
 import com.huotu.hotcms.widget.service.PageService;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
+import me.jiangcai.lib.resource.service.ResourceService;
 import me.jiangcai.lib.test.SpringWebTest;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
@@ -126,6 +127,8 @@ public abstract class ManageTest extends SpringWebTest {
     private GalleryItemRepository galleryItemRepository;
     @Autowired
     private GalleryRepository galleryRepository;
+    @Autowired
+    private ResourceService resourceService;
 
     @Before
     public void aboutTestOwner() {
@@ -564,7 +567,7 @@ public abstract class ManageTest extends SpringWebTest {
         component.setWidgetIdentity(new WidgetIdentifier(groupId, widgetId, version).toString());
         component.setInstalledWidget(widgetFactoryService.installedStatus(widgetInfoRepository.getOne(
                 new WidgetIdentifier(groupId, widgetId, version))).get(0));
-        component.setProperties(component.getInstalledWidget().getWidget().defaultProperties());
+        component.setProperties(component.getInstalledWidget().getWidget().defaultProperties(resourceService));
         return component;
     }
 

@@ -225,7 +225,7 @@ public class WidgetInfoController
                 widgetStyleModel.setThumbnail(widgetStyles[i].thumbnail().getURI().toString());
                 widgetStyleModel.setLocallyName(widgetStyles[i].name());
                 widgetStyleModel.setPreviewHTML(widgetResolveService.previewHTML(widget, widgetStyles[i].id()
-                        , CMSContext.RequestContext(), widget.defaultProperties()));
+                        , CMSContext.RequestContext(), widget.defaultProperties(resourceService)));
                 widgetStyleModels[i] = widgetStyleModel;
             }
             widgetModel.setStyles(widgetStyleModels);

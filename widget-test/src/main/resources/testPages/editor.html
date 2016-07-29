@@ -34,9 +34,11 @@
 <body>
 
 <div id="editor">
+    <button id="editorSaver">Save me!</button>
+    <button id="editorInit">init me!</button>
     <!--${properties} should be supported-->
     <div cms:replaceEditor="${widgetId},${properties}"></div>
-    <button id="editorSaver">Save me!</button>
+
 </div>
 
 <script th:inline="javascript">
@@ -45,23 +47,23 @@
 </script>
 
 <script src="http://resali.huobanplus.com/cdn/jquery/2.2.4/jquery.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/jquery-form/3.51/jquery.form.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-ui-1.10.3.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/layer/2.3/layer.js"></script>
 <script src="http://resali.huobanplus.com/cdn/jquery-upload-file/4.0.10/jquery.uploadfile.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bootstrap-treeview/1.2.0/bootstrap-treeview.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/web-storage-cache/1.0.1/web-storage-cache.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/swiper/3.3.1/swiper.jquery.min.js"></script>
-
 <script src="../../../../../manage-service/src/main/resources/web/public/assets/libs/jquery.htmlClean.js"
         th:src="'/manage-resources/assets/libs/jquery.htmlClean.js'"></script>
 <script src="../../../../../manage-service/src/main/resources/web/public/assets/js/page/editPage.js"
         th:src="'/manage-resources/assets/js/page/editPage.js'"></script>
-<script src="../../../../../manage-service/src/main/resources/web/public/assets/js/data/dataHandle.js"
-        th:src="'/manage-resources/assets/js/data/dataHandle.js'"></script>
+<!--<script src="../../../../../manage-service/src/main/resources/web/public/assets/js/data/dataHandle.js"-->
+        <!--th:src="'/manage-resources/assets/js/data/dataHandle.js'"></script>-->
 <script src="../../../../../manage-service/src/main/resources/web/public/assets/js/common.js"
         th:src="'/manage-resources/assets/js/common.js'"></script>
 
-<script>
+<script th:inline="javascript">
     var _widgetProperties = {};
     function widgetProperties() {
         return _widgetProperties;
@@ -69,20 +71,24 @@
 
     var _successProperties;
     var _failedMessage;
-
+    var scope = null;
+    /*<![CDATA[*/
+     scope = /*[[${widgetId}]]*/;
+    /*]]>*/
     $('#editorSaver').click(function () {
-        // fetch right scope of component
-        var scope = null;
         _failedMessage = null;
-        scope.saveCompoent({
-            onSuccess: function (ps) {
-                console.log('you got me', ps);
-                _successProperties = ps;
-            },
-            onFailed: function (msg) {
-                _failedMessage = msg;
-            }
-        });
+        var properties = window[scope].saveComponent();
+        if(properties!=null){
+            _successProperties = properties;
+        }else{
+            _failedMessage = 'save error';
+        }
+        console.error("save error");
+    });
+
+    $('#editorInit').click(function () {
+        window[scope].init(1);
+        console.error("init error");
     });
 </script>
 <script th:src="@{/javascript/{id}(id=${widgetId})}"></script>

@@ -58,7 +58,7 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     }
 
     @Override
-    public List<Category> findParentArticleCategorys() {
+    public List<Category> findParentArticleCategory() {
         return categoryRepository.findBySiteAndParent(CMSContext.RequestContext().getSite(), null);
     }
 

@@ -9,6 +9,7 @@
 
 package com.huotu.widget.test.bean;
 
+import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.InstalledWidget;

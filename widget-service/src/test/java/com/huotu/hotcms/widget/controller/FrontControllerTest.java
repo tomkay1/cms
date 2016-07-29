@@ -9,7 +9,6 @@
 
 package com.huotu.hotcms.widget.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.common.PageType;
 import com.huotu.hotcms.service.entity.Category;
@@ -143,13 +142,13 @@ public class FrontControllerTest extends TestBase {
                 .accept(MediaType.TEXT_HTML)).andDo(print()).andReturn().getResponse().getStatus();
         assertThat(code).as("不存在的contentId和存在的path").isEqualTo(HttpStatus.SC_OK);
 
-        //case 6 测试组件的预览视图
-        code = mockMvc.perform(get("/previewHtml")
-                .param("widgetIdentifier","com.huotu.hotcms.widget.topNavigation-topNavigation:1.0-SNAPSHOT")
-                .param("styleId","topNavigationDefaultStyle")
-                .param("properties", String.valueOf(getComponentProperties()))
-                .accept(MediaType.TEXT_HTML)).andDo(print()).andReturn().getResponse().getStatus();
-        assertThat(code).as("存在preview").isEqualTo(HttpStatus.SC_OK);
+//        //case 6 测试组件的预览视图
+//        code = mockMvc.perform(get("/previewHtml")
+//                .param("widgetIdentifier","com.huotu.hotcms.widget.topNavigation-topNavigation:1.0-SNAPSHOT")
+//                .param("styleId","topNavigationDefaultStyle")
+//                .param("properties", String.valueOf(getComponentProperties()))
+//                .accept(MediaType.TEXT_HTML)).andDo(print()).andReturn().getResponse().getStatus();
+//        assertThat(code).as("存在preview").isEqualTo(HttpStatus.SC_OK);
 
     }
 

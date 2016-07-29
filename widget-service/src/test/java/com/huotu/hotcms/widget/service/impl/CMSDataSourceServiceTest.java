@@ -63,17 +63,17 @@ public class CMSDataSourceServiceTest extends TestBase {
 
     @Test
     public void category() {
-        assertThat(cmsDataSourceService.findParentArticleCategorys())
+        assertThat(cmsDataSourceService.findParentArticleCategory())
                 .isEmpty();
 
         Category category = randomCategory(site, ContentType.Link);
-        assertThat(cmsDataSourceService.findParentArticleCategorys())
+        assertThat(cmsDataSourceService.findParentArticleCategory())
                 .contains(category);
 
         // 再弄一个子集
         Category sub = randomCategory(site, ContentType.Link, category);
 
-        assertThat(cmsDataSourceService.findParentArticleCategorys())
+        assertThat(cmsDataSourceService.findParentArticleCategory())
                 .contains(category)
                 .doesNotContain(sub);
     }

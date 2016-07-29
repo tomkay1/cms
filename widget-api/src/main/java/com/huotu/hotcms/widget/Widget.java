@@ -9,10 +9,12 @@
 
 package com.huotu.hotcms.widget;
 
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.http.entity.ContentType;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
+import java.io.IOException;
 import java.util.Locale;
 import java.util.Map;
 
@@ -133,9 +135,9 @@ public interface Widget {
     void valid(String styleId, ComponentProperties properties) throws IllegalArgumentException;
 
     /**
+     * 该版本暂时用不到
      * 可以获取Spring额外配置信息
      * 如果该值非空,则控件在生成HTML的时候 应该使用其他的ApplicationContext而非默认的
-     *
      * @return 可以为null
      */
     Class springConfigClass();
@@ -145,7 +147,7 @@ public interface Widget {
      *
      * @return 这个方法总是返回新建的实例而且从不为null, 即它的结果可以直接用于分发。
      */
-    ComponentProperties defaultProperties();
+    ComponentProperties defaultProperties(ResourceService resourceService) throws IOException;
 
 
 }

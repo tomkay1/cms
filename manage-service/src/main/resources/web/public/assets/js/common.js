@@ -277,3 +277,4 @@ $('div[id^="picCarousel"]').swiper({
     updateOnImagesReady : true,
     loop: true
 });
+

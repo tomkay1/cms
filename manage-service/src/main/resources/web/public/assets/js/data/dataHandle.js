@@ -60,7 +60,7 @@ var DataHandle  = {
             childJSON.component.widgetIdentity = $(elements).attr('data-widgetidentity');
             childJSON.component.id = $(elements).attr('id');
             childJSON.component.styleId = $(elements).attr('data-styleid');
-            childJSON.component.properties = wsCache.get($(elements).attr('id')).properties;
+            childJSON.component.properties = wsCache.get($(elements).attr('id')) ? wsCache.get($(elements).attr('id')).properties : {};
         }
         return childJSON;
     },
@@ -122,6 +122,7 @@ var DataHandle  = {
             ]
         });
         var root = $('<div></div>');
+        console.log(formatSrc)
         root.html(formatSrc);
         DataHandle.createROOT($(root), url);
     },
@@ -215,9 +216,16 @@ var CreatePage = {
         var container = $('<div></div>');
         var arr = data.value.toString().split(',');
         $.each(arr, function (i, v) {
-            var column = $('<div class="column ui-sortable"></div>');
-            var col = 'col-md-' + v;
-            column.addClass(col);
+            var column;
+            if ( v == 100 ) {
+                column = $('<div class="column ui-sortable"></div>');
+            } else if ( v == 50 ) {
+                column = $('<div class="container column ui-sortable"></div>');
+            } else {
+                column = $('<div class="column ui-sortable"></div>');
+                var col = 'col-md-' + v;
+                column.addClass(col);
+            }
             column.html( CreatePage.createColumnDom( data.elementGroups[i] ) );
             container.append(column);
         });

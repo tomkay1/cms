@@ -43,18 +43,16 @@ public class ResourceController {
     @Autowired
     private ResourceService resourceService;
 
-    public String uploadTempResource(InputStream data,String suffix) throws IOException {
-        String path = "tmp/" + UUID.randomUUID().toString()+suffix;
+    public String uploadTempResource(InputStream data) throws IOException {
+        String path = "tmp/" + UUID.randomUUID().toString();
         resourceService.uploadResource(path, data);
         return path;
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<String> upload(MultipartFile file) throws IOException, URISyntaxException {
-        String name=  file.getOriginalFilename();
-        String suffix=name.substring(name.lastIndexOf("."));
         try (InputStream inputStream = file.getInputStream()) {
-            String path = uploadTempResource(inputStream,suffix);
+            String path = uploadTempResource(inputStream);
             Resource resource = resourceService.getResource(path);
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.setContentType(MediaType.TEXT_PLAIN);
@@ -76,10 +74,8 @@ public class ResourceController {
     @ResponseBody
     public Object fineUpload(MultipartFile file) {
         try {
-            String name=  file.getOriginalFilename();
-            String suffix=name.substring(name.lastIndexOf("."));
             try (InputStream inputStream = file.getInputStream()) {
-                String path = uploadTempResource(inputStream,suffix);
+                String path = uploadTempResource(inputStream);
                 HashMap<String, Object> body = new HashMap<>();
                 body.put("success", true);
                 body.put("newUuid", path);

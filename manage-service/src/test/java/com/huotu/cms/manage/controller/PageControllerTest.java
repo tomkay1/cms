@@ -144,6 +144,7 @@ public class PageControllerTest extends ManageTest {
         /*先确保存在已安装的控件*/
         List<InstalledWidget> installedWidgets = widgetFactoryService.widgetList(null);
         if (installedWidgets.size() == 0) {
+
             widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
                     , "1.0-SNAPSHOT", "picCarousel");
         }

@@ -59,6 +59,7 @@ var widgetHandle = {
             if( properties !== null && !$.isEmptyObject(properties)) {
                 widgetHandle.setStroe(GlobalID, properties);
                 updataCompoentPreview(id, properties);
+                editFunc.closeFunc();
             }
         }
     }
@@ -164,7 +165,7 @@ var dynamicLoading = {
 };
 
 /**
- *
+ * 所有参数都有初始化默认
  * @param obj [] 参数对象
  * @param obj.ui [String] 绑定元素的 class 或者 id 如：#test
  * @param obj.inputName [String] imput[type=file] name值，传给接口的参数名
@@ -180,12 +181,12 @@ var dynamicLoading = {
 function uploadForm (obj) {
     var ui = obj.ui,
         inputName = obj.inputName || 'file',
-        maxWidth = obj.maxWidth || 9999,
-        maxHeight = obj.maxHeight || 9999,
+        maxWidth = obj.maxWidth || 1920,
+        maxHeight = obj.maxHeight || 1080,
         maxFileCount = obj.maxFileCount || -1,
-        uploadUrl = obj.uploadUrl,
+        uploadUrl = obj.uploadUrl || '/manage/cms/resourceUpload',
         successCallback = obj.successCallback || function () {},
-        deleteUrl = obj.deleteUrl || obj.uploadUrl,
+        deleteUrl = obj.deleteUrl || '/manage/cms/deleteResource',
         deleteCallback = obj.deleteCallback || function () {},
         sign = obj.isCongruent || false;
 

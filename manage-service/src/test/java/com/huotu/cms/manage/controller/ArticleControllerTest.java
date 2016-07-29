@@ -7,16 +7,18 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.cms.manage.page;
+package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.SiteManageTest;
 import com.huotu.cms.manage.controller.support.CRUDHelper;
 import com.huotu.cms.manage.controller.support.CRUDTest;
+import com.huotu.cms.manage.page.ArticlePage;
+import com.huotu.cms.manage.page.ManageMainPage;
 import com.huotu.cms.manage.page.support.AbstractCRUDPage;
 import com.huotu.hotcms.service.common.ArticleSource;
 import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.widget.entity.PageInfo;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Collection;
@@ -28,7 +30,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Created by wenqi on 2016/7/26.
  */
-public class ArticleFlowTest extends SiteManageTest {
+@Ignore // NO TEST
+public class ArticleControllerTest extends SiteManageTest {
 
     @Test
     public void flow() throws Exception {

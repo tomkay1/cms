@@ -9,11 +9,19 @@
 
 package com.huotu.cms.manage.controller;
 
+import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.service.TemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.io.IOException;
 
@@ -21,9 +29,9 @@ import java.io.IOException;
  * <p>CMS系统模板相关</p>
  * <p>针对界面:/view/site/site.html 上的点赞，使用，预览功能</p>
  *
+ * @author wenqi
  * @see com.huotu.hotcms.service.entity.Template
  * @see TemplateController
- * @author wenqi
  */
 @Controller
 @RequestMapping("/manage/template")
@@ -36,15 +44,15 @@ public class CMSTemplateController {
     /**
      * 点赞功能
      *
-     * @param siteId     一个模板其实是个站点，此处对应模板的ID
-     * @param ownerId ownerId
-     * @param behavior 用户行为。1表示点赞，0表示取消赞
+     * @param templateId 一个模板其实是个站点，此处对应模板的ID
+     * @param login      当前身份
+     * @param behavior   用户行为。1表示点赞，0表示取消赞
      */
-    @RequestMapping(value = "/laud/{siteId}", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    @RequestMapping(value = "/laud/{templateId}", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public boolean laud(@PathVariable("siteId") long siteId, @RequestParam("ownerId") long ownerId
-            ,@RequestParam("behavior") int behavior) {
-        return templateService.laud(siteId, ownerId,behavior );
+    public boolean laud(@PathVariable("templateId") long templateId, @AuthenticationPrincipal Login login
+            , @RequestBody int behavior) {
+        return templateService.laud(templateId, login.currentOwnerId(), behavior);
     }
 
     /**
@@ -58,7 +66,7 @@ public class CMSTemplateController {
      *                       <li>1为替换模式</li>
      *                       </ul>
      */
-    @RequestMapping(value = "/use/{templateSiteID}/{customerSiteId}",method = RequestMethod.POST)
+    @RequestMapping(value = "/use/{templateSiteID}/{customerSiteId}", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public void use(@PathVariable("templateSiteID") long templateSiteID
             , @PathVariable("customerSiteId") long customerSiteId, @RequestParam("mode") int mode) throws IOException {

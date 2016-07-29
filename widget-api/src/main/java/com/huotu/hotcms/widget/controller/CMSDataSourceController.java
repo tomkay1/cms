@@ -55,11 +55,9 @@ public class CMSDataSourceController {
         Gallery gallery = galleryRepository.findOne(parentId);
         if (gallery != null && gallery.getCategory().getContentType().equals(ContentType.Gallery)) {
             List<GalleryItem> data = cmsDataSourceService.findGalleryItem(parentId);
-            if (data != null && data.size() > 0) {
-                return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(data);
-            }
+            return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(data);
         }
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.notFound().build();
     }
 
     /**
@@ -72,9 +70,7 @@ public class CMSDataSourceController {
         Category category = categoryService.get(parentId);
         if (category != null && category.getContentType().equals(ContentType.Link)) {
             List<Link> data = cmsDataSourceService.findLink(parentId);
-            if (data != null && data.size() > 0) {
-                return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(data);
-            }
+            return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(data);
         }
         return ResponseEntity.noContent().build();
     }
@@ -89,9 +85,7 @@ public class CMSDataSourceController {
         Category category = categoryService.get(parentId);
         if (category != null && category.getContentType().equals(ContentType.Article)) {
             String data = cmsDataSourceService.findChildrenArticleCategory(parentId);
-            if (data != null) {
-                return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(data);
-            }
+            return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(data);
         }
         return ResponseEntity.noContent().build();
     }

@@ -14,6 +14,7 @@ import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Gallery;
 import com.huotu.hotcms.service.entity.GalleryItem;
 import com.huotu.hotcms.service.entity.Link;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.GalleryItemRepository;
 import com.huotu.hotcms.service.repository.GalleryRepository;
@@ -28,8 +29,12 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
+ * /dataSource 的测试 具体数据测试已经在{@link com.huotu.hotcms.widget.service.impl.CMSDataSourceServiceTest}完成
+ * 这里只是确定下controller是否可互动
  * Created by lhx on 2016/7/29.
  */
 @Transactional
@@ -47,37 +52,49 @@ public class CMSDataSourceControllerTest extends TestBase {
     @Autowired
     private LinkRepository linkRepository;
 
+    /**
+     * @throws Exception
+     * @see com.huotu.hotcms.widget.service.CMSDataSourceService#findGalleryItem(Long)
+     */
     @Test
     public void testFindGalleryItem() throws Exception {
-        Category category = new Category();
-        category.setContentType(ContentType.Gallery);
-        category = categoryRepository.save(category);
-        Gallery gallery = new Gallery();
-//        gallery.setId(1L);
-        gallery.setCategory(category);
-        gallery = galleryRepository.save(gallery);
-        GalleryItem galleryItem = new GalleryItem();
-        galleryItem.setGallery(gallery);
-        galleryItem.setThumbUri("http://www.baidu.com");
-        galleryItemRepository.save(galleryItem);
+        Site site = randomSite(randomOwner());
+        Gallery gallery = randomGallery(site);
 
-        int code = mockMvc.perform(get("/dataSource/findGalleryItem/{parentId}", "1")
-                .accept(MediaType.APPLICATION_JSON)).andDo(print()).andReturn().getResponse().getStatus();
-        assertThat(code).as("存在数据").isEqualTo(HttpStatus.SC_OK);
+        mockMvc.perform(get("/dataSource/findGalleryItem/{parentId}", String.valueOf(gallery.getId()))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(0));
+
+        GalleryItem galleryItem = randomGalleryItem(gallery);
+
+        mockMvc.perform(get("/dataSource/findGalleryItem/{parentId}", String.valueOf(gallery.getId()))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(1));
     }
 
     @Test
     public void testFindLink() throws Exception {
-        Category category = new Category();
-        category.setId(1L);
-        category.setContentType(ContentType.Link);
-        category = categoryRepository.save(category);
-        Link link = new Link();
-        link.setCategory(category);
-        linkRepository.save(link);
-        int code = mockMvc.perform(get("/dataSource/findLink/{parentId}", "1")
-                .accept(MediaType.APPLICATION_JSON)).andDo(print()).andReturn().getResponse().getStatus();
-        assertThat(code).as("存在数据").isEqualTo(HttpStatus.SC_OK);
+        Site site = randomSite(randomOwner());
+        Category category = randomCategory(site, ContentType.Link);
+
+        mockMvc.perform(get("/dataSource/findLink/{parentId}", String.valueOf(category.getId()))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(0))
+        ;
+
+        Link link = randomLink(category);
+
+        mockMvc.perform(get("/dataSource/findLink/{parentId}", String.valueOf(category.getId()))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(1));
     }
 
     @Test

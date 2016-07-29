@@ -9,21 +9,28 @@
 
 package com.huotu.hotcms.widget.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Gallery;
 import com.huotu.hotcms.service.entity.GalleryItem;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.model.CollapseArtcleCategory;
+import com.huotu.hotcms.service.model.NavbarPageInfoModel;
+import com.huotu.hotcms.service.repository.ArticleRepository;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.GalleryItemRepository;
 import com.huotu.hotcms.service.repository.GalleryRepository;
 import com.huotu.hotcms.service.repository.LinkRepository;
 import com.huotu.hotcms.widget.CMSContext;
+import com.huotu.hotcms.widget.entity.PageInfo;
+import com.huotu.hotcms.widget.repository.PageInfoRepository;
 import com.huotu.hotcms.widget.service.CMSDataSourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,6 +47,10 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     private CategoryRepository categoryRepository;
     @Autowired
     private LinkRepository linkRepository;
+    @Autowired
+    private PageInfoRepository pageInfoRepository;
+    @Autowired
+    private ArticleRepository articleRepository;
 
     @Override
     public List<Gallery> findGallery() {
@@ -64,12 +75,54 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
 
     @Override
     public String findChildrenArticleCategory(Long parentId) {
-        throw new NoSuchMethodError("不会写。。");
+        List<Category> list = categoryRepository.findByParent_Id(parentId);
+        List<CollapseArtcleCategory> collapseArtcleCategories = new ArrayList<>();
+        for (Category category : list) {
+            CollapseArtcleCategory collapseArtcleCategory = new CollapseArtcleCategory();
+            collapseArtcleCategory.setText(category.getName());
+            collapseArtcleCategory.setHref(category.getSerial());
+            collapseArtcleCategory.setCategoryId(category.getId());
+            collapseArtcleCategory.setParentId(category.getParent() != null ? category.getParent().getId() : 0);
+            collapseArtcleCategories.add(collapseArtcleCategory);
+        }
+        List<CollapseArtcleCategory> rootTrees = new ArrayList<>();
+        for (CollapseArtcleCategory collapseArtcleCategory : collapseArtcleCategories) {
+            if (collapseArtcleCategory.getParentId() == 0) {
+                rootTrees.add(collapseArtcleCategory);
+            }
+            for (CollapseArtcleCategory t : collapseArtcleCategories) {
+                if (t.getParentId() == collapseArtcleCategory.getCategoryId()) {
+                    collapseArtcleCategory.getNodes().add(t);
+                }
+            }
+        }
+        return JSONObject.toJSONString(rootTrees);
     }
 
     @Override
     public String findSitePage() {
-        throw new NoSuchMethodError("不会写。。");
+        List<PageInfo> list = pageInfoRepository.findBySite(CMSContext.RequestContext().getSite());
+        List<NavbarPageInfoModel> navbarPageInfoModels = new ArrayList<>();
+        for (PageInfo pageInfo : list) {
+            NavbarPageInfoModel navbarPageInfoModel = new NavbarPageInfoModel();
+            navbarPageInfoModel.setText(pageInfo.getTitle());
+            navbarPageInfoModel.setHref(pageInfo.getPagePath());
+            navbarPageInfoModel.setPageId(pageInfo.getPageId());
+            navbarPageInfoModel.setParentId(pageInfo.getParent() != null ? pageInfo.getParent().getPageId() : 0);
+            navbarPageInfoModels.add(navbarPageInfoModel);
+        }
+        List<NavbarPageInfoModel> rootTrees = new ArrayList<>();
+        for (NavbarPageInfoModel navbarPageInfoModel : navbarPageInfoModels) {
+            if (navbarPageInfoModel.getParentId() == 0) {
+                rootTrees.add(navbarPageInfoModel);
+            }
+            for (NavbarPageInfoModel t : navbarPageInfoModels) {
+                if (t.getParentId() == navbarPageInfoModel.getPageId()) {
+                    navbarPageInfoModel.getNodes().add(t);
+                }
+            }
+        }
+        return JSONObject.toJSONString(rootTrees);
     }
 
     @Override

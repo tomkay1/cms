@@ -1,7 +1,6 @@
 html {
     height: 100%;
 }
-
 body {
     height: 100%;
     font: 12px/1.5 Microsoft YaHei, Arial, sans-serif;
@@ -11,90 +10,46 @@ body {
     outline: none;
     word-wrap: break-word;
 }
-
 h1, h2, h3, h4, img, button, input, iframe {
     padding: 0;
     margin: 0;
     border: 0;
     outline: none;
 }
-
 textarea {
     resize: none;
 }
-
 img {
     display: block;
 }
-
 .font16 {
     font-size: 16px;
 }
-
 .fl {
     float: left;
 }
-
 .fr {
     float: right;
 }
-
 /*mixin*/
 /*reset*/
-.btn-primary {
+.btn-primary, .label-primary {
     background-color: #00a0e9;
 }
-
-.btn-primary:focus, .btn-primary:hover {
+.btn-primary:focus, .btn-primary:hover, .btn-primary:active:focus {
     background-color: #007db6;
 }
-
-.btn-primary:active:focus {
-    background-color: #007db6;
-}
-
-.btn-success {
+.btn-success, .text-success, .label-default  {
     background-color: #7cb147;
 }
-
-.btn-success:focus, .btn-success:hover {
+.btn-success:focus, .btn-success:hover, .btn-success:active:focus {
     background-color: #638d38;
 }
-
-.btn-success:active:focus {
-    background-color: #638d38;
-}
-
-.btn-danger {
+.btn-danger, .text-danger, .label-danger {
     background-color: #ea5342;
 }
-
-.btn-danger:focus, .btn-danger:hover {
+.btn-danger:focus, .btn-danger:hover, .btn-danger:active:focus  {
     background-color: #e02d19;
-}
-
-.btn-danger:active:focus {
-    background-color: #e02d19;
-}
-
-.text-success {
-    color: #7cb147;
-}
-
-.text-danger {
-    color: #ea5342;
-}
-
-.label-default {
-    background-color: #7cb147;
-}
-
-.label-danger {
-    background-color: #ea5342;
-}
-
-.label-primary {
-    background-color: #00a0e9;
 }
 
 /*global*/

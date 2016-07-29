@@ -15,14 +15,9 @@ import com.huotu.hotcms.service.entity.Gallery;
 import com.huotu.hotcms.service.entity.GalleryItem;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.repository.CategoryRepository;
-import com.huotu.hotcms.service.repository.GalleryItemRepository;
-import com.huotu.hotcms.service.repository.GalleryRepository;
-import com.huotu.hotcms.service.repository.LinkRepository;
 import com.huotu.hotcms.widget.test.TestBase;
 import org.apache.http.HttpStatus;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,18 +34,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @Transactional
 public class CMSDataSourceControllerTest extends TestBase {
-
-    @Autowired
-    private CategoryRepository categoryRepository;
-
-    @Autowired
-    private GalleryRepository galleryRepository;
-
-    @Autowired
-    private GalleryItemRepository galleryItemRepository;
-
-    @Autowired
-    private LinkRepository linkRepository;
 
     /**
      * @throws Exception
@@ -99,21 +82,14 @@ public class CMSDataSourceControllerTest extends TestBase {
 
     @Test
     public void testFindChildrenArticleCategory() throws Exception {
-        Category category = new Category();
-        category.setId(1L);
-        category.setContentType(ContentType.Article);
-        category = categoryRepository.save(category);
+        Site site = randomSite(randomOwner());
+        Category parentCategory = randomCategory(site, ContentType.Article);
 
-        Category category1 = new Category();
-        category1.setContentType(ContentType.Article);
-        category1.setParent(category);
-        category1 = categoryRepository.save(category);
-        Category category2 = new Category();
-        category2.setContentType(ContentType.Article);
-        category2.setParent(category);
-        category2 = categoryRepository.save(category2);
+        Category category1 = randomCategory(site, ContentType.Article, parentCategory);
+        Category category2 = randomCategory(site, ContentType.Article, parentCategory);
 
-        int code = mockMvc.perform(get("/dataSource/findChildrenArticleCategory/{parentId}", "1")
+        int code = mockMvc.perform(get("/dataSource/findChildrenArticleCategory/{parentId}"
+                , String.valueOf(parentCategory.getId()))
                 .accept(MediaType.APPLICATION_JSON)).andDo(print()).andReturn().getResponse().getStatus();
         assertThat(code).as("存在数据").isEqualTo(HttpStatus.SC_OK);
     }

@@ -1,3 +1,12 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 /**
  * Created by Neo on 2016/7/21.
  */
@@ -14,7 +23,7 @@ if (!wsCache.isSupported()) {
  */
 var GlobalID;
 
-function widgetProperties( id ) {
+function widgetProperties(id) {
     return wsCache.get(id) || {};
 };
 
@@ -33,20 +42,20 @@ var widgetHandle = {
         widgetHandle.initFunc(GlobalID);
     },
     setStroe: function (id, data) {
-        if ( data ) {
-            wsCache.set(id, { 'properties' : data });
+        if (data) {
+            wsCache.set(id, {'properties': data});
         } else {
-            wsCache.set(id, { 'properties' : {} });
+            wsCache.set(id, {'properties': {}});
         }
     },
     getGlobalFunc: function (id) {
-        if ( !id ) return false;
+        if (!id) return false;
         var arr = id.split('-');
         return window[arr[0]];
     },
     initFunc: function (id) {
         var fn = widgetHandle.getGlobalFunc(id);
-        if( fn && typeof fn.init === 'function' ) {
+        if (fn && typeof fn.init === 'function') {
             fn.init(id);
         }
     },
@@ -55,9 +64,9 @@ var widgetHandle = {
         var path = '/preview/' + pageId + '/' + id + '.css';
 
         dynamicLoading.css(path);
-        if( fn && typeof fn.saveCompoent === 'function' ) {
+        if (fn && typeof fn.saveCompoent === 'function') {
             var properties = fn.saveCompoent();
-            if( properties !== null && !$.isEmptyObject(properties)) {
+            if (properties !== null && !$.isEmptyObject(properties)) {
                 widgetHandle.setStroe(GlobalID, properties);
                 updataCompoentPreview(id, properties);
                 editFunc.closeFunc();
@@ -99,49 +108,48 @@ function updataCompoentPreview(globalID, properties) {
     });
 }
 
-function getDataSource(urlS, parentID) {
-    var dataSource = null;
+/**
+ *
+ * @param type 表示查询的数据类别 比如 findGalleryItem
+ * @param parameter 查询参数 可选
+ *
+ * @param onSuccess 成功回调 参考 http://api.jquery.com/jquery.ajax/#success
+ * @param onError 错误回调 参考 http://api.jquery.com/jquery.ajax/#error
+ */
+function getDataSource(type, parameter, onSuccess, onError) {
+    if (_CMS_DataSource_URI == null) {
+        console.log('invoke getDataSource in po..');
+        // TODO 根据不同的type给予不同的mock数据
+        onSuccess({});
+        return;
+    }
+    var url = _CMS_DataSource_URI + type;
+    if (parameter != null) {
+        url = url + "/" + parameter;
+    }
     $.ajax({
         type: 'GET',
-        url: urlS+parentID,
+        url: url,
         dataType: 'json',
-        async:!testMode,
-        success: function (json) {
-            console.error('success json:'+json);
-            if (json.statusCode == '200') {
-                dataSource = json.body;
-                return dataSource;
-            }
-            if (json.statusCode == '204') {
-                layer.msg('没有找到数据', {time: 2000});
-                return dataSource;
-            }
-            if (json.statusCode == '502') {
-                layer.msg('服务器错误,请稍后再试', {time: 2000});
-                return dataSource;
-            }
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.error("error json:"+errorThrown);
-            layer.msg('服务器错误,请稍后再试', {time: 2000});
-            return dataSource;
-        }
+        async: !testMode,
+        success: onSuccess,
+        error: onError
     });
 }
 /**
-* 动态加载组件的 JS文件
-* @type {{css: dynamicLoading.css, js: dynamicLoading.js}}
-*/
+ * 动态加载组件的 JS文件
+ * @type {{css: dynamicLoading.css, js: dynamicLoading.js}}
+ */
 var dynamicLoading = {
-    css: function(path){
-        if( !path || path.length === 0){
+    css: function (path) {
+        if (!path || path.length === 0) {
             console.error('参数 "path" 是必需的！');
         }
         var exist = false;
         var ele = $('link');
         $.each(ele, function (i, v) {
             var href = $(v).attr('href');
-            if ( href.indexOf(path) != -1 ) {
+            if (href.indexOf(path) != -1) {
                 exist = true;
                 $(v).attr('href', path + '?t=' + +new Date());
             }
@@ -153,8 +161,8 @@ var dynamicLoading = {
             lastElement.after(link);
         }
     },
-    js: function(path){
-        if( !path || path.length === 0){
+    js: function (path) {
+        if (!path || path.length === 0) {
             console.error('参数 "path" 是必需的！');
         }
         var lastElement = $('script').last();
@@ -178,16 +186,18 @@ var dynamicLoading = {
  * @param obj.deleteCallback [Function] 删除成功后回调函数
  * @param obj.isCongruent [Boolean] 是否启用完全相等
  */
-function uploadForm (obj) {
+function uploadForm(obj) {
     var ui = obj.ui,
         inputName = obj.inputName || 'file',
         maxWidth = obj.maxWidth || 1920,
         maxHeight = obj.maxHeight || 1080,
         maxFileCount = obj.maxFileCount || -1,
         uploadUrl = obj.uploadUrl || '/manage/cms/resourceUpload',
-        successCallback = obj.successCallback || function () {},
+        successCallback = obj.successCallback || function () {
+            },
         deleteUrl = obj.deleteUrl || '/manage/cms/deleteResource',
-        deleteCallback = obj.deleteCallback || function () {},
+        deleteCallback = obj.deleteCallback || function () {
+            },
         sign = obj.isCongruent || false;
 
     var uploadFile = $(ui).uploadFile({
@@ -195,29 +205,29 @@ function uploadForm (obj) {
         showFileCounter: false,
         returnType: "json",
         fileName: inputName,
-        multiple:false,
-        dragDrop:false,
+        multiple: false,
+        dragDrop: false,
         maxFileCount: maxFileCount,
-        abortStr:"中止",
+        abortStr: "中止",
         cancelStr: "取消",
-        deletelStr:"删除",
-        uploadStr:"上传图片",
-        maxFileCountErrorStr:" 不可以上传. 最大数量: ",
-        showPreview:true,
+        deletelStr: "删除",
+        uploadStr: "上传图片",
+        maxFileCountErrorStr: " 不可以上传. 最大数量: ",
+        showPreview: true,
         previewHeight: "60px",
         previewWidth: "60px",
         showDelete: true,
         autoSubmit: false,
         onSuccess: successCallback,
-        onSelect:function(files) {
+        onSelect: function (files) {
 
             var file = files[0];
             var reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 var data = e.target.result;
                 var image = new Image();
                 image.src = data;
-                image.onload = function(){
+                image.onload = function () {
                     var width = image.width;
                     var height = image.height;
                     var vWidth = sign ? width == maxWidth : width >= maxWidth;
@@ -238,7 +248,7 @@ function uploadForm (obj) {
         },
         deleteCallback: function (data, pd) {
             for (var i = 0; i < data.length; i++) {
-                $.post(deleteUrl, { op: "delete", name: data[i] }, deleteCallback);
+                $.post(deleteUrl, {op: "delete", name: data[i]}, deleteCallback);
             }
             pd.statusbar.hide();
         },
@@ -259,22 +269,22 @@ function verifySize(congruent, vWidth, vHeight, callback) {
     if (congruent) {
         if (!vWidth) layer.msg(widthText);
         if (!vHeight) layer.msg(heightText);
-        if ( vWidth === true && vHeight === true ) callback();
+        if (vWidth === true && vHeight === true) callback();
     } else {
         if (vWidth) layer.msg(widthText);
         if (vHeight) layer.msg(heightText);
-        if ( !vWidth === true && !vHeight === true ) callback();
+        if (!vWidth === true && !vHeight === true) callback();
     }
 };
 
 $('div[id^="picCarousel"]').swiper({
     pagination: '.swiper-pagination',
-    autoplay : 5000,
+    autoplay: 5000,
     slidesPerView: 1,
     paginationClickable: true,
     observer: true,
     observeParents: true,
-    updateOnImagesReady : true,
+    updateOnImagesReady: true,
     loop: true
 });
 

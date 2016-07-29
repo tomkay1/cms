@@ -71,10 +71,11 @@
 
     var _successProperties;
     var _failedMessage;
-    var testMode = null;
+
     /*<![CDATA[*/
-    testMode = /*[[${@environment.acceptsProfiles('test')}]]*/ true;
+    var testMode = /*[[${@environment.acceptsProfiles('test')}]]*/ true;
     var scope = /*[[${widgetId}]]*/ null;
+    var _CMS_DataSource_URI = /*[[@{/dataSource/}]]*/ null;
     /*]]>*/
     $('#editorSaver').click(function () {
         _failedMessage = null;

@@ -12,11 +12,15 @@ package com.huotu.widget.test;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetStyle;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author CJ
@@ -30,7 +34,12 @@ public class WidgetTestTest extends WidgetTest {
 
     @Override
     protected void editorWork(Widget widget, WebElement editor, Supplier<Map<String, Object>> currentWidgetProperties) {
+        editor.findElement(By.id("DataFetcher")).click();
 
+        Object result = currentWidgetProperties.get().get("DataFetcherResult");
+        assertThat(result)
+                .isNotNull()
+                .isInstanceOf(List.class);
     }
 
     @Override

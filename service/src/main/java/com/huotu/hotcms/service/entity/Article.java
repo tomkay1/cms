@@ -127,10 +127,15 @@ public class Article extends AbstractContent{
     @Override
     public void updateImage(int index, ResourceService resourceService, InputStream stream) throws IOException
             , IllegalArgumentException {
-        if (thumbUri != null) {
-            resourceService.deleteResource(thumbUri);
+        try{
+            if (thumbUri != null) {
+                resourceService.deleteResource(thumbUri);
+            }
+            thumbUri = ImageHelper.storeAsImage("png", resourceService, stream);
+        }finally {
+            stream.close();
         }
-        thumbUri = ImageHelper.storeAsImage("png", resourceService, stream);
+
     }
 
 //    /**

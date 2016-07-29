@@ -36,9 +36,6 @@ import java.time.LocalDateTime;
 public class ArticleController extends ContentManageController<Article,ContentExtra> {
     private static final Log log = LogFactory.getLog(ArticleController.class);
 
-    @Autowired
-    private ResourceService resourceService;
-
     @Override
     protected String indexViewName() {
         return "/view/contents/article.html";
@@ -52,14 +49,10 @@ public class ArticleController extends ContentManageController<Article,ContentEx
         entity.setType(data.getType());
         entity.setTitle(data.getTitle());
         entity.setAuthor(data.getAuthor());
-        entity.setThumbUri(data.getThumbUri());
-        String oldThumbUri=extra.getOldResourcesUri();
-        if(!StringUtils.isEmpty(oldThumbUri)){
-            try {
-                resourceService.deleteResource(oldThumbUri);
-            } catch (IOException e) {//删除资源失败，但是这个异常可以不用做处理，因为只是资源删除
-                log.error("删除资源失败，原因是："+e.getMessage());
-            }
+        try {
+            uploadTempImageToOwner(entity,extra.getTempPath());
+        } catch (IOException e) {
+            log.warn("图片转存异常："+e.getMessage());
         }
     }
 

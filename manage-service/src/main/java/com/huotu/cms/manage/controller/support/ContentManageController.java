@@ -12,15 +12,20 @@ package com.huotu.cms.manage.controller.support;
 import com.huotu.cms.manage.exception.RedirectException;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.AbstractContent;
+import com.huotu.hotcms.service.entity.Download;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.exception.BadCategoryInfoException;
 import com.huotu.hotcms.service.model.ContentExtra;
 import com.huotu.hotcms.service.service.CategoryService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.io.IOException;
 
 /**
  * 所有内容管理的控制器
@@ -31,6 +36,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  */
 public abstract class ContentManageController<T extends AbstractContent, ED extends ContentExtra>
         extends SiteManageController<T, Long, ED, ED> {
+
+    private static final Log log= LogFactory.getLog(ContentManageController.class);
 
     @Autowired
     private CategoryService categoryService;
@@ -64,9 +71,13 @@ public abstract class ContentManageController<T extends AbstractContent, ED exte
         try {
             data.setCategory(categoryService.getCategoryByNameAndParent(site, extra.getCategoryName()
                     , extra.getParentCategoryId(), contentType()));
-            // TODO 还有更多共享的内容,比如创建者巴拉巴拉的
+            if(!(data instanceof Download)){//下载模型不能简单使用图片的处理操作
+                uploadTempImageToOwner(data,extra.getTempPath());
+            }
         } catch (BadCategoryInfoException e) {
             throw new RedirectException(rootUri(), "该数据源已存在，并且不符合你要求。", e);
+        } catch (IOException e) {
+            log.warn("图片转存异常："+e.getMessage());
         }
         return preparePersistContext(login, site, data, extra, attributes);
     }

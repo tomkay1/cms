@@ -9,10 +9,15 @@
 
 package com.huotu.hotcms.service.entity;
 
+import com.huotu.hotcms.service.ImagesOwner;
+import com.huotu.hotcms.service.util.ImageHelper;
 import lombok.Getter;
 import lombok.Setter;
+import me.jiangcai.lib.resource.service.ResourceService;
 
 import javax.persistence.*;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * 模板信息,模板也就是一个站点
@@ -22,7 +27,7 @@ import javax.persistence.*;
 @Table(name = "cms_template")
 @Getter
 @Setter
-public class Template extends Site {
+public class Template extends Site implements ImagesOwner {
 
     /**
      * 浏览量
@@ -49,4 +54,17 @@ public class Template extends Site {
     private TemplateType templateType;
 
 
+    @Override
+    public String[] getImagePaths() {
+        return new String[]{getLogoUri()};
+    }
+
+    @Override
+    public void updateImage(int index, ResourceService resourceService, InputStream stream) throws IOException
+            , IllegalArgumentException {
+        if (getLogoUri() != null) {
+            resourceService.deleteResource(getLogoUri());
+        }
+        setLogoUri(ImageHelper.storeAsImage("png", resourceService, stream));
+    }
 }

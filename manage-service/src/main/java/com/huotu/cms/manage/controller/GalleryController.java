@@ -61,14 +61,10 @@ public class GalleryController extends ContentManageController<Gallery,ContentEx
         entity.setLinkUrl(data.getLinkUrl());
         entity.setDescription(data.getDescription());
         entity.setUpdateTime(LocalDateTime.now());
-        entity.setThumbUri(data.getThumbUri());
-        String oldThumbUri=extra.getOldResourcesUri();
-        if(!StringUtils.isEmpty(oldThumbUri)){
-            try {
-                resourceService.deleteResource(oldThumbUri);
-            } catch (IOException e) {
-                log.error("删除资源失败，原因是："+e.getMessage());
-            }
+        try {
+            uploadTempImageToOwner(entity,extra.getTempPath());
+        } catch (IOException e) {
+            log.warn("图片转存异常："+e.getMessage());
         }
     }
 

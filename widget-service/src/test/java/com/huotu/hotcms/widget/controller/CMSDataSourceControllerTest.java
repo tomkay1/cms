@@ -53,7 +53,7 @@ public class CMSDataSourceControllerTest extends TestBase {
         category.setContentType(ContentType.Gallery);
         category = categoryRepository.save(category);
         Gallery gallery = new Gallery();
-//        gallery.setId(1L);
+        gallery.setId(1L);
         gallery.setCategory(category);
         gallery = galleryRepository.save(gallery);
         GalleryItem galleryItem = new GalleryItem();

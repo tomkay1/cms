@@ -234,6 +234,8 @@
     var initPath=/*[[@{/manage/widget/widgets}]]*/ '../../public/assets/js/data/widget.json';
     var savePage=/*[[@{/manage/pages/}]]*/ null;
     var pageId=/*[[${pageId}]]*/ -999;
+    // 识别是否处于测试阶段 前端勿删！
+    var testMode = /*[[${@environment.acceptsProfiles('test')}]]*/ true;
 </script>
 
 <script src="http://resali.huobanplus.com/cdn/jquery/2.2.4/jquery.min.js"></script>

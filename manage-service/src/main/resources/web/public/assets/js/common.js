@@ -98,16 +98,15 @@ function updataCompoentPreview(globalID, properties) {
     });
 }
 
-function getDataSource(url, parentID) {
+function getDataSource(urlS, parentID) {
     var dataSource = null;
     $.ajax({
-        type: 'POST',
-        url: url,
+        type: 'GET',
+        url: urlS+parentID,
         dataType: 'json',
-        data: {
-            parentID: parentID
-        },
+        async:!testMode,
         success: function (json) {
+            console.error('success json:'+json);
             if (json.statusCode == '200') {
                 dataSource = json.body;
                 return dataSource;
@@ -122,7 +121,7 @@ function getDataSource(url, parentID) {
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            console.log(errorThrown);
+            console.error("error json:"+errorThrown);
             layer.msg('服务器错误,请稍后再试', {time: 2000});
             return dataSource;
         }

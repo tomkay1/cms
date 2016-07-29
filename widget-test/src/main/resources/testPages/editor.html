@@ -71,9 +71,10 @@
 
     var _successProperties;
     var _failedMessage;
-    var scope = null;
+    var testMode = null;
     /*<![CDATA[*/
-     scope = /*[[${widgetId}]]*/;
+    testMode = /*[[${@environment.acceptsProfiles('test')}]]*/ true;
+    var scope = /*[[${widgetId}]]*/ null;
     /*]]>*/
     $('#editorSaver').click(function () {
         _failedMessage = null;

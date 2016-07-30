@@ -19,7 +19,6 @@ import com.huotu.hotcms.service.model.CollapseArtcleCategory;
 import com.huotu.hotcms.service.model.NavbarPageInfoModel;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.service.CMSDataSourceService;
-import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;

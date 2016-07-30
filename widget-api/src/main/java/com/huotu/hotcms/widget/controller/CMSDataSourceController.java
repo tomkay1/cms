@@ -9,9 +9,6 @@
 
 package com.huotu.hotcms.widget.controller;
 
-import com.huotu.hotcms.service.common.ContentType;
-import com.huotu.hotcms.service.entity.Category;
-import com.huotu.hotcms.service.entity.Gallery;
 import com.huotu.hotcms.service.entity.GalleryItem;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.repository.GalleryRepository;
@@ -52,12 +49,8 @@ public class CMSDataSourceController {
      */
     @RequestMapping(value = "/findGalleryItem/{parentId}", method = RequestMethod.GET)
     public ResponseEntity findGalleryItem(@PathVariable("parentId") Long parentId) {
-        Gallery gallery = galleryRepository.findOne(parentId);
-        if (gallery != null && gallery.getCategory().getContentType().equals(ContentType.Gallery)) {
-            List<GalleryItem> data = cmsDataSourceService.findGalleryItem(parentId);
-            return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(data);
-        }
-        return ResponseEntity.notFound().build();
+        List<GalleryItem> data = cmsDataSourceService.findGalleryItem(parentId);
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(data);
     }
 
     /**
@@ -78,12 +71,8 @@ public class CMSDataSourceController {
      */
     @RequestMapping(value = "/findChildrenArticleCategory/{parentId}", method = RequestMethod.GET)
     public ResponseEntity findChildrenArticleCategory(@PathVariable("parentId") Long parentId) {
-        Category category = categoryService.get(parentId);
-        if (category != null && category.getContentType().equals(ContentType.Article)) {
             String data = cmsDataSourceService.findChildrenArticleCategory(parentId);
             return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(data);
-        }
-        return ResponseEntity.noContent().build();
     }
 
 }

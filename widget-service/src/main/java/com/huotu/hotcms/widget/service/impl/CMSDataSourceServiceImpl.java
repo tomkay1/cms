@@ -40,11 +40,12 @@ import java.util.List;
 public class CMSDataSourceServiceImpl implements CMSDataSourceService {
 
     @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
     private GalleryRepository galleryRepository;
     @Autowired
     private GalleryItemRepository galleryItemRepository;
-    @Autowired
-    private CategoryRepository categoryRepository;
+
     @Autowired
     private LinkRepository linkRepository;
     @Autowired
@@ -60,6 +61,9 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
 
     @Override
     public List<GalleryItem> findGalleryItem(Long galleryId) {
+        if (!categoryRepository.findOne(galleryId).getContentType().equals(ContentType.Gallery)) {
+            return null;
+        }
         return galleryItemRepository.findByGallery(galleryRepository.getOne(galleryId));
     }
 
@@ -75,6 +79,10 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
 
     @Override
     public String findChildrenArticleCategory(Long parentId) {
+        if (!categoryRepository.findOne(parentId).getContentType().equals(ContentType.Article)) {
+            return null;
+        }
+
         List<Category> list = categoryRepository.findByParent_Id(parentId);
         List<CollapseArtcleCategory> collapseArtcleCategories = new ArrayList<>();
         for (Category category : list) {
@@ -127,6 +135,9 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
 
     @Override
     public List<Link> findLink(Long categoryId) {
-        return linkRepository.findByCategory_id(categoryId);
+        if (categoryRepository.findOne(categoryId).getContentType().equals(ContentType.Link))
+            return linkRepository.findByCategory_id(categoryId);
+        else
+            return null;
     }
 }

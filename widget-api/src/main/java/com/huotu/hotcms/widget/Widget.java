@@ -28,26 +28,35 @@ public interface Widget {
 
     /**
      * 获得这个widget的唯一id
-     * 这个还不稳定,需要及早确定唯一表达式
      *
      * @param widget 控件
      * @return 唯一id
      */
     static String WidgetIdentity(Widget widget) {
-        return widget.groupId() + "-" + widget.widgetId() + ":" + widget.version();
+        return new WidgetIdentifier(widget.groupId(), widget.widgetId(), widget.version()).toString();
+    }
+
+    /**
+     * 获得这个widget的唯一id
+     *
+     * @param widget 控件
+     * @return 唯一id
+     */
+    static String URIEncodedWidgetIdentity(Widget widget) {
+        return new WidgetIdentifier(widget.groupId(), widget.widgetId(), widget.version()).toURIEncoded();
     }
 
     static String widgetJsResourcePath(Widget widget) {
         StringBuilder stringBuilder = new StringBuilder("widgets/javascript/");
         return stringBuilder.append(
-                new WidgetIdentifier(widget.groupId(), widget.widgetId(), widget.version()).toURIEncoded())
+                URIEncodedWidgetIdentity(widget))
                 .append(".js").toString();
     }
 
     static String thumbnailPath(Widget widget) {
         StringBuilder stringBuilder = new StringBuilder("widgets/thumbnail/");
         return stringBuilder.append(
-                new WidgetIdentifier(widget.groupId(), widget.widgetId(), widget.version()).toURIEncoded())
+                URIEncodedWidgetIdentity(widget))
                 .append(".png").toString();
     }
 
@@ -107,6 +116,7 @@ public interface Widget {
 
     /**
      * 要么为空或者返回不存在的资源,要么必然是<code>CMSWidgets.initWidget....</code>
+     *
      * @return 控件的Javascript模板(是模板), 可以为空 内容上也必须严格符合<a href="https://huobanplus.quip.com/KngdAAGxtKSQ">标准</a>
      */
     Resource widgetJs();

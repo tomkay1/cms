@@ -150,6 +150,16 @@ public class WidgetInfoController
         return "/view/widget/widget.html";
     }
 
+    /**
+     * 获取控件资源时参照 {@link WidgetFactoryService#installWidgetInfo(WidgetInfo)}
+     *
+     * @param locale
+     * @param login
+     * @return
+     * @throws IOException
+     * @throws URISyntaxException
+     * @throws FormatException
+     */
     @ResponseBody
     @PreAuthorize("hasRole('" + Login.Role_Manage_Value + "')")
     @RequestMapping(value = "/widgets", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")

@@ -110,6 +110,8 @@ var editFunc = {
             },500);
             // 创建当前操作组件的数据
             widgetHandle.createStore($(this));
+            var styleid = $('#'+GlobalID).data('styleid');
+            //Todo
         });
     },
     saveConfig: function () {
@@ -138,6 +140,10 @@ var editFunc = {
     },
     removeMenuClasses: function() {
         $(".operate-buttons li").removeClass("active")
+    },
+    changeImgStyleActive: function (ele) {
+        $('img.changeStyle').removeClass('active');
+        ele.addClass('active');
     },
     handleJsIds: function (id) {
         // editFunc.handleModalIds();
@@ -173,6 +179,17 @@ var Page = {
         '</div>',
         '</li>'
     ],
+    styleList: [
+	    '<div>',
+	    '<h3><i class="icon-puzzle"></i><b></b>选择组件样式</h3>',
+	    '<div class="swiper-container styles">',
+	    '<div class="swiper-wrapper">',
+	    '</div>',
+	    '<div class="swiper-button-next"></div>',
+	    '<div class="swiper-button-prev"></div>',
+	    '</div>',
+	    '</div>'
+	],
     init: function (url) {
         $.getJSON(url, function(result){
             var parent = $('#configuration').find('.conf-body');
@@ -191,9 +208,32 @@ var Page = {
                 element.find('.view').eq(i).children().eq(0).attr('data-styleid', 0);
                 //编辑器视图渲染
                 var child = $('<div class="common-conf"></div>');
+                var container = $('<div></div>');
                 child.attr('id', v['identity']);
+                child.append(Page.styleList.join('\n'));
+                $.each(v.styles, function (key, val) {
+                    var div = $('<div class="swiper-slide"></div>')
+                    var img = $('<img class="center-block changeStyle">');
+                    var p = $('<p></p>');
+                    img.attr('src',val.thumbnail);
+                    img.attr('data-styleid',val.id);
+                    p.text(val.locallyName);
+                    div.append(img);
+                    div.append(p);
+                    child.find('.swiper-wrapper').append(div);
+                });
                 child.append(v['editorHTML']);
                 parent.append(child);
+
+                $('.swiper-container.styles').swiper({
+                    nextButton: '.swiper-button-next',
+                    prevButton: '.swiper-button-prev',
+                    slidesPerView: 4,
+                    paginationClickable: true,
+                    observer: true,
+                    observeParents: true,
+                    updateOnImagesReady : true
+                });
 
             });
             Page.draggable();
@@ -270,16 +310,10 @@ editPage.init = function () {
             layer.close(index);
         });
     });
-    $('.swiper-container.styles').swiper({
-        nextButton: '.swiper-button-next',
-        prevButton: '.swiper-button-prev',
-        slidesPerView: 4,
-        paginationClickable: true,
-        observer: true,
-        observeParents: true,
-        updateOnImagesReady : true
-    });
 
+    $('.conf-body').on('click','img.changeStyle', function () {
+        editFunc.changeImgStyleActive($(this));
+    });
     editFunc.init();
     Page.init(initPath);
 };

@@ -13,13 +13,13 @@
       {
         "locallyName": "1号carousel",
         "id": "carousel-1",
-        "thumbnail": "test-1.png",
+        "thumbnail": "http://placehold.it/106x82?text=试试",
         "previewHTML": "<div id=\"jumbotron\"><h1 class=\"title\">Connect  Local.  连接一切本地生活</h1><p class=\"desc\">我是测试内容，测试内容，测试内容，测试内容，测试内容，测试内容，测试内容。</p></div>"
       },
       {
         "locallyName": "2号carousel",
-        "id": "carousel-2",
-        "thumbnail": "test-1.png",
+        "id": 0,
+        "thumbnail": "http://placehold.it/106x82?text=试试",
         "previewHTML": "<div id=\"jumbotron\"><h1 class=\"title\">Connect  Local.  连接一切本地生活</h1><p class=\"desc\">我是测试内容，测试内容，测试内容，测试内容，测试内容，测试内容，测试内容。</p></div>"
       }
     ]
@@ -36,15 +36,15 @@
     },
     "styles": [
       {
-        "locallyName": "1号carousel",
-        "id": "carousel-1",
-        "thumbnail": "test-1.png",
+        "locallyName": "3号carousel",
+        "id": 0,
+        "thumbnail": "http://placehold.it/106x82?text=试试",
         "previewHTML": "<img id=\"test1\" src=\"http://placehold.it/200x150?text=Test2-1\">"
       },
       {
-        "locallyName": "2号carousel",
+        "locallyName": "4号carousel",
         "id": "carousel-2",
-        "thumbnail": "test-1.png",
+        "thumbnail": "http://placehold.it/106x82?text=试试",
         "previewHTML": "<img id=\"test1\" src=\"http://placehold.it/200x150?text=Test2-2\">"
       }
     ]
@@ -54,16 +54,40 @@
     "locallyName": "test4",
     "thumbnail": "test.png",
     "editorHTML": "<kbd>测试</kbd>",
-    "scriptHref": "../../public/assets/js/page/home.js",
+    "scriptHref": "http://cdn.bootcss.com/list.js/1.2.0/list.min.js",
     "defaultProperties": {
       "name": "Fei",
       "sex": "Man"
     },
     "styles": [
       {
-        "locallyName": "carousel-1",
+        "locallyName": "5carousel",
         "id": "carousel-1",
-        "thumbnail": "test-1.png",
+        "thumbnail": "http://placehold.it/106x82?text=试试",
+        "previewHTML": "<img id=\"test2\" src=\"http://placehold.it/200x150?text=Test3\">"
+      },
+      {
+        "locallyName": "6carousel",
+        "id": 0,
+        "thumbnail": "http://placehold.it/106x82?text=试试",
+        "previewHTML": "<img id=\"test2\" src=\"http://placehold.it/200x150?text=Test3\">"
+      },
+      {
+        "locallyName": "7carousel",
+        "id": "carousel-1",
+        "thumbnail": "http://placehold.it/106x82?text=试试",
+        "previewHTML": "<img id=\"test2\" src=\"http://placehold.it/200x150?text=Test3\">"
+      },
+      {
+        "locallyName": "8carousel",
+        "id": "carousel-1",
+        "thumbnail": "http://placehold.it/106x82?text=试试",
+        "previewHTML": "<img id=\"test2\" src=\"http://placehold.it/200x150?text=Test3\">"
+      },
+      {
+        "locallyName": "9carousel",
+        "id": "carousel-1",
+        "thumbnail": "http://placehold.it/106x82?text=试试",
         "previewHTML": "<img id=\"test2\" src=\"http://placehold.it/200x150?text=Test3\">"
       }
     ]

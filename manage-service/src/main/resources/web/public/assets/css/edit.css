@@ -670,3 +670,7 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
     float: left;
     margin-right: 10px;
 }
+
+.changeStyle.active {
+    border: 1px solid #638d38;
+}

@@ -174,15 +174,15 @@ var dynamicLoading = {
  * 所有参数都有初始化默认
  * @param obj [] 参数对象
  * @param obj.ui [String] 绑定元素的 class 或者 id 如：#test
- * @param obj.inputName [String] imput[type=file] name值，传给接口的参数名
- * @param obj.maxWidth [Number] 图片宽度规格
- * @param obj.maxHeight [Number] 图片高度
- * @param obj.maxFileCount [Number] 限制上传的图片数量，不限制参数为 -1
- * @param obj.uploadUrl [String] 上传图片接口地址
- * @param obj.successCallback [Function] 上传成功后回调函数
- * @param obj.deleteUrl [String] 删除图片接口地址. 为空就与 uploadUrl同一值
- * @param obj.deleteCallback [Function] 删除成功后回调函数
- * @param obj.isCongruent [Boolean] 是否启用完全相等
+ * @param obj.inputName [String] imput[type=file] name值，传给接口的参数名 默认 file
+ * @param obj.maxWidth [Number] 图片宽度规格 默认 1920
+ * @param obj.maxHeight [Number] 图片高度 默认 1080
+ * @param obj.maxFileCount [Number] 限制上传的图片数量，-1 不限制参数为 默认 -1
+ * @param obj.uploadUrl [String] 上传图片接口地址 默认 /manage/cms/resourceUpload
+ * @param obj.successCallback [Function] 上传成功后回调函数 默认为空
+ * @param obj.deleteUrl [String] 删除图片接口地址. 默认 /manage/cms/deleteResource
+ * @param obj.deleteCallback [Function] 删除成功后回调函数 默认为空
+ * @param obj.isCongruent [Boolean] 是否启用完全相等，false 不启用，默认 false
  */
 function uploadForm (obj) {
     var ui = obj.ui,
@@ -248,7 +248,7 @@ function uploadForm (obj) {
                 $.post(deleteUrl, { op: "delete", name: data[i] }, deleteCallback);
             }
             pd.statusbar.hide();
-        },
+        }
     });
 };
 

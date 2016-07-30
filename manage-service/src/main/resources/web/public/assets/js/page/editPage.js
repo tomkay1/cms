@@ -177,7 +177,7 @@ var Page = {
         $.getJSON(url, function(result){
             var parent = $('#configuration').find('.conf-body');
             $.each(result, function (i, v) {
-                dynamicLoading.js(v.scriptHref);
+                wsCache.set(v.identity, v.scriptHref);
                 // 组件列表渲染
                 var element = $('#widgetLists');
                 element.append(Page.widgetHTML.join('\n'));

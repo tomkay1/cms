@@ -18,6 +18,7 @@ function widgetProperties( id ) {
     return wsCache.get(id) || {};
 };
 
+
 /**
  * 组件数据控制逻辑
  * createStore: 初始化GlobalID
@@ -196,15 +197,16 @@ function uploadForm (obj) {
         showFileCounter: false,
         returnType: "json",
         fileName: inputName,
-        multiple:false,
-        dragDrop:false,
+        multiple:true,
         maxFileCount: maxFileCount,
+        dragDropStr:"<span>拖拽至此</span>",
         abortStr:"中止",
         cancelStr: "取消",
         deletelStr:"删除",
         uploadStr:"上传图片",
         maxFileCountErrorStr:" 不可以上传. 最大数量: ",
         showPreview:true,
+        statusBarWidth:360,
         previewHeight: "60px",
         previewWidth: "60px",
         showDelete: true,

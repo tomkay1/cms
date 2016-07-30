@@ -62,7 +62,6 @@ header {
     background: #292a2c;
     z-index: 999;
 }
-
 header h1 {
     float: left;
     display: block;
@@ -73,16 +72,13 @@ header h1 {
     background: #38393b;
     text-align: center;
 }
-
 header ul {
     float: left;
     margin: 0;
 }
-
 header ul i {
     margin-right: 5px;
 }
-
 header .btn {
     float: left;
     padding: 0;
@@ -91,24 +87,20 @@ header .btn {
     line-height: 40px;
     border-radius: 0;
 }
-
 .thumbnail {
     -webkit-transition: box-shadow .2s ease-in-out;
     -o-transition: box-shadow .2s ease-in-out;
     transition: box-shadow .2s ease-in-out;
 }
-
 a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
     border-color: rgba(0, 0, 0, 0.3);
     -webkit-box-shadow: rgba(0, 0, 0, 0.5) 0 3px 5px;
     -moz-box-shadow: rgba(0, 0, 0, 0.5) 0 3px 5px;
     box-shadow: rgba(0, 0, 0, 0.5) 0 3px 5px;
 }
-
 #container {
     height: 100%;
 }
-
 #container .sidebar {
     position: fixed;
     width: 200px;
@@ -117,7 +109,6 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
     overflow: hidden;
     z-index: 888;
 }
-
 #container .sidebar dt {
     padding-top: 9px;
     padding-bottom: 9px;
@@ -129,16 +120,13 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
     border-radius: 5px;
     text-align: center;
 }
-
 #container .sidebar dd {
     margin: 0 auto 10px;
     width: 180px;
 }
-
 .box, .ncrow {
     position: relative;
 }
-
 .edit .drag, .edit .remove, .edit .setting {
     display: block;
     padding: 0;
@@ -344,7 +332,7 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
     z-index: 1000;
     background-color: rgba(0, 0, 0, 0.5);
 }
-
+/* 编辑器 */
 #configuration {
     display: none;
     position: fixed;
@@ -356,31 +344,26 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
     z-index: 1001;
     overflow: hidden;
 }
-
 #configuration .conf-header {
     height: 40px;
     line-height: 40px;
     background-color: #eee;
     font-size: 14px;
 }
-
 #configuration .conf-header p {
     float: left;
     height: 40px;
     text-indent: 20px;
     font-weight: bold;
 }
-
 #configuration .conf-header button {
     float: right;
     width: 98px;
     height: 40px;
 }
-
 #configuration .conf-body {
     padding: 20px 20px 0;
 }
-
 #configuration .conf-body h3 {
     height: 38px;
     line-height: 38px;
@@ -388,7 +371,6 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
     background-color: #f6f6f6;
     border: 1px solid #e8e8e8;
 }
-
 #configuration .conf-body h3 i {
     margin-right: 12px;
     display: block;
@@ -399,31 +381,25 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
     text-align: center;
     border-right: 1px solid #e8e8e8;
 }
-
 #configuration .conf-body h3 i:before {
     line-height: 36px;
 }
-
 #configuration .conf-body .styles {
     padding-top: 16px;
     border: 1px solid #e8e8e8;
     border-top: none;
 }
-
 #configuration .conf-body .styles .swiper-slide {
     text-align: center;
 }
-
 #configuration .conf-body .styles .swiper-button-prev {
     background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M0%2C22L22%2C0l2.1%2C2.1L4.2%2C22l19.9%2C19.9L22%2C44L0%2C22L0%2C22L0%2C22z'%20fill%3D'%23d8d8d8'%2F%3E%3C%2Fsvg%3E");
     left: 0;
 }
-
 #configuration .conf-body .styles .swiper-button-next {
     background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M27%2C22L27%2C22L5%2C44l-2.1-2.1L22.8%2C22L2.9%2C2.1L5%2C0L27%2C22L27%2C22z'%20fill%3D'%23d8d8d8'%2F%3E%3C%2Fsvg%3E");
     right: 0;
 }
-
 #configuration .conf-body .images {
     padding: 10px;
     width: 610px;
@@ -472,7 +448,9 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
 #configuration .conf-body .images > div {
     overflow: hidden;
 }
-
+#configuration .conf-body .borderBoxs > div {
+    overflow: hidden;
+}
 #configuration .conf-body .borderBoxs .select-list {
     display: inline;
     width: auto;

@@ -5,13 +5,20 @@
     "thumbnail": "test.png",
     "editorHTML": "<s id=\"yes\">测试</s>",
     "scriptHref": "http://cdn.bootcss.com/lodash.js/4.13.1/lodash.min.js",
-    "defaultProperties":{
+    "defaultProperties": {
       "name": "Neo",
       "sex": "Man"
     },
-    "styles":[
+    "styles": [
       {
-        "locallyName": "carousel-1",
+        "locallyName": "1号carousel",
+        "id": "carousel-1",
+        "thumbnail": "test-1.png",
+        "previewHTML": "<div id=\"jumbotron\"><h1 class=\"title\">Connect  Local.  连接一切本地生活</h1><p class=\"desc\">我是测试内容，测试内容，测试内容，测试内容，测试内容，测试内容，测试内容。</p></div>"
+      },
+      {
+        "locallyName": "2号carousel",
+        "id": "carousel-2",
         "thumbnail": "test-1.png",
         "previewHTML": "<div id=\"jumbotron\"><h1 class=\"title\">Connect  Local.  连接一切本地生活</h1><p class=\"desc\">我是测试内容，测试内容，测试内容，测试内容，测试内容，测试内容，测试内容。</p></div>"
       }
@@ -23,15 +30,22 @@
     "thumbnail": "test.png",
     "editorHTML": "<i>测试</i>",
     "scriptHref": "http://cdn.bootcss.com/6to5/3.6.5/browser-polyfill.js",
-    "defaultProperties":{
+    "defaultProperties": {
       "name": "CHang",
       "sex": "Man"
     },
-    "styles":[
+    "styles": [
       {
-        "locallyName":"carousel-1",
+        "locallyName": "1号carousel",
+        "id": "carousel-1",
         "thumbnail": "test-1.png",
-        "previewHTML": "<img id=\"test1\" src=\"http://placehold.it/200x150?text=Test2\">"
+        "previewHTML": "<img id=\"test1\" src=\"http://placehold.it/200x150?text=Test2-1\">"
+      },
+      {
+        "locallyName": "2号carousel",
+        "id": "carousel-2",
+        "thumbnail": "test-1.png",
+        "previewHTML": "<img id=\"test1\" src=\"http://placehold.it/200x150?text=Test2-2\">"
       }
     ]
   },
@@ -41,13 +55,14 @@
     "thumbnail": "test.png",
     "editorHTML": "<kbd>测试</kbd>",
     "scriptHref": "http://cdn.bootcss.com/fullPage.js/2.8.2/jquery.fullPage.js",
-    "defaultProperties":{
+    "defaultProperties": {
       "name": "Fei",
       "sex": "Man"
     },
-    "styles":[
+    "styles": [
       {
-        "locallyName":"carousel-1",
+        "locallyName": "carousel-1",
+        "id": "carousel-1",
         "thumbnail": "test-1.png",
         "previewHTML": "<img id=\"test2\" src=\"http://placehold.it/200x150?text=Test3\">"
       }

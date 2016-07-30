@@ -16,7 +16,9 @@ import com.huotu.hotcms.widget.resolve.WidgetConfiguration;
 import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StreamUtils;
 import org.thymeleaf.IEngineConfiguration;
 import org.thymeleaf.cache.ICacheEntryValidity;
 import org.thymeleaf.cache.NonCacheableCacheEntryValidity;
@@ -24,7 +26,11 @@ import org.thymeleaf.spring4.templateresource.SpringResourceTemplateResource;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.AbstractTemplateResolver;
 import org.thymeleaf.templateresource.ITemplateResource;
+import org.thymeleaf.templateresource.StringTemplateResource;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
 /**
@@ -44,6 +50,7 @@ public class WidgetTemplateResolver extends AbstractTemplateResolver {
     public static final String PREVIEW = "PREVIEW";
     public static final String BROWSE = "BROWSE";
     public static final String CSS = "CSS";
+    public static final String JAVASCRIPT = "JAVASCRIPT";
 
 
     @Autowired
@@ -53,6 +60,16 @@ public class WidgetTemplateResolver extends AbstractTemplateResolver {
     @Override
     protected ITemplateResource computeTemplateResource(IEngineConfiguration configuration, String ownerTemplate
             , String template, Map<String, Object> templateResolutionAttributes) {
+        switch (template) {
+            case EDITOR:
+            case CSS:
+            case PREVIEW:
+            case BROWSE:
+            case JAVASCRIPT:
+                break;
+            default:
+                return null;
+        }
         WidgetConfiguration widgetConfiguration = CMSContext.RequestContext()
                 .getWidgetConfigurationStack().pop();
         Widget widget = widgetConfiguration.getWidget();
@@ -69,6 +86,24 @@ public class WidgetTemplateResolver extends AbstractTemplateResolver {
                         : style.browseTemplate(), "UTF-8");
             case BROWSE:
                 return new SpringResourceTemplateResource(style.browseTemplate(), "UTF-8");
+            case JAVASCRIPT:
+                // 加也应该在这里加 缓存就不要了
+                Resource resource = widget.widgetJs();
+                if (resource == null || !resource.exists()) {
+                    return new StringTemplateResource("");
+                }
+                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+                try {
+                    buffer.write(("CMSWidgets.pushNextWidgetIdentity('" + Widget.WidgetIdentity(widget) + "');\n")
+                            .getBytes());
+                    try (InputStream stream = resource.getInputStream()) {
+                        StreamUtils.copy(stream, buffer);
+                    }
+                    return new StringTemplateResource(buffer.toString("UTF-8"));
+                } catch (IOException ex) {
+                    throw new Error("Mem Error", ex);
+                }
+
         }
         return null;
     }
@@ -76,6 +111,12 @@ public class WidgetTemplateResolver extends AbstractTemplateResolver {
     @Override
     protected TemplateMode computeTemplateMode(IEngineConfiguration configuration, String ownerTemplate, String template
             , Map<String, Object> templateResolutionAttributes) {
+        switch (template) {
+            case CSS:
+                return TemplateMode.CSS;
+            case JAVASCRIPT:
+                return TemplateMode.JAVASCRIPT;
+        }
         return TemplateMode.HTML;
     }
 

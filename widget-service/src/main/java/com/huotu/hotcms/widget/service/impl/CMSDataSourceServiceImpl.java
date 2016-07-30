@@ -61,9 +61,9 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
 
     @Override
     public List<GalleryItem> findGalleryItem(Long galleryId) {
-        if (!categoryRepository.findOne(galleryId).getContentType().equals(ContentType.Gallery)) {
-            return null;
-        }
+//        if (!categoryRepository.findOne(galleryId).getContentType().equals(ContentType.Gallery)) {
+//            return null;
+//        }
         return galleryItemRepository.findByGallery(galleryRepository.getOne(galleryId));
     }
 

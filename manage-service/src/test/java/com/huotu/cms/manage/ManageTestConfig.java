@@ -14,13 +14,15 @@ import com.huotu.hotcms.service.config.ServiceConfig;
 import me.jiangcai.lib.embedweb.ewp.MockMVC;
 import me.jiangcai.lib.resource.thymeleaf.ResourceDialect;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
-import org.thymeleaf.spring4.SpringTemplateEngine;
 
-import java.util.Set;
+import javax.annotation.PostConstruct;
+import java.util.Collection;
 
 /**
  * @author CJ
@@ -32,9 +34,15 @@ public class ManageTestConfig extends MockMVC {
 
     @Autowired
     private ResourceDialect resourceDialect;
-
     @Autowired
-    public void setTemplateEngineSet(Set<SpringTemplateEngine> templateEngineSet) {
+    private ApplicationContext applicationContext;
+
+    @PostConstruct
+    public void init() {
+        setTemplateEngineSet(applicationContext.getBeansOfType(TemplateEngine.class).values());
+    }
+
+    private void setTemplateEngineSet(Collection<TemplateEngine> templateEngineSet) {
         // 所有都增加安全方言
         templateEngineSet.forEach(engine
                         -> {

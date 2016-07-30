@@ -40,6 +40,24 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class WidgetInfoControllerTest extends ManageTest {
 
+    String[][] widgets = new String[][]{
+//                new String[]{
+//                        "com.huotu.hotcms.widget.pagingWidget",
+//                        "pagingWidget"
+//                },
+            new String[]{
+                    "com.huotu.hotcms.widget.picCarousel",
+                    "picCarousel"
+            },
+            new String[]{
+                    "com.huotu.hotcms.widget.productList",
+                    "productList"
+            },
+            new String[]{
+                    "com.huotu.hotcms.widget.picBanner",
+                    "picBanner"
+            }
+    };
     @Autowired
     private WidgetInfoRepository widgetInfoRepository;
     @Autowired
@@ -135,7 +153,7 @@ public class WidgetInfoControllerTest extends ManageTest {
 
             @Override
             public WidgetInfo randomValue() {
-                for (int i = 0; i < 4; i++) {
+                for (int i = 0; i < widgets.length; i++) {
                     WidgetInfo info = randomWidgetInfoValue(i);
                     if (widgetInfoRepository.findOne(info.getIdentifier()) == null)
                         return info;
@@ -168,24 +186,7 @@ public class WidgetInfoControllerTest extends ManageTest {
     }
 
     private WidgetInfo randomWidgetInfoValue(Integer seed) {
-        String[][] widgets = new String[][]{
-//                new String[]{
-//                        "com.huotu.hotcms.widget.pagingWidget",
-//                        "pagingWidget"
-//                },
-                new String[]{
-                        "com.huotu.hotcms.widget.picCarousel",
-                        "picCarousel"
-                },
-                new String[]{
-                        "com.huotu.hotcms.widget.productList",
-                        "productList"
-                },
-                new String[]{
-                        "com.huotu.hotcms.widget.picBanner",
-                        "picBanner"
-                }
-        };
+
         String[] widgetInfo;
         if (seed == null) {
             widgetInfo = widgets[random.nextInt(widgets.length)];

@@ -79,6 +79,25 @@ public interface WidgetResolveService {
     void pageElementHTML(PageElement pageElement, CMSContext cmsContext, Writer writer) throws IOException;
 
     /**
+     * 生成控件脚本{@link Widget#widgetJs()}
+     *
+     * @param context
+     * @param widget
+     * @return
+     */
+    String widgetJavascript(CMSContext context, Widget widget);
+
+    /**
+     * 生成控件脚本{@link Widget#widgetJs()}
+     *
+     * @param context
+     * @param widget
+     * @param out
+     * @throws IOException
+     */
+    void widgetJavascript(CMSContext context, Widget widget, OutputStream out) throws IOException;
+
+    /**
      * 生成一个pageElement的完整HTML代码
      * <p>
      * 页面的生成者应该是通过调用这个方法获取每一个pageElement的HTML,技术上我们限定生成一个页面绝对不可以超过0.5s

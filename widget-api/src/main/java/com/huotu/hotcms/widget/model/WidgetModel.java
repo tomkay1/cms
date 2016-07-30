@@ -9,16 +9,14 @@
 
 package com.huotu.hotcms.widget.model;
 
+import com.huotu.hotcms.widget.ComponentProperties;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Created by wenqi on 2016/7/11.
- */
-
-/**
  * WidgetInfo的模型类，用于页面获取已安装Widget列表时使用
  * <p>文档参考：https://quip.com/bU07AX3W15KE</p>
+ *
  * @see com.huotu.hotcms.widget.Widget
  */
 @Setter
@@ -33,6 +31,7 @@ public class WidgetModel {
      */
     private String editorHTML;
     private String scriptHref;
+    private ComponentProperties defaultProperties;
     private WidgetStyleModel[] styles;
 
 }

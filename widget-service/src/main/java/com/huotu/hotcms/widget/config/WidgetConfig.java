@@ -9,9 +9,9 @@
 
 package com.huotu.hotcms.widget.config;
 
-import com.huotu.hotcms.widget.loader.WidgetLoaderConfig;
+import com.huotu.hotcms.widget.WidgetLoaderConfig;
+import com.huotu.hotcms.widget.WidgetResolveServiceConfig;
 import com.huotu.hotcms.widget.page.PageInfoResolver;
-import com.huotu.hotcms.widget.resolve.WidgetResolveServiceConfig;
 import com.huotu.hotcms.widget.service.CMSRequestDataValueProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -30,7 +30,10 @@ import java.util.List;
         , "com.huotu.hotcms.widget.controller"
 //        , "com.huotu.hotcms.widget.service"
 })
-@Import({WidgetLoaderConfig.class, WidgetResolveServiceConfig.class, WidgetJpaConfig.class})
+@Import({WidgetLoaderConfig.class, WidgetResolveServiceConfig.class
+        , WidgetJpaConfig.class
+//        , WidgetConfig.WidgetJavascriptResolverLoader.class
+})
 @EnableWebMvc
 public class WidgetConfig extends WebMvcConfigurerAdapter {
 
@@ -47,4 +50,6 @@ public class WidgetConfig extends WebMvcConfigurerAdapter {
     public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> returnValueHandlers) {
         returnValueHandlers.add(pageInfoResolver);
     }
+
+
 }

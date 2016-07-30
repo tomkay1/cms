@@ -66,7 +66,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 @WebAppConfiguration
-public class TestBase extends SpringWebTest {
+public abstract class TestBase extends SpringWebTest {
 
     //建立一系列已经建立好的控件以及默认属性
     WidgetIdentifier[] preparedWidgets = new WidgetIdentifier[]{

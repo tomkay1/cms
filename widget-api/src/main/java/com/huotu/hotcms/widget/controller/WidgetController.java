@@ -11,9 +11,13 @@ package com.huotu.hotcms.widget.controller;
 
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.service.exception.PageNotFoundException;
+import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.WidgetLocateService;
+import com.huotu.hotcms.widget.WidgetResolveService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,29 +33,23 @@ public class WidgetController {
 
     @Autowired
     private WidgetLocateService widgetLocateService;
+    @Autowired
+    private WidgetResolveService widgetResolveService;
 
     @RequestMapping("/{identifier}.js")
-    public String widgetJs(@PathVariable WidgetIdentifier identifier) throws PageNotFoundException {
+    public ResponseEntity widgetJs(@PathVariable WidgetIdentifier identifier) throws PageNotFoundException {
         // StandardLinkBuilder
         InstalledWidget widget = widgetLocateService.findWidget(identifier.getGroupId(), identifier.getArtifactId()
                 , identifier.getVersion());
 
         if (widget == null) {
-            throw new PageNotFoundException();
-//            return ResponseEntity.notFound().build();
+//            throw new PageNotFoundException();
+            return ResponseEntity.notFound().build();
         }
 
-        return identifier.toString() + ".WidgetJS";
-//
-//        Resource resource = widget.getWidget().widgetJs();
-//        if (resource == null) {
-//            return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/javascript"))
-//                    .body("");
-//        }
-//        if (!resource.exists())
-//            return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/javascript"))
-//                    .body("");
+        String code = widgetResolveService.widgetJavascript(CMSContext.RequestContext(), widget.getWidget());
 
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/javascript")).body(code);
     }
 
 }

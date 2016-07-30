@@ -33,8 +33,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -152,6 +154,31 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
     }
 
     @Override
+    public String widgetJavascript(CMSContext context, Widget widget) {
+        ByteArrayOutputStream buf = new ByteArrayOutputStream();
+        try {
+            widgetJavascript(context, widget, buf);
+            return buf.toString("UTF-8");
+        } catch (IOException e) {
+            // working in mem. so never happen
+            throw new IllegalStateException("Mem IO", e);
+        }
+    }
+
+    @Override
+    public void widgetJavascript(CMSContext context, Widget widget, OutputStream out) throws IOException {
+        // 必须是以安装的控件
+        checkEngine();
+        WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, context
+                , widget, null, webApplicationContext.getServletContext()
+                , null, null);
+        WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();
+        context.getWidgetConfigurationStack().push(widgetConfiguration);
+        widgetTemplateEngine.process(WidgetTemplateResolver.JAVASCRIPT, widgetContext
+                , new OutputStreamWriter(out, "UTF-8"));
+    }
+
+    @Override
     public String pageElementHTML(PageElement pageElement, CMSContext cmsContext) {
         StringBuilder stringBuilder = new StringBuilder();
         StringBuilderWriter writer = new StringBuilderWriter(stringBuilder);
@@ -180,13 +207,15 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
             if (installedWidget != null &&
                     installedWidget.getWidget().widgetDependencyContent(ContentType.create("text/css")) != null) {
                 WidgetStyle style = getWidgetStyle(component.getInstalledWidget().getWidget(), component.getStyleId());
+                checkEngine();
                 WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
                         , component.getInstalledWidget().getWidget(), style, webApplicationContext.getServletContext()
                         , component, component.getProperties());
                 WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();
                 cmsContext.getWidgetConfigurationStack().push(widgetConfiguration);
-                String css = widgetTemplateEngine.process(WidgetTemplateResolver.CSS, widgetContext);
-                out.write(css.getBytes(), 0, css.getBytes().length);
+                widgetTemplateEngine.process(WidgetTemplateResolver.CSS, widgetContext
+                        , new OutputStreamWriter(out, "UTF-8"));
+//                out.write(css.getBytes(), 0, css.getBytes().length);
             }
         }
     }

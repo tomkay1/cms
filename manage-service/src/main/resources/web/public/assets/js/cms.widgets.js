@@ -50,7 +50,8 @@ CMSWidgets.initWidget = function (config) {
  * @param identity 控件识别符
  */
 CMSWidgets.openEditor = function (globalId, identity) {
-
+    var config = CMSWidgets.getNoNullConfig(identity, globalId);
+    config.editor.open(globalId);
 };
 
 /**
@@ -73,7 +74,16 @@ CMSWidgets.openEditor = function (globalId, identity) {
  *                      onFailed(可选) 可以接受错误描述作为参数
  */
 CMSWidgets.saveComponent = function (globalId, callbacks) {
+    var config = CMSWidgets.getNoNullConfig(null, globalId);
 
+    var voidFunction = function () {
+
+    };
+    callbacks = callbacks || {};
+    var onSuccess = callbacks.onSuccess || voidFunction;
+    var onFailed = callbacks.onFailed || voidFunction;
+
+    return config.editor.saveComponent(onSuccess, onFailed);
 };
 
 
@@ -90,8 +100,13 @@ CMSWidgets.initWidgetCore = function (identity, config) {
 
 // 不然会返回一个配置
 CMSWidgets.getNoNullConfig = function (identity, globalId) {
-    if (globalId) {
+    if (identity && globalId) {
         $("#" + globalId).attr('widgetIdentity', identity);
+    }
+    //noinspection JSJQueryEfficiency
+    identity = identity || $("#" + globalId).attr('widgetIdentity');
+    if (!identity) {
+        throw "意图获取一个尚未配置的控件信息";
     }
     var config = CMSWidgets.widgetLibraries[identity];
     if (!config)

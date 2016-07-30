@@ -11,10 +11,10 @@ CMSWidgets.initWidget(
     {
         // 编辑器相关
         editor: {
-            open: function () {
+            open: function (globalId) {
 
             },
-            saveComponent: function () {
+            saveComponent: function (onSuccess, onFailed) {
                 return {};
             }
         },

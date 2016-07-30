@@ -62,7 +62,7 @@ public class WidgetInfoController
         extends CRUDController<WidgetInfo, WidgetIdentifier, HttpServletRequest, Long> {
 
     @Autowired
-    Environment environment;
+    private Environment environment;
     @Autowired
     private OwnerRepository ownerRepository;
     @Autowired
@@ -153,8 +153,8 @@ public class WidgetInfoController
     /**
      * 获取控件资源时参照 {@link WidgetFactoryService#installWidgetInfo(WidgetInfo)}
      *
-     * @param locale
-     * @param login
+     * @param locale 当前语言
+     * @param login  当前身份
      * @return
      * @throws IOException
      * @throws URISyntaxException
@@ -171,40 +171,32 @@ public class WidgetInfoController
             if (installedWidgets == null || installedWidgets.size() == 0) {
                 widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
                         , "1.0-SNAPSHOT", "picCarousel");
+                installedWidgets = widgetFactoryService.widgetList(owner);
             }
         }
-        installedWidgets = widgetFactoryService.widgetList(owner);
-        Widget widget;
+
         List<WidgetModel> widgetModels = new ArrayList<>();
         for (InstalledWidget installedWidget : installedWidgets) {
             WidgetModel widgetModel = new WidgetModel();
-            widget = installedWidget.getWidget();
+            Widget widget = installedWidget.getWidget();
             widgetModel.setLocallyName(widget.name(locale));
             WidgetStyle[] widgetStyles = widget.styles();
             widgetModel.setEditorHTML(widgetResolveService.editorHTML(widget, CMSContext.RequestContext(), null));
-            WidgetIdentifier identifier = new WidgetIdentifier(widget.groupId(), widget.widgetId(), widget.version());
-            widgetModel.setIdentity(identifier.toString());
-            widgetModel.setScriptHref(resourceService.getResource("widget/"
-                    + Widget.widgetJsResourcePath(widget)).httpUrl().toURI().toString());
-            //todo 可能存在更多public js
-            //获取js资源uri
-//            for (Map.Entry<String, Resource> entry : widget.publicResources().entrySet()) {
-//                if (entry.getKey().endsWith(".js")) {
-//                    widgetModel.setScriptHref(resourceService.getResource("widget/" + widget.groupId() + "-"
-//                            + widget.widgetId() + "-" + widget.version() + "/" + entry.getKey())
-//                            .httpUrl().toURI().toString() + ","
-//                    );
-//                }
-//            }
-            widgetModel.setThumbnail(resourceService.getResource("widget/"
-                    + Widget.thumbnailPath(widget)).httpUrl().toURI().toString());
+            widgetModel.setIdentity(Widget.WidgetIdentity(widget));
+            widgetModel.setScriptHref(resourceService.getResource(Widget.widgetJsResourcePath(widget)).httpUrl()
+                    .toString());
+
+            widgetModel.setThumbnail(resourceService.getResource(Widget.thumbnailPath(widget)).httpUrl().toString());
             WidgetStyleModel[] widgetStyleModels = new WidgetStyleModel[widgetStyles.length];
+
             for (int i = 0; i < widgetStyles.length; i++) {
                 WidgetStyleModel widgetStyleModel = new WidgetStyleModel();
-                widgetStyleModel.setId(widgetStyles[i].id());
-                widgetStyleModel.setThumbnail(widgetStyles[i].thumbnail().getURI().toString());
-                widgetStyleModel.setLocallyName(widgetStyles[i].name());
-                widgetStyleModel.setPreviewHTML(widgetResolveService.previewHTML(widget, widgetStyles[i].id()
+                final WidgetStyle widgetStyle = widgetStyles[i];
+                widgetStyleModel.setId(widgetStyle.id());
+                widgetStyleModel.setThumbnail(resourceService.getResource(WidgetStyle.thumbnailPath(widget
+                        , widgetStyle)).httpUrl().toString());
+                widgetStyleModel.setLocallyName(widgetStyle.name(locale));
+                widgetStyleModel.setPreviewHTML(widgetResolveService.previewHTML(widget, widgetStyle.id()
                         , CMSContext.RequestContext(), widget.defaultProperties(resourceService)));
                 widgetStyleModels[i] = widgetStyleModel;
             }

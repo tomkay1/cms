@@ -13,10 +13,12 @@ import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.service.exception.PageNotFoundException;
+import com.huotu.hotcms.service.util.ImageHelper;
 import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetLocateService;
+import com.huotu.hotcms.widget.WidgetStyle;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.page.Layout;
@@ -215,11 +217,15 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
                     while ((len = inputStream.read(data)) != -1) {
                         outputStream.write(data, 0, len - 1);
                     }
-                    resourceService.uploadResource("widget/" + Widget.thumbnailPath(widget)
-                            , widget.thumbnail().getInputStream());
+                    ImageHelper.storeAsImage("png", resourceService, widget.thumbnail().getInputStream()
+                            , Widget.thumbnailPath(widget));
 
                     resourceService.uploadResource("widget/" + Widget.widgetJsResourcePath(widget)
                             , new ByteArrayInputStream(outputStream.toByteArray()));
+                    for (WidgetStyle style : widget.styles()) {
+                        ImageHelper.storeAsImage("png", resourceService, style.thumbnail().getInputStream()
+                                , WidgetStyle.thumbnailPath(widget, style));
+                    }
                 }
             }
 

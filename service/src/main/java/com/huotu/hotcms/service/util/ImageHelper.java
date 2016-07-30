@@ -35,14 +35,27 @@ public class ImageHelper {
      */
     public static String storeAsImage(String type, ResourceService resourceService, InputStream data)
             throws IOException {
-        try{
+        String path = UUID.randomUUID().toString() + "." + type;
+        storeAsImage(type, resourceService, data, path);
+        return path;
+    }
+
+    /**
+     * 以指定格式保存一张图片,并且保存到指定path
+     *
+     * @param type            类型 比如png,jpg
+     * @param resourceService 资源服务
+     * @param data            原数据
+     * @param path            资源系统的路径
+     * @return 资源path
+     */
+    public static void storeAsImage(String type, ResourceService resourceService, InputStream data, String path) throws IOException {
+        try {
             BufferedImage image = ImageIO.read(data);
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
             ImageIO.write(image, type, buffer);
-            String path = UUID.randomUUID().toString() + "." + type;
             resourceService.uploadResource(path, new ByteArrayInputStream(buffer.toByteArray()));
-            return path;
-        }finally {
+        } finally {
             //noinspection ThrowFromFinallyBlock
             data.close();
         }

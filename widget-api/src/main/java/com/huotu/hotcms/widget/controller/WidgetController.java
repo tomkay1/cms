@@ -52,4 +52,7 @@ public class WidgetController {
         return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/javascript")).body(code);
     }
 
+    //样式表是可以就一整个网页的 也可以是就一个组件的
+
+
 }

@@ -55,5 +55,6 @@ public class WidgetTestTest extends WidgetTest {
 
     @Override
     protected void browseWork(Widget widget, WidgetStyle style, Function<ComponentProperties, WebElement> uiChanger) {
+//        uiChanger.apply(widget.defaultProperties(r))
     }
 }

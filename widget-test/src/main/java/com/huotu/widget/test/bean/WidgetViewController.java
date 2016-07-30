@@ -10,10 +10,13 @@
 package com.huotu.widget.test.bean;
 
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
+import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.InstalledWidget;
+import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetLocateService;
+import com.huotu.hotcms.widget.WidgetResolveService;
 import com.huotu.hotcms.widget.WidgetStyle;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
@@ -25,10 +28,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 /**
  * 将几个常用动作 写成单独文件
- *
+ * <p>
  * JUnit测试是单线程的,所以这个Controller不用考虑并发问题,所以该实例可以设计未非线程安全
+ *
  * @author CJ
  */
 @Controller
@@ -38,6 +45,8 @@ public class WidgetViewController {
 
     @Autowired
     private WidgetLocateService widgetLocateService;
+    @Autowired
+    private WidgetResolveService widgetResolveService;
 
 
     private ComponentProperties currentProperties;
@@ -51,6 +60,21 @@ public class WidgetViewController {
 
     public void setCurrentProperties(ComponentProperties currentProperties) {
         this.currentProperties = currentProperties;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/css/{widgetName}.css")
+    public void css(@PathVariable("widgetName") WidgetIdentifier widgetName, HttpServletResponse response) throws IOException {
+        InstalledWidget widget = widgetLocateService.findWidget(widgetName.getGroupId(), widgetName.getArtifactId()
+                , widgetName.getVersion());
+
+        Component component = new Component();
+        component.setInstalledWidget(widget);
+        component.setWidgetIdentity(Widget.WidgetIdentity(widget.getWidget()));
+        component.setProperties(currentProperties);
+
+        response.setContentType("text/css");
+        widgetResolveService.componentCSS(CMSContext.RequestContext(), component, response.getOutputStream());
+        response.flushBuffer();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/editor/{widgetName}")
@@ -79,6 +103,7 @@ public class WidgetViewController {
             }
         }
         model.addAttribute("component", component);
+        model.addAttribute("widgetURLEDId", Widget.URIEncodedWidgetIdentity(installedWidget.getWidget()));
         return "browse";
     }
 

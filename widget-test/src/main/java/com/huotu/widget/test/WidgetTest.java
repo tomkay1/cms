@@ -99,7 +99,7 @@ public abstract class WidgetTest extends SpringWebTest {
     }
 
     @Test
-    public void style() {
+    public void style() throws IOException {
         for (Widget widget : holder.getWidgetSet()) {
             assertThat(widget.styles())
                     .isNotNull();
@@ -108,7 +108,7 @@ public abstract class WidgetTest extends SpringWebTest {
 
             for (WidgetStyle style : widget.styles()) {
                 stylePropertiesFor(style);
-                browseWork(widget, style, componentProperties -> {
+                finalBrowseWork(widget, style, componentProperties -> {
                     widgetViewController.setCurrentProperties(componentProperties);
                     String uri = "/browse/" + Widget.URIEncodedWidgetIdentity(widget) + "/" + style.id();
                     if (printPageSource())
@@ -165,6 +165,14 @@ public abstract class WidgetTest extends SpringWebTest {
     protected abstract void editorWork(Widget widget, WebElement editor
             , Supplier<Map<String, Object>> currentWidgetProperties);
 
+    private void finalBrowseWork(Widget widget, WidgetStyle style
+            , Function<ComponentProperties, WebElement> uiChanger) throws IOException {
+        WebElement defaultWeb = uiChanger.apply(widget.defaultProperties(resourceService));
+        assertThat(defaultWeb.isDisplayed()).isTrue();
+
+        browseWork(widget, style, uiChanger);
+    }
+
     /**
      * 浏览视图的测试
      * 通过设置属性改变预览视图
@@ -174,7 +182,7 @@ public abstract class WidgetTest extends SpringWebTest {
      * @param uiChanger 更改后的预览视图
      */
     protected abstract void browseWork(Widget widget, WidgetStyle style
-            , Function<ComponentProperties, WebElement> uiChanger);
+            , Function<ComponentProperties, WebElement> uiChanger) throws IOException;
 
     /**
      * 一些常用属性测试
@@ -191,6 +199,52 @@ public abstract class WidgetTest extends SpringWebTest {
             }
         });
     }
+
+//    /**
+//     * 本来应该是在页面流中完成的
+//     */
+//    @Test
+//    public void css() {
+//
+//    }
+//
+//    @Autowired
+//    private PageService pageService;
+//    @Autowired
+//    private PageInfoRepository pageInfoRepository;
+//
+//    @Test
+//    @Transactional
+//    public void pageSave() throws IOException {
+//        PageInfo pageInfo = new PageInfo();
+//        pageInfo.setTitle(randomEmailAddress());
+//        pageInfo = pageInfoRepository.saveAndFlush(pageInfo);
+//
+//        PageModel model = new PageModel();
+//
+//        Layout[] layouts = new Layout[holder.getWidgetSet().size()];
+//        int i = 0;
+//        for (Widget widget : holder.getWidgetSet()) {
+//            Layout layout = new Layout();
+//            layout.setValue("12");
+//
+//            InstalledWidget installedWidget = new InstalledWidget(widget);
+//            installedWidget.setIdentifier(WidgetIdentifier.valueOf(Widget.WidgetIdentity(widget)));
+//            installedWidget.setType(randomEmailAddress());
+//
+//            Component component = new Component();
+//            component.setInstalledWidget(installedWidget);
+//            component.setWidgetIdentity(Widget.WidgetIdentity(widget));
+//            component.setProperties(widget.defaultProperties(resourceService));
+//
+//            layout.setParallelElements(new PageElement[]{component});
+//
+//            layouts[i++] = layout;
+//        }
+//
+//        model.setRoot(layouts);
+//        pageService.savePage(model, pageInfo.getPageId());
+//    }
 
     @SuppressWarnings("WeakerAccess")
     protected void propertiesFor(Widget widget) throws IOException {

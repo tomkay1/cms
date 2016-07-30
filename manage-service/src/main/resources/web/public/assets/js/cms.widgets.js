@@ -23,7 +23,10 @@ CMSWidgets = CMSWidgets || {};
  * @param identity 控件识别符
  */
 CMSWidgets.pushNextWidgetIdentity = function (identity) {
-
+    if (CMSWidgets.nextWidgetIdentity != null) {
+        CMSWidgets.initWidget();
+    }
+    CMSWidgets.nextWidgetIdentity = identity;
 };
 
 /**
@@ -32,7 +35,12 @@ CMSWidgets.pushNextWidgetIdentity = function (identity) {
  * @param config 可以为null,表示当前控件全部采用默认配置
  */
 CMSWidgets.initWidget = function (config) {
-
+    if (CMSWidgets.nextWidgetIdentity == null) {
+        console.error('initWidget without pushNextWidgetIdentity');
+        return;
+    }
+    CMSWidgets.initWidgetCore(CMSWidgets.nextWidgetIdentity, config);
+    CMSWidgets.nextWidgetIdentity = null;
 };
 
 /**
@@ -67,3 +75,18 @@ CMSWidgets.openEditor = function (globalId, identity) {
 CMSWidgets.saveComponent = function (globalId, callbacks) {
 
 };
+
+
+//-------------------------- PRIVATE
+CMSWidgets.nextWidgetIdentity = null;
+CMSWidgets.widgetLibraries = {};
+
+CMSWidgets.initWidgetCore = function (identity, config) {
+    // 支持null
+    CMSWidgets.widgetLibraries[identity] = config;
+};
+
+CMSWidgets.getNoNullConfig = function (identity, globalId) {
+
+};
+

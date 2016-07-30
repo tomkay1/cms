@@ -13,7 +13,6 @@ import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetLocateService;
-import com.huotu.widget.test.WidgetTestConfig;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
@@ -63,13 +62,13 @@ public class WidgetHolder implements WidgetLocateService {
     @Override
     public InstalledWidget findWidget(String groupId, String widgetId, String version) {
 //        return null;
-        throw new IllegalStateException("not support yet");
+        return findWidget(new WidgetIdentifier(groupId, widgetId, version).toString());
     }
 
     @Override
     public InstalledWidget findWidget(String identifier) {
         for (Widget widget : widgetSet) {
-            if (WidgetTestConfig.WidgetIdentity(widget).equals(identifier)) {
+            if (Widget.WidgetIdentity(widget).equals(identifier)) {
                 InstalledWidget widget1 = new InstalledWidget(widget);
                 widget1.setType("test");
                 widget1.setIdentifier(WidgetIdentifier.valueOf(Widget.WidgetIdentity(widget)));

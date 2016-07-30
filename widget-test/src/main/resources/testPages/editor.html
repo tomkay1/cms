@@ -102,9 +102,9 @@
 //        console.error("init error");
     });
 
-    CMSWidgets.pushNextWidgetIdentity(scope);
+    //    CMSWidgets.pushNextWidgetIdentity(scope);
 </script>
-<script th:src="@{/javascript/{id}(id=${widgetId})}"></script>
+<script th:src="@{/widget/{id}(id=${widgetId+'.js'})}"></script>
 
 </body>
 </html>

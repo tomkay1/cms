@@ -61,8 +61,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @Ignore
-//TODO 暂时忽略是因为 productList Property or field 'pagingTColor' cannot be found on object of type
-// 'com.huotu.hotcms.widget.ComponentProperties' - maybe not public?
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 @Import(ServiceConfig.class)

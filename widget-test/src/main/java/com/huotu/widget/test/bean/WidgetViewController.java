@@ -25,9 +25,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.io.IOException;
-import java.util.Map;
-
 /**
  * 将几个常用动作 写成单独文件
  *
@@ -57,15 +54,15 @@ public class WidgetViewController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/editor/{widgetName}")
-    public String editor(@PathVariable("widgetName") String widgetName, Model model) {
-        model.addAttribute("widgetId", widgetName);
+    public String editor(@PathVariable("widgetName") WidgetIdentifier widgetName, Model model) {
+        model.addAttribute("widgetId", widgetName.toString());
         return "editor";
     }
 
     @RequestMapping(method = RequestMethod.GET, value = {"/browse/{widgetName}/{styleId}"})
-    public String browse(@PathVariable("widgetName") String widgetName
-            ,@PathVariable("styleId") String styleId,Model model) {
-        InstalledWidget installedWidget = widgetLocateService.findWidget(widgetName);
+    public String browse(@PathVariable("widgetName") WidgetIdentifier widgetName
+            , @PathVariable("styleId") String styleId, Model model) {
+        InstalledWidget installedWidget = widgetLocateService.findWidget(widgetName.toString());
 
         Component component = new Component();
         component.setProperties((ComponentProperties) currentProperties.get("properties"));
@@ -86,13 +83,13 @@ public class WidgetViewController {
     }
 
 
-    @RequestMapping(method = RequestMethod.GET, value = {"/javascript/{id}"}, produces = "application/javascript")
-    public String javascript(@PathVariable("id") String widgetId) throws IOException {
-        InstalledWidget installedWidget = widgetLocateService.findWidget(widgetId);
-        resourceService.uploadResource("testWidget/js/" + widgetId + ".js"
-                , installedWidget.getWidget().widgetJs().getInputStream());
-        return widgetId + ".js";
-    }
+//    @RequestMapping(method = RequestMethod.GET, value = {"/javascript/{id}"}, produces = "application/javascript")
+//    public String javascript(@PathVariable("id") String widgetId) throws IOException {
+//        InstalledWidget installedWidget = widgetLocateService.findWidget(widgetId);
+//        resourceService.uploadResource("testWidget/js/" + widgetId + ".js"
+//                , installedWidget.getWidget().widgetJs().getInputStream());
+//        return widgetId + ".js";
+//    }
 
 
 }

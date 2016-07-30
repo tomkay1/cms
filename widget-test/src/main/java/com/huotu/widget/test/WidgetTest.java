@@ -30,6 +30,8 @@ import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -108,7 +110,7 @@ public abstract class WidgetTest extends SpringWebTest {
                 stylePropertiesFor(style);
                 browseWork(widget, style, componentProperties -> {
                     widgetViewController.setCurrentProperties(componentProperties);
-                    String uri = "/browse/" + WidgetTestConfig.WidgetIdentity(widget) + "/" + style.id();
+                    String uri = "/browse/" + Widget.URIEncodedWidgetIdentity(widget) + "/" + style.id();
                     if (printPageSource())
                         try {
                             mockMvc.perform(get(uri))
@@ -117,8 +119,7 @@ public abstract class WidgetTest extends SpringWebTest {
                             throw new IllegalStateException("no print html");
                         }
                     driver.get("http://localhost" + uri);
-                    WebElement webElement = driver.findElement(By.id("browse")).findElement(By.tagName("div"));
-                    return webElement;
+                    return driver.findElement(By.id("browse")).findElement(By.tagName("div"));
                 });
             }
         }
@@ -128,10 +129,10 @@ public abstract class WidgetTest extends SpringWebTest {
     protected void editor(Widget widget) throws Exception {
 
         if (printPageSource())
-            mockMvc.perform(get("/editor/" + WidgetTestConfig.WidgetIdentity(widget)))
+            mockMvc.perform(get("/editor/" + Widget.URIEncodedWidgetIdentity(widget)))
                     .andDo(print());
 
-        driver.get("http://localhost/editor/" + WidgetTestConfig.WidgetIdentity(widget));
+        driver.get("http://localhost/editor/" + Widget.URIEncodedWidgetIdentity(widget));
         driver.findElement(By.id("editorInit")).click();
 
         editorWork(widget, driver.findElement(By.id("editor")).findElement(By.tagName("div")), () -> {
@@ -227,6 +228,10 @@ public abstract class WidgetTest extends SpringWebTest {
         assertThat(componentProperties)
                 .as("控件默认属性")
                 .isNotNull();
+
+        // 属性 只可以有Number String Map 或者List Array
+        componentPropertiesCheck(componentProperties);
+
         // 通过给分发用属性增加一个额外属性 再跟原始值比较;很显然不应该影响
         String randomKey = randomEmailAddress();
         String randomValue = randomEmailAddress();
@@ -252,6 +257,32 @@ public abstract class WidgetTest extends SpringWebTest {
         }
 
         // 现在检查编辑器
+    }
+
+    @SuppressWarnings("unchecked")
+    private void componentPropertiesCheck(Object var) {
+        if (var == null)
+            return;
+        if (var instanceof Map) {
+            ((Map) var).values().forEach(this::componentPropertiesCheck);
+            return;
+        }
+        if (var instanceof Collection) {
+            ((Collection) var).forEach(this::componentPropertiesCheck);
+            return;
+        }
+        // array
+        if (var.getClass().isArray()) {
+            for (int i = 0; i < Array.getLength(var); i++) {
+                componentPropertiesCheck(Array.get(var, i));
+            }
+            return;
+        }
+        if (var instanceof String)
+            return;
+        if (var instanceof Number)
+            return;
+        throw new AssertionError("不期望的控件属性:" + var);
     }
 
 

@@ -10,10 +10,11 @@
 package com.huotu.widget.test;
 
 import com.huotu.hotcms.service.config.ServiceConfig;
-import com.huotu.hotcms.widget.Widget;
+import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.widget.WidgetLoaderConfig;
 import com.huotu.hotcms.widget.WidgetResolveServiceConfig;
 import com.huotu.hotcms.widget.controller.CMSDataSourceController;
+import com.huotu.hotcms.widget.controller.WidgetController;
 import com.huotu.hotcms.widget.service.CMSDataSourceService;
 import com.huotu.widget.test.bean.CMSDataSourceServiceImpl;
 import com.huotu.widget.test.bean.WidgetHolder;
@@ -23,6 +24,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
@@ -49,13 +52,14 @@ public class WidgetTestConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private ThymeleafViewResolver javascriptThymeleafViewResolver;
 
-    public static String WidgetIdentity(Widget widget) {
-        return widget.widgetId().replace('-', '.');
-    }
-
     @Bean
     public CMSDataSourceController cmsDataSourceController() {
         return new CMSDataSourceController();
+    }
+
+    @Bean
+    public WidgetController widgetController() {
+        return new WidgetController();
     }
 
     @Override
@@ -71,6 +75,18 @@ public class WidgetTestConfig extends WebMvcConfigurerAdapter {
         registry.viewResolver(javascriptThymeleafViewResolver);
     }
 
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        super.addFormatters(registry);
+        registry.addConverter(new Converter<String, WidgetIdentifier>() {
+            @Override
+            public WidgetIdentifier convert(String source) {
+                if (source == null)
+                    return null;
+                return WidgetIdentifier.valueOf(source);
+            }
+        });
+    }
 
     @Bean
     public CMSDataSourceService cmsDataSourceService() {

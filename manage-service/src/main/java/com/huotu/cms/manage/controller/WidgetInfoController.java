@@ -14,6 +14,7 @@ import com.huotu.cms.manage.controller.support.CRUDController;
 import com.huotu.cms.manage.exception.RedirectException;
 import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Login;
+import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.service.repository.OwnerRepository;
 import com.huotu.hotcms.widget.CMSContext;
@@ -26,18 +27,18 @@ import com.huotu.hotcms.widget.model.WidgetModel;
 import com.huotu.hotcms.widget.model.WidgetStyleModel;
 import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
-import com.sun.jndi.toolkit.url.Uri;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.NumberUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartResolver;
@@ -45,13 +46,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * @author CJ
@@ -154,7 +153,8 @@ public class WidgetInfoController
     @ResponseBody
     @PreAuthorize("hasRole('" + Login.Role_Manage_Value + "')")
     @RequestMapping(value = "/widgets", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
-    public List<WidgetModel> getWidgetInfo(Locale locale, @AuthenticationPrincipal Login login) throws IOException, URISyntaxException {
+    public List<WidgetModel> getWidgetInfo(Locale locale, @AuthenticationPrincipal Login login) throws IOException
+            , URISyntaxException, FormatException {
         Owner owner = ownerRepository.getOne(login.currentOwnerId());
         List<InstalledWidget> installedWidgets = widgetFactoryService.widgetList(owner);
         if (environment.acceptsProfiles("test")) {
@@ -172,7 +172,6 @@ public class WidgetInfoController
             widgetModel.setLocallyName(widget.name(locale));
             WidgetStyle[] widgetStyles = widget.styles();
             widgetModel.setEditorHTML(widgetResolveService.editorHTML(widget, CMSContext.RequestContext(), null));
-            //<groupId>-<widgetId>:<version>
             WidgetIdentifier identifier = new WidgetIdentifier(widget.groupId(), widget.widgetId(), widget.version());
             widgetModel.setIdentity(identifier.toString());
             widgetModel.setScriptHref(resourceService.getResource("widget/"
@@ -187,7 +186,6 @@ public class WidgetInfoController
 //                    );
 //                }
 //            }
-
             widgetModel.setThumbnail(resourceService.getResource("widget/"
                     + Widget.thumbnailPath(widget)).httpUrl().toURI().toString());
             WidgetStyleModel[] widgetStyleModels = new WidgetStyleModel[widgetStyles.length];

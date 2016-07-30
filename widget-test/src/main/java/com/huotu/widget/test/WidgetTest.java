@@ -134,14 +134,6 @@ public abstract class WidgetTest extends SpringWebTest {
         driver.get("http://localhost/editor/" + WidgetTestConfig.WidgetIdentity(widget));
         driver.findElement(By.id("editorInit")).click();
 
-        if (driver instanceof JavascriptExecutor) {
-            Boolean inited = (Boolean) ((JavascriptExecutor) driver).executeScript("return window['inited']");
-            assertThat(inited)
-                    .as("编辑器初始化, see demoWidget.js")
-                    .isNotNull()
-                    .isTrue();
-        }
-
         editorWork(widget, driver.findElement(By.id("editor")).findElement(By.tagName("div")), () -> {
             driver.findElement(By.id("editorSaver")).click();
             if (driver instanceof JavascriptExecutor) {

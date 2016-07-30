@@ -13,6 +13,7 @@ import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetStyle;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
@@ -34,6 +35,16 @@ public class WidgetTestTest extends WidgetTest {
 
     @Override
     protected void editorWork(Widget widget, WebElement editor, Supplier<Map<String, Object>> currentWidgetProperties) {
+
+
+        if (driver instanceof JavascriptExecutor) {
+            Boolean initFlag = (Boolean) ((JavascriptExecutor) driver).executeScript("return window['inited']");
+            assertThat(initFlag)
+                    .as("编辑器初始化, see demoWidget.js")
+                    .isNotNull()
+                    .isTrue();
+        }
+
         editor.findElement(By.id("DataFetcher")).click();
 
         Object result = currentWidgetProperties.get().get("DataFetcherResult");

@@ -13,7 +13,7 @@
  * Created by CJ on 7/30/16.
  */
 
-CMSWidgets = CMSWidgets || {};
+CMSWidgets = {};
 
 //-------------------------- PUBLIC METHODS
 
@@ -51,6 +51,7 @@ CMSWidgets.initWidget = function (config) {
  */
 CMSWidgets.openEditor = function (globalId, identity) {
     var config = CMSWidgets.getNoNullConfig(identity, globalId);
+    console.error('config on openEditor:', config);
     config.editor.open(globalId);
 };
 
@@ -75,6 +76,8 @@ CMSWidgets.openEditor = function (globalId, identity) {
  */
 CMSWidgets.saveComponent = function (globalId, callbacks) {
     var config = CMSWidgets.getNoNullConfig(null, globalId);
+
+    console.error('config on saveComponent:', config);
 
     var voidFunction = function () {
 

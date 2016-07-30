@@ -90,6 +90,7 @@ public interface Widget {
     Map<String, Resource> publicResources();
 
     /**
+     * 要么为空或者返回不存在的资源,要么必然是<code>CMSWidgets.initWidget....</code>
      * @return 控件的Javascript模板(是模板), 可以为空 内容上也必须严格符合<a href="https://huobanplus.quip.com/KngdAAGxtKSQ">标准</a>
      */
     Resource widgetJs();

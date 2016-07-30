@@ -13,10 +13,31 @@ CMSWidgets.initWidget(
         editor: {
             // 
             open: function (globalId) {
-
+                if (CMSDebugMode)
+                    console.error('初始化编辑器', this);
+                window['inited'] = true;
+                this.ps = {};
+                var me = this;
+                $('#DataFetcher').bind('click', function () {
+                    if (CMSDebugMode)
+                        console.error('some one click data fetch');
+                    getDataSource('findLink', 123, function (data) {
+                        if (CMSDebugMode)
+                            console.error('findLink:', data);
+                        me.ps.DataFetcherResult = data;
+                    }, function (jhr, status, error) {
+                        if (CMSDebugMode)
+                            console.error('findLink error,', status, error);
+                    })
+                });
+            },
+            close: function (globalId) {
+                $('#DataFetcher').unbind();
             },
             saveComponent: function (onSuccess, onFailed) {
-                return {};
+                // var newPs = {};
+                onSuccess(this.ps);
+                return this.ps;
             }
         },
         // 浏览相关 暂无

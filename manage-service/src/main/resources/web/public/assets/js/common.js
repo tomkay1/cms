@@ -18,7 +18,6 @@ function widgetProperties( id ) {
     return wsCache.get(id) || {};
 };
 
-
 /**
  * 组件数据控制逻辑
  * createStore: 初始化GlobalID
@@ -100,34 +99,32 @@ function updataCompoentPreview(globalID, properties) {
     });
 }
 
-function getDataSource(url, parentID) {
-    var dataSource = null;
+/**
+ *
+ * @param type 表示查询的数据类别 比如 findGalleryItem
+ * @param parameter 查询参数 可选
+ *
+ * @param onSuccess 成功回调 参考 http://api.jquery.com/jquery.ajax/#success
+ * @param onError 错误回调 参考 http://api.jquery.com/jquery.ajax/#error
+ */
+function getDataSource(type, parameter, onSuccess, onError) {
+    if (_CMS_DataSource_URI == null) {
+        console.log('invoke getDataSource in po..');
+        // TODO 根据不同的type给予不同的mock数据
+        onSuccess({});
+        return;
+    }
+    var url = _CMS_DataSource_URI + type;
+    if (parameter != null) {
+        url = url + "/" + parameter;
+    }
     $.ajax({
-        type: 'POST',
+        type: 'GET',
         url: url,
         dataType: 'json',
-        data: {
-            parentID: parentID
-        },
-        success: function (json) {
-            if (json.statusCode == '200') {
-                dataSource = json.body;
-                return dataSource;
-            }
-            if (json.statusCode == '204') {
-                layer.msg('没有找到数据', {time: 2000});
-                return dataSource;
-            }
-            if (json.statusCode == '502') {
-                layer.msg('服务器错误,请稍后再试', {time: 2000});
-                return dataSource;
-            }
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.log(errorThrown);
-            layer.msg('服务器错误,请稍后再试', {time: 2000});
-            return dataSource;
-        }
+        async: !testMode,
+        success: onSuccess,
+        error: onError
     });
 }
 /**

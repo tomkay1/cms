@@ -90,6 +90,11 @@ public interface Widget {
     Map<String, Resource> publicResources();
 
     /**
+     * @return 控件的Javascript模板(是模板), 可以为空 内容上也必须严格符合<a href="https://huobanplus.quip.com/KngdAAGxtKSQ">标准</a>
+     */
+    Resource widgetJs();
+
+    /**
      * @return 插件缩略图
      */
     default Resource thumbnail() {
@@ -110,12 +115,6 @@ public interface Widget {
      * @return 资源模板 具体模板技术自行实现。freemarker velocity
      */
     Resource widgetDependencyContent(ContentType contentType);
-
-    /**
-     * @return 页面的js资源
-     * @deprecated instead by {@link #widgetDependencyContent(ContentType)}
-     */
-    Resource widgetJs();
 
 
     /**
@@ -138,6 +137,7 @@ public interface Widget {
      * 该版本暂时用不到
      * 可以获取Spring额外配置信息
      * 如果该值非空,则控件在生成HTML的时候 应该使用其他的ApplicationContext而非默认的
+     *
      * @return 可以为null
      */
     Class springConfigClass();

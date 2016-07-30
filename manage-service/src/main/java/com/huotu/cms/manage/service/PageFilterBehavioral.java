@@ -45,7 +45,8 @@ public class PageFilterBehavioral implements FilterBehavioral {
             "shop",
             "admin",
             "dataSource",
-            "preview"
+            "preview",
+            "widget"
     ));
     private static final Log log = LogFactory.getLog(PageFilterBehavioral.class);
     private final Pattern pattern = Pattern.compile("^/([_a-zA-Z0-9]+)(/.*)?$");

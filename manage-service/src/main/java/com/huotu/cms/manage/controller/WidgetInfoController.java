@@ -44,6 +44,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -76,6 +77,8 @@ public class WidgetInfoController
 
     @Autowired(required = false)
     private ResourceService resourceService;
+    @Autowired
+    private ServletContext servletContext;
 
     @RequestMapping(value = "/{id}/install", method = RequestMethod.GET)
     @Transactional
@@ -183,8 +186,7 @@ public class WidgetInfoController
             WidgetStyle[] widgetStyles = widget.styles();
             widgetModel.setEditorHTML(widgetResolveService.editorHTML(widget, CMSContext.RequestContext(), null));
             widgetModel.setIdentity(Widget.WidgetIdentity(widget));
-            widgetModel.setScriptHref(resourceService.getResource("widget/" + Widget.widgetJsResourcePath(widget)).httpUrl()
-                    .toString());
+            widgetModel.setScriptHref(servletContext.getContextPath() + Widget.widgetJsResourceURI(widget));
 
             widgetModel.setThumbnail(resourceService.getResource(Widget.thumbnailPath(widget)).httpUrl().toString());
             WidgetStyleModel[] widgetStyleModels = new WidgetStyleModel[widgetStyles.length];

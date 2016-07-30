@@ -13,8 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.core.env.Environment;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.dialect.IDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
+import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
 import java.util.Set;
@@ -25,13 +31,16 @@ import java.util.Set;
  * @author CJ
  */
 @Configuration
-@ComponentScan({"com.huotu.hotcms.widget.resolve.impl", "com.huotu.hotcms.widget.resolve.thymeleaf", "com.huotu.hotcms.widget.service"})
-public class WidgetResolveServiceConfig {
+@Import(WidgetResolveServiceConfig.WidgetJavascriptResolverLoader.class)
+@EnableWebMvc
+public class WidgetResolveServiceConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
     private Set<IDialect> dialectSet;
     @Autowired
     private ITemplateResolver widgetTemplateResolver;
+    @Autowired
+    private ThymeleafViewResolver widgetJavascriptResolver;
 
     /**
      * 这个引擎仅帮助控件模板生成HTML
@@ -46,4 +55,47 @@ public class WidgetResolveServiceConfig {
         return engine;
     }
 
+    @Override
+    public void configureViewResolvers(ViewResolverRegistry registry) {
+        super.configureViewResolvers(registry);
+        registry.viewResolver(widgetJavascriptResolver);
+    }
+
+    @Import(WidgetJavascriptResolverLoader.SpringTemplateEngineLoader.class)
+    static class WidgetJavascriptResolverLoader {
+
+        @Autowired
+        private SpringTemplateEngine widgetJavascriptTemplateEngine;
+        @Autowired
+        private Environment environment;
+
+        @Bean
+        public ThymeleafViewResolver widgetJavascriptResolver() {
+            ThymeleafViewResolver resolver = new ThymeleafViewResolver();
+            resolver.setTemplateEngine(widgetJavascriptTemplateEngine);
+            resolver.setContentType("application/javascript");
+            resolver.setCharacterEncoding("UTF-8");
+            if (environment.acceptsProfiles("development")) {
+                resolver.setCache(false);
+            }
+            resolver.setViewNames(new String[]{"*.WidgetJS"});
+            return resolver;
+        }
+
+        @ComponentScan({"com.huotu.hotcms.widget.resolve.impl", "com.huotu.hotcms.widget.resolve.thymeleaf"
+                , "com.huotu.hotcms.widget.service"})
+        static class SpringTemplateEngineLoader {
+
+            @Autowired
+            private ITemplateResolver widgetJavascriptTemplateResolver;
+
+            @Bean
+            public SpringTemplateEngine widgetJavascriptTemplateEngine() {
+                SpringTemplateEngine engine = new SpringTemplateEngine();
+                engine.setTemplateResolver(widgetJavascriptTemplateResolver);
+                return engine;
+            }
+        }
+
+    }
 }

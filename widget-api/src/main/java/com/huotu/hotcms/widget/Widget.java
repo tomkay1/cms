@@ -15,6 +15,7 @@ import org.apache.http.entity.ContentType;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
+import javax.servlet.ServletContext;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Map;
@@ -44,6 +45,16 @@ public interface Widget {
      */
     static String URIEncodedWidgetIdentity(Widget widget) {
         return new WidgetIdentifier(widget.groupId(), widget.widgetId(), widget.version()).toURIEncoded();
+    }
+
+    /**
+     * @return 注意这是相对于context的, 应该注意要再加上 {@link ServletContext#getContextPath()}
+     */
+    static String widgetJsResourceURI(Widget widget) {
+        StringBuilder stringBuilder = new StringBuilder("/widget/");
+        return stringBuilder.append(
+                URIEncodedWidgetIdentity(widget))
+                .append(".js").toString();
     }
 
     static String widgetJsResourcePath(Widget widget) {

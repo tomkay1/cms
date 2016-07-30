@@ -20,10 +20,11 @@ public interface WidgetLocateService {
 
     /**
      * 定位一个控件
+     *
      * @param groupId
      * @param widgetId
      * @param version
-     * @return 已安装控件实例
+     * @return 已安装控件实例, null 如果没有找到
      */
     InstalledWidget findWidget(String groupId, String widgetId, String version);
 

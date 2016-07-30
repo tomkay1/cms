@@ -39,6 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StreamUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -208,20 +209,25 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
                                     + entry.getKey(), entry.getValue().getInputStream());
                         }
                     }
+
+                    // widgetJs
                     Resource resource = widget.widgetJs();
-                    InputStream inputStream = resource.getInputStream();
-                    byte[] data = new byte[1024];
-                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                    outputStream.write(("CMSWidgets.pushNextWidgetIdentity('" + identifier.toString() + "')").getBytes());
-                    int len;
-                    while ((len = inputStream.read(data)) != -1) {
-                        outputStream.write(data, 0, len - 1);
+                    if (resource != null && resource.exists()) {
+                        //保存
+                        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+                        buffer.write(("CMSWidgets.pushNextWidgetIdentity('" + identifier.toString() + "');\n")
+                                .getBytes());
+                        try (InputStream stream = resource.getInputStream()) {
+                            StreamUtils.copy(stream, buffer);
+                        }
+
+                        resourceService.uploadResource(Widget.widgetJsResourcePath(widget)
+                                , new ByteArrayInputStream(buffer.toByteArray()));
                     }
+
                     ImageHelper.storeAsImage("png", resourceService, widget.thumbnail().getInputStream()
                             , Widget.thumbnailPath(widget));
 
-                    resourceService.uploadResource("widget/" + Widget.widgetJsResourcePath(widget)
-                            , new ByteArrayInputStream(outputStream.toByteArray()));
                     for (WidgetStyle style : widget.styles()) {
                         ImageHelper.storeAsImage("png", resourceService, style.thumbnail().getInputStream()
                                 , WidgetStyle.thumbnailPath(widget, style));

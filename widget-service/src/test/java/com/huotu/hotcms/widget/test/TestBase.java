@@ -74,7 +74,7 @@ public class TestBase extends SpringWebTest {
 //                    "pagingWidget", "1.0-SNAPSHOT")
 //            ,
             new WidgetIdentifier("com.huotu.hotcms.widget.picCarousel",
-            "picCarousel", "1.0-SNAPSHOT")
+                    "picCarousel", "1.0-SNAPSHOT")
             , new WidgetIdentifier("com.huotu.hotcms.widget.productList",
             "productList", "1.0-SNAPSHOT")
             , new WidgetIdentifier("com.huotu.hotcms.widget.picBanner",
@@ -176,10 +176,15 @@ public class TestBase extends SpringWebTest {
         return new Empty();
     }
 
-    private PageElement randomComponent() throws IOException, FormatException {
+    protected PageElement randomPageElement() throws IOException, FormatException {
         if (random.nextBoolean())
             return randomEmpty();
 
+        return randomComponent();
+    }
+
+    @NotNull
+    protected Component randomComponent() throws IOException, FormatException {
         WidgetIdentifier widgetIdentifier = preparedWidgets[random.nextInt(preparedWidgets.length)];
         Component component = makeComponent(widgetIdentifier.getGroupId(), widgetIdentifier.getArtifactId()
                 , widgetIdentifier.getVersion());
@@ -234,7 +239,7 @@ public class TestBase extends SpringWebTest {
             if (isLayout)
                 pageElementList.add(randomLayout());
             else
-                pageElementList.add(randomComponent());
+                pageElementList.add(randomPageElement());
         }
 
         layout.setParallelElements(pageElementList.toArray(new PageElement[pageElementList.size()]));

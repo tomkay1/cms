@@ -37,6 +37,9 @@
     <button id="editorSaver">Save me!</button>
     <button id="editorInit">init me!</button>
     <!--${properties} should be supported-->
+    <span id="previewRegion">
+        nothing
+    </span>
     <div cms:replaceEditor="${widgetId},${properties}"></div>
 
 </div>
@@ -59,7 +62,7 @@
 <script src="../../../../../manage-service/src/main/resources/web/public/assets/js/page/editPage.js"
         th:src="'/manage-resources/assets/js/page/editPage.js'"></script>
 <!--<script src="../../../../../manage-service/src/main/resources/web/public/assets/js/data/dataHandle.js"-->
-        <!--th:src="'/manage-resources/assets/js/data/dataHandle.js'"></script>-->
+<!--th:src="'/manage-resources/assets/js/data/dataHandle.js'"></script>-->
 <script src="../../../../../manage-service/src/main/resources/web/public/assets/js/common.js"
         th:src="'/manage-resources/assets/js/common.js'"></script>
 <script src="../../../../../manage-service/src/main/resources/web/public/assets/js/cms.widgets.js"
@@ -75,25 +78,31 @@
     var _failedMessage;
 
     /*<![CDATA[*/
+    var CMSDebugMode = /*[[${@configInfo.debugging}]]*/ false;
     var testMode = /*[[${@environment.acceptsProfiles('test')}]]*/ true;
     var scope = /*[[${widgetId}]]*/ null;
     var _CMS_DataSource_URI = /*[[@{/dataSource/}]]*/ null;
     /*]]>*/
     $('#editorSaver').click(function () {
         _failedMessage = null;
-        var properties = window[scope].saveComponent();
-        if(properties!=null){
-            _successProperties = properties;
-        }else{
-            _failedMessage = 'save error';
-        }
-        console.error("save error");
+        CMSWidgets.saveComponent('previewRegion', {
+            onSuccess: function (ps) {
+                _successProperties = ps;
+            }, onFailed: function (msg) {
+                _failedMessage = msg;
+                console.error("save error", msg);
+            }
+        });
+
     });
 
     $('#editorInit').click(function () {
-        window[scope].init(1);
-        console.error("init error");
+        CMSWidgets.openEditor('previewRegion', scope);
+//        window[scope].init(1);
+//        console.error("init error");
     });
+
+    CMSWidgets.pushNextWidgetIdentity(scope);
 </script>
 <script th:src="@{/javascript/{id}(id=${widgetId})}"></script>
 </body>

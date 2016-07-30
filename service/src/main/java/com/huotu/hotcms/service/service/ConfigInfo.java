@@ -15,14 +15,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import java.lang.management.ManagementFactory;
+import java.util.regex.Pattern;
+
 @Component
 public class ConfigInfo {
+    private final static Pattern debugPattern = Pattern.compile("-Xdebug|jdwp");
     private final String outLoginUrl;
-
     private final String mallManageUrl;
-
     private final String mallSupperUrl;
-
+    private final boolean debugging;
     @Value("${resources.site}")
     private String resourcesSiteLogo;
     @Value("${resources.video}")
@@ -39,17 +41,26 @@ public class ConfigInfo {
     private String resourcesConfig;
     @Value("${resources.template}")
     private String resourcesTemplate;
-
     @Value("${resources.page}")
     private String pageConfig;
 
     @Autowired
     public ConfigInfo(ConfigService configService, Environment environment) {
+        this.debugging = Debugging();
         this.outLoginUrl = environment.getProperty("cms.loginUrl", "http://manager." + configService.getMallDomain());
         this.mallManageUrl = environment.getProperty("huobanmall.mallManageUrl", "http://pdmall."
                 + configService.getMallDomain() + "/home.aspx");
         this.mallSupperUrl = environment.getProperty("huobanmall.mallSupperUrl", "http://manager."
                 + configService.getMallDomain() + "/home.aspx?customerid=%s");
+    }
+
+    private static boolean Debugging() {
+        for (String arg : ManagementFactory.getRuntimeMXBean().getInputArguments()) {
+            if (debugPattern.matcher(arg).find()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public String getResourcesSiteLogo(long ownerId) {
@@ -122,4 +133,7 @@ public class ConfigInfo {
         return String.format(mallSupperUrl, customerId);
     }
 
+    public boolean isDebugging() {
+        return debugging;
+    }
 }

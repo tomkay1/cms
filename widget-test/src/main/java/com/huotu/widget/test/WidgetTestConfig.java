@@ -11,6 +11,7 @@ package com.huotu.widget.test;
 
 import com.huotu.hotcms.service.config.ServiceConfig;
 import com.huotu.hotcms.widget.Widget;
+import com.huotu.hotcms.widget.controller.CMSDataSourceController;
 import com.huotu.hotcms.widget.loader.WidgetLoaderConfig;
 import com.huotu.hotcms.widget.resolve.WidgetResolveServiceConfig;
 import com.huotu.hotcms.widget.service.CMSDataSourceService;
@@ -45,12 +46,16 @@ public class WidgetTestConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
     private ThymeleafViewResolver normalViewResolver;
-
     @Autowired
     private ThymeleafViewResolver javascriptThymeleafViewResolver;
 
     public static String WidgetIdentity(Widget widget) {
         return widget.widgetId().replace('-', '.');
+    }
+
+    @Bean
+    public CMSDataSourceController cmsDataSourceController() {
+        return new CMSDataSourceController();
     }
 
     @Override

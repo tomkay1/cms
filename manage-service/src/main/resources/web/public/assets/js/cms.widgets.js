@@ -18,6 +18,14 @@ var CMSWidgets = {};
 //-------------------------- PUBLIC METHODS
 
 /**
+ * 目前依赖于载入的页面支持的global变量CMSDebugMode
+ * @return 是否处于调试状态
+ */
+CMSWidgets.isDebugging = function () {
+    return CMSDebugMode;
+};
+
+/**
  * 这个方法应该是由编辑器调用
  * 下个控件的识别符,这个方法总是和initWidget配对出现
  * @param identity 控件识别符
@@ -51,6 +59,8 @@ CMSWidgets.initWidget = function (config) {
  */
 CMSWidgets.openEditor = function (globalId, identity) {
     var config = CMSWidgets.getNoNullConfig(identity, globalId);
+    if (CMSWidgets.isDebugging())
+        console.error('config on openEditor:', config);
     config.editor.open(globalId);
 };
 /**
@@ -84,6 +94,9 @@ CMSWidgets.closeEditor = function (globalId, identity) {
  */
 CMSWidgets.saveComponent = function (globalId, callbacks) {
     var config = CMSWidgets.getNoNullConfig(null, globalId);
+
+    if (CMSWidgets.isDebugging())
+        console.error('config on saveComponent:', config);
 
     var voidFunction = function () {
 

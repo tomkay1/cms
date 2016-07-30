@@ -183,7 +183,7 @@ public class WidgetInfoController
             WidgetStyle[] widgetStyles = widget.styles();
             widgetModel.setEditorHTML(widgetResolveService.editorHTML(widget, CMSContext.RequestContext(), null));
             widgetModel.setIdentity(Widget.WidgetIdentity(widget));
-            widgetModel.setScriptHref(resourceService.getResource(Widget.widgetJsResourcePath(widget)).httpUrl()
+            widgetModel.setScriptHref(resourceService.getResource("widget/" + Widget.widgetJsResourcePath(widget)).httpUrl()
                     .toString());
 
             widgetModel.setThumbnail(resourceService.getResource(Widget.thumbnailPath(widget)).httpUrl().toString());

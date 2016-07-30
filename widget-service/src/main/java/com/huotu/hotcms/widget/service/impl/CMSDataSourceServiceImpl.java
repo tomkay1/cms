@@ -40,13 +40,12 @@ import java.util.List;
 public class CMSDataSourceServiceImpl implements CMSDataSourceService {
 
     @Autowired
-    CategoryRepository categoryRepository;
+    private CategoryRepository categoryRepository;
     @Autowired
     private GalleryRepository galleryRepository;
     @Autowired
     private GalleryItemRepository galleryItemRepository;
-    @Autowired
-    private CategoryRepository categoryRepository;
+
     @Autowired
     private LinkRepository linkRepository;
     @Autowired

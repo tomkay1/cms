@@ -13,9 +13,17 @@
  * Created by CJ on 7/30/16.
  */
 
-CMSWidgets = CMSWidgets || {};
+var CMSWidgets = {};
 
 //-------------------------- PUBLIC METHODS
+
+/**
+ * 目前依赖于载入的页面支持的global变量CMSDebugMode
+ * @return 是否处于调试状态
+ */
+CMSWidgets.isDebugging = function () {
+    return CMSDebugMode;
+};
 
 /**
  * 这个方法应该是由编辑器调用
@@ -51,9 +59,20 @@ CMSWidgets.initWidget = function (config) {
  */
 CMSWidgets.openEditor = function (globalId, identity) {
     var config = CMSWidgets.getNoNullConfig(identity, globalId);
+    if (CMSWidgets.isDebugging())
+        console.error('config on openEditor:', config);
     config.editor.open(globalId);
 };
-
+/**
+ * 同上
+ * 在用户意图关闭某一个组件的设置界面时,应该调用这个方法
+ * @param globalId 组件的id
+ * @param identity 控件识别符
+ */
+CMSWidgets.closeEditor = function (globalId, identity) {
+    var config = CMSWidgets.getNoNullConfig(identity, globalId);
+    config.editor.close(globalId);
+};
 /**
  * 使用场景：组件使用者点击“保存”时调用。
  * return properties.如果失败则返回null
@@ -75,6 +94,9 @@ CMSWidgets.openEditor = function (globalId, identity) {
  */
 CMSWidgets.saveComponent = function (globalId, callbacks) {
     var config = CMSWidgets.getNoNullConfig(null, globalId);
+
+    if (CMSWidgets.isDebugging())
+        console.error('config on saveComponent:', config);
 
     var voidFunction = function () {
 
@@ -113,7 +135,8 @@ CMSWidgets.getNoNullConfig = function (identity, globalId) {
     var config = CMSWidgets.widgetLibraries[identity];
     if (!config)
         config = CMSWidgets.defaultConfig;
-    var noNullConfig = {};
+    // 克隆对象及其方法
+    var noNullConfig = jQuery.extend(true, {}, config);
 
     noNullConfig.editor = config.editor || CMSWidgets.defaultConfig.editor;
     var editor = noNullConfig.editor;

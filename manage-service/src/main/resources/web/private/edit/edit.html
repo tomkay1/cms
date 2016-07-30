@@ -235,6 +235,7 @@
     var savePage=/*[[@{/manage/pages/}]]*/ null;
     var pageId=/*[[${pageId}]]*/ -999;
     // 识别是否处于测试阶段 前端勿删！
+    var CMSDebugMode = /*[[${@configInfo.debugging}]]*/ false;
     var testMode = /*[[${@environment.acceptsProfiles('test')}]]*/ true;
     var _CMS_DataSource_URI = /*[[@{/dataSource/}]]*/ null;
 </script>
@@ -251,8 +252,8 @@
 
 <script src="../../public/assets/libs/jquery.htmlClean.js" ewp:src="/assets/libs/jquery.htmlClean.js"></script>
 <script src="../../public/assets/js/common.js" ewp:src="/assets/js/common.js"></script>
+<script src="../../public/assets/js/cms.widgets.js" ewp:src="/assets/js/cms.widgets.js"></script>
 <script src="../../public/assets/js/page/editPage.js" ewp:src="/assets/js/page/editPage.js"></script>
 <script src="../../public/assets/js/data/dataHandle.js" ewp:src="/assets/js/data/dataHandle.js"></script>
-
 
 </html>

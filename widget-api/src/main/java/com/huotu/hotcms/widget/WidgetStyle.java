@@ -28,7 +28,9 @@ public interface WidgetStyle {
     /**
      * @return 样式名称
      */
-    String name();
+    default String name() {
+        return name(Locale.CHINA);
+    }
 
     /**
      * @param locale 区域
@@ -39,7 +41,9 @@ public interface WidgetStyle {
     /**
      * @return 样式描述
      */
-    String description();
+    default String description() {
+        return description(Locale.CHINA);
+    }
 
     /**
      * @param locale 区域

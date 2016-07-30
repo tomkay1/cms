@@ -29,27 +29,17 @@ public class DefaultWidgetStyle implements WidgetStyle{
     }
 
     @Override
-    public String name() {
-        return "bootstrap 风格";
-    }
-
-    @Override
     public String name(Locale locale) {
         if (locale.equals(Locale.CHINESE)) {
-            return name();
+            return "bootstrap 风格";
         }
         return "bootstrap style ${artifactId}";
     }
 
     @Override
-    public String description() {
-        return "基于bootstrap样式的   ";
-    }
-
-    @Override
     public String description(Locale locale) {
         if (locale.equals(Locale.CHINESE)) {
-            return description();
+            return "基于bootstrap样式的   ";
         }
         return "Based on the bootstrap style by ${artifactId}";
     }

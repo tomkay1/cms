@@ -67,12 +67,8 @@ public class CMSDataSourceController {
      */
     @RequestMapping(value = "/findLink/{parentId}", method = RequestMethod.GET)
     public ResponseEntity findLink(@PathVariable("parentId") Long parentId) {
-        Category category = categoryService.get(parentId);
-        if (category != null && category.getContentType().equals(ContentType.Link)) {
-            List<Link> data = cmsDataSourceService.findLink(parentId);
-            return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(data);
-        }
-        return ResponseEntity.noContent().build();
+        List<Link> data = cmsDataSourceService.findLink(parentId);
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(data);
     }
 
     /**

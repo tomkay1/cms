@@ -39,7 +39,6 @@ public class WidgetInfo implements Widget{
         return "${artifactId}";
     }
 
-
     @Override
     public String name(Locale locale) {
         if (locale.equals(Locale.CHINESE)) {
@@ -49,14 +48,9 @@ public class WidgetInfo implements Widget{
     }
 
     @Override
-    public String description() {
-        return "这是一个 ${name}，你可以对组件进行自定义修改。";
-    }
-
-    @Override
     public String description(Locale locale) {
         if (locale.equals(Locale.CHINESE)) {
-            return description();
+            return "这是一个 ${name}，你可以对组件进行自定义修改。";
         }
         return "This is a ${artifactId},  you can make custom change the component.";
     }

@@ -20,6 +20,15 @@ import java.util.Locale;
  */
 public interface WidgetStyle {
 
+    static String thumbnailPath(Widget widget, WidgetStyle style) {
+        StringBuilder stringBuilder = new StringBuilder("widgets/thumbnail/");
+        return stringBuilder.append(
+                Widget.URIEncodedWidgetIdentity(widget))
+                .append("/")
+                .append(style.id())
+                .append(".png").toString();
+    }
+
     /**
      * @return 这个样式的id, 将反应在 {@link Component#styleId}
      */
@@ -65,5 +74,4 @@ public interface WidgetStyle {
      * @return 浏览模板, 既最终模板, 必须存在不然爆炸
      */
     Resource browseTemplate();
-
 }

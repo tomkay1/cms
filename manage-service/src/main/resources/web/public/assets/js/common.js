@@ -37,6 +37,7 @@ var widgetHandle = {
         GlobalID = $(ele).siblings('.view').children().attr('id');
         if (wsCache.get(GlobalID) == null) widgetHandle.setStroe(GlobalID);
         widgetHandle.getIdentity(ele ,function (identity) {
+            dynamicLoading.js( wsCache.get(identity).script);
             if ( CMSWidgets )  CMSWidgets.openEditor(GlobalID,identity);
         });
     },
@@ -135,34 +136,37 @@ function getDataSource(type, parameter, onSuccess, onError) {
 * @type {{css: dynamicLoading.css, js: dynamicLoading.js}}
 */
 var dynamicLoading = {
-    css: function(path){
+    init: function (type, path) {
         if( !path || path.length === 0){
             console.error('参数 "path" 是必需的！');
         }
         var exist = false;
-        var ele = $('link');
+        var handler = (type === 'css');
+        var ele =  handler ? $('link') : $('script');
         $.each(ele, function (i, v) {
-            var href = $(v).attr('href');
-            if ( href.indexOf(path) != -1 ) {
+            var attr = handler ? 'href' : 'src';
+            var argv = $(v).attr(attr);
+            if ( argv && argv.indexOf(path) != -1 ) {
                 exist = true;
-                $(v).attr('href', path + '?t=' + +new Date());
+                $(v).attr(attr, path + '?t=' + +new Date());
             }
         });
         if (!exist) {
             var lastElement = ele.last();
-            var link = $('<link>');
-            link.attr({'rel': 'stylesheet', 'href': path + '?t=' + +new Date()});
-            lastElement.after(link);
+            var addEle = handler ? $('<link>') : $('<script></script>');
+            if ( handler ) {
+                addEle.attr({'rel': 'stylesheet', 'href': path + '?t=' + +new Date()});
+            } else {
+                addEle.attr('src', path);
+            }
+            lastElement.after(addEle);
         }
     },
+    css: function(path){
+        dynamicLoading.init('css', path);
+    },
     js: function(path){
-        if( !path || path.length === 0){
-            console.error('参数 "path" 是必需的！');
-        }
-        var lastElement = $('script').last();
-        var script = $('<script></script>');
-        script.attr('src', path);
-        lastElement.after(script);
+        dynamicLoading.init('js', path);
     }
 };
 

@@ -90,7 +90,7 @@ public interface Widget {
     Map<String, Resource> publicResources();
 
     /**
-     * @return 控件的Javascript模板(是模板), 不可为空 内容上也必须严格符合<a href="https://huobanplus.quip.com/KngdAAGxtKSQ">标准</a>
+     * @return 控件的Javascript模板(是模板), 可以为空 内容上也必须严格符合<a href="https://huobanplus.quip.com/KngdAAGxtKSQ">标准</a>
      */
     Resource widgetJs();
 

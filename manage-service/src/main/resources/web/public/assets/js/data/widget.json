@@ -4,7 +4,7 @@
     "locallyName": "test2",
     "thumbnail": "test.png",
     "editorHTML": "<s id=\"yes\">测试</s>",
-    "scriptHref": "http://cdn.bootcss.com/lodash.js/4.13.1/lodash.min.js",
+    "scriptHref": "../../public/assets/js/jPicture/jquery.queue.js",
     "defaultProperties": {
       "name": "Neo",
       "sex": "Man"
@@ -29,7 +29,7 @@
     "locallyName": "test3",
     "thumbnail": "test.png",
     "editorHTML": "<i>测试</i>",
-    "scriptHref": "http://cdn.bootcss.com/6to5/3.6.5/browser-polyfill.js",
+    "scriptHref": "../../public/assets/js/jPicture/jPicture.js",
     "defaultProperties": {
       "name": "CHang",
       "sex": "Man"
@@ -54,7 +54,7 @@
     "locallyName": "test4",
     "thumbnail": "test.png",
     "editorHTML": "<kbd>测试</kbd>",
-    "scriptHref": "http://cdn.bootcss.com/fullPage.js/2.8.2/jquery.fullPage.js",
+    "scriptHref": "../../public/assets/js/page/home.js",
     "defaultProperties": {
       "name": "Fei",
       "sex": "Man"

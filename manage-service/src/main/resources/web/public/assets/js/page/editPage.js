@@ -119,7 +119,7 @@ var editFunc = {
     },
     closeConfig: function () {
         $('#cancelBtn').click(function () {
-            editFunc.closeFunc();
+            widgetHandle.closeSetting();
         });
     },
     closeFunc: function () {
@@ -177,7 +177,10 @@ var Page = {
         $.getJSON(url, function(result){
             var parent = $('#configuration').find('.conf-body');
             $.each(result, function (i, v) {
-                wsCache.set(v.identity, v.scriptHref);
+                var initData = {};
+                initData.script = v.scriptHref;
+                initData.properties = v.defaultProperties;
+                wsCache.set(v.identity, initData);
                 // 组件列表渲染
                 var element = $('#widgetLists');
                 element.append(Page.widgetHTML.join('\n'));

@@ -12,10 +12,12 @@ if (!wsCache.isSupported()) {
 /**
  * GlobalID 全局参数，用于存储当前操作组件的唯一 ID
  */
-var GlobalID;
+var GlobalID, identity;
 
 function widgetProperties( id ) {
-    return wsCache.get(id) || {};
+    var ele = $('#' + id);
+    var identity = ele.data('widgetidentity');
+    return wsCache.get(id) || wsCache.get(identity).properties;
 };
 
 /**
@@ -27,10 +29,16 @@ function widgetProperties( id ) {
  * saveFunc：动态调用组件保存方法
  */
 var widgetHandle = {
+    getIdentity: function (ele, callback) {
+        identity = $(ele).siblings('.view').children().data('widgetidentity');
+        callback&&callback(identity);
+    },
     createStore: function (ele) {
         GlobalID = $(ele).siblings('.view').children().attr('id');
-        widgetHandle.setStroe(GlobalID);
-        widgetHandle.initFunc(GlobalID);
+        if (wsCache.get(GlobalID) == null) widgetHandle.setStroe(GlobalID);
+        widgetHandle.getIdentity(ele ,function (identity) {
+            if ( CMSWidgets )  CMSWidgets.openEditor(GlobalID,identity);
+        });
     },
     setStroe: function (id, data) {
         if ( data ) {
@@ -39,30 +47,24 @@ var widgetHandle = {
             wsCache.set(id, { 'properties' : {} });
         }
     },
-    getGlobalFunc: function (id) {
-        if ( !id ) return false;
-        var arr = id.split('-');
-        return window[arr[0]];
-    },
-    initFunc: function (id) {
-        var fn = widgetHandle.getGlobalFunc(id);
-        if( fn && typeof fn.init === 'function' ) {
-            fn.init(id);
-        }
-    },
     saveFunc: function (id) {
-        var fn = widgetHandle.getGlobalFunc(id);
         var path = '/preview/' + pageId + '/' + id + '.css';
-
         dynamicLoading.css(path);
-        if( fn && typeof fn.saveCompoent === 'function' ) {
-            var properties = fn.saveCompoent();
-            if( properties !== null && !$.isEmptyObject(properties)) {
-                widgetHandle.setStroe(GlobalID, properties);
-                updataCompoentPreview(id, properties);
+        CMSWidgets.saveComponent(id, {
+            onSuccess: function (ps) {
+                if ( properties !== null && !$.isEmptyObject(properties) )
+                widgetHandle.setStroe(id, ps);
+                updataCompoentPreview(id, ps);
                 editFunc.closeFunc();
+            },
+            onFailed: function (msg) {
+                layer.msg(msg)
             }
-        }
+        });
+    },
+    closeSetting: function () {
+        CMSWidgets.closeEditor(GlobalID,identity);
+        editFunc.closeFunc();
     }
 };
 

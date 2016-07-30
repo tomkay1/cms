@@ -13,7 +13,7 @@
  * Created by CJ on 7/30/16.
  */
 
-CMSWidgets = CMSWidgets || {};
+var CMSWidgets = {};
 
 //-------------------------- PUBLIC METHODS
 
@@ -53,7 +53,16 @@ CMSWidgets.openEditor = function (globalId, identity) {
     var config = CMSWidgets.getNoNullConfig(identity, globalId);
     config.editor.open(globalId);
 };
-
+/**
+ * 同上
+ * 在用户意图关闭某一个组件的设置界面时,应该调用这个方法
+ * @param globalId 组件的id
+ * @param identity 控件识别符
+ */
+CMSWidgets.closeEditor = function (globalId, identity) {
+    var config = CMSWidgets.getNoNullConfig(identity, globalId);
+    config.editor.close(globalId);
+};
 /**
  * 使用场景：组件使用者点击“保存”时调用。
  * return properties.如果失败则返回null
@@ -113,7 +122,8 @@ CMSWidgets.getNoNullConfig = function (identity, globalId) {
     var config = CMSWidgets.widgetLibraries[identity];
     if (!config)
         config = CMSWidgets.defaultConfig;
-    var noNullConfig = {};
+    // 克隆对象及其方法
+    var noNullConfig = jQuery.extend(true, {}, config);
 
     noNullConfig.editor = config.editor || CMSWidgets.defaultConfig.editor;
     var editor = noNullConfig.editor;

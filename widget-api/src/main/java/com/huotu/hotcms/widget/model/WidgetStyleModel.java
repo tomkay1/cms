@@ -22,6 +22,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class WidgetStyleModel {
+    private String id;
     private String locallyName;
     private String thumbnail;
     private String previewHTML;

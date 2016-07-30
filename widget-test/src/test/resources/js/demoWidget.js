@@ -11,12 +11,18 @@ CMSWidgets.initWidget(
     {
         // 编辑器相关
         editor: {
-            // 
+            //
+            properties:null,
+            initProperties:function(){
+                //init properties
+            },
             open: function (globalId) {
-
+                this.properties = widgetProperties(globalId);
+                this.initProperties();
             },
             saveComponent: function (onSuccess, onFailed) {
-                return {};
+                onSuccess&&onSuccess(this.properties);
+                onFailed&&onFailed("xxx");
             }
         },
         // 浏览相关 暂无

@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.widget;
 
+import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.http.entity.ContentType;
 import org.springframework.core.io.ClassPathResource;
@@ -36,6 +37,20 @@ public interface Widget {
         return widget.groupId() + "-" + widget.widgetId() + ":" + widget.version();
     }
 
+    static String widgetJsResourcePath(Widget widget) {
+        StringBuilder stringBuilder = new StringBuilder("widgets/javascript/");
+        return stringBuilder.append(
+                new WidgetIdentifier(widget.groupId(), widget.widgetId(), widget.version()).toURIEncoded())
+                .append(".js").toString();
+    }
+
+    static String thumbnailPath(Widget widget) {
+        StringBuilder stringBuilder = new StringBuilder("widgets/thumbnail/");
+        return stringBuilder.append(
+                new WidgetIdentifier(widget.groupId(), widget.widgetId(), widget.version()).toURIEncoded())
+                .append(".png").toString();
+    }
+
     String groupId();
 
     String widgetId();
@@ -57,7 +72,6 @@ public interface Widget {
     default String version() {
         return this.getClass().getPackage().getImplementationVersion();
     }
-
 
     /**
      * 接口提供了默认返货读取头信息中的产品信息

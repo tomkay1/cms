@@ -36,6 +36,7 @@ public class WidgetIdentifier implements Serializable {
     private String artifactId;
     private String version;
 
+
     /**
      * @param identify groupId-widgetId:version 也可能是Base64加密以后的{@link #toURIEncoded()}
      * @return
@@ -66,10 +67,14 @@ public class WidgetIdentifier implements Serializable {
 
     /**
      * @return <pre>Base64.getUrlEncoder().encodeToString(data)</pre>
-     * @throws UnsupportedEncodingException
      */
-    public String toURIEncoded() throws UnsupportedEncodingException {
-        byte[] data = toString().getBytes("UTF-8");
+    public String toURIEncoded() {
+        byte[] data;
+        try {
+            data = toString().getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new Error(e);
+        }
         return Base64.getUrlEncoder().encodeToString(data);
 //        return URLEncoder.encode(toString(),"UTF-8");
     }

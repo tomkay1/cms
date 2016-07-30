@@ -118,6 +118,7 @@ function getDataSource(type, parameter, onSuccess, onError) {
     if (parameter != null) {
         url = url + "/" + parameter;
     }
+    console.error("url:"+url)
     $.ajax({
         type: 'GET',
         url: url,
@@ -244,6 +245,7 @@ function uploadForm (obj) {
         },
     });
 };
+
 
 /**
  *

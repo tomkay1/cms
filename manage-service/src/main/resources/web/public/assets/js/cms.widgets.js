@@ -61,7 +61,7 @@ CMSWidgets.openEditor = function (globalId, identity) {
     var config = CMSWidgets.getNoNullConfig(identity, globalId);
     if (CMSWidgets.isDebugging())
         console.error('config on openEditor:', config);
-    //config.editor.open(globalId);
+    config.editor.open(globalId);
 };
 /**
  * 同上
@@ -71,7 +71,7 @@ CMSWidgets.openEditor = function (globalId, identity) {
  */
 CMSWidgets.closeEditor = function (globalId, identity) {
     var config = CMSWidgets.getNoNullConfig(identity, globalId);
-    //config.editor.close(globalId);
+    config.editor.close(globalId);
 };
 /**
  * 使用场景：组件使用者点击“保存”时调用。
@@ -112,9 +112,6 @@ CMSWidgets.saveComponent = function (globalId, callbacks) {
 //-------------------------- PRIVATE
 // 默认配置
 CMSWidgets.defaultConfig = {
-    editor: {
-        open: {}
-    }
     // TODO 这是应该配置一个所有控件都「应该」做到的事
 };
 CMSWidgets.nextWidgetIdentity = null;

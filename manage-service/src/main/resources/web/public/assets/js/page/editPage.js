@@ -313,6 +313,8 @@ editPage.init = function () {
 
     $('.conf-body').on('click','img.changeStyle', function () {
         editFunc.changeImgStyleActive($(this));
+        var id = $(this).data('styleid');
+        $('#'+GlobalID).attr('data-styleid',id);
     });
     editFunc.init();
     Page.init(initPath);

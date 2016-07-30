@@ -16,7 +16,7 @@ CMSWidgets.initWidget(
                 if (CMSDebugMode)
                     console.error('初始化编辑器', this);
                 window['inited'] = true;
-                this.ps = {};
+                this.ps = widgetProperties();
                 var me = this;
                 $('#DataFetcher').bind('click', function () {
                     if (CMSDebugMode)

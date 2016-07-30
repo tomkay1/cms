@@ -78,6 +78,8 @@ CMSWidgets.saveComponent = function (globalId, callbacks) {
 
 
 //-------------------------- PRIVATE
+// 默认配置
+CMSWidgets.defaultConfig = {};
 CMSWidgets.nextWidgetIdentity = null;
 CMSWidgets.widgetLibraries = {};
 
@@ -86,7 +88,21 @@ CMSWidgets.initWidgetCore = function (identity, config) {
     CMSWidgets.widgetLibraries[identity] = config;
 };
 
+// 不然会返回一个配置
 CMSWidgets.getNoNullConfig = function (identity, globalId) {
+    if (globalId) {
+        $("#" + globalId).attr('widgetIdentity', identity);
+    }
+    var config = CMSWidgets.widgetLibraries[identity];
+    if (!config)
+        config = CMSWidgets.defaultConfig;
+    var noNullConfig = {};
 
+    noNullConfig.editor = config.editor || CMSWidgets.defaultConfig.editor;
+    var editor = noNullConfig.editor;
+    editor.open = editor.open || CMSWidgets.defaultConfig.editor.open;
+    editor.saveComponent = editor.saveComponent || CMSWidgets.defaultConfig.editor.saveComponent;
+
+    return noNullConfig;
 };
 

@@ -14,6 +14,7 @@ import com.huotu.cms.manage.controller.support.CRUDController;
 import com.huotu.cms.manage.exception.RedirectException;
 import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Login;
+import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.service.repository.OwnerRepository;
 import com.huotu.hotcms.widget.CMSContext;
@@ -29,9 +30,8 @@ import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.NumberUtils;
@@ -46,13 +46,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * @author CJ
@@ -152,73 +150,58 @@ public class WidgetInfoController
         return "/view/widget/widget.html";
     }
 
+    /**
+     * 获取控件资源时参照 {@link WidgetFactoryService#installWidgetInfo(WidgetInfo)}
+     *
+     * @param locale
+     * @param login
+     * @return
+     * @throws IOException
+     * @throws URISyntaxException
+     * @throws FormatException
+     */
     @ResponseBody
     @PreAuthorize("hasRole('" + Login.Role_Manage_Value + "')")
     @RequestMapping(value = "/widgets", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
-    public List<WidgetModel> getWidgetInfo() throws IOException, URISyntaxException, FormatException {
-        List<InstalledWidget> installedWidgets = widgetFactoryService.widgetList(null);
+    public List<WidgetModel> getWidgetInfo(Locale locale, @AuthenticationPrincipal Login login) throws IOException
+            , URISyntaxException, FormatException {
+        Owner owner = ownerRepository.getOne(login.currentOwnerId());
+        List<InstalledWidget> installedWidgets = widgetFactoryService.widgetList(owner);
         if (environment.acceptsProfiles("test")) {
             if (installedWidgets == null || installedWidgets.size() == 0) {
                 widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
                         , "1.0-SNAPSHOT", "picCarousel");
             }
         }
-        installedWidgets = widgetFactoryService.widgetList(null);
+        installedWidgets = widgetFactoryService.widgetList(owner);
         Widget widget;
         List<WidgetModel> widgetModels = new ArrayList<>();
         for (InstalledWidget installedWidget : installedWidgets) {
             WidgetModel widgetModel = new WidgetModel();
             widget = installedWidget.getWidget();
-            widgetModel.setLocallyName(widget.name(Locale.CHINA));
+            widgetModel.setLocallyName(widget.name(locale));
             WidgetStyle[] widgetStyles = widget.styles();
-            String styleModel = "<div>\n" +
-                    "            <h3>\n" +
-                    "                <i class=\"icon-puzzle\"></i><b></b>选择组件样式\n" +
-                    "            </h3>\n" +
-                    "            <div class=\"swiper-container styles\">\n" +
-                    "              %s " +
-                    "            </div>\n" +
-                    "<div class=\"swiper-button-next\"></div>\n" +
-                    "<div class=\"swiper-button-prev\"></div>\n"+
-                    "        </div>\n";
-
-            String item = "<div class=\"swiper-wrapper\">\n" +
-                    "<div class=\"swiper-slide\">" +
-                    "<img class=\"center-block\" src=\"%s\">\n" +
-                    "<p>默认</p>\n" +
-                    "</div>\n" +
-                    "</div>\n";
-            String prefix = "widget/" + widget.groupId() + "-" + widget.widgetId()
-                    + "-" + widget.version() + "/";
-            StringBuilder sb = new StringBuilder();
-            for (WidgetStyle widgetStyle : widgetStyles) {
-                URI src = resourceService.getResource(prefix + ((ClassPathResource) widgetStyle.thumbnail()).getPath()).httpUrl().toURI();
-                sb.append(String.format(item, src));
-            }
-            styleModel = String.format(styleModel, sb.toString());
-            widgetModel.setEditorHTML(styleModel + widgetResolveService.editorHTML(widget, CMSContext.RequestContext(), null));
-            //<groupId>-<widgetId>:<version>
-            widgetModel.setIdentity(widget.groupId() + "-" + widget.widgetId() + ":" + widget.version());
-
+            widgetModel.setEditorHTML(widgetResolveService.editorHTML(widget, CMSContext.RequestContext(), null));
+            WidgetIdentifier identifier = new WidgetIdentifier(widget.groupId(), widget.widgetId(), widget.version());
+            widgetModel.setIdentity(identifier.toString());
+            widgetModel.setScriptHref(resourceService.getResource("widget/"
+                    + Widget.widgetJsResourcePath(widget)).httpUrl().toURI().toString());
+            //todo 可能存在更多public js
             //获取js资源uri
-            for (Map.Entry<String, Resource> entry : widget.publicResources().entrySet()) {
-                if (entry.getKey().endsWith(".js")) {
-                    widgetModel.setScriptHref(resourceService.getResource("widget/" + widget.groupId() + "-"
-                            + widget.widgetId() + "-" + widget.version() + "/" + entry.getKey())
-                            .httpUrl().toURI().toString() + ","
-                    );
-                }
-            }
-            if (widgetModel.getScriptHref() != null && widgetModel.getScriptHref().length() > 0) {
-                widgetModel.setScriptHref(widgetModel.getScriptHref().substring(0
-                        , widgetModel.getScriptHref().length() - 1));
-            }//
-
-            widgetModel.setThumbnail(widget.thumbnail().getURL().toString());
+//            for (Map.Entry<String, Resource> entry : widget.publicResources().entrySet()) {
+//                if (entry.getKey().endsWith(".js")) {
+//                    widgetModel.setScriptHref(resourceService.getResource("widget/" + widget.groupId() + "-"
+//                            + widget.widgetId() + "-" + widget.version() + "/" + entry.getKey())
+//                            .httpUrl().toURI().toString() + ","
+//                    );
+//                }
+//            }
+            widgetModel.setThumbnail(resourceService.getResource("widget/"
+                    + Widget.thumbnailPath(widget)).httpUrl().toURI().toString());
             WidgetStyleModel[] widgetStyleModels = new WidgetStyleModel[widgetStyles.length];
-
             for (int i = 0; i < widgetStyles.length; i++) {
                 WidgetStyleModel widgetStyleModel = new WidgetStyleModel();
+                widgetStyleModel.setId(widgetStyles[i].id());
                 widgetStyleModel.setThumbnail(widgetStyles[i].thumbnail().getURI().toString());
                 widgetStyleModel.setLocallyName(widgetStyles[i].name());
                 widgetStyleModel.setPreviewHTML(widgetResolveService.previewHTML(widget, widgetStyles[i].id()

@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.widget.resolve.impl;
 
+import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.ComponentProperties;
@@ -69,9 +70,10 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
     @Override
     public URI resourceURI(Widget widget, String resourceName) throws URISyntaxException, IOException {
         Map<String, org.springframework.core.io.Resource> publicResources = widget.publicResources();
+        WidgetIdentifier identifier = new WidgetIdentifier(widget.groupId(), widget.widgetId(), widget.version());
         if (publicResources.containsKey(resourceName)) {
-            Resource resource = resourceService.getResource("widget/" + widget.groupId() + "-" + widget.widgetId()
-                    + "-" + widget.version() + "/" + resourceName);
+            Resource resource = resourceService.getResource("widget/" + identifier.toURIEncoded() + "/"
+                    + resourceName);
             return resource.httpUrl().toURI();
         }
         return null;

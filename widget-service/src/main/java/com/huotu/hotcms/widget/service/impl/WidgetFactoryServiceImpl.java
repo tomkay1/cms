@@ -45,6 +45,7 @@ import org.xml.sax.SAXException;
 import javax.annotation.PostConstruct;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -181,11 +182,11 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
     public void installWidgetInfo(WidgetInfo widgetInfo) throws IOException, FormatException {
         setupJarFile(widgetInfo, new FileInputStream(downloadJar(widgetInfo.getGroupId(), widgetInfo.getArtifactId()
                 , widgetInfo.getVersion())));
-        widgetInfoRepository.save(widgetInfo);
-
         if (widgetInfo.getPath() == null)
             throw new IllegalStateException("无法获取控件包资源");
         try {
+            widgetInfoRepository.save(widgetInfo);
+
             List<Class> classes = ClassLoaderUtil.loadJarWidgetClasses(resourceService.getResource(widgetInfo.getPath()));
             if (classes != null) {
                 for (Class clazz : classes) {
@@ -193,14 +194,32 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
                     //加载jar
                     installWidget(widgetInfo.getOwner(), widget, widgetInfo.getType())
                             .setIdentifier(widgetInfo.getIdentifier());
+                    // widget/js/base64(identifier).js
+
                     //上传控件资源
                     Map<String, Resource> publicResources = widget.publicResources();
+                    WidgetIdentifier identifier = new WidgetIdentifier(widget.groupId(), widget.widgetId()
+                            , widget.version());
                     if (publicResources != null) {
-                        for (Map.Entry<String, Resource> entry : publicResources.entrySet())
-                            resourceService.uploadResource("widget/" + widget.groupId() + "-" + widget.widgetId()
-                                    + "-" + widget.version() + "/"
+                        for (Map.Entry<String, Resource> entry : publicResources.entrySet()) {
+                            resourceService.uploadResource("widget/" + identifier.toURIEncoded() + "/"
                                     + entry.getKey(), entry.getValue().getInputStream());
+                        }
                     }
+                    Resource resource = widget.widgetJs();
+                    InputStream inputStream = resource.getInputStream();
+                    byte[] data = new byte[1024];
+                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                    outputStream.write(("CMSWidgets.pushNextWidgetIdentity('" + identifier.toString() + "')").getBytes());
+                    int len;
+                    while ((len = inputStream.read(data)) != -1) {
+                        outputStream.write(data, 0, len - 1);
+                    }
+                    resourceService.uploadResource("widget/" + Widget.thumbnailPath(widget)
+                            , widget.thumbnail().getInputStream());
+
+                    resourceService.uploadResource("widget/" + Widget.widgetJsResourcePath(widget)
+                            , new ByteArrayInputStream(outputStream.toByteArray()));
                 }
             }
 

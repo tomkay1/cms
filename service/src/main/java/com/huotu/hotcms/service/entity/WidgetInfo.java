@@ -64,6 +64,7 @@ public class WidgetInfo implements Enabled, Auditable {
     @Column(length = 100)
     private String path;
 
+
     public WidgetIdentifier getIdentifier() {
         return new WidgetIdentifier(groupId, artifactId, version);
     }

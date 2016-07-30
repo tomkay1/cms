@@ -135,6 +135,7 @@ public abstract class WidgetTest extends SpringWebTest {
         driver.findElement(By.id("editorInit")).click();
 
         editorWork(widget, driver.findElement(By.id("editor")).findElement(By.tagName("div")), () -> {
+
             driver.findElement(By.id("editorSaver")).click();
             if (driver instanceof JavascriptExecutor) {
                 String failedMessage = (String) ((JavascriptExecutor) driver).executeScript("return _failedMessage");

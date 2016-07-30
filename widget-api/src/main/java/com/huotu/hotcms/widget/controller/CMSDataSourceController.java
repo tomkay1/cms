@@ -48,7 +48,7 @@ public class CMSDataSourceController {
      *
      * @param parentId 数据源id
      * @return json 返回当前parentId 的所有子级元素
-     * 例如{code=200,message="Success",data=[...]},{code=403,message="fail",data=[]}
+     * 例如{status=200,message="Success",data=[...]},{status=404,message="fail",data=[]}
      */
     @RequestMapping(value = "/findGalleryItem/{parentId}", method = RequestMethod.GET)
     public ResponseEntity findGalleryItem(@PathVariable("parentId") Long parentId) {

@@ -11,6 +11,7 @@ CMSWidgets.initWidget(
     {
         // 编辑器相关
         editor: {
+            // 
             open: function (globalId) {
 
             },

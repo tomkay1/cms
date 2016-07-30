@@ -70,7 +70,9 @@ public interface Widget {
 
     String name(Locale locale);
 
-    String description();
+    default String description() {
+        return description(Locale.CHINA);
+    }
 
     String description(Locale locale);
 

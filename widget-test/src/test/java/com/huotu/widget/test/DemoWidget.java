@@ -13,9 +13,9 @@ import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetStyle;
 import me.jiangcai.lib.resource.service.ResourceService;
-import org.apache.http.entity.ContentType;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -64,7 +64,13 @@ public class DemoWidget implements Widget {
     }
 
     @Override
-    public Resource widgetDependencyContent(ContentType contentType) {
+    public Resource widgetDependencyContent(MediaType contentType) {
+        if (contentType.equals(Javascript)) {
+            return new ClassPathResource("js/demoWidget.js");
+        }
+        if (contentType.equals(CSS)) {
+            return new ClassPathResource("css/demo.css");
+        }
         return null;
     }
 

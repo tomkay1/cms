@@ -9,18 +9,14 @@
 
 package com.huotu.hotcms.widget.test;
 
-import com.huotu.hotcms.service.entity.Category;
-import com.huotu.hotcms.service.model.CollapseArtcleCategory;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetStyle;
 import me.jiangcai.lib.resource.service.ResourceService;
-import org.apache.http.entity.ContentType;
 import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
@@ -65,12 +61,7 @@ public class TestWidget implements Widget  {
     }
 
     @Override
-    public Resource widgetDependencyContent(ContentType contentType) {
-        return null;
-    }
-
-    @Override
-    public Resource widgetJs() {
+    public Resource widgetDependencyContent(MediaType contentType) {
         return null;
     }
 

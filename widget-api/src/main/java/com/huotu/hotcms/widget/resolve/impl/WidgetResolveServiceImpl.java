@@ -18,6 +18,7 @@ import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetLocateService;
 import com.huotu.hotcms.widget.WidgetResolveService;
 import com.huotu.hotcms.widget.WidgetStyle;
+import com.huotu.hotcms.widget.page.Empty;
 import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.PageElement;
 import com.huotu.hotcms.widget.resolve.WidgetConfiguration;
@@ -27,13 +28,12 @@ import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.io.output.StringBuilderWriter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -154,27 +154,38 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
     }
 
     @Override
-    public String widgetJavascript(CMSContext context, Widget widget) {
-        ByteArrayOutputStream buf = new ByteArrayOutputStream();
-        try {
-            widgetJavascript(context, widget, buf);
-            return buf.toString("UTF-8");
-        } catch (IOException e) {
-            // working in mem. so never happen
-            throw new IllegalStateException("Mem IO", e);
-        }
-    }
-
-    @Override
-    public void widgetJavascript(CMSContext context, Widget widget, OutputStream out) throws IOException {
+    public void widgetDependencyContent(CMSContext context, Widget widget, MediaType type, PageElement element
+            , OutputStream out) throws IOException {
         // 必须是以安装的控件
         checkEngine();
-        WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, context
-                , widget, null, webApplicationContext.getServletContext()
-                , null, null);
+
+        WidgetContext widgetContext;
+        if (element == null) {
+            if (widget == null)
+                throw new IllegalArgumentException("both widget element is null.");
+            widgetContext = new WidgetContext(widgetTemplateEngine, context
+                    , widget, null, webApplicationContext.getServletContext()
+                    , null, null);
+        } else if (element instanceof Empty) {
+            return;
+        } else if (element instanceof Layout) {
+            Layout layout = ((Layout) element);
+            for (PageElement pageElement1 : layout.elements()) {
+                widgetDependencyContent(context, null, type, pageElement1, out);
+            }
+            return;
+        } else {
+            Component component = (Component) element;
+            widget = component.getInstalledWidget().getWidget();
+            widgetContext = new WidgetContext(widgetTemplateEngine, context
+                    , widget, component.currentStyle(), webApplicationContext.getServletContext()
+                    , component, component.getProperties());
+        }
+
         WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();
         context.getWidgetConfigurationStack().push(widgetConfiguration);
-        widgetTemplateEngine.process(WidgetTemplateResolver.JAVASCRIPT, widgetContext
+        widgetTemplateEngine.process(
+                type.equals(Widget.CSS) ? WidgetTemplateResolver.CSS : WidgetTemplateResolver.JAVASCRIPT, widgetContext
                 , new OutputStreamWriter(out, "UTF-8"));
     }
 
@@ -190,36 +201,6 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
         }
         return stringBuilder.toString();
     }
-
-    @Override
-    public void componentCSS(CMSContext cmsContext, PageElement pageElement, OutputStream out) throws IOException {
-        if (pageElement instanceof Layout) {
-            //是一个布局界面
-            Layout layout = ((Layout) pageElement);
-            for (PageElement pageElement1 : layout.elements()) {
-                componentCSS(cmsContext, pageElement1, out);
-            }
-        } else if (pageElement instanceof Component) {
-            //是一个组件
-            Component component = (Component) pageElement;
-            InstalledWidget installedWidget = widgetLocateService.findWidget(component.getWidgetIdentity());
-            component.setInstalledWidget(installedWidget);
-            if (installedWidget != null &&
-                    installedWidget.getWidget().widgetDependencyContent(ContentType.create("text/css")) != null) {
-                WidgetStyle style = getWidgetStyle(component.getInstalledWidget().getWidget(), component.getStyleId());
-                checkEngine();
-                WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
-                        , component.getInstalledWidget().getWidget(), style, webApplicationContext.getServletContext()
-                        , component, component.getProperties());
-                WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();
-                cmsContext.getWidgetConfigurationStack().push(widgetConfiguration);
-                widgetTemplateEngine.process(WidgetTemplateResolver.CSS, widgetContext
-                        , new OutputStreamWriter(out, "UTF-8"));
-//                out.write(css.getBytes(), 0, css.getBytes().length);
-            }
-        }
-    }
-
 
     private WidgetStyle getWidgetStyle(Widget widget, String styleId) {
         WidgetStyle style = null;

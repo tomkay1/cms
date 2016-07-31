@@ -73,7 +73,8 @@ public class WidgetViewController {
         component.setProperties(currentProperties);
 
         response.setContentType("text/css");
-        widgetResolveService.componentCSS(CMSContext.RequestContext(), component, response.getOutputStream());
+        widgetResolveService.widgetDependencyContent(CMSContext.RequestContext(), widget.getWidget(), Widget.CSS
+                , component, response.getOutputStream());
         response.flushBuffer();
     }
 

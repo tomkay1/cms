@@ -13,6 +13,7 @@ import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.InstalledWidget;
+import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetLocateService;
 import com.huotu.hotcms.widget.WidgetResolveService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 /**
  * 查询一个控件相关信息的
@@ -37,8 +41,17 @@ public class WidgetController {
     private WidgetResolveService widgetResolveService;
 
     @RequestMapping("/{identifier}.js")
-    public ResponseEntity widgetJs(@PathVariable WidgetIdentifier identifier) throws PageNotFoundException {
+    public ResponseEntity javascript(@PathVariable WidgetIdentifier identifier) throws PageNotFoundException, IOException {
         // StandardLinkBuilder
+        return content(identifier, Widget.Javascript);
+    }
+
+    @RequestMapping("/{identifier}.css")
+    public ResponseEntity css(@PathVariable WidgetIdentifier identifier) throws PageNotFoundException, IOException {
+        return content(identifier, Widget.CSS);
+    }
+
+    private ResponseEntity content(@PathVariable WidgetIdentifier identifier, MediaType type) throws IOException {
         InstalledWidget widget = widgetLocateService.findWidget(identifier.getGroupId(), identifier.getArtifactId()
                 , identifier.getVersion());
 
@@ -47,12 +60,10 @@ public class WidgetController {
             return ResponseEntity.notFound().build();
         }
 
-        String code = widgetResolveService.widgetJavascript(CMSContext.RequestContext(), widget.getWidget());
-
-        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/javascript")).body(code);
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        widgetResolveService.widgetDependencyContent(CMSContext.RequestContext(), widget.getWidget(), type, null, buffer);
+        return ResponseEntity.ok().contentType(type).body(buffer.toString("UTF-8"));
     }
-
-    //样式表是可以就一整个网页的 也可以是就一个组件的
 
 
 }

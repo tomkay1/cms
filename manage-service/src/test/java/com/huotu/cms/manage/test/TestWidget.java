@@ -13,8 +13,8 @@ import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetStyle;
 import me.jiangcai.lib.resource.service.ResourceService;
-import org.apache.http.entity.ContentType;
 import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -61,12 +61,7 @@ public class TestWidget implements Widget  {
     }
 
     @Override
-    public Resource widgetDependencyContent(ContentType contentType) {
-        return null;
-    }
-
-    @Override
-    public Resource widgetJs() {
+    public Resource widgetDependencyContent(MediaType contentType) {
         return null;
     }
 

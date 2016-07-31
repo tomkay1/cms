@@ -13,7 +13,6 @@ import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetStyle;
 import com.huotu.hotcms.widget.resolve.WidgetConfiguration;
-import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
@@ -79,8 +78,11 @@ public class WidgetTemplateResolver extends AbstractTemplateResolver {
             case EDITOR:
                 return new SpringResourceTemplateResource(widget.editorTemplate(), "UTF-8");
             case CSS:
-                return new SpringResourceTemplateResource(widget.widgetDependencyContent(ContentType.create("text/css"))
-                        , "UTF-8");
+                Resource resource = widget.widgetDependencyContent(Widget.CSS);
+                if (resource == null || !resource.exists()) {
+                    return new StringTemplateResource("");
+                }
+                return new SpringResourceTemplateResource(resource, "UTF-8");
             case PREVIEW:
                 return new SpringResourceTemplateResource(style.previewTemplate() != null ? style.previewTemplate()
                         : style.browseTemplate(), "UTF-8");
@@ -88,7 +90,7 @@ public class WidgetTemplateResolver extends AbstractTemplateResolver {
                 return new SpringResourceTemplateResource(style.browseTemplate(), "UTF-8");
             case JAVASCRIPT:
                 // 加也应该在这里加 缓存就不要了
-                Resource resource = widget.widgetJs();
+                resource = widget.widgetDependencyContent(Widget.Javascript);
                 if (resource == null || !resource.exists()) {
                     return new StringTemplateResource("");
                 }

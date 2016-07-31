@@ -10,6 +10,7 @@
 package com.huotu.hotcms.widget;
 
 import com.huotu.hotcms.widget.page.PageElement;
+import org.springframework.http.MediaType;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -79,23 +80,17 @@ public interface WidgetResolveService {
     void pageElementHTML(PageElement pageElement, CMSContext cmsContext, Writer writer) throws IOException;
 
     /**
-     * 生成控件脚本{@link Widget#widgetJs()}
+     * 生成控件(组件)依赖context{@link Widget#widgetDependencyContent(MediaType)}
      *
-     * @param context
-     * @param widget
-     * @return
-     */
-    String widgetJavascript(CMSContext context, Widget widget);
-
-    /**
-     * 生成控件脚本{@link Widget#widgetJs()}
-     *
-     * @param context
-     * @param widget
-     * @param out
+     * @param context cms上下文
+     * @param widget  控件,element或者widget总要选一个
+     * @param type    目标类型 css or js
+     * @param element 组件 （可选)
+     * @param out     输出流
      * @throws IOException
      */
-    void widgetJavascript(CMSContext context, Widget widget, OutputStream out) throws IOException;
+    void widgetDependencyContent(CMSContext context, Widget widget, MediaType type, PageElement element
+            , OutputStream out) throws IOException;
 
     /**
      * 生成一个pageElement的完整HTML代码
@@ -108,14 +103,5 @@ public interface WidgetResolveService {
      * @return HTML Code
      */
     String pageElementHTML(PageElement pageElement, CMSContext cmsContext);
-
-    /**
-     * 生成一个component的完整css代码
-     *
-     * @param cmsContext  上下文环境
-     * @param pageElement 页面的元素
-     * @param out
-     */
-    void componentCSS(CMSContext cmsContext, PageElement pageElement, OutputStream out) throws IOException;
 
 }

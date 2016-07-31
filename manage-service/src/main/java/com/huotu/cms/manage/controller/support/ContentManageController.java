@@ -66,7 +66,7 @@ public abstract class ContentManageController<T extends AbstractContent, ED exte
     }
 
     @Override
-    protected final T preparePersist(Login login, Site site, T data, ED extra, RedirectAttributes attributes)
+    protected T preparePersist(Login login, Site site, T data, ED extra, RedirectAttributes attributes)
             throws RedirectException {
         try {
             data.setCategory(categoryService.getCategoryByNameAndParent(site, extra.getCategoryName()

@@ -11,9 +11,9 @@ package com.huotu.hotcms.widget;
 
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import me.jiangcai.lib.resource.service.ResourceService;
-import org.apache.http.entity.ContentType;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
 
 import javax.servlet.ServletContext;
 import java.io.IOException;
@@ -26,6 +26,9 @@ import java.util.Map;
  * @author CJ
  */
 public interface Widget {
+
+    MediaType Javascript = MediaType.valueOf("application/javascript");
+    MediaType CSS = MediaType.valueOf("text/css");
 
     /**
      * 获得这个widget的唯一id
@@ -52,13 +55,6 @@ public interface Widget {
      */
     static String widgetJsResourceURI(Widget widget) {
         StringBuilder stringBuilder = new StringBuilder("/widget/");
-        return stringBuilder.append(
-                URIEncodedWidgetIdentity(widget))
-                .append(".js").toString();
-    }
-
-    static String widgetJsResourcePath(Widget widget) {
-        StringBuilder stringBuilder = new StringBuilder("widgets/javascript/");
         return stringBuilder.append(
                 URIEncodedWidgetIdentity(widget))
                 .append(".js").toString();
@@ -120,17 +116,12 @@ public interface Widget {
     /**
      * 这个控件所需要的公开静态资源
      * key为资源的名字,可以通过在thymeleaf的w:src或者s:href属性获取运行时准确URL
+     * <p>声明以后还需要在html中引入，这也是和{@link #widgetDependencyContent(MediaType) 模板依赖资源}的另一个
+     * 区别</p>
      *
      * @return 没有的话可以为null
      */
     Map<String, Resource> publicResources();
-
-    /**
-     * 要么为空或者返回不存在的资源,要么必然是<code>CMSWidgets.initWidget....</code>
-     *
-     * @return 控件的Javascript模板(是模板), 可以为空 内容上也必须严格符合<a href="https://huobanplus.quip.com/KngdAAGxtKSQ">标准</a>
-     */
-    Resource widgetJs();
 
     /**
      * @return 插件缩略图
@@ -148,11 +139,22 @@ public interface Widget {
 
     /**
      * 组装这个控件所依赖的content
+     * <ul>
+     * <li>Javascript
+     * 要么为空或者返回不存在的资源,要么必然是<code>CMSWidgets.initWidget....</code>
+     * 内容上也必须严格符合<a href="https://huobanplus.quip.com/KngdAAGxtKSQ">标准</a>
+     * </li>
+     * <li>CSS 同样也要求为模板</li>
+     * </ul>
+     * <p>作为控件依赖的资源，并不需要控件作者显式使用，控件在应用中会强制加载，这也是和{@link #publicResources() 静态资源}的另一个
+     * 区别</p>
      *
-     * @param contentType 正文类型 比如javascript或者css或者image
-     * @return 资源模板 具体模板技术自行实现。freemarker velocity
+     * @param mediaType 正文类型 比如javascript或者css或者image
+     * @return 资源模板 具体模板技术依赖不同的contentType
+     * @see #Javascript
+     * @see #CSS
      */
-    Resource widgetDependencyContent(ContentType contentType);
+    Resource widgetDependencyContent(MediaType mediaType);
 
 
     /**

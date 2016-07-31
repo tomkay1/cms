@@ -15,11 +15,12 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.service.repository.ContentRepository;
 import com.huotu.hotcms.widget.CMSContext;
+import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.InstalledWidget;
+import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetLocateService;
 import com.huotu.hotcms.widget.WidgetResolveService;
-import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.PageElement;
@@ -53,15 +54,14 @@ import java.io.IOException;
 public class FrontController implements FilterBehavioral {
 
     private static final Log log = LogFactory.getLog(FrontController.class);
-
+    @Autowired
+    WidgetLocateService widgetLocateService;
     @Autowired(required = false)
     private ContentRepository contentRepository;
     @Autowired
     private PageService pageService;
     @Autowired
     private WidgetResolveService widgetResolveService;
-    @Autowired
-    WidgetLocateService widgetLocateService;
 
     /**
      * 参考<a href="https://huobanplus.quip.com/Y9mVAeo9KnTh">可用的CSS 资源</a>
@@ -81,7 +81,8 @@ public class FrontController implements FilterBehavioral {
                 Component component = findComponent(layout, id);
                 if (component != null) {
                     ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-                    widgetResolveService.componentCSS(CMSContext.RequestContext(), component, buffer);
+                    widgetResolveService.widgetDependencyContent(CMSContext.RequestContext()
+                            , component.getInstalledWidget().getWidget(), Widget.CSS, layout, buffer);
                     return ResponseEntity
                             .ok()
                             .contentType(MediaType.parseMediaType("text/css"))
@@ -150,9 +151,10 @@ public class FrontController implements FilterBehavioral {
 
     /**
      * 获取指定控件,指定样式,的控件预览视图htmlCode
-     *
+     * <p>
      * 成功：状态200，并返回控件 priviewHtml Code
      * 失败：状态404 无htmlCode
+     *
      * @param widgetIdentifier {@link com.huotu.hotcms.service.entity.support.WidgetIdentifier}
      * @param styleId          样式id
      * @param properties       控件参数
@@ -161,18 +163,17 @@ public class FrontController implements FilterBehavioral {
     public ResponseEntity previewHtml(@RequestParam(required = false) String widgetIdentifier
             , @RequestParam(required = false) String styleId
             , @RequestParam(required = false) ComponentProperties properties) {
-        try{
+        try {
             InstalledWidget installedWidget = widgetLocateService.findWidget(widgetIdentifier);
-            installedWidget.getWidget().valid(styleId,properties);
+            installedWidget.getWidget().valid(styleId, properties);
             String previewHTML = widgetResolveService.previewHTML(installedWidget.getWidget(), styleId
                     , CMSContext.RequestContext(), properties);
             return ResponseEntity.ok().contentType(MediaType.parseMediaType("text/html"))
                     .body(previewHTML.getBytes());
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
     }
-
 
 
     @Override

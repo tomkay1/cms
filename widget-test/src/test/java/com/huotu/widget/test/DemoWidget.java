@@ -69,11 +69,6 @@ public class DemoWidget implements Widget {
     }
 
     @Override
-    public Resource widgetJs() {
-        return new ClassPathResource("js/demoWidget.js");
-    }
-
-    @Override
     public WidgetStyle[] styles() {
         return new WidgetStyle[]{new DemoStyle()};
     }

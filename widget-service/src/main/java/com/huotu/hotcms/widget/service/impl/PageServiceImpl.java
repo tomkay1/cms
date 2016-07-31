@@ -96,13 +96,13 @@ public class PageServiceImpl implements PageService {
 //        pageInfo.setPageSetting(pageJson.getBytes());
         pageInfoRepository.save(pageInfo);
         //生成page的css样式表
-        PageElement[] elements = PageLayout.NoNullLayout(pageInfo.getLayout());
+        Layout[] elements = PageLayout.NoNullLayout(pageInfo.getLayout());
         Path path = Files.createTempFile("tempCss", ".css");
         try {
             try (OutputStream out = Files.newOutputStream(path)) {
-                for (PageElement element : elements) {
+                for (Layout element : elements) {
                     //生成组件css
-                    widgetResolveService.componentCSS(CMSContext.RequestContext(), element, out);
+                    widgetResolveService.widgetDependencyContent(CMSContext.RequestContext(), null, Widget.CSS, element, out);
                 }
                 //上传最新的page css样式表到资源服务
                 try (InputStream data = Files.newInputStream(path)) {

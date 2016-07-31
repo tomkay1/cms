@@ -15,6 +15,7 @@ import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetStyle;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -65,12 +66,12 @@ public class WidgetInfo implements Widget{
         return new WidgetStyle[]{new DefaultWidgetStyle()};
     }
 
-
     @Override
-    public Resource widgetJs() {
-        return new ClassPathResource("js/${artifactId}.js", getClass().getClassLoader());
+    public Resource widgetDependencyContent(MediaType mediaType){
+        if (mediaType.equals(Widget.Javascript))
+            return new ClassPathResource("js/${artifactId}.js", getClass().getClassLoader());
+        return null;
     }
-
 
     @Override
     public Map<String, Resource> publicResources() {

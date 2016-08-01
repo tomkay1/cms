@@ -111,7 +111,7 @@ public class PreviewTest extends ManageTest {
 
         driver.get("http://localhost/?simulateSite=" + site.getSiteId());
 
-        System.out.println(driver.getPageSource());
+//        System.out.println(driver.getPageSource());
         assertThat(driver.getTitle())
                 .isEqualTo(indexPage.getTitle());
 
@@ -122,8 +122,7 @@ public class PreviewTest extends ManageTest {
                 .orElseThrow(IllegalStateException::new)
                 .click();
 
-        System.out.println(driver.getPageSource());
-
+//        System.out.println(driver.getPageSource());
 
         assertThat(driver.getTitle())
                 .isEqualTo(anotherPage.getTitle());

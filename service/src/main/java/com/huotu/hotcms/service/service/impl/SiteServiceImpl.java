@@ -9,9 +9,13 @@
 
 package com.huotu.hotcms.service.service.impl;
 
-import com.huotu.hotcms.service.entity.*;
+import com.huotu.hotcms.service.entity.Host;
+import com.huotu.hotcms.service.entity.Region;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.exception.NoSiteFoundException;
-import com.huotu.hotcms.service.repository.*;
+import com.huotu.hotcms.service.repository.HostRepository;
+import com.huotu.hotcms.service.repository.RegionRepository;
+import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.service.HostService;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.util.SerialUtil;
@@ -32,9 +36,9 @@ public class SiteServiceImpl implements SiteService {
 
     private static final Log log = LogFactory.getLog(SiteServiceImpl.class);
     @Autowired
-    private   SiteRepository siteRepository;
+    private SiteRepository siteRepository;
     @Autowired
-    private   HostRepository hostRepository;
+    private HostRepository hostRepository;
     @Autowired
     private RegionRepository regionRepository;
     @Autowired
@@ -85,7 +89,7 @@ public class SiteServiceImpl implements SiteService {
     }
 
 
-//    @Override
+    //    @Override
 //    public void siteCopy(long templateId, Site customerSite) throws Exception {
 //        //根据模板ID读取到相应的站点
 //        Template template = templateRepository.findOne(templateId);
@@ -138,13 +142,14 @@ public class SiteServiceImpl implements SiteService {
 //                    return new ResultView(ResultOptionEnum.DOMAIN_EXIST.getCode(), ResultOptionEnum.DOMAIN_EXIST.getValue(), null);
                 }
                 host.addSite(site);
-                hostRepository.save(host);
+                hostRepository.saveAndFlush(host);
             }
         }
         siteRepository.save(site);
 //        return new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), site);
         return site;
     }
+
     @Override
     public Site patchSite(String[] domains, String homeDomains, Site site, Locale locale) {
         // 将之前关联

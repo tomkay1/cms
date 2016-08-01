@@ -18,6 +18,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * 地区/国家
@@ -65,5 +66,16 @@ public class Region {
     @Column(name = "langTag")
     private String langTag;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Region)) return false;
+        Region region = (Region) o;
+        return Objects.equals(locale, region.locale);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(locale);
+    }
 }

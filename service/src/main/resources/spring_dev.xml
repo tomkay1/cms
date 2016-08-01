@@ -33,14 +33,16 @@
             <map>
                 <entry key="javax.persistence.schema-generation.database.action" value="create"/>
                 <entry key="eclipselink.weaving" value="false"/>
-                <entry key="eclipselink.logging.level" value="INFO"/>
+                <entry key="eclipselink.logging.level" value="FINE"/>
             </map>
         </property>
     </bean>
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="url"
-                  value="jdbc:mysql://120.24.243.104:3307/hotcms2?useUnicode=true&amp;characterEncoding=UTF8&amp;autoReconnect=true&amp;rewriteBatchedStatements=TRUE"/>
+                  value="jdbc:mysql://120.24.243.104:3307/hotcms4?useUnicode=true&amp;characterEncoding=UTF8&amp;autoReconnect=true&amp;rewriteBatchedStatements=TRUE"/>
+        <!--<property name="url"-->
+        <!--value="jdbc:mysql://120.24.243.104:3307/cmstest?useUnicode=true&amp;characterEncoding=UTF8&amp;autoReconnect=true&amp;rewriteBatchedStatements=TRUE"/>-->
         <!--<property name="url" value="jdbc:mysql://192.168.1.254:3306/cms?useUnicode=true&amp;characterEncoding=UTF8&amp;autoReconnect=true&amp;rewriteBatchedStatements=TRUE"/>-->
         <property name="username" value="dbuser"/>
         <property name="password" value="ddbbuusseerr"/>

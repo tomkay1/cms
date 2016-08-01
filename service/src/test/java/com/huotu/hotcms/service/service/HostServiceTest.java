@@ -12,12 +12,16 @@ package com.huotu.hotcms.service.service;
 import com.huotu.hotcms.service.TestBase;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Owner;
+import com.huotu.hotcms.service.repository.HostRepository;
 import com.huotu.hotcms.service.repository.OwnerRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.assertj.core.api.Condition;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Locale;
@@ -34,9 +38,50 @@ public class HostServiceTest extends TestBase {
     @Autowired
     private SiteService siteService;
     @Autowired
+    private HostRepository hostRepository;
+    @Autowired
     private SiteRepository siteRepository;
     @Autowired
     private OwnerRepository ownerRepository;
+    private Site lastingSite;
+
+    @Before
+    @Transactional
+    @Rollback(false)
+    public void prepareData() {
+        Owner owner = new Owner();
+        owner.setEnabled(true);
+        owner = ownerRepository.saveAndFlush(owner);
+        lastingSite = new Site();
+        lastingSite.setEnabled(true);
+        lastingSite.setOwner(owner);
+        lastingSite = siteRepository.saveAndFlush(lastingSite);
+        assertThat(hostService.hookOn(lastingSite))
+                .isEmpty();
+        String domain = RandomStringUtils.randomAlphabetic(10 + random.nextInt(4)) + ".com";
+
+        siteService.newSite(new String[]{domain}, domain, lastingSite, Locale.CHINA);
+    }
+
+    @Test
+    @Transactional
+    public void tx() {
+        String anotherDomain = RandomStringUtils.randomAlphabetic(10 + random.nextInt(4)) + ".com";
+        siteService.patchSite(new String[]{anotherDomain}, anotherDomain, lastingSite, Locale.CHINA);
+
+        assertThat(hostService.hookOn(lastingSite))
+                .hasSize(1)
+                .haveExactly(1, new Condition<>(host -> host.getDomain().equals(anotherDomain), "必须是这个domain"));
+    }
+
+    @After
+    @Transactional
+    @Rollback(false)
+    public void remove() {
+        siteRepository.delete(lastingSite);
+//        hostRepository.deleteByOwner(lastingSite.getOwner());
+        ownerRepository.delete(lastingSite.getOwner());
+    }
 
     @Test
     @Transactional

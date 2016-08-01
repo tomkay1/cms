@@ -87,16 +87,18 @@ public class HostServiceImpl implements HostService {
     public void stopHookSite(Site site) {
         for (Host host : hookOn(site)) {
             host.removeSite(site);
-            hostRepository.save(host);
+            hostRepository.saveAndFlush(host);
         }
+        assert hookOn(site).isEmpty();
     }
 
     @Override
     public Collection<Host> hookOn(Site site) {
-        return hostRepository.findBySitesIn(site);
+        return hostRepository.findBySites(site);
     }
 
 
+    // TODO  home的设计存在比较大的问题,home应该只是存在一个关联中
     private Host getHomeHost(Site site) {
         for (Host host : hookOn(site)) {
             if (host.isHome()) {

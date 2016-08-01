@@ -24,6 +24,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "cms_widgetInfo")
@@ -64,6 +65,22 @@ public class WidgetInfo implements Enabled, Auditable {
     @Column(length = 100)
     private String path;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof WidgetInfo)) return false;
+        WidgetInfo that = (WidgetInfo) o;
+        return Objects.equals(groupId, that.groupId) &&
+                Objects.equals(artifactId, that.artifactId) &&
+                Objects.equals(version, that.version) &&
+                Objects.equals(type, that.type) &&
+                Objects.equals(owner, that.owner);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(groupId, artifactId, version, type, owner);
+    }
 
     public WidgetIdentifier getIdentifier() {
         return new WidgetIdentifier(groupId, artifactId, version);

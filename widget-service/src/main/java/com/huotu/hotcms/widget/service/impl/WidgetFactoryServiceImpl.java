@@ -220,7 +220,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
 
         } catch (InstantiationException
                 | IllegalAccessException | FormatException e) {
-            throw new FormatException(e.toString());
+            throw new FormatException("Bad jar format", e);
         }
     }
 

@@ -113,6 +113,9 @@ CMSWidgets.saveComponent = function (globalId, callbacks) {
 // 默认配置
 CMSWidgets.defaultConfig = {
     // TODO 这是应该配置一个所有控件都「应该」做到的事
+    // editor: {
+    //     open : {}
+    // }
 };
 CMSWidgets.nextWidgetIdentity = null;
 CMSWidgets.widgetLibraries = {};

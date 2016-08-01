@@ -14,6 +14,7 @@ import com.huotu.hotcms.service.common.SiteType;
 import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Owner;
+import com.huotu.hotcms.service.exception.NoSiteFoundException;
 import com.huotu.hotcms.service.repository.HostRepository;
 import com.huotu.hotcms.service.repository.OwnerRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
@@ -43,6 +44,8 @@ public class InitService {
     @Autowired
     private UpgradeService upgradeService;
     @Autowired
+    private ConfigService configService;
+    @Autowired
     private SiteRepository siteRepository;
     @Autowired
     private HostRepository hostRepository;
@@ -55,7 +58,7 @@ public class InitService {
 
     @Transactional
     @PostConstruct
-    public void init() {
+    public void init() throws NoSiteFoundException {
 
         // 系统升级
         upgradeService.systemUpgrade(new VersionUpgrade<CMSDataVersion>() {
@@ -83,11 +86,21 @@ public class InitService {
                 site.setTitle("标题是什么");
                 site.setSiteType(SiteType.SITE_PC_WEBSITE);
 
-                siteService.newSite(new String[]{"localhost", "mycms.51flashmall.com"}, "localhost", site, Locale.CHINA);
+                siteService.newSite(new String[]{"localhost", "cms." + configService.getMallDomain()}, "localhost", site
+                        , Locale.CHINA);
 
                 host = hostRepository.findByDomain("localhost");
                 host.setRemarks("本地开发所用的host");
                 host = hostRepository.save(host);
+            }
+
+            host = hostRepository.findByDomain("cms." + configService.getMallDomain());
+            if (host == null) {
+                // 先找站点
+                Site site = siteService.closestSite(hostRepository.findByDomain("localhost"), Locale.CHINA);
+
+                siteService.patchSite(new String[]{"localhost", "cms." + configService.getMallDomain()}, "localhost"
+                        , site, Locale.CHINA);
             }
 
         }

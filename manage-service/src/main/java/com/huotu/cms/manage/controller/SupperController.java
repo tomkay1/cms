@@ -12,8 +12,6 @@ package com.huotu.cms.manage.controller;
 import com.huotu.cms.manage.bracket.GritterUtils;
 import com.huotu.cms.manage.controller.support.AbstractSiteSupperController;
 import com.huotu.cms.manage.util.web.CookieUser;
-import com.huotu.hotcms.service.common.SiteType;
-import com.huotu.hotcms.service.entity.Region;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.SiteConfig;
 import com.huotu.hotcms.service.entity.Template;
@@ -130,37 +128,6 @@ public class SupperController extends AbstractSiteSupperController {
     public ModelAndView templateList() throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/view/supper/templateList.html");
-        return modelAndView;
-    }
-
-    /**
-     * 添加站点页面
-     *
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping(value = "/addSite")
-    public ModelAndView addSite() throws Exception {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("/view/supper/addSite.html");
-        List<Region> regions = regionRepository.findAll();
-        modelAndView.addObject("regions", regions);
-        modelAndView.addObject("siteTypes", SiteType.values());
-        return modelAndView;
-    }
-
-    /**
-     * 添加模板
-     *
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping("/addTemplate")
-    public ModelAndView addTemplate(long ownerId) throws Exception {
-        ModelAndView modelAndView = new ModelAndView();
-        List<Site> siteList = siteRepository.findByOwner_IdAndDeletedOrderBySiteIdDesc(ownerId, false);
-        modelAndView.setViewName("/view/supper/addTemplate.html");
-        modelAndView.addObject("siteList", siteList);
         return modelAndView;
     }
 

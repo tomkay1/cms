@@ -15,6 +15,7 @@ import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.page.PageLayout;
 import com.huotu.hotcms.widget.test.TestBase;
 import org.junit.Test;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 
@@ -24,6 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * 测试一系列将页面信息保存到xml 和 把xml解析成相应的类的过程
  * <b>但是xml对其他数据类型比如array的支持不如json</b>
  */
+@Transactional
 public class PersistToXmlTest extends TestBase {
 
 

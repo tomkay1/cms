@@ -48,7 +48,6 @@ seajs.config({
 		"addContents":"js/page/contents/addContents.js?v="+version,
 		// "siteList":"js/page/web/siteList.js?v="+version,
 		// "addSite":"js/page/web/addSite.js?v="+version,
-		// "updateSite":"js/page/web/updateSite.js?v="+version,
 		"routeList":"js/page/web/routeList.js?v="+version,
 		"addRoute":"js/page/web/addRoute.js?v="+version,
 		"updateRoute":"js/page/web/updateRoute.js?v="+version,
@@ -106,12 +105,10 @@ seajs.config({
 		"superSlide":"js/jquery.SuperSlide.2.1.1.js?v="+version,
 
 		"supperSiteList":"js/page/supper/siteList.js?v="+version,
-		"supperAddSite":"js/page/supper/addSite.js?v="+version,
 		"supperUpdateSite":"js/page/supper/updateSite.js?v="+version,
 		"supperSiteConfig":"js/page/supper/siteConfig.js?v="+version,
 
 		"templateList":"js/page/supper/templateList.js?v="+version,
-		"addTemplateJs":"js/page/supper/addTemplate.js?v="+version
 	},
 	preload: ['jquery']
 });

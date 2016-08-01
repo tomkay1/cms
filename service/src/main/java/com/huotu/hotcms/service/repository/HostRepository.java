@@ -18,6 +18,6 @@ import java.util.List;
 public interface HostRepository extends JpaRepository<Host,Long> {
     Host findByDomain(String domain);
 
-    List<Host> findBySitesContains(Site site);
+    List<Host> findBySitesIn(Site site);
 
 }

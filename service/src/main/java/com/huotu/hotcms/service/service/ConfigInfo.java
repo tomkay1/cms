@@ -9,7 +9,6 @@
 
 package com.huotu.hotcms.service.service;
 
-import com.huotu.hotcms.service.entity.Site;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -61,58 +60,6 @@ public class ConfigInfo {
             }
         }
         return false;
-    }
-
-    public String getResourcesSiteLogo(long ownerId) {
-        return String.format(resourcesSiteLogo, ownerId);
-    }
-
-    public String getResourcesVideo(long ownerId) {
-        return String.format(resourcesVideo, ownerId);
-    }
-
-    public String getResourcesUeditor(long ownerId) {
-        return String.format(resourcesUeditor, ownerId);
-    }
-
-    public String getResourcesImg(long ownerId) {
-        return String.format(resourcesImg, ownerId);
-    }
-
-    public String getResourcesDownload(long ownerId) {
-        return String.format(resourcesDownload, ownerId);
-    }
-
-    public String getResourcesTemplate() {
-        return resourcesTemplate;
-    }
-
-    public String getPageConfig(String pageId) {
-        return String.format(pageConfig, pageId);
-    }
-
-    /**
-     * 获得控件主体地址目录
-     */
-    public String getResourcesWidget() {
-        return resourcesWidget;
-    }
-
-    public String getResourceWidgetImg() {
-        return resourcesWidget + "/img";
-    }
-
-    /**
-     * 获得商户装修的页面配置存储目录地址
-     *
-     * @param site 站点
-     */
-    public String getResourcesConfig(Site site) {
-        return String.format(resourcesConfig, site.getOwner().getId(), site.getSiteId());
-    }
-
-    public String getTemplateConfig(Long siteId) {
-        return String.format(resourcesTemplate, siteId);
     }
 
     public String getOutLoginUrl() {

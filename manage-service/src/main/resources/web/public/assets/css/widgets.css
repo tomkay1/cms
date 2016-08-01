@@ -1,0 +1,145 @@
+/*Word Banner Style*/
+.word-banner {
+	padding: 10px 0;
+}
+.word-banner .title {
+	padding-bottom: 20px;
+    font-size: 30px;
+    text-align: center;
+}
+.word-banner .desc {
+	margin: 10px auto;
+    color: #999;
+    font-size: 16px;
+    text-align: center;
+}
+/*Picture List Style*/
+
+/*Picture Carousel Style*/
+
+/*Picture Banner Style*/
+
+/*Navigation Bar Style*/
+
+.navbar {
+    padding-top: 16px;
+    margin: 0;
+    background-color: #fff;
+    border: none;
+}
+.navbar .logo {
+    margin-left: 20px;
+    max-width: 163px;
+}
+
+.navbar-right  .dropdown-menu {
+    top: 100%;
+    left: 0;
+    min-width: 0;
+}
+.navbar-default .navbar-nav>.open>a,
+.navbar-default .navbar-nav>.open>a:focus,
+.navbar-default .navbar-nav>.open>a:hover,
+.navbar-default .navbar-nav>.active>a,
+.navbar-default .navbar-nav>.active>a:focus,
+.navbar-default .navbar-nav>.active>a:hover {
+    background-color: transparent;
+}
+.dropdown-menu>li>a {
+    padding: 14px 15px;
+}
+@media (min-width: 769px) {
+	.nav > .dropdown {
+        padding-bottom: 16px;
+    }
+}
+
+/*Link Exchange Style*/
+.link-exchange dl {
+    overflow: hidden;
+}
+
+.link-exchange dt {
+    float: left;
+    margin-top: 6px;
+    width: 70px;
+    font-size: 16px;
+}
+
+.link-exchange dd {
+    margin-left: 70px;
+}
+
+.link-exchange span {
+    float: left;
+    padding: 7px 0 9px;
+    font-size: 12px;
+    line-height: 15px;
+    color: #999;
+}
+
+.link-exchange a {
+    white-space: nowrap;
+    float: left;
+    padding: 8px 9px;
+    font-size: 12px;
+    line-height: 15px;
+    color: #555;
+    text-decoration: none;
+}
+/*Tree Menu Style*/
+.treeMenu-menu {
+    padding: 0;
+    margin: 0;
+    width: 240px;
+    font-size: 14px;
+    list-style: none;
+}
+.treeMenu-menu ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+.treeMenu-menu  li {
+    padding: 0;
+    margin: 0;
+}
+.treeMenu-items {
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+.treeMenu-items > div {
+    padding: 10px 15px;
+}
+.treeMenu-items a {
+    float: left;
+    color: #333;
+}
+.treeMenu-items i {
+    padding-left: 10px;
+    float: right;
+    color: #999;
+}
+.treeMenu-menu .level1, .treeMenu-menu .level2 {
+    display:none;
+    border-top: 1px solid #ddd;
+}
+.treeMenu-menu .level1 > li > div {
+    padding: 10px 15px 5px 30px;
+}
+.treeMenu-menu .level2 > li > div {
+    padding: 5px 0 5px 50px;
+}
+.treeMenu-menu .level2 > li:hover {
+    background-color: #f5f5f5;
+    color: #555;
+    text-decoration: none;
+}
+.treeMenu-menu .active {
+    background-color: #337ab7;
+    border-color: #337ab7;
+}
+.treeMenu-menu .active a {
+    color: #fff;
+}

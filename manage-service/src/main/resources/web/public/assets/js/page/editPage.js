@@ -67,8 +67,14 @@ var editFunc = {
             },500);
             // 创建当前操作组件的数据
             widgetHandle.createStore($(this));
-            var styleid = $('#'+GlobalID).data('styleid');
-            //Todo
+            var ele = $('#'+GlobalID);
+            var styleid = ele.data('styleid');
+            var widgetidentity = ele.data('widgetidentity');
+            $('#'+ widgetidentity).find('img.changeStyle').each(function () {
+               if ( $(this).data('styleid') == styleid ) {
+                   editFunc.changeImgStyleActive($(this));
+               }
+            });
         });
     },
     saveConfig: function () {
@@ -215,8 +221,6 @@ var Page = {
 };
 
 var editPage = {};
-
-
 
 editPage.init = function () {
     $(document.body).css("min-height", $(window).height() - 90);

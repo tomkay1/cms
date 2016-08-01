@@ -17,8 +17,8 @@
     <title>CMS 模板系统</title>
 
     <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/font-awesome/4.6.3/css/font-awesome.min.css">
     <link rel="stylesheet" href="../../public/assets/css/edit.css" ewp:href="/assets/css/edit.css">
-    <link rel="stylesheet" href="../../public/assets/css/fontello.css" ewp:href="/assets/css/fontello.css">
 
     <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/jquery-upload-file/4.0.10/css/uploadfile.css">
     <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/bootstrap-treeview/1.2.0/css/bootstrap-treeview.min.css">
@@ -34,14 +34,17 @@
 <header>
     <h1>CMS 模板系统</h1>
     <ul class="list-unstyled operate-buttons">
-        <li class="btn btn-default active" id="editBtn"><i class="icon-edit"></i>编辑</li>
-        <li class="btn btn-default" id="previewBtn"><i class="icon-search"></i>预览</li>
-        <li class="btn btn-default" id="clearBtn"><i class="icon-reply-all"></i>重做</li>
+        <li class="btn btn-default active" id="editBtn"><i class="fa fa-pencil-square-o"></i>编辑</li>
+        <li class="btn btn-default" id="previewBtn"><i class="fa fa-search"></i>预览</li>
+        <li class="btn btn-default" id="clearBtn"><i class="fa fa-reply-all"></i>重做</li>
     </ul>
     <ul class="list-unstyled pull-right">
         <li class="btn btn-danger" id="saveBtn">保存</li>
     </ul>
 </header>
+<div id="preloader">
+    <div id="status"><i class="fa fa-spinner fa-spin"></i></div>
+</div>
 <div id="container">
     <div class="sidebar">
         <div class="draggable-group">
@@ -52,11 +55,11 @@
                         <li>
                             <div class="ncrow ui-draggable">
                                 <span class="remove label label-danger">
-                                    <i class="icon-cancel"></i>
+                                    <i class="fa fa-times"></i>
                                     删除
                                 </span>
                                 <span class="drag label label-default">
-                                    <i class="icon-move"></i>
+                                    <i class="fa fa-arrows"></i>
                                     拖动
                                 </span>
 
@@ -73,11 +76,11 @@
                         <li>
                             <div class="ncrow ui-draggable">
                                 <span class="remove label label-danger">
-                                    <i class="icon-cancel"></i>
+                                    <i class="fa fa-times"></i>
                                     删除
                                 </span>
                                 <span class="drag label label-default">
-                                    <i class="icon-move"></i>
+                                    <i class="fa fa-arrows"></i>
                                     拖动
                                 </span>
 
@@ -95,11 +98,11 @@
                         <li>
                             <div class="ncrow ui-draggable">
                                 <span class="remove label label-danger">
-                                    <i class="icon-cancel"></i>
+                                    <i class="fa fa-times"></i>
                                     删除
                                 </span>
                                 <span class="drag label label-default">
-                                    <i class="icon-move"></i>
+                                    <i class="fa fa-arrows"></i>
                                     拖动
                                 </span>
 
@@ -116,11 +119,11 @@
                         <li>
                             <div class="ncrow ui-draggable">
                                 <span class="remove label label-danger">
-                                    <i class="icon-cancel"></i>
+                                    <i class="fa fa-times"></i>
                                     删除
                                 </span>
                                 <span class="drag label label-default">
-                                    <i class="icon-move"></i>
+                                    <i class="fa fa-arrows"></i>
                                     拖动
                                 </span>
 
@@ -138,11 +141,11 @@
                         <li>
                             <div class="ncrow ui-draggable">
                                 <span class="remove label label-danger">
-                                    <i class="icon-cancel"></i>
+                                    <i class="fa fa-times"></i>
                                     删除
                                 </span>
                                 <span class="drag label label-default">
-                                    <i class="icon-move"></i>
+                                    <i class="fa fa-arrows"></i>
                                     拖动
                                 </span>
 
@@ -160,11 +163,11 @@
                         <li>
                             <div class="ncrow ui-draggable">
                                 <span class="remove label label-danger">
-                                    <i class="icon-cancel"></i>
+                                    <i class="fa fa-times"></i>
                                     删除
                                 </span>
                                 <span class="drag label label-default">
-                                    <i class="icon-move"></i>
+                                    <i class="fa fa-arrows"></i>
                                     拖动
                                 </span>
                                 <div class="preview">
@@ -182,11 +185,11 @@
                         <li>
                             <div class="ncrow ui-draggable">
                                 <span class="remove label label-danger">
-                                    <i class="icon-cancel"></i>
+                                    <i class="fa fa-times"></i>
                                     删除
                                 </span>
                                 <span class="drag label label-default">
-                                    <i class="icon-move"></i>
+                                    <i class="fa fa-arrows"></i>
                                     拖动
                                 </span>
                                 <div class="preview">

@@ -1,61 +1,18 @@
 
 var editFunc = {
-    handleSaveLayout: function () {
-        var e = $(".pageHTML").html();
-        if (e != window.demoHtml) {
-            saveLayout();
-            window.demoHtml = e;
-        };
+    handleWidgetChildrenIds: function (id, data) {
+        var t = editFunc.randomNumber();
+        switch (id) {
+            case 'navbar':
+                data.e.find('button.navbar-toggle').attr('data-target', '#navList' + t);
+                data.e.find('div.navbar-collapse').attr('id', '#navList' + t);
+                break;
+        }
     },
-    // 需要一些改变，待考虑
-    // handleAccordionIds: function() {
-    //     var e = $(".pageHTML #myAccordion");
-    //     var t = editFunc.randomNumber();
-    //     var n = "panel-" + t;
-    //     var r;
-    //     e.attr("id", n);
-    //     e.find(".panel").each(function (e, t) {
-    //         r = "panel-element-" + editFunc.randomNumber();
-    //         $(t).find(".panel-title").each(function (e, t) {
-    //             $(t).attr("data-parent", "#" + n);
-    //             $(t).attr("href", "#" + r)
-    //         });
-    //         $(t).find(".panel-collapse").each(function (e, t) {
-    //             $(t).attr("id", r)
-    //         })
-    //     })
-    // },
-    // handleModalIds: function() {
-    //     var e = $(".pageHTML #myModalLink");
-    //     var t = editFunc.randomNumber();
-    //     var n = "modal-container-" + t;
-    //     var r = "modal-" + t;
-    //     e.attr("id", r);
-    //     e.attr("href", "#" + n);
-    //     e.next().attr("id", n)
-    // },
-    // handleTabsIds: function() {
-    //     var e = $(".pageHTML #myTabs");
-    //     var t = editFunc.randomNumber();
-    //     var n = "tabs-" + t;
-    //     e.attr("id", n);
-    //     e.find(".tab-pane").each(function (e, t) {
-    //         var n = $(t).attr("id");
-    //         var r = "panel-" + editFunc.randomNumber();
-    //         $(t).attr("id", r);
-    //         $(t).parent().parent().find("a[href=#" + n + "]").attr("href", "#" + r)
-    //     })
-    // },
     handleWidgetIds: function(id) {
         var data = editFunc.getWidgetId(id);
+        editFunc.handleWidgetChildrenIds(id, data);
         data.e.attr("id", data.n);
-        if ( id == 'carousel') {
-            data.e.find(".carousel-indicators li").each(function (e, t) {
-                $(t).attr("data-target", "#" + data.n)
-            });
-            data.e.find(".left").attr("href", "#" + data.n);
-            data.e.find(".right").attr("href", "#" + data.n)
-        }
     },
     getWidgetId: function(id) {
         var data = {};
@@ -146,10 +103,11 @@ var editFunc = {
         ele.addClass('active');
     },
     handleJsIds: function (id) {
-        // editFunc.handleModalIds();
-        // editFunc.handleAccordionIds();
-        // editFunc.handleTabsIds();
         editFunc.handleWidgetIds(id);
+    },
+    closePreloader: function () {
+        $('#status').fadeOut();
+        $('#preloader').delay(350).fadeOut();
     },
     init: function () {
         editFunc.removeElement();
@@ -164,13 +122,13 @@ var Page = {
         '<li>',
         '<div class="box box-element ui-draggable">',
         '<span class="setting label label-primary">',
-        '<i class="icon-cog"></i> 设置',
+        '<i class="fa fa-cog"></i> 设置',
         '</span>',
         '<span class="drag label label-default">',
-        '<i class="icon-move"></i> 拖动',
+        '<i class="fa fa-arrows"></i> 拖动',
         '</span>',
         '<span class="remove label label-danger">',
-        '<i class="icon-cancel"></i> 删除',
+        '<i class="fa fa-times"></i> 删除',
         '</span>',
         '<div class="preview">',
         '<p></p>',
@@ -181,7 +139,7 @@ var Page = {
     ],
     styleList: [
 	    '<div>',
-	    '<h3><i class="icon-puzzle"></i><b></b>选择组件样式</h3>',
+	    '<h3><i class="fa fa-puzzle-piece"></i><strong>设置组件参数</strong></h3>',
 	    '<div class="swiper-container styles">',
 	    '<div class="swiper-wrapper">',
 	    '</div>',
@@ -192,6 +150,7 @@ var Page = {
 	],
     init: function (url) {
         $.getJSON(url, function(result){
+            if(result) editFunc.closePreloader();
             var parent = $('#configuration').find('.conf-body');
             $.each(result, function (i, v) {
                 var initData = {};

@@ -151,6 +151,10 @@ var editFunc = {
         // editFunc.handleTabsIds();
         editFunc.handleWidgetIds(id);
     },
+    closePreloader: function () {
+        $('#status').fadeOut();
+        $('#preloader').delay(350).fadeOut();
+    },
     init: function () {
         editFunc.removeElement();
         editFunc.settingElement();
@@ -164,13 +168,13 @@ var Page = {
         '<li>',
         '<div class="box box-element ui-draggable">',
         '<span class="setting label label-primary">',
-        '<i class="icon-cog"></i> 设置',
+        '<i class="fa fa-cog"></i> 设置',
         '</span>',
         '<span class="drag label label-default">',
-        '<i class="icon-move"></i> 拖动',
+        '<i class="fa fa-arrows"></i> 拖动',
         '</span>',
         '<span class="remove label label-danger">',
-        '<i class="icon-cancel"></i> 删除',
+        '<i class="fa fa-times"></i> 删除',
         '</span>',
         '<div class="preview">',
         '<p></p>',
@@ -181,7 +185,7 @@ var Page = {
     ],
     styleList: [
 	    '<div>',
-	    '<h3><i class="icon-puzzle"></i><b></b>选择组件样式</h3>',
+	    '<h3><i class="fa fa-puzzle-piece"></i><b></b>选择组件样式</h3>',
 	    '<div class="swiper-container styles">',
 	    '<div class="swiper-wrapper">',
 	    '</div>',
@@ -192,6 +196,7 @@ var Page = {
 	],
     init: function (url) {
         $.getJSON(url, function(result){
+            if(result) editFunc.closePreloader();
             var parent = $('#configuration').find('.conf-body');
             $.each(result, function (i, v) {
                 var initData = {};

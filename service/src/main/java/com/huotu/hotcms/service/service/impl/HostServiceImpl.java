@@ -93,7 +93,7 @@ public class HostServiceImpl implements HostService {
 
     @Override
     public Collection<Host> hookOn(Site site) {
-        return hostRepository.findBySitesContains(site);
+        return hostRepository.findBySitesIn(site);
     }
 
 

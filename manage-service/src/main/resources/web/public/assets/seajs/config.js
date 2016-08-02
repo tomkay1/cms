@@ -104,11 +104,6 @@ seajs.config({
 
 		"superSlide":"js/jquery.SuperSlide.2.1.1.js?v="+version,
 
-		"supperSiteList":"js/page/supper/siteList.js?v="+version,
-		"supperUpdateSite":"js/page/supper/updateSite.js?v="+version,
-		"supperSiteConfig":"js/page/supper/siteConfig.js?v="+version,
-
-		"templateList":"js/page/supper/templateList.js?v="+version,
 	},
 	preload: ['jquery']
 });

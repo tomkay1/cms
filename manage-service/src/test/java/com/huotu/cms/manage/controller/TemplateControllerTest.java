@@ -60,7 +60,8 @@ public class TemplateControllerTest extends SiteManageTest {
     public void flow() throws Exception {
         TemplatePage page = loginAsManage().toPage(TemplatePage.class);
 
-        CRUDHelper.flow(page, new TemplateCRUDTest());
+        CRUDHelper.flow(page, new TemplateCRUDTest(true));
+        CRUDHelper.flow(page, new TemplateCRUDTest(false));
 
         //找一个条记录 并且打开编辑
         page.refresh();
@@ -90,7 +91,35 @@ public class TemplateControllerTest extends SiteManageTest {
     @Test
     @Transactional
     public void testLaud() throws Exception {
-        // 先 添加几个模板
+
+        workingWithTemplate(new DoForTemplate() {
+            @Override
+            public void templateWork(SitePage currentPage, Template template, WebElement templateRow, Site yourSite) throws Exception {
+                //找一个点下赞
+                int old = template.getLauds();
+
+
+                currentPage.laud(templateRow);
+
+                assertThat(template.getLauds())
+                        .isGreaterThan(old);
+
+                assertThat(templateService.isLauded(template.getSiteId(), yourSite.getOwner().getId()))
+                        .isTrue();
+
+                //再点一下
+                currentPage.laud(templateRow);
+
+                assertThat(template.getLauds())
+                        .isEqualTo(old);
+
+                assertThat(templateService.isLauded(template.getSiteId(), yourSite.getOwner().getId()))
+                        .isFalse();
+            }
+        });
+    }
+
+    private void workingWithTemplate(DoForTemplate action) throws Exception {
         TemplatePage page = loginAsManage().toPage(TemplatePage.class);
 
         CRUDHelper.flow(page, new TemplateCRUDTest());
@@ -121,32 +150,15 @@ public class TemplateControllerTest extends SiteManageTest {
                 .stream()
                 .findAny()
                 .orElseThrow(IllegalStateException::new);
-        int old = template.getLauds();
 
-        //找一个点下赞
+
         WebElement templateRow = oneSitePage.listTemplateRows()
                 .stream()
                 .filter(oneSitePage.findRow(template))
                 .findAny()
                 .orElseThrow(() -> new IllegalStateException("找不到预设的模板"));
 
-        oneSitePage.laud(templateRow);
-
-        assertThat(template.getLauds())
-                .isGreaterThan(old);
-
-        assertThat(templateService.isLauded(template.getSiteId(), site.getOwner().getId()))
-                .isTrue();
-
-        //再点一下
-        oneSitePage.laud(templateRow);
-
-        assertThat(template.getLauds())
-                .isEqualTo(old);
-
-        assertThat(templateService.isLauded(template.getSiteId(), site.getOwner().getId()))
-                .isFalse();
-
+        action.templateWork(oneSitePage, template, templateRow, site);
     }
 
     @Test
@@ -165,8 +177,22 @@ public class TemplateControllerTest extends SiteManageTest {
 
     }
 
+    interface DoForTemplate {
+
+        void templateWork(SitePage currentPage, Template template, WebElement templateRow, Site yourSite) throws Exception;
+    }
+
     private class TemplateCRUDTest implements CRUDTest<Template> {
+        private final boolean resource;
         Resource logoResource;
+
+        TemplateCRUDTest(boolean resource) {
+            this.resource = resource;
+        }
+
+        public TemplateCRUDTest() {
+            this(random.nextBoolean());
+        }
 
         @Override
         public Collection<Template> list() {
@@ -175,7 +201,7 @@ public class TemplateControllerTest extends SiteManageTest {
 
         @Override
         public Template randomValue() {
-            logoResource = random.nextBoolean() ? null : new ClassPathResource("thumbnail.png");
+            logoResource = !resource ? null : new ClassPathResource("thumbnail.png");
             Template template = new Template();
             template.setName(UUID.randomUUID().toString());
             return template;

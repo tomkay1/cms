@@ -226,6 +226,17 @@ public abstract class ManageTest extends SpringWebTest {
     }
 
     /**
+     * 给这个站点添加一些数据，包括数据源，正文，页面
+     *
+     * @param site
+     */
+    protected void randomSiteData(Site site) {
+        // 包括数据源的父子关系
+
+        // TODO 尚未完成
+    }
+
+    /**
      * 随机一个模板
      *
      * @return

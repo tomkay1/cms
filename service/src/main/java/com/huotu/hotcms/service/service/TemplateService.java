@@ -18,6 +18,12 @@ import java.io.IOException;
  * 模板站点的相关操作
  */
 public interface TemplateService {
+
+    /**
+     * 在复制的时候 有严谨语义但又不可重复的字段 在重复时会加入该字符串
+     */
+    String DuplicateAppend = "_duplicate";
+
     /**
      * 点赞
      *

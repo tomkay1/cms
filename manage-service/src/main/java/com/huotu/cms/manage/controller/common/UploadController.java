@@ -55,7 +55,6 @@ public class UploadController {
     @ResponseBody
     public ResultView resourceUpload(@AuthenticationPrincipal Login login
             , @RequestParam(value = "file", required = false) MultipartFile file) {
-
         ResultView resultView;
         try {
             if (login.siteManageable(CMSContext.RequestContext().getSite())) {

@@ -17,6 +17,8 @@ import com.huotu.hotcms.service.entity.GalleryItem;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.CollapseArtcleCategory;
+import com.huotu.hotcms.service.model.GalleryItemModel;
+import com.huotu.hotcms.service.model.LinkModel;
 import com.huotu.hotcms.service.model.NavbarPageInfoModel;
 import com.huotu.hotcms.service.repository.ArticleRepository;
 import com.huotu.hotcms.service.repository.CategoryRepository;
@@ -60,11 +62,16 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     }
 
     @Override
-    public List<GalleryItem> findGalleryItem(Long galleryId) {
-//        if (!categoryRepository.findOne(galleryId).getContentType().equals(ContentType.Gallery)) {
-//            return null;
-//        }
-        return galleryItemRepository.findByGallery(galleryRepository.getOne(galleryId));
+    public List<GalleryItemModel> findGalleryItem(Long galleryId) {
+        List<GalleryItem> galleryItems = galleryItemRepository.findByGallery(galleryRepository.getOne(galleryId));
+        if (galleryItems != null && galleryItems.size() > 0) {
+            List<GalleryItemModel> galleryItemModels = new ArrayList<>();
+            for (GalleryItem item : galleryItems) {
+                galleryItemModels.add(GalleryItem.getGalleryItemModel(item));
+            }
+            return galleryItemModels;
+        }
+        return null;
     }
 
     @Override
@@ -82,7 +89,6 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
         if (!categoryRepository.findOne(parentId).getContentType().equals(ContentType.Article)) {
             return null;
         }
-
         List<Category> list = categoryRepository.findByParent_Id(parentId);
         List<CollapseArtcleCategory> collapseArtcleCategories = new ArrayList<>();
         for (Category category : list) {
@@ -134,10 +140,17 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     }
 
     @Override
-    public List<Link> findLink(Long categoryId) {
-        if (categoryRepository.findOne(categoryId).getContentType().equals(ContentType.Link))
-            return linkRepository.findByCategory_id(categoryId);
-        else
-            return null;
+    public List<LinkModel> findLink(Long categoryId) {
+        if (categoryRepository.findOne(categoryId).getContentType().equals(ContentType.Link)) {
+            List<Link> links = linkRepository.findByCategory_id(categoryId);
+            if (links != null && links.size() > 0) {
+                List<LinkModel> linkModels = new ArrayList<>();
+                for (Link link : links) {
+                    linkModels.add(Link.getLinkModel(link));
+                }
+                return linkModels;
+            }
+        }
+        return null;
     }
 }

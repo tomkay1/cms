@@ -348,6 +348,7 @@ public abstract class TestBase extends SpringWebTest {
         return galleryItemRepository.save(item);
     }
 
+
     protected Gallery randomGallery(Site site) {
         return randomGallery(randomCategory(site, ContentType.Gallery));
     }

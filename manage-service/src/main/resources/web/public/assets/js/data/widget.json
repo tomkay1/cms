@@ -91,5 +91,26 @@
         "previewHTML": "<img id=\"test2\" src=\"http://placehold.it/200x150?text=Test3\">"
       }
     ]
+  },
+  {
+    "identity": "com.huotu.hotcms.widget.picBanner-picBanner:1.0-SNAPSHOT",
+    "locallyName": "图片条幅",
+    "thumbnail": "http://cdn73.huobanplus.com/cmstest/widgets/thumbnail/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQucGljQmFubmVyLXBpY0Jhbm5lcjoxLjAtU05BUFNIT1Q=.png",
+    "editorHTML": "<div class=\"editor\" style=\"display:block;\">\r\n    <!--编辑视图-->\r\n    <div>\r\n        <h3><i class=\"icon-puzzle\"></i><b></b>设置</h3>\r\n        <form id=\"picBForm\" class=\"form-horizontal\">\r\n            <div class=\"form-group\">\r\n                <span class=\"col-sm-3\">大图 - 宽度1920px </span>\r\n                <div id=\"picBannerMaxImg\">\r\n\r\n                </div>\r\n            </div>\r\n            <div class=\"form-group\">\r\n                <span class=\"col-sm-3\">小图 - 宽度1200px </span>\r\n                <div id=\"picBannerMinImg\">\r\n\r\n                </div>\r\n            </div>\r\n            <div class=\"form-group\">\r\n                <label for=\"picBUrl\" class=\"col-sm-3 control-label\">跳转链接</label>\r\n                <div class=\"col-sm-9\">\r\n                    <input type=\"url\" class=\"form-control picBUrl\" id=\"picBUrl\">\r\n                </div>\r\n            </div>\r\n        </form>\r\n    </div>\r\n    <!--/编辑视图-->\r\n</div>",
+    "scriptHref": "/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQucGljQmFubmVyLXBpY0Jhbm5lcjoxLjAtU05BUFNIT1Q=.js",
+    "defaultProperties": {
+      "mobileImg": "http://cdn73.huobanplus.com/cmstest/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQucGljQmFubmVyLXBpY0Jhbm5lcjoxLjAtU05BUFNIT1Q=/thumbnail/defaultStyleThumbnail.png",
+      "pcImg": "http://cdn73.huobanplus.com/cmstest/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQucGljQmFubmVyLXBpY0Jhbm5lcjoxLjAtU05BUFNIT1Q=/thumbnail/defaultStyleThumbnail.png",
+      "linkUrl": ""
+    },
+    "styles": [
+      {
+        "id": "picBannerDefaultStyle",
+        "locallyName": "bootstrap style picBanner",
+        "thumbnail": "http://cdn73.huobanplus.com/cmstest/widgets/thumbnail/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQucGljQmFubmVyLXBpY0Jhbm5lcjoxLjAtU05BUFNIT1Q=/picBannerDefaultStyle.png",
+        "previewHTML": "<div id=\"picBanner\" class=\"pic-banner\">\r\n    <div>\r\n        <a href=\"\"><img  src=\"http://cdn73.huobanplus.com/cmstest/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQucGljQmFubmVyLXBpY0Jhbm5lcjoxLjAtU05BUFNIT1Q=/thumbnail/defaultStyleThumbnail.png\"\r\n                                                    class=\"visible-xm hidden-lg img-responsive\">\r\n        </a>\r\n        <a href=\"\"><img  src=\"http://cdn73.huobanplus.com/cmstest/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQucGljQmFubmVyLXBpY0Jhbm5lcjoxLjAtU05BUFNIT1Q=/thumbnail/defaultStyleThumbnail.png\"\r\n                                                    class=\"visible-lg hidden-xs img-responsive\">\r\n        </a>\r\n    </div>\r\n</div>",
+        "browseHTML": null
+      }
+    ]
   }
 ]

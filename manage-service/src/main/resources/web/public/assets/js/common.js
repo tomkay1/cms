@@ -137,6 +137,7 @@ function getDataSource(type, parameter, onSuccess, onError) {
 */
 var dynamicLoading = {
     init: function (type, path) {
+        console.log(path);
         if( !path || path.length === 0){
             console.error('参数 "path" 是必需的！');
         }
@@ -148,7 +149,7 @@ var dynamicLoading = {
             var argv = $(v).attr(attr);
             if ( argv && argv.indexOf(path) != -1 ) {
                 exist = true;
-                $(v).attr(attr, path + '?t=' + +new Date());
+                $(v).attr(attr, path);
             }
         });
         if (!exist) {

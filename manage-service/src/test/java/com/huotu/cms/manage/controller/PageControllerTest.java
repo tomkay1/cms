@@ -20,18 +20,15 @@ import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.page.PageLayout;
 import com.huotu.hotcms.widget.page.PageModel;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
-import com.huotu.hotcms.widget.servlet.CMSFilter;
 import com.jayway.jsonpath.JsonPath;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
@@ -44,7 +41,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 /**
  * Created by hzbc on 2016/7/9.
@@ -59,24 +55,6 @@ public class PageControllerTest extends ManageTest {
 
     private static <T> Iterable<T> IterableIterator(Iterator<T> iterator) {
         return () -> iterator;
-    }
-
-    @Override
-    public void createMockMVC() {
-        MockitoAnnotations.initMocks(this);
-        // ignore it, so it works in no-web fine.
-        if (context == null)
-            return;
-        DefaultMockMvcBuilder builder = webAppContextSetup(context);
-        builder.addFilter(new CMSFilter(servletContext));
-        if (springSecurityFilter != null) {
-            builder = builder.addFilters(springSecurityFilter);
-        }
-
-        if (mockMvcConfigurer != null) {
-            builder = builder.apply(mockMvcConfigurer);
-        }
-        mockMvc = builder.build();
     }
 
     @Test

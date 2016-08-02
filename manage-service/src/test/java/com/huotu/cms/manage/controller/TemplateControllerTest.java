@@ -20,10 +20,10 @@ import com.huotu.cms.manage.page.TemplatePage;
 import com.huotu.cms.manage.page.support.AbstractCRUDPage;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.Template;
-import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.repository.TemplateRepository;
 import com.huotu.hotcms.service.service.TemplateService;
 import com.huotu.hotcms.service.util.ImageHelper;
+import com.huotu.hotcms.widget.entity.PageInfo;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -40,8 +40,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * @author CJ
@@ -119,6 +117,45 @@ public class TemplateControllerTest extends SiteManageTest {
         });
     }
 
+    @Test
+    @Transactional
+    public void testPreview() throws Exception {
+        workingWithTemplate(new DoForTemplate() {
+            @Override
+            public void templateWork(SitePage currentPage, Template template, WebElement templateRow, Site yourSite)
+                    throws Exception {
+                // 添加一个首页吧
+                PageInfo pageInfo = randomPageInfo(template);
+                pageInfo.setPagePath("");
+                pageInfo.setTitle(randomEmailAddress());
+                // 点下预览
+                int old = template.getScans();
+
+                currentPage.preview(templateRow, pageInfo.getTitle());
+                assertThat(template.getScans())
+                        .isGreaterThan(old);
+
+                old = template.getScans();
+                currentPage.preview(templateRow, pageInfo.getTitle());
+                assertThat(template.getScans())
+                        .isGreaterThan(old);
+
+            }
+        });
+//        Template template = randomTemplate();
+//        Owner owner = randomOwner();
+//        Site site = randomSiteAndData(owner);
+//        loginAsOwner(owner);
+//        String mode = String.valueOf(random.nextInt(2));//随机0或者1,0代表追加模式，1代表替换模式
+//        mockMvc.perform(post("/manage/template/use/{templateSiteID}/{customerSiteId}", template.getSiteId(), site.getSiteId())
+//                .param("mode", mode)
+//                .session(session))
+//                .andExpect(status().isOk())
+//                .andReturn();
+
+    }
+
+
     private void workingWithTemplate(DoForTemplate action) throws Exception {
         TemplatePage page = loginAsManage().toPage(TemplatePage.class);
 
@@ -159,22 +196,6 @@ public class TemplateControllerTest extends SiteManageTest {
                 .orElseThrow(() -> new IllegalStateException("找不到预设的模板"));
 
         action.templateWork(oneSitePage, template, templateRow, site);
-    }
-
-    @Test
-    @Transactional
-    public void testUse() throws Exception {
-        Template template = randomTemplate();
-        Owner owner = randomOwner();
-        Site site = randomSiteAndData(owner);
-        loginAsOwner(owner);
-        String mode = String.valueOf(random.nextInt(2));//随机0或者1,0代表追加模式，1代表替换模式
-        mockMvc.perform(post("/manage/template/use/{templateSiteID}/{customerSiteId}", template.getSiteId(), site.getSiteId())
-                .param("mode", mode)
-                .session(session))
-                .andExpect(status().isOk())
-                .andReturn();
-
     }
 
     interface DoForTemplate {

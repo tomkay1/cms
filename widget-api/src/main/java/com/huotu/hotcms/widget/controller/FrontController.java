@@ -12,8 +12,10 @@ package com.huotu.hotcms.widget.controller;
 import com.huotu.hotcms.service.FilterBehavioral;
 import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.entity.Template;
 import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.service.repository.ContentRepository;
+import com.huotu.hotcms.service.service.TemplateService;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.ComponentProperties;
@@ -62,6 +64,8 @@ public class FrontController implements FilterBehavioral {
     private PageService pageService;
     @Autowired
     private WidgetResolveService widgetResolveService;
+    @Autowired
+    private TemplateService templateService;
 
     /**
      * 参考<a href="https://huobanplus.quip.com/Y9mVAeo9KnTh">可用的CSS 资源</a>
@@ -128,6 +132,9 @@ public class FrontController implements FilterBehavioral {
     public PageInfo pageIndex(@PathVariable("pagePath") String pagePath, Model model)
             throws PageNotFoundException, IOException {
         CMSContext cmsContext = CMSContext.RequestContext();
+        if (cmsContext.getSite() instanceof Template && pagePath.isEmpty()) {
+            templateService.preview((Template) cmsContext.getSite());
+        }
         model.addAttribute("time", System.currentTimeMillis());
         //查找当前站点下指定pagePath的page
         return pageService.findBySiteAndPagePath(cmsContext.getSite(), pagePath);

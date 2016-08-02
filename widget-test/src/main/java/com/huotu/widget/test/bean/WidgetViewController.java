@@ -93,8 +93,6 @@ public class WidgetViewController {
         Component component = new Component();
         component.setProperties(currentProperties);
         component.setId(UUID.randomUUID().toString());
-//        component.setProperties((ComponentProperties) currentProperties.get("properties"));
-//        component.setId((String) currentProperties.get("componentId"));
         component.setStyleId(styleId);
         component.setInstalledWidget(installedWidget);
         if (installedWidget != null) {

@@ -4,11 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Created by lhx on 2016/8/1.
+ * Created by lhx on 2016/8/2.
  */
 @Getter
 @Setter
-public class GalleryItemModel {
-    private Long id;
+public class LinkModel {
+    private String linkUrl;
     private String thumbUri;
 }

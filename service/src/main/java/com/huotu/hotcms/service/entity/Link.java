@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.service.entity;
 
+import com.huotu.hotcms.service.model.LinkModel;
 import com.huotu.hotcms.service.util.ImageHelper;
 import com.huotu.hotcms.service.util.SerialUtil;
 import lombok.Getter;
@@ -56,9 +57,16 @@ public class Link extends AbstractContent {
     @Column(name = "linkUrl")
     private String linkUrl;
 
+    public static LinkModel getLinkModel(Link link) {
+        LinkModel linkModel = new LinkModel();
+        linkModel.setLinkUrl(link.getLinkUrl());
+        linkModel.setThumbUri(link.getThumbUri());
+        return linkModel;
+    }
+
     @Override
     public Link copy() {
-        Link link=new Link();
+        Link link = new Link();
         link.setThumbUri(thumbUri);
         link.setDescription(getDescription());
         link.setOrderWeight(getOrderWeight());
@@ -71,7 +79,7 @@ public class Link extends AbstractContent {
 
     @Override
     public Link copy(Site site, Category category) {
-        Link link=copy();
+        Link link = copy();
         link.setCategory(category);
         link.setSerial(SerialUtil.formatSerial(site));
         return link;

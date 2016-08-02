@@ -154,54 +154,65 @@ var Page = {
 	    '</div>',
 	    '</div>'
 	],
-    init: function (url) {
-        $.getJSON(url, function(result){
-            if(result) editFunc.closePreloader();
-            var parent = $('#configuration').find('.conf-body');
-            $.each(result, function (i, v) {
-                var initData = {};
-                initData.script = v.scriptHref;
-                initData.properties = v.defaultProperties;
-                wsCache.set(v.identity, initData);
-                // 组件列表渲染
-                var element = $('#widgetLists');
-                element.append(Page.widgetHTML.join('\n'));
-                element.find('.setting').eq(i).attr('data-target', v.identity);
-                element.find('.preview p').eq(i).html(v.locallyName);
-                element.find('.view').eq(i).append(v.styles[0].previewHTML);
-                element.find('.view').eq(i).children().eq(0).attr('data-widgetidentity', v.identity);
-                element.find('.view').eq(i).children().eq(0).attr('data-styleid', 0);
-                //编辑器视图渲染
-                var child = $('<div class="common-conf"></div>');
-                var container = $('<div></div>');
-                child.attr('id', v['identity']);
-                child.append(Page.styleList.join('\n'));
-                $.each(v.styles, function (key, val) {
-                    var div = $('<div class="swiper-slide"></div>')
-                    var img = $('<img class="center-block changeStyle">');
-                    var p = $('<p></p>');
-                    img.attr('src',val.thumbnail);
-                    img.attr('data-styleid',val.id);
-                    p.text(val.locallyName);
-                    div.append(img);
-                    div.append(p);
-                    child.find('.swiper-wrapper').append(div);
-                });
-                child.append(v['editorHTML']);
-                parent.append(child);
-
-                $('.swiper-container.styles').swiper({
-                    nextButton: '.swiper-button-next',
-                    prevButton: '.swiper-button-prev',
-                    slidesPerView: 4,
-                    paginationClickable: true,
-                    observer: true,
-                    observeParents: true,
-                    updateOnImagesReady : true
-                });
-
+    createListAndEditor: function (data) {
+        var parent = $('#configuration').find('.conf-body');
+        $.each(data, function (i, v) {
+            var initData = {};
+            initData.script = v.scriptHref;
+            initData.properties = v.defaultProperties;
+            wsCache.set(v.identity, initData);
+            // 组件列表渲染
+            var element = $('#widgetLists');
+            element.append(Page.widgetHTML.join('\n'));
+            element.find('.setting').eq(i).attr('data-target', v.identity);
+            element.find('.preview p').eq(i).html(v.locallyName);
+            element.find('.view').eq(i).append(v.styles[0].previewHTML);
+            element.find('.view').eq(i).children().eq(0).attr('data-widgetidentity', v.identity);
+            element.find('.view').eq(i).children().eq(0).attr('data-styleid', 0);
+            //编辑器视图渲染
+            var child = $('<div class="common-conf"></div>');
+            var container = $('<div></div>');
+            child.attr('id', v['identity']);
+            child.append(Page.styleList.join('\n'));
+            $.each(v.styles, function (key, val) {
+                var div = $('<div class="swiper-slide"></div>')
+                var img = $('<img class="center-block changeStyle">');
+                var p = $('<p></p>');
+                img.attr('src',val.thumbnail);
+                img.attr('data-styleid',val.id);
+                p.text(val.locallyName);
+                div.append(img);
+                div.append(p);
+                child.find('.swiper-wrapper').append(div);
             });
-            Page.draggable();
+            child.append(v['editorHTML']);
+            parent.append(child);
+
+            $('.swiper-container.styles').swiper({
+                nextButton: '.swiper-button-next',
+                prevButton: '.swiper-button-prev',
+                slidesPerView: 4,
+                paginationClickable: true,
+                observer: true,
+                observeParents: true,
+                updateOnImagesReady : true
+            });
+
+        });
+        Page.draggable();
+    },
+    init: function (url) {
+        $.ajax({
+            type: 'GET',
+            url: url,
+            dataType: 'json',
+            success: function (result) {
+                if(result) editFunc.closePreloader();
+                Page.createListAndEditor(result);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(textStatus);
+            }
         });
     },
     draggable: function () {

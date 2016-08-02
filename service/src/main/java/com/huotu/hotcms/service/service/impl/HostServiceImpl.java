@@ -98,22 +98,4 @@ public class HostServiceImpl implements HostService {
     }
 
 
-    // TODO  home的设计存在比较大的问题,home应该只是存在一个关联中
-    private Host getHomeHost(Site site) {
-        for (Host host : hookOn(site)) {
-            if (host.isHome()) {
-                return host;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public String getHomeDomain(Site site) {
-        Host host = getHomeHost(site);
-        if (host != null) {
-            return host.getDomain();
-        }
-        return null;
-    }
 }

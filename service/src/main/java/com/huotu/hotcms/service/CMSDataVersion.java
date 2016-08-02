@@ -15,5 +15,6 @@ package com.huotu.hotcms.service;
  * @author CJ
  */
 public enum CMSDataVersion {
-    init
+    init,
+    siteRecommendDomain
 }

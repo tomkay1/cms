@@ -140,6 +140,23 @@ public abstract class AbstractManagePage extends BracketPage {
         input.clear();
         String id = input.getAttribute("id");
         // 规律是加上 _tag
+
+        // 结构为
+        //
+//        <div id="id_tagsinput" class="tagsinput">
+//                <span class="tag"><span>...</span><a>...</a></span>
+//                <span class="tag"><span>...</span><a>...</a></span>
+//                ...
+//                <span class="tag"><span>...</span><a>...</a></span>
+//                <div id="id_addTag">
+//                    <input id="id_tag" />
+//                </div>
+//        </div>
+        WebElement div = formElement.findElement(By.id(id + "_tagsinput"));
+        for (WebElement tag : div.findElements(By.className("tag"))) {
+            tag.findElement(By.tagName("a")).click();
+        }
+
         WebElement toInput = formElement.findElement(By.id(id + "_tag"));
         for (String value : values) {
             toInput.clear();

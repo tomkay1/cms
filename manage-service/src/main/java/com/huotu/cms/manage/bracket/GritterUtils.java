@@ -11,6 +11,10 @@ package com.huotu.cms.manage.bracket;
 
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * Bracket系列UI的辅助工具
@@ -32,6 +36,10 @@ public class GritterUtils {
 
     private static void AddFlashMessage(RedirectAttributes model, String key, String message) {
         model.addFlashAttribute(key, message);
+    }
+
+    private static void AddFlashMessage(Map<String, Object> model, String key, String message) {
+        model.put(key, message);
     }
 
     /**
@@ -64,6 +72,18 @@ public class GritterUtils {
      * @see #AddDanger(String, Model)
      */
     public static void AddFlashDanger(String message, RedirectAttributes model) {
+        AddFlashMessage(model, DangerKey, message);
+    }
+
+    /**
+     * 以闪存的方式,可以用于页面跳转之后的信息展示
+     *
+     * @param message 消息
+     * @param model   MVC Model
+     * @see RequestContextUtils#getOutputFlashMap(HttpServletRequest)
+     * @see #AddDanger(String, Model)
+     */
+    public static void AddFlashDanger(String message, Map<String, Object> model) {
         AddFlashMessage(model, DangerKey, message);
     }
 

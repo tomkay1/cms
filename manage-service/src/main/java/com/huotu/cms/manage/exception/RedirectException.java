@@ -17,12 +17,17 @@ import lombok.Getter;
  * @author CJ
  */
 @Getter
-public class RedirectException extends Exception {
+public class RedirectException extends RuntimeException {
 
     private final String uri;
 
     public RedirectException(String uri, String message) {
         super(message);
+        this.uri = uri;
+    }
+
+    public RedirectException(String uri, Throwable cause) {
+        super(cause.getLocalizedMessage(), cause);
         this.uri = uri;
     }
 

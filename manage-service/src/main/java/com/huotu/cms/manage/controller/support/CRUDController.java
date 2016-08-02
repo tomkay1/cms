@@ -61,7 +61,7 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
     @RequestMapping(method = RequestMethod.POST)
     @Transactional
     public String add(@AuthenticationPrincipal Login login, @MethodParameterFixed T data
-            , @MethodParameterFixed PD extra, RedirectAttributes attributes) {
+            , @MethodParameterFixed PD extra, RedirectAttributes attributes) throws RedirectException {
         try {
             data = preparePersist(login, data, extra, attributes);
 
@@ -72,14 +72,15 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
             jpaRepository.save(data);
 
             GritterUtils.AddFlashSuccess("成功添加", attributes);
+
+            return redirectIndexViewName();
         } catch (RedirectException ex) {
-            GritterUtils.AddFlashDanger(ex.getMessage(), attributes);
-            return ex.redirectViewName();
+            throw ex;
         } catch (Exception ex) {
             log.warn("Unknown Exception on Add", ex);
-            GritterUtils.AddFlashDanger(ex.getMessage(), attributes);
+            throw new RedirectException(rootUri(), ex);
         }
-        return redirectIndexViewName();
+
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -113,35 +114,25 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
     @RequestMapping(value = "/{id}/delete", method = RequestMethod.GET)
     @Transactional
     public String delete(@AuthenticationPrincipal Login login, @PathVariable("id") ID id
-            , RedirectAttributes attributes) {
-        try {
-            doDelete(login, id);
-        } catch (RedirectException e) {
-            GritterUtils.AddFlashDanger(e.getMessage(), attributes);
-            return e.redirectViewName();
-        }
+            , RedirectAttributes attributes) throws RedirectException {
+        doDelete(login, id);
         return redirectIndexViewName();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @Transactional(readOnly = true)
     public String open(@AuthenticationPrincipal Login login, @PathVariable("id") ID id, Model model
-            , RedirectAttributes attributes) {
+            , RedirectAttributes attributes) throws RedirectException {
         T data = jpaRepository.getOne(id);
         model.addAttribute("object", data);
-        try {
-            prepareOpen(login, data, model, attributes);
-        } catch (RedirectException e) {
-            GritterUtils.AddFlashDanger(e.getMessage(), attributes);
-            return e.redirectViewName();
-        }
+        prepareOpen(login, data, model, attributes);
         return openViewName();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     @Transactional
     public String save(@AuthenticationPrincipal Login login, @PathVariable("id") ID id, @MethodParameterFixed T data
-            , @MethodParameterFixed MD extra, RedirectAttributes attributes) {
+            , @MethodParameterFixed MD extra, RedirectAttributes attributes) throws RedirectException {
         T entity = jpaRepository.getOne(id);
         try {
             prepareUpdate(login, entity, data, extra, attributes);
@@ -151,18 +142,17 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
             jpaRepository.save(entity);
             GritterUtils.AddFlashSuccess("保存成功", attributes);
         } catch (RedirectException ex) {
-            GritterUtils.AddFlashDanger(ex.getMessage(), attributes);
-            return ex.redirectViewName();
+            throw ex;
         } catch (Exception ex) {
             log.info("unknown exception on save", ex);
-            GritterUtils.AddFlashDanger(ex.getMessage(), attributes);
+            throw new RedirectException(rootUri(), ex);
         }
         return redirectIndexViewName();
     }
 
     @RequestMapping(method = RequestMethod.GET)
     @Transactional(readOnly = true)
-    public String index(@AuthenticationPrincipal Login login, Model model, RedirectAttributes attributes) {
+    public String index(@AuthenticationPrincipal Login login, Model model, RedirectAttributes attributes) throws RedirectException {
         try {
             Specification<T> specification = prepareIndex(login, model, attributes);
             if (specification == null)
@@ -171,11 +161,11 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
                 model.addAttribute("list", jpaSpecificationExecutor.findAll(specification));
 
         } catch (RedirectException ex) {
-            GritterUtils.AddFlashDanger(ex.getMessage(), attributes);
-            return ex.redirectViewName();
+            throw ex;
         } catch (Exception ex) {
             log.info("unknown exception on index", ex);
-            GritterUtils.AddDanger(ex.getMessage(), attributes);
+            // 这里可不能返回root 不是就死循环了,  应该返回
+            throw new RedirectException("/manage", ex);
         }
 //        if (searchText != null) {
 //            String toSearch = "%" + searchText + "%";

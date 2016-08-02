@@ -65,7 +65,8 @@ public class SiteController extends CRUDController<Site, Long, SiteController.Ab
     }
 
     @Override
-    protected Site preparePersist(Login login, Site data, AboutNewSite extra, RedirectAttributes attributes) throws RedirectException {
+    protected Site preparePersist(Login login, Site data, AboutNewSite extra, RedirectAttributes attributes)
+            throws RedirectException {
         //  只有Root才可以干这事。
         if (!login.isRoot())
             throw new AccessDeniedException("无法访问。");

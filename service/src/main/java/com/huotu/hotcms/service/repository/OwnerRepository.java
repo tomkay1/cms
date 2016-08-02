@@ -40,4 +40,9 @@ public interface OwnerRepository extends LoginRepository<Owner> {
      */
     List<Owner> findByEnabledTrue();
 
+    /**
+     * @return 可用商户
+     */
+    List<Owner> findTop5ByEnabledTrue();
+
 }

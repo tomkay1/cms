@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.UUID;
 
 /**
  * 将几个常用动作 写成单独文件
@@ -90,8 +91,10 @@ public class WidgetViewController {
         InstalledWidget installedWidget = widgetLocateService.findWidget(widgetName.toString());
 
         Component component = new Component();
-        component.setProperties((ComponentProperties) currentProperties.get("properties"));
-        component.setId((String) currentProperties.get("componentId"));
+        component.setProperties(currentProperties);
+        component.setId(UUID.randomUUID().toString());
+//        component.setProperties((ComponentProperties) currentProperties.get("properties"));
+//        component.setId((String) currentProperties.get("componentId"));
         component.setStyleId(styleId);
         component.setInstalledWidget(installedWidget);
         if (installedWidget != null) {

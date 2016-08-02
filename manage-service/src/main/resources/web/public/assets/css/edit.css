@@ -31,8 +31,6 @@ img {
 .fr {
     float: right;
 }
-/*mixin*/
-/*reset*/
 .btn-primary, .label-primary {
     background-color: #00a0e9;
 }
@@ -51,8 +49,24 @@ img {
 .btn-danger:focus, .btn-danger:hover, .btn-danger:active:focus  {
     background-color: #e02d19;
 }
-
-/*global*/
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #e4e7ea;
+    z-index: 10000;
+}
+#status {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -15px 0 0 -15px;
+    font-size: 32px;
+}
 header {
     position: fixed;
     top: 0;
@@ -400,57 +414,6 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
     background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M27%2C22L27%2C22L5%2C44l-2.1-2.1L22.8%2C22L2.9%2C2.1L5%2C0L27%2C22L27%2C22z'%20fill%3D'%23d8d8d8'%2F%3E%3C%2Fsvg%3E");
     right: 0;
 }
-#configuration .conf-body .images {
-    padding: 10px;
-    width: 610px;
-    border: 1px solid #e8e8e8;
-    border-top: none;
-    overflow: hidden;
-}
-
-#configuration .conf-body .images .upload-img {
-    margin-top: 10px;
-    height: 220px;
-    overflow: auto;
-}
-
-#configuration .conf-body .images .upload-img li {
-    padding-top: 10px;
-    margin-bottom: 10px;
-    border-top: 1px solid #e8e8e8;
-}
-
-#configuration .conf-body .images .upload-img img {
-    display: inline;
-    width: 120px;
-}
-
-#configuration .conf-body .images .upload-img button {
-    margin-left: 320px;
-}
-
-#configuration .conf-body .images .upload-img i {
-    margin-right: 10px;
-}
-
-#configuration .conf-body .images .select-list {
-    display: inline;
-    width: auto;
-}
-
-#configuration .conf-body .images span {
-    padding: 6px 12px;
-    margin-right: 20px;
-    height: 34px;
-    font-size: 14px;
-}
-
-#configuration .conf-body .images > div {
-    overflow: hidden;
-}
-#configuration .conf-body .borderBoxs > div {
-    overflow: hidden;
-}
 #configuration .conf-body .borderBoxs .select-list {
     display: inline;
     width: auto;
@@ -461,7 +424,9 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
     height: 400px;
     overflow: auto;
 }
-
+#configuration .conf-body .borderBoxs > div {
+    overflow: hidden;
+}
 #configuration .conf-body .borderBoxs span {
     padding: 6px 12px;
     margin-right: 20px;
@@ -481,14 +446,19 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
     height: 80px;
 }
 
-#configuration .conf-body .borderBoxs button {
-    margin-left: 320px;
-}
-
 #configuration .conf-body .borderBoxs i {
     margin-right: 10px;
 }
-
+.borderBoxs {
+    padding: 16px 20px;
+    width: 610px;
+    border: 1px solid #e8e8e8;
+    border-top: none;
+    overflow: hidden;
+}
+.borderBoxs > div {
+    overflow: hidden;
+}
 #pageConf {
     padding-top: 20px;
 }
@@ -514,126 +484,6 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
     outline: 1px dashed #ddd;
     visibility: visible !important;
     border-radius: 4px;
-}
-
-.form-group span {
-    padding-top: 7px;
-    margin-bottom: 0;
-    text-align: right;
-    font-weight: 700;
-}
-
-.form-group .file-btn {
-    float: left;
-    padding: 0;
-    width: 68px;
-    height: 68px;
-    text-align: center;
-}
-
-.form-group .file-btn i {
-    color: #aaa;
-    font-size: 64px;
-}
-
-.uploadButtonImage {
-    position: absolute;
-    left: 0;
-    top: 0;
-    opacity: 0;
-    width: 0;
-    filter: alpha(opacity=0);
-    cursor: pointer;
-}
-
-#picConfForm {
-    padding: 20px;
-    border: 1px solid #e8e8e8;
-    border-top: none;
-}
-
-.jumbotron-index {
-    text-align: center;
-    background-color: #fff;
-}
-
-.link-exchange {
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.link-exchange dl {
-    overflow: hidden;
-}
-
-.link-exchange dt {
-    float: left;
-    margin-top: 6px;
-    width: 70px;
-    font-size: 16px;
-}
-
-.link-exchange dd {
-    margin-left: 70px;
-}
-
-.link-exchange span {
-    float: left;
-    padding: 7px 0 9px;
-    font-size: 12px;
-    line-height: 15px;
-    color: #999;
-}
-
-.link-exchange a {
-    white-space: nowrap;
-    float: left;
-    padding: 8px 9px;
-    font-size: 12px;
-    line-height: 15px;
-    color: #555;
-    text-decoration: none;
-}
-
-.borderBoxs {
-    padding: 16px 20px;
-    width: 610px;
-    border: 1px solid #e8e8e8;
-    border-top: none;
-    overflow: hidden;
-}
-
-.borderBoxs div {
-    overflow: hidden;
-}
-
-.linkbox {
-    padding: 16px 20px;
-    width: 610px;
-    border: 1px solid #e8e8e8;
-    border-top: none;
-}
-
-.linkbox .buttons {
-    margin: 10px 0;
-}
-
-.linkbox .row {
-    margin: 0 0 10px 0;
-}
-
-#links-list {
-    height: 400px;
-    overflow-y: auto;
-}
-
-.word-banner {
-    text-align: center;
-}
-
-.word-banner p {
-    margin: 10px 0;
-    font-size: 36px;
 }
 
 .sourcepreview .drag,
@@ -667,12 +517,20 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
     height: 300px;
     overflow-y: auto;
 }
-
+.ajax-file-upload-container {
+    height: 220px;
+    overflow-y: auto;
+}
+.oneImage .ajax-file-upload-container {
+    height: 82px;
+}
+.ajax-file-upload {
+  height: auto;
+}
 .ajax-file-upload-preview {
     float: left;
     margin-right: 10px;
 }
-
 .changeStyle.active {
     border: 1px solid #638d38;
 }

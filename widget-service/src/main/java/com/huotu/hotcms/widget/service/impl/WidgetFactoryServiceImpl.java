@@ -113,11 +113,11 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
             }
         }
         File file = File.createTempFile("CMSWidget", ".jar");
-        file.deleteOnExit();
         //下载jar
         try (FileOutputStream outputStream = new FileOutputStream(file)) {
             HttpClientUtil.getInstance().webGet(repoUrl.toString() + "/" + widgetId + "-" + (version.split("-")[0])
                     + "-" + timeBuild + ".jar", outputStream);
+            outputStream.flush();
         }
         return file;
     }
@@ -134,10 +134,14 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
             resourceService.uploadResource(path, data);
         } else {
             File file = downloadJar(info.getGroupId(), info.getArtifactId(), info.getVersion());
-            try (FileInputStream inputStream = new FileInputStream(file)) {
-                resourceService.uploadResource(path, inputStream);
+            try {
+                try (FileInputStream inputStream = new FileInputStream(file)) {
+                    resourceService.uploadResource(path, inputStream);
+                }
+            } finally {
+                //noinspection ResultOfMethodCallIgnored
+                file.delete();
             }
-            file.delete();
         }
         info.setPath(path);
     }
@@ -181,8 +185,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
 
     @Override
     public void installWidgetInfo(WidgetInfo widgetInfo) throws IOException, FormatException {
-        setupJarFile(widgetInfo, new FileInputStream(downloadJar(widgetInfo.getGroupId(), widgetInfo.getArtifactId()
-                , widgetInfo.getVersion())));
+        setupJarFile(widgetInfo, null);
         if (widgetInfo.getPath() == null)
             throw new IllegalStateException("无法获取控件包资源");
         try {
@@ -220,7 +223,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
 
         } catch (InstantiationException
                 | IllegalAccessException | FormatException e) {
-            throw new FormatException(e.toString());
+            throw new FormatException("Bad jar format", e);
         }
     }
 

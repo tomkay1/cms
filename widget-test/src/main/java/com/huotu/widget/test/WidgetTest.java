@@ -179,7 +179,7 @@ public abstract class WidgetTest extends SpringWebTest {
      *
      * @param widget    控件
      * @param style     样式
-     * @param uiChanger 更改后的预览视图
+     * @param uiChanger 更改后的预览视图,它接受的参数就是组件的实际properties不再需要很古怪再设置properties了
      */
     protected abstract void browseWork(Widget widget, WidgetStyle style
             , Function<ComponentProperties, WebElement> uiChanger) throws IOException;

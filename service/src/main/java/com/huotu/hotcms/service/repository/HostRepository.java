@@ -11,6 +11,7 @@ package com.huotu.hotcms.service.repository;
 
 import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.entity.login.Owner;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -18,6 +19,8 @@ import java.util.List;
 public interface HostRepository extends JpaRepository<Host,Long> {
     Host findByDomain(String domain);
 
-    List<Host> findBySitesContains(Site site);
+    long deleteByOwner(Owner owner);
+
+    List<Host> findBySites(Site site);
 
 }

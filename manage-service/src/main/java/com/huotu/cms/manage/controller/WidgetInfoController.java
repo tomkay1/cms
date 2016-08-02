@@ -28,6 +28,8 @@ import com.huotu.hotcms.widget.model.WidgetStyleModel;
 import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import me.jiangcai.lib.resource.service.ResourceService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -62,6 +64,8 @@ import java.util.Locale;
 public class WidgetInfoController
         extends CRUDController<WidgetInfo, WidgetIdentifier, HttpServletRequest, Long> {
 
+    private static final Log log = LogFactory.getLog(WidgetInfoController.class);
+
     @Autowired
     private Environment environment;
     @Autowired
@@ -88,6 +92,7 @@ public class WidgetInfoController
             widgetFactoryService.installWidgetInfo(widgetInfo);
             GritterUtils.AddSuccess("完成", attributes);
         } catch (IOException | FormatException e) {
+            log.error("install widget", e);
             GritterUtils.AddFlashDanger(e.getLocalizedMessage(), attributes);
         }
 

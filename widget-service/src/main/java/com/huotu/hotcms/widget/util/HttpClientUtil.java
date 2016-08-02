@@ -98,8 +98,7 @@ public class HttpClientUtil {
             }
         }
         HttpGet httpGet = new HttpGet(finalUrl.toString());
-        CloseableHttpResponse response = httpClient.execute(httpGet);
-        return response;
+        return httpClient.execute(httpGet);
     }
 
 

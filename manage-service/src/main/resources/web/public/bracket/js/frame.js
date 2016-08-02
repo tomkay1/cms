@@ -15,7 +15,7 @@
  */
 
 $(function () {
-    var debug = true;
+    var debug = false;
 
     var print = function () {
         if (debug)

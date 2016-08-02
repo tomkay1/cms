@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -153,11 +154,11 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
     }
 
     @Override
-    public String getPersonDetailUrl(HttpServletRequest request){
+    public String getPersonDetailUrl(HttpServletRequest request, Locale locale) {
         Site site = null;
         String domain = "";
         try {
-            site = siteResolveService.getCurrentSite(request);
+            site = siteResolveService.getCurrentSite(request, locale);
             Merchant merchant = merchantRestRepository.getOneByPK(site.getOwner().getCustomerId());
             domain = merchant.getSubDomain();
         } catch (Exception e) {
@@ -169,10 +170,10 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
     }
 
     @Override
-    public String getSubscribeUrl(HttpServletRequest request) {
+    public String getSubscribeUrl(HttpServletRequest request, Locale locale) {
         Site site = null;
         try {
-            site = siteResolveService.getCurrentSite(request);
+            site = siteResolveService.getCurrentSite(request, locale);
         } catch (Exception e) {
             e.printStackTrace();
         }

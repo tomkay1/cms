@@ -19,6 +19,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.LocaleResolver;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -28,6 +29,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Locale;
 
 /**
  * 这个Filer所完成的工作就是让{@link CMSContext#RequestContext()}可用
@@ -59,7 +61,11 @@ public class CMSFilter extends OncePerRequestFilter implements Filter {
             throws ServletException, IOException {
         WebApplicationContext context = WebApplicationContextUtils.findWebApplicationContext(getServletContext());
         try {
-            Site site = context.getBean(SiteResolveService.class).getCurrentSite(request);
+            // Locale 在Spring MVC中 是在DispatchServlet内才开始解析的, 在我们个案中到了Spring就晚了,所以得自己动手
+            // 至少在这个一步我们已经获得Host了, 也考虑更改设计为先获取Host再根据Host的设置获取不同的区域处理器
+            Locale locale = context.getBean("localeResolver", LocaleResolver.class).resolveLocale(request);
+            // 这个值是否正确 还需要再研究哈
+            Site site = context.getBean(SiteResolveService.class).getCurrentSite(request, locale);
             CMSContext.PutContext(request, response, site);
         } catch (NoSiteFoundException | NoHostFoundException e) {
             log.info("Redirect http://www.huobanplus.com ", e);

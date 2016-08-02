@@ -10,8 +10,7 @@
 package com.huotu.hotcms.web.interceptor;
 
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.thymeleaf.service.SiteResolveService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.huotu.hotcms.widget.CMSContext;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -19,12 +18,8 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import javax.servlet.http.HttpServletRequest;
-
 @Component
 public class SiteResolver implements HandlerMethodArgumentResolver {
-    @Autowired
-    private SiteResolveService siteResolveService;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -55,9 +50,7 @@ public class SiteResolver implements HandlerMethodArgumentResolver {
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer
             , NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-        HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
-        // 应该直接使用CMSContext 更好么?
-        return siteResolveService.getCurrentSite(request);
+        return CMSContext.RequestContext().getSite();
     }
 
 

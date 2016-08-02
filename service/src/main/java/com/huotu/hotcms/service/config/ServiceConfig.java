@@ -22,6 +22,9 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
+
+import java.util.Locale;
 
 
 @Configuration
@@ -39,6 +42,15 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
         , JdbcSpringConfig.class, JpaConfig.class,})
 //@EnableWebMvc
 public class ServiceConfig {
+
+    @Bean
+    public CookieLocaleResolver localeResolver() {
+        CookieLocaleResolver localeResolver = new CookieLocaleResolver();
+        localeResolver.setDefaultLocale(Locale.CHINA);
+        localeResolver.setCookieName("locale");
+        localeResolver.setCookieMaxAge(24 * 60 * 60);
+        return localeResolver;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

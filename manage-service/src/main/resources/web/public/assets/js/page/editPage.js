@@ -61,7 +61,12 @@ var editFunc = {
             var ele = $('#configuration');
             ele.show();
             var id = $(this).data('target');
-            $('#' + id).show();
+            $('.conf-body').find('.common-conf').each(function () {
+                var oId = $(this).data('id') ;
+                if (oId == id) {
+                    $(this).show();
+                }
+            });
             ele.stop().animate({
                 right: 0
             },500);
@@ -172,7 +177,7 @@ var Page = {
             //编辑器视图渲染
             var child = $('<div class="common-conf"></div>');
             var container = $('<div></div>');
-            child.attr('id', v['identity']);
+            child.attr('data-id', v['identity']);
             child.append(Page.styleList.join('\n'));
             $.each(v.styles, function (key, val) {
                 var div = $('<div class="swiper-slide"></div>')

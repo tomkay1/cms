@@ -11,6 +11,7 @@ package com.huotu.hotcms.service.entity;
 
 import com.huotu.hotcms.service.Auditable;
 import com.huotu.hotcms.service.Copyable;
+import com.huotu.hotcms.service.model.GalleryItemModel;
 import com.huotu.hotcms.service.util.SerialUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -91,6 +92,13 @@ public class GalleryItem implements Auditable, Copyable<GalleryItem> {
     @Column(name = "updateTime")
     private LocalDateTime updateTime;
 
+    public static GalleryItemModel getGalleryItemModel(GalleryItem galleryItem) {
+        GalleryItemModel galleryItemModel = new GalleryItemModel();
+        galleryItemModel.setId(galleryItem.getId());
+        galleryItemModel.setThumbUri(galleryItem.getThumbUri());
+        return galleryItemModel;
+    }
+
     @Override
     public GalleryItem copy() {
         GalleryItem galleryItem = new GalleryItem();
@@ -112,5 +120,6 @@ public class GalleryItem implements Auditable, Copyable<GalleryItem> {
 //        galleryItem.setSite(site);
         return galleryItem;
     }
+
 
 }

@@ -91,8 +91,6 @@ public class TestWidgetFactoryService extends TestBase {
     @Test
     public void testInstallWidget() throws IOException, FormatException, IllegalAccessException
             , InstantiationException, InterruptedException, PageNotFoundException {
-
-
         //*********************************case1 安装控件校验控件是否存在控件列表中******************************
         String randomType = UUID.randomUUID().toString();
         widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
@@ -193,6 +191,15 @@ public class TestWidgetFactoryService extends TestBase {
     public void testDownloadJar() throws IOException {
         File file = widgetFactoryService.downloadJar("com.huotu.widget.friendshipLink", "friendshipLink", "1.0-SNAPSHOT");
         assertThat(file).as("file不等于空,下载成功").isNotNull();
+    }
+
+    @Test
+    public void testInstallWidgetInfo() throws IOException, FormatException, IllegalAccessException, InstantiationException {
+        //*********************************case1 安装控件校验控件是否存在控件列表中******************************
+        String randomType = UUID.randomUUID().toString();
+        widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
+                , "1.0-SNAPSHOT", randomType);
+        assertWidgetListContainWidgetName("picCarousel", "1.0-SNAPSHOT", randomType);
     }
 
     public void validPageElements(PageElement pageElement, WidgetInfo widgetInfo) {

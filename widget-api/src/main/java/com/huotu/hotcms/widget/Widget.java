@@ -95,7 +95,7 @@ public interface Widget {
      * @return 控件名称(无语言)
      */
     default String name() {
-        return getClass().getPackage().getImplementationTitle();
+        return name(Locale.CHINA);
     }
 
     String name(Locale locale);

@@ -37,7 +37,7 @@ import java.io.IOException;
 public abstract class ContentManageController<T extends AbstractContent, ED extends ContentExtra>
         extends SiteManageController<T, Long, ED, ED> {
 
-    private static final Log log= LogFactory.getLog(ContentManageController.class);
+    private static final Log log = LogFactory.getLog(ContentManageController.class);
 
     @Autowired
     private CategoryService categoryService;
@@ -71,13 +71,14 @@ public abstract class ContentManageController<T extends AbstractContent, ED exte
         try {
             data.setCategory(categoryService.getCategoryByNameAndParent(site, extra.getCategoryName()
                     , extra.getParentCategoryId(), contentType()));
-            if(!(data instanceof Download)){//下载模型不能简单使用图片的处理操作
-                uploadTempImageToOwner(data,extra.getTempPath());
+            if (!(data instanceof Download)) {//下载模型不能简单使用图片的处理操作
+                uploadTempImageToOwner(data, extra.getTempPath());
             }
         } catch (BadCategoryInfoException e) {
             throw new RedirectException(rootUri(), "该数据源已存在，并且不符合你要求。", e);
         } catch (IOException e) {
-            log.warn("图片转存异常："+e.getMessage());
+            log.warn("图片转存异常：" + e.getMessage());
+            throw new RedirectException(rootUri(), "图片转存异常：" + e.getMessage(), e);
         }
         return preparePersistContext(login, site, data, extra, attributes);
     }

@@ -15,6 +15,8 @@ import com.huotu.hotcms.service.entity.Gallery;
 import com.huotu.hotcms.service.entity.GalleryItem;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.model.GalleryItemModel;
+import com.huotu.hotcms.service.model.LinkModel;
 import com.huotu.hotcms.service.repository.GalleryItemRepository;
 import com.huotu.hotcms.service.repository.GalleryRepository;
 import com.huotu.hotcms.service.repository.LinkRepository;
@@ -90,13 +92,20 @@ public class CMSDataSourceServiceTest extends TestBase {
                 .isEmpty();
 
         List<Link> linkList = new ArrayList<>();
+        List<LinkModel> linkModelList = new ArrayList<>();
         int count = random.nextInt(10) + 2;
         while (count-- > 0) {
-            linkList.add(randomLink(category));
+            Link link = randomLink(category);
+            linkList.add(link);
+
+            LinkModel model = new LinkModel();
+            model.setLinkUrl(link.getLinkUrl());
+            model.setThumbUri(link.getThumbUri());
+            linkModelList.add(model);
         }
 
         assertThat(cmsDataSourceService.findLink(category.getId()))
-                .containsAll(linkList);
+                .containsAll(linkModelList);
     }
 
     @Test
@@ -119,13 +128,16 @@ public class CMSDataSourceServiceTest extends TestBase {
                 .isEmpty();
 
         List<GalleryItem> itemList = new ArrayList<>();
+        List<GalleryItemModel> itemModelList = new ArrayList<>();
         int count = random.nextInt(10) + 2;
         while (count-- > 0) {
-            itemList.add(randomGalleryItem(gallery2));
+            GalleryItem galleryItem = randomGalleryItem(gallery2);
+            itemList.add(galleryItem);
+            itemModelList.add(GalleryItem.getGalleryItemModel(galleryItem));
         }
 
         assertThat(cmsDataSourceService.findGalleryItem(gallery2.getId()))
-                .containsAll(itemList);
+                .containsAll(itemModelList);
     }
 
 

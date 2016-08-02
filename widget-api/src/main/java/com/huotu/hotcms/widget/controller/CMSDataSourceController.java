@@ -9,8 +9,8 @@
 
 package com.huotu.hotcms.widget.controller;
 
-import com.huotu.hotcms.service.entity.GalleryItem;
-import com.huotu.hotcms.service.entity.Link;
+import com.huotu.hotcms.service.model.GalleryItemModel;
+import com.huotu.hotcms.service.model.LinkModel;
 import com.huotu.hotcms.service.repository.GalleryRepository;
 import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.widget.service.CMSDataSourceService;
@@ -49,7 +49,7 @@ public class CMSDataSourceController {
      */
     @RequestMapping(value = "/findGalleryItem/{parentId}", method = RequestMethod.GET)
     public ResponseEntity findGalleryItem(@PathVariable("parentId") Long parentId) {
-        List<GalleryItem> data = cmsDataSourceService.findGalleryItem(parentId);
+        List<GalleryItemModel> data = cmsDataSourceService.findGalleryItem(parentId);
         return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(data);
     }
 
@@ -60,7 +60,7 @@ public class CMSDataSourceController {
      */
     @RequestMapping(value = "/findLink/{parentId}", method = RequestMethod.GET)
     public ResponseEntity findLink(@PathVariable("parentId") Long parentId) {
-        List<Link> data = cmsDataSourceService.findLink(parentId);
+        List<LinkModel> data = cmsDataSourceService.findLink(parentId);
         return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(data);
     }
 

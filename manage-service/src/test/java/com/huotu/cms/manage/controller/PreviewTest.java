@@ -140,6 +140,7 @@ public class PreviewTest extends ManageTest {
         List<Object> list = new ArrayList<>();
         map.put("title", linkTitle);
         map.put("url", "/" + toPage.getPagePath());
+        map.put("target", "_self");
         list.add(map);
         properties.put("linkList", list);
         properties.put("styleTemplate", "html");

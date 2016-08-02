@@ -13,9 +13,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Gallery;
-import com.huotu.hotcms.service.entity.GalleryItem;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.model.CollapseArtcleCategory;
+import com.huotu.hotcms.service.model.GalleryItemModel;
+import com.huotu.hotcms.service.model.LinkModel;
 import com.huotu.hotcms.service.model.NavbarPageInfoModel;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.service.CMSDataSourceService;
@@ -43,16 +44,14 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     }
 
     @Override
-    public List<GalleryItem> findGalleryItem(Long galleryId) {
+    public List<GalleryItemModel> findGalleryItem(Long galleryId) {
         Gallery gallery = new Gallery();
         gallery.setId(galleryId);
-        List<GalleryItem> list = new ArrayList<>();
-        GalleryItem galleryItem1 = new GalleryItem();
-        galleryItem1.setGallery(gallery);
+        List<GalleryItemModel> list = new ArrayList<>();
+        GalleryItemModel galleryItem1 = new GalleryItemModel();
         galleryItem1.setId(1L);
         galleryItem1.setThumbUri("http://placehold.it/106x82?text=galleryItem1");
-        GalleryItem galleryItem2 = new GalleryItem();
-        galleryItem2.setGallery(gallery);
+        GalleryItemModel galleryItem2 = new GalleryItemModel();
         galleryItem2.setId(2L);
         galleryItem2.setThumbUri("http://placehold.it/106x82?text=galleryItem2");
         list.add(galleryItem1);
@@ -78,7 +77,7 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     }
 
     @Override
-    public List<Link> findLink(Long categoryId) {
+    public List<LinkModel> findLink(Long categoryId) {
         List<Link> list = new ArrayList<>();
         Link link1 = new Link();
         link1.setId(1L);
@@ -92,7 +91,14 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
 
         list.add(link1);
         list.add(link2);
-        return list;
+        if (list != null && list.size() > 0) {
+            List<LinkModel> linkModels = new ArrayList<>();
+            for (Link link : list) {
+                linkModels.add(Link.getLinkModel(link));
+            }
+            return linkModels;
+        }
+        return null;
     }
 
     @Override
@@ -171,7 +177,7 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
         }
         List<CollapseArtcleCategory> rootTrees = new ArrayList<>();
         for (CollapseArtcleCategory collapseArtcleCategory : collapseArtcleCategories) {
-            if (collapseArtcleCategory.getParentId() == 0) {
+            if (collapseArtcleCategory.getParentId() == parentId) {
                 rootTrees.add(collapseArtcleCategory);
             }
             for (CollapseArtcleCategory t : collapseArtcleCategories) {

@@ -68,6 +68,7 @@
                                 <label class="col-sm-2 control-label">站点关键字</label>
                                 <div class="col-sm-10">
                                     <input name="keywords" class="form-control inputTags" value="" title="站点关键字"
+                                           tagsDefaultText="关键字"
                                            th:value="${object.keywords}"/>
                                 </div>
                             </div>
@@ -87,7 +88,8 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">域名</label>
                                 <div class="col-sm-10">
-                                    <input name="domains" class="form-control inputTags" value="" title="域名"/>
+                                    <input name="domains" class="form-control inputTags" value="" tagsDefaultText="域名"
+                                           title="域名"/>
                                     <span class="help-block">域名不包含"/"结尾,例如huobanplus.com,www.huobanplus.com</span>
                                 </div>
                             </div>

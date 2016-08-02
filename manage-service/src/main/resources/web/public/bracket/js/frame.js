@@ -107,12 +107,23 @@ $(function () {
     }
     // 让inputTags class 可以变成点击添加
     var inputTags = $('.inputTags');
-    if (inputTags.size() > 0)
-        inputTags.tagsInput({width: 'auto'});
+    inputTags.each(function (index, ele) {
+        var input = $(ele);
+        var config = {width: 'auto'};
+        var tagsDefaultText = input.attr('tagsDefaultText');
+        var tagsWidth = input.attr('tagsWidth');
 
+        if (tagsDefaultText) {
+            config.defaultText = tagsDefaultText;
+        }
+        if (tagsWidth) {
+            config.width = tagsWidth;
+        }
+        input.tagsInput(config);
+    });
 
-    var datepicker=$('.cms-datepicker');
-    if(datepicker.size()>0)
+    var datepicker = $('.cms-datepicker');
+    if (datepicker.size() > 0)
         datepicker.datepicker();
 
 

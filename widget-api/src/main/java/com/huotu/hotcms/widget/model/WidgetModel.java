@@ -24,6 +24,7 @@ import lombok.Setter;
 public class WidgetModel {
 
     private String identity;
+    private String type;
     private String locallyName;
     private String thumbnail;
     /**

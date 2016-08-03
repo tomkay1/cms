@@ -471,11 +471,13 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
 .common-conf {
     display: none;
 }
-
 .common-conf > div {
     margin-bottom: 20px;
 }
-
+.common-conf .styles img {
+    width: 106px;
+    height: 82px;
+}
 .ui-draggable-dragging .view {
     display: block;
 }

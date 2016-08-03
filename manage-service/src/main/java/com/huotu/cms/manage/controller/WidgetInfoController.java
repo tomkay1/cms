@@ -188,6 +188,7 @@ public class WidgetInfoController
             WidgetModel widgetModel = new WidgetModel();
             Widget widget = installedWidget.getWidget();
             widgetModel.setLocallyName(widget.name(locale));
+            widgetModel.setType(installedWidget.getType());
             WidgetStyle[] widgetStyles = widget.styles();
             widgetModel.setEditorHTML(widgetResolveService.editorHTML(widget, CMSContext.RequestContext(), null));
             widgetModel.setIdentity(Widget.WidgetIdentity(widget));

@@ -53,7 +53,7 @@ var widgetHandle = {
         dynamicLoading.css(path);
         CMSWidgets.saveComponent(id, {
             onSuccess: function (ps) {
-                if ( properties !== null && !$.isEmptyObject(properties) )
+                if ( ps !== null && !$.isEmptyObject(ps) )
                 widgetHandle.setStroe(id, ps);
                 updataCompoentPreview(id, ps);
                 editFunc.closeFunc();

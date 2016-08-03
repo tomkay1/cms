@@ -54,10 +54,13 @@ import com.huotu.hotcms.widget.repository.PageInfoRepository;
 import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
 import com.huotu.hotcms.widget.service.PageService;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
+import com.huotu.hotcms.widget.servlet.CMSFilter;
+import com.huotu.hotcms.widget.servlet.RouteFilter;
 import me.jiangcai.lib.resource.service.ResourceService;
 import me.jiangcai.lib.test.SpringWebTest;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
@@ -68,6 +71,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.htmlunit.webdriver.MockMvcHtmlUnitDriverBuilder;
 import org.springframework.test.web.servlet.htmlunit.webdriver.WebConnectionHtmlUnitDriver;
+import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
 import org.springframework.util.StreamUtils;
 
 import javax.servlet.http.Cookie;
@@ -84,6 +88,7 @@ import java.util.function.Consumer;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 /**
  * 提供了自动登录的办法
@@ -129,6 +134,26 @@ public abstract class ManageTest extends SpringWebTest {
     private GalleryRepository galleryRepository;
     @Autowired
     private ResourceService resourceService;
+
+
+    // 需要应用跟web项目一样的filter
+    @Override
+    public void createMockMVC() {
+        MockitoAnnotations.initMocks(this);
+        // ignore it, so it works in no-web fine.
+        if (context == null)
+            return;
+        DefaultMockMvcBuilder builder = webAppContextSetup(context);
+        builder.addFilters(new CMSFilter(context.getServletContext()), new RouteFilter(context.getServletContext()));
+        if (springSecurityFilter != null) {
+            builder = builder.addFilters(springSecurityFilter);
+        }
+
+        if (mockMvcConfigurer != null) {
+            builder = builder.apply(mockMvcConfigurer);
+        }
+        mockMvc = builder.build();
+    }
 
     @Before
     public void aboutTestOwner() {
@@ -198,6 +223,17 @@ public abstract class ManageTest extends SpringWebTest {
         Gallery gallery = randomGallery(category);
         randomGalleryItem(gallery);
         return site;
+    }
+
+    /**
+     * 给这个站点添加一些数据，包括数据源，正文，页面
+     *
+     * @param site
+     */
+    protected void randomSiteData(Site site) {
+        // 包括数据源的父子关系
+
+        // TODO 尚未完成
     }
 
     /**

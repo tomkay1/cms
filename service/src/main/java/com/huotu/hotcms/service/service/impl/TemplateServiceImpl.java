@@ -106,6 +106,11 @@ public class TemplateServiceImpl implements TemplateService {
     }
 
     @Override
+    public void preview(Template template) {
+        template.setScans(template.getScans() + 1);
+    }
+
+    @Override
     public void use(long templateSiteID, long customerSiteId, int mode) throws IOException {
         Template templateSite = templateRepository.findOne(templateSiteID);
         Site customerSite = siteRepository.findOne(customerSiteId);

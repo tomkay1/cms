@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.service.service;
 
+import com.huotu.hotcms.service.entity.Template;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
@@ -17,6 +18,12 @@ import java.io.IOException;
  * 模板站点的相关操作
  */
 public interface TemplateService {
+
+    /**
+     * 在复制的时候 有严谨语义但又不可重复的字段 在重复时会加入该字符串
+     */
+    String DuplicateAppend = "_duplicate";
+
     /**
      * 点赞
      *
@@ -29,6 +36,14 @@ public interface TemplateService {
     boolean laud(long templateId, long ownerId, int behavior);
 
     /**
+     * 有人浏览了这个模板的首页，所以认为这是一次预览
+     *
+     * @param template 相关模板
+     */
+    @Transactional
+    void preview(Template template);
+
+    /**
      * 使用
      *
      * @param templateSiteID 模板站点ID
@@ -38,6 +53,7 @@ public interface TemplateService {
      *                       <li>1为替换模式 - 清空原有数据，然后进行复制</li>
      *                       </ul>
      */
+    @Transactional
     void use(long templateSiteID, long customerSiteId, int mode) throws IOException;
 
 

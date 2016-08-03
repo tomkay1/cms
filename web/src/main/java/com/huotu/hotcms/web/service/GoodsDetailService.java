@@ -1,9 +1,19 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 package com.huotu.hotcms.web.service;
 
 
 import com.huotu.hotcms.service.widget.model.GoodsDetail;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Locale;
 
 /**
  * Created by chendeyu on 2016/4/8.
@@ -40,16 +50,18 @@ public interface GoodsDetailService {
     /**
      * 获取PC商城个人中心二维码地址
      * @param request
+     * @param locale
      * @return
      */
-    String getPersonDetailUrl(HttpServletRequest request) throws Exception;
+    String getPersonDetailUrl(HttpServletRequest request, Locale locale) throws Exception;
 
     /**
      * 获取商户的二维码地址
      * @param request
+     * @param locale
      * @return
      */
-    String getSubscribeUrl(HttpServletRequest request) throws Exception;
+    String getSubscribeUrl(HttpServletRequest request, Locale locale) throws Exception;
 
 
 }

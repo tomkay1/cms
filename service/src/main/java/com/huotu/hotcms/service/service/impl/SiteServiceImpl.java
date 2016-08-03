@@ -131,8 +131,8 @@ public class SiteServiceImpl implements SiteService {
                 host.setDomain(domain);
                 host.setOwner(site.getOwner());
                 host.setSerial(SerialUtil.formatSerial(site));
-                if (domain.equals(homeDomains))
-                    host.setHome(true);
+//                if (domain.equals(homeDomains))
+//                    host.setHome(true);
                 host.addSite(site);
                 hostRepository.save(host);
             } else {
@@ -145,6 +145,7 @@ public class SiteServiceImpl implements SiteService {
                 hostRepository.saveAndFlush(host);
             }
         }
+        site.setRecommendDomain(homeDomains);
         siteRepository.save(site);
 //        return new ResultView(ResultOptionEnum.OK.getCode(), ResultOptionEnum.OK.getValue(), site);
         return site;

@@ -38,6 +38,11 @@
             <artifactId>resource</artifactId>
             <version>${luffy.version}</version>
         </dependency>
+        <dependency>
+            <groupId>me.jiangcai.lib</groupId>
+            <artifactId>jdbc</artifactId>
+            <version>${luffy.version}</version>
+        </dependency>
         <!--VFS-->
         <dependency>
             <groupId>org.apache.commons</groupId>

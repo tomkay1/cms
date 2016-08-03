@@ -11,6 +11,7 @@ package com.huotu.hotcms.service.repository;
 
 import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.Site;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -90,4 +91,12 @@ public interface ContentRepository extends JpaRepository<AbstractContent, Long>,
      * @return 内容
      */
     List<AbstractContent> findByCategory(Category category);
+
+    /**
+     * 通过站点查找内容
+     *
+     * @param site 站点
+     * @return 内容
+     */
+    List<AbstractContent> findByCategory_Site(Site site);
 }

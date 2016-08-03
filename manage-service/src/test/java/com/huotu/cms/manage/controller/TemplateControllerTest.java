@@ -18,12 +18,17 @@ import com.huotu.cms.manage.page.PageInfoPage;
 import com.huotu.cms.manage.page.SitePage;
 import com.huotu.cms.manage.page.TemplatePage;
 import com.huotu.cms.manage.page.support.AbstractCRUDPage;
+import com.huotu.hotcms.service.entity.AbstractContent;
+import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.Template;
-import com.huotu.hotcms.service.entity.login.Owner;
+import com.huotu.hotcms.service.repository.CategoryRepository;
+import com.huotu.hotcms.service.repository.ContentRepository;
 import com.huotu.hotcms.service.repository.TemplateRepository;
 import com.huotu.hotcms.service.service.TemplateService;
 import com.huotu.hotcms.service.util.ImageHelper;
+import com.huotu.hotcms.widget.entity.PageInfo;
+import com.huotu.hotcms.widget.repository.PageInfoRepository;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -35,13 +40,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.beans.PropertyDescriptor;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * @author CJ
@@ -54,13 +58,20 @@ public class TemplateControllerTest extends SiteManageTest {
     private ResourceService resourceService;
     @Autowired
     private TemplateService templateService;
+    @Autowired
+    private PageInfoRepository pageInfoRepository;
+    @Autowired
+    private ContentRepository contentRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Test
     @Transactional
     public void flow() throws Exception {
         TemplatePage page = loginAsManage().toPage(TemplatePage.class);
 
-        CRUDHelper.flow(page, new TemplateCRUDTest());
+        CRUDHelper.flow(page, new TemplateCRUDTest(true));
+        CRUDHelper.flow(page, new TemplateCRUDTest(false));
 
         //找一个条记录 并且打开编辑
         page.refresh();
@@ -90,7 +101,73 @@ public class TemplateControllerTest extends SiteManageTest {
     @Test
     @Transactional
     public void testLaud() throws Exception {
-        // 先 添加几个模板
+
+        workingWithTemplate((currentPage, template, templateRow, yourSite) -> {
+            //找一个点下赞
+            int old = template.getLauds();
+
+
+            currentPage.laud(templateRow);
+
+            assertThat(template.getLauds())
+                    .isGreaterThan(old);
+
+            assertThat(templateService.isLauded(template.getSiteId(), yourSite.getOwner().getId()))
+                    .isTrue();
+
+            //再点一下
+            currentPage.laud(templateRow);
+
+            assertThat(template.getLauds())
+                    .isEqualTo(old);
+
+            assertThat(templateService.isLauded(template.getSiteId(), yourSite.getOwner().getId()))
+                    .isFalse();
+        });
+    }
+
+    @Test
+    @Transactional
+    public void testUse() throws Exception {
+        workingWithTemplate(new SiteUseTemplate(true));
+        workingWithTemplate(new SiteUseTemplate(false));
+    }
+
+    @Test
+    @Transactional
+    public void testPreview() throws Exception {
+        workingWithTemplate((currentPage, template, templateRow, yourSite) -> {
+            // 添加一个首页吧
+            PageInfo pageInfo = randomPageInfo(template);
+            pageInfo.setPagePath("");
+            pageInfo.setTitle(randomEmailAddress());
+            // 点下预览
+            int old = template.getScans();
+
+            currentPage.preview(templateRow, pageInfo.getTitle());
+            assertThat(template.getScans())
+                    .isGreaterThan(old);
+
+            old = template.getScans();
+            currentPage.preview(templateRow, pageInfo.getTitle());
+            assertThat(template.getScans())
+                    .isGreaterThan(old);
+
+        });
+//        Template template = randomTemplate();
+//        Owner owner = randomOwner();
+//        Site site = randomSiteAndData(owner);
+//        loginAsOwner(owner);
+//        String mode = String.valueOf(random.nextInt(2));//随机0或者1,0代表追加模式，1代表替换模式
+//        mockMvc.perform(post("/manage/template/use/{templateSiteID}/{customerSiteId}", template.getSiteId(), site.getSiteId())
+//                .param("mode", mode)
+//                .session(session))
+//                .andExpect(status().isOk())
+//                .andReturn();
+
+    }
+
+    private void workingWithTemplate(DoForTemplate action) throws Exception {
         TemplatePage page = loginAsManage().toPage(TemplatePage.class);
 
         CRUDHelper.flow(page, new TemplateCRUDTest());
@@ -121,52 +198,32 @@ public class TemplateControllerTest extends SiteManageTest {
                 .stream()
                 .findAny()
                 .orElseThrow(IllegalStateException::new);
-        int old = template.getLauds();
 
-        //找一个点下赞
+
         WebElement templateRow = oneSitePage.listTemplateRows()
                 .stream()
                 .filter(oneSitePage.findRow(template))
                 .findAny()
                 .orElseThrow(() -> new IllegalStateException("找不到预设的模板"));
 
-        oneSitePage.laud(templateRow);
-
-        assertThat(template.getLauds())
-                .isGreaterThan(old);
-
-        assertThat(templateService.isLauded(template.getSiteId(), site.getOwner().getId()))
-                .isTrue();
-
-        //再点一下
-        oneSitePage.laud(templateRow);
-
-        assertThat(template.getLauds())
-                .isEqualTo(old);
-
-        assertThat(templateService.isLauded(template.getSiteId(), site.getOwner().getId()))
-                .isFalse();
-
+        action.templateWork(oneSitePage, template, templateRow, site);
     }
+    interface DoForTemplate {
 
-    @Test
-    @Transactional
-    public void testUse() throws Exception {
-        Template template = randomTemplate();
-        Owner owner = randomOwner();
-        Site site = randomSiteAndData(owner);
-        loginAsOwner(owner);
-        String mode = String.valueOf(random.nextInt(2));//随机0或者1,0代表追加模式，1代表替换模式
-        mockMvc.perform(post("/manage/template/use/{templateSiteID}/{customerSiteId}", template.getSiteId(), site.getSiteId())
-                .param("mode", mode)
-                .session(session))
-                .andExpect(status().isOk())
-                .andReturn();
-
+        void templateWork(SitePage currentPage, Template template, WebElement templateRow, Site yourSite) throws Exception;
     }
 
     private class TemplateCRUDTest implements CRUDTest<Template> {
+        private final boolean resource;
         Resource logoResource;
+
+        TemplateCRUDTest(boolean resource) {
+            this.resource = resource;
+        }
+
+        public TemplateCRUDTest() {
+            this(random.nextBoolean());
+        }
 
         @Override
         public Collection<Template> list() {
@@ -175,7 +232,7 @@ public class TemplateControllerTest extends SiteManageTest {
 
         @Override
         public Template randomValue() {
-            logoResource = random.nextBoolean() ? null : new ClassPathResource("thumbnail.png");
+            logoResource = !resource ? null : new ClassPathResource("thumbnail.png");
             Template template = new Template();
             template.setName(UUID.randomUUID().toString());
             return template;
@@ -214,6 +271,82 @@ public class TemplateControllerTest extends SiteManageTest {
                         .isNotNull();
                 ImageHelper.assertSame(resourceService.getResource(entity.getLogoUri()), logoResource);
             }
+        }
+    }
+
+    private class SiteUseTemplate implements DoForTemplate {
+        private final boolean append;
+
+        /**
+         * @param append 追加模式
+         */
+        SiteUseTemplate(boolean append) {
+            this.append = append;
+        }
+
+        @Override
+        public void templateWork(SitePage currentPage, Template template, WebElement templateRow, Site yourSite)
+                throws Exception {
+            // 包括正文 数据源 和 页面
+            randomSiteData(template);
+            randomSiteData(yourSite);
+            // 点下预览
+            int old = template.getUseNumber();
+
+            // 页面当时的数据
+            List<PageInfo> sitePages = pageInfoRepository.findBySite(yourSite);
+            List<AbstractContent> siteContents = contentRepository.findByCategory_Site(yourSite);
+            List<Category> siteCategories = categoryRepository.findBySite(yourSite);
+
+            // 模板当时的数据
+            List<PageInfo> templatePages = pageInfoRepository.findBySite(template);
+            List<AbstractContent> templateContents = contentRepository.findByCategory_Site(template);
+            List<Category> templateCategories = categoryRepository.findBySite(template);
+
+            // 使用
+//            currentPage.use(templateRow, append);
+
+            assertThat(template.getUseNumber())
+                    .isGreaterThan(old);
+            // 检查资源是否符合需求
+            if (append) {
+                //原资源还存在F
+                assertThat(pageInfoRepository.findBySite(yourSite)).containsAll(sitePages);
+                assertThat(contentRepository.findByCategory_Site(yourSite)).containsAll(siteContents);
+                assertThat(categoryRepository.findBySite(yourSite)).containsAll(siteCategories);
+            } else {
+                //原资源已经没了
+                sitePages.stream().forEach(page -> assertThat(pageInfoRepository.findOne(page.getPageId())).isNull());
+                siteContents.stream().forEach(page -> assertThat(contentRepository.findOne(page.getId())).isNull());
+                siteCategories.stream().forEach(page -> assertThat(categoryRepository.findOne(page.getId())).isNull());
+            }
+
+            //复制过来的效果，遇到重名的可能改名字了 所以名字使用contain即可
+
+            // 原数据 没有变化
+            assertThat(pageInfoRepository.findBySite(template)).containsExactlyElementsOf(templatePages);
+            assertThat(contentRepository.findByCategory_Site(template)).containsExactlyElementsOf(templateContents);
+            assertThat(categoryRepository.findBySite(template)).containsExactlyElementsOf(templateCategories);
+
+            for (PageInfo templatePage : templatePages) {
+                PageInfo sitePage = pageInfoRepository.findBySiteAndPagePath(yourSite, templatePage.getPagePath());
+                //有可能是原来的
+                String append = "";
+                while (sitePages.contains(sitePage)) {
+                    append += TemplateService.DuplicateAppend;
+                    sitePage = pageInfoRepository.findBySiteAndPagePath(yourSite, templatePage.getPagePath() + append);
+                }
+                // 资源可用 页面好像比较复杂 得参考SiteService了
+                // 关联数据
+                if (templatePage.getCategory() != null) {
+                    assertThat(sitePage.getCategory())
+                            .isNotNull();
+                    assertThat(sitePage.getCategory().getName())
+                            .contains(templatePage.getCategory().getName());
+                }
+            }
+            // TODO 正文 数据源
+
         }
     }
 }

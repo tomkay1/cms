@@ -18,6 +18,7 @@ import org.assertj.core.api.Condition;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.springframework.core.io.Resource;
 import org.springframework.util.StringUtils;
@@ -200,5 +201,28 @@ public class SitePage extends AbstractCRUDPage<Site> {
         lauds.findElement(By.tagName("span")).click();
         assertThat(lauds.findElements(By.className("fa-thumbs-up")).isEmpty())
                 .isEqualTo(!state);
+    }
+
+    public void preview(WebElement templateRow, String newTitle) {
+        beforeDriver();
+        String current = webDriver.getWindowHandle();
+        WebElement preview = templateRow.findElement(By.className("site-preview")).findElement(By.tagName("a"));
+        Actions builder = new Actions(webDriver);
+        builder
+                .moveToElement(templateRow)
+                .click(preview)
+                .build().perform();
+
+        String blankWindow = webDriver.getWindowHandles().stream()
+                .filter(x -> !x.equals(current))
+                .findFirst()
+                .orElseThrow(IllegalStateException::new);
+
+//        webDriver.switchTo().parentFrame();
+        webDriver.switchTo().window(blankWindow);
+        assertThat(webDriver.getTitle())
+                .isEqualTo(newTitle);
+        webDriver.close();
+        webDriver.switchTo().window(current);
     }
 }

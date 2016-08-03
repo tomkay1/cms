@@ -46,7 +46,9 @@ public class PageFilterBehavioral implements FilterBehavioral {
             "admin",
             "dataSource",
             "preview",
-            "widget"
+            "widget",
+            //这是一个很特殊的 测试的模拟登陆 :)
+            "testLoginAs"
     ));
     private static final Log log = LogFactory.getLog(PageFilterBehavioral.class);
     private final Pattern pattern = Pattern.compile("^/([_a-zA-Z0-9]+)(/.*)?$");

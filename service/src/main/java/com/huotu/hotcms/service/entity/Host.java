@@ -42,7 +42,7 @@ public class Host {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "hostId")
     private Long hostId;
-    
+
     /**
      * 序列号
      */
@@ -68,12 +68,6 @@ public class Host {
      */
     @Column(name = "remarks")
     private String remarks;
-
-    /**
-     * 主推域名,一般一个网站只有一个主推域名
-     * */
-    @Column(name = "home")
-    private boolean home;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH})
     @JoinTable(name = "cms_host_site")

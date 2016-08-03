@@ -11,7 +11,6 @@ package com.huotu.hotcms.service.entity;
 
 import com.huotu.hotcms.service.Auditable;
 import com.huotu.hotcms.service.Enabled;
-import com.huotu.hotcms.service.ImagesOwner;
 import com.huotu.hotcms.service.common.SiteType;
 import com.huotu.hotcms.service.entity.login.Owner;
 import lombok.Getter;
@@ -143,6 +142,13 @@ public class Site implements Auditable, Enabled {
     @JoinColumn(name = "regionId")
     private Region region;
 
+    /**
+     * 推荐域名,可以为null
+     *
+     * @see com.huotu.hotcms.service.CMSDataVersion#siteRecommendDomain
+     */
+    @Column(length = 100)
+    private String recommendDomain;
 
 //    @Column(name = "mode")
 //    private int mode = -1;

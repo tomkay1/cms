@@ -58,5 +58,4 @@ public interface HostService {
     @Transactional(readOnly = true)
     Collection<Host> hookOn(Site site);
 
-    String getHomeDomain(Site site);
 }

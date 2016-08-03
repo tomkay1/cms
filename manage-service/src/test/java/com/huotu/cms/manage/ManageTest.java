@@ -99,6 +99,25 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @WebAppConfiguration
 public abstract class ManageTest extends SpringWebTest {
 
+
+    protected String[][] widgets = new String[][]{
+//                new String[]{
+//                        "com.huotu.hotcms.widget.pagingWidget",
+//                        "pagingWidget"
+//                },
+            new String[]{
+                    "com.huotu.hotcms.widget.picCarousel",
+                    "picCarousel"
+            },
+            new String[]{
+                    "com.huotu.hotcms.widget.productList",
+                    "productList"
+            },
+            new String[]{
+                    "com.huotu.hotcms.widget.picBanner",
+                    "picBanner"
+            }
+    };
     protected MockHttpSession session;
     @Autowired
     protected OwnerRepository ownerRepository;
@@ -124,10 +143,8 @@ public abstract class ManageTest extends SpringWebTest {
     private CategoryRepository categoryRepository;
     @Autowired
     private ArticleRepository articleRepository;
-
     @Autowired
     private DownloadRepository downloadRepository;
-
     @Autowired
     private GalleryItemRepository galleryItemRepository;
     @Autowired
@@ -135,6 +152,28 @@ public abstract class ManageTest extends SpringWebTest {
     @Autowired
     private ResourceService resourceService;
 
+    protected WidgetInfo randomWidgetInfoValue(Integer seed) {
+
+        String[] widgetInfo;
+        if (seed == null) {
+            widgetInfo = widgets[random.nextInt(widgets.length)];
+        } else {
+            widgetInfo = widgets[seed];
+        }
+        WidgetInfo info = new WidgetInfo();
+        // com.huotu.hotcms.widget.pagingWidget  pagingWidget 1.0-SNAPSHOT
+        info.setGroupId(widgetInfo[0]);
+        info.setArtifactId(widgetInfo[1]);
+        info.setVersion("1.0-SNAPSHOT");
+        info.setType(randomDomain());
+
+        if (random.nextBoolean()) {
+            Owner owner = randomOwner();
+            info.setOwner(owner);
+        }
+
+        return info;
+    }
 
     // 需要应用跟web项目一样的filter
     @Override

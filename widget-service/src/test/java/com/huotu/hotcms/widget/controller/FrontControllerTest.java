@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.widget.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.common.PageType;
 import com.huotu.hotcms.service.entity.Category;
@@ -50,6 +51,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -82,6 +84,23 @@ public class FrontControllerTest extends TestBase {
 
     @Autowired
     private SiteService siteService;
+
+    @Test
+    public void previewHtml() throws Exception {
+        long contentId = 1L;
+        String pagePath = "test";
+        //构造数据
+        pageInitData(contentId, pagePath);
+        //case 1 测试组件的预览视图
+        ObjectMapper objectMapper = new ObjectMapper();
+        ComponentProperties properties = getComponentProperties();
+        int code = mockMvc.perform(post("/previewHtml").contentType(MediaType.APPLICATION_JSON)
+                .param("widgetIdentifier", "com.huotu.hotcms.widget.topNavigation-topNavigation:1.0-SNAPSHOT")
+                .param("styleId", "topNavigationDefaultStyle")
+                .param("properties", objectMapper.writeValueAsString(properties))
+        ).andDo(print()).andReturn().getResponse().getStatus();
+        assertThat(code).as("存在preview").isEqualTo(HttpStatus.SC_OK);
+    }
 
     /**
      * 预览css的测试
@@ -142,13 +161,6 @@ public class FrontControllerTest extends TestBase {
                 .accept(MediaType.TEXT_HTML)).andDo(print()).andReturn().getResponse().getStatus();
         assertThat(code).as("不存在的contentId和存在的path").isEqualTo(HttpStatus.SC_OK);
 
-//        //case 6 测试组件的预览视图
-//        code = mockMvc.perform(get("/previewHtml")
-//                .param("widgetIdentifier","com.huotu.hotcms.widget.topNavigation-topNavigation:1.0-SNAPSHOT")
-//                .param("styleId","topNavigationDefaultStyle")
-//                .param("properties", String.valueOf(getComponentProperties()))
-//                .accept(MediaType.TEXT_HTML)).andDo(print()).andReturn().getResponse().getStatus();
-//        assertThat(code).as("存在preview").isEqualTo(HttpStatus.SC_OK);
 
     }
 

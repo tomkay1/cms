@@ -35,10 +35,12 @@ import java.io.IOException;
 @RequestMapping("/widget")
 public class WidgetController {
 
-    @Autowired
+    @Autowired(required = false)
     private WidgetLocateService widgetLocateService;
     @Autowired
     private WidgetResolveService widgetResolveService;
+
+
 
     @RequestMapping("/{identifier}.js")
     public ResponseEntity javascript(@PathVariable WidgetIdentifier identifier) throws PageNotFoundException, IOException {

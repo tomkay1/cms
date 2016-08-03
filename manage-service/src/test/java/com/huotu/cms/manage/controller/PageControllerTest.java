@@ -9,33 +9,26 @@
 
 package com.huotu.cms.manage.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.cms.manage.ManageTest;
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.entity.login.Login;
+import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Owner;
-import com.huotu.hotcms.widget.InstalledWidget;
+import com.huotu.hotcms.widget.Component;
+import com.huotu.hotcms.widget.WidgetStyle;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.page.PageLayout;
 import com.huotu.hotcms.widget.page.PageModel;
-import com.huotu.hotcms.widget.service.WidgetFactoryService;
-import com.jayway.jsonpath.JsonPath;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -43,18 +36,74 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Created by hzbc on 2016/7/9.
+ * 针对页面编辑功能的几个测试,
+ * 要求标准<a href="https://huobanplus.quip.com/Y9mVAeo9KnTh">服务标准</a>
  */
 @Transactional
 public class PageControllerTest extends ManageTest {
 
     private static final Log log = LogFactory.getLog(PageControllerTest.class);
-    @Autowired
-    private WidgetFactoryService widgetFactoryService;
-    private ObjectMapper objectMapper = new ObjectMapper();
 
-    private static <T> Iterable<T> IterableIterator(Iterator<T> iterator) {
-        return () -> iterator;
+    @Test
+    public void previewCss() {
+        // TODO 定义存在疑问,暂缺
+    }
+
+    @Test
+    public void previewComponent() throws Exception {
+        loginAsOwner(randomOwner());
+
+        WidgetInfo widgetInfo = randomWidgetInfoValue(null);
+        Component component = makeComponent(widgetInfo.getGroupId(), widgetInfo.getArtifactId(), widgetInfo.getVersion());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, Object> toPost = new HashMap<>();
+
+        mockMvc.perform(
+                post("/previewHtml")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.TEXT_HTML)
+                        .content(objectMapper.writeValueAsBytes(toPost))
+                        .session(session)
+        ).andExpect(status().isNotFound());
+
+        toPost.put("widgetIdentity", UUID.randomUUID().toString());
+        mockMvc.perform(
+                post("/previewHtml")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.TEXT_HTML)
+                        .content(objectMapper.writeValueAsBytes(toPost))
+                        .session(session)
+        ).andExpect(status().isNotFound());
+
+        toPost.put("widgetIdentity", component.getWidgetIdentity());
+        toPost.put("properties", component.getProperties());
+        mockMvc.perform(
+                post("/previewHtml")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.TEXT_HTML)
+                        .content(objectMapper.writeValueAsBytes(toPost))
+                        .session(session)
+        )
+                .andExpect(status().isNotFound())
+                .andDo(print());
+
+        for (WidgetStyle style : component.getInstalledWidget().getWidget().styles()) {
+            toPost.put("styleId", style.id());
+            mockMvc.perform(
+                    post("/previewHtml")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .accept(MediaType.TEXT_HTML)
+                            .param("widgetIdentifier", component.getWidgetIdentity())
+                            .param("styleId", style.id())
+                            .param("properties", objectMapper.writeValueAsString(component.getProperties()))
+                            .session(session)
+            )
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                    .andDo(print());
+        }
+
     }
 
     @Test
@@ -116,79 +165,6 @@ public class PageControllerTest extends ManageTest {
                 .session(session))
                 .andExpect(status().isNotFound())
                 .andReturn();
-    }
-
-    private JsonNode assertMvcArrayNotEmpty(String uri) throws Exception {
-        return objectMapper.readTree(
-                mockMvc.perform(get(uri)
-                        .session(session)
-                        .accept(MediaType.APPLICATION_JSON)
-                )
-                        .andExpect(status().isOk())
-                        .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                        .andExpect(jsonPath("$").isArray())
-                        .andExpect(jsonPath("$.[0]").isMap())
-                        .andReturn().getResponse().getContentAsString());
-    }
-
-    private void assertAsMockArray(JsonNode mvcOne, InputStream inputStream) throws IOException {
-        JsonNode mockArray = objectMapper.readTree(inputStream);
-        JsonNode mockOne = mockArray.get(0);
-
-        assertThat(mvcOne.fieldNames())
-                .containsAll(IterableIterator(mockOne.fieldNames()));
-    }
-
-    /**
-     * 对widget json进行校验
-     *
-     * @throws Exception
-     * @see WidgetInfoController#getWidgetInfo(Locale, Login)
-     */
-    @Test
-    public void testGetWidgets() throws Exception {
-
-        Owner owner = randomOwner();
-        loginAsOwner(owner);
-
-        /*先确保存在已安装的控件*/
-        List<InstalledWidget> installedWidgets = widgetFactoryService.widgetList(null);
-        if (installedWidgets.size() == 0) {
-            widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
-                    , "1.0-SNAPSHOT", "picCarousel");
-        }
-
-        JsonNode widgets = assertMvcArrayNotEmpty("/manage/widget/widgets");
-        assertAsMockArray(widgets.get(0), new ClassPathResource("web/public/assets/js/data/widget.json")
-                .getInputStream());
-
-        MvcResult result = mockMvc.perform(get("/manage/widget/widgets").session(session))
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
-        String widgetJson = result.getResponse().getContentAsString();
-        log.info("获取到的json：" + widgetJson);
-        Assert.assertTrue(widgetJson != null && widgetJson.length() != 0);
-        //identity的格式:<groupId>-<widgetId>:<version>
-        //此处校验逻辑为：先检索出所有的identity，如果存在groupId和widgetId 一致，但有两个版本号的，视为bug！
-        List<String> identities = JsonPath.read(widgetJson, "$..identity");
-        Assert.assertTrue(identities.size() != 0);
-
-        //json中不应该出现同一个组件
-        for (int i = 0; i < identities.size(); i++) {
-            for (int j = i + 1; j <= identities.size() - 1; j++) {
-                Assert.assertEquals(identities.get(i).split(":")[0].equals(identities.get(j).split(":")[0]), false);
-            }
-        }
-        //json组件版本不应该有高低
-//        for (int i = 0; i < identities.size(); i++) {
-//            for (int j = i + 1; j <= identities.size() - 1; j++) {
-//                if (identities.get(i).split(":")[0].equals(identities.get(j).split(":")[0])) {
-//                    //断言为真，就表明json符合要求
-//                    Assert.assertEquals(identities.get(i).split(":")[1].equals(identities.get(j).split(":")[1]), true);
-//                }
-//            }
-//        }
     }
 
 }

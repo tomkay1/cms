@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.widget.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.service.FilterBehavioral;
 import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Site;
@@ -32,7 +33,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -75,11 +75,12 @@ public class FrontController implements FilterBehavioral {
      * @return css内容
      * @throws IOException
      */
-    @RequestMapping(method = RequestMethod.GET, value = {"/preview/{pageId}/{id}.css"}, produces = "text/css")
-    public ResponseEntity previewCss(@PathVariable("pageId") long pageId, @PathVariable("id") String id) throws IOException {
+    @RequestMapping(method = RequestMethod.GET, value = {"/previewCss/{pageId}/{componentId}.css"}
+            , produces = "text/css")
+    public ResponseEntity previewCss(@PathVariable("pageId") long pageId, @PathVariable("componentId") String id)
+            throws IOException {
         try {
             PageInfo pageInfo = pageService.getPage(pageId);
-
             // 寻找控件了
             for (Layout layout : PageLayout.NoNullLayout(pageInfo.getLayout())) {
                 Component component = findComponent(layout, id);
@@ -89,14 +90,40 @@ public class FrontController implements FilterBehavioral {
                             , component.getInstalledWidget().getWidget(), Widget.CSS, layout, buffer);
                     return ResponseEntity
                             .ok()
-                            .contentType(MediaType.parseMediaType("text/css"))
+                            .contentType(Widget.CSS)
                             .body(buffer.toByteArray());
                 }
             }
-
             return ResponseEntity.notFound().build();
-
         } catch (PageNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    /**
+     * 获取指定控件,指定样式,的控件预览视图htmlCode
+     * <p>
+     * 成功：状态200，并返回控件 priviewHtml Code
+     * 失败：状态404 无htmlCode
+     *
+     * @param widgetIdentifier {@link com.huotu.hotcms.service.entity.support.WidgetIdentifier}
+     * @param styleId          样式id
+     * @param properties       控件参数
+     */
+    @RequestMapping(value = "/previewHtml", method = RequestMethod.POST)
+    public ResponseEntity previewHtml(@RequestParam(required = false) String widgetIdentifier
+            , @RequestParam(required = false) String styleId
+            , @RequestParam(required = false) String properties) {
+        try {
+            InstalledWidget installedWidget = widgetLocateService.findWidget(widgetIdentifier);
+            ObjectMapper objectMapper = new ObjectMapper();
+            ComponentProperties componentProperties = objectMapper.readValue(properties, ComponentProperties.class);
+            installedWidget.getWidget().valid(styleId, componentProperties);
+            String previewHTML = widgetResolveService.previewHTML(installedWidget.getWidget(), styleId
+                    , CMSContext.RequestContext(), componentProperties);
+            return ResponseEntity.ok().contentType(Widget.HTML)
+                    .body(previewHTML.getBytes());
+        } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
     }
@@ -153,32 +180,6 @@ public class FrontController implements FilterBehavioral {
             return pageService.getClosestContentPage(content.getCategory(), pagePath);
         } else {
             return pageService.findBySiteAndPagePath(cmsContext.getSite(), pagePath);
-        }
-    }
-
-    /**
-     * 获取指定控件,指定样式,的控件预览视图htmlCode
-     * <p>
-     * 成功：状态200，并返回控件 priviewHtml Code
-     * 失败：状态404 无htmlCode
-     *
-     * @param widgetIdentifier {@link com.huotu.hotcms.service.entity.support.WidgetIdentifier}
-     * @param styleId          样式id
-     * @param properties       控件参数
-     */
-    @RequestMapping(value = "/previewHtml", method = RequestMethod.GET)
-    public ResponseEntity previewHtml(@RequestParam(required = false) String widgetIdentifier
-            , @RequestParam(required = false) String styleId
-            , @RequestParam(required = false) ComponentProperties properties) {
-        try {
-            InstalledWidget installedWidget = widgetLocateService.findWidget(widgetIdentifier);
-            installedWidget.getWidget().valid(styleId, properties);
-            String previewHTML = widgetResolveService.previewHTML(installedWidget.getWidget(), styleId
-                    , CMSContext.RequestContext(), properties);
-            return ResponseEntity.ok().contentType(MediaType.parseMediaType("text/html"))
-                    .body(previewHTML.getBytes());
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
         }
     }
 

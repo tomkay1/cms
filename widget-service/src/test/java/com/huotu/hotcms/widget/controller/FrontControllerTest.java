@@ -95,12 +95,11 @@ public class FrontControllerTest extends TestBase {
         ObjectMapper objectMapper = new ObjectMapper();
         ComponentProperties properties = getComponentProperties();
         int code = mockMvc.perform(post("/previewHtml").contentType(MediaType.APPLICATION_JSON)
-                .param("widgetIdentifier", "com.huotu.hotcms.widget.topNavigation-topNavigation:1.0-SNAPSHOT")
-                .param("styleId", "topNavigationDefaultStyle")
-                .param("properties", objectMapper.writeValueAsString(properties))
+                .content(objectMapper.writeValueAsBytes(properties))
         ).andDo(print()).andReturn().getResponse().getStatus();
         assertThat(code).as("存在preview").isEqualTo(HttpStatus.SC_OK);
     }
+
 
     /**
      * 预览css的测试

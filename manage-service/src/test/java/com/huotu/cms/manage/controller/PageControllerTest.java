@@ -44,13 +44,11 @@ public class PageControllerTest extends ManageTest {
 
     private static final Log log = LogFactory.getLog(PageControllerTest.class);
 
-    @Test
-    public void previewCss() {
-        // TODO 定义存在疑问,暂缺
-    }
+
 
     @Test
     public void previewComponent() throws Exception {
+
         loginAsOwner(randomOwner());
 
         WidgetInfo widgetInfo = randomWidgetInfoValue(null);
@@ -65,7 +63,7 @@ public class PageControllerTest extends ManageTest {
                         .accept(MediaType.TEXT_HTML)
                         .content(objectMapper.writeValueAsBytes(toPost))
                         .session(session)
-        ).andExpect(status().isNotFound());
+        ).andExpect(status().is5xxServerError());
 
         toPost.put("widgetIdentity", UUID.randomUUID().toString());
         mockMvc.perform(
@@ -74,7 +72,7 @@ public class PageControllerTest extends ManageTest {
                         .accept(MediaType.TEXT_HTML)
                         .content(objectMapper.writeValueAsBytes(toPost))
                         .session(session)
-        ).andExpect(status().isNotFound());
+        ).andExpect(status().is5xxServerError());
 
         toPost.put("widgetIdentity", component.getWidgetIdentity());
         toPost.put("properties", component.getProperties());
@@ -85,8 +83,9 @@ public class PageControllerTest extends ManageTest {
                         .content(objectMapper.writeValueAsBytes(toPost))
                         .session(session)
         )
-                .andExpect(status().isNotFound())
+                .andExpect(status().is5xxServerError())
                 .andDo(print());
+
 
         for (WidgetStyle style : component.getInstalledWidget().getWidget().styles()) {
             toPost.put("styleId", style.id());
@@ -94,12 +93,11 @@ public class PageControllerTest extends ManageTest {
                     post("/previewHtml")
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.TEXT_HTML)
-                            .param("widgetIdentifier", component.getWidgetIdentity())
-                            .param("styleId", style.id())
-                            .param("properties", objectMapper.writeValueAsString(component.getProperties()))
+                            .content(objectMapper.writeValueAsBytes(toPost))
                             .session(session)
             )
                     .andExpect(status().isOk())
+                    .andExpect(header().string("cssLocation", "http://"))
                     .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                     .andDo(print());
         }

@@ -12,6 +12,7 @@ package com.huotu.hotcms.widget.controller;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.widget.CMSContext;
+import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetLocateService;
@@ -35,10 +36,36 @@ import java.io.IOException;
 @RequestMapping("/widget")
 public class WidgetController {
 
-    @Autowired
+    @Autowired(required = false)
     private WidgetLocateService widgetLocateService;
     @Autowired
     private WidgetResolveService widgetResolveService;
+
+    @RequestMapping("/previewHtml")
+    public ResponseEntity previewHtml(String identifier, String styleId, ComponentProperties properties)
+            throws PageNotFoundException, IOException {
+        InstalledWidget installedWidget = widgetLocateService.findWidget(identifier);
+        if (installedWidget == null) {
+            return ResponseEntity.notFound().build();
+        }
+        String html = widgetResolveService.previewHTML(installedWidget.getWidget(), styleId, CMSContext.RequestContext()
+                , properties);
+        return ResponseEntity.ok().contentType(Widget.HTML).body(html);
+    }
+
+    @RequestMapping("/preview/{pageId}/{componentId}.css")
+    public ResponseEntity componentCss(@PathVariable String pageId, @PathVariable String componentId)
+            throws PageNotFoundException, IOException {
+
+        return null;
+    }
+
+    @RequestMapping("/")
+    public ResponseEntity previewCss(@PathVariable WidgetIdentifier identifier) throws PageNotFoundException, IOException {
+        // StandardLinkBuilder
+        return content(identifier, Widget.Javascript);
+    }
+
 
     @RequestMapping("/{identifier}.js")
     public ResponseEntity javascript(@PathVariable WidgetIdentifier identifier) throws PageNotFoundException, IOException {

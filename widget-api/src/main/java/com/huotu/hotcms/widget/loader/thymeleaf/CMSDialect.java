@@ -31,7 +31,7 @@ public class CMSDialect extends AbstractDialect implements IProcessorDialect {
 
     public static final String Prefix = "cms";
 
-    @Autowired
+    @Autowired(required = false)
     private Set<CMSProcessor> CMSProcessors;
 
     public CMSDialect() {

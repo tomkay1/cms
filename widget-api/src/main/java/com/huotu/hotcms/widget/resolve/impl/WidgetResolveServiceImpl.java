@@ -56,7 +56,7 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
     //    @Autowired
     private SpringTemplateEngine widgetTemplateEngine;
 
-    @Autowired
+    @Autowired(required = false)
     private WidgetLocateService widgetLocateService;
 
     @Autowired

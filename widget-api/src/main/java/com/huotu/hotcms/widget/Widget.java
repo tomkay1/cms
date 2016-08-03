@@ -29,6 +29,7 @@ public interface Widget {
 
     MediaType Javascript = MediaType.valueOf("application/javascript");
     MediaType CSS = MediaType.valueOf("text/css");
+    MediaType HTML = MediaType.valueOf("text/html");
 
     /**
      * 获得这个widget的唯一id

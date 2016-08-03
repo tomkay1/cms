@@ -35,7 +35,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 public class ReplaceBrowseProcessor extends AbstractStandardExpressionAttributeTagProcessor implements CMSProcessor {
 
     private static final Log log = LogFactory.getLog(ReplaceBrowseProcessor.class);
-    @Autowired
+    @Autowired(required = false)
     private WidgetResolveService widgetResolveService;
 
     public ReplaceBrowseProcessor() {

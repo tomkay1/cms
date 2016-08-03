@@ -177,6 +177,7 @@ var Page = {
             //编辑器视图渲染
             var child = $('<div class="common-conf"></div>');
             var container = $('<div></div>');
+            var h3 = $('<h3><i class="fa fa-puzzle-piece"></i><strong>设置组件参数</strong></h3>');
             child.attr('data-id', v['identity']);
             child.append(Page.styleList.join('\n'));
             $.each(v.styles, function (key, val) {
@@ -190,7 +191,9 @@ var Page = {
                 div.append(p);
                 child.find('.swiper-wrapper').append(div);
             });
-            child.append(v['editorHTML']);
+            container.append(h3);
+            container.append(v['editorHTML']);
+            child.append(container);
             parent.append(child);
 
             $('.swiper-container.styles').swiper({

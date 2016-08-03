@@ -42,26 +42,15 @@ public class SiteResolveService {
     private SiteService siteService;
 
     /**
-     * 根据当前请求的语言
-     *
-     * @param request
-     * @return 语言方位
-     */
-    public Locale localeFromRequest(HttpServletRequest request) {
-        // TODO 这个方法不应该存在,应该使用Spring MVC的 Locale解决方案
-        // String languageParam = PatternMatchUtil.getLangParam(request);
-        return request.getLocale();
-    }
-
-    /**
      * 获取当前站点
      *
      * @param request servlet 请求
+     * @param locale
      * @return 站点
      * @throws NoSiteFoundException 找不到站点
      * @throws NoHostFoundException 找不到主机
      */
-    public Site getCurrentSite(HttpServletRequest request) throws NoSiteFoundException, NoHostFoundException {
+    public Site getCurrentSite(HttpServletRequest request, Locale locale) throws NoSiteFoundException, NoHostFoundException {
 
         if (request.getParameter("simulateSite") != null) {
             long id = NumberUtils.parseNumber(request.getParameter("simulateSite"), Long.class);
@@ -77,10 +66,8 @@ public class SiteResolveService {
             throw new NoHostFoundException(domain);
         }
 
-        Locale locale = localeFromRequest(request);
-
         //接下来是寻找Site
-        return siteService.closestSite(host, locale);
+        return siteService.closestSite(host, locale == null ? request.getLocale() : locale);
     }
 
 }

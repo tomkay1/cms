@@ -18,6 +18,7 @@ import com.huotu.hotcms.service.exception.NoSiteFoundException;
 import com.huotu.hotcms.service.repository.HostRepository;
 import com.huotu.hotcms.service.repository.OwnerRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
+import me.jiangcai.lib.jdbc.JdbcService;
 import me.jiangcai.lib.upgrade.VersionUpgrade;
 import me.jiangcai.lib.upgrade.service.UpgradeService;
 import org.apache.commons.logging.Log;
@@ -55,6 +56,8 @@ public class InitService {
     private Environment environment;
     @Autowired
     private SiteService siteService;
+    @Autowired
+    private JdbcService jdbcService;
 
     @Transactional
     @PostConstruct
@@ -65,6 +68,11 @@ public class InitService {
             @Override
             public void upgradeToVersion(CMSDataVersion version) throws Exception {
                 log.debug(" to version:" + version);
+                switch (version) {
+                    case siteRecommendDomain:
+                        jdbcService.tableAlterAddColumn(Site.class, "recommendDomain", null);
+                        break;
+                }
             }
         });
 

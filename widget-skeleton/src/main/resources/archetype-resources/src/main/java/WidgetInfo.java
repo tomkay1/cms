@@ -10,6 +10,8 @@
 package ${package};
 
 import java.util.Locale;
+
+import java.util.Locale;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetStyle;
@@ -42,7 +44,7 @@ public class WidgetInfo implements Widget{
 
     @Override
     public String name(Locale locale) {
-        if (locale.equals(Locale.CHINESE)) {
+        if (locale.equals(Locale.CHINA)) {
             return "${name}";
         }
         return "${artifactId}";

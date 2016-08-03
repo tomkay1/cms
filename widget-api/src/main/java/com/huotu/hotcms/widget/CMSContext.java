@@ -90,7 +90,8 @@ public class CMSContext {
      * @param site     当前站点
      */
     public static CMSContext PutContext(HttpServletRequest request, HttpServletResponse response, Site site) {
-        CMSContext cmsContext = new CMSContext(request, response, site, site.getRegion().getLocale(), null, null);
+        CMSContext cmsContext = new CMSContext(request, response, site, site.getRegion() == null ? request.getLocale()
+                : site.getRegion().getLocale(), null, null);
         contexts.set(cmsContext);
         return cmsContext;
     }

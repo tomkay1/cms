@@ -37,6 +37,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Locale;
 
 /**
  * <p>
@@ -105,9 +106,9 @@ public class BindController {
      * 二维码购买
      */
     @RequestMapping(value = "/qrCode", method = { RequestMethod.GET,RequestMethod.POST })
-    public void qrCode(HttpServletRequest request, HttpServletResponse resp) throws Exception {
-        int customerId = siteResolveService.getCurrentSite(request).getOwner().getCustomerId();
-        Merchant merchant = null;
+    public void qrCode(HttpServletRequest request, HttpServletResponse resp, Locale locale) throws Exception {
+        int customerId = siteResolveService.getCurrentSite(request, locale).getOwner().getCustomerId();
+        Merchant merchant;
         String num = request.getParameter("num");//购买数量
         String productId = request.getParameter("productId");//购买的产品Id
         String goodsId = request.getParameter("goodsId");//商品id
@@ -147,9 +148,9 @@ public class BindController {
      * 二维码公众号
      */
     @RequestMapping(value = "/subscribeCode", method = { RequestMethod.GET })
-    public void subscribeCode(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void subscribeCode(HttpServletRequest request, HttpServletResponse response, Locale locale) throws Exception {
         // 指定生成的响应是图片
-        int customerId = siteResolveService.getCurrentSite(request).getOwner().getCustomerId();
+        int customerId = siteResolveService.getCurrentSite(request, locale).getOwner().getCustomerId();
         BufferedImage bufferedImage = webSiteAppConfigRestRepository.imageForMerchantWeixinBusinessCard(customerId);
         ImageIO.write(bufferedImage,"JPEG",response.getOutputStream());
     }
@@ -159,8 +160,8 @@ public class BindController {
      * 个人中心二维码
      */
     @RequestMapping(value = "/personCode", method = { RequestMethod.GET })
-    public void personCode(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String url = goodsDetailService.getPersonDetailUrl(request);//获取二维码域名（商城个人中心）
+    public void personCode(HttpServletRequest request, HttpServletResponse response, Locale locale) throws Exception {
+        String url = goodsDetailService.getPersonDetailUrl(request, locale);//获取二维码域名（商城个人中心）
         if (url != null && !"".equals(url)) {
             ServletOutputStream stream = null;
             try {

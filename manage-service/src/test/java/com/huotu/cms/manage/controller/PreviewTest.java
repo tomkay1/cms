@@ -19,14 +19,10 @@ import com.huotu.hotcms.widget.WidgetResolveService;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.repository.PageInfoRepository;
-import com.huotu.hotcms.widget.servlet.CMSFilter;
-import com.huotu.hotcms.widget.servlet.RouteFilter;
 import org.junit.Test;
-import org.mockito.MockitoAnnotations;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
@@ -36,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 /**
  * 预览测试
@@ -50,25 +45,6 @@ public class PreviewTest extends ManageTest {
     protected PageInfoRepository pageInfoRepository;
     @Autowired
     protected WidgetResolveService widgetResolveService;
-
-    // 需要应用跟web项目一样的filter
-    @Override
-    public void createMockMVC() {
-        MockitoAnnotations.initMocks(this);
-        // ignore it, so it works in no-web fine.
-        if (context == null)
-            return;
-        DefaultMockMvcBuilder builder = webAppContextSetup(context);
-        builder.addFilters(new CMSFilter(context.getServletContext()), new RouteFilter(context.getServletContext()));
-        if (springSecurityFilter != null) {
-            builder = builder.addFilters(springSecurityFilter);
-        }
-
-        if (mockMvcConfigurer != null) {
-            builder = builder.apply(mockMvcConfigurer);
-        }
-        mockMvc = builder.build();
-    }
 
     @Test
     @Transactional

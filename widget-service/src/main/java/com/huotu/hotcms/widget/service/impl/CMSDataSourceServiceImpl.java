@@ -64,14 +64,13 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     @Override
     public List<GalleryItemModel> findGalleryItem(Long galleryId) {
         List<GalleryItem> galleryItems = galleryItemRepository.findByGallery(galleryRepository.getOne(galleryId));
+        List<GalleryItemModel> galleryItemModels = new ArrayList<>();
         if (galleryItems != null && galleryItems.size() > 0) {
-            List<GalleryItemModel> galleryItemModels = new ArrayList<>();
             for (GalleryItem item : galleryItems) {
                 galleryItemModels.add(GalleryItem.getGalleryItemModel(item));
             }
-            return galleryItemModels;
         }
-        return null;
+        return galleryItemModels;
     }
 
     @Override
@@ -141,16 +140,15 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
 
     @Override
     public List<LinkModel> findLink(Long categoryId) {
+        List<LinkModel> linkModels = new ArrayList<>();
         if (categoryRepository.findOne(categoryId).getContentType().equals(ContentType.Link)) {
             List<Link> links = linkRepository.findByCategory_id(categoryId);
             if (links != null && links.size() > 0) {
-                List<LinkModel> linkModels = new ArrayList<>();
                 for (Link link : links) {
                     linkModels.add(Link.getLinkModel(link));
                 }
-                return linkModels;
             }
         }
-        return null;
+        return linkModels;
     }
 }

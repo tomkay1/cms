@@ -135,7 +135,7 @@
                             <div class="dropdown-menu dropdown-menu-head pull-right">
                                 <h5 class="title">点击商户可以直接管理</h5>
                                 <ul class="dropdown-list user-list">
-                                    <li class="new" th:each="owner:${@ownerRepository.findByEnabledTrue()}">
+                                    <li class="new" th:each="owner:${@ownerRepository.findTop5ByEnabledTrue()}">
                                         <!--<div class="thumb"></a>-->
                                         <!--</div>-->
                                         <div class="desc">

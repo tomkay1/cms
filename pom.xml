@@ -36,6 +36,7 @@
         <module>widget-service</module>
         <module>manage-service</module>
         <module>widget-test</module>
+        <module>widget-preview</module>
     </modules>
 
     <distributionManagement>

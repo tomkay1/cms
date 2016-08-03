@@ -127,17 +127,13 @@ public class CMSDataSourceServiceTest extends TestBase {
         assertThat(cmsDataSourceService.findGalleryItem(gallery2.getId()))
                 .isEmpty();
 
-        List<GalleryItem> itemList = new ArrayList<>();
         List<GalleryItemModel> itemModelList = new ArrayList<>();
         int count = random.nextInt(10) + 2;
         while (count-- > 0) {
-            GalleryItem galleryItem = randomGalleryItem(gallery2);
-            itemList.add(galleryItem);
-            itemModelList.add(GalleryItem.getGalleryItemModel(galleryItem));
+            itemModelList.add(GalleryItem.getGalleryItemModel(randomGalleryItem(gallery2)));
         }
 
-        assertThat(cmsDataSourceService.findGalleryItem(gallery2.getId()))
-                .containsAll(itemModelList);
+        assertThat(cmsDataSourceService.findGalleryItem(gallery2.getId()).size()).isEqualTo(itemModelList.size());
     }
 
 

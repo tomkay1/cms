@@ -41,12 +41,6 @@ public class WidgetController {
     private WidgetResolveService widgetResolveService;
 
 
-    @RequestMapping("/")
-    public ResponseEntity previewCss(@PathVariable WidgetIdentifier identifier) throws PageNotFoundException, IOException {
-        // StandardLinkBuilder
-        return content(identifier, Widget.Javascript);
-    }
-
 
     @RequestMapping("/{identifier}.js")
     public ResponseEntity javascript(@PathVariable WidgetIdentifier identifier) throws PageNotFoundException, IOException {

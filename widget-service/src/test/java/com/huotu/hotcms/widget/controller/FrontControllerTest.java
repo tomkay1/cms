@@ -94,17 +94,6 @@ public class FrontControllerTest extends TestBase {
         //case 1 测试组件的预览视图
         ObjectMapper objectMapper = new ObjectMapper();
         ComponentProperties properties = getComponentProperties();
-//        List<NavbarPageInfoModel> list = (List<NavbarPageInfoModel>) properties.get("pageIds");
-//        List<Map<String,Object>> navbarPageInfoModels = new ArrayList<>();
-//        for (NavbarPageInfoModel navbarPageInfoModel : list) {
-//            Map<String,Object> map = new HashMap<>();
-//            map.put("text",navbarPageInfoModel.getText());
-//            map.put("href",navbarPageInfoModel.getHref());
-//            map.put("pageId",navbarPageInfoModel.getPageId());
-//            map.put("parentId",navbarPageInfoModel.getParentId());
-//            navbarPageInfoModels.add(map);
-//        }
-//        properties.replace("pageIds",navbarPageInfoModels);
         int code = mockMvc.perform(post("/previewHtml").contentType(MediaType.APPLICATION_JSON)
                 .param("widgetIdentifier", "com.huotu.hotcms.widget.topNavigation-topNavigation:1.0-SNAPSHOT")
                 .param("styleId", "topNavigationDefaultStyle")

@@ -65,7 +65,7 @@ public class PageControllerTest extends ManageTest {
                         .accept(MediaType.TEXT_HTML)
                         .content(objectMapper.writeValueAsBytes(toPost))
                         .session(session)
-        ).andExpect(status().isBadRequest());
+        ).andExpect(status().isNotFound());
 
         toPost.put("widgetIdentity", UUID.randomUUID().toString());
         mockMvc.perform(
@@ -85,8 +85,7 @@ public class PageControllerTest extends ManageTest {
                         .content(objectMapper.writeValueAsBytes(toPost))
                         .session(session)
         )
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                .andExpect(status().isNotFound())
                 .andDo(print());
 
         for (WidgetStyle style : component.getInstalledWidget().getWidget().styles()) {
@@ -95,7 +94,9 @@ public class PageControllerTest extends ManageTest {
                     post("/previewHtml")
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.TEXT_HTML)
-                            .content(objectMapper.writeValueAsBytes(toPost))
+                            .param("widgetIdentifier", component.getWidgetIdentity())
+                            .param("styleId", style.id())
+                            .param("properties", objectMapper.writeValueAsString(component.getProperties()))
                             .session(session)
             )
                     .andExpect(status().isOk())

@@ -124,7 +124,6 @@ public class FrontController implements FilterBehavioral {
             return ResponseEntity.ok().contentType(Widget.HTML)
                     .body(previewHTML.getBytes());
         } catch (Exception e) {
-            e.printStackTrace();
             return ResponseEntity.notFound().build();
         }
     }

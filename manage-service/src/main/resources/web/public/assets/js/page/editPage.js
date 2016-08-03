@@ -205,7 +205,6 @@ var Page = {
                 observeParents: true,
                 updateOnImagesReady : true
             });
-
         });
         Page.draggable();
     },

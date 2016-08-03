@@ -46,6 +46,7 @@ public class PageFilterBehavioral implements FilterBehavioral {
             "admin",
             "dataSource",
             "preview",
+            "previewHtml",
             "widget",
             //这是一个很特殊的 测试的模拟登陆 :)
             "testLoginAs"

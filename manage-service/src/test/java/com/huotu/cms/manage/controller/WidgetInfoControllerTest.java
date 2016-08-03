@@ -58,24 +58,6 @@ public class WidgetInfoControllerTest extends ManageTest {
 
     private static final Log log = LogFactory.getLog(WidgetInfoControllerTest.class);
 
-    String[][] widgets = new String[][]{
-//                new String[]{
-//                        "com.huotu.hotcms.widget.pagingWidget",
-//                        "pagingWidget"
-//                },
-            new String[]{
-                    "com.huotu.hotcms.widget.picCarousel",
-                    "picCarousel"
-            },
-            new String[]{
-                    "com.huotu.hotcms.widget.productList",
-                    "productList"
-            },
-            new String[]{
-                    "com.huotu.hotcms.widget.picBanner",
-                    "picBanner"
-            }
-    };
     @Autowired
     private WidgetInfoRepository widgetInfoRepository;
     @Autowired
@@ -204,29 +186,6 @@ public class WidgetInfoControllerTest extends ManageTest {
                         .isEqualTo(data.getVersion());
             }
         });
-    }
-
-    private WidgetInfo randomWidgetInfoValue(Integer seed) {
-
-        String[] widgetInfo;
-        if (seed == null) {
-            widgetInfo = widgets[random.nextInt(widgets.length)];
-        } else {
-            widgetInfo = widgets[seed];
-        }
-        WidgetInfo info = new WidgetInfo();
-        // com.huotu.hotcms.widget.pagingWidget  pagingWidget 1.0-SNAPSHOT
-        info.setGroupId(widgetInfo[0]);
-        info.setArtifactId(widgetInfo[1]);
-        info.setVersion("1.0-SNAPSHOT");
-        info.setType(randomDomain());
-
-        if (random.nextBoolean()) {
-            Owner owner = randomOwner();
-            info.setOwner(owner);
-        }
-
-        return info;
     }
 
     private JsonNode assertMvcArrayNotEmpty(String uri) throws Exception {

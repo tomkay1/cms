@@ -12,7 +12,10 @@ package com.huotu.cms.manage.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.cms.manage.ManageTest;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Owner;
+import com.huotu.hotcms.widget.Component;
+import com.huotu.hotcms.widget.WidgetStyle;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.page.PageLayout;
 import com.huotu.hotcms.widget.page.PageModel;
@@ -23,18 +26,84 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Created by hzbc on 2016/7/9.
+ * 针对页面编辑功能的几个测试,
+ * 要求标准<a href="https://huobanplus.quip.com/Y9mVAeo9KnTh">服务标准</a>
  */
 @Transactional
 public class PageControllerTest extends ManageTest {
 
     private static final Log log = LogFactory.getLog(PageControllerTest.class);
+
+    @Test
+    public void previewCss() {
+        // TODO 定义存在疑问,暂缺
+    }
+
+    @Test
+    public void previewComponent() throws Exception {
+        loginAsOwner(randomOwner());
+
+        WidgetInfo widgetInfo = randomWidgetInfoValue(null);
+        Component component = makeComponent(widgetInfo.getGroupId(), widgetInfo.getArtifactId(), widgetInfo.getVersion());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, Object> toPost = new HashMap<>();
+
+        mockMvc.perform(
+                post("/previewHtml")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.TEXT_HTML)
+                        .content(objectMapper.writeValueAsBytes(toPost))
+                        .session(session)
+        ).andExpect(status().isBadRequest());
+
+        toPost.put("widgetIdentity", UUID.randomUUID().toString());
+        mockMvc.perform(
+                post("/previewHtml")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.TEXT_HTML)
+                        .content(objectMapper.writeValueAsBytes(toPost))
+                        .session(session)
+        ).andExpect(status().isNotFound());
+
+        toPost.put("widgetIdentity", component.getWidgetIdentity());
+        toPost.put("properties", component.getProperties());
+        mockMvc.perform(
+                post("/previewHtml")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.TEXT_HTML)
+                        .content(objectMapper.writeValueAsBytes(toPost))
+                        .session(session)
+        )
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                .andDo(print());
+
+        for (WidgetStyle style : component.getInstalledWidget().getWidget().styles()) {
+            toPost.put("styleId", style.id());
+            mockMvc.perform(
+                    post("/previewHtml")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .accept(MediaType.TEXT_HTML)
+                            .content(objectMapper.writeValueAsBytes(toPost))
+                            .session(session)
+            )
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                    .andDo(print());
+        }
+
+    }
 
     @Test
     public void flow() throws Exception {

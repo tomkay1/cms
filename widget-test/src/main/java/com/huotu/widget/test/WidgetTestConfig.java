@@ -42,6 +42,7 @@ import java.util.Set;
 /**
  * @author CJ
  */
+
 @EnableWebMvc
 @Import({WidgetTestConfig.ViewResolver.class, WidgetResolveServiceConfig.class, ServiceConfig.class})
 @ComponentScan("com.huotu.widget.test.bean")

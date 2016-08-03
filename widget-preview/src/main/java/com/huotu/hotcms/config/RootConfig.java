@@ -1,13 +1,4 @@
-/*
- * 版权所有:杭州火图科技有限公司
- * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
- *
- * (c) Copyright Hangzhou Hot Technology Co., Ltd.
- * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
- * 2013-2016. All rights reserved.
- */
-
-package com.huotu.widget.test;
+package com.huotu.hotcms.config;
 
 import com.huotu.hotcms.service.config.ServiceConfig;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
@@ -21,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.format.FormatterRegistry;
@@ -39,13 +29,12 @@ import org.thymeleaf.templatemode.TemplateMode;
 import java.util.Set;
 
 /**
- * @author CJ
+ * Created by lhx on 2016/8/3.
  */
-
 @EnableWebMvc
-@Import({WidgetTestConfig.ViewResolver.class, WidgetResolveServiceConfig.class, ServiceConfig.class})
-@ComponentScan("com.huotu.widget.test.bean")
-public class WidgetTestConfig extends WebMvcConfigurerAdapter {
+@Import({RootConfig.ViewResolver.class, WidgetResolveServiceConfig.class, ServiceConfig.class})
+@ComponentScan(value = {"com.huotu.hotcms.bean"})
+public class RootConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
     private ThymeleafViewResolver normalViewResolver;
@@ -66,7 +55,7 @@ public class WidgetTestConfig extends WebMvcConfigurerAdapter {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         super.addResourceHandlers(registry);
         registry.addResourceHandler("/manage-resources/**")
-                .addResourceLocations("classpath:/web/public/");
+                .addResourceLocations("widget-test/classpath:/web/public/");
     }
 
     @Override
@@ -93,20 +82,8 @@ public class WidgetTestConfig extends WebMvcConfigurerAdapter {
         return new CMSDataSourceServiceImpl();
     }
 
-//    @Bean
-//    public SpringTemplateEngine springTemplateEngine(){
-//        return new SpringTemplateEngine();
-//    }
-
-//    @Override
-//    public void addViewControllers(ViewControllerRegistry registry) {
-//        registry.addViewController("/editor")
-//                .setViewName("editor");
-//    }
-
-    @DependsOn("widgetHolder")
     @Import(WidgetLoaderConfig.class)
-    public static class ViewResolver {
+    static class ViewResolver {
 
         @Autowired
         private ApplicationContext applicationContext;
@@ -161,8 +138,5 @@ public class WidgetTestConfig extends WebMvcConfigurerAdapter {
             resolver.setContentType("application/javascript");
             return resolver;
         }
-
-
     }
-
 }

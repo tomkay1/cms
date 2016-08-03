@@ -22,13 +22,15 @@ import java.nio.file.Path;
 @Setter
 public class EmbeddedTomcat {
     private static final Log log = LogFactory.getLog(EmbeddedTomcat.class);
-    private static int port = 9080;
+    private int port = 9080;
     private Tomcat tomcat = new Tomcat();
 
     public EmbeddedTomcat(int port) {
         this.port = port;
     }
 
+    public EmbeddedTomcat() {
+    }
 
     public void start() throws Exception {
         try {

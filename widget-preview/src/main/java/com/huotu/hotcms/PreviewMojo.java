@@ -20,7 +20,7 @@ public class PreviewMojo extends AbstractMojo {
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         try {
-            //robot 用来做什么还不清楚
+            //robot 用来做什么我还不清楚，
             Robot robot = new Robot();
             InetAddress inetAddress = InetAddress.getByName("127.0.0.1");
             Integer port = null;
@@ -36,6 +36,7 @@ public class PreviewMojo extends AbstractMojo {
             EmbeddedTomcat tomcat = new EmbeddedTomcat(port.intValue());
             tomcat.start();
             Desktop desktop = Desktop.getDesktop();
+            //todo 打开控件浏览视图或者编辑视图通过widgetName进行打开
             desktop.browse(new URI("http://localhost:" + port + "/"));
 
         } catch (Exception e) {

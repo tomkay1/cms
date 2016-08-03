@@ -11,7 +11,6 @@ package com.huotu.hotcms.config;
 
 import com.huotu.hotcms.widget.servlet.CMSFilter;
 import com.huotu.hotcms.widget.servlet.RouteFilter;
-import com.huotu.widget.test.WidgetTestConfig;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
@@ -21,7 +20,7 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
     @Override
     protected Class<?>[] getRootConfigClasses() {
         return new Class<?>[]{
-                WidgetTestConfig.class
+                RootConfig.class
         };
     }
 

@@ -345,6 +345,9 @@ public class TemplateControllerTest extends SiteManageTest {
                             .contains(templatePage.getCategory().getName());
                 }
             }
+            for (AbstractContent content : templateContents) {
+//                AbstractContent siteContent = contentRepository.findBy
+            }
             // TODO 正文 数据源
 
         }

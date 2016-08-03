@@ -9,6 +9,8 @@
 
 package com.huotu.cms.manage.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.cms.manage.ManageTest;
 import com.huotu.cms.manage.controller.support.CRUDHelper;
 import com.huotu.cms.manage.controller.support.CRUDTest;
@@ -17,21 +19,35 @@ import com.huotu.cms.manage.page.WidgetEditPage;
 import com.huotu.cms.manage.page.WidgetPage;
 import com.huotu.cms.manage.page.support.AbstractCRUDPage;
 import com.huotu.hotcms.service.entity.WidgetInfo;
+import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
+import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
-import me.jiangcai.lib.resource.service.ResourceService;
+import com.jayway.jsonpath.JsonPath;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.function.BiConsumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * 后台控件管理的测试
@@ -39,6 +55,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author CJ
  */
 public class WidgetInfoControllerTest extends ManageTest {
+
+    private static final Log log = LogFactory.getLog(WidgetInfoControllerTest.class);
 
     String[][] widgets = new String[][]{
 //                new String[]{
@@ -62,8 +80,11 @@ public class WidgetInfoControllerTest extends ManageTest {
     private WidgetInfoRepository widgetInfoRepository;
     @Autowired
     private WidgetFactoryService widgetFactoryService;
-    @Autowired
-    private ResourceService resourceService;
+    private ObjectMapper objectMapper = new ObjectMapper();
+
+    private static <T> Iterable<T> IterableIterator(Iterator<T> iterator) {
+        return () -> iterator;
+    }
 
     @Test
     @Transactional
@@ -206,6 +227,80 @@ public class WidgetInfoControllerTest extends ManageTest {
         }
 
         return info;
+    }
+
+    private JsonNode assertMvcArrayNotEmpty(String uri) throws Exception {
+        return objectMapper.readTree(
+                mockMvc.perform(get(uri)
+                        .session(session)
+                        .accept(MediaType.APPLICATION_JSON)
+                )
+                        .andExpect(status().isOk())
+                        .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                        .andExpect(jsonPath("$").isArray())
+                        .andExpect(jsonPath("$.[0]").isMap())
+                        .andReturn().getResponse().getContentAsString());
+    }
+
+    private void assertAsMockArray(JsonNode mvcOne, InputStream inputStream) throws IOException {
+        JsonNode mockArray = objectMapper.readTree(inputStream);
+        JsonNode mockOne = mockArray.get(0);
+
+        assertThat(mvcOne.fieldNames())
+                .containsAll(IterableIterator(mockOne.fieldNames()));
+    }
+
+
+    /**
+     * 对widget json进行校验
+     *
+     * @throws Exception
+     * @see WidgetInfoController#getWidgetInfo(Locale, Login)
+     */
+    @Test
+    public void testGetWidgets() throws Exception {
+
+        Owner owner = randomOwner();
+        loginAsOwner(owner);
+
+        /*先确保存在已安装的控件*/
+        List<InstalledWidget> installedWidgets = widgetFactoryService.widgetList(null);
+        if (installedWidgets.size() == 0) {
+            widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
+                    , "1.0-SNAPSHOT", "picCarousel");
+        }
+
+        JsonNode widgets = assertMvcArrayNotEmpty("/manage/widget/widgets");
+        assertAsMockArray(widgets.get(0), new ClassPathResource("web/public/assets/js/data/widget.json")
+                .getInputStream());
+
+        MvcResult result = mockMvc.perform(get("/manage/widget/widgets").session(session))
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+        String widgetJson = result.getResponse().getContentAsString();
+        log.info("获取到的json：" + widgetJson);
+        Assert.assertTrue(widgetJson != null && widgetJson.length() != 0);
+        //identity的格式:<groupId>-<widgetId>:<version>
+        //此处校验逻辑为：先检索出所有的identity，如果存在groupId和widgetId 一致，但有两个版本号的，视为bug！
+        List<String> identities = JsonPath.read(widgetJson, "$..identity");
+        Assert.assertTrue(identities.size() != 0);
+
+        //json中不应该出现同一个组件
+        for (int i = 0; i < identities.size(); i++) {
+            for (int j = i + 1; j <= identities.size() - 1; j++) {
+                Assert.assertEquals(identities.get(i).split(":")[0].equals(identities.get(j).split(":")[0]), false);
+            }
+        }
+        //json组件版本不应该有高低
+//        for (int i = 0; i < identities.size(); i++) {
+//            for (int j = i + 1; j <= identities.size() - 1; j++) {
+//                if (identities.get(i).split(":")[0].equals(identities.get(j).split(":")[0])) {
+//                    //断言为真，就表明json符合要求
+//                    Assert.assertEquals(identities.get(i).split(":")[1].equals(identities.get(j).split(":")[1]), true);
+//                }
+//            }
+//        }
     }
 
 }

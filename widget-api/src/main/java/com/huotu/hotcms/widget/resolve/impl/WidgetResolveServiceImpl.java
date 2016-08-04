@@ -165,7 +165,7 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
                 throw new IllegalArgumentException("both widget element is null.");
             widgetContext = new WidgetContext(widgetTemplateEngine, context
                     , widget, null, webApplicationContext.getServletContext()
-                    , null, null);
+                    , null, widget.defaultProperties(resourceService));
         } else if (element instanceof Empty) {
             return;
         } else if (element instanceof Layout) {

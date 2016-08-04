@@ -7,10 +7,11 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.hotcms.widget.test;
+package com.huotu.hotcms.widget.service.impl;
 
 import com.huotu.hotcms.widget.PageTheme;
 import com.huotu.hotcms.widget.service.CSSService;
+import com.huotu.hotcms.widget.test.TestBase;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ import java.io.IOException;
  * Created by lhx on 2016/6/3.
  */
 @Transactional
-public class CSSServiceImplTest extends TestBase {
+public class CSSServiceTest extends TestBase {
     @Autowired
     CSSService cssService;
 

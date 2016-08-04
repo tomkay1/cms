@@ -24,11 +24,14 @@ import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetLocateService;
 import com.huotu.hotcms.widget.WidgetResolveService;
+import com.huotu.hotcms.widget.WidgetStyle;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.PageElement;
 import com.huotu.hotcms.widget.page.PageLayout;
 import com.huotu.hotcms.widget.service.PageService;
+import me.jiangcai.lib.resource.Resource;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,15 +40,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Map;
 
 /**
  * 用户获取page页面html Code 页面服务相关
@@ -66,6 +74,9 @@ public class FrontController implements FilterBehavioral {
     private WidgetResolveService widgetResolveService;
     @Autowired
     private TemplateService templateService;
+
+    @Autowired
+    private ResourceService resourceService;
 
     /**
      * 参考<a href="https://huobanplus.quip.com/Y9mVAeo9KnTh">可用的CSS 资源</a>
@@ -100,31 +111,65 @@ public class FrontController implements FilterBehavioral {
         }
     }
 
+
     /**
      * 获取指定控件,指定样式,的控件预览视图htmlCode
      * <p>
-     * 成功：状态200，并返回控件 priviewHtml Code
+     * 成功：状态200，并返回控件 previewHtml Code
      * 失败：状态404 无htmlCode
-     *
-     * @param widgetIdentifier {@link com.huotu.hotcms.service.entity.support.WidgetIdentifier}
-     * @param styleId          样式id
-     * @param properties       控件参数
+     * <p>
+     * widgetIdentifier {@link com.huotu.hotcms.service.entity.support.WidgetIdentifier}
+     * styleId          样式id
+     * properties       控件参数
      */
-    @RequestMapping(value = "/previewHtml", method = RequestMethod.POST)
-    public ResponseEntity previewHtml(@RequestParam(required = false) String widgetIdentifier
-            , @RequestParam(required = false) String styleId
-            , @RequestParam(required = false) String properties) {
+    @RequestMapping(value = "/previewHtml/component", method = RequestMethod.POST)
+    public ResponseEntity previewHtml(@RequestBody String json) throws IOException {
+        return getPreviewComponentResponseEntity(json);
+    }
+
+    private ResponseEntity getPreviewComponentResponseEntity(String json) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map map = objectMapper.readValue(json, Map.class);
+        String widgetIdentifier = (String) map.get("widgetIdentity");
+        String styleId = (String) map.get("styleId");
+        String pageId = (String) map.get("pageId");
+        String componentId = (String) map.get("componentId");
+        Map properties = (Map) map.get("properties");
+        ComponentProperties componentProperties = new ComponentProperties();
+        componentProperties.putAll(properties);
         try {
             InstalledWidget installedWidget = widgetLocateService.findWidget(widgetIdentifier);
-            ObjectMapper objectMapper = new ObjectMapper();
-            ComponentProperties componentProperties = objectMapper.readValue(properties, ComponentProperties.class);
             installedWidget.getWidget().valid(styleId, componentProperties);
             String previewHTML = widgetResolveService.previewHTML(installedWidget.getWidget(), styleId
                     , CMSContext.RequestContext(), componentProperties);
-            return ResponseEntity.ok().contentType(Widget.HTML)
+            Path path = Files.createTempFile("tempCss", ".css");
+            Resource resource = null;
+            if (installedWidget.getWidget().widgetDependencyContent(Widget.CSS) != null) {
+                for (WidgetStyle style : installedWidget.getWidget().styles()) {
+                    if (styleId == null || style.id().equals(styleId)) {
+                        OutputStream out = Files.newOutputStream(path);
+                        Component component = new Component();
+                        component.setId(componentId);
+                        component.setInstalledWidget(installedWidget);
+                        component.setProperties(componentProperties);
+                        component.setWidgetIdentity(widgetIdentifier);
+                        component.setStyleId(style.id());
+                        widgetResolveService.widgetDependencyContent(CMSContext.RequestContext()
+                                , installedWidget.getWidget(), Widget.CSS, component, out);
+                        out.flush();
+                        InputStream is = Files.newInputStream(path);
+                        resource = resourceService.uploadResource("page/" + installedWidget.getWidget().widgetId()
+                                + "/" + pageId + "/" + componentId + ".css", is);
+                        break;
+                    }
+                }
+            }
+            Files.delete(path);
+            return ResponseEntity.ok().contentType(Widget.HTML).header("cssLocation"
+                    , resource != null ? resource.httpUrl().toURI().toString() : "")
                     .body(previewHTML.getBytes());
         } catch (Exception e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.notFound().header("cssLocation", "").build();
         }
     }
 

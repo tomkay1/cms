@@ -17,7 +17,12 @@ var GlobalID, identity;
 function widgetProperties( id ) {
     var ele = $('#' + id);
     var identity = ele.data('widgetidentity');
-    return wsCache.get(id) || wsCache.get(identity).properties;
+    var data = wsCache.get(id).properties;
+    if( $.isEmptyObject(data) ) {
+        return wsCache.get(identity).properties;
+    } else {
+        return data;
+    }
 };
 
 /**

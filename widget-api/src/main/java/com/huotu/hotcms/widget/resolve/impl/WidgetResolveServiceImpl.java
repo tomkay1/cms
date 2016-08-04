@@ -62,7 +62,6 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
     @Autowired
     private ResourceService resourceService;
 
-
     private void checkEngine() {
         if (widgetTemplateEngine == null) {
             widgetTemplateEngine = webApplicationContext.getBean("widgetTemplateEngine", SpringTemplateEngine.class);

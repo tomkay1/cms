@@ -53,8 +53,16 @@ public class WidgetResolveServiceTest extends TestBase {
         widgetResolveService.widgetDependencyContent(CMSContext.PutContext(request, response, site)
                 , new CSSWidget(), Widget.CSS, null, buffer);
 
+        StreamUtils.copy(buffer.toByteArray(), System.out);
+
+        byte[] expected = StreamUtils.copyToByteArray(new ClassPathResource("css/result.css").getInputStream());
+        if (buffer.toByteArray().length < expected.length) {
+            byte[] newOne = new byte[buffer.toByteArray().length];
+            System.arraycopy(expected, 0, newOne, 0, newOne.length);
+            expected = newOne;
+        }
         assertThat(buffer.toByteArray())
-                .containsExactly(StreamUtils.copyToByteArray(new ClassPathResource("css/result.css").getInputStream()));
+                .containsExactly(expected);
     }
 
     class CSSWidget implements Widget {
@@ -115,6 +123,9 @@ public class WidgetResolveServiceTest extends TestBase {
         public ComponentProperties defaultProperties(ResourceService resourceService) throws IOException {
             ComponentProperties properties = new ComponentProperties();
             properties.put("color", "#101010");
+            // ansi 没问题
+            // # 会加入 \#
+            // 数字会 加入 \3
             return properties;
         }
     }

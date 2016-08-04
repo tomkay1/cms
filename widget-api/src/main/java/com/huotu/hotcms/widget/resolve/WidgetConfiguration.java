@@ -11,6 +11,7 @@ package com.huotu.hotcms.widget.resolve;
 
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetStyle;
+import com.huotu.hotcms.widget.resolve.impl.CSSSerializer;
 import org.thymeleaf.DialectConfiguration;
 import org.thymeleaf.IEngineConfiguration;
 import org.thymeleaf.cache.ICacheManager;
@@ -33,23 +34,29 @@ import org.thymeleaf.processor.processinginstruction.IProcessingInstructionProce
 import org.thymeleaf.processor.templateboundaries.ITemplateBoundariesProcessor;
 import org.thymeleaf.processor.text.ITextProcessor;
 import org.thymeleaf.processor.xmldeclaration.IXMLDeclarationProcessor;
+import org.thymeleaf.standard.serializer.StandardSerializers;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateparser.markup.decoupled.IDecoupledTemplateLogicResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
  * @author CJ
  */
-public class WidgetConfiguration  implements IEngineConfiguration {
+public class WidgetConfiguration implements IEngineConfiguration {
 
     private final IEngineConfiguration configuration;
     private final Widget widget;
     private final WidgetStyle style;
+    private CSSSerializer cssSerializer = new CSSSerializer();
 
-    public WidgetConfiguration(IEngineConfiguration configuration, Widget widget, WidgetStyle style ) {
+    public WidgetConfiguration(IEngineConfiguration configuration, Widget widget, WidgetStyle style) {
         this.configuration = configuration;
         this.widget = widget;
         this.style = style;
@@ -167,7 +174,136 @@ public class WidgetConfiguration  implements IEngineConfiguration {
 
     @Override
     public Map<String, Object> getExecutionAttributes() {
-        return configuration.getExecutionAttributes();
+        return new Map<String, Object>() {
+            Map<String, Object> src = configuration.getExecutionAttributes();
+
+            @Override
+            public Object get(Object key) {
+                if (StandardSerializers.STANDARD_CSS_SERIALIZER_ATTRIBUTE_NAME.equals(key))
+                    return cssSerializer;
+                return src.get(key);
+            }
+
+            @Override
+            public int size() {
+                return src.size();
+            }
+
+            @Override
+            public boolean isEmpty() {
+                return src.isEmpty();
+            }
+
+            @Override
+            public boolean containsKey(Object key) {
+                return src.containsKey(key);
+            }
+
+            @Override
+            public boolean containsValue(Object value) {
+                return src.containsValue(value);
+            }
+
+            @Override
+            public Object put(String key, Object value) {
+                return src.put(key, value);
+            }
+
+            @Override
+            public Object remove(Object key) {
+                return src.remove(key);
+            }
+
+            @Override
+            public void putAll(Map<? extends String, ?> m) {
+                src.putAll(m);
+            }
+
+            @Override
+            public void clear() {
+                src.clear();
+            }
+
+            @Override
+            public Set<String> keySet() {
+                return src.keySet();
+            }
+
+            @Override
+            public Collection<Object> values() {
+                return src.values();
+            }
+
+            @Override
+            public Set<Entry<String, Object>> entrySet() {
+                return src.entrySet();
+            }
+
+            @Override
+            public boolean equals(Object o) {
+                return src.equals(o);
+            }
+
+            @Override
+            public int hashCode() {
+                return src.hashCode();
+            }
+
+            @Override
+            public Object getOrDefault(Object key, Object defaultValue) {
+                return src.getOrDefault(key, defaultValue);
+            }
+
+            @Override
+            public void forEach(BiConsumer<? super String, ? super Object> action) {
+                src.forEach(action);
+            }
+
+            @Override
+            public void replaceAll(BiFunction<? super String, ? super Object, ?> function) {
+                src.replaceAll(function);
+            }
+
+            @Override
+            public Object putIfAbsent(String key, Object value) {
+                return src.putIfAbsent(key, value);
+            }
+
+            @Override
+            public boolean remove(Object key, Object value) {
+                return src.remove(key, value);
+            }
+
+            @Override
+            public boolean replace(String key, Object oldValue, Object newValue) {
+                return src.replace(key, oldValue, newValue);
+            }
+
+            @Override
+            public Object replace(String key, Object value) {
+                return src.replace(key, value);
+            }
+
+            @Override
+            public Object computeIfAbsent(String key, Function<? super String, ?> mappingFunction) {
+                return src.computeIfAbsent(key, mappingFunction);
+            }
+
+            @Override
+            public Object computeIfPresent(String key, BiFunction<? super String, ? super Object, ?> remappingFunction) {
+                return src.computeIfPresent(key, remappingFunction);
+            }
+
+            @Override
+            public Object compute(String key, BiFunction<? super String, ? super Object, ?> remappingFunction) {
+                return src.compute(key, remappingFunction);
+            }
+
+            @Override
+            public Object merge(String key, Object value, BiFunction<? super Object, ? super Object, ?> remappingFunction) {
+                return src.merge(key, value, remappingFunction);
+            }
+        };
     }
 
     @Override

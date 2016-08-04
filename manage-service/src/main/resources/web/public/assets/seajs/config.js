@@ -48,13 +48,7 @@ seajs.config({
 		"addContents":"js/page/contents/addContents.js?v="+version,
 		// "siteList":"js/page/web/siteList.js?v="+version,
 		// "addSite":"js/page/web/addSite.js?v="+version,
-		"routeList":"js/page/web/routeList.js?v="+version,
-		"addRoute":"js/page/web/addRoute.js?v="+version,
-		"updateRoute":"js/page/web/updateRoute.js?v="+version,
 
-		"addCategory":"js/page/section/addCategory.js?v="+version,
-		"categoryList":"js/page/section/categoryList.js?v="+version,
-		"updateCategory":"js/page/section/updateCategory.js??v="+version,
 		"contentsList":"js/page/contents/contentsList.js?v="+version,
 		"widgetTypeList":"js/page/widget/widgetTypeList.js?v="+version,
 		"addWidgetType":"js/page/widget/addWidgetType.js?v="+version,
@@ -67,8 +61,6 @@ seajs.config({
 
 		"ajaxfileupload":"libs/ajaxfileupload.js?v="+version,
 		"jupload":"libs/upload/jackson-upload.js?v="+version,
-		"ueditorConfig":"libs/ueditor/ueditor.config.js?v="+version,
-		"ueditorAll":"libs/ueditor/ueditor.all.js?v="+version,
 		"kindeditor":"libs/richText/kindeditor-min.js?v="+version,
 		"init":"libs/richText/init.js?v="+version,
 		"zh_CN":"libs/richText/lang/zh_CN.js?v="+version,

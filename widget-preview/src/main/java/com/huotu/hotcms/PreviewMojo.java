@@ -20,26 +20,28 @@ public class PreviewMojo extends AbstractMojo {
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         try {
-            //robot 用来做什么我还不清楚
-            InetAddress inetAddress = InetAddress.getByName("127.0.0.1");
-            Integer port = null;
+            InetAddress inetAddress = InetAddress.getLocalHost();
+            int port = 0;
             for (int i = 10000; i < 65535; i++) {
                 try {
                     new Socket(inetAddress, i);
                     port = i;
-                } catch (IOException e) {
+                } catch (IOException ignored) {
                     //端口连接失败
-                    getLog().info(i + "端口占用");
+//                    getLog().info(i + "端口占用");
                 }
             }
+            getLog().debug("Preview Http Server will use port " + port);
             EmbeddedTomcat tomcat = new EmbeddedTomcat(port);
             tomcat.start();
             Desktop desktop = Desktop.getDesktop();
+
+
             //todo 打开控件浏览视图或者编辑视图通过widgetName进行打开
             desktop.browse(new URI("http://localhost:" + port + "/"));
+
         } catch (Exception e) {
-            getLog().error("error preview", e);
+            getLog().error("preview", e);
         }
-        getLog().info("preview");
     }
 }

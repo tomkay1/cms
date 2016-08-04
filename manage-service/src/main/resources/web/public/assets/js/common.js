@@ -17,7 +17,12 @@ var GlobalID, identity;
 function widgetProperties( id ) {
     var ele = $('#' + id);
     var identity = ele.data('widgetidentity');
-    return wsCache.get(id) || wsCache.get(identity).properties;
+    var data = wsCache.get(id).properties;
+    if( $.isEmptyObject(data) ) {
+        return wsCache.get(identity).properties;
+    } else {
+        return data;
+    }
 };
 
 /**
@@ -49,8 +54,6 @@ var widgetHandle = {
         }
     },
     saveFunc: function (id) {
-        var path = '/preview/' + pageId + '/' + id + '.css';
-        dynamicLoading.css(path);
         CMSWidgets.saveComponent(id, {
             onSuccess: function (ps) {
                 if ( ps !== null && !$.isEmptyObject(ps) )
@@ -68,25 +71,28 @@ var widgetHandle = {
         editFunc.closeFunc();
     }
 };
-
 function updataCompoentPreview(globalID, properties) {
     var ele = $('#' + globalID);
     var widgetId = ele.data('widgetidentity');
     var styleId = ele.data('styleid');
     $.ajax({
         type: 'POST',
-        url: '/previewHTML',
-        dataType: 'html',
+        url: '/preview/component',
+        dataType: 'json',
         data: {
             widgetidentity: widgetId,
             styleId: styleId,
-            properties: properties
+            properties: properties,
+            pageId: pageId,
+            componentId: globalID
         },
-        success: function (json) {
+        success: function (json, textStatus, jqXHR) {
             if (json.statusCode == '200') {
                 ele.html(json.body);
                 editFunc.closeFunc();
                 layer.msg('操作成功', {time: 2000});
+                var path = jqXHR.getResponseHeader('cssLocation');
+                if (path) dynamicLoading.css(path);
             }
             if (json.statusCode == '403') {
                 layer.msg('没有权限', {time: 2000});
@@ -121,7 +127,7 @@ function getDataSource(type, parameter, onSuccess, onError) {
     if (parameter != null) {
         url = url + "/" + parameter;
     }
-    console.error("url:"+url)
+    console.error("url:"+url);
     $.ajax({
         type: 'GET',
         url: url,
@@ -137,7 +143,6 @@ function getDataSource(type, parameter, onSuccess, onError) {
 */
 var dynamicLoading = {
     init: function (type, path) {
-        console.log(path);
         if( !path || path.length === 0){
             console.error('参数 "path" 是必需的！');
         }
@@ -156,7 +161,7 @@ var dynamicLoading = {
             var lastElement = ele.last();
             var addEle = handler ? $('<link>') : $('<script></script>');
             if ( handler ) {
-                addEle.attr({'rel': 'stylesheet', 'href': path + '?t=' + +new Date()});
+                addEle.attr({'rel': 'stylesheet', 'href': path });
             } else {
                 addEle.attr('src', path);
             }

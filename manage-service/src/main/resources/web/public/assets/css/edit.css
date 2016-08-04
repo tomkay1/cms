@@ -101,17 +101,6 @@ header .btn {
     line-height: 40px;
     border-radius: 0;
 }
-.thumbnail {
-    -webkit-transition: box-shadow .2s ease-in-out;
-    -o-transition: box-shadow .2s ease-in-out;
-    transition: box-shadow .2s ease-in-out;
-}
-a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
-    border-color: rgba(0, 0, 0, 0.3);
-    -webkit-box-shadow: rgba(0, 0, 0, 0.5) 0 3px 5px;
-    -moz-box-shadow: rgba(0, 0, 0, 0.5) 0 3px 5px;
-    box-shadow: rgba(0, 0, 0, 0.5) 0 3px 5px;
-}
 #container {
     height: 100%;
 }
@@ -152,18 +141,15 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
     line-height: 22px;
     cursor: pointer;
 }
-
 .draggable-group {
     margin-top: 80px;
 }
-
 .draggable-group .preview {
     display: block;
     color: #666;
     font-size: 12px;
     line-height: 26px;
 }
-
 .draggable-group .preview input, .draggable-group .preview p {
     padding: 0;
     width: 134px;
@@ -174,7 +160,6 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
     line-height: 22px;
     text-indent: 14px;
 }
-
 .draggable-group .preview p {
     border-radius: 4px;
 }
@@ -346,7 +331,7 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
     z-index: 1000;
     background-color: rgba(0, 0, 0, 0.5);
 }
-/* 编辑器 */
+
 #configuration {
     display: none;
     position: fixed;
@@ -418,11 +403,13 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
     display: inline;
     width: auto;
 }
-
 #configuration .conf-body .borderBoxs .images-list {
     margin-top: 10px;
     height: 400px;
     overflow: auto;
+}
+#configuration .conf-body .borderBoxs .images-list li > img{
+    margin-right: 350px
 }
 #configuration .conf-body .borderBoxs > div {
     overflow: hidden;
@@ -487,7 +474,6 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
     visibility: visible !important;
     border-radius: 4px;
 }
-
 .sourcepreview .drag,
 .sourcepreview .setting,
 .sourcepreview .remove {
@@ -525,6 +511,9 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
 }
 .oneImage .ajax-file-upload-container {
     height: 82px;
+}
+.moreImage .ajax-file-upload-container {
+    height: 440px;
 }
 .ajax-file-upload {
   height: auto;

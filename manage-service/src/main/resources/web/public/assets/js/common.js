@@ -86,9 +86,8 @@ function updataCompoentPreview(globalID, properties) {
                 ele.html(json.body);
                 editFunc.closeFunc();
                 layer.msg('操作成功', {time: 2000});
-
                 var path = jqXHR.getResponseHeader('cssLocation');
-                dynamicLoading.css(path);
+                if (path) dynamicLoading.css(path);
             }
             if (json.statusCode == '403') {
                 layer.msg('没有权限', {time: 2000});
@@ -123,7 +122,7 @@ function getDataSource(type, parameter, onSuccess, onError) {
     if (parameter != null) {
         url = url + "/" + parameter;
     }
-    console.error("url:"+url)
+    console.error("url:"+url);
     $.ajax({
         type: 'GET',
         url: url,

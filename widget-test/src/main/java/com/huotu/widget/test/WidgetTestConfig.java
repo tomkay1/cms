@@ -43,7 +43,7 @@ import java.util.Set;
  */
 
 @EnableWebMvc
-@Import({WidgetTestConfig.ViewResolver.class, WidgetResolveServiceConfig.class, ServiceConfig.class})
+@Import({DSConfig.class, WidgetTestConfig.ViewResolver.class, WidgetResolveServiceConfig.class, ServiceConfig.class})
 @ComponentScan("com.huotu.widget.test.bean")
 public class WidgetTestConfig extends WebMvcConfigurerAdapter {
 

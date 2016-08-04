@@ -329,7 +329,7 @@ public abstract class ManageTest extends SpringWebTest {
         }
 
         // 内容
-        while (contentService.listBySite(site, null).spliterator().estimateSize() < 10) {
+        while (contentService.countBySite(site) < 10) {
             for (Category category : categoryRepository.findBySite(site)) {
                 if (random.nextBoolean()) {
                     AbstractContent content = contentService.newContent(category.getContentType());

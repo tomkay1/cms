@@ -17,6 +17,6 @@ import org.springframework.context.annotation.Import;
  * @author CJ
  */
 @Configuration
-@Import(MVCConfig.class)
+@Import({DSConfig.class, MVCConfig.class})
 public class WebTestConfig {
 }

@@ -10,16 +10,14 @@
 package com.huotu.hotcms.widget.config;
 
 import com.huotu.hotcms.service.config.ServiceConfig;
+import com.huotu.hotcms.widget.DSConfig;
 import me.jiangcai.lib.resource.ResourceSpringConfig;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-/**
- * Created by wenqi on 2016/5/31.
- */
 @Configuration
-@Import({ResourceSpringConfig.class, ServiceConfig.class})
+@Import({DSConfig.class, ResourceSpringConfig.class, ServiceConfig.class})
 @ComponentScan(value = {"com.huotu.hotcms.widget.config"
         })
 public class TestConfig {

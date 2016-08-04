@@ -28,7 +28,7 @@ import java.util.Collection;
  * @author CJ
  */
 @Configuration
-@Import({ServiceConfig.class, ManageServiceSpringConfig.class})
+@Import({DSConfig.class, ServiceConfig.class, ManageServiceSpringConfig.class})
 @ComponentScan("com.huotu.cms.manage.test")
 public class ManageTestConfig extends MockMVC {
 

@@ -17,7 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -26,8 +25,8 @@ import java.util.List;
  * @author CJ
  */
 //@NoRepositoryBean
-public interface AbstractContentRepository<T extends AbstractContent, ID extends Serializable>
-        extends JpaRepository<T, ID>, JpaSpecificationExecutor<T> {
+public interface AbstractContentRepository<T extends AbstractContent>
+        extends JpaRepository<T, Long>, JpaSpecificationExecutor<T> {
 
     /**
      * @param category 数据源
@@ -39,7 +38,7 @@ public interface AbstractContentRepository<T extends AbstractContent, ID extends
      * @param category 数据源
      * @return 按数据源查找
      */
-    List<T> findByCategory_id(Long category);
+    List<T> findByCategory_Id(Long category);
 
     Page<T> findByCategory(Category category, Pageable pageable);
 
@@ -47,9 +46,18 @@ public interface AbstractContentRepository<T extends AbstractContent, ID extends
      * @param site 站点
      * @return 按站点查找
      */
-    List<T> findByCategory_site(Site site);
+    List<T> findByCategory_Site(Site site);
 
-    Page<T> findByCategory_site(Site site, Pageable pageable);
+    Page<T> findByCategory_Site(Site site, Pageable pageable);
+
+    /**
+     * 按照站点和唯一序列号查找
+     *
+     * @param site   站点
+     * @param serial 序列号
+     * @return 内容
+     */
+    T findByCategory_SiteAndSerial(Site site, String serial);
 
     /**
      * 删除所有该数据源相关

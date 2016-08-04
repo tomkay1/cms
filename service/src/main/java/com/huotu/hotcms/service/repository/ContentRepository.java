@@ -10,15 +10,12 @@
 package com.huotu.hotcms.service.repository;
 
 import com.huotu.hotcms.service.entity.AbstractContent;
-import com.huotu.hotcms.service.entity.Category;
-import com.huotu.hotcms.service.entity.Site;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import com.huotu.hotcms.service.repositoryi.AbstractContentRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface ContentRepository extends JpaRepository<AbstractContent, Long>, JpaSpecificationExecutor<AbstractContent> {
+public interface ContentRepository extends AbstractContentRepository<AbstractContent> {
     /**
      * 根据站点查询所有contents
      */
@@ -32,8 +29,8 @@ public interface ContentRepository extends JpaRepository<AbstractContent, Long>,
             "UNION\n" +
             "select f.title,f.description,c.name,f.id,c.modelId,f.createTime from cms_video f,cms_category c where f.categoryId=c.id and f.deleted=false and c.siteId = ?1 and c.deleted=false and f.title like %?2%\n" +
             "UNION\n" +
-            "select g.title,g.description,c.name,g.id,c.modelId,g.createTime from cms_gallery g,cms_category c where g.categoryId=c.id and g.deleted=false and c.siteId = ?1 and c.deleted=false and g.title like %?2%) as t order by modelId,id limit ?3,?4",nativeQuery = true)
-    List<Object[]> findAllContentsBySiteIdAndName(Long siteId,String name,int page, int pageSize);
+            "select g.title,g.description,c.name,g.id,c.modelId,g.createTime from cms_gallery g,cms_category c where g.categoryId=c.id and g.deleted=false and c.siteId = ?1 and c.deleted=false and g.title like %?2%) as t order by modelId,id limit ?3,?4", nativeQuery = true)
+    List<Object[]> findAllContentsBySiteIdAndName(Long siteId, String name, int page, int pageSize);
 
 
     /**
@@ -49,54 +46,39 @@ public interface ContentRepository extends JpaRepository<AbstractContent, Long>,
             "UNION\n" +
             "select f.title,f.description,c.name,f.id,c.modelId,f.createTime from cms_video f,cms_category c where f.categoryId=c.id and f.deleted=false and c.deleted=false and c.siteId = ?1 and f.title like %?2%\n" +
             "UNION\n" +
-            "select g.title,g.description,c.name,g.id,c.modelId,g.createTime from cms_gallery g,cms_category c where g.categoryId=c.id and g.deleted=false and c.deleted=false and c.siteId = ?1 and g.title like %?2%) as t",nativeQuery = true)
-    List<Object[]> findContentsSizeBySiteIdAndName(Long siteId,String name);
+            "select g.title,g.description,c.name,g.id,c.modelId,g.createTime from cms_gallery g,cms_category c where g.categoryId=c.id and g.deleted=false and c.deleted=false and c.siteId = ?1 and g.title like %?2%) as t", nativeQuery = true)
+    List<Object[]> findContentsSizeBySiteIdAndName(Long siteId, String name);
 
     /**
      * 根据站点和栏目以及contents name查询所有contents
      */
     @Query(value = "select * from(select a.title,a.description,c.name,a.id,c.modelId,a.createTime from cms_link a left join cms_category c on a.categoryId=c.id where  a.deleted=false and c.deleted=false and c.siteId = ?1 and c.id in(?2) and a.title like %?3%\n" +
-                "UNION\n" +
-                "select b.title,b.description,c.name,b.id,c.modelId,b.createTime from cms_article b left join cms_category c on b.categoryId=c.id where b.deleted=false and c.siteId = ?1 and c.deleted=false and c.id in(?2) and b.title like %?3%\n" +
-                "UNION\n" +
-                "select d.title,d.description,c.name,d.id,c.modelId,d.createTime from cms_notice d left join cms_category c on d.categoryId=c.id where d.deleted=false and c.siteId = ?1 and c.deleted=false and c.id in(?2) and d.title like %?3%\n" +
-                "UNION\n" +
-                "select e.title,e.description,c.name,e.id,c.modelId,e.createTime from cms_download e left join cms_category c on e.categoryId=c.id where e.deleted=false and c.siteId = ?1 and c.deleted=false and c.id in(?2) and e.title like %?3%\n" +
-                "UNION\n" +
-                "select f.title,f.description,c.name,f.id,c.modelId,f.createTime from cms_video f left join cms_category c on f.categoryId=c.id  where f.deleted=false and c.siteId = ?1 and c.deleted=false and c.id in(?2) and f.title like %?3%\n" +
-                "UNION\n" +
-                "select g.title,g.description,c.name,g.id,c.modelId,g.createTime from cms_gallery g left join cms_category c on g.categoryId=c.id where g.deleted=false and c.siteId = ?1 and c.deleted=false and c.id in(?2) and g.title like %?3%) as t order by id,modelId limit ?4,?5",nativeQuery = true)
-        List<Object[]> findAllContentsBySiteIdAndCategoryIdsAndName(Long siteId,String categoryId,String name,int page, int pageSize);
+            "UNION\n" +
+            "select b.title,b.description,c.name,b.id,c.modelId,b.createTime from cms_article b left join cms_category c on b.categoryId=c.id where b.deleted=false and c.siteId = ?1 and c.deleted=false and c.id in(?2) and b.title like %?3%\n" +
+            "UNION\n" +
+            "select d.title,d.description,c.name,d.id,c.modelId,d.createTime from cms_notice d left join cms_category c on d.categoryId=c.id where d.deleted=false and c.siteId = ?1 and c.deleted=false and c.id in(?2) and d.title like %?3%\n" +
+            "UNION\n" +
+            "select e.title,e.description,c.name,e.id,c.modelId,e.createTime from cms_download e left join cms_category c on e.categoryId=c.id where e.deleted=false and c.siteId = ?1 and c.deleted=false and c.id in(?2) and e.title like %?3%\n" +
+            "UNION\n" +
+            "select f.title,f.description,c.name,f.id,c.modelId,f.createTime from cms_video f left join cms_category c on f.categoryId=c.id  where f.deleted=false and c.siteId = ?1 and c.deleted=false and c.id in(?2) and f.title like %?3%\n" +
+            "UNION\n" +
+            "select g.title,g.description,c.name,g.id,c.modelId,g.createTime from cms_gallery g left join cms_category c on g.categoryId=c.id where g.deleted=false and c.siteId = ?1 and c.deleted=false and c.id in(?2) and g.title like %?3%) as t order by id,modelId limit ?4,?5", nativeQuery = true)
+    List<Object[]> findAllContentsBySiteIdAndCategoryIdsAndName(Long siteId, String categoryId, String name, int page, int pageSize);
 
     /**
      * 根据站点,栏目以及contents name查询所有contents,用于查总size
      */
     @Query(value = "select * from(select a.title,a.description,c.name,a.id,c.modelId,a.createTime from cms_link a left join cms_category c on a.categoryId=c.id where a.deleted=false and c.siteId = ?1 and c.id in(?2) and a.title like %?3%\n" +
-                "UNION\n" +
-                "select b.title,b.description,c.name,b.id,c.modelId,b.createTime from cms_article b left join cms_category c on b.categoryId=c.id where b.deleted=false and c.siteId = ?1 and c.deleted=false and c.id in(?2) and b.title like %?3%\n" +
-                "UNION\n" +
-                "select d.title,d.description,c.name,d.id,c.modelId,d.createTime from cms_notice d left join cms_category c on d.categoryId=c.id where d.deleted=false and c.siteId = ?1 and c.deleted=false and c.id in(?2) and d.title like %?3%\n" +
-                "UNION\n" +
-                "select e.title,e.description,c.name,e.id,c.modelId,e.createTime from cms_download e left join cms_category c on e.categoryId=c.id where e.deleted=false and c.siteId = ?1 and c.deleted=false and c.id in(?2) and e.title like %?3%\n" +
-                "UNION\n" +
-                "select f.title,f.description,c.name,f.id,c.modelId,f.createTime from cms_video f left join cms_category c on f.categoryId=c.id where f.deleted=false and c.siteId = ?1 and c.deleted=false and c.id in(?2) and f.title like %?3%\n" +
-                "UNION\n" +
-                "select g.title,g.description,c.name,g.id,c.modelId,g.createTime from cms_gallery g left join cms_category c on g.categoryId=c.id where g.deleted=false and c.siteId = ?1 and c.deleted=false and c.id in(?2) and g.title like %?3%) as t",nativeQuery = true)
-        List<Object[]> findContentsSizeBySiteIdAndCategoryIdsAndName(Long siteId,String categoryId,String name);
+            "UNION\n" +
+            "select b.title,b.description,c.name,b.id,c.modelId,b.createTime from cms_article b left join cms_category c on b.categoryId=c.id where b.deleted=false and c.siteId = ?1 and c.deleted=false and c.id in(?2) and b.title like %?3%\n" +
+            "UNION\n" +
+            "select d.title,d.description,c.name,d.id,c.modelId,d.createTime from cms_notice d left join cms_category c on d.categoryId=c.id where d.deleted=false and c.siteId = ?1 and c.deleted=false and c.id in(?2) and d.title like %?3%\n" +
+            "UNION\n" +
+            "select e.title,e.description,c.name,e.id,c.modelId,e.createTime from cms_download e left join cms_category c on e.categoryId=c.id where e.deleted=false and c.siteId = ?1 and c.deleted=false and c.id in(?2) and e.title like %?3%\n" +
+            "UNION\n" +
+            "select f.title,f.description,c.name,f.id,c.modelId,f.createTime from cms_video f left join cms_category c on f.categoryId=c.id where f.deleted=false and c.siteId = ?1 and c.deleted=false and c.id in(?2) and f.title like %?3%\n" +
+            "UNION\n" +
+            "select g.title,g.description,c.name,g.id,c.modelId,g.createTime from cms_gallery g left join cms_category c on g.categoryId=c.id where g.deleted=false and c.siteId = ?1 and c.deleted=false and c.id in(?2) and g.title like %?3%) as t", nativeQuery = true)
+    List<Object[]> findContentsSizeBySiteIdAndCategoryIdsAndName(Long siteId, String categoryId, String name);
 
-
-    /**
-     * 通过数据源查找内容
-     * @param category 数据源
-     * @return 内容
-     */
-    List<AbstractContent> findByCategory(Category category);
-
-    /**
-     * 通过站点查找内容
-     *
-     * @param site 站点
-     * @return 内容
-     */
-    List<AbstractContent> findByCategory_Site(Site site);
 }

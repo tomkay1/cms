@@ -13,7 +13,7 @@ import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.repositoryi.AbstractContentRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface ArticleRepository extends AbstractContentRepository<Article, Long> {
+public interface ArticleRepository extends AbstractContentRepository<Article> {
 
     /**
      * 根绝siteID 查询文章

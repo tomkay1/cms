@@ -58,7 +58,7 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     @Override
     public List<Gallery> findGallery() {
         Site site = CMSContext.RequestContext().getSite();
-        return galleryRepository.findByCategory_site(site);
+        return galleryRepository.findByCategory_Site(site);
     }
 
     @Override
@@ -142,7 +142,7 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     public List<LinkModel> findLink(Long categoryId) {
         List<LinkModel> linkModels = new ArrayList<>();
         if (categoryRepository.findOne(categoryId).getContentType().equals(ContentType.Link)) {
-            List<Link> links = linkRepository.findByCategory_id(categoryId);
+            List<Link> links = linkRepository.findByCategory_Id(categoryId);
             if (links != null && links.size() > 0) {
                 for (Link link : links) {
                     linkModels.add(Link.getLinkModel(link));

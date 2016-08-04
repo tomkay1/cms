@@ -12,6 +12,6 @@ package com.huotu.hotcms.service.repository;
 import com.huotu.hotcms.service.entity.Notice;
 import com.huotu.hotcms.service.repositoryi.AbstractContentRepository;
 
-public interface NoticeRepository extends AbstractContentRepository<Notice, Long> {
+public interface NoticeRepository extends AbstractContentRepository<Notice> {
 
 }

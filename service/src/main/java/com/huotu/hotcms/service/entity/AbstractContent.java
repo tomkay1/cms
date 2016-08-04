@@ -51,6 +51,7 @@ public abstract class AbstractContent implements Auditable,Copyable<AbstractCont
     private Long id;
     /**
      * 序列号
+     * 序列号是表示这个资源在某领域（比如站点）唯一的识别码;即 它在global中是非唯一的,但在指定领域中唯一
      */
     @Column(length = 100)
     private String serial;

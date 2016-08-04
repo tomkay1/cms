@@ -12,6 +12,6 @@ package com.huotu.hotcms.service.repository;
 import com.huotu.hotcms.service.entity.Gallery;
 import com.huotu.hotcms.service.repositoryi.AbstractContentRepository;
 
-public interface GalleryRepository extends AbstractContentRepository<Gallery, Long> {
+public interface GalleryRepository extends AbstractContentRepository<Gallery> {
 
 }

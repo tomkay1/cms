@@ -12,6 +12,6 @@ package com.huotu.hotcms.service.repository;
 import com.huotu.hotcms.service.entity.Video;
 import com.huotu.hotcms.service.repositoryi.AbstractContentRepository;
 
-public interface VideoRepository extends AbstractContentRepository<Video, Long> {
+public interface VideoRepository extends AbstractContentRepository<Video> {
 
 }

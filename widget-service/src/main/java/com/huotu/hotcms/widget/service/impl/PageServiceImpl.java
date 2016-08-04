@@ -12,7 +12,7 @@ package com.huotu.hotcms.widget.service.impl;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.exception.PageNotFoundException;
-import com.huotu.hotcms.service.repository.SiteRepository;
+import com.huotu.hotcms.service.service.CommonService;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.InstalledWidget;
@@ -42,10 +42,11 @@ import java.util.UUID;
 
 @Service
 public class PageServiceImpl implements PageService {
-    @Autowired(required = false)
-    SiteRepository siteRepository;
 
-    @Autowired(required = false)
+    @Autowired
+    private CommonService commonService;
+
+    @Autowired
     private PageInfoRepository pageInfoRepository;
 
     @Autowired
@@ -127,7 +128,8 @@ public class PageServiceImpl implements PageService {
     }
 
     @Override
-    public void deletePage(Long pageId) {
+    public void deletePage(Long pageId) throws IOException {
+        commonService.deleteResource(pageInfoRepository.getOne(pageId));
         pageInfoRepository.delete(pageId);
     }
 

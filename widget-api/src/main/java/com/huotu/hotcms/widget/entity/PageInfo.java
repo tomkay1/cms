@@ -11,12 +11,14 @@ package com.huotu.hotcms.widget.entity;
 
 import com.huotu.hotcms.service.Auditable;
 import com.huotu.hotcms.service.Copyable;
+import com.huotu.hotcms.service.ResourcesOwner;
 import com.huotu.hotcms.service.common.PageType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.widget.page.PageLayout;
 import lombok.Getter;
 import lombok.Setter;
+import me.jiangcai.lib.resource.service.ResourceService;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -27,6 +29,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
@@ -40,7 +44,7 @@ import java.util.UUID;
 @Table(name = "cms_pageInfo")
 @Getter
 @Setter
-public class PageInfo implements Auditable, Copyable<PageInfo> {
+public class PageInfo implements Auditable, Copyable<PageInfo>, ResourcesOwner {
 
     /**
      * 父级page
@@ -127,5 +131,20 @@ public class PageInfo implements Auditable, Copyable<PageInfo> {
      */
     public String getPageCssResourcePath() {
         return "page/resource/css/" + resourceKey + "/" + pageId + ".css";
+    }
+
+    @Override
+    public String[] getResourcePaths() {
+        return new String[]{getPageCssResourcePath()};
+    }
+
+    @Override
+    public void updateResource(int index, String path, ResourceService resourceService) throws IOException {
+        throw new NoSuchMethodError("PageInfo update resource itself.");
+    }
+
+    @Override
+    public String generateResourcePath(int index, ResourceService resourceService, InputStream stream) {
+        throw new NoSuchMethodError("PageInfo update resource itself.");
     }
 }

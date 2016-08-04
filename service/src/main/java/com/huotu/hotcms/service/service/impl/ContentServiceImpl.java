@@ -9,27 +9,38 @@
 
 package com.huotu.hotcms.service.service.impl;
 
+import com.huotu.hotcms.service.ResourcesOwner;
+import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.AbstractContent;
+import com.huotu.hotcms.service.entity.Article;
+import com.huotu.hotcms.service.entity.Download;
+import com.huotu.hotcms.service.entity.Gallery;
+import com.huotu.hotcms.service.entity.Link;
+import com.huotu.hotcms.service.entity.Notice;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.entity.Video;
 import com.huotu.hotcms.service.repository.ContentRepository;
-import com.huotu.hotcms.service.service.CategoryService;
-import com.huotu.hotcms.service.service.ContentsService;
+import com.huotu.hotcms.service.service.CommonService;
+import com.huotu.hotcms.service.service.ContentService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
-public class ContentsServiceImpl implements ContentsService {
-
-
-    @Autowired
-    ContentRepository contentRepository;
+public class ContentServiceImpl implements ContentService {
 
     @Autowired
-    CategoryService categoryService;
+    private ContentRepository contentRepository;
+
+    @Autowired
+    private CommonService commonService;
 
 
     @Override
@@ -54,8 +65,68 @@ public class ContentsServiceImpl implements ContentsService {
     }
 
     @Override
+    public Iterable<AbstractContent> listBySite(Site site, Pageable pageable) {
+        Specification<AbstractContent> specification = specificationBySite(site);
+
+        if (pageable == null)
+            return contentRepository.findAll(specification);
+        return contentRepository.findAll(specification, pageable);
+    }
+
+    @NotNull
+    private Specification<AbstractContent> specificationBySite(Site site) {
+        return (root, query, cb) -> cb.equal(root.get("category").get("site"), site);
+    }
+
+    @Override
+    public long countBySite(Site site) {
+        Specification<AbstractContent> specification = specificationBySite(site);
+        return contentRepository.count(specification);
+    }
+
+    @Override
     public AbstractContent findById(Long contentId) {
         return contentRepository.findOne(contentId);
+    }
+
+    @Override
+    public void delete(AbstractContent content) throws IOException {
+        contentRepository.delete(content);
+        if (content instanceof ResourcesOwner)
+            commonService.deleteResource((ResourcesOwner) content);
+    }
+
+    @Override
+    public AbstractContent newContent(ContentType type) {
+        AbstractContent content;
+        switch (type) {
+            case Article:
+                content = new Article();
+                break;
+            case Download:
+                content = new Download();
+                break;
+            case Gallery:
+                content = new Gallery();
+                break;
+            case Notice:
+                content = new Notice();
+                break;
+            case Link:
+                content = new Link();
+                break;
+            case Video:
+                content = new Video();
+                break;
+            default:
+                throw new IllegalArgumentException(type.name() + " is unknown.");
+        }
+
+        content.setSerial(UUID.randomUUID().toString().replace("-", ""));
+        content.setCreateTime(LocalDateTime.now());
+        content.setDeleted(false);
+
+        return content;
     }
 
 

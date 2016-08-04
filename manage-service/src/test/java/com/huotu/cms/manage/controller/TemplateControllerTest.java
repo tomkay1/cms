@@ -18,7 +18,6 @@ import com.huotu.cms.manage.page.PageInfoPage;
 import com.huotu.cms.manage.page.SitePage;
 import com.huotu.cms.manage.page.TemplatePage;
 import com.huotu.cms.manage.page.support.AbstractCRUDPage;
-import com.huotu.hotcms.service.ResourcesOwner;
 import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
@@ -26,12 +25,15 @@ import com.huotu.hotcms.service.entity.Template;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.ContentRepository;
 import com.huotu.hotcms.service.repository.TemplateRepository;
+import com.huotu.hotcms.service.service.CategoryService;
+import com.huotu.hotcms.service.service.ContentService;
 import com.huotu.hotcms.service.service.TemplateService;
 import com.huotu.hotcms.service.util.ImageHelper;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.repository.PageInfoRepository;
 import me.jiangcai.lib.resource.service.ResourceService;
-import org.assertj.core.api.Condition;
+import org.assertj.core.util.Arrays;
+import org.assertj.core.util.IterableUtil;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -66,6 +68,11 @@ public class TemplateControllerTest extends SiteManageTest {
     private ContentRepository contentRepository;
     @Autowired
     private CategoryRepository categoryRepository;
+    @Autowired
+    private ContentService contentService;
+    @Autowired
+    private CategoryService categoryService;
+
 
     @Test
     @Transactional
@@ -298,12 +305,12 @@ public class TemplateControllerTest extends SiteManageTest {
 
             // 页面当时的数据
             List<PageInfo> sitePages = pageInfoRepository.findBySite(yourSite);
-            List<AbstractContent> siteContents = contentRepository.findByCategory_Site(yourSite);
+            Iterable<AbstractContent> siteContents = contentService.listBySite(yourSite, null);
             List<Category> siteCategories = categoryRepository.findBySite(yourSite);
 
             // 模板当时的数据
             List<PageInfo> templatePages = pageInfoRepository.findBySite(template);
-            List<AbstractContent> templateContents = contentRepository.findByCategory_Site(template);
+            Iterable<AbstractContent> templateContents = contentService.listBySite(template, null);
             List<Category> templateCategories = categoryRepository.findBySite(template);
 
             // 使用
@@ -315,21 +322,29 @@ public class TemplateControllerTest extends SiteManageTest {
             if (append) {
                 //原资源还存在F
                 assertThat(pageInfoRepository.findBySite(yourSite)).containsAll(sitePages);
-                assertThat(contentRepository.findByCategory_Site(yourSite)).containsAll(siteContents);
+                assertThat(contentService.listBySite(yourSite, null)).containsAll(siteContents);
                 assertThat(categoryRepository.findBySite(yourSite)).containsAll(siteCategories);
             } else {
                 //原资源已经没了
                 sitePages.stream().forEach(page -> assertThat(pageInfoRepository.findOne(page.getPageId())).isNull());
-                siteContents.stream().forEach(page -> assertThat(contentRepository.findOne(page.getId())).isNull());
+                siteContents.forEach(page -> assertThat(contentRepository.findOne(page.getId())).isNull());
                 siteCategories.stream().forEach(page -> assertThat(categoryRepository.findOne(page.getId())).isNull());
             }
 
-            //复制过来的效果，遇到重名的可能改名字了 所以名字使用contain即可
+            // 模板资源都还在而且还可用
+            Runnable templateResourceChecker = () -> {
+                assertThat(pageInfoRepository.findBySite(template)).containsExactlyElementsOf(templatePages);
+                assertThat(contentService.listBySite(template, null)).containsExactlyElementsOf(templateContents);
+                assertThat(categoryRepository.findBySite(template)).containsExactlyElementsOf(templateCategories);
 
-            // 原数据 没有变化
-            assertThat(pageInfoRepository.findBySite(template)).containsExactlyElementsOf(templatePages);
-            assertThat(contentRepository.findByCategory_Site(template)).containsExactlyElementsOf(templateContents);
-            assertThat(categoryRepository.findBySite(template)).containsExactlyElementsOf(templateCategories);
+                templatePages.forEach((obj) -> assertResourcesExisting(obj, false));
+                templateContents.forEach((obj) -> assertResourcesExisting(obj, false));
+                templateCategories.forEach((obj) -> assertResourcesExisting(obj, false));
+            };
+
+            templateResourceChecker.run();
+
+            //复制过来的效果，遇到重名的可能改名字了 所以名字使用contain即可
 
             for (PageInfo templatePage : templatePages) {
                 PageInfo sitePage = pageInfoRepository.findBySiteAndPagePath(yourSite, templatePage.getPagePath());
@@ -339,7 +354,8 @@ public class TemplateControllerTest extends SiteManageTest {
                     append += TemplateService.DuplicateAppend;
                     sitePage = pageInfoRepository.findBySiteAndPagePath(yourSite, templatePage.getPagePath() + append);
                 }
-                // TODO 资源可用
+                // 资源可用
+                assertResourcesExisting(sitePage, true);
                 // 数据唯一
                 assertThat(sitePage)
                         .isNotIn(sitePages)
@@ -358,18 +374,13 @@ public class TemplateControllerTest extends SiteManageTest {
             for (AbstractContent content : templateContents) {
                 AbstractContent siteContent = contentRepository.findByCategory_SiteAndSerial(yourSite, content.getSerial());
                 String append = "";
-                while (siteContents.contains(siteContent)) {
+                while (Arrays.nonNullElementsIn(IterableUtil.toArray(siteContents)).contains(siteContent)) {
                     append += TemplateService.DuplicateAppend;
                     siteContent = contentRepository.findByCategory_SiteAndSerial(yourSite, content.getSerial() + append);
                 }
                 // 资源可用
-                if (siteContent instanceof ResourcesOwner) {
-                    for (String imagePath : ((ResourcesOwner) siteContent).getResourcePaths()) {
-                        assertThat(resourceService.getResource(imagePath))
-                                .isNotNull()
-                                .is(new Condition<>(Resource::exists, ""));
-                    }
-                }
+                assertResourcesExisting(siteContent, false);
+
                 // 数据唯一
                 assertThat(siteContent.getCategory())
                         .isNotNull()
@@ -417,6 +428,22 @@ public class TemplateControllerTest extends SiteManageTest {
                 }
             }
 
+            for (PageInfo pageInfo : pageInfoRepository.findBySite(yourSite)) {
+                pageService.deletePage(pageInfo.getPageId());
+            }
+
+            for (AbstractContent content : contentService.listBySite(yourSite, null)) {
+                contentService.delete(content);
+            }
+
+            for (Category category : categoryRepository.findBySite(yourSite)) {
+                if (categoryRepository.exists(category.getId()))
+                    categoryService.delete(category);
+            }
+
+            templateResourceChecker.run();
+
         }
     }
+
 }

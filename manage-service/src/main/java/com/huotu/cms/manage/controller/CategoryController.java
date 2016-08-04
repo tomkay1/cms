@@ -11,37 +11,19 @@ package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.controller.support.SiteManageController;
 import com.huotu.cms.manage.exception.RedirectException;
-import com.huotu.cms.manage.util.web.CookieUser;
-import com.huotu.hotcms.service.common.ContentType;
-import com.huotu.hotcms.service.common.EnumUtils;
-import com.huotu.hotcms.service.common.ModelType;
-import com.huotu.hotcms.service.common.RouteType;
-import com.huotu.hotcms.service.converter.CategoryFormatter;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
-import com.huotu.hotcms.service.model.CategoryTreeModel;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.service.RouteService;
 import com.huotu.hotcms.service.service.SiteService;
-import com.huotu.hotcms.service.util.ResultOptionEnum;
-import com.huotu.hotcms.service.util.ResultView;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Created by chendeyu on 2015/12/31.
@@ -67,6 +49,7 @@ public class CategoryController extends SiteManageController<Category, Long, Lon
         if (extra != null) {
             data.setParent(categoryService.get(extra));
         }
+        categoryService.init(data);
         return data;
     }
 

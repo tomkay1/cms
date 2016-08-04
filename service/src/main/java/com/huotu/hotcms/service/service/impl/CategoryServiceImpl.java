@@ -18,7 +18,6 @@ import com.huotu.hotcms.service.model.CategoryTreeModel;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.CategoryForeachParam;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.service.CategoryService;
-import com.huotu.hotcms.service.service.RouteService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +33,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,26 +44,30 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-//    @Autowired
-//    CategoryService categoryService;
-
-    @Autowired
-    private RouteService routeService;
-
     @Override
     public List<Category> getCategories(Site site) {
         return categoryRepository.findBySiteOrderByOrderWeightDesc(site);
     }
 
+
     @Override
-    public Category get(long id) {
-        return categoryRepository.getOne(id);
+    @Transactional
+    public Boolean deleteCategory(Category category) {
+        category.setDeleted(true);
+        categoryRepository.save(category);
+        return true;
     }
 
     @Override
-    public Boolean save(Category category) {
-        categoryRepository.save(category);
-        return true;
+    public void delete(Category category) {
+        categoryRepository.findByParent_Id(category.getId())
+                .forEach(this::delete);
+        categoryRepository.delete(category);
+    }
+
+    @Override
+    public Category get(long id) {
+        return categoryRepository.getOne(id);
     }
 
     @Override
@@ -184,6 +188,10 @@ public class CategoryServiceImpl implements CategoryService {
         return category;
     }
 
+    @Override
+    public void init(Category category) {
+        category.setSerial(UUID.randomUUID().toString().replace("-", ""));
+    }
 
     @Override
     public List<Category> getSubCategories(Long parenId, int size) {
@@ -287,14 +295,6 @@ public class CategoryServiceImpl implements CategoryService {
         return null;
     }
 
-
-    @Override
-    @Transactional
-    public Boolean deleteCategory(Category category) {
-        category.setDeleted(true);
-        save(category);
-        return true;
-    }
 
     @Override
     public List<Category> getCategoryList(Category parent) {

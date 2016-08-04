@@ -13,7 +13,7 @@ import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.LinkRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.service.CategoryService;
-import com.huotu.hotcms.service.service.ContentsService;
+import com.huotu.hotcms.service.service.ContentService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class ContentsController {
     SiteRepository siteRepository;
 
     @Autowired
-    ContentsService contentsService;
+    ContentService contentService;
 
     @Autowired
     LinkRepository linkRepository;
@@ -147,7 +147,7 @@ public class ContentsController {
 //            @RequestParam(name = "page", defaultValue = "1") int page,
 //            @RequestParam(name = "pagesize", defaultValue = "20") int pageSize) {
 //
-//        return contentsService.getPage(title, siteId, category, page, pageSize);
+//        return contentService.getPage(title, siteId, category, page, pageSize);
 //    }
 }
 

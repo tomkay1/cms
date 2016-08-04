@@ -17,9 +17,12 @@ import com.huotu.cms.manage.page.AdminPage;
 import com.huotu.cms.manage.page.ManageMainPage;
 import com.huotu.cms.manage.page.support.AbstractCRUDPage;
 import com.huotu.cms.manage.test.AuthController;
+import com.huotu.hotcms.service.ImagesOwner;
+import com.huotu.hotcms.service.ResourcesOwner;
 import com.huotu.hotcms.service.common.CMSEnums;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.common.PageType;
+import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Download;
@@ -35,11 +38,14 @@ import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.service.repository.ArticleRepository;
 import com.huotu.hotcms.service.repository.CategoryRepository;
+import com.huotu.hotcms.service.repository.ContentRepository;
 import com.huotu.hotcms.service.repository.DownloadRepository;
 import com.huotu.hotcms.service.repository.GalleryItemRepository;
 import com.huotu.hotcms.service.repository.GalleryRepository;
 import com.huotu.hotcms.service.repository.OwnerRepository;
 import com.huotu.hotcms.service.repository.TemplateRepository;
+import com.huotu.hotcms.service.service.CategoryService;
+import com.huotu.hotcms.service.service.ContentService;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.util.StringUtil;
 import com.huotu.hotcms.widget.CMSContext;
@@ -59,10 +65,12 @@ import com.huotu.hotcms.widget.servlet.RouteFilter;
 import me.jiangcai.lib.resource.service.ResourceService;
 import me.jiangcai.lib.test.SpringWebTest;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.assertj.core.api.Condition;
 import org.junit.Before;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.annotation.Rollback;
@@ -76,7 +84,9 @@ import org.springframework.util.StreamUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -85,6 +95,7 @@ import java.util.Locale;
 import java.util.UUID;
 import java.util.function.Consumer;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -151,6 +162,12 @@ public abstract class ManageTest extends SpringWebTest {
     private GalleryRepository galleryRepository;
     @Autowired
     private ResourceService resourceService;
+    @Autowired
+    private CategoryService categoryService;
+    @Autowired
+    private ContentService contentService;
+    @Autowired
+    private ContentRepository contentRepository;
 
     protected WidgetInfo randomWidgetInfoValue(Integer seed) {
 
@@ -289,10 +306,88 @@ public abstract class ManageTest extends SpringWebTest {
      *
      * @param site
      */
-    protected void randomSiteData(Site site) {
+    protected void randomSiteData(Site site) throws IOException, FormatException {
         // 包括数据源的父子关系
+        while (categoryRepository.findBySite(site).size() < 5) {
+            for (ContentType contentType : ContentType.values()) {
+                //create it
+                if (random.nextBoolean()) {
+                    Category category = randomCategoryNoParent(site);
+                    category.setContentType(contentType);
+                    //parent it?
+                    if (random.nextBoolean()) {
+                        //找下有没有
+                        Category parent = categoryRepository.findBySiteAndContentType(site, contentType).stream()
+                                .filter((c) -> !c.equals(category))
+                                .findAny()
+                                .orElse(null);
+                        category.setParent(parent);
+                        categoryRepository.saveAndFlush(category);
+                    }
+                }
+            }
+        }
 
-        // TODO 尚未完成
+        // 内容
+        while (contentService.listBySite(site, null).spliterator().estimateSize() < 10) {
+            for (Category category : categoryRepository.findBySite(site)) {
+                if (random.nextBoolean()) {
+                    AbstractContent content = contentService.newContent(category.getContentType());
+                    content.setCategory(category);
+                    content.setDescription(UUID.randomUUID().toString());
+                    content.setTitle(UUID.randomUUID().toString());
+
+                    if (content instanceof ResourcesOwner) {
+                        ResourcesOwner owner = (ResourcesOwner) content;
+                        // 如果它同时还是
+                        for (int i = 0; i < owner.getResourcePaths().length; i++) {
+                            try {
+                                owner.updateResource(i, resourceService, randomStream());
+                            } catch (IllegalArgumentException ignored) {
+                            }
+                        }
+                    }
+                    if (content instanceof ImagesOwner) {
+                        ImagesOwner owner = (ImagesOwner) content;
+                        for (int i = 0; i < owner.getImagePaths().length; i++) {
+                            owner.updateImage(i, resourceService, randomImageStream());
+                        }
+                    }
+
+                    contentRepository.save(content);
+                }
+            }
+        }
+
+        // 页面
+        while (pageInfoRepository.findBySite(site).size() < 5) {
+            PageInfo pageInfo = randomNormalPageInfo(site);
+            // 确保它生成了资源 调用savePage
+            if (random.nextBoolean()) {
+                pageInfo.setPageType(random.nextBoolean() ? PageType.DataContent : PageType.DataIndex);
+                pageInfo.setCategory(categoryRepository.findBySite(site).stream()
+                        .findAny()
+                        .orElse(null));
+            }
+            pageInfoRepository.saveAndFlush(pageInfo);
+            pageService.savePage(null, pageInfo.getPageId());
+        }
+    }
+
+    /**
+     * @return 一个图片流
+     */
+    private InputStream randomImageStream() throws IOException {
+        return new ClassPathResource("thumbnail.png").getInputStream();
+    }
+
+    /**
+     * @return 任意输入流
+     */
+    private InputStream randomStream() {
+        byte[] data = new byte[10 + random.nextInt(100)];
+        random.nextBytes(data);
+        return new ByteArrayInputStream(data);
     }
 
     /**
@@ -441,12 +536,18 @@ public abstract class ManageTest extends SpringWebTest {
     }
 
     protected Category randomCategory(Site site) {
-        Category category = new Category();
+        Category category = randomCategoryNoParent(site);
         if (random.nextBoolean())
             category.setParent(randomCategory(site));
+        return categoryRepository.saveAndFlush(category);
+    }
+
+    protected Category randomCategoryNoParent(Site site) {
+        Category category = new Category();
         category.setSite(site);
         category.setName(UUID.randomUUID().toString());
         category.setContentType(ContentType.values()[random.nextInt(ContentType.values().length)]);
+        categoryService.init(category);
         return categoryRepository.saveAndFlush(category);
     }
 
@@ -494,12 +595,19 @@ public abstract class ManageTest extends SpringWebTest {
      * @return 页面信息
      * @throws JsonProcessingException jackson相关序列化异常
      */
-    public PageInfo randomPageInfo(Site site) throws IOException, FormatException {
-        PageInfo pageInfo = new PageInfo();
-        pageInfo.setSite(site);
+    protected PageInfo randomPageInfo(Site site) throws IOException, FormatException {
+        PageInfo pageInfo = randomNormalPageInfo(site);
         pageInfo.setCategory(randomCategory(site));
         pageInfo.setPageType(PageType.DataContent);
+        return pageInfoRepository.saveAndFlush(pageInfo);
+    }
+
+    protected PageInfo randomNormalPageInfo(Site site) throws IOException, FormatException {
+        PageInfo pageInfo = new PageInfo();
+        pageInfo.setPagePath(RandomStringUtils.randomAlphabetic(random.nextInt(5) + 3));
+        pageInfo.setSite(site);
         pageInfo.setLayout(randomPageLayout());
+        pageInfo.setPageType(PageType.Ordinary);
         return pageInfoRepository.saveAndFlush(pageInfo);
     }
 
@@ -684,6 +792,26 @@ public abstract class ManageTest extends SpringWebTest {
 
         if (widgetFactoryService.installedStatus(info).isEmpty()) {
             widgetFactoryService.installWidgetInfo(info);
+        }
+    }
+
+    /**
+     * 断言这个对象拥有的资源都还在!
+     *
+     * @param object 资源拥有者
+     * @param noNull 所有可拥有的资源都必须存在
+     */
+    protected void assertResourcesExisting(Object object, boolean noNull) {
+        if (object instanceof ResourcesOwner) {
+            for (String imagePath : ((ResourcesOwner) object).getResourcePaths()) {
+                if (noNull)
+                    assertThat(imagePath).isNotNull();
+
+                if (imagePath != null)
+                    assertThat(resourceService.getResource(imagePath))
+                            .isNotNull()
+                            .is(new Condition<>(Resource::exists, ""));
+            }
         }
     }
 }

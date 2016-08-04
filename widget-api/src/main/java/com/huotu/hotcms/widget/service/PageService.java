@@ -16,6 +16,7 @@ import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.page.PageModel;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -75,6 +76,7 @@ public interface PageService {
      * @param pageId 页面ID
      * @throws IOException 删除page失败
      */
+    @Transactional
     void deletePage(Long pageId) throws IOException;
 
     /**

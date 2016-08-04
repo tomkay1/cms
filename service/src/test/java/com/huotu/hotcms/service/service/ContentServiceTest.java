@@ -30,10 +30,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author CJ
  */
 @Transactional
-public class ContentsServiceTest extends TestBase {
+public class ContentServiceTest extends TestBase {
 
     @Autowired
-    private ContentsService contentsService;
+    private ContentService contentService;
     @Autowired
     private CategoryRepository categoryRepository;
     @Autowired
@@ -68,7 +68,12 @@ public class ContentsServiceTest extends TestBase {
         contentRepository.save(video);
 
         // 添加不同的模型 不同的category 再一起搜索 好吧 就这么干
-        assertThat(contentsService.list(null, site, null, null))
+        assertThat(contentService.list(null, site, null, null))
+                .contains(article)
+                .contains(video)
+                .hasSize(2);
+
+        assertThat(contentService.listBySite(site, null))
                 .contains(article)
                 .contains(video)
                 .hasSize(2);

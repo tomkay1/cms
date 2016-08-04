@@ -31,14 +31,22 @@ public interface CategoryService {
     List<Category> getCategories(Site site);
 
     /**
+     * 物理删除数据源,如果删除的是一个其他数据源的父级,那么将会删除所有旗下数据源
+     * 其他联机操作不在此列
+     *
+     * @param category 数据源
+     */
+    @Transactional
+    void delete(Category category);
+
+
+    /**
      * 拿到一个,拿不到就报错
      *
      * @param id pk
      * @return 实例
      */
     Category get(long id);
-
-    Boolean save(Category category);
 
     List<Category> getCategoryBySiteAndDeletedAndNameContainingOrderByOrderWeightDesc(Site site, Boolean deleted, String name);
 
@@ -102,4 +110,11 @@ public interface CategoryService {
     @Transactional
     Category getCategoryByNameAndParent(Site site, String name, Long parentCategoryId, ContentType type)
             throws BadCategoryInfoException;
+
+    /**
+     * 初始化一个数据源,每一个数据源只可能被初始化一次
+     *
+     * @param category
+     */
+    void init(Category category);
 }

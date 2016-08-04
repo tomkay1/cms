@@ -15,13 +15,17 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.widget.Component;
+import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetStyle;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.page.PageLayout;
 import com.huotu.hotcms.widget.page.PageModel;
+import me.jiangcai.lib.resource.Resource;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +48,8 @@ public class PageControllerTest extends ManageTest {
 
     private static final Log log = LogFactory.getLog(PageControllerTest.class);
 
+    @Autowired
+    private ResourceService resourceService;
 
 
     @Test
@@ -51,55 +57,63 @@ public class PageControllerTest extends ManageTest {
 
         loginAsOwner(randomOwner());
 
-        WidgetInfo widgetInfo = randomWidgetInfoValue(null);
+//        WidgetInfo widgetInfo = randomWidgetInfoValue(null);
+        WidgetInfo widgetInfo = randomWidgetInfoValue("com.huotu.hotcms.widget.productList", "productList", "1.0-SNAPSHOT");
         Component component = makeComponent(widgetInfo.getGroupId(), widgetInfo.getArtifactId(), widgetInfo.getVersion());
 
         ObjectMapper objectMapper = new ObjectMapper();
         Map<String, Object> toPost = new HashMap<>();
 
+
         mockMvc.perform(
-                post("/previewHtml")
+                post("/previewHtml/component")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.TEXT_HTML)
                         .content(objectMapper.writeValueAsBytes(toPost))
                         .session(session)
-        ).andExpect(status().is5xxServerError());
+        ).andExpect(status().isNotFound());
 
         toPost.put("widgetIdentity", UUID.randomUUID().toString());
         mockMvc.perform(
-                post("/previewHtml")
+                post("/previewHtml/component")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.TEXT_HTML)
                         .content(objectMapper.writeValueAsBytes(toPost))
                         .session(session)
-        ).andExpect(status().is5xxServerError());
+        ).andExpect(status().isNotFound());
 
         toPost.put("widgetIdentity", component.getWidgetIdentity());
         toPost.put("properties", component.getProperties());
         mockMvc.perform(
-                post("/previewHtml")
+                post("/previewHtml/component")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.TEXT_HTML)
                         .content(objectMapper.writeValueAsBytes(toPost))
                         .session(session)
         )
-                .andExpect(status().is5xxServerError())
+                .andExpect(status().isNotFound())
                 .andDo(print());
 
-
+        String css = component.getInstalledWidget().getWidget().widgetDependencyContent(Widget.CSS) == null ? null : "";
+        log.info("==============================widgetInfo " + widgetInfo.getGroupId());
         for (WidgetStyle style : component.getInstalledWidget().getWidget().styles()) {
             toPost.put("styleId", style.id());
-            mockMvc.perform(
-                    post("/previewHtml")
+            toPost.put("pageId", "1111");
+            toPost.put("componentId", "efg");
+            String header = mockMvc.perform(
+                    post("/previewHtml/component")
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.TEXT_HTML)
                             .content(objectMapper.writeValueAsBytes(toPost))
                             .session(session)
             )
                     .andExpect(status().isOk())
-                    .andExpect(header().string("cssLocation", "http://"))
                     .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-                    .andDo(print());
+                    .andDo(print()).andReturn().getResponse().getHeader("cssLocation");
+            if (css != null) {
+                Resource resource = resourceService.getResource(header);
+                assertThat(resource).isNotNull();
+            }
         }
 
     }

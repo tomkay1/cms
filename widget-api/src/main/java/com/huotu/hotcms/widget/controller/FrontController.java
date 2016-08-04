@@ -30,6 +30,7 @@ import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.PageElement;
 import com.huotu.hotcms.widget.page.PageLayout;
 import com.huotu.hotcms.widget.service.PageService;
+import me.jiangcai.lib.resource.Resource;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -48,6 +49,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -115,21 +117,24 @@ public class FrontController implements FilterBehavioral {
      * <p>
      * 成功：状态200，并返回控件 previewHtml Code
      * 失败：状态404 无htmlCode
-     *
-     *  widgetIdentifier {@link com.huotu.hotcms.service.entity.support.WidgetIdentifier}
-     *  styleId          样式id
-     *  properties       控件参数
+     * <p>
+     * widgetIdentifier {@link com.huotu.hotcms.service.entity.support.WidgetIdentifier}
+     * styleId          样式id
+     * properties       控件参数
      */
     @RequestMapping(value = "/previewHtml/component", method = RequestMethod.POST)
     public ResponseEntity previewHtml(@RequestBody String json) throws IOException {
+        return getPreviewComponentResponseEntity(json);
+    }
+
+    private ResponseEntity getPreviewComponentResponseEntity(String json) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        Map<String, Object> map = objectMapper.readValue(json, Map.class);
+        Map map = objectMapper.readValue(json, Map.class);
         String widgetIdentifier = (String) map.get("widgetIdentity");
         String styleId = (String) map.get("styleId");
-        String pageId = (String) map.get("componentId");
+        String pageId = (String) map.get("pageId");
         String componentId = (String) map.get("componentId");
-        Map properties = objectMapper.readValue(map.get("properties").toString()
-                , Map.class);
+        Map properties = (Map) map.get("properties");
         ComponentProperties componentProperties = new ComponentProperties();
         componentProperties.putAll(properties);
         try {
@@ -138,8 +143,8 @@ public class FrontController implements FilterBehavioral {
             String previewHTML = widgetResolveService.previewHTML(installedWidget.getWidget(), styleId
                     , CMSContext.RequestContext(), componentProperties);
             Path path = Files.createTempFile("tempCss", ".css");
+            Resource resource = null;
             if (installedWidget.getWidget().widgetDependencyContent(Widget.CSS) != null) {
-                //todo
                 for (WidgetStyle style : installedWidget.getWidget().styles()) {
                     if (styleId == null || style.id().equals(styleId)) {
                         OutputStream out = Files.newOutputStream(path);
@@ -151,14 +156,20 @@ public class FrontController implements FilterBehavioral {
                         component.setStyleId(style.id());
                         widgetResolveService.widgetDependencyContent(CMSContext.RequestContext()
                                 , installedWidget.getWidget(), Widget.CSS, component, out);
+                        out.flush();
+                        InputStream is = Files.newInputStream(path);
+                        resource = resourceService.uploadResource("page/" + installedWidget.getWidget().widgetId()
+                                + "/" + pageId + "/" + componentId + ".css", is);
                         break;
                     }
                 }
             }
-            return ResponseEntity.ok().contentType(Widget.HTML).header("cssLocation", path.toUri().toString())
+            Files.delete(path);
+            return ResponseEntity.ok().contentType(Widget.HTML).header("cssLocation"
+                    , resource != null ? resource.httpUrl().toURI().toString() : "")
                     .body(previewHTML.getBytes());
         } catch (Exception e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.notFound().header("cssLocation", "").build();
         }
     }
 

@@ -10,14 +10,18 @@
 package com.huotu.hotcms.service.entity;
 
 import com.huotu.hotcms.service.ImagesOwner;
-import com.huotu.hotcms.service.util.ImageHelper;
 import lombok.Getter;
 import lombok.Setter;
 import me.jiangcai.lib.resource.service.ResourceService;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.UUID;
 
 /**
  * 模板信息,模板也就是一个站点
@@ -44,7 +48,7 @@ public class Template extends Site implements ImagesOwner {
     /**
      * 使用数
      */
-    @Column(name="useNumber")
+    @Column(name = "useNumber")
     private int useNumber;
 
     /**
@@ -53,18 +57,26 @@ public class Template extends Site implements ImagesOwner {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private TemplateType templateType;
 
+    @Override
+    public int[] imageResourceIndexes() {
+        return new int[]{0};
+    }
 
     @Override
-    public String[] getImagePaths() {
+    public String[] getResourcePaths() {
         return new String[]{getLogoUri()};
     }
 
     @Override
-    public void updateImage(int index, ResourceService resourceService, InputStream stream) throws IOException
-            , IllegalArgumentException {
+    public void updateResource(int index, String path, ResourceService resourceService) throws IOException {
         if (getLogoUri() != null) {
             resourceService.deleteResource(getLogoUri());
         }
-        setLogoUri(ImageHelper.storeAsImage("png", resourceService, stream));
+        setLogoUri(path);
+    }
+
+    @Override
+    public String generateResourcePath(int index, ResourceService resourceService, InputStream stream) {
+        return UUID.randomUUID().toString();
     }
 }

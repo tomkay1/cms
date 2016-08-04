@@ -9,8 +9,8 @@
 
 package com.huotu.hotcms.service.entity;
 
+import com.huotu.hotcms.service.ImagesOwner;
 import com.huotu.hotcms.service.model.LinkModel;
-import com.huotu.hotcms.service.util.ImageHelper;
 import com.huotu.hotcms.service.util.SerialUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,6 +22,7 @@ import javax.persistence.Table;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * 链接模型
@@ -31,7 +32,7 @@ import java.time.LocalDateTime;
 @Table(name = "cms_link")
 @Getter
 @Setter
-public class Link extends AbstractContent {
+public class Link extends AbstractContent implements ImagesOwner {
 
 //    /**
 //     * 标题
@@ -85,24 +86,27 @@ public class Link extends AbstractContent {
         return link;
     }
 
+
     @Override
-    public String[] getImagePaths() {
-        return new String[]{thumbUri};
+    public int[] imageResourceIndexes() {
+        return new int[]{0};
     }
 
     @Override
-    public void updateImage(int index, ResourceService resourceService, InputStream stream) throws IOException, IllegalArgumentException {
-        if (thumbUri != null) {
-            resourceService.deleteResource(thumbUri);
+    public String[] getResourcePaths() {
+        return new String[]{getThumbUri()};
+    }
+
+    @Override
+    public void updateResource(int index, String path, ResourceService resourceService) throws IOException {
+        if (getThumbUri() != null) {
+            resourceService.deleteResource(getThumbUri());
         }
-        thumbUri = ImageHelper.storeAsImage("png", resourceService, stream);
+        setThumbUri(path);
     }
 
-//    /**
-//     * 所属栏目
-//     */
-//    @Basic
-//    @ManyToOne
-//    @JoinColumn(name = "categoryId")
-//    private Category category;
+    @Override
+    public String generateResourcePath(int index, ResourceService resourceService, InputStream stream) {
+        return UUID.randomUUID().toString();
+    }
 }

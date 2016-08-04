@@ -10,9 +10,9 @@
 package com.huotu.cms.manage.controller.support;
 
 import com.huotu.cms.manage.exception.RedirectException;
+import com.huotu.hotcms.service.ImagesOwner;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.AbstractContent;
-import com.huotu.hotcms.service.entity.Download;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.exception.BadCategoryInfoException;
@@ -71,8 +71,9 @@ public abstract class ContentManageController<T extends AbstractContent, ED exte
         try {
             data.setCategory(categoryService.getCategoryByNameAndParent(site, extra.getCategoryName()
                     , extra.getParentCategoryId(), contentType()));
-            if (!(data instanceof Download)) {//下载模型不能简单使用图片的处理操作
-                uploadTempImageToOwner(data, extra.getTempPath());
+            // 谁可以 谁上
+            if (data instanceof ImagesOwner) {
+                uploadTempImageToOwner((ImagesOwner) data, extra.getTempPath());
             }
         } catch (BadCategoryInfoException e) {
             throw new RedirectException(rootUri(), "该数据源已存在，并且不符合你要求。", e);

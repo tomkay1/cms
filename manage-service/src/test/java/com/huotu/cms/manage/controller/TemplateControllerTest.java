@@ -18,6 +18,7 @@ import com.huotu.cms.manage.page.PageInfoPage;
 import com.huotu.cms.manage.page.SitePage;
 import com.huotu.cms.manage.page.TemplatePage;
 import com.huotu.cms.manage.page.support.AbstractCRUDPage;
+import com.huotu.hotcms.service.ResourcesOwner;
 import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
@@ -361,11 +362,13 @@ public class TemplateControllerTest extends SiteManageTest {
                     append += TemplateService.DuplicateAppend;
                     siteContent = contentRepository.findByCategory_SiteAndSerial(yourSite, content.getSerial() + append);
                 }
-                // 资源可用 TODO 目前只处理图片 其实还可能存在其他需要复制的资源。。
-                for (String imagePath : siteContent.getImagePaths()) {
-                    assertThat(resourceService.getResource(imagePath))
-                            .isNotNull()
-                            .is(new Condition<>(Resource::exists, ""));
+                // 资源可用
+                if (siteContent instanceof ResourcesOwner) {
+                    for (String imagePath : ((ResourcesOwner) siteContent).getResourcePaths()) {
+                        assertThat(resourceService.getResource(imagePath))
+                                .isNotNull()
+                                .is(new Condition<>(Resource::exists, ""));
+                    }
                 }
                 // 数据唯一
                 assertThat(siteContent.getCategory())

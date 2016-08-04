@@ -15,16 +15,22 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.widget.Component;
+import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetStyle;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.page.PageLayout;
 import com.huotu.hotcms.widget.page.PageModel;
+import me.jiangcai.lib.resource.Resource;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StreamUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,23 +50,25 @@ public class PageControllerTest extends ManageTest {
 
     private static final Log log = LogFactory.getLog(PageControllerTest.class);
 
-    @Test
-    public void previewCss() {
-        // TODO 定义存在疑问,暂缺
-    }
+    @Autowired
+    private ResourceService resourceService;
+
 
     @Test
     public void previewComponent() throws Exception {
+
         loginAsOwner(randomOwner());
 
-        WidgetInfo widgetInfo = randomWidgetInfoValue(null);
+//        WidgetInfo widgetInfo = randomWidgetInfoValue(null);
+        WidgetInfo widgetInfo = randomWidgetInfoValue("com.huotu.hotcms.widget.productList", "productList", "1.0-SNAPSHOT");
         Component component = makeComponent(widgetInfo.getGroupId(), widgetInfo.getArtifactId(), widgetInfo.getVersion());
 
         ObjectMapper objectMapper = new ObjectMapper();
         Map<String, Object> toPost = new HashMap<>();
 
+
         mockMvc.perform(
-                post("/previewHtml")
+                post("/preview/component")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.TEXT_HTML)
                         .content(objectMapper.writeValueAsBytes(toPost))
@@ -69,7 +77,7 @@ public class PageControllerTest extends ManageTest {
 
         toPost.put("widgetIdentity", UUID.randomUUID().toString());
         mockMvc.perform(
-                post("/previewHtml")
+                post("/preview/component")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.TEXT_HTML)
                         .content(objectMapper.writeValueAsBytes(toPost))
@@ -79,29 +87,57 @@ public class PageControllerTest extends ManageTest {
         toPost.put("widgetIdentity", component.getWidgetIdentity());
         toPost.put("properties", component.getProperties());
         mockMvc.perform(
-                post("/previewHtml")
+                post("/preview/component")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.TEXT_HTML)
                         .content(objectMapper.writeValueAsBytes(toPost))
                         .session(session)
         )
-                .andExpect(status().isNotFound())
-                .andDo(print());
+                .andExpect(status().isOk());
 
+        toPost.put("pageId", Math.abs(random.nextLong()));
+
+        mockMvc.perform(
+                post("/preview/component")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.TEXT_HTML)
+                        .content(objectMapper.writeValueAsBytes(toPost))
+                        .session(session)
+        )
+                .andExpect(status().isOk());
+
+
+        org.springframework.core.io.Resource widgetCss = component.getInstalledWidget().getWidget()
+                .widgetDependencyContent(Widget.CSS);
+        boolean cssExisting = widgetCss != null && widgetCss.exists();
+        log.info("==============================widgetInfo " + widgetInfo.getGroupId());
         for (WidgetStyle style : component.getInstalledWidget().getWidget().styles()) {
             toPost.put("styleId", style.id());
-            mockMvc.perform(
-                    post("/previewHtml")
+            toPost.put("componentId", "efg");
+            MockHttpServletResponse response = mockMvc.perform(
+                    post("/preview/component")
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.TEXT_HTML)
-                            .param("widgetIdentifier", component.getWidgetIdentity())
-                            .param("styleId", style.id())
-                            .param("properties", objectMapper.writeValueAsString(component.getProperties()))
+                            .content(objectMapper.writeValueAsBytes(toPost))
                             .session(session)
             )
                     .andExpect(status().isOk())
                     .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-                    .andDo(print());
+                    .andDo(print()).andReturn().getResponse();
+            String header = response.getHeader("cssPath");
+            String location = response.getHeader("cssLocation");
+
+            if (cssExisting) {
+                assertThat(location).isNotEmpty();
+                Resource resource = resourceService.getResource(header);
+                assertThat(resource).isNotNull();
+                assertThat(resource.exists()).isTrue();
+
+                StreamUtils.copy(resource.getInputStream(), System.out);
+
+            } else {
+                assertThat(location).isEmpty();
+            }
         }
 
     }

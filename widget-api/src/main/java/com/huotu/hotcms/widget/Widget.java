@@ -168,7 +168,7 @@ public interface Widget {
     /**
      * 检查以下的属性是否符合控件要求
      *
-     * @param styleId
+     * @param styleId 语义等同{@link Component#styleId}
      * @param properties
      * @throws IllegalArgumentException 表示验证失败
      */

@@ -12,7 +12,6 @@ package com.huotu.hotcms.widget.service.impl;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.common.PageType;
 import com.huotu.hotcms.service.common.SiteType;
-import com.huotu.hotcms.service.config.ServiceConfig;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Site;
@@ -39,14 +38,8 @@ import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
 import com.huotu.hotcms.widget.service.PageService;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import com.huotu.hotcms.widget.test.TestBase;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
@@ -59,14 +52,8 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
-@Ignore
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = TestConfig.class)
-@Import(ServiceConfig.class)
-@WebAppConfiguration
 @Transactional
-public class TestWidgetFactoryService extends TestBase {
+public class WidgetFactoryServiceTest extends TestBase {
 
     @Autowired(required = false)
     HttpServletResponse response;

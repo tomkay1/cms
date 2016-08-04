@@ -175,6 +175,26 @@ public abstract class ManageTest extends SpringWebTest {
         return info;
     }
 
+    protected WidgetInfo randomWidgetInfoValue(String groupId, String artifactId, String version) {
+
+        String[] widgetInfo;
+
+        WidgetInfo info = new WidgetInfo();
+        // com.huotu.hotcms.widget.pagingWidget  pagingWidget 1.0-SNAPSHOT
+        info.setGroupId(groupId);
+        info.setArtifactId(artifactId);
+        info.setVersion(version);
+//        info.setVersion("1.0-SNAPSHOT");
+        info.setType(randomDomain());
+
+        if (random.nextBoolean()) {
+            Owner owner = randomOwner();
+            info.setOwner(owner);
+        }
+
+        return info;
+    }
+
     // 需要应用跟web项目一样的filter
     @Override
     public void createMockMVC() {

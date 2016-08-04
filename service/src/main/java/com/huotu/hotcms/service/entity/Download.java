@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.service.entity;
 
+import com.huotu.hotcms.service.ResourcesOwner;
 import com.huotu.hotcms.service.util.SerialUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +21,7 @@ import javax.persistence.Table;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * 下载模型
@@ -29,7 +31,7 @@ import java.time.LocalDateTime;
 @Table(name = "cms_download")
 @Getter
 @Setter
-public class Download extends AbstractContent {
+public class Download extends AbstractContent implements ResourcesOwner {
 
     /**
      * 文件名称
@@ -37,17 +39,11 @@ public class Download extends AbstractContent {
     @Column(name = "fileName")
     private String fileName;
 
-//    /**
-//     * 描述信息
-//     */
-//    @Column(name = "description")
-//    private String description;
-
     /**
      * 下载地址
      */
     @Column(name = "downloadUrl")
-    private String downloadUrl;
+    private String downloadPath;
 
     /**
      * 下载次数
@@ -57,8 +53,8 @@ public class Download extends AbstractContent {
 
     @Override
     public Download copy() {
-        Download download=new Download();
-        download.setDownloadUrl(downloadUrl);
+        Download download = new Download();
+        download.setDownloadPath(downloadPath);
         download.setTitle(getTitle());
         download.setDeleted(isDeleted());
         download.setOrderWeight(getOrderWeight());
@@ -70,29 +66,27 @@ public class Download extends AbstractContent {
 
     @Override
     public Download copy(Site site, Category category) {
-        Download download=copy();
+        Download download = copy();
         download.setSerial(SerialUtil.formatSerial(site));
         download.setCategory(category);
         return download;
     }
 
     @Override
-    public String[] getImagePaths() {
-        return new String[]{null};
+    public String[] getResourcePaths() {
+        return new String[]{getDownloadPath()};
     }
 
     @Override
-    public void updateImage(int index, ResourceService resourceService, InputStream stream) throws IOException
-            , IllegalArgumentException {
-
+    public void updateResource(int index, String path, ResourceService resourceService) throws IOException {
+        if (getDownloadPath() != null)
+            resourceService.deleteResource(getDownloadPath());
+        setDownloadPath(path);
     }
 
-    //    /**
-//    * 所属栏目
-//    */
-//    @Basic
-//    @ManyToOne
-//    @JoinColumn(name = "categoryId")
-//    private Category category;
+    @Override
+    public String generateResourcePath(int index, ResourceService resourceService, InputStream stream) {
+        return UUID.randomUUID().toString();
+    }
 
 }

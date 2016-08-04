@@ -173,8 +173,8 @@ public class TemplateServiceImpl implements TemplateService {
         }
         List<Download> downloads = downloadRepository.findByCategory(category);
         for (Download download : downloads) {
-            if (!StringUtils.isEmpty(download.getDownloadUrl()))
-                deleteStaticResourceByPath(download.getDownloadUrl());
+            if (!StringUtils.isEmpty(download.getDownloadPath()))
+                deleteStaticResourceByPath(download.getDownloadPath());
         }
         List<Gallery> galleries = galleryRepository.findByCategory(category);
         List<GalleryItem> galleryItems;
@@ -290,8 +290,8 @@ public class TemplateServiceImpl implements TemplateService {
         Download d;
         for (Download download : downloads) {
             d = download.copy(customerSite, copyCategory);
-            if (!StringUtils.isEmpty(download.getDownloadUrl())) {
-                d.setDownloadUrl(copyStaticResource(download.getDownloadUrl()));
+            if (!StringUtils.isEmpty(download.getDownloadPath())) {
+                d.setDownloadPath(copyStaticResource(download.getDownloadPath()));
                 contentRepository.save(d);
             }
             //图库模型复制

@@ -62,7 +62,6 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
     @Autowired
     private ResourceService resourceService;
 
-
     private void checkEngine() {
         if (widgetTemplateEngine == null) {
             widgetTemplateEngine = webApplicationContext.getBean("widgetTemplateEngine", SpringTemplateEngine.class);
@@ -165,7 +164,7 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
                 throw new IllegalArgumentException("both widget element is null.");
             widgetContext = new WidgetContext(widgetTemplateEngine, context
                     , widget, null, webApplicationContext.getServletContext()
-                    , null, null);
+                    , null, widget.defaultProperties(resourceService));
         } else if (element instanceof Empty) {
             return;
         } else if (element instanceof Layout) {
@@ -203,18 +202,7 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
     }
 
     private WidgetStyle getWidgetStyle(Widget widget, String styleId) {
-        WidgetStyle style = null;
-        for (WidgetStyle style1 : widget.styles()) {
-            if (style1.id().equals(styleId)) {
-                style = style1;
-                break;
-            }
-        }
-        if (style == null) {
-            style = widget.styles()[0];
-        }
-        checkEngine();
-        return style;
+        return WidgetStyle.styleByID(widget, styleId);
     }
 
 }

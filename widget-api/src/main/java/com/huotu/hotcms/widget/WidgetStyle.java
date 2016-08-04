@@ -30,6 +30,27 @@ public interface WidgetStyle {
     }
 
     /**
+     * 从一个控件中获取一个样式,无论如何都会返回一个
+     *
+     * @param widget  控件
+     * @param styleId 样式的id
+     * @return not null 默认是控件的第一个样式
+     */
+    static WidgetStyle styleByID(Widget widget, String styleId) {
+
+        if (styleId == null) {
+            return widget.styles()[0];
+        }
+
+
+        for (WidgetStyle style : widget.styles()) {
+            if (styleId.equalsIgnoreCase(style.id()))
+                return style;
+        }
+        return widget.styles()[0];
+    }
+
+    /**
      * @return 这个样式的id, 将反应在 {@link Component#styleId}
      */
     String id();

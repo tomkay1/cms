@@ -12,6 +12,6 @@ package com.huotu.hotcms.service.repository;
 import com.huotu.hotcms.service.entity.Download;
 import com.huotu.hotcms.service.repositoryi.AbstractContentRepository;
 
-public interface DownloadRepository extends AbstractContentRepository<Download, Long> {
+public interface DownloadRepository extends AbstractContentRepository<Download> {
 
 }

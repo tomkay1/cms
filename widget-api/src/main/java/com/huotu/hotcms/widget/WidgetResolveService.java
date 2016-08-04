@@ -85,7 +85,7 @@ public interface WidgetResolveService {
      * @param context cms上下文
      * @param widget  控件,element或者widget总要选一个
      * @param type    目标类型 css or js
-     * @param element 组件 （可选)
+     * @param element 组件 （可选),在这个情况下 应该采纳控件默认的属性
      * @param out     输出流
      * @throws IOException
      */

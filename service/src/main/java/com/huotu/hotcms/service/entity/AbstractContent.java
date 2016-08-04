@@ -11,7 +11,6 @@ package com.huotu.hotcms.service.entity;
 
 import com.huotu.hotcms.service.Auditable;
 import com.huotu.hotcms.service.Copyable;
-import com.huotu.hotcms.service.ImagesOwner;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.BaseForeachParam;
 import lombok.Getter;
 import lombok.Setter;
@@ -44,13 +43,14 @@ import java.util.stream.Collectors;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Getter
 @Setter
-public abstract class AbstractContent implements Auditable,Copyable<AbstractContent>,ImagesOwner {
+public abstract class AbstractContent implements Auditable, Copyable<AbstractContent> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /**
      * 序列号
+     * 序列号是表示这个资源在某领域（比如站点）唯一的识别码;即 它在global中是非唯一的,但在指定领域中唯一
      */
     @Column(length = 100)
     private String serial;

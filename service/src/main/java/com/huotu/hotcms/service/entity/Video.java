@@ -9,7 +9,7 @@
 
 package com.huotu.hotcms.service.entity;
 
-import com.huotu.hotcms.service.util.ImageHelper;
+import com.huotu.hotcms.service.ImagesOwner;
 import com.huotu.hotcms.service.util.SerialUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +21,7 @@ import javax.persistence.Table;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * 视频模型
@@ -30,7 +31,7 @@ import java.time.LocalDateTime;
 @Table(name = "cms_video")
 @Getter
 @Setter
-public class Video extends AbstractContent {
+public class Video extends AbstractContent implements ImagesOwner {
 
 
     /**
@@ -40,7 +41,7 @@ public class Video extends AbstractContent {
     private String thumbUri;
 
     /**
-     * 内部储存地址
+     * 内部储存地址,path;如果为null就表示没有保存在我方资源系统,只有{@link #outLinkUrl}可用
      */
     @Column(name = "videoUrl")
     private String videoUrl;
@@ -59,7 +60,7 @@ public class Video extends AbstractContent {
 
     @Override
     public Video copy() {
-        Video video=new Video();
+        Video video = new Video();
         video.setThumbUri(thumbUri);
         video.setVideoUrl(videoUrl);
         video.setTitle(getTitle());
@@ -76,30 +77,42 @@ public class Video extends AbstractContent {
 
     @Override
     public Video copy(Site site, Category category) {
-        Video video=copy();
+        Video video = copy();
         video.setSerial(SerialUtil.formatSerial(site));
         video.setCategory(category);
         return video;
     }
 
     @Override
-    public String[] getImagePaths() {
-        return new String[]{thumbUri};
+    public int[] imageResourceIndexes() {
+        return new int[]{0};
     }
 
     @Override
-    public void updateImage(int index, ResourceService resourceService, InputStream stream) throws IOException
-            , IllegalArgumentException {
-        if (thumbUri != null) {
-            resourceService.deleteResource(thumbUri);
-        }
-        thumbUri = ImageHelper.storeAsImage("png", resourceService, stream);
+    public String[] getResourcePaths() {
+        return new String[]{
+                getThumbUri(), getVideoUrl()
+        };
     }
 
-//    /**
-//     * 所属栏目
-//     */
-//    @ManyToOne
-//    @JoinColumn(name = "categoryId")
-//    private Category category;
+    @Override
+    public void updateResource(int index, String path, ResourceService resourceService) throws IOException {
+        switch (index) {
+            case 0:
+                if (getThumbUri() != null)
+                    resourceService.deleteResource(getThumbUri());
+                setThumbUri(path);
+                break;
+            case 1:
+                if (getVideoUrl() != null)
+                    resourceService.deleteResource(getVideoUrl());
+                setVideoUrl(path);
+        }
+    }
+
+    @Override
+    public String generateResourcePath(int index, ResourceService resourceService, InputStream stream) {
+        return UUID.randomUUID().toString();
+    }
+
 }

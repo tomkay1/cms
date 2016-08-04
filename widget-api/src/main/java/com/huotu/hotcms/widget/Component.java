@@ -20,7 +20,6 @@ import lombok.ToString;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import java.util.Map;
 import java.util.Objects;
 
 
@@ -56,6 +55,9 @@ public class Component implements PageElement {
     private InstalledWidget installedWidget;
 
 
+    /**
+     * 可以为null 表示使用默认样式
+     */
     private String styleId;
 
     private ComponentProperties properties;
@@ -64,18 +66,7 @@ public class Component implements PageElement {
     private String previewHTML;
 
     public WidgetStyle currentStyle() {
-        if (styleId == null) {
-            log.debug("with null styleId, use default style instead.");
-            return installedWidget.getWidget().styles()[0];
-        }
-
-
-        for (WidgetStyle style : installedWidget.getWidget().styles()) {
-            if (styleId.equalsIgnoreCase(style.id()))
-                return style;
-        }
-        log.debug("with " + styleId + " styleId, use default style instead because it's invalid.");
-        return installedWidget.getWidget().styles()[0];
+        return WidgetStyle.styleByID(installedWidget.getWidget(), styleId);
     }
 
     @Override

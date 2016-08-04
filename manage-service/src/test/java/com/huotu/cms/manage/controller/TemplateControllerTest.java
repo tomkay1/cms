@@ -18,6 +18,7 @@ import com.huotu.cms.manage.page.PageInfoPage;
 import com.huotu.cms.manage.page.SitePage;
 import com.huotu.cms.manage.page.TemplatePage;
 import com.huotu.cms.manage.page.support.AbstractCRUDPage;
+import com.huotu.hotcms.service.ResourcesOwner;
 import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
@@ -30,6 +31,7 @@ import com.huotu.hotcms.service.util.ImageHelper;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.repository.PageInfoRepository;
 import me.jiangcai.lib.resource.service.ResourceService;
+import org.assertj.core.api.Condition;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -208,6 +210,7 @@ public class TemplateControllerTest extends SiteManageTest {
 
         action.templateWork(oneSitePage, template, templateRow, site);
     }
+
     interface DoForTemplate {
 
         void templateWork(SitePage currentPage, Template template, WebElement templateRow, Site yourSite) throws Exception;
@@ -336,8 +339,15 @@ public class TemplateControllerTest extends SiteManageTest {
                     append += TemplateService.DuplicateAppend;
                     sitePage = pageInfoRepository.findBySiteAndPagePath(yourSite, templatePage.getPagePath() + append);
                 }
-                // 资源可用 页面好像比较复杂 得参考SiteService了
-                // 关联数据
+                // TODO 资源可用
+                // 数据唯一
+                assertThat(sitePage)
+                        .isNotIn(sitePages)
+                        .isNotIn(templatePages);
+                // 数据一致
+                assertThat(sitePage.getTitle())
+                        .isEqualTo(templatePage.getTitle());
+                // 数据关联
                 if (templatePage.getCategory() != null) {
                     assertThat(sitePage.getCategory())
                             .isNotNull();
@@ -346,9 +356,66 @@ public class TemplateControllerTest extends SiteManageTest {
                 }
             }
             for (AbstractContent content : templateContents) {
-//                AbstractContent siteContent = contentRepository.findBy
+                AbstractContent siteContent = contentRepository.findByCategory_SiteAndSerial(yourSite, content.getSerial());
+                String append = "";
+                while (siteContents.contains(siteContent)) {
+                    append += TemplateService.DuplicateAppend;
+                    siteContent = contentRepository.findByCategory_SiteAndSerial(yourSite, content.getSerial() + append);
+                }
+                // 资源可用
+                if (siteContent instanceof ResourcesOwner) {
+                    for (String imagePath : ((ResourcesOwner) siteContent).getResourcePaths()) {
+                        assertThat(resourceService.getResource(imagePath))
+                                .isNotNull()
+                                .is(new Condition<>(Resource::exists, ""));
+                    }
+                }
+                // 数据唯一
+                assertThat(siteContent.getCategory())
+                        .isNotNull()
+                        .isNotIn(siteCategories)
+                        .isNotIn(templateCategories);
+                // 数据一致
+                assertThat(siteContent.getCategory().getSite())
+                        .isEqualTo(yourSite);
+                assertThat(siteContent.getTitle())
+                        .isEqualTo(content.getTitle());
+                assertThat(siteContent.getDescription())
+                        .isEqualTo(content.getDescription());
+                // 数据关联
             }
-            // TODO 正文 数据源
+            for (Category templateCategory : templateCategories) {
+                Category siteCategory = categoryRepository.findBySerialAndSite(templateCategory.getSerial(), yourSite);
+                String append = "";
+                while (siteCategories.contains(siteCategory)) {
+                    append += TemplateService.DuplicateAppend;
+                    siteCategory = categoryRepository.findBySerialAndSite(templateCategory.getSerial() + append, yourSite);
+                }
+                // 资源可用 无
+                // 数据唯一
+                assertThat(siteCategory)
+                        .isNotIn(siteCategories)
+                        .isNotIn(templateCategories);
+                // 数据一致
+                assertThat(siteCategory.getName())
+                        .contains(templateCategory.getName());
+                assertThat(siteCategory.getContentType())
+                        .isEqualByComparingTo(templateCategory.getContentType());
+                // 数据关联
+                if (templateCategory.getParent() == null) {
+                    assertThat(siteCategory.getParent())
+                            .isNull();
+                } else {
+                    assertThat(siteCategory.getParent())
+                            .isNotNull()
+                            .isNotIn(siteCategories)
+                            .isNotIn(templateCategories);
+                    assertThat(siteCategory.getParent().getName())
+                            .contains(templateCategory.getParent().getName());
+                    assertThat(siteCategory.getParent().getContentType())
+                            .isEqualByComparingTo(templateCategory.getParent().getContentType());
+                }
+            }
 
         }
     }

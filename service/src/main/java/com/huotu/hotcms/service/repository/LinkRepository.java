@@ -12,5 +12,5 @@ package com.huotu.hotcms.service.repository;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.repositoryi.AbstractContentRepository;
 
-public interface LinkRepository extends AbstractContentRepository<Link, Long> {
+public interface LinkRepository extends AbstractContentRepository<Link> {
 }

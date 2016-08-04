@@ -203,18 +203,7 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
     }
 
     private WidgetStyle getWidgetStyle(Widget widget, String styleId) {
-        WidgetStyle style = null;
-        for (WidgetStyle style1 : widget.styles()) {
-            if (style1.id().equals(styleId)) {
-                style = style1;
-                break;
-            }
-        }
-        if (style == null) {
-            style = widget.styles()[0];
-        }
-        checkEngine();
-        return style;
+        return WidgetStyle.styleByID(widget, styleId);
     }
 
 }

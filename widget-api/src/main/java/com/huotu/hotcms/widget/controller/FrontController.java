@@ -54,6 +54,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * 用户获取page页面html Code 页面服务相关
@@ -122,7 +123,7 @@ public class FrontController implements FilterBehavioral {
      * styleId          样式id
      * properties       控件参数
      */
-    @RequestMapping(value = "/previewHtml/component", method = RequestMethod.POST)
+    @RequestMapping(value = "/preview/component", method = RequestMethod.POST)
     public ResponseEntity previewHtml(@RequestBody String json) throws IOException {
         return getPreviewComponentResponseEntity(json);
     }
@@ -132,41 +133,62 @@ public class FrontController implements FilterBehavioral {
         Map map = objectMapper.readValue(json, Map.class);
         String widgetIdentifier = (String) map.get("widgetIdentity");
         String styleId = (String) map.get("styleId");
-        String pageId = (String) map.get("pageId");
+//        String pageId = (String) map.get("pageId");
         String componentId = (String) map.get("componentId");
         Map properties = (Map) map.get("properties");
         ComponentProperties componentProperties = new ComponentProperties();
-        componentProperties.putAll(properties);
+        if (properties != null)
+            componentProperties.putAll(properties);
         try {
             InstalledWidget installedWidget = widgetLocateService.findWidget(widgetIdentifier);
+
+            {
+                //补丁
+                styleId = WidgetStyle.styleByID(installedWidget.getWidget(), styleId).id();
+            }
+
             installedWidget.getWidget().valid(styleId, componentProperties);
             String previewHTML = widgetResolveService.previewHTML(installedWidget.getWidget(), styleId
                     , CMSContext.RequestContext(), componentProperties);
-            Path path = Files.createTempFile("tempCss", ".css");
+
+            // 生成好的css
             Resource resource = null;
-            if (installedWidget.getWidget().widgetDependencyContent(Widget.CSS) != null) {
-                for (WidgetStyle style : installedWidget.getWidget().styles()) {
-                    if (styleId == null || style.id().equals(styleId)) {
-                        OutputStream out = Files.newOutputStream(path);
+            String resourcePath = null;
+            // 决定是否生成css
+            org.springframework.core.io.Resource cssResource = installedWidget.getWidget()
+                    .widgetDependencyContent(Widget.CSS);
+
+            if (cssResource != null && cssResource.exists()) {
+                Path path = Files.createTempFile("tempCss", ".css");
+                try {
+
+                    try (OutputStream out = Files.newOutputStream(path)) {
                         Component component = new Component();
                         component.setId(componentId);
                         component.setInstalledWidget(installedWidget);
                         component.setProperties(componentProperties);
                         component.setWidgetIdentity(widgetIdentifier);
-                        component.setStyleId(style.id());
+                        component.setStyleId(styleId);
+
                         widgetResolveService.widgetDependencyContent(CMSContext.RequestContext()
                                 , installedWidget.getWidget(), Widget.CSS, component, out);
                         out.flush();
-                        InputStream is = Files.newInputStream(path);
-                        resource = resourceService.uploadResource("page/" + installedWidget.getWidget().widgetId()
-                                + "/" + pageId + "/" + componentId + ".css", is);
-                        break;
                     }
+
+                    try (InputStream is = Files.newInputStream(path)) {
+                        resourcePath = "tmp/page/" + UUID.randomUUID().toString() + ".css";
+                        resource = resourceService.uploadResource(resourcePath, is);
+                    }
+
+                } finally {
+                    //noinspection ThrowFromFinallyBlock
+                    Files.deleteIfExists(path);
                 }
             }
-            Files.delete(path);
-            return ResponseEntity.ok().contentType(Widget.HTML).header("cssLocation"
-                    , resource != null ? resource.httpUrl().toURI().toString() : "")
+
+            return ResponseEntity.ok().contentType(Widget.HTML)
+                    .header("cssLocation", resource != null ? resource.httpUrl().toString() : "")
+                    .header("cssPath", resource != null ? resourcePath : "")
                     .body(previewHTML.getBytes());
         } catch (Exception e) {
             return ResponseEntity.notFound().header("cssLocation", "").build();

@@ -27,8 +27,10 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StreamUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -66,7 +68,7 @@ public class PageControllerTest extends ManageTest {
 
 
         mockMvc.perform(
-                post("/previewHtml/component")
+                post("/preview/component")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.TEXT_HTML)
                         .content(objectMapper.writeValueAsBytes(toPost))
@@ -75,7 +77,7 @@ public class PageControllerTest extends ManageTest {
 
         toPost.put("widgetIdentity", UUID.randomUUID().toString());
         mockMvc.perform(
-                post("/previewHtml/component")
+                post("/preview/component")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.TEXT_HTML)
                         .content(objectMapper.writeValueAsBytes(toPost))
@@ -85,23 +87,35 @@ public class PageControllerTest extends ManageTest {
         toPost.put("widgetIdentity", component.getWidgetIdentity());
         toPost.put("properties", component.getProperties());
         mockMvc.perform(
-                post("/previewHtml/component")
+                post("/preview/component")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.TEXT_HTML)
                         .content(objectMapper.writeValueAsBytes(toPost))
                         .session(session)
         )
-                .andExpect(status().isNotFound())
-                .andDo(print());
+                .andExpect(status().isOk());
 
-        String css = component.getInstalledWidget().getWidget().widgetDependencyContent(Widget.CSS) == null ? null : "";
+        toPost.put("pageId", Math.abs(random.nextLong()));
+
+        mockMvc.perform(
+                post("/preview/component")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.TEXT_HTML)
+                        .content(objectMapper.writeValueAsBytes(toPost))
+                        .session(session)
+        )
+                .andExpect(status().isOk());
+
+
+        org.springframework.core.io.Resource widgetCss = component.getInstalledWidget().getWidget()
+                .widgetDependencyContent(Widget.CSS);
+        boolean cssExisting = widgetCss != null && widgetCss.exists();
         log.info("==============================widgetInfo " + widgetInfo.getGroupId());
         for (WidgetStyle style : component.getInstalledWidget().getWidget().styles()) {
             toPost.put("styleId", style.id());
-            toPost.put("pageId", "1111");
             toPost.put("componentId", "efg");
-            String header = mockMvc.perform(
-                    post("/previewHtml/component")
+            MockHttpServletResponse response = mockMvc.perform(
+                    post("/preview/component")
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.TEXT_HTML)
                             .content(objectMapper.writeValueAsBytes(toPost))
@@ -109,10 +123,20 @@ public class PageControllerTest extends ManageTest {
             )
                     .andExpect(status().isOk())
                     .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-                    .andDo(print()).andReturn().getResponse().getHeader("cssLocation");
-            if (css != null) {
+                    .andDo(print()).andReturn().getResponse();
+            String header = response.getHeader("cssPath");
+            String location = response.getHeader("cssLocation");
+
+            if (cssExisting) {
+                assertThat(location).isNotEmpty();
                 Resource resource = resourceService.getResource(header);
                 assertThat(resource).isNotNull();
+                assertThat(resource.exists()).isTrue();
+
+                StreamUtils.copy(resource.getInputStream(), System.out);
+
+            } else {
+                assertThat(location).isEmpty();
             }
         }
 

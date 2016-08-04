@@ -330,6 +330,7 @@
 </script>
 <script th:inline="javascript">
     $.cmsUploaderUrl = /*[[@{/manage/upload/fine}]]*/ null;
+    $.testMode = /*[[${@environment.acceptsProfiles('test')}]]*/ true;
 </script>
 <!--/*@thymesVar id="_primary" type="java.lang.String"*/-->
 <!--/*@thymesVar id="_info" type="java.lang.String"*/-->

@@ -314,7 +314,7 @@ public class TemplateControllerTest extends SiteManageTest {
             List<Category> templateCategories = categoryRepository.findBySite(template);
 
             // 使用
-//            currentPage.use(templateRow, append);
+            currentPage.use(templateRow, append);
 
             assertThat(template.getUseNumber())
                     .isGreaterThan(old);
@@ -333,9 +333,9 @@ public class TemplateControllerTest extends SiteManageTest {
 
             // 模板资源都还在而且还可用
             Runnable templateResourceChecker = () -> {
-                assertThat(pageInfoRepository.findBySite(template)).containsExactlyElementsOf(templatePages);
-                assertThat(contentService.listBySite(template, null)).containsExactlyElementsOf(templateContents);
-                assertThat(categoryRepository.findBySite(template)).containsExactlyElementsOf(templateCategories);
+                assertThat(pageInfoRepository.findBySite(template)).containsOnlyElementsOf(templatePages);
+                assertThat(contentService.listBySite(template, null)).containsOnlyElementsOf(templateContents);
+                assertThat(categoryRepository.findBySite(template)).containsOnlyElementsOf(templateCategories);
 
                 templatePages.forEach((obj) -> assertResourcesExisting(obj, false));
                 templateContents.forEach((obj) -> assertResourcesExisting(obj, false));

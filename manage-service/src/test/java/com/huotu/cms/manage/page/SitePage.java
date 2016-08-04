@@ -23,6 +23,7 @@ import org.openqa.selenium.support.FindBy;
 import org.springframework.core.io.Resource;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -224,5 +225,34 @@ public class SitePage extends AbstractCRUDPage<Site> {
                 .isEqualTo(newTitle);
         webDriver.close();
         webDriver.switchTo().window(current);
+    }
+
+    /**
+     * 使用模板
+     *
+     * @param templateRow
+     * @param append
+     */
+    public void use(WebElement templateRow, boolean append) throws InterruptedException {
+        beforeDriver();
+        WebElement button = templateRow.findElement(By.className("template-use"));
+        WebElement modal = webDriver.findElement(By.id("useTemplateModal"));
+
+        button.click();
+        waitOn((wait) -> wait.until(new com.google.common.base.Predicate<WebDriver>() {
+            @Override
+            public boolean apply(@Nullable WebDriver input) {
+                return modal.isDisplayed();
+            }
+        }));
+        assertThat(modal.isDisplayed())
+                .isTrue();
+
+        modal.findElements(By.tagName("label")).stream()
+                .filter((label) -> append == label.getText().contains("追加"))
+                .findAny().orElseThrow(IllegalStateException::new)
+                .click();
+
+        modal.findElement(By.className("btn-primary")).click();
     }
 }

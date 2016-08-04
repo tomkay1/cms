@@ -78,11 +78,11 @@ public class ContentServiceImpl implements ContentService {
         return (root, query, cb) -> cb.equal(root.get("category").get("site"), site);
     }
 
-    @Override
-    public long countBySite(Site site) {
-        Specification<AbstractContent> specification = specificationBySite(site);
-        return contentRepository.count(specification);
-    }
+//    @Override
+//    public long countBySite(Site site) {
+//        Specification<AbstractContent> specification = specificationBySite(site);
+//        return contentRepository.count(specification);
+//    }
 
     @Override
     public AbstractContent findById(Long contentId) {

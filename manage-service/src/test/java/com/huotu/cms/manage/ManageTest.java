@@ -66,6 +66,7 @@ import me.jiangcai.lib.resource.service.ResourceService;
 import me.jiangcai.lib.test.SpringWebTest;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.assertj.core.api.Condition;
+import org.assertj.core.util.IterableUtil;
 import org.junit.Before;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -329,7 +330,8 @@ public abstract class ManageTest extends SpringWebTest {
         }
 
         // 内容
-        while (contentService.countBySite(site) < 10) {
+
+        while (IterableUtil.sizeOf(contentService.listBySite(site, null)) < 10) {
             for (Category category : categoryRepository.findBySite(site)) {
                 if (random.nextBoolean()) {
                     AbstractContent content = contentService.newContent(category.getContentType());

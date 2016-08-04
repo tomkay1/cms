@@ -41,8 +41,8 @@ public interface ContentService {
     @Transactional(readOnly = true)
     Iterable<AbstractContent> listBySite(Site site, Pageable pageable);
 
-    @Transactional(readOnly = true)
-    long countBySite(Site site);
+//    @Transactional(readOnly = true)
+//    long countBySite(Site site);
 
     /**
      * 查找指定id的内容

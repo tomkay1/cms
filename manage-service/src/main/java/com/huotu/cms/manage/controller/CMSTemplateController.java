@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -66,10 +65,10 @@ public class CMSTemplateController {
      *                       <li>1为替换模式</li>
      *                       </ul>
      */
-    @RequestMapping(value = "/use/{templateSiteID}/{customerSiteId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/use/{templateSiteID}/{customerSiteId}/{mode}", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public void use(@PathVariable("templateSiteID") long templateSiteID
-            , @PathVariable("customerSiteId") long customerSiteId, @RequestParam("mode") int mode) throws IOException {
+            , @PathVariable("customerSiteId") long customerSiteId, @PathVariable("mode") int mode) throws IOException {
         templateService.use(templateSiteID, customerSiteId, mode);
     }
 

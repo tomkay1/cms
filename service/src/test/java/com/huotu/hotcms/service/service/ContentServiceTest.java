@@ -77,6 +77,9 @@ public class ContentServiceTest extends TestBase {
                 .contains(article)
                 .contains(video)
                 .hasSize(2);
+
+//        assertThat(contentService.countBySite(site))
+//                .isEqualTo(2);
     }
 
 }

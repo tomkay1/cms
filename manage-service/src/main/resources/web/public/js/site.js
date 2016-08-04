@@ -147,16 +147,20 @@ $(function () {
     });
     $('#confirmBtn').click(function () {
         var type = $(".modal-body").find("input[name='type']:checked").val();
-        if (customerSiteId == null)//原型测试环境
+        if (customerSiteId == null) {
+            console.log('执行使用模板');
             return;
+        }//原型测试环境
+        var url = $(this).attr('href') + templateSiteId + '/' + customerSiteId + '/' + type;
+        console.error('FGGG', templateSiteId, customerSiteId, url);
+
         $.ajax({
-            url: '/manage/template/use/' + templateSiteId + '/' + customerSiteId,
-            data: {
-                mode: type
-            },
+            url: url,
             type: 'post',
+            async: !top.$.testMode,
             success: function (data) {//应该是iframe内跳转
-                window.location.href = "/manage/site";
+                console.error('success');
+                window.location.reload();
             }
         })
     });

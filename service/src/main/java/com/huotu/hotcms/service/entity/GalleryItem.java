@@ -12,7 +12,6 @@ package com.huotu.hotcms.service.entity;
 import com.huotu.hotcms.service.Auditable;
 import com.huotu.hotcms.service.Copyable;
 import com.huotu.hotcms.service.model.GalleryItemModel;
-import com.huotu.hotcms.service.util.SerialUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -110,14 +109,6 @@ public class GalleryItem implements Auditable, Copyable<GalleryItem> {
         galleryItem.setGallery(gallery);
 //        galleryItem.setSite(site);
         galleryItem.setUpdateTime(LocalDateTime.now());
-        return galleryItem;
-    }
-
-    @Override
-    public GalleryItem copy(Site site, Category category) {
-        GalleryItem galleryItem = copy();
-        galleryItem.setSerial(SerialUtil.formatSerial(site));
-//        galleryItem.setSite(site);
         return galleryItem;
     }
 

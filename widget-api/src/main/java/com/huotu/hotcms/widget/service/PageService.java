@@ -11,14 +11,15 @@ package com.huotu.hotcms.widget.service;
 
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.event.CopySiteEvent;
 import com.huotu.hotcms.service.event.DeleteSiteEvent;
 import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.page.PageModel;
+import org.springframework.context.event.EventListener;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -31,8 +32,12 @@ import java.util.List;
  */
 public interface PageService {
 
-    @TransactionalEventListener
+    @EventListener
     void siteDeleted(DeleteSiteEvent event) throws IOException;
+
+    //    @TransactionalEventListener(CopySiteEvent.class)
+    @EventListener
+    void siteCopy(CopySiteEvent event) throws IOException;
 
     /**
      * 生成一个页面的html

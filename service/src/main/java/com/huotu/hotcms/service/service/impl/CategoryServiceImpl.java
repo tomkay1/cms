@@ -196,7 +196,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category copyTo(Category src, Site to) {
-        Category newOne = src.copy(to, null);
+        Category newOne = src.copy();
+
+        newOne.setSite(to);
 
         //检查to是否本来已经存在
         String append = "";

@@ -9,7 +9,6 @@
 
 package com.huotu.hotcms.service.entity;
 
-import com.huotu.hotcms.service.util.SerialUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -39,14 +38,6 @@ public class Notice extends AbstractContent {
         Notice notice = new Notice();
         copyTo(notice);
         notice.setContent(content);
-        return notice;
-    }
-
-    @Override
-    public Notice copy(Site site, Category category) {
-        Notice notice = copy();
-        notice.setSerial(SerialUtil.formatSerial(site));
-        notice.setCategory(category);
         return notice;
     }
 

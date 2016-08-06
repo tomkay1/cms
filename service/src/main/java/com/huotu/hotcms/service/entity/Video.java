@@ -10,7 +10,6 @@
 package com.huotu.hotcms.service.entity;
 
 import com.huotu.hotcms.service.ImagesOwner;
-import com.huotu.hotcms.service.util.SerialUtil;
 import lombok.Getter;
 import lombok.Setter;
 import me.jiangcai.lib.resource.service.ResourceService;
@@ -64,14 +63,6 @@ public class Video extends AbstractContent implements ImagesOwner {
 //        video.setThumbUri(thumbUri);
 //        video.setVideoUrl(videoUrl);
         video.setOutLinkUrl(outLinkUrl);
-        return video;
-    }
-
-    @Override
-    public Video copy(Site site, Category category) {
-        Video video = copy();
-        video.setSerial(SerialUtil.formatSerial(site));
-        video.setCategory(category);
         return video;
     }
 

@@ -348,55 +348,6 @@ public class TemplateControllerTest extends SiteManageTest {
 
             //复制过来的效果，遇到重名的可能改名字了 所以名字使用contain即可
 
-            for (PageInfo templatePage : templatePages) {
-                PageInfo sitePage = pageInfoRepository.findBySiteAndPagePath(yourSite, templatePage.getPagePath());
-                //有可能是原来的
-                String append = "";
-                while (sitePages.contains(sitePage)) {
-                    append += TemplateService.DuplicateAppend;
-                    sitePage = pageInfoRepository.findBySiteAndPagePath(yourSite, templatePage.getPagePath() + append);
-                }
-                // 资源可用
-                assertResourcesExisting(sitePage, true);
-                // 数据唯一
-                assertThat(sitePage)
-                        .isNotIn(sitePages)
-                        .isNotIn(templatePages);
-                // 数据一致
-                assertThat(sitePage.getTitle())
-                        .isEqualTo(templatePage.getTitle());
-                // 数据关联
-                if (templatePage.getCategory() != null) {
-                    assertThat(sitePage.getCategory())
-                            .isNotNull();
-                    assertThat(sitePage.getCategory().getName())
-                            .contains(templatePage.getCategory().getName());
-                }
-            }
-            for (AbstractContent content : templateContents) {
-                AbstractContent siteContent = contentRepository.findByCategory_SiteAndSerial(yourSite, content.getSerial());
-                String append = "";
-                while (Arrays.nonNullElementsIn(IterableUtil.toArray(siteContents)).contains(siteContent)) {
-                    append += TemplateService.DuplicateAppend;
-                    siteContent = contentRepository.findByCategory_SiteAndSerial(yourSite, content.getSerial() + append);
-                }
-                // 资源可用
-                assertResourcesExisting(siteContent, false);
-
-                // 数据唯一
-                assertThat(siteContent.getCategory())
-                        .isNotNull()
-                        .isNotIn(siteCategories)
-                        .isNotIn(templateCategories);
-                // 数据一致
-                assertThat(siteContent.getCategory().getSite())
-                        .isEqualTo(yourSite);
-                assertThat(siteContent.getTitle())
-                        .isEqualTo(content.getTitle());
-                assertThat(siteContent.getDescription())
-                        .isEqualTo(content.getDescription());
-                // 数据关联
-            }
             for (Category templateCategory : templateCategories) {
                 Category siteCategory = categoryRepository.findBySerialAndSite(templateCategory.getSerial(), yourSite);
                 String append = "";
@@ -429,11 +380,59 @@ public class TemplateControllerTest extends SiteManageTest {
                             .isEqualByComparingTo(templateCategory.getParent().getContentType());
                 }
             }
+            for (AbstractContent content : templateContents) {
+                AbstractContent siteContent = contentService.getContent(yourSite, content.getSerial());
+                String append = "";
+                while (Arrays.nonNullElementsIn(IterableUtil.toArray(siteContents)).contains(siteContent)) {
+                    append += TemplateService.DuplicateAppend;
+                    siteContent = contentService.getContent(yourSite, content.getSerial() + append);
+                }
+                // 资源可用
+                assertResourcesExisting(siteContent, false);
+
+                // 数据唯一
+                assertThat(siteContent.getCategory())
+                        .isNotNull()
+                        .isNotIn(siteCategories)
+                        .isNotIn(templateCategories);
+                // 数据一致
+                assertThat(siteContent.getCategory().getSite())
+                        .isEqualTo(yourSite);
+                assertThat(siteContent.getTitle())
+                        .isEqualTo(content.getTitle());
+                assertThat(siteContent.getDescription())
+                        .isEqualTo(content.getDescription());
+                // 数据关联
+            }
+            for (PageInfo templatePage : templatePages) {
+                PageInfo sitePage = pageInfoRepository.findBySiteAndPagePath(yourSite, templatePage.getPagePath());
+                //有可能是原来的
+                String append = "";
+                while (sitePages.contains(sitePage)) {
+                    append += TemplateService.DuplicateAppend;
+                    sitePage = pageInfoRepository.findBySiteAndPagePath(yourSite, templatePage.getPagePath() + append);
+                }
+                // 资源可用
+                assertResourcesExisting(sitePage, true);
+                // 数据唯一
+                assertThat(sitePage)
+                        .isNotIn(sitePages)
+                        .isNotIn(templatePages);
+                // 数据一致
+                assertThat(sitePage.getTitle())
+                        .isEqualTo(templatePage.getTitle());
+                // 数据关联
+                if (templatePage.getCategory() != null) {
+                    assertThat(sitePage.getCategory())
+                            .isNotNull();
+                    assertThat(sitePage.getCategory().getName())
+                            .contains(templatePage.getCategory().getName());
+                }
+            }
 
             siteService.deleteData(yourSite);
 
             templateResourceChecker.run();
-
         }
     }
 

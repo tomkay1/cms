@@ -11,7 +11,6 @@ package com.huotu.hotcms.service.entity;
 
 import com.huotu.hotcms.service.ImagesOwner;
 import com.huotu.hotcms.service.common.ArticleSource;
-import com.huotu.hotcms.service.util.SerialUtil;
 import lombok.Getter;
 import lombok.Setter;
 import me.jiangcai.lib.resource.service.ResourceService;
@@ -100,14 +99,6 @@ public class Article extends AbstractContent implements ImagesOwner {
         article.setSystem(system);
         article.setType(type);
 //        article.setThumbUri(thumbUri);
-        return article;
-    }
-
-    @Override
-    public Article copy(Site site, Category category) {
-        Article article = copy();
-        article.setSerial(SerialUtil.formatSerial(site));
-        article.setCategory(category);
         return article;
     }
 

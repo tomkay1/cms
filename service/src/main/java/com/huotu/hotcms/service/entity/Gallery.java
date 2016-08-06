@@ -10,7 +10,6 @@
 package com.huotu.hotcms.service.entity;
 
 import com.huotu.hotcms.service.ImagesOwner;
-import com.huotu.hotcms.service.util.SerialUtil;
 import lombok.Getter;
 import lombok.Setter;
 import me.jiangcai.lib.resource.service.ResourceService;
@@ -59,14 +58,6 @@ public class Gallery extends AbstractContent implements ImagesOwner {
         gallery.setContent(content);
 //        gallery.setThumbUri(thumbUri);
         gallery.setLinkUrl(linkUrl);
-        return gallery;
-    }
-
-    @Override
-    public Gallery copy(Site site, Category category) {
-        Gallery gallery = copy();
-        gallery.setSerial(SerialUtil.formatSerial(site));
-        gallery.setCategory(category);
         return gallery;
     }
 

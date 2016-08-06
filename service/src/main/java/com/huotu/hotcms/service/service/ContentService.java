@@ -24,6 +24,15 @@ import java.io.IOException;
 public interface ContentService {
 
     /**
+     * 寻找一个正文
+     *
+     * @param site
+     * @param serial
+     * @return
+     */
+    AbstractContent getContent(Site site, String serial);
+
+    /**
      * 查找所有符合要求的内容
      *
      * @param title    标题满足like,可选

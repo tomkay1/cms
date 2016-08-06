@@ -11,7 +11,6 @@ package com.huotu.hotcms.service.entity;
 
 import com.huotu.hotcms.service.ImagesOwner;
 import com.huotu.hotcms.service.model.LinkModel;
-import com.huotu.hotcms.service.util.SerialUtil;
 import lombok.Getter;
 import lombok.Setter;
 import me.jiangcai.lib.resource.service.ResourceService;
@@ -70,14 +69,6 @@ public class Link extends AbstractContent implements ImagesOwner {
         copyTo(link);
 //        link.setThumbUri(thumbUri);
         link.setLinkUrl(linkUrl);
-        return link;
-    }
-
-    @Override
-    public Link copy(Site site, Category category) {
-        Link link = copy();
-        link.setCategory(category);
-        link.setSerial(SerialUtil.formatSerial(site));
         return link;
     }
 

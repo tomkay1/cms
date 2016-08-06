@@ -46,6 +46,11 @@ public class ContentServiceImpl implements ContentService {
     @Autowired
     private CommonService commonService;
 
+    public AbstractContent getContent(Site site, String serial) {
+        return contentRepository.findOne((root, query, cb) -> {
+            return cb.and(cb.equal(root.get("category").get("site"), site), cb.equal(root.get("serial"), serial));
+        });
+    }
 
     @Override
     public Iterable<AbstractContent> list(String title, Site site, Long category, Pageable pageable) {
@@ -154,7 +159,7 @@ public class ContentServiceImpl implements ContentService {
 
             // 看下目标站是否已存在
             String append = "";
-            while (contentRepository.findByCategory_SiteAndSerial(dist.getSite(), newContent.getSerial() + append) != null) {
+            while (getContent(dist.getSite(), newContent.getSerial() + append) != null) {
                 append += TemplateService.DuplicateAppend;
             }
             newContent.setSerial(newContent.getSerial() + append);

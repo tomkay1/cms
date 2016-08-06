@@ -16,7 +16,6 @@ import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
 
 /**
  * 公告模型
@@ -38,12 +37,8 @@ public class Notice extends AbstractContent {
     @Override
     public Notice copy() {
         Notice notice = new Notice();
+        copyTo(notice);
         notice.setContent(content);
-        notice.setUpdateTime(LocalDateTime.now());
-        notice.setOrderWeight(getOrderWeight());
-        notice.setDeleted(isDeleted());
-        notice.setCreateTime(LocalDateTime.now());
-        notice.setTitle(getTitle());
         return notice;
     }
 

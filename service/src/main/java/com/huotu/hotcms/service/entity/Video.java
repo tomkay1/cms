@@ -20,7 +20,6 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -61,17 +60,10 @@ public class Video extends AbstractContent implements ImagesOwner {
     @Override
     public Video copy() {
         Video video = new Video();
-        video.setThumbUri(thumbUri);
-        video.setVideoUrl(videoUrl);
-        video.setTitle(getTitle());
+        copyTo(video);
+//        video.setThumbUri(thumbUri);
+//        video.setVideoUrl(videoUrl);
         video.setOutLinkUrl(outLinkUrl);
-        video.setDescription(getDescription());
-        video.setCreateTime(LocalDateTime.now());
-        video.setDeleted(isDeleted());
-        video.setOrderWeight(getOrderWeight());
-        video.setUpdateTime(LocalDateTime.now());
-        video.setCategory(getCategory());
-        video.setSerial(getSerial());
         return video;
     }
 

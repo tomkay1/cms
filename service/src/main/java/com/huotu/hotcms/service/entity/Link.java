@@ -21,7 +21,6 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -68,13 +67,9 @@ public class Link extends AbstractContent implements ImagesOwner {
     @Override
     public Link copy() {
         Link link = new Link();
-        link.setThumbUri(thumbUri);
-        link.setDescription(getDescription());
-        link.setOrderWeight(getOrderWeight());
-        link.setTitle(getTitle());
-        link.setCreateTime(LocalDateTime.now());
-        link.setUpdateTime(LocalDateTime.now());
-        link.setDeleted(isDeleted());
+        copyTo(link);
+//        link.setThumbUri(thumbUri);
+        link.setLinkUrl(linkUrl);
         return link;
     }
 

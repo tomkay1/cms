@@ -27,6 +27,7 @@ import com.huotu.hotcms.service.repository.ContentRepository;
 import com.huotu.hotcms.service.repository.TemplateRepository;
 import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.service.ContentService;
+import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.service.TemplateService;
 import com.huotu.hotcms.service.util.ImageHelper;
 import com.huotu.hotcms.widget.entity.PageInfo;
@@ -72,7 +73,8 @@ public class TemplateControllerTest extends SiteManageTest {
     private ContentService contentService;
     @Autowired
     private CategoryService categoryService;
-
+    @Autowired
+    private SiteService siteService;
 
     @Test
     @Transactional
@@ -428,18 +430,7 @@ public class TemplateControllerTest extends SiteManageTest {
                 }
             }
 
-            for (PageInfo pageInfo : pageInfoRepository.findBySite(yourSite)) {
-                pageService.deletePage(pageInfo.getPageId());
-            }
-
-            for (AbstractContent content : contentService.listBySite(yourSite, null)) {
-                contentService.delete(content);
-            }
-
-            for (Category category : categoryRepository.findBySite(yourSite)) {
-                if (categoryRepository.exists(category.getId()))
-                    categoryService.delete(category);
-            }
+            siteService.deleteData(yourSite);
 
             templateResourceChecker.run();
 

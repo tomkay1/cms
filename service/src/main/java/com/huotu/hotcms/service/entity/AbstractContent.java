@@ -93,7 +93,6 @@ public abstract class AbstractContent implements Auditable, Copyable<AbstractCon
     @JoinColumn(name = "categoryId")
     private Category category;
 
-
     /**
      * 依然不知道这是干什么……
      *
@@ -162,5 +161,16 @@ public abstract class AbstractContent implements Auditable, Copyable<AbstractCon
             predicates.add(cb.equal(root.get("category").get("site").get("owner").get("id").as(Long.class), ownerId));
             return cb.and(predicates.toArray(new Predicate[predicates.size()]));
         };
+    }
+
+    protected void copyTo(AbstractContent dist) {
+        dist.setCategory(getCategory());
+        dist.setCreateTime(LocalDateTime.now());
+        dist.setOrderWeight(getOrderWeight());
+        dist.setDeleted(isDeleted());
+        dist.setUpdateTime(LocalDateTime.now());
+        dist.setDescription(getDescription());
+        dist.setTitle(getTitle());
+        dist.setSerial(getSerial());
     }
 }

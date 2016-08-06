@@ -18,6 +18,7 @@ import com.huotu.hotcms.service.model.CategoryTreeModel;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.CategoryForeachParam;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.service.CategoryService;
+import com.huotu.hotcms.service.service.TemplateService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -191,6 +192,25 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void init(Category category) {
         category.setSerial(UUID.randomUUID().toString().replace("-", ""));
+    }
+
+    @Override
+    public Category copyTo(Category src, Site to) {
+        Category newOne = src.copy(to, null);
+
+        //检查to是否本来已经存在
+        String append = "";
+        while (categoryRepository.findBySerialAndSite(newOne.getSerial() + append, to) != null) {
+            append = append + TemplateService.DuplicateAppend;
+        }
+
+        newOne.setSerial(newOne.getSerial() + append);
+
+        if (src.getParent() != null) {
+            Category parent = categoryRepository.findBySerialAndSite(src.getParent().getSerial(), to);
+            newOne.setParent(parent);
+        }
+        return categoryRepository.save(newOne);
     }
 
     @Override

@@ -9,13 +9,19 @@
 
 package com.huotu.hotcms.service.service.impl;
 
+import com.huotu.hotcms.service.entity.AbstractContent;
+import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Region;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.event.DeleteSiteEvent;
 import com.huotu.hotcms.service.exception.NoSiteFoundException;
+import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.HostRepository;
 import com.huotu.hotcms.service.repository.RegionRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
+import com.huotu.hotcms.service.service.CategoryService;
+import com.huotu.hotcms.service.service.ContentService;
 import com.huotu.hotcms.service.service.HostService;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.util.SerialUtil;
@@ -23,8 +29,10 @@ import com.huotu.hotcms.service.util.StringUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Locale;
 import java.util.Set;
 
@@ -43,6 +51,28 @@ public class SiteServiceImpl implements SiteService {
     private RegionRepository regionRepository;
     @Autowired
     private HostService hostService;
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
+    @Autowired
+    private ContentService contentService;
+    @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private CategoryService categoryService;
+
+    @Override
+    public void deleteData(Site site) throws IOException {
+        applicationEventPublisher.publishEvent(new DeleteSiteEvent(site));
+
+        for (AbstractContent content : contentService.listBySite(site, null)) {
+            contentService.delete(content);
+        }
+
+        for (Category category : categoryRepository.findBySite(site)) {
+            if (categoryRepository.exists(category.getId()))
+                categoryService.delete(category);
+        }
+    }
 
     @Override
     public Site closestSite(Host host, Locale locale) throws NoSiteFoundException {

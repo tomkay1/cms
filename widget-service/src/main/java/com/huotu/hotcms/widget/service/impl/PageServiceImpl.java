@@ -11,6 +11,7 @@ package com.huotu.hotcms.widget.service.impl;
 
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.event.DeleteSiteEvent;
 import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.service.service.CommonService;
 import com.huotu.hotcms.widget.CMSContext;
@@ -54,6 +55,14 @@ public class PageServiceImpl implements PageService {
 
     @Autowired(required = false)
     private ResourceService resourceService;
+
+
+    @Override
+    public void siteDeleted(DeleteSiteEvent event) throws IOException {
+        for (PageInfo pageInfo : pageInfoRepository.findBySite(event.getSite())) {
+            deletePage(pageInfo.getPageId());
+        }
+    }
 
     @Override
     public String generateHTML(PageInfo page, CMSContext context) {

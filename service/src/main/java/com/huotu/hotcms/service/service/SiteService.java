@@ -11,10 +11,10 @@ package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.entity.Template;
 import com.huotu.hotcms.service.exception.NoSiteFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.Locale;
 import java.util.Set;
 
@@ -27,6 +27,14 @@ import java.util.Set;
  * @see com.huotu.hotcms.service.service.TemplateService
  */
 public interface SiteService {
+
+    /**
+     * 删除，真正删除所有该站点旗下的数据，不可挽回的哦
+     *
+     * @param site 站点
+     */
+    @Transactional
+    void deleteData(Site site) throws IOException;
 
     /**
      * 寻找最适合的站点

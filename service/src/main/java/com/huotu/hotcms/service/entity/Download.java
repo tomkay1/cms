@@ -20,7 +20,6 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -54,13 +53,8 @@ public class Download extends AbstractContent implements ResourcesOwner {
     @Override
     public Download copy() {
         Download download = new Download();
-        download.setDownloadPath(downloadPath);
-        download.setTitle(getTitle());
-        download.setDeleted(isDeleted());
-        download.setOrderWeight(getOrderWeight());
-        download.setUpdateTime(LocalDateTime.now());
-        download.setCreateTime(LocalDateTime.now());
-        download.setDescription(getDescription());
+        copyTo(download);
+        download.setFileName(fileName);
         return download;
     }
 

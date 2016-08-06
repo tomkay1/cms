@@ -105,7 +105,7 @@ public class GalleryItem implements Auditable, Copyable<GalleryItem> {
         galleryItem.setDeleted(isDeleted());
         galleryItem.setSerial(serial);
         galleryItem.setOrderWeight(orderWeight);
-        galleryItem.setThumbUri(thumbUri);
+//        galleryItem.setThumbUri(thumbUri);
         galleryItem.setCreateTime(LocalDateTime.now());
         galleryItem.setGallery(gallery);
 //        galleryItem.setSite(site);

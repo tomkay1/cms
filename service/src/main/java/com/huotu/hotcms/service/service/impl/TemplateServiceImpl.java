@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.service.service.impl;
 
+import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Download;
@@ -30,6 +31,9 @@ import com.huotu.hotcms.service.repository.NoticeRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.repository.TemplateRepository;
 import com.huotu.hotcms.service.repository.VideoRepository;
+import com.huotu.hotcms.service.service.CategoryService;
+import com.huotu.hotcms.service.service.ContentService;
+import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.service.TemplateService;
 import me.jiangcai.lib.resource.Resource;
 import me.jiangcai.lib.resource.service.ResourceService;
@@ -44,6 +48,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -55,7 +60,13 @@ public class TemplateServiceImpl implements TemplateService {
     private TemplateRepository templateRepository;
 
     @Autowired
+    private ContentService contentService;
+    @Autowired
+    private SiteService siteService;
+    @Autowired
     private CategoryRepository categoryRepository;
+    @Autowired
+    private CategoryService categoryService;
     @Autowired
     private SiteRepository siteRepository;
     @Autowired
@@ -112,15 +123,15 @@ public class TemplateServiceImpl implements TemplateService {
 
     @Override
     public void use(long templateSiteID, long customerSiteId, int mode) throws IOException {
-        Template templateSite = templateRepository.findOne(templateSiteID);
-        Site customerSite = siteRepository.findOne(customerSiteId);
+        Template template = templateRepository.findOne(templateSiteID);
+        Site site = siteRepository.findOne(customerSiteId);
         if (1 == mode) {
-            delete(customerSite);
+            siteService.deleteData(site);
         }
-        copy(templateSite, customerSite);
-        templateSite.setUseNumber(templateSite.getUseNumber() + 1);//使用数+1
-        templateSite.setEnabled(true);
-        templateRepository.save(templateSite);
+        copy(template, site);
+        template.setUseNumber(template.getUseNumber() + 1);//使用数+1
+//        template.setEnabled(true);
+        templateRepository.save(template);
     }
 
     @Override
@@ -128,87 +139,6 @@ public class TemplateServiceImpl implements TemplateService {
         //目前只是简单实现
         String key = templateId + "$" + ownerId;
         return laudMap.get(key) != null;
-    }
-
-    /**
-     * 删掉要使用模板站点的商户站点下的数据
-     *
-     * @param customerSite 商户站点
-     */
-    private void delete(Site customerSite) throws IOException {
-        List<Category> categories = categoryRepository.findBySite(customerSite);
-        if (categories.isEmpty())
-            return;
-        //删除内容
-        for (Category category : categories) {
-            articleRepository.deleteByCategory(category);
-            downloadRepository.deleteByCategory(category);
-            linkRepository.deleteByCategory(category);
-            noticeRepository.deleteByCategory(category);
-            videoRepository.deleteByCategory(category);
-            List<Gallery> galleries = galleryRepository.findByCategory(category);
-            galleries.forEach(galleryItemRepository::deleteByGallery);
-            galleryRepository.deleteByCategory(category);
-            //静态资源删除
-            deleteStaticResourceByCategory(category);
-        }
-        //删除数据源
-        categoryRepository.deleteBySite(customerSite);
-        //删除页面数据
-        // TODO 嘿嘿 有麻烦了
-//        pageInfoRepository.deleteBySite(customerSite);
-    }
-
-    /**
-     * 删除的同时，如果有静态资源，也一并删除
-     *
-     * @param category 数据源
-     */
-    private void deleteStaticResourceByCategory(Category category) throws IOException {
-        List<Article> articles = articleRepository.findByCategory(category);
-        for (Article article : articles) {
-            if (!StringUtils.isEmpty(article.getThumbUri())) {
-                deleteStaticResourceByPath(article.getThumbUri());
-            }
-        }
-        List<Download> downloads = downloadRepository.findByCategory(category);
-        for (Download download : downloads) {
-            if (!StringUtils.isEmpty(download.getDownloadPath()))
-                deleteStaticResourceByPath(download.getDownloadPath());
-        }
-        List<Gallery> galleries = galleryRepository.findByCategory(category);
-        List<GalleryItem> galleryItems;
-        for (Gallery gallery : galleries) {
-            if (!StringUtils.isEmpty(gallery.getThumbUri()))
-                deleteStaticResourceByPath(gallery.getThumbUri());
-            galleryItems = galleryItemRepository.findByGallery(gallery);
-            for (GalleryItem galleryItem : galleryItems) {
-                if (!StringUtils.isEmpty(galleryItem.getThumbUri()))
-                    deleteStaticResourceByPath(galleryItem.getThumbUri());
-            }
-        }
-        List<Link> links = linkRepository.findByCategory(category);
-        for (Link link : links) {
-            if (!StringUtils.isEmpty(link.getThumbUri())) {
-                deleteStaticResourceByPath(link.getThumbUri());
-            }
-        }
-        List<Video> videos = videoRepository.findByCategory(category);
-        for (Video video : videos) {
-            if (!StringUtils.isEmpty(video.getThumbUri()))
-                deleteStaticResourceByPath(video.getThumbUri());
-            if (!StringUtils.isEmpty(video.getVideoUrl()))
-                deleteStaticResourceByPath(video.getVideoUrl());
-        }
-    }
-
-    /**
-     * 通过资源所在地址，删除资源
-     *
-     * @param resourcePath 资源地址
-     */
-    private void deleteStaticResourceByPath(String resourcePath) throws IOException {
-        resourceService.deleteResource(resourcePath);
     }
 
     /**
@@ -230,21 +160,31 @@ public class TemplateServiceImpl implements TemplateService {
     /**
      * 复制
      *
-     * @param templateSite 模板站点
-     * @param customerSite 商户站点
+     * @param from 源站点
+     * @param to   商户站点
      */
-    private void copy(Site templateSite, Site customerSite) throws IOException {
-        List<Category> categories = categoryRepository.findBySite(templateSite);
-        Category copyCategory;
-        //数据源复制
-        for (Category category : categories) {
-            copyCategory = category.copy(customerSite, null);
-            categoryRepository.save(copyCategory);
-            //Page信息的复制
-            copyPageInfo(category, copyCategory, customerSite);
-            //对内容的复制
-            copyContent(category, copyCategory, customerSite);
+    private void copy(Site from, Site to) throws IOException {
+        // 考虑到 有一些数据源具有上下级，所以应该先把没有上级的 弄好，再弄带这些上级的 以此类推。
+        Set<Category> categories = null;
+
+        while (true) {
+            if (categories == null)
+                categories = categoryRepository.findBySiteAndParentNull(from);
+            else
+                categories = categoryRepository.findBySiteAndParentIn(from, categories);
+            if (categories.isEmpty())
+                break;
+            // 执行copy
+            for (Category category : categories) {
+                Category newOne = categoryService.copyTo(category, to);
+                //Page信息的复制
+//                copyPageInfo(category, copyCategory, to);
+                //对内容的复制
+                contentService.copyTo(category, newOne);
+            }
         }
+
+        // TODO 页面复制
     }
 
     /**
@@ -269,45 +209,50 @@ public class TemplateServiceImpl implements TemplateService {
     }
 
     /**
-     * 对模板站点的内容数据进行复制
+     * 复制一份所有数据源旗下的内容
      *
-     * @param templateCategory 模板站点的数据源
-     * @param copyCategory     复制到商户站点的数据源
-     * @param customerSite     商户站点
+     * @param src          源数据源
+     * @param dist         目标数据源
+     * @param customerSite 商户站点
      */
-    private void copyContent(Category templateCategory, Category copyCategory, Site customerSite) throws IOException {
+    private void copyContent(Category src, Category dist, Site customerSite) throws IOException {
+        for (ContentType contentType : ContentType.values()) {
+            contentService.copyTo(src, dist);
+        }
         //对Article的复制
-        List<Article> articles = articleRepository.findByCategory(templateCategory);
+
+
+        List<Article> articles = articleRepository.findByCategory(src);
         Article newArticle;
         for (Article article : articles) {
-            newArticle = article.copy(customerSite, copyCategory);
+            newArticle = article.copy(customerSite, dist);
             if (!StringUtils.isEmpty(newArticle.getThumbUri()))
                 newArticle.setThumbUri(copyStaticResource(newArticle.getThumbUri()));
             contentRepository.save(newArticle);
         }
         //下载模型复制
-        List<Download> downloads = downloadRepository.findByCategory(templateCategory);
+        List<Download> downloads = downloadRepository.findByCategory(src);
         Download d;
         for (Download download : downloads) {
-            d = download.copy(customerSite, copyCategory);
+            d = download.copy(customerSite, dist);
             if (!StringUtils.isEmpty(download.getDownloadPath())) {
                 d.setDownloadPath(copyStaticResource(download.getDownloadPath()));
                 contentRepository.save(d);
             }
             //图库模型复制
-            List<Gallery> galleries = galleryRepository.findByCategory(templateCategory);
+            List<Gallery> galleries = galleryRepository.findByCategory(src);
             Gallery g;
             GalleryItem galleryItem;
             List<GalleryItem> galleryItems;
             for (Gallery gallery : galleries) {
-                g = gallery.copy(customerSite, copyCategory);
+                g = gallery.copy(customerSite, dist);
                 if (!StringUtils.isEmpty(gallery.getThumbUri()))
                     g.setThumbUri(copyStaticResource(gallery.getThumbUri()));
                 g = contentRepository.save(g);
                 //图库集合复制
                 galleryItems = galleryItemRepository.findByGallery(gallery);
                 for (GalleryItem gl : galleryItems) {
-                    galleryItem = gl.copy(customerSite, copyCategory);
+                    galleryItem = gl.copy(customerSite, dist);
                     galleryItem.setGallery(g);
                     if (!StringUtils.isEmpty(galleryItem.getThumbUri()))
                         galleryItem.setThumbUri(copyStaticResource(galleryItem.getThumbUri()));
@@ -315,27 +260,27 @@ public class TemplateServiceImpl implements TemplateService {
                 }
             }
             //链接模型复制
-            List<Link> links = linkRepository.findByCategory(templateCategory);
+            List<Link> links = linkRepository.findByCategory(src);
             Link link1;
             for (Link link : links) {
-                link1 = link.copy(customerSite, copyCategory);
+                link1 = link.copy(customerSite, dist);
                 if (!StringUtils.isEmpty(link1.getThumbUri())) {
                     link1.setThumbUri(copyStaticResource(link1.getThumbUri()));
                 }
                 contentRepository.save(link1);
             }
             //公告模型复制
-            List<Notice> notices = noticeRepository.findByCategory(templateCategory);
+            List<Notice> notices = noticeRepository.findByCategory(src);
             Notice notice1;
             for (Notice notice : notices) {
-                notice1 = notice.copy(customerSite, copyCategory);
+                notice1 = notice.copy(customerSite, dist);
                 contentRepository.save(notice1);
             }
             //视频模型复制
-            List<Video> videos = videoRepository.findByCategory(templateCategory);
+            List<Video> videos = videoRepository.findByCategory(src);
             Video v;
             for (Video video : videos) {
-                v = video.copy(customerSite, copyCategory);
+                v = video.copy(customerSite, dist);
                 if (!StringUtils.isEmpty(v.getThumbUri()))
                     v.setThumbUri(copyStaticResource(v.getThumbUri()));
                 if (!StringUtils.isEmpty(v.getVideoUrl()))

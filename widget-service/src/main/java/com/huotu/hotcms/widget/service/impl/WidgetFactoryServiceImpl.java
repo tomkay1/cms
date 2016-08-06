@@ -93,17 +93,13 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
                         , new DocumentResponseHandler());
                 Node snapshot = doc.getElementsByTagName("snapshot").item(0);
                 String timeBuild = nodeStream(snapshot.getChildNodes())
-                        .filter((node) -> {
-                            return "timestamp".equalsIgnoreCase(node.getNodeName());
-                        })
+                        .filter((node) -> "timestamp".equalsIgnoreCase(node.getNodeName()))
                         .findAny()
                         .orElseThrow(IOException::new)
                         .getTextContent()
                         + "-"
                         + nodeStream(snapshot.getChildNodes())
-                        .filter((node) -> {
-                            return "buildNumber".equalsIgnoreCase(node.getNodeName());
-                        })
+                        .filter((node) -> "buildNumber".equalsIgnoreCase(node.getNodeName()))
                         .findAny()
                         .orElseThrow(IOException::new)
                         .getTextContent();

@@ -41,6 +41,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -157,13 +158,13 @@ public class PageServiceImpl implements PageService {
         Layout[] elements = layoutsForUse(pageInfo.getLayout());
         Path path = Files.createTempFile("tempCss", ".css");
         try {
-            try (OutputStream out = Files.newOutputStream(path)) {
+            try (OutputStream out = Files.newOutputStream(path, StandardOpenOption.WRITE)) {
                 for (Layout element : elements) {
                     //生成组件css
                     widgetResolveService.widgetDependencyContent(CMSContext.RequestContext(), null, Widget.CSS, element, out);
                 }
                 //上传最新的page css样式表到资源服务
-                try (InputStream data = Files.newInputStream(path)) {
+                try (InputStream data = Files.newInputStream(path, StandardOpenOption.READ)) {
                     resourceService.uploadResource(pageInfo.getPageCssResourcePath(), data);
                 }
             }

@@ -70,7 +70,7 @@ public class WidgetPage extends AbstractCRUDPage<WidgetInfo> {
 
                 assertThat(tds)
                         .haveAtLeastOne(new Condition<>(td
-                                -> td.getText().contains(value.getType()), "需显示类型"));
+                                -> td.getText().contains(value.getType().trim()), "需显示类型"));
 
                 if (value.getOwner() != null)
                     assertThat(tds)

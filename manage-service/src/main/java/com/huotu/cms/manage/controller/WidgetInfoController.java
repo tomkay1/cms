@@ -114,6 +114,13 @@ public class WidgetInfoController
         data.setCreateTime(LocalDateTime.now());
         data.setEnabled(true);
 
+        data.setGroupId(data.getGroupId().trim());
+        data.setArtifactId(data.getArtifactId().trim());
+        data.setVersion(data.getVersion().trim());
+        if (data.getType() != null) {
+            data.setType(data.getType().trim());
+        }
+
         final String ownerIdParameter = extra.getParameter("ownerId");
         if (ownerIdParameter != null && ownerIdParameter.length() > 0) {
             Long ownerId = NumberUtils.parseNumber(ownerIdParameter, Long.class);

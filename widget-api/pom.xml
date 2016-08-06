@@ -30,6 +30,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>${collections.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.huotu.hotcms</groupId>
             <artifactId>service</artifactId>
             <version>${project.version}</version>

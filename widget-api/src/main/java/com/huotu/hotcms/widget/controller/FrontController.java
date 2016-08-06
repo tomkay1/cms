@@ -28,7 +28,6 @@ import com.huotu.hotcms.widget.WidgetStyle;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.PageElement;
-import com.huotu.hotcms.widget.page.PageLayout;
 import com.huotu.hotcms.widget.service.PageService;
 import me.jiangcai.lib.resource.Resource;
 import me.jiangcai.lib.resource.service.ResourceService;
@@ -94,7 +93,7 @@ public class FrontController implements FilterBehavioral {
         try {
             PageInfo pageInfo = pageService.getPage(pageId);
             // 寻找控件了
-            for (Layout layout : PageLayout.NoNullLayout(pageInfo.getLayout())) {
+            for (Layout layout : pageService.layoutsForUse(pageInfo.getLayout())) {
                 Component component = findComponent(layout, id);
                 if (component != null) {
                     ByteArrayOutputStream buffer = new ByteArrayOutputStream();

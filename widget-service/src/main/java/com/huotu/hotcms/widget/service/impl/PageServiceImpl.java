@@ -21,6 +21,7 @@ import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.Widget;
+import com.huotu.hotcms.widget.WidgetLocateService;
 import com.huotu.hotcms.widget.WidgetResolveService;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.page.Layout;
@@ -53,6 +54,8 @@ public class PageServiceImpl implements PageService {
     private PageInfoRepository pageInfoRepository;
     @Autowired
     private WidgetResolveService widgetResolveService;
+    @Autowired
+    private WidgetLocateService widgetLocateService;
     @Autowired
     private ResourceService resourceService;
     @Autowired
@@ -89,6 +92,23 @@ public class PageServiceImpl implements PageService {
     }
 
     @Override
+    public Layout[] layoutsForUse(PageLayout page) {
+        Layout[] layouts = PageLayout.NoNullLayout(page);
+        //
+        for (Layout layout : layouts) {
+            for (PageElement element : layout.elements()) {
+                if (element instanceof Component) {
+                    Component component = (Component) element;
+                    if (component.getInstalledWidget() == null) {
+                        component.setInstalledWidget(widgetLocateService.findWidget(component.getWidgetIdentity()));
+                    }
+                }
+            }
+        }
+        return layouts;
+    }
+
+    @Override
     public String generateHTML(PageInfo page, CMSContext context) {
         StringWriter writer = new StringWriter();
         try {
@@ -101,7 +121,7 @@ public class PageServiceImpl implements PageService {
 
     @Override
     public void generateHTML(Writer writer, PageInfo page, CMSContext context) throws IOException {
-        Layout[] layouts = PageLayout.NoNullLayout(page.getLayout());
+        Layout[] layouts = layoutsForUse(page.getLayout());
         writer.append("<div class=\"container\">");
         for (PageElement element : layouts) {
             writer.append("<div class=\"row\">");
@@ -134,7 +154,7 @@ public class PageServiceImpl implements PageService {
 //        pageInfo.setPageSetting(pageJson.getBytes());
         pageInfo = pageInfoRepository.saveAndFlush(pageInfo);
         //生成page的css样式表
-        Layout[] elements = PageLayout.NoNullLayout(pageInfo.getLayout());
+        Layout[] elements = layoutsForUse(pageInfo.getLayout());
         Path path = Files.createTempFile("tempCss", ".css");
         try {
             try (OutputStream out = Files.newOutputStream(path)) {
@@ -202,7 +222,7 @@ public class PageServiceImpl implements PageService {
 
     @Override
     public void updatePageComponent(PageInfo page, InstalledWidget installedWidget) throws IllegalStateException {
-        Layout[] layouts = PageLayout.NoNullLayout(page.getLayout());
+        Layout[] layouts = layoutsForUse(page.getLayout());
         for (PageElement pageElement : layouts) {
             updateComponent(pageElement, installedWidget);
         }

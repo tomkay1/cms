@@ -71,6 +71,9 @@
         <io.version>2.4</io.version>
         <codec.version>1.10</codec.version>
         <assertj.version>3.3.0</assertj.version>
+        <http.version>4.5.2</http.version>
+        <dhcp.version>1.4</dhcp.version>
+        <collections.version>3.2.2</collections.version>
 
         <json-version>2.7.5</json-version>
     </properties>

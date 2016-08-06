@@ -27,39 +27,42 @@ import com.huotu.hotcms.widget.page.PageLayout;
 import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
 import com.huotu.hotcms.widget.service.PageService;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
+import com.huotu.hotcms.widget.service.impl.http.DocumentResponseHandler;
 import com.huotu.hotcms.widget.util.ClassLoaderUtil;
-import com.huotu.hotcms.widget.util.HttpClientUtil;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.util.EntityUtils;
-import org.luffy.libs.libseext.XMLUtils;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StreamUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 import javax.annotation.PostConstruct;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 @Service
 public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLocateService {
@@ -77,49 +80,92 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
     @Autowired
     private PageService pageService;
 
-    /**
-     * 下载widget jar文件
-     *
-     * @param groupId  分组id,参考maven
-     * @param version  版本
-     * @param widgetId 控件id
-     * @return 临时文件
-     */
-    public File downloadJar(String groupId, String widgetId, String version) throws IOException {
+    public void downloadJar(String groupId, String widgetId, String version, OutputStream outputStream)
+            throws IOException {
         groupId = groupId.replace(".", "/");
         StringBuilder repoUrl = new StringBuilder(String.format(PRIVATE_REPO, groupId, widgetId, version));
-        CloseableHttpResponse response = HttpClientUtil.getInstance().get(repoUrl + "/maven-metadata.xml"
-                , new HashMap<>());
-        byte[] result = EntityUtils.toByteArray(response.getEntity());
-        String timeBuild = "";
-        Document doc;
-        try {
-            doc = XMLUtils.xml2doc(new ByteArrayInputStream(result));
-        } catch (SAXException | ParserConfigurationException e) {
-            throw new IOException(e);
-        }
-        NodeList nodeList = doc.getElementsByTagName("timestamp");
-        NodeList buildNumber = doc.getElementsByTagName("buildNumber");
-        if (nodeList != null) {
-            for (int i = 0; i < nodeList.getLength(); i++) {
-                Node node = nodeList.item(i);
-                timeBuild = timeBuild + node.getTextContent();
+
+        try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
+            // 是否是 SNAPSHOT ?
+            String jarUrl;
+            if (version.endsWith("-SNAPSHOT")) {
+                Document doc = httpClient.execute(new HttpGet(repoUrl + "/maven-metadata.xml")
+                        , new DocumentResponseHandler());
+                Node snapshot = doc.getElementsByTagName("snapshot").item(0);
+                String timeBuild = nodeStream(snapshot.getChildNodes())
+                        .filter((node) -> {
+                            return "timestamp".equalsIgnoreCase(node.getNodeName());
+                        })
+                        .findAny()
+                        .orElseThrow(IOException::new)
+                        .getTextContent()
+                        + "-"
+                        + nodeStream(snapshot.getChildNodes())
+                        .filter((node) -> {
+                            return "buildNumber".equalsIgnoreCase(node.getNodeName());
+                        })
+                        .findAny()
+                        .orElseThrow(IOException::new)
+                        .getTextContent();
+
+                // 从version中移除-SNAPSHOT
+                String newVersion = version.substring(0, version.length() - "-SNAPSHOT".length());
+
+                jarUrl = repoUrl
+                        .append("/")
+                        .append(widgetId)
+                        .append("-")
+                        .append(newVersion)
+                        .append("-")
+                        .append(timeBuild).append(".jar")
+                        .toString();
+            } else {
+                jarUrl = repoUrl
+                        .append("/")
+                        .append(widgetId)
+                        .append("-")
+                        .append(version)
+                        .append(".jar")
+                        .toString();
             }
-        }
-        if (buildNumber != null) {
-            for (int i = 0; i < buildNumber.getLength(); i++) {
-                Node node = buildNumber.item(i);
-                timeBuild = timeBuild + "-" + node.getTextContent();
+
+            log.debug("prepare to download " + jarUrl);
+
+            try (CloseableHttpResponse response = httpClient.execute(new HttpGet(jarUrl))) {
+                try (InputStream stream = response.getEntity().getContent()) {
+                    StreamUtils.copy(stream, outputStream);
+                }
             }
+
         }
-        File file = File.createTempFile("CMSWidget", ".jar");
-        //下载jar
-        try (FileOutputStream outputStream = new FileOutputStream(file)) {
-            HttpClientUtil.getInstance().webGet(repoUrl.toString() + "/" + widgetId + "-" + (version.split("-")[0])
-                    + "-" + timeBuild + ".jar", outputStream);
-            outputStream.flush();
-        }
-        return file;
+
+    }
+
+    /**
+     * 这个其实可以公用 以后再重构
+     *
+     * @param nodeList
+     * @return 可迭代的Node
+     */
+    private Iterable<Node> iterateNode(NodeList nodeList) {
+        return () -> new Iterator<Node>() {
+            private NodeList list = nodeList;
+            private int index = 0;
+
+            @Override
+            public boolean hasNext() {
+                return list.getLength() > index;
+            }
+
+            @Override
+            public Node next() {
+                return list.item(index++);
+            }
+        };
+    }
+
+    private Stream<Node> nodeStream(NodeList nodeList) {
+        return StreamSupport.stream(iterateNode(nodeList).spliterator(), false);
     }
 
     @Override
@@ -133,14 +179,17 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
         if (data != null) {
             resourceService.uploadResource(path, data);
         } else {
-            File file = downloadJar(info.getGroupId(), info.getArtifactId(), info.getVersion());
+            Path file = Files.createTempFile("cmsWidget", ".jar");
             try {
-                try (FileInputStream inputStream = new FileInputStream(file)) {
+                try (OutputStream outputStream = Files.newOutputStream(file, StandardOpenOption.WRITE)) {
+                    downloadJar(info.getGroupId(), info.getArtifactId(), info.getVersion(), outputStream);
+                }
+                try (InputStream inputStream = Files.newInputStream(file, StandardOpenOption.READ)) {
                     resourceService.uploadResource(path, inputStream);
                 }
             } finally {
-                //noinspection ResultOfMethodCallIgnored
-                file.delete();
+                //noinspection ResultOfMethodCallIgnored,ThrowFromFinallyBlock
+                Files.deleteIfExists(file);
             }
         }
         info.setPath(path);

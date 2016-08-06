@@ -122,7 +122,7 @@ var DataHandle  = {
             ]
         });
         var root = $('<div></div>');
-        console.log(formatSrc)
+        console.log(formatSrc);
         root.html(formatSrc);
         DataHandle.createROOT($(root), url);
     },

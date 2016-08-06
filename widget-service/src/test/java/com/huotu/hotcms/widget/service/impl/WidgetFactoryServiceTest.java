@@ -43,12 +43,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -176,8 +179,23 @@ public class WidgetFactoryServiceTest extends TestBase {
 
     @Test
     public void testDownloadJar() throws IOException {
-        File file = widgetFactoryService.downloadJar("com.huotu.widget.friendshipLink", "friendshipLink", "1.0-SNAPSHOT");
-        assertThat(file).as("file不等于空,下载成功").isNotNull();
+        String groupId = "com.huotu.widget.friendshipLink";
+        String id = "friendshipLink";
+        String version = "1.0-SNAPSHOT";
+        testDownloadJar(groupId, id, version);
+        testDownloadJar("commons-codec", "commons-codec", "1.10");
+    }
+
+    private void testDownloadJar(String groupId, String id, String version) throws IOException {
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        widgetFactoryService.downloadJar(groupId, id, version, buffer);
+        assertThat(buffer.toByteArray())
+                .isNotEmpty();
+        // 而且是一个zip格式
+        try (ZipInputStream zipInputStream = new ZipInputStream(new ByteArrayInputStream(buffer.toByteArray()))) {
+            ZipEntry entry = zipInputStream.getNextEntry();
+            System.out.println(entry.getName() + entry.getCreationTime());
+        }
     }
 
     @Test

@@ -169,7 +169,8 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
         if (info.getPath() != null && resourceService.getResource(info.getPath()).exists()) {
             if (log.isDebugEnabled())
                 log.debug("WidgetInfo " + info + "'s Package is existing.");
-            return;
+            if (resourceService.getResource(info.getPath()).contentLength() > 0)
+                return;
         }
         String path = "widget/" + UUID.randomUUID().toString() + ".jar";
         if (data != null) {

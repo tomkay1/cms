@@ -31,11 +31,13 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.UUID;
 import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -121,6 +123,16 @@ public class SiteControllerTest extends ManageTest {
 
         @Override
         public boolean open() {
+            return true;
+        }
+
+        @Override
+        public Predicate<? super PropertyDescriptor> editableProperty() throws Exception {
+            return propertyDescriptor -> Arrays.asList("title", "description", "keywords", "copyright").contains(propertyDescriptor.getName());
+        }
+
+        @Override
+        public boolean modify() {
             return true;
         }
 

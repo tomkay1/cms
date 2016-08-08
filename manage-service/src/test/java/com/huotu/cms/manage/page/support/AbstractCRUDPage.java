@@ -80,7 +80,8 @@ public abstract class AbstractCRUDPage<T> extends AbstractContentPage {
 
         // 先打开这个添加区域
         WebElement panel = getForm().findElement(By.className("panel-default"));
-        if (panel.getAttribute("class").contains("close-panel")) {
+        WebElement body = panel.findElement(By.className("panel-body"));
+        if (!body.isDisplayed()) {
             panel.findElement(By.cssSelector("a.maximize")).click();
         }
 

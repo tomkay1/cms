@@ -11,6 +11,7 @@ package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.controller.support.CRUDController;
 import com.huotu.cms.manage.exception.RedirectException;
+import com.huotu.hotcms.service.ImagesOwner;
 import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
@@ -18,7 +19,6 @@ import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.repository.OwnerRepository;
 import com.huotu.hotcms.service.service.HostService;
 import com.huotu.hotcms.service.service.SiteService;
-import com.huotu.hotcms.service.util.ImageHelper;
 import lombok.Data;
 import me.jiangcai.lib.resource.Resource;
 import me.jiangcai.lib.resource.service.ResourceService;
@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
  */
 @Controller
 @RequestMapping("/manage/site")
-public class SiteController extends CRUDController<Site, Long, SiteController.AboutNewSite, Void> {
+public class SiteController extends CRUDController<Site, Long, SiteController.AboutNewSite, SiteController.AboutNewSite> {
 
     private static final Log log = LogFactory.getLog(SiteController.class);
 
@@ -88,27 +88,54 @@ public class SiteController extends CRUDController<Site, Long, SiteController.Ab
         data.setOwner(owner);
 
         data = siteService.newSite(extra.getDomains(), extra.getHomeDomain(), data, Locale.CHINA);
-        if (!StringUtils.isEmpty(extra.getTmpLogoPath())) {
-            Resource tmp = resourceService.getResource(extra.getTmpLogoPath());
-            if (tmp.exists()) {
-                try {
-                    String path = ImageHelper.storeAsImage("png", resourceService, tmp.getInputStream());
-                    data.setLogoUri(path);
-                } catch (IOException e) {
-                    throw new RedirectException("/manage/site", e.getMessage(), e);
-                }
-                try {
-                    resourceService.deleteResource(extra.getTmpLogoPath());
-                } catch (IOException ignored) {
-                }
-            }
+        try {
+            updateImageFromTmp(data, 0, extra.getTmpLogoPath());
+        } catch (IOException e) {
+            throw new RedirectException(rootUri(), e.getMessage(), e);
         }
+
         return data;
     }
 
+    /**
+     * 从临时资源库更新图片资源,临时资源需要立刻回收
+     *
+     * @param owner 资源宿主
+     * @param index 索引号
+     * @param path  资源路径
+     */
+    private void updateImageFromTmp(ImagesOwner owner, int index, String path) throws IOException {
+        if (!StringUtils.isEmpty(path)) {
+            Resource tmp = resourceService.getResource(path);
+            if (tmp.exists()) {
+                try {
+                    owner.updateImage(index, resourceService, path);
+                } finally {
+                    //noinspection ThrowFromFinallyBlock
+                    resourceService.deleteResource(path);
+                }
+            }
+        }
+    }
+
     @Override
-    protected void prepareUpdate(Login login, Site entity, Site data, Void extra, RedirectAttributes attributes) throws RedirectException {
-        System.out.println(entity);
+    protected void prepareUpdate(Login login, Site entity, Site data, AboutNewSite extra, RedirectAttributes attributes)
+            throws RedirectException {
+        if (!login.siteManageable(entity)) {
+            throw new AccessDeniedException("您无权修改该网站。");
+        }
+        entity.setDescription(data.getDescription());
+        entity.setKeywords(data.getKeywords());
+        entity.setTitle(data.getTitle());
+        entity.setCopyright(data.getCopyright());
+
+        siteService.patchSite(extra.getDomains(), extra.getHomeDomain(), entity, Locale.CHINA);
+        try {
+            updateImageFromTmp(entity, 0, extra.getTmpLogoPath());
+        } catch (IOException e) {
+            throw new RedirectException(rootUri() + "/" + entity.getSiteId(), e.getMessage(), e);
+        }
+
     }
 
     @Override

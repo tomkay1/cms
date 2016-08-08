@@ -197,6 +197,7 @@ var CreatePage = {
             success: function (pageJson) {
                 if (!$.isEmptyObject(pageJson)) {
                     CreatePage.createTopLayout(pageJson);
+                    editFunc.dragFunc();
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {

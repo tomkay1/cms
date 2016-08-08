@@ -126,6 +126,27 @@ var editFunc = {
         editFunc.saveConfig();
         editFunc.closeConfig();
         editFunc.gridSystemGenerator();
+    },
+    dragFunc: function () {
+        $(".pageHTML, .pageHTML .column").sortable({
+            connectWith: ".column",
+            opacity: .35,
+            handle: ".drag"
+        });
+        $(".draggable-group .ncrow").draggable({
+            connectToSortable: ".pageHTML",
+            helper: "clone",
+            handle: ".drag",
+            drag: function (e, t) {
+                t.helper.width(400);
+            },
+            stop: function () {
+                $(".pageHTML .column").sortable({
+                    opacity: .35,
+                    connectWith: ".column"
+                });
+            }
+        });
     }
 };
 var Page = {
@@ -262,25 +283,8 @@ var editPage = {};
 editPage.init = function () {
     $(document.body).css("min-height", $(window).height() - 90);
     $(".pageHTML").css("min-height", $(window).height() - 160);
-    $(".pageHTML, .pageHTML .column").sortable({
-        connectWith: ".column",
-        opacity: .35,
-        handle: ".drag"
-    });
-    $(".draggable-group .ncrow").draggable({
-        connectToSortable: ".pageHTML",
-        helper: "clone",
-        handle: ".drag",
-        drag: function (e, t) {
-            t.helper.width(400);
-        },
-        stop: function () {
-            $(".pageHTML .column").sortable({
-                opacity: .35,
-                connectWith: ".column"
-            });
-        }
-    });
+
+    editFunc.dragFunc();
 
     $("#editBtn").click(function () {
         $(document.body).removeClass("sourcepreview");

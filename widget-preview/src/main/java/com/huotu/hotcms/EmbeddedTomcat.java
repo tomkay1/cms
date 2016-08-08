@@ -41,9 +41,11 @@ public class EmbeddedTomcat {
             File webContentFolder = Files.createTempDirectory("default-doc-base").toFile();
             StandardContext ctx = (StandardContext) tomcat.addWebapp("", webContentFolder.getAbsolutePath());
             tomcat.addServlet(ctx, "PreviewServlet", new PreviewServlet());
-            ctx.addServletMapping("/preview", "PreviewServlet");
+            ctx.addServletMapping("/*", "PreviewServlet");
+            log.info("tomcat start status await……");
             tomcat.start();
             tomcat.getServer().await();
+
         } catch (LifecycleException | ServletException e) {
             log.error(e.getMessage(), e);
             throw e;

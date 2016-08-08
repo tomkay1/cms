@@ -28,11 +28,12 @@ public class PreviewMojo extends AbstractMojo {
                 } catch (IOException ignored) {
                 }
             }
-            getLog().debug("Preview Http Server will use port " + port);
+            getLog().error("Preview Http Server will use port " + port);
             EmbeddedTomcat tomcat = new EmbeddedTomcat(port);
+            getLog().error("-------------close command [Ctrl+c]-----------------");
             tomcat.start();
             Desktop desktop = Desktop.getDesktop();
-            desktop.browse(new URI("http://localhost:" + port + "/index.html"));
+            desktop.browse(new URI("http://localhost:" + port + "/index"));
         } catch (Exception e) {
             getLog().error("preview", e);
         }

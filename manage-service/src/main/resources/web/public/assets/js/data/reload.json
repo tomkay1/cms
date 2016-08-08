@@ -7,11 +7,11 @@
           [
             {
               "component": {
-                "widgetIdentity": "com.huotu.hotcms.widget.friendshipLink-friendshipLink:1.0-SNAPSHOT",
+                "widgetIdentity": "group-widget-2",
                 "id": "friendshipLink-1470623666551",
                 "styleId": "0",
                 "properties": {},
-                "previewHTML": "<div id=\"riendshipLink-1470623666551\"><h1 class=\"title\">Connect  Local.  连接一切本地生活</h1><p class=\"desc\">我是测试内容，测试内容，测试内容，测试内容，测试内容，测试内容，测试内容。</p></div>"
+                "previewHTML": "<div id=\"friendshipLink\"><h1 class=\"title\">Connect  Local.  连接一切本地生活</h1><p class=\"desc\">我是测试内容，测试内容，测试内容，测试内容，测试内容，测试内容，测试内容。</p></div>"
               }
             }
           ]
@@ -25,22 +25,22 @@
           [
             {
               "component": {
-                "widgetIdentity": "com.huotu.hotcms.widget.friendshipLink-friendshipLink:1.0-SNAPSHOT",
+                "widgetIdentity": "group-widget-3",
                 "id": "friendshipLink-1470625376083",
                 "styleId": "0",
                 "properties": {},
-                "previewHTML": "<img id=\"friendshipLink-1470625376083\" src=\"http://placehold.it/200x150?text=Test2-1\">"
+                "previewHTML": "<img id=\"friendshipLink\" src=\"http://placehold.it/200x150?text=Test2-1\">"
               }
             }
           ],
           [
             {
               "component": {
-                "widgetIdentity": "com.huotu.hotcms.widget.friendshipLink-friendshipLink:1.0-SNAPSHOT",
+                "widgetIdentity": "group-widget-4",
                 "id": "friendshipLink-1470625378595",
                 "styleId": "0",
                 "properties": {},
-                "previewHTML": "<img id=\"friendshipLink-1470625378595\" src=\"http://placehold.it/200x150?text=Test2-1\">"
+                "previewHTML": "<img id=\"friendshipLink\" src=\"http://placehold.it/200x150?text=Test2-1\">"
               }
             }
           ]

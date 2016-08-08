@@ -275,11 +275,10 @@ var CreatePage = {
 var dataHandle = {};
 dataHandle.init = function () {
     var url = savePage + pageId;//save url
+
+    CreatePage.init(url);
     console.log(pageId);
-    if ( !pageId == -999 ) {
-        console.log("It's OK")
-        CreatePage.init(url);
-    }
+
     $('#saveBtn').on('click', function () {
         DataHandle.init(url);
     })

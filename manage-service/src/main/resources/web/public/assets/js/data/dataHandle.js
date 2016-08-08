@@ -150,7 +150,7 @@ var DataHandle = {
         });
     },
     init: function (url) {
-        DataHandle.downloadLayoutSrc(url);
+        if (!url) DataHandle.downloadLayoutSrc(url);
     }
 };
 
@@ -195,7 +195,6 @@ var CreatePage = {
             url: url,
             dataType: 'json',
             success: function (pageJson) {
-                console.log(pageJson)
                 if (!$.isEmptyObject(pageJson)) {
                     CreatePage.createTopLayout(pageJson);
                 }
@@ -270,6 +269,7 @@ var CreatePage = {
         return container.html();
     },
     init: function (url) {
+        if (!url) url = '../../public/assets/js/data/reload.json';
         CreatePage.getPage(url);
     }
 };
@@ -280,7 +280,7 @@ dataHandle.init = function () {
         CreatePage.init(null);
     else
         CreatePage.init(savePage + pageId);
-    console.log(pageId);
+
 
     $('#saveBtn').on('click', function () {
         if (!savePage)

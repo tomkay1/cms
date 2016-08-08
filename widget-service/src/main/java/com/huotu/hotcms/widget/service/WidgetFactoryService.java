@@ -126,7 +126,7 @@ public interface WidgetFactoryService {
      *
      *
      * @param widgetInfo  控件包
-     * @param ignoreError 忽略错误 true 忽略，false 不忽略
+     * @param ignoreError 忽略错误 true 忽略，false 不忽略 默认不忽略错误
      * @throws IllegalStateException 不支持的控件包，检查后不兼容旧版本
      * @throws IOException           查找列表page列表失败等
      */

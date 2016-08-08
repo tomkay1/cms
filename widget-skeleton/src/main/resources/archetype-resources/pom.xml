@@ -88,6 +88,14 @@
         </repository>
     </repositories>
 
+    <pluginRepositories>
+        <pluginRepository>
+            <id>repo-huotu</id>
+            <name>huotu Repository</name>
+            <url>http://repo.51flashmall.com:8081/nexus/content/groups/public/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
     <build>
         <plugins>
             <plugin>
@@ -121,7 +129,7 @@
             <plugin>
                 <groupId>com.huotu.hotcms</groupId>
                 <artifactId>widget-preview</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${apiVersion}</version>
             </plugin>
         </plugins>
     </build>

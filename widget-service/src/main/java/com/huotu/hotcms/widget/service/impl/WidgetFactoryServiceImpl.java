@@ -206,12 +206,8 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
 
     @Override
     public List<InstalledWidget> installedStatus(WidgetInfo widgetInfo) {
-        return installedStatus(widgetInfo.getIdentifier());
-    }
-
-    private List<InstalledWidget> installedStatus(WidgetIdentifier identifier) {
         return installedWidgets.stream()
-                .filter(widget -> widget.getIdentifier().toString().equals(identifier.toString()))
+                .filter(installedWidget -> installedWidget.getIdentifier().toString().equals(widgetInfo.getIdentifier().toString()))
                 .collect(Collectors.toList());
     }
 
@@ -234,7 +230,6 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
             throw new IllegalStateException("无法获取控件包资源");
         try {
             widgetInfoRepository.save(widgetInfo);
-
             List<Class> classes = ClassLoaderUtil.loadJarWidgetClasses(resourceService.getResource(widgetInfo.getPath()));
             if (classes != null) {
                 for (Class clazz : classes) {
@@ -242,8 +237,6 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
                     //加载jar
                     installWidget(widgetInfo.getOwner(), widget, widgetInfo.getType())
                             .setIdentifier(widgetInfo.getIdentifier());
-                    // widget/js/base64(identifier).js
-
                     //上传控件资源
                     Map<String, Resource> publicResources = widget.publicResources();
                     WidgetIdentifier identifier = new WidgetIdentifier(widget.groupId(), widget.widgetId()
@@ -254,22 +247,20 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
                                     + entry.getKey(), entry.getValue().getInputStream());
                         }
                     }
-
                     ImageHelper.storeAsImage("png", resourceService, widget.thumbnail().getInputStream()
                             , Widget.thumbnailPath(widget));
-
                     for (WidgetStyle style : widget.styles()) {
                         ImageHelper.storeAsImage("png", resourceService, style.thumbnail().getInputStream()
                                 , WidgetStyle.thumbnailPath(widget, style));
                     }
                 }
             }
-
         } catch (InstantiationException
                 | IllegalAccessException | FormatException e) {
             throw new FormatException("Bad jar format", e);
         }
     }
+
 
     @Override
     public void installWidgetInfo(Owner owner, String groupId, String artifactId, String version, String type)
@@ -311,17 +302,27 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
      */
     private void deleteOtherWidget(Widget widget, Set<Widget> keepWidgets) throws IOException, FormatException {
         //查找控件
-        //
+
         // 根据参数 清理 this.installedWidgets
+        WidgetIdentifier identifier = new WidgetIdentifier(widget.groupId(), widget.widgetId(), widget.version());
+        Iterator<InstalledWidget> it = installedWidgets.iterator();
+        while (it.hasNext()) {
+            Widget w = it.next().getWidget();
+            if (w.groupId().equals(identifier.getGroupId())
+                    && w.widgetId().equals(widget.widgetId())
+                    && !w.version().equals(identifier.getVersion())) {
+                if (!keepWidgets.contains(w)) {
+                    it.remove();
+                }
+            }
+        }
         // 循环所有控件包  installedStatus(null) 如果发现已安装控件为空 则删除
-//
         List<WidgetInfo> widgetInfoList = widgetInfoRepository.findByGroupIdAndArtifactIdAndEnabledTrue(widget.groupId()
                 , widget.widgetId());
-        //设置不等于改控件版本的为不可用状态
         for (WidgetInfo widgetInfo : widgetInfoList) {
-            if (!widgetInfo.getVersion().equals(widget.version())) {
-                widgetInfo.setEnabled(false);
-                widgetInfoRepository.saveAndFlush(widgetInfo);
+            List<InstalledWidget> set = installedStatus(widgetInfo);
+            if (set == null || set.isEmpty()) {
+                widgetInfoRepository.delete(widgetInfo);
             }
         }
     }

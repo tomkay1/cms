@@ -302,7 +302,6 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
      */
     private void deleteOtherWidget(Widget widget, Set<Widget> keepWidgets) throws IOException, FormatException {
         //查找控件
-
         // 根据参数 清理 this.installedWidgets
         WidgetIdentifier identifier = new WidgetIdentifier(widget.groupId(), widget.widgetId(), widget.version());
         Iterator<InstalledWidget> it = installedWidgets.iterator();

@@ -193,6 +193,7 @@ var CreatePage = {
             url: url,
             dataType: 'json',
             success: function (pageJson) {
+                console.log(pageJson)
                 if (!$.isEmptyObject(pageJson)) {
                     CreatePage.createTopLayout(pageJson);
                 }
@@ -274,7 +275,10 @@ var CreatePage = {
 var dataHandle = {};
 dataHandle.init = function () {
     var url = savePage + pageId;//save url
-    if ( !pageId == -999 ) CreatePage.init(url);
+    if ( !pageId == -999 ) {
+        console.log("It's OK")
+        CreatePage.init(url);
+    }
     $('#saveBtn').on('click', function () {
         DataHandle.init(url);
     })

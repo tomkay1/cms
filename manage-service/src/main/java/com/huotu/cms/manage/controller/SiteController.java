@@ -11,10 +11,12 @@ package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.controller.support.CRUDController;
 import com.huotu.cms.manage.exception.RedirectException;
+import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.repository.OwnerRepository;
+import com.huotu.hotcms.service.service.HostService;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.util.ImageHelper;
 import lombok.Data;
@@ -33,6 +35,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 /**
  * Created by chendeyu on 2015/12/24.
@@ -46,6 +49,8 @@ public class SiteController extends CRUDController<Site, Long, SiteController.Ab
 
     @Autowired
     private SiteService siteService;
+    @Autowired
+    private HostService hostService;
 
     @Autowired
     private OwnerRepository ownerRepository;
@@ -57,6 +62,15 @@ public class SiteController extends CRUDController<Site, Long, SiteController.Ab
         return (root, query, cb)
                 -> cb.and(cb.isFalse(root.get("deleted")), cb.equal(root.get("owner").get("id")
                 , login.currentOwnerId()));
+    }
+
+    @Override
+    protected void prepareOpen(Login login, Site data, Model model, RedirectAttributes attributes) throws RedirectException {
+        super.prepareOpen(login, data, model, attributes);
+        String domains = String.join(",", hostService.hookOn(data).stream()
+                .map(Host::getDomain)
+                .collect(Collectors.toSet()));
+        model.addAttribute("domains", domains);
     }
 
     @Override

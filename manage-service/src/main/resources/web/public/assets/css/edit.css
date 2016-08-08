@@ -305,7 +305,9 @@ header .btn {
     -moz-box-shadow: inset 0 1px 13px rgba(0, 0, 0, 0.1);
     box-shadow: inset 0 1px 13px rgba(0, 0, 0, 0.1);
 }
-
+.pageHTML .row.copyright {
+    background-color: transparent;
+}
 .pageHTML .ncrow:hover > .drag,
 .pageHTML .ncrow:hover > .setting,
 .pageHTML .ncrow:hover > .remove {

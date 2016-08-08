@@ -254,7 +254,7 @@ var Page = {
                 var ele = $(e.target).find('.view').children().eq(0);
                 var oId = ele.attr('id');
                 if ( !oId ) {
-                    layer.msg('该控件缺少唯一ID，可能影响操作。');
+                    console.log('部分组件缺少唯一ID，可能影响操作。');
                     ele.attr('id', Page.randomId(6))
                 }
             },

@@ -126,6 +126,27 @@ var editFunc = {
         editFunc.saveConfig();
         editFunc.closeConfig();
         editFunc.gridSystemGenerator();
+    },
+    dragFunc: function () {
+        $(".pageHTML, .pageHTML .column").sortable({
+            connectWith: ".column",
+            opacity: .35,
+            handle: ".drag"
+        });
+        $(".draggable-group .ncrow").draggable({
+            connectToSortable: ".pageHTML",
+            helper: "clone",
+            handle: ".drag",
+            drag: function (e, t) {
+                t.helper.width(400);
+            },
+            stop: function () {
+                $(".pageHTML .column").sortable({
+                    opacity: .35,
+                    connectWith: ".column"
+                });
+            }
+        });
     }
 };
 var Page = {
@@ -181,7 +202,7 @@ var Page = {
             child.attr('data-id', v['identity']);
             child.append(Page.styleList.join('\n'));
             $.each(v.styles, function (key, val) {
-                var div = $('<div class="swiper-slide"></div>')
+                var div = $('<div class="swiper-slide"></div>');
                 var img = $('<img class="center-block changeStyle">');
                 var p = $('<p></p>');
                 img.attr('src',val.thumbnail);
@@ -229,14 +250,31 @@ var Page = {
             connectToSortable: ".column",
             helper: "clone",
             handle: ".drag",
+            create: function(e, ui ) {
+                var ele = $(e.target).find('.view').children().eq(0);
+                var oId = ele.attr('id');
+                if ( !oId ) {
+                    console.log('部分组件缺少唯一ID，可能影响操作。');
+                    ele.attr('id', Page.randomId(6))
+                }
+            },
             drag: function (e, t) {
-                t.helper.width(400)
+                t.helper.width(400);
             },
             stop: function (e, t) {
                 var oId = t.helper.find('.view').children().eq(0).attr('id');
                 editFunc.handleJsIds(oId);
             }
         });
+    },
+    randomId: function (num) {
+        var str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        var s = '';
+        for(var i = 0; i < num; i++){
+            var rand = Math.floor(Math.random() * str.length);
+            s += str.charAt(rand);
+        }
+        return s;
     }
 };
 
@@ -245,25 +283,8 @@ var editPage = {};
 editPage.init = function () {
     $(document.body).css("min-height", $(window).height() - 90);
     $(".pageHTML").css("min-height", $(window).height() - 160);
-    $(".pageHTML, .pageHTML .column").sortable({
-        connectWith: ".column",
-        opacity: .35,
-        handle: ".drag"
-    });
-    $(".draggable-group .ncrow").draggable({
-        connectToSortable: ".pageHTML",
-        helper: "clone",
-        handle: ".drag",
-        drag: function (e, t) {
-            t.helper.width(400);
-        },
-        stop: function () {
-            $(".pageHTML .column").sortable({
-                opacity: .35,
-                connectWith: ".column"
-            });
-        }
-    });
+
+    editFunc.dragFunc();
 
     $("#editBtn").click(function () {
         $(document.body).removeClass("sourcepreview");

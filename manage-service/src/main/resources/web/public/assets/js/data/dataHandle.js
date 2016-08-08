@@ -150,7 +150,7 @@ var DataHandle = {
         });
     },
     init: function (url) {
-        if (!url) DataHandle.downloadLayoutSrc(url);
+        DataHandle.downloadLayoutSrc(url);
     }
 };
 
@@ -197,6 +197,7 @@ var CreatePage = {
             success: function (pageJson) {
                 if (!$.isEmptyObject(pageJson)) {
                     CreatePage.createTopLayout(pageJson);
+                    editFunc.dragFunc();
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -256,7 +257,8 @@ var CreatePage = {
         var container = $('<div></div>');
         container.append(DOM.component.join('\n'));
         container.children('.box').children('span.setting').attr('data-target', data.widgetIdentity);
-        container.children('.box').children('view').html('data-target', data.previewHTML);
+        container.children('.box').children('.view').html(data.previewHTML);
+        container.children('.box').children('.view').children().attr({'id':data.id,'data-widgetidentity':data.widgetIdentity, 'data-styleid': data.styleId});
         return container.html();
     },
     createLayout: function (data) {

@@ -114,7 +114,6 @@ var editFunc = {
         ele.addClass('active');
     },
     handleJsIds: function (id) {
-        console.log(id);
         editFunc.handleWidgetIds(id);
     },
     closePreloader: function () {
@@ -234,6 +233,7 @@ var Page = {
                 var ele = $(e.target).find('.view').children().eq(0);
                 var oId = ele.attr('id');
                 if ( !oId ) {
+                    layer.msg('该控件缺少唯一ID，可能影响操作。');
                     ele.attr('id', Page.randomId(6))
                 }
             },
@@ -242,11 +242,7 @@ var Page = {
             },
             stop: function (e, t) {
                 var oId = t.helper.find('.view').children().eq(0).attr('id');
-                if ( !oId ) {
-                    layer.msg('该控件缺少唯一ID，可能影响操作。');
-                } else {
-                    editFunc.handleJsIds(oId);
-                }
+                editFunc.handleJsIds(oId);
             }
         });
     },

@@ -112,7 +112,46 @@ CMSWidgets.saveComponent = function (globalId, callbacks) {
 //-------------------------- PRIVATE
 // 默认配置
 CMSWidgets.defaultConfig = {
-    // TODO 这是应该配置一个所有控件都「应该」做到的事
+    //支持简单的input参数内容，不支持第三方插件，如使用第三方请在控件开发时自定义editor内容
+    editor: {
+        properties: null,
+        setProperties: function (obj) {
+            var name = $(obj).attr("name");
+            properties[name] = $(obj).val();
+        },
+        saveComponent: function (onSuccess, onFailed) {
+            $("input[type='email']").each(function () {
+                editor.setProperties($(this));
+            });
+            $("input[type='url']").each(function () {
+                editor.setProperties($(this));
+            });
+            $("input[type='color']").each(function () {
+                editor.setProperties($(this));
+            });
+            $(":text").each(function () {
+                editor.setProperties($(this));
+            });
+
+            $(":checkbox").each(function () {
+                var name = $(this).attr("name");
+                editor.properties[name] = $(this).is(":checked");
+            });
+            $(":file").each(function () {
+                editor.setProperties($(this));
+            });
+            $("select").each(function () {
+                editor.setProperties($(this));
+            });
+            return this.properties;
+        },
+        open: function (globalId) {
+            this.properties = widgetProperties(globalId);
+        },
+        close: function (globalId) {
+
+        }
+    }
 };
 CMSWidgets.nextWidgetIdentity = null;
 CMSWidgets.widgetLibraries = {};

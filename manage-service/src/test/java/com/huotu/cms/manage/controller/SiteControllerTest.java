@@ -31,9 +31,13 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.UUID;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -113,6 +117,33 @@ public class SiteControllerTest extends ManageTest {
 
         SiteCRUDTest(Owner owner) {
             this.owner = owner;
+        }
+
+        @Override
+        public boolean open() {
+            return true;
+        }
+
+        @Override
+        public void assertResourcePage(AbstractCRUDPage<Site> page, Site entity) throws Exception {
+            WebElement form = page.getForm();
+            // 这里有2个tab
+            page.assertInputText(form, "name", entity.getName());
+            page.assertInputText(form, "title", entity.getTitle());
+            page.assertInputTextarea(form, "description", entity.getDescription());
+            page.assertInputText(form, "copyright", entity.getCopyright());
+            if (entity.getKeywords() != null)
+                page.assertInputTags(form, "keywords", Arrays.asList(entity.getKeywords().split(",")));
+            else
+                page.assertInputTags(form, "keywords", new ArrayList<>());
+
+            final Stream<Host> hostStream = hostService.hookOn(entity).stream();
+            page.assertInputTags(form, "domains", hostStream
+                    .map(Host::getDomain)
+                    .collect(Collectors.toList()));
+
+            page.assertInputText(form, "homeDomain", entity.getRecommendDomain());
+//            page.assertInputText(form, "description", entity.getDescription());
         }
 
         @Override

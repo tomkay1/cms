@@ -29,6 +29,7 @@ import org.springframework.core.io.Resource;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -133,6 +134,21 @@ public abstract class AbstractManagePage extends BracketPage {
                 return;
             }
         }
+    }
+
+    public void assertInputTags(WebElement form, String name, Iterable<String> tags) {
+        WebElement input = form.findElement(By.name(name));
+        String id = input.getAttribute("id");
+
+        WebElement div = form.findElement(By.id(id + "_tagsinput"));
+
+        assertThat(div.findElements(By.className("tag")).stream()
+                .map((tag) -> tag.findElement(By.tagName("span")))
+                .map(WebElement::getText)
+                .map(String::trim)
+                .collect(Collectors.toList())
+        ).containsOnlyElementsOf(tags);
+
     }
 
     public void inputTags(WebElement formElement, String inputName, String[] values) {
@@ -285,7 +301,7 @@ public abstract class AbstractManagePage extends BracketPage {
      * @param name    input name
      * @param checked 期望值
      */
-    protected void assertInputChecked(WebElement form, String name, boolean checked) {
+    public void assertInputChecked(WebElement form, String name, boolean checked) {
         WebElement input = form.findElement(By.name(name));
         assertThat(inputChecked(input))
                 .isEqualTo(checked);
@@ -299,7 +315,7 @@ public abstract class AbstractManagePage extends BracketPage {
      * @param label 期望值
      * @see #inputSelect(WebElement, String, String)
      */
-    protected void assertInputSelect(WebElement form, String name, String label) {
+    public void assertInputSelect(WebElement form, String name, String label) {
         WebElement input = form.findElement(By.name(name));
         // chosen-single
         if (!input.isDisplayed()) {
@@ -326,9 +342,15 @@ public abstract class AbstractManagePage extends BracketPage {
      * @param value 期望值
      * @see #inputText(WebElement, String, String)
      */
-    protected void assertInputText(WebElement form, String name, String value) {
+    public void assertInputText(WebElement form, String name, String value) {
         WebElement input = form.findElement(By.name(name));
         assertThat(input.getAttribute("value"))
+                .isEqualTo(value);
+    }
+
+    public void assertInputTextarea(WebElement form, String name, String value) {
+        WebElement input = form.findElement(By.name(name));
+        assertThat(input.getText())
                 .isEqualTo(value);
     }
 
@@ -357,4 +379,5 @@ public abstract class AbstractManagePage extends BracketPage {
     public void uploadResource(WebElement form, String name, Resource resource) {
 
     }
+
 }

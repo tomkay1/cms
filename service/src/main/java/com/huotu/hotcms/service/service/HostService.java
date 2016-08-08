@@ -14,11 +14,7 @@ import com.huotu.hotcms.service.entity.Site;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
-import java.util.Set;
 
-/**
- * Created by cwb on 2015/12/24.
- */
 public interface HostService {
 
     /**
@@ -29,19 +25,6 @@ public interface HostService {
      */
     @Transactional(readOnly = true)
     Host getHost(String domain);
-
-    Boolean save(Host host);
-
-    /**
-     * <p>
-     * 获得需要移除的Host列表
-     * </p>
-     *
-     * @param domains 新的域名列表
-     * @param site    目标站点信息
-     * @return
-     */
-    Set<Host> getRemoveHost(String[] domains, Site site);
 
     /**
      * <p>不要在管这个站点,让这个站点处于无主机可路由的状态</p>

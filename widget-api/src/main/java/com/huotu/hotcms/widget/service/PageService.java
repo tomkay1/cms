@@ -11,11 +11,16 @@ package com.huotu.hotcms.widget.service;
 
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.event.CopySiteEvent;
+import com.huotu.hotcms.service.event.DeleteSiteEvent;
 import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.entity.PageInfo;
+import com.huotu.hotcms.widget.page.Layout;
+import com.huotu.hotcms.widget.page.PageLayout;
 import com.huotu.hotcms.widget.page.PageModel;
+import org.springframework.context.event.EventListener;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
@@ -28,6 +33,21 @@ import java.util.List;
  * @author CJ
  */
 public interface PageService {
+
+    @EventListener
+    void siteDeleted(DeleteSiteEvent event) throws IOException;
+
+    //    @TransactionalEventListener(CopySiteEvent.class)
+    @EventListener
+    void siteCopy(CopySiteEvent event) throws IOException;
+
+    /**
+     * 可使用的布局组
+     *
+     * @param layout 页面布局
+     * @return 一个不可能为null的布局数组
+     */
+    Layout[] layoutsForUse(PageLayout layout);
 
     /**
      * 生成一个页面的html

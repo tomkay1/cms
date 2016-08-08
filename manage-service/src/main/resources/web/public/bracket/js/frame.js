@@ -64,6 +64,12 @@ $(function () {
 
     resetTopMenuStatus();
 
+    // 点取消 你给我提交! 你tmd逗我啊
+    $('button.btn-default').click(function () {
+        history.back();
+        return false;
+    });
+
     // 让delete class 具备确认能力
     function followTheLink() {
         var link = $(this).attr('href');

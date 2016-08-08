@@ -11,7 +11,6 @@ package com.huotu.hotcms.service.entity;
 
 import com.huotu.hotcms.service.ImagesOwner;
 import com.huotu.hotcms.service.model.LinkModel;
-import com.huotu.hotcms.service.util.SerialUtil;
 import lombok.Getter;
 import lombok.Setter;
 import me.jiangcai.lib.resource.service.ResourceService;
@@ -21,7 +20,6 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -68,21 +66,9 @@ public class Link extends AbstractContent implements ImagesOwner {
     @Override
     public Link copy() {
         Link link = new Link();
-        link.setThumbUri(thumbUri);
-        link.setDescription(getDescription());
-        link.setOrderWeight(getOrderWeight());
-        link.setTitle(getTitle());
-        link.setCreateTime(LocalDateTime.now());
-        link.setUpdateTime(LocalDateTime.now());
-        link.setDeleted(isDeleted());
-        return link;
-    }
-
-    @Override
-    public Link copy(Site site, Category category) {
-        Link link = copy();
-        link.setCategory(category);
-        link.setSerial(SerialUtil.formatSerial(site));
+        copyTo(link);
+//        link.setThumbUri(thumbUri);
+        link.setLinkUrl(linkUrl);
         return link;
     }
 

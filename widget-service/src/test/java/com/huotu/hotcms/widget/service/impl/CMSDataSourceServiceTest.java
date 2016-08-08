@@ -67,12 +67,12 @@ public class CMSDataSourceServiceTest extends TestBase {
         assertThat(cmsDataSourceService.findParentArticleCategory())
                 .isEmpty();
 
-        Category category = randomCategory(site, ContentType.Link);
+        Category category = randomCategory(site, ContentType.Article);
         assertThat(cmsDataSourceService.findParentArticleCategory())
                 .contains(category);
 
         // 再弄一个子集
-        Category sub = randomCategory(site, ContentType.Link, category);
+        Category sub = randomCategory(site, ContentType.Article, category);
 
         assertThat(cmsDataSourceService.findParentArticleCategory())
                 .contains(category)

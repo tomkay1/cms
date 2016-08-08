@@ -11,7 +11,6 @@ package com.huotu.hotcms.service.entity;
 
 import com.huotu.hotcms.service.ImagesOwner;
 import com.huotu.hotcms.service.common.ArticleSource;
-import com.huotu.hotcms.service.util.SerialUtil;
 import lombok.Getter;
 import lombok.Setter;
 import me.jiangcai.lib.resource.service.ResourceService;
@@ -22,7 +21,6 @@ import javax.persistence.Lob;
 import javax.persistence.Table;
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -93,29 +91,14 @@ public class Article extends AbstractContent implements ImagesOwner {
     @Override
     public Article copy() {
         Article article = new Article();
+        copyTo(article);
+
+        article.setArticleSource(articleSource);
         article.setAuthor(author);
         article.setContent(content);
-        article.setCategory(getCategory());
-        article.setSerial(SerialUtil.formatSerial(getCategory().getSite()));
         article.setSystem(system);
-        article.setThumbUri(thumbUri);
-        article.setCreateTime(LocalDateTime.now());
-        article.setArticleSource(articleSource);
-        article.setOrderWeight(getOrderWeight());
-        article.setDeleted(isDeleted());
-        article.setUpdateTime(LocalDateTime.now());
-        article.setDescription(getDescription());
-        article.setTitle(getTitle());
-        article.setSerial(getSerial());
-        article.setCategory(getCategory());
-        return article;
-    }
-
-    @Override
-    public Article copy(Site site, Category category) {
-        Article article = copy();
-        article.setSerial(SerialUtil.formatSerial(site));
-        article.setCategory(category);
+        article.setType(type);
+//        article.setThumbUri(thumbUri);
         return article;
     }
 

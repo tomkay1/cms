@@ -10,7 +10,6 @@
 package com.huotu.hotcms.service.entity;
 
 import com.huotu.hotcms.service.ImagesOwner;
-import com.huotu.hotcms.service.util.SerialUtil;
 import lombok.Getter;
 import lombok.Setter;
 import me.jiangcai.lib.resource.service.ResourceService;
@@ -21,7 +20,6 @@ import javax.persistence.Lob;
 import javax.persistence.Table;
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -55,26 +53,11 @@ public class Gallery extends AbstractContent implements ImagesOwner {
 
     @Override
     public Gallery copy() {
-        Gallery gallery=new Gallery();
+        Gallery gallery = new Gallery();
+        copyTo(gallery);
         gallery.setContent(content);
-        gallery.setThumbUri(thumbUri);
-        gallery.setOrderWeight(getOrderWeight());
-        gallery.setTitle(getTitle());
-        gallery.setSerial(getSerial());
-        gallery.setCategory(getCategory());
-        gallery.setDeleted(isDeleted());
+//        gallery.setThumbUri(thumbUri);
         gallery.setLinkUrl(linkUrl);
-        gallery.setCreateTime(LocalDateTime.now());
-        gallery.setUpdateTime(LocalDateTime.now());
-        gallery.setDescription(getDescription());
-        return gallery;
-    }
-
-    @Override
-    public Gallery copy(Site site, Category category) {
-        Gallery gallery=copy();
-        gallery.setSerial(SerialUtil.formatSerial(site));
-        gallery.setCategory(category);
         return gallery;
     }
 

@@ -13,6 +13,7 @@ import com.huotu.hotcms.service.ResourcesOwner;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Article;
+import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Download;
 import com.huotu.hotcms.service.entity.Gallery;
 import com.huotu.hotcms.service.entity.Link;
@@ -22,6 +23,8 @@ import com.huotu.hotcms.service.entity.Video;
 import com.huotu.hotcms.service.repository.ContentRepository;
 import com.huotu.hotcms.service.service.CommonService;
 import com.huotu.hotcms.service.service.ContentService;
+import com.huotu.hotcms.service.service.TemplateService;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -38,10 +41,16 @@ public class ContentServiceImpl implements ContentService {
 
     @Autowired
     private ContentRepository contentRepository;
-
+    @Autowired
+    private ResourceService resourceService;
     @Autowired
     private CommonService commonService;
 
+    public AbstractContent getContent(Site site, String serial) {
+        return contentRepository.findOne((root, query, cb) -> {
+            return cb.and(cb.equal(root.get("category").get("site"), site), cb.equal(root.get("serial"), serial));
+        });
+    }
 
     @Override
     public Iterable<AbstractContent> list(String title, Site site, Long category, Pageable pageable) {
@@ -83,6 +92,19 @@ public class ContentServiceImpl implements ContentService {
 //        Specification<AbstractContent> specification = specificationBySite(site);
 //        return contentRepository.count(specification);
 //    }
+
+    public Iterable<AbstractContent> listByCategory(Category category, Pageable pageable) {
+        Specification<AbstractContent> specification = specificationByCategory(category);
+
+        if (pageable == null)
+            return contentRepository.findAll(specification);
+        return contentRepository.findAll(specification, pageable);
+    }
+
+    @NotNull
+    private Specification<AbstractContent> specificationByCategory(Category category) {
+        return (root, query, cb) -> cb.equal(root.get("category"), category);
+    }
 
     @Override
     public AbstractContent findById(Long contentId) {
@@ -127,6 +149,52 @@ public class ContentServiceImpl implements ContentService {
         content.setDeleted(false);
 
         return content;
+    }
+
+    @Override
+    public void copyTo(Category src, Category dist) throws IOException {
+        for (AbstractContent content : listByCategory(src, null)) {
+            // 执行复制
+            AbstractContent newContent = content.copy();
+
+            // 看下目标站是否已存在
+            String append = "";
+            while (getContent(dist.getSite(), newContent.getSerial() + append) != null) {
+                append += TemplateService.DuplicateAppend;
+            }
+            newContent.setSerial(newContent.getSerial() + append);
+            newContent.setCategory(dist);
+            contentRepository.save(newContent);
+            //成功了 那就复制资源！
+
+            if (newContent instanceof ResourcesOwner) {
+                ResourcesOwner oldResources = (ResourcesOwner) content;
+                ResourcesOwner newResources = (ResourcesOwner) newContent;
+                //首先做一个检查 新的资源肯定都是没的！
+                for (String path : newResources.getResourcePaths()) {
+                    assert path == null;
+                }
+
+                newResources.updateResources(resourceService, oldResources.getResourcePaths());
+            }
+
+            // TODO 特殊类型 图库！
+//            for (Gallery gallery : galleries) {
+//                g = gallery.copy(customerSite, dist);
+//                if (!StringUtils.isEmpty(gallery.getThumbUri()))
+//                    g.setThumbUri(copyStaticResource(gallery.getThumbUri()));
+//                g = contentRepository.save(g);
+//                //图库集合复制
+//                galleryItems = galleryItemRepository.findByGallery(gallery);
+//                for (GalleryItem gl : galleryItems) {
+//                    galleryItem = gl.copy(customerSite, dist);
+//                    galleryItem.setGallery(g);
+//                    if (!StringUtils.isEmpty(galleryItem.getThumbUri()))
+//                        galleryItem.setThumbUri(copyStaticResource(galleryItem.getThumbUri()));
+//                    galleryItemRepository.save(galleryItem);
+//                }
+//            }
+        }
     }
 
 

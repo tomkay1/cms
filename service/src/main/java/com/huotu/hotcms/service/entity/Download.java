@@ -10,7 +10,6 @@
 package com.huotu.hotcms.service.entity;
 
 import com.huotu.hotcms.service.ResourcesOwner;
-import com.huotu.hotcms.service.util.SerialUtil;
 import lombok.Getter;
 import lombok.Setter;
 import me.jiangcai.lib.resource.service.ResourceService;
@@ -20,7 +19,6 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -54,21 +52,8 @@ public class Download extends AbstractContent implements ResourcesOwner {
     @Override
     public Download copy() {
         Download download = new Download();
-        download.setDownloadPath(downloadPath);
-        download.setTitle(getTitle());
-        download.setDeleted(isDeleted());
-        download.setOrderWeight(getOrderWeight());
-        download.setUpdateTime(LocalDateTime.now());
-        download.setCreateTime(LocalDateTime.now());
-        download.setDescription(getDescription());
-        return download;
-    }
-
-    @Override
-    public Download copy(Site site, Category category) {
-        Download download = copy();
-        download.setSerial(SerialUtil.formatSerial(site));
-        download.setCategory(category);
+        copyTo(download);
+        download.setFileName(fileName);
         return download;
     }
 

@@ -28,7 +28,6 @@ import com.huotu.hotcms.widget.WidgetStyle;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.PageElement;
-import com.huotu.hotcms.widget.page.PageLayout;
 import com.huotu.hotcms.widget.service.PageService;
 import me.jiangcai.lib.resource.Resource;
 import me.jiangcai.lib.resource.service.ResourceService;
@@ -53,6 +52,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.Map;
 import java.util.UUID;
 
@@ -94,7 +94,7 @@ public class FrontController implements FilterBehavioral {
         try {
             PageInfo pageInfo = pageService.getPage(pageId);
             // 寻找控件了
-            for (Layout layout : PageLayout.NoNullLayout(pageInfo.getLayout())) {
+            for (Layout layout : pageService.layoutsForUse(pageInfo.getLayout())) {
                 Component component = findComponent(layout, id);
                 if (component != null) {
                     ByteArrayOutputStream buffer = new ByteArrayOutputStream();
@@ -162,7 +162,7 @@ public class FrontController implements FilterBehavioral {
                 Path path = Files.createTempFile("tempCss", ".css");
                 try {
 
-                    try (OutputStream out = Files.newOutputStream(path)) {
+                    try (OutputStream out = Files.newOutputStream(path, StandardOpenOption.WRITE)) {
                         Component component = new Component();
                         component.setId(componentId);
                         component.setInstalledWidget(installedWidget);
@@ -175,7 +175,7 @@ public class FrontController implements FilterBehavioral {
                         out.flush();
                     }
 
-                    try (InputStream is = Files.newInputStream(path)) {
+                    try (InputStream is = Files.newInputStream(path, StandardOpenOption.READ)) {
                         resourcePath = "tmp/page/" + UUID.randomUUID().toString() + ".css";
                         resource = resourceService.uploadResource(resourcePath, is);
                     }

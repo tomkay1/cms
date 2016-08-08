@@ -121,11 +121,6 @@ public class PageInfo implements Auditable, Copyable<PageInfo>, ResourcesOwner {
         return pageInfo;
     }
 
-    @Override
-    public PageInfo copy(Site site, Category category) {
-        return copy();
-    }
-
     /**
      * @return ..
      */

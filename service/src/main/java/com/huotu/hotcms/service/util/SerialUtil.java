@@ -9,10 +9,6 @@
 
 package com.huotu.hotcms.service.util;
 
-/**
- * Created by hzbc on 2016/5/18.
- */
-
 import com.huotu.hotcms.service.entity.Site;
 
 import java.util.Date;

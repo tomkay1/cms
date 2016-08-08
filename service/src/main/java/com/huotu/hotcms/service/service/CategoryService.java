@@ -117,4 +117,14 @@ public interface CategoryService {
      * @param category
      */
     void init(Category category);
+
+    /**
+     * 复制一个数据源，目标站点是to
+     *
+     * @param src 原数据源 如果拥有parent数据源，应该从to站点中寻找
+     * @param to  目标站点
+     * @return 新数据源
+     */
+    @Transactional
+    Category copyTo(Category src, Site to);
 }

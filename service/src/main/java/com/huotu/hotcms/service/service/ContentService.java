@@ -11,6 +11,7 @@ package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.AbstractContent;
+import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,15 @@ import java.io.IOException;
  * 内容服务
  */
 public interface ContentService {
+
+    /**
+     * 寻找一个正文
+     *
+     * @param site
+     * @param serial
+     * @return
+     */
+    AbstractContent getContent(Site site, String serial);
 
     /**
      * 查找所有符合要求的内容
@@ -63,6 +73,15 @@ public interface ContentService {
      * @return 一个尚未进入持久曾的内容(JO)
      */
     AbstractContent newContent(ContentType type);
+
+    /**
+     * 复制所有src的正文到dist
+     *
+     * @param src  源数据源
+     * @param dist 目标数据源
+     */
+    @Transactional
+    void copyTo(Category src, Category dist) throws IOException;
 
 //    PageData<Contents> getPage(String title,Long siteId,Long category, int page, int pageSize);
 }

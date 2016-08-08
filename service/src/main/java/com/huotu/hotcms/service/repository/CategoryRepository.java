@@ -14,6 +14,7 @@ import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Set;
@@ -28,14 +29,21 @@ public interface CategoryRepository extends JpaRepository<Category, Long>, JpaSp
      */
     List<Category> findBySite(Site site);
 
+    List<Category> findBySiteAndContentTypeAndParent(Site site, ContentType contentType, Category parent);
+
     /**
      * 根据站点父级数据源查询数据源
      *
      * @param site   站点
-     * @param parent 父级数据源,支持null
+     * @param parent 父级数据源,不支持null
      * @return
      */
-    List<Category> findBySiteAndParent(Site site, Category parent);
+    @Query("select c from Category as c where c.site=?1 and c.parent in ?2")
+    Set<Category> findBySiteAndParentIn(Site site, Set<Category> parent);
+
+    Set<Category> findBySiteAndParentNull(Site site);
+
+//    Set<Category> findBySiteAnd
 
     /**
      * 删除相应站点下的数据源

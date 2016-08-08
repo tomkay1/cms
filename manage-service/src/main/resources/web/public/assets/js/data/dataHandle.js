@@ -150,7 +150,7 @@ var DataHandle = {
         });
     },
     init: function (url) {
-        if (!url) DataHandle.downloadLayoutSrc(url);
+        DataHandle.downloadLayoutSrc(url);
     }
 };
 

@@ -114,6 +114,7 @@ var editFunc = {
         ele.addClass('active');
     },
     handleJsIds: function (id) {
+        console.log(id);
         editFunc.handleWidgetIds(id);
     },
     closePreloader: function () {
@@ -181,7 +182,7 @@ var Page = {
             child.attr('data-id', v['identity']);
             child.append(Page.styleList.join('\n'));
             $.each(v.styles, function (key, val) {
-                var div = $('<div class="swiper-slide"></div>')
+                var div = $('<div class="swiper-slide"></div>');
                 var img = $('<img class="center-block changeStyle">');
                 var p = $('<p></p>');
                 img.attr('src',val.thumbnail);
@@ -229,14 +230,34 @@ var Page = {
             connectToSortable: ".column",
             helper: "clone",
             handle: ".drag",
+            create: function(e, ui ) {
+                var ele = $(e.target).find('.view').children().eq(0);
+                var oId = ele.attr('id');
+                if ( !oId ) {
+                    ele.attr('id', Page.randomId(6))
+                }
+            },
             drag: function (e, t) {
-                t.helper.width(400)
+                t.helper.width(400);
             },
             stop: function (e, t) {
                 var oId = t.helper.find('.view').children().eq(0).attr('id');
-                editFunc.handleJsIds(oId);
+                if ( !oId ) {
+                    layer.msg('该控件缺少唯一ID，可能影响操作。');
+                } else {
+                    editFunc.handleJsIds(oId);
+                }
             }
         });
+    },
+    randomId: function (num) {
+        var str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        var s = '';
+        for(var i = 0; i < num; i++){
+            var rand = Math.floor(Math.random() * str.length);
+            s += str.charAt(rand);
+        }
+        return s;
     }
 };
 

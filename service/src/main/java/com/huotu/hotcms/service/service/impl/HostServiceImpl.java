@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.Set;
 
 /**
  * Created by cwb on 2015/12/24.
@@ -35,47 +34,6 @@ public class HostServiceImpl implements HostService {
     @Override
     public Host getHost(String domain) {
         return hostRepository.findByDomain(domain);
-    }
-
-    @Override
-    public Boolean save(Host host) {
-        hostRepository.save(host);
-        return true;
-    }
-
-    @Override
-    /**
-     * <p>
-     *     获得需要移除的Host列表
-     * </p>
-     * @param domains 新的域名列表
-     * @param site 目标站点信息
-     * @return
-     * */
-    public Set<Host> getRemoveHost(String[] domains, Site site) {
-        throw new IllegalStateException("看不懂这是做什么");
-//        Set<Host> hosts = new HashSet<>();
-//        Set<Host> hostSet = site.getHosts();
-//        for (Host host : hostSet) {
-//            boolean isExists = false;
-//            for (String domain : domains) {
-//                if (domain.equals(host.getDomain())) {
-//                    isExists = true;
-//                }
-//            }
-//            if (!isExists) {
-//                if (host.getSites() != null) {
-//                    if (host.getSites().size() == 0) {
-//                        hosts.add(host);
-//                    } else if (host.getSites().size() == 1) {
-//                        if (host.getSites().contains(site)) {
-//                            hosts.add(host);
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        return hosts;
     }
 
     /**

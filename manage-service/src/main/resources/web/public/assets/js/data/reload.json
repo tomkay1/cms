@@ -1,0 +1,48 @@
+{
+  "root": [
+    {
+      "layout": {
+        "value": "12",
+        "elementGroups": [
+          [
+            {
+              "component": {
+                "widgetIdentity": "com.huotu.hotcms.widget.friendshipLink-friendshipLink:1.0-SNAPSHOT",
+                "id": "friendshipLink-1470623666551",
+                "styleId": "0",
+                "properties": {}
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "layout": {
+        "value": "6,6",
+        "elementGroups": [
+          [
+            {
+              "component": {
+                "widgetIdentity": "com.huotu.hotcms.widget.friendshipLink-friendshipLink:1.0-SNAPSHOT",
+                "id": "friendshipLink-1470625376083",
+                "styleId": "0",
+                "properties": {}
+              }
+            }
+          ],
+          [
+            {
+              "component": {
+                "widgetIdentity": "com.huotu.hotcms.widget.friendshipLink-friendshipLink:1.0-SNAPSHOT",
+                "id": "friendshipLink-1470625378595",
+                "styleId": "0",
+                "properties": {}
+              }
+            }
+          ]
+        ]
+      }
+    }
+  ]
+}

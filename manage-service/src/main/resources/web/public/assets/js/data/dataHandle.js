@@ -11,8 +11,10 @@
  * 数据保存遍历生成 JSON 数据传给服务器
  * createROOT json.elements 改为 json.root 标示为顶级数据
  * 改写 traversalDOM2Json 使 elements 为多维数组
+ *
+ * init 初始化 url 如果为null表示处于原型测试
  */
-var DataHandle  = {
+var DataHandle = {
     createROOT: function (elements, url) {
         var json = {};
         var data = [];
@@ -32,7 +34,7 @@ var DataHandle  = {
         var ele = $(elements).children();
         $.each(ele, function (i, v) {
             var html = $.trim($(v).html());
-            if ( html == '') {
+            if (html == '') {
                 var arr = [];
                 var key = {};
                 key.empty = {};
@@ -51,7 +53,7 @@ var DataHandle  = {
     },
     distinguishDOMType: function (elements) {
         var childJSON = {};
-        if ( $(elements).hasClass('row') ) {
+        if ($(elements).hasClass('row')) {
             childJSON.layout = {};
             childJSON.layout.value = $(elements).attr('data-layout-value');
             childJSON.layout.elementGroups = DataHandle.traversalDOM2Json(elements);
@@ -64,10 +66,10 @@ var DataHandle  = {
         }
         return childJSON;
     },
-    changeStructure: function(e, t) {
+    changeStructure: function (e, t) {
         $("#pageHTML ." + e).removeClass(e).addClass(t)
     },
-    cleanHtml: function(e) {
+    cleanHtml: function (e) {
         $(e).parent().append($(e).children().html());
     },
     downloadLayoutSrc: function (url) {
@@ -128,27 +130,27 @@ var DataHandle  = {
     },
     //用于保存 数据时候，发起请求
     ajaxData: function (data, url) {
-        data=JSON.stringify(data);
-        if(savePage==null){
+        data = JSON.stringify(data);
+        if (savePage == null) {
             layer.alert(data);
         }
         console.log(data);
-         $.ajax({
-             type: 'PUT',
-             url: url,
-             data: data ,
-             dataType: 'json',
-             success: function (msg) {
-                 console.log(msg);
-                 //Todo 保存成功后需要跳转的页面
-             },
-             error: function (jqXHR, textStatus, errorThrown) {
-                 console.log(errorThrown);
-             }
-         });
+        $.ajax({
+            type: 'PUT',
+            url: url,
+            data: data,
+            dataType: 'json',
+            success: function (msg) {
+                console.log(msg);
+                //Todo 保存成功后需要跳转的页面
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+            }
+        });
     },
     init: function (url) {
-        DataHandle.downloadLayoutSrc(url);
+        if (!url) DataHandle.downloadLayoutSrc(url);
     }
 };
 
@@ -184,7 +186,7 @@ var DOM = {
  * createColumnDom: 绘制 Column代码，并使用递归插入内容
  * createComponent: 绘制组件代码
  * createLayout: 绘制布局代码
- * init: 外部调用方法
+ * init: 外部调用方法 url 如果为null表示处于原型测试
  */
 var CreatePage = {
     getPage: function (url) {
@@ -218,16 +220,16 @@ var CreatePage = {
         var arr = data.value.toString().split(',');
         $.each(arr, function (i, v) {
             var column;
-            if ( v == 100 ) {
+            if (v == 100) {
                 column = $('<div class="column ui-sortable"></div>');
-            } else if ( v == 50 ) {
+            } else if (v == 50) {
                 column = $('<div class="container column ui-sortable"></div>');
             } else {
                 column = $('<div class="column ui-sortable"></div>');
                 var col = 'col-md-' + v;
                 column.addClass(col);
             }
-            column.html( CreatePage.createColumnDom( data.elementGroups[i] ) );
+            column.html(CreatePage.createColumnDom(data.elementGroups[i]));
             container.append(column);
         });
         return container.html();
@@ -235,14 +237,14 @@ var CreatePage = {
     createColumnDom: function (data) {
         var container = $('<div></div>');
         $.each(data, function (i, v) {
-            $.each(v, function (key , val) {
+            $.each(v, function (key, val) {
                 if (key == 'component') {
-                    container.append( CreatePage.createComponent(val) );
+                    container.append(CreatePage.createComponent(val));
                 }
                 if (key == 'layout') {
-                    container.append( CreatePage.createLayout(val) );
+                    container.append(CreatePage.createLayout(val));
                 }
-                if ( key == 'empty') {
+                if (key == 'empty') {
                     console.log('It\'s Empty');
                 }
             });
@@ -250,7 +252,7 @@ var CreatePage = {
         return container.html();
     },
     createComponent: function (data) {
-        wsCache.set(data.id, { 'properties' : data.properties });
+        wsCache.set(data.id, {'properties': data.properties});
         var container = $('<div></div>');
         container.append(DOM.component.join('\n'));
         container.children('.box').children('span.setting').attr('data-target', data.widgetIdentity);
@@ -267,16 +269,24 @@ var CreatePage = {
         return container.html();
     },
     init: function (url) {
+        if (!url) url = '../../public/assets/js/data/reload.json';
         CreatePage.getPage(url);
     }
 };
 
 var dataHandle = {};
 dataHandle.init = function () {
-    var url = savePage + pageId;//save url
-    if ( !pageId == -999 ) CreatePage.init(url);
+    if (!savePage)
+        CreatePage.init(null);
+    else
+        CreatePage.init(savePage + pageId);
+
+
     $('#saveBtn').on('click', function () {
-        DataHandle.init(url);
+        if (!savePage)
+            DataHandle.init(null);
+        else
+            DataHandle.init(savePage + pageId);
     })
 };
 dataHandle.init();

@@ -29,11 +29,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @BodyId("fa-tasks")
 public class ArticlePage extends AbstractCMSContentPage<Article> {
 
-
     /**
      * @param webDriver driver
      */
-    protected ArticlePage(WebDriver webDriver) {
+    public ArticlePage(WebDriver webDriver) {
         super("categoryForm", webDriver);
     }
 

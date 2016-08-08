@@ -9,71 +9,31 @@
 
 package com.huotu.cms.manage.controller;
 
-import com.huotu.cms.manage.SiteManageTest;
-import com.huotu.cms.manage.controller.support.CRUDHelper;
-import com.huotu.cms.manage.controller.support.CRUDTest;
+import com.huotu.cms.manage.ContentManageTest;
 import com.huotu.cms.manage.page.ArticlePage;
-import com.huotu.cms.manage.page.ManageMainPage;
-import com.huotu.cms.manage.page.support.AbstractCRUDPage;
 import com.huotu.hotcms.service.common.ArticleSource;
+import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Site;
-import org.junit.Ignore;
-import org.junit.Test;
 
-import java.util.Collection;
 import java.util.UUID;
-import java.util.function.BiConsumer;
 
-import static org.assertj.core.api.Assertions.assertThat;
+public class ArticleControllerTest extends ContentManageTest<Article> {
 
-/**
- * Created by wenqi on 2016/7/26.
- */
-@Ignore // NO TEST
-public class ArticleControllerTest extends SiteManageTest {
+    public ArticleControllerTest() {
+        super(ContentType.Article, ArticlePage.class);
+    }
 
-    @Test
-    public void flow() throws Exception {
-        Site site = loginAsSite();
+    @Override
+    protected void normalRandom(Article value, Site site) {
+        value.setAuthor(UUID.randomUUID().toString());
+        value.setContent(UUID.randomUUID().toString());
+        value.setType(UUID.randomUUID().toString());
+        value.setArticleSource(ArticleSource.ORIGINAL);
+    }
 
-        ManageMainPage manageMainPage = initPage(ManageMainPage.class);
+    @Override
+    protected void assertCreation(Article entity, Article data) {
 
-        CRUDHelper.flow(manageMainPage.toPage(ArticlePage.class), new CRUDTest<Article>() {
-
-            @Override
-            public Collection<Article> list() throws Exception {
-                return null;
-            }
-
-            @Override
-            public Article randomValue() throws Exception {
-                Article article=new Article();
-                article.setAuthor(UUID.randomUUID().toString());
-                article.setCategory(randomCategory());
-                article.setTitle(UUID.randomUUID().toString());
-                article.setContent(UUID.randomUUID().toString());
-                article.setType(UUID.randomUUID().toString());
-                article.setArticleSource(ArticleSource.ORIGINAL);
-                return article;
-            }
-
-            @Override
-            public BiConsumer<AbstractCRUDPage<Article>, Article> customAddFunction() throws Exception {
-                return null;
-            }
-
-            @Override
-            public void assertCreation(Article entity, Article data) throws Exception {
-                assertThat(entity.getCategory())
-                        .isEqualTo(data.getCategory());
-                assertThat(entity.getTitle())
-                        .isEqualTo(data.getTitle());
-            }
-
-            public void delete(){
-
-            }
-        });
     }
 }

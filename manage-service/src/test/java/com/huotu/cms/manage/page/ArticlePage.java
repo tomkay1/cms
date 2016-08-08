@@ -9,7 +9,7 @@
 
 package com.huotu.cms.manage.page;
 
-import com.huotu.cms.manage.page.support.AbstractCRUDPage;
+import com.huotu.cms.manage.page.support.AbstractCMSContentPage;
 import com.huotu.cms.manage.page.support.BodyId;
 import com.huotu.hotcms.service.entity.Article;
 import org.assertj.core.api.Condition;
@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Created by wenqi on 2016/7/26.
  */
 @BodyId("fa-tasks")
-public class ArticlePage extends AbstractCRUDPage<Article>{
+public class ArticlePage extends AbstractCMSContentPage<Article> {
 
 
     /**
@@ -40,12 +40,12 @@ public class ArticlePage extends AbstractCRUDPage<Article>{
     @Override
     protected void fillValueToForm(Article article) {
         WebElement form = getForm();
-        inputText(form,"title",article.getTitle());
-        inputText(form,"categoryName",article.getCategory().getName());
-        inputText(form,"parentCategoryId",String.valueOf(article.getCategory().getParent().getId()));
-        inputText(form,"type",article.getType());
-        inputText(form,"articleSource",article.getArticleSource().name());
-        inputText(form,"createTime",article.getCreateTime().toString());
+        inputText(form, "title", article.getTitle());
+        inputText(form, "categoryName", article.getCategory().getName());
+        inputText(form, "parentCategoryId", String.valueOf(article.getCategory().getParent().getId()));
+        inputText(form, "type", article.getType());
+        inputText(form, "articleSource", article.getArticleSource().name());
+        inputText(form, "createTime", article.getCreateTime().toString());
     }
 
     @Override

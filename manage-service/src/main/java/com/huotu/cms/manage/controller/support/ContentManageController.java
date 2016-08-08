@@ -73,7 +73,7 @@ public abstract class ContentManageController<T extends AbstractContent, ED exte
                     , extra.getParentCategoryId(), contentType()));
             // 谁可以 谁上
             if (data instanceof ImagesOwner) {
-                uploadTempImageToOwner((ImagesOwner) data, extra.getTempPath());
+                commonService.uploadTempImageToOwner((ImagesOwner) data, extra.getTempPath());
             }
         } catch (BadCategoryInfoException e) {
             throw new RedirectException(rootUri(), "该数据源已存在，并且不符合你要求。", e);

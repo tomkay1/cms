@@ -59,8 +59,8 @@ public class PageControllerTest extends ManageTest {
 
         loginAsOwner(randomOwner());
 
-//        WidgetInfo widgetInfo = randomWidgetInfoValue(null);
-        WidgetInfo widgetInfo = randomWidgetInfoValue("com.huotu.hotcms.widget.productList", "productList", "1.0-SNAPSHOT");
+        WidgetInfo widgetInfo = randomWidgetInfoValue(null);
+//        WidgetInfo widgetInfo = randomWidgetInfoValue("com.huotu.hotcms.widget.productList", "productList", "1.0-SNAPSHOT");
         Component component = makeComponent(widgetInfo.getGroupId(), widgetInfo.getArtifactId(), widgetInfo.getVersion());
 
         ObjectMapper objectMapper = new ObjectMapper();

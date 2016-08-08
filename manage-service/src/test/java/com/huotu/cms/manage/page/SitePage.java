@@ -44,7 +44,15 @@ public class SitePage extends AbstractCRUDPage<Site> {
     private WebElement uploader;
 
     public SitePage(WebDriver webDriver) {
-        super("addSiteForm", webDriver);
+        super("siteForm", webDriver);
+    }
+
+    @Override
+    protected void howToOpenResource(WebElement webElement) {
+        webElement.findElements(By.tagName("button")).stream()
+                .filter((button) -> button.getText().contains("编辑"))
+                .findAny().orElseThrow(IllegalStateException::new)
+                .click();
     }
 
     public void uploadLogo(String name, Resource resource) throws IOException {

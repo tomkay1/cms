@@ -27,23 +27,23 @@
                 <include>**/*.java</include>
             </includes>
         </fileSet>
-        <!--<fileSet filtered="true" encoding="UTF-8">-->
-        <!--<directory>src/main/webapp</directory>-->
-        <!--<includes>-->
-        <!--<include>**/*.html</include>-->
-        <!--<include>**/*.xml</include>-->
-        <!--<include>**/default.xhtml</include>-->
-        <!--</includes>-->
-        <!--</fileSet>-->
-        <!--<fileSet encoding="UTF-8">-->
-        <!--<directory>src/main/webapp</directory>-->
-        <!--<includes>-->
-        <!--<include>**/*.png</include>-->
-        <!--<include>**/*.jpg</include>-->
-        <!--<include>**/*.xhtml</include>-->
-        <!--<include>**/*.css</include>-->
-        <!--</includes>-->
-        <!--</fileSet>-->
+        <fileSet filtered="true" encoding="UTF-8">
+            <directory>src/main/webapp</directory>
+            <includes>
+                <include>**/*.html</include>
+                <include>**/*.xml</include>
+                <include>**/default.xhtml</include>
+            </includes>
+        </fileSet>
+        <fileSet encoding="UTF-8">
+            <directory>src/main/webapp</directory>
+            <includes>
+                <include>**/*.png</include>
+                <include>**/*.jpg</include>
+                <include>**/*.xhtml</include>
+                <include>**/*.css</include>
+            </includes>
+        </fileSet>
         <fileSet encoding="UTF-8" filtered="true">
             <directory>src/main/resources</directory>
             <includes>

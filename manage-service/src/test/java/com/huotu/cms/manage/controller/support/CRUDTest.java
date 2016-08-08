@@ -44,6 +44,13 @@ public interface CRUDTest<T> {
     }
 
     /**
+     * @return 是否允许打开资源
+     */
+    default boolean open() {
+        return false;
+    }
+
+    /**
      * @return 业务层的相关业务数据
      */
     Collection<T> list() throws Exception;
@@ -81,5 +88,16 @@ public interface CRUDTest<T> {
      */
     default String errorMessageAfterAdd(T data) {
         return null;
+    }
+
+    /**
+     * 检查这个页面所展示的资源是否符合entity
+     *
+     * @param page   页面
+     * @param entity 资源
+     * @throws Exception
+     */
+    default void assertResourcePage(AbstractCRUDPage<T> page, T entity) throws Exception {
+
     }
 }

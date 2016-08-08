@@ -15,7 +15,7 @@ $(function () {
 
     var useTemplateModal = $('#useTemplateModal');
 
-    var addSiteForm = $('#addSiteForm');
+    var addSiteForm = $('#siteForm');
 
     addSiteForm.validate({
         rules: {

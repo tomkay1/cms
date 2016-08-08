@@ -12,7 +12,6 @@ package com.huotu.hotcms.widget.service.impl;
 import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
-import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.service.util.ImageHelper;
 import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.InstalledWidget;
@@ -53,7 +52,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -303,9 +301,20 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
         return installedWidget;
     }
 
-    @Override
-    public void updateWidget(Widget widget) throws IOException, FormatException {
+    /**
+     * 删除其他版本的控件包（确认这个控件包的所有控件都要被删除）
+     *
+     * @param widget      除了这个版本以外
+     * @param keepWidgets 这里的控件需要保留
+     * @throws IOException
+     * @throws FormatException
+     */
+    private void deleteOtherWidget(Widget widget, Set<Widget> keepWidgets) throws IOException, FormatException {
         //查找控件
+        //
+        // 根据参数 清理 this.installedWidgets
+        // 循环所有控件包  installedStatus(null) 如果发现已安装控件为空 则删除
+//
         List<WidgetInfo> widgetInfoList = widgetInfoRepository.findByGroupIdAndArtifactIdAndEnabledTrue(widget.groupId()
                 , widget.widgetId());
         //设置不等于改控件版本的为不可用状态
@@ -318,53 +327,54 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
     }
 
     @Override
-    public void primary(WidgetInfo widgetInfo, boolean ignoreError) throws IllegalStateException, IOException, PageNotFoundException {
+    public void primary(WidgetInfo widgetInfo, boolean ignoreError) throws IllegalStateException, IOException {
+        try {
+            installWidgetInfo(widgetInfo);
+        } catch (FormatException e) {
+            throw new IllegalStateException(e);
+        }
         List<InstalledWidget> installedWidgetList = installedStatus(widgetInfo);
-        if (installedWidgetList != null && installedWidgetList.size() > 0) {
-
-            InstalledWidget installedWidget = findWidget(widgetInfo.getGroupId(), widgetInfo.getArtifactId()
-                    , widgetInfo.getVersion());
-
+        for (InstalledWidget installedWidget : installedWidgetList) {
             //不支持的界面，和具体组件
-            Map<Long, PageInfo> notSupportPage = new HashMap<>();
-            Map<Long, PageInfo> supportPage = new HashMap<>();
+            Set<Long> notSupportPage = new HashSet<>();
+            Set<Long> supportPage = new HashSet<>();
             List<PageInfo> pageList = pageService.findAll();
-            if (pageList != null && pageList.size() > 0) {
-                for (PageInfo page : pageList) {
-                    //检查所有界面使用该组件的参数是否合法，如果不合法添加到不支持的界面中
-                    Layout[] elements = PageLayout.NoNullLayout(page.getLayout());
-                    Set<Component> notSupportComponent = new HashSet<>();
-                    for (PageElement element : elements) {
-                        primarUtil(element, installedWidget, notSupportComponent, supportPage, page);
+            // 这些控件 无法被删除!
+            Set<Widget> keepWidgets = new HashSet<>();
+            for (PageInfo page : pageList) {
+                //检查所有界面使用该组件的参数是否合法，如果不合法添加到不支持的界面中
+                Layout[] elements = PageLayout.NoNullLayout(page.getLayout());
+                Set<Component> notSupportComponent = new HashSet<>();
+                for (PageElement element : elements) {
+                    primarUtil(element, installedWidget, notSupportComponent, supportPage, page);
+                }
+                if (notSupportComponent.size() > 0) {
+                    if (ignoreError) {
+                        notSupportPage.add(page.getPageId());
+                    } else {
+                        throw new IllegalStateException("安装的控件不能满足旧版本控件的参数异常");
                     }
-                    if (notSupportComponent.size() > 0) {
-                        if (ignoreError) {
-                            notSupportPage.put(page.getPageId(), page);
-                        } else {
-                            throw new IllegalStateException("安装的控件不能满足旧版本控件的参数异常");
-                        }
-                    }
+
+                    keepWidgets.addAll(notSupportComponent.stream() //组件流
+                            .map(Component::getInstalledWidget)  // InstalledWidget流
+                            .map(InstalledWidget::getWidget)     //  Widget 流
+                            .collect(Collectors.toSet())
+                    );
                 }
             }
 
-            if (pageList != null && pageList.size() > 0) {
-                for (PageInfo page : pageList) {
-                    if (notSupportPage.size() > 0 && notSupportPage.get(page.getPageId()) != null) {
-                        break;
-                    }
-                    if (supportPage.get(page.getPageId()) != null) {
-                        if (ignoreError || notSupportPage.size() == 0) {
-                            //更新页面
-                            pageService.updatePageComponent(page, installedWidget);
-                        }
-                        break;
-                    }
-
+            for (PageInfo page : pageList) {
+                if (notSupportPage.contains(page.getPageId())) {
+                    break;
+                }
+                if (supportPage.contains(page.getPageId())) {
+                    pageService.updatePageComponent(page, installedWidget);
                 }
             }
-            //更新控件
+            // 禁用其他控件
+            // 找到其他控件
             try {
-                updateWidget(installedWidget.getWidget());
+                deleteOtherWidget(installedWidget.getWidget(), keepWidgets);
             } catch (FormatException e) {
                 throw new IllegalStateException("更新完成,重新加载控件列表失败");
             }
@@ -381,7 +391,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
      * @param page
      */
     private void primarUtil(PageElement pageElement, InstalledWidget installedWidget
-            , Set<Component> notSupportComponent, Map<Long, PageInfo> supportPage, PageInfo page) {
+            , Set<Component> notSupportComponent, Set<Long> supportPage, PageInfo page) {
         if (pageElement instanceof Component) {
             Component component = (Component) pageElement;
             component.setInstalledWidget(findWidget(component.getWidgetIdentity()));
@@ -393,7 +403,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
                     if (widget1.groupId().equals(widget2.groupId()) && widget1.widgetId().equals(widget2.widgetId())
                             && !widget1.version().equals(widget2.version())) {
                         installedWidget.getWidget().valid(component.getStyleId(), component.getProperties());
-                        supportPage.put(page.getPageId(), page);
+                        supportPage.add(page.getPageId());
                     }
                 }
             } catch (IllegalArgumentException e) {

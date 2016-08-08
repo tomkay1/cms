@@ -133,7 +133,7 @@ public interface PageService {
     /**
      * 返回所有page
      *
-     * @return
+     * @return 如果没有数据会返回一个size为0的List
      */
     List<PageInfo> findAll();
 

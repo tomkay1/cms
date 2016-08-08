@@ -11,7 +11,6 @@ package com.huotu.hotcms.widget.service;
 
 import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Owner;
-import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.exception.FormatException;
@@ -62,7 +61,7 @@ public interface WidgetFactoryService {
     /**
      * 检查控件安装状态
      *
-     * @param widgetInfo 控件信息
+     * @param widgetInfo 控件包信息
      * @return 如果控件已安装则返回安装信息, 结果必然非null
      */
     List<InstalledWidget> installedStatus(WidgetInfo widgetInfo);
@@ -116,59 +115,21 @@ public interface WidgetFactoryService {
 //    @Transactional
     InstalledWidget installWidget(Owner owner, Widget widget, String type);
 
-    //所谓更新应该是指弃用其他版本的同个控件
 
     /**
-     * 更新数据库已经安装后的控件
+     * 以此控件包为主,禁用该控件包相关控件的其他版本。
      * <p>
      * 需要检查每一个使用该控件的组件属性是否符合要求。</p>
      * <p>
      * 如果使用了缓存系统,包括组件缓存和页面缓存,更新以后都需要清理缓存。</p>
      * <p>如果顺利完成更新则应该将过往版本的控件包标记为禁用,并且移除已安装控件实例。</p>
      *
-     * @param widget 控件
-     */
-    @Transactional
-    void updateWidget(Widget widget) throws IOException, FormatException;
-
-    /**
-     * 以此控件包为主,禁用同控件的其他控件包和控件。
      *
      * @param widgetInfo  控件包
      * @param ignoreError 忽略错误 true 忽略，false 不忽略
      * @throws IllegalStateException 不支持的控件包，检查后不兼容旧版本
-     * @throws IOException 查找列表page列表失败等
-     * @see #updateWidget(Widget)
+     * @throws IOException           查找列表page列表失败等
      */
-    void primary(WidgetInfo widgetInfo, boolean ignoreError) throws IllegalStateException, IOException, PageNotFoundException;
-
-//    /**
-//     * 更新已安装的控件
-//     * <p>
-//     * 需要检查每一个使用该控件的组件属性是否符合要求。</p>
-//     * <p>
-//     * 如果使用了缓存系统,包括组件缓存和页面缓存,更新以后都需要清理缓存。</p>
-//     *
-//     * @param widget  原控件
-//     * @param jarFile 新的工程控件jar包
-//     */
-//    void updateWidget(Widget widget, InputStream jarFile) throws IOException;
-//
-//
-//    /**
-//     * 更新已安装的控件
-//     * <p>
-//     * 需要检查每一个使用该控件的组件属性是否符合要求。</p>
-//     * <p>
-//     * 如果使用了缓存系统,包括组件缓存和页面缓存,更新以后都需要清理缓存。</p>
-//     *
-//     * @param groupId  分组id,参考maven
-//     * @param version  版本
-//     * @param widgetId 控件id
-//     * @param type     控件类型
-//     */
-//    void updateWidget(String groupId, String widgetId, String version, String type) throws IOException
-//            , FormatException;
-
+    void primary(WidgetInfo widgetInfo, boolean ignoreError) throws IllegalStateException, IOException;
 
 }

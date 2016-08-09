@@ -128,10 +128,19 @@ $(function () {
         input.tagsInput(config);
     });
 
+
+    // date picker ?
     var datepicker = $('.cms-datepicker');
     if (datepicker.size() > 0)
         datepicker.datepicker();
 
+    // ck editor
+    var editor = $(".editor");
+    if (editor.size() > 0) {
+        editor.ckeditor({
+            language: top.$.language
+        });
+    }
 
     // 让chosen-select可以自动处理
     var chosenSelect = $('.chosen-select');

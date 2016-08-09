@@ -16,7 +16,6 @@ import org.assertj.core.api.Condition;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -24,7 +23,7 @@ import java.util.function.Predicate;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Created by wenqi on 2016/7/26.
+ * 文章管理页面
  */
 @BodyId("fa-tasks")
 public class ArticlePage extends AbstractCMSContentPage<Article> {
@@ -33,27 +32,19 @@ public class ArticlePage extends AbstractCMSContentPage<Article> {
      * @param webDriver driver
      */
     public ArticlePage(WebDriver webDriver) {
-        super("categoryForm", webDriver);
+        super("articleForm", webDriver);
     }
 
-    @Override
-    protected void fillValueToForm(Article article) {
-        WebElement form = getForm();
-        inputText(form, "title", article.getTitle());
-        inputText(form, "categoryName", article.getCategory().getName());
-        inputText(form, "parentCategoryId", String.valueOf(article.getCategory().getParent().getId()));
-        inputText(form, "type", article.getType());
-        inputText(form, "articleSource", article.getArticleSource().name());
-        inputText(form, "createTime", article.getCreateTime().toString());
-    }
-
-    @Override
-    public Predicate<? super WebElement> findRow(Article article) {
-        return row -> {
-            String id = row.getAttribute("data-id");
-            return !StringUtils.isEmpty(id) && id.equals(article.getId());
-        };
-    }
+//    @Override
+//    protected void fillValueToForm(Article article) {
+//        WebElement form = getForm();
+//        inputText(form, "title", article.getTitle());
+//        inputText(form, "categoryName", article.getCategory().getName());
+//        inputText(form, "parentCategoryId", String.valueOf(article.getCategory().getParent().getId()));
+//        inputText(form, "type", article.getType());
+//        inputText(form, "articleSource", article.getArticleSource().name());
+//        inputText(form, "createTime", article.getCreateTime().toString());
+//    }
 
     @Override
     protected Predicate<WebElement> rowPredicate(Article value) {

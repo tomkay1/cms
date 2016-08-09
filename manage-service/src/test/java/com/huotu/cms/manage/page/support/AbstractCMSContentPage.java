@@ -11,6 +11,10 @@ package com.huotu.cms.manage.page.support;
 
 import com.huotu.hotcms.service.entity.AbstractContent;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.springframework.util.StringUtils;
+
+import java.util.function.Predicate;
 
 /**
  * 正文管理页面的基类
@@ -25,5 +29,18 @@ public abstract class AbstractCMSContentPage<T extends AbstractContent> extends 
      */
     protected AbstractCMSContentPage(String formId, WebDriver webDriver) {
         super(formId, webDriver);
+    }
+
+    @Override
+    public Predicate<? super WebElement> findRow(T value) {
+        return row -> {
+            String id = row.getAttribute("data-id");
+            return !StringUtils.isEmpty(id) && id.equals(String.valueOf(value.getId()));
+        };
+    }
+
+    @Override
+    protected final void fillValueToForm(T value) {
+
     }
 }

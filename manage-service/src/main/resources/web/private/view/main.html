@@ -95,25 +95,31 @@
                 <li class="nav-parent"><a href=""><i class="fa fa-book"></i> <span>内容管理</span></a>
                     <ul class="children">
                         <li>
-                            <a href="contents/article.html" th:href="@{/manage/article}" target="content"><i class="fa fa-tasks"></i> 文章</a>
+                            <a href="contents/article.html" th:href="@{/manage/article}" target="content"><i
+                                    class="fa fa-tasks"></i> 文章</a>
                         </li>
                         <li>
-                            <a href="contents/link.html" th:href="@{/manage/link}" target="content"><i class="fa fa-link"></i> 链接</a>
+                            <a href="contents/link.html" th:href="@{/manage/link}" target="content"><i
+                                    class="fa fa-link"></i> 链接</a>
                         </li>
                         <li>
-                            <a href="contents/video.html" th:href="@{/manage/video}" target="content"><i class="fa fa-film"></i> 视频</a>
+                            <a href="contents/video.html" th:href="@{/manage/video}" target="content"><i
+                                    class="fa fa-film"></i> 视频</a>
                         </li>
                         <li>
-                            <a href="contents/notice.html" th:href="@{/manage/notice}" target="content"><i class="fa fa-bullhorn"></i> 公告</a>
+                            <a href="contents/notice.html" th:href="@{/manage/notice}" target="content"><i
+                                    class="fa fa-bullhorn"></i> 公告</a>
                         </li>
                         <li>
-                            <a href="contents/gallery.html" th:href="@{/manage/gallery}" target="content"><i class="fa fa-picture-o"></i> 图库</a>
+                            <a href="contents/gallery.html" th:href="@{/manage/gallery}" target="content"><i
+                                    class="fa fa-picture-o"></i> 图库</a>
                         </li>
                         <li>
-                            <a href="contents/download.html" th:href="@{/manage/download}" target="content"><i class="fa fa-download"></i> 下载</a>
+                            <a href="contents/download.html" th:href="@{/manage/download}" target="content"><i
+                                    class="fa fa-download"></i> 下载</a>
                         </li>
                         <!--<li>-->
-                            <!--<a href="contents/product.html" th:href="@{/manage/product}" target="content"><i class="fa fa-product-hunt"></i> 产品</a>-->
+                        <!--<a href="contents/product.html" th:href="@{/manage/product}" target="content"><i class="fa fa-product-hunt"></i> 产品</a>-->
                         <!--</li>-->
                     </ul>
                 </li>
@@ -331,6 +337,7 @@
 <script th:inline="javascript">
     $.cmsUploaderUrl = /*[[@{/manage/upload/fine}]]*/ null;
     $.testMode = /*[[${@environment.acceptsProfiles('test')}]]*/ true;
+    $.language = 'zh'; // TODO 在获取站点信息之前语言还不明朗
 </script>
 <!--/*@thymesVar id="_primary" type="java.lang.String"*/-->
 <!--/*@thymesVar id="_info" type="java.lang.String"*/-->

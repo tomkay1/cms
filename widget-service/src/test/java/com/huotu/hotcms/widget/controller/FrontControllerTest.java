@@ -264,20 +264,19 @@ public class FrontControllerTest extends TestBase {
         List<NavbarPageInfoModel> navbarPageInfoModels = new ArrayList<>();
         for (PageInfo info : list) {
             NavbarPageInfoModel navbarPageInfoModel = new NavbarPageInfoModel();
-            navbarPageInfoModel.setText(info.getTitle());
-            navbarPageInfoModel.setHref(info.getPagePath());
-            navbarPageInfoModel.setPageId(info.getPageId());
-            navbarPageInfoModel.setParentId(info.getParent() != null ? info.getParent().getPageId() : 0);
+            navbarPageInfoModel.setName(info.getTitle());
+            navbarPageInfoModel.setPagePath(info.getPagePath());
+            navbarPageInfoModel.setId(info.getPageId());
+            navbarPageInfoModel.setPid(info.getParent() != null ? info.getParent().getPageId() : 0);
             navbarPageInfoModels.add(navbarPageInfoModel);
         }
         List<NavbarPageInfoModel> rootTrees = new ArrayList<>();
         for (NavbarPageInfoModel navbarPageInfoModel : navbarPageInfoModels) {
-            if (navbarPageInfoModel.getParentId() == 0) {
+            if (navbarPageInfoModel.getPid() == 0) {
                 rootTrees.add(navbarPageInfoModel);
             }
             for (NavbarPageInfoModel t : navbarPageInfoModels) {
-                if (t.getParentId() == navbarPageInfoModel.getPageId()) {
-                    navbarPageInfoModel.getNodes().add(t);
+                if (t.getPid() == navbarPageInfoModel.getId()) {
                 }
             }
         }

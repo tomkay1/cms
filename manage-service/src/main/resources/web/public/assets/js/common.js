@@ -77,7 +77,7 @@ function updataCompoentPreview(globalID, properties) {
     var widgetId = ele.data('widgetidentity');
     var styleId = ele.data('styleid');
     var data = {
-        "widgetidentity": widgetId,
+        "widgetIdentity": widgetId,
         "styleId": styleId,
         "properties": properties,
         "pageId": pageId,

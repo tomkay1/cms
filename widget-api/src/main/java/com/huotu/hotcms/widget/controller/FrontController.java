@@ -132,7 +132,7 @@ public class FrontController implements FilterBehavioral {
         ObjectMapper objectMapper = new ObjectMapper();
         Map map = objectMapper.readValue(json, Map.class);
         String widgetIdentifier = (String) map.get("widgetIdentity");
-        String styleId = (String) map.get("styleId");
+        String styleId = (String) map.get("styleId").toString();
 //        String pageId = (String) map.get("pageId");
         String componentId = (String) map.get("componentId");
         Map properties = (Map) map.get("properties");

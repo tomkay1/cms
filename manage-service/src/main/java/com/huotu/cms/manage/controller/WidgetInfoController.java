@@ -165,6 +165,7 @@ public class WidgetInfoController
         return "/view/widget/widget.html";
     }
 
+
     /**
      * 获取控件资源时参照 {@link WidgetFactoryService#installWidgetInfo(WidgetInfo)}
      *
@@ -189,6 +190,8 @@ public class WidgetInfoController
                 installedWidgets = widgetFactoryService.widgetList(owner);
             }
         }
+//        List<WidgetInfo> widgetInfos = widgetInfoRepository.findByOwnerGroup_By(owner);
+
 
         List<WidgetModel> widgetModels = new ArrayList<>();
         for (InstalledWidget installedWidget : installedWidgets) {

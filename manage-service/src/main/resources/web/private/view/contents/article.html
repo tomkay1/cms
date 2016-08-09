@@ -91,7 +91,9 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">内容</label>
                         <div class="col-sm-10">
-                            <textarea class="form-control editor" rows="4" title="内容" name="content"></textarea>
+                            <textarea class="form-control editor"
+                                      th:class="${(@environment.acceptsProfiles('no_ck')?'':'editor ')+'form-control'}"
+                                      rows="4" title="内容" name="content"></textarea>
                         </div>
                     </div>
                 </div>
@@ -113,7 +115,7 @@
                 <a href="" class="panel-close">&times;</a>
                 <a href="" class="minimize">&minus;</a>
             </div><!-- panel-btns -->
-            <h3 class="panel-title">数据源列表</h3>
+            <h3 class="panel-title">文章列表</h3>
             <p></p>
         </div>
         <div class="panel-body">
@@ -123,8 +125,8 @@
                     <tr>
                         <th>标题</th>
                         <th>创建时间</th>
-                        <th>文章类型</th>
-                        <th>父级</th>
+                        <th>数据源</th>
+                        <th>类型</th>
                         <th>&nbsp;</th>
                     </tr>
                     </thead>
@@ -134,9 +136,9 @@
                     <tr th:each="article,stats:${list}" class="odd" th:class="${stats.odd?'odd':'even'}"
                         th:attr="data-id=${article.id}" data-id="456">
                         <td th:text="${article.title}">新闻资讯</td>
-                        <td th:text="${#temporals.format(article.createTime,'yyyy-MM-dd HH:mm')}">2016 06-20</td>
-                        <td th:text="${article.type}">普通文章</td>
-                        <td th:text="${article.category.parent==null?'无':article.category.parent.name}">无</td>
+                        <td th:text="${{article.createTime}}">2016 06-20</td>
+                        <td th:text="${article.category.name}">普通文章</td>
+                        <td th:text="${article.articleSource.value}">原创</td>
                         <td class="center">
                             <a href="articleOpen.html" th:href="@{/manage/article/{id}(id=${article.id})}" title="管理">
                                 <i class="fa fa-pencil"></i>

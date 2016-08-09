@@ -85,7 +85,7 @@ public class Article extends AbstractContent implements ImagesOwner {
     /**
      * 文章类型
      */
-    @Column(name = "type")
+    @Column(name = "type", length = 20)
     private String type;
 
     @Override

@@ -14,32 +14,46 @@ import com.huotu.cms.manage.controller.support.CRUDTest;
 import com.huotu.cms.manage.page.ManageMainPage;
 import com.huotu.cms.manage.page.support.AbstractCMSContentPage;
 import com.huotu.cms.manage.page.support.AbstractCRUDPage;
+import com.huotu.hotcms.service.ResourcesOwner;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.repositoryi.AbstractContentRepository;
+import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.service.ContentService;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.junit.Test;
+import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.util.StringUtils;
 
 import java.util.Collection;
 import java.util.UUID;
 import java.util.function.BiConsumer;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * 所有正文管理测试的公用基类
  *
  * @author CJ
  */
+@ActiveProfiles({"test", "no_ck"})
 public abstract class ContentManageTest<T extends AbstractContent> extends SiteManageTest {
 
     private final ContentType contentType;
     private final Class<? extends AbstractCMSContentPage<T>> pageClass;
     @Autowired
     protected ContentService contentService;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private AbstractContentRepository<T> abstractContentRepository;
+    @Autowired
+    private CategoryService categoryService;
+    @Autowired
+    private ResourceService resourceService;
 
     private boolean categoryCreation;
 
@@ -127,8 +141,51 @@ public abstract class ContentManageTest<T extends AbstractContent> extends SiteM
         }
 
         @Override
+        public void assertResourcePage(AbstractCRUDPage<T> page, T entity) throws Exception {
+            AbstractCMSContentPage<T> contentPage = (AbstractCMSContentPage<T>) page;
+            WebElement form = contentPage.getForm();
+            // title 对不对
+            contentPage.assertInputText(form, "title", entity.getTitle());
+            // description
+            contentPage.assertResourcePage(entity);
+        }
+
+        @Override
         public void assertCreation(T entity, T data) throws Exception {
-// TODO 通用的先来
+            Category category = entity.getCategory();
+            Category excepted = categoryService.getCategoryByNameAndParent(site, data.getCategory().getName()
+                    , data.getCategory().getParent() == null ? null : data.getCategory().getParent().getId()
+                    , contentType);
+            assertThat(category)
+                    .isEqualTo(excepted);
+
+            // TODO 不是所有页面都有这个玩意儿 所以暂时忽略
+//            assertThat(entity.getDescription())
+//                    .isEqualTo(data.getDescription());
+            assertThat(entity.getTitle())
+                    .isEqualTo(data.getTitle());
+            assertThat(entity.getSerial())
+                    .isNotEmpty();
+
+            // 如果提交了资源 那么就校验资源
+            if (entity instanceof ResourcesOwner) {
+                ResourcesOwner entityResources = (ResourcesOwner) entity;
+                ResourcesOwner dataResources = (ResourcesOwner) data;
+
+                for (int i = 0; i < dataResources.getResourcePaths().length; i++) {
+                    String srcPath = dataResources.getResourcePaths()[i];
+                    if (StringUtils.isEmpty(srcPath)) {
+                        assertThat(entityResources.getResourcePaths()[i])
+                                .isNull();
+                    } else {
+                        assertThat(resourceService.getResource(entityResources.getResourcePaths()[i])
+                                .getInputStream())
+                                .hasSameContentAs(resourceService.getResource(srcPath).getInputStream());
+                    }
+                }
+
+            }
+
             ContentManageTest.this.assertCreation(entity, data);
         }
     }

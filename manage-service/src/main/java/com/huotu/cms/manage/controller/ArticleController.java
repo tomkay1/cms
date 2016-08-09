@@ -22,15 +22,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
-
 /**
  * @author wenqi
  */
 @Controller
 @RequestMapping("/manage/article")
-public class ArticleController extends ContentManageController<Article,ContentExtra> {
+public class ArticleController extends ContentManageController<Article, ContentExtra> {
     private static final Log log = LogFactory.getLog(ArticleController.class);
 
     @Override
@@ -39,18 +36,10 @@ public class ArticleController extends ContentManageController<Article,ContentEx
     }
 
     @Override
-    protected void prepareUpdate(Login login, Article entity, Article data, ContentExtra extra
+    protected void prepareUpdateContext(Login login, Article entity, Article data, ContentExtra extra
             , RedirectAttributes attributes) throws RedirectException {
         entity.setContent(data.getContent());
-        entity.setUpdateTime(LocalDateTime.now());
-        entity.setType(data.getType());
-        entity.setTitle(data.getTitle());
         entity.setAuthor(data.getAuthor());
-        try {
-            commonService.uploadTempImageToOwner(entity, extra.getTempPath());
-        } catch (IOException e) {
-            log.warn("图片转存异常："+e.getMessage());
-        }
     }
 
     @Override

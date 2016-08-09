@@ -16,28 +16,19 @@ import com.huotu.hotcms.service.entity.Gallery;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.model.ContentExtra;
-import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.io.IOException;
-import java.time.LocalDateTime;
 
 /**
  * Created by chendeyu on 2016/1/10.
  */
 @Controller
 @RequestMapping("/manage/gallery")
-public class GalleryController extends ContentManageController<Gallery,ContentExtra>{
+public class GalleryController extends ContentManageController<Gallery, ContentExtra> {
     private static final Log log = LogFactory.getLog(GalleryController.class);
-
-    @Autowired
-    private ResourceService resourceService;
-
 
     @Override
     protected ContentType contentType() {
@@ -55,16 +46,9 @@ public class GalleryController extends ContentManageController<Gallery,ContentEx
     }
 
     @Override
-    protected void prepareUpdate(Login login, Gallery entity, Gallery data, ContentExtra extra, RedirectAttributes attributes) throws RedirectException {
-        entity.setTitle(data.getTitle());
+    protected void prepareUpdateContext(Login login, Gallery entity, Gallery data, ContentExtra extra, RedirectAttributes attributes) throws RedirectException {
+
         entity.setLinkUrl(data.getLinkUrl());
-        entity.setDescription(data.getDescription());
-        entity.setUpdateTime(LocalDateTime.now());
-        try {
-            commonService.uploadTempImageToOwner(entity, extra.getTempPath());
-        } catch (IOException e) {
-            log.warn("图片转存异常："+e.getMessage());
-        }
     }
 
     @Override

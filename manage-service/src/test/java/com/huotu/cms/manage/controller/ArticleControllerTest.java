@@ -18,6 +18,8 @@ import com.huotu.hotcms.service.entity.Site;
 
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class ArticleControllerTest extends ContentManageTest<Article> {
 
     public ArticleControllerTest() {
@@ -29,11 +31,18 @@ public class ArticleControllerTest extends ContentManageTest<Article> {
         value.setAuthor(UUID.randomUUID().toString());
         value.setContent(UUID.randomUUID().toString());
         value.setType(UUID.randomUUID().toString());
-        value.setArticleSource(ArticleSource.ORIGINAL);
+        value.setArticleSource(ArticleSource.values()[random.nextInt(ArticleSource.values().length)]);
     }
 
     @Override
     protected void assertCreation(Article entity, Article data) {
-
+        assertThat(entity.getArticleSource())
+                .isEqualByComparingTo(data.getArticleSource());
+        assertThat(entity.getAuthor())
+                .isEqualTo(data.getAuthor());
+        assertThat(entity.getContent())
+                .isEqualTo(data.getContent());
+//        assertThat(entity.getType())
+        // 资源
     }
 }

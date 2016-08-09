@@ -42,7 +42,7 @@ public class TemplateController extends CRUDController<Template, Long, String, S
             throws RedirectException {
         data.setEnabled(true);// 第一次添加的模板 总是有效的吧
         try {
-            commonService.uploadTempImageToOwner(data, extra);
+            commonService.updateImageFromTmp(data, 0, extra);
         } catch (IOException e) {
             throw new RedirectException(rootUri(), e);
         }
@@ -54,7 +54,7 @@ public class TemplateController extends CRUDController<Template, Long, String, S
     protected void prepareUpdate(Login login, Template entity, Template data, String extra, RedirectAttributes attributes)
             throws RedirectException {
         try {
-            commonService.uploadTempImageToOwner(data, extra);
+            commonService.updateImageFromTmp(data, 0, extra);
         } catch (IOException e) {
             throw new RedirectException(rootUri() + "/" + entity.getSiteId(), e);
         }

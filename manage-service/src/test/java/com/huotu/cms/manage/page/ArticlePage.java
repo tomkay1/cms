@@ -35,17 +35,6 @@ public class ArticlePage extends AbstractCMSContentPage<Article> {
         super("articleForm", webDriver);
     }
 
-//    @Override
-//    protected void fillValueToForm(Article article) {
-//        WebElement form = getForm();
-//        inputText(form, "title", article.getTitle());
-//        inputText(form, "categoryName", article.getCategory().getName());
-//        inputText(form, "parentCategoryId", String.valueOf(article.getCategory().getParent().getId()));
-//        inputText(form, "type", article.getType());
-//        inputText(form, "articleSource", article.getArticleSource().name());
-//        inputText(form, "createTime", article.getCreateTime().toString());
-//    }
-
     @Override
     protected Predicate<WebElement> rowPredicate(Article value) {
         return row -> {
@@ -58,16 +47,19 @@ public class ArticlePage extends AbstractCMSContentPage<Article> {
 
                 assertThat(tds)
                         .haveAtLeastOne(new Condition<>(td
-                                -> td.getText().contains(value.getCreateTime().toString()), "需显示时间"));
+                                -> td.getText().contains(value.getArticleSource().getValue().toString()), "需显示来源"));
 
                 assertThat(tds)
                         .haveAtLeastOne(new Condition<>(td
-                                -> td.getText().contains(value.getType()), "需显示类型"));
+                                -> td.getText().contains(value.getCategory().getName()), "需显示数据源"));
 
-                if (value.getCategory() != null)
-                    assertThat(tds)
-                            .haveAtLeastOne(new Condition<>(td
-                                    -> td.getText().contains(value.getCategory().getParent().getName()), "需显示父级数据源名"));
+//                assertThat(tds)
+//                        .haveAtLeastOne(new Condition<>(td
+//                                -> td.getText().contains(value.getCreateTime().toString()), "需显示时间"));
+
+//                assertThat(tds)
+//                        .haveAtLeastOne(new Condition<>(td
+//                                -> td.getText().contains(value.getType()), "需显示类型"));
 
             } catch (RuntimeException ex) {
                 printThisPage();
@@ -75,5 +67,24 @@ public class ArticlePage extends AbstractCMSContentPage<Article> {
             }
             return true;
         };
+    }
+
+    @Override
+    protected void fillContentValue(Article value) {
+        WebElement form = getForm();
+        inputText(form, "author", value.getAuthor());
+        inputSelect(form, "articleSource", value.getArticleSource().getValue().toString());
+        inputText(form, "content", value.getContent());
+//        inputText(form, "createTime", article.getCreateTime().toString());
+        // 上传封面 let's check!
+    }
+
+    @Override
+    public void assertResourcePage(Article entity) throws Exception {
+        WebElement form = getForm();
+
+        assertInputText(form, "author", entity.getAuthor());
+        assertInputSelect(form, "articleSource", entity.getArticleSource().getValue().toString());
+        assertInputText(form, "content", entity.getContent());
     }
 }

@@ -10,6 +10,7 @@
 package com.huotu.cms.manage.page.support;
 
 import com.huotu.hotcms.service.entity.AbstractContent;
+import com.huotu.hotcms.service.entity.Category;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.springframework.util.StringUtils;
@@ -41,6 +42,22 @@ public abstract class AbstractCMSContentPage<T extends AbstractContent> extends 
 
     @Override
     protected final void fillValueToForm(T value) {
+        Category category = value.getCategory();
+        WebElement form = getForm();
 
+        inputText(form, "categoryName", category.getName());
+        if (category.getParent() == null) {
+            inputSelect(form, "parentCategoryId", "无");
+        } else
+            inputSelect(form, "parentCategoryId", category.getParent().getName());
+
+        inputText(form, "title", value.getTitle());
+        // description
+
+        fillContentValue(value);
     }
+
+    protected abstract void fillContentValue(T value);
+
+    public abstract void assertResourcePage(T entity) throws Exception;
 }

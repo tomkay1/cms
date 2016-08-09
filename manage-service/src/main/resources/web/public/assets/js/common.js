@@ -76,18 +76,19 @@ function updataCompoentPreview(globalID, properties) {
     var ele = $('#' + globalID);
     var widgetId = ele.data('widgetidentity');
     var styleId = ele.data('styleid');
+    var data = {
+        "widgetidentity": widgetId,
+        "styleId": styleId,
+        "properties": properties,
+        "pageId": pageId,
+        "componentId": globalID
+    };
     $.ajax({
         type: 'POST',
         url: '/preview/component',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
-        data: {
-            "widgetidentity": widgetId,
-            "styleId": styleId,
-            "properties": properties,
-            "pageId": pageId,
-            "componentId": globalID
-        },
+        data: JSON.stringify(data),
         success: function (json, textStatus, jqXHR) {
             if (json.statusCode == '200') {
                 ele.html(json.body);

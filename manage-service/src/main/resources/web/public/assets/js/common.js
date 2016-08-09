@@ -82,11 +82,11 @@ function updataCompoentPreview(globalID, properties) {
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: {
-            widgetidentity: widgetId,
-            styleId: styleId,
-            properties: properties,
-            pageId: pageId,
-            componentId: globalID
+            "widgetidentity": widgetId,
+            "styleId": styleId,
+            "properties": properties,
+            "pageId": pageId,
+            "componentId": globalID
         },
         success: function (json, textStatus, jqXHR) {
             if (json.statusCode == '200') {

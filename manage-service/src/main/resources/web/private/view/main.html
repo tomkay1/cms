@@ -337,7 +337,7 @@
 <script th:inline="javascript">
     $.cmsUploaderUrl = /*[[@{/manage/upload/fine}]]*/ null;
     $.testMode = /*[[${@environment.acceptsProfiles('test')}]]*/ true;
-    $.language = /*[[${manageSite.region.locale.language}]]*/ 'zh';
+    $.language = 'zh'; // TODO 在获取站点信息之前语言还不明朗
 </script>
 <!--/*@thymesVar id="_primary" type="java.lang.String"*/-->
 <!--/*@thymesVar id="_info" type="java.lang.String"*/-->

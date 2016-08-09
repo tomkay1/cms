@@ -16,6 +16,7 @@ import com.huotu.cms.manage.page.support.AbstractCMSContentPage;
 import com.huotu.cms.manage.page.support.AbstractCRUDPage;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.AbstractContent;
+import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.repositoryi.AbstractContentRepository;
 import com.huotu.hotcms.service.service.ContentService;
@@ -40,6 +41,8 @@ public abstract class ContentManageTest<T extends AbstractContent> extends SiteM
     @Autowired
     private AbstractContentRepository<T> abstractContentRepository;
 
+    private boolean categoryCreation;
+
     protected ContentManageTest(ContentType contentType, Class<? extends AbstractCMSContentPage<T>> pageClass) {
         this.contentType = contentType;
         this.pageClass = pageClass;
@@ -51,6 +54,21 @@ public abstract class ContentManageTest<T extends AbstractContent> extends SiteM
         value.setTitle(UUID.randomUUID().toString());
         value.setDescription(UUID.randomUUID().toString());
         normalRandom(value, site);
+
+        if (categoryCreation) {
+            value.setCategory(randomCategoryData(site, contentType));
+        } else {
+            value.setCategory(randomCategory(site));
+            // 更换为正确的Type
+            Category category = value.getCategory();
+            while (true) {
+                category.setContentType(contentType);
+                category = category.getParent();
+                if (category == null)
+                    break;
+            }
+        }
+
         return value;
     }
 
@@ -69,6 +87,12 @@ public abstract class ContentManageTest<T extends AbstractContent> extends SiteM
 
         ContentTest contentTest = new ContentTest(site);
 
+        // 尝试使用不同的方式创建
+        // 1 建立新数据源
+        // 2 选择已有数据源
+        categoryCreation = true;
+        CRUDHelper.flow(page, contentTest);
+        categoryCreation = false;
         CRUDHelper.flow(page, contentTest);
     }
 
@@ -83,6 +107,7 @@ public abstract class ContentManageTest<T extends AbstractContent> extends SiteM
 
         @Override
         public boolean modify() {
+            // 修改的时候 并不允许更换数据源
             return true;
         }
 

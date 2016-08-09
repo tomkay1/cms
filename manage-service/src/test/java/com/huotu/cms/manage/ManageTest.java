@@ -544,11 +544,30 @@ public abstract class ManageTest extends SpringWebTest {
         return categoryRepository.saveAndFlush(category);
     }
 
-    protected Category randomCategoryNoParent(Site site) {
+    /**
+     * 纯数据
+     *
+     * @param site
+     * @return
+     */
+    protected Category randomCategoryData(Site site, ContentType contentType) {
         Category category = new Category();
-        category.setSite(site);
         category.setName(UUID.randomUUID().toString());
-        category.setContentType(ContentType.values()[random.nextInt(ContentType.values().length)]);
+        category.setContentType(contentType);
+        category.setSite(site);
+
+        if (random.nextBoolean()) {
+            category.setParent(categoryRepository.findBySiteAndContentType(site, contentType).stream()
+                    .findAny().orElse(null));
+        }
+
+        // 看看我有没有parent
+        return category;
+    }
+
+    protected Category randomCategoryNoParent(Site site) {
+        Category category = randomCategoryData(site, ContentType.values()[random.nextInt(ContentType.values().length)]);
+        category.setParent(null);
         categoryService.init(category);
         return categoryRepository.saveAndFlush(category);
     }

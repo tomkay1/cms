@@ -16,12 +16,10 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.repository.OwnerRepository;
+import com.huotu.hotcms.service.service.CommonService;
 import com.huotu.hotcms.service.service.HostService;
 import com.huotu.hotcms.service.service.SiteService;
-import com.huotu.hotcms.service.util.ImageHelper;
 import lombok.Data;
-import me.jiangcai.lib.resource.Resource;
-import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +27,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -43,19 +40,17 @@ import java.util.stream.Collectors;
  */
 @Controller
 @RequestMapping("/manage/site")
-public class SiteController extends CRUDController<Site, Long, SiteController.AboutNewSite, Void> {
+public class SiteController extends CRUDController<Site, Long, SiteController.AboutNewSite, SiteController.AboutNewSite> {
 
     private static final Log log = LogFactory.getLog(SiteController.class);
-
+    @Autowired
+    protected CommonService commonService;
     @Autowired
     private SiteService siteService;
     @Autowired
     private HostService hostService;
-
     @Autowired
     private OwnerRepository ownerRepository;
-    @Autowired
-    private ResourceService resourceService;
 
     @Override
     protected Specification<Site> prepareIndex(Login login, Model model, RedirectAttributes attributes) throws RedirectException {
@@ -88,27 +83,34 @@ public class SiteController extends CRUDController<Site, Long, SiteController.Ab
         data.setOwner(owner);
 
         data = siteService.newSite(extra.getDomains(), extra.getHomeDomain(), data, Locale.CHINA);
-        if (!StringUtils.isEmpty(extra.getTmpLogoPath())) {
-            Resource tmp = resourceService.getResource(extra.getTmpLogoPath());
-            if (tmp.exists()) {
-                try {
-                    String path = ImageHelper.storeAsImage("png", resourceService, tmp.getInputStream());
-                    data.setLogoUri(path);
-                } catch (IOException e) {
-                    throw new RedirectException("/manage/site", e.getMessage(), e);
-                }
-                try {
-                    resourceService.deleteResource(extra.getTmpLogoPath());
-                } catch (IOException ignored) {
-                }
-            }
+        try {
+            commonService.updateImageFromTmp(data, 0, extra.getTmpLogoPath());
+        } catch (IOException e) {
+            throw new RedirectException(rootUri(), e.getMessage(), e);
         }
+
         return data;
     }
 
+
     @Override
-    protected void prepareUpdate(Login login, Site entity, Site data, Void extra, RedirectAttributes attributes) throws RedirectException {
-        System.out.println(entity);
+    protected void prepareUpdate(Login login, Site entity, Site data, AboutNewSite extra, RedirectAttributes attributes)
+            throws RedirectException {
+        if (!login.siteManageable(entity)) {
+            throw new AccessDeniedException("您无权修改该网站。");
+        }
+        entity.setDescription(data.getDescription());
+        entity.setKeywords(data.getKeywords());
+        entity.setTitle(data.getTitle());
+        entity.setCopyright(data.getCopyright());
+
+        siteService.patchSite(extra.getDomains(), extra.getHomeDomain(), entity, Locale.CHINA);
+        try {
+            commonService.updateImageFromTmp(entity, 0, extra.getTmpLogoPath());
+        } catch (IOException e) {
+            throw new RedirectException(rootUri() + "/" + entity.getSiteId(), e.getMessage(), e);
+        }
+
     }
 
     @Override

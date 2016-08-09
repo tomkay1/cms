@@ -14,9 +14,8 @@ import com.huotu.cms.manage.bracket.GritterUtils;
 import com.huotu.cms.manage.exception.RedirectException;
 import com.huotu.hotcms.service.Auditable;
 import com.huotu.hotcms.service.Enabled;
-import com.huotu.hotcms.service.ImagesOwner;
 import com.huotu.hotcms.service.entity.login.Login;
-import me.jiangcai.lib.resource.service.ResourceService;
+import com.huotu.hotcms.service.service.CommonService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -50,13 +48,12 @@ import java.time.LocalDateTime;
 public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
 
     private static final Log log = LogFactory.getLog(CRUDController.class);
-
+    @Autowired
+    protected CommonService commonService;
     @Autowired
     private JpaRepository<T, ID> jpaRepository;
     @Autowired
     private JpaSpecificationExecutor<T> jpaSpecificationExecutor;
-    @Autowired
-    private ResourceService resourceService;
 
     @RequestMapping(method = RequestMethod.POST)
     @Transactional
@@ -261,25 +258,5 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
      */
     protected abstract String openViewName();
 
-    /**
-     * 这个方法是一个便利糖,可以放到更为底层的位置
-     * 更新数个临时图片到owner
-     *
-     * @param owner   图片拥有者
-     * @param tmpPath 临时文件的资源path
-     * @throws IOException
-     * @throws IllegalArgumentException 如果图片不是图片
-     */
-    protected void uploadTempImageToOwner(ImagesOwner owner, String... tmpPath) throws IOException
-            , IllegalArgumentException {
-        try {
-            owner.updateImages(resourceService, tmpPath);
-        } finally {
-            //
-            for (String path : tmpPath)
-                //noinspection ThrowFromFinallyBlock
-                resourceService.deleteResource(path);
-        }
-    }
 
 }

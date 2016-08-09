@@ -18,7 +18,6 @@ import org.assertj.core.api.AbstractListAssert;
 import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotVisibleException;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -29,6 +28,7 @@ import org.springframework.core.io.Resource;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -152,9 +152,8 @@ public abstract class AbstractManagePage extends BracketPage {
     }
 
     public void inputTags(WebElement formElement, String inputName, String[] values) {
-        WebElement input = formElement.findElement(By.name(inputName));
-        input.clear();
-        String id = input.getAttribute("id");
+        beforeDriver();
+        Supplier<String> idSupplier = () -> formElement.findElement(By.name(inputName)).getAttribute("id");
         // 规律是加上 _tag
 
         // 结构为
@@ -168,16 +167,23 @@ public abstract class AbstractManagePage extends BracketPage {
 //                    <input id="id_tag" />
 //                </div>
 //        </div>
-        WebElement div = formElement.findElement(By.id(id + "_tagsinput"));
-        for (WebElement tag : div.findElements(By.className("tag"))) {
-            tag.findElement(By.tagName("a")).click();
+        while (true) {
+            WebElement div = formElement.findElement(By.id(idSupplier.get() + "_tagsinput"));
+            if (div.findElements(By.className("tag")).isEmpty())
+                break;
+            div.findElement(By.className("tag")).findElement(By.tagName("a")).click();
         }
+//        for (WebElement tag : div.findElements(By.className("tag"))) {
+//            tag.findElement(By.tagName("a")).click();
+//        }
 
-        WebElement toInput = formElement.findElement(By.id(id + "_tag"));
         for (String value : values) {
+            System.out.println("_____" + idSupplier.get() + "_tag" + "   " + formElement);
+            WebElement toInput = formElement.findElement(By.id(idSupplier.get() + "_tag"));
             toInput.clear();
             toInput.sendKeys(value);
-            toInput.sendKeys(Keys.ENTER);
+//            toInput.sendKeys(Keys.ENTER);
+            formElement.findElement(By.id(idSupplier.get() + "_tagsinput")).click();
         }
     }
 
@@ -241,7 +247,15 @@ public abstract class AbstractManagePage extends BracketPage {
             } else {
                 if (parentElement == null)
                     throw new IllegalStateException("指定的菜单无法展示" + className);
-                parentElement.click();
+//                new Actions(webDriver)
+//                .moveToElement(parentElement)
+//                .click()
+//                .moveToElement(element)
+//                .click()
+//                .build()
+//                .perform();
+//                System.out.println("1");
+                clickElement(parentElement);
                 clickElement(element);
             }
         }

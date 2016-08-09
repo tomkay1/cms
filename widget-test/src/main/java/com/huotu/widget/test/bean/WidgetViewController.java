@@ -109,6 +109,11 @@ public class WidgetViewController {
         return "browse";
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/index")
+    public String index(Model model) {
+        return "editor";
+    }
+
 
 //    @RequestMapping(method = RequestMethod.GET, value = {"/javascript/{id}"}, produces = "application/javascript")
 //    public String javascript(@PathVariable("id") String widgetId) throws IOException {

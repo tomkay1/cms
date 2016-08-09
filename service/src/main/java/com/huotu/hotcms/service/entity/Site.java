@@ -11,10 +11,12 @@ package com.huotu.hotcms.service.entity;
 
 import com.huotu.hotcms.service.Auditable;
 import com.huotu.hotcms.service.Enabled;
+import com.huotu.hotcms.service.ImagesOwner;
 import com.huotu.hotcms.service.common.SiteType;
 import com.huotu.hotcms.service.entity.login.Owner;
 import lombok.Getter;
 import lombok.Setter;
+import me.jiangcai.lib.resource.service.ResourceService;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,8 +29,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * 站点
@@ -39,7 +44,7 @@ import java.util.Objects;
 @Setter
 @Getter
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Site implements Auditable, Enabled {
+public class Site implements Auditable, Enabled, ImagesOwner {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -186,6 +191,28 @@ public class Site implements Auditable, Enabled {
     @Override
     public int hashCode() {
         return Objects.hash(siteId, enabled, name, title, keywords, description, logoUri, copyright, custom, customTemplateUrl, personalise, createTime, updateTime, deleted, resourceUrl, siteType);
+    }
+
+    @Override
+    public int[] imageResourceIndexes() {
+        return new int[]{0};
+    }
+
+    @Override
+    public String[] getResourcePaths() {
+        return new String[]{getLogoUri()};
+    }
+
+    @Override
+    public void updateResource(int index, String path, ResourceService resourceService) throws IOException {
+        if (getLogoUri() != null)
+            resourceService.deleteResource(getLogoUri());
+        setLogoUri(path);
+    }
+
+    @Override
+    public String generateResourcePath(int index, ResourceService resourceService, InputStream stream) {
+        return UUID.randomUUID().toString();
     }
 
     //

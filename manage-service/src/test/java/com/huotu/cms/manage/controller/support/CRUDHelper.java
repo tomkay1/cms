@@ -104,48 +104,51 @@ public class CRUDHelper {
                 // 检查这个数据row
                 try {
                     testInstance.assertResourcePage(editPage, entity);
+
+                    log.debug("测试编辑资源");
+                    if (testInstance.modify()) {
+
+                        // 允许修改的字段
+                        PropertyDescriptor[] allPropertyDescriptors = BeanUtils.getPropertyDescriptors(entity.getClass());
+                        allPropertyDescriptors = Arrays.stream(allPropertyDescriptors)
+                                .filter(propertyDescriptor -> propertyDescriptor.getWriteMethod() != null && propertyDescriptor.getReadMethod() != null)
+                                .toArray(PropertyDescriptor[]::new);
+
+                        T toModify = (T) entity.getClass().newInstance();
+                        for (PropertyDescriptor propertyDescriptor : allPropertyDescriptors) {
+                            Object obj = propertyDescriptor.getReadMethod().invoke(entity);
+                            propertyDescriptor.getWriteMethod().invoke(toModify, obj);
+                        }
+
+                        // 应用随机值
+                        PropertyDescriptor[] fields = Arrays.stream(allPropertyDescriptors)
+                                .filter(testInstance.editableProperty())
+                                .toArray(PropertyDescriptor[]::new);
+                        T anotherValue = testInstance.randomValue();
+
+                        for (PropertyDescriptor propertyDescriptor : fields) {
+                            Object obj = propertyDescriptor.getReadMethod().invoke(anotherValue);
+                            propertyDescriptor.getWriteMethod().invoke(toModify, obj);
+                        }
+
+                        //准备提交toModify
+                        AbstractCRUDPage<T> afterModifyPage = editPage.addEntityAndSubmit(toModify, testInstance.customAddFunction());
+                        afterModifyPage.assertNoDanger();
+
+                        if (entity instanceof Auditable) {
+                            assertThat(((Auditable) entity).getUpdateTime())
+                                    .isNotNull();
+                        }
+                        testInstance.assertCreation(entity, toModify);
+
+                    }
+
                 } catch (Throwable ex) {
                     editPage.printThisPage();
                     throw ex;
                 }
 
-                log.debug("测试编辑资源");
-                if (testInstance.modify()) {
 
-                    // 允许修改的字段
-                    PropertyDescriptor[] allPropertyDescriptors = BeanUtils.getPropertyDescriptors(entity.getClass());
-                    allPropertyDescriptors = Arrays.stream(allPropertyDescriptors)
-                            .filter(propertyDescriptor -> propertyDescriptor.getWriteMethod() != null && propertyDescriptor.getReadMethod() != null)
-                            .toArray(PropertyDescriptor[]::new);
-
-                    T toModify = (T) entity.getClass().newInstance();
-                    for (PropertyDescriptor propertyDescriptor : allPropertyDescriptors) {
-                        Object obj = propertyDescriptor.getReadMethod().invoke(entity);
-                        propertyDescriptor.getWriteMethod().invoke(toModify, obj);
-                    }
-
-                    // 应用随机值
-                    PropertyDescriptor[] fields = Arrays.stream(allPropertyDescriptors)
-                            .filter(testInstance.editableProperty())
-                            .toArray(PropertyDescriptor[]::new);
-                    T anotherValue = testInstance.randomValue();
-
-                    for (PropertyDescriptor propertyDescriptor : fields) {
-                        Object obj = propertyDescriptor.getReadMethod().invoke(anotherValue);
-                        propertyDescriptor.getWriteMethod().invoke(toModify, obj);
-                    }
-
-                    //准备提交toModify
-                    AbstractCRUDPage<T> afterModifyPage = editPage.addEntityAndSubmit(toModify, testInstance.customAddFunction());
-                    afterModifyPage.assertNoDanger();
-
-                    if (entity instanceof Auditable) {
-                        assertThat(((Auditable) entity).getUpdateTime())
-                                .isNotNull();
-                    }
-                    testInstance.assertCreation(entity, toModify);
-
-                }
             }
 
         } else if (testInstance.modify()) {

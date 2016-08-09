@@ -13,15 +13,10 @@ import com.huotu.cms.manage.controller.support.CRUDController;
 import com.huotu.cms.manage.exception.RedirectException;
 import com.huotu.hotcms.service.entity.Template;
 import com.huotu.hotcms.service.entity.login.Login;
-import com.huotu.hotcms.service.util.ImageHelper;
-import me.jiangcai.lib.resource.Resource;
-import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -37,9 +32,6 @@ public class TemplateController extends CRUDController<Template, Long, String, S
 
     private static Log log = LogFactory.getLog(TemplateController.class);
 
-    @Autowired
-    private ResourceService resourceService;
-
     @Override
     protected String indexViewName() {
         return "/view/template/index.html";
@@ -50,22 +42,21 @@ public class TemplateController extends CRUDController<Template, Long, String, S
             throws RedirectException {
         data.setEnabled(true);// 第一次添加的模板 总是有效的吧
         try {
-            uploadTempImageToOwner(data,extra);
+            commonService.uploadTempImageToOwner(data, extra);
         } catch (IOException e) {
-            log.warn("图片转存异常："+e.getMessage());
+            throw new RedirectException(rootUri(), e);
         }
         return data;
     }
-
 
 
     @Override
     protected void prepareUpdate(Login login, Template entity, Template data, String extra, RedirectAttributes attributes)
             throws RedirectException {
         try {
-            uploadTempImageToOwner(data,extra);
+            commonService.uploadTempImageToOwner(data, extra);
         } catch (IOException e) {
-            log.warn("图片转存异常："+e.getMessage());
+            throw new RedirectException(rootUri() + "/" + entity.getSiteId(), e);
         }
     }
 

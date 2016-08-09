@@ -93,9 +93,9 @@ public class SitePage extends AbstractCRUDPage<Site> {
         inputText(form, "name", value.getName());
         inputText(form, "title", value.getTitle());
         inputText(form, "description", value.getDescription());
+        inputText(form, "copyright", value.getCopyright());
         inputTags(form, "keywords", value.getKeywords().split(","));
 //        inputSelect(form, "siteType", value.getSiteType().getValue().toString());
-        inputText(form, "copyright", value.getCopyright());
 
         log.info("to click submit for add site.");
     }

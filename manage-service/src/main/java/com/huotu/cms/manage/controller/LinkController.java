@@ -11,35 +11,19 @@ package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.controller.support.ContentManageController;
 import com.huotu.cms.manage.exception.RedirectException;
-import com.huotu.cms.manage.util.web.CookieUser;
 import com.huotu.hotcms.service.common.ContentType;
-import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.model.ContentExtra;
-import com.huotu.hotcms.service.model.LinkCategory;
-import com.huotu.hotcms.service.repository.CategoryRepository;
-import com.huotu.hotcms.service.repository.LinkRepository;
-import com.huotu.hotcms.service.service.LinkService;
-import com.huotu.hotcms.service.util.PageData;
-import com.huotu.hotcms.service.util.ResultOptionEnum;
-import com.huotu.hotcms.service.util.ResultView;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
@@ -78,7 +62,7 @@ public class LinkController extends ContentManageController<Link,ContentExtra> {
         entity.setUpdateTime(LocalDateTime.now());
         entity.setLinkUrl(data.getLinkUrl());
         try {
-            uploadTempImageToOwner(entity,extra.getTempPath());
+            commonService.uploadTempImageToOwner(entity, extra.getTempPath());
         } catch (IOException e) {
             log.warn("图片转存异常："+e.getMessage());
         }

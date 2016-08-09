@@ -9,10 +9,13 @@
 
 package com.huotu.hotcms.service.service;
 
+import com.huotu.hotcms.service.ImagesOwner;
 import com.huotu.hotcms.service.ResourcesOwner;
+import me.jiangcai.lib.resource.Resource;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 
@@ -35,6 +38,49 @@ public class CommonService {
     public void deleteResource(ResourcesOwner resourcesOwner) throws IOException {
         for (String path : resourcesOwner.getResourcePaths()) {
             if (path != null)
+                resourceService.deleteResource(path);
+        }
+    }
+
+
+    /**
+     * 从临时资源库更新图片资源,临时资源需要立刻回收
+     *
+     * @param owner 资源宿主
+     * @param index 索引号
+     * @param path  资源路径
+     */
+    public void updateImageFromTmp(ImagesOwner owner, int index, String path) throws IOException {
+        if (!StringUtils.isEmpty(path)) {
+            Resource tmp = resourceService.getResource(path);
+            if (tmp.exists()) {
+                try {
+                    owner.updateImage(index, resourceService, path);
+                } finally {
+                    //noinspection ThrowFromFinallyBlock
+                    resourceService.deleteResource(path);
+                }
+            }
+        }
+    }
+
+    /**
+     * 这个方法是一个便利糖,可以放到更为底层的位置
+     * 更新数个临时图片到owner
+     *
+     * @param owner   图片拥有者
+     * @param tmpPath 临时文件的资源path
+     * @throws IOException
+     * @throws IllegalArgumentException 如果图片不是图片
+     */
+    public void uploadTempImageToOwner(ImagesOwner owner, String... tmpPath) throws IOException
+            , IllegalArgumentException {
+        try {
+            owner.updateImages(resourceService, tmpPath);
+        } finally {
+            //
+            for (String path : tmpPath)
+                //noinspection ThrowFromFinallyBlock
                 resourceService.deleteResource(path);
         }
     }

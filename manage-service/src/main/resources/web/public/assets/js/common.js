@@ -80,6 +80,7 @@ function updataCompoentPreview(globalID, properties) {
         type: 'POST',
         url: '/preview/component',
         dataType: 'json',
+        contentType: "application/json; charset=utf-8",
         data: {
             widgetidentity: widgetId,
             styleId: styleId,
@@ -99,7 +100,7 @@ function updataCompoentPreview(globalID, properties) {
                 layer.msg('没有权限', {time: 2000});
             }
             if (json.statusCode == '502') {
-                ayer.msg('服务器错误,请稍后再试', {time: 2000});
+                layer.msg('服务器错误,请稍后再试', {time: 2000});
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {

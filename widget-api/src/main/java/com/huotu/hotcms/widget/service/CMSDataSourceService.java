@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.widget.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Gallery;
 import com.huotu.hotcms.service.model.GalleryItemModel;
@@ -67,7 +68,7 @@ public interface CMSDataSourceService {
      *
      * @return 返回当前站点json Page
      */
-    String findSitePage();
+    String findSitePage() throws JsonProcessingException;
 
     /**
      * <p>查询指定链接数据源下的所有链接模型</p>
@@ -76,5 +77,12 @@ public interface CMSDataSourceService {
      * @return 返回指定链接数据源下的全部链接模型
      */
     List<LinkModel> findLink(Long categoryId);
+
+    /**
+     * 查询一级页面
+     *
+     * @return json串
+     */
+    String findSiteNotParentPage();
 
 }

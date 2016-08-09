@@ -163,7 +163,7 @@ public class WidgetFactoryServiceTest extends TestBase {
 
         List<WidgetInfo> list = widgetInfoRepository.findByGroupIdAndArtifactIdAndEnabledTrue(
                 "com.huotu.hotcms.widget.picCarousel", "picCarousel");
-        assertThat(list.size()).isEqualTo(2);
+        assertThat(list.size()).as("新版本未能满足低版本所以没有删除低版本").isEqualTo(2);
 
     }
 

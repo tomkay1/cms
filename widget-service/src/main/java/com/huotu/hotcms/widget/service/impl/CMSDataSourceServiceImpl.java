@@ -10,6 +10,8 @@
 package com.huotu.hotcms.widget.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Gallery;
@@ -119,24 +121,18 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
         List<NavbarPageInfoModel> navbarPageInfoModels = new ArrayList<>();
         for (PageInfo pageInfo : list) {
             NavbarPageInfoModel navbarPageInfoModel = new NavbarPageInfoModel();
-            navbarPageInfoModel.setText(pageInfo.getTitle());
-            navbarPageInfoModel.setHref(pageInfo.getPagePath());
-            navbarPageInfoModel.setPageId(pageInfo.getPageId());
-            navbarPageInfoModel.setParentId(pageInfo.getParent() != null ? pageInfo.getParent().getPageId() : 0);
+            navbarPageInfoModel.setName(pageInfo.getTitle());
+            navbarPageInfoModel.setId(pageInfo.getPageId());
+            navbarPageInfoModel.setPagePath(pageInfo.getPagePath());
+            navbarPageInfoModel.setPid(pageInfo.getParent() != null ? pageInfo.getParent().getPageId() : 0);
             navbarPageInfoModels.add(navbarPageInfoModel);
         }
-        List<NavbarPageInfoModel> rootTrees = new ArrayList<>();
-        for (NavbarPageInfoModel navbarPageInfoModel : navbarPageInfoModels) {
-            if (navbarPageInfoModel.getParentId() == 0) {
-                rootTrees.add(navbarPageInfoModel);
-            }
-            for (NavbarPageInfoModel t : navbarPageInfoModels) {
-                if (t.getParentId() == navbarPageInfoModel.getPageId()) {
-                    navbarPageInfoModel.getNodes().add(t);
-                }
-            }
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.writeValueAsString(navbarPageInfoModels);
+        } catch (JsonProcessingException e) {
+            return "";
         }
-        return JSONObject.toJSONString(rootTrees);
     }
 
     @Override
@@ -151,5 +147,25 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
             }
         }
         return linkModels;
+    }
+
+    @Override
+    public String findSiteNotParentPage() {
+        List<PageInfo> list = pageInfoRepository.findBySiteAndParent(CMSContext.RequestContext().getSite(), null);
+        List<NavbarPageInfoModel> navbarPageInfoModels = new ArrayList<>();
+        for (PageInfo pageInfo : list) {
+            NavbarPageInfoModel navbarPageInfoModel = new NavbarPageInfoModel();
+            navbarPageInfoModel.setName(pageInfo.getTitle());
+            navbarPageInfoModel.setId(pageInfo.getPageId());
+            navbarPageInfoModel.setPagePath(pageInfo.getPagePath());
+            navbarPageInfoModel.setPid(pageInfo.getParent() != null ? pageInfo.getParent().getPageId() : 0);
+            navbarPageInfoModels.add(navbarPageInfoModel);
+        }
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.writeValueAsString(navbarPageInfoModels);
+        } catch (JsonProcessingException e) {
+            return "";
+        }
     }
 }

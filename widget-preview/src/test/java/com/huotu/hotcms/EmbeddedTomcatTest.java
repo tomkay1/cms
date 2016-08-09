@@ -15,6 +15,7 @@ public class EmbeddedTomcatTest {
     public void start() throws Exception {
         embeddedTomcat.setPort(9080);
         embeddedTomcat.start();
+        embeddedTomcat.stop();
     }
 
     @Test

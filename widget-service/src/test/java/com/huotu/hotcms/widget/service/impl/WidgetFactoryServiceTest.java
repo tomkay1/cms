@@ -159,12 +159,11 @@ public class WidgetFactoryServiceTest extends TestBase {
         for (PageElement element : pageElements) {
             validPageElements(element, widgetInfo);
         }
-        assertThat(1).as("页面错误被忽略，组件被忽略更新").isEqualTo(1);
+        assertThat(1).as("错误被忽略，组件被忽略更新").isEqualTo(1);
 
         List<WidgetInfo> list = widgetInfoRepository.findByGroupIdAndArtifactIdAndEnabledTrue(
                 "com.huotu.hotcms.widget.picCarousel", "picCarousel");
-        assertThat(list.size()).isEqualTo(1);
-        assertThat(list.get(0).getVersion()).as("组件忽略更新，禁用其他低版本的组件").isEqualToIgnoringCase("2.0-SNAPSHOT");
+        assertThat(list.size()).as("新版本未能满足低版本所以没有删除低版本").isEqualTo(2);
 
     }
 

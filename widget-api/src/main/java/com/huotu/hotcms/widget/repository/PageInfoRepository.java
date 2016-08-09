@@ -61,5 +61,13 @@ public interface PageInfoRepository extends JpaRepository<PageInfo, Long>, JpaSp
      */
     PageInfo findByPagePath(String pagePath);
 
+    /**
+     * 通过数据源查询pageInfo列表
+     *
+     * @param parent 数据源 =null
+     * @return pageInfo列表
+     */
+    List<PageInfo> findBySiteAndParent(Site site, PageInfo parent);
+
 
 }

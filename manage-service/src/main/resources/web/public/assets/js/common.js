@@ -65,6 +65,7 @@ var widgetHandle = {
                 layer.msg(msg)
             }
         });
+        CMSWidgets.closeEditor(GlobalID,identity);
     },
     closeSetting: function () {
         CMSWidgets.closeEditor(GlobalID,identity);

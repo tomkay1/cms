@@ -23,7 +23,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
- * @author wenqi
+ * 管理文章内容
+ *
+ * @author CJ
  */
 @Controller
 @RequestMapping("/manage/article")

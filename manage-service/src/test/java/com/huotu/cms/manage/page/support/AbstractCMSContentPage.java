@@ -9,6 +9,8 @@
 
 package com.huotu.cms.manage.page.support;
 
+import com.huotu.cms.manage.ManageTest;
+import com.huotu.hotcms.service.ImagesOwner;
 import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Category;
 import org.openqa.selenium.WebDriver;
@@ -16,6 +18,8 @@ import org.openqa.selenium.WebElement;
 import org.springframework.util.StringUtils;
 
 import java.util.function.Predicate;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * 正文管理页面的基类
@@ -51,17 +55,50 @@ public abstract class AbstractCMSContentPage<T extends AbstractContent> extends 
         } else
             inputSelect(form, "parentCategoryId", category.getParent().getName());
 
+        commonUpdate(value, form);
+
+        fillContentValue(value, false);
+    }
+
+    /**
+     * @param value
+     * @param form
+     * @see com.huotu.hotcms.service.model.ContentExtra#tempPath
+     */
+    private void commonUpdate(T value, WebElement form) {
         inputText(form, "title", value.getTitle());
         // description
 
-        fillContentValue(value, false);
+        ManageTest test = (ManageTest) getTestInstance();
+        assertThat(test)
+                .isNotNull();
+
+        if (value instanceof ImagesOwner) {
+            // 目前就做了这个呀。  资源上传的还不知道怎么弄呢
+            // 应该是复制一份资源 然后给它一个新名字
+            ImagesOwner imagesOwner = (ImagesOwner) value;
+
+            for (int i = 0; i < imagesOwner.getImagePaths().length; i++) {
+                if (i == 0) {
+                    String path = imagesOwner.getImagePaths()[i];
+                    if (!StringUtils.isEmpty(path)) {
+                        // 复制
+                        try {
+                            test.uploadResource(this, "tempPath", test.getResourceService().getResource(path));
+                        } catch (Exception e) {
+                            throw new IllegalStateException(e);
+                        }
+                    }
+                } else
+                    throw new IllegalStateException("靠 怎么弄其他图片啊?");
+            }
+        }
     }
 
     @Override
     protected final void fillValueToFormForUpdate(T value) {
         WebElement form = getForm();
-        inputText(form, "title", value.getTitle());
-        // description
+        commonUpdate(value, form);
 
         fillContentValue(value, true);
     }

@@ -18,34 +18,35 @@
 </head>
 <body class="mainpanel" id="fa-tasks">
 <div class="pageheader">
-    <h2><i class="fa fa-tasks"></i> 文章模型 <span>管理文章数据源</span></h2>
+    <h2><i class="fa fa-tasks"></i> 文章模型 <span>管理文章</span></h2>
 </div>
-
+<!--/*@thymesVar id="categories" type="java.lang.Iterable<com.huotu.hotcms.service.entity.Category"*/-->
 <div class="contentpanel">
-    <form id="categoryForm" action="index.html" method="POST" th:action="@{/manage/article}">
+    <form id="articleForm" action="index.html" method="POST" th:action="@{/manage/article}">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="panel-btns">
                     <a href="" class="panel-close">&times;</a>
                     <a href="" class="minimize">&minus;</a>
                 </div><!-- panel-btns -->
-                <h3 class="panel-title">新增文章数据源</h3>
+                <h3 class="panel-title">新增文章</h3>
                 <p>父级数据源可以不选择,按父级数据源搜索将可以搜索到相关所有数据内容</p>
             </div>
             <div class="panel-body">
-
                 <div class="form-horizontal form-bordered">
-
-                    <div class="form-group" >
-                        <label class="col-sm-2 control-label">名称</label>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">数据源</label>
                         <div class="col-sm-2">
                             <input name="categoryName" title="名称" type="text" placeholder="数据源的名称"
-                                   class="form-control" />
+                                   class="form-control"/>
                         </div>
                         <label class="col-sm-2 control-label">父级</label>
                         <div class="col-sm-2">
-                            <select name="parentCategoryId" title="父级数据源" class="form-control" >
-                                <option th:each="category:${categories}" th:value="${category.id}" th:text="${category.name}">无</option>
+                            <select name="parentCategoryId" title="父级数据源" class="form-control">
+                                <option value="">无</option>
+                                <option th:each="category:${categories}" th:value="${category.id}"
+                                        th:text="${category.name}">最新消息
+                                </option>
                                 <option th:remove="all">新闻咨询</option>
                                 <option th:remove="all">成功案例</option>
                             </select>
@@ -53,49 +54,48 @@
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">标题</label>
-                        <div class="col-sm-2">
+                        <div class="col-sm-6">
                             <input name="title" title="标题" type="text" placeholder="文章标题"
                                    class="form-control"/>
                         </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-sm-2 control-label">作者</label>
                         <div class="col-sm-2">
                             <input name="author" title="作者" type="text" placeholder="文章作者"
                                    class="form-control"/>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">类型</label>
-                        <div class="col-sm-2">
-                            <input name="type" title="类型" type="text" placeholder="文章类型"
-                                   class="form-control"/>
-                        </div>
                         <label class="col-sm-2 control-label">来源</label>
                         <div class="col-sm-2">
                             <select name="articleSource" title="文章来源" class="form-control">
-                                <option th:value="ORIGINAL">原创</option>
-                                <option th:value="REPRINT">转载</option>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option value="0"
+                                        th:each="pageType:${T(com.huotu.hotcms.service.common.ArticleSource).values()}"
+                                        th:value="${pageType.getCode()}"
+                                        th:text="${pageType.getValue().toString()}">原创
+                                </option>
+                                <option th:remove="all">转载</option>
                             </select>
                         </div>
                         <!--<label class="col-sm-2 control-label">时间</label>-->
                         <!--<div class="col-sm-2">-->
-                            <!--<input  name="createTime" title="时间" type="text" placeholder="文章时间"-->
-                                   <!--class="form-control cms-datepicker"/>-->
+                        <!--<input  name="createTime" title="时间" type="text" placeholder="文章时间"-->
+                        <!--class="form-control cms-datepicker"/>-->
                         <!--</div>-->
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">封面</label>
+                        <input type="hidden" name="tempPath" id="thumbUri"/>
+                        <div class="col-sm-10" id="article-uploader"></div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">内容</label>
                         <div class="col-sm-10">
-                            <textarea class="form-control" rows="4" title="内容" name="content"></textarea>
+                            <textarea class="form-control editor" rows="4" title="内容" name="content"></textarea>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">封面</label>
-                        <input type="hidden" name="tempPath" id="thumbUri" />
-                        <div class="col-sm-10" id="article-uploader"></div>
                     </div>
                 </div>
             </div><!-- panel-body -->
-
             <div class="panel-footer">
                 <div class="row">
                     <div class="col-sm-6 col-sm-offset-3">
@@ -105,10 +105,8 @@
                     </div>
                 </div>
             </div><!-- panel-footer -->
-
         </div>
     </form>
-
     <div class="panel panel-default">
         <div class="panel-heading">
             <div class="panel-btns">
@@ -143,7 +141,8 @@
                             <a href="articleOpen.html" th:href="@{/manage/article/{id}(id=${article.id})}" title="管理">
                                 <i class="fa fa-pencil"></i>
                             </a>
-                            <a href="article.html" class="delete" th:href="@{/manage/article/{id}/delete(id=${article.id})}"
+                            <a href="article.html" class="delete"
+                               th:href="@{/manage/article/{id}/delete(id=${article.id})}"
                                title="删除">
                                 <i class="fa fa-trash-o"></i>
                             </a>
@@ -156,11 +155,11 @@
                         <td>文章</td>
                         <td>无</td>
                         <td class="center">
-                            <a href="articleOpen.html"  title="编辑">
+                            <a href="articleOpen.html" title="编辑">
                                 <i class="fa fa-pencil"></i>
                             </a>
                             <a href="article.html" class="delete"
-                                title="删除">
+                               title="删除">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                         </td>
@@ -171,7 +170,7 @@
                         <td>文章</td>
                         <td>新闻资讯</td>
                         <td class="center">
-                            <a href="articleOpen.html"  title="编辑">
+                            <a href="articleOpen.html" title="编辑">
                                 <i class="fa fa-pencil"></i>
                             </a>
                             <a href="article.html" class="delete"
@@ -192,12 +191,15 @@
         var customerIdChangeUrl = /*[[@{/manage/supper/owner/$1/customerId}]]*/ null;
     </script>
 </div><!-- contentpanel -->
-<script src="http://resali.huobanplus.com/cdn/jquery/1.9.1/jquery.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-1.10.2.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-ui-1.10.3.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/bootstrap.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/toggles.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.cookies.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.maskedinput.min.js"></script>
+<script src="//cdn.ckeditor.com/4.5.10/standard/ckeditor.js"></script>
+<script src="//cdn.ckeditor.com/4.5.10/standard/adapters/jquery.js"></script>
+
 <script src="http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/jquery.fine-uploader.min.js"></script>
 <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/fine-uploader-new.min.css"
       property=""/>

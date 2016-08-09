@@ -51,6 +51,14 @@ public interface AbstractContentRepository<T extends AbstractContent>
     Page<T> findByCategory_Site(Site site, Pageable pageable);
 
     /**
+     * @param site 站点
+     * @return 按站点查找
+     */
+    List<T> findByCategory_SiteAndDeletedFalse(Site site);
+
+    Page<T> findByCategory_SiteAndDeletedFalse(Site site, Pageable pageable);
+
+    /**
      * 按照站点和唯一序列号查找
      *
      * @param site   站点

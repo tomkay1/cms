@@ -11,17 +11,15 @@ package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.controller.support.CRUDController;
 import com.huotu.cms.manage.exception.RedirectException;
-import com.huotu.hotcms.service.ImagesOwner;
 import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.repository.OwnerRepository;
+import com.huotu.hotcms.service.service.CommonService;
 import com.huotu.hotcms.service.service.HostService;
 import com.huotu.hotcms.service.service.SiteService;
 import lombok.Data;
-import me.jiangcai.lib.resource.Resource;
-import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +27,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -46,16 +43,14 @@ import java.util.stream.Collectors;
 public class SiteController extends CRUDController<Site, Long, SiteController.AboutNewSite, SiteController.AboutNewSite> {
 
     private static final Log log = LogFactory.getLog(SiteController.class);
-
+    @Autowired
+    protected CommonService commonService;
     @Autowired
     private SiteService siteService;
     @Autowired
     private HostService hostService;
-
     @Autowired
     private OwnerRepository ownerRepository;
-    @Autowired
-    private ResourceService resourceService;
 
     @Override
     protected Specification<Site> prepareIndex(Login login, Model model, RedirectAttributes attributes) throws RedirectException {
@@ -89,7 +84,7 @@ public class SiteController extends CRUDController<Site, Long, SiteController.Ab
 
         data = siteService.newSite(extra.getDomains(), extra.getHomeDomain(), data, Locale.CHINA);
         try {
-            updateImageFromTmp(data, 0, extra.getTmpLogoPath());
+            commonService.updateImageFromTmp(data, 0, extra.getTmpLogoPath());
         } catch (IOException e) {
             throw new RedirectException(rootUri(), e.getMessage(), e);
         }
@@ -97,26 +92,6 @@ public class SiteController extends CRUDController<Site, Long, SiteController.Ab
         return data;
     }
 
-    /**
-     * 从临时资源库更新图片资源,临时资源需要立刻回收
-     *
-     * @param owner 资源宿主
-     * @param index 索引号
-     * @param path  资源路径
-     */
-    private void updateImageFromTmp(ImagesOwner owner, int index, String path) throws IOException {
-        if (!StringUtils.isEmpty(path)) {
-            Resource tmp = resourceService.getResource(path);
-            if (tmp.exists()) {
-                try {
-                    owner.updateImage(index, resourceService, path);
-                } finally {
-                    //noinspection ThrowFromFinallyBlock
-                    resourceService.deleteResource(path);
-                }
-            }
-        }
-    }
 
     @Override
     protected void prepareUpdate(Login login, Site entity, Site data, AboutNewSite extra, RedirectAttributes attributes)
@@ -131,7 +106,7 @@ public class SiteController extends CRUDController<Site, Long, SiteController.Ab
 
         siteService.patchSite(extra.getDomains(), extra.getHomeDomain(), entity, Locale.CHINA);
         try {
-            updateImageFromTmp(entity, 0, extra.getTmpLogoPath());
+            commonService.updateImageFromTmp(entity, 0, extra.getTmpLogoPath());
         } catch (IOException e) {
             throw new RedirectException(rootUri() + "/" + entity.getSiteId(), e.getMessage(), e);
         }

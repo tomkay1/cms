@@ -247,7 +247,15 @@ public abstract class AbstractManagePage extends BracketPage {
             } else {
                 if (parentElement == null)
                     throw new IllegalStateException("指定的菜单无法展示" + className);
-                parentElement.click();
+//                new Actions(webDriver)
+//                .moveToElement(parentElement)
+//                .click()
+//                .moveToElement(element)
+//                .click()
+//                .build()
+//                .perform();
+//                System.out.println("1");
+                clickElement(parentElement);
                 clickElement(element);
             }
         }

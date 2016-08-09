@@ -27,11 +27,14 @@ import org.junit.Test;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.beans.PropertyDescriptor;
 import java.util.Collection;
 import java.util.UUID;
 import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -90,8 +93,11 @@ public abstract class ContentManageTest<T extends AbstractContent> extends SiteM
 
     protected abstract void assertCreation(T entity, T data);
 
+    protected abstract Predicate<? super PropertyDescriptor> editableProperty() throws Exception;
+
 
     @Test
+    @Transactional
     public void flow() throws Exception {
         Site site = loginAsSite();
 
@@ -138,6 +144,14 @@ public abstract class ContentManageTest<T extends AbstractContent> extends SiteM
         @Override
         public BiConsumer<AbstractCRUDPage<T>, T> customAddFunction() throws Exception {
             return null;
+        }
+
+        @Override
+        public Predicate<? super PropertyDescriptor> editableProperty() throws Exception {
+            Predicate<PropertyDescriptor> stable = propertyDescriptor -> propertyDescriptor.getName().equals("title")
+                    || propertyDescriptor.getName().equals("description");
+
+            return stable.or(ContentManageTest.this.editableProperty());
         }
 
         @Override

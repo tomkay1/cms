@@ -70,7 +70,7 @@ public class ArticlePage extends AbstractCMSContentPage<Article> {
     }
 
     @Override
-    protected void fillContentValue(Article value) {
+    protected void fillContentValue(Article value, boolean update) {
         WebElement form = getForm();
         inputText(form, "author", value.getAuthor());
         inputSelect(form, "articleSource", value.getArticleSource().getValue().toString());

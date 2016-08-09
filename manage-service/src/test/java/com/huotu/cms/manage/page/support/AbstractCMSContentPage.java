@@ -54,10 +54,19 @@ public abstract class AbstractCMSContentPage<T extends AbstractContent> extends 
         inputText(form, "title", value.getTitle());
         // description
 
-        fillContentValue(value);
+        fillContentValue(value, false);
     }
 
-    protected abstract void fillContentValue(T value);
+    @Override
+    protected final void fillValueToFormForUpdate(T value) {
+        WebElement form = getForm();
+        inputText(form, "title", value.getTitle());
+        // description
+
+        fillContentValue(value, true);
+    }
+
+    protected abstract void fillContentValue(T value, boolean update);
 
     public abstract void assertResourcePage(T entity) throws Exception;
 }

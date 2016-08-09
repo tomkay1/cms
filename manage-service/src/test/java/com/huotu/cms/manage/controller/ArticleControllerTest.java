@@ -16,7 +16,9 @@ import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Site;
 
+import java.beans.PropertyDescriptor;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -44,5 +46,12 @@ public class ArticleControllerTest extends ContentManageTest<Article> {
                 .isEqualTo(data.getContent());
 //        assertThat(entity.getType())
         // 资源
+    }
+
+    @Override
+    protected Predicate<? super PropertyDescriptor> editableProperty() throws Exception {
+        return pd -> pd.getName().equals("author")
+                || pd.getName().equals("articleSource")
+                || pd.getName().equals("content");
     }
 }

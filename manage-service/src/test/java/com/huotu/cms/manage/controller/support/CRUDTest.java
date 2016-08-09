@@ -66,6 +66,15 @@ public interface CRUDTest<T> {
     BiConsumer<AbstractCRUDPage<T>, T> customAddFunction() throws Exception;
 
     /**
+     * 不覆盖实现的话将直接使用{@link #customAddFunction()}
+     * @return 修改编辑时的额外操作
+     * @throws Exception
+     */
+    default BiConsumer<AbstractCRUDPage<T>, T> customUpdateFunction() throws Exception {
+        return customAddFunction();
+    }
+
+    /**
      * 检查新增的数据是否正确
      *
      * @param entity 来自JPA

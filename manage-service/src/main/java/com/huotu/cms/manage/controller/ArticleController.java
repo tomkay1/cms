@@ -40,6 +40,7 @@ public class ArticleController extends ContentManageController<Article, ContentE
             , RedirectAttributes attributes) throws RedirectException {
         entity.setContent(data.getContent());
         entity.setAuthor(data.getAuthor());
+        entity.setArticleSource(data.getArticleSource());
     }
 
     @Override

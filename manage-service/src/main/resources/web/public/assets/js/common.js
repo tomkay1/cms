@@ -65,6 +65,7 @@ var widgetHandle = {
                 layer.msg(msg)
             }
         });
+        CMSWidgets.closeEditor(GlobalID,identity);
     },
     closeSetting: function () {
         CMSWidgets.closeEditor(GlobalID,identity);
@@ -75,17 +76,19 @@ function updataCompoentPreview(globalID, properties) {
     var ele = $('#' + globalID);
     var widgetId = ele.data('widgetidentity');
     var styleId = ele.data('styleid');
+    var data = {
+        "widgetidentity": widgetId,
+        "styleId": styleId,
+        "properties": properties,
+        "pageId": pageId,
+        "componentId": globalID
+    };
     $.ajax({
         type: 'POST',
         url: '/preview/component',
         dataType: 'json',
-        data: {
-            widgetidentity: widgetId,
-            styleId: styleId,
-            properties: properties,
-            pageId: pageId,
-            componentId: globalID
-        },
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(data),
         success: function (json, textStatus, jqXHR) {
             if (json.statusCode == '200') {
                 ele.html(json.body);
@@ -98,7 +101,7 @@ function updataCompoentPreview(globalID, properties) {
                 layer.msg('没有权限', {time: 2000});
             }
             if (json.statusCode == '502') {
-                ayer.msg('服务器错误,请稍后再试', {time: 2000});
+                layer.msg('服务器错误,请稍后再试', {time: 2000});
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {

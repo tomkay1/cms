@@ -20,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
@@ -38,7 +39,7 @@ public class TemplateController extends CRUDController<Template, Long, String, S
     }
 
     @Override
-    protected Template preparePersist(Login login, Template data, String extra, RedirectAttributes attributes)
+    protected Template preparePersist(HttpServletRequest request, Login login, Template data, String extra, RedirectAttributes attributes)
             throws RedirectException {
         data.setEnabled(true);// 第一次添加的模板 总是有效的吧
         try {

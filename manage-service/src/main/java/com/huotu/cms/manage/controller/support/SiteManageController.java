@@ -19,6 +19,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 
 /**
@@ -51,7 +52,7 @@ public abstract class SiteManageController<T, ID extends Serializable, PD, MD> e
     }
 
     @Override
-    protected T preparePersist(Login login, T data, PD extra, RedirectAttributes attributes)
+    protected T preparePersist(HttpServletRequest request, Login login, T data, PD extra, RedirectAttributes attributes)
             throws RedirectException {
         Site site = checkSite(login);
 
@@ -82,7 +83,7 @@ public abstract class SiteManageController<T, ID extends Serializable, PD, MD> e
      * @param extra
      * @param attributes
      * @return
-     * @see CRUDController#preparePersist(Login, Object, Object, RedirectAttributes)
+     * @see CRUDController#preparePersist(HttpServletRequest, Login, Object, Object, RedirectAttributes)
      */
     @SuppressWarnings({"WeakerAccess", "JavaDoc"})
     protected abstract T preparePersist(Login login, Site site, T data, PD extra, RedirectAttributes attributes)

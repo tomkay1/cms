@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -50,17 +51,19 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
     private static final Log log = LogFactory.getLog(CRUDController.class);
     @Autowired
     protected CommonService commonService;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private JpaRepository<T, ID> jpaRepository;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private JpaSpecificationExecutor<T> jpaSpecificationExecutor;
 
     @RequestMapping(method = RequestMethod.POST)
     @Transactional
-    public String add(@AuthenticationPrincipal Login login, @MethodParameterFixed T data
+    public String add(HttpServletRequest request, @AuthenticationPrincipal Login login, @MethodParameterFixed T data
             , @MethodParameterFixed PD extra, RedirectAttributes attributes) throws RedirectException {
         try {
-            data = preparePersist(login, data, extra, attributes);
+            data = preparePersist(request, login, data, extra, attributes);
 
             if (data instanceof Auditable) {
                 ((Auditable) data).setCreateTime(LocalDateTime.now());
@@ -195,6 +198,7 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
     /**
      * 在新增持久一个资源之前
      *
+     * @param request    当前请求
      * @param login      当前操作者的身份
      * @param data       来自用户的数据
      * @param extra      额外数据
@@ -202,7 +206,7 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
      * @return 提交到持久层的数据
      * @throws RedirectException 让视图转向
      */
-    protected abstract T preparePersist(Login login, T data, PD extra, RedirectAttributes attributes)
+    protected abstract T preparePersist(HttpServletRequest request, Login login, T data, PD extra, RedirectAttributes attributes)
             throws RedirectException;
 
     /**

@@ -170,6 +170,10 @@ public abstract class ManageTest extends SpringWebTest {
     @Autowired
     private ContentRepository contentRepository;
 
+    public ResourceService getResourceService() {
+        return resourceService;
+    }
+
     protected WidgetInfo randomWidgetInfoValue(Integer seed) {
 
         String[] widgetInfo;
@@ -735,7 +739,7 @@ public abstract class ManageTest extends SpringWebTest {
      * @param name     隐藏字段的名称
      * @param resource 需要上传的资源
      */
-    protected void uploadResource(AbstractCRUDPage<?> page, String name, Resource resource) throws Exception {
+    public void uploadResource(AbstractCRUDPage<?> page, String name, Resource resource) throws Exception {
         String path = mockMvc.perform(fileUpload("/manage/upload")
                 .file("file", StreamUtils.copyToByteArray(resource.getInputStream()))
                 .session(session)

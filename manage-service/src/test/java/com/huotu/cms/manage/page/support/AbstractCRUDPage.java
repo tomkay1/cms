@@ -66,6 +66,41 @@ public abstract class AbstractCRUDPage<T> extends AbstractContentPage {
         return webDriver.findElement(By.id(formId));
     }
 
+    private <X extends AbstractCRUDPage<T>> X doFormAndSubmit(T value, BiConsumer<AbstractCRUDPage<T>, T> otherDataSubmitter, Runnable runnable) {
+        beforeDriver();
+
+        // 先打开这个添加区域
+        WebElement panel = getForm().findElement(By.className("panel-default"));
+        WebElement body = panel.findElement(By.className("panel-body"));
+        if (!body.isDisplayed()) {
+            panel.findElement(By.cssSelector("a.maximize")).click();
+        }
+
+        runnable.run();
+        if (otherDataSubmitter != null) {
+            otherDataSubmitter.accept(this, value);
+        }
+        getForm().findElement(By.className("btn-primary")).click();
+        return (X) initPage(getClass());
+    }
+
+    /**
+     * 修改一个资源,并且提交表单
+     *
+     * @param data               原值
+     * @param value              数值
+     * @param otherDataSubmitter 作为额外输入字段的辅助,可以添加一个消耗者
+     * @param <X>                返回的页面类型
+     * @return 添加以后的页面
+     */
+    public <X extends AbstractCRUDPage<T>> X updateEntityAndSubmit(T data, T value
+            , BiConsumer<AbstractCRUDPage<T>, T> otherDataSubmitter) {
+        Runnable runnable = () -> fillValueToFormForUpdate(value);
+
+        return doFormAndSubmit(value, otherDataSubmitter, runnable);
+    }
+
+
     /**
      * 添加一个资源,并且提交表单
      *
@@ -76,21 +111,9 @@ public abstract class AbstractCRUDPage<T> extends AbstractContentPage {
      */
     public <X extends AbstractCRUDPage<T>> X addEntityAndSubmit(T value
             , BiConsumer<AbstractCRUDPage<T>, T> otherDataSubmitter) {
-        beforeDriver();
+        Runnable runnable = () -> fillValueToForm(value);
 
-        // 先打开这个添加区域
-        WebElement panel = getForm().findElement(By.className("panel-default"));
-        WebElement body = panel.findElement(By.className("panel-body"));
-        if (!body.isDisplayed()) {
-            panel.findElement(By.cssSelector("a.maximize")).click();
-        }
-
-        fillValueToForm(value);
-        if (otherDataSubmitter != null) {
-            otherDataSubmitter.accept(this, value);
-        }
-        getForm().findElement(By.className("btn-primary")).click();
-        return (X) initPage(getClass());
+        return doFormAndSubmit(value, otherDataSubmitter, runnable);
     }
 
     /**
@@ -99,6 +122,16 @@ public abstract class AbstractCRUDPage<T> extends AbstractContentPage {
      * @param value 资源值
      */
     protected abstract void fillValueToForm(T value);
+
+    /**
+     * 将数值表述在表单中 ,用于更新
+     * 不覆盖实现的话,将直接使用{@link #fillValueToForm(Object)}
+     *
+     * @param value 资源值
+     */
+    protected void fillValueToFormForUpdate(T value) {
+        fillValueToForm(value);
+    }
 
     /**
      * 子类可以替换该实现。
@@ -157,6 +190,7 @@ public abstract class AbstractCRUDPage<T> extends AbstractContentPage {
 
     /**
      * 删除操作
+     *
      * @param webElement
      * @param <X>
      * @return
@@ -173,13 +207,12 @@ public abstract class AbstractCRUDPage<T> extends AbstractContentPage {
     }
 
 
-
     @SuppressWarnings("WeakerAccess")
     protected void howToOpenResource(WebElement webElement) {
         webElement.findElement(By.className("fa-pencil")).click();
     }
 
-    protected void toDelete(WebElement webElement){
+    protected void toDelete(WebElement webElement) {
         webElement.findElement(By.className("fa-trash-o")).click();
     }
 }

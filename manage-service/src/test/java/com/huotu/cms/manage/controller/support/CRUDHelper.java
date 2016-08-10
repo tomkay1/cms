@@ -132,7 +132,8 @@ public class CRUDHelper {
                         }
 
                         //准备提交toModify
-                        AbstractCRUDPage<T> afterModifyPage = editPage.addEntityAndSubmit(toModify, testInstance.customAddFunction());
+                        AbstractCRUDPage<T> afterModifyPage = editPage.updateEntityAndSubmit(entity, toModify
+                                , testInstance.customUpdateFunction());
                         afterModifyPage.assertNoDanger();
 
                         if (entity instanceof Auditable) {

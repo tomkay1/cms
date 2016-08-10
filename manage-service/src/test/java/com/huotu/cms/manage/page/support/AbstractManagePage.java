@@ -23,6 +23,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitWebElement;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.Select;
 import org.springframework.core.io.Resource;
 
 import java.lang.reflect.Field;
@@ -343,7 +344,7 @@ public abstract class AbstractManagePage extends BracketPage {
             assertThat(container.findElement(By.className("chosen-single")).getText())
                     .isEqualTo(label);
         } else {
-            assertThat(input.getText())
+            assertThat(new Select(input).getFirstSelectedOption().getText())
                     .isEqualTo(label);
         }
     }

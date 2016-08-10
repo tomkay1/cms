@@ -29,6 +29,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * 这里是超管管理商户的控制器
  * <ul>
@@ -77,7 +79,7 @@ public class OwnerController extends CRUDController<Owner, Long, Void, Void> {
     }
 
     @Override
-    protected Owner preparePersist(Login login, Owner data, Void extra, RedirectAttributes attributes) throws RedirectException {
+    protected Owner preparePersist(HttpServletRequest request, Login login, Owner data, Void extra, RedirectAttributes attributes) throws RedirectException {
         if (StringUtils.isEmpty(data.getLoginName()) && data.getCustomerId() == null)
             throw new IllegalArgumentException("用户名或者商户号必须选择一个");
         if (!StringUtils.isEmpty(data.getLoginName()) && StringUtils.isEmpty(data.getPassword()))

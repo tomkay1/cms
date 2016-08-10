@@ -49,6 +49,7 @@ public class CommonService {
      * @param owner 资源宿主
      * @param index 索引号
      * @param path  资源路径
+     * @throws IllegalArgumentException 如果图片不是图片
      */
     public void updateImageFromTmp(ImagesOwner owner, int index, String path) throws IOException {
         if (!StringUtils.isEmpty(path)) {
@@ -61,27 +62,6 @@ public class CommonService {
                     resourceService.deleteResource(path);
                 }
             }
-        }
-    }
-
-    /**
-     * 这个方法是一个便利糖,可以放到更为底层的位置
-     * 更新数个临时图片到owner
-     *
-     * @param owner   图片拥有者
-     * @param tmpPath 临时文件的资源path
-     * @throws IOException
-     * @throws IllegalArgumentException 如果图片不是图片
-     */
-    public void uploadTempImageToOwner(ImagesOwner owner, String... tmpPath) throws IOException
-            , IllegalArgumentException {
-        try {
-            owner.updateImages(resourceService, tmpPath);
-        } finally {
-            //
-            for (String path : tmpPath)
-                //noinspection ThrowFromFinallyBlock
-                resourceService.deleteResource(path);
         }
     }
 

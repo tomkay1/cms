@@ -75,6 +75,13 @@ public interface ContentService {
     AbstractContent newContent(ContentType type);
 
     /**
+     * 初始化一个正文
+     *
+     * @param content 正文
+     */
+    void init(AbstractContent content);
+
+    /**
      * 复制所有src的正文到dist
      *
      * @param src  源数据源

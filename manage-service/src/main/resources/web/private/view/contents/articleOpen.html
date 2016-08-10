@@ -19,14 +19,14 @@
     <link href="../../../public/css/site.css" ewp:href="/css/site.css" rel="stylesheet">
     <title>EditSite</title>
 </head>
-<body class="mainpanel" id="fa-puzzle-piece">
+<body class="mainpanel" id="fa-tasks">
 <div class="pageheader">
     <h2><i class="fa fa-puzzle-piece"></i> 文章管理 <span>修改文章信息</span></h2>
 </div>
 
 <!--/*@thymesVar id="object" type="com.huotu.hotcms.service.entity.Article"*/-->
 <div class="contentpanel">
-    <form id="updateSiteForm" sec:authorize="hasRole('MANAGE')" action="article.html" method="post"
+    <form id="articleForm" sec:authorize="hasRole('MANAGE')" action="article.html" method="post"
           th:action="@{/manage/article/{id}(id=${object.id})}">
         <div class="panel panel-default close-panel">
             <div class="panel-heading">
@@ -43,44 +43,47 @@
                         <div class="form-horizontal form-bordered">
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">标题</label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-6">
                                     <input name="title" title="标题" type="text" placeholder="文章标题"
-                                           class="form-control" th:value="${object.title}"/>
-                                </div>
-                                <label class="col-sm-2 control-label">作者</label>
-                                <div class="col-sm-2">
-                                    <input name="author" title="作者" type="text" placeholder="文章作者"
                                            class="form-control" th:value="${object.title}"/>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">类型</label>
+
+                                <label class="col-sm-2 control-label">作者</label>
                                 <div class="col-sm-2">
-                                    <input name="type" title="类型" type="text" placeholder="文章类型"
-                                           class="form-control" th:value="${object.type}"/>
+                                    <input name="author" title="作者" type="text" placeholder="文章作者"
+                                           class="form-control" th:value="${object.author}"/>
                                 </div>
                                 <label class="col-sm-2 control-label">来源</label>
                                 <div class="col-sm-2">
-                                    <select name="articleSource" title="文章来源" class="form-control" disabled>
-                                        <option th:if="${object.articleSource.code==1}" th:selected="selected">原创</option>
-                                        <option th:if="${object.articleSource.code==0}" th:selected="selected">转载</option>
+                                    <select name="articleSource" title="文章来源" class="form-control">
+                                        <!--suppress ThymeleafVariablesResolveInspection -->
+                                        <option value="0"
+                                                th:each="pageType:${T(com.huotu.hotcms.service.common.ArticleSource).values()}"
+                                                th:selected="${object.articleSource==pageType}"
+                                                th:value="${pageType.getCode()}"
+                                                th:text="${pageType.getValue().toString()}">原创
+                                        </option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">内容</label>
                                 <div class="col-sm-10">
-                                    <textarea class="form-control" rows="4" title="内容" name="content" th:text="${object.content}"></textarea>
+                                    <textarea class="form-control editor" rows="4" title="内容" name="content"
+                                              th:class="${(@environment.acceptsProfiles('no_ck')?'':'editor ')+'form-control'}"
+                                              th:utext="${object.content}"></textarea>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">原有封面</label>
-                                <img res:src="${object.thumbUri}" class="oldThumbUri" src="videoOpen.html"/>
-                                <input name="oldResourcesUri" th:value="${object.thumbUri}" type="hidden" />
+                                <img res:src="${object.thumbUri}" style="margin-left: 12px;" class="oldThumbUri"
+                                     src="http://img5.imgtn.bdimg.com/it/u=582181963,2516527288&fm=21&gp=0.jpg"/>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">封面</label>
-                                <input type="hidden" name="tempPath" id="thumbUri" />
+                                <input type="hidden" name="tempPath" id="thumbUri"/>
                                 <div class="col-sm-10" id="article-uploader"></div>
                             </div>
                         </div>
@@ -111,6 +114,8 @@
 <script src="http://resali.huobanplus.com/cdn/bracket/js/bootstrap.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/toggles.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.cookies.js"></script>
+<script src="//cdn.ckeditor.com/4.5.10/standard/ckeditor.js"></script>
+<script src="//cdn.ckeditor.com/4.5.10/standard/adapters/jquery.js"></script>
 
 <script src="http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/jquery.fine-uploader.min.js"></script>
 <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/fine-uploader-new.min.css"

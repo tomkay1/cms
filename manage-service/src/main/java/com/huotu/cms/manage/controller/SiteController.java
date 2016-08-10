@@ -30,6 +30,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -74,7 +75,7 @@ public class SiteController extends CRUDController<Site, Long, SiteController.Ab
     }
 
     @Override
-    protected Site preparePersist(Login login, Site data, AboutNewSite extra, RedirectAttributes attributes)
+    protected Site preparePersist(HttpServletRequest request, Login login, Site data, AboutNewSite extra, RedirectAttributes attributes)
             throws RedirectException {
         //  只有Root才可以干这事。
         if (!login.isRoot())

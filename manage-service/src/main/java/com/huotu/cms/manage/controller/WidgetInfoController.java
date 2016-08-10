@@ -62,7 +62,7 @@ import java.util.Locale;
 @RequestMapping("/manage/widget")
 @PreAuthorize("hasRole('ROOT')")
 public class WidgetInfoController
-        extends CRUDController<WidgetInfo, WidgetIdentifier, HttpServletRequest, Long> {
+        extends CRUDController<WidgetInfo, WidgetIdentifier, Void, Long> {
 
     private static final Log log = LogFactory.getLog(WidgetInfoController.class);
 
@@ -105,7 +105,7 @@ public class WidgetInfoController
     }
 
     @Override
-    protected WidgetInfo preparePersist(Login login, WidgetInfo data, HttpServletRequest extra
+    protected WidgetInfo preparePersist(HttpServletRequest request, Login login, WidgetInfo data, Void extra
             , RedirectAttributes attributes) throws RedirectException {
 
         if (widgetInfoRepository.findOne(data.getIdentifier()) != null)
@@ -121,19 +121,19 @@ public class WidgetInfoController
             data.setType(data.getType().trim());
         }
 
-        final String ownerIdParameter = extra.getParameter("ownerId");
+        final String ownerIdParameter = request.getParameter("ownerId");
         if (ownerIdParameter != null && ownerIdParameter.length() > 0) {
             Long ownerId = NumberUtils.parseNumber(ownerIdParameter, Long.class);
             data.setOwner(ownerRepository.getOne(ownerId));
         }
         try {
             MultipartFile jar;
-            if (multipartResolver.isMultipart(extra)) {
+            if (multipartResolver.isMultipart(request)) {
                 MultipartHttpServletRequest multipartHttpServletRequest;
-                if (extra instanceof MultipartHttpServletRequest)
-                    multipartHttpServletRequest = (MultipartHttpServletRequest) extra;
+                if (request instanceof MultipartHttpServletRequest)
+                    multipartHttpServletRequest = (MultipartHttpServletRequest) request;
                 else
-                    multipartHttpServletRequest = multipartResolver.resolveMultipart(extra);
+                    multipartHttpServletRequest = multipartResolver.resolveMultipart(request);
                 jar = multipartHttpServletRequest.getFile("jar");
             } else
                 jar = null;

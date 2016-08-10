@@ -16,27 +16,19 @@ import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.model.ContentExtra;
-import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.io.IOException;
-import java.time.LocalDateTime;
 
 /**
  * @author wenqi
  */
 @Controller
 @RequestMapping("/manage/link")
-public class LinkController extends ContentManageController<Link,ContentExtra> {
+public class LinkController extends ContentManageController<Link, ContentExtra> {
     private static final Log log = LogFactory.getLog(LinkController.class);
-
-    @Autowired
-    private ResourceService resourceService;
 
     @Override
     protected ContentType contentType() {
@@ -55,17 +47,9 @@ public class LinkController extends ContentManageController<Link,ContentExtra> {
     }
 
     @Override
-    protected void prepareUpdate(Login login, Link entity, Link data, ContentExtra extra
+    protected void prepareUpdateContext(Login login, Link entity, Link data, ContentExtra extra
             , RedirectAttributes attributes) throws RedirectException {
-        entity.setTitle(data.getTitle());
-        entity.setDescription(data.getDescription());
-        entity.setUpdateTime(LocalDateTime.now());
         entity.setLinkUrl(data.getLinkUrl());
-        try {
-            commonService.uploadTempImageToOwner(entity, extra.getTempPath());
-        } catch (IOException e) {
-            log.warn("图片转存异常："+e.getMessage());
-        }
     }
 
     @Override

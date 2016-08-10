@@ -18,6 +18,7 @@ import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.exception.BadCategoryInfoException;
 import com.huotu.hotcms.service.model.ContentExtra;
 import com.huotu.hotcms.service.service.CategoryService;
+import com.huotu.hotcms.service.service.ContentService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,8 @@ public abstract class ContentManageController<T extends AbstractContent, ED exte
 
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private ContentService contentService;
 
     /**
      * @return 这个内容的模型
@@ -71,18 +74,40 @@ public abstract class ContentManageController<T extends AbstractContent, ED exte
         try {
             data.setCategory(categoryService.getCategoryByNameAndParent(site, extra.getCategoryName()
                     , extra.getParentCategoryId(), contentType()));
+            contentService.init(data);
             // 谁可以 谁上
             if (data instanceof ImagesOwner) {
-                commonService.uploadTempImageToOwner((ImagesOwner) data, extra.getTempPath());
+                commonService.updateImageFromTmp((ImagesOwner) data, 0, extra.getTempPath());
             }
         } catch (BadCategoryInfoException e) {
             throw new RedirectException(rootUri(), "该数据源已存在，并且不符合你要求。", e);
         } catch (IOException e) {
-            log.warn("图片转存异常：" + e.getMessage());
-            throw new RedirectException(rootUri(), "图片转存异常：" + e.getMessage(), e);
+            log.warn("IO in ContentManage", e);
+            throw new RedirectException(rootUri(), e);
         }
         return preparePersistContext(login, site, data, extra, attributes);
     }
+
+    @Override
+    protected void prepareUpdate(Login login, T entity, T data, ED extra, RedirectAttributes attributes) throws RedirectException {
+        // 数据源不可更改
+        entity.setTitle(data.getTitle());
+        entity.setDescription(data.getDescription());
+
+        if (data instanceof ImagesOwner) {
+            try {
+                commonService.updateImageFromTmp((ImagesOwner) data, 0, extra.getTempPath());
+            } catch (IOException e) {
+                log.warn("IO in ContentManage", e);
+                throw new RedirectException(rootUri() + "/" + entity.getId(), e);
+            }
+        }
+
+        prepareUpdateContext(login, entity, data, extra, attributes);
+    }
+
+    protected abstract void prepareUpdateContext(Login login, T entity, T data, ED extra, RedirectAttributes attributes)
+            throws RedirectException;
 
     protected abstract T preparePersistContext(Login login, Site site, T data, ED extra, RedirectAttributes attributes)
             throws RedirectException;

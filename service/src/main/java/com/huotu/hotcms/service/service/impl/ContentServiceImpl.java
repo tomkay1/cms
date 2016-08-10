@@ -144,11 +144,16 @@ public class ContentServiceImpl implements ContentService {
                 throw new IllegalArgumentException(type.name() + " is unknown.");
         }
 
+        init(content);
+
+        return content;
+    }
+
+    @Override
+    public void init(AbstractContent content) {
         content.setSerial(UUID.randomUUID().toString().replace("-", ""));
         content.setCreateTime(LocalDateTime.now());
         content.setDeleted(false);
-
-        return content;
     }
 
     @Override

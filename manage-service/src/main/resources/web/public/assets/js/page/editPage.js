@@ -236,6 +236,20 @@ var Page = {
             type: 'GET',
             url: url,
             dataType: 'json',
+            statusCode: {
+                403: function() {
+                    layer.msg('没有权限', {time: 2000});
+                    editFunc.closePreloader();
+                },
+                404: function() {
+                    layer.msg('页面请求失败', {time: 2000});
+                    editFunc.closePreloader();
+                },
+                502: function () {
+                    layer.msg('服务器错误,请稍后再试', {time: 2000});
+                    editFunc.closePreloader();
+                }
+            },
             success: function (result) {
                 if(result) editFunc.closePreloader();
                 Page.createListAndEditor(result);

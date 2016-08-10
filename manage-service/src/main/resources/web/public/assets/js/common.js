@@ -77,7 +77,7 @@ function updataCompoentPreview(globalID, properties) {
     var widgetId = ele.data('widgetidentity');
     var styleId = ele.data('styleid');
     var data = {
-        "widgetidentity": widgetId,
+        "widgetIdentity": widgetId,
         "styleId": styleId,
         "properties": properties,
         "pageId": pageId,
@@ -86,22 +86,31 @@ function updataCompoentPreview(globalID, properties) {
     $.ajax({
         type: 'POST',
         url: '/preview/component',
-        dataType: 'json',
+        dataType: 'html',
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(data),
-        success: function (json, textStatus, jqXHR) {
-            if (json.statusCode == '200') {
-                ele.html(json.body);
+        statusCode: {
+            403: function() {
+                layer.msg('没有权限', {time: 2000});
+                editFunc.closePreloader();
+            },
+            404: function() {
+                layer.msg('服务器请求失败', {time: 2000});
+                editFunc.closePreloader();
+            },
+            502: function () {
+                layer.msg('服务器错误,请稍后再试', {time: 2000});
+                editFunc.closePreloader();
+            }
+        },
+        success: function (html, textStatus, jqXHR) {
+            if (html) {
+                var html = $(html);
+                ele.html(html.html);
                 editFunc.closeFunc();
                 layer.msg('操作成功', {time: 2000});
                 var path = jqXHR.getResponseHeader('cssLocation');
                 if (path) dynamicLoading.css(path);
-            }
-            if (json.statusCode == '403') {
-                layer.msg('没有权限', {time: 2000});
-            }
-            if (json.statusCode == '502') {
-                layer.msg('服务器错误,请稍后再试', {time: 2000});
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {

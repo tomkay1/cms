@@ -134,7 +134,7 @@
                         <td th:text="${page.pagePath}">/</td>
                         <td th:text="${page.category==null?'无':page.category.name}">&nbsp;</td>
                         <td class="center">
-                            <a href="../../edit/edit.html" target="_top"
+                            <a href="../../edit/edit.html" target="_blank"
                                title="编辑" th:href="@{/manage/page/edit/{pageId}(pageId=${page.pageId})}">
                                 <i class="fa fa-pencil"></i>
                             </a>

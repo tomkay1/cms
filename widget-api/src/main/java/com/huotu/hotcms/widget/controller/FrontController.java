@@ -132,12 +132,21 @@ public class FrontController implements FilterBehavioral {
         ObjectMapper objectMapper = new ObjectMapper();
         Map map = objectMapper.readValue(json, Map.class);
         String widgetIdentifier = (String) map.get("widgetIdentity");
-        String styleId = (String) map.get("styleId");
+        String styleId;
+        if (map.containsKey("styleId")) {
+            Object o = map.get("styleId");
+            if (o != null)
+                styleId = o.toString();
+            else
+                styleId = null;
+        } else
+            styleId = null;
 //        String pageId = (String) map.get("pageId");
         String componentId = (String) map.get("componentId");
         Map properties = (Map) map.get("properties");
         ComponentProperties componentProperties = new ComponentProperties();
         if (properties != null)
+            //noinspection unchecked
             componentProperties.putAll(properties);
         try {
             InstalledWidget installedWidget = widgetLocateService.findWidget(widgetIdentifier);

@@ -142,6 +142,10 @@ var DataHandle = {
             data: Data,
             dataType: 'json',
             statusCode: {
+                202: function () {
+                    layer.msg('保存成功！', {time: 2000});
+                    //Todo 保存成功后需要跳转的页面
+                },
                 403: function() {
                     layer.msg('没有权限', {time: 2000});
                     editFunc.closePreloader();
@@ -154,10 +158,6 @@ var DataHandle = {
                     layer.msg('服务器错误,请稍后再试', {time: 2000});
                     editFunc.closePreloader();
                 }
-            },
-            success: function (msg) {
-                console.log(msg);
-                //Todo 保存成功后需要跳转的页面
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(errorThrown);

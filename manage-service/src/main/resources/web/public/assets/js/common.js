@@ -83,6 +83,7 @@ function updataCompoentPreview(globalID, properties) {
         "pageId": pageId,
         "componentId": globalID
     };
+    var loading = layer.load(2);
     $.ajax({
         type: 'POST',
         url: '/preview/component',
@@ -105,9 +106,10 @@ function updataCompoentPreview(globalID, properties) {
         },
         success: function (html, textStatus, jqXHR) {
             if (html) {
-                var html = $(html);
-                ele.html(html.html);
+                var updateHtml = $(html);
+                ele.html(updateHtml.html());
                 editFunc.closeFunc();
+                layer.close(loading);
                 layer.msg('操作成功', {time: 2000});
                 var path = jqXHR.getResponseHeader('cssLocation');
                 if (path) dynamicLoading.css(path);
@@ -115,6 +117,7 @@ function updataCompoentPreview(globalID, properties) {
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log(errorThrown);
+            layer.close(loading);
             layer.msg('服务器错误,请稍后再试', {time: 2000});
         }
     });

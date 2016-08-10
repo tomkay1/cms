@@ -182,13 +182,6 @@ public class WidgetInfoController
             , URISyntaxException, FormatException {
         Owner owner = ownerRepository.getOne(login.currentOwnerId());
         List<InstalledWidget> installedWidgets = widgetFactoryService.widgetList(owner);
-        if (environment.acceptsProfiles("test")) {
-            if (installedWidgets == null || installedWidgets.size() == 0) {
-                widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
-                        , "1.0-SNAPSHOT", "picCarousel");
-                installedWidgets = widgetFactoryService.widgetList(owner);
-            }
-        }
 
         List<WidgetModel> widgetModels = new ArrayList<>();
         for (InstalledWidget installedWidget : installedWidgets) {

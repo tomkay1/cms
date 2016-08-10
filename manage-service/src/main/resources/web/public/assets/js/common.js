@@ -296,14 +296,4 @@ function verifySize(congruent, vWidth, vHeight, callback) {
     }
 };
 
-$('div[id^="picCarousel"]').swiper({
-    pagination: '.swiper-pagination',
-    autoplay : 5000,
-    slidesPerView: 1,
-    paginationClickable: true,
-    observer: true,
-    observeParents: true,
-    updateOnImagesReady : true,
-    loop: true
-});
 

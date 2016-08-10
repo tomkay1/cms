@@ -24,7 +24,7 @@ import java.util.UUID;
 /**
  * Created by hzbc on 2016/6/22.
  */
-public class TestWidget implements Widget  {
+public class TestWidget implements Widget {
     @Override
     public String groupId() {
         return UUID.randomUUID().toString();
@@ -51,8 +51,8 @@ public class TestWidget implements Widget  {
     }
 
     @Override
-    public int dependBuild() {
-        return 0;
+    public String dependVersion() {
+        return "1.0-SNAPSHOT";
     }
 
     @Override

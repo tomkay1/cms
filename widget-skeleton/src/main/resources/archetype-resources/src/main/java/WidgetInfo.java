@@ -59,8 +59,8 @@ public class WidgetInfo implements Widget{
     }
 
     @Override
-    public int dependBuild() {
-        return 0;
+    public String dependVersion() {
+        return "${apiVersion}";
     }
 
     @Override

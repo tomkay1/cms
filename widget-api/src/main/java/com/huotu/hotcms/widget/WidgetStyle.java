@@ -20,6 +20,13 @@ import java.util.Locale;
  */
 public interface WidgetStyle {
 
+    /**
+     * 获取一个控件的缩略图资源path
+     *
+     * @param widget 控件
+     * @param style  样式
+     * @return 缩略图资源path
+     */
     static String thumbnailPath(Widget widget, WidgetStyle style) {
         StringBuilder stringBuilder = new StringBuilder("widgets/thumbnail/");
         return stringBuilder.append(

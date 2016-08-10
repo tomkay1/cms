@@ -55,7 +55,7 @@ public class SupperController {
      * @return 回到商户管理主页
      */
     @RequestMapping(value = "/as/{id}", method = RequestMethod.GET)
-    @PreAuthorize("hasRole('" + Login.Role_AS_Value + "')")
+    @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_AS_Value + "')")
     public String as(@AuthenticationPrincipal Login login, @PathVariable(value = "id") Long id) {
         login.updateOwnerId(id);
         return "redirect:/manage/main";

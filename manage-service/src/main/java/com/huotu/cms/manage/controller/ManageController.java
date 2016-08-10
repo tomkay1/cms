@@ -44,7 +44,7 @@ public class ManageController {
      */
     @RequestMapping(value = "/switch/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('" + Login.Role_Manage_Value + "')")
+    @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Manage_Value + "')")
     public void switchCurrentSite(@AuthenticationPrincipal Login login, @PathVariable("id") Long id) {
         log.debug("user " + login + " switching current site to " + id);
 

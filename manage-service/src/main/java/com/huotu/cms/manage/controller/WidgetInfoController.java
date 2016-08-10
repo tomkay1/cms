@@ -176,7 +176,7 @@ public class WidgetInfoController
      * @throws FormatException
      */
     @ResponseBody
-    @PreAuthorize("hasRole('" + Login.Role_Manage_Value + "')")
+    @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Manage_Value + "')")
     @RequestMapping(value = "/widgets", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
     public List<WidgetModel> getWidgetInfo(Locale locale, @AuthenticationPrincipal Login login) throws IOException
             , URISyntaxException, FormatException {

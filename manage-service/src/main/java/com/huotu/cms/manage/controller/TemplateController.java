@@ -28,7 +28,7 @@ import java.io.IOException;
  */
 @Controller
 @RequestMapping("/manage/template")
-@PreAuthorize("hasRole('" + Login.Role_Template_Value + "')")
+@PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Template_Value + "')")
 public class TemplateController extends CRUDController<Template, Long, String, String> {
 
     private static Log log = LogFactory.getLog(TemplateController.class);

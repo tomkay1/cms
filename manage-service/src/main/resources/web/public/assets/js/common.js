@@ -14,15 +14,22 @@ if (!wsCache.isSupported()) {
  */
 var GlobalID, identity;
 
+/**
+ *  初始化 wsCache.get(id) 若为 null 组件初始化状态，该组件的 properties 为对应控件的默认 properties
+ *  若不为 null 组件再次操作，返回该组件的 properties，可为空
+ * @param id 传入GlobalID;
+ * @returns 返回对应properties
+ */
 function widgetProperties( id ) {
     var ele = $('#' + id);
     var identity = ele.data('widgetidentity');
-    var data = wsCache.get(id).properties;
-    if( $.isEmptyObject(data) ) {
-        return wsCache.get(identity).properties;
+    var dataCache = wsCache.get(id);
+    if ( dataCache ) {
+        return dataCache.properties;
     } else {
-        return data;
+        return wsCache.get(identity).properties;
     }
+
 };
 
 /**
@@ -40,7 +47,8 @@ var widgetHandle = {
     },
     createStore: function (ele) {
         GlobalID = $(ele).siblings('.view').children().attr('id');
-        if (wsCache.get(GlobalID) == null) widgetHandle.setStroe(GlobalID);
+        var data = widgetProperties(GlobalID);
+        if (wsCache.get(GlobalID) == null) widgetHandle.setStroe(GlobalID, data);
         widgetHandle.getIdentity(ele ,function (identity) {
             dynamicLoading.js( wsCache.get(identity).script);
             if ( CMSWidgets )  CMSWidgets.openEditor(GlobalID,identity);
@@ -56,9 +64,10 @@ var widgetHandle = {
     saveFunc: function (id) {
         CMSWidgets.saveComponent(id, {
             onSuccess: function (ps) {
-                if ( ps !== null && !$.isEmptyObject(ps) )
-                widgetHandle.setStroe(id, ps);
-                updataCompoentPreview(id, ps);
+                if ( ps !== null) {
+                    widgetHandle.setStroe(id, ps);
+                    updataCompoentPreview(id, ps);
+                }
                 editFunc.closeFunc();
             },
             onFailed: function (msg) {
@@ -87,8 +96,8 @@ function updataCompoentPreview(globalID, properties) {
     $.ajax({
         type: 'POST',
         url: '/preview/component',
-        dataType: 'html',
         contentType: "application/json; charset=utf-8",
+        dataType: 'html',
         data: JSON.stringify(data),
         statusCode: {
             403: function() {

@@ -235,6 +235,7 @@ var Page = {
         $.ajax({
             type: 'GET',
             url: url,
+            contentType: "application/json; charset=utf-8",
             dataType: 'json',
             statusCode: {
                 403: function() {

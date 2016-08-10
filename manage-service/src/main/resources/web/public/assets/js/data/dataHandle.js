@@ -130,16 +130,16 @@ var DataHandle = {
     },
     //用于保存 数据时候，发起请求
     ajaxData: function (data, url) {
-        data = JSON.stringify(data);
+        var Data = JSON.stringify(data);
         if (savePage == null) {
-            layer.alert(data);
+            layer.alert(Data);
         }
-        console.log(data);
+        console.log(Data);
         $.ajax({
             type: 'PUT',
             url: url,
             contentType: "application/json; charset=utf-8",
-            data: data,
+            data: Data,
             dataType: 'json',
             statusCode: {
                 403: function() {
@@ -209,8 +209,21 @@ var CreatePage = {
         $.ajax({
             type: 'GET',
             url: url,
-            contentType: "application/json; charset=utf-8",
             dataType: 'json',
+            statusCode: {
+                403: function() {
+                    layer.msg('没有权限', {time: 2000});
+                    editFunc.closePreloader();
+                },
+                404: function() {
+                    layer.msg('服务器请求失败', {time: 2000});
+                    editFunc.closePreloader();
+                },
+                502: function () {
+                    layer.msg('服务器错误,请稍后再试', {time: 2000});
+                    editFunc.closePreloader();
+                }
+            },
             success: function (pageJson) {
                 if (!$.isEmptyObject(pageJson)) {
                     CreatePage.createTopLayout(pageJson);
@@ -219,6 +232,7 @@ var CreatePage = {
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(errorThrown);
+                layer.msg('服务器错误,请稍后再试', {time: 2000});
             }
         });
     },

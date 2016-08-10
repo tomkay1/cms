@@ -56,9 +56,10 @@ var widgetHandle = {
     saveFunc: function (id) {
         CMSWidgets.saveComponent(id, {
             onSuccess: function (ps) {
-                if ( ps !== null && !$.isEmptyObject(ps) )
-                widgetHandle.setStroe(id, ps);
-                updataCompoentPreview(id, ps);
+                if ( ps !== null && !$.isEmptyObject(ps) ) {
+                    widgetHandle.setStroe(id, ps);
+                    updataCompoentPreview(id, ps);
+                }
                 editFunc.closeFunc();
             },
             onFailed: function (msg) {

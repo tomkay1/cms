@@ -235,7 +235,6 @@ var Page = {
         $.ajax({
             type: 'GET',
             url: url,
-            contentType: "application/json; charset=utf-8",
             dataType: 'json',
             statusCode: {
                 403: function() {
@@ -256,7 +255,8 @@ var Page = {
                 Page.createListAndEditor(result);
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                console.log(textStatus);
+                console.log(errorThrown);
+                layer.msg('服务器错误,请稍后再试', {time: 2000});
             }
         });
     },

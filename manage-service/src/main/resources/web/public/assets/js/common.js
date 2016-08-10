@@ -96,8 +96,8 @@ function updataCompoentPreview(globalID, properties) {
     $.ajax({
         type: 'POST',
         url: '/preview/component',
-        dataType: 'html',
         contentType: "application/json; charset=utf-8",
+        dataType: 'html',
         data: JSON.stringify(data),
         statusCode: {
             403: function() {

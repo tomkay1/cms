@@ -138,14 +138,30 @@ var DataHandle = {
         $.ajax({
             type: 'PUT',
             url: url,
+            contentType: "application/json; charset=utf-8",
             data: data,
             dataType: 'json',
+            statusCode: {
+                403: function() {
+                    layer.msg('没有权限', {time: 2000});
+                    editFunc.closePreloader();
+                },
+                404: function() {
+                    layer.msg('服务器请求失败', {time: 2000});
+                    editFunc.closePreloader();
+                },
+                502: function () {
+                    layer.msg('服务器错误,请稍后再试', {time: 2000});
+                    editFunc.closePreloader();
+                }
+            },
             success: function (msg) {
                 console.log(msg);
                 //Todo 保存成功后需要跳转的页面
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(errorThrown);
+                layer.msg('服务器错误,请稍后再试', {time: 2000});
             }
         });
     },
@@ -193,6 +209,7 @@ var CreatePage = {
         $.ajax({
             type: 'GET',
             url: url,
+            contentType: "application/json; charset=utf-8",
             dataType: 'json',
             success: function (pageJson) {
                 if (!$.isEmptyObject(pageJson)) {

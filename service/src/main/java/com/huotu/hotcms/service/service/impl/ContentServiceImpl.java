@@ -20,7 +20,13 @@ import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Notice;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.Video;
+import com.huotu.hotcms.service.repository.ArticleRepository;
 import com.huotu.hotcms.service.repository.ContentRepository;
+import com.huotu.hotcms.service.repository.DownloadRepository;
+import com.huotu.hotcms.service.repository.GalleryRepository;
+import com.huotu.hotcms.service.repository.LinkRepository;
+import com.huotu.hotcms.service.repository.NoticeRepository;
+import com.huotu.hotcms.service.repository.VideoRepository;
 import com.huotu.hotcms.service.service.CommonService;
 import com.huotu.hotcms.service.service.ContentService;
 import com.huotu.hotcms.service.service.TemplateService;
@@ -34,17 +40,44 @@ import org.springframework.stereotype.Service;
 import javax.persistence.criteria.Predicate;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
 public class ContentServiceImpl implements ContentService {
 
+    private final Map<ContentType, Class<? extends AbstractContent>> types;
     @Autowired
     private ContentRepository contentRepository;
+    @Autowired
+    private ArticleRepository articleRepository;
+    @Autowired
+    private DownloadRepository downloadRepository;
+    @Autowired
+    private GalleryRepository galleryRepository;
+    @Autowired
+    private NoticeRepository noticeRepository;
+    @Autowired
+    private LinkRepository linkRepository;
+    @Autowired
+    private VideoRepository videoRepository;
     @Autowired
     private ResourceService resourceService;
     @Autowired
     private CommonService commonService;
+
+    {
+        HashMap<ContentType, Class<? extends AbstractContent>> typeClassHashMap = new HashMap<>();
+        typeClassHashMap.put(ContentType.Article, Article.class);
+        typeClassHashMap.put(ContentType.Download, Download.class);
+        typeClassHashMap.put(ContentType.Gallery, Gallery.class);
+        typeClassHashMap.put(ContentType.Notice, Notice.class);
+        typeClassHashMap.put(ContentType.Link, Link.class);
+        typeClassHashMap.put(ContentType.Video, Video.class);
+        types = Collections.unmodifiableMap(typeClassHashMap);
+    }
 
     public AbstractContent getContent(Site site, String serial) {
         return contentRepository.findOne((root, query, cb) -> {
@@ -93,7 +126,7 @@ public class ContentServiceImpl implements ContentService {
 //        return contentRepository.count(specification);
 //    }
 
-    public Iterable<AbstractContent> listByCategory(Category category, Pageable pageable) {
+    private Iterable<AbstractContent> listByCategory(Category category, Pageable pageable) {
         Specification<AbstractContent> specification = specificationByCategory(category);
 
         if (pageable == null)
@@ -107,8 +140,29 @@ public class ContentServiceImpl implements ContentService {
     }
 
     @Override
-    public AbstractContent findById(Long contentId) {
-        return contentRepository.findOne(contentId);
+    public AbstractContent findById(long contentId, ContentType type) {
+        Class<? extends AbstractContent> clazz = types.get(type);
+        if (clazz == null)
+            throw new IllegalArgumentException(type.name() + " is unknown.");
+        return findById(contentId, clazz);
+    }
+
+    @Override
+    public AbstractContent findById(long contentId, Class<? extends AbstractContent> clazz) {
+        if (clazz == Article.class)
+            return articleRepository.findOne(contentId);
+        if (clazz == Download.class)
+            return downloadRepository.findOne(contentId);
+        if (clazz == Gallery.class)
+            return galleryRepository.findOne(contentId);
+        if (clazz == Notice.class)
+            return noticeRepository.findOne(contentId);
+        if (clazz == Link.class)
+            return linkRepository.findOne(contentId);
+        if (clazz == Video.class)
+            return videoRepository.findOne(contentId);
+
+        throw new IllegalArgumentException(clazz.getName() + " is unknown.");
     }
 
     @Override
@@ -120,28 +174,14 @@ public class ContentServiceImpl implements ContentService {
 
     @Override
     public AbstractContent newContent(ContentType type) {
+        Class<? extends AbstractContent> clazz = types.get(type);
+        if (clazz == null)
+            throw new IllegalArgumentException(type.name() + " is unknown.");
         AbstractContent content;
-        switch (type) {
-            case Article:
-                content = new Article();
-                break;
-            case Download:
-                content = new Download();
-                break;
-            case Gallery:
-                content = new Gallery();
-                break;
-            case Notice:
-                content = new Notice();
-                break;
-            case Link:
-                content = new Link();
-                break;
-            case Video:
-                content = new Video();
-                break;
-            default:
-                throw new IllegalArgumentException(type.name() + " is unknown.");
+        try {
+            content = clazz.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new IllegalStateException(e);
         }
 
         init(content);

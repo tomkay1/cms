@@ -171,7 +171,7 @@ var Page = {
     ],
     styleList: [
 	    '<div>',
-	    '<h3><i class="fa fa-puzzle-piece"></i><strong>设置组件参数</strong></h3>',
+	    '<h3><i class="fa fa-puzzle-piece"></i><strong>选择组件样式</strong></h3>',
 	    '<div class="swiper-container styles">',
 	    '<div class="swiper-wrapper">',
 	    '</div>',
@@ -198,7 +198,7 @@ var Page = {
             //编辑器视图渲染
             var child = $('<div class="common-conf"></div>');
             var container = $('<div></div>');
-            var h3 = $('<h3><i class="fa fa-puzzle-piece"></i><strong>选择组件样式</strong></h3>');
+            var h3 = $('<h3><i class="fa fa-puzzle-piece"></i><strong>设置组件参数</strong></h3>');
             child.attr('data-id', v['identity']);
             child.append(Page.styleList.join('\n'));
             $.each(v.styles, function (key, val) {

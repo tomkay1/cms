@@ -11,6 +11,7 @@ if (!wsCache.isSupported()) {
 
 /**
  * GlobalID 全局参数，用于存储当前操作组件的唯一 ID
+ * identity 全局参数，用于存储当前操作控件的唯一标示
  */
 var GlobalID, identity;
 
@@ -41,6 +42,15 @@ function widgetProperties( id ) {
  * saveFunc：动态调用组件保存方法
  */
 var widgetHandle = {
+    getEditAreaElement: function (dataId) {
+        var $DOM = '';
+        $('.common-conf').each(function () {
+            if ($(this).data('id') == dataId) {
+                $DOM = $(this).children().eq(1);
+            }
+        });
+        return $DOM;
+    },
     getIdentity: function (ele, callback) {
         identity = $(ele).siblings('.view').children().data('widgetidentity');
         callback&&callback(identity);
@@ -50,8 +60,9 @@ var widgetHandle = {
         var data = widgetProperties(GlobalID);
         if (wsCache.get(GlobalID) == null) widgetHandle.setStroe(GlobalID, data);
         widgetHandle.getIdentity(ele ,function (identity) {
+            var $DOM = widgetHandle.getEditAreaElement(identity);
             dynamicLoading.js( wsCache.get(identity).script);
-            if ( CMSWidgets )  CMSWidgets.openEditor(GlobalID,identity);
+            if ( CMSWidgets )  CMSWidgets.openEditor(GlobalID, identity, $DOM);
         });
     },
     setStroe: function (id, data) {
@@ -62,6 +73,7 @@ var widgetHandle = {
         }
     },
     saveFunc: function (id) {
+        var $DOM = widgetHandle.getEditAreaElement(identity);
         CMSWidgets.saveComponent(id, {
             onSuccess: function (ps) {
                 if ( ps !== null) {
@@ -73,11 +85,12 @@ var widgetHandle = {
             onFailed: function (msg) {
                 layer.msg(msg)
             }
-        });
-        CMSWidgets.closeEditor(GlobalID,identity);
+        }, $DOM);
+        CMSWidgets.closeEditor(GlobalID, identity, $DOM);
     },
     closeSetting: function () {
-        CMSWidgets.closeEditor(GlobalID,identity);
+        var $DOM = widgetHandle.getEditAreaElement(identity);
+        CMSWidgets.closeEditor(GlobalID, identity, $DOM);
         editFunc.closeFunc();
     }
 };
@@ -304,5 +317,3 @@ function verifySize(congruent, vWidth, vHeight, callback) {
         if ( !vWidth === true && !vHeight === true ) callback();
     }
 };
-
-

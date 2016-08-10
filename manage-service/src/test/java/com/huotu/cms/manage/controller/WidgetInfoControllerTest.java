@@ -27,7 +27,6 @@ import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import com.jayway.jsonpath.JsonPath;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -217,17 +216,23 @@ public class WidgetInfoControllerTest extends ManageTest {
      * @see WidgetInfoController#getWidgetInfo(Locale, Login)
      */
     @Test
+    @Transactional
     public void testGetWidgets() throws Exception {
 
         Owner owner = randomOwner();
         loginAsOwner(owner);
 
+        widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.copyright", "copyright"
+                , "1.0-SNAPSHOT", "普通");
+        widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.copyright", "copyright"
+                , "1.0.2-SNAPSHOT", "普通");
+
         /*先确保存在已安装的控件*/
         List<InstalledWidget> installedWidgets = widgetFactoryService.widgetList(null);
-        if (installedWidgets.size() == 0) {
-            widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
-                    , "1.0-SNAPSHOT", "picCarousel");
-        }
+//        if (installedWidgets.size() == 0) {
+//            widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
+//                    , "1.0-SNAPSHOT", "picCarousel");
+//        }
 
         JsonNode widgets = assertMvcArrayNotEmpty("/manage/widget/widgets");
         assertAsMockArray(widgets.get(0), new ClassPathResource("web/public/assets/js/data/widget.json")
@@ -239,27 +244,15 @@ public class WidgetInfoControllerTest extends ManageTest {
                 .andReturn();
         String widgetJson = result.getResponse().getContentAsString();
         log.info("获取到的json：" + widgetJson);
-        Assert.assertTrue(widgetJson != null && widgetJson.length() != 0);
+        assertThat(widgetJson)
+                .isNotEmpty();
         //identity的格式:<groupId>-<widgetId>:<version>
         //此处校验逻辑为：先检索出所有的identity，如果存在groupId和widgetId 一致，但有两个版本号的，视为bug！
         List<String> identities = JsonPath.read(widgetJson, "$..identity");
-        Assert.assertTrue(identities.size() != 0);
+        assertThat(identities)
+                .isNotEmpty()
+                .containsOnlyOnce("com.huotu.hotcms.widget.copyright-copyright:1.0.2-SNAPSHOT");
 
-        //json中不应该出现同一个组件
-        for (int i = 0; i < identities.size(); i++) {
-            for (int j = i + 1; j <= identities.size() - 1; j++) {
-                Assert.assertEquals(identities.get(i).split(":")[0].equals(identities.get(j).split(":")[0]), false);
-            }
-        }
-        //json组件版本不应该有高低
-//        for (int i = 0; i < identities.size(); i++) {
-//            for (int j = i + 1; j <= identities.size() - 1; j++) {
-//                if (identities.get(i).split(":")[0].equals(identities.get(j).split(":")[0])) {
-//                    //断言为真，就表明json符合要求
-//                    Assert.assertEquals(identities.get(i).split(":")[1].equals(identities.get(j).split(":")[1]), true);
-//                }
-//            }
-//        }
     }
 
 }

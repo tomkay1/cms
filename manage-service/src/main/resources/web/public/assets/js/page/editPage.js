@@ -334,6 +334,24 @@ editPage.init = function () {
         var id = $(this).data('styleid');
         $('#'+GlobalID).attr('data-styleid',id);
     });
+
+
+    $('div[id^="picCarousel"]').swiper({
+        pagination: '.swiper-pagination',
+        autoplay : 5000,
+        slidesPerView: 1,
+        paginationClickable: true,
+        observer: true,
+        observeParents: true,
+        updateOnImagesReady : true,
+        loop: true
+    });
+
+    $(".boxes").mCustomScrollbar({
+        autoHideScrollbar:true,
+        theme:"minimal"
+    });
+
     editFunc.init();
     Page.init(initPath);
 };

@@ -35,6 +35,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -52,6 +53,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -190,18 +192,39 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
         info.setPath(path);
     }
 
-    /**
-     * 已安装控件列表
-     *
-     * @param owner
-     * @return
-     */
     @Override
     public List<InstalledWidget> widgetList(Owner owner) {
-        return installedWidgets.stream()
+
+        // 找到同一个型号的,
+//        Map<WidgetIdentifier,InstalledWidget> map =
+        ArrayList<InstalledWidget> widgets = new ArrayList<>(installedWidgets.size());
+        installedWidgets.stream()
                 // 过滤掉不要的控件
                 .filter(widget -> owner == null || widget.getOwnerId() == null
-                        || widget.getOwnerId().equals(owner.getId())).collect(Collectors.toList());
+                        || widget.getOwnerId().equals(owner.getId()))
+                .collect(Collectors.groupingBy(t -> new WidgetIdentifier(t.getWidget().groupId()
+                        , t.getWidget().widgetId(), ""), Collectors.toList()))
+                .forEach(((identifier, installedWidgets1) -> {
+                    if (installedWidgets1.isEmpty())
+                        return;
+                    if (identifier == null) {
+                        widgets.addAll(installedWidgets1);
+                        return;
+                    }
+                    // 没有持久化的 不管!
+                    if (installedWidgets1.size() > 1) {
+                        // 找到他们最大的 其他的 都排除掉
+                        InstalledWidget best = installedWidgets1.stream()
+                                .sorted((o1, o2) -> new DefaultArtifactVersion(o2.getWidget().version())
+                                        .compareTo(new DefaultArtifactVersion(o1.getWidget().version())))
+                                .findFirst().orElse(null);
+                        widgets.add(best);
+                    } else
+                        widgets.addAll(installedWidgets1);
+                }))
+        ;
+
+        return widgets;
     }
 
     @Override
@@ -303,18 +326,26 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
     private void deleteOtherWidget(Widget widget, Set<Widget> keepWidgets) throws IOException, FormatException {
         //查找控件
         // 根据参数 清理 this.installedWidgets
-        WidgetIdentifier identifier = new WidgetIdentifier(widget.groupId(), widget.widgetId(), widget.version());
-        Iterator<InstalledWidget> it = installedWidgets.iterator();
-        while (it.hasNext()) {
-            Widget w = it.next().getWidget();
-            if (w.groupId().equals(identifier.getGroupId())
-                    && w.widgetId().equals(widget.widgetId())
-                    && !w.version().equals(identifier.getVersion())) {
-                if (!keepWidgets.contains(w)) {
-                    it.remove();
-                }
-            }
-        }
+
+        // 从安装库中移除
+        installedWidgets.stream().filter((installedWidget) ->
+                installedWidget.getWidget().groupId().equals(widget.groupId()) && installedWidget.getWidget().widgetId().equals(widget.widgetId())
+        )
+                .filter(installedWidget -> keepWidgets.contains(installedWidget.getWidget()))
+                .forEach(installedWidgets::remove);
+
+//        WidgetIdentifier identifier = new WidgetIdentifier(widget.groupId(), widget.widgetId(), widget.version());
+//        Iterator<InstalledWidget> it = installedWidgets.iterator();
+//        while (it.hasNext()) {
+//            Widget w = it.next().getWidget();
+//            if (w.groupId().equals(identifier.getGroupId())
+//                    && w.widgetId().equals(widget.widgetId())
+//                    && !w.version().equals(identifier.getVersion())) {
+//                if (!keepWidgets.contains(w)) {
+//                    it.remove();
+//                }
+//            }
+//        }
         // 循环所有控件包  installedStatus(null) 如果发现已安装控件为空 则删除
         List<WidgetInfo> widgetInfoList = widgetInfoRepository.findByGroupIdAndArtifactIdAndEnabledTrue(widget.groupId()
                 , widget.widgetId());
@@ -324,6 +355,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
                 widgetInfoRepository.delete(widgetInfo);
             }
         }
+
     }
 
     @Override

@@ -165,7 +165,6 @@ public class WidgetInfoController
         return "/view/widget/widget.html";
     }
 
-
     /**
      * 获取控件资源时参照 {@link WidgetFactoryService#installWidgetInfo(WidgetInfo)}
      *
@@ -177,21 +176,12 @@ public class WidgetInfoController
      * @throws FormatException
      */
     @ResponseBody
-    @PreAuthorize("hasRole('" + Login.Role_Manage_Value + "')")
+    @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Manage_Value + "')")
     @RequestMapping(value = "/widgets", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
     public List<WidgetModel> getWidgetInfo(Locale locale, @AuthenticationPrincipal Login login) throws IOException
             , URISyntaxException, FormatException {
         Owner owner = ownerRepository.getOne(login.currentOwnerId());
         List<InstalledWidget> installedWidgets = widgetFactoryService.widgetList(owner);
-        if (environment.acceptsProfiles("test")) {
-            if (installedWidgets == null || installedWidgets.size() == 0) {
-                widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
-                        , "1.0-SNAPSHOT", "picCarousel");
-                installedWidgets = widgetFactoryService.widgetList(owner);
-            }
-        }
-//        List<WidgetInfo> widgetInfos = widgetInfoRepository.findByOwnerGroup_By(owner);
-
 
         List<WidgetModel> widgetModels = new ArrayList<>();
         for (InstalledWidget installedWidget : installedWidgets) {

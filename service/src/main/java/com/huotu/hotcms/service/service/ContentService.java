@@ -56,13 +56,32 @@ public interface ContentService {
 
     /**
      * 查找指定id的内容
+     * 显然一个id代表不了一切,因为id会重复的,还需要指明具体的类型
      *
-     * @param contentId
-     * @return
+     * @param contentId 内容id
+     * @param type      内容类型
+     * @return 唯一内容, null if not existing
      */
     @Transactional(readOnly = true)
-    AbstractContent findById(Long contentId);
+    AbstractContent findById(long contentId, ContentType type);
 
+    /**
+     * 查找指定id的内容
+     * 显然一个id代表不了一切,因为id会重复的,还需要指明具体的类型
+     *
+     * @param contentId 内容id
+     * @param clazz     内容类型
+     * @return 唯一内容, null if not existing
+     */
+    @Transactional(readOnly = true)
+    AbstractContent findById(long contentId, Class<? extends AbstractContent> clazz);
+
+    /**
+     * 彻底删除,包括资源
+     *
+     * @param content 内容
+     * @throws IOException 清理资源时发生的IO异常,但不会影响事务
+     */
     @Transactional
     void delete(AbstractContent content) throws IOException;
 

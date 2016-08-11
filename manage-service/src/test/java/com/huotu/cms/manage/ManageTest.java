@@ -50,9 +50,9 @@ import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.util.StringUtil;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.Component;
+import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.exception.FormatException;
-import com.huotu.hotcms.widget.page.Empty;
 import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.PageElement;
 import com.huotu.hotcms.widget.page.PageLayout;
@@ -111,7 +111,6 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @WebAppConfiguration
 public abstract class ManageTest extends SpringWebTest {
 
-
     protected String[][] widgets = new String[][]{
 //                new String[]{
 //                        "com.huotu.hotcms.widget.pagingWidget",
@@ -142,6 +141,20 @@ public abstract class ManageTest extends SpringWebTest {
     protected WidgetInfoRepository widgetInfoRepository;
     @Autowired
     protected WidgetFactoryService widgetFactoryService;
+    //建立一系列已经建立好的控件以及默认属性
+    WidgetIdentifier[] preparedWidgets = new WidgetIdentifier[]{
+//            new WidgetIdentifier("com.huotu.hotcms.widget.pagingWidget",
+//                    "pagingWidget", "1.0-SNAPSHOT")
+//            ,
+            new WidgetIdentifier("com.huotu.hotcms.widget.picCarousel",
+                    "picCarousel", "1.0-SNAPSHOT")
+            , new WidgetIdentifier("com.huotu.hotcms.widget.productList",
+            "productList", "1.0-SNAPSHOT")
+            , new WidgetIdentifier("com.huotu.hotcms.widget.picBanner",
+            "picBanner", "1.0-SNAPSHOT")
+            , new WidgetIdentifier("com.huotu.hotcms.widget.friendshipLink",
+            "friendshipLink", "1.0-SNAPSHOT")
+    };
     @Autowired
     private SiteService siteService;
     @Autowired
@@ -646,41 +659,17 @@ public abstract class ManageTest extends SpringWebTest {
     }
 
     private PageElement randomComponent() throws IOException, FormatException {
-        //得预创才可以
-        return new Empty();
-//        Component component = new Component();
-//        component.setPreviewHTML(UUID.randomUUID().toString());
-////        component.setStyleId(UUID.randomUUID().toString());
-//        String groupId = "com.huotu.hotcms.widget.friendshipLink";
-//        String widgetId = "friendshipLink";
-//        String version = "1.0-SNAPSHOT";
-//        component.setWidgetIdentity(groupId + "-" + widgetId + ":" + version);
-//        ComponentProperties properties = new ComponentProperties();
-//        Map map = new HashMap<>();
-//        List list = new ArrayList<>();
-//        map.put("title", UUID.randomUUID().toString());
-//        map.put("url", "/wtf");
-//        list.add(map);
-//        properties.put("linkList", list);
-//        properties.put("styleTemplate", "html");
-//        InstalledWidget installedWidget = null;
-//        List<InstalledWidget> installedWidgets = widgetFactoryService.widgetList(null);
-//        if (installedWidgets == null || installedWidgets.size() == 0) {
-//            widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
-//                    , "1.0-SNAPSHOT", "picCarousel");
-//            installedWidgets = widgetFactoryService.widgetList(null);
-//        }
-//        WidgetIdentifier widgetIdentifier = null;
-//        for (InstalledWidget installedWidget1 : installedWidgets) {
-//            widgetIdentifier = installedWidget1.getIdentifier();
-//            if (groupId.equals(widgetIdentifier.getGroupId()) && widgetId.equals(widgetIdentifier.getArtifactId()) &&
-//                    version.equals(widgetIdentifier.getVersion())) {
-//                installedWidget = installedWidget1;
-//                break;
-//            }
-//        }
-//        component.setInstalledWidget(installedWidget);
-//        return component;
+        WidgetIdentifier widgetIdentifier = preparedWidgets[random.nextInt(preparedWidgets.length)];
+        Component component = makeComponent(widgetIdentifier.getGroupId(), widgetIdentifier.getArtifactId()
+                , widgetIdentifier.getVersion());
+
+        ComponentProperties componentProperties = component.getProperties();
+        componentProperties.put(StringUtil.createRandomStr(random.nextInt(3) + 1), UUID.randomUUID().toString());
+        componentProperties.put("TestArray", new String[]{UUID.randomUUID().toString(), UUID.randomUUID().toString()
+                , UUID.randomUUID().toString()});
+        componentProperties.put(UUID.randomUUID().toString(), "中文呢?");
+
+        return component;
     }
 
     /**

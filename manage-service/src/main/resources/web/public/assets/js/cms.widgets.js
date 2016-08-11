@@ -56,22 +56,24 @@ CMSWidgets.initWidget = function (config) {
  * 在用户意图打开某一个组件的设置界面时,应该调用这个方法
  * @param globalId 组件的id
  * @param identity 控件识别符
+ * @param editAreaElement 编辑器的jquery结果
  */
-CMSWidgets.openEditor = function (globalId, identity) {
+CMSWidgets.openEditor = function (globalId, identity, editAreaElement) {
     var config = CMSWidgets.getNoNullConfig(identity, globalId);
     if (CMSWidgets.isDebugging())
         console.error('config on openEditor:', config);
-    config.editor.open(globalId);
+    config.editor.open(globalId, editAreaElement);
 };
 /**
  * 同上
  * 在用户意图关闭某一个组件的设置界面时,应该调用这个方法
  * @param globalId 组件的id
  * @param identity 控件识别符
+ * @param editAreaElement 编辑器的jquery结果
  */
-CMSWidgets.closeEditor = function (globalId, identity) {
+CMSWidgets.closeEditor = function (globalId, identity, editAreaElement) {
     var config = CMSWidgets.getNoNullConfig(identity, globalId);
-    config.editor.close(globalId);
+    config.editor.close(globalId, editAreaElement);
 };
 /**
  * 使用场景：组件使用者点击“保存”时调用。
@@ -91,8 +93,9 @@ CMSWidgets.closeEditor = function (globalId, identity) {
  * @param globalId 组件的id
  * @param callbacks (可选) 包括 onSuccess(可选) 可以接受 properties作为参数
  *                      onFailed(可选) 可以接受错误描述作为参数
+ * @param editAreaElement 编辑器的jquery结果
  */
-CMSWidgets.saveComponent = function (globalId, callbacks) {
+CMSWidgets.saveComponent = function (globalId, callbacks, editAreaElement) {
     var config = CMSWidgets.getNoNullConfig(null, globalId);
 
     if (CMSWidgets.isDebugging())
@@ -105,7 +108,7 @@ CMSWidgets.saveComponent = function (globalId, callbacks) {
     var onSuccess = callbacks.onSuccess || voidFunction;
     var onFailed = callbacks.onFailed || voidFunction;
 
-    return config.editor.saveComponent(onSuccess, onFailed);
+    return config.editor.saveComponent(onSuccess, onFailed, editAreaElement);
 };
 
 

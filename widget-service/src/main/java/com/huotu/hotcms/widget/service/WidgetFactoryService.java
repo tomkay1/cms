@@ -50,10 +50,10 @@ public interface WidgetFactoryService {
     void downloadJar(String groupId, String widgetId, String version, OutputStream outputStream) throws IOException;
 
     /**
-     * 当前owner已安装的控件列表
+     * 当前owner已安装的控件列表,只会展示控件的「一个」版本
      *
      * @param owner 专享商户可为空表示所有控件
-     * @return 已安装控件列表
+     * @return 已安装控件列表, 总不会是null了不起一个空List
      */
     @Transactional(readOnly = true)
     List<InstalledWidget> widgetList(Owner owner);

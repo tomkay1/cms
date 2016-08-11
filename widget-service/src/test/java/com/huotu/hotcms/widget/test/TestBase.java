@@ -193,6 +193,7 @@ public abstract class TestBase extends SpringWebTest {
         componentProperties.put(StringUtil.createRandomStr(random.nextInt(3) + 1), UUID.randomUUID().toString());
         componentProperties.put("TestArray", new String[]{UUID.randomUUID().toString(), UUID.randomUUID().toString()
                 , UUID.randomUUID().toString()});
+        componentProperties.put(UUID.randomUUID().toString(), "中文呢?");
 
         return component;
     }

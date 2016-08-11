@@ -13,6 +13,7 @@ import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.service.TemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +35,7 @@ import java.io.IOException;
  */
 @Controller
 @RequestMapping("/manage/template")
+@PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Manage_Value + "')")
 public class CMSTemplateController {
 
     @Autowired

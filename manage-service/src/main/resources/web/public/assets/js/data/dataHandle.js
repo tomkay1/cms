@@ -130,22 +130,38 @@ var DataHandle = {
     },
     //用于保存 数据时候，发起请求
     ajaxData: function (data, url) {
-        data = JSON.stringify(data);
+        var Data = JSON.stringify(data);
         if (savePage == null) {
-            layer.alert(data);
+            layer.alert(Data);
         }
-        console.log(data);
+        console.log(Data);
         $.ajax({
             type: 'PUT',
             url: url,
-            data: data,
+            contentType: "application/json; charset=utf-8",
+            data: Data,
             dataType: 'json',
-            success: function (msg) {
-                console.log(msg);
-                //Todo 保存成功后需要跳转的页面
+            statusCode: {
+                202: function () {
+                    layer.msg('保存成功！', {time: 2000});
+                    //Todo 保存成功后需要跳转的页面
+                },
+                403: function() {
+                    layer.msg('没有权限', {time: 2000});
+                    editFunc.closePreloader();
+                },
+                404: function() {
+                    layer.msg('服务器请求失败', {time: 2000});
+                    editFunc.closePreloader();
+                },
+                502: function () {
+                    layer.msg('服务器错误,请稍后再试', {time: 2000});
+                    editFunc.closePreloader();
+                }
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(errorThrown);
+                layer.msg('服务器错误,请稍后再试', {time: 2000});
             }
         });
     },
@@ -194,6 +210,20 @@ var CreatePage = {
             type: 'GET',
             url: url,
             dataType: 'json',
+            statusCode: {
+                403: function() {
+                    layer.msg('没有权限', {time: 2000});
+                    editFunc.closePreloader();
+                },
+                404: function() {
+                    layer.msg('服务器请求失败', {time: 2000});
+                    editFunc.closePreloader();
+                },
+                502: function () {
+                    layer.msg('服务器错误,请稍后再试', {time: 2000});
+                    editFunc.closePreloader();
+                }
+            },
             success: function (pageJson) {
                 if (!$.isEmptyObject(pageJson)) {
                     CreatePage.createTopLayout(pageJson);
@@ -202,6 +232,7 @@ var CreatePage = {
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(errorThrown);
+                layer.msg('服务器错误,请稍后再试', {time: 2000});
             }
         });
     },

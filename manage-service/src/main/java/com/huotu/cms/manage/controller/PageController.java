@@ -13,7 +13,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.service.repository.SiteRepository;
+import com.huotu.hotcms.widget.CMSContext;
+import com.huotu.hotcms.widget.Component;
+import com.huotu.hotcms.widget.WidgetResolveService;
 import com.huotu.hotcms.widget.entity.PageInfo;
+import com.huotu.hotcms.widget.page.Layout;
+import com.huotu.hotcms.widget.page.PageElement;
+import com.huotu.hotcms.widget.page.PageLayout;
 import com.huotu.hotcms.widget.page.PageModel;
 import com.huotu.hotcms.widget.service.PageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +60,8 @@ public class PageController {
     private SiteRepository siteRepository;
     @Autowired
     private PageService pageService;
+    @Autowired
+    private WidgetResolveService widgetResolveService;
 
     /**
      * <p>获取页面{@link PageInfo}</p>
@@ -92,6 +100,20 @@ public class PageController {
         pageModel.setPageIdentity(page.getPageId());
         if (page.getLayout() != null)
             pageModel.setRoot(page.getLayout().getRoot());
+
+        // 要给它设置previewHTML
+        for (Layout layout : PageLayout.NoNullLayout(pageModel)) {
+            for (PageElement pageElement : layout.elements()) {
+                if (pageElement instanceof Component) {
+                    Component component = (Component) pageElement;
+                    String previewHTML = widgetResolveService.previewHTML(component.getInstalledWidget().getWidget(), component.getStyleId()
+                            , CMSContext.RequestContext(), component.getProperties());
+                    component.setPreviewHTML(previewHTML);
+                }
+            }
+        }
+
+
         pageModel.setTitle(page.getTitle());
         return pageModel;
     }
@@ -145,7 +167,7 @@ public class PageController {
     @RequestMapping("/manage/page/edit/{pageId}")
     public String startEdit(@PathVariable("pageId") long pageId, Model model) throws PageNotFoundException {
         model.addAttribute("pageInfo", pageService.getPage(pageId));
-        model.addAttribute("pageId",pageId);
+        model.addAttribute("pageId", pageId);
         return "/edit/edit.html";
     }
 }

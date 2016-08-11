@@ -82,7 +82,7 @@
                         <div class="col-sm-2">
                             <input name="pagePath" title="URI" type="text"
                                    class="form-control"/>
-                            <span class="help-block">用于决定该页面的地址,应该以/开头;数据内容页的地址将会是URI/{id};对于普通页,数据索引页 URI是必须的</span>
+                            <span class="help-block">用于决定该页面的地址,保持空白即使首页;数据内容页的地址将会是URI/{id};对于普通页,数据索引页 URI是必须的</span>
                         </div>
                     </div>
                 </div>
@@ -134,7 +134,7 @@
                         <td th:text="${page.pagePath}">/</td>
                         <td th:text="${page.category==null?'无':page.category.name}">&nbsp;</td>
                         <td class="center">
-                            <a href="../../edit/edit.html" target="_top"
+                            <a href="../../edit/edit.html" target="_blank"
                                title="编辑" th:href="@{/manage/page/edit/{pageId}(pageId=${page.pageId})}">
                                 <i class="fa fa-pencil"></i>
                             </a>

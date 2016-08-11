@@ -18,6 +18,8 @@ import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetStyle;
 import com.huotu.hotcms.widget.entity.PageInfo;
+import com.huotu.hotcms.widget.page.Layout;
+import com.huotu.hotcms.widget.page.PageElement;
 import com.huotu.hotcms.widget.page.PageLayout;
 import com.huotu.hotcms.widget.page.PageModel;
 import me.jiangcai.lib.resource.Resource;
@@ -164,6 +166,9 @@ public class PageControllerTest extends ManageTest {
 
 
         PageLayout page = randomPageLayout();
+        // 不包含一个组件就不算
+        while (haveNoComponent(page))
+            page = randomPageLayout();
         PageModel model = new PageModel();
         model.setRoot(page.getRoot());
         model.setTitle(pageInfo.getTitle());
@@ -175,6 +180,7 @@ public class PageControllerTest extends ManageTest {
         mockMvc.perform(put("/manage/pages/{pageId}", pageInfo.getPageId())
                 .session(session)
                 .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(pageJson))
                 .andExpect(status().isAccepted());
 
@@ -191,6 +197,16 @@ public class PageControllerTest extends ManageTest {
         PageModel getPage = objectMapper.readValue(pageJson, PageModel.class);
         assertThat(getPage)
                 .isEqualTo(model);
+        // 略有不同的是 必然有previewHtml
+        for (Layout layout : PageLayout.NoNullLayout(getPage)) {
+            for (PageElement pageElement : layout.elements()) {
+                if (pageElement instanceof Component) {
+                    Component component = (Component) pageElement;
+                    assertThat(component.getPreviewHTML())
+                            .isNotEmpty();
+                }
+            }
+        }
 
 //        Assert.assertTrue(page.getPageIdentity().equals(getPage.getPageIdentity()));
         //删除
@@ -201,6 +217,17 @@ public class PageControllerTest extends ManageTest {
                 .session(session))
                 .andExpect(status().isNotFound())
                 .andReturn();
+    }
+
+    private boolean haveNoComponent(PageLayout page) {
+        for (Layout layout : PageLayout.NoNullLayout(page)) {
+            for (PageElement pageElement : layout.elements()) {
+                if (pageElement instanceof Component) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
 }

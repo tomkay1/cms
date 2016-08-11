@@ -42,7 +42,7 @@ public interface Widget {
     }
 
     /**
-     * 获得这个widget的唯一id
+     * 获得这个widget的唯一id,这个结果可以直接添加在URI中
      *
      * @param widget 控件
      * @return 唯一id
@@ -68,8 +68,14 @@ public interface Widget {
                 .append(".png").toString();
     }
 
+    /**
+     * @return 语意上接近maven的groupId
+     */
     String groupId();
 
+    /**
+     * @return 控件id
+     */
     String widgetId();
 
     /**
@@ -91,28 +97,38 @@ public interface Widget {
     }
 
     /**
-     * 接口提供了默认返货读取头信息中的产品信息
-     *
-     * @return 控件名称(无语言)
+     * @return 默认语言控件名称
      */
     default String name() {
         return name(Locale.CHINA);
     }
 
+    /**
+     * @param locale 语言区域
+     * @return 控件本地化名称
+     */
     String name(Locale locale);
 
+
+    /**
+     * @return 默认语言控件描述
+     */
     default String description() {
         return description(Locale.CHINA);
     }
 
+    /**
+     * @param locale 语言区域
+     * @return 控件本地化描述
+     */
     String description(Locale locale);
 
     /**
-     * 以int形式获取依赖widget-service的版本
+     * 控件服务系统会检查该项目以确定是否支持这个控件。
      *
      * @return 依赖widget-service版本
      */
-    int dependBuild();
+    String dependVersion();
 
     /**
      * 这个控件所需要的公开静态资源
@@ -168,8 +184,8 @@ public interface Widget {
     /**
      * 检查以下的属性是否符合控件要求
      *
-     * @param styleId 语义等同{@link Component#styleId}
-     * @param properties
+     * @param styleId    语义等同{@link Component#styleId}
+     * @param properties 当前控件属性
      * @throws IllegalArgumentException 表示验证失败
      */
     void valid(String styleId, ComponentProperties properties) throws IllegalArgumentException;

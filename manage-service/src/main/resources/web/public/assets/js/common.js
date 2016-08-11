@@ -11,18 +11,26 @@ if (!wsCache.isSupported()) {
 
 /**
  * GlobalID 全局参数，用于存储当前操作组件的唯一 ID
+ * identity 全局参数，用于存储当前操作控件的唯一标示
  */
 var GlobalID, identity;
 
+/**
+ *  初始化 wsCache.get(id) 若为 null 组件初始化状态，该组件的 properties 为对应控件的默认 properties
+ *  若不为 null 组件再次操作，返回该组件的 properties，可为空
+ * @param id 传入GlobalID;
+ * @returns 返回对应properties
+ */
 function widgetProperties( id ) {
     var ele = $('#' + id);
     var identity = ele.data('widgetidentity');
-    var data = wsCache.get(id).properties;
-    if( $.isEmptyObject(data) ) {
-        return wsCache.get(identity).properties;
+    var dataCache = wsCache.get(id);
+    if ( dataCache ) {
+        return dataCache.properties;
     } else {
-        return data;
+        return wsCache.get(identity).properties;
     }
+
 };
 
 /**
@@ -34,16 +42,27 @@ function widgetProperties( id ) {
  * saveFunc：动态调用组件保存方法
  */
 var widgetHandle = {
+    getEditAreaElement: function (dataId) {
+        var $DOM = '';
+        $('.common-conf').each(function () {
+            if ($(this).data('id') == dataId) {
+                $DOM = $(this).children().eq(1);
+            }
+        });
+        return $DOM;
+    },
     getIdentity: function (ele, callback) {
         identity = $(ele).siblings('.view').children().data('widgetidentity');
         callback&&callback(identity);
     },
     createStore: function (ele) {
         GlobalID = $(ele).siblings('.view').children().attr('id');
-        if (wsCache.get(GlobalID) == null) widgetHandle.setStroe(GlobalID);
+        var data = widgetProperties(GlobalID);
+        if (wsCache.get(GlobalID) == null) widgetHandle.setStroe(GlobalID, data);
         widgetHandle.getIdentity(ele ,function (identity) {
+            var $DOM = widgetHandle.getEditAreaElement(identity);
             dynamicLoading.js( wsCache.get(identity).script);
-            if ( CMSWidgets )  CMSWidgets.openEditor(GlobalID,identity);
+            if ( CMSWidgets )  CMSWidgets.openEditor(GlobalID, identity, $DOM);
         });
     },
     setStroe: function (id, data) {
@@ -54,21 +73,24 @@ var widgetHandle = {
         }
     },
     saveFunc: function (id) {
+        var $DOM = widgetHandle.getEditAreaElement(identity);
         CMSWidgets.saveComponent(id, {
             onSuccess: function (ps) {
-                if ( ps !== null && !$.isEmptyObject(ps) )
-                widgetHandle.setStroe(id, ps);
-                updataCompoentPreview(id, ps);
+                if ( ps !== null) {
+                    widgetHandle.setStroe(id, ps);
+                    updataCompoentPreview(id, ps);
+                }
                 editFunc.closeFunc();
             },
             onFailed: function (msg) {
                 layer.msg(msg)
             }
-        });
-        CMSWidgets.closeEditor(GlobalID,identity);
+        }, $DOM);
+        CMSWidgets.closeEditor(GlobalID, identity, $DOM);
     },
     closeSetting: function () {
-        CMSWidgets.closeEditor(GlobalID,identity);
+        var $DOM = widgetHandle.getEditAreaElement(identity);
+        CMSWidgets.closeEditor(GlobalID, identity, $DOM);
         editFunc.closeFunc();
     }
 };
@@ -83,11 +105,12 @@ function updataCompoentPreview(globalID, properties) {
         "pageId": pageId,
         "componentId": globalID
     };
+    var loading = layer.load(2);
     $.ajax({
         type: 'POST',
         url: '/preview/component',
-        dataType: 'html',
         contentType: "application/json; charset=utf-8",
+        dataType: 'html',
         data: JSON.stringify(data),
         statusCode: {
             403: function() {
@@ -105,9 +128,10 @@ function updataCompoentPreview(globalID, properties) {
         },
         success: function (html, textStatus, jqXHR) {
             if (html) {
-                var html = $(html);
-                ele.html(html.html);
+                var updateHtml = $(html);
+                ele.html(updateHtml.html());
                 editFunc.closeFunc();
+                layer.close(loading);
                 layer.msg('操作成功', {time: 2000});
                 var path = jqXHR.getResponseHeader('cssLocation');
                 if (path) dynamicLoading.css(path);
@@ -115,6 +139,7 @@ function updataCompoentPreview(globalID, properties) {
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log(errorThrown);
+            layer.close(loading);
             layer.msg('服务器错误,请稍后再试', {time: 2000});
         }
     });
@@ -292,15 +317,3 @@ function verifySize(congruent, vWidth, vHeight, callback) {
         if ( !vWidth === true && !vHeight === true ) callback();
     }
 };
-
-$('div[id^="picCarousel"]').swiper({
-    pagination: '.swiper-pagination',
-    autoplay : 5000,
-    slidesPerView: 1,
-    paginationClickable: true,
-    observer: true,
-    observeParents: true,
-    updateOnImagesReady : true,
-    loop: true
-});
-

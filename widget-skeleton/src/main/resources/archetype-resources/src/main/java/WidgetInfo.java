@@ -8,16 +8,15 @@
  */
 
 package ${package};
-
-import java.io.IOException;
-import java.util.Locale;
-import java.util.Locale;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetStyle;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -71,7 +70,7 @@ public class WidgetInfo implements Widget{
     @Override
     public Resource widgetDependencyContent(MediaType mediaType){
         if (mediaType.equals(Widget.Javascript))
-            return new ClassPathResource("js/WidgetInfo.js", getClass().getClassLoader());
+            return new ClassPathResource("js/widgetInfo.js", getClass().getClassLoader());
         return null;
     }
 
@@ -106,11 +105,10 @@ public class WidgetInfo implements Widget{
         return null;
     }
 
-    @Override
-    public ComponentProperties defaultProperties(ResourceService resourceService) {
-        ComponentProperties properties = new ComponentProperties();
-        return properties;
-    }
 
+    @Override
+    public ComponentProperties defaultProperties(ResourceService resourceService) throws IOException {
+        return new ComponentProperties();
+    }
 
 }

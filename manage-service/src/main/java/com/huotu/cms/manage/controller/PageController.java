@@ -40,14 +40,11 @@ import java.util.List;
 
 /**
  * <b>页面管理服务</b>
- * <p>
  * <em>响应码说明：</em>
  * <ul>
  * <li>202-成功接收客户端发来的请求</li>
  * <li>502-出现异常，具体待定</li>
  * </ul>
- * </p>
- * <p>
  * <p>07.22 将交互的主体更换为{@link PageModel},系统内部只认准{@link PageInfo}</p>
  *
  * @author wenqi

@@ -21,6 +21,7 @@
 
     <artifactId>widget-test</artifactId>
 
+    <name>Widget Test</name>
     <description>
         提供给控件开发者,用于测试控件的各项功能
     </description>

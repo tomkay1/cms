@@ -22,6 +22,7 @@
     <artifactId>widget-service</artifactId>
     <packaging>jar</packaging>
 
+    <name>Widget Service</name>
     <description>
         控件服务,请参考 https://huobanplus.quip.com/Y9mVAeo9KnTh
     </description>

@@ -151,7 +151,6 @@ public class ChangeAC {
 
     /**
      * 以权限策略方式执行文件写出
-     * @throws IOException
      */
     public static void privilegeWriteFile(){
         AccessController.doPrivileged(new PrivilegedAction<String>() {
@@ -164,7 +163,6 @@ public class ChangeAC {
 
     /**
      *以权限策略方式切换AC
-     * @throws IOException
      */
     public static void privilegChangeAC(){
         AccessController.doPrivileged(new PrivilegedAction<String>() {

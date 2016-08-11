@@ -126,7 +126,7 @@ function updataCompoentPreview(globalID, properties) {
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            var errorMsg = jqXHR.getResponseHeader('errorMsg');
+            var errorMsg = jqXHR.getResponseHeader('errorMsg') || '服务器异常';
             layer.close(loading);
             layer.msg(errorMsg, {time: 2000});
         }

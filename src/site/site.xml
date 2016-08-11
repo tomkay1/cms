@@ -37,6 +37,9 @@
         <links>
             <item name="火图资源站" href="http://resources.chinaswt.cn"/>
         </links>
+        <menu name="控件开发">
+            <item name="指引" href="guide.html"/>
+        </menu>
         <menu ref="modules"/>
         <menu ref="reports"/>
 

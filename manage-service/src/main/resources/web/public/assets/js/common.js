@@ -126,9 +126,8 @@ function updataCompoentPreview(globalID, properties) {
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            var errorMsg = jqXHR.getResponseHeader('errorMsg') || '服务器错误，请稍后操作。';
             layer.close(loading);
-            layer.msg(errorMsg, {time: 2000});
+            layer.msg('服务器错误，请稍后操作。', {time: 2000});
         }
     });
 }

@@ -126,7 +126,7 @@ function updataCompoentPreview(globalID, properties) {
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            var errorMsg = jqXHR.getResponseHeader('errorMsg');
+            var errorMsg = jqXHR.getResponseHeader('errorMsg') || '服务器错误，请稍后操作。';
             layer.close(loading);
             layer.msg(errorMsg, {time: 2000});
         }
@@ -161,7 +161,7 @@ function getDataSource(type, parameter, onSuccess, onError) {
         success: onSuccess,
         error: onError
     });
-}
+};
 /**
 * 动态加载组件的 JS文件
 * @type {{css: dynamicLoading.css, js: dynamicLoading.js}}
@@ -271,11 +271,19 @@ function uploadForm (obj) {
         },
         onError: function (files, status, message, pd) {
             pd.statusbar.hide();
-            layer.msg('上传失败，请稍后再说');
+            layer.msg('上传失败，请稍后再说', {time: 2000});
         },
         deleteCallback: function (data, pd) {
             var Data = {fileUri: data.fileUri};
-            $.post(deleteUrl, { op: "delete", data:JSON.stringify(Data) }, deleteCallback);
+            $.ajax({
+                type: 'DELETE',
+                url: deleteUrl,
+                dataType: 'json',
+                data: Data,
+                error: function (jqXHR, textStatus, errorThrown) {
+                    layer.msg('服务器错误，请稍后操作。', {time: 2000});
+                }
+            });
             pd.statusbar.hide();
         }
     });

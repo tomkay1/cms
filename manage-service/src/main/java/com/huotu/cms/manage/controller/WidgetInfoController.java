@@ -180,7 +180,11 @@ public class WidgetInfoController
     @RequestMapping(value = "/widgets", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
     public List<WidgetModel> getWidgetInfo(Locale locale, @AuthenticationPrincipal Login login) throws IOException
             , URISyntaxException, FormatException {
-        Owner owner = ownerRepository.getOne(login.currentOwnerId());
+        Owner owner;
+        if (login.currentOwnerId() != null)
+            owner = ownerRepository.getOne(login.currentOwnerId());
+        else
+            owner = null;
         List<InstalledWidget> installedWidgets = widgetFactoryService.widgetList(owner);
 
         List<WidgetModel> widgetModels = new ArrayList<>();

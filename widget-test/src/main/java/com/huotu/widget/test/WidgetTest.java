@@ -296,6 +296,12 @@ public abstract class WidgetTest extends SpringWebTest {
                 .as("对默认属性的修改不会影响全局")
                 .isNotEqualTo(randomValue);
 
+        // 默认样式必然是可以valid的
+        widget.valid(null, componentProperties);
+        for (WidgetStyle style : widget.styles()) {
+            widget.valid(style.id(), componentProperties);
+        }
+
         // 缩略图测试
         assertThat(widget.thumbnail())
                 .isNotNull();

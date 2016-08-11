@@ -105,6 +105,7 @@ public class FrontControllerTest extends TestBase {
 
     /**
      * 最基本的测试流
+     *
      */
     @Test
     public void page() throws Exception {
@@ -112,9 +113,9 @@ public class FrontControllerTest extends TestBase {
         String pagePath = "test";
         //构造数据
         pageInitData(contentId, pagePath);
+        //case 1存在的path
         MockHttpServletResponse response = mockMvc.perform(get("/_web/{pagePath}", pagePath)
                 .accept(MediaType.TEXT_HTML)).andDo(print()).andReturn().getResponse();
-        //case 1存在的path
         int code = response.getStatus();
         assertThat(code).as("存在的path").isEqualTo(HttpStatus.SC_OK);
         String html = response.getContentAsString();
@@ -148,7 +149,7 @@ public class FrontControllerTest extends TestBase {
 
 
     /**
-     * 初始化一个页面，并添加一个顶部导航条组件
+     * 初始化一个页面，保存指定一个Link（链接模型）内容，并添加一个顶部导航条组件
      *
      * @param contentId 内容id
      * @param pagePath  页面url

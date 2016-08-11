@@ -7,7 +7,9 @@
  * 2013-2016. All rights reserved.
  */
 
-package ${package};
+package $
+
+import java.io.IOException;{package};
 
 import java.util.Locale;
 
@@ -106,4 +108,9 @@ public class WidgetInfo implements Widget{
         return null;
     }
 
+    @Override
+    public ComponentProperties defaultProperties(ResourceService resourceService) throws IOException {
+        ComponentProperties properties = new ComponentProperties();
+        return properties;
+    }
 }

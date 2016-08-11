@@ -53,17 +53,20 @@ public class WidgetIdentifier implements Serializable {
         }
         try {
             String[] args = identify.split(":");
-            String[] groupIdAndWidgetId = args[0].split("-");
-            return new WidgetIdentifier(groupIdAndWidgetId[0], groupIdAndWidgetId[1], args[1]);
+            return new WidgetIdentifier(args[0].substring(0, args[0].indexOf("-"))
+                    , args[0].substring(args[0].indexOf("-") + 1)
+                    , args[1]);
         } catch (Exception e) {
             throw new IllegalArgumentException("参数不符合预定规则");
         }
     }
 
+
     @Override
     public String toString() {
         return groupId + "-" + artifactId + ":" + version;
     }
+
 
     /**
      * @return <pre>Base64.getUrlEncoder().encodeToString(data)</pre>

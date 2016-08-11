@@ -19,7 +19,7 @@
       },
       {
         "locallyName": "2号carousel",
-        "id": 0,
+        "id": null,
         "thumbnail": "http://placehold.it/106x82?text=试试",
         "previewHTML": "<div id=\"jumbotron\"><h1 class=\"title\">Connect  Local.  连接一切本地生活</h1><p class=\"desc\">我是测试内容，测试内容，测试内容，测试内容，测试内容，测试内容，测试内容。</p></div>"
       }
@@ -39,7 +39,7 @@
     "styles": [
       {
         "locallyName": "3号carousel",
-        "id": 0,
+        "id": null,
         "thumbnail": "http://placehold.it/106x82?text=试试",
         "previewHTML": "<div id=\"copyright\" class=\"copyright row\">\r\n    <div class=\"col-sm-8 col-lg-10\">\r\n        <ul class=\"list-unstyled\">\r\n            <li>\r\n                <a class=\"copyright\" href=\"/_web/+${pageLink[&#39;url&#39;]}\" title=\"首页\">链接</a>\r\n            </li>\r\n            <li>\r\n                <a class=\"copyright\" href=\"/_web/+${pageLink[&#39;url&#39;]}\" title=\"首页\">链接</a>\r\n            </li>\r\n            <li>\r\n                <a class=\"copyright\" href=\"/_web/+${pageLink[&#39;url&#39;]}\" title=\"首页\">链接</a>\r\n            </li>\r\n            <li>\r\n                <a class=\"copyright\" href=\"/_web/+${pageLink[&#39;url&#39;]}\" title=\"首页\">链接</a>\r\n            </li>\r\n            <li>\r\n                <a class=\"copyright\" href=\"/_web/+${pageLink[&#39;url&#39;]}\" title=\"首页\">链接</a>\r\n            </li>\r\n            <li>\r\n                <a class=\"copyright\" href=\"/_web/+${pageLink[&#39;url&#39;]}\" title=\"首页\">链接</a>\r\n            </li>\r\n        </ul>\r\n        <p class=\"copyright-contact\">杭州市滨江区阡陌路482号智慧e谷B幢4楼</p>\r\n        <p class=\"copyright-address\">400-1818-357 加盟热线：400-1008-013</p>\r\n        <p>Copyright&amp;copy;2013-2016.杭州火图科技有限公司. 浙ICP备13027761号-5</p>\r\n    </div>\r\n    <div class=\"col-sm-4 col-lg-2 hidden-xs\">\r\n        <img class=\"img-responsive\" src=\"http://cdn73.huobanplus.com/cmstest/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQuY29weXJpZ2h0LWNvcHlyaWdodDoxLjAtU05BUFNIT1Q=/img/code.jpg\"\r\n             alt=\"二维码\">\r\n    </div>\r\n</div>"
       },
@@ -71,7 +71,7 @@
       },
       {
         "locallyName": "6carousel",
-        "id": 0,
+        "id": null,
         "thumbnail": "http://placehold.it/106x82?text=试试",
         "previewHTML": "<img id=\"test2\" src=\"http://placehold.it/200x150?text=Test3\">"
       },

@@ -9,7 +9,7 @@
               "component": {
                 "widgetIdentity": "group-widget-2",
                 "id": "friendshipLink-1470623666551",
-                "styleId": "0",
+                "styleId": "haua-1",
                 "properties": {
                   "name": "Neo",
                   "sex": "Man"
@@ -30,7 +30,7 @@
               "component": {
                 "widgetIdentity": "group-widget-3",
                 "id": "friendshipLink-1470625376083",
-                "styleId": "0",
+                "styleId": "haua-2",
                 "properties": {
                   "name": "Neo",
                   "sex": "Man"
@@ -44,7 +44,7 @@
               "component": {
                 "widgetIdentity": "group-widget-4",
                 "id": "friendshipLink-1470625378595",
-                "styleId": "0",
+                "styleId": null,
                 "properties": {
                   "name": "Neo",
                   "sex": "Man"

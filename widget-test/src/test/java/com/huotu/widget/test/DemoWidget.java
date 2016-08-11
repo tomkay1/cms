@@ -32,7 +32,7 @@ public class DemoWidget implements Widget {
 
     @Override
     public String widgetId() {
-        return "bar";
+        return "bar-os";
     }
 
     @Override

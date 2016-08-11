@@ -61,7 +61,7 @@ var DataHandle = {
             childJSON.component = {};
             childJSON.component.widgetIdentity = $(elements).attr('data-widgetidentity');
             childJSON.component.id = $(elements).attr('id');
-            childJSON.component.styleId = $(elements).attr('data-styleid');
+            childJSON.component.styleId = $(elements).attr('data-styleid') || null;
             childJSON.component.properties = wsCache.get($(elements).attr('id')) ? wsCache.get($(elements).attr('id')).properties : {};
         }
         return childJSON;

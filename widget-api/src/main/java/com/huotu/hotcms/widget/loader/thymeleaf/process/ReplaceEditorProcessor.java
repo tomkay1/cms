@@ -60,10 +60,10 @@ public class ReplaceEditorProcessor extends AbstractAttributeTagProcessor implem
         // 我们的格式应该是 widgetId,..
         String[] inputs = attributeValue.split(",");
         Object[] results = new Object[inputs.length];
+
         for (int i = 0; i < inputs.length; i++) {
             results[i] = ExpressionUtils.ParseInputElseInput(context, inputs[i]);
         }
-
 
         CMSContext cmsContext = CMSContext.RequestContext();
 

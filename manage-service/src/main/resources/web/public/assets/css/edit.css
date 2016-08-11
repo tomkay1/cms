@@ -109,7 +109,6 @@ header .btn {
     width: 200px;
     height: 100%;
     background: #1c1d1f;
-    overflow: hidden;
     z-index: 888;
 }
 #container .sidebar dt {
@@ -165,6 +164,7 @@ header .btn {
     text-indent: 14px;
 }
 .draggable-group .preview p {
+    margin-top: 10px;
     border-radius: 4px;
 }
 
@@ -532,4 +532,52 @@ header .btn {
 }
 .changeStyle.active {
     border: 1px solid #638d38;
+}
+/*Updata 2016.08.11*/
+.widgetListGroup {
+    cursor: pointer;
+    font-size: 14px;
+    color: #fff;
+}
+.popover-info {
+    position: relative;
+    top: 2px;
+    right: 6px;
+}
+.popover-info .popover {
+    display: none;
+    top: -12.5px;
+    left: 15px;
+}
+.popover-info:hover .popover {
+    display: block;
+    opacity: 1;
+    width: 400px;
+}
+.popover-info:hover .popover .arrow {
+    top: 23px;
+}
+.group-header {
+    padding: 10px 0 10px 10px;
+}
+.group-header:hover {
+    color: #000;
+    background: #fff;
+}
+.active .group-header:hover {
+    color: #fff;
+}
+.active .group-header {
+    background: #7cb147;
+}
+.group-header i.fa-list {
+    margin-right: 10px;
+}
+.group-header i.fa-chevron-left {
+    float: right;
+    margin-top: 3px;
+    margin-right: 6px;
+}
+.group-content {
+    display: none;
 }

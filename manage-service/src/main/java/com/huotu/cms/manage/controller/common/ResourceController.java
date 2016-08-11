@@ -67,8 +67,6 @@ public class ResourceController {
      *
      * @param file
      * @return
-     * @throws IOException
-     * @throws URISyntaxException
      */
     @RequestMapping(value = "/fine", method = RequestMethod.POST)
     @ResponseBody

@@ -202,7 +202,7 @@ public class StringUtil {
     }
 
     /**
-     * 将输入字符串<param>input</param>中的'转换? \'以及"转化成\". 这样不会引起脚本歧义? 可以直接在JS中应用??
+     * 将输入字符串&lt;param&gt;input&lt;/param&gt;中的'转换? \'以及"转化成\". 这样不会引起脚本歧义? 可以直接在JS中应用??
      *
      * @param input String
      * @return String
@@ -260,14 +260,14 @@ public class StringUtil {
     }
 
     /**
-     * 判断字符?<param>str</param>是哪种语?的文字??
-     * <LI>根据unicode编码，如果字符串中的某个字符值在<br>
+     * 判断字符?str是哪种语?的文字??
+     * 根据unicode编码，如果字符串中的某个字符值在
      * 汉字? Unicode 里面有单独的几块区域，是中日韩（朝鲜）共享的。以下两? U+4e00 ~ U+9FBB 原来 GB2312 ? GBK
-     * 中的汉字 U+3400 ~ U+4DB6 包括 GB18030.2000 中那些增加的汉字 <br>
+     * 中的汉字 U+3400 ~ U+4DB6 包括 GB18030.2000 中那些增加的汉字
      * 之间，则字符串中含有中文?
-     * <LI>?些中文符号属? CJK Symbols and Punctuation 范围，从 u+3000 ? u+303F
-     * <LI>生成命令信件时，应该使用方法 <code>toGBStringBinary</code>进行转换?<strong>注意参数必须是unicode编码才行<strong>
-     * <LI>由于目前系统考虑只支持中英文，其它情况一律认为是英文，使用方? <code>toISOStringBinary</code>进行转换?
+     * ?些中文符号属? CJK Symbols and Punctuation 范围，从 u+3000 ? u+303F
+     * 生成命令信件时，应该使用方法 <code>toGBStringBinary</code>进行转换?<strong>注意参数必须是unicode编码才行</strong>
+     * 由于目前系统考虑只支持中英文，其它情况一律认为是英文，使用方? <code>toISOStringBinary</code>进行转换?
      *
      * @param str 被验证的字符?
      * @return 含中文字符串?"zh"，其它的字符串认为是英文字符串，返回:"en"
@@ -382,7 +382,6 @@ public class StringUtil {
     /**
      * 验证空串
      *
-     * @param
      * @return
      */
     public static boolean isEmpty(Object checkStr_) {

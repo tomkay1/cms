@@ -55,7 +55,6 @@ public interface PageService {
      *
      * @param page 页面
      * @return html
-     * @throws IOException
      */
     String generateHTML(PageInfo page, CMSContext context);
 
@@ -66,7 +65,6 @@ public interface PageService {
      * @param writer
      * @param page
      * @param context
-     * @throws IOException
      * @see #generateHTML(PageInfo, CMSContext)
      */
     void generateHTML(Writer writer, PageInfo page, CMSContext context) throws IOException;
@@ -121,7 +119,7 @@ public interface PageService {
 
     /**
      * <p>返回path对应的界面如果存在返回界面</p>
-     * <p>>path如果不存在,查找指定数据源下的最接近的界面</p>
+     * <p>path如果不存在,查找指定数据源下的最接近的界面</p>
      *
      * @param category 相关数据源
      * @param path     请求的路径

@@ -47,7 +47,6 @@ public class ImageHelper {
      * @param resourceService 资源服务
      * @param data            原数据
      * @param path            资源系统的路径
-     * @return 资源path
      */
     public static void storeAsImage(String type, ResourceService resourceService, InputStream data, String path) throws IOException {
         try {

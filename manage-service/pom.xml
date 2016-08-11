@@ -21,6 +21,7 @@
 
     <artifactId>manage-service</artifactId>
 
+    <name>Manage Service</name>
     <description>
         将代替admin项目 提供基于管理（页面,content）的服务
     </description>

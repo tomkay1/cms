@@ -201,7 +201,8 @@ public class FrontController implements FilterBehavioral {
                     .body(previewHTML.getBytes());
         } catch (Exception e) {
             log.warn("Unknown Exception", e);
-            return ResponseEntity.notFound().header("cssLocation", "").build();
+            return ResponseEntity.notFound().header("errorMsg", e.getMessage())
+                    .header("cssLocation", "").build();
         }
     }
 

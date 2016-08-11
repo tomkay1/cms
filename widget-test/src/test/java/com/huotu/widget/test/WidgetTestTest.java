@@ -40,7 +40,7 @@ public class WidgetTestTest extends WidgetTest {
         if (driver instanceof JavascriptExecutor) {
             Boolean initFlag = (Boolean) ((JavascriptExecutor) driver).executeScript("return window['inited']");
             assertThat(initFlag)
-                    .as("编辑器初始化, see demoWidget.js")
+                    .as("编辑器初始化, see FdemoWidget.js")
                     .isNotNull()
                     .isTrue();
         }

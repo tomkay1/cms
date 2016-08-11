@@ -240,7 +240,6 @@ function uploadForm (obj) {
         deleteUrl = obj.deleteUrl || '/manage/cms/deleteResource',
         deleteCallback = obj.deleteCallback || function () {},
         sign = obj.isCongruent || false;
-
     var uploadFile = $(ui).uploadFile({
         url: uploadUrl,
         showFileCounter: false,

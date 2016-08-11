@@ -39,4 +39,8 @@ public interface WidgetInfoRepository extends JpaRepository<WidgetInfo, WidgetId
     List<WidgetInfo> findByGroupIdAndArtifactIdAndEnabledTrue(String groupId, String artifactId);
 
 
+//    @Query("select w from WidgetInfo w group by w.groupId,artifactId having w.owner=?1 and max(w.createTime)")
+//    List<WidgetInfo> findByOwnerGroup_By(Owner owner);
+
+
 }

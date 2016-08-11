@@ -167,7 +167,7 @@ public class SiteServiceImpl implements SiteService {
                 hostRepository.save(host);
             } else {
                 // host 已存在
-                if (!host.getOwner().equals(site.getOwner())) {
+                if (host.getOwner() != null && !host.getOwner().equals(site.getOwner())) {
                     throw new IllegalArgumentException("域名已经存在");
 //                    return new ResultView(ResultOptionEnum.DOMAIN_EXIST.getCode(), ResultOptionEnum.DOMAIN_EXIST.getValue(), null);
                 }

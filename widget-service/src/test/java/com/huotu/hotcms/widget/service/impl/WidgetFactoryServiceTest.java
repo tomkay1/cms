@@ -38,6 +38,7 @@ import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
 import com.huotu.hotcms.widget.service.PageService;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import com.huotu.hotcms.widget.test.TestBase;
+import org.assertj.core.api.Condition;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -220,15 +221,9 @@ public class WidgetFactoryServiceTest extends TestBase {
 
     private void assertWidgetListContainWidgetName(String widgetId, String version, String type) throws IOException
             , FormatException, InstantiationException, IllegalAccessException {
-        for (InstalledWidget widget : widgetFactoryService.widgetList(null)) {
-            if (type.equals(widget.getType())) {
-                assertThat(widget.getWidget().widgetId()).isEqualToIgnoringCase(widgetId);
-                // 版本不会太过重要,因为会被新版本覆盖
-//                assertThat(widget.getWidget().version()).isEqualToIgnoringCase(version);
-                return;
-            }
-        }
-        assertThat(0).as("未找到控件").isEqualTo(1);
+        assertThat(widgetFactoryService.widgetList(null))
+                .haveAtLeastOne(new Condition<>(installedWidget
+                        -> installedWidget.getWidget().widgetId().equals(widgetId), "找不到添加的控件"));
     }
 
     public void pageInitData(String pagePath, InstalledWidget installedWidget, ComponentProperties properties) {

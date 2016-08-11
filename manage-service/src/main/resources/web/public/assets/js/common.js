@@ -114,20 +114,6 @@ function updataCompoentPreview(globalID, properties) {
         contentType: "application/json; charset=utf-8",
         dataType: 'html',
         data: JSON.stringify(data),
-        statusCode: {
-            403: function() {
-                layer.msg('没有权限', {time: 2000});
-                editFunc.closePreloader();
-            },
-            404: function() {
-                layer.msg('服务器请求失败', {time: 2000});
-                editFunc.closePreloader();
-            },
-            502: function () {
-                layer.msg('服务器错误,请稍后再试', {time: 2000});
-                editFunc.closePreloader();
-            }
-        },
         success: function (html, textStatus, jqXHR) {
             if (html) {
                 var updateHtml = $(html);
@@ -140,9 +126,9 @@ function updataCompoentPreview(globalID, properties) {
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            console.log(errorThrown);
+            var errorMsg = jqXHR.getResponseHeader('errorMsg');
             layer.close(loading);
-            layer.msg('服务器错误,请稍后再试', {time: 2000});
+            layer.msg(errorMsg, {time: 2000});
         }
     });
 }

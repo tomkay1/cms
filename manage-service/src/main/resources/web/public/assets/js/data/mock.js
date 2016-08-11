@@ -8,6 +8,7 @@ CMSWidgets.initWidget({
     editor: {
         properties: null,
         saveComponent: function (onSuccess, onFailed) {
+            console.log(this.properties + '>>>>');
             this.properties.linkUrl = $(".picBUrl").val();
             if (this.properties.pcImg == "" && this.properties.mobileImg == "") {
                 onFailed("组件数据缺少,未能保存,请完善。");
@@ -53,13 +54,16 @@ CMSWidgets.initWidget({
             this.properties.linkUrl = "";
         },
         open: function (globalId) {
+            console.log(this.properties + '<<<<');
             this.properties = widgetProperties(globalId);
+            console.log(this.properties);
             this.initProperties();
             this.uploadImage();
         },
         close: function (globalId) {
             $('#picBannerMaxImg').siblings().remove();
             $('#picBannerMinImg').siblings().remove();
+            console.log(1)
         }
     }
 });

@@ -151,23 +151,13 @@ var editFunc = {
 };
 var Page = {
     widgetHTML: [
-        '<li>',
         '<div class="box box-element ui-draggable">',
-        '<span class="setting label label-primary">',
-        '<i class="fa fa-cog"></i> 设置',
-        '</span>',
-        '<span class="drag label label-default">',
-        '<i class="fa fa-arrows"></i> 拖动',
-        '</span>',
-        '<span class="remove label label-danger">',
-        '<i class="fa fa-times"></i> 删除',
-        '</span>',
-        '<div class="preview">',
-        '<p></p>',
-        '</div>',
+        '<span class="setting label label-primary"><i class="fa fa-cog"></i> 设置</span>',
+        '<span class="drag label label-default"><i class="fa fa-arrows"></i> 拖动</span>',
+        '<span class="remove label label-danger"><i class="fa fa-times"></i> 删除</span>',
+        '<div class="preview"><p></p></div>',
         '<div class="view"></div>',
-        '</div>',
-        '</li>'
+        '</div>'
     ],
     styleList: [
 	    '<div>',
@@ -182,19 +172,31 @@ var Page = {
 	],
     createListAndEditor: function (data) {
         var parent = $('#configuration').find('.conf-body');
+        var element = $('#widgetLists');
+        var typeData = $.unique($.map(data, function (v) {return [$.trim(v.type)];}));
+        $.each(typeData, function (i,v) {
+            var typeList = $('<li class="widgetListGroup"></li>');
+            var div = $('<div class="group-header clearfix"><i class="fa fa-list"></i>'+ v +'<i class="fa fa-chevron-left"></i></div>');
+            var widgetList = $('<ul class="group-content list-unstyled"></ul>');
+            typeList.append(div);
+            typeList.append(widgetList);
+            element.append(typeList);
+        });
         $.each(data, function (i, v) {
             var initData = {};
             initData.script = v.scriptHref;
             initData.properties = v.defaultProperties;
             wsCache.set(v.identity, initData);
             // 组件列表渲染
-            var element = $('#widgetLists');
-            element.append(Page.widgetHTML.join('\n'));
-            element.find('.setting').eq(i).attr('data-target', v.identity);
-            element.find('.preview p').eq(i).html(v.locallyName);
-            element.find('.view').eq(i).append(v.styles[0].previewHTML);
-            element.find('.view').eq(i).children().eq(0).attr('data-widgetidentity', v.identity);
-            element.find('.view').eq(i).children().eq(0).attr('data-styleid', 0);
+            var typeList = $('.group-header:contains("'+v.type+'")').siblings('.group-content');
+            var list = $('<li></li>');
+            list.append(Page.widgetHTML.join('\n'));
+            list.find('.setting').attr('data-target', v.identity);
+            list.find('.preview p').html(v.locallyName);
+            list.find('.view').append(v.styles[0].previewHTML);
+            list.find('.view').children().eq(0).attr('data-widgetidentity', v.identity);
+            list.find('.view').children().eq(0).attr('data-styleid', 'null');
+            typeList.append(list);
             //编辑器视图渲染
             var child = $('<div class="common-conf"></div>');
             var container = $('<div></div>');
@@ -269,7 +271,6 @@ var Page = {
                 var ele = $(e.target).find('.view').children().eq(0);
                 var oId = ele.attr('id');
                 if ( !oId ) {
-                    console.log('部分组件缺少唯一ID，可能影响操作。');
                     ele.attr('id', Page.randomId(6))
                 }
             },
@@ -351,6 +352,16 @@ editPage.init = function () {
     $(".boxes").mCustomScrollbar({
         autoHideScrollbar:true,
         theme:"minimal"
+    });
+
+    $('#widgetLists').on('click', '.group-header', function () {
+        $(this).parent().toggleClass('active');
+        $(this).children('.fa-chevron-left').toggleClass('fa-chevron-down');
+        $(this).siblings('.group-content').slideToggle();
+
+        $(this).parent().siblings().removeClass('active');
+        $(this).parent().siblings().find('.group-header .fa-chevron-left').removeClass('fa-chevron-down');
+        $(this).parent().siblings().find('.group-content').slideUp();
     });
 
     editFunc.init();

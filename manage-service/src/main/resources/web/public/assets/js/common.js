@@ -35,6 +35,8 @@ function widgetProperties( id ) {
 
 /**
  * 组件数据控制逻辑
+ * getEditAreaElement: 获取当前组件对应编辑器的编辑区域 jQuery 对象
+ * getIdentity: 获取当前组件对应的控件 Identity 标示
  * createStore: 初始化GlobalID
  * setStroe: 设置操作组件的 properties 本地数据存储
  * getGlobalFunc: 获取GlobalID
@@ -80,13 +82,13 @@ var widgetHandle = {
                     widgetHandle.setStroe(id, ps);
                     updataCompoentPreview(id, ps);
                 }
+                CMSWidgets.closeEditor(GlobalID, identity, $DOM);
                 editFunc.closeFunc();
             },
             onFailed: function (msg) {
                 layer.msg(msg)
             }
         }, $DOM);
-        CMSWidgets.closeEditor(GlobalID, identity, $DOM);
     },
     closeSetting: function () {
         var $DOM = widgetHandle.getEditAreaElement(identity);

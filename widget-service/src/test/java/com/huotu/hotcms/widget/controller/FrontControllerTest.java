@@ -147,6 +147,12 @@ public class FrontControllerTest extends TestBase {
     }
 
 
+    /**
+     * 初始化一个页面，并添加一个顶部导航条组件
+     *
+     * @param contentId 内容id
+     * @param pagePath  页面url
+     */
     public void pageInitData(Long contentId, String pagePath) {
         Owner owner = ownerRepository.findOne(1L);
         if (owner == null)
@@ -214,6 +220,11 @@ public class FrontControllerTest extends TestBase {
 
     }
 
+    /**
+     * 构造顶部导航组件properties参数
+     *
+     * @return
+     */
     @NotNull
     private ComponentProperties getComponentProperties() {
         ComponentProperties properties = new ComponentProperties();
@@ -269,16 +280,6 @@ public class FrontControllerTest extends TestBase {
             navbarPageInfoModel.setId(info.getPageId());
             navbarPageInfoModel.setPid(info.getParent() != null ? info.getParent().getPageId() : 0);
             navbarPageInfoModels.add(navbarPageInfoModel);
-        }
-        List<NavbarPageInfoModel> rootTrees = new ArrayList<>();
-        for (NavbarPageInfoModel navbarPageInfoModel : navbarPageInfoModels) {
-            if (navbarPageInfoModel.getPid() == 0) {
-                rootTrees.add(navbarPageInfoModel);
-            }
-            for (NavbarPageInfoModel t : navbarPageInfoModels) {
-                if (t.getPid() == navbarPageInfoModel.getId()) {
-                }
-            }
         }
         properties.put("pageIds",navbarPageInfoModels);
         return properties;

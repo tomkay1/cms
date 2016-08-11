@@ -140,7 +140,6 @@ var DataHandle = {
             url: url,
             contentType: "application/json; charset=utf-8",
             data: Data,
-            dataType: 'json',
             statusCode: {
                 202: function () {
                     layer.msg('保存成功！', {time: 2000});

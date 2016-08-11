@@ -7,12 +7,10 @@
  * 2013-2016. All rights reserved.
  */
 
-package $
+package ${package};
 
-import java.io.IOException;{package};
-
+import java.io.IOException;
 import java.util.Locale;
-
 import java.util.Locale;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.Widget;
@@ -73,7 +71,7 @@ public class WidgetInfo implements Widget{
     @Override
     public Resource widgetDependencyContent(MediaType mediaType){
         if (mediaType.equals(Widget.Javascript))
-            return new ClassPathResource("js/${artifactId}.js", getClass().getClassLoader());
+            return new ClassPathResource("js/WidgetInfo.js", getClass().getClassLoader());
         return null;
     }
 
@@ -109,8 +107,10 @@ public class WidgetInfo implements Widget{
     }
 
     @Override
-    public ComponentProperties defaultProperties(ResourceService resourceService) throws IOException {
+    public ComponentProperties defaultProperties(ResourceService resourceService) {
         ComponentProperties properties = new ComponentProperties();
         return properties;
     }
+
+
 }

@@ -274,9 +274,8 @@ function uploadForm (obj) {
             layer.msg('上传失败，请稍后再说');
         },
         deleteCallback: function (data, pd) {
-            for (var i = 0; i < data.length; i++) {
-                $.post(deleteUrl, { op: "delete", name: data[i] }, deleteCallback);
-            }
+            var Data = {fileUri: data.fileUri};
+            $.post(deleteUrl, { op: "delete", data:JSON.stringify(Data) }, deleteCallback);
             pd.statusbar.hide();
         }
     });

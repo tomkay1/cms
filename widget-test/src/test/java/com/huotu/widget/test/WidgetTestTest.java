@@ -68,7 +68,9 @@ public class WidgetTestTest extends WidgetTest {
 
     @Override
     protected void editorBrowseWork(Widget widget, Function<ComponentProperties, WebElement> uiChanger) throws IOException {
-        uiChanger.apply(widget.defaultProperties(resourceService));
-
+        WebElement webElement = uiChanger.apply(widget.defaultProperties(resourceService));
+        ComponentProperties properties = widget.defaultProperties(resourceService);
+        assertThat(webElement.findElement(By.name("content")).getAttribute("value"))
+                .isEqualTo(properties.get("content").toString());
     }
 }

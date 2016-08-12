@@ -167,9 +167,9 @@ public abstract class WidgetTest extends SpringWebTest {
     protected void editorBrowse(Widget widget) throws Exception {
         for (WidgetStyle style : widget.styles()) {
             stylePropertiesFor(style);
-            editorBrowseWork(widget, style, componentProperties -> {
+            editorBrowseWork(widget, componentProperties -> {
                 widgetViewController.setCurrentProperties(componentProperties);
-                String uri = "/editorBrowse/" + Widget.URIEncodedWidgetIdentity(widget);
+                String uri = "/editor/" + Widget.URIEncodedWidgetIdentity(widget);
                 if (printPageSource())
                     try {
                         mockMvc.perform(get(uri))
@@ -218,14 +218,12 @@ public abstract class WidgetTest extends SpringWebTest {
 
     /**
      * 编辑器浏览测试
-     * 通过设置属性改变浏览视图
+     * 通过设置属性改变编辑器浏览视图
      *
      * @param widget    控件
-     * @param style     样式
-     * @param uiChanger 更改后的预览视图,它接受的参数就是组件的实际properties
+     * @param uiChanger 更改后的编辑器浏览视图,它接受的参数就是组件的实际properties
      */
-    protected abstract void editorBrowseWork(Widget widget, WidgetStyle style
-            , Function<ComponentProperties, WebElement> uiChanger) throws IOException;
+    protected abstract void editorBrowseWork(Widget widget, Function<ComponentProperties, WebElement> uiChanger) throws IOException;
 
     /**
      * 一些常用属性测试

@@ -82,6 +82,7 @@ public class WidgetViewController {
     @RequestMapping(method = RequestMethod.GET, value = "/editor/{widgetName}")
     public String editor(@PathVariable("widgetName") WidgetIdentifier widgetName, Model model) {
         model.addAttribute("widgetId", widgetName.toString());
+        model.addAttribute("properties", currentProperties);
         return "editor";
     }
 
@@ -92,14 +93,6 @@ public class WidgetViewController {
         return "browse";
     }
 
-
-    @RequestMapping(method = RequestMethod.GET, value = {"/editorBrowse/{widgetName}"})
-    public String editorBrowse(@PathVariable("widgetName") WidgetIdentifier widgetName
-            , Model model) {
-        model.addAttribute("widgetId", widgetName.toString());
-        model.addAttribute("properties", currentProperties);
-        return "editor";
-    }
 
     @RequestMapping(method = RequestMethod.GET, value = "/index")
     public String index(Model model) {

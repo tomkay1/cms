@@ -12,9 +12,11 @@ package com.huotu.widget.test;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetStyle;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.util.List;
@@ -29,6 +31,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class WidgetTestTest extends WidgetTest {
 
+    @Autowired
+    private ResourceService resourceService;
     @Override
     protected boolean printPageSource() {
         return true;
@@ -55,12 +59,12 @@ public class WidgetTestTest extends WidgetTest {
     }
 
     @Override
-    protected void browseWork(Widget widget, WidgetStyle style, Function<ComponentProperties, WebElement> uiChanger) {
-        uiChanger.apply(new ComponentProperties());
+    protected void browseWork(Widget widget, WidgetStyle style, Function<ComponentProperties, WebElement> uiChanger) throws IOException {
+        uiChanger.apply(widget.defaultProperties(resourceService));
     }
 
     @Override
-    protected void editorBrowseWork(Widget widget, WidgetStyle style, Function<ComponentProperties, WebElement> uiChanger) throws IOException {
-        uiChanger.apply(new ComponentProperties());
+    protected void editorBrowseWork(Widget widget, Function<ComponentProperties, WebElement> uiChanger) throws IOException {
+        uiChanger.apply(widget.defaultProperties(resourceService));
     }
 }

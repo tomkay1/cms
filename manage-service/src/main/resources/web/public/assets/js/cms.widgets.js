@@ -120,33 +120,35 @@ CMSWidgets.defaultConfig = {
         properties: null,
         setProperties: function (obj) {
             var name = $(obj).attr("name");
-            properties[name] = $(obj).val();
+            this.properties[name] = $(obj).val();
         },
         saveComponent: function (onSuccess, onFailed) {
+            var that = this;
             $("input[type='email']").each(function () {
-                editor.setProperties($(this));
+                that.setProperties($(this));
             });
             $("input[type='url']").each(function () {
-                editor.setProperties($(this));
+                that.setProperties($(this));
             });
             $("input[type='color']").each(function () {
-                editor.setProperties($(this));
+                that.setProperties($(this));
             });
             $(":text").each(function () {
-                editor.setProperties($(this));
+                that.setProperties($(this));
             });
 
             $(":checkbox").each(function () {
                 var name = $(this).attr("name");
-                editor.properties[name] = $(this).is(":checked");
+                that.properties[name] = $(this).is(":checked");
             });
             $(":file").each(function () {
-                editor.setProperties($(this));
+                that.setProperties($(this));
             });
             $("select").each(function () {
-                editor.setProperties($(this));
+                that.setProperties($(this));
             });
-            return this.properties;
+            onSuccess(that.properties);
+            return that.properties;
         },
         open: function (globalId) {
             this.properties = widgetProperties(globalId);

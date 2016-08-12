@@ -29,6 +29,7 @@ import org.thymeleaf.spring4.naming.SpringContextVariableNames;
 
 import javax.servlet.ServletContext;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -73,9 +74,17 @@ public class WidgetContext extends WebEngineContext {
         variables.put("widget", widget);
         variables.put("style", style);
         variables.put("properties", properties);
+        if (properties != null) {
+            Iterator<Map.Entry<String, Object>> entries = properties.entrySet().iterator();
+            while (entries.hasNext()) {
+                Map.Entry<String, Object> entry = entries.next();
+                variables.put(entry.getKey(), entry.getValue());
+            }
+        }
         if (component != null) {
             variables.put("componentId", component.getId());
         }
+
         // "thymeleaf::EvaluationContext" ->
         // "springMacroRequestContext" ->
         // "springRequestContext" ->

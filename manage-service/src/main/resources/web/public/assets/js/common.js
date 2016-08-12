@@ -270,14 +270,16 @@ function uploadForm (obj) {
         onError: function (files, status, message, pd) {
             pd.statusbar.hide();
             layer.msg('上传失败，请稍后再说', {time: 2000});
+            5
         },
         deleteCallback: function (data, pd) {
-            var Data = {fileUri: data.fileUri};
+            var _data = {path: data.path};
             $.ajax({
                 type: 'DELETE',
                 url: deleteUrl,
+                contentType: "application/json; charset=utf-8",
                 dataType: 'json',
-                data: Data,
+                data: JSON.stringify(_data),
                 error: function (jqXHR, textStatus, errorThrown) {
                     layer.msg('服务器错误，请稍后操作。', {time: 2000});
                 }

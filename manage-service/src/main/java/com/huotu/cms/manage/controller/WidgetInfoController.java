@@ -32,6 +32,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -180,11 +181,10 @@ public class WidgetInfoController
     @RequestMapping(value = "/widgets", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
     public List<WidgetModel> getWidgetInfo(Locale locale, @AuthenticationPrincipal Login login) throws IOException
             , URISyntaxException, FormatException {
-        Owner owner;
-        if (login.currentOwnerId() != null)
-            owner = ownerRepository.getOne(login.currentOwnerId());
-        else
-            owner = null;
+        Owner owner = CMSContext.RequestContext().getSite().getOwner();
+        if (owner == null && !login.isRoot()) {
+            throw new AccessDeniedException("");
+        }
         List<InstalledWidget> installedWidgets = widgetFactoryService.widgetList(owner);
 
         List<WidgetModel> widgetModels = new ArrayList<>();

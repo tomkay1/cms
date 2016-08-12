@@ -66,6 +66,8 @@ public class Owner extends AbstractLogin implements Serializable, Enabled {
 
     @Override
     public boolean siteManageable(Site site) {
+        if (site.getOwner() == null)
+            return false;
         return site.getOwner().equals(this);
     }
 
@@ -76,12 +78,12 @@ public class Owner extends AbstractLogin implements Serializable, Enabled {
 
     @Override
     public boolean contentManageable(AbstractContent content) {
-        return content.getCategory().getSite().getOwner().equals(this);
+        return categoryManageable(content.getCategory());
     }
 
     @Override
     public boolean categoryManageable(Category category) {
-        return category.getSite().getOwner().equals(this);
+        return siteManageable(category.getSite());
     }
 
     @Override

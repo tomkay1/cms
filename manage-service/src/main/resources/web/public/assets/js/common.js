@@ -126,9 +126,8 @@ function updataCompoentPreview(globalID, properties) {
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            var errorMsg = jqXHR.getResponseHeader('errorMsg') || '服务器异常';
             layer.close(loading);
-            layer.msg(errorMsg, {time: 2000});
+            layer.msg('服务器错误，请稍后操作。', {time: 2000});
         }
     });
 }
@@ -179,7 +178,6 @@ var dynamicLoading = {
             var argv = $(v).attr(attr);
             if ( argv && argv.indexOf(path) != -1 ) {
                 exist = true;
-                $(v).attr(attr, path);
             }
         });
         if (!exist) {
@@ -271,16 +269,23 @@ function uploadForm (obj) {
         },
         onError: function (files, status, message, pd) {
             pd.statusbar.hide();
-            layer.msg('上传失败，请稍后再说');
+            layer.msg('上传失败，请稍后再说', {time: 2000});
         },
         deleteCallback: function (data, pd) {
-            for (var i = 0; i < data.length; i++) {
-                $.post(deleteUrl, { op: "delete", name: data[i] }, deleteCallback);
-            }
+            var Data = {fileUri: data.fileUri};
+            $.ajax({
+                type: 'DELETE',
+                url: deleteUrl,
+                dataType: 'json',
+                data: Data,
+                error: function (jqXHR, textStatus, errorThrown) {
+                    layer.msg('服务器错误，请稍后操作。', {time: 2000});
+                }
+            });
             pd.statusbar.hide();
         }
     });
-};
+}
 
 
 /**
@@ -303,4 +308,4 @@ function verifySize(congruent, vWidth, vHeight, callback) {
         if (vHeight) layer.msg(heightText);
         if ( !vWidth === true && !vHeight === true ) callback();
     }
-};
+}

@@ -1,118 +1,68 @@
 [
   {
-    "identity": "group-widget-2",
-    "type": "类型1",
-    "locallyName": "test2",
-    "thumbnail": "test.png",
-    "editorHTML": "<s id=\"yes\">测试</s>",
-    "scriptHref": "../../public/assets/js/jPicture/jquery.queue.js",
+    "identity": "com.huotu.hotcms.widget.friendshipLink-friendshipLink:1.0-SNAPSHOT",
+    "type": "普通",
+    "locallyName": "友情链接",
+    "thumbnail": "http://cdn73.huobanplus.com/cmstest/widgets/thumbnail/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQuZnJpZW5kc2hpcExpbmstZnJpZW5kc2hpcExpbms6MS4wLVNOQVBTSE9U.png",
+    "editorHTML": "<div class=\"borderBoxs\">\n    <form class=\"form-horizontal\">\n        <div class=\"linkbox\">\n            <div class=\"form-group\">\n                <div class=\"col-sm-3\">\n                    <button type=\"button\" class=\"btn btn-success addLink\">添加链接</button>\n                </div>\n            </div>\n        </div>\n    </form>\n\n    <div class=\"LinkRowHtml\" style=\"display:none;\">\n        <div class=\"item form-group\">\n            <div class=\"col-sm-3\">\n                <input type=\"text\" class=\"form-control linkTitle\" placeholder=\"链接名称\">\n            </div>\n            <div class=\"col-sm-6\">\n                <input type=\"url\" class=\"form-control linkUrl\" placeholder=\"链接地址\">\n            </div>\n            <div class=\"col-sm-3\">\n                <input type=\"button\" class=\"btn btn-danger removerLinkItem\" value=\"删除\">\n            </div>\n        </div>\n    </div>\n</div>",
+    "scriptHref": "../../public/assets/js/data/friendLink.js",
     "defaultProperties": {
-      "name": "Neo",
-      "sex": "Man"
+      "linkList": [
+        {
+          "title": "火图科技",
+          "url": "http://www.huobanplus.com",
+          "target": "_blank"
+        },
+        {
+          "title": "火图科技",
+          "url": "http://www.huobanplus.com",
+          "target": "_blank"
+        },
+        {
+          "title": "火图科技",
+          "url": "http://www.huobanplus.com",
+          "target": "_blank"
+        },
+        {
+          "title": "火图科技",
+          "url": "http://www.huobanplus.com",
+          "target": "_blank"
+        },
+        {
+          "title": "火图科技",
+          "url": "http://www.huobanplus.com",
+          "target": "_blank"
+        }
+      ]
     },
     "styles": [
       {
-        "locallyName": "1号carousel",
-        "id": "carousel-1",
-        "thumbnail": "http://placehold.it/106x82?text=试试",
-        "previewHTML": "<div id=\"jumbotron\"><h1 class=\"title\">Connect  Local.  连接一切本地生活</h1><p class=\"desc\">我是测试内容，测试内容，测试内容，测试内容，测试内容，测试内容，测试内容。</p></div>"
-      },
-      {
-        "locallyName": "2号carousel",
-        "id": null,
-        "thumbnail": "http://placehold.it/106x82?text=试试",
-        "previewHTML": "<div id=\"jumbotron\"><h1 class=\"title\">Connect  Local.  连接一切本地生活</h1><p class=\"desc\">我是测试内容，测试内容，测试内容，测试内容，测试内容，测试内容，测试内容。</p></div>"
-      }
-    ]
-  },
-  {
-    "identity": "group-widget-3",
-    "type": "类型2",
-    "locallyName": "test3",
-    "thumbnail": "test.png",
-    "editorHTML": "<i>测试</i>",
-    "scriptHref": "../../public/assets/js/jPicture/jPicture.js",
-    "defaultProperties": {
-      "name": "CHang",
-      "sex": "Man"
-    },
-    "styles": [
-      {
-        "locallyName": "3号carousel",
-        "id": null,
-        "thumbnail": "http://placehold.it/106x82?text=试试",
-        "previewHTML": "<div id=\"copyright\" class=\"copyright row\">\r\n    <div class=\"col-sm-8 col-lg-10\">\r\n        <ul class=\"list-unstyled\">\r\n            <li>\r\n                <a class=\"copyright\" href=\"/_web/+${pageLink[&#39;url&#39;]}\" title=\"首页\">链接</a>\r\n            </li>\r\n            <li>\r\n                <a class=\"copyright\" href=\"/_web/+${pageLink[&#39;url&#39;]}\" title=\"首页\">链接</a>\r\n            </li>\r\n            <li>\r\n                <a class=\"copyright\" href=\"/_web/+${pageLink[&#39;url&#39;]}\" title=\"首页\">链接</a>\r\n            </li>\r\n            <li>\r\n                <a class=\"copyright\" href=\"/_web/+${pageLink[&#39;url&#39;]}\" title=\"首页\">链接</a>\r\n            </li>\r\n            <li>\r\n                <a class=\"copyright\" href=\"/_web/+${pageLink[&#39;url&#39;]}\" title=\"首页\">链接</a>\r\n            </li>\r\n            <li>\r\n                <a class=\"copyright\" href=\"/_web/+${pageLink[&#39;url&#39;]}\" title=\"首页\">链接</a>\r\n            </li>\r\n        </ul>\r\n        <p class=\"copyright-contact\">杭州市滨江区阡陌路482号智慧e谷B幢4楼</p>\r\n        <p class=\"copyright-address\">400-1818-357 加盟热线：400-1008-013</p>\r\n        <p>Copyright&amp;copy;2013-2016.杭州火图科技有限公司. 浙ICP备13027761号-5</p>\r\n    </div>\r\n    <div class=\"col-sm-4 col-lg-2 hidden-xs\">\r\n        <img class=\"img-responsive\" src=\"http://cdn73.huobanplus.com/cmstest/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQuY29weXJpZ2h0LWNvcHlyaWdodDoxLjAtU05BUFNIT1Q=/img/code.jpg\"\r\n             alt=\"二维码\">\r\n    </div>\r\n</div>"
-      },
-      {
-        "locallyName": "4号carousel",
-        "id": "carousel-2",
-        "thumbnail": "http://placehold.it/106x82?text=试试",
-        "previewHTML": "<img id=\"test1\" src=\"http://placehold.it/200x150?text=Test2-2\">"
-      }
-    ]
-  },
-  {
-    "identity": "group-widget-4",
-    "type": "类型1",
-    "locallyName": "test4",
-    "thumbnail": "test.png",
-    "editorHTML": "<kbd>测试</kbd>",
-    "scriptHref": "http://cdn.bootcss.com/list.js/1.2.0/list.min.js",
-    "defaultProperties": {
-      "name": "Fei",
-      "sex": "Man"
-    },
-    "styles": [
-      {
-        "locallyName": "5carousel",
-        "id": "carousel-1",
-        "thumbnail": "http://placehold.it/106x82?text=试试",
-        "previewHTML": "<img id=\"test2\" src=\"http://placehold.it/200x150?text=Test3\">"
-      },
-      {
-        "locallyName": "6carousel",
-        "id": null,
-        "thumbnail": "http://placehold.it/106x82?text=试试",
-        "previewHTML": "<img id=\"test2\" src=\"http://placehold.it/200x150?text=Test3\">"
-      },
-      {
-        "locallyName": "7carousel",
-        "id": "carousel-1",
-        "thumbnail": "http://placehold.it/106x82?text=试试",
-        "previewHTML": "<img id=\"test2\" src=\"http://placehold.it/200x150?text=Test3\">"
-      },
-      {
-        "locallyName": "8carousel",
-        "id": "carousel-1",
-        "thumbnail": "http://placehold.it/106x82?text=试试",
-        "previewHTML": "<img id=\"test2\" src=\"http://placehold.it/200x150?text=Test3\">"
-      },
-      {
-        "locallyName": "9carousel",
-        "id": "carousel-1",
-        "thumbnail": "http://placehold.it/106x82?text=试试",
-        "previewHTML": "<img id=\"test2\" src=\"http://placehold.it/200x150?text=Test3\">"
+        "id": "friendshipLink1",
+        "locallyName": "bootstrap style",
+        "thumbnail": "http://cdn73.huobanplus.com/cmstest/widgets/thumbnail/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQuZnJpZW5kc2hpcExpbmstZnJpZW5kc2hpcExpbms6MS4wLVNOQVBTSE9U/friendshipLink1.png",
+        "previewHTML": "<div id=\"friendshipLink\" class=\"link-exchange\">\n    <dl>\n        <dt>友情链接</dt>\n        <dd>\n            <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.huobanplus.com\">火图科技</a><a rel=\"nofollow\" target=\"_blank\" href=\"http://www.huobanplus.com\">火图科技</a><a rel=\"nofollow\" target=\"_blank\" href=\"http://www.huobanplus.com\">火图科技</a><a rel=\"nofollow\" target=\"_blank\" href=\"http://www.huobanplus.com\">火图科技</a><a rel=\"nofollow\" target=\"_blank\" href=\"http://www.huobanplus.com\">火图科技</a>\n        </dd>\n    </dl>\n</div>",
+        "browseHTML": null
       }
     ]
   },
   {
     "identity": "com.huotu.hotcms.widget.picBanner-picBanner:1.0-SNAPSHOT",
-    "type": "类型1",
+    "type": "普通",
     "locallyName": "图片条幅",
     "thumbnail": "http://cdn73.huobanplus.com/cmstest/widgets/thumbnail/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQucGljQmFubmVyLXBpY0Jhbm5lcjoxLjAtU05BUFNIT1Q=.png",
-    "editorHTML": "<div class=\"borderBoxs\"><form class=\"form-horizontal\"><div class=\"form-group\"><label class=\"col-sm-3 control-label\">跳转链接</label><div class=\"col-sm-9\"><input type=\"url\" class=\"form-control picBUrl\" id=\"picBUrl\"></div></div><div class=\"form-group\"><label class=\"col-sm-3 control-label\">选择图片 - 宽度1920</label><div class=\"col-sm-9 oneImage\"><div id=\"picBannerMaxImg\"></div></div></div><div class=\"form-group\"><label class=\"col-sm-3 control-label\">选择图片 - 宽度1200</label><div class=\"col-sm-9 oneImage\"><div id=\"picBannerMinImg\"></div></div></div></form></div>",
+    "editorHTML": "<div class=\"borderBoxs\">\r\n    <form class=\"form-horizontal\">\r\n        <div class=\"form-group\">\r\n            <label class=\"col-sm-3 control-label\">跳转链接</label>\r\n            <div class=\"col-sm-9\">\r\n                <input type=\"url\" class=\"form-control picBUrl\" id=\"picBUrl\">\r\n            </div>\r\n        </div>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-sm-3 control-label\">选择图片 - 宽度1920</label>\r\n            <div class=\"col-sm-9 oneImage\">\r\n                <div id=\"picBannerMaxImg\"></div>\r\n            </div>\r\n        </div>\r\n        <div class=\"form-group\">\r\n            <label class=\"col-sm-3 control-label\">选择图片 - 宽度1200</label>\r\n            <div class=\"col-sm-9 oneImage\">\r\n                <div id=\"picBannerMinImg\"></div>\r\n            </div>\r\n        </div>\r\n    </form>\r\n</div>",
     "scriptHref": "../../public/assets/js/data/mock.js",
     "defaultProperties": {
       "mobileImg": "http://cdn73.huobanplus.com/cmstest/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQucGljQmFubmVyLXBpY0Jhbm5lcjoxLjAtU05BUFNIT1Q=/thumbnail/defaultStyleThumbnail.png",
       "pcImg": "http://cdn73.huobanplus.com/cmstest/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQucGljQmFubmVyLXBpY0Jhbm5lcjoxLjAtU05BUFNIT1Q=/thumbnail/defaultStyleThumbnail.png",
-      "linkUrl": ""
+      "linkUrl": "http://www.huobanplus.com"
     },
     "styles": [
       {
         "id": "picBannerDefaultStyle",
         "locallyName": "bootstrap style picBanner",
         "thumbnail": "http://cdn73.huobanplus.com/cmstest/widgets/thumbnail/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQucGljQmFubmVyLXBpY0Jhbm5lcjoxLjAtU05BUFNIT1Q=/picBannerDefaultStyle.png",
-        "previewHTML": "<div id=\"picBanner\" class=\"pic-banner\">\r\n    <div>\r\n        <a href=\"\"><img  src=\"http://cdn73.huobanplus.com/cmstest/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQucGljQmFubmVyLXBpY0Jhbm5lcjoxLjAtU05BUFNIT1Q=/thumbnail/defaultStyleThumbnail.png\"\r\n                                                    class=\"visible-xm hidden-lg img-responsive\">\r\n        </a>\r\n        <a href=\"\"><img  src=\"http://cdn73.huobanplus.com/cmstest/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQucGljQmFubmVyLXBpY0Jhbm5lcjoxLjAtU05BUFNIT1Q=/thumbnail/defaultStyleThumbnail.png\"\r\n                                                    class=\"visible-lg hidden-xs img-responsive\">\r\n        </a>\r\n    </div>\r\n</div>",
+        "previewHTML": "<div id=\"picBanner\" class=\"pic-banner\">\r\n    <a href=\"http://www.huobanplus.com\"><img src=\"http://cdn73.huobanplus.com/cmstest/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQucGljQmFubmVyLXBpY0Jhbm5lcjoxLjAtU05BUFNIT1Q=/thumbnail/defaultStyleThumbnail.png\"\r\n                                            class=\"img-responsive hidden-xs\">\r\n    </a>\r\n    <a href=\"http://www.huobanplus.com\"><img src=\"http://cdn73.huobanplus.com/cmstest/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQucGljQmFubmVyLXBpY0Jhbm5lcjoxLjAtU05BUFNIT1Q=/thumbnail/defaultStyleThumbnail.png\"\r\n                                            class=\"img-responsive visible-xs\">\r\n    </a>\r\n</div>",
         "browseHTML": null
       }
     ]

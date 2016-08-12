@@ -11,9 +11,21 @@ package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.ManageTest;
 import com.huotu.cms.manage.page.AdminPage;
+import com.huotu.hotcms.service.entity.login.Owner;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.junit.Test;
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.web.servlet.MvcResult;
 
+import java.util.UUID;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -22,17 +34,50 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class LoginTest extends ManageTest {
 
 
-
+    /**
+     * 以提交form的方式登录
+     *
+     * @throws Exception
+     */
     @Test
     public void normal() throws Exception {
-        String loginPageURL = mockMvc.perform(get("/manage/"))
-                .andExpect(status().isFound())
-                .andReturn().getResponse().getRedirectedUrl();
+        // 1 是商户可登录
+        // 2 是测试管理员可登录
 
-        mockMvc.perform(get(loginPageURL))
-                .andExpect(status().isOk());
+        String password = UUID.randomUUID().toString();
+        Owner owner = randomOwner(password);
+
+        MvcResult result = mockMvc.perform(get("/manage/"))
+                .andExpect(status().isFound())
+                .andReturn();
+        session = (MockHttpSession) result.getRequest().getSession(true);
+
+        String loginPageURL = result.getResponse().getRedirectedUrl();
+
+        Document document = Jsoup.parse(mockMvc.perform(get(loginPageURL).session(session))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString());
+
+        Elements forms = document.getElementsByTag("form");
+        assertThat(forms)
+                .hasSize(1);
+
+        Element form = forms.get(0);
+
+        String action = form.attr("action");
+        assertThat(action)
+                .isNotEmpty();
+
+        // username password
+        mockMvc.perform(post(action).param("username", owner.getLoginName()).param("password", password).session(session))
+                .andDo(print());
+//        http://localhost/manage
     }
 
+    /**
+     * 以管理员身份登录 cookie
+     * @throws Exception
+     */
     @Test
     public void manager() throws Exception {
         loginAsManage();
@@ -40,6 +85,10 @@ public class LoginTest extends ManageTest {
         AdminPage page = initPage(AdminPage.class);
     }
 
+    /**
+     * 以商户身份登录 cookie
+     * @throws Exception
+     */
     @Test
     public void customer() throws Exception {
         loginAsOwner(testOwner);

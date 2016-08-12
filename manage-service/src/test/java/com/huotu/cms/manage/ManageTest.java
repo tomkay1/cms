@@ -46,6 +46,7 @@ import com.huotu.hotcms.service.repository.OwnerRepository;
 import com.huotu.hotcms.service.repository.TemplateRepository;
 import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.service.ContentService;
+import com.huotu.hotcms.service.service.LoginService;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.util.StringUtil;
 import com.huotu.hotcms.widget.CMSContext;
@@ -74,7 +75,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MvcResult;
@@ -182,6 +182,8 @@ public abstract class ManageTest extends SpringWebTest {
     private ContentService contentService;
     @Autowired
     private ContentRepository contentRepository;
+    @Autowired
+    private LoginService loginService;
 
     public ResourceService getResourceService() {
         return resourceService;
@@ -509,11 +511,18 @@ public abstract class ManageTest extends SpringWebTest {
     /**
      * @return 新建的随机Owner
      */
-    @Rollback
     protected Owner randomOwner() {
+        return randomOwner(null);
+    }
+
+    protected Owner randomOwner(String rawPassword) {
         Owner owner = new Owner();
         owner.setEnabled(true);
         owner.setCustomerId(Math.abs(random.nextInt()));
+        owner.setLoginName(RandomStringUtils.randomAlphabetic(50));
+        if (rawPassword != null) {
+            loginService.changePassword(owner, rawPassword);
+        }
         return ownerRepository.saveAndFlush(owner);
     }
 

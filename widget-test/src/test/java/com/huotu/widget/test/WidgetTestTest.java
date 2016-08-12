@@ -33,19 +33,22 @@ public class WidgetTestTest extends WidgetTest {
 
     @Autowired
     private ResourceService resourceService;
+
     @Override
     protected boolean printPageSource() {
         return true;
     }
 
     @Override
-    protected void editorWork(Widget widget, WebElement editor, Supplier<Map<String, Object>> currentWidgetProperties) {
-
+    protected void editorWork(Widget widget, WebElement editor, Supplier<Map<String, Object>> currentWidgetProperties) throws IOException {
+        Map<String, Object> map = currentWidgetProperties.get();
+        assertThat(map.containsKey("content")).isEqualTo(true);
+        assertThat(map.get("content")).isEqualTo(widget.defaultProperties(resourceService).get("content"));
 
         if (driver instanceof JavascriptExecutor) {
             Boolean initFlag = (Boolean) ((JavascriptExecutor) driver).executeScript("return window['inited']");
             assertThat(initFlag)
-                    .as("编辑器初始化, see FdemoWidget.js")
+                    .as("编辑器初始化, see demoWidget.js")
                     .isNotNull()
                     .isTrue();
         }
@@ -65,6 +68,9 @@ public class WidgetTestTest extends WidgetTest {
 
     @Override
     protected void editorBrowseWork(Widget widget, Function<ComponentProperties, WebElement> uiChanger) throws IOException {
-        uiChanger.apply(widget.defaultProperties(resourceService));
+        WebElement webElement = uiChanger.apply(widget.defaultProperties(resourceService));
+        ComponentProperties properties = widget.defaultProperties(resourceService);
+        assertThat(webElement.findElement(By.name("content")).getAttribute("value"))
+                .isEqualTo(properties.get("content").toString());
     }
 }

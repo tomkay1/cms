@@ -50,15 +50,16 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @Transactional
 public abstract class WidgetTest extends SpringWebTest {
 
+    @Autowired(required = false)
+    public ResourceService resourceService;
     @Autowired
     private WidgetViewController widgetViewController;
-
     @Autowired
     private WidgetHolder holder;
 
-    @Autowired(required = false)
-    private ResourceService resourceService;
+    public void defaultEditor() {
 
+    }
 
     @Override
     public void createMockMVC() {
@@ -195,7 +196,7 @@ public abstract class WidgetTest extends SpringWebTest {
      */
     @SuppressWarnings("WeakerAccess")
     protected abstract void editorWork(Widget widget, WebElement editor
-            , Supplier<Map<String, Object>> currentWidgetProperties);
+            , Supplier<Map<String, Object>> currentWidgetProperties) throws IOException;
 
 
     private void finalBrowseWork(Widget widget, WidgetStyle style

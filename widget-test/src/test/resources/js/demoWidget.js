@@ -11,7 +11,6 @@ CMSWidgets.initWidget(
     {
         // 编辑器相关
         editor: {
-            // 
             open: function (globalId) {
                 if (CMSDebugMode)
                     console.error('初始化编辑器', this);
@@ -35,7 +34,12 @@ CMSWidgets.initWidget(
                 $('#DataFetcher').unbind();
             },
             saveComponent: function (onSuccess, onFailed) {
-                // var newPs = {};
+                var that = this;
+                $(":text").each(function () {
+                    var name = $(this).attr("name");
+                    that.ps[name] = $(this).val();
+
+                });
                 onSuccess(this.ps);
                 return this.ps;
             }

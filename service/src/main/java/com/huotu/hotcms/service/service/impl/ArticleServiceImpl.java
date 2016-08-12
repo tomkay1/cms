@@ -121,7 +121,8 @@ public class ArticleServiceImpl implements ArticleService {
                 articleCategory.setCategoryName(article.getCategory().getName());
 //                articleCategory.setCategory(article.getCategory());
                 articleCategory.setCreateTime(article.getCreateTime());
-                articleCategory.setCustomerId(article.getCategory().getSite().getOwner().getCustomerId());
+                if (article.getCategory().getSite().getOwner() != null)
+                    articleCategory.setCustomerId(article.getCategory().getSite().getOwner().getCustomerId());
                 articleCategory.setId(article.getId());
                 articleCategory.setDescription(article.getDescription());
                 articleCategory.setTitle(article.getTitle());

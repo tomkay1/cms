@@ -160,7 +160,7 @@ function getDataSource(type, parameter, onSuccess, onError) {
         success: onSuccess,
         error: onError
     });
-};
+}
 /**
 * 动态加载组件的 JS文件
 * @type {{css: dynamicLoading.css, js: dynamicLoading.js}}
@@ -178,7 +178,6 @@ var dynamicLoading = {
             var argv = $(v).attr(attr);
             if ( argv && argv.indexOf(path) != -1 ) {
                 exist = true;
-                $(v).attr(attr, path);
             }
         });
         if (!exist) {
@@ -286,7 +285,7 @@ function uploadForm (obj) {
             pd.statusbar.hide();
         }
     });
-};
+}
 
 
 /**
@@ -309,4 +308,4 @@ function verifySize(congruent, vWidth, vHeight, callback) {
         if (vHeight) layer.msg(heightText);
         if ( !vWidth === true && !vHeight === true ) callback();
     }
-};
+}

@@ -100,6 +100,18 @@ public abstract class WidgetTest extends SpringWebTest {
         }
     }
 
+    /**
+     * 编辑器浏览测试
+     * 打开编辑器
+     * 校验编辑浏览结果
+     */
+    @Test
+    public void editorBrowse() throws Exception {
+        for (Widget widget : holder.getWidgetSet()) {
+            editorBrowse(widget);
+        }
+    }
+
     @Test
     public void style() throws IOException {
         for (Widget widget : holder.getWidgetSet()) {
@@ -129,7 +141,6 @@ public abstract class WidgetTest extends SpringWebTest {
 
     @SuppressWarnings("WeakerAccess")
     protected void editor(Widget widget) throws Exception {
-        Widget.URIEncodedWidgetIdentity(widget);
         if (printPageSource())
             mockMvc.perform(get("/editor/" + Widget.URIEncodedWidgetIdentity(widget)))
                     .andDo(print());
@@ -152,6 +163,26 @@ public abstract class WidgetTest extends SpringWebTest {
         });
     }
 
+    @SuppressWarnings("WeakerAccess")
+    protected void editorBrowse(Widget widget) throws Exception {
+        for (WidgetStyle style : widget.styles()) {
+            stylePropertiesFor(style);
+            editorBrowseWork(widget, style, componentProperties -> {
+                widgetViewController.setCurrentProperties(componentProperties);
+                String uri = "/editorBrowse/" + Widget.URIEncodedWidgetIdentity(widget);
+                if (printPageSource())
+                    try {
+                        mockMvc.perform(get(uri))
+                                .andDo(print());
+                    } catch (Exception e) {
+                        throw new IllegalStateException("no print html");
+                    }
+                driver.get("http://localhost" + uri);
+                return driver.findElement(By.id("editor")).findElement(By.tagName("div"));
+            });
+        }
+    }
+
     /**
      * 执行编辑操作,校验编辑结果
      * {@link #driver}应该是一个{@link JavascriptExecutor}
@@ -171,7 +202,6 @@ public abstract class WidgetTest extends SpringWebTest {
             , Function<ComponentProperties, WebElement> uiChanger) throws IOException {
 //        WebElement defaultWeb = uiChanger.apply(widget.defaultProperties(resourceService));
 //        assertThat(defaultWeb.isDisplayed()).isTrue();
-
         browseWork(widget, style, uiChanger);
     }
 
@@ -184,6 +214,17 @@ public abstract class WidgetTest extends SpringWebTest {
      * @param uiChanger 更改后的预览视图,它接受的参数就是组件的实际properties不再需要很古怪再设置properties了
      */
     protected abstract void browseWork(Widget widget, WidgetStyle style
+            , Function<ComponentProperties, WebElement> uiChanger) throws IOException;
+
+    /**
+     * 编辑器浏览测试
+     * 通过设置属性改变浏览视图
+     *
+     * @param widget    控件
+     * @param style     样式
+     * @param uiChanger 更改后的预览视图,它接受的参数就是组件的实际properties
+     */
+    protected abstract void editorBrowseWork(Widget widget, WidgetStyle style
             , Function<ComponentProperties, WebElement> uiChanger) throws IOException;
 
     /**
@@ -202,51 +243,6 @@ public abstract class WidgetTest extends SpringWebTest {
         });
     }
 
-//    /**
-//     * 本来应该是在页面流中完成的
-//     */
-//    @Test
-//    public void css() {
-//
-//    }
-//
-//    @Autowired
-//    private PageService pageService;
-//    @Autowired
-//    private PageInfoRepository pageInfoRepository;
-//
-//    @Test
-//    @Transactional
-//    public void pageSave() throws IOException {
-//        PageInfo pageInfo = new PageInfo();
-//        pageInfo.setTitle(randomEmailAddress());
-//        pageInfo = pageInfoRepository.saveAndFlush(pageInfo);
-//
-//        PageModel model = new PageModel();
-//
-//        Layout[] layouts = new Layout[holder.getWidgetSet().size()];
-//        int i = 0;
-//        for (Widget widget : holder.getWidgetSet()) {
-//            Layout layout = new Layout();
-//            layout.setValue("12");
-//
-//            InstalledWidget installedWidget = new InstalledWidget(widget);
-//            installedWidget.setIdentifier(WidgetIdentifier.valueOf(Widget.WidgetIdentity(widget)));
-//            installedWidget.setType(randomEmailAddress());
-//
-//            Component component = new Component();
-//            component.setInstalledWidget(installedWidget);
-//            component.setWidgetIdentity(Widget.WidgetIdentity(widget));
-//            component.setProperties(widget.defaultProperties(resourceService));
-//
-//            layout.setParallelElements(new PageElement[]{component});
-//
-//            layouts[i++] = layout;
-//        }
-//
-//        model.setRoot(layouts);
-//        pageService.savePage(model, pageInfo.getPageId());
-//    }
 
     @SuppressWarnings("WeakerAccess")
     protected void propertiesFor(Widget widget) throws IOException {

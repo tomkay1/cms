@@ -36,7 +36,6 @@ import org.springframework.util.StreamUtils;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -55,19 +54,53 @@ public class PageControllerTest extends ManageTest {
     @Autowired
     private ResourceService resourceService;
 
+    @Test
+    public void previewWidgetEditor() throws Exception {
+        loginAsOwner(randomOwner());
+        WidgetInfo widgetInfo = randomWidgetInfoValue(null);
+        Component component = makeComponent(widgetInfo.getGroupId(), widgetInfo.getArtifactId(), widgetInfo.getVersion());
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, Object> toPost = new HashMap<>();
+        mockMvc.perform(
+                post("/preview/widgetEditor")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.TEXT_HTML)
+                        .content(objectMapper.writeValueAsBytes(toPost))
+                        .session(session)
+        ).andExpect(status().isNotFound());
+
+        toPost.put("widgetIdentity", component.getWidgetIdentity());
+        mockMvc.perform(
+                post("/preview/widgetEditor")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.TEXT_HTML)
+                        .content(objectMapper.writeValueAsBytes(toPost))
+                        .session(session)
+        ).andExpect(status().isNotFound());
+
+        toPost.put("widgetIdentity", component.getWidgetIdentity());
+        toPost.put("properties", component.getProperties());
+        mockMvc.perform(
+                post("/preview/widgetEditor")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.TEXT_HTML)
+                        .content(objectMapper.writeValueAsBytes(toPost))
+                        .session(session)
+        ).andDo(print())
+                .andExpect(status().isOk());
+
+
+    }
 
     @Test
     public void previewComponent() throws Exception {
-
         loginAsOwner(randomOwner());
-
         WidgetInfo widgetInfo = randomWidgetInfoValue(null);
 //        WidgetInfo widgetInfo = randomWidgetInfoValue("com.huotu.hotcms.widget.productList", "productList", "1.0-SNAPSHOT");
         Component component = makeComponent(widgetInfo.getGroupId(), widgetInfo.getArtifactId(), widgetInfo.getVersion());
 
         ObjectMapper objectMapper = new ObjectMapper();
         Map<String, Object> toPost = new HashMap<>();
-
 
         mockMvc.perform(
                 post("/preview/component")
@@ -77,7 +110,7 @@ public class PageControllerTest extends ManageTest {
                         .session(session)
         ).andExpect(status().isNotFound());
 
-        toPost.put("widgetIdentity", UUID.randomUUID().toString());
+        toPost.put("widgetIdentity", component.getWidgetIdentity());
         mockMvc.perform(
                 post("/preview/component")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -112,7 +145,6 @@ public class PageControllerTest extends ManageTest {
         org.springframework.core.io.Resource widgetCss = component.getInstalledWidget().getWidget()
                 .widgetDependencyContent(Widget.CSS);
         boolean cssExisting = widgetCss != null && widgetCss.exists();
-        log.info("==============================widgetInfo " + widgetInfo.getGroupId());
         for (WidgetStyle style : component.getInstalledWidget().getWidget().styles()) {
             toPost.put("styleId", style.id());
             toPost.put("componentId", "efg");

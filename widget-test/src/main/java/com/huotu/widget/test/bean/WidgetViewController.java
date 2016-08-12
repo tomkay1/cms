@@ -88,8 +88,27 @@ public class WidgetViewController {
     @RequestMapping(method = RequestMethod.GET, value = {"/browse/{widgetName}/{styleId}"})
     public String browse(@PathVariable("widgetName") WidgetIdentifier widgetName
             , @PathVariable("styleId") String styleId, Model model) {
-        InstalledWidget installedWidget = widgetLocateService.findWidget(widgetName.toString());
+        setComponent(widgetName, styleId, model);
+        return "browse";
+    }
 
+
+    @RequestMapping(method = RequestMethod.GET, value = {"/editorBrowse/{widgetName}"})
+    public String editorBrowse(@PathVariable("widgetName") WidgetIdentifier widgetName
+            , Model model) {
+        model.addAttribute("widgetId", widgetName.toString());
+        model.addAttribute("properties", currentProperties);
+        return "editor";
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/index")
+    public String index(Model model) {
+        return "editor";
+    }
+
+
+    private void setComponent(WidgetIdentifier widgetName, String styleId, Model model) {
+        InstalledWidget installedWidget = widgetLocateService.findWidget(widgetName.toString());
         Component component = new Component();
         component.setProperties(currentProperties);
         component.setId(UUID.randomUUID().toString());
@@ -97,21 +116,10 @@ public class WidgetViewController {
         component.setInstalledWidget(installedWidget);
         if (installedWidget != null) {
             model.addAttribute("widget", installedWidget.getWidget());
-            for (WidgetStyle style : installedWidget.getWidget().styles()) {
-                if (style.id().equals(styleId)) {
-                    model.addAttribute("style", installedWidget.getWidget().styles()[0]);
-                    break;
-                }
-            }
+            model.addAttribute("style", WidgetStyle.styleByID(installedWidget.getWidget(), styleId));
         }
         model.addAttribute("component", component);
         model.addAttribute("widgetURLEDId", Widget.URIEncodedWidgetIdentity(installedWidget.getWidget()));
-        return "browse";
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/index")
-    public String index(Model model) {
-        return "editor";
     }
 
 

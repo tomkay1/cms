@@ -53,7 +53,7 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
-    //    @Autowired
+    //    @Autowired(required = false)
     private SpringTemplateEngine widgetTemplateEngine;
 
     @Autowired(required = false)
@@ -83,6 +83,7 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
     @Override
     public String previewHTML(Widget widget, String styleId, CMSContext cmsContext, ComponentProperties properties) {
         WidgetStyle style = getWidgetStyle(widget, styleId);
+        checkEngine();
         WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
                 , widget, style, webApplicationContext.getServletContext(), null, properties);
         WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();

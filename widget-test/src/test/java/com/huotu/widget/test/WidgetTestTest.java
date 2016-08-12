@@ -16,6 +16,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -55,6 +56,11 @@ public class WidgetTestTest extends WidgetTest {
 
     @Override
     protected void browseWork(Widget widget, WidgetStyle style, Function<ComponentProperties, WebElement> uiChanger) {
-//        uiChanger.apply(widget.defaultProperties(r))
+        uiChanger.apply(new ComponentProperties());
+    }
+
+    @Override
+    protected void editorBrowseWork(Widget widget, WidgetStyle style, Function<ComponentProperties, WebElement> uiChanger) throws IOException {
+        uiChanger.apply(new ComponentProperties());
     }
 }

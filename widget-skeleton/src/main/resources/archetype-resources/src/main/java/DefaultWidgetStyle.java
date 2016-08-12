@@ -51,7 +51,7 @@ public class DefaultWidgetStyle implements WidgetStyle{
 
     @Override
     public Resource previewTemplate() {
-        return new ClassPathResource("/template/defaultStylePreviewTemplate.html", getClass().getClassLoader());
+        return null;
     }
 
     @Override

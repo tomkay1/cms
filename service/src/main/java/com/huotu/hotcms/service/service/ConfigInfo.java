@@ -62,6 +62,9 @@ public class ConfigInfo {
         return false;
     }
 
+    /**
+     * @return 类似 http://manage.huobanmall.com 的登录入口URL
+     */
     public String getOutLoginUrl() {
         return outLoginUrl;
     }

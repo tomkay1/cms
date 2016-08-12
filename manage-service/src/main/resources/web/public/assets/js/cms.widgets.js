@@ -184,6 +184,7 @@ CMSWidgets.getNoNullConfig = function (identity, globalId) {
     var editor = noNullConfig.editor;
     editor.open = editor.open || CMSWidgets.defaultConfig.editor.open;
     editor.saveComponent = editor.saveComponent || CMSWidgets.defaultConfig.editor.saveComponent;
+    editor.close = editor.close || CMSWidgets.defaultConfig.editor.close;
 
     return noNullConfig;
 };

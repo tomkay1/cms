@@ -270,7 +270,6 @@ function uploadForm (obj) {
         onError: function (files, status, message, pd) {
             pd.statusbar.hide();
             layer.msg('上传失败，请稍后再说', {time: 2000});
-            5
         },
         deleteCallback: function (data, pd) {
             var _data = {path: data.path};

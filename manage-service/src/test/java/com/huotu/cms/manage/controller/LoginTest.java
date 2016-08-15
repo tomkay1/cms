@@ -50,11 +50,15 @@ public class LoginTest extends ManageTest {
         Owner owner = randomOwner(password);
         String username = owner.getLoginName();
 
-        formLogin(username, password, owner);
-        formLogin(ManageServiceSpringConfig.BuildIn_ROOT, ManageServiceSpringConfig.BuildIn_Password, null);
+        formLogin(username, password, owner, false);
+        driver.get("http://localhost/manage/logout");
+        formLogin(ManageServiceSpringConfig.BuildIn_ROOT, ManageServiceSpringConfig.BuildIn_Password, null, false);
+        driver.get("http://localhost/manage/logout");
+        formLogin(ManageServiceSpringConfig.BuildIn_ROOT, ManageServiceSpringConfig.BuildIn_Password
+                + ManageServiceSpringConfig.BuildIn_Password, null, true);
     }
 
-    private void formLogin(String username, String password, Owner owner) throws Exception {
+    private void formLogin(String username, String password, Owner owner, boolean badPassword) throws Exception {
         MvcResult result = mockMvc.perform(get("/manage/"))
                 .andExpect(status().isFound())
                 .andReturn();
@@ -99,12 +103,19 @@ public class LoginTest extends ManageTest {
         LoginPage page = initPage(LoginPage.class);
         page.login(username, password);
 
+        if (badPassword) {
+            page.reloadPageInfo();
+            page.assertDanger().contains("用户名或者密码不正确。");
+            page.closeDanger();
+            return;
+        }
+
         if (owner != null) {
             initPage(ManageMainPage.class);
         } else {
             initPage(AdminPage.class);
         }
-        driver.get("http://localhost/manage/logout");
+
     }
 
     /**

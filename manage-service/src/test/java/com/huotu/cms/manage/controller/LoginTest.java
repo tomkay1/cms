@@ -11,6 +11,8 @@ package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.ManageTest;
 import com.huotu.cms.manage.page.AdminPage;
+import com.huotu.cms.manage.page.LoginPage;
+import com.huotu.cms.manage.page.ManageMainPage;
 import com.huotu.hotcms.service.entity.login.Owner;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -25,7 +27,6 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -46,6 +47,7 @@ public class LoginTest extends ManageTest {
 
         String password = UUID.randomUUID().toString();
         Owner owner = randomOwner(password);
+        String username = owner.getUsername();
 
         MvcResult result = mockMvc.perform(get("/manage/"))
                 .andExpect(status().isFound())
@@ -69,13 +71,36 @@ public class LoginTest extends ManageTest {
                 .isNotEmpty();
 
         // username password
-        mockMvc.perform(post(action).param("username", owner.getLoginName()).param("password", password).session(session))
-                .andDo(print());
+        MvcResult result2 = mockMvc.perform(post(action).param("username", username).param("password", password).session(session))
+                .andReturn();
 //        http://localhost/manage
+        while (true) {
+            if (result2.getResponse().getStatus() == 200)
+                break;
+            if (result2.getResponse().getStatus() == 302) {
+                final String redirectedUrl = result2.getResponse().getRedirectedUrl();
+                System.out.println(redirectedUrl);
+                result2 = mockMvc.perform(get(redirectedUrl).session(session)).andReturn();
+            } else
+                throw new IllegalStateException("why ?" + result2.getResponse().getStatus());
+        }
+
+        driver.manage().deleteAllCookies();
+        driver.get("http://localhost/manage/");
+
+        LoginPage page = initPage(LoginPage.class);
+        page.login(username, password);
+
+        if (owner != null) {
+            initPage(ManageMainPage.class);
+        } else {
+            initPage(AdminPage.class);
+        }
     }
 
     /**
      * 以管理员身份登录 cookie
+     *
      * @throws Exception
      */
     @Test
@@ -87,6 +112,7 @@ public class LoginTest extends ManageTest {
 
     /**
      * 以商户身份登录 cookie
+     *
      * @throws Exception
      */
     @Test

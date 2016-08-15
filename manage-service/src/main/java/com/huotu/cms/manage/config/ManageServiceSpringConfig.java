@@ -26,6 +26,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
@@ -64,7 +66,10 @@ public class ManageServiceSpringConfig implements EmbedWeb {
                 manager.setPassword(passwordEncoder.encode(BuildIn_Password));
                 return manager;
             }
-            return ownerRepository.findByLoginName(username);
+            UserDetails userDetails = ownerRepository.findByLoginName(username);
+            if (userDetails == null)
+                throw new UsernameNotFoundException("没有找到用户名");
+            return userDetails;
         });
         auth.authenticationProvider(provider);
     }

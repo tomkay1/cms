@@ -32,16 +32,21 @@ public class TestWidgetInfo extends WidgetTest {
 
     @Override
     protected void editorWork(Widget widget, WebElement editor, Supplier<Map<String, Object>> currentWidgetProperties) {
-
+        Map map = currentWidgetProperties.get();
+        //todo
     }
 
     @Override
     protected void browseWork(Widget widget, WidgetStyle style, Function<ComponentProperties, WebElement> uiChanger) {
+        ComponentProperties properties = widget.defaultProperties(resourceService);
+        WebElement webElement = uiChanger.apply(properties);
 
     }
 
     @Override
     protected void editorBrowseWork(Widget widget, Function<ComponentProperties, WebElement> uiChanger) throws IOException {
+        ComponentProperties properties = widget.defaultProperties(resourceService);
+        WebElement webElement = uiChanger.apply(properties);
 
     }
 }

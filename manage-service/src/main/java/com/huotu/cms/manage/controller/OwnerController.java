@@ -69,7 +69,8 @@ public class OwnerController extends CRUDController<Owner, Long, Void, Void> {
     }
 
     @Override
-    protected void prepareUpdate(Login login, Owner entity, Owner data, Void extra, RedirectAttributes attributes) throws RedirectException {
+    protected void prepareUpdate(Login login, Owner entity, Owner data, Void extra, RedirectAttributes attributes)
+            throws RedirectException {
 
     }
 
@@ -79,7 +80,10 @@ public class OwnerController extends CRUDController<Owner, Long, Void, Void> {
     }
 
     @Override
-    protected Owner preparePersist(HttpServletRequest request, Login login, Owner data, Void extra, RedirectAttributes attributes) throws RedirectException {
+    protected Owner preparePersist(HttpServletRequest request, Login login, Owner data, Void extra
+            , RedirectAttributes attributes) throws RedirectException {
+        if (!StringUtils.isEmpty(data.getLoginName()) && data.getLoginName().equalsIgnoreCase("root"))
+            throw new IllegalArgumentException("用户名不可用。");
         if (StringUtils.isEmpty(data.getLoginName()) && data.getCustomerId() == null)
             throw new IllegalArgumentException("用户名或者商户号必须选择一个");
         if (!StringUtils.isEmpty(data.getLoginName()) && StringUtils.isEmpty(data.getPassword()))

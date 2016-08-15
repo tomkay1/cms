@@ -118,37 +118,44 @@ CMSWidgets.defaultConfig = {
     //支持简单的input参数内容，不支持第三方插件，如使用第三方请在控件开发时自定义editor内容
     editor: {
         properties: null,
-        setProperties: function (obj) {
-            var name = $(obj).attr("name");
-            this.properties[name] = $(obj).val();
-        },
         saveComponent: function (onSuccess, onFailed) {
             var that = this;
+
+            function setProperties(obj) {
+                var name = $(obj).attr("name");
+                that.properties[name] = $(obj).val();
+            }
             $("input[type='email']").each(function () {
-                that.setProperties($(this));
+                setProperties($(this));
             });
             $("input[type='url']").each(function () {
-                that.setProperties($(this));
+                setProperties($(this));
             });
             $("input[type='color']").each(function () {
-                that.setProperties($(this));
+                setProperties($(this));
+            });
+            $("input[type='range']").each(function () {
+                setProperties($(this));
+            });
+            $("textarea").each(function () {
+                var name = $(this).attr("name");
+                that.properties[name] = $(this).text();
             });
             $(":text").each(function () {
-                that.setProperties($(this));
+                setProperties($(this));
             });
-
             $(":checkbox").each(function () {
                 var name = $(this).attr("name");
                 that.properties[name] = $(this).is(":checked");
             });
             $(":file").each(function () {
-                that.setProperties($(this));
+                setProperties($(this));
             });
             $("select").each(function () {
-                that.setProperties($(this));
+                setProperties($(this));
             });
-            onSuccess(that.properties);
-            return that.properties;
+            onSuccess(this.properties);
+            return this.properties;
         },
         open: function (globalId) {
             this.properties = widgetProperties(globalId);

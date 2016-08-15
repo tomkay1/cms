@@ -7,7 +7,10 @@
  * 2013-2016. All rights reserved.
  */
 
-package ${package};
+package $
+
+import java.io.IOException;
+import java.util.function.Function;{package};
 
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.Widget;
@@ -37,4 +40,8 @@ public class TestWidgetInfo extends WidgetTest {
 
     }
 
+    @Override
+    protected void editorBrowseWork(Widget widget, Function<ComponentProperties, WebElement> uiChanger) throws IOException {
+
+    }
 }

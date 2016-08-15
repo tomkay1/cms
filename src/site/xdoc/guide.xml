@@ -16,8 +16,20 @@
     <body>
         <h2>开始</h2>
         <p>
-            执行一个mvn...
-            <a href="">点击这里下载</a>
+            1、执行一个mvn指令添加一个控件项目
+            <br/>
+            <a href="../resources/createWidget.bat">windows点击这里下载</a>
+            <a href="">Linux点击这里下载</a>
+        </p>
+        <p>
+            2、打开刚刚添加的控件项目
+            <br/>
+            <img src="../resources/img/"/>
+        </p>
+        <p>
+            3、
+            <br/>
+            <img src="../resources/img/"/>
         </p>
     </body>
 </document>

@@ -10,6 +10,7 @@
 package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.ManageTest;
+import com.huotu.cms.manage.config.ManageServiceSpringConfig;
 import com.huotu.cms.manage.page.AdminPage;
 import com.huotu.cms.manage.page.LoginPage;
 import com.huotu.cms.manage.page.ManageMainPage;
@@ -47,8 +48,13 @@ public class LoginTest extends ManageTest {
 
         String password = UUID.randomUUID().toString();
         Owner owner = randomOwner(password);
-        String username = owner.getUsername();
+        String username = owner.getLoginName();
 
+        formLogin(username, password, owner);
+        formLogin(ManageServiceSpringConfig.BuildIn_ROOT, ManageServiceSpringConfig.BuildIn_Password, null);
+    }
+
+    private void formLogin(String username, String password, Owner owner) throws Exception {
         MvcResult result = mockMvc.perform(get("/manage/"))
                 .andExpect(status().isFound())
                 .andReturn();
@@ -76,7 +82,7 @@ public class LoginTest extends ManageTest {
 //        http://localhost/manage
         while (true) {
             if (result2.getResponse().getStatus() == 200) {
-                System.out.println(result2.getResponse().getContentAsString());
+//                System.out.println(result2.getResponse().getContentAsString());
                 break;
             }
             if (result2.getResponse().getStatus() == 302) {
@@ -98,6 +104,7 @@ public class LoginTest extends ManageTest {
         } else {
             initPage(AdminPage.class);
         }
+        driver.get("http://localhost/manage/logout");
     }
 
     /**

@@ -10,6 +10,7 @@
 package com.huotu.cms.manage.page;
 
 import com.huotu.cms.manage.page.support.AbstractManagePage;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -48,6 +49,11 @@ public class LoginPage extends AbstractManagePage {
         this.username.sendKeys(username);
         this.password.clear();
         this.password.sendKeys(password);
-        form.submit();
+
+        form.findElements(By.tagName("button"))
+                .stream()
+                .filter(button -> button.getText().contains("登录"))
+                .findAny().orElse(null)
+                .click();
     }
 }

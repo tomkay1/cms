@@ -182,7 +182,8 @@ public interface Widget {
     WidgetStyle[] styles();
 
     /**
-     * 检查以下的属性是否符合控件要求
+     * 校验控件的属性是否符合要求，以确保控件使用该属性可以{@link WidgetStyle#previewTemplate() 预览}
+     * 和{@link WidgetStyle#browseTemplate() 浏览}。
      *
      * @param styleId    语义等同{@link Component#styleId}
      * @param properties 当前控件属性

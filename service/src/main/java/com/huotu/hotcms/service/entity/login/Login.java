@@ -100,4 +100,12 @@ public interface Login extends UserDetails {
      * @param siteId siteId
      */
     void updateSiteId(Long siteId);
+
+    /**
+     * 更新密码
+     *
+     * @param password 密码的密文
+     * @see org.springframework.security.crypto.password.PasswordEncoder
+     */
+    void setPassword(String password);
 }

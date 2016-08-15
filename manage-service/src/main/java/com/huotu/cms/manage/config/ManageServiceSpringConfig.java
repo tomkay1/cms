@@ -104,6 +104,7 @@ public class ManageServiceSpringConfig implements EmbedWeb {
 //                .failureHandler()
                     .loginProcessingUrl("/manage/auth")
                     .loginPage("/manage/main/login")
+                    .failureUrl("/manage/main/login?type=error")
                     .permitAll()
                     .and()
                     .logout().logoutUrl("/manage/logout").permitAll();

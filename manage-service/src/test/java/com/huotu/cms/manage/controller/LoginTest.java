@@ -75,8 +75,10 @@ public class LoginTest extends ManageTest {
                 .andReturn();
 //        http://localhost/manage
         while (true) {
-            if (result2.getResponse().getStatus() == 200)
+            if (result2.getResponse().getStatus() == 200) {
+                System.out.println(result2.getResponse().getContentAsString());
                 break;
+            }
             if (result2.getResponse().getStatus() == 302) {
                 final String redirectedUrl = result2.getResponse().getRedirectedUrl();
                 System.out.println(redirectedUrl);

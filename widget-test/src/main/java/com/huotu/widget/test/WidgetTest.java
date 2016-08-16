@@ -180,6 +180,19 @@ public abstract class WidgetTest extends SpringWebTest {
                     }
                 driver.get("http://localhost" + uri);
                 return driver.findElement(By.id("editor")).findElement(By.tagName("div"));
+            }, () -> {
+
+                driver.findElement(By.id("editorSaver")).click();
+                if (driver instanceof JavascriptExecutor) {
+                    String failedMessage = (String) ((JavascriptExecutor) driver).executeScript("return _failedMessage");
+                    if (failedMessage != null)
+                        throw new IllegalStateException(failedMessage);
+                }
+                if (driver instanceof JavascriptExecutor) {
+                    return (Map) ((JavascriptExecutor) driver).executeScript("return _successProperties");
+                }
+
+                throw new IllegalStateException("no JavascriptExecutor driver");
             });
         }
     }
@@ -223,8 +236,11 @@ public abstract class WidgetTest extends SpringWebTest {
      *
      * @param widget    控件
      * @param uiChanger 更改后的编辑器浏览视图,它接受的参数就是组件的实际properties
+     * @param currentWidgetProperties 可以从浏览器中获取当前控件属性,如果当前属性不被接收调用这个supplier会抛出IllegalStateException
+     * @see JavascriptExecutor#executeScript(String, Object...)
      */
-    protected abstract void editorBrowseWork(Widget widget, Function<ComponentProperties, WebElement> uiChanger) throws IOException;
+    protected abstract void editorBrowseWork(Widget widget, Function<ComponentProperties, WebElement> uiChanger
+            , Supplier<Map<String, Object>> currentWidgetProperties) throws IOException;
 
     /**
      * 一些常用属性测试

@@ -70,12 +70,22 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     }
 
     @Override
-    public List<Object> findVideoCategory() {
+    public List<Category> findVideoCategory() {
         return null;
     }
 
     @Override
     public List<Object> findVideoContent(String serial) {
+        return null;
+    }
+
+    @Override
+    public List<Category> findArticleCategory() {
+        return null;
+    }
+
+    @Override
+    public List<Object> findArticleContent(String serial) {
         return null;
     }
 

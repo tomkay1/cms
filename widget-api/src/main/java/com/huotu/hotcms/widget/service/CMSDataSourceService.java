@@ -42,7 +42,7 @@ public interface CMSDataSourceService {
      * 查询当前站点下视频数据源列表
      * @return 视频数据源列表
      */
-    List<Object> findVideoCategory();
+    List<Category> findVideoCategory();
 
     /**
      * 查询当前站点下，指定数据源serial的 视频内容列表
@@ -51,6 +51,22 @@ public interface CMSDataSourceService {
      * @return 视频内容列表
      */
     List<Object> findVideoContent(String serial);
+
+    /**
+     * 查询当前站点下文章数据源列表
+     *
+     * @return 视频数据源列表
+     */
+    List<Category> findArticleCategory();
+
+    /**
+     * 查询当前站点下，指定数据源serial的 视频内容列表
+     *
+     * @param serial 数据源的serial
+     * @return 视频内容列表
+     */
+    List<Object> findArticleContent(String serial);
+
 
 
     /**

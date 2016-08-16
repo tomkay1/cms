@@ -148,6 +148,41 @@ function updataCompoentPreview(globalID, properties) {
     );
 }
 
+function widgetEditorPreview(globalID, properties) {
+    var ele = $('#' + globalID);
+    var widgetId = ele.data('widgetidentity');
+    var styleId = ele.data('styleid');
+    var data = {
+        "widgetIdentity": widgetId,
+        "styleId": styleId,
+        "properties": properties,
+        "pageId": pageId
+    };
+    var loading = layer.load(2);
+    $.ajax({
+        type: 'POST',
+        url: '/preview/widgetEditor',
+        contentType: "application/json; charset=utf-8",
+        dataType: 'html',
+        data: JSON.stringify(data),
+        success: function (html, textStatus, jqXHR) {
+            if (html) {
+                var updateHtml = $(html);
+                ele.html(updateHtml.html());
+                editFunc.closeFunc();
+                layer.close(loading);
+                layer.msg('操作成功', {time: 2000});
+                var path = jqXHR.getResponseHeader('cssLocation');
+                if (path) dynamicLoading.css(path);
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            layer.close(loading);
+            layer.msg('服务器错误，请稍后操作。', {time: 2000});
+        }
+    });
+}
+
 /**
  *
  * @param type 表示查询的数据类别 比如 findGalleryItem

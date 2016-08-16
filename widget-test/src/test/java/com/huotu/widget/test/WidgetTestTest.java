@@ -62,12 +62,14 @@ public class WidgetTestTest extends WidgetTest {
     }
 
     @Override
-    protected void browseWork(Widget widget, WidgetStyle style, Function<ComponentProperties, WebElement> uiChanger) throws IOException {
+    protected void browseWork(Widget widget, WidgetStyle style, Function<ComponentProperties, WebElement> uiChanger)
+            throws IOException {
         uiChanger.apply(widget.defaultProperties(resourceService));
     }
 
     @Override
-    protected void editorBrowseWork(Widget widget, Function<ComponentProperties, WebElement> uiChanger) throws IOException {
+    protected void editorBrowseWork(Widget widget, Function<ComponentProperties, WebElement> uiChanger
+            , Supplier<Map<String, Object>> currentWidgetProperties) throws IOException {
         WebElement webElement = uiChanger.apply(widget.defaultProperties(resourceService));
         ComponentProperties properties = widget.defaultProperties(resourceService);
         assertThat(webElement.findElement(By.name("content")).getAttribute("value"))

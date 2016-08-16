@@ -50,16 +50,19 @@
             <name>Nexus Snapshot Repository</name>
             <url>http://repo.51flashmall.com:8081/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
-        <!--<site>-->
-        <!--<id>${deploy.site.id}</id>-->
-        <!--<url>scpexe://${deploy.site.url.home}</url>-->
-        <!--</site>-->
+        <site>
+            <id>${deploy.site.id}</id>
+            <url>scpexe://${deploy.site.url.home}</url>
+        </site>
     </distributionManagement>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+
+        <deploy.site.id>huobanplus-site</deploy.site.id>
+        <deploy.site.url.home>ci@docs.huobanplus.com/var/documents/cms</deploy.site.url.home>
 
         <javaee.version>7.0</javaee.version>
         <spring.version>4.2.5.RELEASE</spring.version>
@@ -233,24 +236,35 @@
                     <target>${maven.compiler.target}</target>
                 </configuration>
             </plugin>
-            <!--javadoc暂时不用了,赶进度 各种不规范的jdoc数量预测是天文数字级别的-->
-            <!--<plugin>-->
-            <!--<groupId>org.apache.maven.plugins</groupId>-->
-            <!--<artifactId>maven-javadoc-plugin</artifactId>-->
-            <!--<version>2.10.3</version>-->
-            <!--<configuration>-->
-            <!--<show>private</show>-->
-            <!--</configuration>-->
-            <!--<executions>-->
-            <!--<execution>-->
-            <!--<id>attach-javadocs</id>-->
-            <!--<phase>verify</phase>-->
-            <!--<goals>-->
-            <!--<goal>jar</goal>-->
-            <!--</goals>-->
-            <!--</execution>-->
-            <!--</executions>-->
-            <!--</plugin>-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.4</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.wagon</groupId>
+                        <artifactId>wagon-ssh-external</artifactId>
+                        <version>2.10</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.3</version>
+                <configuration>
+                    <show>private</show>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -264,6 +278,18 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                        </manifest>
+                    </archive>
+                </configuration>
             </plugin>
         </plugins>
     </build>

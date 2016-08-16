@@ -264,3 +264,51 @@
         display: inline-block;
     }
 }
+/*图文之一*/
+.imageText .title {
+    padding-bottom: 26px;
+    font-size: 30px;
+    text-align: center;
+}
+.imageText .desc {
+    margin: 10px auto;
+    color: #999;
+    font-size: 16px;
+    text-align: center;
+}
+.imageText .category {
+    margin-top: 20px;
+    color: #333;
+    font-size: 36px;
+    text-align: left;
+}
+.imageText .summary {
+    margin-bottom: 42px;
+    color: #666;
+    font-size: 16px;
+    text-align: left;
+}
+.imageText .btn-detail {
+    margin-bottom: 0;
+    padding: 15px 47px;
+    border: 1px solid #999;
+}
+@media (max-width: 991px) {
+    .imageText .category, .imageText .detail {
+        text-align: center;
+    }
+}
+@media (max-width: 768px ) {
+    .imageText .img70 {
+        width: 70%;
+        height: 70%;
+    }
+}
+@media (min-width: 992px) {
+    .imageText .category {
+        margin-top: 140px;
+    }
+    .imageText .ml40 {
+        margin-left: 40px
+    }
+}

@@ -91,6 +91,8 @@ public class DemoWidget implements Widget {
 
     @Override
     public ComponentProperties defaultProperties(ResourceService resourceService) {
-        return new ComponentProperties();
+        ComponentProperties properties = new ComponentProperties();
+        properties.put("content", "lalalalala!!!");
+        return properties;
     }
 }

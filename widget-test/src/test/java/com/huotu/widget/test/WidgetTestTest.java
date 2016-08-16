@@ -12,10 +12,13 @@ package com.huotu.widget.test;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetStyle;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -28,19 +31,24 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class WidgetTestTest extends WidgetTest {
 
+    @Autowired
+    private ResourceService resourceService;
+
     @Override
     protected boolean printPageSource() {
         return true;
     }
 
     @Override
-    protected void editorWork(Widget widget, WebElement editor, Supplier<Map<String, Object>> currentWidgetProperties) {
-
+    protected void editorWork(Widget widget, WebElement editor, Supplier<Map<String, Object>> currentWidgetProperties) throws IOException {
+        Map<String, Object> map = currentWidgetProperties.get();
+        assertThat(map.containsKey("content")).isEqualTo(true);
+        assertThat(map.get("content")).isEqualTo(widget.defaultProperties(resourceService).get("content"));
 
         if (driver instanceof JavascriptExecutor) {
             Boolean initFlag = (Boolean) ((JavascriptExecutor) driver).executeScript("return window['inited']");
             assertThat(initFlag)
-                    .as("编辑器初始化, see FdemoWidget.js")
+                    .as("编辑器初始化, see demoWidget.js")
                     .isNotNull()
                     .isTrue();
         }
@@ -54,7 +62,15 @@ public class WidgetTestTest extends WidgetTest {
     }
 
     @Override
-    protected void browseWork(Widget widget, WidgetStyle style, Function<ComponentProperties, WebElement> uiChanger) {
-//        uiChanger.apply(widget.defaultProperties(r))
+    protected void browseWork(Widget widget, WidgetStyle style, Function<ComponentProperties, WebElement> uiChanger) throws IOException {
+        uiChanger.apply(widget.defaultProperties(resourceService));
+    }
+
+    @Override
+    protected void editorBrowseWork(Widget widget, Function<ComponentProperties, WebElement> uiChanger) throws IOException {
+        WebElement webElement = uiChanger.apply(widget.defaultProperties(resourceService));
+        ComponentProperties properties = widget.defaultProperties(resourceService);
+        assertThat(webElement.findElement(By.name("content")).getAttribute("value"))
+                .isEqualTo(properties.get("content").toString());
     }
 }

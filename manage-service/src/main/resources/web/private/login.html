@@ -23,8 +23,8 @@
     <![endif]-->
 </head>
 
+<!--/*@thymesVar id="mallLoginUrl" type="java.lang.String"*/-->
 <body class="signin">
-
 
 <!-- Preloader -->
 <div id="preloader">
@@ -32,20 +32,14 @@
 </div>
 
 <section>
-
     <div class="signinpanel">
-
         <div class="row">
-
             <div class="col-md-7">
-
                 <div class="signin-info">
                     <div class="logopanel">
                         <h1><span>[</span> CMS <span>]</span></h1>
                     </div><!-- logopanel -->
-
                     <div class="mb20"></div>
-
                     <h5><strong>欢迎登录!</strong></h5>
                     <ul>
                         <li><i class="fa fa-arrow-circle-o-right mr5"></i> <span>可视化编辑</span></li>
@@ -56,27 +50,18 @@
                     <div class="mb20"></div>
                     <!--<strong>还没有帐号? <a href="signup.html" th:href="@{/register}">请注册</a></strong>-->
                 </div><!-- signin0-info -->
-
             </div><!-- col-sm-7 -->
-
             <div class="col-md-5">
-
-                <form method="post" action="login.html" th:action="@{/auth}">
+                <form method="post" action="login.html" th:action="@{/manage/auth}">
                     <h4 class="nomargin">登录</h4>
-
                     <p class="mt5 mb20">所有操作都需要登录才可以继续.</p>
-
                     <button id="toMall" class="btn btn-success btn-block">我是伙伴商城用户</button>
-
-                    <input type="text" name="username" class="form-control uname" placeholder="手机号码"/>
+                    <input type="text" name="username" class="form-control uname" placeholder="登录名"/>
                     <input type="password" name="password" class="form-control pword" placeholder="登录密码"/>
                     <a href="">
-                        <small>忘记密码?</small>
+                        <!--<small>忘记密码?</small> 忘记个腿  忘记我也没办法……-->
                     </a>
-
                     <button class="btn btn-success btn-block">登录</button>
-
-
                 </form>
             </div><!-- col-sm-5 -->
 
@@ -96,48 +81,18 @@
 </section>
 
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-1.10.2.min.js"></script>
+<script th:inline="javascript">
+    $.mallLoginUrl = /*[[${mallLoginUrl}]]*/ 'login.html';
+</script>
 <script src="../public/js/login.js" ewp:src="/js/login.js"></script>
-
-<!--<div th:if="${'error'==#httpServletRequest.getParameter('type')}">-->
-<!--<div-->
-<!--th:replace="fragments/common::alert ('登录错误',${#httpSession.getAttribute('AUTHENTICATION_MESSAGE')},'growl-danger',null,null,false)">-->
-<!--<script src="js/jquery.gritter.min.js"></script>-->
-<!--<link href="css/jquery.gritter.css" rel="stylesheet"/>-->
-<!--<script>-->
-<!--jQuery(function () {-->
-<!--jQuery.gritter.add({-->
-<!--title: '登录错误!',-->
-<!--text: '您输入了错误的用户名或者密码',-->
-<!--class_name: 'growl-danger',-->
-<!--//            image: 'images/screen.png',-->
-<!--sticky: false,-->
-<!--time: ''-->
-<!--});-->
-<!--});-->
-<!--</script>-->
-<!--</div>-->
-<!--</div>-->
-
-<!--<div th:if="${#httpServletRequest.getParameter('logout')!=null}">-->
-<!--<div-->
-<!--th:replace="fragments/common::alert ('成功登出','欢迎下次再来','growl-info',null,null,false)">-->
-<!--<script src="js/jquery.gritter.min.js"></script>-->
-<!--<link href="css/jquery.gritter.css" rel="stylesheet"/>-->
-<!--<script>-->
-<!--jQuery(function () {-->
-<!--jQuery.gritter.add({-->
-<!--title: '成功登出!',-->
-<!--text: '欢迎下次再来',-->
-<!--class_name: 'growl-info',-->
-<!--//            image: 'images/screen.png',-->
-<!--sticky: false,-->
-<!--time: ''-->
-<!--});-->
-<!--});-->
-<!--</script>-->
-<!--</div>-->
-<!--</div>-->
-
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.gritter.min.js"></script>
+<link href="http://resali.huobanplus.com/cdn/bracket/css/jquery.gritter.css" rel="stylesheet" property=""/>
+<script src="../public/bracket/js/gritter.js" ewp:src="/bracket/js/gritter.js"></script>
+<!--/*@thymesVar id="#loginFailedMessage" type="java.lang.String"*/-->
+<script th:if="${'error'==#httpServletRequest.getParameter('type')}" th:inline="javascript">
+    var message = /*[[${#loginFailedMessage}]]*/ '演示错误';
+    showDanger('登录错误', message);
+</script>
 
 </body>
 </html>

@@ -38,6 +38,9 @@ public class PageFilterBehavioral implements FilterBehavioral {
      * 保护的path,这些path是系统使用的
      */
     public static final List<String> protectedPath = Collections.unmodifiableList(Arrays.asList("_web",
+            "auth",
+            "login",
+            "logout",
             "manage",
             "web",
             "bind",

@@ -11,6 +11,7 @@ package com.huotu.cms.manage;
 
 import com.huotu.cms.manage.config.ManageServiceSpringConfig;
 import com.huotu.hotcms.service.config.ServiceConfig;
+import com.huotu.hotcms.service.thymeleaf.dialect.LoginDialect;
 import me.jiangcai.lib.embedweb.ewp.MockMVC;
 import me.jiangcai.lib.resource.thymeleaf.ResourceDialect;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,8 @@ public class ManageTestConfig extends MockMVC {
     @Autowired
     private ResourceDialect resourceDialect;
     @Autowired
+    private LoginDialect loginDialect;
+    @Autowired
     private ApplicationContext applicationContext;
 
     @PostConstruct
@@ -48,6 +51,7 @@ public class ManageTestConfig extends MockMVC {
                         -> {
                     engine.addDialect(new SpringSecurityDialect());
                     engine.addDialect(resourceDialect);
+            engine.addDialect(loginDialect);
                 }
         );
     }

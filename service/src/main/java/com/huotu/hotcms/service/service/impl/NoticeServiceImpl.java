@@ -45,15 +45,16 @@ public class NoticeServiceImpl implements NoticeService {
         PageData<NoticeCategory> data = null;
         Specification<Notice> specification = AbstractContent.Specification(ownerId, title, false);
 
-        Page<Notice> pageData = noticeRepository.findAll(specification,new PageRequest(page - 1, pageSize));
+        Page<Notice> pageData = noticeRepository.findAll(specification, new PageRequest(page - 1, pageSize));
         if (pageData != null) {
-            List<Notice> notices =pageData.getContent();
-            List<NoticeCategory> noticeCategoryList =new ArrayList<>();
-            for(Notice notice : notices){
+            List<Notice> notices = pageData.getContent();
+            List<NoticeCategory> noticeCategoryList = new ArrayList<>();
+            for (Notice notice : notices) {
                 NoticeCategory noticeCategory = new NoticeCategory();
                 noticeCategory.setCategoryName(notice.getCategory().getName());
                 noticeCategory.setCreateTime(notice.getCreateTime());
-                noticeCategory.setCustomerId(notice.getCategory().getSite().getOwner().getCustomerId());
+                if (notice.getCategory().getSite().getOwner() != null)
+                    noticeCategory.setCustomerId(notice.getCategory().getSite().getOwner().getCustomerId());
                 noticeCategory.setId(notice.getId());
                 noticeCategory.setContent(notice.getContent());
                 noticeCategory.setTitle(notice.getTitle());
@@ -66,7 +67,7 @@ public class NoticeServiceImpl implements NoticeService {
             data.setTotal(pageData.getTotalElements());
             data.setRows(noticeCategoryList.toArray(new NoticeCategory[noticeCategoryList.size()]));
         }
-        return  data;
+        return data;
     }
 
     @Override
@@ -77,8 +78,8 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public Notice findById(Long id) {
-        Notice notice= noticeRepository.findOne(id);
-        return notice ;
+        Notice notice = noticeRepository.findOne(id);
+        return notice;
     }
 
     @Override
@@ -86,28 +87,28 @@ public class NoticeServiceImpl implements NoticeService {
         List<String> ids = Arrays.asList(specifyIds);
         List<Long> noticeIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
         Specification<Notice> specification = (root, query, cb) -> {
-            List<Predicate> predicates = noticeIds.stream().map(id -> cb.equal(root.get("id").as(Long.class),id)).collect(Collectors.toList());
+            List<Predicate> predicates = noticeIds.stream().map(id -> cb.equal(root.get("id").as(Long.class), id)).collect(Collectors.toList());
             return cb.or(predicates.toArray(new Predicate[predicates.size()]));
         };
-        return noticeRepository.findAll(specification, new Sort(Sort.Direction.DESC,"orderWeight"));
+        return noticeRepository.findAll(specification, new Sort(Sort.Direction.DESC, "orderWeight"));
     }
 
     @Override
     public List<Notice> getNoticeList(NormalForeachParam param) {
-        Sort sort = new Sort(Sort.Direction.DESC,"orderWeight");
+        Sort sort = new Sort(Sort.Direction.DESC, "orderWeight");
         Specification<Notice> specification = (root, query, cb) -> {
             List<Predicate> predicates;
-            if(!org.springframework.util.StringUtils.isEmpty(param.getExcludeIds())) {
+            if (!org.springframework.util.StringUtils.isEmpty(param.getExcludeIds())) {
                 List<String> ids = Arrays.asList(param.getExcludeIds());
                 List<Long> linkIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
-                predicates = linkIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class),id)).collect(Collectors.toList());
-            }else {
+                predicates = linkIds.stream().map(id -> cb.notEqual(root.get("id").as(Long.class), id)).collect(Collectors.toList());
+            } else {
                 predicates = new ArrayList<>();
             }
-            predicates.add(cb.equal(root.get("category").get("id").as(Long.class),param.getCategoryId()));
-            predicates.add(cb.equal(root.get("deleted").as(Boolean.class),false));
+            predicates.add(cb.equal(root.get("category").get("id").as(Long.class), param.getCategoryId()));
+            predicates.add(cb.equal(root.get("deleted").as(Boolean.class), false));
             return cb.and(predicates.toArray(new Predicate[predicates.size()]));
         };
-        return noticeRepository.findAll(specification,new PageRequest(0,param.getSize(),sort)).getContent();
+        return noticeRepository.findAll(specification, new PageRequest(0, param.getSize(), sort)).getContent();
     }
 }

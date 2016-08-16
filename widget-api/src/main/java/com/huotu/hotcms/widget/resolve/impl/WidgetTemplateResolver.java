@@ -84,7 +84,8 @@ public class WidgetTemplateResolver extends AbstractTemplateResolver {
                 }
                 return new SpringResourceTemplateResource(resource, "UTF-8");
             case PREVIEW:
-                return new SpringResourceTemplateResource(style.previewTemplate() != null ? style.previewTemplate()
+                return new SpringResourceTemplateResource(style.previewTemplate() != null
+                        && style.previewTemplate().exists() ? style.previewTemplate()
                         : style.browseTemplate(), "UTF-8");
             case BROWSE:
                 return new SpringResourceTemplateResource(style.browseTemplate(), "UTF-8");

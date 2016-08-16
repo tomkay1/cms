@@ -91,7 +91,7 @@ public class MainController {
         if (login.isRoot()) {
             model.addAttribute("logout", "/manage/supper");
         } else
-            model.addAttribute("logout", "/logout");
+            model.addAttribute("logout", "/manage/logout");
         login.updateSiteId(null);
         return "/view/main.html";
     }

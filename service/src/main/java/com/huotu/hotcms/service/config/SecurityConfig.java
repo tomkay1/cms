@@ -19,6 +19,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -58,7 +59,6 @@ public class SecurityConfig {
         // Since we didn't specify an AuthenticationManager for this class,
         // the global instance is used
 
-
         @Override
         public void configure(WebSecurity web) throws Exception {
             super.configure(web);
@@ -73,32 +73,24 @@ public class SecurityConfig {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
 //            super.configure(http);
-            http.authorizeRequests()
+
+            ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry
+                    = http.authorizeRequests();
+
+            // 2 个点  登录时 具体请求的页面应该是什么; 2 登录的处理者
+
+            registry
                     .anyRequest()
                     .permitAll()
                     .and().csrf().disable()
-            ;
+                    .formLogin()
+//                .failureHandler()
+                    .loginProcessingUrl("/auth")
+                    .loginPage("/login")//
+                    .permitAll()
+                    .and()
+                    .logout().logoutUrl("/logout").permitAll();
 
-//            http
-//                    .authorizeRequests()
-//                    .antMatchers(
-////                            "/config"
-////                            , "/register"
-//                            "/login"
-//                            // 这里加入安全系统可见但允许所有操作的uri
-////                            "/_resources/**",
-////                            "/getGoodDetails/**"
-//                    ).permitAll()
-//                    .anyRequest().authenticated()
-//                    .and()
-//                    .csrf().disable()
-//                    .formLogin()
-////                    .failureHandler(new K3AuthenticationFailureHandler())
-//                    .loginProcessingUrl("/auth")
-//                    .loginPage("/login")
-//                    .permitAll()
-//                    .and()
-//                    .httpBasic();
         }
     }
 }

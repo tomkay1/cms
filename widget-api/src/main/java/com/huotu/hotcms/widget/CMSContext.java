@@ -12,8 +12,8 @@ package com.huotu.hotcms.widget;
 import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.widget.resolve.WidgetConfiguration;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.apache.commons.logging.Log;
@@ -37,7 +37,7 @@ import java.util.Stack;
 @Setter
 @Getter
 @ToString
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CMSContext {
 
     private static final Log log = LogFactory.getLog(CMSContext.class);
@@ -91,7 +91,7 @@ public class CMSContext {
      */
     public static CMSContext PutContext(HttpServletRequest request, HttpServletResponse response, Site site) {
         CMSContext cmsContext = new CMSContext(request, response, site, site.getRegion() == null ? request.getLocale()
-                : site.getRegion().getLocale(), null, null);
+                : site.getRegion().getLocale());
         contexts.set(cmsContext);
         return cmsContext;
     }

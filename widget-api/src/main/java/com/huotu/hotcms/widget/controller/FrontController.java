@@ -35,6 +35,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -195,15 +196,54 @@ public class FrontController implements FilterBehavioral {
                 }
             }
 
-            return ResponseEntity.ok().contentType(Widget.HTML)
+            return ResponseEntity.ok().contentType(MediaType.valueOf("text/html;charset=utf-8"))
                     .header("cssLocation", resource != null ? resource.httpUrl().toString() : "")
                     .header("cssPath", resource != null ? resourcePath : "")
-                    .body(previewHTML.getBytes());
+                    .body(previewHTML.getBytes("utf-8"));
         } catch (Exception e) {
             log.warn("Unknown Exception", e);
             return ResponseEntity.notFound().header("errorMsg", e.getMessage())
                     .header("cssLocation", "").build();
         }
+    }
+
+    /**
+     * 获取指定控件,指定样式,的控件预览视图htmlCode
+     * <p>
+     * 成功：状态200，并返回控件 previewHtml Code
+     * 失败：状态404 无htmlCode
+     * <p>
+     * widgetIdentifier {@link com.huotu.hotcms.service.entity.support.WidgetIdentifier}
+     * styleId          样式id
+     * pageId           页面id
+     * properties       控件参数
+     */
+    @RequestMapping(value = "/preview/widgetEditor", method = RequestMethod.POST)
+    public ResponseEntity widgetEditor(@RequestBody String json) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map map = objectMapper.readValue(json, Map.class);
+//        String pageId = (String) map.get("pageId");
+        String styleId;
+        if (map.containsKey("styleId")) {
+            Object o = map.get("styleId");
+            if (o != null)
+                styleId = o.toString();
+            else
+                styleId = null;
+        } else
+            styleId = null;
+        String widgetIdentifier = (String) map.get("widgetIdentity");
+        Map properties = (Map) map.get("properties");
+        ComponentProperties componentProperties = new ComponentProperties();
+        if (properties != null)
+            //noinspection unchecked
+            componentProperties.putAll(properties);
+        InstalledWidget installedWidget = widgetLocateService.findWidget(widgetIdentifier);
+        installedWidget.getWidget().valid(styleId, componentProperties);
+        String htmlCode = widgetResolveService.editorHTML(installedWidget.getWidget(), CMSContext.RequestContext()
+                , componentProperties);
+        return ResponseEntity.ok().contentType(MediaType.valueOf("text/html;charset=utf-8"))
+                .body(htmlCode.getBytes("utf-8"));
     }
 
     private Component findComponent(PageElement element, String id) {

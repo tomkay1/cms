@@ -14,11 +14,11 @@ import com.huotu.cms.manage.exception.RedirectException;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.repository.OwnerRepository;
+import com.huotu.hotcms.service.service.LoginService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -52,7 +52,7 @@ public class OwnerController extends CRUDController<Owner, Long, Void, Void> {
     @Autowired
     private OwnerRepository ownerRepository;
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private LoginService loginService;
 
     @RequestMapping(value = "/{id}/customerId", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -69,7 +69,8 @@ public class OwnerController extends CRUDController<Owner, Long, Void, Void> {
     }
 
     @Override
-    protected void prepareUpdate(Login login, Owner entity, Owner data, Void extra, RedirectAttributes attributes) throws RedirectException {
+    protected void prepareUpdate(Login login, Owner entity, Owner data, Void extra, RedirectAttributes attributes)
+            throws RedirectException {
 
     }
 
@@ -79,14 +80,18 @@ public class OwnerController extends CRUDController<Owner, Long, Void, Void> {
     }
 
     @Override
-    protected Owner preparePersist(HttpServletRequest request, Login login, Owner data, Void extra, RedirectAttributes attributes) throws RedirectException {
+    protected Owner preparePersist(HttpServletRequest request, Login login, Owner data, Void extra
+            , RedirectAttributes attributes) throws RedirectException {
+        if (!StringUtils.isEmpty(data.getLoginName()) && data.getLoginName().equalsIgnoreCase("root"))
+            throw new IllegalArgumentException("用户名不可用。");
         if (StringUtils.isEmpty(data.getLoginName()) && data.getCustomerId() == null)
             throw new IllegalArgumentException("用户名或者商户号必须选择一个");
         if (!StringUtils.isEmpty(data.getLoginName()) && StringUtils.isEmpty(data.getPassword()))
             throw new IllegalArgumentException("必须输入密码");
         data.setEnabled(true);
-        if (!StringUtils.isEmpty(data.getLoginName()))
-            data.setPassword(passwordEncoder.encode(data.getPassword()));
+        if (!StringUtils.isEmpty(data.getPassword()))
+            loginService.changePassword(data, data.getPassword());
+
         return data;
     }
 

@@ -66,6 +66,7 @@ var widgetHandle = {
             dynamicLoading.js( wsCache.get(identity).script);
             if ( CMSWidgets )  CMSWidgets.openEditor(GlobalID, identity, $DOM);
         });
+        updataWidgetEditor(GlobalID,widgetProperties(GlobalID));
     },
     setStroe: function (id, data) {
         if ( data ) {
@@ -96,40 +97,55 @@ var widgetHandle = {
         editFunc.closeFunc();
     }
 };
+/**
+ * 更新控件编辑器
+ */
+function updataWidgetEditor(globalID, properties) {
+    var ele = $('#' + globalID);
+    var widgetId = ele.data('widgetidentity');
+    var DATA = {
+        "widgetIdentity": widgetId,
+        "properties": properties,
+        "pageId": pageId
+    };
+    Util.ajaxHtml(
+        '/preview/widgetEditor',
+        JSON.stringify(DATA),
+        function (html) {
+            if (html) {
+                var container = editFunc.findCurrentEdit(GlobalID).children().eq(1);
+                container.append(html);
+            }
+        }
+    );
+}
+/**
+ * 更新预览视图
+ */
 function updataCompoentPreview(globalID, properties) {
     var ele = $('#' + globalID);
     var widgetId = ele.data('widgetidentity');
     var styleId = ele.data('styleid');
-    var data = {
+    var DATA = {
         "widgetIdentity": widgetId,
         "styleId": styleId,
         "properties": properties,
         "pageId": pageId,
         "componentId": globalID
     };
-    var loading = layer.load(2);
-    $.ajax({
-        type: 'POST',
-        url: '/preview/component',
-        contentType: "application/json; charset=utf-8",
-        dataType: 'html',
-        data: JSON.stringify(data),
-        success: function (html, textStatus, jqXHR) {
+    Util.ajaxHtml(
+        '/preview/component',
+        JSON.stringify(DATA),
+        function (html, textStatus, jqXHR) {
             if (html) {
                 var updateHtml = $(html);
                 ele.html(updateHtml.html());
                 editFunc.closeFunc();
-                layer.close(loading);
-                layer.msg('操作成功', {time: 2000});
                 var path = jqXHR.getResponseHeader('cssLocation');
                 if (path) dynamicLoading.css(path);
             }
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            layer.close(loading);
-            layer.msg('服务器错误，请稍后操作。', {time: 2000});
         }
-    });
+    );
 }
 
 /**
@@ -272,13 +288,13 @@ function uploadForm (obj) {
             layer.msg('上传失败，请稍后再说', {time: 2000});
         },
         deleteCallback: function (data, pd) {
-            var _data = {path: data.path};
+            var DATA = {path: data.path};
             $.ajax({
                 type: 'DELETE',
                 url: deleteUrl,
                 contentType: "application/json; charset=utf-8",
                 dataType: 'json',
-                data: JSON.stringify(_data),
+                data: JSON.stringify(DATA),
                 error: function (jqXHR, textStatus, errorThrown) {
                     layer.msg('服务器错误，请稍后操作。', {time: 2000});
                 }
@@ -310,3 +326,39 @@ function verifySize(congruent, vWidth, vHeight, callback) {
         if ( !vWidth === true && !vHeight === true ) callback();
     }
 }
+
+var Util = {
+    /**
+     *
+     * @param url 接口地址
+     * @param option 传递参数 JSON格式
+     * @param callback 成功回调
+     */
+    ajaxHtml: function(url,option,callback){
+        var loading = layer.load(2);
+        $.ajax({
+            type: 'POST',
+            ulr: url,
+            contentType: "application/json; charset=utf-8",
+            dataType:'html',
+            data:option,
+            success:function(data, textStatus, jqXHR) {
+                if($.isFunction(callback)){
+                    callback(data, textStatus, jqXHR);
+                    layer.close(loading);
+                    layer.msg('操作成功', {time: 2000});
+                }
+            },
+            error:function(response, textStatus, errorThrown){
+                try{
+                    layer.close(loading);
+                    var data = $.parseJSON(response.responseText);
+                    ayer.msg(data.msg || '服务器错误，请稍后操作。', {time: 2000});
+                } catch (e) {
+                    console.error(e);
+                    layer.msg('服务器错误，请稍后操作。', {time: 2000});
+                }
+            }
+        });
+    }
+};

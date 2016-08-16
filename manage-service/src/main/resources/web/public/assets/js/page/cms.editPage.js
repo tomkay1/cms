@@ -69,18 +69,29 @@ var editFunc = {
             });
             ele.stop().animate({
                 right: 0
-            },500);
+            }, 500);
             // 创建当前操作组件的数据
             widgetHandle.createStore($(this));
-            var ele = $('#'+GlobalID);
-            var styleid = ele.data('styleid');
-            var widgetidentity = ele.data('widgetidentity');
-            $('#'+ widgetidentity).find('img.changeStyle').each(function () {
-               if ( $(this).data('styleid') == styleid ) {
-                   editFunc.changeImgStyleActive($(this));
-               }
+            var element = $('#'+GlobalID);
+            var styleid = element.data('styleid');
+            var container = editFunc.findCurrentEdit(GlobalID);
+            container.find('img.changeStyle').each(function () {
+                if ( $(this).data('styleid') == styleid ) {
+                    editFunc.changeImgStyleActive($(this));
+                }
             });
         });
+    },
+    findCurrentEdit: function (elementId) {
+        var element = $('#'+elementId);
+        var widgetidentity = element.data('widgetidentity');
+        var container = '';
+        $('.common-conf').each(function () {
+            if( $(this).data('id') == widgetidentity) {
+                container = $(this);
+            }
+        });
+        return container;
     },
     saveConfig: function () {
         $('#confBtn').click(function () {
@@ -195,7 +206,7 @@ var Page = {
             list.find('.preview p').html(v.locallyName);
             list.find('.view').append(v.styles[0].previewHTML);
             list.find('.view').children().eq(0).attr('data-widgetidentity', v.identity);
-            list.find('.view').children().eq(0).attr('data-styleid', 'null');
+            list.find('.view').children().eq(0).attr('data-styleid', v.styles[0].id);
             typeList.append(list);
             //编辑器视图渲染
             var child = $('<div class="common-conf"></div>');
@@ -215,7 +226,7 @@ var Page = {
                 child.find('.swiper-wrapper').append(div);
             });
             container.append(h3);
-            container.append(v['editorHTML']);
+            // container.append(v['editorHTML']);
             child.append(container);
             parent.append(child);
 

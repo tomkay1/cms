@@ -120,7 +120,6 @@ CMSWidgets.defaultConfig = {
         properties: null,
         saveComponent: function (onSuccess, onFailed) {
             var that = this;
-
             function setProperties(obj) {
                 var name = $(obj).attr("name");
                 that.properties[name] = $(obj).val();

@@ -142,12 +142,12 @@ public abstract class WidgetTest extends SpringWebTest {
 
     @SuppressWarnings("WeakerAccess")
     protected void editor(Widget widget) throws Exception {
+        widgetViewController.setCurrentProperties(new ComponentProperties());
         if (printPageSource())
             mockMvc.perform(get("/editor/" + Widget.URIEncodedWidgetIdentity(widget)))
                     .andDo(print());
         driver.get("http://localhost/editor/" + Widget.URIEncodedWidgetIdentity(widget));
         driver.findElement(By.id("editorInit")).click();
-
         editorWork(widget, driver.findElement(By.id("editor")).findElement(By.tagName("div")), () -> {
 
             driver.findElement(By.id("editorSaver")).click();

@@ -272,12 +272,13 @@ function uploadForm (obj) {
             layer.msg('上传失败，请稍后再说', {time: 2000});
         },
         deleteCallback: function (data, pd) {
-            var Data = {fileUri: data.fileUri};
+            var DATA = {"fileUri": data.fileUri};
             $.ajax({
                 type: 'DELETE',
                 url: deleteUrl,
+                contentType: "application/json; charset=utf-8",
                 dataType: 'json',
-                data: Data,
+                data: JSON.stringify(DATA),
                 error: function (jqXHR, textStatus, errorThrown) {
                     layer.msg('服务器错误，请稍后操作。', {time: 2000});
                 }

@@ -349,7 +349,7 @@ editPage.init = function () {
         loop: true
     });
 
-    $(".boxes").mCustomScrollbar({
+    $('.boxes').mCustomScrollbar({
         autoHideScrollbar:true,
         theme:"minimal"
     });

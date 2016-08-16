@@ -7,10 +7,10 @@
  * 2013-2016. All rights reserved.
  */
 
-package $
+package ${package};
 
 import java.io.IOException;
-import java.util.function.Function;{package};
+import java.util.function.Function;
 
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.Widget;
@@ -37,14 +37,16 @@ public class TestWidgetInfo extends WidgetTest {
     }
 
     @Override
-    protected void browseWork(Widget widget, WidgetStyle style, Function<ComponentProperties, WebElement> uiChanger) {
+    protected void browseWork(Widget widget, WidgetStyle style, Function<ComponentProperties, WebElement> uiChanger)
+            throws IOException {
         ComponentProperties properties = widget.defaultProperties(resourceService);
         WebElement webElement = uiChanger.apply(properties);
 
     }
 
     @Override
-    protected void editorBrowseWork(Widget widget, Function<ComponentProperties, WebElement> uiChanger) throws IOException {
+    protected void editorBrowseWork(Widget widget, Function<ComponentProperties, WebElement> uiChanger
+            , Supplier<Map<String, Object>> currentWidgetProperties) throws IOException {
         ComponentProperties properties = widget.defaultProperties(resourceService);
         WebElement webElement = uiChanger.apply(properties);
 

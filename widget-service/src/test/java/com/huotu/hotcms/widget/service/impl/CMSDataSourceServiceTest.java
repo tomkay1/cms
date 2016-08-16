@@ -11,15 +11,9 @@ package com.huotu.hotcms.widget.service.impl;
 
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.Category;
-import com.huotu.hotcms.service.entity.Gallery;
-import com.huotu.hotcms.service.entity.GalleryItem;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.model.GalleryItemModel;
 import com.huotu.hotcms.service.model.LinkModel;
-import com.huotu.hotcms.service.repository.GalleryItemRepository;
-import com.huotu.hotcms.service.repository.GalleryRepository;
-import com.huotu.hotcms.service.repository.LinkRepository;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.service.CMSDataSourceService;
 import com.huotu.hotcms.widget.test.TestBase;
@@ -47,12 +41,6 @@ public class CMSDataSourceServiceTest extends TestBase {
     @Autowired(required = false)
     private HttpServletResponse response;
 
-    @Autowired
-    private GalleryRepository galleryRepository;
-    @Autowired
-    private GalleryItemRepository galleryItemRepository;
-    @Autowired
-    private LinkRepository linkRepository;
     private Site site;
 
     @Before
@@ -60,23 +48,6 @@ public class CMSDataSourceServiceTest extends TestBase {
         // 准备下CMSContent
         site = randomSite(randomOwner());
         CMSContext.PutContext(request, response, site);
-    }
-
-    @Test
-    public void category() {
-        assertThat(cmsDataSourceService.findParentArticleCategory())
-                .isEmpty();
-
-        Category category = randomCategory(site, ContentType.Article);
-        assertThat(cmsDataSourceService.findParentArticleCategory())
-                .contains(category);
-
-        // 再弄一个子集
-        Category sub = randomCategory(site, ContentType.Article, category);
-
-        assertThat(cmsDataSourceService.findParentArticleCategory())
-                .contains(category)
-                .doesNotContain(sub);
     }
 
     @Test
@@ -88,7 +59,7 @@ public class CMSDataSourceServiceTest extends TestBase {
         assertThat(cmsDataSourceService.findLinkCategory())
                 .contains(category);
 
-        assertThat(cmsDataSourceService.findLink(category.getId()))
+        assertThat(cmsDataSourceService.findLinkContent(category.getId()))
                 .isEmpty();
 
         List<Link> linkList = new ArrayList<>();
@@ -104,37 +75,10 @@ public class CMSDataSourceServiceTest extends TestBase {
             linkModelList.add(model);
         }
 
-        assertThat(cmsDataSourceService.findLink(category.getId()))
+        assertThat(cmsDataSourceService.findLinkContent(category.getId()))
                 .containsAll(linkModelList);
     }
 
-    @Test
-    public void gallery() {
-        assertThat(cmsDataSourceService.findGallery())
-                .isEmpty();
-        Category category = randomCategory(site, ContentType.Gallery);
-        Gallery gallery = randomGallery(category);
-        assertThat(cmsDataSourceService.findGallery())
-                .contains(gallery);
-
-        galleryRepository.deleteByCategory(category);
-        assertThat(cmsDataSourceService.findGallery())
-                .isEmpty();
-
-        //
-        Gallery gallery2 = randomGallery(category);
-
-        assertThat(cmsDataSourceService.findGalleryItem(gallery2.getId()))
-                .isEmpty();
-
-        List<GalleryItemModel> itemModelList = new ArrayList<>();
-        int count = random.nextInt(10) + 2;
-        while (count-- > 0) {
-            itemModelList.add(GalleryItem.getGalleryItemModel(randomGalleryItem(gallery2)));
-        }
-
-        assertThat(cmsDataSourceService.findGalleryItem(gallery2.getId()).size()).isEqualTo(itemModelList.size());
-    }
 
 
 }

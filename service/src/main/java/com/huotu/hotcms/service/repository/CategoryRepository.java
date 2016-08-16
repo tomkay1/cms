@@ -29,8 +29,6 @@ public interface CategoryRepository extends JpaRepository<Category, Long>, JpaSp
      */
     List<Category> findBySite(Site site);
 
-    List<Category> findBySiteAndContentTypeAndParent(Site site, ContentType contentType, Category parent);
-
     /**
      * 根据站点父级数据源查询数据源
      *

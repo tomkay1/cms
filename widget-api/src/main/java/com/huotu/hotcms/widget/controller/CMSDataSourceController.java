@@ -9,10 +9,7 @@
 
 package com.huotu.hotcms.widget.controller;
 
-import com.huotu.hotcms.service.model.GalleryItemModel;
 import com.huotu.hotcms.service.model.LinkModel;
-import com.huotu.hotcms.service.repository.GalleryRepository;
-import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.widget.service.CMSDataSourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -34,24 +31,7 @@ public class CMSDataSourceController {
 
     @Autowired
     private CMSDataSourceService cmsDataSourceService;
-    @Autowired
-    private GalleryRepository galleryRepository;
-    @Autowired
-    private CategoryService categoryService;
 
-
-    /**
-     * 根据parent 的contentType 来决定查询的数据类型 {@link com.huotu.hotcms.widget.service.CMSDataSourceService}
-     *
-     * @param parentId 数据源id
-     * @return json 返回当前parentId 的所有子级元素
-     * 例如{status=200,message="Success",data=[...]},{status=404,message="fail",data=[]}
-     */
-    @RequestMapping(value = "/findGalleryItem/{parentId}", method = RequestMethod.GET)
-    public ResponseEntity findGalleryItem(@PathVariable("parentId") Long parentId) {
-        List<GalleryItemModel> data = cmsDataSourceService.findGalleryItem(parentId);
-        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(data);
-    }
 
     /**
      * @param parentId 数据源id
@@ -60,19 +40,9 @@ public class CMSDataSourceController {
      */
     @RequestMapping(value = "/findLink/{parentId}", method = RequestMethod.GET)
     public ResponseEntity findLink(@PathVariable("parentId") Long parentId) {
-        List<LinkModel> data = cmsDataSourceService.findLink(parentId);
+        List<LinkModel> data = cmsDataSourceService.findLinkContent(parentId);
         return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(data);
     }
 
-    /**
-     * @param parentId 数据源id
-     * @return json 返回当前parentId 的所有子级元素
-     * 例如{code=200,message="Success",data=[...]},{code=403,message="fail",data=[]}
-     */
-    @RequestMapping(value = "/findChildrenArticleCategory/{parentId}", method = RequestMethod.GET)
-    public ResponseEntity findChildrenArticleCategory(@PathVariable("parentId") Long parentId) {
-            String data = cmsDataSourceService.findChildrenArticleCategory(parentId);
-            return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(data);
-    }
 
 }

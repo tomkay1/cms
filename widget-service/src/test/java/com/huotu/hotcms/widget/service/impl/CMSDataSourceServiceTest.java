@@ -59,7 +59,7 @@ public class CMSDataSourceServiceTest extends TestBase {
         assertThat(cmsDataSourceService.findLinkCategory())
                 .contains(category);
 
-        assertThat(cmsDataSourceService.findLinkContent(category.getId()))
+        assertThat(cmsDataSourceService.findLinkContent(category.getSerial()))
                 .isEmpty();
 
         List<Link> linkList = new ArrayList<>();
@@ -75,7 +75,7 @@ public class CMSDataSourceServiceTest extends TestBase {
             linkModelList.add(model);
         }
 
-        assertThat(cmsDataSourceService.findLinkContent(category.getId()))
+        assertThat(cmsDataSourceService.findLinkContent(category.getSerial()))
                 .containsAll(linkModelList);
     }
 

@@ -49,7 +49,7 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     }
 
     @Override
-    public List<LinkModel> findLinkContent(Long categoryId) {
+    public List<LinkModel> findLinkContent(String serial) {
         List<Link> list = new ArrayList<>();
         Link link1 = new Link();
         link1.setId(1L);

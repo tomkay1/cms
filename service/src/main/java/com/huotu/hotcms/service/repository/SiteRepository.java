@@ -24,4 +24,7 @@ public interface SiteRepository extends JpaRepository<Site, Long>, JpaSpecificat
     List<Site> findByOwner_IdAndDeletedOrderBySiteIdDesc(long ownerId, boolean deleted);
 
     Set<Site> findByOwner_IdAndDeleted(long owner, boolean deleted);
+
+    Site findByRecommendDomain(String recommendDomain);
+
 }

@@ -35,10 +35,10 @@ public interface CMSDataSourceService {
     /**
      * <p>查询指定链接数据源下的所有链接模型</p>
      *
-     * @param categoryId 栏目id（链接模型的数据源id）
+     * @param serial （链接模型的数据源serial）
      * @return 返回指定链接数据源下的全部链接模型
      */
-    List<LinkModel> findLinkContent(Long categoryId);
+    List<LinkModel> findLinkContent(String serial);
 
     /**
      * 查询当前站点下视频数据源列表

@@ -77,23 +77,11 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     }
 
     @Override
-    public List<LinkModel> findLinkContent(Long categoryId) {
-//        List<Video> list = videoRepository.findByCategory_SiteAndCategory_Serial(CMSContext.RequestContext().getSite(), serial);
-//        List<VideoModel> videoModels = new ArrayList<>();
-//        for (Video video : list) {
-//            VideoModel videoModel = Video.toVideoModel(video);
-//            videoModels.add(videoModel);
-//        }
-//        return videoModels;
-
+    public List<LinkModel> findLinkContent(String serial) {
+        List<Link> list = linkRepository.findByCategory_SiteAndCategory_Serial(CMSContext.RequestContext().getSite(), serial);
         List<LinkModel> linkModels = new ArrayList<>();
-        if (categoryRepository.findOne(categoryId).getContentType().equals(ContentType.Link)) {
-            List<Link> links = linkRepository.findByCategory_Id(categoryId);
-            if (links != null && links.size() > 0) {
-                for (Link link : links) {
-                    linkModels.add(Link.toLinkModel(link));
-                }
-            }
+        for (Link link : list) {
+            linkModels.add(Link.toLinkModel(link));
         }
         return linkModels;
     }

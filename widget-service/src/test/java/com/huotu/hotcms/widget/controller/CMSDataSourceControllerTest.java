@@ -15,10 +15,14 @@ import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.Video;
+import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.widget.test.TestBase;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.servlet.http.HttpServletResponse;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -31,22 +35,27 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @Transactional
 public class CMSDataSourceControllerTest extends TestBase {
+    @Autowired(required = false)
+    private HttpServletResponse response;
+    @Autowired
+    private SiteRepository siteRepository;
 
     @Test
     public void testFindLink() throws Exception {
-        Site site = randomSite(randomOwner());
+        Site site = siteRepository.findByRecommendDomain("localhost");
         Category category = randomCategory(site, ContentType.Link);
 
-        mockMvc.perform(get("/dataSource/findLink/{parentId}", String.valueOf(category.getId()))
+        mockMvc.perform(get("/dataSource/findLink/{serial}", String.valueOf(category.getSerial()))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$.length()").value(0))
         ;
-
+        category.setSerial("444555");
+        category = categoryRepository.saveAndFlush(category);
         Link link = randomLink(category);
 
-        mockMvc.perform(get("/dataSource/findLink/{parentId}", String.valueOf(category.getId()))
+        mockMvc.perform(get("/dataSource/findLink/{serial}", String.valueOf(category.getSerial()))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
@@ -55,8 +64,7 @@ public class CMSDataSourceControllerTest extends TestBase {
 
     @Test
     public void testFindArticleContent() throws Exception {
-        Site site = randomSite(randomOwner());
-
+        Site site = siteRepository.findByRecommendDomain("localhost");
         Category category = randomCategory(site, ContentType.Article);
         mockMvc.perform(get("/dataSource/findArticleContent/{serial}", String.valueOf(category.getSerial()))
                 .accept(MediaType.APPLICATION_JSON))
@@ -64,7 +72,7 @@ public class CMSDataSourceControllerTest extends TestBase {
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$.length()").value(0))
         ;
-        category.setSerial("444555");
+        category.setSerial("444666");
         category = categoryRepository.saveAndFlush(category);
         Article article = randomArticle(category);
 
@@ -77,8 +85,7 @@ public class CMSDataSourceControllerTest extends TestBase {
 
     @Test
     public void testFindVideoContent() throws Exception {
-        Site site = randomSite(randomOwner());
-
+        Site site = siteRepository.findByRecommendDomain("localhost");
         Category category = randomCategory(site, ContentType.Video);
         mockMvc.perform(get("/dataSource/findVideoContent/{serial}", String.valueOf(category.getSerial()))
                 .accept(MediaType.APPLICATION_JSON))
@@ -86,7 +93,7 @@ public class CMSDataSourceControllerTest extends TestBase {
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$.length()").value(0))
         ;
-        category.setSerial("444555");
+        category.setSerial("444777");
         category = categoryRepository.saveAndFlush(category);
         Video video = randomVideo(category);
 
@@ -96,4 +103,5 @@ public class CMSDataSourceControllerTest extends TestBase {
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$.length()").value(1));
     }
+
 }

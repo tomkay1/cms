@@ -36,13 +36,13 @@ public class CMSDataSourceController {
 
 
     /**
-     * @param parentId 数据源id
+     * @param serial
      * @return json 返回当前parentId 的所有子级元素
      * 例如{code=200,message="Success",data=[...]},{code=403,message="fail",data=[]}
      */
-    @RequestMapping(value = "/findLink/{parentId}", method = RequestMethod.GET)
-    public ResponseEntity findLink(@PathVariable("parentId") Long parentId) {
-        List<LinkModel> data = cmsDataSourceService.findLinkContent(parentId);
+    @RequestMapping(value = "/findLink/{serial}", method = RequestMethod.GET)
+    public ResponseEntity findLink(@PathVariable("serial") String serial) {
+        List<LinkModel> data = cmsDataSourceService.findLinkContent(serial);
         return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(data);
     }
 

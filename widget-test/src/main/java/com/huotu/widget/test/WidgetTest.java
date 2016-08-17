@@ -15,6 +15,7 @@ import com.huotu.hotcms.widget.WidgetStyle;
 import com.huotu.hotcms.widget.servlet.CMSFilter;
 import com.huotu.widget.test.bean.WidgetHolder;
 import com.huotu.widget.test.bean.WidgetViewController;
+import com.huotu.widget.test.hold.TestWidgetHolder;
 import me.jiangcai.lib.resource.service.ResourceService;
 import me.jiangcai.lib.test.SpringWebTest;
 import org.junit.Test;
@@ -23,6 +24,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
@@ -45,7 +47,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 /**
  * @author CJ
  */
-@ContextConfiguration(classes = WidgetTestConfig.class)
+@ContextConfiguration(classes = {WidgetTestConfig.class, WidgetTest.WidgetLoader.class})
 @WebAppConfiguration
 @Transactional
 public abstract class WidgetTest extends SpringWebTest {
@@ -211,7 +213,6 @@ public abstract class WidgetTest extends SpringWebTest {
     protected abstract void editorWork(Widget widget, WebElement editor
             , Supplier<Map<String, Object>> currentWidgetProperties) throws IOException;
 
-
     private void finalBrowseWork(Widget widget, WidgetStyle style
             , Function<ComponentProperties, WebElement> uiChanger) throws IOException {
 //        WebElement defaultWeb = uiChanger.apply(widget.defaultProperties(resourceService));
@@ -234,8 +235,8 @@ public abstract class WidgetTest extends SpringWebTest {
      * 编辑器浏览测试
      * 通过设置属性改变编辑器浏览视图
      *
-     * @param widget    控件
-     * @param uiChanger 更改后的编辑器浏览视图,它接受的参数就是组件的实际properties
+     * @param widget                  控件
+     * @param uiChanger               更改后的编辑器浏览视图,它接受的参数就是组件的实际properties
      * @param currentWidgetProperties 可以从浏览器中获取当前控件属性,如果当前属性不被接收调用这个supplier会抛出IllegalStateException
      * @see JavascriptExecutor#executeScript(String, Object...)
      */
@@ -257,7 +258,6 @@ public abstract class WidgetTest extends SpringWebTest {
             }
         });
     }
-
 
     @SuppressWarnings("WeakerAccess")
     protected void propertiesFor(Widget widget) throws IOException {
@@ -358,7 +358,6 @@ public abstract class WidgetTest extends SpringWebTest {
         throw new AssertionError("不期望的控件属性:" + var);
     }
 
-
     /**
      * 样式基本属性测试
      *
@@ -390,5 +389,12 @@ public abstract class WidgetTest extends SpringWebTest {
         }
 
         // 现在检查编辑器
+    }
+
+    public static class WidgetLoader {
+        @Bean
+        public WidgetHolder widgetHolder() throws ClassNotFoundException, InstantiationException, IllegalAccessException, IOException {
+            return new TestWidgetHolder();
+        }
     }
 }

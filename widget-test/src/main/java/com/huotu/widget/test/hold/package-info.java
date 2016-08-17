@@ -7,22 +7,9 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.widget.test.bean;
-
-import com.huotu.hotcms.widget.Widget;
-import com.huotu.hotcms.widget.WidgetLocateService;
-
-import java.util.Set;
-
 /**
+ * 装载控件,鉴于测试和预览会有不同的装载过程,所以区分普通测试
+ *
  * @author CJ
  */
-public interface WidgetHolder extends WidgetLocateService {
-
-    /**
-     * 控件集合
-     *
-     * @return
-     */
-    Set<Widget> getWidgetSet();
-}
+package com.huotu.widget.test.hold;

@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by lhx on 2016/6/28.
+ * 一个测试实现的或者叫模拟实现
  */
 public class CMSDataSourceServiceImpl implements CMSDataSourceService {
 

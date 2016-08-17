@@ -108,6 +108,7 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
 
     @Override
     public void pageElementHTML(PageElement pageElement, CMSContext cmsContext, Writer writer) throws IOException {
+        checkEngine();
         String className;
         if (pageElement instanceof Layout) {
             //是一个布局界面

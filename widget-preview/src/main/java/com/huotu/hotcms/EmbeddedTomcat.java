@@ -1,65 +1,82 @@
+/*
+ * 版权所有:杭州火图科技有限公司
+ * 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+ *
+ * (c) Copyright Hangzhou Hot Technology Co., Ltd.
+ * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+ * 2013-2016. All rights reserved.
+ */
+
 package com.huotu.hotcms;
 
-import com.huotu.hotcms.servlet.PreviewServlet;
-import lombok.Getter;
-import lombok.Setter;
+import com.huotu.hotcms.config.PreviewConfig;
 import org.apache.catalina.LifecycleException;
-import org.apache.catalina.core.StandardContext;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.maven.model.Model;
 
 import javax.servlet.ServletException;
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.IOException;
 
 /**
- * 内嵌tomcat 为控件浏览测试提供
- * Created by lhx on 2016/8/2.
+ * 内置Tomcat引擎
  */
-@Getter
-@Setter
-public class EmbeddedTomcat {
+class EmbeddedTomcat {
     private static final Log log = LogFactory.getLog(EmbeddedTomcat.class);
-    private int port = 9080;
-    private Tomcat tomcat = new Tomcat();
+    private final int port;
+    private final Tomcat tomcat = new Tomcat();
+    private final Model model;
 
-    public EmbeddedTomcat(int port) {
+    /**
+     * @param model 控件项目model
+     * @param port  开启的port
+     */
+    EmbeddedTomcat(Model model, int port) {
         this.port = port;
+        this.model = model;
+        System.setProperty("me.jiangcai.server.port", String.valueOf(port));
     }
 
-    public EmbeddedTomcat() {
+    /**
+     * 启动tomcat实例
+     *
+     * @throws LifecycleException
+     * @throws IOException
+     * @throws ServletException
+     */
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    void start() throws LifecycleException, IOException, ServletException {
+
+        String output = model.getBuild().getOutputDirectory();
+        log.debug("classes path:" + output);
+        PreviewConfig.classesPath = new File(output);
+
+        System.setProperty("org.apache.catalina.startup.EXIT_ON_INIT_FAILURE", "true");
+        File tomcatBase = new File(PreviewConfig.classesPath.getParentFile(), "tomcat");
+        tomcatBase.mkdirs();
+        tomcat.setBaseDir(tomcatBase.getAbsolutePath());
+        tomcat.setPort(port);
+        tomcat.getEngine().setName("CMS");
+
+        File webContentFolder = new File(tomcatBase, "doc");
+        webContentFolder.mkdir();
+        tomcat.addWebapp("", webContentFolder.getAbsolutePath());
+        log.info("tomcat start status await……");
+        tomcat.start();
     }
 
-    public void start() throws Exception {
-        try {
-            System.setProperty("org.apache.catalina.startup.EXIT_ON_INIT_FAILURE", "true");
-            Path tempPath = Files.createTempDirectory("tomcat-base-dir");
-            tomcat.setBaseDir(tempPath.toString());
-            tomcat.setPort(port);
-            File webContentFolder = Files.createTempDirectory("default-doc-base").toFile();
-            StandardContext ctx = (StandardContext) tomcat.addWebapp("", webContentFolder.getAbsolutePath());
-            tomcat.addServlet(ctx, "PreviewServlet", new PreviewServlet());
-            ctx.addServletMapping("/*", "PreviewServlet");
-            log.info("tomcat start status await……");
-            tomcat.start();
-            tomcat.getServer().await();
-
-        } catch (LifecycleException | ServletException e) {
-            log.error(e.getMessage(), e);
-            throw e;
-        }
+    /**
+     * 挂起当前线程,直到tomcat被关闭
+     */
+    void waitForTomcat() {
+        tomcat.getServer().await();
     }
 
-    public void stop() throws Exception {
-        try {
-            tomcat.stop();
-            log.info("Tomcat stoped");
-        } catch (LifecycleException ex) {
-            log.error(ex.getMessage(), ex);
-            throw ex;
-        }
+    void stop() throws LifecycleException {
+        log.info("Stopping Tomcat");
+        tomcat.stop();
     }
 
 

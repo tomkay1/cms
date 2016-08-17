@@ -74,7 +74,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
     @Autowired
     private WidgetInfoRepository widgetInfoRepository;
 
-    @Autowired(required = false)
+    @Autowired
     private ResourceService resourceService;
 
     @Autowired
@@ -260,22 +260,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
                     //加载jar
                     installWidget(widgetInfo.getOwner(), widget, widgetInfo.getType())
                             .setIdentifier(widgetInfo.getIdentifier());
-                    //上传控件资源
-                    Map<String, Resource> publicResources = widget.publicResources();
-                    WidgetIdentifier identifier = new WidgetIdentifier(widget.groupId(), widget.widgetId()
-                            , widget.version());
-                    if (publicResources != null) {
-                        for (Map.Entry<String, Resource> entry : publicResources.entrySet()) {
-                            resourceService.uploadResource("widget/" + identifier.toURIEncoded() + "/"
-                                    + entry.getKey(), entry.getValue().getInputStream());
-                        }
-                    }
-                    ImageHelper.storeAsImage("png", resourceService, widget.thumbnail().getInputStream()
-                            , Widget.thumbnailPath(widget));
-                    for (WidgetStyle style : widget.styles()) {
-                        ImageHelper.storeAsImage("png", resourceService, style.thumbnail().getInputStream()
-                                , WidgetStyle.thumbnailPath(widget, style));
-                    }
+
                 }
             }
         } catch (InstantiationException
@@ -304,7 +289,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
         installWidgetInfo(widgetInfo);
     }
 
-    public InstalledWidget installWidget(Owner owner, Widget widget, String type) {
+    public InstalledWidget installWidget(Owner owner, Widget widget, String type) throws IOException {
         //持久化相应的信息
         InstalledWidget installedWidget = new InstalledWidget(widget);
         installedWidget.setType(type);
@@ -312,6 +297,24 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
             installedWidget.setOwnerId(owner.getId());
         }
         installedWidgets.add(installedWidget);
+
+        //上传控件资源
+        Map<String, Resource> publicResources = widget.publicResources();
+        WidgetIdentifier identifier = new WidgetIdentifier(widget.groupId(), widget.widgetId()
+                , widget.version());
+        if (publicResources != null) {
+            for (Map.Entry<String, Resource> entry : publicResources.entrySet()) {
+                resourceService.uploadResource("widget/" + identifier.toURIEncoded() + "/"
+                        + entry.getKey(), entry.getValue().getInputStream());
+            }
+        }
+        ImageHelper.storeAsImage("png", resourceService, widget.thumbnail().getInputStream()
+                , Widget.thumbnailPath(widget));
+        for (WidgetStyle style : widget.styles()) {
+            ImageHelper.storeAsImage("png", resourceService, style.thumbnail().getInputStream()
+                    , WidgetStyle.thumbnailPath(widget, style));
+        }
+
         return installedWidget;
     }
 

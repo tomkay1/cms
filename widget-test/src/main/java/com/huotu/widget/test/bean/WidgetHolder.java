@@ -25,4 +25,12 @@ public interface WidgetHolder extends WidgetLocateService {
      * @return
      */
     Set<Widget> getWidgetSet();
+
+    interface WidgetLoader {
+        /**
+         * @param className 控件的class name
+         * @return 控件实例
+         */
+        Widget toWidget(String className) throws ClassNotFoundException, IllegalAccessException, InstantiationException;
+    }
 }

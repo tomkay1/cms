@@ -12,7 +12,6 @@ package com.huotu.hotcms.widget.service;
 import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.widget.InstalledWidget;
-import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.exception.FormatException;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -105,25 +104,12 @@ public interface WidgetFactoryService {
     void installWidgetInfo(WidgetInfo widgetInfo) throws IOException, FormatException;
 
     /**
-     * 以实例方式直接进行安装
-     * <p>这个安装方式是非持久化的</p>
-     *
-     * @param widget 控件实例
-     * @param type   控件类型
-     * @param owner  用户
-     */
-//    @Transactional
-    InstalledWidget installWidget(Owner owner, Widget widget, String type);
-
-
-    /**
      * 以此控件包为主,禁用该控件包相关控件的其他版本。
      * <p>
      * 需要检查每一个使用该控件的组件属性是否符合要求。</p>
      * <p>
      * 如果使用了缓存系统,包括组件缓存和页面缓存,更新以后都需要清理缓存。</p>
      * <p>如果顺利完成更新则应该将过往版本的控件包标记为禁用,并且移除已安装控件实例。</p>
-     *
      *
      * @param widgetInfo  控件包
      * @param ignoreError 忽略错误 true 忽略，false 不忽略 默认不忽略错误

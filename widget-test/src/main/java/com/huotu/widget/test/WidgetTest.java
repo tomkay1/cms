@@ -150,7 +150,7 @@ public abstract class WidgetTest extends SpringWebTest {
                     .andDo(print());
         driver.get("http://localhost/editor/" + Widget.URIEncodedWidgetIdentity(widget));
         driver.findElement(By.id("editorInit")).click();
-        editorWork(widget, driver.findElement(By.id("editor")).findElement(By.tagName("div")), () -> {
+        finalEditorWork(widget, driver.findElement(By.id("editor")).findElement(By.tagName("div")), () -> {
 
             driver.findElement(By.id("editorSaver")).click();
             if (driver instanceof JavascriptExecutor) {
@@ -197,6 +197,19 @@ public abstract class WidgetTest extends SpringWebTest {
                 throw new IllegalStateException("no JavascriptExecutor driver");
             });
         }
+    }
+
+    private void finalEditorWork(Widget widget, WebElement editor
+            , Supplier<Map<String, Object>> currentWidgetProperties) throws IOException {
+
+        // 获取默认属性
+        ComponentProperties properties = widget.defaultProperties(resourceService);
+
+        Map<String, Object> map = currentWidgetProperties.get();
+
+        //
+
+        editorWork(widget, editor, currentWidgetProperties);
     }
 
     /**

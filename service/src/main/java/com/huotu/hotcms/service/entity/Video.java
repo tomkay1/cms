@@ -10,6 +10,7 @@
 package com.huotu.hotcms.service.entity;
 
 import com.huotu.hotcms.service.ImagesOwner;
+import com.huotu.hotcms.service.model.widget.VideoModel;
 import lombok.Getter;
 import lombok.Setter;
 import me.jiangcai.lib.resource.service.ResourceService;
@@ -56,6 +57,17 @@ public class Video extends AbstractContent implements ImagesOwner {
     @Column(name = "playTimes")
     private int playTimes;
 
+    public static VideoModel toVideoModel(Video video) {
+        VideoModel videoModel = new VideoModel();
+        videoModel.setCreateTime(video.getCreateTime());
+        videoModel.setId(video.getId());
+        videoModel.setTitle(video.getTitle());
+        videoModel.setOutLinkUrl(video.getOutLinkUrl());
+        videoModel.setThumbUri(video.getThumbUri());
+        videoModel.setVideoUrl(video.getVideoUrl());
+        return videoModel;
+    }
+
     @Override
     public Video copy() {
         Video video = new Video();
@@ -97,5 +109,4 @@ public class Video extends AbstractContent implements ImagesOwner {
     public String generateResourcePath(int index, ResourceService resourceService, InputStream stream) {
         return UUID.randomUUID().toString();
     }
-
 }

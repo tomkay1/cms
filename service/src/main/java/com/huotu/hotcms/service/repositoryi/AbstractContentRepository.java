@@ -40,6 +40,13 @@ public interface AbstractContentRepository<T extends AbstractContent>
      */
     List<T> findByCategory_Id(Long category);
 
+    /**
+     * @param site   站点
+     * @param serial 数据源
+     * @return 按数据源查找
+     */
+    List<T> findBySiteAndCategory_Serial(Site site, String serial);
+
     Page<T> findByCategory(Category category, Pageable pageable);
 
     /**

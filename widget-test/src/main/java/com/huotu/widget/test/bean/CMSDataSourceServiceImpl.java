@@ -14,11 +14,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
+import com.huotu.hotcms.service.model.BaseModel;
 import com.huotu.hotcms.service.model.LinkModel;
 import com.huotu.hotcms.service.model.NavbarPageInfoModel;
+import com.huotu.hotcms.service.model.widget.VideoModel;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.service.CMSDataSourceService;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +29,7 @@ import java.util.List;
  * Created by lhx on 2016/6/28.
  */
 public class CMSDataSourceServiceImpl implements CMSDataSourceService {
+
 
     @Override
     public List<Category> findLinkCategory() {
@@ -71,22 +75,62 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
 
     @Override
     public List<Category> findVideoCategory() {
-        return null;
+        Category category = new Category();
+        category.setSerial("456454564");
+        category.setName("公司视频");
+        category.setContentType(ContentType.Video);
+        List<Category> categories = new ArrayList<>();
+        categories.add(category);
+        return categories;
     }
 
     @Override
-    public List<Object> findVideoContent(String serial) {
-        return null;
+    public List<VideoModel> findVideoContent(String serial) {
+        VideoModel videoModel1 = new VideoModel();
+        videoModel1.setVideoUrl("http://localhost:8080/video/123.mp4");
+        videoModel1.setThumbUri("http://placehold.it/106x82?text=voide");
+        videoModel1.setOutLinkUrl("http://player.video.qiyi.com/4e5bd13c2da9f53f1b43d7a202f3bca9/0/5543/v_19rrm04vks.swf-" +
+                "albumId=522414000-tvId=522414000-isPurchase=0-cnId=6");
+        videoModel1.setTitle("视频1");
+        videoModel1.setId(1L);
+        VideoModel videoModel2 = new VideoModel();
+        videoModel2.setVideoUrl("http://localhost:8080/video/123.mp4");
+        videoModel2.setThumbUri("http://placehold.it/106x82?text=voide");
+        videoModel2.setOutLinkUrl("http://player.video.qiyi.com/4e5bd13c2da9f53f1b43d7a202f3bca9/0/5543/v_19rrm04vks.swf-" +
+                "albumId=522414000-tvId=522414000-isPurchase=0-cnId=6");
+        videoModel2.setTitle("视频2");
+        videoModel2.setId(2L);
+        List<VideoModel> videoModels = new ArrayList<>();
+        videoModels.add(videoModel1);
+        videoModels.add(videoModel2);
+        return videoModels;
     }
 
     @Override
     public List<Category> findArticleCategory() {
-        return null;
+        Category category = new Category();
+        category.setSerial("123456789");
+        category.setName("新闻快讯");
+        category.setContentType(ContentType.Article);
+        List<Category> categories = new ArrayList<>();
+        categories.add(category);
+        return categories;
     }
 
     @Override
-    public List<Object> findArticleContent(String serial) {
-        return null;
+    public List<BaseModel> findArticleContent(String serial) {
+        BaseModel baseModel = new BaseModel();
+        baseModel.setId(1L);
+        baseModel.setTitle("中共19大召开");
+        baseModel.setCreateTime(LocalDateTime.now());
+        BaseModel baseModel1 = new BaseModel();
+        baseModel1.setId(2L);
+        baseModel1.setTitle("中共192大召开");
+        baseModel1.setCreateTime(LocalDateTime.now());
+        List<BaseModel> list = new ArrayList<>();
+        list.add(baseModel);
+        list.add(baseModel1);
+        return list;
     }
 
     @Override

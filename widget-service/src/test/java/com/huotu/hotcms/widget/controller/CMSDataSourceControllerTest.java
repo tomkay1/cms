@@ -10,6 +10,7 @@
 package com.huotu.hotcms.widget.controller;
 
 import com.huotu.hotcms.service.common.ContentType;
+import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Site;
@@ -45,6 +46,28 @@ public class CMSDataSourceControllerTest extends TestBase {
         Link link = randomLink(category);
 
         mockMvc.perform(get("/dataSource/findLink/{parentId}", String.valueOf(category.getId()))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(1));
+    }
+
+    @Test
+    public void testFindArticleContent() throws Exception {
+        Site site = randomSite(randomOwner());
+        Category category = randomCategory(site, ContentType.Article);
+
+        mockMvc.perform(get("/dataSource/findArticleContent/{serial}", String.valueOf(category.getId()))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(0))
+        ;
+        category.setSerial("444555");
+        category = categoryRepository.save(category);
+        Article article = randomArticle(category);
+
+        mockMvc.perform(get("/dataSource/findArticleContent/{serial}", String.valueOf(category.getSerial()))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())

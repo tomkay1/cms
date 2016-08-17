@@ -12,12 +12,18 @@ package com.huotu.hotcms.widget.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.service.common.ContentType;
+import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
+import com.huotu.hotcms.service.entity.Video;
+import com.huotu.hotcms.service.model.BaseModel;
 import com.huotu.hotcms.service.model.LinkModel;
 import com.huotu.hotcms.service.model.NavbarPageInfoModel;
+import com.huotu.hotcms.service.model.widget.VideoModel;
+import com.huotu.hotcms.service.repository.ArticleRepository;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.LinkRepository;
+import com.huotu.hotcms.service.repository.VideoRepository;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.repository.PageInfoRepository;
@@ -36,11 +42,14 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
 
     @Autowired
     private CategoryRepository categoryRepository;
-
     @Autowired
     private LinkRepository linkRepository;
     @Autowired
     private PageInfoRepository pageInfoRepository;
+    @Autowired
+    private ArticleRepository articleRepository;
+    @Autowired
+    private VideoRepository videoRepository;
 
 
     @Override
@@ -84,22 +93,34 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
 
     @Override
     public List<Category> findVideoCategory() {
-        return null;
+        return categoryRepository.findBySiteAndContentType(CMSContext.RequestContext().getSite(), ContentType.Video);
     }
 
     @Override
-    public List<Object> findVideoContent(String serial) {
-        return null;
+    public List<VideoModel> findVideoContent(String serial) {
+        List<Video> list = videoRepository.findBySiteAndCategory_Serial(CMSContext.RequestContext().getSite(), serial);
+        List<VideoModel> videoModels = new ArrayList<>();
+        for (Video video : list) {
+            VideoModel videoModel = Video.toVideoModel(video);
+            videoModels.add(videoModel);
+        }
+        return videoModels;
     }
 
     @Override
     public List<Category> findArticleCategory() {
-        return null;
+        return categoryRepository.findBySiteAndContentType(CMSContext.RequestContext().getSite(), ContentType.Article);
     }
 
     @Override
-    public List<Object> findArticleContent(String serial) {
-        return null;
+    public List<BaseModel> findArticleContent(String serial) {
+        List<Article> list = articleRepository.findBySiteAndCategory_Serial(CMSContext.RequestContext().getSite(), serial);
+        List<BaseModel> baseModels = new ArrayList<>();
+        for (Article article : list) {
+            BaseModel baseModel = Article.toBaseModel(article);
+            baseModels.add(baseModel);
+        }
+        return baseModels;
     }
 
     @Override

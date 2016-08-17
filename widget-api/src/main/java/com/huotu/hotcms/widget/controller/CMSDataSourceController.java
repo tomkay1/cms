@@ -9,7 +9,9 @@
 
 package com.huotu.hotcms.widget.controller;
 
+import com.huotu.hotcms.service.model.BaseModel;
 import com.huotu.hotcms.service.model.LinkModel;
+import com.huotu.hotcms.service.model.widget.VideoModel;
 import com.huotu.hotcms.widget.service.CMSDataSourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -43,6 +45,30 @@ public class CMSDataSourceController {
         List<LinkModel> data = cmsDataSourceService.findLinkContent(parentId);
         return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(data);
     }
+
+
+    /**
+     * @param serial 数据源id
+     * @return json 返回当前parentId 的所有子级元素
+     * 例如{code=200,message="Success",data=[...]},{code=403,message="fail",data=[]}
+     */
+    @RequestMapping(value = "/findArticleContent/{serial}", method = RequestMethod.GET)
+    public ResponseEntity findArticleContent(@PathVariable("serial") String serial) {
+        List<BaseModel> data = cmsDataSourceService.findArticleContent(serial);
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(data);
+    }
+
+    /**
+     * @param serial 数据源id
+     * @return json 返回当前parentId 的所有子级元素
+     * 例如{code=200,message="Success",data=[...]},{code=403,message="fail",data=[]}
+     */
+    @RequestMapping(value = "/findVideoContent/{serial}", method = RequestMethod.GET)
+    public ResponseEntity findVideoContent(@PathVariable("serial") String serial) {
+        List<VideoModel> data = cmsDataSourceService.findVideoContent(serial);
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(data);
+    }
+
 
 
 }

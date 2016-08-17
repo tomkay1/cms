@@ -11,7 +11,9 @@ package com.huotu.hotcms.widget.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.model.BaseModel;
 import com.huotu.hotcms.service.model.LinkModel;
+import com.huotu.hotcms.service.model.widget.VideoModel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,7 +52,7 @@ public interface CMSDataSourceService {
      * @param serial 数据源的serial
      * @return 视频内容列表
      */
-    List<Object> findVideoContent(String serial);
+    List<VideoModel> findVideoContent(String serial);
 
     /**
      * 查询当前站点下文章数据源列表
@@ -65,7 +67,7 @@ public interface CMSDataSourceService {
      * @param serial 数据源的serial
      * @return 视频内容列表
      */
-    List<Object> findArticleContent(String serial);
+    List<BaseModel> findArticleContent(String serial);
 
 
 

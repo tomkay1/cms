@@ -10,6 +10,7 @@
 package com.huotu.hotcms.widget.test;
 
 import com.huotu.hotcms.service.common.ContentType;
+import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Gallery;
 import com.huotu.hotcms.service.entity.GalleryItem;
@@ -18,6 +19,7 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
+import com.huotu.hotcms.service.repository.ArticleRepository;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.GalleryItemRepository;
 import com.huotu.hotcms.service.repository.GalleryRepository;
@@ -68,6 +70,8 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @WebAppConfiguration
 public abstract class TestBase extends SpringWebTest {
 
+    @Autowired
+    public CategoryRepository categoryRepository;
     //建立一系列已经建立好的控件以及默认属性
     WidgetIdentifier[] preparedWidgets = new WidgetIdentifier[]{
 //            new WidgetIdentifier("com.huotu.hotcms.widget.pagingWidget",
@@ -85,8 +89,6 @@ public abstract class TestBase extends SpringWebTest {
     @Autowired
     private OwnerRepository ownerRepository;
     @Autowired
-    private CategoryRepository categoryRepository;
-    @Autowired
     private SiteResolveService siteResolveService;
     @Autowired
     private SiteService siteService;
@@ -100,6 +102,8 @@ public abstract class TestBase extends SpringWebTest {
     private GalleryItemRepository galleryItemRepository;
     @Autowired
     private LinkRepository linkRepository;
+    @Autowired
+    private ArticleRepository articleRepository;
 
     @Autowired
     private ResourceService resourceService;
@@ -271,6 +275,7 @@ public abstract class TestBase extends SpringWebTest {
         site.setTitle(UUID.randomUUID().toString());
         site.setCreateTime(LocalDateTime.now());
         site.setEnabled(true);
+        site.setTitle(UUID.randomUUID().toString());
         site.setDescription(UUID.randomUUID().toString());
         String[] domains = randomDomains();
         site = siteService.newSite(domains, domains[0], site, Locale.CHINA);
@@ -369,7 +374,16 @@ public abstract class TestBase extends SpringWebTest {
     @NotNull
     protected Link randomLink(Category category) {
         Link link = new Link();
+        link.setTitle(UUID.randomUUID().toString());
         link.setCategory(category);
         return linkRepository.save(link);
+    }
+
+    @NotNull
+    protected Article randomArticle(Category category) {
+        Article article = new Article();
+        article.setTitle(UUID.randomUUID().toString());
+        article.setCategory(category);
+        return articleRepository.save(article);
     }
 }

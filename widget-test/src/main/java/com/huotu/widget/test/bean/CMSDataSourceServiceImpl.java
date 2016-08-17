@@ -66,7 +66,7 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
         if (list != null && list.size() > 0) {
             List<LinkModel> linkModels = new ArrayList<>();
             for (Link link : list) {
-                linkModels.add(Link.getLinkModel(link));
+                linkModels.add(Link.toLinkModel(link));
             }
             return linkModels;
         }

@@ -51,7 +51,6 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     @Autowired
     private VideoRepository videoRepository;
 
-
     @Override
     public List<Category> findLinkCategory() {
         return categoryRepository.findBySiteAndContentType(CMSContext.RequestContext().getSite(), ContentType.Link);
@@ -79,12 +78,20 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
 
     @Override
     public List<LinkModel> findLinkContent(Long categoryId) {
+//        List<Video> list = videoRepository.findByCategory_SiteAndCategory_Serial(CMSContext.RequestContext().getSite(), serial);
+//        List<VideoModel> videoModels = new ArrayList<>();
+//        for (Video video : list) {
+//            VideoModel videoModel = Video.toVideoModel(video);
+//            videoModels.add(videoModel);
+//        }
+//        return videoModels;
+
         List<LinkModel> linkModels = new ArrayList<>();
         if (categoryRepository.findOne(categoryId).getContentType().equals(ContentType.Link)) {
             List<Link> links = linkRepository.findByCategory_Id(categoryId);
             if (links != null && links.size() > 0) {
                 for (Link link : links) {
-                    linkModels.add(Link.getLinkModel(link));
+                    linkModels.add(Link.toLinkModel(link));
                 }
             }
         }
@@ -98,7 +105,7 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
 
     @Override
     public List<VideoModel> findVideoContent(String serial) {
-        List<Video> list = videoRepository.findBySiteAndCategory_Serial(CMSContext.RequestContext().getSite(), serial);
+        List<Video> list = videoRepository.findByCategory_SiteAndCategory_Serial(CMSContext.RequestContext().getSite(), serial);
         List<VideoModel> videoModels = new ArrayList<>();
         for (Video video : list) {
             VideoModel videoModel = Video.toVideoModel(video);
@@ -114,7 +121,8 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
 
     @Override
     public List<BaseModel> findArticleContent(String serial) {
-        List<Article> list = articleRepository.findBySiteAndCategory_Serial(CMSContext.RequestContext().getSite(), serial);
+        List<Article> list = articleRepository.findByCategory_SiteAndCategory_Serial(
+                CMSContext.RequestContext().getSite(), serial);
         List<BaseModel> baseModels = new ArrayList<>();
         for (Article article : list) {
             BaseModel baseModel = Article.toBaseModel(article);

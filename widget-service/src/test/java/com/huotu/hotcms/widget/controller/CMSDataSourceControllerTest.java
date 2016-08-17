@@ -14,6 +14,7 @@ import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.entity.Video;
 import com.huotu.hotcms.widget.test.TestBase;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -55,19 +56,41 @@ public class CMSDataSourceControllerTest extends TestBase {
     @Test
     public void testFindArticleContent() throws Exception {
         Site site = randomSite(randomOwner());
-        Category category = randomCategory(site, ContentType.Article);
 
-        mockMvc.perform(get("/dataSource/findArticleContent/{serial}", String.valueOf(category.getId()))
+        Category category = randomCategory(site, ContentType.Article);
+        mockMvc.perform(get("/dataSource/findArticleContent/{serial}", String.valueOf(category.getSerial()))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$.length()").value(0))
         ;
         category.setSerial("444555");
-        category = categoryRepository.save(category);
+        category = categoryRepository.saveAndFlush(category);
         Article article = randomArticle(category);
 
         mockMvc.perform(get("/dataSource/findArticleContent/{serial}", String.valueOf(category.getSerial()))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(1));
+    }
+
+    @Test
+    public void testFindVideoContent() throws Exception {
+        Site site = randomSite(randomOwner());
+
+        Category category = randomCategory(site, ContentType.Video);
+        mockMvc.perform(get("/dataSource/findVideoContent/{serial}", String.valueOf(category.getSerial()))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(0))
+        ;
+        category.setSerial("444555");
+        category = categoryRepository.saveAndFlush(category);
+        Video video = randomVideo(category);
+
+        mockMvc.perform(get("/dataSource/findVideoContent/{serial}", String.valueOf(category.getSerial()))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())

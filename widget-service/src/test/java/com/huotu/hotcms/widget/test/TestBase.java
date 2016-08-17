@@ -16,6 +16,7 @@ import com.huotu.hotcms.service.entity.Gallery;
 import com.huotu.hotcms.service.entity.GalleryItem;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.entity.Video;
 import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
@@ -25,6 +26,7 @@ import com.huotu.hotcms.service.repository.GalleryItemRepository;
 import com.huotu.hotcms.service.repository.GalleryRepository;
 import com.huotu.hotcms.service.repository.LinkRepository;
 import com.huotu.hotcms.service.repository.OwnerRepository;
+import com.huotu.hotcms.service.repository.VideoRepository;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.thymeleaf.service.SiteResolveService;
 import com.huotu.hotcms.service.util.StringUtil;
@@ -79,8 +81,6 @@ public abstract class TestBase extends SpringWebTest {
 //            ,
             new WidgetIdentifier("com.huotu.hotcms.widget.picCarousel",
                     "picCarousel", "1.0-SNAPSHOT")
-            , new WidgetIdentifier("com.huotu.hotcms.widget.productList",
-            "productList", "1.0-SNAPSHOT")
             , new WidgetIdentifier("com.huotu.hotcms.widget.picBanner",
             "picBanner", "1.0-SNAPSHOT")
             , new WidgetIdentifier("com.huotu.hotcms.widget.friendshipLink",
@@ -107,6 +107,9 @@ public abstract class TestBase extends SpringWebTest {
 
     @Autowired
     private ResourceService resourceService;
+
+    @Autowired
+    private VideoRepository videoRepository;
 
     @Override
     public void createMockMVC() {
@@ -272,7 +275,6 @@ public abstract class TestBase extends SpringWebTest {
         site.setOwner(owner);
         site.setName(UUID.randomUUID().toString());
 //        site.setSiteType(SiteType.SITE_PC_WEBSITE);
-        site.setTitle(UUID.randomUUID().toString());
         site.setCreateTime(LocalDateTime.now());
         site.setEnabled(true);
         site.setTitle(UUID.randomUUID().toString());
@@ -374,7 +376,6 @@ public abstract class TestBase extends SpringWebTest {
     @NotNull
     protected Link randomLink(Category category) {
         Link link = new Link();
-        link.setTitle(UUID.randomUUID().toString());
         link.setCategory(category);
         return linkRepository.save(link);
     }
@@ -382,8 +383,14 @@ public abstract class TestBase extends SpringWebTest {
     @NotNull
     protected Article randomArticle(Category category) {
         Article article = new Article();
-        article.setTitle(UUID.randomUUID().toString());
         article.setCategory(category);
         return articleRepository.save(article);
+    }
+
+    @NotNull
+    protected Video randomVideo(Category category) {
+        Video video = new Video();
+        video.setCategory(category);
+        return videoRepository.save(video);
     }
 }

@@ -61,7 +61,7 @@ var widgetHandle = {
         GlobalID = $(ele).siblings('.view').children().attr('id');
         var data = widgetProperties(GlobalID);
         if (wsCache.get(GlobalID) == null) widgetHandle.setStroe(GlobalID, data);
-        updataWidgetEditor(GlobalID, widgetProperties(GlobalID), element);
+        updataWidgetEditor(GlobalID, widgetProperties(GlobalID), ele);
     },
     setStroe: function (id, data) {
         if ( data ) {

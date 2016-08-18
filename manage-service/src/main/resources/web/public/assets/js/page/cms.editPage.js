@@ -60,9 +60,9 @@ var editFunc = {
             $('.modal-backdrop').fadeIn();
             var ele = $('#configuration');
             ele.show();
-            var id = $(this).data('target');
+            var id = $(this).attr('data-target');
             $('.conf-body').find('.common-conf').each(function () {
-                var oId = $(this).data('id') ;
+                var oId = $(this).attr('data-id') ;
                 if (oId == id) {
                     $(this).show();
                 }
@@ -73,10 +73,10 @@ var editFunc = {
             // 创建当前操作组件的数据
             widgetHandle.createStore($(this));
             var element = $('#'+GlobalID);
-            var styleid = element.data('styleid');
+            var styleid = element.attr('data-styleid');
             var container = editFunc.findCurrentEdit(GlobalID);
             container.find('img.changeStyle').each(function () {
-                if ( $(this).data('styleid') == styleid ) {
+                if ( $(this).attr('data-styleid') == styleid ) {
                     editFunc.changeImgStyleActive($(this));
                 }
             });
@@ -84,10 +84,10 @@ var editFunc = {
     },
     findCurrentEdit: function (elementId) {
         var element = $('#'+elementId);
-        var widgetidentity = element.data('widgetidentity');
+        var widgetidentity = element.attr('data-widgetidentity');
         var container = '';
         $('.common-conf').each(function () {
-            if( $(this).data('id') == widgetidentity) {
+            if( $(this).attr('data-id') == widgetidentity) {
                 container = $(this);
             }
         });
@@ -344,7 +344,7 @@ editPage.init = function () {
 
     $('.conf-body').on('click','img.changeStyle', function () {
         editFunc.changeImgStyleActive($(this));
-        var id = $(this).data('styleid');
+        var id = $(this).attr('data-styleid');
         $('#'+GlobalID).attr('data-styleid',id);
     });
 

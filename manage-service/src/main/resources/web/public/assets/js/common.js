@@ -102,7 +102,7 @@ var widgetHandle = {
  */
 function updataWidgetEditor(globalID, properties) {
     var ele = $('#' + globalID);
-    var widgetId = ele.data('widgetidentity');
+    var widgetId = ele.attr('data-widgetidentity');
     var DATA = {
         "widgetIdentity": widgetId,
         "properties": properties,
@@ -124,8 +124,8 @@ function updataWidgetEditor(globalID, properties) {
  */
 function updataCompoentPreview(globalID, properties) {
     var ele = $('#' + globalID);
-    var widgetId = ele.data('widgetidentity');
-    var styleId = ele.data('styleid');
+    var widgetId = ele.attr('data-widgetidentity');
+    var styleId = ele.attr('data-styleid');
     var DATA = {
         "widgetIdentity": widgetId,
         "styleId": styleId,
@@ -338,7 +338,7 @@ var Util = {
         var loading = layer.load(2);
         $.ajax({
             type: 'POST',
-            ulr: url,
+            url: url,
             contentType: "application/json; charset=utf-8",
             dataType:'html',
             data:option,
@@ -346,7 +346,6 @@ var Util = {
                 if($.isFunction(callback)){
                     callback(data, textStatus, jqXHR);
                     layer.close(loading);
-                    layer.msg('操作成功', {time: 2000});
                 }
             },
             error:function(response, textStatus, errorThrown){

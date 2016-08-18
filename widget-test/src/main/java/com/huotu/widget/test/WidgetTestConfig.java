@@ -67,6 +67,8 @@ public class WidgetTestConfig extends WebMvcConfigurerAdapter {
         super.addResourceHandlers(registry);
         registry.addResourceHandler("/manage-resources/**")
                 .addResourceLocations("classpath:/web/public/");
+        registry.addResourceHandler("/_resources/**")
+                .addResourceLocations("/_resources/");
     }
 
     @Override

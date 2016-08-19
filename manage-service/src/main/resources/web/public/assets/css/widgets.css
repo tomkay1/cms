@@ -21,35 +21,35 @@
 
 /*Navigation Bar Style*/
 
-.navbar {
+.topnavbar .navbar {
     padding-top: 16px;
     margin: 0;
     background-color: #fff;
     border: none;
 }
-.navbar .logo {
+.topnavbar .navbar .logo {
     margin-left: 20px;
     max-width: 163px;
 }
 
-.navbar-right  .dropdown-menu {
+.topnavbar .navbar-right  .dropdown-menu {
     top: 100%;
     left: 0;
     min-width: 0;
 }
-.navbar-default .navbar-nav>.open>a,
-.navbar-default .navbar-nav>.open>a:focus,
-.navbar-default .navbar-nav>.open>a:hover,
-.navbar-default .navbar-nav>.active>a,
-.navbar-default .navbar-nav>.active>a:focus,
-.navbar-default .navbar-nav>.active>a:hover {
+.topnavbar .navbar-default .navbar-nav>.open>a,
+.topnavbar .navbar-default .navbar-nav>.open>a:focus,
+.topnavbar .navbar-default .navbar-nav>.open>a:hover,
+.topnavbar .navbar-default .navbar-nav>.active>a,
+.topnavbar .navbar-default .navbar-nav>.active>a:focus,
+.topnavbar .navbar-default .navbar-nav>.active>a:hover {
     background-color: transparent;
 }
-.dropdown-menu>li>a {
+.topnavbar .dropdown-menu>li>a {
     padding: 14px 15px;
 }
 @media (min-width: 769px) {
-    .nav > .dropdown {
+    .topnavbar .nav > .dropdown {
         padding-bottom: 16px;
     }
 }
@@ -264,6 +264,7 @@
         display: inline-block;
     }
 }
+
 /*图文之一*/
 .imageText .title {
     padding-bottom: 26px;

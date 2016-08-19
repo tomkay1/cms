@@ -138,7 +138,7 @@ CMSWidgets.defaultConfig = {
             });
             $("textarea").each(function () {
                 var name = $(this).attr("name");
-                that.properties[name] = $(this).text();
+                that.properties[name] = $(this).val();
             });
             $(":text").each(function () {
                 setProperties($(this));

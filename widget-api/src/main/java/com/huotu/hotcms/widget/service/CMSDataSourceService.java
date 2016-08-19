@@ -9,7 +9,6 @@
 
 package com.huotu.hotcms.widget.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.model.BaseModel;
 import com.huotu.hotcms.service.model.LinkModel;
@@ -68,24 +67,5 @@ public interface CMSDataSourceService {
      * @return 视频内容列表
      */
     List<BaseModel> findArticleContent(String serial);
-
-
-
-    /**
-     * <p>查询当前站点可用page列表</p>
-     *
-     * @return 返回当前站点json Page
-     * TODO 该方法待删除
-     */
-    String findSitePage() throws JsonProcessingException;
-
-    /**
-     * 查询一级页面
-     *
-     * @return json串
-     * TODO 该方法待删除
-     */
-    String findSiteNotParentPage();
-
 
 }

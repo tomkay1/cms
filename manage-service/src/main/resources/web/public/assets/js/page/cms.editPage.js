@@ -280,6 +280,7 @@ var Page = {
             handle: ".drag",
             create: function(e, ui ) {
                 var ele = $(e.target).find('.view').children().eq(0);
+                console.log(ele)
                 var oId = ele.attr('id');
                 if ( !oId ) {
                     ele.attr('id', Page.randomId(6))

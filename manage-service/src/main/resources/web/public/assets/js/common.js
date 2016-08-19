@@ -61,12 +61,7 @@ var widgetHandle = {
         GlobalID = $(ele).siblings('.view').children().attr('id');
         var data = widgetProperties(GlobalID);
         if (wsCache.get(GlobalID) == null) widgetHandle.setStroe(GlobalID, data);
-        widgetHandle.getIdentity(ele ,function (identity) {
-            var $DOM = widgetHandle.getEditAreaElement(identity);
-            dynamicLoading.js( wsCache.get(identity).script);
-            if ( CMSWidgets )  CMSWidgets.openEditor(GlobalID, identity, $DOM);
-        });
-        updataWidgetEditor(GlobalID,widgetProperties(GlobalID));
+        updataWidgetEditor(GlobalID, widgetProperties(GlobalID), ele);
     },
     setStroe: function (id, data) {
         if ( data ) {
@@ -100,7 +95,7 @@ var widgetHandle = {
 /**
  * 更新控件编辑器
  */
-function updataWidgetEditor(globalID, properties) {
+function updataWidgetEditor(globalID, properties, element) {
     var ele = $('#' + globalID);
     var widgetId = ele.data('widgetidentity');
     var DATA = {
@@ -114,7 +109,12 @@ function updataWidgetEditor(globalID, properties) {
         function (html) {
             if (html) {
                 var container = editFunc.findCurrentEdit(GlobalID).children().eq(1);
-                container.append(html);
+                container.html(html);
+                widgetHandle.getIdentity(element, function (identity) {
+                    var $DOM = widgetHandle.getEditAreaElement(identity);
+                    dynamicLoading.js(wsCache.get(identity).script);
+                    if (CMSWidgets)  CMSWidgets.openEditor(GlobalID, identity, $DOM);
+                });
             }
         }
     );
@@ -125,7 +125,7 @@ function updataWidgetEditor(globalID, properties) {
 function updataCompoentPreview(globalID, properties) {
     var ele = $('#' + globalID);
     var widgetId = ele.data('widgetidentity');
-    var styleId = ele.data('styleid');
+    var styleId = ele.attr('data-styleid');
     var DATA = {
         "widgetIdentity": widgetId,
         "styleId": styleId,
@@ -338,7 +338,7 @@ var Util = {
         var loading = layer.load(2);
         $.ajax({
             type: 'POST',
-            ulr: url,
+            url: url,
             contentType: "application/json; charset=utf-8",
             dataType:'html',
             data:option,

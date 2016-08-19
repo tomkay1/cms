@@ -9,8 +9,6 @@
 
 package com.huotu.hotcms.widget.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Category;
@@ -18,15 +16,12 @@ import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Video;
 import com.huotu.hotcms.service.model.BaseModel;
 import com.huotu.hotcms.service.model.LinkModel;
-import com.huotu.hotcms.service.model.NavbarPageInfoModel;
 import com.huotu.hotcms.service.model.widget.VideoModel;
 import com.huotu.hotcms.service.repository.ArticleRepository;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.LinkRepository;
 import com.huotu.hotcms.service.repository.VideoRepository;
 import com.huotu.hotcms.widget.CMSContext;
-import com.huotu.hotcms.widget.entity.PageInfo;
-import com.huotu.hotcms.widget.repository.PageInfoRepository;
 import com.huotu.hotcms.widget.service.CMSDataSourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,8 +40,6 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     @Autowired
     private LinkRepository linkRepository;
     @Autowired
-    private PageInfoRepository pageInfoRepository;
-    @Autowired
     private ArticleRepository articleRepository;
     @Autowired
     private VideoRepository videoRepository;
@@ -56,25 +49,6 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
         return categoryRepository.findBySiteAndContentType(CMSContext.RequestContext().getSite(), ContentType.Link);
     }
 
-    @Override
-    public String findSitePage() {
-        List<PageInfo> list = pageInfoRepository.findBySite(CMSContext.RequestContext().getSite());
-        List<NavbarPageInfoModel> navbarPageInfoModels = new ArrayList<>();
-        for (PageInfo pageInfo : list) {
-            NavbarPageInfoModel navbarPageInfoModel = new NavbarPageInfoModel();
-            navbarPageInfoModel.setName(pageInfo.getTitle());
-            navbarPageInfoModel.setId(pageInfo.getPageId());
-            navbarPageInfoModel.setPagePath(pageInfo.getPagePath());
-            navbarPageInfoModel.setPid(pageInfo.getParent() != null ? pageInfo.getParent().getPageId() : 0);
-            navbarPageInfoModels.add(navbarPageInfoModel);
-        }
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            return objectMapper.writeValueAsString(navbarPageInfoModels);
-        } catch (JsonProcessingException e) {
-            return "";
-        }
-    }
 
     @Override
     public List<LinkModel> findLinkContent(String serial) {
@@ -104,6 +78,7 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
 
     @Override
     public List<Category> findArticleCategory() {
+
         return categoryRepository.findBySiteAndContentType(CMSContext.RequestContext().getSite(), ContentType.Article);
     }
 
@@ -119,23 +94,4 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
         return baseModels;
     }
 
-    @Override
-    public String findSiteNotParentPage() {
-        List<PageInfo> list = pageInfoRepository.findBySiteAndParent(CMSContext.RequestContext().getSite(), null);
-        List<NavbarPageInfoModel> navbarPageInfoModels = new ArrayList<>();
-        for (PageInfo pageInfo : list) {
-            NavbarPageInfoModel navbarPageInfoModel = new NavbarPageInfoModel();
-            navbarPageInfoModel.setName(pageInfo.getTitle());
-            navbarPageInfoModel.setId(pageInfo.getPageId());
-            navbarPageInfoModel.setPagePath(pageInfo.getPagePath());
-            navbarPageInfoModel.setPid(pageInfo.getParent() != null ? pageInfo.getParent().getPageId() : 0);
-            navbarPageInfoModels.add(navbarPageInfoModel);
-        }
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            return objectMapper.writeValueAsString(navbarPageInfoModels);
-        } catch (JsonProcessingException e) {
-            return "";
-        }
-    }
 }

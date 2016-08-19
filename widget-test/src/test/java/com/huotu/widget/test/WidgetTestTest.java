@@ -16,7 +16,6 @@ import me.jiangcai.lib.resource.service.ResourceService;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
@@ -42,13 +41,6 @@ public class WidgetTestTest extends WidgetTest {
 
     @Override
     protected void editorWork(Widget widget, WebElement editor, Supplier<Map<String, Object>> currentWidgetProperties) throws IOException {
-        WebElement webElement = editor.findElement(By.name("content"));
-        Actions actions = new Actions(driver);
-        actions.sendKeys(webElement, "abc").build().perform();
-        Map<String, Object> map = currentWidgetProperties.get();
-        assertThat(map.containsKey("content")).isEqualTo(true);
-        assertThat(map.get("content").toString()).isEqualTo("abc");
-
         if (driver instanceof JavascriptExecutor) {
             Boolean initFlag = (Boolean) ((JavascriptExecutor) driver).executeScript("return window['inited']");
             assertThat(initFlag)

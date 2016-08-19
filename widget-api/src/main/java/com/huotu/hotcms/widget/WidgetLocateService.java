@@ -9,7 +9,10 @@
 
 package com.huotu.hotcms.widget;
 
+import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
+
+import java.io.IOException;
 
 /**
  * 控件定位服务
@@ -17,6 +20,17 @@ import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
  * @author CJ
  */
 public interface WidgetLocateService {
+
+    /**
+     * 以实例方式直接进行安装
+     * <p>这个安装方式是非持久化的</p>
+     *
+     * @param widget 控件实例
+     * @param type   控件类型
+     * @param owner  用户
+     * @throws IOException 资源处理出现问题
+     */
+    InstalledWidget installWidget(Owner owner, Widget widget, String type) throws IOException;
 
     /**
      * 定位一个控件

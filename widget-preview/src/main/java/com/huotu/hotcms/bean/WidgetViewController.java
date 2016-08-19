@@ -7,7 +7,7 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.widget.test.bean;
+package com.huotu.hotcms.bean;
 
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.widget.CMSContext;
@@ -92,13 +92,6 @@ public class WidgetViewController {
         setComponent(widgetName, styleId, model);
         return "browse";
     }
-
-
-    @RequestMapping(method = RequestMethod.GET, value = "/index")
-    public String index(Model model) {
-        return "editor";
-    }
-
 
     private void setComponent(WidgetIdentifier widgetName, String styleId, Model model) {
         InstalledWidget installedWidget = widgetLocateService.findWidget(widgetName.toString());

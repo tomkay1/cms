@@ -40,7 +40,7 @@
         "id": "friendshipLink1",
         "locallyName": "bootstrap style",
         "thumbnail": "http://cdn73.huobanplus.com/cmstest/widgets/thumbnail/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQuZnJpZW5kc2hpcExpbmstZnJpZW5kc2hpcExpbms6MS4wLVNOQVBTSE9U/friendshipLink1.png",
-        "previewHTML": "<div id=\"friendshipLink\" class=\"link-exchange\">\n    <dl>\n        <dt>友情链接</dt>\n        <dd>\n            <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.huobanplus.com\">火图科技</a><a rel=\"nofollow\" target=\"_blank\" href=\"http://www.huobanplus.com\">火图科技</a><a rel=\"nofollow\" target=\"_blank\" href=\"http://www.huobanplus.com\">火图科技</a><a rel=\"nofollow\" target=\"_blank\" href=\"http://www.huobanplus.com\">火图科技</a><a rel=\"nofollow\" target=\"_blank\" href=\"http://www.huobanplus.com\">火图科技</a>\n        </dd>\n    </dl>\n</div>",
+        "previewHTML": "<div class=\"link-exchange\">\n    <dl>\n        <dt>友情链接</dt>\n        <dd>\n            <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.huobanplus.com\">火图科技</a><a rel=\"nofollow\" target=\"_blank\" href=\"http://www.huobanplus.com\">火图科技</a><a rel=\"nofollow\" target=\"_blank\" href=\"http://www.huobanplus.com\">火图科技</a><a rel=\"nofollow\" target=\"_blank\" href=\"http://www.huobanplus.com\">火图科技</a><a rel=\"nofollow\" target=\"_blank\" href=\"http://www.huobanplus.com\">火图科技</a>\n        </dd>\n    </dl>\n</div>",
         "browseHTML": null
       }
     ]
@@ -62,7 +62,7 @@
         "id": "picBannerDefaultStyle",
         "locallyName": "bootstrap style picBanner",
         "thumbnail": "http://cdn73.huobanplus.com/cmstest/widgets/thumbnail/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQucGljQmFubmVyLXBpY0Jhbm5lcjoxLjAtU05BUFNIT1Q=/picBannerDefaultStyle.png",
-        "previewHTML": "<div id=\"picBanner\" class=\"pic-banner\">\r\n    <a href=\"http://www.huobanplus.com\"><img src=\"http://cdn73.huobanplus.com/cmstest/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQucGljQmFubmVyLXBpY0Jhbm5lcjoxLjAtU05BUFNIT1Q=/thumbnail/defaultStyleThumbnail.png\"\r\n                                            class=\"img-responsive hidden-xs\">\r\n    </a>\r\n    <a href=\"http://www.huobanplus.com\"><img src=\"http://cdn73.huobanplus.com/cmstest/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQucGljQmFubmVyLXBpY0Jhbm5lcjoxLjAtU05BUFNIT1Q=/thumbnail/defaultStyleThumbnail.png\"\r\n                                            class=\"img-responsive visible-xs\">\r\n    </a>\r\n</div>",
+        "previewHTML": "<div class=\"pic-banner\">\r\n    <a href=\"http://www.huobanplus.com\"><img src=\"http://cdn73.huobanplus.com/cmstest/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQucGljQmFubmVyLXBpY0Jhbm5lcjoxLjAtU05BUFNIT1Q=/thumbnail/defaultStyleThumbnail.png\"\r\n                                            class=\"img-responsive hidden-xs\">\r\n    </a>\r\n    <a href=\"http://www.huobanplus.com\"><img src=\"http://cdn73.huobanplus.com/cmstest/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQucGljQmFubmVyLXBpY0Jhbm5lcjoxLjAtU05BUFNIT1Q=/thumbnail/defaultStyleThumbnail.png\"\r\n                                            class=\"img-responsive visible-xs\">\r\n    </a>\r\n</div>",
         "browseHTML": null
       }
     ]

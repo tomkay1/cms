@@ -97,7 +97,7 @@ var widgetHandle = {
  */
 function updataWidgetEditor(globalID, properties, element) {
     var ele = $('#' + globalID);
-    var widgetId = ele.data('widgetidentity');
+    var widgetId = ele.attr('data-widgetidentity');
     var DATA = {
         "widgetIdentity": widgetId,
         "properties": properties,
@@ -110,10 +110,10 @@ function updataWidgetEditor(globalID, properties, element) {
             if (html) {
                 var container = editFunc.findCurrentEdit(GlobalID).children().eq(1);
                 container.html(html);
-                widgetHandle.getIdentity(element, function (identity) {
+                widgetHandle.getIdentity(element ,function (identity) {
                     var $DOM = widgetHandle.getEditAreaElement(identity);
-                    dynamicLoading.js(wsCache.get(identity).script);
-                    if (CMSWidgets)  CMSWidgets.openEditor(GlobalID, identity, $DOM);
+                    dynamicLoading.js( wsCache.get(identity).script);
+                    if ( CMSWidgets )  CMSWidgets.openEditor(GlobalID, identity, $DOM);
                 });
             }
         }
@@ -124,7 +124,7 @@ function updataWidgetEditor(globalID, properties, element) {
  */
 function updataCompoentPreview(globalID, properties) {
     var ele = $('#' + globalID);
-    var widgetId = ele.data('widgetidentity');
+    var widgetId = ele.attr('data-widgetidentity');
     var styleId = ele.attr('data-styleid');
     var DATA = {
         "widgetIdentity": widgetId,
@@ -346,7 +346,6 @@ var Util = {
                 if($.isFunction(callback)){
                     callback(data, textStatus, jqXHR);
                     layer.close(loading);
-                    layer.msg('操作成功', {time: 2000});
                 }
             },
             error:function(response, textStatus, errorThrown){

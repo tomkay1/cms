@@ -7,8 +7,9 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.widget.test.hold;
+package com.huotu.hotcms.hold;
 
+import com.huotu.hotcms.widget.Widget;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
@@ -18,6 +19,7 @@ import java.io.IOException;
  */
 public class TestWidgetHolder extends AbstractWidgetHolder {
     public TestWidgetHolder() throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
-        super(new ClassPathResource("META-INF/widget.properties"));
+        super(new ClassPathResource("META-INF/widget.properties")
+                , className -> (Widget) Class.forName(className).newInstance());
     }
 }

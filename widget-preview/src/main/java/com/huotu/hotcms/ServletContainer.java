@@ -7,22 +7,16 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.widget.test.bean;
-
-import com.huotu.hotcms.widget.Widget;
-import com.huotu.hotcms.widget.WidgetLocateService;
-
-import java.util.Set;
+package com.huotu.hotcms;
 
 /**
  * @author CJ
  */
-public interface WidgetHolder extends WidgetLocateService {
+public interface ServletContainer {
 
-    /**
-     * 控件集合
-     *
-     * @return
-     */
-    Set<Widget> getWidgetSet();
+    void start() throws Exception;
+
+    void stop();
+
+    void waitForStop() throws InterruptedException;
 }

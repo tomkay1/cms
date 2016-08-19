@@ -12,4 +12,4 @@
  *
  * @author CJ
  */
-package com.huotu.widget.test.hold;
+package com.huotu.hotcms.hold;

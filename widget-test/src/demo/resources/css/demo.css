@@ -7,13 +7,3 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.widget.test;
-
-import org.springframework.context.annotation.Import;
-
-/**
- * @author CJ
- */
-@Import(DSConfig.class)
-class WidgetTestConfig extends com.huotu.hotcms.config.WidgetTestConfig {
-}

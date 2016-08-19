@@ -9,13 +9,13 @@
 
 package com.huotu.widget.test;
 
+import com.huotu.hotcms.bean.WidgetHolder;
+import com.huotu.hotcms.bean.WidgetViewController;
+import com.huotu.hotcms.hold.TestWidgetHolder;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetStyle;
 import com.huotu.hotcms.widget.servlet.CMSFilter;
-import com.huotu.widget.test.bean.WidgetHolder;
-import com.huotu.widget.test.bean.WidgetViewController;
-import com.huotu.widget.test.hold.TestWidgetHolder;
 import me.jiangcai.lib.resource.service.ResourceService;
 import me.jiangcai.lib.test.SpringWebTest;
 import org.junit.Test;

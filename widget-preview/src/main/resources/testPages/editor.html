@@ -34,14 +34,16 @@
 <body>
 
 <div id="editor">
-    <button id="editorSaver">Save me!</button>
-    <button id="editorInit">init me!</button>
+    <button class="btn btn-success" id="editorSaver">Save me!</button>
+    <button class="btn btn-success" id="editorInit">init me!</button>
+    <br>
     <!--${properties} should be supported-->
     <span id="previewRegion">
         nothing
     </span>
-    <div cms:replaceEditor="${widgetId},${properties}"></div>
-
+    <div class="conf-body">
+        <div cms:replaceEditor="${widgetId},${properties}"></div>
+    </div>
 </div>
 
 <script th:inline="javascript">
@@ -97,7 +99,6 @@
             }
         });
     });
-
     $('#editorInit').click(function () {
         CMSWidgets.openEditor('previewRegion', scope);
 //        window[scope].init(1);

@@ -28,30 +28,81 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.huotu.hotcms</groupId>
-            <artifactId>widget-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>me.jiangcai.lib</groupId>
             <artifactId>test</artifactId>
             <version>${luffy.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.huotu.hotcms</groupId>
+            <artifactId>widget-preview</artifactId>
+            <version>${project.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>jetty-webapp</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>jetty-annotations</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>jetty-util</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>jetty-io</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>websocket</artifactId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>tomcat-jsp-api</artifactId>
+                    <groupId>org.apache.tomcat</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>tomcat-embed-logging-juli</artifactId>
+                    <groupId>org.apache.tomcat.embed</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>tomcat-embed-jasper</artifactId>
+                    <groupId>org.apache.tomcat.embed</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
 
     <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-            </resource>
-            <resource>
-                <directory>../manage-service/src/main/resources</directory>
-                <excludes>
-                    <exclude>web/private/**</exclude>
-                </excludes>
-            </resource>
-        </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+            <testResource>
+                <directory>src/demo/resources</directory>
+            </testResource>
+        </testResources>
         <plugins>
+            <!--添加一个测试源文件夹-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.9.1</version>
+                <executions>
+                    <execution>
+                        <id>add-test-source</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>add-test-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/demo/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>2.5</version>

@@ -7,7 +7,7 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.widget.test.bean;
+package com.huotu.hotcms.bean;
 
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.widget.CMSContext;

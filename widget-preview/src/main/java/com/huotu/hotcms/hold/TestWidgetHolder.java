@@ -7,7 +7,7 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.widget.test.hold;
+package com.huotu.hotcms.hold;
 
 import com.huotu.hotcms.widget.Widget;
 import org.springframework.core.io.ClassPathResource;

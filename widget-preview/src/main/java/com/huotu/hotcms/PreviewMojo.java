@@ -9,10 +9,11 @@
 
 package com.huotu.hotcms;
 
-import org.apache.catalina.LifecycleException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Execute;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
@@ -27,10 +28,11 @@ import java.net.URI;
 /**
  * 执行预览
  */
-@Mojo(name = "preview", requiresDependencyResolution = ResolutionScope.COMPILE)
+@Mojo(name = "preview", requiresDependencyResolution = ResolutionScope.COMPILE, defaultPhase = LifecyclePhase.PROCESS_CLASSES)
+@Execute(phase = LifecyclePhase.PROCESS_CLASSES)
 public class PreviewMojo extends AbstractMojo {
 
-    private EmbeddedTomcat tomcat;
+    private ServletContainer container;
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -51,21 +53,21 @@ public class PreviewMojo extends AbstractMojo {
 
             getLog().info("Preview Http Server will use port " + port);
             MavenProject project = (MavenProject) getPluginContext().get("project");
-            tomcat = new EmbeddedTomcat(project.getModel(), port);
-            tomcat.start();
+            container = new EmbeddedJetty(project.getModel(), port);
+            container.start();
             getLog().info("-------------close command [Ctrl+c]-----------------");
             getLog().info("Browse " + "http://localhost:" + port + "/index");
             if (Desktop.isDesktopSupported()) {
                 Desktop desktop = Desktop.getDesktop();
                 desktop.browse(new URI("http://localhost:" + port + "/index"));
             }
-            tomcat.waitForTomcat();
+            container.waitForStop();
         } catch (Exception e) {
             getLog().error("preview", e);
         }
     }
 
-    void shutdown() throws LifecycleException {
-        tomcat.stop();
+    void shutdown() {
+        container.stop();
     }
 }

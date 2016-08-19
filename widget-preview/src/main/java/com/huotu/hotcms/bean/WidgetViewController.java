@@ -71,7 +71,10 @@ public class WidgetViewController {
         Component component = new Component();
         component.setInstalledWidget(widget);
         component.setWidgetIdentity(Widget.WidgetIdentity(widget.getWidget()));
-        component.setProperties(currentProperties);
+        if (currentProperties == null)
+            component.setProperties(widget.getWidget().defaultProperties(resourceService));
+        else
+            component.setProperties(currentProperties);
 
         response.setContentType("text/css");
         widgetResolveService.widgetDependencyContent(CMSContext.RequestContext(), widget.getWidget(), Widget.CSS

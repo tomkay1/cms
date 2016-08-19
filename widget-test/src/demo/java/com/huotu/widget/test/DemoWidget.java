@@ -81,6 +81,10 @@ public class DemoWidget implements Widget {
 
     @Override
     public void valid(String styleId, ComponentProperties properties) throws IllegalArgumentException {
+        WidgetStyle style = WidgetStyle.styleByID(this, styleId);
+        if (!properties.containsKey("content")) {
+            throw new IllegalArgumentException("参数异常");
+        }
 
     }
 

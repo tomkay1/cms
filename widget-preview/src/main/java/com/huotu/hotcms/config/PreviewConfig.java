@@ -9,10 +9,9 @@
 
 package com.huotu.hotcms.config;
 
+import com.huotu.hotcms.bean.WidgetHolder;
+import com.huotu.hotcms.hold.AbstractWidgetHolder;
 import com.huotu.hotcms.widget.Widget;
-import com.huotu.widget.test.WidgetTestConfig;
-import com.huotu.widget.test.bean.WidgetHolder;
-import com.huotu.widget.test.hold.AbstractWidgetHolder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -43,7 +42,7 @@ public class PreviewConfig extends WidgetTestConfig {
         assert classesPath != null;
         File propertiesFile = new File(classesPath, "META-INF/widget.properties");
         URLClassLoader classLoader = new URLClassLoader(new URL[]{classesPath.toURI().toURL()}
-                , ClassLoader.getSystemClassLoader());
+                , Thread.currentThread().getContextClassLoader());
         return new AbstractWidgetHolder(new FileSystemResource(propertiesFile)
                 , className -> (Widget) classLoader.loadClass(className).newInstance());
     }

@@ -7,15 +7,15 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.widget.test.hold;
+package com.huotu.hotcms.hold;
 
+import com.huotu.hotcms.bean.WidgetHolder;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.service.util.ImageHelper;
 import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetStyle;
-import com.huotu.widget.test.bean.WidgetHolder;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -28,8 +28,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author CJ
@@ -47,8 +45,7 @@ public class AbstractWidgetHolder implements WidgetHolder {
         }
 
         String classes = properties.getProperty("widgetClasses");
-        assertThat(classes)
-                .isNotNull();
+        assert classes != null;
 
         HashSet<Widget> widgetArrayList = new HashSet<>();
         for (String clazz : classes.split(",")) {

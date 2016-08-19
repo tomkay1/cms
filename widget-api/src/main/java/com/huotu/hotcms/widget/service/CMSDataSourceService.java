@@ -9,11 +9,10 @@
 
 package com.huotu.hotcms.widget.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.huotu.hotcms.service.entity.Category;
-import com.huotu.hotcms.service.entity.Gallery;
-import com.huotu.hotcms.service.model.GalleryItemModel;
+import com.huotu.hotcms.service.model.BaseModel;
 import com.huotu.hotcms.service.model.LinkModel;
+import com.huotu.hotcms.service.model.widget.VideoModel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,22 +25,6 @@ import java.util.List;
 public interface CMSDataSourceService {
 
     /**
-     * <p>查询 当前站点下<b>可用数据源（category）且为图库类型</b></p>
-     * <p>下的所有图库模型（Gallery）</p>
-     *
-     * @return 返回当前站点的所有可用的图库模型
-     */
-    List<Gallery> findGallery();
-
-    /**
-     * <p>查询图库模型下的所有可用图库列表</p>
-     *
-     * @param galleryId 图库id
-     * @return 返回当前站点指定图库模型的图库列表
-     */
-    List<GalleryItemModel> findGalleryItem(Long galleryId);
-
-    /**
      * <p>查询当前站点下所有可用的链接模型数据源</p>
      *
      * @return 返回当前站点下所有链接模型的栏目（数据源）
@@ -49,40 +32,40 @@ public interface CMSDataSourceService {
     List<Category> findLinkCategory();
 
     /**
-     * <p>查询当前站点下所有可用的文章模型，且为一级分类的数据源</p>
-     *
-     * @return 返回当前站点下所有一级 文章模型的数据源
-     */
-    List<Category> findParentArticleCategory();
-
-    /**
-     * <p>查询当前站点下所有可用的文章模型，且为指定数据源的（包括间接）子级</p>
-     *
-     * @param parentId 父元素id
-     * @return 子元素列表 json;如果没有有效数据则返回空字符串（不是null）
-     */
-    String findChildrenArticleCategory(Long parentId);
-
-    /**
-     * <p>查询当前站点可用page列表</p>
-     *
-     * @return 返回当前站点json Page
-     */
-    String findSitePage() throws JsonProcessingException;
-
-    /**
      * <p>查询指定链接数据源下的所有链接模型</p>
      *
-     * @param categoryId 栏目id（链接模型的数据源id）
+     * @param serial （链接模型的数据源serial）
      * @return 返回指定链接数据源下的全部链接模型
      */
-    List<LinkModel> findLink(Long categoryId);
+    List<LinkModel> findLinkContent(String serial);
 
     /**
-     * 查询一级页面
-     *
-     * @return json串
+     * 查询当前站点下视频数据源列表
+     * @return 视频数据源列表
      */
-    String findSiteNotParentPage();
+    List<Category> findVideoCategory();
+
+    /**
+     * 查询当前站点下，指定数据源serial的 视频内容列表
+     *
+     * @param serial 数据源的serial
+     * @return 视频内容列表
+     */
+    List<VideoModel> findVideoContent(String serial);
+
+    /**
+     * 查询当前站点下文章数据源列表
+     *
+     * @return 视频数据源列表
+     */
+    List<Category> findArticleCategory();
+
+    /**
+     * 查询当前站点下，指定数据源serial的 视频内容列表
+     *
+     * @param serial 数据源的serial
+     * @return 视频内容列表
+     */
+    List<BaseModel> findArticleContent(String serial);
 
 }

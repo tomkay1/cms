@@ -7,9 +7,16 @@
  * 2013-2016. All rights reserved.
  */
 
+package com.huotu.hotcms;
+
 /**
- * 装载控件,鉴于测试和预览会有不同的装载过程,所以区分普通测试
- *
  * @author CJ
  */
-package com.huotu.widget.test.hold;
+public interface ServletContainer {
+
+    void start() throws Exception;
+
+    void stop();
+
+    void waitForStop() throws InterruptedException;
+}

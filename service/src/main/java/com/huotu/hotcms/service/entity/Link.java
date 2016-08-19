@@ -32,18 +32,6 @@ import java.util.UUID;
 @Setter
 public class Link extends AbstractContent implements ImagesOwner {
 
-//    /**
-//     * 标题
-//     */
-//    @Column(name = "title")
-//    private String title;
-
-//    /**
-//     * 描述
-//     */
-//    @Column(name = "description")
-//    private String description;
-
     /**
      * 缩略图uri
      */
@@ -56,7 +44,7 @@ public class Link extends AbstractContent implements ImagesOwner {
     @Column(name = "linkUrl")
     private String linkUrl;
 
-    public static LinkModel getLinkModel(Link link) {
+    public static LinkModel toLinkModel(Link link) {
         LinkModel linkModel = new LinkModel();
         linkModel.setLinkUrl(link.getLinkUrl());
         linkModel.setThumbUri(link.getThumbUri());

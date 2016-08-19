@@ -11,6 +11,7 @@ package com.huotu.hotcms.service.entity;
 
 import com.huotu.hotcms.service.ImagesOwner;
 import com.huotu.hotcms.service.common.ArticleSource;
+import com.huotu.hotcms.service.model.BaseModel;
 import lombok.Getter;
 import lombok.Setter;
 import me.jiangcai.lib.resource.service.ResourceService;
@@ -88,6 +89,14 @@ public class Article extends AbstractContent implements ImagesOwner {
     @Column(name = "type", length = 20)
     private String type;
 
+    public static BaseModel toBaseModel(Article article) {
+        BaseModel baseModel = new BaseModel();
+        baseModel.setId(article.getId());
+        baseModel.setTitle(article.getTitle());
+        baseModel.setCreateTime(article.getCreateTime());
+        return baseModel;
+    }
+
     @Override
     public Article copy() {
         Article article = new Article();
@@ -124,5 +133,6 @@ public class Article extends AbstractContent implements ImagesOwner {
     public String generateResourcePath(int index, ResourceService resourceService, InputStream stream) {
         return UUID.randomUUID().toString();
     }
+
 
 }

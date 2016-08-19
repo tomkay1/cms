@@ -41,10 +41,6 @@ public class WidgetTestTest extends WidgetTest {
 
     @Override
     protected void editorWork(Widget widget, WebElement editor, Supplier<Map<String, Object>> currentWidgetProperties) throws IOException {
-        Map<String, Object> map = currentWidgetProperties.get();
-        assertThat(map.containsKey("content")).isEqualTo(true);
-        assertThat(map.get("content")).isEqualTo(widget.defaultProperties(resourceService).get("content"));
-
         if (driver instanceof JavascriptExecutor) {
             Boolean initFlag = (Boolean) ((JavascriptExecutor) driver).executeScript("return window['inited']");
             assertThat(initFlag)
@@ -54,7 +50,6 @@ public class WidgetTestTest extends WidgetTest {
         }
 
         editor.findElement(By.id("DataFetcher")).click();
-
         Object result = currentWidgetProperties.get().get("DataFetcherResult");
         assertThat(result)
                 .isNotNull()

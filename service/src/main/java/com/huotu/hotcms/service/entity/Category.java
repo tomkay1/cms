@@ -27,7 +27,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
- * 栏目节点
+ * 栏目节点（数据源）
  * Created by cwb on 2015/12/21.
  */
 @Entity

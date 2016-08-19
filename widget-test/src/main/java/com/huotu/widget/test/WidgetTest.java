@@ -9,13 +9,13 @@
 
 package com.huotu.widget.test;
 
+import com.huotu.hotcms.bean.WidgetHolder;
+import com.huotu.hotcms.bean.WidgetViewController;
+import com.huotu.hotcms.hold.TestWidgetHolder;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetStyle;
 import com.huotu.hotcms.widget.servlet.CMSFilter;
-import com.huotu.widget.test.bean.WidgetHolder;
-import com.huotu.widget.test.bean.WidgetViewController;
-import com.huotu.widget.test.hold.TestWidgetHolder;
 import me.jiangcai.lib.resource.service.ResourceService;
 import me.jiangcai.lib.test.SpringWebTest;
 import org.junit.Test;
@@ -144,7 +144,7 @@ public abstract class WidgetTest extends SpringWebTest {
 
     @SuppressWarnings("WeakerAccess")
     protected void editor(Widget widget) throws Exception {
-        widgetViewController.setCurrentProperties(new ComponentProperties());
+        widgetViewController.setCurrentProperties(widget.defaultProperties(resourceService));
         if (printPageSource())
             mockMvc.perform(get("/editor/" + Widget.URIEncodedWidgetIdentity(widget)))
                     .andDo(print());
@@ -161,7 +161,6 @@ public abstract class WidgetTest extends SpringWebTest {
             if (driver instanceof JavascriptExecutor) {
                 return (Map) ((JavascriptExecutor) driver).executeScript("return _successProperties");
             }
-
             throw new IllegalStateException("no JavascriptExecutor driver");
         });
     }
@@ -201,14 +200,11 @@ public abstract class WidgetTest extends SpringWebTest {
 
     private void finalEditorWork(Widget widget, WebElement editor
             , Supplier<Map<String, Object>> currentWidgetProperties) throws IOException {
-
         // 获取默认属性
-        ComponentProperties properties = widget.defaultProperties(resourceService);
-
         Map<String, Object> map = currentWidgetProperties.get();
-
-        //
-
+        ComponentProperties componentProperties = new ComponentProperties();
+        componentProperties.putAll(map);
+        widget.valid(null, componentProperties);
         editorWork(widget, editor, currentWidgetProperties);
     }
 

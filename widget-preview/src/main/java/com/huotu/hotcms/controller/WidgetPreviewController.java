@@ -9,7 +9,7 @@
 
 package com.huotu.hotcms.controller;
 
-import com.huotu.widget.test.bean.WidgetHolder;
+import com.huotu.hotcms.bean.WidgetHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

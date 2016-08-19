@@ -9,7 +9,6 @@
 
 package com.huotu.hotcms;
 
-import org.apache.catalina.LifecycleException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.maven.model.Build;
@@ -38,7 +37,7 @@ public class PreviewMojoTest {
     public void init() {
         //  此处直接引入widget-test的测试控件即可
         Build build = new Build();
-        File file = new File("../widget-test/target/test-classes");
+        File file = new File("./target/test-classes");
         build.setOutputDirectory(file.getAbsolutePath());
 
         Model model = new Model();
@@ -60,11 +59,7 @@ public class PreviewMojoTest {
         ScheduledExecutorService executorService = java.util.concurrent.Executors.newSingleThreadScheduledExecutor();
         executorService.schedule(() -> {
             System.out.println("time up");
-            try {
-                mojo.shutdown();
-            } catch (LifecycleException e) {
-                log.error("", e);
-            }
+            mojo.shutdown();
         }, timeToClose, TimeUnit.SECONDS);
 
         mojo.execute();

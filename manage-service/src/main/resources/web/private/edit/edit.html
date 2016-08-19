@@ -243,6 +243,43 @@
 </div>
 <div class="modal-backdrop" ></div>
 </body>
+<script type="text/neo-template" id="templateHtml">
+    <div class="modal fade" id="selectDataTable" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-hidden="true">×
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">添加图片</h4>
+                </div>
+                <div class="modal-body">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active">
+                            <a href="#selectDataList" role="tab" data-toggle="tab">选择图片</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#selectDataUpload" role="tab" data-toggle="tab">新增图片</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="selectDataList">
+                            <table id="js-selectTable"></table >
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="selectDataUpload">
+                            <div id="js-fileUploader">Upload</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-toggle="#selectDataList" class="btn btn-primary js-select-btn">确认</button>
+                    <button type="button" data-toggle="#selectDataUpload" class="btn btn-primary hidden js-uploader-btn">确认</button>
+                    <button type="button" class="btn btn-default js-cancel-btn" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
 <!--suppress HtmlUnknownAttribute -->
 <script th:inline="javascript">
     // var path = /*[[@{/manage/upload/fine}]]*/ null;

@@ -67,7 +67,8 @@ class EmbeddedJetty implements ServletContainer {
 
         File base = new File(PreviewConfig.classesPath.getParentFile(), "jetty");
 
-        System.setProperty("me.jiangcai.lib.resource.home", base.getAbsolutePath() + "/_resources");
+        File resources = new File(base, "_resources");
+        System.setProperty("me.jiangcai.lib.resource.home", resources.toURI().toString());
         System.setProperty("me.jiangcai.lib.resource.http.uri", "http://localhost:" + port + "/_resources");
 
         URI webResourceBase = base.toURI();

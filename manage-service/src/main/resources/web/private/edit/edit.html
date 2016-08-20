@@ -18,10 +18,11 @@
 
     <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/font-awesome/4.6.3/css/font-awesome.min.css">
-    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap-table/1.11.0/bootstrap-table.min.css">
+
     <link rel="stylesheet" href="../../public/assets/css/edit.css" ewp:href="/assets/css/edit.css">
     <link rel="stylesheet" href="../../public/assets/css/widgets.css" ewp:href="/assets/css/widgets.css">
 
+    <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/jquery.dataTables/1.10.12/css/dataTables.bootstrap.min.css" >
     <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/jquery-upload-file/4.0.10/css/uploadfile.css">
     <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/zTree/3.5.24/css/metroStyle/metroStyle.css">
     <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/swiper/3.3.1/css/swiper.min.css">
@@ -246,7 +247,7 @@
 </body>
 <script type="text/neo-template" id="templateHtml">
     <div class="modal fade" id="selectDataTable" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"
@@ -265,7 +266,7 @@
                     </ul>
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="selectDataList">
-                            <table id="js-selectTable"></table >
+                            <table id="js-selectTable" class="table table-hover" width="100%"></table >
                         </div>
                         <div role="tabpanel" class="tab-pane" id="selectDataUpload">
                             <div id="js-fileUploader">Upload</div>
@@ -304,8 +305,9 @@
 <script src="http://resali.huobanplus.com/cdn/swiper/3.3.1/swiper.jquery.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/jquery-bigcolorpicker/2.5.1/jquery.bigcolorpicker.js"></script>
 <script src="http://resali.huobanplus.com/cdn/jquery.mCustomScrollbar/3.1.5/jquery.mCustomScrollbar.min.js"></script>
-<script src="http://cdn.bootcss.com/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
-<script src="http://cdn.bootcss.com/bootstrap-table/1.11.0/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/jquery.dataTables/1.10.12/jquery.dataTables.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/jquery.dataTables/1.10.12/dataTables.bootstrap.min.js"></script>
+
 <script src="../../public/assets/libs/jquery.htmlClean.js" ewp:src="/assets/libs/jquery.htmlClean.js"></script>
 <script src="../../public/assets/js/cms.addEdit.js" ewp:src="/assets/js/cms.widgets.js"></script>
 <script src="../../public/assets/js/common.js" ewp:src="/assets/js/common.js"></script>

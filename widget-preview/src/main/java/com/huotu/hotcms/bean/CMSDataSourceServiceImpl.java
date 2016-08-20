@@ -10,9 +10,11 @@
 package com.huotu.hotcms.bean;
 
 import com.huotu.hotcms.service.common.ContentType;
+import com.huotu.hotcms.service.common.EnumUtils;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.model.BaseModel;
+import com.huotu.hotcms.service.model.DataModel;
 import com.huotu.hotcms.service.model.LinkModel;
 import com.huotu.hotcms.service.model.widget.VideoModel;
 import com.huotu.hotcms.widget.service.CMSDataSourceService;
@@ -127,6 +129,13 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
         list.add(baseModel);
         list.add(baseModel1);
         return list;
+    }
+
+    @Override
+    public DataModel findContentType(Long contentType, int pageNum, int pageSize, Long pageId, String search) {
+        DataModel dataModel = new DataModel();
+        ContentType type = EnumUtils.valueOf(ContentType.class, contentType);
+        return dataModel;
     }
 
 }

@@ -67,8 +67,10 @@ public class PageInfo implements Auditable, Copyable<PageInfo>, ResourcesOwner {
     @ManyToOne
     @JoinColumn(name = "categoryId")
     private Category category;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "siteId")
+
     private Site site;
     @Column(name = "createTime")
     private LocalDateTime createTime;

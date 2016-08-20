@@ -391,6 +391,9 @@ public abstract class TestBase extends SpringWebTest {
     protected Video randomVideo(Category category) {
         Video video = new Video();
         video.setCategory(category);
+        video.setDeleted(false);
+        video.setCreateTime(LocalDateTime.now());
+        video.setTitle(UUID.randomUUID().toString());
         return videoRepository.save(video);
     }
 }

@@ -34,13 +34,13 @@ public class Download extends AbstractContent implements ResourcesOwner {
     /**
      * 文件名称
      */
-    @Column(name = "fileName")
+    @Column(name = "fileName", length = 50)
     private String fileName;
 
     /**
      * 下载地址
      */
-    @Column(name = "downloadUrl")
+    @Column(name = "downloadUrl", length = 200)
     private String downloadPath;
 
     /**

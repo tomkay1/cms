@@ -35,13 +35,13 @@ public class Link extends AbstractContent implements ImagesOwner {
     /**
      * 缩略图uri
      */
-    @Column(name = "thumbUri")
+    @Column(name = "thumbUri", length = 200)
     private String thumbUri;
 
     /**
      * 链接地址
      */
-    @Column(name = "linkUrl")
+    @Column(name = "linkUrl", length = 200)
     private String linkUrl;
 
     public static LinkModel toLinkModel(Link link) {

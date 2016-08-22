@@ -18,10 +18,6 @@ $(function () {
         sizeLimit: 3 * 1024 * 1024
     });
 
-    $.cmsUploader($('#download-uploader'), function (path) {
-        $("#downloadUrl").val(path);
-    });
-
     // common
     var categories = $('option', $('#categories'));
 
@@ -119,6 +115,63 @@ $(function () {
         }, messages)
     });
 
+    var downloadForm = $('#downloadForm');
+    downloadForm.on('submit', function () {
+        // <input type="hidden" name="tempPath" id="downloadUrl">
+        // <label for="title" class="error" style="display: inline-block;">需要标题</label>
+        // console.log('submit me? ', this);
+        // 如果当前form并不是新增 那么就无需要求上传
+        var action = $(this).attr('action');
+        var index = action.lastIndexOf('/');
+        if (index > 0) {
+            var isNumber = action.substring(index + 1, action.length);
+            try {
+                if (parseInt(isNumber) > 0)
+                    return true;
+            } catch (e) {
+                //继续
+            }
+        }
+
+        var tempPath = $('input[name=tempPath]', $(this));
+        if (!tempPath.val() || tempPath.val().length < 0) {
+            var label = $('span[class=error]', tempPath.parent());
+            if (label.size() > 0) {
+                label.css('display', 'block');
+            } else {
+                tempPath.parent().append('<span class="error" style="display: block;margin-left: 160px;color: #B94A48;">需要上传资源</span>');
+            }
+            return false;
+        }
+        return true;
+    });
+
+
+    $.cmsUploader($('#download-uploader'), function (path) {
+        $("#downloadUrl").val(path);
+        var tempPath = $('input[name=tempPath]', downloadForm);
+        var label = $('span[class=error]', tempPath.parent());
+        if (label.size() > 0) {
+            label.css('display', 'none');
+        }
+    }, {
+        itemLimit: 1
+    });
+
+    downloadForm.validate({
+        rules: jQuery.extend(true, {
+            fileName: {
+                required: true,
+                maxlength: 48
+            }
+        }, rules),
+        messages: jQuery.extend(true, {
+            fileName: {
+                required: "请输入文件名",
+                maxlength: "文件名长度过长"
+            }
+        }, messages)
+    });
 
 });
 

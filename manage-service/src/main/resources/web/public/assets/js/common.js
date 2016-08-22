@@ -412,7 +412,8 @@ var TableData = {
             }
 
         });
-        if (flag != '') {
+
+        if (flag !== '') {
             element.find('tbody').off('click', 'tr');
             if(flag) {
                 element.find('tbody').on('click', 'tr', function () {

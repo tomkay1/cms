@@ -8,6 +8,8 @@
  */
 
 $(function () {
+
+    // uploader
     $.cmsUploader($('#article-uploader, #link-uploader, #video-uploader, #gallery-uploader'), function (path) {
         $("#thumbUri").val(path);
     }, {
@@ -20,9 +22,11 @@ $(function () {
         $("#downloadUrl").val(path);
     });
 
+    // common
     var categories = $('option', $('#categories'));
 
     var parentCategoryId = $('select[name=parentCategoryId]');
+    var parentOptions = $('option', parentCategoryId);
 
     var categoryName = $('input[name=categoryName]');
     categoryName.change(function () {
@@ -31,13 +35,15 @@ $(function () {
         var val = $(this).val();
         // 我们找下是否在列表内
 
+        parentOptions.attr('disabled', false);
+
         var targetOption = categories.filter(function (index, ele) {
             return $(ele).val() == val;
         }).first();
 
         if (targetOption.size() > 0) {
             // 的确是选择的
-            parentCategoryId.prop('disabled', 'disabled');
+            // parentCategoryId.prop('disabled', 'disabled');
             var parentId = targetOption.attr('parentId');
             if (parentId && parentId.length > 0) {
                 //有父类的
@@ -46,14 +52,60 @@ $(function () {
                 //置空
                 parentCategoryId.val('');
             }
+            $('option:not(:selected)', parentCategoryId).attr('disabled', true);
         } else {
             // 手工录入的 保留原值么?
-            parentCategoryId.prop('disabled', '');
+            // parentCategoryId.prop('disabled', '');
         }
-
-        console.log('changed', val, categories, targetOption);
-
+        // console.log('changed', val, categories, targetOption);
     });
+
+    var rules = {
+        categoryName: {
+            required: true
+        }, title: {
+            required: true,
+            maxlength: 40
+        }
+    };
+    var messages = {
+        categoryName: {
+            required: "必须选择或者输入一个数据源名称"
+        }, title: {
+            required: "需要标题",
+            maxlength: "标题长度太长了"
+        }
+    };
+
+    // form
+    $('#articleForm').validate({
+        rules: jQuery.extend(true, {
+            content: {
+                required: true
+            }
+        }, rules),
+        messages: jQuery.extend(true, {
+            content: {
+                required: "请输入文章的正文"
+            }
+        }, messages)
+    });
+
+    $('#linkForm').validate({
+        rules: jQuery.extend(true, {
+            linkUrl: {
+                required: true,
+                url: true
+            }
+        }, rules),
+        messages: jQuery.extend(true, {
+            linkUrl: {
+                required: "请输入绝对的链接",
+                url: '请输入有效的URL链接'
+            }
+        }, messages)
+    });
+
 
 });
 

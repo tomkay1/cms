@@ -14,7 +14,6 @@
 <head>
     <meta charset="UTF-8">
     <link href="http://resali.huobanplus.com/cdn/bracket/css/style.default.css" rel="stylesheet">
-    <link href="http://resali.huobanplus.com/cdn/bracket/css/jquery.datatables.css" rel="stylesheet">
     <link href="../../../public/assets/css/customize.css" ewp:href="/assets/css/customize.css" rel="stylesheet">
     <link href="../../../public/css/site.css" ewp:href="/css/site.css" rel="stylesheet">
     <title>EditSite</title>
@@ -78,7 +77,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">原有封面</label>
-                                <img res:src="${object.thumbUri}" style="margin-left: 12px;" class="oldThumbUri"
+                                <img res:src="${object.thumbUri}" class="oldThumbUri col-sm-10"
                                      src="http://img5.imgtn.bdimg.com/it/u=582181963,2516527288&fm=21&gp=0.jpg"/>
                             </div>
                             <div class="form-group">
@@ -104,18 +103,14 @@
 
         </div>
     </form>
-    <script th:inline="javascript">
-        var uploadFileUrl = /*[[@{/manage/upload/fine}]]*/ null;
-        var customerIdChangeUrl = /*[[@{/manage/supper/owner/$1/customerId}]]*/ null;
-    </script>
 </div><!-- contentpanel -->
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-1.10.2.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-ui-1.10.3.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/bootstrap.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/toggles.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.cookies.js"></script>
-<script src="//cdn.ckeditor.com/4.5.10/standard/ckeditor.js"></script>
-<script src="//cdn.ckeditor.com/4.5.10/standard/adapters/jquery.js"></script>
+<script src="http://resali.huobanplus.com/cdn/ckeditor/4.5.10/standard/ckeditor.js"></script>
+<script src="http://resali.huobanplus.com/cdn/ckeditor/4.5.10/standard/adapters/jquery.js"></script>
 
 <script src="http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/jquery.fine-uploader.min.js"></script>
 <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/fine-uploader-new.min.css"
@@ -123,7 +118,7 @@
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.tagsinput.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.autogrow-textarea.js"></script>
 <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/bracket/css/jquery.tagsinput.css" property=""/>
-<script src="http://resali.huobanplus.com/cdn/datatables/1.10.12/datatables.min.js"></script>
+
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.validate.min.js"></script>
 <script src="../../../public/js/jquery.validation.message-zh_cn.js"
         ewp:src="/js/jquery.validation.message-zh_cn.js"></script>

@@ -5,7 +5,7 @@
     var editHTML = [
         '<div class="addEditBox row">',
         '<div class="col-xs-3 mb10 <% this.hasImage ? "" : "hidden"%>">',
-        '<img class="img-responsive img-thumbnail center-block js-image <% this.imageClass %>" src="http://placehold.it/80x80?text=1" />',
+        '<img class="img-responsive img-thumbnail center-block js-image <% this.imageClass %>" src="http://placehold.it/80x80?text=1" data-path="http://placehold.it/80x80?text=1"/>',
         '</div>',
         '<div class="form-inline col-xs-9 row mb10">',
         '<div class="col-xs-12 mb10 <% this.hasParagraph ? "" : "hidden"%>">',
@@ -31,7 +31,7 @@
         '<div class="form-group col-xs-12 <% this.hasTextArea ? "" : "hidden"%>">',
         '<textarea class="form-control <% this.textArea %>" rows="3" placeholder="详细内容"></textarea>',
         '</div>',
-        '<div class="btn-group btn-group-xs" role="group">',
+        '<div class="btn-group btn-group-xs js-addEdit-BtnGroup" role="group">',
         '<div class="btn btn-default js-move-edit" title="移动"><b class="fa fa-arrows" aria-hidden="true"></b></div>',
         '<button type="button" class="btn btn-default js-delete-edit" title="删除"><b class="fa fa-trash-o" aria-hidden="true"></b></button>',
         '</div>',
@@ -44,7 +44,7 @@
             js? (code += line.match(reExp) ? line + '\n' : 'r.push(' + line + ');\n') :
                 (code += line != '' ? 'r.push("' + line.replace(/"/g, '\\"') + '");\n' : '');
             return add;
-        }
+        };
         while(match = re.exec(html)) {
             add(html.slice(cursor, match.index))(match[1], true);
             cursor = match.index + match[0].length;
@@ -55,10 +55,14 @@
     };
 
     var methods = {
-        delete: function() {
+        addButtonDom: '',
+        delete: function(amount) {
+            var self = this;
+            $(document).off('click', '.js-delete-edit');
             $(document).on('click', '.js-delete-edit', function() {
                 var element = $(this).parents('.addEditBox');
                 element.remove();
+                self.editAmount(amount);
             });
         },
         move: function() {
@@ -78,26 +82,43 @@
             return DOM;
         },
         onClick: function (debug) {
+            $(document).off('click', '.js-image');
             $(document).on('click', '.js-image', function() {
                 var self = $(this);
                 plugin.popover(self, '', false, debug);
             });
         },
-        addEdit: function (ele, html, data, debug) {
+        addEdit: function (ele, html, data, debug, amount) {
             var content = $('<div></div>');
+            var len = amount - $(document).find('.addEditBox').length;
             $.each(data, function (i, v) {
                 var ele = $(html).clone();
-                ele.find('.js-image').attr('src', v.thumpUri);
-                content.append(ele);
+                if ( !(amount == -1)) {
+                    if (i < len) {
+                        ele.find('.js-image').attr({
+                            'src': v.thumpUri,
+                            'data-path': v.thumpUri
+                        });
+                        content.append(ele);
+                    }
+                } else {
+                    ele.find('.js-image').attr({
+                        'src': v.thumpUri,
+                        'data-path': v.thumpUri
+                    });
+                    content.append(ele);
+                }
+
             });
             ele.before(content.html());
-            this.delete();
+            this.delete(amount);
             this.move();
             this.onClick(debug);
             this.selectData(debug);
         },
         selectData: function (debug) {
             var self = this;
+            $(document).off('change', '.js-get-source');
             $(document).on('change', '.js-get-source',function () {
                 var $this = $(this);
                 var type = $this.val();
@@ -127,20 +148,57 @@
         },
         changeImage: function (ele, data) {
             var thumpUri = data[0].thumpUri;
-            ele.attr('src', thumpUri)
+            ele.attr({
+                'src': thumpUri,
+                'data-path': thumpUri
+            });
         },
-        init: function(ele, html, data, debug) {
+        init: function(ele, html, data, debug, amount) {
             if (data.length && html) {
-                this.addEdit(ele, html, data, debug);
+                this.addEdit(ele, html, data, debug, amount);
+                this.editAmount(amount);
             }
             if (data.length && !html) {
                 this.changeImage(ele, data);
+            }
+        },
+        bindInit: function (debug, amount) {
+            this.delete(amount);
+            this.move();
+            this.selectData(debug);
+            this.onClick(debug);
+        },
+        hideAllButtons: function () {
+            var element = $(document);
+            element.find('.js-addEdit-BtnGroup').detach();
+            this.addButtonDom = element.find('.js-addEditBtn').detach();
+        },
+        hideAddButtons: function () {
+            var element = $(document);
+            this.addButtonDom = element.find('.js-addEditBtn').detach();
+        },
+        showAddButtons: function () {
+            var element = $(document);
+            element.find('.borderBoxs').append(this.addButtonDom);
+        },
+        editAmount: function (amount) {
+            var len = $(document).find('.addEditBox').length;
+            if (amount == 1) {
+                if (len == amount) this.hideAllButtons();
+            }
+            if (amount > 1) {
+                if (len == amount) {
+                    this.hideAddButtons();
+                } else {
+                    this.showAddButtons();
+                }
             }
         }
     };
     $.fn.addEdit = function (options) {
         var s = $.extend({
             debug: false,
+            amount: -1,
             hasImage: true,
             imageClass:'',
             hasParagraph: false,
@@ -153,15 +211,18 @@
         }, options);
         var self = this;
         var DOM = methods.create(s);
+        methods.bindInit(s.debug, s.amount);
+        methods.editAmount(s.amount);
+
         self.off('click');
         self.on('click', function () {
-            plugin.popover(self, DOM, true, s.debug);
+            plugin.popover(self, DOM, true, s.debug, s.amount);
         });
     };
 
     var plugin = {
         uploadCallBackData : [],
-        popover: function(pointer, html, flag, debug) {
+        popover: function(pointer, html, flag, debug, amount) {
 
             var self = this;
 
@@ -174,7 +235,7 @@
 
             $container.modal();
 
-            self.getImageData(pointer, html, flag, debug);
+            self.getImageData(pointer, html, flag, debug, amount);
 
             $container.on('hide.bs.modal', function () {
                 $(this).off('hide.bs.modal');
@@ -183,7 +244,7 @@
 
 
         },
-        getImageData: function(pointer, html, flag, debug) {
+        getImageData: function(pointer, html, flag, debug, amount) {
             var self = this;
             var url = debug ? imageMock : '/dataSource/findContentType';
 
@@ -207,7 +268,7 @@
                     "columnDefs": [
                         {
                             "className": "pictureBox",
-                            "render": function (data, type, row ) {
+                            "render": function (data) {
                                 return '<img  src="'+data+'" class="pictureImages img-rounded" >';
                             },
                             "targets": 0
@@ -216,27 +277,29 @@
                     "lengthMenu": [11, 22, 33],
                     "displayLength": 11
                 },function (data) {
-                    self.creatEditArea(pointer, html, data, debug)
+                    self.creatEditArea(pointer, html, data, debug, amount);
                 });
         },
         initUpload: function (debug) {
             var self = this;
             var url = debug ? uploadMock : '';
+            var method = debug ? 'GET' : '';
             uploadForm({
                 ui: '#js-fileUploader',
-                inputName: 'myfile',
+                method: method,
+                inputName: 'file',
                 maxFileCount: 1,
                 uploadUrl: url,
-                successCallback: function(files, data, xhr, pd) {
+                successCallback: function(files, data) {
                     var temp = {};
                     temp.thumpUri = data.fileUri;
                     self.uploadCallBackData.push(temp);
                 }
             });
         },
-        creatEditArea: function (pointer, html, data, debug) {
+        creatEditArea: function (pointer, html, data, debug, amount) {
             var $container = $('#selectDataTable');
-            methods.init(pointer, html, data, debug);
+            methods.init(pointer, html, data, debug, amount);
             $container.modal('hide')
         },
         changeImage: function (pointer, html) {

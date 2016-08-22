@@ -31,7 +31,7 @@ function widgetProperties( id ) {
         return wsCache.get(identity).properties;
     }
 
-};
+}
 
 /**
  * 组件数据控制逻辑
@@ -104,7 +104,7 @@ function updataWidgetEditor(globalID, properties, element) {
         "pageId": pageId
     };
     Util.ajaxHtml(
-        '/preview/widgetEditor',
+        widgetEditor,
         JSON.stringify(DATA),
         function (html) {
             if (html) {
@@ -134,7 +134,7 @@ function updataCompoentPreview(globalID, properties) {
         "componentId": globalID
     };
     Util.ajaxHtml(
-        '/preview/component',
+        component,
         JSON.stringify(DATA),
         function (html, textStatus, jqXHR) {
             if (html) {
@@ -231,6 +231,7 @@ var dynamicLoading = {
  */
 function uploadForm (obj) {
     var ui = obj.ui,
+        method = obj.method || 'POST',
         inputName = obj.inputName || 'file',
         maxWidth = obj.maxWidth || 9999,
         maxHeight = obj.maxHeight || 9999,
@@ -242,6 +243,7 @@ function uploadForm (obj) {
         sign = obj.isCongruent || false;
     var uploadFile = $(ui).uploadFile({
         url: uploadUrl,
+        method: method,
         showFileCounter: false,
         returnType: "json",
         fileName: inputName,

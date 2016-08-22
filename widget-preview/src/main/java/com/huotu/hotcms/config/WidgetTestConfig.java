@@ -44,7 +44,7 @@ import java.util.Set;
 
 @EnableWebMvc
 @Import({WidgetTestConfig.ViewResolver.class, WidgetResolveServiceConfig.class, ServiceConfig.class})
-@ComponentScan("com.huotu.hotcms.bean")
+@ComponentScan({"com.huotu.hotcms.bean"})
 public class WidgetTestConfig extends WebMvcConfigurerAdapter {
 
     @Autowired

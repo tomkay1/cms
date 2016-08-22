@@ -243,7 +243,6 @@
         </div>
     </div>
 </div>
-<table id="example" width="100%"></table>
 <div class="modal-backdrop" ></div>
 </body>
 <script type="text/neo-template" id="templateHtml">
@@ -310,7 +309,7 @@
 <script src="http://resali.huobanplus.com/cdn/jquery.dataTables/1.10.12/dataTables.bootstrap.min.js"></script>
 
 <script src="../../public/assets/libs/jquery.htmlClean.js" ewp:src="/assets/libs/jquery.htmlClean.js"></script>
-<script src="../../public/assets/js/cms.addEdit.js" ewp:src="/assets/js/cms.widgets.js"></script>
+<script src="../../public/assets/js/cms.addEdit.js" ewp:src="/assets/js/cms.addEdit.js"></script>
 <script src="../../public/assets/js/common.js" ewp:src="/assets/js/common.js"></script>
 <script src="../../public/assets/js/cms.widgets.js" ewp:src="/assets/js/cms.widgets.js"></script>
 <script src="../../public/assets/js/page/cms.editPage.js" ewp:src="/assets/js/page/cms.editPage.js"></script>
@@ -319,39 +318,5 @@
 
 <script src="http://cdn.bootcss.com/datatables/1.10.12/js/jquery.dataTables.min.js"></script>
 <script src="http://cdn.bootcss.com/datatables/1.10.12/js/dataTables.bootstrap.min.js"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#example').DataTable({
-            "processing": true,
-            "serverSide": true,
-//            "ajax": {
-//                "url":"/dataSource/findContentType",
-//                "type": "POST",
-//                "dataType": 'json',
-//                "contentType": "application/json; charset=utf-8",
-//                "data": function ( d ) {
-//                    return JSON.stringify($.extend( {}, d, {
-//                        "pageId": pageId,
-//                        "contentType":1
-//                    }));
-//                }
-//            },
-            "ajax": {
-                "url": "/dataSource/findContentType",
-                "data": function (d) {
-                    return $.extend({}, d, {
-                        "pageId": pageId,
-                        "contentType": 1
-                    });
-                }
-            },
-            "columns": [
-                {"data": "id"},
-                {"data": "name"},
-                {"data": "date"},
-                {"data": "url"}
-            ]
-        });
-    });
-</script>
+
 </html>

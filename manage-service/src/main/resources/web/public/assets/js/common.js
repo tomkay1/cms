@@ -31,7 +31,7 @@ function widgetProperties( id ) {
         return wsCache.get(identity).properties;
     }
 
-};
+}
 
 /**
  * 组件数据控制逻辑

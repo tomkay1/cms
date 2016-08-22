@@ -335,6 +335,7 @@
     </div>
 </script>
 <script th:inline="javascript">
+    $.imageUploaderUrl = /*[[@{/manage/upload/image}]]*/ null;
     $.cmsUploaderUrl = /*[[@{/manage/upload/fine}]]*/ null;
     $.testMode = /*[[${@environment.acceptsProfiles('test')}]]*/ true;
     $.language = 'zh'; // TODO 在获取站点信息之前语言还不明朗

@@ -137,7 +137,11 @@ $(function () {
     // ck editor
     var editor = $(".editor");
     if (editor.size() > 0) {
+        var url = top.$.imageUploaderUrl;
+        url = url || 'http://cms.51flashmall.com/manage/upload/image';
         editor.ckeditor({
+            extraPlugins: 'uploadimage',
+            uploadUrl: url,
             language: top.$.language
         });
     }

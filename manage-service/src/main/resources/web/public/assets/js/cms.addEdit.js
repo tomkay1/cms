@@ -5,12 +5,12 @@
     var editHTML = [
         '<div class="addEditBox row">',
         '<div class="col-xs-3 mb10 <% this.hasImage ? "" : "hidden"%>">',
-        '<img class="img-responsive img-thumbnail center-block js-image" src="http://placehold.it/80x80?text=1" />',
+        '<img class="img-responsive img-thumbnail center-block js-image <% this.imageClass %>" src="http://placehold.it/80x80?text=1" />',
         '</div>',
         '<div class="form-inline col-xs-9 row mb10">',
         '<div class="col-xs-12 mb10 <% this.hasParagraph ? "" : "hidden"%>">',
         '<label class="mr6">文字：</label>',
-        '<input class="form-control" type="text" name="text" placeholder="文字内容" />',
+        '<input class="form-control <% this.paragraphClass %>" type="text" name="text" placeholder="文字内容" />',
         '</div>',
         '<div class="col-xs-12 mb10 <% this.hasUrl ? "" : "hidden"%>">',
         '<label class="mr6">链接：</label>',
@@ -25,11 +25,11 @@
         '<option value="5">下载资源</option>',
         '<option value="custom">自定义链接</option>',
         '</select>',
-        '<input class="form-control" type="url" name="url" placeholder="图文链接" readonly>',
+        '<input class="form-control <% this.urlClass %>" type="url" name="url" placeholder="图文链接" readonly>',
         '</div>',
         '</div>',
         '<div class="form-group col-xs-12 <% this.hasTextArea ? "" : "hidden"%>">',
-        ' <textarea class="form-control" rows="3" placeholder="详细内容"></textarea>',
+        '<textarea class="form-control <% this.textArea %>" rows="3" placeholder="详细内容"></textarea>',
         '</div>',
         '<div class="btn-group btn-group-xs" role="group">',
         '<div class="btn btn-default js-move-edit" title="移动"><b class="fa fa-arrows" aria-hidden="true"></b></div>',
@@ -141,14 +141,19 @@
     $.fn.addEdit = function (options) {
         var s = $.extend({
             hasImage: true,
+            imageClass:'',
             hasParagraph: true,
+            paragraphClass: '',
             hasUrl: false,
+            urlClass: '',
             hasTextArea: false,
+            textArea: '',
             customHTML: ''
         }, options);
         var self = this;
         var DOM = methods.create(s);
-        self.click(function () {
+        self.off('click');
+        self.on('click', function () {
             plugin.popover(self, DOM, true);
         });
     };

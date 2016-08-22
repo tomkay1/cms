@@ -5,27 +5,31 @@
     var editHTML = [
         '<div class="addEditBox row">',
         '<div class="col-xs-3 mb10 <% this.hasImage ? "" : "hidden"%>">',
-        '<img class="img-responsive img-thumbnail center-block js-image" src="http://placehold.it/80x80?text=1" />',
+        '<img class="img-responsive img-thumbnail center-block js-image <% this.imageClass %>" src="http://placehold.it/80x80?text=1" />',
         '</div>',
         '<div class="form-inline col-xs-9 row mb10">',
         '<div class="col-xs-12 mb10 <% this.hasParagraph ? "" : "hidden"%>">',
         '<label class="mr6">文字：</label>',
-        '<input class="form-control" type="text" name="text" placeholder="文字内容" />',
+        '<input class="form-control <% this.paragraphClass %>" type="text" name="text" placeholder="文字内容" />',
         '</div>',
         '<div class="col-xs-12 mb10 <% this.hasUrl ? "" : "hidden"%>">',
         '<label class="mr6">链接：</label>',
         '<select class="form-control mr6 js-get-source">',
-        '<option value="0">不添加链接</option>',
-        '<option value="1">文章链接</option>',
-        '<option value="2">新闻链接</option>',
-        '<option value="3">页面链接</option>',
+        '<option value="noUrl">不添加链接</option>',
+        '<option value="6">页面资源</option>',
+        '<option value="0">文章资源</option>',
+        '<option value="1">链接资源</option>',
+        '<option value="2">视频资源</option>',
+        '<option value="2">视频资源</option>',
+        '<option value="3">公告资源</option>',
+        '<option value="5">下载资源</option>',
         '<option value="custom">自定义链接</option>',
         '</select>',
-        '<input class="form-control" type="url" name="url" placeholder="图文链接" readonly>',
+        '<input class="form-control <% this.urlClass %>" type="url" name="url" placeholder="图文链接" readonly>',
         '</div>',
         '</div>',
         '<div class="form-group col-xs-12 <% this.hasTextArea ? "" : "hidden"%>">',
-        ' <textarea class="form-control" rows="3" placeholder="详细内容"></textarea>',
+        '<textarea class="form-control <% this.textArea %>" rows="3" placeholder="详细内容"></textarea>',
         '</div>',
         '<div class="btn-group btn-group-xs" role="group">',
         '<div class="btn btn-default js-move-edit" title="移动"><b class="fa fa-arrows" aria-hidden="true"></b></div>',
@@ -83,7 +87,7 @@
             var content = $('<div></div>');
             $.each(data, function (i, v) {
                 var ele = $(html).clone();
-                ele.find('.js-image').attr('src', v.uri);
+                ele.find('.js-image').attr('src', v.url);
                 content.append(ele);
             });
             ele.before(content.html());
@@ -99,7 +103,7 @@
                 var type = $this.val();
 
                 switch(type) {
-                    case 0:
+                    case 'noUrl':
                         self.addReadonly($this);
                         break;
                     case 'custom':
@@ -116,6 +120,7 @@
         },
         addReadonly: function (element) {
             var input = element.siblings('input[type="url"]');
+            input.val('');
             if (!input.attr('readonly')) {
                 input.attr('readonly', 'readonly');
             }
@@ -136,14 +141,19 @@
     $.fn.addEdit = function (options) {
         var s = $.extend({
             hasImage: true,
+            imageClass:'',
             hasParagraph: true,
+            paragraphClass: '',
             hasUrl: false,
+            urlClass: '',
             hasTextArea: false,
+            textArea: '',
             customHTML: ''
         }, options);
         var self = this;
         var DOM = methods.create(s);
-        self.click(function () {
+        self.off('click');
+        self.on('click', function () {
             plugin.popover(self, DOM, true);
         });
     };
@@ -155,71 +165,75 @@
 
             $('body').append($('#templateHtml').html());
             var $container = $('#selectDataTable');
-            uploadForm({
-                ui: '#js-fileUploader',
-                inputName: 'myfile',
-                maxFileCount: 1,
-                successCallback: function(files, data, xhr, pd ) {
-                    var temp = {};
-                    temp.uri = data.fileUri;
-                    self.uploadCallBackData.push(temp);
-                }
-            });
-            this.switchButton();
+            self.switchButton();
+
+            self.initUpload();
+            self.changeImage(pointer, html);
 
             $container.modal();
 
-            this.checkImage(flag, pointer, html);
+            self.getImageData(pointer, html, flag);
 
             $container.on('hide.bs.modal', function () {
                 $(this).off('hide.bs.modal');
                 $(this).remove();
             });
+
+
         },
-        checkImage: function(flag, pointer, html) {
-            var $table = $('#js-selectTable');
+        getImageData: function(pointer, html, flag) {
+            var self = this;
             $('#selectDataTable').addClass('imageTable-style');
-            $table.bootstrapTable('destroy').bootstrapTable({
-                url: 'test.json',
-                dataType: 'json',
-                locales: 'zh-CN',
-                showHeader:false,
-                striped: true,
-                pagination: true,
-                search: true,
-                clickToSelect: true,
-                pageSize: 16,
-                pageList: [16, 24, 32],
-                columns: [
-                    {
-                        class: "checkboxBtn",
-                        checkbox: flag,
-                        radio: !flag
-                    },
-                    {
-                        class: "pictureBox",
-                        title: '序号',
-                        field: 'uri',
-                        formatter: function(value, row, index){
-                            return '<img  src="'+value+'" class="pictureImages img-rounded" >';
-                        }
+
+            TableData.createTable($('#js-selectTable'),
+                {
+                    "url": '/dataSource/findContentType',
+                    "data": function ( d ) {
+                        return $.extend( {}, d, {
+                            "pageId": 1,
+                            "contentType": 5
+                        });
                     }
-                ]
-            });
-            this.selectData($table, pointer, html);
-            this.selectUpload(pointer, html)
+                }, flag, {
+                    "columns": [
+                        {
+                            "data": "url"
+                        }
+                    ],
+                    "columnDefs": [
+                        {
+                            "className": "pictureBox",
+                            "render": function (data, type, row ) {
+                                return '<img  src="'+data+'" class="pictureImages img-rounded" >';
+                            },
+                            "targets": 0
+                        }
+                    ],
+                    "lengthMenu": [11, 22, 33],
+                    "displayLength": 11
+                },function (data) {
+                    self.creatEditArea(pointer, html, data)
+                });
         },
-        selectData: function (element, pointer, html) {
+        initUpload: function () {
+            var self = this;
+            uploadForm({
+                ui: '#js-fileUploader',
+                inputName: 'myfile',
+                maxFileCount: 1,
+                successCallback: function(files, data, xhr, pd) {
+                    var temp = {};
+                    temp.uri = data.fileUri;
+                    self.uploadCallBackData.push(temp);
+                }
+            });
+        },
+        creatEditArea: function (pointer, html, data) {
             var $container = $('#selectDataTable');
-            var $ele = $container.find('.js-select-btn');
-            $ele.off('click');
-            $ele.on('click', function () {
-                var Data = element.bootstrapTable('getAllSelections');
-                methods.init(pointer, html, Data);
-                $container.modal('hide')
-            });
+            methods.init(pointer, html, data);
+            $container.modal('hide')
         },
-        selectUpload: function (pointer, html) {
+        changeImage: function (pointer, html) {
             var self = this;
             var $container = $('#selectDataTable');
             var $ele = $container.find('.js-uploader-btn');
@@ -242,67 +256,71 @@
             })
         },
         getUrlPopover: function (element, parameter) {
+            var self = this;
             $('body').append($('#templateHtml').html());
             var $container = $('#selectDataTable');
             $('#myModalLabel').text('选择链接');
-            $container.find('.modal-body').empty().append('<table id="js-url-selectTable"></table >');
+            $container.find('.modal-body').empty().append('<table id="js-url-selectTable" class="table table-bordered table-striped table-hover" width="100%"></table >');
             $container.find('.modal-footer').remove();
             $container.modal();
 
-            this.getResourceLocator(element, parameter);
-
+            TableData.createTable($('#js-url-selectTable'),
+                {
+                    "url": '/dataSource/findContentType',
+                    "data": function ( d ) {
+                        return $.extend( {}, d, {
+                            "pageId": 1,
+                            "contentType": parameter
+                        });
+                    }
+                }, '', {
+                    "columns": [
+                        {
+                            "title": "资源名称",
+                            "data": "name"
+                        },
+                        {
+                            "title": "创建日期",
+                            "data": "date"
+                        },
+                        {
+                            "title": "资源链接",
+                            "data": "url"
+                        },
+                        {
+                            "title": "操作",
+                            "data": "null",
+                            "defaultContent": '<button class="btn btn-default btn-xs js-choose-url" type="button">选取</button>'
+                        }
+                    ],
+                    "columnDefs": [
+                        {
+                            "className": "text-center",
+                            "targets": -1
+                        }
+                    ],
+                    "lengthMenu": [10, 15, 20],
+                    "displayLength": 10
+                });
+            self.chooseUrl(element);
             $container.on('hide.bs.modal', function () {
                 $(this).off('hide.bs.modal');
                 $(this).remove();
             });
         },
-        getResourceLocator: function (element, parameter) {
-            var self = this;
-            var $table = $('#js-url-selectTable');
-            $table.bootstrapTable('destroy').bootstrapTable({
-                url: 'data.json',
-                dataType: 'json',
-                locales: 'zh-CN',
-                striped: true,
-                pagination: true,
-                search: true,
-                clickToSelect: true,
-                pageSize: 10,
-                pageList: [10, 15],
-                columns: [
-                    {
-                        width: '50%',
-                        title: '数据名字',
-                        field: 'name'
-                    },
-                    {
-                        width: '30%',
-                        title: '创建时间',
-                        field: 'date'
-                    },
-                    {
-                        width: '20%',
-                        title: '操作',
-                        align: 'center',
-                        field: 'url',
-                        formatter:function(value, row, index){
-                            return '<button class="btn btn-default btn-xs js-choose-url" data-url="'+ row.url +'">选取</button>';
-                        },
-                        events: 'actionEvents'
-                    }
-                ]
-            });
-            window.actionEvents = {
-                'click .js-choose-url': function (e, value, row, index) {
-                    self.chooseUrl(element, value);
-                }
-            };
-        },
-        chooseUrl: function (element, value) {
-            var $container = $('#selectDataTable');
+        chooseUrl: function (element) {
             var input = element.siblings('input[type="url"]');
-            input.val(value);
-            $container.modal('hide');
+            var $container = $('#selectDataTable');
+            var $element = $('#js-url-selectTable');
+            $element.off( 'click', '.js-choose-url');
+            $element.on( 'click', '.js-choose-url', function () {
+                var data = $element.DataTable().row( $(this).parents('tr') ).data();
+                input.val(data.url);
+                if (!input.attr('readonly')) {
+                    input.attr('readonly', 'readonly');
+                }
+                $container.modal('hide');
+            });
         }
     };
 })(jQuery);

@@ -1229,16 +1229,14 @@ header .btn {
     border: none !important;
 }
 #js-selectTable tbody > tr > td {
-    border: none;
-}
-.modal-dialog {
-    width: 642px;
+    border: 1px solid transparent;
 }
 #js-selectTable .checkboxBtn {
     display: none;
 }
 #js-selectTable .selected .pictureBox {
     position: relative;
+    border: 1px solid #337ab7;
 }
 #js-selectTable .selected .pictureBox:after{
     content: '\2714';

@@ -361,3 +361,97 @@ var Util = {
         });
     }
 };
+/**
+ * jquery.datatable.js 简单封装
+ * @type {{createTable: TableData.createTable, selectSingleRow: TableData.selectSingleRow}}
+ */
+var TableData = {
+    /**
+     * 创建一个Table
+     * @param element 插件绑定的元素 jquery对象
+     * @param ajaxData ajax的一些配置项，Object类型
+     * @param flag 启用单选或者多选 Boolean类型
+     * @param config 插件的配置项 Object类型
+     * @param callback 选取数据后执行的回调函数， Function类型
+     */
+    createTable: function (element, ajaxData, flag, config, callback) {
+        var table = element.DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": ajaxData,
+            "ordering": false,
+
+            "columns": config.columns,
+            "columnDefs": config.columnDefs || [],
+            "lengthMenu": config.lengthMenu || [],
+            "displayLength": config.displayLength || '',
+
+            "language": {
+                "sProcessing":   "处理中...",
+                "sLengthMenu":   "显示 _MENU_ 项结果",
+                "sZeroRecords":  "没有匹配结果",
+                "sInfo":         "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                "sInfoEmpty":    "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix":  "",
+                "sSearch":       "搜索:",
+                "sUrl":          "",
+                "sEmptyTable":     "表中数据为空",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands":  ",",
+                "oPaginate": {
+                    "sFirst":    "首页",
+                    "sPrevious": "上页",
+                    "sNext":     "下页",
+                    "sLast":     "末页"
+                },
+                "oAria": {
+                    "sSortAscending":  ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            }
+
+        });
+        if (flag != '') {
+            element.find('tbody').off('click', 'tr');
+            if(flag) {
+                element.find('tbody').on('click', 'tr', function () {
+                    $(this).toggleClass('selected');
+                });
+                this.selectSingleRow(table, callback);
+            } else {
+                element.find('tbody').on( 'click', 'tr', function () {
+                    if ( $(this).hasClass('selected') ) {
+                        $(this).removeClass('selected');
+                    }
+                    else {
+                        table.$('tr.selected').removeClass('selected');
+                        $(this).addClass('selected');
+                    }
+                });
+                this.selectRowData(table, callback);
+            }
+        }
+    },
+    /**
+     * 获取图片数据函数
+     * @param member 绑定table的对象
+     * @param callback callback 选取数据后执行的回调函数， Function类型
+     */
+    selectRowData: function (member, callback) {
+        var $container = $('#selectDataTable');
+        var $ele = $container.find('.js-select-btn');
+        $ele.off('click');
+        $ele.on('click', function () {
+            var ARRAY = [];
+            var arr = member.rows('.selected').data();
+            var len = arr.length;
+            for (var i = 0; i < len; i++) {
+                ARRAY.push(arr[i]);
+            }
+            if($.isFunction(callback)){
+                callback(ARRAY);
+            }
+        });
+    }
+};

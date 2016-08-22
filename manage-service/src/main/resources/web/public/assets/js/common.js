@@ -232,8 +232,8 @@ var dynamicLoading = {
 function uploadForm (obj) {
     var ui = obj.ui,
         inputName = obj.inputName || 'file',
-        maxWidth = obj.maxWidth || 1920,
-        maxHeight = obj.maxHeight || 1080,
+        maxWidth = obj.maxWidth || 9999,
+        maxHeight = obj.maxHeight || 9999,
         maxFileCount = obj.maxFileCount || -1,
         uploadUrl = obj.uploadUrl || '/manage/cms/resourceUpload',
         successCallback = obj.successCallback || function () {},
@@ -418,7 +418,7 @@ var TableData = {
                 element.find('tbody').on('click', 'tr', function () {
                     $(this).toggleClass('selected');
                 });
-                this.selectSingleRow(table, callback);
+                this.selectRowData(table, callback);
             } else {
                 element.find('tbody').on( 'click', 'tr', function () {
                     if ( $(this).hasClass('selected') ) {

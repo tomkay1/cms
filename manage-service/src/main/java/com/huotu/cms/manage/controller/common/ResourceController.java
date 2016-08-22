@@ -9,6 +9,9 @@
 
 package com.huotu.cms.manage.controller.common;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.huotu.hotcms.service.util.ImageHelper;
 import me.jiangcai.lib.resource.Resource;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,10 +43,52 @@ import java.util.UUID;
 @RequestMapping("/manage/upload")
 public class ResourceController {
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
     @Autowired
     private ResourceService resourceService;
 
-    public String uploadTempResource(InputStream data) throws IOException {
+    /**
+     * 为ckeditor而专门设置的编辑上传图片工具
+     * 这里有一个很大的问题是上传以后仅仅是告知了客户端一个URL,客户端后来是否删除了 一概不得而知,所以需要一个监视的第三方工具
+     * ,如果一直没有对此资源的GET请求,那么这些资源应该被删除。
+     *
+     * @param upload
+     * @return
+     */
+    @RequestMapping(value = "/image", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<String> ckeditorUpload(MultipartFile upload) throws JsonProcessingException {
+        try {
+            try (InputStream inputStream = upload.getInputStream()) {
+                String path = "watch/" + UUID.randomUUID().toString().replaceAll("-", "") + ".png";
+                ImageHelper.storeAsImage("png", resourceService, inputStream, path);
+                HashMap<String, Object> body = new HashMap<>();
+                body.put("uploaded", 1);
+                body.put("success", true);
+                body.put("fileName", path);
+                body.put("newUuid", path);
+                body.put("url", resourceService.getResource(path).httpUrl().toString());
+                return ResponseEntity
+                        .ok()
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .body(objectMapper.writeValueAsString(body));
+            }
+        } catch (Exception ex) {
+            HashMap<String, Object> body = new HashMap<>();
+            body.put("uploaded", 0);
+            body.put("success", false);
+            HashMap<String, Object> error = new HashMap<>();
+            error.put("message", ex.getLocalizedMessage());
+
+            body.put("error", error);
+            return ResponseEntity
+                    .badRequest()
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .body(objectMapper.writeValueAsString(body));
+        }
+    }
+
+    private String uploadTempResource(InputStream data) throws IOException {
         String path = "tmp/" + UUID.randomUUID().toString();
         resourceService.uploadResource(path, data);
         return path;
@@ -85,7 +130,6 @@ public class ResourceController {
             body.put("error", ex.getLocalizedMessage());
             return body;
         }
-
     }
 
 }

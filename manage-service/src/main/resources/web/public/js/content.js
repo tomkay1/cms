@@ -7,14 +7,17 @@
  * 2013-2016. All rights reserved.
  */
 
-$.cmsUploader($('#article-uploader, #link-uploader, #video-uploader, #gallery-uploader'), function (path) {
-    $("#thumbUri").val(path);
-}, {
-    allowedExtensions: ['jpeg', 'jpg', 'png', 'bmp'],
-    itemLimit: 1,
-    sizeLimit: 3 * 1024 * 1024
+$(function () {
+    $.cmsUploader($('#article-uploader, #link-uploader, #video-uploader, #gallery-uploader'), function (path) {
+        $("#thumbUri").val(path);
+    }, {
+        allowedExtensions: ['jpeg', 'jpg', 'png', 'bmp'],
+        itemLimit: 1,
+        sizeLimit: 3 * 1024 * 1024
+    });
+
+    $.cmsUploader($('#download-uploader'), function (path) {
+        $("#downloadUrl").val(path);
+    });
 });
 
-$.cmsUploader($('#download-uploader'), function (path) {
-    $("#downloadUrl").val(path);
-});

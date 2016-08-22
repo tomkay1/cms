@@ -42,27 +42,29 @@
                         <div class="form-horizontal form-bordered">
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">标题</label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-6">
                                     <input name="title" title="标题" type="text" placeholder="文章标题"
                                            class="form-control" th:value="${object.title}"/>
                                 </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="col-sm-2 control-label">链接</label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-6">
                                     <input name="linkUrl" title="链接" type="text" placeholder="链接"
                                            class="form-control" th:value="${object.linkUrl}"/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">描述</label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-6">
                                     <input name="description" title="描述" type="text" placeholder="描述"
                                            class="form-control" th:value="${object.description}"/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">原有封面</label>
-                                <img res:src="${object.thumbUri}" class="oldThumbUri" src="linkOpen.html"/>
-                                <input name="oldResourcesUri" th:value="${object.thumbUri}" type="hidden"/>
+                                <img res:src="${object.thumbUri}" class="oldThumbUri col-sm-10"
+                                     src="http://img5.imgtn.bdimg.com/it/u=582181963,2516527288&fm=21&gp=0.jpg"/>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">封面</label>

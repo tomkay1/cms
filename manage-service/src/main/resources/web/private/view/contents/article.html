@@ -38,7 +38,16 @@
                         <label class="col-sm-2 control-label">数据源</label>
                         <div class="col-sm-2">
                             <input name="categoryName" title="名称" type="text" placeholder="数据源的名称"
-                                   class="form-control"/>
+                                   class="form-control" list="categories"/>
+                            <datalist id="categories">
+                                <option th:each="category:${categories}" th:value="${category.id}"
+                                        value="最新消息"
+                                        th:attr="parentId=${category.parent!=null?category.parent.id:''}"
+                                        parentId="998">
+                                </option>
+                                <option th:remove="all" value="新闻咨询"></option>
+                                <option th:remove="all" value="成功案例"></option>
+                            </datalist>
                         </div>
                         <label class="col-sm-2 control-label">父级</label>
                         <div class="col-sm-2">
@@ -47,7 +56,7 @@
                                 <option th:each="category:${categories}" th:value="${category.id}"
                                         th:text="${category.name}">最新消息
                                 </option>
-                                <option th:remove="all">新闻咨询</option>
+                                <option th:remove="all" value="998">新闻咨询</option>
                                 <option th:remove="all">成功案例</option>
                             </select>
                         </div>

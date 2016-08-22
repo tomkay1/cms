@@ -77,26 +77,26 @@
             }
             return DOM;
         },
-        onClick: function () {
+        onClick: function (debug) {
             $(document).on('click', '.js-image', function() {
                 var self = $(this);
-                plugin.popover(self, '', false);
+                plugin.popover(self, '', false, debug);
             });
         },
-        addEdit: function (ele, html, data) {
+        addEdit: function (ele, html, data, debug) {
             var content = $('<div></div>');
             $.each(data, function (i, v) {
                 var ele = $(html).clone();
-                ele.find('.js-image').attr('src', v.url);
+                ele.find('.js-image').attr('src', v.thumpUri);
                 content.append(ele);
             });
             ele.before(content.html());
             this.delete();
             this.move();
-            this.onClick();
-            this.selectData();
+            this.onClick(debug);
+            this.selectData(debug);
         },
-        selectData: function () {
+        selectData: function (debug) {
             var self = this;
             $(document).on('change', '.js-get-source',function () {
                 var $this = $(this);
@@ -110,7 +110,7 @@
                         self.removeReadonly($this);
                         break;
                     default:
-                        plugin.getUrlPopover($this, type);
+                        plugin.getUrlPopover($this, type, debug);
                 }
             });
         },
@@ -126,12 +126,12 @@
             }
         },
         changeImage: function (ele, data) {
-            var uri = data[0].uri;
-            ele.attr('src', uri)
+            var thumpUri = data[0].thumpUri;
+            ele.attr('src', thumpUri)
         },
-        init: function(ele, html, data) {
+        init: function(ele, html, data, debug) {
             if (data.length && html) {
-                this.addEdit(ele, html, data);
+                this.addEdit(ele, html, data, debug);
             }
             if (data.length && !html) {
                 this.changeImage(ele, data);
@@ -140,6 +140,7 @@
     };
     $.fn.addEdit = function (options) {
         var s = $.extend({
+            debug: false,
             hasImage: true,
             imageClass:'',
             hasParagraph: false,
@@ -154,25 +155,26 @@
         var DOM = methods.create(s);
         self.off('click');
         self.on('click', function () {
-            plugin.popover(self, DOM, true);
+            plugin.popover(self, DOM, true, s.debug);
         });
     };
 
     var plugin = {
         uploadCallBackData : [],
-        popover: function(pointer, html, flag) {
+        popover: function(pointer, html, flag, debug) {
+
             var self = this;
 
             $('body').append($('#templateHtml').html());
             var $container = $('#selectDataTable');
             self.switchButton();
 
-            self.initUpload();
+            self.initUpload(debug);
             self.changeImage(pointer, html);
 
             $container.modal();
 
-            self.getImageData(pointer, html, flag);
+            self.getImageData(pointer, html, flag, debug);
 
             $container.on('hide.bs.modal', function () {
                 $(this).off('hide.bs.modal');
@@ -181,13 +183,15 @@
 
 
         },
-        getImageData: function(pointer, html, flag) {
+        getImageData: function(pointer, html, flag, debug) {
             var self = this;
+            var url = debug ? imageMock : '/dataSource/findContentType';
+
             $('#selectDataTable').addClass('imageTable-style');
 
             TableData.createTable($('#js-selectTable'),
                 {
-                    "url": '/dataSource/findContentType',
+                    "url": url,
                     "data": function ( d ) {
                         return $.extend( {}, d, {
                             "pageId": 1,
@@ -197,7 +201,7 @@
                 }, flag, {
                     "columns": [
                         {
-                            "data": "url"
+                            "data": "thumpUri"
                         }
                     ],
                     "columnDefs": [
@@ -212,25 +216,27 @@
                     "lengthMenu": [11, 22, 33],
                     "displayLength": 11
                 },function (data) {
-                    self.creatEditArea(pointer, html, data)
+                    self.creatEditArea(pointer, html, data, debug)
                 });
         },
-        initUpload: function () {
+        initUpload: function (debug) {
             var self = this;
+            var url = debug ? uploadMock : '';
             uploadForm({
                 ui: '#js-fileUploader',
                 inputName: 'myfile',
                 maxFileCount: 1,
+                uploadUrl: url,
                 successCallback: function(files, data, xhr, pd) {
                     var temp = {};
-                    temp.uri = data.fileUri;
+                    temp.thumpUri = data.fileUri;
                     self.uploadCallBackData.push(temp);
                 }
             });
         },
-        creatEditArea: function (pointer, html, data) {
+        creatEditArea: function (pointer, html, data, debug) {
             var $container = $('#selectDataTable');
-            methods.init(pointer, html, data);
+            methods.init(pointer, html, data, debug);
             $container.modal('hide')
         },
         changeImage: function (pointer, html) {
@@ -255,8 +261,10 @@
                 });
             })
         },
-        getUrlPopover: function (element, parameter) {
+        getUrlPopover: function (element, parameter, debug) {
             var self = this;
+            var url = debug ? linkMock : '/dataSource/findContentType';
+
             $('body').append($('#templateHtml').html());
             var $container = $('#selectDataTable');
             $('#myModalLabel').text('选择链接');
@@ -266,7 +274,7 @@
 
             TableData.createTable($('#js-url-selectTable'),
                 {
-                    "url": '/dataSource/findContentType',
+                    "url": url,
                     "data": function ( d ) {
                         return $.extend( {}, d, {
                             "pageId": 1,

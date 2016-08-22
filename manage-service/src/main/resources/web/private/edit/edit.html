@@ -288,6 +288,10 @@
     var initPath=/*[[@{/manage/widget/widgets}]]*/ '../../public/assets/js/data/widget.json';
     var savePage=/*[[@{/manage/pages/}]]*/ null;
     var pageId=/*[[${pageId}]]*/ -999;
+    // Mock数据地址
+    var imageMock = '../../public/assets/js/data/imageMock.json';
+    var linkMock = '../../public/assets/js/data/linkMock.json';
+    var uploadMock = '../../public/assets/js/data/uploadMock.json';
     // 识别是否处于测试阶段 前端勿删！
     var CMSDebugMode = /*[[${@configInfo.debugging}]]*/ false;
     var testMode = /*[[${@environment.acceptsProfiles('test')}]]*/ true;
@@ -309,7 +313,7 @@
 <script src="http://resali.huobanplus.com/cdn/jquery.dataTables/1.10.12/dataTables.bootstrap.min.js"></script>
 
 <script src="../../public/assets/libs/jquery.htmlClean.js" ewp:src="/assets/libs/jquery.htmlClean.js"></script>
-<script src="../../public/assets/js/cms.addEdit.js" ewp:src="/assets/js/cms.widgets.js"></script>
+<script src="../../public/assets/js/cms.addEdit.js" ewp:src="/assets/js/cms.addEdit.js"></script>
 <script src="../../public/assets/js/common.js" ewp:src="/assets/js/common.js"></script>
 <script src="../../public/assets/js/cms.widgets.js" ewp:src="/assets/js/cms.widgets.js"></script>
 <script src="../../public/assets/js/page/cms.editPage.js" ewp:src="/assets/js/page/cms.editPage.js"></script>

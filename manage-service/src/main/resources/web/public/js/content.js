@@ -7,87 +7,53 @@
  * 2013-2016. All rights reserved.
  */
 
-/**
- * 关于文章的脚本
- * Created by Neo on 7/7/16.
- */
-
-//$('#articleDate').mask('9999-99-99');
-
-
-function logoUploaded(id, name, responseJSON) {
-    if(responseJSON.success){
-        $("#thumbUri").val(responseJSON.newUuid);
-    }
-    console.log(responseJSON.newUuid);
-    // newUuid is the path
-}
-
-function logoOnUpload() {
-    //maybe in protype
-    console.log('logoOnUpload');
-    console.log.apply(console, arguments);
-}
-
-//noinspection JSUnresolvedFunction
-$('#article-uploader, #link-uploader, #video-uploader, #gallery-uploader').fineUploader({
-    debug:true,
-    template: top.$('#qq-template').get(0),
-    request: {
-        inputName: 'file',
-        // endpoint: 'http://mycms.51flashmall.com:8080/manage/upload/fine'
-        endpoint: uploadFileUrl
-    },
-    thumbnails: {
-        placeholders: {
-            waitingPath: 'http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/placeholders/waiting-generic.png',
-            notAvailablePath: 'http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/placeholders/not_available-generic.png'
-        }
-    },
-    validation: {
+$(function () {
+    $.cmsUploader($('#article-uploader, #link-uploader, #video-uploader, #gallery-uploader'), function (path) {
+        $("#thumbUri").val(path);
+    }, {
         allowedExtensions: ['jpeg', 'jpg', 'png', 'bmp'],
         itemLimit: 1,
         sizeLimit: 3 * 1024 * 1024
-    },
-    callbacks:{
-        onComplete: function (id, name, response) {
-            console.log(response);
-            if(response.success){
-                if($("#thumbUri").size()>0)
-                    $("#thumbUri").val(response.newUuid);
+    });
+
+    $.cmsUploader($('#download-uploader'), function (path) {
+        $("#downloadUrl").val(path);
+    });
+
+    var categories = $('option', $('#categories'));
+
+    var parentCategoryId = $('select[name=parentCategoryId]');
+
+    var categoryName = $('input[name=categoryName]');
+    categoryName.change(function () {
+
+        // 找到那个option
+        var val = $(this).val();
+        // 我们找下是否在列表内
+
+        var targetOption = categories.filter(function (index, ele) {
+            return $(ele).val() == val;
+        }).first();
+
+        if (targetOption.size() > 0) {
+            // 的确是选择的
+            parentCategoryId.prop('disabled', 'disabled');
+            var parentId = targetOption.attr('parentId');
+            if (parentId && parentId.length > 0) {
+                //有父类的
+                parentCategoryId.val(parentId);
+            } else {
+                //置空
+                parentCategoryId.val('');
             }
-        },
-        onError: logoOnUpload,
-        onSubmit: logoOnUpload,
-        onCancel: logoOnUpload,
-        onValidate: logoOnUpload
-    }
+        } else {
+            // 手工录入的 保留原值么?
+            parentCategoryId.prop('disabled', '');
+        }
+
+        console.log('changed', val, categories, targetOption);
+
+    });
+
 });
 
-$('#download-uploader').fineUploader({
-    debug:true,
-    template: top.$('#qq-template').get(0),
-    request: {
-        inputName: 'file',
-        // endpoint: 'http://mycms.51flashmall.com:8080/manage/upload/fine'
-        endpoint: uploadFileUrl
-    },
-    thumbnails: {
-        placeholders: {
-            waitingPath: 'http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/placeholders/waiting-generic.png',
-            notAvailablePath: 'http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/placeholders/not_available-generic.png'
-        }
-    },
-    callbacks:{
-        onComplete: function (id, name, response) {
-            console.log(response);
-            if(response.success){
-                $("#downloadUrl").val(response.newUuid);
-            }
-        },
-        onError: logoOnUpload,
-        onSubmit: logoOnUpload,
-        onCancel: logoOnUpload,
-        onValidate: logoOnUpload
-    }
-});

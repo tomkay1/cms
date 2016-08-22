@@ -89,6 +89,7 @@ var widgetHandle = {
     closeSetting: function () {
         var $DOM = widgetHandle.getEditAreaElement(identity);
         CMSWidgets.closeEditor(GlobalID, identity, $DOM);
+        $DOM.children('.borderBoxs').remove();
         editFunc.closeFunc();
     }
 };
@@ -109,7 +110,7 @@ function updataWidgetEditor(globalID, properties, element) {
         function (html) {
             if (html) {
                 var container = editFunc.findCurrentEdit(GlobalID).children().eq(1);
-                container.html(html);
+                container.append(html);
                 widgetHandle.getIdentity(element ,function (identity) {
                     var $DOM = widgetHandle.getEditAreaElement(identity);
                     dynamicLoading.js( wsCache.get(identity).script);

@@ -14,19 +14,18 @@
 <head>
     <meta charset="UTF-8">
     <link href="http://resali.huobanplus.com/cdn/bracket/css/style.default.css" rel="stylesheet">
-    <link href="http://resali.huobanplus.com/cdn/bracket/css/jquery.datatables.css" rel="stylesheet">
     <link href="../../../public/assets/css/customize.css" ewp:href="/assets/css/customize.css" rel="stylesheet">
     <link href="../../../public/css/site.css" ewp:href="/css/site.css" rel="stylesheet">
     <title>EditSite</title>
 </head>
-<body class="mainpanel" id="fa-puzzle-piece">
+<body class="mainpanel" id="fa-link">
 <div class="pageheader">
-    <h2><i class="fa fa-puzzle-piece"></i> 链接管理 <span>修改链接信息</span></h2>
+    <h2><i class="fa fa-link"></i> 链接管理 <span>修改链接信息</span></h2>
 </div>
 
 <!--/*@thymesVar id="object" type="com.huotu.hotcms.service.entity.Link"*/-->
 <div class="contentpanel">
-    <form id="updateSiteForm" sec:authorize="hasRole('MANAGE')" action="link.html" method="post"
+    <form id="linkForm" sec:authorize="hasRole('MANAGE')" action="link.html" method="post"
           th:action="@{/manage/link/{id}(id=${object.id})}">
         <div class="panel panel-default close-panel">
             <div class="panel-heading">
@@ -62,12 +61,12 @@
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">原有封面</label>
-                                <img res:src="${object.thumbUri}" class="oldThumbUri"  src="linkOpen.html"/>
-                                <input name="oldResourcesUri" th:value="${object.thumbUri}" type="hidden" />
+                                <img res:src="${object.thumbUri}" class="oldThumbUri" src="linkOpen.html"/>
+                                <input name="oldResourcesUri" th:value="${object.thumbUri}" type="hidden"/>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">封面</label>
-                                <input type="hidden" name="tempPath" id="thumbUri" />
+                                <input type="hidden" name="tempPath" id="thumbUri"/>
                                 <div class="col-sm-10" id="link-uploader"></div>
                             </div>
                         </div>
@@ -89,10 +88,6 @@
         </div>
     </form>
 </div><!-- contentpanel -->
-<script th:inline="javascript">
-    var uploadFileUrl = /*[[@{/manage/upload/fine}]]*/ null;
-    var customerIdChangeUrl = /*[[@{/manage/supper/owner/$1/customerId}]]*/ null;
-</script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-1.10.2.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-ui-1.10.3.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/bootstrap.min.js"></script>

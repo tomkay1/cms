@@ -142,7 +142,7 @@
         var s = $.extend({
             hasImage: true,
             imageClass:'',
-            hasParagraph: true,
+            hasParagraph: false,
             paragraphClass: '',
             hasUrl: false,
             urlClass: '',

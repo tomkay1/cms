@@ -9,24 +9,22 @@
   -->
 
 <html xmlns:th="http://www.thymeleaf.org" xmlns:ewp="http://ewp.jiangcai.me" xmlns:sec="http://security.thymeleaf.org"
-      xmlns:res="http://resource.jiangcai.me"
       lang="en">
 <head>
     <meta charset="UTF-8">
     <link href="http://resali.huobanplus.com/cdn/bracket/css/style.default.css" rel="stylesheet">
-    <link href="http://resali.huobanplus.com/cdn/bracket/css/jquery.datatables.css" rel="stylesheet">
     <link href="../../../public/assets/css/customize.css" ewp:href="/assets/css/customize.css" rel="stylesheet">
     <link href="../../../public/css/site.css" ewp:href="/css/site.css" rel="stylesheet">
     <title>EditSite</title>
 </head>
-<body class="mainpanel" id="fa-puzzle-piece">
+<body class="mainpanel" id="fa-bullhorn">
 <div class="pageheader">
-    <h2><i class="fa fa-puzzle-piece"></i> 公告管理 <span>修改公告信息</span></h2>
+    <h2><i class="fa fa-bullhorn"></i> 公告管理 <span>修改公告信息</span></h2>
 </div>
 
 <!--/*@thymesVar id="object" type="com.huotu.hotcms.service.entity.Notice"*/-->
 <div class="contentpanel">
-    <form id="updateSiteForm" sec:authorize="hasRole('MANAGE')" action="notice.html" method="post"
+    <form id="noticeForm" sec:authorize="hasRole('MANAGE')" action="notice.html" method="post"
           th:action="@{/manage/notice/{id}(id=${object.id})}">
         <div class="panel panel-default close-panel">
             <div class="panel-heading">
@@ -35,7 +33,7 @@
                     <a href="" class="minimize maximize">&minus;</a>
                 </div><!-- panel-btns -->
                 <h3 class="panel-title">修改公告信息</h3>
-                <p>公告信息发生变化时做一定修改</p>
+                <p>修改公告信息</p>
             </div>
             <div class="panel-body">
                 <div class="tab-content">
@@ -43,12 +41,14 @@
                         <div class="form-horizontal form-bordered">
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">标题</label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-6">
                                     <input name="title" title="标题" type="text" placeholder="文章标题"
                                            class="form-control" th:value="${object.title}"/>
                                 </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="col-sm-2 control-label">描述</label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-6">
                                     <input name="description" title="描述" type="text" placeholder="描述"
                                            class="form-control" th:value="${object.description}"/>
                                 </div>
@@ -56,7 +56,9 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">内容</label>
                                 <div class="col-sm-10">
-                                    <textarea class="form-control" rows="4" title="内容" name="content" th:text="${object.content}"></textarea>
+                                    <textarea class="form-control editor"
+                                              th:class="${(@environment.acceptsProfiles('no_ck')?'':'editor ')+'form-control'}"
+                                              rows="4" title="内容" name="content" th:text="${object.content}"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -83,20 +85,17 @@
 <script src="http://resali.huobanplus.com/cdn/bracket/js/bootstrap.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/toggles.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.cookies.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.maskedinput.min.js"></script>
 
-<script src="http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/jquery.fine-uploader.min.js"></script>
-<link rel="stylesheet" href="http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/fine-uploader-new.min.css"
-      property=""/>
-<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.tagsinput.min.js"></script>
-<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.autogrow-textarea.js"></script>
-<link rel="stylesheet" href="http://resali.huobanplus.com/cdn/bracket/css/jquery.tagsinput.css" property=""/>
-<script src="http://resali.huobanplus.com/cdn/datatables/1.10.12/datatables.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/ckeditor/4.5.10/standard/ckeditor.js"></script>
+<script src="http://resali.huobanplus.com/cdn/ckeditor/4.5.10/standard/adapters/jquery.js"></script>
+
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.validate.min.js"></script>
 <script src="../../../public/js/jquery.validation.message-zh_cn.js"
         ewp:src="/js/jquery.validation.message-zh_cn.js"></script>
 <div ewp:replace="fragments/frame.html::#messageSection"></div>
 <script src="../../../public/bracket/js/frame.js" ewp:src="/bracket/js/frame.js"></script>
 <script src="../../../public/bracket/js/frame_custom.js" ewp:src="/bracket/js/frame_custom.js"></script>
-<script src="../../../public/js/site.js" ewp:src="/js/site.js"></script>
+<script src="../../../public/js/content.js" ewp:src="/js/content.js"></script>
 </body>
 </html>

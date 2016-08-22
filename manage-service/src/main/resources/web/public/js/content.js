@@ -65,7 +65,7 @@ $(function () {
             required: true
         }, title: {
             required: true,
-            maxlength: 40
+            maxlength: 48
         }
     };
     var messages = {
@@ -102,6 +102,19 @@ $(function () {
             linkUrl: {
                 required: "请输入绝对的链接",
                 url: '请输入有效的URL链接'
+            }
+        }, messages)
+    });
+
+    $('#noticeForm').validate({
+        rules: jQuery.extend(true, {
+            content: {
+                required: true
+            }
+        }, rules),
+        messages: jQuery.extend(true, {
+            content: {
+                required: "请输入公告的正文"
             }
         }, messages)
     });

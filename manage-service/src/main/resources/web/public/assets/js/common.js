@@ -54,14 +54,14 @@ var widgetHandle = {
         return $DOM;
     },
     getIdentity: function (ele, callback) {
-        identity = $(ele).siblings('.view').children().data('widgetidentity');
+        identity = $(ele).siblings('.view').children().attr('data-widgetidentity');
         callback&&callback(identity);
     },
     createStore: function (ele) {
         GlobalID = $(ele).siblings('.view').children().attr('id');
         var data = widgetProperties(GlobalID);
         if (wsCache.get(GlobalID) == null) widgetHandle.setStroe(GlobalID, data);
-        //updataWidgetEditor(GlobalID, widgetProperties(GlobalID), ele);
+        updataWidgetEditor(GlobalID, widgetProperties(GlobalID), ele);
     },
     setStroe: function (id, data) {
         if ( data ) {

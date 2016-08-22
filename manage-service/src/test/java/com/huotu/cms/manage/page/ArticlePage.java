@@ -13,14 +13,10 @@ import com.huotu.cms.manage.page.support.AbstractCMSContentPage;
 import com.huotu.cms.manage.page.support.BodyId;
 import com.huotu.hotcms.service.entity.Article;
 import org.assertj.core.api.Condition;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.util.List;
-import java.util.function.Predicate;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Collections;
 
 /**
  * 文章管理页面
@@ -36,37 +32,9 @@ public class ArticlePage extends AbstractCMSContentPage<Article> {
     }
 
     @Override
-    protected Predicate<WebElement> rowPredicate(Article value) {
-        return row -> {
-            try {
-                // 找到名字 也就算了
-                List<WebElement> tds = row.findElements(By.tagName("td"));
-                assertThat(tds)
-                        .haveAtLeastOne(new Condition<>(td
-                                -> td.getText().contains(value.getTitle()), "需显示标题"));
-
-                assertThat(tds)
-                        .haveAtLeastOne(new Condition<>(td
-                                -> td.getText().contains(value.getArticleSource().getValue().toString()), "需显示来源"));
-
-                assertThat(tds)
-                        .haveAtLeastOne(new Condition<>(td
-                                -> td.getText().contains(value.getCategory().getName()), "需显示数据源"));
-
-//                assertThat(tds)
-//                        .haveAtLeastOne(new Condition<>(td
-//                                -> td.getText().contains(value.getCreateTime().toString()), "需显示时间"));
-
-//                assertThat(tds)
-//                        .haveAtLeastOne(new Condition<>(td
-//                                -> td.getText().contains(value.getType()), "需显示类型"));
-
-            } catch (RuntimeException ex) {
-                printThisPage();
-                throw ex;
-            }
-            return true;
-        };
+    protected Iterable<Condition<WebElement>> rowPredicateConditions(Article value) {
+        return Collections.singleton(new Condition<>(td
+                -> td.getText().contains(value.getCategory().getName()), "需显示数据源"));
     }
 
     @Override

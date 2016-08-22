@@ -44,7 +44,7 @@
             js? (code += line.match(reExp) ? line + '\n' : 'r.push(' + line + ');\n') :
                 (code += line != '' ? 'r.push("' + line.replace(/"/g, '\\"') + '");\n' : '');
             return add;
-        }
+        };
         while(match = re.exec(html)) {
             add(html.slice(cursor, match.index))(match[1], true);
             cursor = match.index + match[0].length;
@@ -90,7 +90,7 @@
         },
         addEdit: function (ele, html, data, debug, amount) {
             var content = $('<div></div>');
-            var len = amount - $('#configuration').find('.addEditBox').length;
+            var len = amount - $(document).find('.addEditBox').length;
             $.each(data, function (i, v) {
                 var ele = $(html).clone();
                 if ( !(amount == -1)) {
@@ -169,20 +169,20 @@
             this.onClick(debug);
         },
         hideAllButtons: function () {
-            var element = $('#configuration');
+            var element = $(document);
             element.find('.js-addEdit-BtnGroup').detach();
             this.addButtonDom = element.find('.js-addEditBtn').detach();
         },
         hideAddButtons: function () {
-            var element = $('#configuration');
+            var element = $(document);
             this.addButtonDom = element.find('.js-addEditBtn').detach();
         },
         showAddButtons: function () {
-            var element = $('#configuration');
+            var element = $(document);
             element.find('.borderBoxs').append(this.addButtonDom);
         },
         editAmount: function (amount) {
-            var len = $('#configuration').find('.addEditBox').length;
+            var len = $(document).find('.addEditBox').length;
             if (amount == 1) {
                 if (len == amount) this.hideAllButtons();
             }
@@ -268,7 +268,7 @@
                     "columnDefs": [
                         {
                             "className": "pictureBox",
-                            "render": function (data, type, row ) {
+                            "render": function (data) {
                                 return '<img  src="'+data+'" class="pictureImages img-rounded" >';
                             },
                             "targets": 0
@@ -290,7 +290,7 @@
                 inputName: 'file',
                 maxFileCount: 1,
                 uploadUrl: url,
-                successCallback: function(files, data, xhr, pd) {
+                successCallback: function(files, data) {
                     var temp = {};
                     temp.thumpUri = data.fileUri;
                     self.uploadCallBackData.push(temp);

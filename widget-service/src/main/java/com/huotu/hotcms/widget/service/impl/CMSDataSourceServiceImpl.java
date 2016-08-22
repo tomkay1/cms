@@ -185,6 +185,10 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
                     data[i] = dataObject;
                 }
                 dataModel.setData(data);
+                dataModel.setPageNum(page.getNumber());
+                dataModel.setPageSize(pageSize);
+                dataModel.setTotalPages(page.getTotalPages());
+                dataModel.setTotalElements(page.getTotalElements());
                 return dataModel;
             case 4:
                 Page<GalleryItem> pages = galleryItemRepository.findByGallery_Category_SiteAndDeletedFalse(site, pageable);
@@ -200,6 +204,10 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
                     data[i] = dataObject;
                 }
                 dataModel.setData(data);
+                dataModel.setPageNum(page.getNumber());
+                dataModel.setPageSize(pageSize);
+                dataModel.setTotalPages(page.getTotalPages());
+                dataModel.setTotalElements(page.getTotalElements());
                 return dataModel;
             case 5:
                 page = downloadRepository.findAll((root, query, cb) -> {
@@ -222,6 +230,10 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
                     data[i] = dataObject;
                 }
                 dataModel.setData(data);
+                dataModel.setPageNum(page.getNumber());
+                dataModel.setPageSize(pageSize);
+                dataModel.setTotalPages(page.getTotalPages());
+                dataModel.setTotalElements(page.getTotalElements());
                 return dataModel;
             case 6:
                 Page<PageInfo> pageInfos = pageInfoRepository.findAll((root, query, cb) -> {
@@ -243,6 +255,10 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
                     data[i] = dataObject;
                 }
                 dataModel.setData(data);
+                dataModel.setPageNum(page.getNumber());
+                dataModel.setPageSize(pageSize);
+                dataModel.setTotalPages(page.getTotalPages());
+                dataModel.setTotalElements(page.getTotalElements());
                 return dataModel;
         }
         if (page != null) {
@@ -252,6 +268,7 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
             dataModel.setPageNum(page.getNumber());
             dataModel.setPageSize(pageSize);
             dataModel.setTotalPages(page.getTotalPages());
+            dataModel.setTotalElements(page.getTotalElements());
             dataModel.setData(data);
         }
         return dataModel;

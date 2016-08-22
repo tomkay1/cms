@@ -16,6 +16,7 @@ import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.Video;
+import com.huotu.hotcms.service.model.DataObject;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.widget.test.TestBase;
 import org.junit.Test;
@@ -25,8 +26,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -124,14 +127,19 @@ public class CMSDataSourceControllerTest extends TestBase {
         toGet.put("draw", 0);
         toGet.put("length", 2);
         toGet.put("pageId", "123");
-        toGet.put("search[value]", "a");
+        toGet.put("search[value]", "");
         String json = mockMvc.perform(get("/dataSource/findContentType")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(toGet))
                 .accept(MediaType.APPLICATION_JSON)
         )
                 .andReturn().getResponse().getContentAsString();
+        Map map = objectMapper.readValue(json, Map.class);
         System.out.println(json);
+        List<DataObject> list = (List<DataObject>) map.get("data");
+        assertThat(list.size()).isEqualTo(2);
+
+
     }
 
 }

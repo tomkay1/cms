@@ -242,6 +242,7 @@
         </div>
     </div>
 </div>
+<table id="example" width="100%"></table>
 <div class="modal-backdrop" ></div>
 </body>
 <script type="text/neo-template" id="templateHtml">
@@ -314,4 +315,41 @@
 <script src="../../public/assets/js/data/cms.dataHandle.js" ewp:src="/assets/js/data/cms.dataHandle.js"></script>
 <script src="../../public/assets/js/data/cms.dataHandle.js" ewp:src="/assets/js/data/cms.dataHandle.js"></script>
 
+<script src="http://cdn.bootcss.com/datatables/1.10.12/js/jquery.dataTables.min.js"></script>
+<script src="http://cdn.bootcss.com/datatables/1.10.12/js/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "processing": true,
+            "serverSide": true,
+//            "ajax": {
+//                "url":"/dataSource/findContentType",
+//                "type": "POST",
+//                "dataType": 'json',
+//                "contentType": "application/json; charset=utf-8",
+//                "data": function ( d ) {
+//                    return JSON.stringify($.extend( {}, d, {
+//                        "pageId": pageId,
+//                        "contentType":1
+//                    }));
+//                }
+//            },
+            "ajax": {
+                "url": "/dataSource/findContentType",
+                "data": function (d) {
+                    return $.extend({}, d, {
+                        "pageId": pageId,
+                        "contentType": 1
+                    });
+                }
+            },
+            "columns": [
+                {"data": "id"},
+                {"data": "name"},
+                {"data": "date"},
+                {"data": "url"}
+            ]
+        });
+    });
+</script>
 </html>

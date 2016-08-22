@@ -12,5 +12,6 @@ public class DataModel {
     private int pageNum;
     private int pageSize;
     private int totalPages;
+    private long totalElements;
     private DataObject[] data;
 }

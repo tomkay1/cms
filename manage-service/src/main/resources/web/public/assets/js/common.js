@@ -79,6 +79,7 @@ var widgetHandle = {
                     updataCompoentPreview(id, ps);
                 }
                 CMSWidgets.closeEditor(GlobalID, identity, $DOM);
+                $DOM.children('.borderBoxs').remove();
                 editFunc.closeFunc();
             },
             onFailed: function (msg) {

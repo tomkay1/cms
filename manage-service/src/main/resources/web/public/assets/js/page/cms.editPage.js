@@ -226,7 +226,6 @@ var Page = {
                 child.find('.swiper-wrapper').append(div);
             });
             container.append(h3);
-            console.log(container[0]);
             child.append(container);
             parent.append(child);
 

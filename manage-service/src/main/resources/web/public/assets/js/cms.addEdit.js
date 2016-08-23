@@ -95,15 +95,13 @@
                 if ( !(amount == -1)) {
                     if (i < len) {
                         ele.find('.js-image').attr({
-                            'src': v.thumpUri,
-                            'data-path': v.thumpUri
+                            'src': v.thumpUri
                         });
                         content.append(ele);
                     }
                 } else {
                     ele.find('.js-image').attr({
-                        'src': v.thumpUri,
-                        'data-path': v.thumpUri
+                        'src': v.thumpUri
                     });
                     content.append(ele);
                 }
@@ -148,8 +146,7 @@
         changeImage: function (ele, data) {
             var thumpUri = data[0].thumpUri;
             ele.attr({
-                'src': thumpUri,
-                'data-path': thumpUri
+                'src': thumpUri
             });
         },
         init: function(ele, html, data, debug, amount) {

@@ -18,11 +18,11 @@
 </head>
 <body class="mainpanel" id="fa-tasks">
 <div class="pageheader">
-    <h2><i class="fa fa-tasks"></i> 文章模型 <span>管理文章</span></h2>
+    <h2><i class="fa fa-tasks"></i> 文章模型 <span>管理文章数据内容</span></h2>
 </div>
 <!--/*@thymesVar id="categories" type="java.lang.Iterable<com.huotu.hotcms.service.entity.Category"*/-->
 <div class="contentpanel">
-    <form id="articleForm" action="index.html" method="POST" th:action="@{/manage/article}">
+    <form id="articleForm" action="article.html" method="POST" th:action="@{/manage/article}">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="panel-btns">
@@ -30,7 +30,7 @@
                     <a href="" class="minimize">&minus;</a>
                 </div><!-- panel-btns -->
                 <h3 class="panel-title">新增文章</h3>
-                <p>父级数据源可以不选择,按父级数据源搜索将可以搜索到相关所有数据内容</p>
+                <p>可以选择已有的数据源或者录入新的数据源</p>
             </div>
             <div class="panel-body">
                 <div class="form-horizontal form-bordered">
@@ -197,10 +197,6 @@
             </div><!-- table-responsive -->
         </div>
     </div>
-    <script th:inline="javascript">
-        var uploadFileUrl = /*[[@{/manage/upload/fine}]]*/ null;
-        var customerIdChangeUrl = /*[[@{/manage/supper/owner/$1/customerId}]]*/ null;
-    </script>
 </div><!-- contentpanel -->
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-1.10.2.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-ui-1.10.3.min.js"></script>
@@ -215,7 +211,10 @@
 <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/fine-uploader-new.min.css"
       property=""/>
 
-<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.datatables.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/datatables/1.10.12/datatables.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.validate.min.js"></script>
+<script src="../../../public/js/jquery.validation.message-zh_cn.js"
+        ewp:src="/js/jquery.validation.message-zh_cn.js"></script>
 <div ewp:replace="fragments/frame.html::#messageSection"></div>
 <script src="../../../public/bracket/js/frame.js" ewp:src="/bracket/js/frame.js"></script>
 <script src="../../../public/bracket/js/frame_custom.js" ewp:src="/bracket/js/frame_custom.js"></script>

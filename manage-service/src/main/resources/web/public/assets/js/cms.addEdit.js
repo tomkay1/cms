@@ -20,7 +20,6 @@
         '<option value="0">文章资源</option>',
         '<option value="1">链接资源</option>',
         '<option value="2">视频资源</option>',
-        '<option value="2">视频资源</option>',
         '<option value="3">公告资源</option>',
         '<option value="5">下载资源</option>',
         '<option value="custom">自定义链接</option>',
@@ -256,7 +255,7 @@
                     "data": function ( d ) {
                         return $.extend( {}, d, {
                             "pageId": 1,
-                            "contentType": 5
+                            "contentType": 4
                         });
                     }
                 }, flag, {

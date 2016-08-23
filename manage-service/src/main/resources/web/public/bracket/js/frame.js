@@ -160,6 +160,8 @@ $(function () {
      * @param validation 是否允许该文件的的校验 http://docs.fineuploader.com/branch/master/api/options.html#validation
      */
     $.cmsUploader = function (ui, uploadedPathConsumer, validation) {
+        if (ui.size() == 0)
+            return;
         var request;
         if (!top.$.cmsUploaderUrl) {
             request = {};

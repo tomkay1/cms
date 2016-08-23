@@ -226,7 +226,7 @@ var Page = {
                 child.find('.swiper-wrapper').append(div);
             });
             container.append(h3);
-            //container.append('<div class="borderBoxs"> <button class="js-addEditBtn btn btn-default" type="button"><i class="fa fa-plus-circle" aria-hidden="true"></i>添加数据</button> </div>');
+            console.log(container[0]);
             child.append(container);
             parent.append(child);
 

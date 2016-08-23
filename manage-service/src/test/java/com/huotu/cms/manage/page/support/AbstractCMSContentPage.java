@@ -13,10 +13,13 @@ import com.huotu.cms.manage.ManageTest;
 import com.huotu.hotcms.service.ImagesOwner;
 import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Category;
+import org.assertj.core.api.Condition;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
 import java.util.function.Predicate;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -103,7 +106,57 @@ public abstract class AbstractCMSContentPage<T extends AbstractContent> extends 
         fillContentValue(value, true);
     }
 
+    /**
+     * 检查这条记录是否是描述这个资源的
+     *
+     * @param value 资源
+     * @return 可以有茫茫多的检查条件, 但不可以返回null
+     */
+    protected abstract Iterable<Condition<WebElement>> rowPredicateConditions(T value);
+
+    @Override
+    protected Predicate<WebElement> rowPredicate(T value) {
+        return row -> {
+            try {
+                // 找到名字 也就算了
+                List<WebElement> tds = row.findElements(By.tagName("td"));
+                assertThat(tds)
+                        .haveAtLeastOne(new Condition<>(td
+                                -> td.getText().contains(value.getTitle()), "需显示标题"));
+                assertThat(tds)
+                        .haveAtLeastOne(new Condition<>(td
+                                -> td.getText().contains(value.getCategory().getName()), "需显示数据源"));
+                //                assertThat(tds)
+//                        .haveAtLeastOne(new Condition<>(td
+//                                -> td.getText().contains(value.getCreateTime().toString()), "需显示时间"));
+
+//                assertThat(tds)
+//                        .haveAtLeastOne(new Condition<>(td
+//                                -> td.getText().contains(value.getType()), "需显示类型"));
+
+                rowPredicateConditions(value).forEach(assertThat(tds)::haveAtLeastOne);
+
+            } catch (RuntimeException ex) {
+                printThisPage();
+                throw ex;
+            }
+            return true;
+        };
+    }
+
+    /**
+     * 将值填入表单中,公共部分和资源部分无需关注
+     *
+     * @param value  值
+     * @param update true表示是更新一个资源否者就是意图新增
+     */
     protected abstract void fillContentValue(T value, boolean update);
 
+    /**
+     * 鉴定当前打开的这个页面展示的是否是entity,同样无需关注公共和资源部分
+     *
+     * @param entity
+     * @throws Exception
+     */
     public abstract void assertResourcePage(T entity) throws Exception;
 }

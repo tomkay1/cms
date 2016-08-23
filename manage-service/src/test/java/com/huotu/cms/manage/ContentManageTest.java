@@ -122,10 +122,29 @@ public abstract class ContentManageTest<T extends AbstractContent> extends SiteM
         return value;
     }
 
+    /**
+     * 随机弄些数据给这个资源,所有Content共享的数据无需关心,资源相关的依然无需关心
+     *
+     * @param value 资源
+     * @param site  在这个站点的
+     */
     protected abstract void normalRandom(T value, Site site);
 
+    /**
+     * 跟{@link CRUDTest#assertCreation(Object, Object)}语义是一致的,但共享部分无需处理,资源部分无需处理
+     *
+     * @param entity
+     * @param data
+     * @see CRUDTest#assertCreation(Object, Object)
+     */
     protected abstract void assertCreation(T entity, T data);
 
+    /**
+     * 跟{@link CRUDTest#editableProperty()}语义是一致的,但共享部分无需处理,资源部分无需处理
+     *
+     * @return
+     * @throws Exception
+     */
     protected abstract Predicate<? super PropertyDescriptor> editableProperty() throws Exception;
 
 

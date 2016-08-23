@@ -14,24 +14,24 @@
     <meta charset="UTF-8">
     <link href="http://resali.huobanplus.com/cdn/bracket/css/style.default.css" rel="stylesheet">
     <link href="http://resali.huobanplus.com/cdn/bracket/css/jquery.datatables.css" rel="stylesheet">
-    <link href="../../public/assets/css/customize.css" ewp:href="/assets/css/customize.css" rel="stylesheet">
+    <link href="../../../public/assets/css/customize.css" ewp:href="/assets/css/customize.css" rel="stylesheet">
     <title>Download</title>
 </head>
 <body class="mainpanel" id="fa-download">
 <div class="pageheader">
-    <h2><i class="fa fa-download"></i> 下载模型 <span>管理下载数据源</span></h2>
+    <h2><i class="fa fa-download"></i> 下载模型 <span>管理下载数据内容</span></h2>
 </div>
-
+<!--/*@thymesVar id="categories" type="java.lang.Iterable<com.huotu.hotcms.service.entity.Category"*/-->
 <div class="contentpanel">
-    <form id="downloadForm" action="index.html" method="POST" th:action="@{/manage/download}">
+    <form id="downloadForm" action="download.html" method="POST" th:action="@{/manage/download}">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="panel-btns">
                     <a href="" class="panel-close">&times;</a>
                     <a href="" class="minimize">&minus;</a>
                 </div><!-- panel-btns -->
-                <h3 class="panel-title">新增数据源</h3>
-                <p>父级数据源可以不选择,按父级数据源搜索将可以搜索到相关所有数据内容</p>
+                <h3 class="panel-title">新增下载</h3>
+                <p>可以选择已有的数据源或者录入新的数据源</p>
             </div>
             <div class="panel-body">
 
@@ -41,23 +41,42 @@
                         <label class="col-sm-2 control-label">名称</label>
                         <div class="col-sm-2">
                             <input name="categoryName" title="名称" type="text" placeholder="数据源的名称"
-                                   class="form-control"/>
+                                   class="form-control" list="categories"/>
+                            <datalist id="categories">
+                                <option th:each="category:${categories}" th:value="${category.id}"
+                                        value="最新消息"
+                                        th:attr="parentId=${category.parent!=null?category.parent.id:''}"
+                                        parentId="998">
+                                </option>
+                                <option th:remove="all" value="新闻咨询"></option>
+                                <option th:remove="all" value="成功案例"></option>
+                            </datalist>
                         </div>
                         <label class="col-sm-2 control-label">父级</label>
                         <div class="col-sm-2">
-                            <select name="parentCategoryId" title="父级数据源" class="form-control" >
-                                <option th:each="category:${categories}" th:value="${category.id}" th:text="${category.name}">无</option>
-                                <option th:remove="all">新闻咨询</option>
+                            <select name="parentCategoryId" title="父级数据源" class="form-control">
+                                <option value="">无</option>
+                                <option th:each="category:${categories}" th:value="${category.id}"
+                                        th:text="${category.name}">最新消息
+                                </option>
+                                <option th:remove="all" value="998">新闻咨询</option>
                                 <option th:remove="all">成功案例</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">文件</label>
-                        <div class="col-sm-2">
-                            <input name="fileName" title="标题" type="text" placeholder="文件名称"
+                        <label class="col-sm-2 control-label">标题</label>
+                        <div class="col-sm-4">
+                            <input name="title" title="标题" type="text" placeholder="标题"
                                    class="form-control"/>
                         </div>
+                        <label class="col-sm-2 control-label">文件</label>
+                        <div class="col-sm-4">
+                            <input name="fileName" title="文件名称" type="text" placeholder="文件名称"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-sm-2 control-label">描述</label>
                         <div class="col-sm-6">
                             <input name="description" title="描述" type="text" placeholder="文件描述"
@@ -66,7 +85,7 @@
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">上传文件</label>
-                        <input type="hidden" name="downloadUrl" id="downloadUrl" />
+                        <input type="hidden" name="tempPath" id="downloadUrl"/>
                         <div class="col-sm-10" id="download-uploader"></div>
                     </div>
                 </div>
@@ -99,10 +118,10 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th>文件名</th>
+                        <th>标题</th>
                         <th>创建时间</th>
-                        <th>模型</th>
-                        <th>父级</th>
+                        <th>数据源</th>
+                        <th>文件名</th>
                         <th>&nbsp;</th>
                     </tr>
                     </thead>
@@ -111,15 +130,17 @@
                     <!--/*@thymesVar id="list" type="java.lang.Iterable<com.huotu.hotcms.service.entity.Download>"*/-->
                     <tr th:each="download,stats:${list}" class="odd" th:class="${stats.odd?'odd':'even'}"
                         th:attr="data-id=${download.id}" data-id="456">
-                        <td th:text="${download.fileName}">新闻资讯</td>
-                        <td th:text="${#temporals.format(download.createTime,'yyyy-MM-dd HH:mm')}">2016 06-20</td>
-                        <td>下载</td>
-                        <td th:text="${download.category.parent==null?'无':download.category.parent.name}">无</td>
+                        <td th:text="${download.title}">新闻资讯</td>
+                        <td th:text="${{download.createTime}}">2016 06-20</td>
+                        <td th:text="${download.category.name}">下载</td>
+                        <td th:text="${download.fileName}">无</td>
                         <td class="center">
-                            <a href="downloadOpen.html" th:href="@{/manage/download/{id}(id=${download.id})}"  title="管理">
+                            <a href="downloadOpen.html" th:href="@{/manage/download/{id}(id=${download.id})}"
+                               title="管理">
                                 <i class="fa fa-pencil"></i>
                             </a>
-                            <a href="download.html" class="delete" th:href="@{/manage/download/{id}/delete(id=${download.id})}"
+                            <a href="download.html" class="delete"
+                               th:href="@{/manage/download/{id}/delete(id=${download.id})}"
                                title="删除">
                                 <i class="fa fa-trash-o"></i>
                             </a>
@@ -132,11 +153,11 @@
                         <td>文章</td>
                         <td>无</td>
                         <td class="center">
-                            <a href="index.html" title="编辑">
+                            <a href="downloadOpen.html" title="编辑">
                                 <i class="fa fa-pencil"></i>
                             </a>
-                            <a href="index.html" class="delete"
-                                title="删除">
+                            <a href="download.html" class="delete"
+                               title="删除">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                         </td>
@@ -147,10 +168,10 @@
                         <td>文章</td>
                         <td>新闻资讯</td>
                         <td class="center">
-                            <a href="index.html"  title="编辑">
+                            <a href="downloadOpen.html" title="编辑">
                                 <i class="fa fa-pencil"></i>
                             </a>
-                            <a href="index.html" class="delete"
+                            <a href="download.html" class="delete"
                                title="删除">
                                 <i class="fa fa-trash-o"></i>
                             </a>
@@ -166,22 +187,22 @@
 
 </div><!-- contentpanel -->
 
-<script th:inline="javascript">
-    var uploadFileUrl = /*[[@{/manage/upload/fine}]]*/ null;
-    var customerIdChangeUrl = /*[[@{/manage/supper/owner/$1/customerId}]]*/ null;
-</script>
-
-<script src="http://resali.huobanplus.com/cdn/jquery/1.9.1/jquery.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-1.10.2.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-ui-1.10.3.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/bootstrap.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/toggles.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.cookies.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.maskedinput.min.js"></script>
+
 <script src="http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/jquery.fine-uploader.min.js"></script>
 <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/fine-uploader-new.min.css"
       property=""/>
 
-<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.datatables.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/datatables/1.10.12/datatables.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.validate.min.js"></script>
+<script src="../../../public/js/jquery.validation.message-zh_cn.js"
+        ewp:src="/js/jquery.validation.message-zh_cn.js"></script>
+
 <div ewp:replace="fragments/frame.html::#messageSection"></div>
 <script src="../../../public/bracket/js/frame.js" ewp:src="/bracket/js/frame.js"></script>
 <script src="../../../public/bracket/js/frame_custom.js" ewp:src="/bracket/js/frame_custom.js"></script>

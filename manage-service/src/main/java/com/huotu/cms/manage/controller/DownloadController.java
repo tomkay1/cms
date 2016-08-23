@@ -16,23 +16,16 @@ import com.huotu.hotcms.service.entity.Download;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.model.ContentExtra;
-import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-/**
- * Created by chendeyu on 2016/1/11.
- */
 @Controller
 @RequestMapping("/manage/download")
 public class DownloadController extends ContentManageController<Download, ContentExtra> {
     private static final Log log = LogFactory.getLog(DownloadController.class);
-    @Autowired
-    private ResourceService resourceService;
 
     @Override
     protected ContentType contentType() {
@@ -40,7 +33,8 @@ public class DownloadController extends ContentManageController<Download, Conten
     }
 
     @Override
-    protected Download preparePersistContext(Login login, Site site, Download data, ContentExtra extra, RedirectAttributes attributes) throws RedirectException {
+    protected Download preparePersistContext(Login login, Site site, Download data, ContentExtra extra
+            , RedirectAttributes attributes) throws RedirectException {
         return data;
     }
 
@@ -50,7 +44,8 @@ public class DownloadController extends ContentManageController<Download, Conten
     }
 
     @Override
-    protected void prepareUpdateContext(Login login, Download entity, Download data, ContentExtra extra, RedirectAttributes attributes) throws RedirectException {
+    protected void prepareUpdateContext(Login login, Download entity, Download data, ContentExtra extra
+            , RedirectAttributes attributes) throws RedirectException {
         entity.setFileName(data.getFileName());
     }
 

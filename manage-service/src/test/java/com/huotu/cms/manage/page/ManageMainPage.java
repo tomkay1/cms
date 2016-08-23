@@ -33,7 +33,7 @@ public class ManageMainPage extends AbstractFrameParentPage {
 
     @Override
     public void validatePage() {
-        printThisPage();
+//        printThisPage();
         assertThat(webDriver.getTitle())
                 .contains("内容管理");
     }

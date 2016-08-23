@@ -10,7 +10,7 @@
 package com.huotu.cms.manage.page.support;
 
 import com.huotu.cms.manage.ManageTest;
-import com.huotu.hotcms.service.ImagesOwner;
+import com.huotu.hotcms.service.ResourcesOwner;
 import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Category;
 import org.assertj.core.api.Condition;
@@ -76,14 +76,14 @@ public abstract class AbstractCMSContentPage<T extends AbstractContent> extends 
         assertThat(test)
                 .isNotNull();
 
-        if (value instanceof ImagesOwner) {
+        if (value instanceof ResourcesOwner) {
             // 目前就做了这个呀。  资源上传的还不知道怎么弄呢
             // 应该是复制一份资源 然后给它一个新名字
-            ImagesOwner imagesOwner = (ImagesOwner) value;
+            ResourcesOwner resourcesOwner = (ResourcesOwner) value;
 
-            for (int i = 0; i < imagesOwner.getImagePaths().length; i++) {
+            for (int i = 0; i < resourcesOwner.getResourcePaths().length; i++) {
                 if (i == 0) {
-                    String path = imagesOwner.getImagePaths()[i];
+                    String path = resourcesOwner.getResourcePaths()[i];
                     if (!StringUtils.isEmpty(path)) {
                         // 复制
                         try {

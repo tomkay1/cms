@@ -40,7 +40,7 @@ public class LoginPage extends AbstractManagePage {
 
     @Override
     public void validatePage() {
-        printThisPage();
+//        printThisPage();
         assertThat(webDriver.getTitle()).contains("登录");
     }
 

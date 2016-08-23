@@ -14,24 +14,24 @@
     <meta charset="UTF-8">
     <link href="http://resali.huobanplus.com/cdn/bracket/css/style.default.css" rel="stylesheet">
     <link href="http://resali.huobanplus.com/cdn/bracket/css/jquery.datatables.css" rel="stylesheet">
-    <link href="../../public/assets/css/customize.css" ewp:href="/assets/css/customize.css" rel="stylesheet">
+    <link href="../../../public/assets/css/customize.css" ewp:href="/assets/css/customize.css" rel="stylesheet">
     <title>Gallery</title>
 </head>
 <body class="mainpanel" id="fa-picture-o">
 <div class="pageheader">
-    <h2><i class="fa fa-picture-o"></i> 图库模型 <span>管理图库数据源</span></h2>
+    <h2><i class="fa fa-picture-o"></i> 图库模型 <span>管理图库内容</span></h2>
 </div>
-
+<!--/*@thymesVar id="categories" type="java.lang.Iterable<com.huotu.hotcms.service.entity.Category"*/-->
 <div class="contentpanel">
-    <form id="galleryForm" action="index.html" method="POST" th:action="@{/manage/gallery}">
+    <form id="galleryForm" action="gallery.html" method="POST" th:action="@{/manage/gallery}">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="panel-btns">
                     <a href="" class="panel-close">&times;</a>
                     <a href="" class="minimize">&minus;</a>
                 </div><!-- panel-btns -->
-                <h3 class="panel-title">新增数据源</h3>
-                <p>父级数据源可以不选择,按父级数据源搜索将可以搜索到相关所有数据内容</p>
+                <h3 class="panel-title">新增图库</h3>
+                <p>可以选择已有的数据源或者录入新的数据源</p>
             </div>
             <div class="panel-body">
 

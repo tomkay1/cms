@@ -46,12 +46,12 @@ import java.util.UUID;
 @Setter
 public class PageInfo implements Auditable, Copyable<PageInfo>, ResourcesOwner {
 
-    /**
-     * 父级page
-     */
-    @ManyToOne
-    @JoinColumn(name = "parentPageId")
-    PageInfo parent;
+//    /**
+//     * 父级page
+//     */
+//    @ManyToOne
+//    @JoinColumn(name = "parentPageId")
+//    PageInfo parent;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

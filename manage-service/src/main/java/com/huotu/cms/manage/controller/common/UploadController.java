@@ -9,7 +9,6 @@
 
 package com.huotu.cms.manage.controller.common;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.util.ResultOptionEnum;
 import com.huotu.hotcms.widget.CMSContext;
@@ -17,13 +16,14 @@ import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -44,6 +44,7 @@ public class UploadController {
 
     /**
      * 上传永久资源
+     *
      * @param login
      * @param file
      * @return
@@ -57,7 +58,7 @@ public class UploadController {
             if (login.siteManageable(CMSContext.RequestContext().getSite())) {
                 String fileName = file.getOriginalFilename();
                 String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
-                String path = "page/resource/img/" + UUID.randomUUID().toString() + "." + suffix;
+                String path = "resource/" + CMSContext.RequestContext().getSite().getSiteId() + "/" + UUID.randomUUID().toString() + "." + suffix;
                 URI uri = resourceService.uploadResource(path, file.getInputStream()).httpUrl().toURI();
                 map.put("fileUri", uri);
                 map.put("path", path);
@@ -67,7 +68,7 @@ public class UploadController {
                 throw new IllegalStateException("上传失败，没有权限");
             }
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("", e);
             map.put("code", ResultOptionEnum.RESOURCE_PERMISSION_ERROR.getCode());
             map.put("msg", e.getMessage());
         }
@@ -79,32 +80,22 @@ public class UploadController {
      * 删除永久资源
      *
      * @param login
-     * @param json
+     * @param path  一个request参数
      * @return
      */
     @RequestMapping(value = "/deleteResource", method = RequestMethod.DELETE)
-    @ResponseBody
-    public Map<String, Object> deleteResource(@AuthenticationPrincipal Login login
-            , @RequestBody String json) throws IOException {
-        Map<String, Object> map = new HashMap<>();
-        ObjectMapper objectMapper = new ObjectMapper();
-        Map jsonMap = objectMapper.readValue(json, Map.class);
-        String path = (String) jsonMap.get("path");
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteResource(@AuthenticationPrincipal Login login, @RequestParam("path") String path)
+            throws IOException {
         try {
             if (login.siteManageable(CMSContext.RequestContext().getSite())) {
                 resourceService.deleteResource(path);
-                map.put("path", path);
-                map.put("code", ResultOptionEnum.OK.getCode());
-                map.put("msg", ResultOptionEnum.OK.getValue());
             } else {
                 throw new IllegalStateException("删除失败，没有权限");
             }
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            map.put("code", ResultOptionEnum.RESOURCE_PERMISSION_ERROR.getCode());
-            map.put("msg", e.getMessage());
+        } catch (IOException e) {
+            throw new IllegalStateException("删除失败，没有权限", e);
         }
-        return map;
     }
 
 }

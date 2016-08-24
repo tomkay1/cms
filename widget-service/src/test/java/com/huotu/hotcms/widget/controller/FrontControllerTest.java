@@ -246,17 +246,17 @@ public class FrontControllerTest extends TestBase {
         gjxw.setTitle("国际新闻");
         gjxw.setPagePath("gjxw");
         gjxw.setPageId(22L);
-        gjxw.setParent(pageInfo2);
+//        gjxw.setParent(pageInfo2);
 
         PageInfo gnxw = new PageInfo();
         gnxw.setTitle("国内新闻");
-        gnxw.setParent(pageInfo2);
+//        gnxw.setParent(pageInfo2);
         gnxw.setPageId(23L);
         gnxw.setPagePath("gnxw");
 
         PageInfo zjxw = new PageInfo();
         zjxw.setTitle("浙江新闻");
-        zjxw.setParent(gnxw);
+//        zjxw.setParent(gnxw);
         zjxw.setPageId(231L);
         zjxw.setPagePath("zjxw");
 
@@ -279,7 +279,7 @@ public class FrontControllerTest extends TestBase {
             navbarPageInfoModel.setName(info.getTitle());
             navbarPageInfoModel.setPagePath(info.getPagePath());
             navbarPageInfoModel.setId(info.getPageId());
-            navbarPageInfoModel.setPid(info.getParent() != null ? info.getParent().getPageId() : 0);
+//            navbarPageInfoModel.setPid(info.getParent() != null ? info.getParent().getPageId() : 0);
             navbarPageInfoModels.add(navbarPageInfoModel);
         }
         properties.put("pageIds",navbarPageInfoModels);

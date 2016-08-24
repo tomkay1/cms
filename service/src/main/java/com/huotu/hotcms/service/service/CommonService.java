@@ -65,4 +65,17 @@ public class CommonService {
         }
     }
 
+    /**
+     * 从临时资源库更新资源,临时资源需要立刻回收
+     *
+     * @param owner 资源宿主
+     * @param index 索引号
+     * @param path  资源路径
+     */
+    public void updateResourceFromTmp(ResourcesOwner owner, int index, String path) throws IOException {
+        if (!StringUtils.isEmpty(path)) {
+            owner.updateResource(index, resourceService, path);
+            resourceService.deleteResource(path);
+        }
+    }
 }

@@ -4,6 +4,9 @@
 ;(function ($){
     var editHTML = [
         '<div class="addEditBox row">',
+        '<div class="col-xs-12 mb10 addEditTitle <% this.title ? "" : "hidden"%>">',
+        '<h6><span class="label label-default"><% this.title %></span></h6>',
+        '</div>',
         '<div class="col-xs-3 mb10 <% this.hasImage ? "" : "hidden"%>">',
         '<img class="img-responsive img-thumbnail center-block js-image <% this.imageClass %>" src="http://placehold.it/80x80?text=1" data-path="http://placehold.it/80x80?text=1"/>',
         '</div>',
@@ -203,7 +206,8 @@
             urlClass: '',
             hasTextArea: false,
             textArea: '',
-            customHTML: ''
+            customHTML: '',
+            title: ''
         }, options);
         var self = this;
         var DOM = methods.create(s);

@@ -278,7 +278,7 @@ public abstract class AbstractManagePage extends BracketPage {
                     element.findElement(By.tagName("img")).click();
                 } catch (NoSuchElementException ignored2) {
                     log.warn("找不到里面的可点击目标,将直接点击自身", ignored2);
-                    printThisPage();
+//                    printThisPage();
                     element.click();
                 }
             }

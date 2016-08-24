@@ -82,7 +82,7 @@ public class PageServiceImpl implements PageService {
 
             newOne.setPagePath(newOne.getPagePath() + append);
             newOne.setSite(event.getDist());
-            newOne.setParent(null);
+//            newOne.setParent(null);
             if (newOne.getCategory() != null) {
                 newOne.setCategory(categoryRepository.findBySerialAndSite(newOne.getCategory().getSerial()
                         , event.getDist()));

@@ -1224,6 +1224,10 @@ header .btn {
     border-bottom: none !important;
     border-radius: 0;
 }
+.addEditBox .addEditTitle .label-default{
+    background: #eee;
+    color: #999;
+}
 #js-selectTable tbody > tr {
     float: left;
     border: none !important;

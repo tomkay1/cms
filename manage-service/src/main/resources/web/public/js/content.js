@@ -74,6 +74,7 @@ $(function () {
     };
 
     // form
+    // 文章
     $('#articleForm').validate({
         rules: jQuery.extend(true, {
             content: {
@@ -87,6 +88,7 @@ $(function () {
         }, messages)
     });
 
+    // 链接
     $('#linkForm').validate({
         rules: jQuery.extend(true, {
             linkUrl: {
@@ -102,6 +104,7 @@ $(function () {
         }, messages)
     });
 
+    // 公告
     $('#noticeForm').validate({
         rules: jQuery.extend(true, {
             content: {
@@ -115,6 +118,7 @@ $(function () {
         }, messages)
     });
 
+    // 下载
     var downloadForm = $('#downloadForm');
     downloadForm.on('submit', function () {
         // <input type="hidden" name="tempPath" id="downloadUrl">
@@ -171,6 +175,32 @@ $(function () {
                 maxlength: "文件名长度过长"
             }
         }, messages)
+    });
+
+    // 图库
+    var session = null;
+    if ($.galleryItemsUrl && $.galleryItemsUrl.length > 0) {
+        session = {
+            endpoint: $.galleryItemsUrl
+        }
+    }
+    $.cmsUploader($('#gallery-item-uploader'), function (path) {
+        var tempImagePaths = $('input[name=tempImagePaths]');
+        var val = tempImagePaths.val();
+        if (!val) val = '';
+        if (val.length > 0)
+            val = val + ',';
+        val = val + path;
+        tempImagePaths.val(val);
+    }, {
+        allowedExtensions: ['jpeg', 'jpg', 'png', 'bmp'],
+        itemLimit: 25,
+        sizeLimit: 3 * 1024 * 1024
+    }, session);
+
+    $('#galleryForm').validate({
+        rules: jQuery.extend(true, {}, rules),
+        messages: jQuery.extend(true, {}, messages)
     });
 
 });

@@ -27,6 +27,7 @@ import com.huotu.hotcms.service.repository.ArticleRepository;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.DownloadRepository;
 import com.huotu.hotcms.service.repository.GalleryItemRepository;
+import com.huotu.hotcms.service.repository.GalleryRepository;
 import com.huotu.hotcms.service.repository.LinkRepository;
 import com.huotu.hotcms.service.repository.NoticeRepository;
 import com.huotu.hotcms.service.repository.VideoRepository;
@@ -68,6 +69,9 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     @Autowired
     private PageInfoRepository pageInfoRepository;
 
+    @Autowired
+    private GalleryRepository galleryRepository;
+
 
     @Autowired
     private GalleryItemRepository galleryItemRepository;
@@ -79,7 +83,6 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
         return categoryRepository.findBySiteAndContentType(CMSContext.RequestContext().getSite(), ContentType.Link);
     }
 
-
     @Override
     public List<LinkModel> findLinkContent(String serial) {
         List<Link> list = linkRepository.findByCategory_SiteAndCategory_Serial(CMSContext.RequestContext().getSite(), serial);
@@ -88,6 +91,11 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
             linkModels.add(Link.toLinkModel(link));
         }
         return linkModels;
+    }
+
+    @Override
+    public List<Category> findGalleryCategory() {
+        return categoryRepository.findBySiteAndContentType(CMSContext.RequestContext().getSite(), ContentType.Gallery);
     }
 
     @Override

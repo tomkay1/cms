@@ -46,6 +46,18 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     }
 
     @Override
+    public List<Category> findGalleryCategory() {
+        Category category1 = new Category();
+        category1.setId(1L);
+        category1.setContentType(ContentType.Gallery);
+        category1.setSerial("123");
+        category1.setName("图库1");
+        List<Category> list = new ArrayList<>();
+        list.add(category1);
+        return list;
+    }
+
+    @Override
     public List<LinkModel> findLinkContent(String serial) {
         List<Link> list = new ArrayList<>();
         Link link1 = new Link();

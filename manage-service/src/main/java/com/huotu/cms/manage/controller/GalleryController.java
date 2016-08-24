@@ -9,6 +9,8 @@
 
 package com.huotu.cms.manage.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.cms.manage.controller.support.ContentManageController;
 import com.huotu.cms.manage.exception.RedirectException;
 import com.huotu.hotcms.service.common.ContentType;
@@ -19,10 +21,13 @@ import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.model.ContentExtra;
 import com.huotu.hotcms.service.repository.GalleryItemRepository;
 import com.huotu.hotcms.service.repository.GalleryRepository;
+import com.huotu.hotcms.service.service.CommonService;
+import com.huotu.hotcms.service.util.ImageHelper;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -30,17 +35,23 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StreamUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletContext;
 import java.io.IOException;
-import java.util.Collections;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -51,7 +62,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/manage/gallery")
 public class GalleryController extends ContentManageController<Gallery, ContentExtra> {
     private static final Log log = LogFactory.getLog(GalleryController.class);
-
+    private final ObjectMapper objectMapper = new ObjectMapper();
     @Autowired
     private GalleryRepository galleryRepository;
     @Autowired
@@ -60,10 +71,26 @@ public class GalleryController extends ContentManageController<Gallery, ContentE
     private ResourceService resourceService;
     @Autowired
     private ServletContext servletContext;
+    @Autowired
+    private CommonService commonService;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/{id}/items/{uuid}", produces = "image/*")
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{id}/items/{uuid}")
+    @Transactional
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteItem(@AuthenticationPrincipal Login login, @PathVariable("id") Long id
+            , @PathVariable("uuid") Long uuid) throws IOException {
+        GalleryItem item = galleryItemRepository.getOne(uuid);
+
+        if (!login.contentManageable(item.getGallery()))
+            throw new AccessDeniedException("无法访问该资源");
+
+        galleryItemRepository.delete(item);
+        commonService.deleteResource(item);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/{id}/items/{uuid}")
     @Transactional(readOnly = true)
-    public ResponseEntity getItems(@AuthenticationPrincipal Login login, @PathVariable("id") Long id
+    public ResponseEntity getItem(@AuthenticationPrincipal Login login, @PathVariable("id") Long id
             , @PathVariable("uuid") Long uuid) throws IOException {
         GalleryItem item = galleryItemRepository.getOne(uuid);
         return ResponseEntity
@@ -72,17 +99,45 @@ public class GalleryController extends ContentManageController<Gallery, ContentE
                 .body(StreamUtils.copyToByteArray(resourceService.getResource(item.getThumbUri()).getInputStream()));
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/{id}/items", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
+    @ResponseBody
+    public Object postItems(@AuthenticationPrincipal Login login, @PathVariable("id") Long id
+            , MultipartFile qqfile, @RequestParam String qqfilename) throws IOException {
+        Gallery gallery = galleryRepository.getOne(id);
+        if (!login.contentManageable(gallery))
+            throw new AccessDeniedException("无法访问该资源");
+        if (StringUtils.isEmpty(qqfilename))
+            throw new IllegalArgumentException("qqfilename is required.");
+        if (qqfile.isEmpty())
+            throw new IllegalArgumentException("qqfile is required.");
+
+        GalleryItem item = new GalleryItem();
+        item.setGallery(gallery);
+        item.setCreateTime(LocalDateTime.now());
+        item.setSerial(UUID.randomUUID().toString());
+        item.setName(qqfilename);
+        String path = "gallery/" + id + "/" + UUID.randomUUID().toString() + ".png";
+        ImageHelper.storeAsImage("png", resourceService, qqfile.getInputStream(), path);
+        item.setThumbUri(path);
+
+        item = galleryItemRepository.saveAndFlush(item);
+
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("success", true);
+        body.put("newUuid", String.valueOf(item.getId()));
+        return body;
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/{id}/items", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional(readOnly = true)
-    public Object getItems(@AuthenticationPrincipal Login login, @PathVariable("id") Long id) {
+    public ResponseEntity<String> getItems(@AuthenticationPrincipal Login login, @PathVariable("id") Long id) throws JsonProcessingException {
         Gallery gallery = galleryRepository.getOne(id);
         if (!login.contentManageable(gallery))
             throw new AccessDeniedException("无法访问该资源");
 
         List<GalleryItem> galleryItemList = galleryItemRepository.findByGallery(gallery);
-        if (galleryItemList.isEmpty())
-            return Collections.emptyList();
-        return galleryItemList.stream()
+        List<Map<String, Object>> list = galleryItemList.stream()
                 .map((Function<GalleryItem, Map<String, Object>>) galleryItem -> {
                     HashMap<String, Object> data = new HashMap<>();
                     data.put("name", galleryItem.getName());
@@ -97,11 +152,14 @@ public class GalleryController extends ContentManageController<Gallery, ContentE
                             "/"
                                     + servletContext.getContextPath()
                                     + "manage/gallery/" + galleryItem.getGallery().getId()
-                                    + "/items"
+                                    + "/items/"
                                     + galleryItem.getId());
                     // thumbnailUrl 考虑到跨域策略,这里给出本域的一个地址
                     return data;
                 }).collect(Collectors.toList());
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .body(objectMapper.writeValueAsString(list));
     }
 
     @Override

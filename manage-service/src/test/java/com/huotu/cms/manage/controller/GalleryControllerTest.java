@@ -20,6 +20,8 @@ import com.huotu.hotcms.service.util.ImageHelper;
 import org.junit.Test;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StreamUtils;
@@ -105,8 +107,13 @@ public class GalleryControllerTest extends ContentManageTest<Gallery> {
             String thumbnailUrl = item.get("thumbnailUrl").asText();
             // 这是一个相对uri
             //
-            ByteArrayResource urlResource = new ByteArrayResource(
-                    mockMvc.perform(get(thumbnailUrl).session(session))
+            Resource urlResource;
+            if (thumbnailUrl.startsWith("http://"))
+                urlResource = new UrlResource(thumbnailUrl);
+            else
+                urlResource = new ByteArrayResource(
+                        mockMvc.perform(get(thumbnailUrl).session(session).accept("*/*"))
+//                            .andDo(print())
                             .andExpect(status().isOk())
                             .andReturn()
                             .getResponse()
@@ -119,7 +126,8 @@ public class GalleryControllerTest extends ContentManageTest<Gallery> {
         for (JsonNode item : items) {
             remaining--;
             mockMvc.perform(delete("/manage/gallery/{id}/items/{uuid}", gallery.getId(), item.get("uuid").asText())
-                    .accept(MediaType.APPLICATION_JSON)
+                            .session(session)
+//                    .accept(MediaType.APPLICATION_JSON)
             ).andExpect(status().isNoContent());
 
             mockMvc.perform(get("/manage/gallery/{id}/items", gallery.getId())
@@ -130,7 +138,7 @@ public class GalleryControllerTest extends ContentManageTest<Gallery> {
                     .andExpect(jsonPath("$").isArray())
                     .andExpect(jsonPath("$.length()").value(remaining));
         }
-        
+
     }
 
     @Override

@@ -48,7 +48,7 @@ public class GalleryController extends ContentManageController<Gallery, ContentE
     @Override
     protected void prepareUpdateContext(Login login, Gallery entity, Gallery data, ContentExtra extra, RedirectAttributes attributes) throws RedirectException {
 
-        entity.setLinkUrl(data.getLinkUrl());
+//        entity.setLinkUrl(data.getLinkUrl());
     }
 
     @Override

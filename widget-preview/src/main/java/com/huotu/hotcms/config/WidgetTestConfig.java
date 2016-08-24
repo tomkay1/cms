@@ -24,6 +24,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -45,6 +46,7 @@ import java.util.Set;
 @EnableWebMvc
 @Import({WidgetTestConfig.ViewResolver.class, WidgetResolveServiceConfig.class, ServiceConfig.class})
 @ComponentScan({"com.huotu.hotcms.bean"})
+@EnableJpaRepositories("com.huotu.hotcms.widget.repository")
 public class WidgetTestConfig extends WebMvcConfigurerAdapter {
 
     @Autowired

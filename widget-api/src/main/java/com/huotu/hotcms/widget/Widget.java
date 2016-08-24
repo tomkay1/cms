@@ -31,8 +31,6 @@ public interface Widget {
     MediaType CSS = MediaType.valueOf("text/css");
     MediaType HTML = MediaType.valueOf("text/html");
 
-
-
     /**
      * 获得这个widget的唯一id
      *
@@ -209,15 +207,4 @@ public interface Widget {
      */
     ComponentProperties defaultProperties(ResourceService resourceService) throws IOException;
 
-
-    /**
-     * 在准备使用这个控件生成的组件执行模板行为的时候运行
-     * @see CMSContext
-     * @param style
-     * @param properties
-     * @param variables
-     */
-    default void prepareContext(WidgetStyle style, ComponentProperties properties, Map<String, Object> variables) {
-
-    }
 }

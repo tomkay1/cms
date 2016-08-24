@@ -12,6 +12,7 @@ package com.huotu.hotcms.widget.resolve;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.ComponentProperties;
+import com.huotu.hotcms.widget.PreProcessWidget;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetStyle;
 import org.springframework.core.convert.ConversionService;
@@ -105,7 +106,9 @@ public class WidgetContext extends WebEngineContext {
         variables.put(ThymeleafEvaluationContext.THYMELEAF_EVALUATION_CONTEXT_CONTEXT_VARIABLE_NAME, evaluationContext);
 
 //        ThymeleafView # renderFragment
-        widget.prepareContext(style, properties, variables);
+        if (widget instanceof PreProcessWidget) {
+            ((PreProcessWidget) widget).prepareContext(style, properties, variables);
+        }
 
         return variables;
     }

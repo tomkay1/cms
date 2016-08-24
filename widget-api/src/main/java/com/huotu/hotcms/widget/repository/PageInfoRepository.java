@@ -14,10 +14,11 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-//@Repository
+@Repository
 public interface PageInfoRepository extends JpaRepository<PageInfo, Long>, JpaSpecificationExecutor<PageInfo> {
 
 
@@ -62,13 +63,6 @@ public interface PageInfoRepository extends JpaRepository<PageInfo, Long>, JpaSp
      */
     PageInfo findByPagePath(String pagePath);
 
-    /**
-     * 通过数据源查询pageInfo列表
-     *
-     * @param parent 数据源 =null
-     * @return pageInfo列表
-     */
-    List<PageInfo> findBySiteAndParent(Site site, PageInfo parent);
-
+    PageInfo findBySerial(String serial);
 
 }

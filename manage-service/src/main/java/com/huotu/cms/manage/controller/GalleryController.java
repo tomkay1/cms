@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
- * Created by chendeyu on 2016/1/10.
+ * 图库控制器
  */
 @Controller
 @RequestMapping("/manage/gallery")
@@ -36,7 +36,8 @@ public class GalleryController extends ContentManageController<Gallery, ContentE
     }
 
     @Override
-    protected Gallery preparePersistContext(Login login, Site site, Gallery data, ContentExtra extra, RedirectAttributes attributes) throws RedirectException {
+    protected Gallery preparePersistContext(Login login, Site site, Gallery data, ContentExtra extra
+            , RedirectAttributes attributes) throws RedirectException {
         return data;
     }
 
@@ -46,9 +47,9 @@ public class GalleryController extends ContentManageController<Gallery, ContentE
     }
 
     @Override
-    protected void prepareUpdateContext(Login login, Gallery entity, Gallery data, ContentExtra extra, RedirectAttributes attributes) throws RedirectException {
-
-        entity.setLinkUrl(data.getLinkUrl());
+    protected void prepareUpdateContext(Login login, Gallery entity, Gallery data, ContentExtra extra
+            , RedirectAttributes attributes) throws RedirectException {
+//        entity.setLinkUrl(data.getLinkUrl());
     }
 
     @Override

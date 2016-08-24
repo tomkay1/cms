@@ -335,6 +335,7 @@
     </div>
 </script>
 <script th:inline="javascript">
+    $.prototypesMode = /*[[${false}]]*/true;
     $.imageUploaderUrl = /*[[@{/manage/upload/image}]]*/ null;
     $.cmsUploaderUrl = /*[[@{/manage/upload/fine}]]*/ null;
     $.testMode = /*[[${@environment.acceptsProfiles('test')}]]*/ true;

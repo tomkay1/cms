@@ -21,6 +21,7 @@ import com.huotu.hotcms.service.entity.Video;
 import com.huotu.hotcms.service.model.BaseModel;
 import com.huotu.hotcms.service.model.DataModel;
 import com.huotu.hotcms.service.model.DataObject;
+import com.huotu.hotcms.service.model.GalleryItemModel;
 import com.huotu.hotcms.service.model.LinkModel;
 import com.huotu.hotcms.service.model.widget.VideoModel;
 import com.huotu.hotcms.service.repository.ArticleRepository;
@@ -42,7 +43,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
-import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,17 +68,14 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     @Autowired
     private PageInfoRepository pageInfoRepository;
 
-
     @Autowired
     private GalleryItemRepository galleryItemRepository;
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-dd-MM");
 
 
     @Override
     public List<Category> findLinkCategory() {
         return categoryRepository.findBySiteAndContentType(CMSContext.RequestContext().getSite(), ContentType.Link);
     }
-
 
     @Override
     public List<LinkModel> findLinkContent(String serial) {
@@ -89,6 +86,26 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
         }
         return linkModels;
     }
+
+    @Override
+    public List<Category> findGalleryCategory() {
+        return categoryRepository.findBySiteAndContentType(CMSContext.RequestContext().getSite(), ContentType.Gallery);
+    }
+
+    @Override
+    public List<GalleryItemModel> findGalleryItems(String serial, int count) {
+        Sort sort = new Sort(Sort.Direction.ASC, "id");
+        Pageable pageable = new PageRequest(0, count, sort);
+        List<GalleryItem> galleryItems = galleryItemRepository.findByGallery_Category_SiteAndGallery_Category_Serial(
+                CMSContext.RequestContext().getSite(), serial, pageable);
+        List<GalleryItemModel> baseModels = new ArrayList<>();
+        for (GalleryItem galleryItem : galleryItems) {
+            GalleryItemModel galleryItemModel = GalleryItem.getGalleryItemModel(galleryItem);
+            baseModels.add(galleryItemModel);
+        }
+        return baseModels;
+    }
+
 
     @Override
     public List<Category> findVideoCategory() {
@@ -113,9 +130,11 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     }
 
     @Override
-    public List<BaseModel> findArticleContent(String serial) {
+    public List<BaseModel> findArticleContent(String serial, Integer count) {
+        Sort sort = new Sort(Sort.Direction.ASC, "id");
+        Pageable pageable = new PageRequest(0, count, sort);
         List<Article> list = articleRepository.findByCategory_SiteAndCategory_Serial(
-                CMSContext.RequestContext().getSite(), serial);
+                CMSContext.RequestContext().getSite(), serial, pageable).getContent();
         List<BaseModel> baseModels = new ArrayList<>();
         for (Article article : list) {
             BaseModel baseModel = Article.toBaseModel(article);

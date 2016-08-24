@@ -12,6 +12,7 @@ package com.huotu.hotcms.widget.service;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.model.BaseModel;
 import com.huotu.hotcms.service.model.DataModel;
+import com.huotu.hotcms.service.model.GalleryItemModel;
 import com.huotu.hotcms.service.model.LinkModel;
 import com.huotu.hotcms.service.model.widget.VideoModel;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,7 @@ public interface CMSDataSourceService {
      */
     List<Category> findLinkCategory();
 
+
     /**
      * <p>查询指定链接数据源下的所有链接模型</p>
      *
@@ -39,6 +41,21 @@ public interface CMSDataSourceService {
      * @return 返回指定链接数据源下的全部链接模型
      */
     List<LinkModel> findLinkContent(String serial);
+
+    /**
+     * <p>查询当前站点下所有可用的图库数据源</p>
+     *
+     * @return 返回当前站点下所有链接模型的栏目（数据源）
+     */
+    List<Category> findGalleryCategory();
+
+    /**
+     * <p>查询当前站点下所有可用的图库数据源</p>
+     *
+     * @return 返回当前站点下所有链接模型的栏目（数据源）
+     */
+    List<GalleryItemModel> findGalleryItems(String serial, int count);
+
 
     /**
      * 查询当前站点下视频数据源列表
@@ -65,9 +82,11 @@ public interface CMSDataSourceService {
      * 查询当前站点下，指定数据源serial的 视频内容列表
      *
      * @param serial 数据源的serial
+     * @param count
      * @return 视频内容列表
      */
-    List<BaseModel> findArticleContent(String serial);
+    List<BaseModel> findArticleContent(String serial, Integer count);
+
 
     /**
      * 查找数据源内分页显示

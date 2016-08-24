@@ -15,6 +15,7 @@ import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.model.BaseModel;
 import com.huotu.hotcms.service.model.DataModel;
+import com.huotu.hotcms.service.model.GalleryItemModel;
 import com.huotu.hotcms.service.model.LinkModel;
 import com.huotu.hotcms.service.model.widget.VideoModel;
 import com.huotu.hotcms.widget.service.CMSDataSourceService;
@@ -43,6 +44,31 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
         list.add(category1);
         list.add(category2);
         return list;
+    }
+
+    @Override
+    public List<Category> findGalleryCategory() {
+        Category category1 = new Category();
+        category1.setId(1L);
+        category1.setContentType(ContentType.Gallery);
+        category1.setSerial("123");
+        category1.setName("图库1");
+        List<Category> list = new ArrayList<>();
+        list.add(category1);
+        return list;
+    }
+
+    @Override
+    public List<GalleryItemModel> findGalleryItems(String serial, int count) {
+        List<GalleryItemModel> baseModels = new ArrayList<>();
+        GalleryItemModel galleryItemModel = new GalleryItemModel();
+        galleryItemModel.setOrderWeight(1);
+        galleryItemModel.setName("这是一个图片item");
+        galleryItemModel.setThumbUri("http://placehold.it/106x82?text=logo1");
+        baseModels.add(galleryItemModel);
+        baseModels.add(galleryItemModel);
+        baseModels.add(galleryItemModel);
+        return baseModels;
     }
 
     @Override
@@ -115,7 +141,7 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     }
 
     @Override
-    public List<BaseModel> findArticleContent(String serial) {
+    public List<BaseModel> findArticleContent(String serial, Integer count) {
         BaseModel baseModel = new BaseModel();
         baseModel.setId(1L);
         baseModel.setTitle("中共19大召开");

@@ -27,4 +27,6 @@ public interface GalleryItemRepository extends JpaRepository<GalleryItem, Long>,
     long countByGallery(Gallery gallery);
 
     Page<GalleryItem> findByGallery_Category_Site(Site site, Pageable pageable);
+
+    List<GalleryItem> findByGallery_Category_SiteAndGallery_Category_Serial(Site site, String serial, Pageable pageable);
 }

@@ -15,6 +15,7 @@ import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.model.BaseModel;
 import com.huotu.hotcms.service.model.DataModel;
+import com.huotu.hotcms.service.model.GalleryItemModel;
 import com.huotu.hotcms.service.model.LinkModel;
 import com.huotu.hotcms.service.model.widget.VideoModel;
 import com.huotu.hotcms.widget.service.CMSDataSourceService;
@@ -55,6 +56,19 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
         List<Category> list = new ArrayList<>();
         list.add(category1);
         return list;
+    }
+
+    @Override
+    public List<GalleryItemModel> findGalleryItems(String serial, int count) {
+        List<GalleryItemModel> baseModels = new ArrayList<>();
+        GalleryItemModel galleryItemModel = new GalleryItemModel();
+        galleryItemModel.setOrderWeight(1);
+        galleryItemModel.setName("这是一个图片item");
+        galleryItemModel.setThumbUri("http://placehold.it/106x82?text=logo1");
+        baseModels.add(galleryItemModel);
+        baseModels.add(galleryItemModel);
+        baseModels.add(galleryItemModel);
+        return baseModels;
     }
 
     @Override

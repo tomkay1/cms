@@ -94,6 +94,8 @@ public class GalleryItem implements Auditable, Copyable<GalleryItem>, ImagesOwne
         GalleryItemModel galleryItemModel = new GalleryItemModel();
         galleryItemModel.setId(galleryItem.getId());
         galleryItemModel.setThumbUri(galleryItem.getThumbUri());
+        galleryItemModel.setName(galleryItem.getName());
+        galleryItemModel.setOrderWeight(galleryItem.getOrderWeight());
         return galleryItemModel;
     }
 

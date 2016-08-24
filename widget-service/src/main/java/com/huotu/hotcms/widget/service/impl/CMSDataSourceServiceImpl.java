@@ -21,13 +21,13 @@ import com.huotu.hotcms.service.entity.Video;
 import com.huotu.hotcms.service.model.BaseModel;
 import com.huotu.hotcms.service.model.DataModel;
 import com.huotu.hotcms.service.model.DataObject;
+import com.huotu.hotcms.service.model.GalleryItemModel;
 import com.huotu.hotcms.service.model.LinkModel;
 import com.huotu.hotcms.service.model.widget.VideoModel;
 import com.huotu.hotcms.service.repository.ArticleRepository;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.DownloadRepository;
 import com.huotu.hotcms.service.repository.GalleryItemRepository;
-import com.huotu.hotcms.service.repository.GalleryRepository;
 import com.huotu.hotcms.service.repository.LinkRepository;
 import com.huotu.hotcms.service.repository.NoticeRepository;
 import com.huotu.hotcms.service.repository.VideoRepository;
@@ -43,7 +43,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
-import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,12 +69,7 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     private PageInfoRepository pageInfoRepository;
 
     @Autowired
-    private GalleryRepository galleryRepository;
-
-
-    @Autowired
     private GalleryItemRepository galleryItemRepository;
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-dd-MM");
 
 
     @Override
@@ -97,6 +91,21 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     public List<Category> findGalleryCategory() {
         return categoryRepository.findBySiteAndContentType(CMSContext.RequestContext().getSite(), ContentType.Gallery);
     }
+
+    @Override
+    public List<GalleryItemModel> findGalleryItems(String serial, int count) {
+        Sort sort = new Sort(Sort.Direction.ASC, "id");
+        Pageable pageable = new PageRequest(0, count, sort);
+        List<GalleryItem> galleryItems = galleryItemRepository.findByGallery_Category_SiteAndGallery_Category_Serial(
+                CMSContext.RequestContext().getSite(), serial, pageable);
+        List<GalleryItemModel> baseModels = new ArrayList<>();
+        for (GalleryItem galleryItem : galleryItems) {
+            GalleryItemModel galleryItemModel = GalleryItem.getGalleryItemModel(galleryItem);
+            baseModels.add(galleryItemModel);
+        }
+        return baseModels;
+    }
+
 
     @Override
     public List<Category> findVideoCategory() {

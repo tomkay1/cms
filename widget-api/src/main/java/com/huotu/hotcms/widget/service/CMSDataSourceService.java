@@ -12,6 +12,7 @@ package com.huotu.hotcms.widget.service;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.model.BaseModel;
 import com.huotu.hotcms.service.model.DataModel;
+import com.huotu.hotcms.service.model.GalleryItemModel;
 import com.huotu.hotcms.service.model.LinkModel;
 import com.huotu.hotcms.service.model.widget.VideoModel;
 import org.springframework.stereotype.Service;
@@ -47,6 +48,13 @@ public interface CMSDataSourceService {
      * @return 返回当前站点下所有链接模型的栏目（数据源）
      */
     List<Category> findGalleryCategory();
+
+    /**
+     * <p>查询当前站点下所有可用的图库数据源</p>
+     *
+     * @return 返回当前站点下所有链接模型的栏目（数据源）
+     */
+    List<GalleryItemModel> findGalleryItems(String serial, int count);
 
 
     /**

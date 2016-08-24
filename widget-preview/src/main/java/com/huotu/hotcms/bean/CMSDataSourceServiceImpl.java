@@ -28,7 +28,6 @@ import java.util.List;
  */
 public class CMSDataSourceServiceImpl implements CMSDataSourceService {
 
-
     @Override
     public List<Category> findLinkCategory() {
         Category category1 = new Category();
@@ -132,7 +131,7 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     }
 
     @Override
-    public DataModel findContentType(Long contentType, int pageNum, int pageSize, Long pageId, String search) {
+    public DataModel findContentType(Long contentType, Integer pageNum, Integer pageSize, Long pageId, String search) {
         DataModel dataModel = new DataModel();
         ContentType type = EnumUtils.valueOf(ContentType.class, contentType);
         return dataModel;

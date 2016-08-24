@@ -79,5 +79,5 @@ public interface CMSDataSourceService {
      * @param search
      * @return
      */
-    DataModel findContentType(Long contentType, int pageNum, int pageSize, Long pageId, String search);
+    DataModel findContentType(Long contentType, Integer pageNum, Integer pageSize, Long pageId, String search);
 }

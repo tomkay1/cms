@@ -74,6 +74,7 @@ public class WidgetContext extends WebEngineContext {
         variables.put("widget", widget);
         variables.put("style", style);
         variables.put("properties", properties);
+        variables.put("site", CMSContext.RequestContext().getSite());
         if (properties != null) {
             Iterator<Map.Entry<String, Object>> entries = properties.entrySet().iterator();
             while (entries.hasNext()) {
@@ -104,6 +105,7 @@ public class WidgetContext extends WebEngineContext {
         variables.put(ThymeleafEvaluationContext.THYMELEAF_EVALUATION_CONTEXT_CONTEXT_VARIABLE_NAME, evaluationContext);
 
 //        ThymeleafView # renderFragment
+        widget.prepareContext(style, properties, variables);
 
         return variables;
     }

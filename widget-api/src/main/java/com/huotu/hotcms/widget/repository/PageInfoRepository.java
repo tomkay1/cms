@@ -20,6 +20,7 @@ import java.util.List;
 //@Repository
 public interface PageInfoRepository extends JpaRepository<PageInfo, Long>, JpaSpecificationExecutor<PageInfo> {
 
+
     /**
      * 查询相应站点下的PageInfo的列表
      *

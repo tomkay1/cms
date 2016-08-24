@@ -125,9 +125,9 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     }
 
     @Override
-    public DataModel findContentType(Long contentType, int pageNum, int pageSize, Long pageId, String search) {
+    public DataModel findContentType(Long contentType, Integer pageNum, Integer pageSize, Long pageId, String search) {
         Site site = CMSContext.RequestContext().getSite();
-        Pageable pageable = new PageRequest(pageNum, pageSize, new Sort(new Sort.Order(Sort.Direction.DESC, "id")));
+        Pageable pageable = new PageRequest(pageNum - 1, pageSize, new Sort(new Sort.Order(Sort.Direction.DESC, "id")));
         DataModel dataModel = new DataModel();
         DataObject[] data;
         Page<? extends AbstractContent> page = null;
@@ -185,7 +185,7 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
                     data[i] = dataObject;
                 }
                 dataModel.setData(data);
-                dataModel.setPageNum(page.getNumber());
+                dataModel.setPageNum(pageNum);
                 dataModel.setPageSize(pageSize);
                 dataModel.setTotalPages(page.getTotalPages());
                 dataModel.setTotalElements(page.getTotalElements());
@@ -198,16 +198,16 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
                     GalleryItem item = galleryItems.get(i);
                     DataObject dataObject = new DataObject();
                     dataObject.setId(item.getId());
-                    dataObject.setDate(dateFormat.format(item.getCreateTime()));
-                    dataObject.setUrl(item.getThumbUri());
+                    dataObject.setDate(item.getCreateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")));
+                    dataObject.setThumpUri(item.getThumbUri());
                     dataObject.setSize(item.getSize());
                     data[i] = dataObject;
                 }
                 dataModel.setData(data);
-                dataModel.setPageNum(page.getNumber());
+                dataModel.setPageNum(pageNum);
                 dataModel.setPageSize(pageSize);
-                dataModel.setTotalPages(page.getTotalPages());
-                dataModel.setTotalElements(page.getTotalElements());
+                dataModel.setTotalPages(pages.getTotalPages());
+                dataModel.setTotalElements(pages.getTotalElements());
                 return dataModel;
             case 5:
                 page = downloadRepository.findAll((root, query, cb) -> {
@@ -224,13 +224,13 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
                     Download down = (Download) list.get(i);
                     DataObject dataObject = new DataObject();
                     dataObject.setId(down.getId());
-                    dataObject.setDate(dateFormat.format(down.getCreateTime()));
+                    dataObject.setDate(down.getCreateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")));
                     dataObject.setName(down.getTitle());
                     dataObject.setUrl(down.getDownloadPath());
                     data[i] = dataObject;
                 }
                 dataModel.setData(data);
-                dataModel.setPageNum(page.getNumber());
+                dataModel.setPageNum(pageNum);
                 dataModel.setPageSize(pageSize);
                 dataModel.setTotalPages(page.getTotalPages());
                 dataModel.setTotalElements(page.getTotalElements());
@@ -249,23 +249,23 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
                     PageInfo pageInfo = pageInfoList.get(i);
                     DataObject dataObject = new DataObject();
                     dataObject.setId(pageInfo.getPageId());
-                    dataObject.setDate(dateFormat.format(pageInfo.getCreateTime()));
+                    dataObject.setDate(pageInfo.getCreateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")));
                     dataObject.setName(pageInfo.getTitle());
                     dataObject.setUrl(pageInfo.getPagePath());
                     data[i] = dataObject;
                 }
                 dataModel.setData(data);
-                dataModel.setPageNum(page.getNumber());
+                dataModel.setPageNum(pageNum);
                 dataModel.setPageSize(pageSize);
-                dataModel.setTotalPages(page.getTotalPages());
-                dataModel.setTotalElements(page.getTotalElements());
+                dataModel.setTotalPages(pageInfos.getTotalPages());
+                dataModel.setTotalElements(pageInfos.getTotalElements());
                 return dataModel;
         }
         if (page != null) {
             list = page.getContent();
             data = new DataObject[list.size()];
             getDataObject(pageId, data, list);
-            dataModel.setPageNum(page.getNumber());
+            dataModel.setPageNum(pageNum);
             dataModel.setPageSize(pageSize);
             dataModel.setTotalPages(page.getTotalPages());
             dataModel.setTotalElements(page.getTotalElements());
@@ -278,7 +278,7 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
         for (int i = 0, len = list.size(); i < len; i++) {
             DataObject dataObject = new DataObject();
             dataObject.setId(list.get(i).getId());
-            dataObject.setDate(dateFormat.format(list.get(i).getCreateTime()));
+            dataObject.setDate(list.get(i).getCreateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")));
             dataObject.setName(list.get(i).getTitle());
             dataObject.setUrl(pageId + "/" + dataObject.getId());
             data[i] = dataObject;

@@ -10,7 +10,9 @@
 package com.huotu.hotcms.widget;
 
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
+import com.huotu.hotcms.widget.repository.PageInfoRepository;
 import me.jiangcai.lib.resource.service.ResourceService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
@@ -30,6 +32,9 @@ public interface Widget {
     MediaType Javascript = MediaType.valueOf("application/javascript");
     MediaType CSS = MediaType.valueOf("text/css");
     MediaType HTML = MediaType.valueOf("text/html");
+
+    @Autowired
+    PageInfoRepository pageInfoRepository;
 
     /**
      * 获得这个widget的唯一id
@@ -208,4 +213,15 @@ public interface Widget {
     ComponentProperties defaultProperties(ResourceService resourceService) throws IOException;
 
 
+    /**
+     * 在准备使用这个控件生成的组件执行模板行为的时候运行
+     *
+     * @param style
+     * @param properties
+     * @param variables
+     * @see CMSContext
+     */
+    default void prepareContext(WidgetStyle style, ComponentProperties properties, Map<String, Object> variables) {
+        pageInfoRepository.find
+    }
 }

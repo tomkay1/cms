@@ -25,7 +25,6 @@ import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -122,15 +121,18 @@ public class CMSDataSourceControllerTest extends TestBase {
         Video video5 = randomVideo(category);
 
         ObjectMapper objectMapper = new ObjectMapper();
-        Map<String, Object> toGet = new HashMap<>();
-        toGet.put("contentType", 2);
-        toGet.put("draw", 0);
-        toGet.put("length", 2);
-        toGet.put("pageId", "123");
-        toGet.put("search[value]", "");
+//        Map<String, Object> toGet = new HashMap<>();
+//        toGet.put("contentType", 2);
+//        toGet.put("draw", 0);
+//        toGet.put("length", 2);
+//        toGet.put("pageId", "123");
+//        toGet.put("search[value]", "");
         String json = mockMvc.perform(get("/dataSource/findContentType")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(toGet))
+                .param("contentType", "2")
+                .param("draw", "0")
+                .param("length", "2")
+                .param("pageId", "123")
+                .param("search[value]", "a")
                 .accept(MediaType.APPLICATION_JSON)
         )
                 .andReturn().getResponse().getContentAsString();

@@ -9,7 +9,6 @@
 
 package com.huotu.hotcms.widget.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.service.model.BaseModel;
 import com.huotu.hotcms.service.model.DataModel;
 import com.huotu.hotcms.service.model.LinkModel;
@@ -20,13 +19,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 查询数据源接口
@@ -83,15 +81,9 @@ public class CMSDataSourceController {
      * 例如{code=200,message="Success",data=[...]},{code=403,message="fail",data=[]}
      */
     @RequestMapping(value = "/findContentType", method = RequestMethod.GET)
-    public ResponseEntity findContentType(@RequestBody String json) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        Map map = objectMapper.readValue(json, Map.class);
-        Long contentType = Long.parseLong(map.get("contentType").toString());
-        int pageNum = (int) map.get("draw");
-        int pageSize = (int) map.get("length");
-        Long pageId = Long.parseLong(map.get("pageId").toString());
-        String search = map.get("search[value]").toString();
-        DataModel dataModel = cmsDataSourceService.findContentType(contentType, pageNum, pageSize, pageId, search);
+    public ResponseEntity findContentType(Long contentType, Integer draw, Integer length, Long pageId
+            , @RequestParam(value = "search[value]") String search) throws IOException {
+        DataModel dataModel = cmsDataSourceService.findContentType(contentType, draw, length, pageId, search);
         return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(dataModel);
     }
 

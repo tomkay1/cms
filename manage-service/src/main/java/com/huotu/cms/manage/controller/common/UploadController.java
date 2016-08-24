@@ -43,8 +43,7 @@ public class UploadController {
 
 
     /**
-     * 上传永久资源,
-     *
+     * 上传永久资源
      * @param login
      * @param file
      * @return

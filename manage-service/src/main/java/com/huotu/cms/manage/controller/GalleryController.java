@@ -74,6 +74,21 @@ public class GalleryController extends ContentManageController<Gallery, ContentE
     @Autowired
     private CommonService commonService;
 
+    @Override
+    protected void prepareRemove(Login login, Gallery entity) throws RedirectException {
+        super.prepareRemove(login, entity);
+
+        List<GalleryItem> galleryItemList = galleryItemRepository.findByGallery(entity);
+        for (GalleryItem item : galleryItemList) {
+            galleryItemRepository.delete(item);
+            try {
+                commonService.deleteResource(item);
+            } catch (IOException e) {
+                throw new RedirectException(rootUri(), e);
+            }
+        }
+    }
+
     @RequestMapping(method = RequestMethod.DELETE, value = "/{id}/items/{uuid}")
     @Transactional
     @ResponseStatus(HttpStatus.NO_CONTENT)

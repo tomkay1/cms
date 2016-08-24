@@ -14,6 +14,7 @@ import com.huotu.cms.manage.bracket.GritterUtils;
 import com.huotu.cms.manage.exception.RedirectException;
 import com.huotu.hotcms.service.Auditable;
 import com.huotu.hotcms.service.Enabled;
+import com.huotu.hotcms.service.ResourcesOwner;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.service.CommonService;
 import org.apache.commons.logging.Log;
@@ -34,6 +35,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -87,8 +89,20 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
     @Transactional
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void doDelete(@AuthenticationPrincipal Login login, @PathVariable("id") ID id) throws RedirectException {
-        prepareRemove(login, id);
-        jpaRepository.delete(id);
+        T entity = jpaRepository.getOne(id);
+        doDelete(login, entity);
+    }
+
+    private void doDelete(Login login, T entity) throws RedirectException {
+        prepareRemove(login, entity);
+        jpaRepository.delete(entity);
+        if (entity instanceof ResourcesOwner) {
+            try {
+                commonService.deleteResource((ResourcesOwner) entity);
+            } catch (IOException e) {
+                throw new RedirectException(rootUri(), e.getLocalizedMessage(), e);
+            }
+        }
     }
 
     @RequestMapping(value = "/{id}/enabled", method = RequestMethod.PUT)
@@ -223,12 +237,11 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
 
     /**
      * 在删除某一个资源之前
-     *
-     * @param login 当前操作者的身份
-     * @param id    主键
+     *  @param login 当前操作者的身份
+     * @param entity    主键
      */
     @SuppressWarnings("WeakerAccess")
-    protected void prepareRemove(Login login, ID id) throws RedirectException {
+    protected void prepareRemove(Login login, T entity) throws RedirectException {
 
     }
 

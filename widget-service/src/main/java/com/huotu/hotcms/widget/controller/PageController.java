@@ -52,24 +52,24 @@
 //
 //    /**
 //     *  获取某一具体页面
-//     * @param pageId 页面ID
+//     * @param id 页面ID
 //     * @return 页面信息
 //     * @throws IOException 其他异常
 //     */
 //
-//    @RequestMapping(value = "/manage/pages/{pageId}",method = RequestMethod.GET)
+//    @RequestMapping(value = "/manage/pages/{id}",method = RequestMethod.GET)
 //    @ResponseBody
-//    Page getPage(@PathVariable String pageId) throws IOException;
+//    Page getPage(@PathVariable String id) throws IOException;
 //
 //    /**
 //     * <p>保存界面{@link Page}</p>
-//     * @param pageId 页面ID
+//     * @param id 页面ID
 //     * @throws IOException 从request中读取请求体时异常
 //     */
 //
-//    @RequestMapping(value = "/manage/pages/{pageId}",method = RequestMethod.PUT)
+//    @RequestMapping(value = "/manage/pages/{id}",method = RequestMethod.PUT)
 //    @ResponseStatus(code = HttpStatus.ACCEPTED)
-//    void savePage(@PathVariable String pageId,HttpServletRequest request) throws IOException, URISyntaxException;
+//    void savePage(@PathVariable String id,HttpServletRequest request) throws IOException, URISyntaxException;
 //
 //    /**
 //     * <p>添加页面{@link Page}</p>
@@ -82,20 +82,20 @@
 //
 //    /**
 //     * <p>删除界面{@link Page}</p>
-//     * @param pageId 页面ID
+//     * @param id 页面ID
 //     */
-//    @RequestMapping(value = "/manage/pages/{pageId}",method = RequestMethod.DELETE)
+//    @RequestMapping(value = "/manage/pages/{id}",method = RequestMethod.DELETE)
 //    @ResponseStatus(code = HttpStatus.ACCEPTED)
-//    void deletePage(@PathVariable String pageId,long ownerId) throws IOException;
+//    void deletePage(@PathVariable String id,long ownerId) throws IOException;
 //
 //    /**
 //     * 保存页面部分属性
-//     * @param pageId 页面ID
+//     * @param id 页面ID
 //     * @param propertyName 要保存的属性名
 //     */
-//    @RequestMapping(value = "/manage/pages/{pageId}/{propertyName}",method = RequestMethod.PUT)
+//    @RequestMapping(value = "/manage/pages/{id}/{propertyName}",method = RequestMethod.PUT)
 //    @ResponseStatus(code = HttpStatus.ACCEPTED)
-//    void savePagePartProperties(@PathVariable String pageId,@PathVariable String propertyName);
+//    void savePagePartProperties(@PathVariable String id,@PathVariable String propertyName);
 //
 //
 //    /**

@@ -130,8 +130,10 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     }
 
     @Override
-    public List<BaseModel> findArticleContent(String serial, Integer count) {
+    public List<BaseModel> findArticleContent(String serial, int count) {
         Sort sort = new Sort(Sort.Direction.ASC, "id");
+        if (count <= 0)
+            count = 10;
         Pageable pageable = new PageRequest(0, count, sort);
         List<Article> list = articleRepository.findByCategory_SiteAndCategory_Serial(
                 CMSContext.RequestContext().getSite(), serial, pageable).getContent();
@@ -267,7 +269,7 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
                 for (int i = 0, len = pageInfoList.size(); i < len; i++) {
                     PageInfo pageInfo = pageInfoList.get(i);
                     DataObject dataObject = new DataObject();
-                    dataObject.setId(pageInfo.getPageId());
+                    dataObject.setId(pageInfo.getId());
                     dataObject.setDate(pageInfo.getCreateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")));
                     dataObject.setName(pageInfo.getTitle());
                     dataObject.setUrl(pageInfo.getPagePath());

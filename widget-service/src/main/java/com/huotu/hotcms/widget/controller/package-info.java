@@ -16,13 +16,13 @@
  *
  * <li>获取页面 GET /owners/{ownerId}/pages</li>
  *
- * <li>保存页面 PUT /pages/{pageId}</li>
+ * <li>保存页面 PUT /pages/{id}</li>
  *
  * <li>新增页面 POST  /owners/{ownerId}/pages</li>
  *
- * <li>删除页面 DELETE /pages/{pageId}</li>
+ * <li>删除页面 DELETE /pages/{id}</li>
  *
- * <li>保存页面部分属性 PUT /pages/{pageId}/{propertyName}</li>
+ * <li>保存页面部分属性 PUT /pages/{id}/{propertyName}</li>
  * </ul>
  *
  * @author CJ

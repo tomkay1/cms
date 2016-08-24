@@ -130,7 +130,7 @@ public class PageControllerTest extends ManageTest {
         )
                 .andExpect(status().isOk());
 
-        toPost.put("pageId", Math.abs(random.nextLong()));
+        toPost.put("id", Math.abs(random.nextLong()));
 
         mockMvc.perform(
                 post("/preview/component")
@@ -204,12 +204,12 @@ public class PageControllerTest extends ManageTest {
         PageModel model = new PageModel();
         model.setRoot(page.getRoot());
         model.setTitle(pageInfo.getTitle());
-        model.setPageIdentity(pageInfo.getPageId());
+        model.setPageIdentity(pageInfo.getId());
 
         ObjectMapper objectMapper = new ObjectMapper();
         String pageJson = objectMapper.writeValueAsString(model);
         //保存
-        mockMvc.perform(put("/manage/pages/{pageId}", pageInfo.getPageId())
+        mockMvc.perform(put("/manage/pages/{id}", pageInfo.getId())
                 .session(session)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -217,7 +217,7 @@ public class PageControllerTest extends ManageTest {
                 .andExpect(status().isAccepted());
 
         //获取上面保存的页面信息
-        MvcResult result = mockMvc.perform(get("/manage/pages/{pageId}", pageInfo.getPageId())
+        MvcResult result = mockMvc.perform(get("/manage/pages/{id}", pageInfo.getId())
                 .session(session))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -242,10 +242,10 @@ public class PageControllerTest extends ManageTest {
 
 //        Assert.assertTrue(page.getPageIdentity().equals(getPage.getPageIdentity()));
         //删除
-        mockMvc.perform(delete("/manage/pages/{pageId}", pageInfo.getPageId()).session(session))
+        mockMvc.perform(delete("/manage/pages/{id}", pageInfo.getId()).session(session))
                 .andExpect(status().isAccepted());
         // 删掉之后，页面应该不存在
-        mockMvc.perform(get("/manage/pages/{pageId}", pageInfo.getPageId())
+        mockMvc.perform(get("/manage/pages/{id}", pageInfo.getId())
                 .session(session))
                 .andExpect(status().isNotFound())
                 .andReturn();

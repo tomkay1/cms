@@ -142,7 +142,7 @@ public class FrontController implements FilterBehavioral {
                 styleId = null;
         } else
             styleId = null;
-//        String pageId = (String) map.get("pageId");
+//        String id = (String) map.get("id");
         String componentId = (String) map.get("componentId");
         Map properties = (Map) map.get("properties");
         ComponentProperties componentProperties = new ComponentProperties();
@@ -215,14 +215,14 @@ public class FrontController implements FilterBehavioral {
      * <p>
      * widgetIdentifier {@link com.huotu.hotcms.service.entity.support.WidgetIdentifier}
      * styleId          样式id
-     * pageId           页面id
+     * id           页面id
      * properties       控件参数
      */
     @RequestMapping(value = "/preview/widgetEditor", method = RequestMethod.POST)
     public ResponseEntity widgetEditor(@RequestBody String json) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         Map map = objectMapper.readValue(json, Map.class);
-//        String pageId = (String) map.get("pageId");
+//        String id = (String) map.get("id");
         String styleId;
         if (map.containsKey("styleId")) {
             Object o = map.get("styleId");

@@ -94,7 +94,7 @@ public class PageController {
 
     private PageModel toModel(PageInfo page) {
         PageModel pageModel = new PageModel();
-        pageModel.setPageIdentity(page.getPageId());
+        pageModel.setPageIdentity(page.getId());
         if (page.getLayout() != null)
             pageModel.setRoot(page.getLayout().getRoot());
 

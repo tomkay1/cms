@@ -9,18 +9,23 @@
 
 package com.huotu.hotcms.widget.service;
 
+import com.huotu.hotcms.service.common.ContentType;
+import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.model.BaseModel;
 import com.huotu.hotcms.service.model.DataModel;
 import com.huotu.hotcms.service.model.GalleryItemModel;
 import com.huotu.hotcms.service.model.LinkModel;
 import com.huotu.hotcms.service.model.widget.VideoModel;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * 控件获取数据源的接口
+ *
  * Created by lhx on 2016/6/28.
  */
 @Service
@@ -82,10 +87,21 @@ public interface CMSDataSourceService {
      * 查询当前站点下，指定数据源serial的 视频内容列表
      *
      * @param serial 数据源的serial
-     * @param count
+     * @param count 数量上限,缺省为10
      * @return 视频内容列表
      */
-    List<BaseModel> findArticleContent(String serial, Integer count);
+    List<BaseModel> findArticleContent(String serial, int count);
+
+    /**
+     * 查找内容
+     *
+     * @param contentType 内容类型
+     * @param pageable    分页根据
+     * @param search      内容可能依赖的模糊查询
+     * @return 分组查询的结果
+     */
+    Page<AbstractContent> findContent(ContentType contentType, Pageable pageable, String search);
+
 
 
     /**

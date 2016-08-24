@@ -125,13 +125,13 @@ public class CMSDataSourceControllerTest extends TestBase {
 //        toGet.put("contentType", 2);
 //        toGet.put("draw", 0);
 //        toGet.put("length", 2);
-//        toGet.put("pageId", "123");
+//        toGet.put("id", "123");
 //        toGet.put("search[value]", "");
         String json = mockMvc.perform(get("/dataSource/findContentType")
                 .param("contentType", "2")
                 .param("draw", "0")
                 .param("length", "2")
-                .param("pageId", "123")
+                .param("id", "123")
                 .param("search[value]", "a")
                 .accept(MediaType.APPLICATION_JSON)
         )

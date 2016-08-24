@@ -66,7 +66,7 @@ public class PageServiceImpl implements PageService {
     @Override
     public void siteDeleted(DeleteSiteEvent event) throws IOException {
         for (PageInfo pageInfo : pageInfoRepository.findBySite(event.getSite())) {
-            deletePage(pageInfo.getPageId());
+            deletePage(pageInfo.getId());
         }
     }
 
@@ -213,7 +213,7 @@ public class PageServiceImpl implements PageService {
         if (pageInfo == null)
             throw new IllegalStateException("没有找到相应page");
         pageInfo = pageInfos.get(0);
-        return getPage(pageInfo.getPageId());
+        return getPage(pageInfo.getId());
     }
 
     @Override

@@ -141,7 +141,7 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     }
 
     @Override
-    public List<BaseModel> findArticleContent(String serial, Integer count) {
+    public List<BaseModel> findArticleContent(String serial, int count) {
         BaseModel baseModel = new BaseModel();
         baseModel.setId(1L);
         baseModel.setTitle("中共19大召开");

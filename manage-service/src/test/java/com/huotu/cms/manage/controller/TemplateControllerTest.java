@@ -328,7 +328,7 @@ public class TemplateControllerTest extends SiteManageTest {
                 assertThat(categoryRepository.findBySite(yourSite)).containsAll(siteCategories);
             } else {
                 //原资源已经没了
-                sitePages.stream().forEach(page -> assertThat(pageInfoRepository.findOne(page.getPageId())).isNull());
+                sitePages.stream().forEach(page -> assertThat(pageInfoRepository.findOne(page.getId())).isNull());
                 siteContents.forEach(page -> assertThat(contentService.findById(page.getId(), page.getClass())).isNull());
                 siteCategories.stream().forEach(page -> assertThat(categoryRepository.findOne(page.getId())).isNull());
             }

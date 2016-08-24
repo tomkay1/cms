@@ -94,7 +94,7 @@ public class FrontControllerTest extends TestBase {
         while (pageInfoRepository.findOne(noExistingPage) != null)
             noExistingPage = Math.abs(random.nextLong());
 
-        mockMvc.perform(get("/preview/{pageId}/1.css", String.valueOf(noExistingPage)))
+        mockMvc.perform(get("/preview/{id}/1.css", String.valueOf(noExistingPage)))
                 .andDo(print())
                 .andExpect(status().isNotFound());
 
@@ -212,9 +212,9 @@ public class FrontControllerTest extends TestBase {
 
             PageModel pageModel = new PageModel();
             pageModel.setRoot(new Layout[]{layoutElement});
-            pageModel.setPageIdentity(pageInfo.getPageId());
+            pageModel.setPageIdentity(pageInfo.getId());
             CMSContext.PutContext(request, response, site);
-            pageService.savePage(pageModel, pageInfo.getPageId());
+            pageService.savePage(pageModel, pageInfo.getId());
         } catch (Exception e) {
             throw new IllegalStateException("error", e);
         }
@@ -235,35 +235,35 @@ public class FrontControllerTest extends TestBase {
         PageInfo pageInfo1 = new PageInfo();
         pageInfo1.setTitle("首页");
         pageInfo1.setPagePath("");
-        pageInfo1.setPageId(1L);
+        pageInfo1.setId(1L);
 
         PageInfo pageInfo2 = new PageInfo();
         pageInfo2.setTitle("新闻");
         pageInfo2.setPagePath("xw");
-        pageInfo2.setPageId(2L);
+        pageInfo2.setId(2L);
 
         PageInfo gjxw = new PageInfo();
         gjxw.setTitle("国际新闻");
         gjxw.setPagePath("gjxw");
-        gjxw.setPageId(22L);
+        gjxw.setId(22L);
 //        gjxw.setParent(pageInfo2);
 
         PageInfo gnxw = new PageInfo();
         gnxw.setTitle("国内新闻");
 //        gnxw.setParent(pageInfo2);
-        gnxw.setPageId(23L);
+        gnxw.setId(23L);
         gnxw.setPagePath("gnxw");
 
         PageInfo zjxw = new PageInfo();
         zjxw.setTitle("浙江新闻");
 //        zjxw.setParent(gnxw);
-        zjxw.setPageId(231L);
+        zjxw.setId(231L);
         zjxw.setPagePath("zjxw");
 
         PageInfo pageInfo3 = new PageInfo();
         pageInfo3.setTitle("关于我们");
         pageInfo3.setPagePath("guwm");
-        pageInfo3.setPageId(3L);
+        pageInfo3.setId(3L);
 
         List<PageInfo> list = new ArrayList<>();
         list.add(pageInfo1);
@@ -278,8 +278,8 @@ public class FrontControllerTest extends TestBase {
             NavbarPageInfoModel navbarPageInfoModel = new NavbarPageInfoModel();
             navbarPageInfoModel.setName(info.getTitle());
             navbarPageInfoModel.setPagePath(info.getPagePath());
-            navbarPageInfoModel.setId(info.getPageId());
-//            navbarPageInfoModel.setPid(info.getParent() != null ? info.getParent().getPageId() : 0);
+            navbarPageInfoModel.setId(info.getId());
+//            navbarPageInfoModel.setPid(info.getParent() != null ? info.getParent().getId() : 0);
             navbarPageInfoModels.add(navbarPageInfoModel);
         }
         properties.put("pageIds",navbarPageInfoModels);
@@ -311,11 +311,11 @@ public class FrontControllerTest extends TestBase {
 //     */
 //    @Test
 //    public void testSavePage() throws Exception {
-//        long pageId = random.nextInt(100);
+//        long id = random.nextInt(100);
 //
 //        Page page = randomPage();
 //        String json = JSON.toJSONString(page);
-//        mockMvc.perform(put("/pages/{pageId}", pageId)
+//        mockMvc.perform(put("/pages/{id}", id)
 //                .contentType(MediaType.APPLICATION_JSON)
 //                .content(json)
 //
@@ -347,8 +347,8 @@ public class FrontControllerTest extends TestBase {
 //     */
 //    @Test
 //    public void testDeletePage() throws Exception {
-//        long pageId = random.nextInt(100);
-//        mockMvc.perform(delete("/pages/{pageId}", pageId)).andDo(print())
+//        long id = random.nextInt(100);
+//        mockMvc.perform(delete("/pages/{id}", id)).andDo(print())
 //                .andExpect(status().isAccepted())
 //                .andReturn();
 //    }
@@ -360,9 +360,9 @@ public class FrontControllerTest extends TestBase {
 //     */
 //    @Test
 //    public void testSavePagePartProperties() throws Exception {
-//        long pageId = random.nextInt(100);
+//        long id = random.nextInt(100);
 //        String propertyName= UUID.randomUUID().toString();
-//        mockMvc.perform(delete("/pages/{pageId}/{propertyName}", pageId,propertyName)).andDo(print())
+//        mockMvc.perform(delete("/pages/{id}/{propertyName}", id,propertyName)).andDo(print())
 //                .andExpect(status().isAccepted())
 //                .andReturn();
 //    }

@@ -272,10 +272,10 @@ public class WidgetFactoryServiceTest extends TestBase {
             pageInfo = pageInfoRepository.saveAndFlush(pageInfo);
             PageModel pageModel = new PageModel();
             pageModel.setTitle("testPicCarousel");
-            pageModel.setPageIdentity(pageInfo.getPageId());
+            pageModel.setPageIdentity(pageInfo.getId());
             pageModel.setRoot(new Layout[]{layoutElement});
             CMSContext.PutContext(request, response, site);
-            pageService.savePage(pageModel, pageInfo.getPageId());
+            pageService.savePage(pageModel, pageInfo.getId());
         } catch (Exception e) {
             throw new IllegalStateException("查找控件列表失败", e);
         }

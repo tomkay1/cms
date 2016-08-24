@@ -34,7 +34,7 @@ public class PageEditTest extends SiteManageTest {
         long siteID=site.getSiteId();
         ManageMainPage manageMainPage = initPage(ManageMainPage.class);
         PageInfo pageInfo = randomPageInfo(site);
-        EditPage editPage=manageMainPage.toEditPage(pageInfo.getPageId());
+        EditPage editPage = manageMainPage.toEditPage(pageInfo.getId());
         editPage.loadWidget();
         editPage.save();
     }

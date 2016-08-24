@@ -44,7 +44,7 @@ public class CMSDataSourceController {
     @RequestMapping(value = "/findLink/{serial}", method = RequestMethod.GET)
     public ResponseEntity findLink(@PathVariable("serial") String serial) {
         List<LinkModel> data = cmsDataSourceService.findLinkContent(serial);
-        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(data);
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json;charset=UTF-8")).body(data);
     }
 
 
@@ -84,6 +84,20 @@ public class CMSDataSourceController {
     public ResponseEntity findContentType(Long contentType, Integer draw, Integer length, Long pageId
             , @RequestParam(value = "search[value]") String search) throws IOException {
         DataModel dataModel = cmsDataSourceService.findContentType(contentType, draw, length, pageId, search);
+
+        // 数据源列表
+
+        //  1 数据源的s
+
+        // 链接
+        // http://www.baidu.com
+        // kakxkd
+
+        // url
+
+        // url    null
+        // pageS  null
+
         return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(dataModel);
     }
 

@@ -10,6 +10,8 @@
 package com.huotu.cms.manage;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.huotu.cms.manage.login.Manager;
@@ -91,6 +93,7 @@ import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -141,6 +144,7 @@ public abstract class ManageTest extends SpringWebTest {
     protected WidgetInfoRepository widgetInfoRepository;
     @Autowired
     protected WidgetFactoryService widgetFactoryService;
+    protected ObjectMapper objectMapper = new ObjectMapper();
     //建立一系列已经建立好的控件以及默认属性
     WidgetIdentifier[] preparedWidgets = new WidgetIdentifier[]{
 //            new WidgetIdentifier("com.huotu.hotcms.widget.pagingWidget",
@@ -184,6 +188,10 @@ public abstract class ManageTest extends SpringWebTest {
     private ContentRepository contentRepository;
     @Autowired
     private LoginService loginService;
+
+    private static <T> Iterable<T> IterableIterator(Iterator<T> iterator) {
+        return () -> iterator;
+    }
 
     public ResourceService getResourceService() {
         return resourceService;
@@ -836,5 +844,34 @@ public abstract class ManageTest extends SpringWebTest {
                             .is(new Condition<>(Resource::exists, ""));
             }
         }
+    }
+
+    /**
+     * 断言输入json是一个数组,并且结构上跟inputStream类似
+     *
+     * @param json
+     * @param inputStream
+     * @throws IOException
+     */
+    protected void assertSimilarJsonArray(JsonNode json, InputStream inputStream) throws IOException {
+        assertThat(json.isArray())
+                .isTrue();
+        JsonNode mockArray = objectMapper.readTree(inputStream);
+        JsonNode mockOne = mockArray.get(0);
+
+        assertSimilarJsonObject(json.get(0), mockOne);
+    }
+
+    /**
+     * 断言实际json是类似期望json的
+     *
+     * @param actual
+     * @param excepted
+     */
+    private void assertSimilarJsonObject(JsonNode actual, JsonNode excepted) {
+        assertThat(actual.isObject())
+                .isTrue();
+        assertThat(actual.fieldNames())
+                .containsAll(IterableIterator(excepted.fieldNames()));
     }
 }

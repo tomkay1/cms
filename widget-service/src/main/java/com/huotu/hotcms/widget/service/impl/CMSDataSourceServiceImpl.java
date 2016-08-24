@@ -191,7 +191,7 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
                 dataModel.setTotalElements(page.getTotalElements());
                 return dataModel;
             case 4:
-                Page<GalleryItem> pages = galleryItemRepository.findByGallery_Category_SiteAndDeletedFalse(site, pageable);
+                Page<GalleryItem> pages = galleryItemRepository.findByGallery_Category_Site(site, pageable);
                 List<GalleryItem> galleryItems = pages.getContent();
                 data = new DataObject[galleryItems.size()];
                 for (int i = 0, len = galleryItems.size(); i < len; i++) {

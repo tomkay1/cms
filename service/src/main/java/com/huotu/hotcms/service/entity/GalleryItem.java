@@ -16,6 +16,7 @@ import com.huotu.hotcms.service.model.GalleryItemModel;
 import lombok.Getter;
 import lombok.Setter;
 import me.jiangcai.lib.resource.service.ResourceService;
+import org.springframework.http.MediaType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,12 +40,6 @@ public class GalleryItem implements Auditable, Copyable<GalleryItem>, ImagesOwne
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-//    /**
-//     * 站点ID
-//     */
-//    @ManyToOne
-//    @JoinColumn(name = "siteId")
-//    private Site site;
 
     /**
      * 序列号
@@ -65,17 +60,16 @@ public class GalleryItem implements Auditable, Copyable<GalleryItem>, ImagesOwne
     private String size;
 
     /**
-     * 图片
+     * 图片path,它有一个特殊约定,它的后缀就是这个图片的类型,比如png 什么什么的
      */
     @Column(name = "thumbUri", length = 100)
     private String thumbUri;
 
-
     /**
-     * 是否已删除
+     * 图片的名字
      */
-    @Column(name = "deleted")
-    private boolean deleted = false;
+    @Column(length = 100)
+    private String name;
 
     /**
      * 所属图库记录ID
@@ -106,7 +100,7 @@ public class GalleryItem implements Auditable, Copyable<GalleryItem>, ImagesOwne
     @Override
     public GalleryItem copy() {
         GalleryItem galleryItem = new GalleryItem();
-        galleryItem.setDeleted(isDeleted());
+//        galleryItem.setDeleted(isDeleted());
         galleryItem.setSerial(serial);
         galleryItem.setOrderWeight(orderWeight);
 //        galleryItem.setThumbUri(thumbUri);
@@ -140,4 +134,10 @@ public class GalleryItem implements Auditable, Copyable<GalleryItem>, ImagesOwne
         return UUID.randomUUID().toString();
     }
 
+    public MediaType toContentType() {
+        int lastDot = thumbUri.lastIndexOf(".");
+        String type = thumbUri.substring(lastDot + 1);
+
+        return MediaType.valueOf("image/" + type);
+    }
 }

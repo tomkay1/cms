@@ -9,14 +9,31 @@
 
 package com.huotu.cms.manage.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.huotu.cms.manage.ContentManageTest;
 import com.huotu.cms.manage.page.GalleryPage;
 import com.huotu.hotcms.service.common.ContentType;
+import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Gallery;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.util.ImageHelper;
+import org.junit.Test;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StreamUtils;
 
 import java.beans.PropertyDescriptor;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import java.util.function.Predicate;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * @author CJ
@@ -25,6 +42,95 @@ public class GalleryControllerTest extends ContentManageTest<Gallery> {
 
     public GalleryControllerTest() {
         super(ContentType.Gallery, GalleryPage.class);
+    }
+
+    @Test
+    @Transactional
+    public void items() throws Exception {
+        Site site = loginAsSite();
+        // /manage/gallery/{id}/items
+
+        // 创建一个Gallery
+        Category category = randomCategory();
+        category.setSite(site);
+        category.setContentType(ContentType.Gallery);
+        Gallery gallery = randomGallery(category);
+
+        mockMvc.perform(get("/manage/gallery/{id}/items", gallery.getId())
+                .session(session)
+                .accept(MediaType.APPLICATION_JSON)
+        )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(0));
+
+        List<String> toPostItemNames = new ArrayList<>();
+
+        int count = random.nextInt(10) + 4;
+        while (count-- > 0)
+            toPostItemNames.add("中" + UUID.randomUUID().toString());
+
+        for (String name : toPostItemNames) {
+            mockMvc.perform(fileUpload("/manage/gallery/{id}/items", gallery.getId())
+                    .file("qqfile", StreamUtils.copyToByteArray(new ClassPathResource("web/mock/sexy.jpg").getInputStream()))
+                    .session(session)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .param("qquuid", UUID.randomUUID().toString())
+                    .param("qqfilename", name)
+            )
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.success").value(true))
+                    .andExpect(jsonPath("$.newUuid").isString());
+        }
+        // 先post
+
+        // 查看下数量
+        String responseString = mockMvc.perform(get("/manage/gallery/{id}/items", gallery.getId())
+                .session(session)
+                .accept(MediaType.APPLICATION_JSON)
+        )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(toPostItemNames.size()))
+                .andReturn().getResponse().getContentAsString();
+
+        JsonNode items = objectMapper.readTree(responseString);
+        assertSimilarJsonArray(items, new ClassPathResource("web/mock/galleryItem.json").getInputStream());
+
+        //
+        for (JsonNode item : items) {
+            String name = item.get("name").asText();
+            assertThat(name)
+                    .isIn(toPostItemNames);
+            String thumbnailUrl = item.get("thumbnailUrl").asText();
+            // 这是一个相对uri
+            //
+            ByteArrayResource urlResource = new ByteArrayResource(
+                    mockMvc.perform(get(thumbnailUrl).session(session))
+                            .andExpect(status().isOk())
+                            .andReturn()
+                            .getResponse()
+                            .getContentAsByteArray());
+            ImageHelper.assertSame(urlResource, new ClassPathResource("web/mock/sexy.jpg"));
+        }
+
+        // 删除
+        int remaining = toPostItemNames.size();
+        for (JsonNode item : items) {
+            remaining--;
+            mockMvc.perform(delete("/manage/gallery/{id}/items/{uuid}", gallery.getId(), item.get("uuid").asText())
+                    .accept(MediaType.APPLICATION_JSON)
+            ).andExpect(status().isNoContent());
+
+            mockMvc.perform(get("/manage/gallery/{id}/items", gallery.getId())
+                    .session(session)
+                    .accept(MediaType.APPLICATION_JSON)
+            )
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$").isArray())
+                    .andExpect(jsonPath("$.length()").value(remaining));
+        }
+        
     }
 
     @Override

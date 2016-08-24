@@ -14,13 +14,11 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
+//@Repository
 public interface PageInfoRepository extends JpaRepository<PageInfo, Long>, JpaSpecificationExecutor<PageInfo> {
-
 
     /**
      * 查询相应站点下的PageInfo的列表

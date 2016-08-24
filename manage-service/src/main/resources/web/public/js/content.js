@@ -178,12 +178,6 @@ $(function () {
     });
 
     // 图库
-    var session = null;
-    if ($.galleryItemsUrl && $.galleryItemsUrl.length > 0) {
-        session = {
-            endpoint: $.galleryItemsUrl
-        }
-    }
     $.cmsUploader($('#gallery-item-uploader'), function (path) {
         var tempImagePaths = $('input[name=tempImagePaths]');
         var val = tempImagePaths.val();
@@ -196,7 +190,7 @@ $(function () {
         allowedExtensions: ['jpeg', 'jpg', 'png', 'bmp'],
         itemLimit: 25,
         sizeLimit: 3 * 1024 * 1024
-    }, session);
+    });
 
     $('#galleryForm').validate({
         rules: jQuery.extend(true, {}, rules),

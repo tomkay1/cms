@@ -10,7 +10,6 @@
 package com.huotu.cms.manage.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.cms.manage.ManageTest;
 import com.huotu.cms.manage.controller.support.CRUDHelper;
 import com.huotu.cms.manage.controller.support.CRUDTest;
@@ -36,10 +35,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.BiConsumer;
@@ -61,11 +57,6 @@ public class WidgetInfoControllerTest extends ManageTest {
     private WidgetInfoRepository widgetInfoRepository;
     @Autowired
     private WidgetFactoryService widgetFactoryService;
-    private ObjectMapper objectMapper = new ObjectMapper();
-
-    private static <T> Iterable<T> IterableIterator(Iterator<T> iterator) {
-        return () -> iterator;
-    }
 
     @Test
     @Transactional
@@ -200,14 +191,6 @@ public class WidgetInfoControllerTest extends ManageTest {
                         .andReturn().getResponse().getContentAsString());
     }
 
-    private void assertAsMockArray(JsonNode mvcOne, InputStream inputStream) throws IOException {
-        JsonNode mockArray = objectMapper.readTree(inputStream);
-        JsonNode mockOne = mockArray.get(0);
-
-        assertThat(mvcOne.fieldNames())
-                .containsAll(IterableIterator(mockOne.fieldNames()));
-    }
-
 
     /**
      * 对widget json进行校验
@@ -235,7 +218,7 @@ public class WidgetInfoControllerTest extends ManageTest {
 //        }
 
         JsonNode widgets = assertMvcArrayNotEmpty("/manage/widget/widgets");
-        assertAsMockArray(widgets.get(0), new ClassPathResource("web/public/assets/js/data/widget.json")
+        assertSimilarJsonArray(widgets, new ClassPathResource("web/public/assets/js/data/widget.json")
                 .getInputStream());
 
         MvcResult result = mockMvc.perform(get("/manage/widget/widgets").session(session))

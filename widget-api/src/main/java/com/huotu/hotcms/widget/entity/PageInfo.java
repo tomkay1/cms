@@ -46,13 +46,6 @@ import java.util.UUID;
 @Setter
 public class PageInfo implements Auditable, Copyable<PageInfo>, ResourcesOwner {
 
-//    /**
-//     * 父级page
-//     */
-//    @ManyToOne
-//    @JoinColumn(name = "parentPageId")
-//    PageInfo parent;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pageId")
@@ -67,20 +60,30 @@ public class PageInfo implements Auditable, Copyable<PageInfo>, ResourcesOwner {
     @ManyToOne
     @JoinColumn(name = "categoryId")
     private Category category;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "siteId")
+
     private Site site;
+
     @Column(name = "createTime")
     private LocalDateTime createTime;
     @Column(name = "updateTime")
     private LocalDateTime updateTime;
     @Column(name = "pageType", nullable = false)
     private PageType pageType;
+
     /**
      * 每次随机生成
      */
     @Column(name = "resourceKey", length = 60)
     private String resourceKey;
+
+    /**
+     * 随机生成
+     */
+    @Column(name = "serial", length = 60)
+    private String serial;
 
     /**
      * 页面配置的xml数据

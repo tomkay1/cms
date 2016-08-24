@@ -10,6 +10,7 @@
 package com.huotu.hotcms.widget.controller;
 
 import com.huotu.hotcms.service.model.BaseModel;
+import com.huotu.hotcms.service.model.DataModel;
 import com.huotu.hotcms.service.model.LinkModel;
 import com.huotu.hotcms.service.model.widget.VideoModel;
 import com.huotu.hotcms.widget.service.CMSDataSourceService;
@@ -20,7 +21,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -33,8 +36,6 @@ public class CMSDataSourceController {
 
     @Autowired
     private CMSDataSourceService cmsDataSourceService;
-
-
     /**
      * @param serial
      * @return json 返回当前parentId 的所有子级元素
@@ -68,6 +69,37 @@ public class CMSDataSourceController {
         List<VideoModel> data = cmsDataSourceService.findVideoContent(serial);
         return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(data);
     }
+
+
+    /**
+     * Json：contentType(0："文章", 1： "链接", 2： "视频", 3： "公告", 4,："图片", 5： "下载"，6：”页面”)
+     * pageNum页号
+     * pageSize每页显示数量
+     * pageId页面id
+     *
+     * @return json 返回当前parentId 的所有子级元素
+     * 例如{code=200,message="Success",data=[...]},{code=403,message="fail",data=[]}
+     */
+    @RequestMapping(value = "/findContentType", method = RequestMethod.GET)
+    public ResponseEntity findContentType(Long contentType, Integer draw, Integer length, Long pageId
+            , @RequestParam(value = "search[value]") String search) throws IOException {
+        DataModel dataModel = cmsDataSourceService.findContentType(contentType, draw, length, pageId, search);
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(dataModel);
+    }
+
+//    /**
+//     * @param galleryId 内容类型{@link com.huotu.hotcms.service.entity.Gallery#id }
+//     * @param pageNum     当前页号
+//     * @param pageSize    页面数量
+//     * @return json 返回当前parentId 的所有子级元素
+//     * 例如{code=200,message="Success",data=[...]},{code=403,message="fail",data=[]}
+//     */
+//    @RequestMapping(value = "/findGalleryItemList/{galleryId}/{pageNum}/{pageSize}", method = RequestMethod.GET)
+//    public ResponseEntity findGalleryItemList(@PathVariable("galleryId") Long galleryId
+//            ,@PathVariable("pageNum") int pageNum,@PathVariable("pageSize") int pageSize) {
+//
+//        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(null);
+//    }
 
 
 

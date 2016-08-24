@@ -89,7 +89,6 @@
                     <br/>
                     * 可以通过这个方法获取脚本信息
                     <br/>
-                    *
                     * @param widget 控件
                     <br/>
                     * @param editor 编辑器element
@@ -112,7 +111,6 @@
                     <br/>
                     * 通过设置属性改变预览视图
                     <br/>
-                    *
                     * @param widget 控件
                     <br/>
                     * @param style 样式
@@ -131,7 +129,6 @@
                     <br/>
                     * 通过设置属性改变预览视图
                     <br/>
-                    *
                     * @param widget 控件
                     <br/>
                     * @param style 样式
@@ -148,11 +145,14 @@
                 ，我们提供了默认实现
                 <br/>
                 <img src="img/jsdetail.png"/>
+                <br/>
+                <br/>
             </p>
             <p>
                 template主要存放控件的浏览视图，内容为thymeleaf的html模板
                 <br/>
                 <img src="img/browseTemplate.png"/>
+                <br/>
             </p>
             <p>
                 thumbnail，内容为控件样式的缩略图资源
@@ -162,6 +162,7 @@
                 editor.html，内容为thymeleaf的html模板,editor.html 提供了编辑和浏览功能
                 <br/>
                 <img src="img/editor.png"/>
+                <br/>
                 <br/>
                 上图是一个简单的编辑视图，保存的操作很简单，这么简单的事情我们已经为你提供了实现，
                 只要你将widgetInfo.js中提供的saveComponent(..)删除我们就回去使用系统默认提供的保存实现。
@@ -180,6 +181,18 @@
                 <br/>
                 <img src="img/deploySuccess.png"/>
             </p>
+            <h5>
+                至此如果你想浏览控件你可以使用项目插件进行预览
+            </h5>
+            <p>
+                <p>双击"widget-preview"插件</p>
+                <img src="img/widgetPreview.png"/>
+            </p>
+            <p>
+                <p>插件启动完毕后会打开控件浏览视图界面，至此你就可以浏览到你的插件了</p>
+                <img src="img/openBrowse.png"/>
+            </p>
+            <br/>
             end.
         </p>
 

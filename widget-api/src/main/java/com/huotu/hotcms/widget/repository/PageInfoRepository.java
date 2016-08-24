@@ -61,5 +61,6 @@ public interface PageInfoRepository extends JpaRepository<PageInfo, Long>, JpaSp
      */
     PageInfo findByPagePath(String pagePath);
 
+    PageInfo findBySerial(String serial);
 
 }

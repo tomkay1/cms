@@ -11,6 +11,7 @@ package com.huotu.hotcms.widget.service;
 
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.model.BaseModel;
+import com.huotu.hotcms.service.model.DataModel;
 import com.huotu.hotcms.service.model.LinkModel;
 import com.huotu.hotcms.service.model.widget.VideoModel;
 import org.springframework.stereotype.Service;
@@ -68,4 +69,15 @@ public interface CMSDataSourceService {
      */
     List<BaseModel> findArticleContent(String serial);
 
+    /**
+     * 查找数据源内分页显示
+     *
+     * @param contentType contentType(0："文章", 1： "链接", 2： "视频", 3： "公告", 4,："图片", 5： "下载"，6：”页面”)
+     * @param pageNum
+     * @param pageSize
+     * @param pageId
+     * @param search
+     * @return
+     */
+    DataModel findContentType(Long contentType, Integer pageNum, Integer pageSize, Long pageId, String search);
 }

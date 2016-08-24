@@ -11,6 +11,9 @@ package com.huotu.hotcms.service.repository;
 
 import com.huotu.hotcms.service.entity.Gallery;
 import com.huotu.hotcms.service.entity.GalleryItem;
+import com.huotu.hotcms.service.entity.Site;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
@@ -20,4 +23,6 @@ public interface GalleryItemRepository extends JpaRepository<GalleryItem, Long>,
     List<GalleryItem> findByGallery(Gallery gallery);
 
     Long deleteByGallery(Gallery gallery);
+
+    Page<GalleryItem> findByGallery_Category_SiteAndDeletedFalse(Site site, Pageable pageable);
 }

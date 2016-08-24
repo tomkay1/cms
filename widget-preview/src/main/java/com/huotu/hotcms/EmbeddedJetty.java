@@ -19,7 +19,6 @@ import org.eclipse.jetty.annotations.ClassInheritanceHandler;
 import org.eclipse.jetty.plus.webapp.EnvConfiguration;
 import org.eclipse.jetty.plus.webapp.PlusConfiguration;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.ConcurrentHashSet;
@@ -54,13 +53,10 @@ class EmbeddedJetty implements ServletContainer {
         this.port = port;
         this.model = model;
         System.setProperty("me.jiangcai.server.port", String.valueOf(port));
-
     }
 
     public void start() throws Exception {
         server = new Server(port);
-
-
         String output = model.getBuild().getOutputDirectory();
         log.debug("classes path:" + output);
         PreviewConfig.classesPath = new File(output);
@@ -103,12 +99,7 @@ class EmbeddedJetty implements ServletContainer {
 
                             @Override
                             public void configure(WebAppContext context) throws Exception {
-                                context.addAliasCheck(new ContextHandler.AliasCheck() {
-                                    @Override
-                                    public boolean check(String path, Resource resource) {
-                                        return true;
-                                    }
-                                });
+                                context.addAliasCheck((path, resource) -> true);
                             }
 
                             @Override

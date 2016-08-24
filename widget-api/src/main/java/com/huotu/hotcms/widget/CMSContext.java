@@ -18,6 +18,8 @@ import lombok.Setter;
 import lombok.ToString;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.servlet.support.RequestContext;
 
 import javax.servlet.http.HttpServletRequest;
@@ -55,6 +57,10 @@ public class CMSContext {
      * 内部使用
      */
     private final Stack<WidgetConfiguration> widgetConfigurationStack = new Stack<>();
+    /**
+     * spring上下文
+     */
+    private final WebApplicationContext webApplicationContext;
     private final HttpServletRequest request;
     private final HttpServletResponse response;
     private final Site site;
@@ -90,7 +96,8 @@ public class CMSContext {
      * @param site     当前站点
      */
     public static CMSContext PutContext(HttpServletRequest request, HttpServletResponse response, Site site) {
-        CMSContext cmsContext = new CMSContext(request, response, site, site.getRegion() == null ? request.getLocale()
+        CMSContext cmsContext = new CMSContext(WebApplicationContextUtils.findWebApplicationContext(request.getServletContext())
+                , request, response, site, site.getRegion() == null ? request.getLocale()
                 : site.getRegion().getLocale());
         contexts.set(cmsContext);
         return cmsContext;

@@ -12,6 +12,15 @@
 <head>
     <meta charset="UTF-8">
     <title>控件预览</title>
+    <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/bootstrap/3.3.6/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/font-awesome/4.6.3/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/swiper/3.3.1/css/swiper.min.css">
+    <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/zTree//3.5.24/css/metroStyle/metroStyle.css"
+          type="text/css">
+    <link rel="stylesheet" href="../../../../../manage-service/src/main/resources/web/public/assets/css/widgets.css"
+          th:href="'/manage-resources/assets/css/widgets.css'">
 </head>
 <body>
 <h1>欢迎使用控件预览</h1>
@@ -22,10 +31,10 @@
 <div th:each="widget:${widgets}">
     <h2 th:text="${widget.name()}">一个控件</h2>
     <h4>
-        <a href="" th:href="@{/editor/{id}(id=${#widgetId.id(widget)})}">打开编辑器视图</a></h4>
+        <a href="" th:href="@{/editor/{id}(id=${#widgetId.id(widget)})}" target="_blank">打开编辑器视图</a></h4>
     <ul>
         <li th:each="style:${widget.styles()}">
-            <a th:text="${style.name()}"
+            <a th:text="${style.name()}" target="_blank"
                th:href="@{/browse/{id}/{styleId}(id=${#widgetId.id(widget)},styleId=${style.id()})}">
                 样式1</a>
         </li>

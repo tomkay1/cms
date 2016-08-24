@@ -113,9 +113,11 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     }
 
     @Override
-    public List<BaseModel> findArticleContent(String serial) {
+    public List<BaseModel> findArticleContent(String serial, Integer count) {
+        Sort sort = new Sort(Sort.Direction.ASC, "id");
+        Pageable pageable = new PageRequest(0, count, sort);
         List<Article> list = articleRepository.findByCategory_SiteAndCategory_Serial(
-                CMSContext.RequestContext().getSite(), serial);
+                CMSContext.RequestContext().getSite(), serial, pageable).getContent();
         List<BaseModel> baseModels = new ArrayList<>();
         for (Article article : list) {
             BaseModel baseModel = Article.toBaseModel(article);

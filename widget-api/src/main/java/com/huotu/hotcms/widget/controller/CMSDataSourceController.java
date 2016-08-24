@@ -55,7 +55,7 @@ public class CMSDataSourceController {
      */
     @RequestMapping(value = "/findArticleContent/{serial}", method = RequestMethod.GET)
     public ResponseEntity findArticleContent(@PathVariable("serial") String serial) {
-        List<BaseModel> data = cmsDataSourceService.findArticleContent(serial);
+        List<BaseModel> data = cmsDataSourceService.findArticleContent(serial, );
         return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(data);
     }
 

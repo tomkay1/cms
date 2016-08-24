@@ -65,9 +65,10 @@ public interface CMSDataSourceService {
      * 查询当前站点下，指定数据源serial的 视频内容列表
      *
      * @param serial 数据源的serial
+     * @param count
      * @return 视频内容列表
      */
-    List<BaseModel> findArticleContent(String serial);
+    List<BaseModel> findArticleContent(String serial, Integer count);
 
     /**
      * 查找数据源内分页显示

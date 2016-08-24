@@ -47,6 +47,13 @@ public interface AbstractContentRepository<T extends AbstractContent>
      */
     List<T> findByCategory_SiteAndCategory_Serial(Site site, String serial);
 
+    /**
+     * @param site   站点
+     * @param serial 数据源
+     * @return 按数据源查找
+     */
+    Page<T> findByCategory_SiteAndCategory_Serial(Site site, String serial, Pageable pageable);
+
     Page<T> findByCategory(Category category, Pageable pageable);
 
     /**

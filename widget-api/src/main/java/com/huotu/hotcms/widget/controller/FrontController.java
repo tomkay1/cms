@@ -33,6 +33,7 @@ import me.jiangcai.lib.resource.Resource;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.http.MediaType;
@@ -133,15 +134,10 @@ public class FrontController implements FilterBehavioral {
         ObjectMapper objectMapper = new ObjectMapper();
         Map map = objectMapper.readValue(json, Map.class);
         String widgetIdentifier = (String) map.get("widgetIdentity");
-        String styleId;
-        if (map.containsKey("styleId")) {
-            Object o = map.get("styleId");
-            if (o != null)
-                styleId = o.toString();
-            else
-                styleId = null;
-        } else
-            styleId = null;
+        if (widgetIdentifier == null) {
+            return ResponseEntity.notFound().build();
+        }
+        String styleId = styleIdFromMap(map);
 //        String id = (String) map.get("id");
         String componentId = (String) map.get("componentId");
         Map properties = (Map) map.get("properties");
@@ -149,6 +145,7 @@ public class FrontController implements FilterBehavioral {
         if (properties != null)
             //noinspection unchecked
             componentProperties.putAll(properties);
+
         try {
             InstalledWidget installedWidget = widgetLocateService.findWidget(widgetIdentifier);
 
@@ -223,6 +220,25 @@ public class FrontController implements FilterBehavioral {
         ObjectMapper objectMapper = new ObjectMapper();
         Map map = objectMapper.readValue(json, Map.class);
 //        String id = (String) map.get("id");
+        String styleId = styleIdFromMap(map);
+        String widgetIdentifier = (String) map.get("widgetIdentity");
+        Map properties = (Map) map.get("properties");
+        if (widgetIdentifier == null || properties == null) {
+            return ResponseEntity.notFound().build();
+        }
+        ComponentProperties componentProperties = new ComponentProperties();
+        //noinspection unchecked
+        componentProperties.putAll(properties);
+        InstalledWidget installedWidget = widgetLocateService.findWidget(widgetIdentifier);
+        installedWidget.getWidget().valid(styleId, componentProperties);
+        String htmlCode = widgetResolveService.editorHTML(installedWidget.getWidget(), CMSContext.RequestContext()
+                , componentProperties);
+        return ResponseEntity.ok().contentType(MediaType.valueOf("text/html;charset=utf-8"))
+                .body(htmlCode.getBytes("utf-8"));
+    }
+
+    @Nullable
+    private String styleIdFromMap(Map map) {
         String styleId;
         if (map.containsKey("styleId")) {
             Object o = map.get("styleId");
@@ -232,18 +248,7 @@ public class FrontController implements FilterBehavioral {
                 styleId = null;
         } else
             styleId = null;
-        String widgetIdentifier = (String) map.get("widgetIdentity");
-        Map properties = (Map) map.get("properties");
-        ComponentProperties componentProperties = new ComponentProperties();
-        if (properties != null)
-            //noinspection unchecked
-            componentProperties.putAll(properties);
-        InstalledWidget installedWidget = widgetLocateService.findWidget(widgetIdentifier);
-        installedWidget.getWidget().valid(styleId, componentProperties);
-        String htmlCode = widgetResolveService.editorHTML(installedWidget.getWidget(), CMSContext.RequestContext()
-                , componentProperties);
-        return ResponseEntity.ok().contentType(MediaType.valueOf("text/html;charset=utf-8"))
-                .body(htmlCode.getBytes("utf-8"));
+        return styleId;
     }
 
     private Component findComponent(PageElement element, String id) {

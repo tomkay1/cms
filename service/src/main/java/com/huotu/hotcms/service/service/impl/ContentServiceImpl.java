@@ -80,6 +80,18 @@ public class ContentServiceImpl implements ContentService {
         types = Collections.unmodifiableMap(typeClassHashMap);
     }
 
+    @Override
+    public ContentType[] normalContentTypes() {
+        return new ContentType[]{
+                ContentType.Article,
+                ContentType.Download,
+                ContentType.Gallery,
+                ContentType.Notice,
+                ContentType.Link,
+                ContentType.Video
+        };
+    }
+
     public AbstractContent getContent(Site site, String serial) {
         return contentRepository.findOne((root, query, cb) -> {
             return cb.and(cb.equal(root.get("category").get("site"), site), cb.equal(root.get("serial"), serial));
@@ -202,6 +214,9 @@ public class ContentServiceImpl implements ContentService {
     public void copyTo(Category src, Category dist) throws IOException {
         for (AbstractContent content : listByCategory(src, null)) {
             // 执行复制
+            // 不复制页面
+            if (content.getClass().getName().endsWith("PageInfo"))
+                continue;
             AbstractContent newContent = content.copy();
 
             // 看下目标站是否已存在

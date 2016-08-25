@@ -27,6 +27,7 @@ import com.huotu.hotcms.service.repository.GalleryRepository;
 import com.huotu.hotcms.service.repository.LinkRepository;
 import com.huotu.hotcms.service.repository.OwnerRepository;
 import com.huotu.hotcms.service.repository.VideoRepository;
+import com.huotu.hotcms.service.service.ContentService;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.thymeleaf.service.SiteResolveService;
 import com.huotu.hotcms.service.util.StringUtil;
@@ -74,6 +75,8 @@ public abstract class TestBase extends SpringWebTest {
 
     @Autowired
     public CategoryRepository categoryRepository;
+    @Autowired
+    protected ContentService contentService;
     //建立一系列已经建立好的控件以及默认属性
     WidgetIdentifier[] preparedWidgets = new WidgetIdentifier[]{
 //            new WidgetIdentifier("com.huotu.hotcms.widget.pagingWidget",
@@ -104,7 +107,6 @@ public abstract class TestBase extends SpringWebTest {
     private LinkRepository linkRepository;
     @Autowired
     private ArticleRepository articleRepository;
-
     @Autowired
     private ResourceService resourceService;
 
@@ -308,7 +310,7 @@ public abstract class TestBase extends SpringWebTest {
 
     protected Category randomCategory() {
         Site site = randomSite(randomOwner());
-        ContentType contentType = ContentType.values()[random.nextInt(ContentType.values().length)];
+        ContentType contentType = contentService.normalContentTypes()[random.nextInt(contentService.normalContentTypes().length)];
         return randomCategory(site, contentType, null);
     }
 

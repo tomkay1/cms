@@ -8,12 +8,12 @@ CMSWidgets.initWidget({
     editor: {
         properties: null,
         saveComponent: function (onSuccess, onFailed) {
-            console.log(this.properties + '>>>>');
             this.properties.linkUrl = $(".picBUrl").val();
             if (this.properties.pcImg == "" && this.properties.mobileImg == "") {
                 onFailed("组件数据缺少,未能保存,请完善。");
                 return;
             }
+            console.log($.getTreeViewData());
             onSuccess(this.properties);
             return this.properties;
         },
@@ -52,6 +52,9 @@ CMSWidgets.initWidget({
             this.properties.pcImg = "";
             this.properties.mobileImg = "";
             this.properties.linkUrl = "";
+            $('#treeDemo').addTreeView({
+                debug: true
+            });
         },
         open: function (globalId) {
             console.log(this.properties + '<<<<');

@@ -243,7 +243,7 @@
         </div>
     </div>
 </div>
-<div class="modal-backdrop" ></div>
+<div class="mask-backdrop"></div>
 </body>
 <script type="text/neo-template" id="templateHtml">
     <div class="modal fade" id="selectDataTable" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -289,7 +289,7 @@
     var savePage=/*[[@{/manage/pages/}]]*/ null;
     var widgetEditor=/*[[@{/preview/widgetEditor}]]*/ '../../public/assets/js/data/mockwidgetEditor.html';
     var component=/*[[@{/preview/component}]]*/ '../../public/assets/js/data/mockComponent.html';
-    var id = /*[[${id}]]*/ -999;
+    var pageId = /*[[${pageId}]]*/ -999;
     // Mock数据地址
     var imageMock = '../../public/assets/js/data/imageMock.json';
     var linkMock = '../../public/assets/js/data/linkMock.json';
@@ -316,6 +316,7 @@
 
 <script src="../../public/assets/libs/jquery.htmlClean.js" ewp:src="/assets/libs/jquery.htmlClean.js"></script>
 <script src="../../public/assets/js/cms.addEdit.js" ewp:src="/assets/js/cms.addEdit.js"></script>
+<script src="../../public/assets/js/cms.addTree.js" ewp:src="/assets/js/cms.addTree.js"></script>
 <script src="../../public/assets/js/common.js" ewp:src="/assets/js/common.js"></script>
 <script src="../../public/assets/js/cms.widgets.js" ewp:src="/assets/js/cms.widgets.js"></script>
 <script src="../../public/assets/js/page/cms.editPage.js" ewp:src="/assets/js/page/cms.editPage.js"></script>

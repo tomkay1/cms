@@ -59,10 +59,14 @@ CMSWidgets.initWidget({
                 return false;
             }
             onSuccess(this.properties);
+            console.log($.getTreeViewData());
             return this.properties;
         },
         initProperties: function () {
             this.properties.linkList = [];
+            $('#treeDemo').addTreeView({
+                debug: true
+            });
         },
         open: function (globalId) {
             console.log(this.properties + '>>>');

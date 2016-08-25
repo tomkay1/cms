@@ -124,6 +124,7 @@ public class FrontController implements FilterBehavioral {
      * widgetIdentifier {@link com.huotu.hotcms.service.entity.support.WidgetIdentifier}
      * styleId          样式id
      * properties       控件参数
+     * @throws IOException 资源未找到
      */
     @RequestMapping(value = "/preview/component", method = RequestMethod.POST)
     public ResponseEntity previewHtml(@RequestBody String json) throws IOException {
@@ -145,7 +146,6 @@ public class FrontController implements FilterBehavioral {
         if (properties != null)
             //noinspection unchecked
             componentProperties.putAll(properties);
-
         try {
             InstalledWidget installedWidget = widgetLocateService.findWidget(widgetIdentifier);
 
@@ -199,8 +199,8 @@ public class FrontController implements FilterBehavioral {
                     .body(previewHTML.getBytes("utf-8"));
         } catch (Exception e) {
             log.warn("Unknown Exception", e);
-            return ResponseEntity.badRequest().header("errorMsg", e.getClass().getName())
-                    .header("cssLocation", "").contentType(MediaType.APPLICATION_JSON_UTF8).body(e.getLocalizedMessage());
+            return ResponseEntity.badRequest()
+                    .contentType(MediaType.APPLICATION_JSON_UTF8).body(e.getLocalizedMessage());
         }
     }
 
@@ -271,16 +271,17 @@ public class FrontController implements FilterBehavioral {
     /**
      * 用于支持首页的浏览
      *
-     * @param model
+     * @param model 模型
+     *              @throws PageNotFoundException 页面没找到或
      */
     @RequestMapping(method = RequestMethod.GET, value = {"/_web", "/_web/"})
-    public PageInfo pageIndex(Model model) throws IOException, PageNotFoundException {
+    public PageInfo pageIndex(Model model) throws PageNotFoundException {
         return pageIndex("", model);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = {"/_web/{pagePath}"})
     public PageInfo pageIndex(@PathVariable("pagePath") String pagePath, Model model)
-            throws PageNotFoundException, IOException {
+            throws PageNotFoundException {
         CMSContext cmsContext = CMSContext.RequestContext();
         if (cmsContext.getSite() instanceof Template && pagePath.isEmpty()) {
             templateService.preview((Template) cmsContext.getSite());
@@ -290,6 +291,16 @@ public class FrontController implements FilterBehavioral {
         return pageService.findBySiteAndPagePath(cmsContext.getSite(), pagePath);
     }
 
+    /**
+     * 页面内容
+     *
+     * @param pagePath  pagePath
+     * @param contentId contentId
+     * @param model     model
+     * @return
+     * @throws IOException           未找到数据
+     * @throws PageNotFoundException 页面没找到
+     */
     @RequestMapping(method = RequestMethod.GET, value = {"/_web/{pagePath}/{contentId}"})
     public PageInfo pageContent(@PathVariable("pagePath") String pagePath, @PathVariable("contentId") Long contentId
             , Model model) throws IOException, PageNotFoundException {

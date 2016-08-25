@@ -52,6 +52,7 @@ public interface Widget {
     }
 
     /**
+     * @param widget 控件
      * @return 注意这是相对于context的, 应该注意要再加上 {@link ServletContext#getContextPath()}
      */
     static String widgetJsResourceURI(Widget widget) {
@@ -61,6 +62,10 @@ public interface Widget {
                 .append(".js").toString();
     }
 
+    /**
+     * @param widget 控件
+     * @return String
+     */
     static String thumbnailPath(Widget widget) {
         StringBuilder stringBuilder = new StringBuilder("widgets/thumbnail/");
         return stringBuilder.append(
@@ -203,6 +208,7 @@ public interface Widget {
     /**
      * 获取控件默认参数
      *
+     * @param resourceService 资源服务
      * @return 这个方法总是返回新建的实例而且从不为null, 即它的结果可以直接用于分发。
      */
     ComponentProperties defaultProperties(ResourceService resourceService) throws IOException;

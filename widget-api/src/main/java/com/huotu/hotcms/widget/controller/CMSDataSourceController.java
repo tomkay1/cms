@@ -49,7 +49,7 @@ public class CMSDataSourceController {
     private CMSDataSourceService cmsDataSourceService;
 
     /**
-     * @param serial
+     * @param serial serial
      * @return json 返回当前parentId 的所有子级元素
      * 例如{code=200,message="Success",data=[...]},{code=403,message="fail",data=[]}
      */
@@ -61,7 +61,7 @@ public class CMSDataSourceController {
 
 
     /**
-     * @param serial 数据源id
+     * @param serial serial
      * @return json 返回当前parentId 的所有子级元素
      * 例如{code=200,message="Success",data=[...]},{code=403,message="fail",data=[]}
      */
@@ -72,7 +72,7 @@ public class CMSDataSourceController {
     }
 
     /**
-     * @param serial 数据源id
+     * @param serial serial
      * @return json 返回当前parentId 的所有子级元素
      * 例如{code=200,message="Success",data=[...]},{code=403,message="fail",data=[]}
      */

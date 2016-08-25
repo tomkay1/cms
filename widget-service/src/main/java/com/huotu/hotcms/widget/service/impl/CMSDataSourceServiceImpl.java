@@ -71,6 +71,20 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
 
 
     @Override
+    public List<Category> findNoticeCategory() {
+        return categoryRepository.findBySiteAndContentType(CMSContext.RequestContext().getSite(), ContentType.Notice);
+    }
+
+    @Override
+    public List<Notice> findNoticeContent(String serial, int count) {
+        Sort sort = new Sort(Sort.Direction.ASC, "id");
+        Pageable pageable = new PageRequest(0, count, sort);
+        List<Notice> list = noticeRepository.findByCategory_SiteAndCategory_Serial(
+                CMSContext.RequestContext().getSite(), serial, pageable).getContent();
+        return list;
+    }
+
+    @Override
     public List<Category> findLinkCategory() {
         return categoryRepository.findBySiteAndContentType(CMSContext.RequestContext().getSite(), ContentType.Link);
     }
@@ -170,6 +184,11 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
                 return pageInfoRepository.findAll((Specification<PageInfo>) spec, pageable);
         }
         return null;
+    }
+
+    @Override
+    public PageInfo findPageInfoContent(String serial) {
+        return pageInfoRepository.findBySerial(serial);
     }
 
 //    @Override

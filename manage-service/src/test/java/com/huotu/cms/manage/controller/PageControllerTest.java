@@ -117,7 +117,7 @@ public class PageControllerTest extends ManageTest {
                         .accept(MediaType.TEXT_HTML)
                         .content(objectMapper.writeValueAsBytes(toPost))
                         .session(session)
-        ).andExpect(status().isNotFound());
+        ).andExpect(status().is4xxClientError());
 
         toPost.put("widgetIdentity", component.getWidgetIdentity());
         toPost.put("properties", component.getProperties());

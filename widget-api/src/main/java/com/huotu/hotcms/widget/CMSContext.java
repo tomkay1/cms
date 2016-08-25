@@ -91,8 +91,8 @@ public class CMSContext {
     /**
      * 更新当前CMS上下文
      *
-     * @param request
-     * @param response
+     * @param request request
+     * @param response response
      * @param site     当前站点
      */
     public static CMSContext PutContext(HttpServletRequest request, HttpServletResponse response, Site site) {
@@ -114,6 +114,7 @@ public class CMSContext {
 
     /**
      * 获取当前CMS列值
+     * @return bootstrap classname
      */
     public String getNextBootstrapClass() {
         CMSContext cmsContext = RequestContext();

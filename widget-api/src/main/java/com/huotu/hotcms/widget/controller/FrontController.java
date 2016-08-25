@@ -146,7 +146,6 @@ public class FrontController implements FilterBehavioral {
         if (properties != null)
             //noinspection unchecked
             componentProperties.putAll(properties);
-
         try {
             InstalledWidget installedWidget = widgetLocateService.findWidget(widgetIdentifier);
 
@@ -200,8 +199,8 @@ public class FrontController implements FilterBehavioral {
                     .body(previewHTML.getBytes("utf-8"));
         } catch (Exception e) {
             log.warn("Unknown Exception", e);
-            return ResponseEntity.badRequest().header("errorMsg", e.getClass().getName())
-                    .header("cssLocation", "").contentType(MediaType.APPLICATION_JSON_UTF8).body(e.getLocalizedMessage());
+            return ResponseEntity.badRequest()
+                    .contentType(MediaType.APPLICATION_JSON_UTF8).body(e.getLocalizedMessage());
         }
     }
 

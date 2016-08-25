@@ -35,7 +35,7 @@ import java.util.UUID;
 /**
  * 用与保存页面信息
  * <p>页面也是内容的一种!</p>
- * {@link #getCategory() 数据源}重新定义为「可选的数据源」
+ * 数据源重新定义为「可选的数据源」
  * Created by lhx on 2016/7/4.
  */
 @Entity

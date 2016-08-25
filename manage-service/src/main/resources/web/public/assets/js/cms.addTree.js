@@ -40,7 +40,7 @@
         var s = $.extend({
             debug: false,
             level: -1,
-            handler: '#confBtn'
+            treeNodes: []
         }, options);
         var self = this;
         var DOM = HTML.join('\n');
@@ -59,7 +59,7 @@
             .end()
             .find('ul')
             .attr('aria-labelledby', 'dropdownMenu-' + NUM);
-        TreeView.init($DOM, id);
+        TreeView.init($DOM, id, s.treeNodes);
         TreeView.initBind();
 
         var treeObj = $.fn.zTree.getZTreeObj(TreeView.treeId);
@@ -90,7 +90,6 @@
     $.extend({
         getTreeViewData: function() { return TreeView.getNodes(); },
     });
-    var zNodes =[];
 
     var setting = {
         view: {
@@ -159,10 +158,12 @@
     var TreeView = {
         $DOM: null,
         treeId: null,
-        init: function (DOM, id) {
+        nodes:[],
+        init: function (DOM, id, nodes) {
             this.$DOM = DOM;
             this.treeId = id;
-            $.fn.zTree.init(this.$DOM, setting, zNodes);
+            this.nodes = nodes || [];
+            $.fn.zTree.init(this.$DOM, setting, this.nodes);
         },
         addRoot: function () {
             var treeObj = $.fn.zTree.getZTreeObj(this.treeId);

@@ -255,7 +255,6 @@
                     "url": url,
                     "data": function ( d ) {
                         return $.extend( {}, d, {
-                            "pageId": 1,
                             "contentType": 4
                         });
                     }
@@ -340,7 +339,6 @@
                     "url": url,
                     "data": function ( d ) {
                         return $.extend( {}, d, {
-                            "pageId": 1,
                             "contentType": parameter
                         });
                     }

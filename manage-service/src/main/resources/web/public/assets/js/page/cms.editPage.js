@@ -57,7 +57,7 @@ var editFunc = {
     },
     settingElement: function () {
         $('.pageHTML').on("click", ".setting", function () {
-            $('.modal-backdrop').fadeIn();
+            $('.mask-backdrop').fadeIn();
             var ele = $('#configuration');
             ele.show();
             var id = $(this).attr('data-target');
@@ -111,7 +111,7 @@ var editFunc = {
         },500, function () {
             $('.common-conf').hide();
             $('#configuration').hide();
-            $('.modal-backdrop').fadeOut();
+            $('.mask-backdrop').fadeOut();
         });
     },
     clearDemo: function() {

@@ -30,8 +30,8 @@
                     <a href="" class="panel-close">&times;</a>
                     <a href="" class="minimize">&minus;</a>
                 </div><!-- panel-btns -->
-                <h3 class="panel-title">修改产品数据源</h3>
-                <p>此处可以选择这个产品数据源可拥有的字段</p>
+                <h3 class="panel-title">修改产品数据源基本信息</h3>
+                <p>&nbsp;</p>
             </div>
             <div class="panel-body">
                 <div class="form-horizontal form-bordered">
@@ -45,6 +45,49 @@
                         <div class="col-sm-2">
                             <span class="form-control"
                                   th:text="${object.parent==null?'无':object.parent.name}">某个数据源</span>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- panel-body -->
+
+            <div class="panel-heading">
+                <div class="panel-btns">
+                    <a href="" class="panel-close">&times;</a>
+                    <a href="" class="minimize">&minus;</a>
+                </div><!-- panel-btns -->
+                <h3 class="panel-title">修改字段</h3>
+                <p>此处可以选择这个产品数据源可拥有的字段</p>
+            </div>
+            <div class="panel-body">
+                <datalist id="currentFieldList">
+                    <option th:each="selectedField:${@productFieldRepository.findAll()}"
+                            value="价格"
+                            th:value="${selectedField.name}"
+                            fieldId="998" fieldTypeId="0"
+                            th:attr="fieldId=${selectedField.id},fieldTypeId=${selectedField.fieldType.code}">
+                    </option>
+                    <option value="大图" th:remove="all"></option>
+                </datalist>
+                <div th:each="field:${object.fieldList}" class="form-horizontal form-bordered">
+                    <div class="form-group">
+                        <input name="fieldId" type="hidden" th:value="${field.id}"/>
+                        <label class="col-sm-2 control-label">名称</label>
+                        <div class="col-sm-2">
+                            <input name="fieldName" title="名称" type="text" placeholder="字段名称"
+                                   class="form-control" list="currentFieldList" th:text="${field.name}"/>
+                        </div>
+                        <label class="col-sm-2 control-label">类型</label>
+                        <div class="col-sm-2">
+                            <select class="form-control" name="fieldType" title="字段类型">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option value="0"
+                                        th:each="pageType:${T(com.huotu.hotcms.service.common.FieldType).values()}"
+                                        th:selected="${pageType==field.fieldType}"
+                                        th:value="${pageType.getCode()}"
+                                        th:text="${pageType.getValue().toString()}">文本
+                                </option>
+                                <option value="1" th:remove="all">图片</option>
+                            </select>
                         </div>
                     </div>
                 </div>

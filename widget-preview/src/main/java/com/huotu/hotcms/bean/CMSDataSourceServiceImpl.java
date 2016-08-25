@@ -13,6 +13,7 @@ import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
+import com.huotu.hotcms.service.entity.Notice;
 import com.huotu.hotcms.service.model.BaseModel;
 import com.huotu.hotcms.service.model.GalleryItemModel;
 import com.huotu.hotcms.service.model.LinkModel;
@@ -41,6 +42,19 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
         List<Category> list = new ArrayList<>();
         list.add(category1);
         list.add(category1);
+        return list;
+    }
+
+    @Override
+    public List<Notice> findNoticeContent(String serial, int count) {
+        Notice notice = new Notice();
+        notice.setCreateTime(LocalDateTime.now());
+        notice.setTitle("招聘信息1");
+        notice.setContent("这是招聘的内容我们在招聘java妹子一枚");
+        notice.setId(1L);
+        List<Notice> list = new ArrayList<>();
+        list.add(notice);
+        list.add(notice);
         return list;
     }
 

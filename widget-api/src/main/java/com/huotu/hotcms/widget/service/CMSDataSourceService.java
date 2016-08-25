@@ -12,6 +12,7 @@ package com.huotu.hotcms.widget.service;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.Notice;
 import com.huotu.hotcms.service.model.BaseModel;
 import com.huotu.hotcms.service.model.GalleryItemModel;
 import com.huotu.hotcms.service.model.LinkModel;
@@ -36,6 +37,15 @@ public interface CMSDataSourceService {
      * @return 返回当前站点下所有链接模型的栏目（数据源）
      */
     List<Category> findNoticeCategory();
+
+    /**
+     * <p>查询当前站点下所有可用的公告模型数据源</p>
+     *
+     * @return 返回当前站点下所有链接模型的栏目（数据源）
+     * @param serial
+     * @param count
+     */
+    List<Notice> findNoticeContent(String serial, int count);
 
     /**
      * <p>查询当前站点下所有可用的链接模型数据源</p>

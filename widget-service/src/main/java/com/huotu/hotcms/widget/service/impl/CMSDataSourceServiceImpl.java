@@ -76,6 +76,15 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     }
 
     @Override
+    public List<Notice> findNoticeContent(String serial, int count) {
+        Sort sort = new Sort(Sort.Direction.ASC, "id");
+        Pageable pageable = new PageRequest(0, count, sort);
+        List<Notice> list = noticeRepository.findByCategory_SiteAndCategory_Serial(
+                CMSContext.RequestContext().getSite(), serial, pageable).getContent();
+        return list;
+    }
+
+    @Override
     public List<Category> findLinkCategory() {
         return categoryRepository.findBySiteAndContentType(CMSContext.RequestContext().getSite(), ContentType.Link);
     }

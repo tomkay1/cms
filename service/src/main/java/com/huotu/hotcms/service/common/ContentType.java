@@ -15,7 +15,38 @@ package com.huotu.hotcms.service.common;
  * @author CJ
  */
 public enum ContentType implements CommonEnum {
-    Article(0, "文章", "富文本内容"), Link(1, "链接", "链接内容"), Video(2, "视频", "视频内容"), Notice(3, "公告", "类似文章内容"), Gallery(4, "图库", "图片内容"), Download(5, "下载", "任意提供下载的内容"), Page(6, "页面", "用户自定义页面");
+    /**
+     *
+     */
+    Article(0, "文章", "富文本内容"),
+    /**
+     *
+     */
+    Link(1, "链接", "链接内容"),
+    /**
+     *
+     */
+    Video(2, "视频", "视频内容"),
+    /**
+     *
+     */
+    Notice(3, "公告", "类似文章内容"),
+    /**
+     *
+     */
+    Gallery(4, "图库", "图片内容"),
+    /**
+     *
+     */
+    Download(5, "下载", "任意提供下载的内容"),
+    /**
+     *
+     */
+    Page(6, "页面", "用户自定义页面"),
+    /**
+     *
+     */
+    Product(7, "产品", "产品内容");
 
     private final int code;
     private final String value;
@@ -40,5 +71,23 @@ public enum ContentType implements CommonEnum {
     @Override
     public String getDescription() {
         return description;
+    }
+
+    /**
+     * @return 是否为产品类型
+     */
+    public boolean isProduct() {
+        return this == Product;
+    }
+
+    public boolean isPage() {
+        return this == Page;
+    }
+
+    /**
+     * @return 普通的内容类型, 没有一些特殊约定的
+     */
+    public boolean isNormal() {
+        return !isProduct() && !isPage();
     }
 }

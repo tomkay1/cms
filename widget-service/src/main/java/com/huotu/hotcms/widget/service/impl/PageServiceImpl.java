@@ -140,6 +140,9 @@ public class PageServiceImpl implements PageService {
     }
 
     private void savePage(PageModel page, PageInfo pageInfo) throws IOException {
+        if (pageInfo.getSerial() == null) {
+            pageInfo.setSerial(UUID.randomUUID().toString().replace("-", ""));
+        }
         pageInfo.setUpdateTime(LocalDateTime.now());
         //删除控件旧的css样式表
         if (pageInfo.getResourceKey() != null) {

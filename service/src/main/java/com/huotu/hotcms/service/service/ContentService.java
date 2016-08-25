@@ -24,6 +24,12 @@ import java.io.IOException;
 public interface ContentService {
 
     /**
+     * @return 普通的内容类型
+     * @see ContentType#isNormal()
+     */
+    ContentType[] normalContentTypes();
+
+    /**
      * 寻找一个正文
      *
      * @param site
@@ -46,8 +52,11 @@ public interface ContentService {
     Iterable<AbstractContent> list(String title, Site site, Long category, Pageable pageable);
 
     /**
-     * @param site
-     * @return
+     * 查找所有符合要求的内容
+     *
+     * @param site     所属站点,必选
+     * @param pageable 是否要分页搜索可选
+     * @return 结果循环
      */
     @Transactional(readOnly = true)
     Iterable<AbstractContent> listBySite(Site site, Pageable pageable);

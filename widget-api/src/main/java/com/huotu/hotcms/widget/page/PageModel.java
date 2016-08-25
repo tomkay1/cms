@@ -30,7 +30,6 @@ public class PageModel extends PageLayout {
      * 如果未null表示该页面尚未持久化
      *
      * @see PageInfo#id
-     *
      */
 //    @XmlAttribute(name = "pageIdentity")
     private Long pageIdentity;

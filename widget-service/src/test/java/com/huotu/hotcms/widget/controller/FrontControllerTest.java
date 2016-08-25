@@ -9,7 +9,6 @@
 
 package com.huotu.hotcms.widget.controller;
 
-import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.common.PageType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
@@ -171,7 +170,7 @@ public class FrontControllerTest extends TestBase {
         site = siteService.newSite(domains, domains[0], site, Locale.CHINA);
 
         Category category = new Category();
-        category.setContentType(ContentType.values()[random.nextInt(ContentType.values().length)]);
+        category.setContentType(contentService.normalContentTypes()[random.nextInt(contentService.normalContentTypes().length)]);
         category.setParent(null);
         category.setSite(site);
         categoryRepository.saveAndFlush(category);

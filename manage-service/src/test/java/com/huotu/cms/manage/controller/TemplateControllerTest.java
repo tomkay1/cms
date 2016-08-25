@@ -49,6 +49,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -220,6 +222,13 @@ public class TemplateControllerTest extends SiteManageTest {
         action.templateWork(oneSitePage, template, templateRow, site);
     }
 
+    private Iterable<AbstractContent> removePages(Iterable<AbstractContent> contents) {
+        return StreamSupport
+                .stream(contents.spliterator(), false)
+                .filter(content -> !(content instanceof PageInfo))
+                .collect(Collectors.toList());
+    }
+
     interface DoForTemplate {
 
         void templateWork(SitePage currentPage, Template template, WebElement templateRow, Site yourSite) throws Exception;
@@ -307,12 +316,12 @@ public class TemplateControllerTest extends SiteManageTest {
 
             // 页面当时的数据
             List<PageInfo> sitePages = pageInfoRepository.findBySite(yourSite);
-            Iterable<AbstractContent> siteContents = contentService.listBySite(yourSite, null);
+            Iterable<AbstractContent> siteContents = removePages(contentService.listBySite(yourSite, null));
             List<Category> siteCategories = categoryRepository.findBySite(yourSite);
 
             // 模板当时的数据
             List<PageInfo> templatePages = pageInfoRepository.findBySite(template);
-            Iterable<AbstractContent> templateContents = contentService.listBySite(template, null);
+            Iterable<AbstractContent> templateContents = removePages(contentService.listBySite(template, null));
             List<Category> templateCategories = categoryRepository.findBySite(template);
 
             // 使用
@@ -324,7 +333,7 @@ public class TemplateControllerTest extends SiteManageTest {
             if (append) {
                 //原资源还存在F
                 assertThat(pageInfoRepository.findBySite(yourSite)).containsAll(sitePages);
-                assertThat(contentService.listBySite(yourSite, null)).containsAll(siteContents);
+                assertThat(removePages(contentService.listBySite(yourSite, null))).containsAll(siteContents);
                 assertThat(categoryRepository.findBySite(yourSite)).containsAll(siteCategories);
             } else {
                 //原资源已经没了
@@ -336,7 +345,7 @@ public class TemplateControllerTest extends SiteManageTest {
             // 模板资源都还在而且还可用
             Runnable templateResourceChecker = () -> {
                 assertThat(pageInfoRepository.findBySite(template)).containsOnlyElementsOf(templatePages);
-                assertThat(contentService.listBySite(template, null)).containsOnlyElementsOf(templateContents);
+                assertThat(removePages(contentService.listBySite(template, null))).containsOnlyElementsOf(templateContents);
                 assertThat(categoryRepository.findBySite(template)).containsOnlyElementsOf(templateCategories);
 
                 templatePages.forEach((obj) -> assertResourcesExisting(obj, false));

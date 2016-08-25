@@ -131,7 +131,7 @@ public class GalleryController extends ContentManageController<Gallery, ContentE
         item.setGallery(gallery);
         item.setCreateTime(LocalDateTime.now());
         item.setSerial(UUID.randomUUID().toString());
-        item.setName(qqfilename);
+        item.setTitle(qqfilename);
         String path = "gallery/" + id + "/" + UUID.randomUUID().toString() + ".png";
         ImageHelper.storeAsImage("png", resourceService, qqfile.getInputStream(), path);
         item.setThumbUri(path);
@@ -155,7 +155,7 @@ public class GalleryController extends ContentManageController<Gallery, ContentE
         List<Map<String, Object>> list = galleryItemList.stream()
                 .map((Function<GalleryItem, Map<String, Object>>) galleryItem -> {
                     HashMap<String, Object> data = new HashMap<>();
-                    data.put("name", galleryItem.getName());
+                    data.put("name", galleryItem.getTitle());
                     data.put("uuid", String.valueOf(galleryItem.getId()));
                     try {
                         data.put("size", resourceService.getResource(galleryItem.getThumbUri()).contentLength());

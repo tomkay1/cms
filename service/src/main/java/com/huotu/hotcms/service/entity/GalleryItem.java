@@ -46,12 +46,6 @@ public class GalleryItem extends AbstractContent implements Auditable, ImagesOwn
     private String thumbUri;
 
     /**
-     * 图片的名字
-     */
-    @Column(length = 100)
-    private String name;
-
-    /**
      * 所属图库记录ID
      */
     @ManyToOne
@@ -63,7 +57,7 @@ public class GalleryItem extends AbstractContent implements Auditable, ImagesOwn
         GalleryItemModel galleryItemModel = new GalleryItemModel();
         galleryItemModel.setId(galleryItem.getId());
         galleryItemModel.setThumbUri(galleryItem.getThumbUri());
-        galleryItemModel.setName(galleryItem.getName());
+        galleryItemModel.setName(galleryItem.getTitle());
         galleryItemModel.setOrderWeight(galleryItem.getOrderWeight());
         return galleryItemModel;
     }

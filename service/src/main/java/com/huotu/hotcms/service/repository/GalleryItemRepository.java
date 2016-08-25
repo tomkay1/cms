@@ -12,14 +12,13 @@ package com.huotu.hotcms.service.repository;
 import com.huotu.hotcms.service.entity.Gallery;
 import com.huotu.hotcms.service.entity.GalleryItem;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.repositoryi.AbstractContentRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 
-public interface GalleryItemRepository extends JpaRepository<GalleryItem, Long>, JpaSpecificationExecutor<GalleryItem> {
+public interface GalleryItemRepository extends AbstractContentRepository<GalleryItem> {
     List<GalleryItem> findByGallery(Gallery gallery);
 
     Long deleteByGallery(Gallery gallery);

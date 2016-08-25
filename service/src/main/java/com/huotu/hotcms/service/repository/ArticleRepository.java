@@ -42,4 +42,6 @@ public interface ArticleRepository extends AbstractContentRepository<Article> {
      * */
     @Query(value = "select * from cms_article  where id <?1 and categoryId=(select categoryId from cms_article where id=?1) order BY id desc LIMIT 1",nativeQuery = true)
     Article findAllByIdAndPreious(Long id);
+
+
 }

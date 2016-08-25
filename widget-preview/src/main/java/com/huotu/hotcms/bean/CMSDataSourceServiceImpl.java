@@ -11,6 +11,7 @@ package com.huotu.hotcms.bean;
 
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.common.EnumUtils;
+import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.model.BaseModel;
@@ -19,6 +20,8 @@ import com.huotu.hotcms.service.model.GalleryItemModel;
 import com.huotu.hotcms.service.model.LinkModel;
 import com.huotu.hotcms.service.model.widget.VideoModel;
 import com.huotu.hotcms.widget.service.CMSDataSourceService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -155,6 +158,12 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
         list.add(baseModel1);
         return list;
     }
+
+    @Override
+    public Page<? extends AbstractContent> findContent(ContentType contentType, Pageable pageable, String search) {
+        return null;
+    }
+
 
     @Override
     public DataModel findContentType(Long contentType, Integer pageNum, Integer pageSize, Long pageId, String search) {

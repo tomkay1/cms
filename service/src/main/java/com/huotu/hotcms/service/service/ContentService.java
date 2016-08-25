@@ -32,6 +32,7 @@ public interface ContentService {
      */
     AbstractContent getContent(Site site, String serial);
 
+
     /**
      * 查找所有符合要求的内容
      *

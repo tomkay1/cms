@@ -9,12 +9,20 @@
 
 package com.huotu.hotcms.widget.controller;
 
+import com.huotu.hotcms.service.common.ContentType;
+import com.huotu.hotcms.service.common.EnumUtils;
+import com.huotu.hotcms.service.entity.AbstractContent;
+import com.huotu.hotcms.service.entity.GalleryItem;
 import com.huotu.hotcms.service.model.BaseModel;
-import com.huotu.hotcms.service.model.DataModel;
 import com.huotu.hotcms.service.model.LinkModel;
 import com.huotu.hotcms.service.model.widget.VideoModel;
 import com.huotu.hotcms.widget.service.CMSDataSourceService;
+import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -24,7 +32,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * 查询数据源接口
@@ -36,6 +49,7 @@ public class CMSDataSourceController {
 
     @Autowired
     private CMSDataSourceService cmsDataSourceService;
+
     /**
      * @param serial
      * @return json 返回当前parentId 的所有子级元素
@@ -72,33 +86,42 @@ public class CMSDataSourceController {
 
 
     /**
-     * Json：contentType(0："文章", 1： "链接", 2： "视频", 3： "公告", 4,："图片", 5： "下载"，6：”页面”)
-     * pageNum页号
-     * pageSize每页显示数量
-     * pageId页面id
+     * 查询当前站点下数据内容列表
      *
+     * @param search      搜索条件
+     * @param contentType 内容类型 contentType(0："文章", 1： "链接", 2： "视频", 3： "公告", 4,："图片", 5： "下载"，6：”页面”)
+     * @param draw        页索引
+     * @param length      每页显示数量
      * @return json 返回当前parentId 的所有子级元素
-     * 例如{code=200,message="Success",data=[...]},{code=403,message="fail",data=[]}
      */
     @RequestMapping(value = "/findContentType", method = RequestMethod.GET)
-    public ResponseEntity findContentType(Long contentType, Integer draw, Integer length, Long pageId
+    public ResponseEntity findContentType(Long contentType, Integer draw, Integer length
             , @RequestParam(value = "search[value]") String search) throws IOException {
-        DataModel dataModel = cmsDataSourceService.findContentType(contentType, draw, length, pageId, search);
-
         // 数据源列表
-
-        //  1 数据源的s
-
-        // 链接
-        // http://www.baidu.com
-        // kakxkd
-
-        // url
-
-        // url    null
-        // pageS  null
-
-        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(dataModel);
+        Pageable pageable = new PageRequest(draw - 1, length, new Sort(Sort.Direction.ASC, "id"));
+        ContentType type = EnumUtils.valueOf(ContentType.class, contentType);
+        Page<AbstractContent> page = (Page<AbstractContent>) cmsDataSourceService.findContent(type, pageable, search);
+        Map<String, Object> map = new HashedMap();
+        map.put("pageNum", draw); //当前页索引
+        map.put("pageSize", length);
+        map.put("totalPages", page.getTotalPages()); //共多少页
+        map.put("totalElements", page.getTotalElements()); //元素的总数量
+        map.put("data", page.getContent().stream().map((Function<AbstractContent, Map<String, Object>>) content -> {
+            HashMap<String, Object> data = new HashMap<>();
+            data.put("id", content.getId());
+            data.put("name", content.getTitle());
+            data.put("serial", content.getSerial());
+            data.put("date", content.getCreateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            if (content instanceof GalleryItem) {
+                data.put("thumpUri", ((GalleryItem) content).getThumbUri());
+                data.put("size", ((GalleryItem) content).getSize());
+            } else {
+                data.put("thumpUri", "");
+                data.put("size", "");
+            }
+            return data;
+        }).collect(Collectors.toList()));
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(map);
     }
 
 //    /**
@@ -114,7 +137,6 @@ public class CMSDataSourceController {
 //
 //        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(null);
 //    }
-
 
 
 }

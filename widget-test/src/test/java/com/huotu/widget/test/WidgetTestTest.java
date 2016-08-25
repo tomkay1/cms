@@ -48,7 +48,6 @@ public class WidgetTestTest extends WidgetTest {
                     .isNotNull()
                     .isTrue();
         }
-
         editor.findElement(By.id("DataFetcher")).click();
         Object result = currentWidgetProperties.get().get("DataFetcherResult");
         assertThat(result)

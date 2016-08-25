@@ -90,4 +90,5 @@ public interface AbstractContentRepository<T extends AbstractContent>
      */
     long deleteByCategory(Category category);
 
+
 }

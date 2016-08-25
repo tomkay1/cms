@@ -20,6 +20,7 @@
         '</div>',
         '<input class="form-control tree-name" type="text" name="text" placeholder="名称">',
         '<input class="form-control tree-url" type="url" name="url" placeholder="链接">',
+        '<input class="form-control tree-flag" type="hidden" name="flag" placeholder="来源">',
         '<input class="form-control pull-right btn btn-success js-save-node" type="button" value="保存">',
         '</div>',
         '<div class="col-xs-12">',
@@ -67,7 +68,8 @@
         $('.js-save-node', this).click(function () {
             var selectNode = treeObj.getSelectedNodes()[0];
             selectNode.name = $('.tree-name').val();
-            selectNode.pagePath = $('.tree-url').val();
+            selectNode.linkPath = $('.tree-url').val();
+            selectNode.flag = parseInt($('.tree-flag').val()) || 0;
             treeObj.updateNode(selectNode);
         });
 
@@ -88,7 +90,7 @@
 
 
     $.extend({
-        getTreeViewData: function() { return TreeView.getNodes(); },
+        getTreeViewData: function() { return TreeView.getNodes(); }
     });
 
     var setting = {
@@ -146,7 +148,7 @@
 
     function setNameAndUrl(obj) {
         $('.tree-name').val(obj.name);
-        $('.tree-url').val(obj.pagePath);
+        $('.tree-url').val(obj.linkPath);
     }
 
     function clearInput(element) {
@@ -168,7 +170,7 @@
         addRoot: function () {
             var treeObj = $.fn.zTree.getZTreeObj(this.treeId);
             var newId = treeObj.getNodes().length + 1;
-            treeObj.addNodes(null, { id:newId, pId:0, name:"新节点" + newId, pagePath:'/' } );
+            treeObj.addNodes(null, { id:newId, pId:0, name:"新节点" + newId, linkPath:'/', flag: 0 } );
         },
         addSibling: function () {
             var num = '';
@@ -180,11 +182,11 @@
                 var parentNode = selectNode[0].getParentNode();
                 if (!parentNode) {
                     num = treeObj.getNodes().length + 1;
-                    treeObj.addNodes(parentNode, {id: num, pId: 0, name: "新节点" + num, pagePath:'/'});
+                    treeObj.addNodes(parentNode, {id: num, pId: 0, name: "新节点" + num, linkPath:'/', flag: 0});
                 } else {
                     var length = parentNode.children.length;
                     num = selectNode[0].id + length;
-                    treeObj.addNodes(parentNode, { id: num,  pId: selectNode[0].pid, name:"新节点" + num, pagePath:'/'});
+                    treeObj.addNodes(parentNode, { id: num,  pId: selectNode[0].pid, name:"新节点" + num, linkPath:'/', flag: 0});
                 }
 
             }
@@ -203,7 +205,7 @@
 
                 var id = selectNode[0].id * 10 + num;
 
-                treeObj.addNodes(selectNode[0], { id: id,  pId: selectNode[0].id, name:"新节点" + id, pagePath:'/'});
+                treeObj.addNodes(selectNode[0], { id: id,  pId: selectNode[0].id, name:"新节点" + id, linkPath:'/', flag: 0});
 
             }
         },
@@ -234,7 +236,8 @@
                 obj.id = v.id;
                 obj.pId = v.pId;
                 obj.name = v.name;
-                obj.pagePath = v.pagePath;
+                obj.linkPath = v.linkPath;
+                obj.flag = v.flag;
                 node.push(obj);
             });
             return node;
@@ -314,6 +317,7 @@
         chooseUrl: function (element) {
             var inputName = element.siblings('.tree-name');
             var inputUrl = element.siblings('.tree-url');
+            var inputFlag = element.siblings('.tree-flag');
             var $container = $('#selectDataTable');
             var $element = $('#js-url-selectTable');
             $element.off( 'click', '.js-choose-url');
@@ -321,6 +325,7 @@
                 var data = $element.DataTable().row( $(this).parents('tr') ).data();
                 inputName.val(data.name);
                 inputUrl.val(data.serial);
+                inputFlag.val(1);
                 $container.modal('hide');
             });
         }

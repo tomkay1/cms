@@ -356,7 +356,7 @@
                         },
                         {
                             "title": "资源链接",
-                            "data": "url"
+                            "data": "serial"
                         },
                         {
                             "title": "操作",
@@ -386,7 +386,7 @@
             $element.off( 'click', '.js-choose-url');
             $element.on( 'click', '.js-choose-url', function () {
                 var data = $element.DataTable().row( $(this).parents('tr') ).data();
-                input.val(data.url);
+                input.val(data.serial);
                 if (!input.attr('readonly')) {
                     input.attr('readonly', 'readonly');
                 }

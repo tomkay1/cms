@@ -10,7 +10,6 @@
 package com.huotu.hotcms.widget.controller;
 
 import com.huotu.hotcms.service.common.ContentType;
-import com.huotu.hotcms.service.common.EnumUtils;
 import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.GalleryItem;
 import com.huotu.hotcms.service.model.BaseModel;
@@ -98,8 +97,7 @@ public class CMSDataSourceController {
             , @RequestParam(value = "search[value]") String search) throws IOException {
         // 数据源列表
         Pageable pageable = new PageRequest(draw - 1, length, new Sort(Sort.Direction.ASC, "id"));
-        ContentType type = EnumUtils.valueOf(ContentType.class, contentType);
-        Page<? extends AbstractContent> page = cmsDataSourceService.findContent(type, pageable, search);
+        Page<? extends AbstractContent> page = cmsDataSourceService.findContent(contentType, pageable, search);
         Map<String, Object> map = new HashMap<>();
         map.put("pageNum", draw); //当前页索引
         map.put("pageSize", length);
@@ -114,9 +112,6 @@ public class CMSDataSourceController {
             if (content instanceof GalleryItem) {
                 data.put("thumpUri", ((GalleryItem) content).getThumbUri());
                 data.put("size", ((GalleryItem) content).getSize());
-            } else {
-                data.put("thumpUri", "");
-                data.put("size", "");
             }
             return data;
         }).collect(Collectors.toList()));

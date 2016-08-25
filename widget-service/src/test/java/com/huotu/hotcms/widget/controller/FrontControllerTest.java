@@ -15,7 +15,6 @@ import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Owner;
-import com.huotu.hotcms.service.model.NavbarPageInfoModel;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.ContentRepository;
 import com.huotu.hotcms.service.repository.OwnerRepository;
@@ -44,8 +43,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -223,7 +224,6 @@ public class FrontControllerTest extends TestBase {
 
     /**
      * 构造顶部导航组件properties参数
-     *
      * @return
      */
     @NotNull
@@ -231,139 +231,48 @@ public class FrontControllerTest extends TestBase {
         ComponentProperties properties = new ComponentProperties();
         properties.put("pagingTColor", "#000000");
         properties.put("pagingHColor", "#000000");
-        properties.put("logoFileUri", "http://www.baidu.com");
-        PageInfo pageInfo1 = new PageInfo();
-        pageInfo1.setTitle("首页");
-        pageInfo1.setPagePath("");
-        pageInfo1.setId(1L);
+        Map<String, Object> map1 = new HashMap<>();
+        map1.put("name", "首页");
+        map1.put("pagePath", "");
+        map1.put("isParent", "false");
+        map1.put("id", 1);
 
-        PageInfo pageInfo2 = new PageInfo();
-        pageInfo2.setTitle("新闻");
-        pageInfo2.setPagePath("xw");
-        pageInfo2.setId(2L);
+        Map<String, Object> map2 = new HashMap<>();
+        List<Map<String, Object>> children = new ArrayList<>();
+        Map<String, Object> map21 = new HashMap<>();
+        map21.put("name", "公司动态");
+        map21.put("pagePath", "");
+        map21.put("pid", 2);
 
-        PageInfo gjxw = new PageInfo();
-        gjxw.setTitle("国际新闻");
-        gjxw.setPagePath("gjxw");
-        gjxw.setId(22L);
-//        gjxw.setParent(pageInfo2);
+        Map<String, Object> map22 = new HashMap<>();
+        map22.put("name", "行业动态");
+        map22.put("pagePath", "");
+        map22.put("pid", 2);
+        children.add(map21);
+        children.add(map22);
 
-        PageInfo gnxw = new PageInfo();
-        gnxw.setTitle("国内新闻");
-//        gnxw.setParent(pageInfo2);
-        gnxw.setId(23L);
-        gnxw.setPagePath("gnxw");
+        map2.put("name", "动态资讯");
+        map2.put("pagePath", "");
+        map2.put("isParent", "true");
+        map2.put("children", children);
+        map2.put("id", 2);
 
-        PageInfo zjxw = new PageInfo();
-        zjxw.setTitle("浙江新闻");
-//        zjxw.setParent(gnxw);
-        zjxw.setId(231L);
-        zjxw.setPagePath("zjxw");
+        Map<String, Object> map3 = new HashMap<>();
+        map3.put("name", "关于我们");
+        map3.put("pagePath", "");
+        map3.put("isParent", "false");
+        map3.put("id", 3);
 
-        PageInfo pageInfo3 = new PageInfo();
-        pageInfo3.setTitle("关于我们");
-        pageInfo3.setPagePath("guwm");
-        pageInfo3.setId(3L);
+        List<Map<String, Object>> navbarPageInfoModels = new ArrayList<>();
+        navbarPageInfoModels.add(map1);
+        navbarPageInfoModels.add(map2);
+        navbarPageInfoModels.add(map3);
 
-        List<PageInfo> list = new ArrayList<>();
-        list.add(pageInfo1);
-        list.add(gjxw);
-        list.add(pageInfo2);
-        list.add(pageInfo3);
-        list.add(gnxw);
-        list.add(zjxw);
 
-        List<NavbarPageInfoModel> navbarPageInfoModels = new ArrayList<>();
-        for (PageInfo info : list) {
-            NavbarPageInfoModel navbarPageInfoModel = new NavbarPageInfoModel();
-            navbarPageInfoModel.setName(info.getTitle());
-            navbarPageInfoModel.setPagePath(info.getPagePath());
-            navbarPageInfoModel.setId(info.getId());
-//            navbarPageInfoModel.setPid(info.getParent() != null ? info.getParent().getId() : 0);
-            navbarPageInfoModels.add(navbarPageInfoModel);
-        }
+        properties.put("pagingTColor", "#000000");
+        properties.put("pagingHColor", "#000000");
         properties.put("pageIds",navbarPageInfoModels);
         return properties;
     }
 
-//    /**
-//     * <p>获取页面信息test</p>
-//     *
-//     * @throws Exception mockMvc异常
-//     * @see com.huotu.hotcms.widget.controller.PageController#getPage(long)
-//     */
-//    @Test
-//    public void testGetPage() throws Exception {
-//        long ownerId = random.nextInt(100);
-//        mockMvc.perform(get("/owners/{ownerId}/pages", ownerId)
-//                .accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
-//                .andDo(print())
-//                .andExpect(status().isOk())
-//                .andExpect(content().contentType("application/json"))
-//                .andReturn();
-//    }
-//
-//    /**
-//     * <p>保存界面信息test</p>
-//     *
-//     * @throws Exception mockMvc异常
-//     * @see com.huotu.hotcms.widget.controller.PageController#savePage(String, HttpServletRequest)
-//     */
-//    @Test
-//    public void testSavePage() throws Exception {
-//        long id = random.nextInt(100);
-//
-//        Page page = randomPage();
-//        String json = JSON.toJSONString(page);
-//        mockMvc.perform(put("/pages/{id}", id)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(json)
-//
-//        ).andDo(print()).andReturn();
-//    }
-//
-//    /**
-//     * <p>新增页面 test</p>
-//     *
-//     * @throws Exception mockMvc异常
-//     * @see com.huotu.hotcms.widget.controller.PageController#addPage(long, HttpServletRequest)
-//     */
-//    @Test
-//    public void testAddPage() throws Exception {
-//        long ownerId = random.nextInt(100);
-//        Page page = randomPage();
-//        String json = JSON.toJSONString(page);
-//        mockMvc.perform(post("/owners/{ownerId}/pages", ownerId)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(json))
-//                .andDo(print()).andReturn();
-//    }
-//
-//    /**
-//     * <p>删除页面 test</p>
-//     *
-//     * @throws Exception mockMvc异常
-//     * @see com.huotu.hotcms.widget.controller.PageController#deletePage(String)
-//     */
-//    @Test
-//    public void testDeletePage() throws Exception {
-//        long id = random.nextInt(100);
-//        mockMvc.perform(delete("/pages/{id}", id)).andDo(print())
-//                .andExpect(status().isAccepted())
-//                .andReturn();
-//    }
-//
-//    /**
-//     * <p>测试 保存界面部分属性</p>
-//     *  @throws Exception mockMvc异常
-//     *  @see com.huotu.hotcms.widget.controller.PageController#savePagePartProperties(String, String)
-//     */
-//    @Test
-//    public void testSavePagePartProperties() throws Exception {
-//        long id = random.nextInt(100);
-//        String propertyName= UUID.randomUUID().toString();
-//        mockMvc.perform(delete("/pages/{id}/{propertyName}", id,propertyName)).andDo(print())
-//                .andExpect(status().isAccepted())
-//                .andReturn();
-//    }
 }

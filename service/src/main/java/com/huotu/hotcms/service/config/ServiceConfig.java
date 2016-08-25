@@ -39,7 +39,7 @@ import java.util.Locale;
 @EnableTransactionManagement
 @ImportResource({"classpath:spring_dev.xml", "classpath:spring_prod.xml"})
 @Import({CommonClientSpringConfig.class, MinMallSDKConfig.class, ResourceSpringConfig.class, UpgradeSpringConfig.class
-        , JdbcSpringConfig.class, JpaConfig.class, SecurityConfig.class})
+        , JdbcSpringConfig.class, JpaConfig.class, SecurityConfig.class, MVCConfig.class})
 //@EnableWebMvc
 public class ServiceConfig {
 

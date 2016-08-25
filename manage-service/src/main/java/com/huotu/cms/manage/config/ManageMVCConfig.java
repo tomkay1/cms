@@ -11,13 +11,9 @@ package com.huotu.cms.manage.config;
 
 import com.huotu.cms.manage.MethodParameterFixedResolver;
 import com.huotu.cms.manage.interceptor.ManageInterceptor;
-import com.huotu.hotcms.service.converter.CommonEnumConverter;
-import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.format.FormatterRegistry;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -25,7 +21,6 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author CJ
@@ -37,27 +32,10 @@ public class ManageMVCConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private ManageInterceptor manageInterceptor;
 
-    @Autowired
-    private Set<CommonEnumConverter> commonEnumConverterSet;
-
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         super.addArgumentResolvers(argumentResolvers);
         argumentResolvers.add(0, new MethodParameterFixedResolver());
-    }
-
-    @Override
-    public void addFormatters(FormatterRegistry registry) {
-        super.addFormatters(registry);
-        commonEnumConverterSet.forEach(registry::addConverter);
-        registry.addConverter(new Converter<String, WidgetIdentifier>() {
-            @Override
-            public WidgetIdentifier convert(String source) {
-                if (source == null)
-                    return null;
-                return WidgetIdentifier.valueOf(source);
-            }
-        });
     }
 
     /**

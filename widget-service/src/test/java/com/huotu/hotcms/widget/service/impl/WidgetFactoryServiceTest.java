@@ -48,6 +48,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -99,8 +100,8 @@ public class WidgetFactoryServiceTest extends TestBase {
         assertThat(installedWidget).as("等于null").isNotNull();
         String pagePath = "testPagePath";
         ComponentProperties properties = new ComponentProperties();
-        properties.put("maxImgUrl", new String[]{"1.jpg", "2.jpg", "3.jpg", "4.jpg"});
-        properties.put("minImgUrl", new String[]{"1.jpg", "2.jpg", "3.jpg", "4.jpg"});
+        properties.put("maxImgUrl", Arrays.asList(new String[]{"1.jpg", "2.jpg", "3.jpg", "4.jpg"}));
+        properties.put("minImgUrl", Arrays.asList(new String[]{"1.jpg", "2.jpg", "3.jpg", "4.jpg"}));
         properties.put("styleTemplate", "html");
         pageInitData(pagePath, installedWidget, properties);
 
@@ -121,50 +122,51 @@ public class WidgetFactoryServiceTest extends TestBase {
         }
         assertThat(1).as("验证成功，没有出现异常，并找到页面中修改的组件").isEqualTo(1);
 
-        //**********************************case4 设置主控件包不忽略错误 ，安装新版本控件****************************
-        String pagePath2 = "testPagePath2";
-        ComponentProperties properties2 = new ComponentProperties();
-        properties2.put("styleTemplate", "html");
-        installedWidget = getInstalledWidget(installedWidgets, "1.0-SNAPSHOT");
 
-        pageInitData(pagePath2, installedWidget, properties2);
-        try {
-            installedWidget = getInstalledWidget(installedWidgets, "2.0-SNAPSHOT");
-            widgetInfo = widgetInfoRepository.findOne(installedWidget.getIdentifier());
-            widgetFactoryService.primary(widgetInfo, false);
-            assertThat(0).as("参数验证失败，应当出现异常").isEqualTo(1);
-        } catch (IllegalStateException e) {
-            assertThat(0).as("参数验证不忽略错误时抛出异常").isEqualTo(0);
-        }
+        //控件的新版本参数肯定会满足旧版本控件
+
+        //**********************************case4 设置主控件包不忽略错误 ，安装新版本控件****************************
+//        String pagePath2 = "testPagePath2";
+//        ComponentProperties properties2 = new ComponentProperties();
+//        properties2.put("styleTemplate", "html");
+//        pageInitData(pagePath2, installedWidget, properties2);
+//        try {
+//            installedWidget = getInstalledWidget(installedWidgets, "2.0-SNAPSHOT");
+//            widgetInfo = widgetInfoRepository.findOne(installedWidget.getIdentifier());
+//            widgetFactoryService.primary(widgetInfo, false);
+//            assertThat(0).as("参数验证失败，应当出现异常").isEqualTo(1);
+//        } catch (IllegalStateException e) {
+//            assertThat(0).as("参数验证不忽略错误时抛出异常").isEqualTo(0);
+//        }
 
         //***************************************case5 安装主控件包，忽略错误***************************************
-        installedWidget = getInstalledWidget(installedWidgets, "1.0-SNAPSHOT");
-        assertThat(installedWidget).as("等于null").isNotNull();
-        pagePath = "testPagePath3";
-        ComponentProperties properties3 = new ComponentProperties();
-
-        properties3.put("maxImgUrl", new String[]{"1.jpg", "2.jpg", "3.jpg", "4.jpg"});
-        properties3.put("minImgUrl", new String[]{"1.jpg", "2.jpg", "3.jpg", "4.jpg"});
-        properties3.put("styleTemplate", "html");
-        pageInitData(pagePath, installedWidget, properties3);
-        installedWidget = getInstalledWidget(installedWidgets, "2.0-SNAPSHOT");
-        widgetInfo = widgetInfoRepository.findOne(installedWidget.getIdentifier());
-        widgetFactoryService.primary(widgetInfo, true);
-
-        installedWidget = getInstalledWidget(installedWidgets, "1.0-SNAPSHOT");
-        widgetInfo = widgetInfoRepository.findOne(installedWidget.getIdentifier());
-        pageInfo = pageInfoRepository.findByPagePath(pagePath);
-
-        pageElements = PageLayout.NoNullLayout(pageInfo.getLayout());
-
-        for (PageElement element : pageElements) {
-            validPageElements(element, widgetInfo);
-        }
-        assertThat(1).as("错误被忽略，组件被忽略更新").isEqualTo(1);
-
-        List<WidgetInfo> list = widgetInfoRepository.findByGroupIdAndArtifactIdAndEnabledTrue(
-                "com.huotu.hotcms.widget.picCarousel", "picCarousel");
-        assertThat(list.size()).as("新版本未能满足低版本所以没有删除低版本").isEqualTo(2);
+//        installedWidget = getInstalledWidget(installedWidgets, "1.0-SNAPSHOT");
+//        assertThat(installedWidget).as("等于null").isNotNull();
+//        pagePath = "testPagePath3";
+//        ComponentProperties properties3 = new ComponentProperties();
+//
+//        properties3.put("maxImgUrl",  Arrays.asList(new String[]{"1.jpg", "2.jpg", "3.jpg", "4.jpg"}));
+//        properties3.put("minImgUrl",  Arrays.asList(new String[]{"1.jpg", "2.jpg", "3.jpg", "4.jpg"}));
+//        properties3.put("styleTemplate", "html");
+//        pageInitData(pagePath, installedWidget, properties3);
+//        installedWidget = getInstalledWidget(installedWidgets, "2.0-SNAPSHOT");
+//        widgetInfo = widgetInfoRepository.findOne(installedWidget.getIdentifier());
+//        widgetFactoryService.primary(widgetInfo, true);
+//
+//        installedWidget = getInstalledWidget(installedWidgets, "1.0-SNAPSHOT");
+//        widgetInfo = widgetInfoRepository.findOne(installedWidget.getIdentifier());
+//        pageInfo = pageInfoRepository.findByPagePath(pagePath);
+//
+//        pageElements = PageLayout.NoNullLayout(pageInfo.getLayout());
+//
+//        for (PageElement element : pageElements) {
+//            validPageElements(element, widgetInfo);
+//        }
+//        assertThat(1).as("错误被忽略，组件被忽略更新").isEqualTo(1);
+//
+//        List<WidgetInfo> list = widgetInfoRepository.findByGroupIdAndArtifactIdAndEnabledTrue(
+//                "com.huotu.hotcms.widget.picCarousel", "picCarousel");
+//        assertThat(list.size()).as("新版本未能满足低版本所以没有删除低版本").isEqualTo(2);
 
     }
 

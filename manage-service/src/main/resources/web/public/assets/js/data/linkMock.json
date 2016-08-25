@@ -1,76 +1,79 @@
 {
+    "draw": 1,
+    "recordsTotal": 11,
+    "recordsFiltered": 11,
     "data": [
         {
             "id": 0,
             "name": "首页",
             "date": "2015-05-17 10:46",
-            "url": "http://www.neochang.ml/index.html"
+            "serial": "http://www.neochang.ml/index.html"
         },
         {
             "id": 1,
             "name": "新闻资讯",
             "date": "",
-            "url": "http://www.neochang.ml/news.html"
+            "serial": "http://www.neochang.ml/news.html"
         },
         {
             "id": 2,
             "name": "关于我们",
             "date": "2015-05-17 10:46",
-            "url": "http://www.neochang.ml/our.html"
+            "serial": "http://www.neochang.ml/our.html"
         },
         {
             "id": 3,
             "name": "产品展示",
             "date": "",
-            "url": "http://www.neochang.ml/product.html"
+            "serial": "http://www.neochang.ml/product.html"
         },
         {
             "id": 4,
             "name": "招兵买马",
             "date": "2015-05-17 10:46",
-            "url": "http://www.neochang.ml/want.html"
+            "serial": "http://www.neochang.ml/want.html"
         },
         {
             "id": 5,
             "name": "站点地图",
             "date": "2015-05-17 10:46",
-            "url": "http://www.neochang.ml/maps.html"
+            "serial": "http://www.neochang.ml/maps.html"
         },
         {
             "id": 6,
             "name": "最新新闻",
             "date": "2015-05-17 10:46",
-            "url": "http://www.neochang.ml/news.html"
+            "serial": "http://www.neochang.ml/news.html"
         },
         {
             "id": 7,
             "name": "联系我们",
             "date": "2015-05-17 10:46",
-            "url": "http://www.neochang.ml/contact.html"
+            "serial": "http://www.neochang.ml/contact.html"
         },
         {
             "id": 8,
             "name": "产品详情",
             "date": "2015-05-17 10:46",
-            "url": "http://www.neochang.ml/ok.html"
+            "serial": "http://www.neochang.ml/ok.html"
         },
         {
             "id": 9,
             "name": "很好的页面",
             "date": "2015-05-17 10:46",
-            "url": "http://www.neochang.ml/good.html"
+            "serial": "http://www.neochang.ml/good.html"
         },
         {
             "id": 10,
             "name": "非常好",
             "date": "2015-05-17 10:46",
-            "url": "http://www.neochang.ml/index.html"
+            "serial": "http://www.neochang.ml/index.html"
         },
         {
             "id": 11,
             "name": "个人页面",
             "date": "2015-05-17 10:46",
-            "url": "http://www.neochang.ml/personl.html"
+            "serial": "http://www.neochang.ml/personl.html"
         }
     ]
 }

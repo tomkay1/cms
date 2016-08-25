@@ -119,14 +119,14 @@ public abstract class ManageTest extends SpringWebTest {
 //                        "com.huotu.hotcms.widget.pagingWidget",
 //                        "pagingWidget"
 //                },
-            new String[]{
-                    "com.huotu.hotcms.widget.picCarousel",
-                    "picCarousel"
-            },
-            new String[]{
-                    "com.huotu.hotcms.widget.productList",
-                    "productList"
-            },
+//            new String[]{
+//                    "com.huotu.hotcms.widget.picCarousel",
+//                    "picCarousel"
+//            },
+//            new String[]{
+//                    "com.huotu.hotcms.widget.productList",
+//                    "productList"
+//            },
             new String[]{
                     "com.huotu.hotcms.widget.picBanner",
                     "picBanner"

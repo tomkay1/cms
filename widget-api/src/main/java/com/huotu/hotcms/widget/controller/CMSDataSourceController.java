@@ -17,7 +17,6 @@ import com.huotu.hotcms.service.model.BaseModel;
 import com.huotu.hotcms.service.model.LinkModel;
 import com.huotu.hotcms.service.model.widget.VideoModel;
 import com.huotu.hotcms.widget.service.CMSDataSourceService;
-import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -89,19 +88,19 @@ public class CMSDataSourceController {
      * 查询当前站点下数据内容列表
      *
      * @param search      搜索条件
-     * @param contentType 内容类型 contentType(0："文章", 1： "链接", 2： "视频", 3： "公告", 4,："图片", 5： "下载"，6：”页面”)
-     * @param draw        页索引
+     * @param contentType 内容类型
+     * @param draw        页码
      * @param length      每页显示数量
      * @return json 返回当前parentId 的所有子级元素
      */
     @RequestMapping(value = "/findContentType", method = RequestMethod.GET)
-    public ResponseEntity findContentType(Long contentType, Integer draw, Integer length
+    public ResponseEntity findContentType(ContentType contentType, int draw, int length
             , @RequestParam(value = "search[value]") String search) throws IOException {
         // 数据源列表
         Pageable pageable = new PageRequest(draw - 1, length, new Sort(Sort.Direction.ASC, "id"));
         ContentType type = EnumUtils.valueOf(ContentType.class, contentType);
-        Page<AbstractContent> page = (Page<AbstractContent>) cmsDataSourceService.findContent(type, pageable, search);
-        Map<String, Object> map = new HashedMap();
+        Page<? extends AbstractContent> page = cmsDataSourceService.findContent(type, pageable, search);
+        Map<String, Object> map = new HashMap<>();
         map.put("pageNum", draw); //当前页索引
         map.put("pageSize", length);
         map.put("totalPages", page.getTotalPages()); //共多少页
@@ -121,7 +120,7 @@ public class CMSDataSourceController {
             }
             return data;
         }).collect(Collectors.toList()));
-        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(map);
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json;charset=UTF-8")).body(map);
     }
 
 //    /**

@@ -16,7 +16,6 @@ import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.Video;
-import com.huotu.hotcms.service.model.DataObject;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.widget.test.TestBase;
 import org.junit.Test;
@@ -129,7 +128,7 @@ public class CMSDataSourceControllerTest extends TestBase {
 //        toGet.put("search[value]", "");
         String json = mockMvc.perform(get("/dataSource/findContentType")
                 .param("contentType", "2")
-                .param("draw", "0")
+                .param("draw", "1")
                 .param("length", "2")
                 .param("id", "123")
                 .param("search[value]", "a")
@@ -138,7 +137,7 @@ public class CMSDataSourceControllerTest extends TestBase {
                 .andReturn().getResponse().getContentAsString();
         Map map = objectMapper.readValue(json, Map.class);
         System.out.println(json);
-        List<DataObject> list = (List<DataObject>) map.get("data");
+        List<?> list = (List<?>) map.get("data");
         assertThat(list.size()).isEqualTo(2);
 
 

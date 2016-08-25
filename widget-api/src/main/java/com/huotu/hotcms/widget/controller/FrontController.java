@@ -35,6 +35,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -86,7 +87,7 @@ public class FrontController implements FilterBehavioral {
      * @param pageId 页面id
      * @param id     组件id
      * @return css内容
-     * @throws IOException
+     * @throws IOException 资源错误
      */
     @RequestMapping(method = RequestMethod.GET, value = {"/previewCss/{pageId}/{componentId}.css"}
             , produces = "text/css")
@@ -123,6 +124,7 @@ public class FrontController implements FilterBehavioral {
      * widgetIdentifier {@link com.huotu.hotcms.service.entity.support.WidgetIdentifier}
      * styleId          样式id
      * properties       控件参数
+     * @throws IOException 资源未找到
      */
     @RequestMapping(value = "/preview/component", method = RequestMethod.POST)
     public ResponseEntity previewHtml(@RequestBody String json) throws IOException {
@@ -219,31 +221,34 @@ public class FrontController implements FilterBehavioral {
      * properties       控件参数
      */
     @RequestMapping(value = "/preview/widgetEditor", method = RequestMethod.POST)
-    public ResponseEntity widgetEditor(@RequestBody String json) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        Map map = objectMapper.readValue(json, Map.class);
-//        String id = (String) map.get("id");
-        String styleId;
-        if (map.containsKey("styleId")) {
-            Object o = map.get("styleId");
-            if (o != null)
-                styleId = o.toString();
-            else
+    public ResponseEntity widgetEditor(@RequestBody String json) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            Map map = objectMapper.readValue(json, Map.class);
+            String styleId;
+            if (map.containsKey("styleId")) {
+                Object o = map.get("styleId");
+                if (o != null)
+                    styleId = o.toString();
+                else
+                    styleId = null;
+            } else
                 styleId = null;
-        } else
-            styleId = null;
-        String widgetIdentifier = (String) map.get("widgetIdentity");
-        Map properties = (Map) map.get("properties");
-        ComponentProperties componentProperties = new ComponentProperties();
-        if (properties != null)
-            //noinspection unchecked
-            componentProperties.putAll(properties);
-        InstalledWidget installedWidget = widgetLocateService.findWidget(widgetIdentifier);
-        installedWidget.getWidget().valid(styleId, componentProperties);
-        String htmlCode = widgetResolveService.editorHTML(installedWidget.getWidget(), CMSContext.RequestContext()
-                , componentProperties);
-        return ResponseEntity.ok().contentType(MediaType.valueOf("text/html;charset=utf-8"))
-                .body(htmlCode.getBytes("utf-8"));
+            String widgetIdentifier = (String) map.get("widgetIdentity");
+            Map properties = (Map) map.get("properties");
+            ComponentProperties componentProperties = new ComponentProperties();
+            if (properties != null)
+                //noinspection unchecked
+                componentProperties.putAll(properties);
+            InstalledWidget installedWidget = widgetLocateService.findWidget(widgetIdentifier);
+            installedWidget.getWidget().valid(styleId, componentProperties);
+            String htmlCode = widgetResolveService.editorHTML(installedWidget.getWidget(), CMSContext.RequestContext()
+                    , componentProperties);
+            return ResponseEntity.ok().contentType(MediaType.valueOf("text/html;charset=utf-8"))
+                    .body(htmlCode.getBytes("utf-8"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     private Component findComponent(PageElement element, String id) {
@@ -266,16 +271,17 @@ public class FrontController implements FilterBehavioral {
     /**
      * 用于支持首页的浏览
      *
-     * @param model
+     * @param model 模型
+     *              @throws PageNotFoundException 页面没找到或
      */
     @RequestMapping(method = RequestMethod.GET, value = {"/_web", "/_web/"})
-    public PageInfo pageIndex(Model model) throws IOException, PageNotFoundException {
+    public PageInfo pageIndex(Model model) throws PageNotFoundException {
         return pageIndex("", model);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = {"/_web/{pagePath}"})
     public PageInfo pageIndex(@PathVariable("pagePath") String pagePath, Model model)
-            throws PageNotFoundException, IOException {
+            throws PageNotFoundException {
         CMSContext cmsContext = CMSContext.RequestContext();
         if (cmsContext.getSite() instanceof Template && pagePath.isEmpty()) {
             templateService.preview((Template) cmsContext.getSite());
@@ -285,6 +291,16 @@ public class FrontController implements FilterBehavioral {
         return pageService.findBySiteAndPagePath(cmsContext.getSite(), pagePath);
     }
 
+    /**
+     * 页面内容
+     *
+     * @param pagePath  pagePath
+     * @param contentId contentId
+     * @param model     model
+     * @return
+     * @throws IOException           未找到数据
+     * @throws PageNotFoundException 页面没找到
+     */
     @RequestMapping(method = RequestMethod.GET, value = {"/_web/{pagePath}/{contentId}"})
     public PageInfo pageContent(@PathVariable("pagePath") String pagePath, @PathVariable("contentId") Long contentId
             , Model model) throws IOException, PageNotFoundException {

@@ -16,6 +16,7 @@ import com.huotu.hotcms.service.model.BaseModel;
 import com.huotu.hotcms.service.model.GalleryItemModel;
 import com.huotu.hotcms.service.model.LinkModel;
 import com.huotu.hotcms.service.model.widget.VideoModel;
+import com.huotu.hotcms.widget.entity.PageInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,12 @@ import java.util.List;
  */
 @Service
 public interface CMSDataSourceService {
+    /**
+     * <p>查询当前站点下所有可用的公告模型数据源</p>
+     *
+     * @return 返回当前站点下所有链接模型的栏目（数据源）
+     */
+    List<Category> findNoticeCategory();
 
     /**
      * <p>查询当前站点下所有可用的链接模型数据源</p>
@@ -102,15 +109,11 @@ public interface CMSDataSourceService {
     Page<? extends AbstractContent> findContent(ContentType contentType, Pageable pageable, String search);
 
 
-//    /**
-//     * 查找数据源内分页显示
-//     *
-//     * @param contentType contentType(0："文章", 1： "链接", 2： "视频", 3： "公告", 4,："图片", 5： "下载"，6：”页面”)
-//     * @param pageNum
-//     * @param pageSize
-//     * @param pageId
-//     * @param search
-//     * @return
-//     */
-//    DataModel findContentType(Long contentType, Integer pageNum, Integer pageSize, Long pageId, String search);
+    /**
+     * 根据serial 返回当前站点的pageInfo
+     *
+     * @param serial serial
+     * @return pageInfo
+     */
+    PageInfo findPageInfoContent(String serial);
 }

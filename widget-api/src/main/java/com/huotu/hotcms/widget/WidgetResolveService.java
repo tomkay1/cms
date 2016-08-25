@@ -75,7 +75,7 @@ public interface WidgetResolveService {
      * @param pageElement 页面节点
      * @param cmsContext  上下文环境
      * @param writer      HTML Code 的输出点
-     * @throws IOException
+     * @throws IOException 找不到资源
      */
     void pageElementHTML(PageElement pageElement, CMSContext cmsContext, Writer writer) throws IOException;
 
@@ -87,7 +87,7 @@ public interface WidgetResolveService {
      * @param type    目标类型 css or js
      * @param element 组件 （可选),在这个情况下 应该采纳控件默认的属性
      * @param out     输出流
-     * @throws IOException
+     * @throws IOException 找不到资源
      */
     void widgetDependencyContent(CMSContext context, Widget widget, MediaType type, PageElement element
             , OutputStream out) throws IOException;

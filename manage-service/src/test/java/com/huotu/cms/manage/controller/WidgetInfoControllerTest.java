@@ -20,7 +20,6 @@ import com.huotu.cms.manage.page.support.AbstractCRUDPage;
 import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
-import com.huotu.hotcms.widget.InstalledWidget;
 import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import com.jayway.jsonpath.JsonPath;
@@ -201,7 +200,6 @@ public class WidgetInfoControllerTest extends ManageTest {
     @Test
     @Transactional
     public void testGetWidgets() throws Exception {
-
         Owner owner = randomOwner();
         loginAsOwner(owner);
 
@@ -209,14 +207,6 @@ public class WidgetInfoControllerTest extends ManageTest {
                 , "1.0-SNAPSHOT", "普通");
         widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.copyright", "copyright"
                 , "1.0.2-SNAPSHOT", "普通");
-
-        /*先确保存在已安装的控件*/
-        List<InstalledWidget> installedWidgets = widgetFactoryService.widgetList(null);
-//        if (installedWidgets.size() == 0) {
-//            widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.picCarousel", "picCarousel"
-//                    , "1.0-SNAPSHOT", "picCarousel");
-//        }
-
         JsonNode widgets = assertMvcArrayNotEmpty("/manage/widget/widgets");
         assertSimilarJsonArray(widgets, new ClassPathResource("web/public/assets/js/data/widget.json")
                 .getInputStream());

@@ -71,6 +71,11 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
 
 
     @Override
+    public List<Category> findNoticeCategory() {
+        return categoryRepository.findBySiteAndContentType(CMSContext.RequestContext().getSite(), ContentType.Notice);
+    }
+
+    @Override
     public List<Category> findLinkCategory() {
         return categoryRepository.findBySiteAndContentType(CMSContext.RequestContext().getSite(), ContentType.Link);
     }
@@ -170,6 +175,11 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
                 return pageInfoRepository.findAll((Specification<PageInfo>) spec, pageable);
         }
         return null;
+    }
+
+    @Override
+    public PageInfo findPageInfoContent(String serial) {
+        return pageInfoRepository.findBySerial(serial);
     }
 
 //    @Override

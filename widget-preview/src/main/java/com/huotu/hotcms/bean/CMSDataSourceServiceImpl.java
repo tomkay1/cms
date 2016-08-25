@@ -17,6 +17,7 @@ import com.huotu.hotcms.service.model.BaseModel;
 import com.huotu.hotcms.service.model.GalleryItemModel;
 import com.huotu.hotcms.service.model.LinkModel;
 import com.huotu.hotcms.service.model.widget.VideoModel;
+import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.service.CMSDataSourceService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +30,19 @@ import java.util.List;
  * 一个测试实现的或者叫模拟实现
  */
 public class CMSDataSourceServiceImpl implements CMSDataSourceService {
+
+    @Override
+    public List<Category> findNoticeCategory() {
+        Category category1 = new Category();
+        category1.setId(1L);
+        category1.setContentType(ContentType.Notice);
+        category1.setSerial("123123");
+        category1.setName("公告1");
+        List<Category> list = new ArrayList<>();
+        list.add(category1);
+        list.add(category1);
+        return list;
+    }
 
     @Override
     public List<Category> findLinkCategory() {
@@ -160,6 +174,16 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     @Override
     public Page<? extends AbstractContent> findContent(ContentType contentType, Pageable pageable, String search) {
         return null;
+    }
+
+    @Override
+    public PageInfo findPageInfoContent(String serial) {
+        PageInfo pageInfo = new PageInfo();
+        pageInfo.setSerial(serial);
+        pageInfo.setId(1L);
+        pageInfo.setPagePath("wwwww");
+        pageInfo.setCreateTime(LocalDateTime.now());
+        return pageInfo;
     }
 
 }

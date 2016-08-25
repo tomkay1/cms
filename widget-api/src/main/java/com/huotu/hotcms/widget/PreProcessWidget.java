@@ -11,9 +11,9 @@ public interface PreProcessWidget {
     /**
      * 在准备使用这个控件生成的组件执行模板行为的时候运行
      *
-     * @param style
-     * @param properties
-     * @param variables
+     * @param style 样式
+     * @param properties 控件参数
+     * @param variables 属性
      * @see CMSContext
      */
     void prepareContext(WidgetStyle style, ComponentProperties properties, Map<String, Object> variables);

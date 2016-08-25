@@ -385,7 +385,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
                 }
                 if (notSupportComponent.size() > 0) {
                     if (ignoreError) {
-                        notSupportPage.add(page.getPageId());
+                        notSupportPage.add(page.getId());
                     } else {
                         throw new IllegalStateException("安装的控件不能满足旧版本控件的参数异常");
                     }
@@ -399,10 +399,10 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
             }
 
             for (PageInfo page : pageList) {
-                if (notSupportPage.contains(page.getPageId())) {
+                if (notSupportPage.contains(page.getId())) {
                     break;
                 }
-                if (supportPage.contains(page.getPageId())) {
+                if (supportPage.contains(page.getId())) {
                     pageService.updatePageComponent(page, installedWidget);
                 }
             }
@@ -438,13 +438,13 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
                     if (widget1.groupId().equals(widget2.groupId()) && widget1.widgetId().equals(widget2.widgetId())
                             && !widget1.version().equals(widget2.version())) {
                         installedWidget.getWidget().valid(component.getStyleId(), component.getProperties());
-                        supportPage.add(page.getPageId());
+                        supportPage.add(page.getId());
                     }
                 }
             } catch (IllegalArgumentException e) {
                 log.info("不支持的页面组件" + component.getWidgetIdentity() + ":" + e.getMessage());
                 notSupportComponent.add(component);
-                supportPage.remove(page.getPageId());
+                supportPage.remove(page.getId());
             }
         } else if (pageElement instanceof Layout) {
             Layout layout = (Layout) pageElement;

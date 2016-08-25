@@ -71,7 +71,10 @@ public class WidgetViewController {
         Component component = new Component();
         component.setInstalledWidget(widget);
         component.setWidgetIdentity(Widget.WidgetIdentity(widget.getWidget()));
-        component.setProperties(currentProperties);
+        if (currentProperties == null)
+            component.setProperties(widget.getWidget().defaultProperties(resourceService));
+        else
+            component.setProperties(currentProperties);
 
         response.setContentType("text/css");
         widgetResolveService.widgetDependencyContent(CMSContext.RequestContext(), widget.getWidget(), Widget.CSS
@@ -80,23 +83,30 @@ public class WidgetViewController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/editor/{widgetName}")
-    public String editor(@PathVariable("widgetName") WidgetIdentifier widgetName, Model model) {
+    public String editor(@PathVariable("widgetName") WidgetIdentifier widgetName, Model model) throws IOException {
         model.addAttribute("widgetId", widgetName.toString());
-        model.addAttribute("properties", currentProperties);
+        InstalledWidget installedWidget = widgetLocateService.findWidget(widgetName.toString());
+        if (currentProperties == null)
+            model.addAttribute("properties", installedWidget.getWidget().defaultProperties(resourceService));
+        else
+            model.addAttribute("properties", currentProperties);
         return "editor";
     }
 
     @RequestMapping(method = RequestMethod.GET, value = {"/browse/{widgetName}/{styleId}"})
     public String browse(@PathVariable("widgetName") WidgetIdentifier widgetName
-            , @PathVariable("styleId") String styleId, Model model) {
+            , @PathVariable("styleId") String styleId, Model model) throws IOException {
         setComponent(widgetName, styleId, model);
         return "browse";
     }
 
-    private void setComponent(WidgetIdentifier widgetName, String styleId, Model model) {
+    private void setComponent(WidgetIdentifier widgetName, String styleId, Model model) throws IOException {
         InstalledWidget installedWidget = widgetLocateService.findWidget(widgetName.toString());
         Component component = new Component();
-        component.setProperties(currentProperties);
+        if (currentProperties == null)
+            component.setProperties(installedWidget.getWidget().defaultProperties(resourceService));
+        else
+            component.setProperties(currentProperties);
         component.setId(UUID.randomUUID().toString());
         component.setStyleId(styleId);
         component.setInstalledWidget(installedWidget);

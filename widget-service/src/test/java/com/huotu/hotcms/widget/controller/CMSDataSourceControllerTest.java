@@ -9,12 +9,14 @@
 
 package com.huotu.hotcms.widget.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.Video;
+import com.huotu.hotcms.service.model.DataObject;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.widget.test.TestBase;
 import org.junit.Test;
@@ -23,7 +25,10 @@ import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -102,6 +107,41 @@ public class CMSDataSourceControllerTest extends TestBase {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$.length()").value(1));
+    }
+
+
+    @Test
+    public void findContentType() throws Exception {
+        Site site = siteRepository.findByRecommendDomain("localhost");
+        Category category = randomCategory(site, ContentType.Video);
+        Video video1 = randomVideo(category);
+        Video video2 = randomVideo(category);
+        Video video3 = randomVideo(category);
+        Video video4 = randomVideo(category);
+        Video video5 = randomVideo(category);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+//        Map<String, Object> toGet = new HashMap<>();
+//        toGet.put("contentType", 2);
+//        toGet.put("draw", 0);
+//        toGet.put("length", 2);
+//        toGet.put("id", "123");
+//        toGet.put("search[value]", "");
+        String json = mockMvc.perform(get("/dataSource/findContentType")
+                .param("contentType", "2")
+                .param("draw", "0")
+                .param("length", "2")
+                .param("id", "123")
+                .param("search[value]", "a")
+                .accept(MediaType.APPLICATION_JSON)
+        )
+                .andReturn().getResponse().getContentAsString();
+        Map map = objectMapper.readValue(json, Map.class);
+        System.out.println(json);
+        List<DataObject> list = (List<DataObject>) map.get("data");
+        assertThat(list.size()).isEqualTo(2);
+
+
     }
 
 }

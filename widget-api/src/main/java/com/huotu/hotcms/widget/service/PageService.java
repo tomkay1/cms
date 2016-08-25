@@ -83,7 +83,7 @@ public interface PageService {
     /**
      * 获取页面
      *
-     * @param pageId pageId
+     * @param pageId id
      * @throws PageNotFoundException 页面不存在
      */
     PageInfo getPage(Long pageId) throws PageNotFoundException;

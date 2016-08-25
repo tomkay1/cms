@@ -43,19 +43,19 @@
                                 <label class="col-sm-2 control-label">标题</label>
                                 <div class="col-sm-4">
                                     <input name="title" title="标题" type="text" placeholder="标题"
-                                           class="form-control" th:text="${object.title}"/>
+                                           class="form-control" th:value="${object.title}"/>
                                 </div>
                                 <label class="col-sm-2 control-label">文件</label>
                                 <div class="col-sm-4">
                                     <input name="fileName" title="文件名称" type="text" placeholder="文件名称"
-                                           class="form-control" th:text="${object.fileName}"/>
+                                           class="form-control" th:value="${object.fileName}"/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">描述</label>
                                 <div class="col-sm-6">
                                     <input name="description" title="描述" type="text" placeholder="文件描述"
-                                           class="form-control" th:text="${object.description}"/>
+                                           class="form-control" th:value="${object.description}"/>
                                 </div>
                             </div>
                             <div class="form-group">

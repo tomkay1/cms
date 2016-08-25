@@ -14,6 +14,6 @@ import org.springframework.context.annotation.Import;
 /**
  * @author CJ
  */
-@Import(DSConfig.class)
+@Import({DSConfig.class})
 class WidgetTestConfig extends com.huotu.hotcms.config.WidgetTestConfig {
 }

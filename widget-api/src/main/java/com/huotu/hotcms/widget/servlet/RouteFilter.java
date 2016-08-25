@@ -67,7 +67,7 @@ public class RouteFilter extends OncePerRequestFilter {
 
         } catch (Exception ex) {
             log.error("on RouteFilter", ex);
-            response.sendError(404);
+//            response.sendError(404);
             return;
         }
         filterChain.doFilter(request, response);

@@ -1,0 +1,14 @@
+[
+  {
+    "name": "中文名字也可以",
+    "uuid": "foobar",
+    "size": 20202020,
+    "thumbnailUrl": "../../../mock/sexy.jpg"
+  },
+  {
+    "name": "中文名字也可以2",
+    "uuid": "foobar2",
+    "size": 20202020,
+    "thumbnailUrl": "../../../mock/sexy.jpg"
+  }
+]

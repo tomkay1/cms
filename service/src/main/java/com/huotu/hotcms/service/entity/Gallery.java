@@ -16,7 +16,6 @@ import me.jiangcai.lib.resource.service.ResourceService;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Lob;
 import javax.persistence.Table;
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,31 +32,18 @@ import java.util.UUID;
 public class Gallery extends AbstractContent implements ImagesOwner {
 
     /**
-     * 内容
-     */
-    @Lob
-    @Column(name = "content")
-    private String content;
-
-    /**
      * 缩略图Uri
      */
     @Column(name = "thumbUri")
     private String thumbUri;
 
-    /**
-     * 链接地址
-     */
-    @Column(name = "linkUrl")
-    private String linkUrl;
-
     @Override
     public Gallery copy() {
         Gallery gallery = new Gallery();
         copyTo(gallery);
-        gallery.setContent(content);
+//        gallery.setContent(content);
 //        gallery.setThumbUri(thumbUri);
-        gallery.setLinkUrl(linkUrl);
+//        gallery.setLinkUrl(linkUrl);
         return gallery;
     }
 

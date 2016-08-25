@@ -127,7 +127,7 @@
                     <tbody>
                     <!--/*@thymesVar id="list" type="java.lang.Iterable<com.huotu.hotcms.widget.entity.PageInfo>"*/-->
                     <tr th:each="page,stats:${list}" class="odd" th:class="${stats.odd?'odd':'even'}"
-                        th:attr="data-id=${page.pageId}" data-id="456">
+                        th:attr="data-id=${page.getId}" data-id="456">
                         <td th:text="${page.title}">首页</td>
                         <td th:text="${{page.createTime}}">2016 06-11</td>
                         <td th:text="${page.pageType==null?'':page.pageType.getValue()}">普通</td>
@@ -135,10 +135,10 @@
                         <td th:text="${page.category==null?'无':page.category.name}">&nbsp;</td>
                         <td class="center">
                             <a href="../../edit/edit.html" target="_blank"
-                               title="编辑" th:href="@{/manage/page/edit/{pageId}(pageId=${page.pageId})}">
+                               title="编辑" th:href="@{/manage/page/edit/{id}(id=${page.getId})}">
                                 <i class="fa fa-pencil"></i>
                             </a>
-                            <a href="index.html" class="delete" th:href="@{/manage/page/{id}/delete(id=${page.pageId})}"
+                            <a href="index.html" class="delete" th:href="@{/manage/page/{id}/delete(id=${page.getId})}"
                                title="删除">
                                 <i class="fa fa-trash-o"></i>
                             </a>

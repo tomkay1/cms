@@ -10,12 +10,18 @@
 package com.huotu.hotcms.bean;
 
 import com.huotu.hotcms.service.common.ContentType;
+import com.huotu.hotcms.service.common.EnumUtils;
+import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.model.BaseModel;
+import com.huotu.hotcms.service.model.DataModel;
+import com.huotu.hotcms.service.model.GalleryItemModel;
 import com.huotu.hotcms.service.model.LinkModel;
 import com.huotu.hotcms.service.model.widget.VideoModel;
 import com.huotu.hotcms.widget.service.CMSDataSourceService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,7 +31,6 @@ import java.util.List;
  * 一个测试实现的或者叫模拟实现
  */
 public class CMSDataSourceServiceImpl implements CMSDataSourceService {
-
 
     @Override
     public List<Category> findLinkCategory() {
@@ -42,6 +47,31 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
         list.add(category1);
         list.add(category2);
         return list;
+    }
+
+    @Override
+    public List<Category> findGalleryCategory() {
+        Category category1 = new Category();
+        category1.setId(1L);
+        category1.setContentType(ContentType.Gallery);
+        category1.setSerial("123");
+        category1.setName("图库1");
+        List<Category> list = new ArrayList<>();
+        list.add(category1);
+        return list;
+    }
+
+    @Override
+    public List<GalleryItemModel> findGalleryItems(String serial, int count) {
+        List<GalleryItemModel> baseModels = new ArrayList<>();
+        GalleryItemModel galleryItemModel = new GalleryItemModel();
+        galleryItemModel.setOrderWeight(1);
+        galleryItemModel.setName("这是一个图片item");
+        galleryItemModel.setThumbUri("http://placehold.it/106x82?text=logo1");
+        baseModels.add(galleryItemModel);
+        baseModels.add(galleryItemModel);
+        baseModels.add(galleryItemModel);
+        return baseModels;
     }
 
     @Override
@@ -114,7 +144,7 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     }
 
     @Override
-    public List<BaseModel> findArticleContent(String serial) {
+    public List<BaseModel> findArticleContent(String serial, int count) {
         BaseModel baseModel = new BaseModel();
         baseModel.setId(1L);
         baseModel.setTitle("中共19大召开");
@@ -127,6 +157,19 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
         list.add(baseModel);
         list.add(baseModel1);
         return list;
+    }
+
+    @Override
+    public Page<? extends AbstractContent> findContent(ContentType contentType, Pageable pageable, String search) {
+        return null;
+    }
+
+
+    @Override
+    public DataModel findContentType(Long contentType, Integer pageNum, Integer pageSize, Long pageId, String search) {
+        DataModel dataModel = new DataModel();
+        ContentType type = EnumUtils.valueOf(ContentType.class, contentType);
+        return dataModel;
     }
 
 }

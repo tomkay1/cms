@@ -49,7 +49,7 @@ public class PageInfoPage extends AbstractCRUDPage<PageInfo> {
     public Predicate<? super WebElement> findRow(PageInfo pageInfo) {
         return row -> {
             String id = row.getAttribute("data-id");
-            return !StringUtils.isEmpty(id) && id.equals(pageInfo.getPageId().toString());
+            return !StringUtils.isEmpty(id) && id.equals(pageInfo.getId().toString());
         };
     }
 

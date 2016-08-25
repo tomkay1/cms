@@ -38,23 +38,23 @@
 //    @Override
 //    public List<Page> getPageList(long ownerId) throws IOException {
 //        return null;
-//        //return pageService.getPage(ownerId,pageId);
+//        //return pageService.getPage(ownerId,id);
 //    }
 //
 //
 //    @Override
-//    public Page getPage(String pageId) throws IOException {
-//        return pageService.getPage(pageId);
+//    public Page getPage(String id) throws IOException {
+//        return pageService.getPage(id);
 //    }
 //
 //
 //    @Override
-//    public void savePage(@PathVariable String pageId,HttpServletRequest request)
+//    public void savePage(@PathVariable String id,HttpServletRequest request)
 //            throws IOException, URISyntaxException {
 //        String pageJson=CharStreams.toString(request.getReader());
 //        ObjectMapper objectMapper=new ObjectMapper();
 //        Page page=objectMapper.readValue(pageJson, Page.class);
-//        pageService.parsePageToXMlAndSave(page, pageId);
+//        pageService.parsePageToXMlAndSave(page, id);
 //    }
 //
 //
@@ -67,13 +67,13 @@
 //
 //
 //    @Override
-//    public void deletePage(@PathVariable String pageId,@RequestParam long ownerId) throws IOException {
-//        pageService.deletePage(ownerId, pageId);
+//    public void deletePage(@PathVariable String id,@RequestParam long ownerId) throws IOException {
+//        pageService.deletePage(ownerId, id);
 //    }
 //
 //
 //    @Override
-//    public void savePagePartProperties(@PathVariable String pageId,@PathVariable String propertyName) {
+//    public void savePagePartProperties(@PathVariable String id,@PathVariable String propertyName) {
 //
 //    }
 //

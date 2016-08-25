@@ -11,4 +11,6 @@ import lombok.Setter;
 public class GalleryItemModel {
     private Long id;
     private String thumbUri;
+    private String name;
+    private int orderWeight;
 }

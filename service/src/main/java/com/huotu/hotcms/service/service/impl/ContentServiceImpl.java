@@ -63,6 +63,7 @@ public class ContentServiceImpl implements ContentService {
     private LinkRepository linkRepository;
     @Autowired
     private VideoRepository videoRepository;
+
     @Autowired
     private ResourceService resourceService;
     @Autowired
@@ -84,6 +85,7 @@ public class ContentServiceImpl implements ContentService {
             return cb.and(cb.equal(root.get("category").get("site"), site), cb.equal(root.get("serial"), serial));
         });
     }
+
 
     @Override
     public Iterable<AbstractContent> list(String title, Site site, Long category, Pageable pageable) {

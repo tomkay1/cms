@@ -10,10 +10,9 @@
 package com.huotu.hotcms.widget.entity;
 
 import com.huotu.hotcms.service.Auditable;
-import com.huotu.hotcms.service.Copyable;
 import com.huotu.hotcms.service.ResourcesOwner;
 import com.huotu.hotcms.service.common.PageType;
-import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.widget.page.PageLayout;
 import lombok.Getter;
@@ -23,9 +22,6 @@ import me.jiangcai.lib.resource.service.ResourceService;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -38,44 +34,26 @@ import java.util.UUID;
 
 /**
  * 用与保存页面信息
+ * <p>页面也是内容的一种!</p>
+ * {@link #getCategory() 数据源}重新定义为「可选的数据源」
  * Created by lhx on 2016/7/4.
  */
 @Entity
 @Table(name = "cms_pageInfo")
 @Getter
 @Setter
-public class PageInfo implements Auditable, Copyable<PageInfo>, ResourcesOwner {
+public class PageInfo extends AbstractContent implements Auditable, ResourcesOwner {
 
-    /**
-     * 父级page
-     */
-    @ManyToOne
-    @JoinColumn(name = "parentPageId")
-    PageInfo parent;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "pageId")
-    private Long pageId;
     @Column(name = "pagePath", length = 60)
     private String pagePath;
-    @Column(name = "title", length = 60)
-    private String title;
-    /**
-     * 可选的数据源
-     */
-    @ManyToOne
-    @JoinColumn(name = "categoryId")
-    private Category category;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "siteId")
     private Site site;
-    @Column(name = "createTime")
-    private LocalDateTime createTime;
-    @Column(name = "updateTime")
-    private LocalDateTime updateTime;
+
     @Column(name = "pageType", nullable = false)
     private PageType pageType;
+
     /**
      * 每次随机生成
      */
@@ -94,24 +72,24 @@ public class PageInfo implements Auditable, Copyable<PageInfo>, ResourcesOwner {
         if (this == o) return true;
         if (!(o instanceof PageInfo)) return false;
         PageInfo pageInfo = (PageInfo) o;
-        return Objects.equals(pageId, pageInfo.pageId) &&
+        return Objects.equals(getId(), pageInfo.getId()) &&
                 Objects.equals(pagePath, pageInfo.pagePath) &&
-                Objects.equals(title, pageInfo.title) &&
+                Objects.equals(getTitle(), pageInfo.getTitle()) &&
                 pageType == pageInfo.pageType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pageId, pagePath, title, pageType);
+        return Objects.hash(getId(), pagePath, getTitle(), pageType);
     }
 
     @Override
     public PageInfo copy() {
         PageInfo pageInfo = new PageInfo();
-        pageInfo.setCategory(category);
+        pageInfo.setCategory(getCategory());
         pageInfo.setUpdateTime(LocalDateTime.now());
         pageInfo.setCreateTime(LocalDateTime.now());
-        pageInfo.setTitle(title);
+        pageInfo.setTitle(getTitle());
         pageInfo.setResourceKey(UUID.randomUUID().toString());
 //        pageInfo.setPageSetting(pageSetting);
         pageInfo.setLayout(layout);
@@ -125,7 +103,7 @@ public class PageInfo implements Auditable, Copyable<PageInfo>, ResourcesOwner {
      * @return ..
      */
     public String getPageCssResourcePath() {
-        return "page/resource/css/" + resourceKey + "/" + pageId + ".css";
+        return "page/resource/css/" + resourceKey + "/" + getId() + ".css";
     }
 
     @Override

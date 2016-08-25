@@ -11,6 +11,7 @@ package com.huotu.cms.manage.controller.support;
 
 import com.huotu.cms.manage.exception.RedirectException;
 import com.huotu.hotcms.service.ImagesOwner;
+import com.huotu.hotcms.service.ResourcesOwner;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Site;
@@ -23,6 +24,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -62,6 +64,15 @@ public abstract class ContentManageController<T extends AbstractContent, ED exte
     }
 
     @Override
+    protected void prepareRemove(Login login, T entity) throws RedirectException {
+        super.prepareRemove(login, entity);
+
+        if (!login.contentManageable(entity)) {
+            throw new AccessDeniedException("无法访问");
+        }
+    }
+
+    @Override
     protected void prepareOpen(Login login, T data, Model model, RedirectAttributes attributes)
             throws RedirectException {
         forCategoryList(data.getCategory().getSite(), model);
@@ -78,6 +89,8 @@ public abstract class ContentManageController<T extends AbstractContent, ED exte
             // 谁可以 谁上
             if (data instanceof ImagesOwner) {
                 commonService.updateImageFromTmp((ImagesOwner) data, 0, extra.getTempPath());
+            } else if (data instanceof ResourcesOwner) {
+                commonService.updateResourceFromTmp((ResourcesOwner) data, 0, extra.getTempPath());
             }
         } catch (BadCategoryInfoException e) {
             throw new RedirectException(rootUri(), "该数据源已存在，并且不符合你要求。", e);
@@ -91,16 +104,20 @@ public abstract class ContentManageController<T extends AbstractContent, ED exte
     @Override
     protected void prepareUpdate(Login login, T entity, T data, ED extra, RedirectAttributes attributes) throws RedirectException {
         // 数据源不可更改
+        if (!login.contentManageable(entity)) {
+            throw new AccessDeniedException("无法访问");
+        }
         entity.setTitle(data.getTitle());
         entity.setDescription(data.getDescription());
-
-        if (data instanceof ImagesOwner) {
-            try {
+        try {
+            if (data instanceof ImagesOwner) {
                 commonService.updateImageFromTmp((ImagesOwner) data, 0, extra.getTempPath());
-            } catch (IOException e) {
-                log.warn("IO in ContentManage", e);
-                throw new RedirectException(rootUri() + "/" + entity.getId(), e);
+            } else if (data instanceof ResourcesOwner) {
+                commonService.updateResourceFromTmp((ResourcesOwner) data, 0, extra.getTempPath());
             }
+        } catch (IOException e) {
+            log.warn("IO in ContentManage", e);
+            throw new RedirectException(rootUri() + "/" + entity.getId(), e);
         }
 
         prepareUpdateContext(login, entity, data, extra, attributes);

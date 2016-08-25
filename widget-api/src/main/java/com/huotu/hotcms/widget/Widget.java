@@ -207,5 +207,4 @@ public interface Widget {
      */
     ComponentProperties defaultProperties(ResourceService resourceService) throws IOException;
 
-
 }

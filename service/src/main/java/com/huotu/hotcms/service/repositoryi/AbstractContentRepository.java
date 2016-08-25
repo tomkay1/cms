@@ -47,6 +47,13 @@ public interface AbstractContentRepository<T extends AbstractContent>
      */
     List<T> findByCategory_SiteAndCategory_Serial(Site site, String serial);
 
+    /**
+     * @param site   站点
+     * @param serial 数据源
+     * @return 按数据源查找
+     */
+    Page<T> findByCategory_SiteAndCategory_Serial(Site site, String serial, Pageable pageable);
+
     Page<T> findByCategory(Category category, Pageable pageable);
 
     /**
@@ -56,6 +63,7 @@ public interface AbstractContentRepository<T extends AbstractContent>
     List<T> findByCategory_Site(Site site);
 
     Page<T> findByCategory_Site(Site site, Pageable pageable);
+
 
     /**
      * @param site 站点
@@ -81,5 +89,6 @@ public interface AbstractContentRepository<T extends AbstractContent>
      * @return 删除的数量
      */
     long deleteByCategory(Category category);
+
 
 }

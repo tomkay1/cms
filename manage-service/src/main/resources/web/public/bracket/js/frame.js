@@ -158,8 +158,9 @@ $(function () {
      * @param ui 需要变成uploader的jquery集合
      * @param uploadedPathConsumer CMS的uploader会在响应中给予path,这就是上传以后的path;原型环境也会杜撰一个path执行
      * @param validation 是否允许该文件的的校验 http://docs.fineuploader.com/branch/master/api/options.html#validation
+     * @param otherConfig 其他配置比如 http://docs.fineuploader.com/branch/master/api/options.html#session
      */
-    $.cmsUploader = function (ui, uploadedPathConsumer, validation) {
+    $.cmsUploader = function (ui, uploadedPathConsumer, validation, otherConfig) {
         if (ui.size() == 0)
             return;
         var request;
@@ -171,7 +172,8 @@ $(function () {
                 endpoint: top.$.cmsUploaderUrl
             };
         }
-        ui.fineUploader({
+        otherConfig = otherConfig || {};
+        var config = $.extend(true, {
             template: top.$('#qq-template').get(0),
             request: request,
             thumbnails: {
@@ -180,7 +182,6 @@ $(function () {
                     notAvailablePath: 'http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/placeholders/not_available-generic.png'
                 }
             },
-            validation: validation,
             callbacks: {
                 onComplete: function (id, name, responseJSON) {
                     print('onComplete', id, name, responseJSON);
@@ -194,6 +195,10 @@ $(function () {
                     }
                 }
             }
-        });
+        }, otherConfig);
+        if (validation)
+            config.validation = validation;
+
+        ui.fineUploader(config);
     }
 });

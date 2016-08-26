@@ -210,7 +210,9 @@ public interface Widget {
      *
      * @param resourceService 资源服务
      * @return 这个方法总是返回新建的实例而且从不为null, 即它的结果可以直接用于分发。
+     * @throws IOException
+     * @throws IllegalStateException 如果当时状态根本无法生成有效的属性
      */
-    ComponentProperties defaultProperties(ResourceService resourceService) throws IOException;
+    ComponentProperties defaultProperties(ResourceService resourceService) throws IOException, IllegalStateException;
 
 }

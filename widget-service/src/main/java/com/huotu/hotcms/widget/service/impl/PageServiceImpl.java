@@ -207,16 +207,15 @@ public class PageServiceImpl implements PageService {
     }
 
     @Override
-    public PageInfo getClosestContentPage(Category category, String path) throws IOException, PageNotFoundException {
+    public PageInfo getClosestContentPage(Category category, String path) throws PageNotFoundException {
         PageInfo pageInfo = pageInfoRepository.findByPagePath(path);
         if (pageInfo != null && category.getId().equals(pageInfo.getCategory().getId())) {
             return pageInfo;
         }
         List<PageInfo> pageInfos = pageInfoRepository.findByCategory(category);
-        if (pageInfo == null)
-            throw new IllegalStateException("没有找到相应page");
-        pageInfo = pageInfos.get(0);
-        return getPage(pageInfo.getId());
+        if (pageInfos.isEmpty())
+            throw new PageNotFoundException();
+        return pageInfos.get(0);
     }
 
     @Override

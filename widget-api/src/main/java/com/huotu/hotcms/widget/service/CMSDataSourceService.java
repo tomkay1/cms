@@ -99,12 +99,6 @@ public interface CMSDataSourceService {
      */
     List<Category> findArticleCategory();
 
-    /**
-     * 查询当前站点下指定数据源serial的文章数据源列表
-     *
-     * @return 文章数据源列表
-     */
-    List<Category> findArticleCategory(String serial);
 
     /**
      * 查询当前站点下，指定数据源serial的 视频内容列表

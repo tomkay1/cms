@@ -72,7 +72,6 @@ public class CMSContext {
 
     private AbstractContent abstractContent;
 
-
     /**
      * 请求当前的CMS上下文
      *
@@ -131,4 +130,6 @@ public class CMSContext {
 //            variables.put("simulateSite", request.getParameter("simulateSite"));
 //        }
     }
+
+
 }

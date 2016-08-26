@@ -19,6 +19,7 @@ import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -58,7 +59,15 @@ public class WidgetTestTest extends WidgetTest {
     @Override
     protected void browseWork(Widget widget, WidgetStyle style, Function<ComponentProperties, WebElement> uiChanger)
             throws IOException {
-        uiChanger.apply(widget.defaultProperties(resourceService));
+        WebElement webElement = uiChanger.apply(widget.defaultProperties(resourceService));
+        WebElement widgetUrl = webElement.findElement(By.className("widgetUrl"));
+        String url = widgetUrl.getAttribute("href");
+        url = URLDecoder.decode(url, "utf-8");
+        if (url.matches(".*-.*=.*")) {
+            assertThat(true).isTrue();
+        } else {
+            assertThat(false).isTrue();
+        }
     }
 
     @Override

@@ -23,7 +23,8 @@
 </div>
 <!--/*@thymesVar id="object" type="com.huotu.hotcms.service.entity.ProductCategory"*/-->
 <div class="contentpanel">
-    <form id="categoryForm" action="index.html" method="POST" th:action="@{/manage/category/{id}(id=object.id)}">
+    <form id="categoryForm" action="productCategory.html" method="POST"
+          th:action="@{/manage/category/{id}(id=object.id)}">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="panel-btns">
@@ -56,9 +57,11 @@
                     <a href="" class="minimize">&minus;</a>
                 </div><!-- panel-btns -->
                 <h3 class="panel-title">修改字段</h3>
-                <p>此处可以选择这个产品数据源可拥有的字段</p>
+                <p><i class="fa fa-plus-circle" style="cursor:pointer" title="添加字段"></i>
+                    &nbsp;此处可以选择这个产品数据源可拥有的字段&nbsp;
+                </p>
             </div>
-            <div class="panel-body">
+            <div class="panel-body" id="fieldsContainer">
                 <datalist id="currentFieldList">
                     <option th:each="selectedField:${@productFieldRepository.findAll()}"
                             value="价格"
@@ -68,8 +71,38 @@
                     </option>
                     <option value="大图" th:remove="all"></option>
                 </datalist>
-                <div th:each="field:${object.fieldList}" class="form-horizontal form-bordered">
+                <div class="field-form form-horizontal form-bordered" style="display: none" id="fieldTemplate">
                     <div class="form-group">
+                        <label class="col-sm-1 control-label">
+                            <i class="fa fa-caret-square-o-up" style="cursor:pointer" title="上移"></i>
+                            <i class="fa fa-caret-square-o-down" style="cursor:pointer" title="下移"></i>
+                        </label>
+                        <label class="col-sm-2 control-label">名称</label>
+                        <div class="col-sm-2">
+                            <input name="fieldName" title="名称" type="text" placeholder="字段名称"
+                                   class="form-control" list="currentFieldList"/>
+                        </div>
+                        <label class="col-sm-2 control-label">类型</label>
+                        <div class="col-sm-2">
+                            <select class="form-control" name="fieldType" title="字段类型">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option value="0"
+                                        th:each="pageType:${T(com.huotu.hotcms.service.common.FieldType).values()}"
+                                        th:value="${pageType.getCode()}"
+                                        th:text="${pageType.getValue().toString()}">文本
+                                </option>
+                                <option value="1" th:remove="all">图片</option>
+                            </select>
+                        </div>
+                        <i class="control-label col-sm-1 fa fa-trash-o" style="cursor:pointer" title="删除"></i>
+                    </div>
+                </div>
+                <div th:each="field:${object.fieldList}" class="field-form form-horizontal form-bordered">
+                    <div class="form-group">
+                        <label class="col-sm-1 control-label">
+                            <i class="fa fa-caret-square-o-up" style="cursor:pointer" title="上移"></i>
+                            <i class="fa fa-caret-square-o-down" style="cursor:pointer" title="下移"></i>
+                        </label>
                         <input name="fieldId" type="hidden" th:value="${field.id}"/>
                         <label class="col-sm-2 control-label">名称</label>
                         <div class="col-sm-2">
@@ -89,6 +122,7 @@
                                 <option value="1" th:remove="all">图片</option>
                             </select>
                         </div>
+                        <i class="control-label col-sm-1 fa fa-trash-o" style="cursor:pointer" title="删除"></i>
                     </div>
                 </div>
             </div><!-- panel-body -->
@@ -116,5 +150,6 @@
 <div ewp:replace="fragments/frame.html::#messageSection"></div>
 <script src="../../../public/bracket/js/frame.js" ewp:src="/bracket/js/frame.js"></script>
 <script src="../../../public/bracket/js/frame_custom.js" ewp:src="/bracket/js/frame_custom.js"></script>
+<script src="../../../public/js/productCategory.js" ewp:src="/js/productCategory.js"></script>
 </body>
 </html>

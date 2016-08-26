@@ -206,7 +206,7 @@ public interface Widget {
     Class springConfigClass();
 
     /**
-     * 获取控件默认参数
+     * 获取控件默认参数,只可以有Number String Map 或者List Array
      *
      * @param resourceService 资源服务
      * @return 这个方法总是返回新建的实例而且从不为null, 即它的结果可以直接用于分发。

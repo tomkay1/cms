@@ -81,7 +81,6 @@ public class UploadController {
      *
      * @param login
      * @param path  一个request参数
-     * @return
      */
     @RequestMapping(value = "/deleteResource", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)

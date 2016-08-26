@@ -44,32 +44,27 @@ public class RouteFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        try {
-            Site site = CMSContext.RequestContext().getSite();
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+        Site site = CMSContext.RequestContext().getSite();
 
-            Collection<FilterBehavioral> behavioralCollection = WebApplicationContextUtils.findWebApplicationContext(getServletContext())
-                    .getBeansOfType(FilterBehavioral.class).values();
+        Collection<FilterBehavioral> behavioralCollection = WebApplicationContextUtils.findWebApplicationContext(getServletContext())
+                .getBeansOfType(FilterBehavioral.class).values();
 
-            List<FilterBehavioral> behavioralList = behavioralCollection.stream()
-                    .sorted(new OrderComparator()).collect(Collectors.toList());
+        List<FilterBehavioral> behavioralList = behavioralCollection.stream()
+                .sorted(new OrderComparator()).collect(Collectors.toList());
 
-            for (FilterBehavioral behavioral : behavioralList) {
-                FilterBehavioral.FilterStatus status = behavioral.doSiteFilter(site, request, response);
-                switch (status) {
-                    case CHAIN:
-                        filterChain.doFilter(request, response);
-                        return;
-                    case STOP:
-                        return;
-                }
+        for (FilterBehavioral behavioral : behavioralList) {
+            FilterBehavioral.FilterStatus status = behavioral.doSiteFilter(site, request, response);
+            switch (status) {
+                case CHAIN:
+                    filterChain.doFilter(request, response);
+                    return;
+                case STOP:
+                    return;
             }
-
-        } catch (Exception ex) {
-            log.error("on RouteFilter", ex);
-//            response.sendError(404);
-            return;
         }
+
         filterChain.doFilter(request, response);
     }
 

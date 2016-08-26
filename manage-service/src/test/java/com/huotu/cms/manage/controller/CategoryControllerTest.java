@@ -15,7 +15,6 @@ import com.huotu.cms.manage.controller.support.CRUDTest;
 import com.huotu.cms.manage.page.CategoryPage;
 import com.huotu.cms.manage.page.ManageMainPage;
 import com.huotu.cms.manage.page.support.AbstractCRUDPage;
-import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.repository.CategoryRepository;
@@ -97,7 +96,7 @@ public class CategoryControllerTest extends SiteManageTest {
     private Category randomCategoryValue(Site site) {
         Category category = new Category();
         category.setName(UUID.randomUUID().toString());
-        category.setContentType(ContentType.values()[random.nextInt(ContentType.values().length)]);
+        category.setContentType(contentService.normalContentTypes()[random.nextInt(contentService.normalContentTypes().length)]);
 
         if (random.nextBoolean()) {
             Category parent = new Category();

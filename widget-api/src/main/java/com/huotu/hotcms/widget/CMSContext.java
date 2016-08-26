@@ -11,6 +11,7 @@ package com.huotu.hotcms.widget;
 
 import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.resolve.WidgetConfiguration;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -70,8 +71,14 @@ public class CMSContext {
      */
     private Integer column = null;
 
+    /**
+     * 如果当前展示的页面类型为{@link com.huotu.hotcms.service.common.PageType#DataContent}则必须提供一个当前内容
+     */
     private AbstractContent abstractContent;
-
+    /**
+     * 当前正在展示的页面
+     */
+    private PageInfo currentPage;
 
     /**
      * 请求当前的CMS上下文
@@ -91,8 +98,8 @@ public class CMSContext {
     /**
      * 更新当前CMS上下文
      *
-     * @param request
-     * @param response
+     * @param request  request
+     * @param response response
      * @param site     当前站点
      */
     public static CMSContext PutContext(HttpServletRequest request, HttpServletResponse response, Site site) {
@@ -114,6 +121,8 @@ public class CMSContext {
 
     /**
      * 获取当前CMS列值
+     *
+     * @return bootstrap classname
      */
     public String getNextBootstrapClass() {
         CMSContext cmsContext = RequestContext();
@@ -126,8 +135,17 @@ public class CMSContext {
     }
 
     public void widgetContextVariables(Map<String, Object> variables) {
-//        if (request.getParameter("simulateSite") != null) {
-//            variables.put("simulateSite", request.getParameter("simulateSite"));
-//        }
+
+    }
+
+
+    /**
+     * 获取这个组件的请求参数
+     *
+     * @param component 组件,可能为null
+     * @return 可以为null
+     */
+    public Map<String, String> getWidgetParameters(Component component) {
+        return null;
     }
 }

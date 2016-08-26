@@ -11,7 +11,9 @@ package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.controller.support.SiteManageController;
 import com.huotu.cms.manage.exception.RedirectException;
+import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.ProductCategory;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.repository.SiteRepository;
@@ -33,7 +35,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class CategoryController extends SiteManageController<Category, Long, Long, Void> {
     private static final Log log = LogFactory.getLog(CategoryController.class);
 
-
     @Autowired
     CategoryService categoryService;
     @Autowired
@@ -42,12 +43,24 @@ public class CategoryController extends SiteManageController<Category, Long, Lon
     SiteService siteService;
     @Autowired
     RouteService routeService;
+
     @Override
     protected Category preparePersist(Login login, Site site, Category data, Long extra, RedirectAttributes attributes)
             throws RedirectException {
+        if (data.getContentType() == ContentType.Page)
+            throw new RedirectException(rootUri(), "不可以创建页面数据源");
+        if (data.getContentType() == ContentType.Product) {
+            log.debug("use ProductCategory");
+            ProductCategory productCategory = new ProductCategory();
+            productCategory.setContentType(data.getContentType());
+            productCategory.setName(data.getName());
+            data = productCategory;
+        }
         data.setSite(site);
         if (extra != null) {
             data.setParent(categoryService.get(extra));
+            if (data.getParent().getContentType() != data.getContentType())
+                throw new RedirectException(rootUri(), "不可以创建不同于父级内容类型的数据源");
         }
         categoryService.init(data);
         return data;

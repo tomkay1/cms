@@ -11,14 +11,18 @@ package com.huotu.hotcms.bean;
 
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.AbstractContent;
+import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
-import com.huotu.hotcms.service.model.BaseModel;
+import com.huotu.hotcms.service.entity.Notice;
 import com.huotu.hotcms.service.model.GalleryItemModel;
 import com.huotu.hotcms.service.model.LinkModel;
 import com.huotu.hotcms.service.model.widget.VideoModel;
+import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.service.CMSDataSourceService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
@@ -29,6 +33,45 @@ import java.util.List;
  * 一个测试实现的或者叫模拟实现
  */
 public class CMSDataSourceServiceImpl implements CMSDataSourceService {
+
+    @Override
+    public List<Category> findByParent_Serial(String serial) {
+        Category category1 = new Category();
+        category1.setId(1L);
+        category1.setContentType(ContentType.Notice);
+        category1.setSerial("123123");
+        category1.setName("子数据源1");
+        List<Category> list = new ArrayList<>();
+        list.add(category1);
+        list.add(category1);
+        return list;
+    }
+
+    @Override
+    public List<Category> findNoticeCategory() {
+        Category category1 = new Category();
+        category1.setId(1L);
+        category1.setContentType(ContentType.Notice);
+        category1.setSerial("123123");
+        category1.setName("公告1");
+        List<Category> list = new ArrayList<>();
+        list.add(category1);
+        list.add(category1);
+        return list;
+    }
+
+    @Override
+    public List<Notice> findNoticeContent(String serial, int count) {
+        Notice notice = new Notice();
+        notice.setCreateTime(LocalDateTime.now());
+        notice.setTitle("招聘信息1");
+        notice.setContent("这是招聘的内容我们在招聘java妹子一枚");
+        notice.setId(1L);
+        List<Notice> list = new ArrayList<>();
+        list.add(notice);
+        list.add(notice);
+        return list;
+    }
 
     @Override
     public List<Category> findLinkCategory() {
@@ -142,24 +185,35 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     }
 
     @Override
-    public List<BaseModel> findArticleContent(String serial, int count) {
-        BaseModel baseModel = new BaseModel();
+    public Page<Article> findArticleContent(String serial, int pageNum, int count) {
+        Article baseModel = new Article();
         baseModel.setId(1L);
         baseModel.setTitle("中共19大召开");
         baseModel.setCreateTime(LocalDateTime.now());
-        BaseModel baseModel1 = new BaseModel();
+        Article baseModel1 = new Article();
         baseModel1.setId(2L);
         baseModel1.setTitle("中共192大召开");
         baseModel1.setCreateTime(LocalDateTime.now());
-        List<BaseModel> list = new ArrayList<>();
+        List<Article> list = new ArrayList<>();
         list.add(baseModel);
         list.add(baseModel1);
-        return list;
+        Page<Article> page = new PageImpl<>(list, new PageRequest(0, 10), 2);
+        return page;
     }
 
     @Override
     public Page<? extends AbstractContent> findContent(ContentType contentType, Pageable pageable, String search) {
         return null;
+    }
+
+    @Override
+    public PageInfo findPageInfoContent(String serial) {
+        PageInfo pageInfo = new PageInfo();
+        pageInfo.setSerial(serial);
+        pageInfo.setId(1L);
+        pageInfo.setPagePath("wwwww");
+        pageInfo.setCreateTime(LocalDateTime.now());
+        return pageInfo;
     }
 
 }

@@ -123,10 +123,10 @@ public interface PageService {
      *
      * @param category 相关数据源
      * @param path     请求的路径
-     * @return 最适用的内容页
-     * @throws IOException 获取界面xml错误
+     * @return 最适用的内容页 永不为null
+     * @throws PageNotFoundException 如果找不到页面
      */
-    PageInfo getClosestContentPage(Category category, String path) throws IOException, PageNotFoundException;
+    PageInfo getClosestContentPage(Category category, String path) throws PageNotFoundException;
 
     /**
      * 返回所有page

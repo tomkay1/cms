@@ -119,14 +119,14 @@ public abstract class ManageTest extends SpringWebTest {
 //                        "com.huotu.hotcms.widget.pagingWidget",
 //                        "pagingWidget"
 //                },
-            new String[]{
-                    "com.huotu.hotcms.widget.picCarousel",
-                    "picCarousel"
-            },
-            new String[]{
-                    "com.huotu.hotcms.widget.productList",
-                    "productList"
-            },
+//            new String[]{
+//                    "com.huotu.hotcms.widget.picCarousel",
+//                    "picCarousel"
+//            },
+//            new String[]{
+//                    "com.huotu.hotcms.widget.productList",
+//                    "productList"
+//            },
             new String[]{
                     "com.huotu.hotcms.widget.picBanner",
                     "picBanner"
@@ -145,6 +145,8 @@ public abstract class ManageTest extends SpringWebTest {
     @Autowired
     protected WidgetFactoryService widgetFactoryService;
     protected ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    protected ContentService contentService;
     //建立一系列已经建立好的控件以及默认属性
     WidgetIdentifier[] preparedWidgets = new WidgetIdentifier[]{
 //            new WidgetIdentifier("com.huotu.hotcms.widget.pagingWidget",
@@ -182,8 +184,6 @@ public abstract class ManageTest extends SpringWebTest {
     private ResourceService resourceService;
     @Autowired
     private CategoryService categoryService;
-    @Autowired
-    private ContentService contentService;
     @Autowired
     private ContentRepository contentRepository;
     @Autowired
@@ -337,7 +337,9 @@ public abstract class ManageTest extends SpringWebTest {
     protected void randomSiteData(Site site) throws IOException, FormatException {
         // 包括数据源的父子关系
         while (categoryRepository.findBySite(site).size() < 5) {
-            for (ContentType contentType : ContentType.values()) {
+            for (ContentType contentType : contentService.normalContentTypes()) {
+                if (!contentType.isNormal())
+                    continue;
                 //create it
                 if (random.nextBoolean()) {
                     Category category = randomCategoryNoParent(site);
@@ -600,7 +602,7 @@ public abstract class ManageTest extends SpringWebTest {
     }
 
     protected Category randomCategoryNoParent(Site site) {
-        Category category = randomCategoryData(site, ContentType.values()[random.nextInt(ContentType.values().length)]);
+        Category category = randomCategoryData(site, contentService.normalContentTypes()[random.nextInt(contentService.normalContentTypes().length)]);
         category.setParent(null);
         categoryService.init(category);
         return categoryRepository.saveAndFlush(category);

@@ -29,7 +29,7 @@ public class PageModel extends PageLayout {
      * 该页面的唯一ID 与PageInfo的pageID保持一致
      * 如果未null表示该页面尚未持久化
      *
-     * @see PageInfo#pageId
+     * @see PageInfo#id
      */
 //    @XmlAttribute(name = "pageIdentity")
     private Long pageIdentity;

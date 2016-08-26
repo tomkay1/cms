@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<!--
+  ~ 版权所有:杭州火图科技有限公司
+  ~ 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+  ~
+  ~ (c) Copyright Hangzhou Hot Technology Co., Ltd.
+  ~ Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+  ~ 2013-2016. All rights reserved.
+  -->
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:ewp="http://ewp.jiangcai.me"
+      lang="en">
+<!--/*@thymesVar id="manageSite" type="com.huotu.hotcms.service.entity.Site"*/-->
+<head>
+    <meta charset="UTF-8">
+    <link href="http://resali.huobanplus.com/cdn/bracket/css/style.default.css" rel="stylesheet">
+    <link href="http://resali.huobanplus.com/cdn/bracket/css/jquery.datatables.css" rel="stylesheet">
+    <title>Owner</title>
+</head>
+<body class="mainpanel" id="fa-bars">
+<div class="pageheader">
+    <h2><i class="fa fa-bars"></i> 数据源 <span>编辑产品数据源</span></h2>
+</div>
+<!--/*@thymesVar id="object" type="com.huotu.hotcms.service.entity.ProductCategory"*/-->
+<div class="contentpanel">
+    <form id="categoryForm" action="productCategory.html" method="POST"
+          th:action="@{/manage/category/{id}(id=object.id)}">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-btns">
+                    <a href="" class="panel-close">&times;</a>
+                    <a href="" class="minimize">&minus;</a>
+                </div><!-- panel-btns -->
+                <h3 class="panel-title">修改产品数据源基本信息</h3>
+                <p>&nbsp;</p>
+            </div>
+            <div class="panel-body">
+                <div class="form-horizontal form-bordered">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">名称</label>
+                        <div class="col-sm-2">
+                            <input name="name" title="名称" type="text" placeholder="数据源的名称"
+                                   class="form-control" th:text="${object.name}"/>
+                        </div>
+                        <label class="col-sm-2 control-label">父级</label>
+                        <div class="col-sm-2">
+                            <span class="form-control"
+                                  th:text="${object.parent==null?'无':object.parent.name}">某个数据源</span>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- panel-body -->
+
+            <div class="panel-heading">
+                <div class="panel-btns">
+                    <a href="" class="panel-close">&times;</a>
+                    <a href="" class="minimize">&minus;</a>
+                </div><!-- panel-btns -->
+                <h3 class="panel-title">修改字段</h3>
+                <p><i class="fa fa-plus-circle" style="cursor:pointer" title="添加字段"></i>
+                    &nbsp;此处可以选择这个产品数据源可拥有的字段&nbsp;
+                </p>
+            </div>
+            <div class="panel-body" id="fieldsContainer">
+                <datalist id="currentFieldList">
+                    <option th:each="selectedField:${@productFieldRepository.findAll()}"
+                            value="价格"
+                            th:value="${selectedField.name}"
+                            fieldId="998" fieldTypeId="0"
+                            th:attr="fieldId=${selectedField.id},fieldTypeId=${selectedField.fieldType.code}">
+                    </option>
+                    <option value="大图" th:remove="all"></option>
+                </datalist>
+                <div class="field-form form-horizontal form-bordered" style="display: none" id="fieldTemplate">
+                    <div class="form-group">
+                        <label class="col-sm-1 control-label">
+                            <i class="fa fa-caret-square-o-up" style="cursor:pointer" title="上移"></i>
+                            <i class="fa fa-caret-square-o-down" style="cursor:pointer" title="下移"></i>
+                        </label>
+                        <label class="col-sm-2 control-label">名称</label>
+                        <div class="col-sm-2">
+                            <input name="fieldName" title="名称" type="text" placeholder="字段名称"
+                                   class="form-control" list="currentFieldList"/>
+                        </div>
+                        <label class="col-sm-2 control-label">类型</label>
+                        <div class="col-sm-2">
+                            <select class="form-control" name="fieldType" title="字段类型">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option value="0"
+                                        th:each="pageType:${T(com.huotu.hotcms.service.common.FieldType).values()}"
+                                        th:value="${pageType.getCode()}"
+                                        th:text="${pageType.getValue().toString()}">文本
+                                </option>
+                                <option value="1" th:remove="all">图片</option>
+                            </select>
+                        </div>
+                        <i class="control-label col-sm-1 fa fa-trash-o" style="cursor:pointer" title="删除"></i>
+                    </div>
+                </div>
+                <div th:each="field:${object.fieldList}" class="field-form form-horizontal form-bordered">
+                    <div class="form-group">
+                        <label class="col-sm-1 control-label">
+                            <i class="fa fa-caret-square-o-up" style="cursor:pointer" title="上移"></i>
+                            <i class="fa fa-caret-square-o-down" style="cursor:pointer" title="下移"></i>
+                        </label>
+                        <input name="fieldId" type="hidden" th:value="${field.id}"/>
+                        <label class="col-sm-2 control-label">名称</label>
+                        <div class="col-sm-2">
+                            <input name="fieldName" title="名称" type="text" placeholder="字段名称"
+                                   class="form-control" list="currentFieldList" th:text="${field.name}"/>
+                        </div>
+                        <label class="col-sm-2 control-label">类型</label>
+                        <div class="col-sm-2">
+                            <select class="form-control" name="fieldType" title="字段类型">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option value="0"
+                                        th:each="pageType:${T(com.huotu.hotcms.service.common.FieldType).values()}"
+                                        th:selected="${pageType==field.fieldType}"
+                                        th:value="${pageType.getCode()}"
+                                        th:text="${pageType.getValue().toString()}">文本
+                                </option>
+                                <option value="1" th:remove="all">图片</option>
+                            </select>
+                        </div>
+                        <i class="control-label col-sm-1 fa fa-trash-o" style="cursor:pointer" title="删除"></i>
+                    </div>
+                </div>
+            </div><!-- panel-body -->
+
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <button class="btn btn-primary">Submit</button>
+                        &nbsp;
+                        <button class="btn btn-default">Cancel</button>
+                    </div>
+                </div>
+            </div><!-- panel-footer -->
+
+        </div>
+    </form>
+
+</div><!-- contentpanel -->
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-1.10.2.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-ui-1.10.3.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/bootstrap.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/toggles.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.cookies.js"></script>
+
+<div ewp:replace="fragments/frame.html::#messageSection"></div>
+<script src="../../../public/bracket/js/frame.js" ewp:src="/bracket/js/frame.js"></script>
+<script src="../../../public/bracket/js/frame_custom.js" ewp:src="/bracket/js/frame_custom.js"></script>
+<script src="../../../public/js/productCategory.js" ewp:src="/js/productCategory.js"></script>
+</body>
+</html>

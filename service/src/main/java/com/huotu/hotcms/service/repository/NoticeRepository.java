@@ -10,8 +10,13 @@
 package com.huotu.hotcms.service.repository;
 
 import com.huotu.hotcms.service.entity.Notice;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.repositoryi.AbstractContentRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface NoticeRepository extends AbstractContentRepository<Notice> {
+
+    Page<Notice> findByCategory_SiteAndCategory_Serial(Site site, String serial, Pageable pageable);
 
 }

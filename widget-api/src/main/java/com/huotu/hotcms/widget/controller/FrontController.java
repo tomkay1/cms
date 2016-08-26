@@ -33,6 +33,7 @@ import me.jiangcai.lib.resource.Resource;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.http.MediaType;
@@ -123,6 +124,7 @@ public class FrontController implements FilterBehavioral {
      * widgetIdentifier {@link com.huotu.hotcms.service.entity.support.WidgetIdentifier}
      * styleId          样式id
      * properties       控件参数
+     * @throws IOException 资源未找到
      */
     @RequestMapping(value = "/preview/component", method = RequestMethod.POST)
     public ResponseEntity previewHtml(@RequestBody String json) throws IOException {
@@ -133,15 +135,10 @@ public class FrontController implements FilterBehavioral {
         ObjectMapper objectMapper = new ObjectMapper();
         Map map = objectMapper.readValue(json, Map.class);
         String widgetIdentifier = (String) map.get("widgetIdentity");
-        String styleId;
-        if (map.containsKey("styleId")) {
-            Object o = map.get("styleId");
-            if (o != null)
-                styleId = o.toString();
-            else
-                styleId = null;
-        } else
-            styleId = null;
+        if (widgetIdentifier == null) {
+            return ResponseEntity.notFound().build();
+        }
+        String styleId = styleIdFromMap(map);
 //        String id = (String) map.get("id");
         String componentId = (String) map.get("componentId");
         Map properties = (Map) map.get("properties");
@@ -202,8 +199,8 @@ public class FrontController implements FilterBehavioral {
                     .body(previewHTML.getBytes("utf-8"));
         } catch (Exception e) {
             log.warn("Unknown Exception", e);
-            return ResponseEntity.notFound().header("errorMsg", e.getMessage())
-                    .header("cssLocation", "").build();
+            return ResponseEntity.badRequest()
+                    .contentType(MediaType.APPLICATION_JSON_UTF8).body(e.getLocalizedMessage());
         }
     }
 
@@ -223,6 +220,25 @@ public class FrontController implements FilterBehavioral {
         ObjectMapper objectMapper = new ObjectMapper();
         Map map = objectMapper.readValue(json, Map.class);
 //        String id = (String) map.get("id");
+        String styleId = styleIdFromMap(map);
+        String widgetIdentifier = (String) map.get("widgetIdentity");
+        Map properties = (Map) map.get("properties");
+        if (widgetIdentifier == null || properties == null) {
+            return ResponseEntity.notFound().build();
+        }
+        ComponentProperties componentProperties = new ComponentProperties();
+        //noinspection unchecked
+        componentProperties.putAll(properties);
+        InstalledWidget installedWidget = widgetLocateService.findWidget(widgetIdentifier);
+        installedWidget.getWidget().valid(styleId, componentProperties);
+        String htmlCode = widgetResolveService.editorHTML(installedWidget.getWidget(), CMSContext.RequestContext()
+                , componentProperties);
+        return ResponseEntity.ok().contentType(MediaType.valueOf("text/html;charset=utf-8"))
+                .body(htmlCode.getBytes("utf-8"));
+    }
+
+    @Nullable
+    private String styleIdFromMap(Map map) {
         String styleId;
         if (map.containsKey("styleId")) {
             Object o = map.get("styleId");
@@ -232,18 +248,7 @@ public class FrontController implements FilterBehavioral {
                 styleId = null;
         } else
             styleId = null;
-        String widgetIdentifier = (String) map.get("widgetIdentity");
-        Map properties = (Map) map.get("properties");
-        ComponentProperties componentProperties = new ComponentProperties();
-        if (properties != null)
-            //noinspection unchecked
-            componentProperties.putAll(properties);
-        InstalledWidget installedWidget = widgetLocateService.findWidget(widgetIdentifier);
-        installedWidget.getWidget().valid(styleId, componentProperties);
-        String htmlCode = widgetResolveService.editorHTML(installedWidget.getWidget(), CMSContext.RequestContext()
-                , componentProperties);
-        return ResponseEntity.ok().contentType(MediaType.valueOf("text/html;charset=utf-8"))
-                .body(htmlCode.getBytes("utf-8"));
+        return styleId;
     }
 
     private Component findComponent(PageElement element, String id) {
@@ -266,18 +271,24 @@ public class FrontController implements FilterBehavioral {
     /**
      * 用于支持首页的浏览
      *
-     * @param model
+     * @param model 模型
+     *              @throws PageNotFoundException 页面没找到或
      */
     @RequestMapping(method = RequestMethod.GET, value = {"/_web", "/_web/"})
-    public PageInfo pageIndex(Model model) throws IOException, PageNotFoundException {
+    public PageInfo pageIndex(Model model) throws PageNotFoundException {
         return pageIndex("", model);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = {"/_web/{pagePath}"})
     public PageInfo pageIndex(@PathVariable("pagePath") String pagePath, Model model)
-            throws PageNotFoundException, IOException {
+            throws PageNotFoundException {
         CMSContext cmsContext = CMSContext.RequestContext();
         if (cmsContext.getSite() instanceof Template && pagePath.isEmpty()) {
+            HttpServletRequest request = cmsContext.getRequest();
+            if (request.getParameterMap().size() > 0) {
+                //处理页面参数
+//                cmsContext.widgetContextVariables();
+            }
             templateService.preview((Template) cmsContext.getSite());
         }
         model.addAttribute("time", System.currentTimeMillis());
@@ -285,6 +296,16 @@ public class FrontController implements FilterBehavioral {
         return pageService.findBySiteAndPagePath(cmsContext.getSite(), pagePath);
     }
 
+    /**
+     * 页面内容
+     *
+     * @param pagePath  pagePath
+     * @param contentId contentId
+     * @param model     model
+     * @return
+     * @throws IOException           未找到数据
+     * @throws PageNotFoundException 页面没找到
+     */
     @RequestMapping(method = RequestMethod.GET, value = {"/_web/{pagePath}/{contentId}"})
     public PageInfo pageContent(@PathVariable("pagePath") String pagePath, @PathVariable("contentId") Long contentId
             , Model model) throws IOException, PageNotFoundException {

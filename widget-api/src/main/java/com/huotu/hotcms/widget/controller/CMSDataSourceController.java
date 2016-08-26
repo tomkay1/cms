@@ -11,6 +11,7 @@ package com.huotu.hotcms.widget.controller;
 
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.AbstractContent;
+import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.GalleryItem;
 import com.huotu.hotcms.service.model.BaseModel;
 import com.huotu.hotcms.service.model.LinkModel;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +51,7 @@ public class CMSDataSourceController {
     private CMSDataSourceService cmsDataSourceService;
 
     /**
-     * @param serial
+     * @param serial serial
      * @return json 返回当前parentId 的所有子级元素
      * 例如{code=200,message="Success",data=[...]},{code=403,message="fail",data=[]}
      */
@@ -61,18 +63,25 @@ public class CMSDataSourceController {
 
 
     /**
-     * @param serial 数据源id
+     * @param serial serial
      * @return json 返回当前parentId 的所有子级元素
      * 例如{code=200,message="Success",data=[...]},{code=403,message="fail",data=[]}
      */
     @RequestMapping(value = "/findArticleContent/{serial}", method = RequestMethod.GET)
     public ResponseEntity findArticleContent(@PathVariable("serial") String serial) {
-        List<BaseModel> data = cmsDataSourceService.findArticleContent(serial, 0);
-        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(data);
+
+        Page<Article> page = cmsDataSourceService.findArticleContent(serial, 1, 0);
+        List<Article> list = page.getContent();
+        List<BaseModel> baseModels = new ArrayList<>();
+        for (Article article : list) {
+            BaseModel baseModel = Article.toBaseModel(article);
+            baseModels.add(baseModel);
+        }
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(baseModels);
     }
 
     /**
-     * @param serial 数据源id
+     * @param serial serial
      * @return json 返回当前parentId 的所有子级元素
      * 例如{code=200,message="Success",data=[...]},{code=403,message="fail",data=[]}
      */

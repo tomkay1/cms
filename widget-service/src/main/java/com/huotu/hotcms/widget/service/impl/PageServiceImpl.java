@@ -140,6 +140,9 @@ public class PageServiceImpl implements PageService {
     }
 
     private void savePage(PageModel page, PageInfo pageInfo) throws IOException {
+        if (pageInfo.getSerial() == null) {
+            pageInfo.setSerial(UUID.randomUUID().toString().replace("-", ""));
+        }
         pageInfo.setUpdateTime(LocalDateTime.now());
         //删除控件旧的css样式表
         if (pageInfo.getResourceKey() != null) {
@@ -204,16 +207,15 @@ public class PageServiceImpl implements PageService {
     }
 
     @Override
-    public PageInfo getClosestContentPage(Category category, String path) throws IOException, PageNotFoundException {
+    public PageInfo getClosestContentPage(Category category, String path) throws PageNotFoundException {
         PageInfo pageInfo = pageInfoRepository.findByPagePath(path);
         if (pageInfo != null && category.getId().equals(pageInfo.getCategory().getId())) {
             return pageInfo;
         }
         List<PageInfo> pageInfos = pageInfoRepository.findByCategory(category);
-        if (pageInfo == null)
-            throw new IllegalStateException("没有找到相应page");
-        pageInfo = pageInfos.get(0);
-        return getPage(pageInfo.getId());
+        if (pageInfos.isEmpty())
+            throw new PageNotFoundException();
+        return pageInfos.get(0);
     }
 
     @Override

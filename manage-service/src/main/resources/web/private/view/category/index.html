@@ -116,9 +116,10 @@
                         <td th:text="${category.contentType.value}">文章</td>
                         <td th:text="${category.parent!=null?category.parent.name:'无'}">无</td>
                         <td class="center">
-                            <!--<a href="index.html" th:href="@{/manage/supper/as/${owner.id}}" target="_top" title="管理">-->
-                            <!--<i class="fa fa-pencil"></i>-->
-                            <!--</a>-->
+                            <a href="productCategory.html" th:if="${category.contentType.product}"
+                               th:href="@{/manage/category/{id}(id=${category.id})}" title="编辑">
+                                <i class="fa fa-pencil"></i>
+                            </a>
                             <!--<a href="index.html" class="delete" th:href="@{/manage/page/{id}/delete(id=${owner.id})}"-->
                             <!--target="_top" title="删除">-->
                             <!--<i class="fa fa-trash-o"></i>-->
@@ -132,11 +133,10 @@
                         <td>文章</td>
                         <td>无</td>
                         <td class="center">
-                            <a href="index.html" target="_top" title="编辑">
+                            <a href="productCategory.html" title="编辑">
                                 <i class="fa fa-pencil"></i>
                             </a>
-                            <a href="index.html" class="delete"
-                               target="_top" title="删除">
+                            <a href="index.html" class="delete" title="删除">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                         </td>
@@ -147,11 +147,10 @@
                         <td>文章</td>
                         <td>新闻资讯</td>
                         <td class="center">
-                            <a href="index.html" target="_top" title="编辑">
+                            <a href="productCategory.html" title="编辑">
                                 <i class="fa fa-pencil"></i>
                             </a>
-                            <a href="index.html" class="delete"
-                               target="_top" title="删除">
+                            <a href="index.html" class="delete" title="删除">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                         </td>
@@ -171,11 +170,9 @@
 <script src="http://resali.huobanplus.com/cdn/bracket/js/toggles.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.cookies.js"></script>
 
-<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.datatables.min.js"></script>
-<!--<script src="http://resali.huobanplus.com/cdn/bracket/js/custom.js"></script>-->
+<script src="http://resali.huobanplus.com/cdn/datatables/1.10.12/datatables.min.js"></script>
 <div ewp:replace="fragments/frame.html::#messageSection"></div>
 <script src="../../../public/bracket/js/frame.js" ewp:src="/bracket/js/frame.js"></script>
 <script src="../../../public/bracket/js/frame_custom.js" ewp:src="/bracket/js/frame_custom.js"></script>
-<!--<script src="../../../public/js/owner.js" ewp:src="/js/owner.js"></script>-->
 </body>
 </html>

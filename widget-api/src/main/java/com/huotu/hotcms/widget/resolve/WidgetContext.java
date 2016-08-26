@@ -72,6 +72,9 @@ public class WidgetContext extends WebEngineContext {
     private static Map<String, Object> FromComponentProperties(CMSContext context, Widget widget, WidgetStyle style
             , ComponentProperties properties, Component component) {
         Map<String, Object> variables = new HashMap<>();
+        if (context.getCurrentPage() != null) {
+            variables.put("uri", context.getCurrentPage().getPagePath());
+        }
         variables.put("widget", widget);
         variables.put("style", style);
         variables.put("properties", properties);
@@ -107,9 +110,9 @@ public class WidgetContext extends WebEngineContext {
 
 //        ThymeleafView # renderFragment
         if (widget instanceof PreProcessWidget) {
-            ((PreProcessWidget) widget).prepareContext(style, properties, variables);
+            ((PreProcessWidget) widget).prepareContext(style, properties, variables
+                    , context.getWidgetParameters(component));
         }
-
         return variables;
     }
 }

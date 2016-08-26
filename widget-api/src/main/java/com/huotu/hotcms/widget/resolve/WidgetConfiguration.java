@@ -40,6 +40,7 @@ import org.thymeleaf.templateparser.markup.decoupled.IDecoupledTemplateLogicReso
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
@@ -74,7 +75,9 @@ public class WidgetConfiguration implements IEngineConfiguration {
 
     @Override
     public Set<ILinkBuilder> getLinkBuilders() {
-        return configuration.getLinkBuilders();
+        Set<ILinkBuilder> linkBuilders = new HashSet<>();
+        linkBuilders.add(new WidgetILinkBuilder());
+        return linkBuilders;
     }
 
     @Override

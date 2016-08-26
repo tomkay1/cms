@@ -106,5 +106,12 @@ public interface CategoryRepository extends JpaRepository<Category, Long>, JpaSp
 
     List<Category> findBySiteAndContentType(Site site, ContentType contentType);
 
+    /**
+     * 根据父数据源serial查询子数据源列表
+     *
+     * @param serial
+     */
+    List<Category> findByParent_Serial(String serial);
+
 
 }

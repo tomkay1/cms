@@ -18,7 +18,6 @@ import com.huotu.hotcms.service.entity.GalleryItem;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Notice;
 import com.huotu.hotcms.service.entity.Video;
-import com.huotu.hotcms.service.model.BaseModel;
 import com.huotu.hotcms.service.model.GalleryItemModel;
 import com.huotu.hotcms.service.model.LinkModel;
 import com.huotu.hotcms.service.model.widget.VideoModel;
@@ -69,6 +68,11 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     @Autowired
     private GalleryItemRepository galleryItemRepository;
 
+
+    @Override
+    public List<Category> findByParent_Serial(String serial) {
+        return categoryRepository.findByParent_Serial(serial);
+    }
 
     @Override
     public List<Category> findNoticeCategory() {
@@ -142,19 +146,14 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     }
 
     @Override
-    public List<BaseModel> findArticleContent(String serial, int count) {
+    public Page<Article> findArticleContent(String serial, int pageNum, int count) {
         Sort sort = new Sort(Sort.Direction.ASC, "id");
         if (count <= 0)
             count = 10;
-        Pageable pageable = new PageRequest(0, count, sort);
-        List<Article> list = articleRepository.findByCategory_SiteAndCategory_Serial(
-                CMSContext.RequestContext().getSite(), serial, pageable).getContent();
-        List<BaseModel> baseModels = new ArrayList<>();
-        for (Article article : list) {
-            BaseModel baseModel = Article.toBaseModel(article);
-            baseModels.add(baseModel);
-        }
-        return baseModels;
+        Pageable pageable = new PageRequest(pageNum - 1, count, sort);
+        Page page = articleRepository.findByCategory_SiteAndCategory_Serial(
+                CMSContext.RequestContext().getSite(), serial, pageable);
+        return page;
     }
 
     @Override

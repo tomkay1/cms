@@ -11,9 +11,9 @@ package com.huotu.hotcms.widget.service;
 
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.AbstractContent;
+import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Notice;
-import com.huotu.hotcms.service.model.BaseModel;
 import com.huotu.hotcms.service.model.GalleryItemModel;
 import com.huotu.hotcms.service.model.LinkModel;
 import com.huotu.hotcms.service.model.widget.VideoModel;
@@ -31,6 +31,13 @@ import java.util.List;
  */
 @Service
 public interface CMSDataSourceService {
+    /**
+     * 查询指定serial数据源的子集列表
+     * @param serial
+     * @return
+     */
+    List<Category> findByParent_Serial(String serial);
+
     /**
      * <p>查询当前站点下所有可用的公告模型数据源</p>
      *
@@ -102,15 +109,15 @@ public interface CMSDataSourceService {
 
     /**
      * 查询当前站点下，指定数据源serial的 视频内容列表
-     *
      * @param serial 数据源的serial
-     * @param count 数量上限,缺省为10
-     * @return 视频内容列表
+     * @param pageNum 页码
+     * @param count 数量上限,缺省为10  @return 视频内容列表
      */
-    List<BaseModel> findArticleContent(String serial, int count);
+    Page<Article> findArticleContent(String serial, int pageNum, int count);
+
 
     /**
-     * 查找内容
+     * 查找内容 js给插件用
      *
      * @param contentType 内容类型
      * @param pageable    分页根据

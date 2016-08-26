@@ -126,9 +126,7 @@ public class CMSContext {
     }
 
     public void widgetContextVariables(Map<String, Object> variables) {
-//        if (request.getParameter("simulateSite") != null) {
-//            variables.put("simulateSite", request.getParameter("simulateSite"));
-//        }
+
     }
 
 

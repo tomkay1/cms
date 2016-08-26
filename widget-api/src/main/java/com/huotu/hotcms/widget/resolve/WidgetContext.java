@@ -109,7 +109,6 @@ public class WidgetContext extends WebEngineContext {
         if (widget instanceof PreProcessWidget) {
             ((PreProcessWidget) widget).prepareContext(style, properties, variables);
         }
-
         return variables;
     }
 }

@@ -284,6 +284,11 @@ public class FrontController implements FilterBehavioral {
             throws PageNotFoundException {
         CMSContext cmsContext = CMSContext.RequestContext();
         if (cmsContext.getSite() instanceof Template && pagePath.isEmpty()) {
+            HttpServletRequest request = cmsContext.getRequest();
+            if (request.getParameterMap().size() > 0) {
+                //处理页面参数
+//                cmsContext.widgetContextVariables();
+            }
             templateService.preview((Template) cmsContext.getSite());
         }
         model.addAttribute("time", System.currentTimeMillis());

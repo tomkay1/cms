@@ -63,11 +63,7 @@ public class WidgetTestTest extends WidgetTest {
         WebElement widgetUrl = webElement.findElement(By.className("widgetUrl"));
         String url = widgetUrl.getAttribute("href");
         url = URLDecoder.decode(url, "utf-8");
-        if (url.matches(".*-.*=.*")) {
-            assertThat(true).isTrue();
-        } else {
-            assertThat(false).isTrue();
-        }
+        assertThat(url.matches(".*-.*=.*")).isTrue();
     }
 
     @Override

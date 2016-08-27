@@ -88,7 +88,7 @@
         "thumbnail": "http://cdn73.huobanplus.com/cmstest/widgets/thumbnail/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQucGljQmFubmVyLXBpY0Jhbm5lcjoxLjAtU05BUFNIT1Q=/picBannerDefaultStyle.png",
         "previewHTML": null,
         "browseHTML": null,
-        "previewFailed": "错了吧"
+        "previewFailed": "该控件需要对应的数据源，请到CMS管理系统中添数据源。"
       }
     ]
   }

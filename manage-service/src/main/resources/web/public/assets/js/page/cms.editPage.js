@@ -216,9 +216,15 @@ var Page = {
             var typeList = $('.group-header:contains("'+v.type+'")').siblings('.group-content');
             var list = $('<li></li>');
             list.append(Page.widgetHTML.join('\n'));
+            if( !v.styles[0].previewHTML ) {
+                var errorDiv = $('<div id="errorPlaceholder"></div>');
+                list.find('.setting').addClass('hidden');
+                errorDiv.html(v.styles[0].previewFailed)
+            }
             list.find('.setting').attr('data-target', v.identity);
             list.find('.preview p').html(v.locallyName);
-            list.find('.view').append(v.styles[0].previewHTML);
+
+            list.find('.view').append(v.styles[0].previewHTML || errorDiv);
             list.find('.view').children().eq(0).attr('data-widgetidentity', v.identity);
             list.find('.view').children().eq(0).attr('data-styleid', v.styles[0].id);
             typeList.append(list);

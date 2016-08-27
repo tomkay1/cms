@@ -58,11 +58,16 @@ var DataHandle = {
             childJSON.layout.value = $(elements).attr('data-layout-value');
             childJSON.layout.elementGroups = DataHandle.traversalDOM2Json(elements);
         } else {
-            childJSON.component = {};
-            childJSON.component.widgetIdentity = $(elements).attr('data-widgetidentity');
-            childJSON.component.id = $(elements).attr('id');
-            childJSON.component.styleId = $(elements).attr('data-styleid') || null;
-            childJSON.component.properties = wsCache.get($(elements).attr('id')) ? wsCache.get($(elements).attr('id')).properties : {};
+            if ( $(elements).attr('id').indexOf('errorPlaceholder') == -1) {
+                childJSON.component = {};
+                childJSON.component.widgetIdentity = $(elements).attr('data-widgetidentity');
+                childJSON.component.id = $(elements).attr('id');
+                childJSON.component.styleId = $(elements).attr('data-styleid') || null;
+                childJSON.component.properties = wsCache.get($(elements).attr('id')) ? wsCache.get($(elements).attr('id')).properties : {};
+            } else {
+                childJSON.empty = {};
+            }
+
         }
         return childJSON;
     },

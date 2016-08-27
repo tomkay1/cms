@@ -643,3 +643,10 @@ header .btn {
     z-index: 800;
     background-color: rgba(0, 0, 0, .5);
 }
+div[id^="errorPlaceholder"] {
+    font-size: 18px;
+    text-align: center;
+    color: #fff;
+    font-weight: bold;
+    background-color: #e02d19;
+}

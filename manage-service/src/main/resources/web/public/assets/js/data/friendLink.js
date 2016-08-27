@@ -36,30 +36,7 @@ CMSWidgets.initWidget({
             });
         },
         saveComponent: function (onSuccess, onFailed) {
-            var me = this;
-            me.properties.linkList = [];
-            $.each($(".linkbox").find(".item"), function (i, row) {
-                var title = '';
-                var url = '#';
-                $.each($(row).find(".linkTitle"), function (i, v) {
-                    title = $(v).val();
-                });
-                $.each($(row).find(".linkUrl"), function (i, v) {
-                    url = $(v).val();
-                });
-                var item = {
-                    title: title,
-                    url: url,
-                    target: '_blank'
-                };
-                me.properties.linkList.push(item);
-            });
-            if (me.properties.linkList.length == 0) {
-                onFailed("??????,????,????");
-                return false;
-            }
-            onSuccess(this.properties);
-            console.log($.getTreeViewData());
+            console.log(JSON.stringify($.getTreeViewData()));
             return this.properties;
         },
         initProperties: function () {

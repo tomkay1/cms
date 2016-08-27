@@ -149,13 +149,25 @@
     function setNameAndUrl(obj) {
         $('.tree-name').val(obj.name);
         $('.tree-url').val(obj.linkPath);
+        $('.tree-flag').val(obj.flag);
+        var inputUrl = $('.tree-url');
+        if (obj.flag) {
+            inputUrl.attr('readonly', 'readonly');
+        } else {
+            inputUrl.removeAttr('readonly');
+        }
     }
 
     function clearInput(element) {
         var inputName = element.siblings('.tree-name');
         var inputUrl = element.siblings('.tree-url');
+        var inputFlag = element.siblings('.tree-Flag');
         inputName.val('');
         inputUrl.val('');
+        inputFlag.val(0);
+        if (inputUrl.attr('readonly')) {
+            inputUrl.removeAttr('readonly');
+        }
     }
     var TreeView = {
         $DOM: null,
@@ -238,6 +250,7 @@
                 obj.name = v.name;
                 obj.linkPath = v.linkPath;
                 obj.flag = v.flag;
+                obj.isParent = v.isParent;
                 node.push(obj);
             });
             return node;
@@ -326,6 +339,9 @@
                 inputName.val(data.name);
                 inputUrl.val(data.serial);
                 inputFlag.val(1);
+                if (!inputUrl.attr('readonly')) {
+                    inputUrl.attr('readonly', 'readonly');
+                }
                 $container.modal('hide');
             });
         }

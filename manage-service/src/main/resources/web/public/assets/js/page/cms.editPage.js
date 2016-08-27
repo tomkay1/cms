@@ -13,6 +13,8 @@ var editFunc = {
         var data = editFunc.getWidgetId(id);
         editFunc.handleWidgetChildrenIds(id, data);
         data.e.attr("id", data.n);
+        GlobalID = data.n;
+        widgetHandle.createStore(GlobalID);
     },
     getWidgetId: function(id) {
         var data = {};
@@ -71,7 +73,6 @@ var editFunc = {
                 right: 0
             }, 500);
             // 创建当前操作组件的数据
-            widgetHandle.createStore($(this));
             var element = $('#'+GlobalID);
             var styleid = element.attr('data-styleid');
             var container = editFunc.findCurrentEdit(GlobalID);

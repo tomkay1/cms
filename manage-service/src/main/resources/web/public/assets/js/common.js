@@ -23,14 +23,15 @@ var GlobalID, identity;
  */
 function widgetProperties( id ) {
     var ele = $('#' + id);
-    var identity = ele.data('widgetidentity');
+    var identity = ele.attr('data-widgetidentity');
     var dataCache = wsCache.get(id);
-    if ( dataCache ) {
-        return dataCache.properties;
-    } else {
-        return wsCache.get(identity).properties;
+    if (identity) {
+        if ( dataCache ) {
+            return dataCache.properties;
+        } else {
+            return wsCache.get(identity).properties;
+        }
     }
-
 }
 
 /**
@@ -53,15 +54,17 @@ var widgetHandle = {
         });
         return $DOM;
     },
-    getIdentity: function (ele, callback) {
-        identity = $(ele).siblings('.view').children().attr('data-widgetidentity');
+    getIdentity: function (globaId, callback) {
+        identity = $('#'+globaId).attr('data-widgetidentity');
         callback&&callback(identity);
     },
-    createStore: function (ele) {
-        GlobalID = $(ele).siblings('.view').children().attr('id');
-        var data = widgetProperties(GlobalID);
-        if (wsCache.get(GlobalID) == null) widgetHandle.setStroe(GlobalID, data);
-        updataWidgetEditor(GlobalID, widgetProperties(GlobalID), ele);
+    createStore: function (globaId) {
+        var data = widgetProperties(globaId);
+        if (wsCache.get(globaId) == null) widgetHandle.setStroe(globaId, data);
+    },
+    openEditor: function (ele) {
+        var globaId = $(ele).siblings('.view').children().attr('id');
+        updataWidgetEditor(GlobalID, widgetProperties(globaId));
     },
     setStroe: function (id, data) {
         if ( data ) {
@@ -97,7 +100,7 @@ var widgetHandle = {
 /**
  * 更新控件编辑器
  */
-function updataWidgetEditor(globalID, properties, element) {
+function updataWidgetEditor(globalID, properties) {
     var ele = $('#' + globalID);
     var widgetId = ele.attr('data-widgetidentity');
     var DATA = {
@@ -110,12 +113,12 @@ function updataWidgetEditor(globalID, properties, element) {
         JSON.stringify(DATA),
         function (html) {
             if (html) {
-                var container = editFunc.findCurrentEdit(GlobalID).children().eq(1);
+                var container = editFunc.findCurrentEdit(globalID).children().eq(1);
                 container.append(html);
-                widgetHandle.getIdentity(element ,function (identity) {
+                widgetHandle.getIdentity(globalID ,function (identity) {
                     var $DOM = widgetHandle.getEditAreaElement(identity);
                     dynamicLoading.js( wsCache.get(identity).script);
-                    if ( CMSWidgets )  CMSWidgets.openEditor(GlobalID, identity, $DOM);
+                    if ( CMSWidgets )  CMSWidgets.openEditor(globalID, identity, $DOM);
                 });
             }
         }

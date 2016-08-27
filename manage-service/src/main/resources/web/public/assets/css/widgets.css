@@ -1,6 +1,12 @@
 body {
     font-family: 'Microsoft YaHei', sans-serif;
 }
+.row {
+    margin: 0;
+}
+a:link, a:visited, a:hover, a:active {
+    text-decoration: none;
+}
 .filter-gray {
     -webkit-filter: grayscale(1) opacity(.4);
     -moz-filter: grayscale(1) opacity(.4);
@@ -514,9 +520,6 @@ body {
 }
 .newsFlash-pane-red .newsFlash-pane-list .newsFlash-list-title {
     max-width: 98%;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: clip;
 }
 .newsFlash-pane-red .newsFlash-pane-list .newsFlash-list-time {
     font-size: 12px;
@@ -584,6 +587,9 @@ body {
 .information-list {
     background-color: #fff;
 }
+.information-list .information-list-left-header {
+    position: relative;
+}
 .information-list .information-list-left-header h2 {
     padding-bottom: 20px;
     margin: 20px;
@@ -591,8 +597,21 @@ body {
     font-size: 22px;
     border-bottom: 3px solid #b6b6b6;
 }
-.information-list .information-list-left-body {
+.information-list .information-list-right-header h3 {
+    padding-bottom: 20px;
+    font-size: 18px;
+    color: #b3b3b3;
+    border-bottom: 3px solid #b6b6b6;
 }
+.information-list .information-list-left-header .information-list-more {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    color: rgba(0,0,0,0);
+    opacity: 0;
+}
+
 .information-list .information-list-left-body li {
     margin: 10px 20px;
     height: 40px;
@@ -604,12 +623,96 @@ body {
     width: 100%;
     height: 100%;
     color: #000;
-    background-color: #b6b6b6;
+    background-color: #b3b3b3;
+    border-radius: 4px;
 }
 .information-list .information-list-left-body a:hover {
     text-decoration: none;
 }
-.information-list .information-list-left-body .active a {
+.information-list-red .information-list-left-body .active a {
     color: #fff;
     background-color: #e50011;
+}
+.information-list  .information-list-right-body li {
+    padding: 16px 0;
+    border-bottom: 1px dashed #ddd;
+}
+.information-list  .information-list-right-body a {
+    display: block;
+    font-size: 16px;
+    color: #5a5a5a;
+}
+.information-list .information-list-right-body span {
+    display: block;
+}
+.information-list .information-list-items-time {
+    margin-right: 10px;
+    font-size: 12px;
+}
+.information-list .information-list-items-tittle {
+    max-width: 98%;
+}
+.information-list .information-list-bottom {
+    text-align: center;
+}
+.information-list-red .information-list-bottom  li {
+    display: inline-block;
+}
+.information-list-red .information-list-bottom  li a {
+    display: none;
+    color: #000;
+}
+.information-list-red .information-list-bottom .prev a,
+.information-list-red .information-list-bottom .next a,
+.information-list-red .information-list-bottom li .active {
+    display: inline-block;
+}
+.information-list-red .information-list-bottom .active {
+    color: #fff;
+    background-color: #e50011;
+    border-color: #e50011;
+}
+@media (max-width: 768px ) {
+    .information-list .information-list-left-body {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        background-color: #fff;
+        z-index: 2;
+    }
+}
+@media (min-width: 768px) {
+    .information-list .information-list-right {
+        min-height: 818px;
+    }
+    .information-list .information-list-right-header h3 {
+        margin-top: 24px;
+        margin-right: 24px;
+    }
+    .information-list .information-list-bottom {
+        padding: 60px 0;
+        text-align: right;
+    }
+    .information-list .information-list-bottom .pagination {
+        margin-right: 40px;
+    }
+    .information-list-red .information-list-bottom li a {
+        display: inline-block;
+    }
+    .information-list  .information-list-right-body li {
+        margin-right: 24px;
+    }
+    .information-list .information-list-right-body .information-list-items-tittle {
+        display: inline-block;
+        max-width: 610px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: clip;
+    }
+    .information-list .information-list-right-body .information-list-items-time  {
+        float: right;
+    }
 }

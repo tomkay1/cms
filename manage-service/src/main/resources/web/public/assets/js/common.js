@@ -23,14 +23,15 @@ var GlobalID, identity;
  */
 function widgetProperties( id ) {
     var ele = $('#' + id);
-    var identity = ele.data('widgetidentity');
+    var identity = ele.attr('data-widgetidentity');
     var dataCache = wsCache.get(id);
-    if ( dataCache ) {
-        return dataCache.properties;
-    } else {
-        return wsCache.get(identity).properties;
+    if (identity) {
+        if ( dataCache ) {
+            return dataCache.properties;
+        } else {
+            return wsCache.get(identity).properties;
+        }
     }
-
 }
 
 /**
@@ -59,8 +60,11 @@ var widgetHandle = {
     },
     createStore: function (globaId) {
         var data = widgetProperties(globaId);
-        if (wsCache.get(GlobalID) == null) widgetHandle.setStroe(GlobalID, data);
-        updataWidgetEditor(GlobalID, widgetProperties(GlobalID));
+        if (wsCache.get(globaId) == null) widgetHandle.setStroe(globaId, data);
+    },
+    openEditor: function (ele) {
+        var globaId = $(ele).siblings('.view').children().attr('id');
+        updataWidgetEditor(GlobalID, widgetProperties(globaId));
     },
     setStroe: function (id, data) {
         if ( data ) {
@@ -109,12 +113,12 @@ function updataWidgetEditor(globalID, properties) {
         JSON.stringify(DATA),
         function (html) {
             if (html) {
-                var container = editFunc.findCurrentEdit(GlobalID).children().eq(1);
+                var container = editFunc.findCurrentEdit(globalID).children().eq(1);
                 container.append(html);
                 widgetHandle.getIdentity(globalID ,function (identity) {
                     var $DOM = widgetHandle.getEditAreaElement(identity);
                     dynamicLoading.js( wsCache.get(identity).script);
-                    if ( CMSWidgets )  CMSWidgets.openEditor(GlobalID, identity, $DOM);
+                    if ( CMSWidgets )  CMSWidgets.openEditor(globalID, identity, $DOM);
                 });
             }
         }

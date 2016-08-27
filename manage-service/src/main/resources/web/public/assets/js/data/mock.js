@@ -57,16 +57,13 @@ CMSWidgets.initWidget({
             });
         },
         open: function (globalId) {
-            console.log(this.properties + '<<<<');
             this.properties = widgetProperties(globalId);
-            console.log(this.properties);
             this.initProperties();
             this.uploadImage();
         },
         close: function (globalId) {
             $('#picBannerMaxImg').siblings().remove();
             $('#picBannerMinImg').siblings().remove();
-            console.log(1)
         }
     }
 });

@@ -51,6 +51,18 @@ var editFunc = {
     removeElement: function() {
         $(".pageHTML").on("click", ".remove", function (e) {
             e.preventDefault();
+            var globalId = $(this).siblings('.view').children().attr('id');
+            if (globalId) {
+                wsCache.delete(globalId);
+            } else {
+                $(this).parent().find('.view').each(function (i, v) {
+                    var id = $(v).children().attr('id');
+                    if(id) {
+                        wsCache.delete(id);
+                    }
+                });
+            }
+            
             $(this).parent().remove();
             if (!$(".pageHTML .ncrow").length > 0) {
                 editFunc.clearDemo();
@@ -73,6 +85,7 @@ var editFunc = {
                 right: 0
             }, 500);
             // 创建当前操作组件的数据
+            widgetHandle.openEditor($(this));
             var element = $('#'+GlobalID);
             var styleid = element.attr('data-styleid');
             var container = editFunc.findCurrentEdit(GlobalID);

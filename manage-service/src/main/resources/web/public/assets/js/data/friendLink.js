@@ -69,12 +69,10 @@ CMSWidgets.initWidget({
             });
         },
         open: function (globalId) {
-            console.log(this.properties + '>>>');
             this.properties = widgetProperties(globalId);
             this.initProperties();
             this.removerLinkItem();
             this.addLink();
-            console.log(this.properties + '>>>>>>');
         },
         close: function (globalId) {
             $('.linkbox').off("click", ".addLink");

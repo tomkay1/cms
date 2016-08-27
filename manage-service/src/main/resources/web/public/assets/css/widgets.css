@@ -18,15 +18,22 @@ a:link, a:visited, a:hover, a:active {
     padding: 10px 0;
 }
 .word-banner .title {
+    margin: 0;
+    text-align: center;
+}
+.word-banner .title a {
     padding-bottom: 20px;
     font-size: 30px;
-    text-align: center;
 }
 .word-banner .desc {
     margin: 10px auto;
     color: #999;
     font-size: 16px;
     text-align: center;
+}
+.word-banner-sf .title a {
+    font-size: 18px;
+    color: #999;
 }
 /*Picture List Style*/
 
@@ -714,5 +721,23 @@ a:link, a:visited, a:hover, a:active {
     }
     .information-list .information-list-right-body .information-list-items-time  {
         float: right;
+    }
+}
+/*notice-content-list*/
+.notice-content-list .notice-content-list-header{
+    padding-top: 26px;
+    padding-bottom: 26px;
+    font-size: 30px;
+    color: #414141;
+    font-weight: bold;
+}
+.notice-content-list .notice-content-list-heade-body {
+    font-size: 14px;
+    color: #a3a3a3;
+    border-bottom: 1px solid #bcbcbc;
+}
+@media (min-width: 769px) {
+    .notice-content-list .notice-content-list-heade-body  {
+        padding-bottom: 84px;
     }
 }

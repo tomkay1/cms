@@ -25,6 +25,7 @@ import org.springframework.web.servlet.support.RequestContext;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Stack;
@@ -79,6 +80,10 @@ public class CMSContext {
      * 当前正在展示的页面
      */
     private PageInfo currentPage;
+    /**
+     * 当前页面控件参数列表
+     */
+    private Map<String, Map<String, String>> parameters = new HashMap<>();
 
     /**
      * 请求当前的CMS上下文
@@ -146,6 +151,10 @@ public class CMSContext {
      * @return 可以为null
      */
     public Map<String, String> getWidgetParameters(Component component) {
-        return null;
+        if (component == null)
+            return null;
+        else {
+            return parameters.get(component.getId());
+        }
     }
 }

@@ -109,8 +109,6 @@ public class PageController {
                 }
             }
         }
-
-
         pageModel.setTitle(page.getTitle());
         return pageModel;
     }

@@ -28,7 +28,7 @@ import java.util.List;
 @Configuration
 @ComponentScan({"com.huotu.hotcms.widget.page"
         , "com.huotu.hotcms.widget.controller"
-//        , "com.huotu.hotcms.widget.service"
+        , "com.huotu.hotcms.widget.service"
 })
 @Import({WidgetLoaderConfig.class, WidgetResolveServiceConfig.class
         , WidgetJpaConfig.class

@@ -27,4 +27,5 @@ public class WidgetStyleModel {
     private String thumbnail;
     private String previewHTML;
     private String browseHTML;
+    private String previewFailed;
 }

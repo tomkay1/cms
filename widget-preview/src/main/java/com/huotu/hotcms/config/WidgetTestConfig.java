@@ -59,10 +59,12 @@ public class WidgetTestConfig extends WebMvcConfigurerAdapter {
         return new CMSDataSourceController();
     }
 
+
     @Bean
     public WidgetController widgetController() {
         return new WidgetController();
     }
+
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

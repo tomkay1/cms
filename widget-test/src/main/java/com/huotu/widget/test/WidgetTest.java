@@ -12,6 +12,12 @@ package com.huotu.widget.test;
 import com.huotu.hotcms.bean.WidgetHolder;
 import com.huotu.hotcms.bean.WidgetViewController;
 import com.huotu.hotcms.hold.TestWidgetHolder;
+import com.huotu.hotcms.service.common.ContentType;
+import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.repository.CategoryRepository;
+import com.huotu.hotcms.service.repository.SiteRepository;
+import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetStyle;
@@ -31,9 +37,11 @@ import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Map;
 import java.util.function.Function;
@@ -55,6 +63,12 @@ public abstract class WidgetTest extends SpringWebTest {
     @Autowired(required = false)
     public ResourceService resourceService;
     @Autowired
+    HttpServletResponse response;
+    @Autowired
+    SiteRepository siteRepository;
+    @Autowired
+    CategoryRepository categoryRepository;
+    @Autowired
     private WidgetViewController widgetViewController;
     @Autowired
     private WidgetHolder holder;
@@ -63,12 +77,37 @@ public abstract class WidgetTest extends SpringWebTest {
 
     }
 
+    public void randomCategory(Site site) {
+        Category category = new Category();
+        category.setSite(site);
+        category.setCreateTime(LocalDateTime.now());
+        category.setSerial("123");
+        category.setContentType(ContentType.Article);
+        category = categoryRepository.save(category);
+        Category category1 = new Category();
+        category1.setSite(site);
+        category1.setCreateTime(LocalDateTime.now());
+        category1.setSerial("123");
+        category1.setContentType(ContentType.Article);
+        category1.setParent(category);
+        categoryRepository.save(category1);
+        Category category2 = new Category();
+        category2.setSite(site);
+        category2.setCreateTime(LocalDateTime.now());
+        category2.setSerial("123");
+        category2.setContentType(ContentType.Article);
+        category2.setParent(category);
+        categoryRepository.save(category2);
+    }
+
     @Override
     public void createMockMVC() {
         MockitoAnnotations.initMocks(this);
         // ignore it, so it works in no-web fine.
         if (context == null)
             return;
+        CMSContext.PutContext(request, response, siteRepository.findByRecommendDomain("localhost"));
+        randomCategory(siteRepository.findByRecommendDomain("localhost"));
         DefaultMockMvcBuilder builder = webAppContextSetup(context);
         CMSFilter cmsFilter = new CMSFilter();
         cmsFilter.setServletContext(context.getServletContext());

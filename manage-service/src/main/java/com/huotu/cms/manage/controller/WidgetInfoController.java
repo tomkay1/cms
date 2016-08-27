@@ -208,8 +208,12 @@ public class WidgetInfoController
                 widgetStyleModel.setThumbnail(resourceService.getResource(WidgetStyle.thumbnailPath(widget
                         , widgetStyle)).httpUrl().toString());
                 widgetStyleModel.setLocallyName(widgetStyle.name(locale));
-                widgetStyleModel.setPreviewHTML(widgetResolveService.previewHTML(widget, widgetStyle.id()
-                        , CMSContext.RequestContext(), widget.defaultProperties(resourceService)));
+                try {
+                    widgetStyleModel.setPreviewHTML(widgetResolveService.previewHTML(widget, widgetStyle.id()
+                            , CMSContext.RequestContext(), widget.defaultProperties(resourceService)));
+                } catch (IllegalStateException e) {
+                    widgetStyleModel.setPreviewFailed(e.getMessage());
+                }
                 widgetStyleModels[i] = widgetStyleModel;
             }
             widgetModel.setStyles(widgetStyleModels);

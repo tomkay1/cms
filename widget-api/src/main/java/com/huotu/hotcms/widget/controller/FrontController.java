@@ -55,7 +55,10 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -124,6 +127,7 @@ public class FrontController implements FilterBehavioral {
      * widgetIdentifier {@link com.huotu.hotcms.service.entity.support.WidgetIdentifier}
      * styleId          样式id
      * properties       控件参数
+     *
      * @throws IOException 资源未找到
      */
     @RequestMapping(value = "/preview/component", method = RequestMethod.POST)
@@ -272,7 +276,7 @@ public class FrontController implements FilterBehavioral {
      * 用于支持首页的浏览
      *
      * @param model 模型
-     *              @throws PageNotFoundException 页面没找到或
+     * @throws PageNotFoundException 页面没找到或
      */
     @RequestMapping(method = RequestMethod.GET, value = {"/_web", "/_web/"})
     public PageInfo pageIndex(Model model) throws PageNotFoundException {
@@ -284,16 +288,30 @@ public class FrontController implements FilterBehavioral {
             throws PageNotFoundException {
         CMSContext cmsContext = CMSContext.RequestContext();
         if (cmsContext.getSite() instanceof Template && pagePath.isEmpty()) {
-            HttpServletRequest request = cmsContext.getRequest();
-            if (request.getParameterMap().size() > 0) {
-                //处理页面参数
-//                cmsContext.widgetContextVariables();
-            }
             templateService.preview((Template) cmsContext.getSite());
+        }
+        HttpServletRequest request = cmsContext.getRequest();
+        if (request.getParameterMap().size() > 0) {
+            //处理页面参数
+            Map<String, String[]> map = request.getParameterMap();
+            Set<Map.Entry<String, String[]>> set = map.entrySet();
+            Map<String, Map<String, String>> parameters = map.isEmpty() ? null : new HashMap<>();
+            for (Map.Entry<String, String[]> entry : set) {
+                String id_key[] = entry.getKey().split("-");
+                if (parameters.containsKey(id_key[0])) {
+                    parameters.get(id_key[0]).put(id_key[1], Arrays.toString(entry.getValue()));
+                } else {
+                    parameters.put(id_key[0], new HashMap<>());
+                    parameters.get(id_key[0]).put(id_key[1], Arrays.toString(entry.getValue()));
+                }
+            }
+            cmsContext.setParameters(parameters);
         }
         model.addAttribute("time", System.currentTimeMillis());
         //查找当前站点下指定pagePath的page
-        return pageService.findBySiteAndPagePath(cmsContext.getSite(), pagePath);
+        PageInfo pageInfo = pageService.findBySiteAndPagePath(cmsContext.getSite(), pagePath);
+        cmsContext.setCurrentPage(pageInfo);
+        return pageInfo;
     }
 
     /**

@@ -65,6 +65,8 @@ public class Component implements PageElement {
     //@JsonIgnore(value = true)
     private String previewHTML;
 
+    private String previewFail;
+
     public WidgetStyle currentStyle() {
         return WidgetStyle.styleByID(installedWidget.getWidget(), styleId);
     }

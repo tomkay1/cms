@@ -36,7 +36,7 @@ CMSWidgets.initWidget({
             });
         },
         saveComponent: function (onSuccess, onFailed) {
-            console.log(JSON.stringify($.getTreeViewData()));
+            console.log($.getTreeViewData());
             return this.properties;
         },
         initProperties: function () {

@@ -51,5 +51,27 @@
         "previewFailed": null
       }
     ]
+  },
+  {
+    "identity": "com.huotu.hotcms.widget.newsFlash-newsFlash:1.0-SNAPSHOT",
+    "type": "资讯",
+    "locallyName": "A custom Widget",
+    "thumbnail": "http://localhost:8080/_resources/widgets/thumbnail/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQubmV3c0ZsYXNoLW5ld3NGbGFzaDoxLjAtU05BUFNIT1Q=.png",
+    "editorHTML": null,
+    "scriptHref": "/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQubmV3c0ZsYXNoLW5ld3NGbGFzaDoxLjAtU05BUFNIT1Q=.js",
+    "defaultProperties": {
+      "serial": "90fac7dca5a14c25853518c4a44c2e00",
+      "count": 10
+    },
+    "styles": [
+      {
+        "id": "newsFlashDefaultStyle",
+        "locallyName": "bootstrap style newsFlash",
+        "thumbnail": "http://localhost:8080/_resources/widgets/thumbnail/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQubmV3c0ZsYXNoLW5ld3NGbGFzaDoxLjAtU05BUFNIT1Q=/newsFlashDefaultStyle.png",
+        "previewHTML": "<div>\r\n    \r\n    \r\n    \r\n    <div class=\"newsFlash-pane newsFlash-pane-head-pane-red\">\r\n        <p><span class=\"newsFlash-pane-head\">快讯News</span><a href=\"#\" class=\"pull-right\">查看更多>></a></p>\r\n        <ul class=\"list-unstyled newsFlash-pane-list\">\r\n            <li>\r\n                <a class=\"clearfix\"  href=\"%2F%24%7BcontentURI%7D%2F%7Bid%7D%3Fnull-id%3D3\">\r\n                    <span class=\"newsFlash-list-title\">sdfdasdf</span>\r\n                    <span class=\"newsFlash-list-time\">2016-08-28T14:05:37.687</span>\r\n                </a>\r\n            <>\r\n            <li>\r\n                <a class=\"clearfix\"  href=\"%2F%24%7BcontentURI%7D%2F%7Bid%7D%3Fnull-id%3D4\">\r\n                    <span class=\"newsFlash-list-title\">10充值红包</span>\r\n                    <span class=\"newsFlash-list-time\">2016-08-28T14:06:00.672</span>\r\n                </a>\r\n            <>\r\n        </ul>\r\n    </div>\r\n</div>",
+        "browseHTML": null,
+        "previewFailed": null
+      }
+    ]
   }
 ]

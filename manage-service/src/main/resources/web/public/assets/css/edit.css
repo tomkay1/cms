@@ -138,6 +138,9 @@ header .btn {
     height: 510px;
     overflow-y: auto;
 }
+.edit .pageHTML>.ncrow:last-child {
+    padding-bottom: 100px;
+}
 .box, .ncrow {
     position: relative;
 }
@@ -596,13 +599,14 @@ header .btn {
 #js-selectTable .checkboxBtn {
     display: none;
 }
+#js-selectTable .pictureBox img {
+    width: 60px;
+    height: 60px;
+}
+
 #js-selectTable .selected .pictureBox {
     position: relative;
     border: 1px solid #337ab7;
-}
-#js-selectTable .selected .pictureBox img {
-    width: 60px;
-    height: 60px;
 }
 #js-selectTable .selected .pictureBox:after{
     content: '\2714';

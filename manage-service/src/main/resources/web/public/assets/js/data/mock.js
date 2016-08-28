@@ -52,8 +52,18 @@ CMSWidgets.initWidget({
             this.properties.pcImg = "";
             this.properties.mobileImg = "";
             this.properties.linkUrl = "";
-            $('#treeDemo').addTreeView({
-                debug: true
+            // $('#treeDemo').addTreeView({
+            //     debug: true
+            // });
+            $(document).on('click','.js-addEditBtn',function () {
+                console.log(1);
+            });
+            $('.js-addEditBtn').addEdit({
+                debug: true,
+                amount: 1,
+                title: '二维码图片',
+                hasImage: true,
+                imageClass: 'QRcode'
             });
         },
         open: function (globalId) {

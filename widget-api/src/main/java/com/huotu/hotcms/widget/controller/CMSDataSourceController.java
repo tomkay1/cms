@@ -17,6 +17,7 @@ import com.huotu.hotcms.service.model.BaseModel;
 import com.huotu.hotcms.service.model.LinkModel;
 import com.huotu.hotcms.service.model.widget.VideoModel;
 import com.huotu.hotcms.widget.service.CMSDataSourceService;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,6 +51,9 @@ public class CMSDataSourceController {
 
     @Autowired
     private CMSDataSourceService cmsDataSourceService;
+
+    @Autowired
+    private ResourceService resourceService;
 
     /**
      * @param serial serial
@@ -119,7 +124,12 @@ public class CMSDataSourceController {
             data.put("serial", content.getSerial());
             data.put("date", content.getCreateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             if (content instanceof GalleryItem) {
-                data.put("thumpUri", ((GalleryItem) content).getThumbUri());
+
+                try {
+                    data.put("thumpUri", resourceService.getResource(((GalleryItem) content).getThumbUri()).httpUrl().toURI().toString());
+                } catch (URISyntaxException | IOException e) {
+                    data.put("thumpUri", "http://placehold.it/50x50?text=error");
+                }
                 data.put("size", ((GalleryItem) content).getSize());
             }
             return data;

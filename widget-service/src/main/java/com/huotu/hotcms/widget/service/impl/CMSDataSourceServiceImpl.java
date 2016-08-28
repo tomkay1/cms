@@ -180,6 +180,14 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
             case "5":
                 return downloadRepository.findAll((Specification<Download>) spec, pageable);
             case "6":
+                spec = (root, query, cb) -> {
+                    Predicate predicates = cb.equal(root.get("site"), CMSContext.RequestContext().getSite());
+                    predicates = cb.and(predicates, cb.equal(root.get("deleted"), false));
+                    if (search != null && !search.equals("")) {
+                        predicates = cb.and(predicates, cb.like(root.get("title"), "%" + search + "%"));
+                    }
+                    return predicates;
+                };
                 return pageInfoRepository.findAll((Specification<PageInfo>) spec, pageable);
         }
         return null;

@@ -223,7 +223,6 @@ public class FrontController implements FilterBehavioral {
     public ResponseEntity widgetEditor(@RequestBody String json) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         Map map = objectMapper.readValue(json, Map.class);
-//        String id = (String) map.get("id");
         String styleId = styleIdFromMap(map);
         String widgetIdentifier = (String) map.get("widgetIdentity");
         Map properties = (Map) map.get("properties");

@@ -1,3 +1,38 @@
 <div class="borderBoxs">
-    <div id="treeDemo"></div>
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">标题内容</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" data-type="title"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">副标内容</label>
+            <div class="col-sm-9">
+                <textarea  class="form-control" rows="3" data-type="subTitle"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">文字颜色</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control color-picker" data-type="textColor"/>
+            </div>
+            <label class="col-sm-3 control-label">背景颜色</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control color-picker" data-type="backgroundColor"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">字体大小</label>
+            <div class="col-sm-3 text-center">
+                <input type="range" name="fontSize" min="12" max="30" data-type="fontSize">
+                <span class="fontSizeView"></span>
+            </div>
+            <label class="col-sm-3 control-label">是否粗体</label>
+            <div class="col-sm-3 checkbox">
+                <label><input type="checkbox">启用</label>
+            </div>
+        </div>
+        <div id="treeDemo"></div>
+    </form>
 </div>

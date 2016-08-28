@@ -28,14 +28,28 @@
     <script src="http://resali.huobanplus.com/cdn/bracket/js/respond.min.js"></script>
     <![endif]-->
     <script language="javascript" type="text/javascript">
-        function resizeIframe(obj) {
-            try {
-//                console.error('content has changed', obj, obj.contentWindow, obj.contentWindow.document);
-                obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
-            } catch (e) {
+//        function resizeIframe(obj) {
+//            try {
+////                console.error('content has changed', obj, obj.contentWindow, obj.contentWindow.document);
+//                obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+//            } catch (e) {
+//                console.error(e);
+//            }
+//        }
+
+        //解决iframe内容变化，高度不变的问题，但是使用了 setInterval 感觉浏览器压力大，回头想更好的办法。 @蒋哥
+        function reinitIframe(){
+            var iframe = document.getElementById("content");
+            try{
+                var bHeight = iframe.contentWindow.document.body.scrollHeight;
+                var dHeight = iframe.contentWindow.document.documentElement.scrollHeight;
+                var height = Math.max(bHeight, dHeight);
+                iframe.height = height;
+            }catch (e){
                 console.error(e);
             }
         }
+        window.setInterval("reinitIframe()", 1000);
     </script>
 </head>
 <body>
@@ -241,7 +255,7 @@
 
         </div><!-- headerbar -->
 
-        <iframe id="content" name="content" frameborder="0" onload="try{resizeIframe(this);}catch(e){console.error(e);}"
+        <iframe id="content" name="content" frameborder="0"
                 scrolling="auto">
         </iframe>
 
@@ -252,7 +266,6 @@
 
 
 </section>
-
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-1.10.2.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-migrate-1.2.1.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-ui-1.10.3.min.js"></script>

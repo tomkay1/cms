@@ -238,8 +238,10 @@
         },
         getNodes: function () {
             var treeObj = $.fn.zTree.getZTreeObj(this.treeId);
-            var nodes = treeObj.transformToArray(treeObj.getNodes());
-            return this.getJSON(nodes);
+            //var nodes = treeObj.transformToArray(treeObj.getNodes());
+            // return this.getJSON(nodes);
+            var nodes = treeObj.getNodes();
+            return nodes;
         },
         getJSON: function (nodes) {
             var node = [];

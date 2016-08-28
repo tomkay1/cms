@@ -64,6 +64,7 @@ var widgetHandle = {
     },
     openEditor: function (ele) {
         var globaId = $(ele).siblings('.view').children().attr('id');
+        GlobalID = globaId;
         updataWidgetEditor(globaId, widgetProperties(globaId));
     },
     setStroe: function (id, data) {

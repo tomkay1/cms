@@ -15,11 +15,12 @@ import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.Component;
+import com.huotu.hotcms.widget.InstalledWidget;
+import com.huotu.hotcms.widget.WidgetLocateService;
 import com.huotu.hotcms.widget.WidgetResolveService;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.PageElement;
-import com.huotu.hotcms.widget.page.PageLayout;
 import com.huotu.hotcms.widget.page.PageModel;
 import com.huotu.hotcms.widget.service.PageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,9 @@ public class PageController {
     @Autowired
     private WidgetResolveService widgetResolveService;
 
+    @Autowired
+    private WidgetLocateService widgetLocateService;
+
     /**
      * <p>获取页面{@link PageInfo}</p>
      *
@@ -89,28 +93,32 @@ public class PageController {
             , produces = "application/json; charset=UTF-8")
     @ResponseBody
     public PageModel getPage(@PathVariable("pageId") Long pageId) throws IOException, PageNotFoundException {
-        return toModel(pageService.getPage(pageId));
+        PageInfo pageInfo = pageService.getPage(pageId);
+        PageModel pageModel = new PageModel();
+        pageModel.setPageIdentity(pageInfo.getId());
+        pageModel.setTitle(pageInfo.getTitle());
+        // 要给它设置previewHTML
+        for (Layout layout : pageInfo.getLayout().getRoot()) {
+            toModel(layout);
+        }
+        pageModel.setRoot(pageInfo.getLayout().getRoot());
+        return pageModel;
     }
 
-    private PageModel toModel(PageInfo page) {
-        PageModel pageModel = new PageModel();
-        pageModel.setPageIdentity(page.getId());
-        if (page.getLayout() != null)
-            pageModel.setRoot(page.getLayout().getRoot());
-
+    private void toModel(PageElement pageElement) {
         // 要给它设置previewHTML
-        for (Layout layout : PageLayout.NoNullLayout(pageModel)) {
-            for (PageElement pageElement : layout.elements()) {
-                if (pageElement instanceof Component) {
-                    Component component = (Component) pageElement;
-                    String previewHTML = widgetResolveService.previewHTML(component.getInstalledWidget().getWidget(), component.getStyleId()
-                            , CMSContext.RequestContext(), component.getProperties());
-                    component.setPreviewHTML(previewHTML);
-                }
+        if (pageElement instanceof Layout) {
+            Layout layout = (Layout) pageElement;
+            for (PageElement e : layout.elements()) {
+                toModel(e);
             }
+        } else if (pageElement instanceof Component) {
+            Component component = (Component) pageElement;
+            InstalledWidget installWidget = widgetLocateService.findWidget(component.getWidgetIdentity());
+            String previewHTML = widgetResolveService.previewHTML(installWidget.getWidget(), component.getStyleId()
+                    , CMSContext.RequestContext(), component.getProperties());
+            component.setPreviewHTML(previewHTML);
         }
-        pageModel.setTitle(page.getTitle());
-        return pageModel;
     }
 
     /**

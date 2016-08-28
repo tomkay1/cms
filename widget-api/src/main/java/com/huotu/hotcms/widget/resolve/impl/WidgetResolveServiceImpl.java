@@ -62,6 +62,7 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
     @Autowired
     private ResourceService resourceService;
 
+
     private void checkEngine() {
         if (widgetTemplateEngine == null) {
             widgetTemplateEngine = webApplicationContext.getBean("widgetTemplateEngine", SpringTemplateEngine.class);
@@ -183,9 +184,11 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
             return;
         } else {
             Component component = (Component) element;
-            widget = component.getInstalledWidget().getWidget();
+            widget = component.getInstalledWidget() == null ? widgetLocateService.findWidget(component.getWidgetIdentity()).getWidget()
+                    : component.getInstalledWidget().getWidget();
+            WidgetStyle style = WidgetStyle.styleByID(widget, component.getStyleId());
             widgetContext = new WidgetContext(widgetTemplateEngine, context
-                    , widget, component.currentStyle(), webApplicationContext.getServletContext()
+                    , widget, style, webApplicationContext.getServletContext()
                     , component, component.getProperties());
         }
 

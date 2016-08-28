@@ -123,7 +123,7 @@ public class PageServiceImpl implements PageService {
     @Override
     public void generateHTML(Writer writer, PageInfo page, CMSContext context) throws IOException {
         Layout[] layouts = layoutsForUse(page.getLayout());
-        writer.append("<div class=\"container\">");
+        writer.append("<div>");
         for (PageElement element : layouts) {
             writer.append("<div class=\"row\">");
             widgetResolveService.pageElementHTML(element, context, writer);

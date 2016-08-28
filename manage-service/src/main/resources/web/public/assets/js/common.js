@@ -121,6 +121,7 @@ function updataWidgetEditor(globalID, properties) {
                     dynamicLoading.js( wsCache.get(identity).script);
                     if ( CMSWidgets )  CMSWidgets.openEditor(globalID, identity, $DOM);
                 });
+                cmdColorPicker();
             }
         }
     );
@@ -463,3 +464,18 @@ var TableData = {
         });
     }
 };
+/*临时拾色器公共方法*/
+function cmdColorPicker() {
+    $('.color-picker').each(function () {
+        var color = $(this).val() || '';
+        $(this).spectrum({
+            color: color,
+            allowEmpty: true,
+            chooseText: "确定",
+            cancelText: "取消",
+            preferredFormat: "#",
+            showButtons: false,
+            showInput: true
+        });
+    });
+}

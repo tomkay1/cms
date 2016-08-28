@@ -260,7 +260,9 @@ header .btn {
     background-color: #7cb147;
     border: 1px solid #ddd;
 }
-
+.edit .pageHTML .box .row:before {
+    display: none;
+}
 .edit .pageHTML .column:after {
     padding: 2px 4px;
     position: absolute;
@@ -317,6 +319,12 @@ header .btn {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+}
+.edit .pageHTML .box .row {
+    padding-top: 0;
+    margin: 0;
+    position: relative;
+    border: none;
 }
 .edit .pageHTML .row .copyright {
     background-color: transparent;

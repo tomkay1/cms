@@ -202,28 +202,32 @@ header .btn {
     background: transparent;
 }
 
-.column {
-    padding: 39px 19px 24px;
-    margin: 15px 0;
+.edit .column {
+    min-height: 80px;
+    margin: 15px -2px -2px -2px;
     position: relative;
     background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    border: 2px dashed rgba(255,0,0,.2);
+    -webkit-transition: all 500ms ease;
+    -moz-transition: all 500ms ease;
+    -o-transition: all 500ms ease;
+    transition: all 500ms ease;
 }
-
+.column:hover {
+    border-color: #e02d19;
+}
 #content {
-    margin-left: 200px;
+    margin-left: 190px;
     padding-top: 45px;
     padding-left: 20px;
     border: 1px solid transparent;
 }
 
 .edit .pageHTML {
-    padding: 30px 15px 15px;
+    padding: 30px 0 15px;
     margin: 10px 0 100px;
-    border: 1px solid #ddd;
+    border: 2px dashed #ddd;
     position: relative;
-    border-radius: 4px;
     word-wrap: break-word;
 }
 
@@ -233,41 +237,38 @@ header .btn {
     left: -1px;
     top: -1px;
     color: #555;
-    content: "\5BB9\5668";
+    content: "\9875\9762";
     font-size: 12px;
     font-weight: bold;
     background-color: #f5f5f5;
     border: 1px solid #ddd;
-    border-radius: 4px 0 4px 0;
 }
 
 .edit .pageHTML .row:before {
-    padding: 3px 7px;
+    padding: 2px 4px;
     position: absolute;
     left: -1px;
     top: -1px;
-    color: #555;
-    content: "\884c";
+    color: #fff;
+    content: "\5e03\5c40";
     font-size: 12px;
     font-weight: bold;
     line-height: 2;
-    background-color: #f5f5f5;
+    background-color: #7cb147;
     border: 1px solid #ddd;
-    border-radius: 4px 0 4px 0;
 }
 
 .edit .pageHTML .column:after {
-    padding: 3px 7px;
+    padding: 2px 4px;
     position: absolute;
     left: -1px;
     top: -1px;
-    color: #555;
-    content: "\5217";
+    color: #fff;
+    content: "\62d6\62fd\533a\57df";
     font-size: 12px;
     font-weight: bold;
-    background-color: #f5f5f5;
+    background-color: rgba(255,0,0,.3);
     border: 1px solid #ddd;
-    border-radius: 4px 0 4px 0;
 }
 
 .edit .pageHTML .remove {
@@ -294,7 +295,7 @@ header .btn {
 .pageHTML .remove,
 .pageHTML .setting {
     filter: alpha(opacity=20);
-    opacity: 0.2;
+    opacity: .2;
     -webkit-transition: all 500ms ease;
     -moz-transition: all 500ms ease;
     -o-transition: all 500ms ease;
@@ -305,21 +306,16 @@ header .btn {
     display: none;
 }
 
-.pageHTML .row {
-    padding: 25px 14px 0;
-    margin: 15px 0;
+.edit .pageHTML .row {
+    padding-top: 12px;
+    margin: 20px -1px -1px -1px;
     position: relative;
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    border: 1px dashed #7cb147;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    -webkit-box-shadow: inset 0 1px 13px rgba(0, 0, 0, 0.1);
-    -moz-box-shadow: inset 0 1px 13px rgba(0, 0, 0, 0.1);
-    box-shadow: inset 0 1px 13px rgba(0, 0, 0, 0.1);
 }
-.pageHTML .row.copyright {
+.edit .pageHTML .row .copyright {
     background-color: transparent;
 }
 .pageHTML .ncrow:hover > .drag,
@@ -340,7 +336,34 @@ header .btn {
     filter: alpha(opacity=100);
     opacity: 1;
 }
+.sourcepreview .drag,
+.sourcepreview .setting,
+.sourcepreview .remove {
+    display: none !important;
+}
 
+.sourcepreview #content {
+    margin-left: 0;
+}
+.sourcepreview .box .view {
+    padding-top: 0;
+}
+.sourcepreview .column,
+.sourcepreview .row {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    background: none;
+    border: none;
+}
+
+.sourcepreview .ncrow .box,
+.sourcepreview .ncrow .row {
+    padding-top: 0;
+    background: none;
+}
+/*编辑区域*/
 #configuration {
     display: none;
     position: fixed;
@@ -457,34 +480,6 @@ header .btn {
     outline: 1px dashed #ddd;
     visibility: visible !important;
     border-radius: 4px;
-}
-.sourcepreview .drag,
-.sourcepreview .setting,
-.sourcepreview .remove {
-    display: none !important;
-}
-
-.sourcepreview #content {
-    margin-left: 0;
-}
-
-.sourcepreview .column,
-.sourcepreview .row {
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
-    background: none;
-    border: none;
-    -webkit-box-shadow: inset 0 0 0 rgba(0, 0, 0, 0.00);
-    -moz-box-shadow: inset 0 0 0 rgba(0, 0, 0, 0.00);
-    box-shadow: inset 0 0 0 rgba(0, 0, 0, 0.00);
-}
-
-.sourcepreview .ncrow .box,
-.sourcepreview .ncrow .row {
-    padding-top: 0;
-    background: none;
 }
 
 .scrollDiv {

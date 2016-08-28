@@ -262,6 +262,9 @@
                     "columns": [
                         {
                             "data": "thumpUri"
+                        },
+                        {
+                            "data": "size"
                         }
                     ],
                     "columnDefs": [
@@ -271,7 +274,15 @@
                                 return '<img  src="'+data+'" class="pictureImages img-rounded" >';
                             },
                             "targets": 0
+                        },
+                        {
+                            "className": "pictureSize",
+                            "render": function (data) {
+                                return '<span>'+data+'</span>';
+                            },
+                            "targets": 1
                         }
+
                     ],
                     "lengthMenu": [11, 22, 33],
                     "displayLength": 11

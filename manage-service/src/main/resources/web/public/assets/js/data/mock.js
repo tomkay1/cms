@@ -1,4 +1,4 @@
-CMSWidgets.pushNextWidgetIdentity('com.huotu.hotcms.widget.picBanner-picBanner:1.0-SNAPSHOT');
+CMSWidgets.pushNextWidgetIdentity('com.huotu.hotcms.widget.copyright-copyright:1.0-SNAPSHOT');
 /**
  * Created by admin on 2016/6/27.
  */
@@ -52,12 +52,7 @@ CMSWidgets.initWidget({
             this.properties.pcImg = "";
             this.properties.mobileImg = "";
             this.properties.linkUrl = "";
-            // $('#treeDemo').addTreeView({
-            //     debug: true
-            // });
-            $(document).on('click','.js-addEditBtn',function () {
-                console.log(1);
-            });
+
             $('.js-addEditBtn').addEdit({
                 debug: true,
                 amount: 1,

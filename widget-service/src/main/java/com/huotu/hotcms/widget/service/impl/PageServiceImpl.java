@@ -123,7 +123,7 @@ public class PageServiceImpl implements PageService {
     @Override
     public void generateHTML(Writer writer, PageInfo page, CMSContext context) throws IOException {
         Layout[] layouts = layoutsForUse(page.getLayout());
-        writer.append("<div class=\"container\">");
+        writer.append("<div>");
         for (PageElement element : layouts) {
             writer.append("<div class=\"row\">");
             widgetResolveService.pageElementHTML(element, context, writer);
@@ -209,7 +209,7 @@ public class PageServiceImpl implements PageService {
     @Override
     public PageInfo getClosestContentPage(Category category, String path) throws PageNotFoundException {
         PageInfo pageInfo = pageInfoRepository.findByPagePath(path);
-        if (pageInfo != null && category.getId().equals(pageInfo.getCategory().getId())) {
+        if (pageInfo != null && pageInfo.getCategory() != null && category.getId().equals(pageInfo.getCategory().getId())) {
             return pageInfo;
         }
         List<PageInfo> pageInfos = pageInfoRepository.findByCategory(category);

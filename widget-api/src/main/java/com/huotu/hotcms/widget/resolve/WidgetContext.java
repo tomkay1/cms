@@ -88,8 +88,9 @@ public class WidgetContext extends WebEngineContext {
         }
         if (component != null) {
             variables.put("componentId", component.getId());
+        } else {
+            variables.put("componentId", "");
         }
-
         // "thymeleaf::EvaluationContext" ->
         // "springMacroRequestContext" ->
         // "springRequestContext" ->
@@ -115,4 +116,6 @@ public class WidgetContext extends WebEngineContext {
         }
         return variables;
     }
+
+
 }

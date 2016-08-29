@@ -62,6 +62,7 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
     @Autowired
     private ResourceService resourceService;
 
+
     private void checkEngine() {
         if (widgetTemplateEngine == null) {
             widgetTemplateEngine = webApplicationContext.getBean("widgetTemplateEngine", SpringTemplateEngine.class);
@@ -116,9 +117,15 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
             String[] columns = layout.columns();
             PageElement[][] childPageElements = layout.getElementGroups();
             for (int i = 0, l = columns.length; i < l; i++) {
-                cmsContext.updateNextBootstrapLayoutColumn(Integer.parseInt(columns[i]));
-                className = cmsContext.getNextBootstrapClass();
-                writer.append("<div class=\"").append(className).append("\">");
+                if (Integer.parseInt(columns[i]) == 100) {
+                    writer.append("<div>");
+                } else if (Integer.parseInt(columns[i]) == 50) {
+                    writer.append("<div class=\"").append("container").append("\">");
+                } else {
+                    cmsContext.updateNextBootstrapLayoutColumn(Integer.parseInt(columns[i]));
+                    className = cmsContext.getNextBootstrapClass();
+                    writer.append("<div class=\"").append(className).append("\">");
+                }
                 if (childPageElements != null && childPageElements.length >= 0 && i < childPageElements.length) {
                     for (PageElement pageElement1 : childPageElements[i]) {
                         pageElementHTML(pageElement1, cmsContext, writer);
@@ -177,9 +184,11 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
             return;
         } else {
             Component component = (Component) element;
-            widget = component.getInstalledWidget().getWidget();
+            widget = component.getInstalledWidget() == null ? widgetLocateService.findWidget(component.getWidgetIdentity()).getWidget()
+                    : component.getInstalledWidget().getWidget();
+            WidgetStyle style = WidgetStyle.styleByID(widget, component.getStyleId());
             widgetContext = new WidgetContext(widgetTemplateEngine, context
-                    , widget, component.currentStyle(), webApplicationContext.getServletContext()
+                    , widget, style, webApplicationContext.getServletContext()
                     , component, component.getProperties());
         }
 

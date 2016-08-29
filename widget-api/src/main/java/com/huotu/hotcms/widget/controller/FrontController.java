@@ -28,6 +28,7 @@ import com.huotu.hotcms.widget.WidgetStyle;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.PageElement;
+import com.huotu.hotcms.widget.resolve.WidgetILinkBuilder;
 import com.huotu.hotcms.widget.service.PageService;
 import me.jiangcai.lib.resource.Resource;
 import me.jiangcai.lib.resource.service.ResourceService;
@@ -55,7 +56,6 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -223,7 +223,6 @@ public class FrontController implements FilterBehavioral {
     public ResponseEntity widgetEditor(@RequestBody String json) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         Map map = objectMapper.readValue(json, Map.class);
-//        String id = (String) map.get("id");
         String styleId = styleIdFromMap(map);
         String widgetIdentifier = (String) map.get("widgetIdentity");
         Map properties = (Map) map.get("properties");
@@ -297,12 +296,12 @@ public class FrontController implements FilterBehavioral {
             Set<Map.Entry<String, String[]>> set = map.entrySet();
             Map<String, Map<String, String>> parameters = map.isEmpty() ? null : new HashMap<>();
             for (Map.Entry<String, String[]> entry : set) {
-                String id_key[] = entry.getKey().split("-");
+                String id_key[] = entry.getKey().split(WidgetILinkBuilder.A);
                 if (parameters.containsKey(id_key[0])) {
-                    parameters.get(id_key[0]).put(id_key[1], Arrays.toString(entry.getValue()));
+                    parameters.get(id_key[0]).put(id_key[1], request.getParameter(entry.getKey()));
                 } else {
                     parameters.put(id_key[0], new HashMap<>());
-                    parameters.get(id_key[0]).put(id_key[1], Arrays.toString(entry.getValue()));
+                    parameters.get(id_key[0]).put(id_key[1], request.getParameter(entry.getKey()));
                 }
             }
             cmsContext.setParameters(parameters);

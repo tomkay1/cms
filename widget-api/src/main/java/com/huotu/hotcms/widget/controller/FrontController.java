@@ -297,6 +297,8 @@ public class FrontController implements FilterBehavioral {
             Map<String, Map<String, String>> parameters = map.isEmpty() ? null : new HashMap<>();
             for (Map.Entry<String, String[]> entry : set) {
                 String id_key[] = entry.getKey().split(WidgetILinkBuilder.A);
+                if (id_key.length != 2)
+                    continue;
                 if (parameters.containsKey(id_key[0])) {
                     parameters.get(id_key[0]).put(id_key[1], request.getParameter(entry.getKey()));
                 } else {

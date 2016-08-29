@@ -260,7 +260,9 @@ header .btn {
     background-color: #7cb147;
     border: 1px solid #ddd;
 }
-
+.edit .pageHTML .box .row:before {
+    display: none;
+}
 .edit .pageHTML .column:after {
     padding: 2px 4px;
     position: absolute;
@@ -317,6 +319,12 @@ header .btn {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+}
+.edit .pageHTML .box .row {
+    padding-top: 0;
+    margin: 0;
+    position: relative;
+    border: none;
 }
 .edit .pageHTML .row .copyright {
     background-color: transparent;
@@ -599,11 +607,30 @@ header .btn {
 #js-selectTable .checkboxBtn {
     display: none;
 }
-#js-selectTable .pictureBox img {
-    width: 60px;
-    height: 60px;
+#js-selectTable tr {
+    position: relative;
 }
-
+#js-selectTable .pictureSize {
+    padding: 0;
+    position: absolute;
+    left: 0;
+    bottom: 8px;
+    width: 100%;
+    text-align: center;
+}
+#js-selectTable .pictureSize span {
+    display: inline-block;
+    width: 69px;
+    height: 24px;
+    line-height: 24px;
+    background-color: rgba(0,0,0,.5);
+    border-radius: 4px;
+    color: #eee;
+}
+#js-selectTable .pictureBox img {
+    width: 58px;
+    height: 58px;
+}
 #js-selectTable .selected .pictureBox {
     position: relative;
     border: 1px solid #337ab7;

@@ -258,8 +258,6 @@ var Page = {
                 observeParents: true,
                 updateOnImagesReady : true
             });
-
-            $(".color-picker").bigColorpicker();
         });
         Page.draggable();
     },

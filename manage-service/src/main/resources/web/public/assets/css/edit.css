@@ -435,8 +435,46 @@ header .btn {
     border-top: none;
 }
 #configuration .conf-body .styles .swiper-slide {
+    position: relative;
     text-align: center;
 }
+#configuration .conf-body .styles .swiper-slide:hover .theme-thumb-magnifier {
+    display: block;
+}
+#configuration .conf-body .styles .swiper-slide.active img{
+    border: 1px solid #638d38;
+}
+#configuration .conf-body .styles .swiper-slide.active::after {
+    content: '\2714';
+    position: absolute;
+    top: 1px;
+    right: 24px;
+    width: 0;
+    height: 0;
+    color: #fff;
+    text-indent: 8px;
+    line-height: 8px;
+    border-style: solid;
+    border-width: 0 18px 18px 0;
+    border-color: transparent #638d38 transparent transparent;
+    z-index: 20;
+}
+#configuration .conf-body .styles .theme-thumb-magnifier {
+    position: absolute;
+    top: 0;
+    left: 24px;
+    display: block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 18px;
+    color: #fff;
+    background-color: rgba(0, 0, 0,.2);
+}
+#configuration .conf-body .styles .theme-thumb-magnifier:hover {
+    background-color: rgba(0, 0, 0,.5);
+}
+
 #configuration .conf-body .styles .swiper-button-prev {
     background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M0%2C22L22%2C0l2.1%2C2.1L4.2%2C22l19.9%2C19.9L22%2C44L0%2C22L0%2C22L0%2C22z'%20fill%3D'%23d8d8d8'%2F%3E%3C%2Fsvg%3E");
     left: 0;
@@ -463,6 +501,20 @@ header .btn {
     border: 1px solid #e8e8e8;
     border-top: none;
     overflow: hidden;
+}
+.borderBoxs .image-list-show {
+    float: left;
+    padding: 4px 4px 4px 38px;
+    margin-bottom: 10px;
+}
+.borderBoxs .image-list-show img {
+    width: 100px;
+    height: 75px;
+}
+.borderBoxs .image-list-show span {
+    display: inline-block;
+    width: 100px;
+    text-align: center;
 }
 #pageConf {
     padding-top: 20px;
@@ -515,9 +567,7 @@ header .btn {
     float: left;
     margin-right: 10px;
 }
-.changeStyle.active {
-    border: 1px solid #638d38;
-}
+
 /*Updata 2016.08.11*/
 .widgetListGroup {
     cursor: pointer;
@@ -675,4 +725,7 @@ div[id^="errorPlaceholder"] {
     color: #fff;
     font-weight: bold;
     background-color: #e02d19;
+}
+.edit .topnavbar-absolute {
+    position: relative;
 }

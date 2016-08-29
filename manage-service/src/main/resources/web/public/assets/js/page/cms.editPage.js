@@ -135,8 +135,8 @@ var editFunc = {
         $(".operate-buttons li").removeClass("active")
     },
     changeImgStyleActive: function (ele) {
-        $('img.changeStyle').removeClass('active');
-        ele.addClass('active');
+        $('img.changeStyle').parent().removeClass('active');
+        ele.parent().addClass('active');
     },
     handleJsIds: function (id) {
         editFunc.handleWidgetIds(id);
@@ -238,11 +238,13 @@ var Page = {
                 var div = $('<div class="swiper-slide"></div>');
                 var img = $('<img class="center-block changeStyle">');
                 var p = $('<p></p>');
+                var span = $('<span class="theme-thumb-magnifier"><b class="fa fa-search-plus" aria-hidden="true""></b></span>');
                 img.attr('src',val.thumbnail);
                 img.attr('data-styleid',val.id);
                 p.text(val.locallyName);
                 div.append(img);
                 div.append(p);
+                div.append(span);
                 child.find('.swiper-wrapper').append(div);
             });
             container.append(h3);
@@ -392,6 +394,15 @@ editPage.init = function () {
         $(this).parent().siblings().find('.group-content').slideUp();
     });
 
+    $('#configuration').on('click', '.theme-thumb-magnifier', function () {
+       var img = $(this).siblings('img').attr('src');
+        layer.open({
+            type: 1,
+            title: '预览图',
+            area: ['800px;', 'auto'], //宽高
+            content: '<img style="padding: 20px; max-width: 780px; margin: 0 auto; " src="'+ img +'">'
+        });
+    });
     editFunc.init();
     Page.init(initPath);
 };

@@ -16,6 +16,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by lhx on 2016/8/26.
@@ -288,15 +290,20 @@ public class WidgetILinkBuilder extends AbstractLinkBuilder {
          * templates, parameters, URL fragments...
          */
         StringBuilder linkBase = new StringBuilder();
-        for (String s : base.split("/")) {
-            if (!s.equals("") && s.startsWith("${") && s.endsWith("}")) {
-                s = s.replace("${", "");
-                s = s.replace("}", "");
-                linkBase.append(context.getVariable(s));
-            } else {
-                linkBase.append(s);
+        Pattern pattern = Pattern.compile("\\$\\{.*?\\}");
+        Matcher matcher = pattern.matcher(base);
+        if (matcher.find())
+            for (String s : base.split("/")) {
+                if (!s.equals("") && s.startsWith("${") && s.endsWith("}")) {
+                    s = s.replace("${", "");
+                    s = s.replace("}", "");
+                    linkBase.append(context.getVariable(s));
+                } else {
+                    linkBase.append(s);
+                }
             }
-        }
+        else
+            linkBase.append(base);
 
 
 //            String source = "/${http://www.afasdfasf}/jj/${http://www.afasdfasf}/jj/${http://www.afasdfasf}/jj/${http://www.afasdfasf}/jj";

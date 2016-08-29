@@ -7,12 +7,13 @@ import org.thymeleaf.context.IWebContext;
 import org.thymeleaf.exceptions.TemplateProcessingException;
 import org.thymeleaf.linkbuilder.AbstractLinkBuilder;
 import org.thymeleaf.util.Validate;
+import org.unbescape.uri.UriEscape;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,6 +23,12 @@ import java.util.Set;
 
 public class WidgetILinkBuilder extends AbstractLinkBuilder {
     private static final Log log = LogFactory.getLog(WidgetILinkBuilder.class);
+    private static final char URL_TEMPLATE_DELIMITER_PREFIX = '{';
+    private static final char URL_TEMPLATE_DELIMITER_SUFFIX = '}';
+    private static final String URL_TEMPLATE_DELIMITER_SEGMENT_PREFIX = "{/";
+    public static String A = "__";
+    public static String B = "=";
+
 
     public WidgetILinkBuilder() {
         super();
@@ -79,7 +86,141 @@ public class WidgetILinkBuilder extends AbstractLinkBuilder {
         return (linkBase.length() >= 2 && linkBase.charAt(0) == '~' && linkBase.charAt(1) == '/');
     }
 
-    public String buildLink(IExpressionContext context, String base, Map<String, Object> parameters) {
+    private static StringBuilder replaceTemplateParamsInBase(final StringBuilder linkBase, final Map<String, Object> parameters) {
+
+        /*
+         * If parameters is null, there's nothing to do
+         */
+        if (parameters == null) {
+            return linkBase;
+        }
+
+        /*
+         * Search {templateVar} in linkBase, and replace with value.
+         * Parameters can be multivalued, in which case they will be comma-separated.
+         * Parameter values will be URL-path-encoded. If there is a '?' char, only parameter values before this
+         * char will be URL-path-encoded, whereas parameters after it will be URL-query-encoded.
+         */
+
+        final int questionMarkPosition = findCharInSequence(linkBase, '?');
+
+        final Set<String> parameterNames = parameters.keySet();
+        Set<String> alreadyProcessedParameters = null;
+
+        for (final String parameterName : parameterNames) {
+
+            // We default to escaping as a path, not a path segment
+            boolean escapeAsPathSegment = false;
+
+            // We use the text repository in order to avoid the unnecessary creation of too many instances of the same string
+            String template = URL_TEMPLATE_DELIMITER_PREFIX + parameterName + URL_TEMPLATE_DELIMITER_SUFFIX;
+
+            int templateIndex = linkBase.indexOf(template); // not great, because StringBuilder.indexOf ends up calling template.toCharArray(), but...
+
+            if (templateIndex < 0) {
+                template = URL_TEMPLATE_DELIMITER_SEGMENT_PREFIX + parameterName + URL_TEMPLATE_DELIMITER_SUFFIX;
+                templateIndex = linkBase.indexOf(template);
+
+                if (templateIndex < 0) {
+                    // This parameter is not one of those used in path variables
+                    continue;
+                }
+
+                // We need to escape this parameter value as a path segment rather than a path
+                escapeAsPathSegment = true;
+            }
+
+            // Add the parameter name to the set of processed ones so that it is later removed from the parameters object
+            if (alreadyProcessedParameters == null) {
+                alreadyProcessedParameters = new HashSet<>(parameterNames.size());
+            }
+            alreadyProcessedParameters.add(parameterName);
+
+            // Compute the replacement (unescaped!)
+            final Object parameterValue = parameters.get(parameterName);
+            final String templateReplacement = formatParameterValueAsUnescapedVariableTemplate(parameterValue);
+            final int templateReplacementLen = templateReplacement.length();
+
+            // We will now use a the StringBuilder itself for replacing all appearances of the variable template in
+            // the link base. Note we do this instead of using String#replace() because String#replace internally uses
+            // pattern matching and is very slow :-(
+            final int templateLen = template.length();
+            int start = templateIndex;
+            while (start > -1) {
+                // Depending on whether the template appeared before or after the ?, we will apply different escaping
+                final String escapedReplacement =
+                        (questionMarkPosition == -1 || start < questionMarkPosition ?
+                                (escapeAsPathSegment ? UriEscape.escapeUriPathSegment(templateReplacement) : UriEscape.escapeUriPath(templateReplacement))
+                                : UriEscape.escapeUriQueryParam(templateReplacement));
+                linkBase.replace(start, start + templateLen, escapedReplacement);
+                start = linkBase.indexOf(template, start + templateReplacementLen);
+            }
+
+        }
+
+        if (alreadyProcessedParameters != null) {
+            alreadyProcessedParameters.forEach(parameters::remove);
+        }
+
+        return linkBase;
+
+    }
+
+
+    /*
+     * This method will return a String containing all the values for a specific parameter, separated with commas
+     * and suitable therefore to be used as variable template (path variables) replacements
+     */
+    private static String formatParameterValueAsUnescapedVariableTemplate(final Object parameterValue) {
+        // Get the value
+        if (parameterValue == null) { // If null (= NO_VALUE), empty String
+            return "";
+        }
+        // If it is not multivalued (e.g. non-List) simply escape and return
+        if (!(parameterValue instanceof List<?>)) {
+            return parameterValue.toString();
+        }
+        // It is multivalued, so iterate and escape each item (no need to escape the comma separating them, it's an allowed char)
+        final List<?> values = (List<?>) parameterValue;
+        final int valuesLen = values.size();
+        final StringBuilder strBuilder = new StringBuilder(valuesLen * 16);
+        for (int i = 0; i < valuesLen; i++) {
+            final Object valueItem = values.get(i);
+            if (strBuilder.length() > 0) {
+                strBuilder.append(',');
+            }
+            strBuilder.append(valueItem == null ? "" : valueItem.toString());
+        }
+        return strBuilder.toString();
+    }
+
+
+    private static void processAllRemainingParametersAsQueryParams(final StringBuilder strBuilder, final Map<String, Object> parameters, IExpressionContext context) {
+
+        final int parameterSize = parameters.size();
+
+        if (parameterSize <= 0) {
+            return;
+        }
+        final Set<String> parameterNames = parameters.keySet();
+        String componentId = (String) context.getVariable("componentId");
+        int i = 0;
+        for (final String parameterName : parameterNames) {
+            final Object value = parameters.get(parameterName);
+            if (i > 0) {
+                strBuilder.append("&");
+            }
+            strBuilder.append(componentId).append(A)
+                    .append(parameterName).append(B)
+                    .append(value);
+            i++;
+        }
+
+    }
+
+    public final String buildLink(
+            final IExpressionContext context, final String base, final Map<String, Object> parameters) {
+
         Validate.notNull(context, "Expression context cannot be null");
         if (base == null) {
             return null;
@@ -98,42 +239,152 @@ public class WidgetILinkBuilder extends AbstractLinkBuilder {
         } else {
             linkType = LinkType.BASE_RELATIVE;
         }
+        if (base.matches("\\$\\{.*\\}")) {
+            base.substring(base.lastIndexOf("${", 0));
+        }
 
+
+        /*
+         * Compute URL fragments (selectors after '#') so that they can be output at the end of
+         * the URL, after parameters.
+         */
         final int hashPosition = findCharInSequence(base, '#');
 
+
+
+
+        /*
+         * Compute whether we might have variable templates (e.g. Spring Path Variables) inside this link base
+         * that we might need to resolve afterwards
+         */
+        final boolean mightHaveVariableTemplates = findCharInSequence(base, URL_TEMPLATE_DELIMITER_PREFIX) >= 0;
+
+
+        /*
+         * Precompute the context path, so that it can be afterwards used for determining if it has to be added to the
+         * URL (in case it is context-relative) or not.
+         *
+         * Note we give subclasses the opportunity to customize the computation of this context path.
+         */
         final String contextPath =
-                (linkType == LinkType.CONTEXT_RELATIVE ? computeContextPath(context, base, parameters) : null);
+                (linkType == LinkType.CONTEXT_RELATIVE ? computeContextPath(context, base) : null);
         final boolean contextPathEmpty = contextPath == null || contextPath.length() == 0 || contextPath.equals("/");
+
+
+        /*
+         * SHORTCUT - just before starting to work with StringBuilders, and in the case that we know: 1. That the URL is
+         *            absolute, relative or context-relative with no context; 2. That there are no parameters; and
+         *            3. That there are no URL fragments -> then just return the base URL String without further
+         *            processing (except HttpServletResponse-encoding if needed, of course...)
+         */
         if (contextPathEmpty && linkType != LinkType.SERVER_RELATIVE &&
-                (linkParameters == null || linkParameters.size() == 0) && hashPosition < 0) {
+                (linkParameters == null || linkParameters.size() == 0) && hashPosition < 0 && !mightHaveVariableTemplates) {
             return processLink(context, base);
         }
 
-        // c-id=1&c-name=2
-        String componentId = (String) context.getVariable("componentId");
-        StringBuilder stringBuilder = new StringBuilder();
-        if (parameters != null && parameters.size() > 0) {
-            stringBuilder.append(contextPath);
-            stringBuilder.append(base).append("?");
-            Set<Map.Entry<String, Object>> entrys = linkParameters.entrySet();
-            for (Map.Entry entry : entrys) {
-                stringBuilder.append(componentId).append("-")
-                        .append(entry.getKey()).append("=")
-                        .append(entry.getValue()).append("&");
 
+        /*
+         * Build the StringBuilder that will be used as a base for all URL-related operations from now on: variable
+         * templates, parameters, URL fragments...
+         */
+        StringBuilder linkBase = new StringBuilder();
+        for (String s : base.split("/")) {
+            if (!s.equals("") && s.startsWith("${") && s.endsWith("}")) {
+                s = s.replace("${", "");
+                s = s.replace("}", "");
+                linkBase.append(context.getVariable(s));
+            } else {
+                linkBase.append(s);
             }
-        } else {
-            stringBuilder.append(contextPath);
-            stringBuilder.append(base);
         }
 
-        String url = stringBuilder.toString();
-        url = url.substring(0, url.length() - 1);
-        try {
-            return URLEncoder.encode(url, "utf-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new IllegalArgumentException(e);
+
+//            String source = "/${http://www.afasdfasf}/jj/${http://www.afasdfasf}/jj/${http://www.afasdfasf}/jj/${http://www.afasdfasf}/jj";
+//            String patten = "\\$\\{.*?\\}";
+//
+//            Pattern r = Pattern.compile(patten);
+//            Matcher m = r.matcher(source);
+//
+//            while (m.find()) {
+//                System.out.println(source.substring(m.start() + 2, m.end() - 1));
+//            }
+
+        /*
+         * Compute URL fragments (selectors after '#') so that they can be output at the end of
+         * the URL, after parameters.
+         */
+        String urlFragment = "";
+        // If hash position == 0 we will not consider it as marking an
+        // URL fragment.
+        if (hashPosition > 0) {
+            // URL fragment String will include the # sign
+            urlFragment = linkBase.substring(hashPosition);
+            linkBase.delete(hashPosition, linkBase.length());
         }
+
+
+        /*
+         * Replace those variable templates that might appear referenced in the path itself, as for example, Spring
+         * "Path Variables" (e.g. '/something/{variable}/othersomething')
+         */
+        if (mightHaveVariableTemplates) {
+            linkBase = replaceTemplateParamsInBase(linkBase, linkParameters);
+        }
+
+
+        /*
+         * Process parameters (those that have not already been processed as a result of replacing template
+         * parameters in base).
+         */
+        if (linkParameters != null && linkParameters.size() > 0) {
+
+            final boolean linkBaseHasQuestionMark = findCharInSequence(linkBase, '?') >= 0;
+
+            // If there is no '?' in linkBase, we have to replace with first '&' with '?'
+            if (linkBaseHasQuestionMark) {
+                linkBase.append('&');
+            } else {
+                linkBase.append('?');
+            }
+
+            // Build the parameters query. The result will always start with '&'
+            processAllRemainingParametersAsQueryParams(linkBase, linkParameters, context);
+
+        }
+
+
+        /*
+         * Once parameters have been added (if there are parameters), we can add the URL fragment
+         */
+        if (urlFragment.length() > 0) {
+            linkBase.append(urlFragment);
+        }
+
+
+        /*
+         * If link base is server relative, we will delete now the leading '~' character so that it starts with '/'
+         */
+        if (linkType == LinkType.SERVER_RELATIVE) {
+            linkBase.delete(0, 1);
+        }
+
+
+        /*
+         * It's finally a good moment to insert the context path if it is not empty
+         */
+        if (linkType == LinkType.CONTEXT_RELATIVE && !contextPathEmpty) {
+            // Add the application's context path at the beginning
+            linkBase.insert(0, contextPath);
+        }
+
+
+        /*
+         * Return the link, first performing the last processing on it. This will normally perform a standard
+         * HttpServletResponse.encodeUrl(...) operation on it, but will give any subclasses the opportunity to
+         * customize this behaviour (in case, for instance, they don't want to rely on the Java Servlet API).
+         */
+        return processLink(context, linkBase.toString());
+
     }
 
     /**
@@ -152,19 +403,19 @@ public class WidgetILinkBuilder extends AbstractLinkBuilder {
      * contexts).
      * </p>
      *
-     * @param context    the execution context.
-     * @param base       the URL base specified.
-     * @param parameters the URL parameters specified.
+     * @param context the execution context.
+     * @param base    the URL base specified.
      * @return the context path.
      */
     protected String computeContextPath(
-            final IExpressionContext context, final String base, final Map<String, Object> parameters) {
+            final IExpressionContext context, final String base) {
 
         if (!(context instanceof IWebContext)) {
             throw new TemplateProcessingException(
                     "Link base \"" + base + "\" cannot be context relative (/...) unless the context " +
                             "used for executing the engine implements the " + IWebContext.class.getName() + " interface");
         }
+
         // If it is context-relative, it has to be a web context
         final HttpServletRequest request = ((IWebContext) context).getRequest();
         return request.getContextPath();
@@ -190,9 +441,11 @@ public class WidgetILinkBuilder extends AbstractLinkBuilder {
      * @return the processed URL, ready to be used.
      */
     protected String processLink(final IExpressionContext context, final String link) {
+
         if (!(context instanceof IWebContext)) {
             return link;
         }
+
         final HttpServletResponse response = ((IWebContext) context).getResponse();
         return (response != null ? response.encodeURL(link) : link);
 
@@ -200,6 +453,5 @@ public class WidgetILinkBuilder extends AbstractLinkBuilder {
 
 
     protected enum LinkType {ABSOLUTE, CONTEXT_RELATIVE, SERVER_RELATIVE, BASE_RELATIVE}
-
 
 }

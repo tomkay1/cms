@@ -78,4 +78,6 @@ public class CommonService {
             resourceService.deleteResource(path);
         }
     }
+
+
 }

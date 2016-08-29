@@ -97,11 +97,13 @@ public class PageController {
         PageModel pageModel = new PageModel();
         pageModel.setPageIdentity(pageInfo.getId());
         pageModel.setTitle(pageInfo.getTitle());
-        // 要给它设置previewHTML
-        for (Layout layout : pageInfo.getLayout().getRoot()) {
-            toModel(layout);
+        if (pageInfo.getLayout() != null) {
+            // 要给它设置previewHTML
+            for (Layout layout : pageInfo.getLayout().getRoot()) {
+                toModel(layout);
+            }
+            pageModel.setRoot(pageInfo.getLayout().getRoot());
         }
-        pageModel.setRoot(pageInfo.getLayout().getRoot());
         return pageModel;
     }
 

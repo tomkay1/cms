@@ -1,13 +1,38 @@
 <div class="borderBoxs">
-    <div class="form-group">
-        <label class="col-sm-3 control-label">文字颜色</label>
-        <div class="col-sm-3">
-            <input type="text" class="form-control color-picker" data-type="textColor" value="#ff0000"/>
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-3 control-label" >文章数据源：</label>
+            <div class="col-sm-3">
+                <select class="form-control category" name="categoryId">
+                    <option></option>
+                </select>
+            </div>
+            <label class="col-sm-3 control-label">展示条数：</label>
+            <div class="col-sm-3">
+                <input class="form-control size" type="number" name="size" />
+            </div>
         </div>
-        <label class="col-sm-3 control-label">背景颜色</label>
-        <div class="col-sm-3">
-            <input type="text" class="form-control color-picker" data-type="backgroundColor" value="#ff00ff"/>
-        </div>
-    </div>
-    <button class="js-addEditBtn btn btn-default" type="button"><i class="fa fa-plus-circle" aria-hidden="true"></i>添加数据</button>
+    </form>
+    <ul class="list-unstyled clearfix">
+        <li class="image-list-show">
+            <img src="http://placehold.it/1920x108?text=1">
+            <span>1920x108</span>
+        </li>
+        <li class="image-list-show">
+            <img src="http://placehold.it/700x908?text=2">
+            <span>700x908</span>
+        </li>
+        <li class="image-list-show">
+            <img src="http://placehold.it/620x58?text=3">
+            <span>620x58</span>
+        </li>
+        <li class="image-list-show">
+            <img src="http://placehold.it/300x508?text=4">
+            <span>300x508</span>
+        </li>
+        <li class="image-list-show">
+            <img src="http://placehold.it/1020x308?text=5">
+            <span>1020x308</span>
+        </li>
+    </ul>
 </div>

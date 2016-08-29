@@ -695,9 +695,6 @@ a:link, a:visited, a:hover, a:active {
     }
 }
 @media (min-width: 768px) {
-    .information-list .information-list-right {
-        min-height: 818px;
-    }
     .information-list .information-list-right-header h3 {
         margin-top: 24px;
         margin-right: 24px;

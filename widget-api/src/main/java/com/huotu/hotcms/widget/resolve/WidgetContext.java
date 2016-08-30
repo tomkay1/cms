@@ -91,6 +91,8 @@ public class WidgetContext extends WebEngineContext {
         } else {
             variables.put("componentId", "");
         }
+        variables.put("activePagePath", CMSContext.RequestContext().getCurrentPage() != null
+                ? CMSContext.RequestContext().getCurrentPage().getPagePath() : "");
         // "thymeleaf::EvaluationContext" ->
         // "springMacroRequestContext" ->
         // "springRequestContext" ->

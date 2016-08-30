@@ -10,16 +10,22 @@
 package com.huotu.hotcms.widget.service.impl;
 
 import com.huotu.hotcms.service.common.ContentType;
+import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.LinkModel;
+import com.huotu.hotcms.service.repository.ArticleRepository;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.service.CMSDataSourceService;
 import com.huotu.hotcms.widget.test.TestBase;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
@@ -38,6 +44,9 @@ public class CMSDataSourceServiceTest extends TestBase {
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private CMSDataSourceService cmsDataSourceService;
+
+    @Autowired
+    private ArticleRepository articleRepository;
     @Autowired(required = false)
     private HttpServletResponse response;
 
@@ -77,6 +86,16 @@ public class CMSDataSourceServiceTest extends TestBase {
 
         assertThat(cmsDataSourceService.findLinkContent(category.getSerial()))
                 .containsAll(linkModelList);
+    }
+
+    @Test
+    public void test() {
+        Sort sort = new Sort(Sort.Direction.ASC, "id");
+
+        Pageable pageable = new PageRequest(0, 10, sort);
+        Page<Article> page = articleRepository.findByCategory_SiteAndCategory_Serial(
+                CMSContext.RequestContext().getSite(), "a8d01cd9e52d4730a58d0ad7c85dfc62", pageable);
+
     }
 
 

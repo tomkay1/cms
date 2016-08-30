@@ -151,8 +151,12 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
         if (count <= 0)
             count = 10;
         Pageable pageable = new PageRequest(pageNum - 1, count, sort);
-        Page<Article> page = articleRepository.findByCategory_SiteAndCategory_Serial(
-                CMSContext.RequestContext().getSite(), serial, pageable);
+        Specification<Article> spec = (root, query, cb) -> {
+            Predicate predicates = cb.equal(root.get("category").get("site"), CMSContext.RequestContext().getSite());
+            predicates = cb.and(predicates, cb.equal(root.get("category").get("serial"), serial));
+            return predicates;
+        };
+        Page<Article> page = articleRepository.findAll(spec, pageable);
         return page;
     }
 

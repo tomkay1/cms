@@ -34,6 +34,8 @@
                 </div><!-- panel-btns -->
                 <h3 class="panel-title">新建网站</h3>
                 <p>为当前商户添加一个新网站</p>
+                <p th:if="${@environment.getProperty('com.huotu.cms.cname.host')!=null}">
+                    将一个新域名添加到系统以后需要将域名的CNAME记录目标调整为[[${@environment.getProperty('com.huotu.cms.cname.host')}]]</p>
             </div>
             <div class="panel-body">
                 <div class="form-horizontal form-bordered">

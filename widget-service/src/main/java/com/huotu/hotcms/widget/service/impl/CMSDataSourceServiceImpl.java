@@ -151,7 +151,7 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
         if (count <= 0)
             count = 10;
         Pageable pageable = new PageRequest(pageNum - 1, count, sort);
-        Page page = articleRepository.findByCategory_SiteAndCategory_Serial(
+        Page<Article> page = articleRepository.findByCategory_SiteAndCategory_Serial(
                 CMSContext.RequestContext().getSite(), serial, pageable);
         return page;
     }
@@ -354,5 +354,6 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
 //            data[i] = dataObject;
 //        }
 //    }
+
 
 }

@@ -241,9 +241,6 @@ public class WidgetILinkBuilder extends AbstractLinkBuilder {
         } else {
             linkType = LinkType.BASE_RELATIVE;
         }
-        if (base.matches("\\$\\{.*\\}")) {
-            base.substring(base.lastIndexOf("${", 0));
-        }
 
 
         /*

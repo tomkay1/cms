@@ -59,6 +59,7 @@ public class GalleryItem extends AbstractContent implements Auditable, ImagesOwn
         galleryItemModel.setThumbUri(galleryItem.getThumbUri());
         galleryItemModel.setName(galleryItem.getTitle());
         galleryItemModel.setOrderWeight(galleryItem.getOrderWeight());
+        galleryItemModel.setSize(galleryItem.getSize());
         return galleryItemModel;
     }
 

@@ -12,5 +12,6 @@ public class GalleryItemModel {
     private Long id;
     private String thumbUri;
     private String name;
+    private String size;
     private int orderWeight;
 }

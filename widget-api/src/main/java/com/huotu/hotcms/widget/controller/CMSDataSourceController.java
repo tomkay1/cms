@@ -14,6 +14,7 @@ import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.GalleryItem;
 import com.huotu.hotcms.service.model.BaseModel;
+import com.huotu.hotcms.service.model.GalleryItemModel;
 import com.huotu.hotcms.service.model.LinkModel;
 import com.huotu.hotcms.service.model.widget.VideoModel;
 import com.huotu.hotcms.widget.service.CMSDataSourceService;
@@ -96,6 +97,19 @@ public class CMSDataSourceController {
         return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(data);
     }
 
+    /**
+     * 查询指定图库的图库内容（图片）
+     *
+     * @param size          条数
+     * @param gallerySerial 图库serial
+     * @return json 返回第一页（图片）
+     */
+    @RequestMapping(value = "/findGalleryItem", method = RequestMethod.GET)
+    public ResponseEntity findGalleryItem(String gallerySerial, int size) {
+        List<GalleryItemModel> data = cmsDataSourceService.findGalleryItems(gallerySerial, size);
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(data);
+    }
+
 
     /**
      * 查询当前站点下数据内容列表
@@ -108,7 +122,7 @@ public class CMSDataSourceController {
      */
     @RequestMapping(value = "/findContentType", method = RequestMethod.GET)
     public ResponseEntity findContentType(ContentType contentType, int draw, int length
-            , @RequestParam(value = "search[value]") String search) throws IOException {
+            , @RequestParam(value = "search[value]", required = false) String search) throws IOException {
         // 数据源列表
         Pageable pageable = new PageRequest(draw - 1, length, new Sort(Sort.Direction.ASC, "id"));
         Page<? extends AbstractContent> page = cmsDataSourceService.findContent(contentType, pageable, search);

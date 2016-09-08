@@ -13,6 +13,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.Gallery;
+import com.huotu.hotcms.service.entity.GalleryItem;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.Video;
@@ -102,6 +104,34 @@ public class CMSDataSourceControllerTest extends TestBase {
         Video video = randomVideo(category);
 
         mockMvc.perform(get("/dataSource/findVideoContent/{serial}", String.valueOf(category.getSerial()))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(1));
+    }
+
+    @Test
+    public void testFindGalleryItemContent() throws Exception {
+        Site site = siteRepository.findByRecommendDomain("localhost");
+        Category category = randomCategory(site, ContentType.Gallery);
+
+
+        mockMvc.perform(get("/dataSource/findGalleryItem")
+                .param("gallerySerial", category.getSerial())
+                .param("size", "10")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(0))
+        ;
+        category.setSerial("444777");
+        category = categoryRepository.saveAndFlush(category);
+        Gallery gallery = randomGallery(category);
+        GalleryItem galleryItem = randomGalleryItem(gallery);
+
+        mockMvc.perform(get("/dataSource/findGalleryItem")
+                .param("gallerySerial", category.getSerial())
+                .param("size", "10")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())

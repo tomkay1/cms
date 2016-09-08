@@ -109,6 +109,11 @@ public class WidgetInfoController
     protected WidgetInfo preparePersist(HttpServletRequest request, Login login, WidgetInfo data, Void extra
             , RedirectAttributes attributes) throws RedirectException {
 
+        if (!environment.acceptsProfiles("test") && !environment.acceptsProfiles("development")
+                && data.getVersion().endsWith("SNAPSHOT")) {
+            throw new RedirectException("/manage/widget", "无法在本系统挂载测试控件。");
+        }
+
         if (widgetInfoRepository.findOne(data.getIdentifier()) != null)
             throw new RedirectException("/manage/widget", "这个控件已存在。");
 

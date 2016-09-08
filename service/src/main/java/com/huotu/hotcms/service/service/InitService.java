@@ -76,42 +76,42 @@ public class InitService {
             }
         });
 
-        if (environment.acceptsProfiles("test")) {
-            // 应当构造 localhost host for localhost site
-            Owner owner = ownerRepository.findByCustomerId(3447);
-            if (owner == null) {
-                owner = new Owner();
-                owner.setCustomerId(3447);
-                owner.setEnabled(true);
-                owner = ownerRepository.save(owner);
-            }
-            Host host = hostRepository.findByDomain("localhost");
-            if (host == null || siteRepository.count() == 0) {
-                Site site = new Site();
-                site.setOwner(owner);
-                site.setCreateTime(LocalDateTime.now());
-                site.setName("本地站点");
-                site.setTitle("标题是什么");
-                site.setSiteType(SiteType.SITE_PC_WEBSITE);
-
-                siteService.newSite(new String[]{"localhost", "cms." + configService.getMallDomain()}, "localhost", site
-                        , Locale.CHINA);
-
-                host = hostRepository.findByDomain("localhost");
-                host.setRemarks("本地开发所用的host");
-                host = hostRepository.save(host);
-            }
-
-            host = hostRepository.findByDomain("cms." + configService.getMallDomain());
-            if (host == null) {
-                // 先找站点
-                Site site = siteService.closestSite(hostRepository.findByDomain("localhost"), Locale.CHINA);
-
-                siteService.patchSite(new String[]{"localhost", "cms." + configService.getMallDomain()}, "localhost"
-                        , site, Locale.CHINA);
-            }
-
+//        if (environment.acceptsProfiles("test")) {
+        // 应当构造 localhost host for localhost site
+        Owner owner = ownerRepository.findByCustomerId(3447);
+        if (owner == null) {
+            owner = new Owner();
+            owner.setCustomerId(3447);
+            owner.setEnabled(true);
+            owner = ownerRepository.save(owner);
         }
+        Host host = hostRepository.findByDomain("localhost");
+        if (host == null || siteRepository.count() == 0) {
+            Site site = new Site();
+            site.setOwner(owner);
+            site.setCreateTime(LocalDateTime.now());
+            site.setName("本地站点");
+            site.setTitle("标题是什么");
+            site.setSiteType(SiteType.SITE_PC_WEBSITE);
+
+            siteService.newSite(new String[]{"localhost", "cms." + configService.getMallDomain()}, "localhost", site
+                    , Locale.CHINA);
+
+            host = hostRepository.findByDomain("localhost");
+            host.setRemarks("本地开发所用的host");
+            host = hostRepository.save(host);
+        }
+
+        host = hostRepository.findByDomain("cms." + configService.getMallDomain());
+        if (host == null) {
+            // 先找站点
+            Site site = siteService.closestSite(hostRepository.findByDomain("localhost"), Locale.CHINA);
+
+            siteService.patchSite(new String[]{"localhost", "cms." + configService.getMallDomain()}, "localhost"
+                    , site, Locale.CHINA);
+        }
+
+//        }
     }
 
 }

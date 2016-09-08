@@ -14,6 +14,7 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.service.ConfigInfo;
 import com.huotu.hotcms.service.service.SiteService;
+import com.huotu.hotcms.widget.CMSContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -42,6 +43,16 @@ public class ManageInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        Authentication authentication = securityService.currentAuthentication(request, response);
+        if (authentication != null && authentication.getPrincipal() != null) {
+            Login login = (Login) authentication.getPrincipal();
+            if (login.currentSiteId() != null) {
+                Site site = siteService.getSite(login.currentSiteId());
+                CMSContext.RequestContext().setSite(site);
+                CMSContext.RequestContext().setLocale(site.getRegion() == null ? request.getLocale()
+                        : site.getRegion().getLocale());
+            }
+        }
         return true;
     }
 

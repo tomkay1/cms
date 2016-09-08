@@ -63,10 +63,11 @@ public class WidgetContext extends WebEngineContext {
     public WidgetContext(SpringTemplateEngine engine, CMSContext context, Widget widget, WidgetStyle style
             , ServletContext servletContext, Component component, ComponentProperties properties) {
         // 某些属性需要传染下去 比如来自CMSContext
-        super(new WidgetConfiguration(engine.getConfiguration(), widget, style)
+        super(new WidgetConfiguration(engine.getConfiguration(), widget, style == null ? widget.styles()[0] : style)
                 , null, null
                 , context.getRequest(), context.getResponse(), servletContext
-                , context.getLocale(), FromComponentProperties(context, widget, style, properties, component));
+                , context.getLocale(), FromComponentProperties(context, widget
+                        , style == null ? widget.styles()[0] : style, properties, component));
     }
 
     private static Map<String, Object> FromComponentProperties(CMSContext context, Widget widget, WidgetStyle style

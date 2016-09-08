@@ -57,7 +57,7 @@ public class WidgetConfiguration implements IEngineConfiguration {
     private final WidgetStyle style;
     private CSSSerializer cssSerializer = new CSSSerializer();
 
-    public WidgetConfiguration(IEngineConfiguration configuration, Widget widget, WidgetStyle style) {
+    WidgetConfiguration(IEngineConfiguration configuration, Widget widget, WidgetStyle style) {
         this.configuration = configuration;
         this.widget = widget;
         this.style = style;

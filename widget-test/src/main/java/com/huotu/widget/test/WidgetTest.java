@@ -368,14 +368,14 @@ public abstract class WidgetTest extends SpringWebTest {
                 .as("必须拥有缩略图")
                 .isTrue();
         //图片资源必须是 106x82 png
-        try {
-            BufferedImage thumbnail = ImageIO.read(widget.thumbnail().getInputStream());
-            assertThat((float) thumbnail.getWidth() / (float) thumbnail.getHeight())
-                    .as("缩略图必须为106*82的PNG图片")
-                    .isEqualTo(106f / 82f);
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
+//        try {
+//            BufferedImage thumbnail = ImageIO.read(widget.thumbnail().getInputStream());
+//            assertThat((float) thumbnail.getWidth() / (float) thumbnail.getHeight())
+//                    .as("缩略图必须为106*82的PNG图片")
+//                    .isEqualTo(106f / 82f);
+//        } catch (IOException ex) {
+//            throw new RuntimeException(ex);
+//        }
 
         // 现在检查编辑器
     }
@@ -435,7 +435,6 @@ public abstract class WidgetTest extends SpringWebTest {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-
         // 现在检查编辑器
     }
 

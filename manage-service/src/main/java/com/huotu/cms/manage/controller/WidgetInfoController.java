@@ -186,7 +186,6 @@ public class WidgetInfoController
             throw new AccessDeniedException("");
         }
         List<InstalledWidget> installedWidgets = widgetFactoryService.widgetList(owner);
-
         List<WidgetModel> widgetModels = new ArrayList<>();
         for (InstalledWidget installedWidget : installedWidgets) {
             WidgetModel widgetModel = new WidgetModel();
@@ -197,7 +196,6 @@ public class WidgetInfoController
 //            widgetModel.setEditorHTML(widgetResolveService.editorHTML(widget, CMSContext.RequestContext(), null));
             widgetModel.setIdentity(Widget.WidgetIdentity(widget));
             widgetModel.setScriptHref(servletContext.getContextPath() + Widget.widgetJsResourceURI(widget));
-            widgetModel.setDefaultProperties(widget.defaultProperties(resourceService));
             widgetModel.setThumbnail(resourceService.getResource(Widget.thumbnailPath(widget)).httpUrl().toString());
             WidgetStyleModel[] widgetStyleModels = new WidgetStyleModel[widgetStyles.length];
 
@@ -209,6 +207,7 @@ public class WidgetInfoController
                         , widgetStyle)).httpUrl().toString());
                 widgetStyleModel.setLocallyName(widgetStyle.name(locale));
                 try {
+                    widgetModel.setDefaultProperties(widget.defaultProperties(resourceService));
                     widgetStyleModel.setPreviewHTML(widgetResolveService.previewHTML(widget, widgetStyle.id()
                             , CMSContext.RequestContext(), widget.defaultProperties(resourceService)));
                 } catch (IllegalStateException e) {

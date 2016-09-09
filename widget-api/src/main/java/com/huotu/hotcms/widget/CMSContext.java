@@ -65,8 +65,8 @@ public class CMSContext {
     private final WebApplicationContext webApplicationContext;
     private final HttpServletRequest request;
     private final HttpServletResponse response;
-    private final Site site;
-    private final Locale locale;
+    private Site site;
+    private Locale locale;
     /**
      * layout列比值
      */
@@ -109,7 +109,9 @@ public class CMSContext {
      */
     public static CMSContext PutContext(HttpServletRequest request, HttpServletResponse response, Site site) {
         CMSContext cmsContext = new CMSContext(WebApplicationContextUtils.findWebApplicationContext(request.getServletContext())
-                , request, response, site, site.getRegion() == null ? request.getLocale()
+                , request, response);
+        cmsContext.setSite(site);
+        cmsContext.setLocale(site.getRegion() == null ? request.getLocale()
                 : site.getRegion().getLocale());
         contexts.set(cmsContext);
         return cmsContext;

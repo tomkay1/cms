@@ -297,11 +297,16 @@ function uploadForm (obj) {
             layer.msg('上传失败，请稍后再说', {time: 2000});
         },
         deleteCallback: function (data, pd) {
-            $.post(deleteUrl, {op: "DELETE",path: data.path},
-                function (resp,textStatus, jqXHR) {
-                    // layer.msg('服务器错误，请稍后操作。', {time: 2000});
+            var DATA = {path: data.path};
+            $.ajax({
+                type: 'DELETE',
+                url: deleteUrl,
+                dataType: 'json',
+                data: JSON.stringify(DATA),
+                error: function (jqXHR, textStatus, errorThrown) {
+                    layer.msg('服务器错误，请稍后操作。', {time: 2000});
                 }
-            );
+            });
             pd.statusbar.hide();
         }
     });

@@ -302,6 +302,7 @@ function uploadForm (obj) {
                 url: deleteUrl,
                 data: {path : data.path, _method: 'DELETE'},
                 error: function (jqXHR, textStatus, errorThrown) {
+                    //等待处理
                     layer.msg('服务器错误，请稍后操作。', {time: 2000});
                 }
             });

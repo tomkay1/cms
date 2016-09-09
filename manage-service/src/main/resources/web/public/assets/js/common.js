@@ -298,9 +298,8 @@ function uploadForm (obj) {
         },
         deleteCallback: function (data, pd) {
             $.ajax({
-                type: 'POST',
-                url: deleteUrl,
-                data: {path : data.path, _method: 'DELETE'},
+                type: 'DELETE',
+                url: deleteUrl + "?path=" + data.path,
                 error: function (jqXHR, textStatus, errorThrown) {
                     //等待处理
                     layer.msg('服务器错误，请稍后操作。', {time: 2000});

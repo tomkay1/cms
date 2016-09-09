@@ -297,12 +297,10 @@ function uploadForm (obj) {
             layer.msg('上传失败，请稍后再说', {time: 2000});
         },
         deleteCallback: function (data, pd) {
-            var DATA = {path: data.path};
             $.ajax({
-                type: 'DELETE',
+                type: 'POST',
                 url: deleteUrl,
-                contentType: "application/json; charset=utf-8",
-                data: DATA,
+                data: {path : data.path, _method: 'DELETE'},
                 error: function (jqXHR, textStatus, errorThrown) {
                     layer.msg('服务器错误，请稍后操作。', {time: 2000});
                 }

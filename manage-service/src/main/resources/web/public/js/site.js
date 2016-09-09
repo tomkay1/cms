@@ -175,4 +175,8 @@ $(function () {
     }).on('mouseleave', function () {
         $(this).children('.site-preview').stop().fadeOut();
     });
+    
+    $('.js-site-add').click(function () {
+        
+    });
 });

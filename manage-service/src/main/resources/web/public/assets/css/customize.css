@@ -58,6 +58,12 @@ iframe{
     background: rgba(0, 0, 0, 0.8);
     text-align: center;
 }
+.site-add {
+    text-align: center;
+}
+.site-add a {
+    margin-top: 20px;
+}
 .ui-menu {
     color: #555;
     background-color: #fff;

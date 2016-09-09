@@ -301,7 +301,6 @@ function uploadForm (obj) {
             $.ajax({
                 type: 'DELETE',
                 url: deleteUrl,
-                contentType: "application/json; charset=utf-8",
                 data: DATA,
                 error: function (jqXHR, textStatus, errorThrown) {
                     layer.msg('服务器错误，请稍后操作。', {time: 2000});

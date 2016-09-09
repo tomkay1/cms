@@ -64,9 +64,15 @@ public class ManageInterceptor extends HandlerInterceptorAdapter {
             if (authentication != null && authentication.isAuthenticated()) {
                 modelAndView.addObject("mallManageUrl", configInfo.getMallManageUrl());
                 Login login = (Login) authentication.getPrincipal();
+
+                // 推荐站点
+                Site sitePreferences = null;
                 if (login.currentOwnerId() != null) {
                     Set<Site> siteSet = siteService.findByOwnerIdAndDeleted(login.currentOwnerId(), false);
                     modelAndView.addObject("siteSet", siteSet);
+                    if (siteSet.size() == 1) {
+                        sitePreferences = siteSet.stream().findAny().orElse(null);
+                    }
                 }
 
                 // 干嘛自动为用户设置?
@@ -77,6 +83,9 @@ public class ManageInterceptor extends HandlerInterceptorAdapter {
                     } else {
                         login.updateSiteId(null);
                     }
+                } else if (sitePreferences != null) {
+                    // 如果当前用户只有一个site
+                    modelAndView.addObject("manageSite", sitePreferences);
                 }
 
             }

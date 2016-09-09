@@ -53,8 +53,7 @@ public class ManageMainPage extends AbstractFrameParentPage {
         if (!siteList.isDisplayed()) {
             webDriver.findElement(By.cssSelector("button.site-dropdown")).click();
         }
-//        webDriver.get("http://localhost/manage/switch/" + site.getSiteId());
-//        webDriver.get("http://localhost/manage/main");
+
         for (WebElement link : siteList.findElements(By.cssSelector("a.siteSwitcher"))) {
             if (link.getText().contains(site.getName())) {
                 link.click();
@@ -62,6 +61,7 @@ public class ManageMainPage extends AbstractFrameParentPage {
                 return;
             }
         }
+        printThisPage();
         throw new IllegalStateException("页面上找不到站点" + site);
     }
 

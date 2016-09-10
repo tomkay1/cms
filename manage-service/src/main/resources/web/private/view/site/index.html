@@ -255,6 +255,38 @@
 <div ewp:replace="fragments/frame.html::#messageSection"></div>
 <script src="../../../public/bracket/js/frame.js" ewp:src="/bracket/js/frame.js"></script>
 <script src="../../../public/bracket/js/frame_custom.js" ewp:src="/bracket/js/frame_custom.js"></script>
+
+<div class="modal fade" id="siteSelector" tabindex="-1" role="dialog" aria-labelledby="siteSelectorLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="siteSelectorLabel">请选择操作站点</h4>
+            </div>
+            <div class="modal-body">
+                <p id="siteSelectorMsg">之前的操作需要确定站点才可以继续,请选择操作的站点。</p>
+                <!--/*@thymesVar id="siteSet" type="java.lang.Iterable<com.huotu.hotcms.service.entity.Site>"*/-->
+                <select class="form-control" name="site" title="操作站点">
+                    <option value="#" th:each="site:${siteSet}"
+                            th:value="@{/manage/main(site=${site.siteId})}"
+                            th:text="${site.name}">
+                        某站点
+                    </option>
+                    <option value="#" th:remove="all">某站点2</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">不了</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">好的</button>
+            </div>
+        </div><!-- modal-content -->
+    </div><!-- modal-dialog -->
+</div><!-- modal -->
+
+<script th:inline="javascript">
+    $.siteRequred = /*[[${siteRequired}]]*/ true;
+</script>
 <script src="../../../public/js/site.js" ewp:src="/js/site.js"></script>
 </body>
 </html>

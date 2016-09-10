@@ -11,6 +11,7 @@ package com.huotu.cms.manage.interceptor;
 
 import com.huotu.cms.manage.bracket.GritterUtils;
 import com.huotu.cms.manage.exception.RedirectException;
+import com.huotu.cms.manage.exception.SiteRequiredException;
 import com.huotu.hotcms.service.exception.PageNotFoundException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -38,5 +39,13 @@ public class ExceptionInterceptor {
         FlashMap map = RequestContextUtils.getOutputFlashMap(request);
         GritterUtils.AddFlashDanger(ex.getMessage(), map);
         return ex.redirectViewName();
+    }
+
+    @ExceptionHandler(SiteRequiredException.class)
+    public String siteRequiredException(SiteRequiredException ex, HttpServletRequest request) {
+        FlashMap map = RequestContextUtils.getOutputFlashMap(request);
+        GritterUtils.AddFlashDanger("请先选择一个站点,再进行操作", map);
+        map.put("siteRequired", true);
+        return "redirect:/manage/site";
     }
 }

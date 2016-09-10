@@ -76,7 +76,9 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
             GritterUtils.AddFlashSuccess("成功添加", attributes);
 
             return redirectIndexViewName();
-        } catch (RedirectException ex) {
+        } catch (IllegalArgumentException ex) {
+            throw new RedirectException(rootUri(), ex);
+        } catch (RuntimeException ex) {
             throw ex;
         } catch (Exception ex) {
             log.warn("Unknown Exception on Add", ex);
@@ -155,7 +157,9 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
             }
             jpaRepository.save(entity);
             GritterUtils.AddFlashSuccess("保存成功", attributes);
-        } catch (RedirectException ex) {
+        } catch (IllegalArgumentException ex) {
+            throw new RedirectException(rootUri(), ex);
+        } catch (RuntimeException ex) {
             throw ex;
         } catch (Exception ex) {
             log.info("unknown exception on save", ex);
@@ -174,7 +178,9 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
             else
                 model.addAttribute("list", jpaSpecificationExecutor.findAll(specification));
 
-        } catch (RedirectException ex) {
+        } catch (IllegalArgumentException ex) {
+            throw new RedirectException(rootUri(), ex);
+        } catch (RuntimeException ex) {
             throw ex;
         } catch (Exception ex) {
             log.info("unknown exception on index", ex);

@@ -10,6 +10,7 @@
 package com.huotu.cms.manage.controller.support;
 
 import com.huotu.cms.manage.exception.RedirectException;
+import com.huotu.cms.manage.exception.SiteRequiredException;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.service.SiteService;
@@ -42,7 +43,8 @@ public abstract class SiteManageController<T, ID extends Serializable, PD, MD> e
     private Site checkSite(Login login) throws RedirectException {
         Long siteId = login.currentSiteId();
         if (siteId == null) {
-            throw new RedirectException("/manage/site", "请先选择一个站点,再进行操作");
+            throw new SiteRequiredException();
+//            throw new RedirectException("/manage/site", "请先选择一个站点,再进行操作");
         }
         Site site = siteService.getSite(siteId);
         if (site == null || !login.siteManageable(site)) {

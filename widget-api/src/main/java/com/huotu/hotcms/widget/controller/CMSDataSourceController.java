@@ -109,8 +109,9 @@ public class CMSDataSourceController {
         List<GalleryItemModel> data = cmsDataSourceService.findGalleryItems(gallerySerial, size);
         try {
             for (GalleryItemModel galleryItemModel : data) {
-                galleryItemModel.setThumbUri(resourceService.getResource(galleryItemModel.getThumbUri()).httpUrl()
-                        .toURI().toString());
+                if (galleryItemModel.getThumbUri() != null && galleryItemModel.getThumbUri().equals(""))
+                    galleryItemModel.setThumbUri(resourceService.getResource(galleryItemModel.getThumbUri()).httpUrl()
+                            .toURI().toString());
             }
         } catch (URISyntaxException | IOException e) {
         }

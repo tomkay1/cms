@@ -41,8 +41,12 @@ CMSWidgets.initWidget({
         },
         initProperties: function () {
             this.properties.linkList = [];
-            $('#treeDemo').addTreeView({
-                debug: true
+            $('.js-addEditBtn').addEdit({
+                debug: true,
+                hasImage: true,
+                hasParagraph: true,
+                hasUrl: true,
+                hasTextArea: true
             });
         },
         open: function (globalId) {

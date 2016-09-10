@@ -63,6 +63,12 @@ iframe{
 }
 .site-add a {
     margin-top: 20px;
+    margin-bottom: 10px;
+}
+.site-add p {
+    color: #636e7b;
+    font-weight: bold;
+    font-size: 16px;
 }
 .ui-menu {
     color: #555;

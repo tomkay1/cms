@@ -110,11 +110,15 @@ public class CMSContext {
     public static CMSContext PutContext(HttpServletRequest request, HttpServletResponse response, Site site) {
         CMSContext cmsContext = new CMSContext(WebApplicationContextUtils.findWebApplicationContext(request.getServletContext())
                 , request, response);
-        cmsContext.setSite(site);
-        cmsContext.setLocale(site.getRegion() == null ? request.getLocale()
-                : site.getRegion().getLocale());
+        cmsContext.updateSite(site);
         contexts.set(cmsContext);
         return cmsContext;
+    }
+
+    public void updateSite(Site site) {
+        setSite(site);
+        setLocale(site.getRegion() == null ? request.getLocale()
+                : site.getRegion().getLocale());
     }
 
     /**

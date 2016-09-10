@@ -107,6 +107,13 @@ public class CMSDataSourceController {
     @RequestMapping(value = "/findGalleryItem", method = RequestMethod.GET)
     public ResponseEntity findGalleryItem(String gallerySerial, int size) {
         List<GalleryItemModel> data = cmsDataSourceService.findGalleryItems(gallerySerial, size);
+        try {
+            for (GalleryItemModel galleryItemModel : data) {
+                galleryItemModel.setThumbUri(resourceService.getResource(galleryItemModel.getThumbUri()).httpUrl()
+                        .toURI().toString());
+            }
+        } catch (URISyntaxException | IOException e) {
+        }
         return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/json")).body(data);
     }
 
@@ -138,7 +145,6 @@ public class CMSDataSourceController {
             data.put("serial", content.getSerial());
             data.put("date", content.getCreateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             if (content instanceof GalleryItem) {
-
                 try {
                     data.put("thumpUri", resourceService.getResource(((GalleryItem) content).getThumbUri()).httpUrl().toURI().toString());
                 } catch (URISyntaxException | IOException e) {

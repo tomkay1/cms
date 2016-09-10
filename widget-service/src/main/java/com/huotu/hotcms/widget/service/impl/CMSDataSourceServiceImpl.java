@@ -32,6 +32,7 @@ import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.repository.PageInfoRepository;
 import com.huotu.hotcms.widget.service.CMSDataSourceService;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -67,6 +68,9 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
 
     @Autowired
     private GalleryItemRepository galleryItemRepository;
+
+    @Autowired
+    private ResourceService resourceService;
 
 
     @Override

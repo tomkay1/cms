@@ -20,10 +20,12 @@ import com.huotu.hotcms.service.service.SiteService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -32,13 +34,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * 视图控制器
- *
- * @author xhl
- * @since 1.0.0
+ * 内容管理后台控制器
  */
 @Controller
-@RequestMapping("/manage/main")
+@RequestMapping("/manage")
 public class MainController {
 
     private static final Log log = LogFactory.getLog(MainController.class);
@@ -53,7 +52,12 @@ public class MainController {
     @Autowired
     private SiteService siteService;
 
-    @RequestMapping("/login")
+    @RequestMapping(value = {"/", ""}, method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public String index() {
+        return "redirect:/manage/main";
+    }
+
+    @RequestMapping("/main/login")
     public String loginPage(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
 
         if (cookieUser.isSupper(request)) {
@@ -77,7 +81,7 @@ public class MainController {
         return "login.html";
     }
 
-    @RequestMapping({"/index", ""})
+    @RequestMapping({"/main/index", "/main"})
     public String index(@AuthenticationPrincipal Login login, @RequestParam(required = false) Long site
             , Model model) throws Exception {
         if (site != null && login.siteManageable(siteService.getSite(site))) {
@@ -96,7 +100,7 @@ public class MainController {
         return "/view/main.html";
     }
 
-    @RequestMapping(value = "/decorated")
+    @RequestMapping(value = "/main/decorated")
     public ModelAndView decorated(String scope) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("scope", scope);

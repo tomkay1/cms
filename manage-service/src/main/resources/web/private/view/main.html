@@ -195,8 +195,9 @@
                                         <!--</div>-->
                                         <div class="desc">
                                             <h5><a href="#"
+                                                   target="_top"
                                                    class="siteSwitcher"
-                                                   th:href="@{/manage/switch/{id}(id=${site.siteId})}"
+                                                   th:href="@{/manage/main(site=${site.siteId})}"
                                                    th:text="${site.name}">
                                                 站点1
                                             </a>
@@ -209,6 +210,7 @@
                                         <!--</div>-->
                                         <div class="desc">
                                             <h5><a href="#"
+                                                   target="_top"
                                                    class="siteSwitcher">
                                                 站点2
                                             </a>
@@ -405,29 +407,6 @@
         else
             $('#content').attr('src', pageUrl);
 
-        // siteSwitcher
-        $('.siteSwitcher').click(function () {
-            var href = $(this).attr('href');
-            var name = $(this).text();
-            var button = $(this).closest('button');
-
-            function success() {
-                $('#currentSiteSpan').text(name);
-                showSuccess('成功', '已切换。');
-                $('#content').get(0).contentWindow.location.reload();
-            }
-
-//            button.dropdown(); how to hide the menu?
-            if (href != '#') {
-                $.ajax({
-                    url: href,
-                    async: !testMode,
-                    success: success
-                });
-            } else
-                success();
-            return false;
-        });
     });
     /*]]*/
 </script>

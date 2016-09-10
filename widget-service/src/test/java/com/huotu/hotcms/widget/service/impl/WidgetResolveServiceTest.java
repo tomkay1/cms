@@ -106,7 +106,39 @@ public class WidgetResolveServiceTest extends TestBase {
 
         @Override
         public WidgetStyle[] styles() {
-            return new WidgetStyle[0];
+            return new WidgetStyle[]{
+                    new WidgetStyle() {
+                        @Override
+                        public String id() {
+                            return null;
+                        }
+
+                        @Override
+                        public String name(Locale locale) {
+                            return null;
+                        }
+
+                        @Override
+                        public String description(Locale locale) {
+                            return null;
+                        }
+
+                        @Override
+                        public Resource thumbnail() {
+                            return null;
+                        }
+
+                        @Override
+                        public Resource previewTemplate() {
+                            return null;
+                        }
+
+                        @Override
+                        public Resource browseTemplate() {
+                            return null;
+                        }
+                    }
+            };
         }
 
         @Override

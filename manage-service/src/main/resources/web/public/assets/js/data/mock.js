@@ -55,7 +55,7 @@ CMSWidgets.initWidget({
 
             $('.js-addEditBtn').addEdit({
                 debug: true,
-                amount: 1,
+                amount: -1,
                 title: '二维码图片',
                 hasImage: true,
                 imageClass: 'QRcode'

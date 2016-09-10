@@ -48,9 +48,7 @@ public class ManageInterceptor extends HandlerInterceptorAdapter {
             Login login = (Login) authentication.getPrincipal();
             if (login.currentSiteId() != null) {
                 Site site = siteService.getSite(login.currentSiteId());
-                CMSContext.RequestContext().setSite(site);
-                CMSContext.RequestContext().setLocale(site.getRegion() == null ? request.getLocale()
-                        : site.getRegion().getLocale());
+                CMSContext.RequestContext().updateSite(site);
             }
         }
         return true;

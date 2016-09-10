@@ -175,8 +175,40 @@ $(function () {
     }).on('mouseleave', function () {
         $(this).children('.site-preview').stop().fadeOut();
     });
-    
+
     $('.js-site-add').click(function () {
-        
+
     });
+
+    // 站点选择报错
+    var siteSelector = $('#siteSelector');
+    $('.btn-primary', siteSelector).click(function () {
+        if ($('option', siteSelector).size() == 0) {
+            siteSelector.modal('hide');
+            $('.maximize', addSiteForm).click();
+            return false;
+        }
+        // siteSelector.modal('hide');
+        var select = $('select', siteSelector);
+        top.location.href = select.val();
+        return false;
+    });
+    $('.btn-default', siteSelector).click(function () {
+        siteSelector.modal('hide');
+        return false;
+    });
+    if ($.siteRequred) {
+        if (top.$.prototypesMode && Math.random() < 0.5) {
+            // 测试时 随机删除所有选项
+            $('option', siteSelector).remove();
+        }
+        setTimeout(function () {
+            if ($('option', siteSelector).size() == 0) {
+                $('.btn-primary', siteSelector).text('新建');
+                $('#siteSelectorMsg', siteSelector).text('之前的操作需要确定站点才可以继续,请新建站点。');
+                $('select', siteSelector).remove();
+            }
+            siteSelector.modal();
+        }, 1000);
+    }
 });

@@ -109,7 +109,7 @@ public class CMSDataSourceController {
         List<GalleryItemModel> data = cmsDataSourceService.findGalleryItems(gallerySerial, size);
         try {
             for (GalleryItemModel galleryItemModel : data) {
-                if (galleryItemModel.getThumbUri() != null && galleryItemModel.getThumbUri().equals(""))
+                if (galleryItemModel.getThumbUri() != null && !galleryItemModel.getThumbUri().equals(""))
                     galleryItemModel.setThumbUri(resourceService.getResource(galleryItemModel.getThumbUri()).httpUrl()
                             .toURI().toString());
             }

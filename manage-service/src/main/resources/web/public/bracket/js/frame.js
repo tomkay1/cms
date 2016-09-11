@@ -87,6 +87,26 @@ $(function () {
         return confirm('确实要删除么?');
     });
 
+    var ignoreErrorSelector = $('#ignoreErrorSelector');
+    var primaryHref;
+    $('.primary').click(function () {
+        primaryHref = $(this).attr("href");
+        ignoreErrorSelector.modal();
+        return false;
+    });
+
+    $('.modal-footer .btn-primary').click(function () {
+        var type = $(".modal-body").find("input[name='ignoreError']:checked").val();
+        ignoreErrorSelector.modal('hide');
+        window.location = primaryHref + "?ignoreError=" + type;
+    });
+
+    $('.modal-footer .btn-cancel').click(function () {
+        ignoreErrorSelector.modal('hide');
+        primaryHref = "";
+    });
+
+
     linkButtons.filter('.delete').click(function () {
         if (confirm('确实要删除么?')) {
             followTheLink.call(this);

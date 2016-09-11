@@ -142,10 +142,11 @@
                                th:href="@{/manage/widget/{id}(id=${widget.identifier.toURIEncoded()})}" title="编辑">
                                 <i class="fa fa-pencil"></i>
                             </a>
-                            <!--<a href="index.html" class="delete"-->
-                            <!--th:href="@{/manage/widget/{id}/delete(id=${widget.identifier.toURIEncoded()})}" title="删除">-->
-                            <!--<i class="fa fa-trash-o"></i>-->
-                            <!--</a>-->
+                            <a class="primary" href="index.html" title="设置主控件"
+                               th:href="@{/manage/widget/{id}/primary(id=${widget.identifier.toURIEncoded()})}"
+                               th:if="${!@widgetFactoryServiceImpl.installedStatus(widget).isEmpty()}">
+                                <i class="glyphicon glyphicon-flag"></i>
+                            </a>
                             <!--<a href="index.html" class="delete"-->
                             <!--th:href="@{/manage/widget/{id}/delete(id=${widget.identifier})}"-->
                             <!--target="_top" title="删除">-->
@@ -182,6 +183,34 @@
     </div>
 
 </div><!-- contentpanel -->
+
+<div class="modal fade in" id="ignoreErrorSelector" tabindex="-1" role="dialog"
+     aria-labelledby="ignoreErrorSelectorLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="ignoreErrorSelectorLabel">请选择设置主控件包时是否忽略错误</h4>
+            </div>
+            <div class="modal-body">
+                <p id="siteSelectorMsg">需要选择是否忽略错误，否则将取消操作</p>
+                <label>
+                    <input name="ignoreError" type="radio" value="false" checked/>
+                    不忽略:设置主控件时如果发生错误操作终止。
+                </label>
+                <label>
+                    <input name="ignoreError" type="radio" value="true"/>
+                    忽略:设置主控件时如果发生错误不影响操作，将继续执行
+                </label>
+                <p class="warning">操作将是不可逆的!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-cancel" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+            </div>
+        </div><!-- modal-content -->
+    </div><!-- modal-dialog -->
+</div>
 
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-1.10.2.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-ui-1.10.3.min.js"></script>

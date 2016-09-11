@@ -100,6 +100,21 @@ public class WidgetInfoController
         return redirectIndexViewName();
     }
 
+    @RequestMapping(value = "/{id}/primary", method = RequestMethod.GET)
+    @Transactional
+    public String primary(@PathVariable("id") WidgetIdentifier id, boolean ignoreError, RedirectAttributes attributes) {
+        WidgetInfo widgetInfo = widgetInfoRepository.getOne(id);
+        try {
+            widgetFactoryService.primary(widgetInfo, ignoreError);
+            GritterUtils.AddFlashSuccess("设置完成", attributes);
+        } catch (IOException | IllegalStateException e) {
+            log.error("primary widget", e);
+            GritterUtils.AddFlashDanger(e.getLocalizedMessage(), attributes);
+        }
+
+        return redirectIndexViewName();
+    }
+
     @Override
     protected String indexViewName() {
         return "/view/widget/index.html";

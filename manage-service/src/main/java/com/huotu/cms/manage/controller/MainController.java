@@ -87,7 +87,11 @@ public class MainController {
         if (site != null && login.siteManageable(siteService.getSite(site))) {
             // 禁止它使用登出动作
             login.updateSiteId(site);
-            model.addAttribute("logout", "/manage/main");
+            if (login.isRoot()) {
+                login.updateOwnerId(siteService.getSite(site).getOwner().getId());
+                model.addAttribute("logout", "/manage/main");
+            } else
+                model.addAttribute("logout", "/manage/logout");
             return "/view/main.html";
         }
         if (login.isRoot() && login.currentOwnerId() == null)

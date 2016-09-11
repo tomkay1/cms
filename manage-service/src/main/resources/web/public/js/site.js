@@ -177,7 +177,11 @@ $(function () {
     });
 
     $('.js-site-add').click(function () {
-
+        $('.minimize', '#siteForm').each(function () {
+            if ($(this).hasClass('maximize')) {
+                $(this).trigger('click');
+            }
+        });
     });
 
     // 站点选择报错

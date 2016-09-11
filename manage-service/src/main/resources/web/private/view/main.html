@@ -43,13 +43,13 @@
             try{
                 var bHeight = iframe.contentWindow.document.body.scrollHeight;
                 var dHeight = iframe.contentWindow.document.documentElement.scrollHeight;
-                var height = Math.max(bHeight, dHeight);
-                iframe.height = height;
+                iframe.height =  Math.max(bHeight, dHeight);
+//                console.log(iframe.height );
             }catch (e){
                 console.error(e);
             }
         }
-        window.setInterval("reinitIframe()", 1000);
+        window.setInterval(reinitIframe, 1000);
     </script>
 </head>
 <body>

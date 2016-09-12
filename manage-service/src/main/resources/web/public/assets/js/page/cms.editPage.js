@@ -217,45 +217,49 @@ var Page = {
             initData.properties = v.defaultProperties;
             wsCache.set(v.identity, initData);
             // 组件列表渲染
-            var typeList = $('.group-header:contains("'+v.type+'")').siblings('.group-content');
-            var list = $('<li></li>');
-            list.append(Page.widgetHTML.join('\n'));
-            if( !v.styles[0].previewHTML ) {
-                var errorDiv = $('<div id="errorPlaceholder"></div>');
-                list.find('.setting').addClass('hidden');
-                errorDiv.html(v.styles[0].previewFailed)
-            }
-            list.find('.setting').attr('data-target', v.identity);
-            list.find('.preview p').html(v.locallyName);
+            // 解决版本筛选问题
+            if (v.flag === true) {
+                var typeList = $('.group-header:contains("'+v.type+'")').siblings('.group-content');
+                var list = $('<li></li>');
+                list.append(Page.widgetHTML.join('\n'));
+                if( !v.styles[0].previewHTML ) {
+                    var errorDiv = $('<div id="errorPlaceholder"></div>');
+                    list.find('.setting').addClass('hidden');
+                    errorDiv.html(v.styles[0].previewFailed)
+                }
+                list.find('.setting').attr('data-target', v.identity);
+                list.find('.preview p').html(v.locallyName);
 
-            list.find('.view').append(v.styles[0].previewHTML || errorDiv);
-            list.find('.view').children().eq(0).attr('data-widgetidentity', v.identity);
-            list.find('.view').children().eq(0).attr('data-styleid', v.styles[0].id);
-            typeList.append(list);
-            //编辑器视图渲染
-            var child = $('<div class="common-conf"></div>');
-            var container = $('<div></div>');
-            var h3 = $('<h3><i class="fa fa-puzzle-piece"></i><strong>设置组件参数</strong></h3>');
-            //解决版本号不匹配问题
-            var widgetidentity = v.identity.split(':')[0];
-            child.attr('data-id', widgetidentity);
-            child.append(Page.styleList.join('\n'));
-            $.each(v.styles, function (key, val) {
-                var div = $('<div class="swiper-slide"></div>');
-                var img = $('<img class="center-block changeStyle">');
-                var p = $('<p></p>');
-                var span = $('<span class="theme-thumb-magnifier"><b class="fa fa-search-plus" aria-hidden="true""></b></span>');
-                img.attr('src',val.thumbnail);
-                img.attr('data-styleid',val.id);
-                p.text(val.locallyName);
-                div.append(img);
-                div.append(p);
-                div.append(span);
-                child.find('.swiper-wrapper').append(div);
-            });
-            container.append(h3);
-            child.append(container);
-            parent.append(child);
+                list.find('.view').append(v.styles[0].previewHTML || errorDiv);
+                list.find('.view').children().eq(0).attr('data-widgetidentity', v.identity);
+                list.find('.view').children().eq(0).attr('data-styleid', v.styles[0].id);
+                typeList.append(list);
+                //编辑器视图渲染
+                var child = $('<div class="common-conf"></div>');
+                var container = $('<div></div>');
+                var h3 = $('<h3><i class="fa fa-puzzle-piece"></i><strong>设置组件参数</strong></h3>');
+                //解决版本号不匹配问题
+                var widgetidentity = v.identity.split(':')[0];
+                child.attr('data-id', widgetidentity);
+                child.append(Page.styleList.join('\n'));
+                $.each(v.styles, function (key, val) {
+                    var div = $('<div class="swiper-slide"></div>');
+                    var img = $('<img class="center-block changeStyle">');
+                    var p = $('<p></p>');
+                    var span = $('<span class="theme-thumb-magnifier"><b class="fa fa-search-plus" aria-hidden="true""></b></span>');
+                    img.attr('src',val.thumbnail);
+                    img.attr('data-styleid',val.id);
+                    p.text(val.locallyName);
+                    div.append(img);
+                    div.append(p);
+                    div.append(span);
+                    child.find('.swiper-wrapper').append(div);
+                });
+                container.append(h3);
+                child.append(container);
+                parent.append(child);
+            }
+
 
             $('.swiper-container.styles').swiper({
                 nextButton: '.swiper-button-next',

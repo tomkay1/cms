@@ -629,6 +629,9 @@ header .btn {
     top: 6px;
     right: 6px;
 }
+.addEditBox .js-image {
+    width: 90px;
+}
 .mr6 {
     margin-right: 6px;
 }

@@ -8,7 +8,7 @@
         '<h6><span class="label label-default"><% this.title %></span></h6>',
         '</div>',
         '<div class="col-xs-3 mb10 <% this.hasImage ? "" : "hidden"%>">',
-        '<img class="img-responsive img-thumbnail center-block js-image <% this.imageClass %>" src="http://placehold.it/80x80?text=1" data-path="http://placehold.it/80x80?text=1"/>',
+        '<img class="img-responsive img-thumbnail center-block js-image <% this.imageClass %>" src="http://placehold.it/80x80?text=1" />',
         '</div>',
         '<div class="form-inline col-xs-9 row mb10">',
         '<div class="col-xs-12 mb10 <% this.hasParagraph ? "" : "hidden"%>">',
@@ -231,7 +231,7 @@
             self.switchButton();
 
             self.initUpload(debug);
-            self.changeImage(pointer, html);
+            self.changeImage(pointer, html, debug, amount);
 
             $container.modal();
 
@@ -309,17 +309,18 @@
             });
         },
         creatEditArea: function (pointer, html, data, debug, amount) {
+
             var $container = $('#selectDataTable');
             methods.init(pointer, html, data, debug, amount);
             $container.modal('hide')
         },
-        changeImage: function (pointer, html) {
+        changeImage: function (pointer, html, debug, amount) {
             var self = this;
             var $container = $('#selectDataTable');
             var $ele = $container.find('.js-uploader-btn');
             $ele.off('click');
             $ele.on('click', function () {
-                methods.init(pointer, html, self.uploadCallBackData[0]);
+                methods.init(pointer, html, self.uploadCallBackData, debug, amount);
                 $container.modal('hide');
                 self.uploadCallBackData = [];
             });

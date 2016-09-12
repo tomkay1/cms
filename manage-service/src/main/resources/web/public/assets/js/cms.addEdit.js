@@ -301,6 +301,7 @@
                 maxFileCount: 1,
                 uploadUrl: url,
                 successCallback: function(files, data) {
+                    self.uploadCallBackData = [];
                     var temp = {};
                     temp.thumpUri = data.fileUri;
                     self.uploadCallBackData.push(temp);
@@ -318,7 +319,7 @@
             var $ele = $container.find('.js-uploader-btn');
             $ele.off('click');
             $ele.on('click', function () {
-                methods.init(pointer, html, self.uploadCallBackData);
+                methods.init(pointer, html, self.uploadCallBackData[0]);
                 $container.modal('hide');
                 self.uploadCallBackData = [];
             });

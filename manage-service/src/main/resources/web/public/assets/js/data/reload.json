@@ -1,1 +1,48 @@
-{}
+{
+  "root": [
+    {
+      "layout": {
+        "value": "100",
+        "elementGroups": [
+          [
+            {
+              "component": {
+                "widgetIdentity": "com.huotu.hotcms.widget.copyright-copyright:1.0-SNAPSHOT",
+                "id": "xShOYb-1473646513857",
+                "styleId": "copyrightDefaultStyle",
+                "properties": {
+                  "contactInformation": "400-1818-357 加盟热线：400-1008-013",
+                  "QRcode": "",
+                  "pageLinkList": [
+                    {
+                      "flag": 0,
+                      "linkPath": "",
+                      "name": "首页",
+                      "id": 1
+                    },
+                    {
+                      "flag": 0,
+                      "linkPath": "xw",
+                      "name": "新闻",
+                      "id": 2
+                    },
+                    {
+                      "flag": 0,
+                      "linkPath": "guwm",
+                      "name": "关于我们",
+                      "id": 3
+                    }
+                  ],
+                  "companyAddress": "杭州市滨江区阡陌路482号智慧e谷B幢4楼",
+                  "copyTColor": "#000000",
+                  "copyBColor": "#fff"
+                },
+                "previewHTML": "<div class=\"topnavbar topnavbar-red width-1000 topnavbar-absolute\"><div class=\"navbar navbar-default\"><div class=\"navbar-header\"><button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\"#navList\"><span class=\"sr-only\">切换导航</span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span></button><a href=\"index.html\"><img class=\"logo img-responsive\" src=\"img/logo.png\"></a></div><div class=\"navbar-collapse collapse\" id=\"navList\"><ul class=\"nav navbar-nav\"><li class=\"dropdown active\"><a href=\"javascript:;\" data-hover=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">首页</a></li><li class=\"dropdown\"><a href=\"javascript:;\" data-hover=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">公司简介</a></li><li class=\"dropdown\"><a href=\"javascript:;\" data-hover=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">品牌中心</a></li><li class=\"dropdown\"><a href=\"javascript:;\" data-hover=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">招商加盟</a></li><li class=\"dropdown\"><a href=\"javascript:;\" data-hover=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">人才招聘</a></li><li class=\"dropdown\"><a href=\"javascript:;\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" data-hover=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">资讯动态</a><ul class=\"dropdown-menu\"><li><a href=\"#\">公司动态</a></li><li><a href=\"#\">行业动态</a></li><li><a href=\"#\">积分动态</a></li></ul></li><li class=\"dropdown\"><a href=\"javascript:;\" data-hover=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">联系我们</a></li></ul></div></div></div>"
+              }
+            }
+          ]
+        ]
+      }
+    }
+  ]
+}

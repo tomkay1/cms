@@ -77,7 +77,7 @@ var editFunc = {
             var id = $(this).attr('data-target');
             $('.conf-body').find('.common-conf').each(function () {
                 var oId = $(this).attr('data-id') ;
-                if (oId == id) {
+                if (editFunc.contrastString(oId, id)) {
                     $(this).show();
                 }
             });
@@ -101,11 +101,15 @@ var editFunc = {
         var widgetidentity = element.attr('data-widgetidentity');
         var container = '';
         $('.common-conf').each(function () {
-            if( $(this).attr('data-id') == widgetidentity) {
+            var oId = $(this).attr('data-id') ;
+            if( editFunc.contrastString(oId, widgetidentity)) {
                 container = $(this);
             }
         });
         return container;
+    },
+    contrastString: function (includeStr, targetStr) {
+        return (targetStr.indexOf(includeStr) > -1);
     },
     saveConfig: function () {
         $('#confBtn').click(function () {
@@ -232,7 +236,9 @@ var Page = {
             var child = $('<div class="common-conf"></div>');
             var container = $('<div></div>');
             var h3 = $('<h3><i class="fa fa-puzzle-piece"></i><strong>设置组件参数</strong></h3>');
-            child.attr('data-id', v['identity']);
+            //解决版本号不匹配问题
+            var widgetidentity = v.identity.split(':')[0];
+            child.attr('data-id', widgetidentity);
             child.append(Page.styleList.join('\n'));
             $.each(v.styles, function (key, val) {
                 var div = $('<div class="swiper-slide"></div>');
@@ -399,7 +405,7 @@ editPage.init = function () {
         layer.open({
             type: 1,
             title: '预览图',
-            area: ['800px;', 'auto'], //宽高
+            area: '800px', //宽高
             content: '<img style="padding: 20px; max-width: 780px; margin: 0 auto; " src="'+ img +'">'
         });
     });

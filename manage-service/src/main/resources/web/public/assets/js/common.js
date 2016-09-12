@@ -48,7 +48,8 @@ var widgetHandle = {
     getEditAreaElement: function (dataId) {
         var $DOM = '';
         $('.common-conf').each(function () {
-            if ($(this).data('id') == dataId) {
+            var oId = $(this).attr('data-id') ;
+            if (editFunc.contrastString(oId, dataId)) {
                 $DOM = $(this).children().eq(1);
             }
         });

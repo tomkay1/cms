@@ -50,4 +50,5 @@ public interface WidgetLocateService {
      */
     InstalledWidget findWidget(String identifier);
 
+
 }

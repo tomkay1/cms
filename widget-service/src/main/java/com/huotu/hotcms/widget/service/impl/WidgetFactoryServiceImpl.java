@@ -35,7 +35,6 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -53,7 +52,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -197,34 +195,44 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
 
         // 找到同一个型号的,
 //        Map<WidgetIdentifier,InstalledWidget> map =
-        ArrayList<InstalledWidget> widgets = new ArrayList<>(installedWidgets.size());
-        installedWidgets.stream()
+//        ArrayList<InstalledWidget> widgets = new ArrayList<>(installedWidgets.size());
+        return installedWidgets.stream()
                 // 过滤掉不要的控件
                 .filter(widget -> owner == null || widget.getOwnerId() == null
                         || widget.getOwnerId().equals(owner.getId()))
-                .collect(Collectors.groupingBy(t -> new WidgetIdentifier(t.getWidget().groupId()
-                        , t.getWidget().widgetId(), ""), Collectors.toList()))
-                .forEach(((identifier, installedWidgets1) -> {
-                    if (installedWidgets1.isEmpty())
-                        return;
-                    if (identifier == null) {
-                        widgets.addAll(installedWidgets1);
-                        return;
-                    }
-                    // 没有持久化的 不管!
-                    if (installedWidgets1.size() > 1) {
-                        // 找到他们最大的 其他的 都排除掉
-                        InstalledWidget best = installedWidgets1.stream()
-                                .sorted((o1, o2) -> new DefaultArtifactVersion(o2.getWidget().version())
-                                        .compareTo(new DefaultArtifactVersion(o1.getWidget().version())))
-                                .findFirst().orElse(null);
-                        widgets.add(best);
-                    } else
-                        widgets.addAll(installedWidgets1);
-                }))
-        ;
+                .collect(Collectors.toList());
+//                .collect(Collectors.groupingBy(t -> new WidgetIdentifier(t.getWidget().groupId()
+//                        , t.getWidget().widgetId(), ""), Collectors.toList()))
+//                .forEach(((identifier, installedWidgets1) -> {
+//                    if (installedWidgets1.isEmpty())
+//                        return;
+//                    if (identifier == null) {
+//                        widgets.addAll(installedWidgets1);
+//                        return;
+//                    }
+//                    // 没有持久化的 不管!
+//                    if (installedWidgets1.size() > 1) {
+//                        // 找到他们最大的 其他的 都排除掉
+//                        InstalledWidget best = installedWidgets1.stream()
+//                                .sorted((o1, o2) -> new DefaultArtifactVersion(o2.getWidget().version())
+//                                        .compareTo(new DefaultArtifactVersion(o1.getWidget().version())))
+//                                .findFirst().orElse(null);
+//                        //设置最新的控件
+//                        best.setFlag(true);
+//                        widgets.add(best);
+//                        //将源列表控件最新的删除
+//                        installedWidgets1.remove(best);
+//                        //将不是最新的也添加进去
+//                        widgets.addAll(installedWidgets1);
+//                    } else {
+//                        //如果控件分组就一个，那这个控件就是最新的
+//                        installedWidgets1.get(0).setFlag(true);
+//                        widgets.addAll(installedWidgets1);
+//                    }
+//                }))
+//        ;
 
-        return widgets;
+//        return widgets;
     }
 
     @Override

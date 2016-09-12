@@ -30,6 +30,8 @@ import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.access.AccessDeniedException;
@@ -55,6 +57,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 /**
  * @author CJ
@@ -207,7 +210,58 @@ public class WidgetInfoController
         }
         List<InstalledWidget> installedWidgets = widgetFactoryService.widgetList(owner);
         List<WidgetModel> widgetModels = new ArrayList<>();
-        for (InstalledWidget installedWidget : installedWidgets) {
+        installedWidgets.stream().collect(Collectors.groupingBy(t -> new WidgetIdentifier(t.getWidget().groupId()
+                , t.getWidget().widgetId(), ""), Collectors.toList()))
+                .forEach(((identifier, installedWidgets1) -> {
+                    if (installedWidgets1.isEmpty())
+                        return;
+                    if (identifier == null) {
+                        for (InstalledWidget installedWidget : installedWidgets1) {
+                            widgetModels.add(getWidgetModel(locale, installedWidget, false));
+                        }
+                        return;
+                    }
+                    // 没有持久化的 不管!
+                    if (installedWidgets1.size() > 1) {
+                        // 找到他们最大的 其他的 都排除掉
+                        InstalledWidget best = installedWidgets1.stream()
+                                .sorted((o1, o2) -> new DefaultArtifactVersion(o2.getWidget().version())
+                                        .compareTo(new DefaultArtifactVersion(o1.getWidget().version())))
+                                .findFirst().orElse(null);
+                        widgetModels.add(getWidgetModel(locale, best, true));
+                        //设置最新的控件
+                        //将源列表控件最新的删除  将不是最新的也添加进去
+                        installedWidgets1.remove(best);
+                        for (InstalledWidget installedWidget : installedWidgets1) {
+                            widgetModels.add(getWidgetModel(locale, installedWidget, false));
+                        }
+                    } else {
+                        //如果控件分组就一个，那这个控件就是最新的
+                        for (InstalledWidget installedWidget : installedWidgets1) {
+                            widgetModels.add(getWidgetModel(locale, installedWidget, true));
+                        }
+                    }
+                }));
+
+
+//        for (InstalledWidget installedWidget : installedWidgets) {
+//            WidgetModel widgetModel = getWidgetModel(locale, installedWidget);
+//            widgetModels.add(widgetModel);
+//        }
+        return widgetModels;
+    }
+
+    /**
+     * 获取一个控件model
+     *
+     * @param locale
+     * @param installedWidget
+     * @param flag            true最新的，否则不是最新的
+     * @return
+     */
+    @NotNull
+    private WidgetModel getWidgetModel(Locale locale, InstalledWidget installedWidget, Boolean flag) {
+        try {
             WidgetModel widgetModel = new WidgetModel();
             Widget widget = installedWidget.getWidget();
             widgetModel.setLocallyName(widget.name(locale));
@@ -236,9 +290,12 @@ public class WidgetInfoController
                 widgetStyleModels[i] = widgetStyleModel;
             }
             widgetModel.setStyles(widgetStyleModels);
-            widgetModels.add(widgetModel);
+            widgetModel.setFlag(flag);
+            return widgetModel;
+        } catch (IOException e) {
+            log.error(e.getMessage());
+            return null;
         }
-        return widgetModels;
     }
 
 }

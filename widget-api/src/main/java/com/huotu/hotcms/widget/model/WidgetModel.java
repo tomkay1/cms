@@ -28,6 +28,10 @@ public class WidgetModel {
     private String locallyName;
     private String thumbnail;
     /**
+     * 是否是最新控件
+     */
+    private Boolean flag;
+    /**
      * 编辑视图
      */
     private String editorHTML;

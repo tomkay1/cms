@@ -102,6 +102,9 @@ a:link, a:visited, a:hover, a:active {
     color: #fff;
     background-color: #ad8d4b;
 }
+.topnavbar-absolute {
+    z-index: 999;
+}
 @media (max-width: 767px) {
     .navbar-collapse {
         position: absolute;

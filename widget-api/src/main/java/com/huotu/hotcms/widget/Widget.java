@@ -27,8 +27,8 @@ import java.util.Map;
  */
 public interface Widget {
 
-    MediaType Javascript = MediaType.valueOf("application/javascript");
-    MediaType CSS = MediaType.valueOf("text/css");
+    MediaType Javascript = MediaType.valueOf("application/javascript;charset=utf-8");
+    MediaType CSS = MediaType.valueOf("text/css;charset=utf-8");
     MediaType HTML = MediaType.valueOf("text/html");
 
     /**

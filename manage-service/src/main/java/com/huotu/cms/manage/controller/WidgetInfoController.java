@@ -242,8 +242,6 @@ public class WidgetInfoController
                         }
                     }
                 }));
-
-
 //        for (InstalledWidget installedWidget : installedWidgets) {
 //            WidgetModel widgetModel = getWidgetModel(locale, installedWidget);
 //            widgetModels.add(widgetModel);

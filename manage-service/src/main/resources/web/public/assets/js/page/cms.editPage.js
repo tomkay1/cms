@@ -399,7 +399,7 @@ editPage.init = function () {
         layer.open({
             type: 1,
             title: '预览图',
-            area: ['800px;', 'auto'], //宽高
+            area: '800px', //宽高
             content: '<img style="padding: 20px; max-width: 780px; margin: 0 auto; " src="'+ img +'">'
         });
     });

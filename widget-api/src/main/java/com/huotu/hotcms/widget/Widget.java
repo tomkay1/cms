@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.widget;
 
+import com.huotu.hotcms.service.common.PageType;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.springframework.core.io.ClassPathResource;
@@ -214,5 +215,14 @@ public interface Widget {
      * @throws IllegalStateException 如果当时状态根本无法生成有效的属性
      */
     ComponentProperties defaultProperties(ResourceService resourceService) throws IOException, IllegalStateException;
+
+    /**
+     * 默认实现是返回null
+     *
+     * @return 支持的页面类型, 如果null表示支持所有页面类型
+     */
+    default PageType supportedPageType() {
+        return null;
+    }
 
 }

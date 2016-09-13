@@ -15,6 +15,7 @@
     <meta charset="UTF-8">
     <link href="http://resali.huobanplus.com/cdn/bracket/css/style.default.css" rel="stylesheet">
     <link href="http://resali.huobanplus.com/cdn/bracket/css/jquery.datatables.css" rel="stylesheet">
+    <link href="../../../public/assets/css/customize.css" ewp:href="/assets/css/customize.css" rel="stylesheet">
     <title>Owner</title>
 </head>
 <body class="mainpanel" id="fa-bars">
@@ -24,11 +25,10 @@
 
 <div class="contentpanel">
     <form id="categoryForm" action="index.html" method="POST" th:action="@{/manage/category}">
-        <div class="panel panel-default">
+        <div class="panel panel-default close-panel open-panel">
             <div class="panel-heading">
                 <div class="panel-btns">
-                    <a href="" class="panel-close">&times;</a>
-                    <a href="" class="minimize">&minus;</a>
+                    <a href="" class="minimize maximize">&plus;</a>
                 </div><!-- panel-btns -->
                 <h3 class="panel-title">新增数据源</h3>
                 <p>父级数据源可以不选择,按父级数据源搜索将可以搜索到相关所有数据内容</p>
@@ -88,11 +88,10 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <div class="panel-btns">
-                <a href="" class="panel-close">&times;</a>
                 <a href="" class="minimize">&minus;</a>
             </div><!-- panel-btns -->
             <h3 class="panel-title">数据源列表</h3>
-            <p></p>
+            <p><button class="btn btn-white btn-sm js-add-category" type="button"><i class="fa fa-plus-circle" aria-hidden="true"></i> 添加数据源</button></p>
         </div>
         <div class="panel-body">
             <div class="table-responsive">
@@ -174,5 +173,6 @@
 <div ewp:replace="fragments/frame.html::#messageSection"></div>
 <script src="../../../public/bracket/js/frame.js" ewp:src="/bracket/js/frame.js"></script>
 <script src="../../../public/bracket/js/frame_custom.js" ewp:src="/bracket/js/frame_custom.js"></script>
+<script src="../../../public/js/category.js" ewp:src="/js/category.js"></script>
 </body>
 </html>

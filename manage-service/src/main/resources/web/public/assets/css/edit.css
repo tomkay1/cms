@@ -326,9 +326,6 @@ header .btn {
     position: relative;
     border: none;
 }
-.edit .pageHTML .row .copyright {
-    background-color: transparent;
-}
 .pageHTML .ncrow:hover > .drag,
 .pageHTML .ncrow:hover > .setting,
 .pageHTML .ncrow:hover > .remove {

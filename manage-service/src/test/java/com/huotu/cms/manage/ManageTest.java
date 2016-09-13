@@ -130,6 +130,14 @@ public abstract class ManageTest extends SpringWebTest {
             new String[]{
                     "com.huotu.hotcms.widget.picBanner",
                     "picBanner"
+            },
+            new String[]{
+                    "com.huotu.hotcms.widget.copyright",
+                    "copyright"
+            },
+            new String[]{
+                    "com.huotu.hotcms.widget.topNavigation",
+                    "topNavigation"
             }
     };
     protected MockHttpSession session;

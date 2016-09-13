@@ -14,12 +14,15 @@ import com.huotu.cms.manage.config.ManageServiceSpringConfig;
 import com.huotu.cms.manage.page.AdminPage;
 import com.huotu.cms.manage.page.LoginPage;
 import com.huotu.cms.manage.page.ManageMainPage;
+import com.huotu.cms.manage.page.SitePage;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Owner;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.Test;
+import org.openqa.selenium.WebElement;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -35,6 +38,28 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 public class LoginTest extends ManageTest {
 
+    /**
+     * 商户登录的一些特有情况
+     */
+    @Test
+    public void userLogin() throws Exception {
+        String password = UUID.randomUUID().toString();
+        Owner owner = randomOwner(password);
+        Site site = randomSite(owner);
+        String username = owner.getLoginName();
+
+        formLogin(username, password, owner, false);
+
+        ManageMainPage page = initPage(ManageMainPage.class);
+        // 这个时候应该是site界面
+        SitePage sitePage = initPage(SitePage.class);
+        WebElement row = sitePage.listTableRows()
+                .stream()
+                .filter(sitePage.findRow(site))
+                .findAny().orElseThrow(IllegalStateException::new);
+
+        sitePage.openResource(row);
+    }
 
     /**
      * 以提交form的方式登录

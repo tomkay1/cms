@@ -268,7 +268,7 @@
     </div><!-- modal-dialog -->
 </div><!-- modal -->
 <script th:inline="javascript">
-    var currentOwnerId = /*[[${#authentication.details.root?-1:#authentication.details.currentOwnerId()}]]*/ "-999";
+    var currentOwnerId = /*[[${#authentication.principal.root?-1:#authentication.principal.currentOwnerId()}]]*/ "-999";
     //如果是超级管理员，ownerId则为-1
     var laudUrl = /*[[@{/manage/template/laud/}]]*/ null;
     var customerSiteId = /*[[${object.siteId}]]*/ null;

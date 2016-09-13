@@ -8,41 +8,101 @@
             {
               "component": {
                 "widgetIdentity": "com.huotu.hotcms.widget.copyright-copyright:1.0-SNAPSHOT",
-                "id": "xShOYb-1473646513857",
-                "styleId": "copyrightDefaultStyle",
+                "id": "lsPCJC-1473750525845",
+                "styleId": "siFanCopyrightStyle",
                 "properties": {
                   "contactInformation": "400-1818-357 加盟热线：400-1008-013",
-                  "QRcode": "",
+                  "QRcode": "http://cdn73.huobanplus.com/cms/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQuY29weXJpZ2h0LWNvcHlyaWdodDoxLjAtU05BUFNIT1Q=/img/code.png",
                   "pageLinkList": [
                     {
                       "flag": 0,
                       "linkPath": "",
                       "name": "首页",
-                      "id": 1
+                      "id": 1,
+                      "level": 0,
+                      "tId": "treeView-1473750526837_1",
+                      "parentTId": null,
+                      "open": false,
+                      "isParent": false,
+                      "zAsync": true,
+                      "isFirstNode": true,
+                      "isLastNode": false,
+                      "isAjaxing": false,
+                      "pId": 0,
+                      "checked": false,
+                      "checkedOld": false,
+                      "nocheck": false,
+                      "chkDisabled": false,
+                      "halfCheck": false,
+                      "check_Child_State": -1,
+                      "check_Focus": false,
+                      "isHover": false,
+                      "editNameFlag": false
                     },
                     {
                       "flag": 0,
                       "linkPath": "xw",
                       "name": "新闻",
-                      "id": 2
+                      "id": 2,
+                      "level": 0,
+                      "tId": "treeView-1473750526837_2",
+                      "parentTId": null,
+                      "open": false,
+                      "isParent": false,
+                      "zAsync": true,
+                      "isFirstNode": false,
+                      "isLastNode": false,
+                      "isAjaxing": false,
+                      "pId": 0,
+                      "checked": false,
+                      "checkedOld": false,
+                      "nocheck": false,
+                      "chkDisabled": false,
+                      "halfCheck": false,
+                      "check_Child_State": -1,
+                      "check_Focus": false,
+                      "isHover": false,
+                      "editNameFlag": false
                     },
                     {
                       "flag": 0,
                       "linkPath": "guwm",
                       "name": "关于我们",
-                      "id": 3
+                      "id": 3,
+                      "level": 0,
+                      "tId": "treeView-1473750526837_3",
+                      "parentTId": null,
+                      "open": false,
+                      "isParent": false,
+                      "zAsync": true,
+                      "isFirstNode": false,
+                      "isLastNode": true,
+                      "isAjaxing": false,
+                      "pId": 0,
+                      "checked": false,
+                      "checkedOld": false,
+                      "nocheck": false,
+                      "chkDisabled": false,
+                      "halfCheck": false,
+                      "check_Child_State": -1,
+                      "check_Focus": false,
+                      "isHover": false,
+                      "editNameFlag": false
                     }
                   ],
                   "companyAddress": "杭州市滨江区阡陌路482号智慧e谷B幢4楼",
                   "copyTColor": "#000000",
                   "copyBColor": "#fff"
                 },
-                "previewHTML": "<div class=\"topnavbar topnavbar-red width-1000 topnavbar-absolute\"><div class=\"navbar navbar-default\"><div class=\"navbar-header\"><button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\"#navList\"><span class=\"sr-only\">切换导航</span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span></button><a href=\"index.html\"><img class=\"logo img-responsive\" src=\"img/logo.png\"></a></div><div class=\"navbar-collapse collapse\" id=\"navList\"><ul class=\"nav navbar-nav\"><li class=\"dropdown active\"><a href=\"javascript:;\" data-hover=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">首页</a></li><li class=\"dropdown\"><a href=\"javascript:;\" data-hover=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">公司简介</a></li><li class=\"dropdown\"><a href=\"javascript:;\" data-hover=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">品牌中心</a></li><li class=\"dropdown\"><a href=\"javascript:;\" data-hover=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">招商加盟</a></li><li class=\"dropdown\"><a href=\"javascript:;\" data-hover=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">人才招聘</a></li><li class=\"dropdown\"><a href=\"javascript:;\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" data-hover=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">资讯动态</a><ul class=\"dropdown-menu\"><li><a href=\"#\">公司动态</a></li><li><a href=\"#\">行业动态</a></li><li><a href=\"#\">积分动态</a></li></ul></li><li class=\"dropdown\"><a href=\"javascript:;\" data-hover=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">联系我们</a></li></ul></div></div></div>"
+                "previewHTML": "<div class=\"copyright copyright-block copyright-sf\">\r\n    <div class=\"container\">\r\n        <div class=\"row copyright-block-top\">\r\n            <ul class=\"list-unstyled col-md-6 row\">\r\n                <li class=\"col-md-3\">\r\n                    <a href=\"\">首页</a>\r\n\r\n                    \r\n                </li>\r\n                <li class=\"col-md-3\">\r\n                    <a href=\"xw\">新闻</a>\r\n\r\n                    \r\n                </li>\r\n                <li class=\"col-md-3\">\r\n                    <a href=\"guwm\">关于我们</a>\r\n\r\n                    \r\n                </li>\r\n            </ul>\r\n            <div class=\"copyright-sf-pull-right\">\r\n                <img class=\"img-responsive center-block qrcode\" rc=\"http://placehold.it/100x100?text=二维码\" alt=\"二维码\" src=\"http://cdn73.huobanplus.com/cms/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQuY29weXJpZ2h0LWNvcHlyaWdodDoxLjAtU05BUFNIT1Q=/img/code.png\" />\r\n            </div>\r\n        </div>\r\n        <div class=\"row\">\r\n            <div class=\"col-sm-8\">\r\n                <p class=\"copyright-contact\">思凡</p>\r\n                <p class=\"copyright-address\">杭州市滨江区阡陌路482号智慧e谷B幢4楼</p>\r\n            </div>\r\n            <div class=\"copyright-sf-pull-right\">\r\n                <img class=\"img-responsive center-block copyright-sf-logo\" src=\"http://cdn73.huobanplus.com/cms/a3a6576c-2c75-4c77-bc40-4982ce6989ae.png\" alt=\"Logo\"/>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>",
+                "previewFail": null
               }
             }
           ]
         ]
       }
     }
-  ]
+  ],
+  "pageIdentity": 4,
+  "title": "溜溜"
 }

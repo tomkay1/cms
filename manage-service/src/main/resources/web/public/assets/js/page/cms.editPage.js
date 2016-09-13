@@ -219,7 +219,11 @@ var Page = {
             // 组件列表渲染
             // 解决版本筛选问题
             if (v.flag === true) {
-                var typeList = $('.group-header:contains("'+v.type+'")').siblings('.group-content');
+                var typeList = $('.group-header:contains("'+v.type+'")').map(function () {
+                    if ($(this).text() == v.type ) {
+                        return this;
+                    }
+                }).siblings('.group-content');
                 var list = $('<li></li>');
                 list.append(Page.widgetHTML.join('\n'));
                 if( !v.styles[0].previewHTML ) {

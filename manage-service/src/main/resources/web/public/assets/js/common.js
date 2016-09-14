@@ -478,3 +478,22 @@ function cmdColorPicker() {
         });
     });
 }
+
+// 解决两个Low插件耦合度太高问题
+var CommonPlugin = {
+    //TODO
+    uploadCallBackData : [],
+    popover: function() {
+
+        $('body').append($('#templateHtml').html());
+        var $container = $('#selectDataTable');
+
+        $container.modal();
+
+        $container.on('hide.bs.modal', function () {
+            $(this).off('hide.bs.modal');
+            $(this).remove();
+        });
+
+    }
+}

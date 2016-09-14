@@ -197,7 +197,7 @@ $(function () {
         top.location.href = select.val();
         return false;
     });
-    $('.btn-default', siteSelector).click(function () {
+    $('.js-btn-default', siteSelector).click(function () {
         siteSelector.modal('hide');
         return false;
     });

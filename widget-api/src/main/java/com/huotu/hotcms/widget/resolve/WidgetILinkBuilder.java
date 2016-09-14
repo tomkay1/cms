@@ -154,7 +154,7 @@ public class WidgetILinkBuilder extends AbstractLinkBuilder {
                         (questionMarkPosition == -1 || start < questionMarkPosition ?
                                 (escapeAsPathSegment ? UriEscape.escapeUriPathSegment(templateReplacement) : UriEscape.escapeUriPath(templateReplacement))
                                 : UriEscape.escapeUriQueryParam(templateReplacement));
-                linkBase.replace(start, start + templateLen, escapedReplacement);
+                linkBase.replace(start, start + templateLen, "/" + escapedReplacement);
                 start = linkBase.indexOf(template, start + templateReplacementLen);
             }
 

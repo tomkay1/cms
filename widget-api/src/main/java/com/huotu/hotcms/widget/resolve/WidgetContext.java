@@ -94,6 +94,11 @@ public class WidgetContext extends WebEngineContext {
         }
         variables.put("activePagePath", CMSContext.RequestContext().getCurrentPage() != null
                 ? CMSContext.RequestContext().getCurrentPage().getPagePath() : "");
+        if (variables.containsKey("abstractContent")) {
+            variables.replace("abstractContent", CMSContext.RequestContext().getAbstractContent());
+        } else {
+            variables.put("abstractContent", CMSContext.RequestContext().getAbstractContent());
+        }
         // "thymeleaf::EvaluationContext" ->
         // "springMacroRequestContext" ->
         // "springRequestContext" ->
@@ -112,11 +117,13 @@ public class WidgetContext extends WebEngineContext {
                         , conversionService);
         variables.put(ThymeleafEvaluationContext.THYMELEAF_EVALUATION_CONTEXT_CONTEXT_VARIABLE_NAME, evaluationContext);
 
+
 //        ThymeleafView # renderFragment
         if (widget instanceof PreProcessWidget) {
             ((PreProcessWidget) widget).prepareContext(style, properties, variables
                     , context.getWidgetParameters(component));
         }
+
         return variables;
     }
 

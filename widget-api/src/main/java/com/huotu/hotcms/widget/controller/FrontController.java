@@ -15,7 +15,7 @@ import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.Template;
 import com.huotu.hotcms.service.exception.PageNotFoundException;
-import com.huotu.hotcms.service.repository.ContentRepository;
+import com.huotu.hotcms.service.service.ContentService;
 import com.huotu.hotcms.service.service.TemplateService;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.Component;
@@ -72,8 +72,8 @@ public class FrontController implements FilterBehavioral {
     private static final Log log = LogFactory.getLog(FrontController.class);
     @Autowired
     WidgetLocateService widgetLocateService;
-    @Autowired(required = false)
-    private ContentRepository contentRepository;
+    @Autowired
+    private ContentService contentService;
     @Autowired
     private PageService pageService;
     @Autowired
@@ -319,19 +319,20 @@ public class FrontController implements FilterBehavioral {
      * 页面内容
      *
      * @param pagePath  pagePath
-     * @param contentId contentId
+     * @param contentSerial contentSerial
      * @param model     model
      * @return
      * @throws IOException           未找到数据
      * @throws PageNotFoundException 页面没找到
      */
-    @RequestMapping(method = RequestMethod.GET, value = {"/_web/{pagePath}/{contentId}"})
-    public PageInfo pageContent(@PathVariable("pagePath") String pagePath, @PathVariable("contentId") Long contentId
+    @RequestMapping(method = RequestMethod.GET, value = {"/_web/{pagePath}/{contentSerial}"})
+    public PageInfo pageContent(@PathVariable("pagePath") String pagePath, @PathVariable("contentSerial") String contentSerial
             , Model model) throws IOException, PageNotFoundException {
         CMSContext cmsContext = CMSContext.RequestContext();
         model.addAttribute("time", System.currentTimeMillis());
         //查找数据内容
-        AbstractContent content = contentRepository.findOne(contentId);
+        AbstractContent content = contentService.getContent(cmsContext.getSite(), contentSerial);
+        model.addAttribute("abstractContent", content);
         if (content != null) {
             cmsContext.setAbstractContent(content);
             //查找当前站点下指定数据源pagePath下最接近的page

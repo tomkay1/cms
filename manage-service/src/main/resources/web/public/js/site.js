@@ -215,4 +215,8 @@ $(function () {
             siteSelector.modal();
         }, 1000);
     }
+
+    // 隐藏添加站点按钮 在页面管理不可用的情况下
+    if (!top.$.siteAddAble)
+        $('.site-add').remove();
 });

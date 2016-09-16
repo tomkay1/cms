@@ -15,6 +15,8 @@
 
 var CMSWidgets = {};
 
+CMSWidgets.plugins = {};
+
 //-------------------------- PUBLIC METHODS
 
 /**
@@ -63,6 +65,7 @@ CMSWidgets.openEditor = function (globalId, identity, editAreaElement) {
     if (CMSWidgets.isDebugging())
         console.error('config on openEditor:', config);
     config.editor.open(globalId, editAreaElement);
+    CMSWidgets.plugins.properties.open(globalId, identity, editAreaElement);
 };
 /**
  * 同上

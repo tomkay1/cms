@@ -280,7 +280,7 @@ var Page = {
     init: function (url) {
         $.ajax({
             type: 'GET',
-            url: url,
+            url: url + "?pageType=" + pageType,
             dataType: 'json',
             statusCode: {
                 403: function() {

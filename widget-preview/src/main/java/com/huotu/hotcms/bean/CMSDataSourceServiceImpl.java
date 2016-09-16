@@ -186,14 +186,20 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
 
     @Override
     public Page<Article> findArticleContent(String serial, int pageNum, int count) {
+        Category category = new Category();
+        category.setSerial("123456789");
+        category.setName("新闻快讯");
+        category.setContentType(ContentType.Article);
         Article baseModel = new Article();
         baseModel.setId(1L);
         baseModel.setTitle("中共19大召开");
         baseModel.setCreateTime(LocalDateTime.now());
+        baseModel.setCategory(category);
         Article baseModel1 = new Article();
         baseModel1.setId(2L);
         baseModel1.setTitle("中共192大召开");
         baseModel1.setCreateTime(LocalDateTime.now());
+        baseModel1.setCategory(category);
         List<Article> list = new ArrayList<>();
         list.add(baseModel);
         list.add(baseModel1);

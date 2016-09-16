@@ -12,6 +12,7 @@ package com.huotu.cms.manage.controller;
 import com.huotu.cms.manage.bracket.GritterUtils;
 import com.huotu.cms.manage.controller.support.CRUDController;
 import com.huotu.cms.manage.exception.RedirectException;
+import com.huotu.hotcms.service.common.PageType;
 import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
@@ -202,7 +203,7 @@ public class WidgetInfoController
     @ResponseBody
     @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Manage_Value + "')")
     @RequestMapping(value = "/widgets", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
-    public List<WidgetModel> getWidgetInfo(Locale locale, @AuthenticationPrincipal Login login) throws IOException
+    public List<WidgetModel> getWidgetInfo(Locale locale, @AuthenticationPrincipal Login login, PageType pageType) throws IOException
             , URISyntaxException, FormatException {
         Owner owner = CMSContext.RequestContext().getSite().getOwner();
         if (owner == null && !login.isRoot()) {
@@ -210,8 +211,29 @@ public class WidgetInfoController
         }
         List<InstalledWidget> installedWidgets = widgetFactoryService.widgetList(owner);
         List<WidgetModel> widgetModels = new ArrayList<>();
-        installedWidgets.stream().collect(Collectors.groupingBy(t -> new WidgetIdentifier(t.getWidget().groupId()
-                , t.getWidget().widgetId(), ""), Collectors.toList()))
+        List<InstalledWidget> widgets;
+        if (pageType.equals(PageType.DataContent)) {
+            widgets = installedWidgets.stream()
+                    .filter(installedWidget -> PageType.DataContent.equals(installedWidget.getWidget().supportedPageType())
+                            || installedWidget.getWidget().supportedPageType() == null)
+                    .collect(Collectors.toList());
+        } else if (pageType.equals(PageType.DataIndex)) {
+            widgets = installedWidgets.stream()
+                    .filter(installedWidget -> PageType.DataIndex.equals(installedWidget.getWidget().supportedPageType())
+                            || installedWidget.getWidget().supportedPageType() == null)
+                    .collect(Collectors.toList());
+        } else if (pageType.equals(PageType.Ordinary)) {
+            widgets = installedWidgets.stream()
+                    .filter(installedWidget -> PageType.Ordinary.equals(installedWidget.getWidget().supportedPageType())
+                            || installedWidget.getWidget().supportedPageType() == null)
+                    .collect(Collectors.toList());
+        } else {
+            widgets = installedWidgets;
+        }
+
+        widgets.stream()
+                .collect(Collectors.groupingBy(t -> new WidgetIdentifier(t.getWidget().groupId(), t.getWidget().widgetId(), ""),
+                        Collectors.toList()))
                 .forEach(((identifier, installedWidgets1) -> {
                     if (installedWidgets1.isEmpty())
                         return;
@@ -242,10 +264,7 @@ public class WidgetInfoController
                         }
                     }
                 }));
-//        for (InstalledWidget installedWidget : installedWidgets) {
-//            WidgetModel widgetModel = getWidgetModel(locale, installedWidget);
-//            widgetModels.add(widgetModel);
-//        }
+
         return widgetModels;
     }
 

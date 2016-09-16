@@ -6,7 +6,7 @@
     "thumbnail": "http://cdn73.huobanplus.com/cms/widgets/thumbnail/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQubm90aWNlQ29udGVudExpc3Qtbm90aWNlQ29udGVudExpc3Q6MS4wLjE=.png",
     "flag": true,
     "editorHTML": null,
-    "scriptHref": "/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQubm90aWNlQ29udGVudExpc3Qtbm90aWNlQ29udGVudExpc3Q6MS4wLjE=.js",
+    "scriptHref": "../../public/assets/js/data/mock.js",
     "defaultProperties": {
       "serial": "207a2bb5-3d9f-4684-99ac-521443c84dc2",
       "count": 10
@@ -29,7 +29,7 @@
     "thumbnail": "http://cdn73.huobanplus.com/cms/widgets/thumbnail/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQubm90aWNlQ29udGVudExpc3Qtbm90aWNlQ29udGVudExpc3Q6MS4wLVNOQVBTSE9U.png",
     "flag": false,
     "editorHTML": null,
-    "scriptHref": "/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQubm90aWNlQ29udGVudExpc3Qtbm90aWNlQ29udGVudExpc3Q6MS4wLVNOQVBTSE9U.js",
+    "scriptHref": "../../public/assets/js/data/mock.js",
     "defaultProperties": {
       "serial": "207a2bb5-3d9f-4684-99ac-521443c84dc2",
       "count": 10
@@ -52,7 +52,7 @@
     "thumbnail": "http://cdn73.huobanplus.com/cms/widgets/thumbnail/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQuY29weXJpZ2h0LWNvcHlyaWdodDoxLjAtU05BUFNIT1Q=.png",
     "flag": true,
     "editorHTML": null,
-    "scriptHref": "/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQuY29weXJpZ2h0LWNvcHlyaWdodDoxLjAtU05BUFNIT1Q=.js",
+    "scriptHref": "../../public/assets/js/data/mock.js",
     "defaultProperties": {
       "contactInformation": "400-1818-357 加盟热线：400-1008-013",
       "QRcode": "http://cdn73.huobanplus.com/cms/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQuY29weXJpZ2h0LWNvcHlyaWdodDoxLjAtU05BUFNIT1Q=/img/code.png",
@@ -106,7 +106,7 @@
     "thumbnail": "http://cdn73.huobanplus.com/cms/widgets/thumbnail/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQuaW5mb3JtYXRpb25EeW5hbWljcy1pbmZvcm1hdGlvbkR5bmFtaWNzOjEuMC4x.png",
     "flag": true,
     "editorHTML": null,
-    "scriptHref": "/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQuaW5mb3JtYXRpb25EeW5hbWljcy1pbmZvcm1hdGlvbkR5bmFtaWNzOjEuMC4x.js",
+    "scriptHref": "../../public/assets/js/data/mock.js",
     "defaultProperties": {
       "size": 10,
       "serial": null,
@@ -130,7 +130,7 @@
     "thumbnail": "http://cdn73.huobanplus.com/cms/widgets/thumbnail/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQuaW5mb3JtYXRpb25EeW5hbWljcy1pbmZvcm1hdGlvbkR5bmFtaWNzOjEuMC4x.png",
     "flag": false,
     "editorHTML": null,
-    "scriptHref": "/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQuaW5mb3JtYXRpb25EeW5hbWljcy1pbmZvcm1hdGlvbkR5bmFtaWNzOjEuMC4x.js",
+    "scriptHref": "../../public/assets/js/data/mock.js",
     "defaultProperties": {
       "size": 10,
       "serial": null,
@@ -154,7 +154,7 @@
     "thumbnail": "http://cdn73.huobanplus.com/cms/widgets/thumbnail/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQuaW5mb3JtYXRpb25EeW5hbWljcy1pbmZvcm1hdGlvbkR5bmFtaWNzOjEuMC1TTkFQU0hPVA==.png",
     "flag": false,
     "editorHTML": null,
-    "scriptHref": "/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQuaW5mb3JtYXRpb25EeW5hbWljcy1pbmZvcm1hdGlvbkR5bmFtaWNzOjEuMC1TTkFQU0hPVA==.js",
+    "scriptHref": "../../public/assets/js/data/mock.js",
     "defaultProperties": {
       "size": 10,
       "serial": null,
@@ -178,7 +178,7 @@
     "thumbnail": "http://cdn73.huobanplus.com/cms/widgets/thumbnail/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQubmV3c0ZsYXNoLW5ld3NGbGFzaDoxLjAuMQ==.png",
     "flag": true,
     "editorHTML": null,
-    "scriptHref": "/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQubmV3c0ZsYXNoLW5ld3NGbGFzaDoxLjAuMQ==.js",
+    "scriptHref": "../../public/assets/js/data/mock.js",
     "defaultProperties": {
       "serial": null,
       "count": 10
@@ -201,7 +201,7 @@
     "thumbnail": "http://cdn73.huobanplus.com/cms/widgets/thumbnail/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQubmV3c0ZsYXNoLW5ld3NGbGFzaDoxLjAtU05BUFNIT1Q=.png",
     "flag": false,
     "editorHTML": null,
-    "scriptHref": "/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQubmV3c0ZsYXNoLW5ld3NGbGFzaDoxLjAtU05BUFNIT1Q=.js",
+    "scriptHref": "../../public/assets/js/data/mock.js",
     "defaultProperties": {
       "serial": null,
       "count": 10
@@ -224,7 +224,7 @@
     "thumbnail": "http://cdn73.huobanplus.com/cms/widgets/thumbnail/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQubXVsdGlwbGVQaWNXaXRoVGV4dC1tdWx0aXBsZVBpY1dpdGhUZXh0OjEuMC1TTkFQU0hPVA==.png",
     "flag": true,
     "editorHTML": null,
-    "scriptHref": "/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQubXVsdGlwbGVQaWNXaXRoVGV4dC1tdWx0aXBsZVBpY1dpdGhUZXh0OjEuMC1TTkFQU0hPVA==.js",
+    "scriptHref": "../../public/assets/js/data/mock.js",
     "defaultProperties": {
       "serial": null,
       "count": "5"
@@ -271,7 +271,7 @@
     "thumbnail": "http://cdn73.huobanplus.com/cms/widgets/thumbnail/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQudG9wTmF2aWdhdGlvbi10b3BOYXZpZ2F0aW9uOjEuMQ==.png",
     "flag": true,
     "editorHTML": null,
-    "scriptHref": "/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQudG9wTmF2aWdhdGlvbi10b3BOYXZpZ2F0aW9uOjEuMQ==.js",
+    "scriptHref": "../../public/assets/js/data/mock.js",
     "defaultProperties": {
       "pageIds": [
         {
@@ -339,7 +339,7 @@
     "thumbnail": "http://cdn73.huobanplus.com/cms/widgets/thumbnail/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQudG9wTmF2aWdhdGlvbi10b3BOYXZpZ2F0aW9uOjEuMC1TTkFQU0hPVA==.png",
     "flag": false,
     "editorHTML": null,
-    "scriptHref": "/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQudG9wTmF2aWdhdGlvbi10b3BOYXZpZ2F0aW9uOjEuMC1TTkFQU0hPVA==.js",
+    "scriptHref": "../../public/assets/js/data/mock.js",
     "defaultProperties": {
       "pageIds": [
         {
@@ -407,7 +407,7 @@
     "thumbnail": "http://cdn73.huobanplus.com/cms/widgets/thumbnail/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQucGljQmFubmVyLXBpY0Jhbm5lcjoxLjAtU05BUFNIT1Q=.png",
     "flag": true,
     "editorHTML": null,
-    "scriptHref": "/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQucGljQmFubmVyLXBpY0Jhbm5lcjoxLjAtU05BUFNIT1Q=.js",
+    "scriptHref": "../../public/assets/js/data/mock.js",
     "defaultProperties": {
       "bgColor": "transparent",
       "bannerImgPath": "widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQucGljQmFubmVyLXBpY0Jhbm5lcjoxLjAtU05BUFNIT1Q=/thumbnail/defaultStyleThumbnail.png",
@@ -434,7 +434,7 @@
     "thumbnail": "http://cdn73.huobanplus.com/cms/widgets/thumbnail/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQudmlkZW9HcmFwaGljVGV4dC12aWRlb0dyYXBoaWNUZXh0OjEuMC4x.png",
     "flag": true,
     "editorHTML": null,
-    "scriptHref": "/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQudmlkZW9HcmFwaGljVGV4dC12aWRlb0dyYXBoaWNUZXh0OjEuMC4x.js",
+    "scriptHref": "../../public/assets/js/data/mock.js",
     "defaultProperties": {
       "videoThumbnail": "http://placehold.it/400x250?text=video",
       "videoDetail": "这是一个视频描述，这是一个视频描述，这是一个视频描述",
@@ -459,7 +459,7 @@
     "thumbnail": "http://cdn73.huobanplus.com/cms/widgets/thumbnail/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQudmlkZW9HcmFwaGljVGV4dC12aWRlb0dyYXBoaWNUZXh0OjEuMC1TTkFQU0hPVA==.png",
     "flag": false,
     "editorHTML": null,
-    "scriptHref": "/widget/Y29tLmh1b3R1LmhvdGNtcy53aWRnZXQudmlkZW9HcmFwaGljVGV4dC12aWRlb0dyYXBoaWNUZXh0OjEuMC1TTkFQU0hPVA==.js",
+    "scriptHref": "../../public/assets/js/data/mock.js",
     "defaultProperties": {
       "videoThumbnail": "http://placehold.it/400x250?text=video",
       "videoDetail": "这是一个视频描述，这是一个视频描述，这是一个视频描述",

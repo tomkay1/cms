@@ -29,6 +29,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -106,7 +107,10 @@ public class SitePage extends AbstractCRUDPage<Site> {
         // .panel-body>.row>div
         // //*[@id="fa-puzzle-piece"]/div[2]/div/div[2]/div/div[1]
 
-        return webDriver.findElements(By.cssSelector(".panel-body>.row>div"));
+        return webDriver.findElements(By.cssSelector(".panel-body>.row>div"))
+                .stream()
+                .filter(webElement -> !webElement.getAttribute("class").contains("site-add"))
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -33,7 +33,6 @@
         <div class="panel panel-default close-panel">
             <div class="panel-heading">
                 <div class="panel-btns">
-                    <a href="" class="panel-close">&times;</a>
                     <a href="" class="minimize maximize">&minus;</a>
                 </div><!-- panel-btns -->
                 <h3 class="panel-title">修改站点信息</h3>
@@ -269,7 +268,7 @@
     </div><!-- modal-dialog -->
 </div><!-- modal -->
 <script th:inline="javascript">
-    var currentOwnerId = /*[[${#authentication.details.root?-1:#authentication.details.currentOwnerId()}]]*/ "-999";
+    var currentOwnerId = /*[[${#authentication.principal.root?-1:#authentication.principal.currentOwnerId()}]]*/ "-999";
     //如果是超级管理员，ownerId则为-1
     var laudUrl = /*[[@{/manage/template/laud/}]]*/ null;
     var customerSiteId = /*[[${object.siteId}]]*/ null;

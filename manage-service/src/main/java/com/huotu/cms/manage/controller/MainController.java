@@ -12,6 +12,7 @@ package com.huotu.cms.manage.controller;
 import com.huotu.cms.manage.login.Manager;
 import com.huotu.cms.manage.service.SecurityService;
 import com.huotu.cms.manage.util.web.CookieUser;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.repository.OwnerRepository;
@@ -87,8 +88,10 @@ public class MainController {
         if (site != null && login.siteManageable(siteService.getSite(site))) {
             // 禁止它使用登出动作
             login.updateSiteId(site);
+            Site site1 = siteService.getSite(site);
             if (login.isRoot()) {
-                login.updateOwnerId(siteService.getSite(site).getOwner().getId());
+                if (site1.getOwner() != null)
+                    login.updateOwnerId(site1.getOwner().getId());
                 model.addAttribute("logout", "/manage/main");
             } else
                 model.addAttribute("logout", "/manage/logout");

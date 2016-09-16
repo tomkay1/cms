@@ -87,14 +87,15 @@ public class ManageServiceSpringConfig implements EmbedWeb {
             ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry =
                     http.antMatcher("/manage/**")
                             .authorizeRequests();
-            if (environment.acceptsProfiles("test") || environment.acceptsProfiles("development")) {//测试阶段或者开发阶段
-                registry = registry
-//                    .anyRequest().permitAll()//不妨这样  不要这样! 安全也是业务的一部分 同样需要测试,此处许可仅仅是为了原型测试。
-                        .antMatchers("/manage/upload").permitAll()
-                        .antMatchers("/manage/upload/fine").permitAll()
-                        .antMatchers("/manage/widget/widgets").permitAll()
-                        .antMatchers("/manage/owners").permitAll();
-            }
+//            if (environment.acceptsProfiles("test") || environment.acceptsProfiles("development")) {//测试阶段或者开发阶段
+//                registry = registry
+////                    .anyRequest().permitAll()//不妨这样  不要这样! 安全也是业务的一部分 同样需要测试,此处许可仅仅是为了原型测试。
+//                        .antMatchers("/manage/upload").permitAll()
+//                        .antMatchers("/manage/upload/fine").permitAll()
+//                        .antMatchers("/manage/widget/widgets").permitAll()
+//                        .antMatchers("/manage/owners").permitAll();
+//            }
+
             registry
                     .antMatchers("/manage/**").hasRole(Login.Role_Manage_Value)
                     .antMatchers("/manage/supper/**").hasRole("ROOT")
@@ -104,6 +105,7 @@ public class ManageServiceSpringConfig implements EmbedWeb {
 //                .failureHandler()
                     .loginProcessingUrl("/manage/auth")
                     .loginPage("/manage/main/login")
+                    .defaultSuccessUrl("/manage", true)
                     .failureUrl("/manage/main/login?type=error")
                     .permitAll()
                     .and()

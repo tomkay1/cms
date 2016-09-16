@@ -394,12 +394,12 @@
 <!--<script src="http://resali.huobanplus.com/cdn/bracket/js/dashboard.js"></script>-->
 <script th:inline="javascript">
     /*<![CDATA[*/
-    var siteSwitchUrl = /*[[@{/manage/switch/}]]*/ null;
-    var testMode = /*[[${@environment.acceptsProfiles('test')}]]*/ true;
     $(function () {
         var firstUrl = /*[[@{/manage/site}]]*/ "site/index.html";
         var pageUrl = /*[[@{/manage/page}]]*/ "page/index.html";
         var useFirst = /*[[${manageSite==null}]]*/ true;
+
+        $.siteAddAble = useFirst;
 
 //        console.log('start open ' + firstUrl);
         if (useFirst)

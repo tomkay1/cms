@@ -105,6 +105,9 @@ a:link, a:visited, a:hover, a:active {
 .topnavbar-absolute {
     z-index: 799;
 }
+.topnavbar .navbar-collapse {
+    z-index: 2;
+}
 @media (max-width: 767px) {
     .navbar-collapse {
         position: absolute;
@@ -745,4 +748,72 @@ a:link, a:visited, a:hover, a:active {
     .notice-content-list .notice-content-list-heade-body  {
         padding-bottom: 84px;
     }
+}
+/* Article Details Styler*/
+.article-details {
+    padding: 30px 32px;
+}
+.article-details h2 {
+    font-size: 22px;
+    color: #333;
+    text-align: center;
+}
+.article-details .article-info {
+    font-size: 14px;
+    color: #999;
+    margin-top: 10px;
+    margin-bottom: 13px;
+    text-align: center;
+}
+.article-details .article-content p {
+    padding: 15px 0px;
+    margin: 0;
+    font-size: 16px;
+    color: #686f7a;
+    text-indent: 24px;
+    line-height: 24px;
+}
+.article-details .article-content img {
+    padding: 0 20px;
+    width: 100%;
+}
+.article-details .article-laud {
+    text-align: right;
+}
+.article-details .article-laud a {
+    display: inline-block;
+    margin: 10px;
+}
+.article-details .article-laud a i {
+    margin-right: 8px;
+}
+/*Button Style*/
+.btn-red{
+    color: #fff;
+    background-color: #d9534f;
+    border-color: #d43f3a;
+}
+.btn-white {
+    background: #fff;
+    border: 1px solid #ccc;
+    color: #666;
+}
+.btn-red:hover,
+.btn-red:focus,
+.btn-red:active,
+.btn-red.active,
+.open .dropdown-toggle.btn-red {
+    color: #fff;
+    background-color: #d2322d;
+    border-color: #ac2925
+}
+.btn-white:hover,
+.btn-white:focus,
+.btn-white:active,
+.btn-white.active,
+.open .dropdown-toggle.btn-white {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    background: #f7f7f7;
 }

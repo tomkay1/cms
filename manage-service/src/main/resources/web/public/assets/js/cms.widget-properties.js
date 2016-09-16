@@ -14,7 +14,7 @@
 
 /**
  *
- * <span class="gallery-content" id="myChoose"></span>
+ * <span class="gallery-content" data-id="myChoose"></span>
  * <span class="aritcle-content" id="myChoose"></span>
  * <span class="aritcle-category" id="myChoose"></span>
  */

@@ -16,7 +16,7 @@
  *
  * <span class="gallery-content" id="myChoose"></span>
  * <span class="aritcle-content" id="myChoose"></span>
- * <span class="aritcle-category-content" id="myChoose"></span>
+ * <span class="aritcle-category" id="myChoose"></span>
  */
 
 CMSWidgets.plugins.properties = {};

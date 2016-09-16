@@ -103,7 +103,7 @@ a:link, a:visited, a:hover, a:active {
     background-color: #ad8d4b;
 }
 .topnavbar-absolute {
-    z-index: 999;
+    z-index: 799;
 }
 @media (max-width: 767px) {
     .navbar-collapse {
@@ -533,7 +533,7 @@ a:link, a:visited, a:hover, a:active {
 }
 .newsFlash-pane-red .newsFlash-pane-list .newsFlash-list-time {
     font-size: 12px;
-    color: #999999;
+    color: #999;
 }
 @media (min-width: 768px) {
     .newsFlash-pane-red .newsFlash-pane-list a {

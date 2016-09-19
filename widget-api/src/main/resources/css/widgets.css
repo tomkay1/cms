@@ -44,13 +44,11 @@ a:link, a:visited, a:hover, a:active {
     margin-top: 40px;
     margin-bottom: 40px;
 }
-
 .pic-banner-sf {
     padding-bottom: 80px;
     margin-top: 80px;
     background-color: #f0eff0;
 }
-
 /*Navigation Bar Style*/
 
 .topnavbar .navbar {
@@ -128,14 +126,12 @@ a:link, a:visited, a:hover, a:active {
         line-height: 50px;
         text-align: center;
     }
-
     .width-1000 .logo {
         margin-left: 20px;
         margin-right: 12px;
         width: 80px;
         height: 80px;
     }
-
     .width-1000 .dropdown-menu {
         padding: 0;
         width: 90px;
@@ -146,18 +142,15 @@ a:link, a:visited, a:hover, a:active {
     .width-1000 .dropdown-menu > li > a {
         padding: 10px 0;
     }
-
     .topnavbar-absolute {
         position: absolute;
         left: 0;
         right: 0;
     }
-
     .topnavbar-absolute .navbar {
         padding: 0;
     }
 }
-
 @media (min-width: 992px) {
     .topnavbar-red .active a::after {
         content: "";
@@ -167,12 +160,10 @@ a:link, a:visited, a:hover, a:active {
         right: -1px;
         border-bottom: 4px solid #ba0006;
     }
-
     .width-1000 {
         width: 1000px;
         margin: 0 auto;
     }
-
     .width-1000 .nav .dropdown {
         width: 123px;
         height: 80px;
@@ -185,14 +176,12 @@ a:link, a:visited, a:hover, a:active {
         line-height: 80px;
         text-align: center;
     }
-
     .width-1000 .logo {
         margin-left: 20px;
         margin-right: 12px;
         width: 80px;
         height: 80px;
     }
-
     .width-1000 .dropdown-menu {
         padding: 0;
         width: 125px;
@@ -203,18 +192,15 @@ a:link, a:visited, a:hover, a:active {
     .width-1000 .dropdown-menu>li>a {
         padding: 10px 15px;
     }
-
     .topnavbar-absolute {
         position: absolute;
         left: 0;
         right: 0;
     }
-
     .topnavbar-absolute .navbar {
         padding: 0;
     }
 }
-
 /*Link Exchange Style*/
 .link-exchange dl {
     overflow: hidden;
@@ -282,31 +268,25 @@ a:link, a:visited, a:hover, a:active {
     float: right;
     color: #999;
 }
-
 .treeMenu-menu .level1, .treeMenu-menu .level2 {
     display: none;
     border-top: 1px solid #ddd;
 }
-
 .treeMenu-menu .level1 > li > div {
     padding: 10px 15px 5px 30px;
 }
-
 .treeMenu-menu .level2 > li > div {
     padding: 5px 0 5px 50px;
 }
-
 .treeMenu-menu .level2 > li:hover {
     background-color: #f5f5f5;
     color: #555;
     text-decoration: none;
 }
-
 .treeMenu-menu .active {
     background-color: #337ab7;
     border-color: #337ab7;
 }
-
 .treeMenu-menu .active a {
     color: #fff;
 }
@@ -335,12 +315,10 @@ a:link, a:visited, a:hover, a:active {
     color: #999;
     text-align: center;
 }
-
 .copyright .qrcode {
     width: 100px;
     height: 100px;
 }
-
 .copyright-block {
     width: 100%;
     background-color: #1a1a1a;;
@@ -352,11 +330,9 @@ a:link, a:visited, a:hover, a:active {
     text-decoration: none;
     color: #ad8d4b;
 }
-
 .copyright-sf {
     font-size: 14px;
 }
-
 .copyright-sf .copyright-block-top {
     margin-bottom: 15px;
     padding-bottom: 20px;
@@ -365,50 +341,41 @@ a:link, a:visited, a:hover, a:active {
     width: 252px;
     height: 36px;
 }
-
 @media (min-width: 769px) {
     .copyright {
         margin-top: 40px;
     }
-
     .copyright .list-unstyled {
         border-bottom: none;
     }
-
     .copyright .list-unstyled li {
         float: left;
         padding: 0 15px;
         margin-bottom: 0;
         border-right: 1px solid #d4d4d4;
     }
-
     .copyright p {
         text-align: left;
     }
-
     .copyright-block .list-unstyled li {
         margin-bottom: 10px;
         color: #979797;
         border-right: 1px solid #1a1a1a;
     }
-
     .copyright-block .copyright-block-top {
         border-bottom: 1px solid #979797;
     }
-
     .copyright-sf {
         padding: 60px 0;
     }
     .copyright-sf  .copyright-sf-pull-right {
         float: right;
     }
-
     .copyright-sf .copyright-contact, .copyright-sf .copyright-address {
         font-size: 12px;
     }
 
 }
-
 /*News List Style*/
 .news-items {
     padding: 30px 0 18px;
@@ -416,13 +383,11 @@ a:link, a:visited, a:hover, a:active {
     border: solid 1px #e1e1e1;
     background: #fff;
 }
-
 .news-items > h2 {
     margin-top: 0;
     font-size: 36px;
     color: #333;
 }
-
 .news-items > h2 > a {
     display: block;
     float: left;
@@ -436,7 +401,6 @@ a:link, a:visited, a:hover, a:active {
     color: #333;
     text-decoration: none;
 }
-
 .news-items > h2 > a.more {
     float: right;
     display: inline-block;
@@ -444,24 +408,20 @@ a:link, a:visited, a:hover, a:active {
     height: 14px;
     font-size: 16px;
 }
-
 .news-items .news-info {
     font-size: 12px;
     color: #999;
     margin-top: 10px;
     margin-bottom: 13px;
 }
-
 .news-items .news-content {
     font-size: 14px;
     color: #686f7a;
     text-indent: 28px;
 }
-
 .news-items .news-img {
     margin-top:15px;
 }
-
 @media (min-width: 769px) {
     .news-items {
         padding: 30px 32px;
@@ -481,12 +441,10 @@ a:link, a:visited, a:hover, a:active {
     margin: 21px 0;
     border-radius: 3px;
 }
-
 @media (max-width: 769px) {
     .pagination li {
         display: none;
     }
-
     .pagination li.active,
     .pagination li.next,
     .pagination li.prev {
@@ -500,108 +458,89 @@ a:link, a:visited, a:hover, a:active {
     font-size: 30px;
     text-align: center;
 }
-
 .imageText .desc {
     margin: 10px auto;
     color: #999;
     font-size: 16px;
     text-align: center;
 }
-
 .imageText .category {
     margin-top: 20px;
     color: #333;
     font-size: 36px;
     text-align: left;
 }
-
 .imageText .summary {
     margin-bottom: 42px;
     color: #666;
     font-size: 16px;
     text-align: left;
 }
-
 .imageText .btn-detail {
     margin-bottom: 0;
     padding: 15px 47px;
     border: 1px solid #999;
 }
-
 @media (max-width: 991px) {
     .imageText .category, .imageText .detail {
         text-align: center;
     }
 }
-
 @media (max-width: 768px ) {
     .imageText .img70 {
         width: 70%;
         height: 70%;
     }
 }
-
 @media (min-width: 992px) {
     .imageText .category {
         margin-top: 140px;
     }
-
     .imageText .ml40 {
         margin-left: 40px
     }
 }
-
 /* newsFlash */
 .newsFlash-pane .newsFlash-pane-head {
     padding: 5px 20px;
     font-size: 18px;
 }
-
 .newsFlash-pane-red .newsFlash-pane-head {
     color: #fff;
     background-color: #ba0006;
 }
-
 .newsFlash-pane-red a {
     display: block;
     color: #5a5a5a;
 }
-
 .newsFlash-pane-red a:hover, .newsFlash-pane-red .newsFlash-pane-list a:hover {
     color: #ba0006;
     text-decoration: none;
 }
-
 .newsFlash-pane-red .newsFlash-pane-list a:hover span {
     color: #ba0006;
     text-decoration: none;
 }
-
 .newsFlash-pane-red .newsFlash-pane-list a {
     margin-bottom: 10px;
     border-bottom: 1px solid #999;
 }
-
 .newsFlash-pane-red .newsFlash-pane-list span {
     background: #fff;
     display: block;
 }
-
 .newsFlash-pane-red .newsFlash-pane-list .newsFlash-list-title {
     max-width: 98%;
 }
-
 .newsFlash-pane-red .newsFlash-pane-list .newsFlash-list-time {
     font-size: 12px;
     color: #999;
 }
-
 @media (min-width: 768px) {
     .newsFlash-pane-red .newsFlash-pane-list a {
         margin-bottom: 0;
         border-bottom: none;
     }
-
     .newsFlash-pane-red .newsFlash-pane-list li {
         margin: 18px 0;
         width: 100%;
@@ -610,7 +549,6 @@ a:link, a:visited, a:hover, a:active {
         background-repeat: repeat-x;
         background-size: 8px 12px;
     }
-
     .newsFlash-pane-red .newsFlash-pane-list .newsFlash-list-title {
         display: inline-block;
         max-width: 389px;
@@ -618,14 +556,12 @@ a:link, a:visited, a:hover, a:active {
         white-space: nowrap;
         text-overflow: clip;
     }
-
     .newsFlash-pane-red .newsFlash-pane-list .newsFlash-list-time {
         float: right;
         font-size: 14px;
         color: #5a5a5a;
     }
 }
-
 /*video-text-group*/
 .video-text-group .video-info-title {
     margin-top: 20px;
@@ -639,45 +575,37 @@ a:link, a:visited, a:hover, a:active {
 .video-text-group .video-info-detail {
     font-size: 14px;
 }
-
 /* image-text-list */
 
 .image-text-list-item-sf {
     margin-bottom: 80px;
 }
-
 .image-text-list-item-sf li {
     width: 20%;
     padding: 0;
     float: left;
 }
-
 .image-text-list-small li {
     padding: 30px;
     margin-bottom: -1px;
     border-top: 1px solid #b1b1b1;
     border-bottom: 1px solid #b1b1b1;
 }
-
 .image-text-list-small img {
     width: 40px;
     margin-right: 20px;
 }
-
 .image-text-list-small span {
     font-size: 18px;
     color: #818181;
 }
-
 /*infomationDynamics*/
 .information-list {
     background-color: #fff;
 }
-
 .information-list .information-list-left-header {
     position: relative;
 }
-
 .information-list .information-list-left-header h2 {
     padding-bottom: 20px;
     margin: 20px;
@@ -685,14 +613,12 @@ a:link, a:visited, a:hover, a:active {
     font-size: 22px;
     border-bottom: 3px solid #b6b6b6;
 }
-
 .information-list .information-list-right-header h3 {
     padding-bottom: 20px;
     font-size: 18px;
     color: #b3b3b3;
     border-bottom: 3px solid #b6b6b6;
 }
-
 .information-list .information-list-left-header .information-list-more {
     position: absolute;
     top: 0;
@@ -708,7 +634,6 @@ a:link, a:visited, a:hover, a:active {
     line-height: 40px;
     text-align: center;
 }
-
 .information-list .information-list-left-body a {
     display: block;
     width: 100%;
@@ -717,11 +642,9 @@ a:link, a:visited, a:hover, a:active {
     background-color: #b3b3b3;
     border-radius: 4px;
 }
-
 .information-list .information-list-left-body a:hover {
     text-decoration: none;
 }
-
 .information-list-red .information-list-left-body .active a {
     color: #fff;
     background-color: #e50011;
@@ -738,16 +661,13 @@ a:link, a:visited, a:hover, a:active {
 .information-list .information-list-right-body span {
     display: block;
 }
-
 .information-list .information-list-items-time {
     margin-right: 10px;
     font-size: 12px;
 }
-
 .information-list .information-list-items-tittle {
     max-width: 98%;
 }
-
 .information-list .information-list-bottom {
     text-align: center;
 }
@@ -758,19 +678,16 @@ a:link, a:visited, a:hover, a:active {
     display: none;
     color: #000;
 }
-
 .information-list-red .information-list-bottom .prev a,
 .information-list-red .information-list-bottom .next a,
 .information-list-red .information-list-bottom li .active {
     display: inline-block;
 }
-
 .information-list-red .information-list-bottom .active {
     color: #fff;
     background-color: #e50011;
     border-color: #e50011;
 }
-
 @media (max-width: 768px ) {
     .information-list .information-list-left-body {
         display: none;
@@ -783,33 +700,24 @@ a:link, a:visited, a:hover, a:active {
         z-index: 2;
     }
 }
-
 @media (min-width: 768px) {
-    .information-list .information-list-right {
-        min-height: 818px;
-    }
-
     .information-list .information-list-right-header h3 {
         margin-top: 24px;
         margin-right: 24px;
     }
-
     .information-list .information-list-bottom {
         padding: 60px 0;
         text-align: right;
     }
-
     .information-list .information-list-bottom .pagination {
         margin-right: 40px;
     }
-
     .information-list-red .information-list-bottom li a {
         display: inline-block;
     }
     .information-list  .information-list-right-body li {
         margin-right: 24px;
     }
-
     .information-list .information-list-right-body .information-list-items-tittle {
         display: inline-block;
         max-width: 610px;
@@ -821,7 +729,6 @@ a:link, a:visited, a:hover, a:active {
         float: right;
     }
 }
-
 /*notice-content-list*/
 .notice-content-list .notice-content-list-header{
     padding-top: 26px;
@@ -830,13 +737,11 @@ a:link, a:visited, a:hover, a:active {
     color: #414141;
     font-weight: bold;
 }
-
 .notice-content-list .notice-content-list-heade-body {
     font-size: 14px;
     color: #a3a3a3;
     border-bottom: 1px solid #bcbcbc;
 }
-
 @media (min-width: 769px) {
     .notice-content-list .notice-content-list-heade-body  {
         padding-bottom: 84px;

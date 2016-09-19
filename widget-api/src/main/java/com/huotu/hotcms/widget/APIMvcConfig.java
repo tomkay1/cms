@@ -12,7 +12,7 @@ public class APIMvcConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/css/widgets.css")
-                .addResourceLocations("classpath:/css/widgets.css");
+        registry.addResourceHandler("/css/**")
+                .addResourceLocations("classpath:/css/");
     }
 }

@@ -393,9 +393,9 @@ editPage.init = function () {
         loop: true
     });
 
-    $('.boxes').mCustomScrollbar({
-        autoHideScrollbar:true,
-        theme:"minimal"
+    $('.boxes').niceScroll({
+        cursorcolor:"#fff",
+        cursoropacitymax: 0.2
     });
 
     $('#widgetLists').on('click', '.group-header', function () {

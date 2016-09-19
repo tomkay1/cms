@@ -313,13 +313,23 @@ public abstract class ManageTest extends SpringWebTest {
      * @param site
      */
     protected void randomSiteData(Site site) throws IOException, FormatException {
+        randomSiteData(site, false);
+    }
+
+    /**
+     * 给这个站点添加一些数据，包括数据源，正文，页面
+     *
+     * @param site
+     * @param all  所有数据都需要
+     */
+    protected void randomSiteData(Site site, boolean all) throws IOException, FormatException {
         // 包括数据源的父子关系
         while (categoryRepository.findBySite(site).size() < 5) {
             for (ContentType contentType : contentService.normalContentTypes()) {
                 if (!contentType.isNormal())
                     continue;
                 //create it
-                if (random.nextBoolean()) {
+                if (random.nextBoolean() || all) {
                     Category category = randomCategoryNoParent(site);
                     category.setContentType(contentType);
                     //parent it?
@@ -340,7 +350,7 @@ public abstract class ManageTest extends SpringWebTest {
 
         while (IterableUtil.sizeOf(contentService.listBySite(site, null)) < 10) {
             for (Category category : categoryRepository.findBySite(site)) {
-                if (random.nextBoolean()) {
+                if (random.nextBoolean() || all) {
                     AbstractContent content = contentService.newContent(category.getContentType());
                     content.setCategory(category);
                     content.setDescription(UUID.randomUUID().toString());

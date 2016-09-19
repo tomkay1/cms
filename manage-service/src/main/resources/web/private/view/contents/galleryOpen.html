@@ -39,8 +39,9 @@
         }
     </style>
 </head>
-<body class="mainpanel" id="fa-picture-o">
-<div class="pageheader">
+<!--/*@thymesVar id="quick" type="boolean"*/-->
+<body class="mainpanel" id="fa-picture-o" th:id="${quick?'':'fa-picture-o'}">
+<div class="pageheader" th:if="${!quick}">
     <h2><i class="fa fa-picture-o"></i> 图库管理 <span>修改图库信息</span></h2>
 </div>
 
@@ -48,6 +49,7 @@
 <div class="contentpanel">
     <form id="galleryForm" sec:authorize="hasRole('MANAGE')" action="gallery.html" method="post"
           th:action="@{/manage/gallery/{id}(id=${object.id})}">
+        <input type="hidden" name="quick" value="true" th:if="${quick}"/>
         <div class="panel panel-default close-panel">
             <div class="panel-heading">
                 <div class="panel-btns">

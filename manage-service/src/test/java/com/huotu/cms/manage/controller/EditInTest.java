@@ -44,7 +44,7 @@ public class EditInTest extends ManageTest {
         Owner owner = randomOwner();
         loginAsOwner(owner);
         site = randomSite(owner);
-        randomSiteData(site);
+        randomSiteData(site, true);
 
 //        forContentType("category");
         forContentType("gallery");
@@ -85,6 +85,41 @@ public class EditInTest extends ManageTest {
         driver.switchTo().parentFrame();
         assertThat(current.getText())
                 .isNotEmpty();
+
+        // 重置再尝试更新
+        driver.findElement(By.id("resetButton")).click();
+        assertThat(current.getText())
+                .isEmpty();
+
+        // 有可能根本没提供更新的功能呢?
+        driver.switchTo().frame(driver.findElement(By.tagName("iframe")));
+        if (page.ableModify()) {
+            page.submitForm();
+
+            driver.switchTo().parentFrame();
+            assertThat(current.getText())
+                    .isNotEmpty();
+            driver.switchTo().frame(driver.findElement(By.tagName("iframe")));
+        }
+
+        driver.switchTo().parentFrame();
+        // 再度重置
+        driver.findElement(By.id("resetButton")).click();
+        assertThat(current.getText())
+                .isEmpty();
+
+        // 这里存在问题了啊 我们不知道怎么伪造数据。。
+        driver.switchTo().frame(driver.findElement(By.tagName("iframe")));
+
+        if (page.ableInsert()) {
+            page.randomData();
+            page.submitForm();
+
+            driver.switchTo().parentFrame();
+            assertThat(current.getText())
+                    .isNotEmpty();
+        }
+
 
     }
 

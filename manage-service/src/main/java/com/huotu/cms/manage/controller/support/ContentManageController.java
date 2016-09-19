@@ -28,6 +28,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
@@ -73,10 +74,10 @@ public abstract class ContentManageController<T extends AbstractContent, ED exte
     }
 
     @Override
-    protected void prepareOpen(Login login, T data, Model model, RedirectAttributes attributes)
+    protected void prepareOpen(Login login, HttpServletRequest request, T data, Model model, RedirectAttributes attributes)
             throws RedirectException {
         forCategoryList(data.getCategory().getSite(), model);
-        super.prepareOpen(login, data, model, attributes);
+        super.prepareOpen(login, request, data, model, attributes);
     }
 
     @Override

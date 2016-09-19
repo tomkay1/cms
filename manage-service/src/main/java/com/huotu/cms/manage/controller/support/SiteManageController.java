@@ -15,6 +15,7 @@ import com.huotu.hotcms.service.SiteResource;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.service.SiteService;
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jetbrains.annotations.NotNull;
@@ -36,6 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -53,15 +55,46 @@ public abstract class SiteManageController<T, ID extends Serializable, PD, MD> e
     private ServletContext servletContext;
 
     /**
-     * @param locale
+     * @param locale 当前语言环境
      * @return 正在管理的这项资源的名字
      */
     protected abstract String resourceName(Locale locale);
 
+    private String editDone(T data, Model attributes) {
+        attributes.addAttribute("data", new ToJson().apply(data));
+        return "view/edit_done.html";
+    }
+
+    private boolean isQuickMode(HttpServletRequest request) {
+        return BooleanUtils.toBoolean(request.getParameter("quick"));
+    }
+
     @Override
-    protected Specification<T> prepareIndex(Login login, Model model, RedirectAttributes attributes) throws RedirectException {
+    protected String postPersist(Login login, HttpServletRequest request, T data, Model model, RedirectAttributes attributes) {
+        if (data instanceof SiteResource && isQuickMode(request))
+            return editDone(data, model);
+        return super.postPersist(login, request, data, model, attributes);
+    }
+
+    @Override
+    protected String postUpdate(Login login, HttpServletRequest request, T entity, T data, Model model, RedirectAttributes attributes) {
+        if (data instanceof SiteResource && isQuickMode(request))
+            return editDone(entity, model);
+        return super.postUpdate(login, request, entity, data, model, attributes);
+    }
+
+    @Override
+    protected Specification<T> prepareIndex(Login login, HttpServletRequest request, Model model
+            , RedirectAttributes attributes) throws RedirectException {
+        model.addAttribute("quick", isQuickMode(request));
         Site site = checkSite(login);
         return prepareIndex(login, site, model, attributes);
+    }
+
+    @Override
+    protected void prepareOpen(Login login, HttpServletRequest request, T data, Model model, RedirectAttributes attributes) throws RedirectException {
+        super.prepareOpen(login, request, data, model, attributes);
+        model.addAttribute("quick", isQuickMode(request));
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE, value = "/editIn")
@@ -95,16 +128,7 @@ public abstract class SiteManageController<T, ID extends Serializable, PD, MD> e
 
             return list.stream()
                     .filter(x -> x instanceof SiteResource)
-                    .map(x -> {
-                        SiteResource resource = (SiteResource) x;
-                        Map<String, Object> data = new HashMap<>();
-                        data.put("title", resource.getTitle());
-                        data.put("uri", servletContext.getContextPath() + rootUri() + "/" + resource.getId()
-                                + "?quick=true");
-                        data.put("badge", "");
-                        data.put("serial", resource.getSerial());
-                        return data;
-                    })
+                    .map(new ToJson())
                     .collect(Collectors.toList());
         } catch (IllegalArgumentException ex) {
             throw new RedirectException(rootUri(), ex);
@@ -161,7 +185,7 @@ public abstract class SiteManageController<T, ID extends Serializable, PD, MD> e
      * @param model
      * @param attributes
      * @return
-     * @see CRUDController#prepareIndex(Login, Model, RedirectAttributes)
+     * @see CRUDController#prepareIndex(Login, HttpServletRequest, Model, RedirectAttributes)
      */
     @SuppressWarnings({"WeakerAccess", "JavaDoc"})
     protected Specification<T> prepareIndex(Login login, Site site, Model model, RedirectAttributes attributes)
@@ -182,4 +206,18 @@ public abstract class SiteManageController<T, ID extends Serializable, PD, MD> e
     protected abstract T preparePersist(Login login, Site site, T data, PD extra, RedirectAttributes attributes)
             throws RedirectException;
 
+    private class ToJson implements Function<T, Map<String, Object>> {
+
+        @Override
+        public Map<String, Object> apply(T t) {
+            SiteResource resource = (SiteResource) t;
+            Map<String, Object> data = new HashMap<>();
+            data.put("title", resource.getTitle());
+            data.put("uri", servletContext.getContextPath() + rootUri() + "/" + resource.getId()
+                    + "?quick=true");
+            data.put("badge", "");
+            data.put("serial", resource.getSerial());
+            return data;
+        }
+    }
 }

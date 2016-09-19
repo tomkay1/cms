@@ -30,7 +30,7 @@ public class EditInPage extends AbstractPage {
     }
 
     public void chooseRandomOne() {
-//        System.out.println(webDriver.getPageSource());
+
         WebElement target = webDriver.findElements(By.className("list-group-item"))
                 .stream()
                 .findAny().orElseThrow(IllegalStateException::new);
@@ -42,5 +42,45 @@ public class EditInPage extends AbstractPage {
 //                .moveToElement(target)
 //                .doubleClick()
                 .perform();
+    }
+
+    public boolean ableModify() {
+        try {
+            checkOut();
+            WebElement button = webDriver.findElement(By.cssSelector("button.btn-primary"));
+            return button.isEnabled() && button.isDisplayed();
+        } finally {
+            checkIn();
+        }
+
+    }
+
+    private void checkIn() {
+        webDriver.switchTo().parentFrame();
+    }
+
+    private void checkOut() {
+        webDriver.switchTo().frame(webDriver.findElement(By.tagName("iframe")));
+    }
+
+    public void submitForm() {
+        try {
+            checkOut();
+            WebElement button = webDriver.findElement(By.cssSelector("button.btn-primary"));
+            button.click();
+            System.out.println(webDriver.getTitle());
+            System.out.println(webDriver.getCurrentUrl());
+            System.out.println(webDriver.getPageSource());
+        } finally {
+            checkIn();
+        }
+    }
+
+    public boolean ableInsert() {
+        return false;
+    }
+
+    public void randomData() {
+
     }
 }

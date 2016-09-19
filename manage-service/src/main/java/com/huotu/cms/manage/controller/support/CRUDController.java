@@ -64,7 +64,7 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
     @RequestMapping(method = RequestMethod.POST)
     @Transactional
     public String add(HttpServletRequest request, @AuthenticationPrincipal Login login, @MethodParameterFixed T data
-            , @MethodParameterFixed PD extra, RedirectAttributes attributes) throws RedirectException {
+            , @MethodParameterFixed PD extra, Model model, RedirectAttributes attributes) throws RedirectException {
         try {
             data = preparePersist(request, login, data, extra, attributes);
 
@@ -72,11 +72,9 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
                 ((Auditable) data).setCreateTime(LocalDateTime.now());
             }
 
-            jpaRepository.save(data);
+            data = jpaRepository.save(data);
 
-            GritterUtils.AddFlashSuccess("成功添加", attributes);
-
-            return redirectIndexViewName();
+            return postPersist(login, request, data, model, attributes);
         } catch (IllegalArgumentException ex) {
             throw new RedirectException(rootUri(), ex);
         } catch (RuntimeException ex) {
@@ -86,6 +84,22 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
             throw new RedirectException(rootUri(), ex);
         }
 
+    }
+
+    /**
+     * 添加一个数据以后返回的页面
+     *
+     * @param login      登录
+     * @param request    请求实体
+     * @param data
+     * @param model
+     * @param attributes @return
+     */
+    @SuppressWarnings("WeakerAccess")
+    protected String postPersist(Login login, HttpServletRequest request, T data, Model model, RedirectAttributes attributes) {
+        GritterUtils.AddFlashSuccess("成功添加", attributes);
+
+        return redirectIndexViewName();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -138,18 +152,19 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @Transactional(readOnly = true)
-    public String open(@AuthenticationPrincipal Login login, @PathVariable("id") ID id, Model model
+    public String open(@AuthenticationPrincipal Login login, HttpServletRequest request, @PathVariable("id") ID id
+            , Model model
             , RedirectAttributes attributes) throws RedirectException {
         T data = jpaRepository.getOne(id);
         model.addAttribute("object", data);
-        prepareOpen(login, data, model, attributes);
+        prepareOpen(login, request, data, model, attributes);
         return openViewName();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     @Transactional
-    public String save(@AuthenticationPrincipal Login login, @PathVariable("id") ID id, @MethodParameterFixed T data
-            , @MethodParameterFixed MD extra, RedirectAttributes attributes) throws RedirectException {
+    public String save(@AuthenticationPrincipal Login login, HttpServletRequest request, @PathVariable("id") ID id, @MethodParameterFixed T data
+            , @MethodParameterFixed MD extra, Model model, RedirectAttributes attributes) throws RedirectException {
         T entity = jpaRepository.getOne(id);
         try {
             prepareUpdate(login, entity, data, extra, attributes);
@@ -157,7 +172,8 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
                 ((Auditable) entity).setUpdateTime(LocalDateTime.now());
             }
             jpaRepository.save(entity);
-            GritterUtils.AddFlashSuccess("保存成功", attributes);
+
+            return postUpdate(login, request, entity, data, model, attributes);
         } catch (IllegalArgumentException ex) {
             throw new RedirectException(rootUri(), ex);
         } catch (RuntimeException ex) {
@@ -166,14 +182,30 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
             log.info("unknown exception on save", ex);
             throw new RedirectException(rootUri(), ex);
         }
+
+    }
+
+    /**
+     * 更新成功以后打开的页面
+     *
+     * @param login
+     * @param request
+     * @param entity
+     * @param data
+     * @param model
+     * @param attributes @return
+     */
+    @SuppressWarnings("WeakerAccess")
+    protected String postUpdate(Login login, HttpServletRequest request, T entity, T data, Model model, RedirectAttributes attributes) {
+        GritterUtils.AddFlashSuccess("保存成功", attributes);
         return redirectIndexViewName();
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = {MediaType.TEXT_HTML_VALUE, "*/*"})
     @Transactional(readOnly = true)
-    public String index(@AuthenticationPrincipal Login login, Model model, RedirectAttributes attributes) throws RedirectException {
+    public String index(@AuthenticationPrincipal Login login, HttpServletRequest request, Model model, RedirectAttributes attributes) throws RedirectException {
         try {
-            Specification<T> specification = prepareIndex(login, model, attributes);
+            Specification<T> specification = prepareIndex(login, request, model, attributes);
             if (specification == null)
                 model.addAttribute("list", jpaRepository.findAll());
             else
@@ -202,12 +234,13 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
 
     /**
      * @param login      当前操作者的身份
+     * @param request    实际请求
      * @param model      模型
      * @param attributes 空间  @return 搜索规格, null表示无规格要求
      * @throws RedirectException 需要转发到其他地址
      */
     @SuppressWarnings("WeakerAccess")
-    protected Specification<T> prepareIndex(Login login, Model model, RedirectAttributes attributes) throws RedirectException {
+    protected Specification<T> prepareIndex(Login login, HttpServletRequest request, Model model, RedirectAttributes attributes) throws RedirectException {
         return null;
     }
 
@@ -256,12 +289,13 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
     /**
      * 准备展示一个资源
      *
-     * @param login 当前操作者的身份
-     * @param data  资源
-     * @param model 模型
+     * @param login   当前操作者的身份
+     * @param request
+     * @param data    资源
+     * @param model   模型
      */
     @SuppressWarnings("WeakerAccess")
-    protected void prepareOpen(Login login, T data, Model model, RedirectAttributes attributes)
+    protected void prepareOpen(Login login, HttpServletRequest request, T data, Model model, RedirectAttributes attributes)
             throws RedirectException {
 
     }

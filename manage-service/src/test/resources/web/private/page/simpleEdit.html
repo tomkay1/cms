@@ -22,6 +22,8 @@
         src="../view/edit_in.html">
 </iframe>
 
+<button type="button" id="resetButton">Reset</button>
+
 <span id="current"></span>
 
 </body>
@@ -33,6 +35,10 @@
             console.log(this, row);
 //            $('iframe').hide();
             $('#current').text(row.serial);
+        });
+
+        $('#resetButton').click(function () {
+            $('#current').text('');
         });
     });
 

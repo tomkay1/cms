@@ -66,7 +66,6 @@ public class PageInfoResolver implements HandlerMethodReturnValueHandler {
             response.setStatus(404);
             return;
         }
-
         PageInfo pageInfo = (PageInfo) returnValue;
         CMSContext cmsContext = CMSContext.RequestContext();
 
@@ -82,10 +81,7 @@ public class PageInfoResolver implements HandlerMethodReturnValueHandler {
         context.put("content", content);
 
         response.setContentType("text/html;charset=utf-8");
-
         htmlTemplate.merge(context, response.getWriter());
         response.getWriter().flush();
-
-
     }
 }

@@ -1,14 +1,14 @@
 [
   {
     "title": "资源1",
-    "uri": "contents/gallery_edit.html",
-    "badge": "",
+    "uri": "contents/gallery.html",
+    "badge": "54",
     "serial": "1"
   },
   {
     "title": "资源2",
-    "uri": "contents/gallery_edit.html",
-    "badge": "",
+    "uri": "contents/gallery.html",
+    "badge": "200",
     "serial": "2"
   }
 ]

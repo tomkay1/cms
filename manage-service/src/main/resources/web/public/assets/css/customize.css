@@ -1,3 +1,6 @@
+body {
+    overflow: auto;
+}
 .open-panel .panel-body,  .open-panel .panel-footer {
     display: none;
 }

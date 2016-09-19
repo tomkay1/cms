@@ -23,7 +23,7 @@
     <meta name="description" content="${description}">
     <title>${title}</title>
     <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/assets/css/widgets.css">
+    <link rel="stylesheet" href="/css/widgets.css">
 ##    <link rel="stylesheet" href="${globalCssURI}">
     <link rel="stylesheet" href="${pageCssURI}">
 </head>

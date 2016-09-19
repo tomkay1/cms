@@ -1,13 +1,13 @@
 [
   {
     "title": "资源1",
-    "uri": "contents/gallery.html",
+    "uri": "contents/gallery_edit.html",
     "badge": "",
     "serial": "1"
   },
   {
     "title": "资源2",
-    "uri": "contents/gallery.html",
+    "uri": "contents/gallery_edit.html",
     "badge": "",
     "serial": "2"
   }

@@ -165,6 +165,7 @@ public class CategoryServiceImpl implements CategoryService {
                     throw new BadCategoryInfoException(parent, type);
                 category.setParent(parent);
             }
+            init(category);
             return categoryRepository.save(category);
         }
 

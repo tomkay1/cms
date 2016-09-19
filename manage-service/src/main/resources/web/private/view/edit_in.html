@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<!--
+  ~ 版权所有:杭州火图科技有限公司
+  ~ 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+  ~
+  ~ (c) Copyright Hangzhou Hot Technology Co., Ltd.
+  ~ Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+  ~ 2013-2016. All rights reserved.
+  -->
+
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="这个页面会被请求 /manage/editIn 打开
+    必备参数有type(category),contentType(Article,Gallery..)
+    pageId
+    可选参数有editable,insertable">
+    <title>页面编辑-内内容管理页</title>
+    <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../public/assets/css/edit_in.css">
+</head>
+<body>
+<header>
+    <h3>CMS - 图库</h3>
+</header>
+<div id="container">
+    <div id="sidebar">
+        <div class="add-group">
+            <button class="btn btn-default js-add-group" type="button">+ 添加分组</button>
+        </div>
+        <div class="input-group input-group-sm">
+            <input type="text" class="form-control">
+            <span class="input-group-btn">
+                    <button class="btn btn-default btn-sm" type="button"><span
+                            class="glyphicon glyphicon-search"></span></button>
+                </span>
+        </div>
+        <div class="list-group">
+            <a href="javascript:void(0);" class="list-group-item active">
+                <span class="badge">14</span>测试一
+            </a>
+            <a href="javascript:void(0);" class="list-group-item">
+                <span class="badge">66</span>测试二
+            </a>
+            <a href="javascript:void(0);" class="list-group-item">
+                <span class="badge">70</span>测试三
+            </a>
+            <a href="javascript:void(0);" class="list-group-item">
+                <span class="badge">200</span>测试四
+            </a>
+            <a href="javascript:void(0);" class="list-group-item">
+                <span class="badge">2</span>测试污
+            </a>
+        </div>
+    </div>
+    <div id="content">
+        <iframe src="../edit/edit.html"></iframe>
+    </div>
+</div>
+<script th:inline="javascript">
+    var dataURI = '../../mock/data.json';
+</script>
+
+</body>
+<script src="http://resali.huobanplus.com/cdn/jquery/2.2.4/jquery.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/layer/2.4/layer.js"></script>
+<script>
+    $('.js-add-group', '#sidebar').click(function () {
+        layer.prompt({
+            title: '请输入分组名称'
+        }, function (value, index, elem) {
+            //TODO
+            layer.close(index);
+        });
+    });
+</script>
+</html>

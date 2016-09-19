@@ -35,7 +35,7 @@
 
         //解决iframe内容变化，高度不变的问题，但是使用了 setInterval 感觉浏览器压力大，回头想更好的办法。 @蒋哥
         function reinitIframe() {
-            var iframe = document.getElementById("content");
+            var iframe = document.getElementsByName("content")[0];
             try {
                 var bHeight = iframe.contentWindow.document.body.scrollHeight;
                 var dHeight = iframe.contentWindow.document.documentElement.scrollHeight;
@@ -67,8 +67,8 @@
         <div class="list-group">
         </div>
     </div>
-    <div>
-        <iframe id="content" name="content"></iframe>
+    <div id="content">
+        <iframe name="content"></iframe>
     </div>
 </div>
 

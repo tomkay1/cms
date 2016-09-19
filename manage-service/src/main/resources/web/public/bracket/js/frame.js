@@ -42,6 +42,12 @@ $(function () {
         print('done to remove');
 
         var targetClass = document.body.id;
+
+        if (!targetClass) {
+            print('stop in null id');
+            return;
+        }
+
         print('targetClass:', targetClass);
 
         // 寻找目标

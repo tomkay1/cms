@@ -27,4 +27,8 @@ $(function () {
             })
         }
     });
+
+    $('#sidebarContent').niceScroll({
+        'cursoropacitymax': 0.6
+    });
 });

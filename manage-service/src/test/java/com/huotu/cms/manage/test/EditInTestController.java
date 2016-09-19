@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class EditInTestController {
 
-    @RequestMapping("/test/editIn/{name}")
+    @RequestMapping("/testEditIn/{name}")
     public String editIn(@PathVariable String name, long siteId) {
         return "page/simpleEdit.html";
     }

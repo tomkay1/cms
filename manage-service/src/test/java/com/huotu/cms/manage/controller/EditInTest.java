@@ -50,7 +50,7 @@ public class EditInTest extends ManageTest {
      * @param name
      */
     private void forContentType(String name) throws Exception {
-        // 第一步 检查
+        // 第一步 检查数据
 
         String contentString = mockMvc.perform(get("/manage/" + name)
                 .param("siteId", site.getSiteId().toString())
@@ -63,8 +63,8 @@ public class EditInTest extends ManageTest {
         JsonNode array = objectMapper.readTree(contentString);
         assertSimilarJsonArray(array, new ClassPathResource("web/mock/data.json").getInputStream());
 
+        // 第二步 检查页面
         driver.get("/manage/" + name + "/editIn?siteId=" + site.getSiteId());
-
 
     }
 

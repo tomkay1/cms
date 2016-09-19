@@ -22,9 +22,27 @@ $(function () {
             // active on chose
             listGroup.empty();
             $.each(data, function (index, row) {
-                listGroup.append('<a href="' + row.uri + '" class="list-group-item" target="content">' +
+                listGroup.append('<a name="' + row.serial + '" href="' + row.uri + '" class="list-group-item" target="content">' +
                     '<span class="badge">' + row.badge + '</span>' + row.title + '</a>');
-            })
+                $('a[name=' + row.serial + ']', listGroup).get(0).originRow = row;
+            });
+
+            var items = $('.list-group-item', listGroup);
+            items.click(function () {
+                items.removeClass('active');
+                $(this).addClass('active');
+            });
+
+            items.dblclick(function () {
+                var row = $(this).get(0).originRow;
+                if (!row)
+                    return;
+                parent.$(parent.document).trigger('content-changed', row);
+            });
         }
+    });
+
+    $('#sidebarContent').niceScroll({
+        'cursoropacitymax': 0.6
     });
 });

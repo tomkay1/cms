@@ -190,17 +190,17 @@ $(function () {
         if (ui.size() == 0)
             return;
         var request;
-        if (!top.$.cmsUploaderUrl) {
+        if (!parent.$.cmsUploaderUrl) {
             request = {};
         } else {
             request = {
                 inputName: 'file',
-                endpoint: top.$.cmsUploaderUrl
+                endpoint: parent.$.cmsUploaderUrl
             };
         }
         otherConfig = otherConfig || {};
         var config = $.extend(true, {
-            template: top.$('#qq-template').get(0),
+            template: parent.$('#qq-template').get(0),
             request: request,
             thumbnails: {
                 placeholders: {
@@ -215,8 +215,8 @@ $(function () {
                         uploadedPathConsumer(responseJSON.newUuid);
                 },
                 onValidate: function (data, buttonContainer) {
-                    print('onValidate', top.$.cmsUploaderUrl, data);
-                    if (!top.$.cmsUploaderUrl) { //原型
+                    print('onValidate', parent.$.cmsUploaderUrl, data);
+                    if (!parent.$.cmsUploaderUrl) { //原型
                         uploadedPathConsumer(data.name);
                     }
                 }

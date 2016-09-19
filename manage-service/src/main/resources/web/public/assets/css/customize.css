@@ -1,3 +1,9 @@
+body {
+    overflow: auto;
+}
+.mainpanel {
+    min-height: 900px;
+}
 .open-panel .panel-body,  .open-panel .panel-footer {
     display: none;
 }

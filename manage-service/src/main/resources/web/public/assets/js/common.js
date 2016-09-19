@@ -147,7 +147,13 @@ function updataCompoentPreview(globalID, properties) {
         function (html, textStatus, jqXHR) {
             if (html) {
                 var updateHtml = $(html);
-                ele.html(updateHtml.html());
+                updateHtml.attr({
+                    'id': globalID,
+                    'data-widgetidentity': widgetId,
+                    'data-styleid': styleId,
+                    'widgetidentity': widgetId
+                });
+                ele.parent('.view').html(updateHtml);
                 editFunc.closeFunc();
                 var path = jqXHR.getResponseHeader('cssLocation');
                 if (path) dynamicLoading.css(path);

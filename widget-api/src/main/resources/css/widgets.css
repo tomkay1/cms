@@ -138,7 +138,8 @@ a:link, a:visited, a:hover, a:active {
         min-width: 90px;
         text-align: center;
     }
-    .width-1000 .dropdown-menu>li>a {
+
+    .width-1000 .dropdown-menu > li > a {
         padding: 10px 0;
     }
     .topnavbar-absolute {
@@ -268,7 +269,7 @@ a:link, a:visited, a:hover, a:active {
     color: #999;
 }
 .treeMenu-menu .level1, .treeMenu-menu .level2 {
-    display:none;
+    display: none;
     border-top: 1px solid #ddd;
 }
 .treeMenu-menu .level1 > li > div {

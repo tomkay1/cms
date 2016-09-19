@@ -11,6 +11,7 @@ package com.huotu.hotcms.widget;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 /**
  * 这个配置添加了widget的loader支持,增加了thymeleaf的更多方言用于载入控件
@@ -18,6 +19,7 @@ import org.springframework.context.annotation.Configuration;
  * @author CJ
  */
 @Configuration
+@Import(APIMvcConfig.class)
 @ComponentScan("com.huotu.hotcms.widget.loader.thymeleaf")
 public class WidgetLoaderConfig {
 }

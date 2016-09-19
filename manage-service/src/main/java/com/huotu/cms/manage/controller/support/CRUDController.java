@@ -25,6 +25,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -55,10 +56,10 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
     protected CommonService commonService;
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
-    private JpaRepository<T, ID> jpaRepository;
+    protected JpaRepository<T, ID> jpaRepository;
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
-    private JpaSpecificationExecutor<T> jpaSpecificationExecutor;
+    protected JpaSpecificationExecutor<T> jpaSpecificationExecutor;
 
     @RequestMapping(method = RequestMethod.POST)
     @Transactional
@@ -168,7 +169,7 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
         return redirectIndexViewName();
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, produces = {MediaType.TEXT_HTML_VALUE, "*/*"})
     @Transactional(readOnly = true)
     public String index(@AuthenticationPrincipal Login login, Model model, RedirectAttributes attributes) throws RedirectException {
         try {
@@ -243,8 +244,9 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
 
     /**
      * 在删除某一个资源之前
-     *  @param login 当前操作者的身份
-     * @param entity    主键
+     *
+     * @param login  当前操作者的身份
+     * @param entity 主键
      */
     @SuppressWarnings("WeakerAccess")
     protected void prepareRemove(Login login, T entity) throws RedirectException {

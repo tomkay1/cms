@@ -11,17 +11,30 @@ package com.huotu.cms.manage.controller.support;
 
 import com.huotu.cms.manage.exception.RedirectException;
 import com.huotu.cms.manage.exception.SiteRequiredException;
+import com.huotu.hotcms.service.SiteResource;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.service.SiteService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 管理站点内容的控制器,需要当前登录操作人员已经选择好站点
@@ -30,6 +43,8 @@ import java.io.Serializable;
  */
 public abstract class SiteManageController<T, ID extends Serializable, PD, MD> extends CRUDController<T, ID, PD, MD> {
 
+    private static final Log log = LogFactory.getLog(SiteManageController.class);
+
     @Autowired
     private SiteService siteService;
 
@@ -37,6 +52,52 @@ public abstract class SiteManageController<T, ID extends Serializable, PD, MD> e
     protected Specification<T> prepareIndex(Login login, Model model, RedirectAttributes attributes) throws RedirectException {
         Site site = checkSite(login);
         return prepareIndex(login, site, model, attributes);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional(readOnly = true)
+    @ResponseBody
+    public Object json(@AuthenticationPrincipal Login login, Long siteId, Model model, RedirectAttributes attributes)
+            throws RedirectException {
+        try {
+            Site site;
+            if (siteId != null) {
+                site = siteService.getSite(siteId);
+                if (site == null || !login.siteManageable(site)) {
+                    throw new RedirectException("/manage/site", "你无权操作。");
+                }
+            } else
+                throw new IllegalArgumentException("暂时不支持全数据搜索");
+
+            Specification<T> specification = prepareIndex(login, site, model, attributes);
+
+            List<T> list;
+            if (specification == null)
+                list = jpaRepository.findAll();
+            else
+                list = jpaSpecificationExecutor.findAll(specification);
+
+            return list.stream()
+                    .filter(x -> x instanceof SiteResource)
+                    .map(x -> {
+                        SiteResource resource = (SiteResource) x;
+                        Map<String, Object> data = new HashMap<>();
+                        data.put("title", resource.getTitle());
+                        data.put("uri", "");
+                        data.put("badge", "");
+                        data.put("serial", resource.getSerial());
+                        return data;
+                    })
+                    .collect(Collectors.toList());
+        } catch (IllegalArgumentException ex) {
+            throw new RedirectException(rootUri(), ex);
+        } catch (RuntimeException ex) {
+            throw ex;
+        } catch (Exception ex) {
+            log.info("unknown exception on index", ex);
+            // 这里可不能返回root 不是就死循环了,  应该返回
+            throw new RedirectException("/manage", ex);
+        }
     }
 
     @NotNull

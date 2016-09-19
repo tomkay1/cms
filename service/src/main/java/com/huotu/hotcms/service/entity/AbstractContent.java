@@ -11,8 +11,7 @@ package com.huotu.hotcms.service.entity;
 
 import com.huotu.hotcms.service.Auditable;
 import com.huotu.hotcms.service.Copyable;
-import com.huotu.hotcms.service.Serially;
-import com.huotu.hotcms.service.Titled;
+import com.huotu.hotcms.service.SiteResource;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.BaseForeachParam;
 import lombok.Getter;
 import lombok.Setter;
@@ -45,7 +44,7 @@ import java.util.stream.Collectors;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Getter
 @Setter
-public abstract class AbstractContent implements Auditable, Copyable<AbstractContent>, Serially, Titled {
+public abstract class AbstractContent implements Auditable, Copyable<AbstractContent>, SiteResource {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

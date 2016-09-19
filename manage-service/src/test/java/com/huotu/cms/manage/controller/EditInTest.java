@@ -64,8 +64,9 @@ public class EditInTest extends ManageTest {
         assertSimilarJsonArray(array, new ClassPathResource("web/mock/data.json").getInputStream());
 
         // 第二步 检查页面
-        driver.get("/manage/" + name + "/editIn?siteId=" + site.getSiteId());
+        driver.get("http://localhost/test/editIn?siteId=" + site.getSiteId());
 
+        System.out.println(driver.getPageSource());
     }
 
 }

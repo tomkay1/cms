@@ -9,19 +9,29 @@
 
 package com.huotu.cms.manage.page;
 
-import me.jiangcai.lib.test.page.AbstractPage;
+import com.huotu.cms.manage.page.support.AbstractManagePage;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
+import java.util.Random;
+
 /**
  * @author CJ
  */
-public class EditInPage extends AbstractPage {
+public class EditInPage extends AbstractManagePage {
 
     public EditInPage(WebDriver webDriver) {
         super(webDriver);
+    }
+
+    @Override
+    protected void beforeDriver() {
+
     }
 
     @Override
@@ -35,7 +45,7 @@ public class EditInPage extends AbstractPage {
                 .stream()
                 .findAny().orElseThrow(IllegalStateException::new);
 
-        System.out.println(target);
+//        System.out.println(target);
 
         new Actions(webDriver)
                 .click(target)
@@ -68,19 +78,63 @@ public class EditInPage extends AbstractPage {
             checkOut();
             WebElement button = webDriver.findElement(By.cssSelector("button.btn-primary"));
             button.click();
-            System.out.println(webDriver.getTitle());
-            System.out.println(webDriver.getCurrentUrl());
-            System.out.println(webDriver.getPageSource());
+//            System.out.println(webDriver.getTitle());
+//            System.out.println(webDriver.getCurrentUrl());
+//            System.out.println(webDriver.getPageSource());
         } finally {
             checkIn();
         }
     }
 
     public boolean ableInsert() {
-        return false;
+        try {
+            webDriver.findElement(By.className("add-group"));
+            return true;
+        } catch (NoSuchElementException ex) {
+            return false;
+        }
+
     }
 
-    public void randomData() {
+    public void newRandomData() {
+        webDriver.findElement(By.className("add-group")).findElement(By.tagName("a")).click();
+        try {
+            checkOut();
+            // 应该只有一个form
+//            System.out.println(webDriver.getPageSource());
+            WebElement form = webDriver.findElement(By.tagName("form"));
 
+            for (WebElement input : form.findElements(By.tagName("input"))) {
+                if (input.getAttribute("name") == null)
+                    continue;
+                String type = input.getAttribute("type");
+                if (type.equalsIgnoreCase("hidden"))
+                    continue;
+                if (type.equalsIgnoreCase("text")) {
+                    inputText(form, input.getAttribute("name"), randomString());
+                    continue;
+                }
+                if (type.equalsIgnoreCase("file"))
+                    continue;
+                throw new IllegalStateException("无法处理" + type);
+            }
+
+            for (WebElement select : form.findElements(By.tagName("select"))) {
+                // 随便找一个选项呗
+                select.findElements(By.tagName("option"))
+                        .stream()
+                        .filter(x -> x.getAttribute("disabled") == null)
+                        .findAny()
+                        .ifPresent(label -> inputSelect(form, select.getAttribute("name"), label.getText()));
+            }
+
+        } finally {
+            checkIn();
+        }
+    }
+
+    @NotNull
+    private String randomString() {
+        return RandomStringUtils.randomAlphabetic(new Random().nextInt(5) + 3);
     }
 }

@@ -112,7 +112,7 @@ public class EditInTest extends ManageTest {
         driver.switchTo().frame(driver.findElement(By.tagName("iframe")));
 
         if (page.ableInsert()) {
-            page.randomData();
+            page.newRandomData();
             page.submitForm();
 
             driver.switchTo().parentFrame();

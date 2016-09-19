@@ -25,6 +25,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.util.NumberUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -87,8 +89,21 @@ public abstract class SiteManageController<T, ID extends Serializable, PD, MD> e
     protected Specification<T> prepareIndex(Login login, HttpServletRequest request, Model model
             , RedirectAttributes attributes) throws RedirectException {
         model.addAttribute("quick", isQuickMode(request));
-        Site site = checkSite(login);
+        Site site = checkSite(login, request);
+        model.addAttribute("site", site);
+
         return prepareIndex(login, site, model, attributes);
+    }
+
+    @NotNull
+    private Site checkSite(Login login, HttpServletRequest request) {
+        String siteId = request.getParameter("siteId");
+        Site site;
+        if (StringUtils.isEmpty(siteId))
+            site = checkSite(login);
+        else
+            site = checkSite(login, NumberUtils.parseNumber(siteId, Long.class));
+        return site;
     }
 
     @Override
@@ -171,7 +186,7 @@ public abstract class SiteManageController<T, ID extends Serializable, PD, MD> e
     @Override
     protected T preparePersist(HttpServletRequest request, Login login, T data, PD extra, RedirectAttributes attributes)
             throws RedirectException {
-        Site site = checkSite(login);
+        Site site = checkSite(login, request);
 
         return preparePersist(login, site, data, extra, attributes);
     }

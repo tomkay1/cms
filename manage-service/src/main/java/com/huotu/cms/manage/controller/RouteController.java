@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
+import java.util.Locale;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -51,6 +52,11 @@ public class RouteController extends SiteManageController<Route, Long, Void, Voi
     @Override
     protected String indexViewName() {
         return "/view/route/index.html";
+    }
+
+    @Override
+    protected String resourceName(Locale locale) {
+        return "路由";
     }
 
     @Override

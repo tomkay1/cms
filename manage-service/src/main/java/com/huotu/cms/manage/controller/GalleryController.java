@@ -50,6 +50,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
@@ -202,5 +203,10 @@ public class GalleryController extends ContentManageController<Gallery, ContentE
     @Override
     protected String openViewName() {
         return "/view/contents/galleryOpen.html";
+    }
+
+    @Override
+    protected String resourceName(Locale locale) {
+        return "图库";
     }
 }

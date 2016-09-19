@@ -29,10 +29,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -47,11 +49,32 @@ public abstract class SiteManageController<T, ID extends Serializable, PD, MD> e
 
     @Autowired
     private SiteService siteService;
+    @Autowired
+    private ServletContext servletContext;
+
+    /**
+     * @param locale
+     * @return 正在管理的这项资源的名字
+     */
+    protected abstract String resourceName(Locale locale);
 
     @Override
     protected Specification<T> prepareIndex(Login login, Model model, RedirectAttributes attributes) throws RedirectException {
         Site site = checkSite(login);
         return prepareIndex(login, site, model, attributes);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE, value = "/editIn")
+    public String editIn(@AuthenticationPrincipal Login login, Locale locale, Long siteId, Model model) {
+        Site site = checkSite(login, siteId);
+
+        model.addAttribute("title", "选择" + resourceName(locale));
+        model.addAttribute("name", resourceName(locale));
+        model.addAttribute("insertUri", rootUri());
+        model.addAttribute("insertable", true);
+        model.addAttribute("site", site);
+
+        return "view/edit_in.html";
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -60,14 +83,7 @@ public abstract class SiteManageController<T, ID extends Serializable, PD, MD> e
     public Object json(@AuthenticationPrincipal Login login, Long siteId, Model model, RedirectAttributes attributes)
             throws RedirectException {
         try {
-            Site site;
-            if (siteId != null) {
-                site = siteService.getSite(siteId);
-                if (site == null || !login.siteManageable(site)) {
-                    throw new RedirectException("/manage/site", "你无权操作。");
-                }
-            } else
-                throw new IllegalArgumentException("暂时不支持全数据搜索");
+            Site site = checkSite(login, siteId);
 
             Specification<T> specification = prepareIndex(login, site, model, attributes);
 
@@ -83,7 +99,8 @@ public abstract class SiteManageController<T, ID extends Serializable, PD, MD> e
                         SiteResource resource = (SiteResource) x;
                         Map<String, Object> data = new HashMap<>();
                         data.put("title", resource.getTitle());
-                        data.put("uri", "");
+                        data.put("uri", servletContext.getContextPath() + rootUri() + "/" + resource.getId()
+                                + "?quick=true");
                         data.put("badge", "");
                         data.put("serial", resource.getSerial());
                         return data;
@@ -98,6 +115,19 @@ public abstract class SiteManageController<T, ID extends Serializable, PD, MD> e
             // 这里可不能返回root 不是就死循环了,  应该返回
             throw new RedirectException("/manage", ex);
         }
+    }
+
+    @NotNull
+    private Site checkSite(@AuthenticationPrincipal Login login, Long siteId) {
+        Site site;
+        if (siteId != null) {
+            site = siteService.getSite(siteId);
+            if (site == null || !login.siteManageable(site)) {
+                throw new RedirectException("/manage/site", "你无权操作。");
+            }
+        } else
+            site = checkSite(login);
+        return site;
     }
 
     @NotNull

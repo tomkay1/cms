@@ -22,6 +22,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Locale;
+
 /**
  * @author wenqi
  */
@@ -53,5 +55,10 @@ public class VideoController extends ContentManageController<Video, ContentExtra
     @Override
     protected String openViewName() {
         return "/view/contents/videoOpen.html";
+    }
+
+    @Override
+    protected String resourceName(Locale locale) {
+        return "视频";
     }
 }

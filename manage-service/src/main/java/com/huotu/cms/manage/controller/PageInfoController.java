@@ -26,6 +26,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Locale;
+
 /**
  * 页面控制器
  *
@@ -42,6 +44,11 @@ public class PageInfoController extends SiteManageController<PageInfo, Long, Lon
     private PageFilterBehavioral pageFilterBehavioral;
     @Autowired
     private PageService pageService;
+
+    @Override
+    protected String resourceName(Locale locale) {
+        return "页面";
+    }
 
     @Override
     protected PageInfo preparePersist(Login login, Site site, PageInfo data, Long extra, RedirectAttributes attributes)

@@ -11,13 +11,18 @@ package com.huotu.cms.manage.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.huotu.cms.manage.ManageTest;
+import com.huotu.cms.manage.page.EditInPage;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Owner;
 import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -28,6 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author CJ
  */
 @Transactional
+@ActiveProfiles({"test", "unit_test"})
 public class EditInTest extends ManageTest {
 
     private Site site;
@@ -40,7 +46,8 @@ public class EditInTest extends ManageTest {
         site = randomSite(owner);
         randomSiteData(site);
 
-        forContentType("category");
+//        forContentType("category");
+        forContentType("gallery");
     }
 
     /**
@@ -66,7 +73,19 @@ public class EditInTest extends ManageTest {
         // 第二步 检查页面
         driver.get("http://localhost/testEditIn/" + name + "?siteId=" + site.getSiteId());
 
-        System.out.println(driver.getPageSource());
+        WebElement current = driver.findElement(By.id("current"));
+        assertThat(current.getText())
+                .isEmpty();
+
+        driver.switchTo().frame(driver.findElement(By.tagName("iframe")));
+        EditInPage page = initPage(EditInPage.class);
+        // 选择一个
+        page.chooseRandomOne();
+
+        driver.switchTo().parentFrame();
+        assertThat(current.getText())
+                .isNotEmpty();
+
     }
 
 }

@@ -13,7 +13,7 @@
  */
 
 $(function () {
-    $.ajax(dataURI, {
+    $.ajax(dataURI + "?siteId=" + siteId, {
         async: !$.testMode,
         dataType: 'json',
         success: function (data) {
@@ -24,20 +24,30 @@ $(function () {
             $.each(data, function (index, row) {
                 listGroup.append('<a name="' + row.serial + '" href="' + row.uri + '" class="list-group-item" target="content">' +
                     '<span class="badge">' + row.badge + '</span>' + row.title + '</a>');
-                $('a[name=' + row.serial + ']', listGroup).get(0).originRow = row;
+                var links = $('a', listGroup);
+                links.get(links.size() - 1).originRow = row;
             });
 
             var items = $('.list-group-item', listGroup);
-            items.click(function () {
-                items.removeClass('active');
-                $(this).addClass('active');
-            });
 
-            items.dblclick(function () {
-                var row = $(this).get(0).originRow;
+            function doSelect(ele) {
+                console.error('select me');
+                var row = $(ele).get(0).originRow;
                 if (!row)
                     return;
                 parent.$(parent.document).trigger('content-changed', row);
+            }
+
+            items.click(function () {
+                items.removeClass('active');
+                $(this).addClass('active');
+                if ($.unitTestMode) {
+                    doSelect(this);
+                }
+            });
+
+            items.dblclick(function () {
+                doSelect(this);
             });
         }
     });

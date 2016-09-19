@@ -22,6 +22,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Locale;
+
 /**
  * @author wenqi
  */
@@ -55,5 +57,10 @@ public class LinkController extends ContentManageController<Link, ContentExtra> 
     @Override
     protected String openViewName() {
         return "/view/contents/linkOpen.html";
+    }
+
+    @Override
+    protected String resourceName(Locale locale) {
+        return "链接";
     }
 }

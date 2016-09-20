@@ -29,6 +29,7 @@ import org.springframework.util.NumberUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -113,13 +114,14 @@ public abstract class SiteManageController<T, ID extends Serializable, PD, MD> e
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE, value = "/editIn")
-    public String editIn(@AuthenticationPrincipal Login login, Locale locale, Long siteId, Model model) {
+    public String editIn(@AuthenticationPrincipal Login login, Locale locale, Long siteId
+            , @RequestParam(defaultValue = "true") boolean insertable, Model model) {
         Site site = checkSite(login, siteId);
 
         model.addAttribute("title", "选择" + resourceName(locale));
         model.addAttribute("name", resourceName(locale));
         model.addAttribute("insertUri", rootUri());
-        model.addAttribute("insertable", true);
+        model.addAttribute("insertable", insertable);
         model.addAttribute("site", site);
 
         return "view/edit_in.html";

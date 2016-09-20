@@ -289,7 +289,7 @@
     var widgetEditor=/*[[@{/preview/widgetEditor}]]*/ '../../public/assets/js/data/mockwidgetEditor.html';
     var component=/*[[@{/preview/component}]]*/ '../../public/assets/js/data/mockComponent.html';
     var pageId = /*[[${pageId}]]*/ -999;
-    var pageType = /*[[${pageInfo.pageType}]]*/ -999
+    var pageType = /*[[${pageInfo.pageType}]]*/ -999;
     // Mock数据地址
     var imageMock = '../../public/assets/js/data/imageMock.json';
     var linkMock = '../../public/assets/js/data/linkMock.json';
@@ -322,5 +322,7 @@
 <script src="../../public/assets/js/page/cms.editPage.js" ewp:src="/assets/js/page/cms.editPage.js"></script>
 <script src="../../public/assets/js/data/cms.dataHandle.js" ewp:src="/assets/js/data/cms.dataHandle.js"></script>
 <script src="../../public/assets/js/cms.widget-properties.js" ewp:src="/assets/js/cms.widget-properties.js"></script>
-
+<script th:inline="javascript">
+        CMSWidgets.siteId = /*[[${pageInfo.site.siteId}]]*/ -999;
+</script>
 </html>

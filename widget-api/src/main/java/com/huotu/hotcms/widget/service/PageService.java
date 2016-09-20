@@ -69,16 +69,16 @@ public interface PageService {
      */
     void generateHTML(Writer writer, PageInfo page, CMSContext context) throws IOException;
 
-
     /**
      * 保存某站点下编辑的界面信息
      * 重新构造关于该页面的一切缓存,包括样式，脚本
      *
-     * @param page   Page的配置信息,可以为空表示仅仅重新加载页面
-     * @param pageId 页面id
-     * @throws IOException jackson相关异常
+     * @param info    页面
+     * @param model   可选的替换配置信息,可以为空表示仅仅重新加载页面
+     * @param preview 预览模式的话并不会更新{@link PageInfo#resourceKey},仅仅更新资源
+     * @throws IOException
      */
-    void savePage(PageModel page, Long pageId) throws IOException;
+    void savePage(PageInfo info, PageModel model, boolean preview) throws IOException;
 
     /**
      * 获取页面

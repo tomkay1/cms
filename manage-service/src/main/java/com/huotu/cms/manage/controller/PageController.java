@@ -54,6 +54,7 @@ import java.util.List;
 @Controller
 public class PageController {
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
     @Autowired
     private SiteRepository siteRepository;
     @Autowired
@@ -131,12 +132,11 @@ public class PageController {
     @RequestMapping(value = "/manage/pages/{pageId}", method = RequestMethod.PUT)
     @ResponseStatus(code = HttpStatus.ACCEPTED)
     public void savePage(HttpServletRequest request, @PathVariable("pageId") Long pageID, @RequestBody String pageJson)
-            throws IOException, URISyntaxException {
+            throws IOException, URISyntaxException, PageNotFoundException {
 //        String pageJson = CharStreams.toString(request.getReader());
-        ObjectMapper objectMapper = new ObjectMapper();
         PageModel page = objectMapper.readValue(pageJson, PageModel.class);
 //        page.setPageIdentity(pageID);
-        pageService.savePage(page, pageID);
+        pageService.savePage(pageService.getPage(pageID), page, false);
     }
 
     /**

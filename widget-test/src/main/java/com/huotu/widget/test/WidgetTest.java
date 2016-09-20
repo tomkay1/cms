@@ -189,7 +189,7 @@ public abstract class WidgetTest extends SpringWebTest {
                     .andDo(print());
         driver.get("http://localhost/editor/" + Widget.URIEncodedWidgetIdentity(widget));
         driver.findElement(By.id("editorInit")).click();
-        finalEditorWork(widget, driver.findElement(By.id("editor")).findElement(By.tagName("div")), () -> {
+        finalEditorWork(widget, new Editor(driver.findElement(By.id("editor")).findElement(By.tagName("div")), driver), () -> {
 
             driver.findElement(By.id("editorSaver")).click();
             if (driver instanceof JavascriptExecutor) {
@@ -237,7 +237,7 @@ public abstract class WidgetTest extends SpringWebTest {
         }
     }
 
-    private void finalEditorWork(Widget widget, WebElement editor
+    private void finalEditorWork(Widget widget, Editor editor
             , Supplier<Map<String, Object>> currentWidgetProperties) throws IOException {
         // 获取默认属性
         Map<String, Object> map = currentWidgetProperties.get();
@@ -258,7 +258,7 @@ public abstract class WidgetTest extends SpringWebTest {
      * @see JavascriptExecutor#executeScript(String, Object...)
      */
     @SuppressWarnings("WeakerAccess")
-    protected abstract void editorWork(Widget widget, WebElement editor
+    protected abstract void editorWork(Widget widget, Editor editor
             , Supplier<Map<String, Object>> currentWidgetProperties) throws IOException;
 
     private void finalBrowseWork(Widget widget, WidgetStyle style

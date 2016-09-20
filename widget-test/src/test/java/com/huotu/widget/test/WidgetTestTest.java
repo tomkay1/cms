@@ -41,7 +41,7 @@ public class WidgetTestTest extends WidgetTest {
     }
 
     @Override
-    protected void editorWork(Widget widget, WebElement editor, Supplier<Map<String, Object>> currentWidgetProperties) throws IOException {
+    protected void editorWork(Widget widget, Editor editor, Supplier<Map<String, Object>> currentWidgetProperties) throws IOException {
         if (driver instanceof JavascriptExecutor) {
             Boolean initFlag = (Boolean) ((JavascriptExecutor) driver).executeScript("return window['inited']");
             assertThat(initFlag)
@@ -49,11 +49,16 @@ public class WidgetTestTest extends WidgetTest {
                     .isNotNull()
                     .isTrue();
         }
-        editor.findElement(By.id("DataFetcher")).click();
-        Object result = currentWidgetProperties.get().get("DataFetcherResult");
+        editor.getWebElement().findElement(By.id("DataFetcher")).click();
+        editor.chooseSerial("serial", "123444");
+        Map<String, Object> map = currentWidgetProperties.get();
+        Object result = map.get("DataFetcherResult");
+        Object serial = map.get("serial");
+
         assertThat(result)
                 .isNotNull()
                 .isInstanceOf(List.class);
+        assertThat(serial).isEqualTo("123444");
     }
 
     @Override

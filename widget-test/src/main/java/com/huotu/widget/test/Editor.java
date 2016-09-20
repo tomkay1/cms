@@ -14,6 +14,8 @@ import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Download;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Notice;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -21,12 +23,21 @@ import org.openqa.selenium.WebElement;
  *
  * @author CJ
  */
+
 public class Editor {
 
-    private final WebElement web;
 
-    Editor(WebElement editor) {
-        this.web = editor;
+    private WebElement webElement;
+
+    private WebDriver driver;
+
+    Editor(WebElement webElement, WebDriver driver) {
+        this.driver = driver;
+        this.webElement = webElement;
+    }
+
+    public WebElement getWebElement() {
+        return webElement;
     }
 
     /**
@@ -76,7 +87,12 @@ public class Editor {
      * @param category 数据源
      */
     void chooseCategory(String name, Category category) {
+    }
 
+    public void chooseSerial(String name, String serial) {
+        if (driver instanceof JavascriptExecutor) {
+            ((JavascriptExecutor) driver).executeScript("setSuccessPropertiesSerial(" + name + "," + serial + ")");
+        }
     }
 
 }

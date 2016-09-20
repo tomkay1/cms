@@ -288,6 +288,7 @@ public class FrontController implements FilterBehavioral {
             pageInfo.setResourceKey("PREVIEW");
         else
             pageInfo.setResourceKey("PREVIEW" + login.currentOwnerId());
+        pageService.savePage(pageInfo, page, true);
 
         CMSContext cmsContext = CMSContext.RequestContext();
         cmsContext.updateSite(pageInfo.getSite());

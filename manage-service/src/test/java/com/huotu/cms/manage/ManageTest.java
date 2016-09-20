@@ -30,6 +30,8 @@ import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Download;
 import com.huotu.hotcms.service.entity.Gallery;
 import com.huotu.hotcms.service.entity.GalleryItem;
+import com.huotu.hotcms.service.entity.Link;
+import com.huotu.hotcms.service.entity.Notice;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.Template;
@@ -371,6 +373,19 @@ public abstract class ManageTest extends SpringWebTest {
                         for (int i = 0; i < owner.getImagePaths().length; i++) {
                             owner.updateImage(i, resourceService, randomImageStream());
                         }
+                    }
+
+                    if (content instanceof Article) {
+                        Article article = (Article) content;
+                        article.setContent(UUID.randomUUID().toString());
+                    }
+                    if (content instanceof Link) {
+                        Link link = (Link) content;
+                        link.setLinkUrl(randomHttpURL());
+                    }
+                    if (content instanceof Notice) {
+                        Notice notice = (Notice) content;
+                        notice.setContent(UUID.randomUUID().toString());
                     }
 
                     contentRepository.save(content);

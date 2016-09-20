@@ -16,13 +16,17 @@
     <link href="http://resali.huobanplus.com/cdn/bracket/css/jquery.datatables.css" rel="stylesheet">
     <title>Link</title>
 </head>
-<body class="mainpanel" id="fa-link">
-<div class="pageheader">
+<!--/*@thymesVar id="quick" type="boolean"*/-->
+<!--/*@thymesVar id="site" type="com.huotu.hotcms.service.entity.Site"*/-->
+<body class="mainpanel" id="fa-link" th:id="${quick?'':'fa-link'}">
+<div class="pageheader" th:if="${!quick}">
     <h2><i class="fa fa-link"></i> 链接模型 <span>管理链接数据内容</span></h2>
 </div>
 <!--/*@thymesVar id="categories" type="java.lang.Iterable<com.huotu.hotcms.service.entity.Category"*/-->
 <div class="contentpanel">
     <form id="linkForm" action="link.html" method="POST" th:action="@{/manage/link}">
+        <input type="hidden" name="quick" value="true" th:if="${quick}"/>
+        <input type="hidden" name="siteId" th:if="${site!=null}" th:value="${site.siteId}"/>
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="panel-btns">
@@ -103,7 +107,7 @@
         </div>
     </form>
 
-    <div class="panel panel-default">
+    <div class="panel panel-default" th:if="${!quick}">
         <div class="panel-heading">
             <div class="panel-btns">
                 <a href="" class="minimize">&minus;</a>

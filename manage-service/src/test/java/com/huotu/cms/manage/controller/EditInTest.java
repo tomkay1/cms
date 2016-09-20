@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author CJ
  */
 @Transactional
-@ActiveProfiles({"test", "unit_test"})
+@ActiveProfiles({"test", "unit_test", "no_ck"})
 public class EditInTest extends ManageTest {
 
     private Site site;
@@ -47,7 +47,12 @@ public class EditInTest extends ManageTest {
         randomSiteData(site, true);
 
         forContentType("category");
+
         forContentType("gallery");
+        forContentType("article");
+        forContentType("link");
+        forContentType("notice");
+//        forContentType("download");
     }
 
     /**

@@ -73,11 +73,12 @@ public class EditInPage extends AbstractManagePage {
         webDriver.switchTo().frame(webDriver.findElement(By.tagName("iframe")));
     }
 
-    public void submitForm() {
+    public void submitForm() throws InterruptedException {
         try {
             checkOut();
             WebElement button = webDriver.findElement(By.cssSelector("button.btn-primary"));
             button.click();
+//            assertNoDanger();
 //            System.out.println(webDriver.getTitle());
 //            System.out.println(webDriver.getCurrentUrl());
 //            System.out.println(webDriver.getPageSource());
@@ -125,18 +126,34 @@ public class EditInPage extends AbstractManagePage {
                     inputText(form, input.getAttribute("name"), randomString());
                     continue;
                 }
+                if (type.equalsIgnoreCase("url")) {
+                    inputText(form, input.getAttribute("name"), randomHttpURL());
+                    continue;
+                }
                 if (type.equalsIgnoreCase("file"))
                     continue;
                 throw new IllegalStateException("无法处理" + type);
             }
 
             for (WebElement select : form.findElements(By.tagName("select"))) {
+                if (!select.isDisplayed())
+                    continue;
+                if (select.getAttribute("name") == null)
+                    continue;
                 // 随便找一个选项呗
                 select.findElements(By.tagName("option"))
                         .stream()
                         .filter(x -> x.getAttribute("disabled") == null)
                         .findAny()
                         .ifPresent(label -> inputSelect(form, select.getAttribute("name"), label.getText()));
+            }
+            for (WebElement textarea : form.findElements(By.tagName("textarea"))) {
+                if (!textarea.isDisplayed())
+                    continue;
+                if (textarea.getAttribute("name") == null)
+                    continue;
+
+                inputText(form, textarea.getAttribute("name"), randomString());
             }
 
         } finally {
@@ -147,5 +164,21 @@ public class EditInPage extends AbstractManagePage {
     @NotNull
     private String randomString() {
         return RandomStringUtils.randomAlphabetic(new Random().nextInt(5) + 3);
+    }
+
+    /**
+     * @return 获取随机http url
+     */
+    protected String randomHttpURL() {
+        Random random = new Random();
+        StringBuilder stringBuilder = new StringBuilder("http://");
+        stringBuilder.append(RandomStringUtils.randomAlphabetic(2 + random.nextInt(4)));
+        stringBuilder.append(".");
+        stringBuilder.append(RandomStringUtils.randomAlphabetic(2 + random.nextInt(4)));
+        if (random.nextBoolean()) {
+            stringBuilder.append(".");
+            stringBuilder.append(RandomStringUtils.randomAlphabetic(2 + random.nextInt(4)));
+        }
+        return stringBuilder.toString();
     }
 }

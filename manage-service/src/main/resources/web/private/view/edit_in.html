@@ -13,6 +13,8 @@
 <!--/*@thymesVar id="name" type="java.lang.String"*/-->
 <!--/*@thymesVar id="insertUri" type="java.lang.String"*/-->
 <!--/*@thymesVar id="insertable" type="boolean"*/-->
+<!--/*@thymesVar id="site" type="com.huotu.hotcms.service.entity.Site"*/-->
+<!--/*@thymesVar id="fixedType" type="com.huotu.hotcms.service.common.ContentType"*/-->
 <head>
     <meta charset="UTF-8">
     <meta name="description" content="这个页面会被请求 /manage/editIn 打开
@@ -21,17 +23,17 @@
     可选参数有editable,insertable">
     <title>页面编辑-内内容管理页</title>
     <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../public/assets/css/edit_in.css" ewp:href="assets/css/edit_in.css">
+    <link rel="stylesheet" href="../../public/assets/css/edit_in.css" ewp:href="/assets/css/edit_in.css">
 </head>
 <body>
 <div id="container">
     <div id="sidebar">
         <div id="sidebarContent">
-            <div class="add-group" th:remove="${!insertable}">
+            <div class="add-group" th:if="${insertable}">
                 <a class="btn btn-default"
-                   th:text="'+ 添加'${name}"
+                   th:text="'+ 添加'+${name}"
                    target="content" href="contents/gallery_edit.html"
-                   th:href="@{${insertUri}}"
+                   th:href="@{${insertUri}(quick=true,siteId=${site.siteId},fixedType=${fixedType})}"
                 >+ 添加图库</a>
             </div>
             <div class="input-group input-group-sm">
@@ -113,11 +115,16 @@
     $.imageUploaderUrl = /*[[@{/manage/upload/image}]]*/ null;
     $.cmsUploaderUrl = /*[[@{/manage/upload/fine}]]*/ null;
     $.testMode = /*[[${@environment.acceptsProfiles('test')}]]*/ true;
+    $.unitTestMode = /*[[${@environment.acceptsProfiles('unit_test')}]]*/ false;
     $.language = 'zh-cn';
-</script>
 
-<script th:inline="javascript">
-    var dataURI = '../../mock/data.json';
+    var siteId = /*[[${site.siteId}]]*/ null;
+    var fixedType = /*[[${fixedType!=null?fixedType.name():null}]]*/ null;
+    var dataURI = /*[[${insertUri}]]*/'../../mock/data.json';
+    dataURI = dataURI + '?siteId=' + siteId;
+    if (fixedType) {
+        dataURI = dataURI + '&fixedType=' + fixedType;
+    }
 </script>
-<script src="../../public/js/edit_in.js" ewp:src="js/edit_in.js"></script>
+<script src="../../public/js/edit_in.js" ewp:src="/js/edit_in.js"></script>
 </html>

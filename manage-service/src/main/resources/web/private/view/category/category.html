@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<!--
+  ~ 版权所有:杭州火图科技有限公司
+  ~ 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+  ~
+  ~ (c) Copyright Hangzhou Hot Technology Co., Ltd.
+  ~ Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+  ~ 2013-2016. All rights reserved.
+  -->
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:ewp="http://ewp.jiangcai.me"
+      lang="en">
+<!--/*@thymesVar id="manageSite" type="com.huotu.hotcms.service.entity.Site"*/-->
+<!--/*@thymesVar id="quick" type="boolean"*/-->
+<head>
+    <meta charset="UTF-8">
+    <link href="http://resali.huobanplus.com/cdn/bracket/css/style.default.css" rel="stylesheet">
+    <title>数据源</title>
+</head>
+<body class="mainpanel" id="fa-bars" th:id="${quick?'':'fa-bars'}">
+<div class="pageheader" th:if="${!quick}">
+    <h2><i class="fa fa-bars"></i> 数据源 <span>编辑数据源</span></h2>
+</div>
+<!--/*@thymesVar id="object" type="com.huotu.hotcms.service.entity.Category"*/-->
+<div class="contentpanel">
+    <form id="categoryForm" action="productCategory.html" method="POST"
+          th:action="@{/manage/category/{id}(id=${object.id})}">
+        <input type="hidden" name="quick" value="true" th:if="${quick}"/>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-btns">
+                    <a href="" class="minimize">&minus;</a>
+                </div><!-- panel-btns -->
+                <h3 class="panel-title">修改数据源基本信息</h3>
+                <p>&nbsp;</p>
+            </div>
+            <div class="panel-body">
+                <div class="form-horizontal form-bordered">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">名称</label>
+                        <div class="col-sm-2">
+                            <input name="name" title="名称" type="text" placeholder="数据源的名称"
+                                   class="form-control" th:text="${object.name}"/>
+                        </div>
+                        <label class="col-sm-2 control-label">模型</label>
+                        <div class="col-sm-2">
+                            <span class="form-control"
+                                  th:text="${object.contentType.value}">文章</span>
+                        </div>
+                        <label class="col-sm-2 control-label">父级</label>
+                        <div class="col-sm-2">
+                            <span class="form-control"
+                                  th:text="${object.parent==null?'无':object.parent.name}">某个数据源</span>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- panel-body -->
+
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <button class="btn btn-primary">提交</button>
+                        &nbsp;
+                        <button class="btn btn-default">取消</button>
+                    </div>
+                </div>
+            </div><!-- panel-footer -->
+
+        </div>
+    </form>
+
+</div><!-- contentpanel -->
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-1.10.2.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-ui-1.10.3.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/bootstrap.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/toggles.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.cookies.js"></script>
+
+<div ewp:replace="fragments/frame.html::#messageSection"></div>
+<script src="../../../public/bracket/js/frame.js" ewp:src="/bracket/js/frame.js"></script>
+<script src="../../../public/bracket/js/frame_custom.js" ewp:src="/bracket/js/frame_custom.js"></script>
+<script src="../../../public/js/category.js" ewp:src="/js/category.js"></script>
+</body>
+</html>

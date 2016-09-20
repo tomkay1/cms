@@ -39,14 +39,24 @@ public interface CategoryService {
     @Transactional
     void delete(Category category);
 
-
     /**
      * 拿到一个,拿不到就报错
      *
      * @param id pk
      * @return 实例
      */
+    @Transactional(readOnly = true)
     Category get(long id);
+
+    /**
+     * 查找站点唯一的数据源
+     *
+     * @param site   站点
+     * @param serial 序列号
+     * @return 实例, 如果没有找到则返回null
+     */
+    @Transactional(readOnly = true)
+    Category get(Site site, String serial);
 
     List<Category> getCategoryBySiteAndDeletedAndNameContainingOrderByOrderWeightDesc(Site site, Boolean deleted, String name);
 

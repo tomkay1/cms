@@ -30,6 +30,8 @@ import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Download;
 import com.huotu.hotcms.service.entity.Gallery;
 import com.huotu.hotcms.service.entity.GalleryItem;
+import com.huotu.hotcms.service.entity.Link;
+import com.huotu.hotcms.service.entity.Notice;
 import com.huotu.hotcms.service.entity.Route;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.Template;
@@ -313,13 +315,23 @@ public abstract class ManageTest extends SpringWebTest {
      * @param site
      */
     protected void randomSiteData(Site site) throws IOException, FormatException {
+        randomSiteData(site, false);
+    }
+
+    /**
+     * 给这个站点添加一些数据，包括数据源，正文，页面
+     *
+     * @param site
+     * @param all  所有数据都需要
+     */
+    protected void randomSiteData(Site site, boolean all) throws IOException, FormatException {
         // 包括数据源的父子关系
         while (categoryRepository.findBySite(site).size() < 5) {
             for (ContentType contentType : contentService.normalContentTypes()) {
                 if (!contentType.isNormal())
                     continue;
                 //create it
-                if (random.nextBoolean()) {
+                if (random.nextBoolean() || all) {
                     Category category = randomCategoryNoParent(site);
                     category.setContentType(contentType);
                     //parent it?
@@ -340,7 +352,7 @@ public abstract class ManageTest extends SpringWebTest {
 
         while (IterableUtil.sizeOf(contentService.listBySite(site, null)) < 10) {
             for (Category category : categoryRepository.findBySite(site)) {
-                if (random.nextBoolean()) {
+                if (random.nextBoolean() || all) {
                     AbstractContent content = contentService.newContent(category.getContentType());
                     content.setCategory(category);
                     content.setDescription(UUID.randomUUID().toString());
@@ -361,6 +373,23 @@ public abstract class ManageTest extends SpringWebTest {
                         for (int i = 0; i < owner.getImagePaths().length; i++) {
                             owner.updateImage(i, resourceService, randomImageStream());
                         }
+                    }
+
+                    if (content instanceof Article) {
+                        Article article = (Article) content;
+                        article.setContent(UUID.randomUUID().toString());
+                    }
+                    if (content instanceof Link) {
+                        Link link = (Link) content;
+                        link.setLinkUrl(randomHttpURL());
+                    }
+                    if (content instanceof Notice) {
+                        Notice notice = (Notice) content;
+                        notice.setContent(UUID.randomUUID().toString());
+                    }
+                    if (content instanceof Download) {
+                        Download download = (Download) content;
+                        download.setFileName(randomMobile() + ".png");
                     }
 
                     contentRepository.save(content);

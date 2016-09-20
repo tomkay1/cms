@@ -8,16 +8,24 @@
   ~ 2013-2016. All rights reserved.
   -->
 
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>编辑页面把</title>
 </head>
 <body>
 
+<!--/*@thymesVar id="uri" type="java.lang.String"*/-->
+<!--/*@thymesVar id="site" type="com.huotu.hotcms.service.entity.Site"*/-->
+<!--/*@thymesVar id="fixedType" type="com.huotu.hotcms.service.common.ContentType"*/-->
 <iframe width="100%" height="1000"
-        src="../../web/private/view/edit_in.html">
+        th:src="@{${uri}(siteId=${site.siteId},fixedType=${fixedType})}"
+        src="../view/edit_in.html">
 </iframe>
+
+<button type="button" id="resetButton">Reset</button>
+
+<span id="current"></span>
 
 </body>
 
@@ -26,7 +34,12 @@
     $(function () {
         $(document).on('content-changed', function (event, row) {
             console.log(this, row);
-            $('iframe').hide();
+//            $('iframe').hide();
+            $('#current').text(row.serial);
+        });
+
+        $('#resetButton').click(function () {
+            $('#current').text('');
         });
     });
 

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<!--
+  ~ 版权所有:杭州火图科技有限公司
+  ~ 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+  ~
+  ~ (c) Copyright Hangzhou Hot Technology Co., Ltd.
+  ~ Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+  ~ 2013-2016. All rights reserved.
+  -->
+
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>内编辑以后的跳转界面</title>
+</head>
+<body>
+
+</body>
+<script src="http://resali.huobanplus.com/cdn/jquery/2.2.4/jquery.min.js"></script>
+<script th:inline="javascript">
+    var row = /*[[${data}]]*/ {
+        "title": "资源2",
+        "uri": "contents/gallery_edit.html",
+        "badge": "200",
+        "serial": "3"
+    };
+    parent.parent.$(parent.parent.document).trigger('content-changed', row);
+</script>
+</html>

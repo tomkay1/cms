@@ -43,7 +43,7 @@ $(function () {
 
         var targetClass = document.body.id;
 
-        if (!targetClass) {
+        if (!targetClass || targetClass.length == 0) {
             print('stop in null id');
             return;
         }

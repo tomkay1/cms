@@ -54,15 +54,15 @@ public class SiteController extends CRUDController<Site, Long, SiteController.Ab
     private OwnerRepository ownerRepository;
 
     @Override
-    protected Specification<Site> prepareIndex(Login login, Model model, RedirectAttributes attributes) throws RedirectException {
+    protected Specification<Site> prepareIndex(Login login, HttpServletRequest request, Model model, RedirectAttributes attributes) throws RedirectException {
         return (root, query, cb)
                 -> cb.and(cb.isFalse(root.get("deleted")), cb.equal(root.get("owner").get("id")
                 , login.currentOwnerId()));
     }
 
     @Override
-    protected void prepareOpen(Login login, Site data, Model model, RedirectAttributes attributes) throws RedirectException {
-        super.prepareOpen(login, data, model, attributes);
+    protected void prepareOpen(Login login, HttpServletRequest request, Site data, Model model, RedirectAttributes attributes) throws RedirectException {
+        super.prepareOpen(login, request, data, model, attributes);
         String domains = String.join(",", hostService.hookOn(data).stream()
                 .map(Host::getDomain)
                 .collect(Collectors.toSet()));

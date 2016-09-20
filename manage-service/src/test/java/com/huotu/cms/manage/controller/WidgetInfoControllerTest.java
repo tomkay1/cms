@@ -17,6 +17,7 @@ import com.huotu.cms.manage.page.AdminPage;
 import com.huotu.cms.manage.page.WidgetEditPage;
 import com.huotu.cms.manage.page.WidgetPage;
 import com.huotu.cms.manage.page.support.AbstractCRUDPage;
+import com.huotu.hotcms.service.common.PageType;
 import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
@@ -201,7 +202,7 @@ public class WidgetInfoControllerTest extends ManageTest {
      * 对widget json进行校验
      *
      * @throws Exception
-     * @see WidgetInfoController#getWidgetInfo(Locale, Login)
+     * @see WidgetInfoController#getWidgetInfo(Locale, Login, PageType)
      */
     @Test
     @Transactional

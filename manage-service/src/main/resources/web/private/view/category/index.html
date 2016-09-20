@@ -11,20 +11,26 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:ewp="http://ewp.jiangcai.me"
       lang="en">
 <!--/*@thymesVar id="manageSite" type="com.huotu.hotcms.service.entity.Site"*/-->
+<!--/*@thymesVar id="quick" type="boolean"*/-->
+<!--/*@thymesVar id="site" type="com.huotu.hotcms.service.entity.Site"*/-->
+<!--/*@thymesVar id="fixedType" type="com.huotu.hotcms.service.common.ContentType"*/-->
 <head>
     <meta charset="UTF-8">
     <link href="http://resali.huobanplus.com/cdn/bracket/css/style.default.css" rel="stylesheet">
     <link href="http://resali.huobanplus.com/cdn/bracket/css/jquery.datatables.css" rel="stylesheet">
     <link href="../../../public/assets/css/customize.css" ewp:href="/assets/css/customize.css" rel="stylesheet">
-    <title>Owner</title>
+    <title>Category</title>
 </head>
-<body class="mainpanel" id="fa-bars">
-<div class="pageheader">
+<body class="mainpanel" id="fa-bars" th:id="${quick?'':'fa-bars'}">
+<div class="pageheader" th:if="${!quick}">
     <h2><i class="fa fa-bars"></i> 数据源 <span>管理当前站点的数据源</span></h2>
 </div>
 
 <div class="contentpanel">
     <form id="categoryForm" action="index.html" method="POST" th:action="@{/manage/category}">
+        <input type="hidden" name="quick" value="true" th:if="${quick}"/>
+        <input type="hidden" name="siteId" th:if="${site!=null}" th:value="${site.siteId}"/>
+
         <div class="panel panel-default close-panel open-panel">
             <div class="panel-heading">
                 <div class="panel-btns">
@@ -49,6 +55,7 @@
                                 <!--suppress ThymeleafVariablesResolveInspection -->
                                 <option value="0"
                                         th:each="pageType:${T(com.huotu.hotcms.service.common.ContentType).values()}"
+                                        th:if="${fixedType==null or fixedType==pageType}"
                                         th:value="${pageType.getCode()}"
                                         th:text="${pageType.getValue().toString()}">文章
                                 </option>
@@ -85,13 +92,17 @@
         </div>
     </form>
 
-    <div class="panel panel-default">
+    <div class="panel panel-default" th:if="${!quick}">
         <div class="panel-heading">
             <div class="panel-btns">
                 <a href="" class="minimize">&minus;</a>
             </div><!-- panel-btns -->
             <h3 class="panel-title">数据源列表</h3>
-            <p><button class="btn btn-white btn-sm js-add-category" type="button"><i class="fa fa-plus-circle" aria-hidden="true"></i> 添加数据源</button></p>
+            <p>
+                <button class="btn btn-white btn-sm js-add-category" type="button"><i class="fa fa-plus-circle"
+                                                                                      aria-hidden="true"></i> 添加数据源
+                </button>
+            </p>
         </div>
         <div class="panel-body">
             <div class="table-responsive">
@@ -115,7 +126,7 @@
                         <td th:text="${category.contentType.value}">文章</td>
                         <td th:text="${category.parent!=null?category.parent.name:'无'}">无</td>
                         <td class="center">
-                            <a href="productCategory.html" th:if="${category.contentType.product}"
+                            <a href="category.html" th:if="${category.contentType.product}"
                                th:href="@{/manage/category/{id}(id=${category.id})}" title="编辑">
                                 <i class="fa fa-pencil"></i>
                             </a>
@@ -129,7 +140,7 @@
                     <tr class="even" data-id="2" th:remove="all">
                         <td>成功案例</td>
                         <td>2016 06-11</td>
-                        <td>文章</td>
+                        <td>产品</td>
                         <td>无</td>
                         <td class="center">
                             <a href="productCategory.html" title="编辑">
@@ -146,7 +157,7 @@
                         <td>文章</td>
                         <td>新闻资讯</td>
                         <td class="center">
-                            <a href="productCategory.html" title="编辑">
+                            <a href="category.html" title="编辑">
                                 <i class="fa fa-pencil"></i>
                             </a>
                             <a href="index.html" class="delete" title="删除">

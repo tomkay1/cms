@@ -18,8 +18,9 @@
     <link href="../../../public/css/site.css" ewp:href="/css/site.css" rel="stylesheet">
     <title>EditSite</title>
 </head>
-<body class="mainpanel" id="fa-link">
-<div class="pageheader">
+<!--/*@thymesVar id="quick" type="boolean"*/-->
+<body class="mainpanel" id="fa-link" th:id="${quick?'':'fa-link'}">
+<div class="pageheader" th:if="${!quick}">
     <h2><i class="fa fa-link"></i> 链接管理 <span>修改链接信息</span></h2>
 </div>
 
@@ -27,6 +28,7 @@
 <div class="contentpanel">
     <form id="linkForm" sec:authorize="hasRole('MANAGE')" action="link.html" method="post"
           th:action="@{/manage/link/{id}(id=${object.id})}">
+        <input type="hidden" name="quick" value="true" th:if="${quick}"/>
         <div class="panel panel-default close-panel">
             <div class="panel-heading">
                 <div class="panel-btns">

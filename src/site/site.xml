@@ -39,6 +39,7 @@
         </links>
         <menu name="控件开发">
             <item name="指引" href="guide.html"/>
+            <item name="控件编辑器" href="editor.html"/>
         </menu>
         <menu ref="modules"/>
         <menu ref="reports"/>

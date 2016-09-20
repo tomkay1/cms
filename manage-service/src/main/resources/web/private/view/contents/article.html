@@ -16,13 +16,17 @@
     <link href="http://resali.huobanplus.com/cdn/bracket/css/jquery.datatables.css" rel="stylesheet">
     <title>Article</title>
 </head>
-<body class="mainpanel" id="fa-tasks">
-<div class="pageheader">
+<!--/*@thymesVar id="quick" type="boolean"*/-->
+<!--/*@thymesVar id="site" type="com.huotu.hotcms.service.entity.Site"*/-->
+<body class="mainpanel" id="fa-tasks" th:id="${quick?'':'fa-tasks'}">
+<div class="pageheader" th:if="${!quick}">
     <h2><i class="fa fa-tasks"></i> 文章模型 <span>管理文章数据内容</span></h2>
 </div>
 <!--/*@thymesVar id="categories" type="java.lang.Iterable<com.huotu.hotcms.service.entity.Category"*/-->
 <div class="contentpanel">
     <form id="articleForm" action="article.html" method="POST" th:action="@{/manage/article}">
+        <input type="hidden" name="quick" value="true" th:if="${quick}"/>
+        <input type="hidden" name="siteId" th:if="${site!=null}" th:value="${site.siteId}"/>
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="panel-btns">
@@ -117,7 +121,7 @@
             </div><!-- panel-footer -->
         </div>
     </form>
-    <div class="panel panel-default">
+    <div class="panel panel-default" th:if="${!quick}">
         <div class="panel-heading">
             <div class="panel-btns">
                 <a href="" class="minimize">&minus;</a>

@@ -46,7 +46,7 @@ public class EditInTest extends ManageTest {
         site = randomSite(owner);
         randomSiteData(site, true);
 
-//        forContentType("category");
+        forContentType("category");
         forContentType("gallery");
     }
 

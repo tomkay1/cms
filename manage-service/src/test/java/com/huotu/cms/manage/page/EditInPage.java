@@ -104,8 +104,19 @@ public class EditInPage extends AbstractManagePage {
 //            System.out.println(webDriver.getPageSource());
             WebElement form = webDriver.findElement(By.tagName("form"));
 
+            WebElement body = form.findElement(By.className("panel-body"));
+            if (!body.isDisplayed()) {
+                form.findElement(By.cssSelector("a.maximize")).click();
+            }
+
             for (WebElement input : form.findElements(By.tagName("input"))) {
+                if (!input.isDisplayed())
+                    continue;
                 if (input.getAttribute("name") == null)
+                    continue;
+                if (input.getAttribute("readOnly") != null)
+                    continue;
+                if (input.getAttribute("readonly") != null)
                     continue;
                 String type = input.getAttribute("type");
                 if (type.equalsIgnoreCase("hidden"))

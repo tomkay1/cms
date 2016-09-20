@@ -88,6 +88,6 @@ public class CategoryController extends SiteManageController<Category, Long, Lon
     @Override
     protected String openViewName() {
         // 没打算提供编辑页面
-        return null;
+        return "view/category/category.html";
     }
 }

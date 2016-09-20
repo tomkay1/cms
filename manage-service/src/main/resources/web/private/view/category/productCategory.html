@@ -15,7 +15,7 @@
     <meta charset="UTF-8">
     <link href="http://resali.huobanplus.com/cdn/bracket/css/style.default.css" rel="stylesheet">
     <link href="http://resali.huobanplus.com/cdn/bracket/css/jquery.datatables.css" rel="stylesheet">
-    <title>Owner</title>
+    <title>产品数据源</title>
 </head>
 <body class="mainpanel" id="fa-bars">
 <div class="pageheader">
@@ -24,7 +24,7 @@
 <!--/*@thymesVar id="object" type="com.huotu.hotcms.service.entity.ProductCategory"*/-->
 <div class="contentpanel">
     <form id="categoryForm" action="productCategory.html" method="POST"
-          th:action="@{/manage/category/{id}(id=object.id)}">
+          th:action="@{/manage/category/{id}(id=${object.id})}">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="panel-btns">

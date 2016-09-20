@@ -30,7 +30,8 @@
         <h2>注册编辑器生命周期</h2>
         <p>TODO 目前文档还在quip里</p>
         <h2>便捷的编辑功能</h2>
-        <p>编辑互动上总是存在一些很细致的要求,按照我们的原则,我们应当对此进行抽象。这里采用bootstrap风格声明class即可获得功能,而name属性通常用于决定这个属性在以何名保存。
+        <p>编辑互动上总是存在一些很细致的要求,按照我们的原则,我们应当对此进行抽象。这里采用bootstrap风格声明class即可获得功能,
+            而data-name属性通常用于决定这个属性在以何名保存。
         </p>
         <p>
             <b>为了测试!</b>
@@ -42,7 +43,7 @@
             <pre>
                 <code>
                     <![CDATA[
-                    文章:<span name="name" class="article-content"/>
+                    文章:<span data-name="name" class="article-content"></span>
                     ]]>
                 </code>
             </pre>
@@ -52,7 +53,7 @@
             <pre>
                 <code>
                     <![CDATA[
-                    图库:<span name="name" class="gallery-content"/>
+                    图库:<span data-name="name" class="gallery-content"></span>
                     ]]>
                 </code>
             </pre>
@@ -62,7 +63,7 @@
             <pre>
                 <code>
                     <![CDATA[
-                    链接:<span name="name" class="link-content"/>
+                    链接:<span data-name="name" class="link-content"></span>
                     ]]>
                 </code>
             </pre>
@@ -72,7 +73,7 @@
             <pre>
                 <code>
                     <![CDATA[
-                    公告:<span name="name" class="notice-content"/>
+                    公告:<span data-name="name" class="notice-content"></span>
                     ]]>
                 </code>
             </pre>
@@ -83,7 +84,7 @@
             <pre>
                 <code>
                     <![CDATA[
-                    数据源:<span name="name" class="article-category"/>
+                    数据源:<span data-name="name" class="article-category"></span>
                     ]]>
                 </code>
             </pre>
@@ -93,7 +94,7 @@
             <pre>
                 <code>
                     <![CDATA[
-                    数据源:<span name="name" class="gallery-category"/>
+                    数据源:<span data-name="name" class="gallery-category"></span>
                     ]]>
                 </code>
             </pre>
@@ -103,7 +104,7 @@
             <pre>
                 <code>
                     <![CDATA[
-                    数据源:<span name="name" class="link-category"/>
+                    数据源:<span data-name="name" class="link-category"></span>
                     ]]>
                 </code>
             </pre>
@@ -113,7 +114,7 @@
             <pre>
                 <code>
                     <![CDATA[
-                    数据源:<span name="name" class="notice-category"/>
+                    数据源:<span data-name="name" class="notice-category"></span>
                     ]]>
                 </code>
             </pre>

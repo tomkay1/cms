@@ -387,6 +387,10 @@ public abstract class ManageTest extends SpringWebTest {
                         Notice notice = (Notice) content;
                         notice.setContent(UUID.randomUUID().toString());
                     }
+                    if (content instanceof Download) {
+                        Download download = (Download) content;
+                        download.setFileName(randomMobile() + ".png");
+                    }
 
                     contentRepository.save(content);
                 }

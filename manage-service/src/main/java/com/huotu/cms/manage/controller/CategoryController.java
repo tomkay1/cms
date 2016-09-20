@@ -12,6 +12,7 @@ package com.huotu.cms.manage.controller;
 import com.huotu.cms.manage.controller.support.SiteManageController;
 import com.huotu.cms.manage.exception.RedirectException;
 import com.huotu.hotcms.service.common.ContentType;
+import com.huotu.hotcms.service.converter.ContentTypeConverter;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.ProductCategory;
 import com.huotu.hotcms.service.entity.Site;
@@ -23,15 +24,15 @@ import com.huotu.hotcms.service.service.SiteService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
 
-/**
- * Created by chendeyu on 2015/12/31.
- */
 @Controller
 @RequestMapping("/manage/category")
 public class CategoryController extends SiteManageController<Category, Long, Long, Void> {
@@ -45,10 +46,26 @@ public class CategoryController extends SiteManageController<Category, Long, Lon
     SiteService siteService;
     @Autowired
     RouteService routeService;
+    @Autowired
+    private ContentTypeConverter contentTypeConverter;
 
     @Override
     protected String resourceName(Locale locale) {
         return "数据源";
+    }
+
+    @Override
+    protected Specification<Category> prepareIndex(Login login, HttpServletRequest request, Site site, Model model
+            , RedirectAttributes attributes) throws RedirectException {
+        if (request.getParameter("fixedType") != null) {
+            ContentType contentType = contentTypeConverter.convert(request.getParameter("fixedType"));
+            if (contentType != null) {
+                model.addAttribute("fixedType", contentType);
+                return (root, query, cb) -> cb.and(cb.equal(root.get("site").as(Site.class), site)
+                        , cb.equal(root.get("contentType").as(ContentType.class), contentType));
+            }
+        }
+        return super.prepareIndex(login, request, site, model, attributes);
     }
 
     @Override

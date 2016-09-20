@@ -72,6 +72,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public Category get(Site site, String serial) {
+        return categoryRepository.findBySerialAndSite(serial, site);
+    }
+
+    @Override
     public List<Category> getCategoryBySiteAndDeletedAndNameContainingOrderByOrderWeightDesc(Site site, Boolean deleted, String name) {
         List<Category> categories = null;
         if (StringUtils.isEmpty(name)) {
@@ -88,7 +93,7 @@ public class CategoryServiceImpl implements CategoryService {
         return categories;
     }
 
-    public Category setReleationEmpty(Category category) {
+    private Category setReleationEmpty(Category category) {
         if (category != null) {
             Category parentCategory = category.getParent();
             if (parentCategory != null) {
@@ -260,7 +265,7 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryTreeModels;
     }
 
-    public Boolean isExistsCategory(List<CategoryTreeModel> categoryTreeModelList, Category category) {
+    private Boolean isExistsCategory(List<CategoryTreeModel> categoryTreeModelList, Category category) {
         if (categoryTreeModelList != null) {
             for (CategoryTreeModel categoryTreeModel : categoryTreeModelList) {
                 if (categoryTreeModel != null && categoryTreeModel.getId().equals(category.getId())) {
@@ -278,7 +283,7 @@ public class CategoryServiceImpl implements CategoryService {
         return false;
     }
 
-    public Long getCategoryTreeId(List<CategoryTreeModel> categoryTreeModelList, Category category) {
+    private Long getCategoryTreeId(List<CategoryTreeModel> categoryTreeModelList, Category category) {
         if (categoryTreeModelList != null) {
             for (Integer i = 0; i < categoryTreeModelList.size(); i++) {
                 CategoryTreeModel categoryTreeModel = categoryTreeModelList.get(i);
@@ -297,7 +302,7 @@ public class CategoryServiceImpl implements CategoryService {
         return null;
     }
 
-    public List<CategoryTreeModel> insertCategoryTreeById(List<CategoryTreeModel> categoryTreeModelList, Long id, CategoryTreeModel categoryTree) {
+    private List<CategoryTreeModel> insertCategoryTreeById(List<CategoryTreeModel> categoryTreeModelList, Long id, CategoryTreeModel categoryTree) {
         for (CategoryTreeModel categoryTreeModel : categoryTreeModelList) {
             if (categoryTreeModel != null && categoryTreeModel.getId().equals(id)) {
                 categoryTreeModel.addChildren(categoryTree);

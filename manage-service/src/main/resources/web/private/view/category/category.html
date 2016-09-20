@@ -19,7 +19,7 @@
 </head>
 <body class="mainpanel" id="fa-bars" th:id="${quick?'':'fa-bars'}">
 <div class="pageheader" th:if="${!quick}">
-    <h2><i class="fa fa-bars"></i> 数据源 <span>编辑产品数据源</span></h2>
+    <h2><i class="fa fa-bars"></i> 数据源 <span>编辑数据源</span></h2>
 </div>
 <!--/*@thymesVar id="object" type="com.huotu.hotcms.service.entity.Category"*/-->
 <div class="contentpanel">
@@ -31,7 +31,7 @@
                 <div class="panel-btns">
                     <a href="" class="minimize">&minus;</a>
                 </div><!-- panel-btns -->
-                <h3 class="panel-title">修改产品数据源基本信息</h3>
+                <h3 class="panel-title">修改数据源基本信息</h3>
                 <p>&nbsp;</p>
             </div>
             <div class="panel-body">
@@ -41,6 +41,11 @@
                         <div class="col-sm-2">
                             <input name="name" title="名称" type="text" placeholder="数据源的名称"
                                    class="form-control" th:text="${object.name}"/>
+                        </div>
+                        <label class="col-sm-2 control-label">模型</label>
+                        <div class="col-sm-2">
+                            <span class="form-control"
+                                  th:text="${object.contentType.value}">文章</span>
                         </div>
                         <label class="col-sm-2 control-label">父级</label>
                         <div class="col-sm-2">

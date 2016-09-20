@@ -54,7 +54,7 @@ public abstract class ContentManageController<T extends AbstractContent, ED exte
     protected abstract ContentType contentType();
 
     @Override
-    protected Specification<T> prepareIndex(Login login, Site site, Model model, RedirectAttributes attributes)
+    protected Specification<T> prepareIndex(Login login, HttpServletRequest request, Site site, Model model, RedirectAttributes attributes)
             throws RedirectException {
         forCategoryList(site, model);
         return (root, query, cb) -> cb.equal(root.get("category").get("site").as(Site.class), site);

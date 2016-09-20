@@ -9,6 +9,7 @@
 
 package com.huotu.cms.manage.test;
 
+import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.service.SiteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,9 +27,10 @@ public class EditInTestController {
     private SiteService siteService;
 
     @RequestMapping("/testEditIn/{name}")
-    public String editIn(@PathVariable String name, long siteId, Model model) {
+    public String editIn(@PathVariable String name, long siteId, ContentType fixedType, Model model) {
         model.addAttribute("site", siteService.getSite(siteId));
         model.addAttribute("uri", "/manage/" + name + "/editIn");
+        model.addAttribute("fixedType", fixedType);
         return "page/simpleEdit.html";
     }
 

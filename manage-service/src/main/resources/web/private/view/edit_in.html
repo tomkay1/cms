@@ -14,6 +14,7 @@
 <!--/*@thymesVar id="insertUri" type="java.lang.String"*/-->
 <!--/*@thymesVar id="insertable" type="boolean"*/-->
 <!--/*@thymesVar id="site" type="com.huotu.hotcms.service.entity.Site"*/-->
+<!--/*@thymesVar id="fixedType" type="com.huotu.hotcms.service.common.ContentType"*/-->
 <head>
     <meta charset="UTF-8">
     <meta name="description" content="这个页面会被请求 /manage/editIn 打开
@@ -32,7 +33,7 @@
                 <a class="btn btn-default"
                    th:text="'+ 添加'+${name}"
                    target="content" href="contents/gallery_edit.html"
-                   th:href="@{${insertUri}(quick=true,siteId=${site.siteId})}"
+                   th:href="@{${insertUri}(quick=true,siteId=${site.siteId},fixedType=${fixedType})}"
                 >+ 添加图库</a>
             </div>
             <div class="input-group input-group-sm">
@@ -118,7 +119,12 @@
     $.language = 'zh-cn';
 
     var siteId = /*[[${site.siteId}]]*/ null;
+    var fixedType = /*[[${fixedType!=null?fixedType.name():null}]]*/ null;
     var dataURI = /*[[${insertUri}]]*/'../../mock/data.json';
+    dataURI = dataURI + '?siteId=' + siteId;
+    if (fixedType) {
+        dataURI = dataURI + '&fixedType=' + fixedType;
+    }
 </script>
 <script src="../../public/js/edit_in.js" ewp:src="/js/edit_in.js"></script>
 </html>

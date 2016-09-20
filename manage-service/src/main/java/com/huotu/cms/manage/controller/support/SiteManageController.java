@@ -12,6 +12,7 @@ package com.huotu.cms.manage.controller.support;
 import com.huotu.cms.manage.exception.RedirectException;
 import com.huotu.cms.manage.exception.SiteRequiredException;
 import com.huotu.hotcms.service.SiteResource;
+import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.service.SiteService;
@@ -93,7 +94,7 @@ public abstract class SiteManageController<T, ID extends Serializable, PD, MD> e
         Site site = checkSite(login, request);
         model.addAttribute("site", site);
 
-        return prepareIndex(login, site, model, attributes);
+        return prepareIndex(login, request, site, model, attributes);
     }
 
     @NotNull
@@ -115,9 +116,10 @@ public abstract class SiteManageController<T, ID extends Serializable, PD, MD> e
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE, value = "/editIn")
     public String editIn(@AuthenticationPrincipal Login login, Locale locale, Long siteId
-            , @RequestParam(defaultValue = "true") boolean insertable, Model model) {
+            , @RequestParam(defaultValue = "true") boolean insertable, ContentType fixedType, Model model) {
         Site site = checkSite(login, siteId);
 
+        model.addAttribute("fixedType", fixedType);
         model.addAttribute("title", "选择" + resourceName(locale));
         model.addAttribute("name", resourceName(locale));
         model.addAttribute("insertUri", rootUri());
@@ -130,12 +132,12 @@ public abstract class SiteManageController<T, ID extends Serializable, PD, MD> e
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional(readOnly = true)
     @ResponseBody
-    public Object json(@AuthenticationPrincipal Login login, Long siteId, Model model, RedirectAttributes attributes)
+    public Object json(@AuthenticationPrincipal Login login, HttpServletRequest request, Long siteId, Model model, RedirectAttributes attributes)
             throws RedirectException {
         try {
             Site site = checkSite(login, siteId);
 
-            Specification<T> specification = prepareIndex(login, site, model, attributes);
+            Specification<T> specification = prepareIndex(login, request, site, model, attributes);
 
             List<T> list;
             if (specification == null)
@@ -198,15 +200,15 @@ public abstract class SiteManageController<T, ID extends Serializable, PD, MD> e
      * 默认会认为资源会有一个名为<code>site</code>的字段并以此作为过滤条件
      *
      * @param login
+     * @param request
      * @param site       当前站点
      * @param model
-     * @param attributes
-     * @return
+     * @param attributes @return
      * @see CRUDController#prepareIndex(Login, HttpServletRequest, Model, RedirectAttributes)
      */
     @SuppressWarnings({"WeakerAccess", "JavaDoc"})
-    protected Specification<T> prepareIndex(Login login, Site site, Model model, RedirectAttributes attributes)
-            throws RedirectException {
+    protected Specification<T> prepareIndex(Login login, HttpServletRequest request, Site site, Model model
+            , RedirectAttributes attributes) throws RedirectException {
         return (root, query, cb) -> cb.equal(root.get("site").as(Site.class), site);
     }
 

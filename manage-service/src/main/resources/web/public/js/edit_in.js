@@ -13,7 +13,7 @@
  */
 
 $(function () {
-    $.ajax(dataURI + "?siteId=" + siteId, {
+    $.ajax(dataURI, {
         async: !$.testMode,
         dataType: 'json',
         success: function (data) {

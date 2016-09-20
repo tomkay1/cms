@@ -17,8 +17,9 @@
 
 <!--/*@thymesVar id="uri" type="java.lang.String"*/-->
 <!--/*@thymesVar id="site" type="com.huotu.hotcms.service.entity.Site"*/-->
+<!--/*@thymesVar id="fixedType" type="com.huotu.hotcms.service.common.ContentType"*/-->
 <iframe width="100%" height="1000"
-        th:src="@{${uri}(siteId=${site.siteId})}"
+        th:src="@{${uri}(siteId=${site.siteId},fixedType=${fixedType})}"
         src="../view/edit_in.html">
 </iframe>
 

@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<!--
+  ~ 版权所有:杭州火图科技有限公司
+  ~ 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+  ~
+  ~ (c) Copyright Hangzhou Hot Technology Co., Ltd.
+  ~ Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+  ~ 2013-2016. All rights reserved.
+  -->
+
+<document>
+
+    <properties>
+        <title>控件开发-编辑器</title>
+    </properties>
+    <body>
+        <h2>原则</h2>
+        <p>控件应当保持业务上的高复杂度以及技术上的低复杂度。</p>
+        <h2>典型的编辑器</h2>
+        <p>
+            <pre>
+                <code>
+                    <![CDATA[
+                    Name:<input name="name" type="text" title="Name"/>
+                    ]]>
+                </code>
+            </pre>
+            就是这么简单,一个没有form标签的form表单而已。
+        </p>
+        <h2>注册编辑器生命周期</h2>
+        <p>TODO 目前文档还在quip里</p>
+        <h2>便捷的编辑功能</h2>
+        <p>编辑互动上总是存在一些很细致的要求,按照我们的原则,我们应当对此进行抽象。这里采用bootstrap风格声明class即可获得功能,而name属性通常用于决定这个属性在以何名保存。
+        </p>
+        <p>
+            <b>为了测试!</b>
+            <p>在测试中可以通过调用<a href="apidocs/com/huotu/widget/test/Editor.html">Editor</a>的各个方法模拟操作。
+            </p>
+        </p>
+        <h3>选择文章内容</h3>
+        <p>
+            <pre>
+                <code>
+                    <![CDATA[
+                    文章:<span name="name" class="article-content"/>
+                    ]]>
+                </code>
+            </pre>
+        </p>
+        <h3>选择图库内容</h3>
+        <p>
+            <pre>
+                <code>
+                    <![CDATA[
+                    图库:<span name="name" class="gallery-content"/>
+                    ]]>
+                </code>
+            </pre>
+        </p>
+        <h3>选择链接内容</h3>
+        <p>
+            <pre>
+                <code>
+                    <![CDATA[
+                    链接:<span name="name" class="link-content"/>
+                    ]]>
+                </code>
+            </pre>
+        </p>
+        <h3>选择公告内容</h3>
+        <p>
+            <pre>
+                <code>
+                    <![CDATA[
+                    公告:<span name="name" class="notice-content"/>
+                    ]]>
+                </code>
+            </pre>
+        </p>
+
+        <h3>选择文章数据源</h3>
+        <p>
+            <pre>
+                <code>
+                    <![CDATA[
+                    数据源:<span name="name" class="article-category"/>
+                    ]]>
+                </code>
+            </pre>
+        </p>
+        <h3>选择图库数据源</h3>
+        <p>
+            <pre>
+                <code>
+                    <![CDATA[
+                    数据源:<span name="name" class="gallery-category"/>
+                    ]]>
+                </code>
+            </pre>
+        </p>
+        <h3>选择链接数据源</h3>
+        <p>
+            <pre>
+                <code>
+                    <![CDATA[
+                    数据源:<span name="name" class="link-category"/>
+                    ]]>
+                </code>
+            </pre>
+        </p>
+        <h3>选择公告数据源</h3>
+        <p>
+            <pre>
+                <code>
+                    <![CDATA[
+                    数据源:<span name="name" class="notice-category"/>
+                    ]]>
+                </code>
+            </pre>
+        </p>
+
+    </body>
+</document>

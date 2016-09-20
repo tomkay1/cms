@@ -21,7 +21,7 @@
             <pre>
                 <code>
                     <![CDATA[
-                    Name:<input name="name" type="text" title="Name"/>
+Name:<input name="name" type="text" title="Name"/>
                     ]]>
                 </code>
             </pre>
@@ -43,7 +43,7 @@
             <pre>
                 <code>
                     <![CDATA[
-                    文章:<span data-name="name" class="article-content"></span>
+文章:<span data-name="name" class="article-content"></span>
                     ]]>
                 </code>
             </pre>
@@ -53,7 +53,7 @@
             <pre>
                 <code>
                     <![CDATA[
-                    图库:<span data-name="name" class="gallery-content"></span>
+图库:<span data-name="name" class="gallery-content"></span>
                     ]]>
                 </code>
             </pre>
@@ -63,7 +63,7 @@
             <pre>
                 <code>
                     <![CDATA[
-                    链接:<span data-name="name" class="link-content"></span>
+链接:<span data-name="name" class="link-content"></span>
                     ]]>
                 </code>
             </pre>
@@ -73,7 +73,7 @@
             <pre>
                 <code>
                     <![CDATA[
-                    公告:<span data-name="name" class="notice-content"></span>
+公告:<span data-name="name" class="notice-content"></span>
                     ]]>
                 </code>
             </pre>
@@ -84,7 +84,7 @@
             <pre>
                 <code>
                     <![CDATA[
-                    数据源:<span data-name="name" class="article-category"></span>
+数据源:<span data-name="name" class="article-category"></span>
                     ]]>
                 </code>
             </pre>
@@ -94,7 +94,7 @@
             <pre>
                 <code>
                     <![CDATA[
-                    数据源:<span data-name="name" class="gallery-category"></span>
+数据源:<span data-name="name" class="gallery-category"></span>
                     ]]>
                 </code>
             </pre>
@@ -104,7 +104,7 @@
             <pre>
                 <code>
                     <![CDATA[
-                    数据源:<span data-name="name" class="link-category"></span>
+数据源:<span data-name="name" class="link-category"></span>
                     ]]>
                 </code>
             </pre>
@@ -114,7 +114,7 @@
             <pre>
                 <code>
                     <![CDATA[
-                    数据源:<span data-name="name" class="notice-category"></span>
+数据源:<span data-name="name" class="notice-category"></span>
                     ]]>
                 </code>
             </pre>

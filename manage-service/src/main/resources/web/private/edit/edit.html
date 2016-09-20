@@ -322,5 +322,7 @@
 <script src="../../public/assets/js/page/cms.editPage.js" ewp:src="/assets/js/page/cms.editPage.js"></script>
 <script src="../../public/assets/js/data/cms.dataHandle.js" ewp:src="/assets/js/data/cms.dataHandle.js"></script>
 <script src="../../public/assets/js/cms.widget-properties.js" ewp:src="/assets/js/cms.widget-properties.js"></script>
-
+<script th:inline="javascript">
+        CMSWidgets.siteId = /*[[${pageInfo.site.siteId}]]*/ -999;
+</script>
 </html>

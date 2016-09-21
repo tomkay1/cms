@@ -28,6 +28,16 @@ CMSWidgets.isDebugging = function () {
 };
 
 /**
+ * @return 最近打开的编辑器它所维护的控件属性（可能未持久化,也可能不会被持久化）
+ */
+CMSWidgets.currentEditorProperties = function () {
+    if (!CMSWidgets._current) {
+        throw '最近没有打开过任何编辑器';
+    }
+    return CMSWidgets._current.editor.properties;
+};
+
+/**
  * 这个方法应该是由编辑器调用
  * 下个控件的识别符,这个方法总是和initWidget配对出现
  * @param identity 控件识别符
@@ -64,8 +74,14 @@ CMSWidgets.openEditor = function (globalId, identity, editAreaElement) {
     var config = CMSWidgets.getNoNullConfig(identity, globalId);
     if (CMSWidgets.isDebugging())
         console.error('config on openEditor:', config);
+
+    config.editor.properties = widgetProperties(globalId);
+
     config.editor.open(globalId, editAreaElement);
-    CMSWidgets.plugins.properties.open(globalId, identity, editAreaElement);
+    if (CMSWidgets.plugins && CMSWidgets.plugins.properties)
+        CMSWidgets.plugins.properties.open(globalId, identity, editAreaElement);
+
+    CMSWidgets._current = config;
 };
 /**
  * 同上
@@ -111,7 +127,20 @@ CMSWidgets.saveComponent = function (globalId, callbacks, editAreaElement) {
     var onSuccess = callbacks.onSuccess || voidFunction;
     var onFailed = callbacks.onFailed || voidFunction;
 
-    return config.editor.saveComponent(onSuccess, onFailed, editAreaElement);
+    var inEditProperties = config.editor.properties;
+    var inEditOnSuccessInvoked = false;
+
+    config.editor.saveComponent(function (ignoredPs) {
+        onSuccess(inEditProperties);
+        inEditOnSuccessInvoked = true;
+    }, onFailed, editAreaElement);
+
+    if (!inEditOnSuccessInvoked) {
+        onSuccess(inEditProperties);
+        inEditOnSuccessInvoked = true;
+    }
+
+    return inEditProperties;
 };
 
 
@@ -123,10 +152,12 @@ CMSWidgets.defaultConfig = {
         properties: null,
         saveComponent: function (onSuccess, onFailed) {
             var that = this;
+
             function setProperties(obj) {
                 var name = $(obj).attr("name");
                 that.properties[name] = $(obj).val();
             }
+
             $("input[type='email']").each(function () {
                 setProperties($(this));
             });
@@ -160,7 +191,7 @@ CMSWidgets.defaultConfig = {
             return this.properties;
         },
         open: function (globalId) {
-            this.properties = widgetProperties(globalId);
+            // this.properties = widgetProperties(globalId); 无需在此初始化
         },
         close: function (globalId) {
 

@@ -110,21 +110,21 @@
 <script src="http://resali.huobanplus.com/cdn/jquery.dataTables/1.10.12/jquery.dataTables.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/jquery.dataTables/1.10.12/dataTables.bootstrap.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/jquery.nicescroll/3.6.8/jquery.nicescroll.min.js"></script>
+
 <script src="../../../../../manage-service/src/main/resources/web/public/assets/libs/jquery.htmlClean.js"
         th:src="'/manage-resources/assets/libs/jquery.htmlClean.js'"></script>
-<script src="../../../../../manage-service/src/main/resources/web/public/assets/js/page/cms.editPage.js"
-        th:src="'/manage-resources/assets/js/page/cms.editPage.js'"></script>
 <script src="../../../../../manage-service/src/main/resources/web/public/assets/js/cms.addEdit.js"
         th:src="'/manage-resources/assets/js/cms.addEdit.js'"></script>
-<!--<script src="../../../../../manage-service/src/main/resources/web/public/assets/js/data/cms.dataHandle.js"-->
-<!--th:src="'/manage-resources/assets/js/data/cms.dataHandle.js'"></script>-->
-<script src="../../../../../manage-service/src/main/resources/web/public/assets/js/common.js"
-        th:src="'/manage-resources/assets/js/common.js'"></script>
 <script src="../../../../../manage-service/src/main/resources/web/public/assets/js/cms.addTree.js"
         th:src="'/manage-resources/assets/js/cms.addTree.js'"></script>
+<script src="../../../../../manage-service/src/main/resources/web/public/assets/js/common.js"
+        th:src="'/manage-resources/assets/js/common.js'"></script>
 <script src="../../../../../manage-service/src/main/resources/web/public/assets/js/cms.widgets.js"
         th:src="'/manage-resources/assets/js/cms.widgets.js'"></script>
-
+<script src="../../../../../manage-service/src/main/resources/web/public/assets/js/page/cms.editPage.js"
+        th:src="'/manage-resources/assets/js/page/cms.editPage.js'"></script>
+<!--<script src="../../../../../manage-service/src/main/resources/web/public/assets/js/data/cms.dataHandle.js"-->
+<!--th:src="'/manage-resources/assets/js/data/cms.dataHandle.js'"></script>-->
 
 <script th:inline="javascript">
     var _widgetProperties = {};
@@ -150,6 +150,7 @@
         _failedMessage = null;
         CMSWidgets.saveComponent('previewRegion', {
             onSuccess: function (ps) {
+                console.error('CMSWidgets.saveComponent', ps);
                 _successProperties = $.extend(true, ps, _successProperties);
             }, onFailed: function (msg) {
                 _failedMessage = msg;

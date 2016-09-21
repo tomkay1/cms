@@ -15,15 +15,18 @@ CMSWidgets.initWidget(
                 if (CMSDebugMode)
                     console.error('初始化编辑器', this);
                 window['inited'] = true;
-                this.ps = widgetProperties();
+                // this.ps = widgetProperties();
                 var me = this;
+                me.randomValue = Math.random();
+                console.error('our random value:', me.randomValue, me.properties);
                 $('#DataFetcher').bind('click', function () {
                     if (CMSDebugMode)
                         console.error('some one click data fetch');
                     getDataSource('findLink', 123, function (data) {
                         if (CMSDebugMode)
                             console.error('findLink:', data);
-                        me.ps.DataFetcherResult = data;
+                        me.properties.DataFetcherResult = data;
+                        console.error('DataFetcherResult updated', me.properties);
                     }, function (jhr, status, error) {
                         if (CMSDebugMode)
                             console.error('findLink error,', status, error);
@@ -31,17 +34,19 @@ CMSWidgets.initWidget(
                 });
             },
             close: function (globalId) {
+                console.error('our random value:', this.randomValue);
                 $('#DataFetcher').unbind();
             },
             saveComponent: function (onSuccess, onFailed) {
                 var that = this;
+                console.error('our random value:', that.randomValue, that.properties);
                 $(":text").each(function () {
                     var name = $(this).attr("name");
-                    that.ps[name] = $(this).val();
+                    that.properties[name] = $(this).val();
 
                 });
-                onSuccess(this.ps);
-                return this.ps;
+                // onSuccess(this.ps);
+                // return this.ps;
             }
         },
         // 浏览相关 暂无

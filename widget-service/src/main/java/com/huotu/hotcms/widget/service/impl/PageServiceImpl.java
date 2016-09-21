@@ -150,7 +150,7 @@ public class PageServiceImpl implements PageService {
             info.setLayout(PageLayout.FromWeb(PageLayout.NoNullLayout(model)));
 
         if (!preview)
-            info = pageInfoRepository.save(info);
+            info = pageInfoRepository.saveAndFlush(info);
         //生成page的css样式表
         Layout[] elements = layoutsForUse(info.getLayout());
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();

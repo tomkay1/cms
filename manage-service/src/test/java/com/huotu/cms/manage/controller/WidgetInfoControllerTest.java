@@ -214,11 +214,11 @@ public class WidgetInfoControllerTest extends ManageTest {
                 , "1.0-SNAPSHOT", "普通");
         widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.copyright", "copyright"
                 , "1.0.2-SNAPSHOT", "普通");
-        JsonNode widgets = assertMvcArrayNotEmpty("/manage/widget/widgets");
+        JsonNode widgets = assertMvcArrayNotEmpty("/manage/widget/widgets?pageType=0");
         assertSimilarJsonArray(widgets, new ClassPathResource("web/public/assets/js/data/widget.json")
                 .getInputStream());
 
-        MvcResult result = mockMvc.perform(get("/manage/widget/widgets").session(session))
+        MvcResult result = mockMvc.perform(get("/manage/widget/widgets?pageType=0").session(session))
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();

@@ -9,9 +9,6 @@
 
 package com.huotu.hotcms.service.common;
 
-/**
- * Created by cwb on 2015/12/21.
- */
 public interface CommonEnum {
     /**
      * @return 编码

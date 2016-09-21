@@ -21,16 +21,4 @@ public class ContentTypeConverter extends CommonEnumConverter<ContentType> {
         super(ContentType.class);
     }
 
-    @Override
-    public ContentType convert(String source) {
-        try {
-            return super.convert(source);
-        } catch (NumberFormatException ex) {
-            for (ContentType type : ContentType.values()) {
-                if (type.name().equalsIgnoreCase(source))
-                    return type;
-            }
-        }
-        return null;
-    }
 }

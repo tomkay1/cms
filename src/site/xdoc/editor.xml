@@ -28,14 +28,17 @@ Name:<input name="name" type="text" title="Name"/>
             就是这么简单,一个没有form标签的form表单而已。
         </p>
         <h2>注册编辑器生命周期</h2>
-        <p>TODO 目前文档还在quip里
+        <p>
+            <h4>控件开发禁止为editor添加properties属性。系统保留使用</h4>
+            <h4>编辑控件时 open编辑器 生命周期开始</h4>
+            <h4>saveComponent编辑器将保存控件的属性到当前编辑器properties中，如果验证控件属性错误执行失败回调并返回。</h4>
+            <h4>saveComponent周期结束后进入close周期。close执行完毕后，当前生命周期结束。</h4>
             <pre>
                 <code>
                     <![CDATA[
                         CMSWidgets.initWidget({
                         // 编辑器相关
                             editor: {
-                                properties: null,
                                 saveComponent: function (onFailed) {
                                     this.properties.count = $(".count").val();
                                     if ( this.properties.count == '' || this.properties.count == '0') {

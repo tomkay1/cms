@@ -151,7 +151,7 @@
         CMSWidgets.saveComponent('previewRegion', {
             onSuccess: function (ps) {
                 console.error('CMSWidgets.saveComponent', ps);
-                _successProperties = $.extend(true, ps, _successProperties);
+                _successProperties = CMSWidgets.currentEditorProperties();
             }, onFailed: function (msg) {
                 _failedMessage = msg;
                 console.error("save error", msg);
@@ -166,7 +166,7 @@
     });
 
     function setSuccessPropertiesSerial(name, serial) {
-        _successProperties[name] = serial;
+        CMSWidgets.currentEditorProperties()[name] = serial;
     }
 
     //    CMSWidgets.pushNextWidgetIdentity(scope);

@@ -37,7 +37,7 @@ CMSWidgets.initWidget(
                 console.error('our random value:', this.randomValue);
                 $('#DataFetcher').unbind();
             },
-            saveComponent: function (onSuccess, onFailed) {
+            saveComponent: function (onFailed) {
                 var that = this;
                 console.error('our random value:', that.randomValue, that.properties);
                 $(":text").each(function () {

@@ -34,14 +34,11 @@ import me.jiangcai.lib.resource.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -88,7 +85,7 @@ public class PageServiceImpl implements PageService {
                         , event.getDist()));
             }
 
-            savePage(null, newOne);
+            savePage(newOne, null, false);
         }
     }
 
@@ -134,48 +131,36 @@ public class PageServiceImpl implements PageService {
 
 
     @Override
-    public void savePage(PageModel page, Long pageId) throws IOException {
-        PageInfo pageInfo = pageInfoRepository.getOne(pageId);
-        savePage(page, pageInfo);
-    }
-
-    private void savePage(PageModel page, PageInfo pageInfo) throws IOException {
-        if (pageInfo.getSerial() == null) {
-            pageInfo.setSerial(UUID.randomUUID().toString().replace("-", ""));
+    public void savePage(PageInfo info, PageModel model, boolean preview) throws IOException {
+        if (info.getSerial() == null) {
+            info.setSerial(UUID.randomUUID().toString().replace("-", ""));
         }
-        pageInfo.setUpdateTime(LocalDateTime.now());
+        info.setUpdateTime(LocalDateTime.now());
         //删除控件旧的css样式表
-        if (pageInfo.getResourceKey() != null) {
-            resourceService.deleteResource(pageInfo.getPageCssResourcePath());
+        if (info.getResourceKey() != null) {
+            resourceService.deleteResource(info.getPageCssResourcePath());
         }
         //保存最新控件信息
-        String resourceKey = UUID.randomUUID().toString();
-        pageInfo.setResourceKey(resourceKey);
-
-        if (page != null)//如果没有传model过来 不应该改变布局
-            pageInfo.setLayout(PageLayout.FromWeb(PageLayout.NoNullLayout(page)));
-
-//        pageInfo.setPageSetting(pageJson.getBytes());
-        pageInfo = pageInfoRepository.saveAndFlush(pageInfo);
-        //生成page的css样式表
-        Layout[] elements = layoutsForUse(pageInfo.getLayout());
-        Path path = Files.createTempFile("tempCss", ".css");
-        try {
-            try (OutputStream out = Files.newOutputStream(path, StandardOpenOption.WRITE)) {
-                for (Layout element : elements) {
-                    //生成组件css
-                    widgetResolveService.widgetDependencyContent(CMSContext.RequestContext(), null, Widget.CSS, element, out);
-                }
-                //上传最新的page css样式表到资源服务
-                try (InputStream data = Files.newInputStream(path, StandardOpenOption.READ)) {
-                    resourceService.uploadResource(pageInfo.getPageCssResourcePath(), data);
-                }
-            }
-
-        } finally {
-            //noinspection ThrowFromFinallyBlock
-            Files.deleteIfExists(path);
+        if (!preview) {
+            String resourceKey = UUID.randomUUID().toString();
+            info.setResourceKey(resourceKey);
         }
+
+
+        if (model != null)//如果没有传model过来 不应该改变布局
+            info.setLayout(PageLayout.FromWeb(PageLayout.NoNullLayout(model)));
+
+        if (!preview)
+            info = pageInfoRepository.save(info);
+        //生成page的css样式表
+        Layout[] elements = layoutsForUse(info.getLayout());
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        for (Layout element : elements) {
+            //生成组件css
+            widgetResolveService.widgetDependencyContent(CMSContext.RequestContext(), null, Widget.CSS, element, buffer);
+        }
+
+        resourceService.uploadResource(info.getPageCssResourcePath(), new ByteArrayInputStream(buffer.toByteArray()));
     }
 
     @Override

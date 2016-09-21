@@ -15,7 +15,7 @@
  * init 初始化 url 如果为null表示处于原型测试
  */
 var DataHandle = {
-    createROOT: function (elements, url) {
+    createROOT: function (elements) {
         var json = {};
         var data = [];
         var root = $(elements).children();
@@ -27,7 +27,7 @@ var DataHandle = {
             data.push(child);
         });
         json.root = data;
-        DataHandle.ajaxData(json, url);
+        return json;
     },
     traversalDOM2Json: function (elements) {
         var result = [];
@@ -129,22 +129,20 @@ var DataHandle = {
             ]
         });
         var root = $('<div></div>');
-        console.log(formatSrc);
         root.html(formatSrc);
-        DataHandle.createROOT($(root), url);
+        return DataHandle.createROOT($(root));
     },
     //用于保存 数据时候，发起请求
     ajaxData: function (data, url) {
-        var Data = JSON.stringify(data);
+        var DATA = JSON.stringify(data);
         if (savePage == null) {
-            layer.alert(Data);
+            layer.alert(DATA);
         }
-        console.log(Data);
         $.ajax({
             type: 'PUT',
             url: url,
             contentType: "application/json; charset=utf-8",
-            data: Data,
+            data: DATA,
             statusCode: {
                 202: function () {
                     layer.msg('保存成功！', {time: 2000});
@@ -169,8 +167,33 @@ var DataHandle = {
             }
         });
     },
-    init: function (url) {
-        DataHandle.downloadLayoutSrc(url);
+    ajaxPreview: function (data, url) {
+        var DATA = JSON.stringify(data);
+        if (savePage == null) {
+            layer.alert(DATA);
+        }
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: {
+                jsonString: DATA
+            },
+            success: function (result, status) {
+                console.log(result);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+                layer.msg('服务器错误,请稍后再试', {time: 2000});
+            }
+        });
+    },
+    save: function (url) {
+        var data = DataHandle.downloadLayoutSrc();
+        DataHandle.ajaxData(data, url);
+    },
+    preview: function (url) {
+        var data = DataHandle.downloadLayoutSrc();
+        DataHandle.ajaxPreview(data, url);
     }
 };
 
@@ -319,12 +342,19 @@ dataHandle.init = function () {
         CreatePage.init(savePage + pageId);
 
 
-    $('#saveBtn').on('click', function () {
+    $('#saveBtn').click(function () {
         if (!savePage)
-            DataHandle.init(null);
+            return false;
         else
-            DataHandle.init(savePage + pageId);
-    })
+            DataHandle.save(savePage + pageId);
+    });
+
+    $('#previewBtn').click(function () {
+        if (!previewPage)
+            return false;
+        else
+            DataHandle.preview(previewPage + pageId);
+    });
 };
 dataHandle.init();
 

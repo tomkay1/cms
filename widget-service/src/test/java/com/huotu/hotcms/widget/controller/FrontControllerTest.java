@@ -214,7 +214,7 @@ public class FrontControllerTest extends TestBase {
             pageModel.setRoot(new Layout[]{layoutElement});
             pageModel.setPageIdentity(pageInfo.getId());
             CMSContext.PutContext(request, response, site);
-            pageService.savePage(pageModel, pageInfo.getId());
+            pageService.savePage(pageInfo, pageModel, false);
         } catch (Exception e) {
             throw new IllegalStateException("error", e);
         }

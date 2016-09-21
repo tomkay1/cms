@@ -346,23 +346,25 @@ editPage.init = function () {
 
     editFunc.dragFunc();
 
-    $("#editBtn").click(function () {
-        $(document.body).removeClass("sourcepreview");
-        $(document.body).addClass("edit");
-        editFunc.removeMenuClasses();
-        $(this).addClass("active");
-        $('.edit').find('.sidebar').show();
-        return false;
-    });
-    $("#previewBtn").click(function () {
-        if ( $('#pageHTML').html() === '' ) return false;
-        $(document.body).removeClass("edit");
-        $(document.body).addClass("sourcepreview");
-        editFunc.removeMenuClasses();
-        $(this).addClass("active");
-        $('.sourcepreview').find('.sidebar').hide();
-        return false;
-    });
+    // $("#editBtn").click(function () {
+    //     $(document.body).removeClass("sourcepreview");
+    //     $(document.body).addClass("edit");
+    //     editFunc.removeMenuClasses();
+    //     $(this).addClass("active");
+    //     $('.edit').find('.sidebar').show();
+    //     return false;
+    // });
+    //
+    // $("#previewBtn").click(function () {
+    //     if ( $('#pageHTML').html() === '' ) return false;
+    //     $(document.body).removeClass("edit");
+    //     $(document.body).addClass("sourcepreview");
+    //     editFunc.removeMenuClasses();
+    //     $(this).addClass("active");
+    //     $('.sourcepreview').find('.sidebar').hide();
+    //     return false;
+    // });
+
     $("#clearBtn").click(function (e) {
         if ( $('#pageHTML').html() === '' ) return false;
         e.preventDefault();

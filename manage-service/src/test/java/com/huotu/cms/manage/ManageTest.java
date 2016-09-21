@@ -408,7 +408,7 @@ public abstract class ManageTest extends SpringWebTest {
                         .orElse(null));
             }
             pageInfoRepository.saveAndFlush(pageInfo);
-            pageService.savePage(null, pageInfo.getId());
+            pageService.savePage(pageInfo, null, false);
         }
     }
 
@@ -776,7 +776,7 @@ public abstract class ManageTest extends SpringWebTest {
         } catch (IllegalStateException ignored) {
             CMSContext.PutContext(request, response, page.getSite());
         }
-        pageService.savePage(null, page.getId());
+        pageService.savePage(page, null, false);
     }
 
     /**

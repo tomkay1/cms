@@ -23,7 +23,6 @@ import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
-import com.jayway.jsonpath.JsonPath;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
@@ -228,10 +227,11 @@ public class WidgetInfoControllerTest extends ManageTest {
                 .isNotEmpty();
         //identity的格式:<groupId>-<widgetId>:<version>
         //此处校验逻辑为：先检索出所有的identity，如果存在groupId和widgetId 一致，但有两个版本号的，视为bug！
-        List<String> identities = JsonPath.read(widgetJson, "$..identity");
-        assertThat(identities)
-                .isNotEmpty()
-                .containsOnlyOnce("com.huotu.hotcms.widget.copyright-copyright:1.0.2-SNAPSHOT");
+//        List<String> identities = JsonPath.read(widgetJson, "$..identity");
+//        assertThat(identities)
+//                .isNotEmpty()
+//                .containsOnlyOnce("com.huotu.hotcms.widget.copyright-copyright:1.0.2-SNAPSHOT");
+        // 这个需求已经被调整,是有可能看到多个的。
 
     }
 

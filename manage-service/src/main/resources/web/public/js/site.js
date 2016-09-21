@@ -123,18 +123,19 @@ $(function () {
             span.text(newVal);
         };
 
+        // console.error(top.$.testMode,!top.$.testMode,laudUrl + templateId);
         if (laudUrl != null) {//如果不是静态界面测试 查看laudUrl的值
             $.ajax({
                 url: laudUrl + templateId,
                 type: 'post',
                 contentType: 'application/json',
                 // dataType: 'json',
-                async: !top.testMode,
+                async: !top.$.testMode,
                 data: '' + behavior,
                 success: success
             })
         } else {
-            console.log('templateId', templateId, top.testMode);
+            console.log('templateId', templateId, top.$.testMode);
             success();
         }
     });

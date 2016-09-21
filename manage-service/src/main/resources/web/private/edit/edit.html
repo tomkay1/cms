@@ -324,5 +324,16 @@
 <script src="../../public/assets/js/cms.widget-properties.js" ewp:src="/assets/js/cms.widget-properties.js"></script>
 <script th:inline="javascript">
         CMSWidgets.siteId = /*[[${pageInfo.site.siteId}]]*/ -999;
+
+        CMSWidgets.editInURI= function(resourceName,fixedType){
+            var testURI = '../view/edit_in.html';
+            var mangeUriRoot = /*[[@{/manage/}]]*/ testURI;
+            if (mangeUriRoot==testURI)
+                    return testURI;
+            var uri = mangeUriRoot+resourceName+"/editIn?siteId="+CMSWidgets.siteId;
+            if (fixedType!=null)
+                    uri = uri+"&fixedType="+fixedType;
+            return uri;
+        }
 </script>
 </html>

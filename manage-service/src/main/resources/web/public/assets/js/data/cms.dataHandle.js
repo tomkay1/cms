@@ -353,7 +353,7 @@ dataHandle.init = function () {
         if (!previewPage)
             return false;
         else
-            DataHandle.preview(pagePreview + pageId);
+            DataHandle.preview(previewPage + pageId);
     });
 };
 dataHandle.init();

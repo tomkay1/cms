@@ -22,7 +22,6 @@ CMSWidgets.plugins.properties.title=null;
 CMSWidgets.plugins.properties.globalId=null;
 CMSWidgets.plugins.properties.iframeOpenId=null;
 CMSWidgets.plugins.properties.data={};
-CMSWidgets.plugins.properties.isbinds=[];
 
 
 
@@ -69,7 +68,7 @@ CMSWidgets.plugins.properties.util.endWith=function(str,endStr){
 };
 
 /**
- * 从给定的字符串中截取指定的字符串
+ * 从给定的字符串中按照正则表达式截取指定的字符串
  * @param str
  */
 CMSWidgets.plugins.properties.util.interception=function(str){
@@ -79,8 +78,12 @@ CMSWidgets.plugins.properties.util.interception=function(str){
 };
 
 
-
-// 应该存在一个function名为 CMSWidgets.editInURI(resourceName,fixedType)
+/**
+ * 当编辑器打开的时候调用的函数
+ * @param globalId 组件的id
+ * @param identity 控件识别符
+ * @param editAreaElement 编辑器的jquery结果
+ */
 CMSWidgets.plugins.properties.open = function (globalId, identity, editAreaElement) {
     CMSWidgets.plugins.properties.globalId=globalId;
 
@@ -102,9 +105,6 @@ CMSWidgets.plugins.properties.open = function (globalId, identity, editAreaEleme
         CMSWidgets.plugins.properties.buildHtml(data,value);
 
 
-        //if( $.inArray(CMSWidgets.plugins.properties.title, CMSWidgets.plugins.properties.isbinds)!=-1){
-        //    return true;
-        //}
 
         //绑定单击事件
         $(data).on('click',function(){
@@ -125,7 +125,6 @@ CMSWidgets.plugins.properties.open = function (globalId, identity, editAreaEleme
             CMSWidgets.plugins.properties.data=this;
 
             CMSWidgets.plugins.properties.iframeOpenId=layer.open({
-                closeBtn: 0,
                 shadeClose: true,
                 type: 2,
                 title: iframeTitle,
@@ -133,9 +132,6 @@ CMSWidgets.plugins.properties.open = function (globalId, identity, editAreaEleme
                 content:iframePath
             });
         });
-
-        //CMSWidgets.plugins.properties.isbinds.push(CMSWidgets.plugins.properties.title);
-
 
     });
 

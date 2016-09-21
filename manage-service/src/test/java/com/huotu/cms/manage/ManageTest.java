@@ -407,7 +407,7 @@ public abstract class ManageTest extends SpringWebTest {
                         .findAny()
                         .orElse(null));
             }
-            pageInfoRepository.saveAndFlush(pageInfo);
+            pageInfo = pageInfoRepository.saveAndFlush(pageInfo);
             pageService.savePage(pageInfo, null, false);
         }
     }

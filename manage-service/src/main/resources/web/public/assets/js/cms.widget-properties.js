@@ -13,10 +13,7 @@
  */
 
 /**
- *
- * <span class="gallery-content" data-name="myChoose"></span>
- * <span class="aritcle-content" data-name="myChoose"></span>
- * <span class="aritcle-category" data-name="myChoose"></span>
+ * http://docs.huobanplus.com/cms/staging/editor.html
  */
 
 CMSWidgets.plugins.properties = {};

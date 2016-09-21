@@ -277,7 +277,7 @@ public class WidgetFactoryServiceTest extends TestBase {
             pageModel.setPageIdentity(pageInfo.getId());
             pageModel.setRoot(new Layout[]{layoutElement});
             CMSContext.PutContext(request, response, site);
-            pageService.savePage(pageModel, pageInfo.getId());
+            pageService.savePage(pageInfo, pageModel, false);
         } catch (Exception e) {
             throw new IllegalStateException("查找控件列表失败", e);
         }

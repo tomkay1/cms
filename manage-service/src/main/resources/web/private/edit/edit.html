@@ -38,7 +38,6 @@
 <header>
     <h1>CMS 模板系统</h1>
     <ul class="list-unstyled operate-buttons">
-        <li class="btn btn-default active" id="editBtn"><i class="fa fa-pencil-square-o"></i>编辑</li>
         <li class="btn btn-default" id="previewBtn"><i class="fa fa-search"></i>预览</li>
         <li class="btn btn-default" id="clearBtn"><i class="fa fa-reply-all"></i>重做</li>
     </ul>
@@ -284,10 +283,11 @@
 <!--suppress HtmlUnknownAttribute -->
 <script th:inline="javascript">
     // var path = /*[[@{/manage/upload/fine}]]*/ null;
-    var initPath=/*[[@{/manage/widget/widgets}]]*/ '../../public/assets/js/data/widget.json';
-    var savePage=/*[[@{/manage/pages/}]]*/ null;
-    var widgetEditor=/*[[@{/preview/widgetEditor}]]*/ '../../public/assets/js/data/mockwidgetEditor.html';
-    var component=/*[[@{/preview/component}]]*/ '../../public/assets/js/data/mockComponent.html';
+    var initPath = /*[[@{/manage/widget/widgets}]]*/ '../../public/assets/js/data/widget.json';
+    var savePage = /*[[@{/manage/pages/}]]*/ null;
+    var previewPage = /*[[@{/pagePreview/}]]*/ null;
+    var widgetEditor = /*[[@{/preview/widgetEditor}]]*/ '../../public/assets/js/data/mockwidgetEditor.html';
+    var component = /*[[@{/preview/component}]]*/ '../../public/assets/js/data/mockComponent.html';
     var pageId = /*[[${pageId}]]*/ -999;
     var pageType = /*[[${pageInfo.pageType}]]*/ -999;
     // Mock数据地址

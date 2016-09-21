@@ -729,3 +729,19 @@ div[id^="errorPlaceholder"] {
 .edit .topnavbar-absolute {
     position: relative;
 }
+/*attributeData Style*/
+#attributeData .attribute-layout{
+    display: -webkit-box;
+    display: -moz-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+#attributeData .attribute-item {
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+}
+

@@ -23,7 +23,6 @@ import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
-import com.jayway.jsonpath.JsonPath;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
@@ -186,7 +185,7 @@ public class WidgetInfoControllerTest extends ManageTest {
 
     private JsonNode assertMvcArrayNotEmpty(String uri) throws Exception {
         return objectMapper.readTree(
-                mockMvc.perform(get(uri).param("pageType", PageType.Ordinary.getCode().toString())
+                mockMvc.perform(get(uri)
                         .session(session)
                         .accept(MediaType.APPLICATION_JSON)
                 )
@@ -214,13 +213,11 @@ public class WidgetInfoControllerTest extends ManageTest {
                 , "1.0-SNAPSHOT", "普通");
         widgetFactoryService.installWidgetInfo(null, "com.huotu.hotcms.widget.copyright", "copyright"
                 , "1.0.2-SNAPSHOT", "普通");
-        JsonNode widgets = assertMvcArrayNotEmpty("/manage/widget/widgets");
+        JsonNode widgets = assertMvcArrayNotEmpty("/manage/widget/widgets?pageType=0");
         assertSimilarJsonArray(widgets, new ClassPathResource("web/public/assets/js/data/widget.json")
                 .getInputStream());
 
-        MvcResult result = mockMvc.perform(get("/manage/widget/widgets")
-                .param("pageType", PageType.Ordinary.getCode().toString())
-                .session(session))
+        MvcResult result = mockMvc.perform(get("/manage/widget/widgets?pageType=0").session(session))
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -230,10 +227,11 @@ public class WidgetInfoControllerTest extends ManageTest {
                 .isNotEmpty();
         //identity的格式:<groupId>-<widgetId>:<version>
         //此处校验逻辑为：先检索出所有的identity，如果存在groupId和widgetId 一致，但有两个版本号的，视为bug！
-        List<String> identities = JsonPath.read(widgetJson, "$..identity");
-        assertThat(identities)
-                .isNotEmpty()
-                .containsOnlyOnce("com.huotu.hotcms.widget.copyright-copyright:1.0.2-SNAPSHOT");
+//        List<String> identities = JsonPath.read(widgetJson, "$..identity");
+//        assertThat(identities)
+//                .isNotEmpty()
+//                .containsOnlyOnce("com.huotu.hotcms.widget.copyright-copyright:1.0.2-SNAPSHOT");
+        // 这个需求已经被调整,是有可能看到多个的。
 
     }
 

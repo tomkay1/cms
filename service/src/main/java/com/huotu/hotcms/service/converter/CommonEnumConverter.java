@@ -30,7 +30,16 @@ public abstract class CommonEnumConverter<T extends CommonEnum> implements Conve
     public T convert(String source) {
         if (StringUtils.isEmpty(source))
             return null;
-        // 根据范型获取类型 算了麻烦 初始化过来吧
-        return EnumUtils.valueOf(enumClass, NumberUtils.parseNumber(source, Integer.class));
+        try {
+            return EnumUtils.valueOf(enumClass, NumberUtils.parseNumber(source, Integer.class));
+        } catch (NumberFormatException ex) {
+            for (T type : enumClass.getEnumConstants()) {
+                Enum e = (Enum) type;
+                if (e.name().equalsIgnoreCase(source))
+                    return type;
+            }
+        }
+        return null;
+
     }
 }

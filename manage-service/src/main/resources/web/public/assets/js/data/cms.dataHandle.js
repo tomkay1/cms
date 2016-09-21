@@ -136,7 +136,7 @@ var DataHandle = {
     ajaxData: function (data, url) {
         var DATA = JSON.stringify(data);
         if (savePage == null) {
-            layer.alert(Data);
+            layer.alert(DATA);
         }
         $.ajax({
             type: 'PUT',
@@ -170,7 +170,7 @@ var DataHandle = {
     ajaxPreview: function (data, url) {
         var DATA = JSON.stringify(data);
         if (savePage == null) {
-            layer.alert(Data);
+            layer.alert(DATA);
         }
         $.ajax({
             type: 'POST',
@@ -353,7 +353,7 @@ dataHandle.init = function () {
         if (!previewPage)
             return false;
         else
-            DataHandle.preview(pagePreview + pageId);
+            DataHandle.preview(previewPage + pageId);
     });
 };
 dataHandle.init();

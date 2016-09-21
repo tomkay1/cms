@@ -240,10 +240,10 @@ public abstract class WidgetTest extends SpringWebTest {
     private void finalEditorWork(Widget widget, Editor editor
             , Supplier<Map<String, Object>> currentWidgetProperties) throws IOException {
         // 获取默认属性
-        Map<String, Object> map = currentWidgetProperties.get();
-        ComponentProperties componentProperties = new ComponentProperties();
-        componentProperties.putAll(map);
-        widget.valid(null, componentProperties);
+//        Map<String, Object> map = currentWidgetProperties.get();
+//        ComponentProperties componentProperties = new ComponentProperties();
+//        componentProperties.putAll(map);
+//        widget.valid(null, componentProperties);
         editorWork(widget, editor, currentWidgetProperties);
     }
 

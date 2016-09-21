@@ -186,7 +186,7 @@ public class WidgetInfoControllerTest extends ManageTest {
 
     private JsonNode assertMvcArrayNotEmpty(String uri) throws Exception {
         return objectMapper.readTree(
-                mockMvc.perform(get(uri)
+                mockMvc.perform(get(uri).param("pageType", PageType.Ordinary.getCode().toString())
                         .session(session)
                         .accept(MediaType.APPLICATION_JSON)
                 )
@@ -218,7 +218,9 @@ public class WidgetInfoControllerTest extends ManageTest {
         assertSimilarJsonArray(widgets, new ClassPathResource("web/public/assets/js/data/widget.json")
                 .getInputStream());
 
-        MvcResult result = mockMvc.perform(get("/manage/widget/widgets").session(session))
+        MvcResult result = mockMvc.perform(get("/manage/widget/widgets")
+                .param("pageType", PageType.Ordinary.getCode().toString())
+                .session(session))
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();

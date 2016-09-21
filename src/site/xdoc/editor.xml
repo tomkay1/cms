@@ -28,7 +28,34 @@ Name:<input name="name" type="text" title="Name"/>
             就是这么简单,一个没有form标签的form表单而已。
         </p>
         <h2>注册编辑器生命周期</h2>
-        <p>TODO 目前文档还在quip里</p>
+        <p>TODO 目前文档还在quip里
+            <pre>
+                <code>
+                    <![CDATA[
+                        CMSWidgets.initWidget({
+                        // 编辑器相关
+                            editor: {
+                                properties: null,
+                                saveComponent: function (onFailed) {
+                                    this.properties.count = $(".count").val();
+                                    if ( this.properties.count == '' || this.properties.count == '0') {
+                                        onFailed("数据源展示条数不能为空");
+                                        return;
+                                    }
+                                },
+                                open: function (globalId) {
+
+                                },
+                                close: function (globalId) {
+
+                                }
+                            }
+                        });
+                    ]]>
+                </code>
+            </pre>
+        </p>
+
         <h2>便捷的编辑功能</h2>
         <p>编辑互动上总是存在一些很细致的要求,按照我们的原则,我们应当对此进行抽象。这里采用bootstrap风格声明class即可获得功能,
             而data-name属性通常用于决定这个属性在以何名保存。

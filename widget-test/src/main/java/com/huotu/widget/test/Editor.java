@@ -47,7 +47,7 @@ public class Editor {
      * @param article 内容
      */
     void chooseArticle(String name, Article article) {
-
+        chooseSerial(name, article.getSerial());
     }
 
     /**
@@ -57,7 +57,7 @@ public class Editor {
      * @param download 内容
      */
     void chooseDownload(String name, Download download) {
-
+        chooseSerial(name, download.getSerial());
     }
 
     /**
@@ -67,7 +67,7 @@ public class Editor {
      * @param link 内容
      */
     void chooseLink(String name, Link link) {
-
+        chooseSerial(name, link.getSerial());
     }
 
     /**
@@ -77,7 +77,7 @@ public class Editor {
      * @param notice 内容
      */
     void chooseNotice(String name, Notice notice) {
-
+        chooseSerial(name, notice.getSerial());
     }
 
     /**
@@ -87,11 +87,12 @@ public class Editor {
      * @param category 数据源
      */
     void chooseCategory(String name, Category category) {
+        chooseSerial(name, category.getSerial());
     }
 
     public void chooseSerial(String name, String serial) {
         if (driver instanceof JavascriptExecutor) {
-            ((JavascriptExecutor) driver).executeScript("setSuccessPropertiesSerial(" + name + "," + serial + ")");
+            ((JavascriptExecutor) driver).executeScript("setSuccessPropertiesSerial('" + name + "','" + serial + "')");
         }
     }
 

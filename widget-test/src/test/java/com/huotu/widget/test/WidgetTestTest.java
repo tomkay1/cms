@@ -54,11 +54,12 @@ public class WidgetTestTest extends WidgetTest {
         Map<String, Object> map = currentWidgetProperties.get();
         Object result = map.get("DataFetcherResult");
         Object serial = map.get("serial");
-
         assertThat(result)
                 .isNotNull()
                 .isInstanceOf(List.class);
         assertThat(serial).isEqualTo("123444");
+
+
     }
 
     @Override

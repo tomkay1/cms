@@ -132,7 +132,7 @@
         return _widgetProperties;
     }
 
-    var _successProperties;
+    var _successProperties = {};
     var _failedMessage;
 
     /*<![CDATA[*/
@@ -157,6 +157,7 @@
             }
         });
     });
+
     $('#editorInit').click(function () {
         CMSWidgets.openEditor('previewRegion', scope);
 //        window[scope].init(1);
@@ -164,6 +165,7 @@
     });
 
     function setSuccessPropertiesSerial(name, serial) {
+        _successProperties[name] = serial;
     }
 
     //    CMSWidgets.pushNextWidgetIdentity(scope);

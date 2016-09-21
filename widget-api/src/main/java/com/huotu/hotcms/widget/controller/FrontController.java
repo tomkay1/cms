@@ -14,6 +14,7 @@ import com.huotu.hotcms.service.FilterBehavioral;
 import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.Template;
+import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.service.service.ContentService;
 import com.huotu.hotcms.service.service.TemplateService;
@@ -28,6 +29,7 @@ import com.huotu.hotcms.widget.WidgetStyle;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.PageElement;
+import com.huotu.hotcms.widget.page.PageModel;
 import com.huotu.hotcms.widget.resolve.WidgetILinkBuilder;
 import com.huotu.hotcms.widget.service.PageService;
 import me.jiangcai.lib.resource.Resource;
@@ -39,6 +41,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -270,25 +273,21 @@ public class FrontController implements FilterBehavioral {
         return null;
     }
 
-//    @RequestMapping(method = RequestMethod.POST, value = "/pagePreview/{pageId}")
+    @RequestMapping(method = RequestMethod.POST, value = "/pagePreview/{pageId}")
 //    @Transactional(readOnly = true)
-//    public PageInfo pagePreview(@AuthenticationPrincipal Login login, Model model, String jsonString
-//            , @PathVariable("pageId") long pageId) throws PageNotFoundException, IOException {
-//        PageInfo pageInfo = pageService.getPage(pageId);
-//
-//        PageModel page = objectMapper.readValue(jsonString, PageModel.class);
-//
-//        if (login.isRoot())
-//            pageInfo.setResourceKey("PREVIEW");
-//        else
-//            pageInfo.setResourceKey("PREVIEW" + login.currentOwnerId());
-//        pageService.savePage(pageInfo, page, true);
-//
-//        CMSContext cmsContext = CMSContext.RequestContext();
-//        cmsContext.updateSite(pageInfo.getSite());
-//
-//        return returnPage(model, cmsContext, pageInfo);
-//    }
+    public PageInfo pagePreview(@AuthenticationPrincipal Login login, Model model, String jsonString
+            , @PathVariable("pageId") long pageId) throws PageNotFoundException, IOException {
+        PageInfo pageInfo = pageService.getPage(pageId);
+        PageModel page = objectMapper.readValue(jsonString, PageModel.class);
+        if (login.isRoot())
+            pageInfo.setResourceKey("PREVIEW");
+        else
+            pageInfo.setResourceKey("PREVIEW" + login.currentOwnerId());
+        pageService.savePage(pageInfo, page, true);
+        CMSContext cmsContext = CMSContext.RequestContext();
+        cmsContext.updateSite(pageInfo.getSite());
+        return returnPage(model, cmsContext, pageInfo);
+    }
 
     /**
      * 用于支持首页的浏览

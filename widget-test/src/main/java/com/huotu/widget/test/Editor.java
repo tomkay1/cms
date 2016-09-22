@@ -9,6 +9,7 @@
 
 package com.huotu.widget.test;
 
+import com.huotu.hotcms.service.Serially;
 import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Download;
@@ -46,8 +47,8 @@ public class Editor {
      * @param name    存储该内容{@link com.huotu.hotcms.service.entity.AbstractContent#serial}的属性名
      * @param article 内容
      */
-    void chooseArticle(String name, Article article) {
-        chooseSerial(name, article.getSerial());
+    public void chooseArticle(String name, Article article) {
+        chooseSerial(name, article);
     }
 
     /**
@@ -56,8 +57,8 @@ public class Editor {
      * @param name     存储该内容{@link com.huotu.hotcms.service.entity.AbstractContent#serial}的属性名
      * @param download 内容
      */
-    void chooseDownload(String name, Download download) {
-        chooseSerial(name, download.getSerial());
+    public void chooseDownload(String name, Download download) {
+        chooseSerial(name, download);
     }
 
     /**
@@ -66,8 +67,8 @@ public class Editor {
      * @param name 存储该内容{@link com.huotu.hotcms.service.entity.AbstractContent#serial}的属性名
      * @param link 内容
      */
-    void chooseLink(String name, Link link) {
-        chooseSerial(name, link.getSerial());
+    public void chooseLink(String name, Link link) {
+        chooseSerial(name, link);
     }
 
     /**
@@ -76,8 +77,8 @@ public class Editor {
      * @param name   存储该内容{@link com.huotu.hotcms.service.entity.AbstractContent#serial}的属性名
      * @param notice 内容
      */
-    void chooseNotice(String name, Notice notice) {
-        chooseSerial(name, notice.getSerial());
+    public void chooseNotice(String name, Notice notice) {
+        chooseSerial(name, notice);
     }
 
     /**
@@ -86,13 +87,13 @@ public class Editor {
      * @param name     存储该数据源{@link com.huotu.hotcms.service.entity.Category#serial}的属性名
      * @param category 数据源
      */
-    void chooseCategory(String name, Category category) {
-        chooseSerial(name, category.getSerial());
+    public void chooseCategory(String name, Category category) {
+        chooseSerial(name, category);
     }
 
-    public void chooseSerial(String name, String serial) {
+    private void chooseSerial(String name, Serially serially) {
         if (driver instanceof JavascriptExecutor) {
-            ((JavascriptExecutor) driver).executeScript("setSuccessPropertiesSerial('" + name + "','" + serial + "')");
+            ((JavascriptExecutor) driver).executeScript("setSuccessPropertiesSerial('" + name + "','" + serially.getSerial() + "')");
         }
     }
 

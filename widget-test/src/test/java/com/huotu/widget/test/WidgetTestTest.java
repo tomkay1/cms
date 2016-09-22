@@ -9,6 +9,8 @@
 
 package com.huotu.widget.test;
 
+import com.huotu.hotcms.service.common.ContentType;
+import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.Widget;
 import com.huotu.hotcms.widget.WidgetStyle;
@@ -50,7 +52,10 @@ public class WidgetTestTest extends WidgetTest {
                     .isTrue();
         }
         editor.getWebElement().findElement(By.id("DataFetcher")).click();
-        editor.chooseSerial("serial", "123444");
+        Category category = new Category();
+        category.setSerial("123444");
+        category.setContentType(ContentType.Article);
+        editor.chooseCategory("serial", category);
         Map<String, Object> map = currentWidgetProperties.get();
         Object result = map.get("DataFetcherResult");
         Object serial = map.get("serial");

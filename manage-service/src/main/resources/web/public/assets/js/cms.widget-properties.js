@@ -111,14 +111,16 @@ CMSWidgets.plugins.properties.open = function (globalId, identity, editAreaEleme
             var dataClass = CMSWidgets.plugins.properties.util.interception($(data).attr('class'));
             var strs = dataClass.split("-");
 
-            var fixedType = null;
+            var resourceName=strs[0];
+            var fixedType=null;
 
-            if (strs[1] == "category") {
-                iframeTitle = "数据源修改";
-                fixedType = strs[0];
+            if(strs[1]=="category"){
+                iframeTitle="数据源修改";
+                fixedType=strs[0];
+                resourceName=strs[1];
             }
 
-            iframePath = CMSWidgets.editInURI(strs[0], fixedType);
+            iframePath=CMSWidgets.editInURI(resourceName,fixedType);
 
             CMSWidgets.plugins.properties.data = this;
 

@@ -17,8 +17,9 @@
  */
 
 CMSWidgets.plugins.properties = {};
-CMSWidgets.plugins.properties.util = {};
+CMSWidgets.plugins.properties.util = {};//一些工具方法
 CMSWidgets.plugins.properties.title = null;
+CMSWidgets.plugins.properties.resourceName = null;
 CMSWidgets.plugins.properties.globalId = null;
 CMSWidgets.plugins.properties.iframeOpenId = null;
 CMSWidgets.plugins.properties.data = {};
@@ -30,15 +31,17 @@ $(function () {
 
 /**
  * 根据序列号生成元素里面的html代码
- * @param ele       元素
- * @param serial    序列号
+ * @param ele           元素
+ * @param resourceName  资源名称
+ * @param serial        序列号
  */
-CMSWidgets.plugins.properties.buildHtml = function (ele, serial) {
-    var text = "暂无数据";
+CMSWidgets.plugins.properties.buildHtml = function (ele, resourceName,serial) {
+    var contentHTML = '<div><button class="js-addEditBtn btn btn-default" type="button">暂无数据</button></div>';
     if (serial != undefined) {
-        text = "序列号:" + serial;
+        //ajax请求：返回html代码展现在制定元素中去
+        contentHTML=CMSWidgets.plugins.properties.contentHTML(resourceName,serial);
     }
-    $(ele).html('<button class="js-addEditBtn btn btn-default" type="button">' + text + '</button>');
+    $(ele).html(contentHTML);
 };
 
 /**
@@ -50,10 +53,36 @@ CMSWidgets.plugins.properties.bindIframeEvent = function () {
         var properties = CMSWidgets.currentEditorProperties();
         properties[CMSWidgets.plugins.properties.title] = row.serial;
         //修改显示
-        CMSWidgets.plugins.properties.buildHtml(CMSWidgets.plugins.properties.data, row.serial);
+        CMSWidgets.plugins.properties.buildHtml(CMSWidgets.plugins.properties.data,
+                                                CMSWidgets.plugins.properties.resourceName,
+                                                row.serial);
         layer.close(CMSWidgets.plugins.properties.iframeOpenId);
     });
 };
+
+
+/**
+ * 根据资源类型和序列号以及站点ID生成指定url将返回的html渲染到指定元素中去
+ * @param resourceName  资源类型
+ * @param serial        序列号
+ * @param ele           指定元素
+ */
+CMSWidgets.plugins.properties.contentHTML=function(resourceName,serial){
+    var url="/manage/"+resourceName+"/render";
+    $.ajax({
+        type: "GET",
+        url:url,
+        data:{siteId:CMSWidgets.siteId,serial:serial},// 要提交的表单
+        success: function(result) {
+            return result;
+        },
+        error:function(e){
+            layer.msg("获取内容失败");
+        }
+    });
+
+
+}
 
 /**
  * 工具函数，判断A字符串是否以B字符串结尾
@@ -67,7 +96,7 @@ CMSWidgets.plugins.properties.util.endWith = function (str, endStr) {
 };
 
 /**
- * 从给定的字符串中按照正则表达式截取指定的字符串
+ * 工具函数,从给定的字符串中按照正则表达式截取指定的字符串
  * @param str
  */
 CMSWidgets.plugins.properties.util.interception = function (str) {
@@ -123,6 +152,7 @@ CMSWidgets.plugins.properties.open = function (globalId, identity, editAreaEleme
             iframePath=CMSWidgets.editInURI(resourceName,fixedType);
 
             CMSWidgets.plugins.properties.data = this;
+            CMSWidgets.plugins.properties.resourceName=strs[0];
 
             CMSWidgets.plugins.properties.iframeOpenId = layer.open({
                 shadeClose: true,

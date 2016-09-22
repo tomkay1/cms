@@ -21,7 +21,7 @@ CMSWidgets.plugins.properties.util = {};//一些工具方法
 CMSWidgets.plugins.properties.title = null;
 CMSWidgets.plugins.properties.resourceName = null;
 CMSWidgets.plugins.properties.globalId = null;
-CMSWidgets.plugins.properties.iframeOpenId = null;
+CMSWidgets.plugins.properties.iframeOpenId = null;//用户iframe关闭的标记
 CMSWidgets.plugins.properties.data = {};
 
 
@@ -68,10 +68,15 @@ CMSWidgets.plugins.properties.bindIframeEvent = function () {
  * @param ele           指定元素
  */
 CMSWidgets.plugins.properties.contentHTML=function(resourceName,serial){
-    var url="/manage/"+resourceName+"/render";
+    //var url="/manage/"+resourceName+"/render";
+    var url= CMSWidgets.contentURI(resourceName);
+    if(url=='../view/testcontent.html'){
+        return '<img src="https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/logo_white_fe6da1ec.png"/> ';
+    }
     $.ajax({
         type: "GET",
         url:url,
+        dataType:"html",
         data:{siteId:CMSWidgets.siteId,serial:serial},// 要提交的表单
         success: function(result) {
             return result;
@@ -105,6 +110,30 @@ CMSWidgets.plugins.properties.util.interception = function (str) {
     return matching[0];
 };
 
+/**
+ * 将name作为key在properties关联数组中查找value值
+ * @param name      key
+ * @returns {*}
+ */
+CMSWidgets.plugins.properties.util.getValueByProperties=function(name){
+    var properties = widgetProperties(CMSWidgets.plugins.properties.globalId);
+    return properties[name];
+};
+
+/**
+ * 在元素中获取data-name属性的值，如果为undefined则获取name属性的值，
+ * 并且赋值到CMSWidgets.plugins.properties.title中去，
+ * 用来当作properties的key
+ * @param ele
+ * @returns {*}
+ */
+CMSWidgets.plugins.properties.util.getEleName=function(ele){
+    CMSWidgets.plugins.properties.title = $(ele).attr('data-name');
+    if (CMSWidgets.plugins.properties.title == undefined) {
+        CMSWidgets.plugins.properties.title = $(ele).attr('name');
+    }
+};
+
 
 /**
  * 当编辑器打开的时候调用的函数
@@ -120,18 +149,12 @@ CMSWidgets.plugins.properties.open = function (globalId, identity, editAreaEleme
         "[class*='article-category'],[class*='gallery-category']," +
         "[class*='link-category'],[class*='notice-category']";
     $(editAreaElementMatch, editAreaElement).each(function (index, data) {
+        CMSWidgets.plugins.properties.util.getEleName(data);
 
-        CMSWidgets.plugins.properties.title = $(data).attr('data-name');
-        if (CMSWidgets.plugins.properties.title == undefined) {
-            CMSWidgets.plugins.properties.title = $(data).attr('name');
-        }
-        var properties = widgetProperties(CMSWidgets.plugins.properties.globalId);
-
-        var value = properties[CMSWidgets.plugins.properties.title];
+        var value=CMSWidgets.plugins.properties.util.getValueByProperties(CMSWidgets.plugins.properties.title);
 
         //构建编辑器html代码
         CMSWidgets.plugins.properties.buildHtml(data, value);
-
 
         //绑定单击事件
         $(data).on('click', function () {
@@ -163,7 +186,27 @@ CMSWidgets.plugins.properties.open = function (globalId, identity, editAreaEleme
             });
         });
 
+        var galleryItemAreaMatch="[class*='gallery-item-area'][data-name='"+CMSWidgets.plugins.properties.title+"']";
+        var galleryItemArea= $(galleryItemAreaMatch,editAreaElement);
+        if(galleryItemArea.size()>0){
+            //获取items
+
+            //隐藏原始元素
+
+            //循环输出元素
+
+            console.log("有");
+
+
+        }
+
+
+
+
     });
+
+
+
 
 };
 

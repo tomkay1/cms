@@ -335,5 +335,15 @@
                     uri = uri+"&fixedType="+fixedType;
             return uri;
         }
+
+        CMSWidgets.contentURI= function(resourceName){
+            var testURI = '../view/testcontent.html';
+            var mangeUriRoot = /*[[@{/manage/}]]*/ testURI;
+            if (mangeUriRoot==testURI)
+                return testURI;
+            return mangeUriRoot+resourceName+"/render";
+        }
+
+
 </script>
 </html>

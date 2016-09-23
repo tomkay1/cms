@@ -13,7 +13,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
     <meta name="author" content="Neo">
-    <meta name="viewport" content="width=device-width,initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
     <title>CMS 模板系统</title>
 
     <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/bootstrap/3.3.6/css/bootstrap.min.css">
@@ -22,7 +23,8 @@
     <link rel="stylesheet" href="../../public/assets/css/edit.css" ewp:href="/assets/css/edit.css">
     <link rel="stylesheet" href="../../public/assets/css/widgets.css" ewp:href="/assets/css/widgets.css">
 
-    <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/jquery.dataTables/1.10.12/css/dataTables.bootstrap.min.css" >
+    <link rel="stylesheet"
+          href="http://resali.huobanplus.com/cdn/jquery.dataTables/1.10.12/css/dataTables.bootstrap.min.css">
     <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/jquery-upload-file/4.0.10/css/uploadfile.css">
     <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/zTree/3.5.24/css/metroStyle/metroStyle.css">
     <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/swiper/3.3.1/css/swiper.min.css">
@@ -53,14 +55,15 @@
         <div class="draggable-group">
             <dl>
                 <dt>
-                    <div class="pull-right popover-info"><i class="fa fa-question-circle-o"></i>
-                        <div class="popover fade right">
-                            <div class="arrow"></div>
-                            <h3 class="popover-title">帮助</h3>
-                            <div class="popover-content">在这里设置你的栅格布局, 栅格总数默认为12, 用空格分割每列的栅格值, 如果您需要了解更多信息，请访问 <a target="_blank" href="http://v3.bootcss.com/css/#grid"> Bootstrap栅格系统</a></div>
-                        </div>
+                <div class="pull-right popover-info"><i class="fa fa-question-circle-o"></i>
+                    <div class="popover fade right">
+                        <div class="arrow"></div>
+                        <h3 class="popover-title">帮助</h3>
+                        <div class="popover-content">在这里设置你的栅格布局, 栅格总数默认为12, 用空格分割每列的栅格值, 如果您需要了解更多信息，请访问 <a
+                                target="_blank" href="http://v3.bootcss.com/css/#grid"> Bootstrap栅格系统</a></div>
                     </div>
-                    布局
+                </div>
+                布局
                 </dt>
                 <dd class="rows">
                     <ul class="list-unstyled">
@@ -244,7 +247,8 @@
 <div class="mask-backdrop"></div>
 </body>
 <script type="text/neo-template" id="templateHtml">
-    <div class="modal fade" id="selectDataTable" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="selectDataTable" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -264,7 +268,7 @@
                     </ul>
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="selectDataList">
-                            <table id="js-selectTable" class="table table-hover"></table >
+                            <table id="js-selectTable" class="table table-hover"></table>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="selectDataUpload">
                             <div id="js-fileUploader">Upload</div>
@@ -272,8 +276,11 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" data-toggle="#selectDataList" class="btn btn-primary js-select-btn">确认</button>
-                    <button type="button" data-toggle="#selectDataUpload" class="btn btn-primary hidden js-uploader-btn">确认</button>
+                    <button type="button" data-toggle="#selectDataList" class="btn btn-primary js-select-btn">确认
+                    </button>
+                    <button type="button" data-toggle="#selectDataUpload"
+                            class="btn btn-primary hidden js-uploader-btn">确认
+                    </button>
                     <button type="button" class="btn btn-default js-cancel-btn" data-dismiss="modal">关闭</button>
                 </div>
             </div>
@@ -323,27 +330,26 @@
 <script src="../../public/assets/js/data/cms.dataHandle.js" ewp:src="/assets/js/data/cms.dataHandle.js"></script>
 <script src="../../public/assets/js/cms.widget-properties.js" ewp:src="/assets/js/cms.widget-properties.js"></script>
 <script th:inline="javascript">
-        CMSWidgets.siteId = /*[[${pageInfo.site.siteId}]]*/ -999;
+    CMSWidgets.siteId = /*[[${pageInfo.site.siteId}]]*/ -999;
 
-        CMSWidgets.editInURI= function(resourceName,fixedType){
-            var testURI = '../view/edit_in.html';
-            var mangeUriRoot = /*[[@{/manage/}]]*/ testURI;
-            if (mangeUriRoot==testURI)
-                    return testURI;
-            var uri = mangeUriRoot+resourceName+"/editIn?siteId="+CMSWidgets.siteId;
-            if (fixedType!=null)
-                    uri = uri+"&fixedType="+fixedType;
-            return uri;
-        }
+    CMSWidgets.editInURI = function (resourceName, fixedType) {
+        var testURI = '../view/edit_in.html';
+        var mangeUriRoot = /*[[@{/manage/}]]*/ testURI;
+        if (mangeUriRoot == testURI)
+            return testURI;
+        var uri = mangeUriRoot + resourceName + "/editIn?siteId=" + CMSWidgets.siteId;
+        if (fixedType != null)
+            uri = uri + "&fixedType=" + fixedType;
+        return uri;
+    };
 
-        CMSWidgets.contentURI= function(resourceName){
-            var testURI = '../view/testcontent.html';
-            var mangeUriRoot = /*[[@{/manage/}]]*/ testURI;
-            if (mangeUriRoot==testURI)
-                return testURI;
-            return mangeUriRoot+resourceName+"/render";
-        }
-
+    CMSWidgets.contentURI = function (resourceName, serial) {
+        var testURI = '../../mock/resourceContent.html';
+        var mangeUriRoot = /*[[@{/manage/}]]*/ testURI;
+        if (mangeUriRoot == testURI)
+            return testURI;
+        return mangeUriRoot + resourceName + "/render?siteId=" + CMSWidgets.siteId + "&serial=" + serial;
+    };
 
 </script>
 </html>

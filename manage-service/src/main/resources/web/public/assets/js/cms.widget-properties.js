@@ -35,13 +35,14 @@ $(function () {
  * @param resourceName  资源名称
  * @param serial        序列号
  */
-CMSWidgets.plugins.properties.buildHtml = function (ele, resourceName,serial) {
-    var contentHTML = '<div><button class="js-addEditBtn btn btn-default" type="button">暂无数据</button></div>';
+CMSWidgets.plugins.properties.buildHtml = function (ele, resourceName, serial) {
     if (serial != undefined) {
         //ajax请求：返回html代码展现在制定元素中去
-        contentHTML=CMSWidgets.plugins.properties.contentHTML(resourceName,serial);
+        CMSWidgets.plugins.properties.contentHTML(resourceName, serial, ele);
+    } else {
+        var contentHTML = '<div><button class="js-addEditBtn btn btn-default" type="button">暂无数据</button></div>';
+        $(ele).html(contentHTML);
     }
-    $(ele).html(contentHTML);
 };
 
 /**
@@ -54,8 +55,8 @@ CMSWidgets.plugins.properties.bindIframeEvent = function () {
         properties[CMSWidgets.plugins.properties.title] = row.serial;
         //修改显示
         CMSWidgets.plugins.properties.buildHtml(CMSWidgets.plugins.properties.data,
-                                                CMSWidgets.plugins.properties.resourceName,
-                                                row.serial);
+            CMSWidgets.plugins.properties.resourceName,
+            row.serial);
         layer.close(CMSWidgets.plugins.properties.iframeOpenId);
     });
 };
@@ -67,21 +68,19 @@ CMSWidgets.plugins.properties.bindIframeEvent = function () {
  * @param serial        序列号
  * @param ele           指定元素
  */
-CMSWidgets.plugins.properties.contentHTML=function(resourceName,serial){
+CMSWidgets.plugins.properties.contentHTML = function (resourceName, serial, ele) {
     //var url="/manage/"+resourceName+"/render";
-    var url= CMSWidgets.contentURI(resourceName);
-    if(url=='../view/testcontent.html'){
-        return '<img src="https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/logo_white_fe6da1ec.png"/> ';
-    }
+    var url = CMSWidgets.contentURI(resourceName, serial);
     $.ajax({
         type: "GET",
-        url:url,
-        dataType:"html",
-        data:{siteId:CMSWidgets.siteId,serial:serial},// 要提交的表单
-        success: function(result) {
-            return result;
+        url: url,
+        dataType: "html",
+        data: {siteId: CMSWidgets.siteId, serial: serial},// 要提交的表单
+        success: function (result) {
+            $(ele).html(result);
+            // return result;
         },
-        error:function(e){
+        error: function (e) {
             layer.msg("获取内容失败");
         }
     });
@@ -115,7 +114,7 @@ CMSWidgets.plugins.properties.util.interception = function (str) {
  * @param name      key
  * @returns {*}
  */
-CMSWidgets.plugins.properties.util.getValueByProperties=function(name){
+CMSWidgets.plugins.properties.util.getValueByProperties = function (name) {
     var properties = widgetProperties(CMSWidgets.plugins.properties.globalId);
     return properties[name];
 };
@@ -127,7 +126,7 @@ CMSWidgets.plugins.properties.util.getValueByProperties=function(name){
  * @param ele
  * @returns {*}
  */
-CMSWidgets.plugins.properties.util.getEleName=function(ele){
+CMSWidgets.plugins.properties.util.getEleName = function (ele) {
     CMSWidgets.plugins.properties.title = $(ele).attr('data-name');
     if (CMSWidgets.plugins.properties.title == undefined) {
         CMSWidgets.plugins.properties.title = $(ele).attr('name');
@@ -151,7 +150,7 @@ CMSWidgets.plugins.properties.open = function (globalId, identity, editAreaEleme
     $(editAreaElementMatch, editAreaElement).each(function (index, data) {
         CMSWidgets.plugins.properties.util.getEleName(data);
 
-        var value=CMSWidgets.plugins.properties.util.getValueByProperties(CMSWidgets.plugins.properties.title);
+        var value = CMSWidgets.plugins.properties.util.getValueByProperties(CMSWidgets.plugins.properties.title);
 
         //构建编辑器html代码
         CMSWidgets.plugins.properties.buildHtml(data, value);
@@ -163,19 +162,19 @@ CMSWidgets.plugins.properties.open = function (globalId, identity, editAreaEleme
             var dataClass = CMSWidgets.plugins.properties.util.interception($(data).attr('class'));
             var strs = dataClass.split("-");
 
-            var resourceName=strs[0];
-            var fixedType=null;
+            var resourceName = strs[0];
+            var fixedType = null;
 
-            if(strs[1]=="category"){
-                iframeTitle="数据源修改";
-                fixedType=strs[0];
-                resourceName=strs[1];
+            if (strs[1] == "category") {
+                iframeTitle = "数据源修改";
+                fixedType = strs[0];
+                resourceName = strs[1];
             }
 
-            iframePath=CMSWidgets.editInURI(resourceName,fixedType);
+            iframePath = CMSWidgets.editInURI(resourceName, fixedType);
 
             CMSWidgets.plugins.properties.data = this;
-            CMSWidgets.plugins.properties.resourceName=strs[0];
+            CMSWidgets.plugins.properties.resourceName = strs[0];
 
             CMSWidgets.plugins.properties.iframeOpenId = layer.open({
                 shadeClose: true,
@@ -186,9 +185,9 @@ CMSWidgets.plugins.properties.open = function (globalId, identity, editAreaEleme
             });
         });
 
-        var galleryItemAreaMatch="[class*='gallery-item-area'][data-name='"+CMSWidgets.plugins.properties.title+"']";
-        var galleryItemArea= $(galleryItemAreaMatch,editAreaElement);
-        if(galleryItemArea.size()>0){
+        var galleryItemAreaMatch = "[class*='gallery-item-area'][data-name='" + CMSWidgets.plugins.properties.title + "']";
+        var galleryItemArea = $(galleryItemAreaMatch, editAreaElement);
+        if (galleryItemArea.size() > 0) {
             //获取items
 
             //隐藏原始元素
@@ -201,11 +200,7 @@ CMSWidgets.plugins.properties.open = function (globalId, identity, editAreaEleme
         }
 
 
-
-
     });
-
-
 
 
 };

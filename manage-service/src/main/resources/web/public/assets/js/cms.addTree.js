@@ -147,10 +147,10 @@
     }
 
     function setNameAndUrl(obj) {
-        $('.tree-name').val(obj.name);
-        $('.tree-url').val(obj.linkPath);
-        $('.tree-flag').val(obj.flag);
         var inputUrl = $('.tree-url');
+        $('.tree-name').val(obj.name);
+        inputUrl.val(obj.linkPath);
+        $('.tree-flag').val(obj.flag);
         if (obj.flag) {
             inputUrl.attr('readonly', 'readonly');
         } else {

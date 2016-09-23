@@ -22,13 +22,111 @@
         <span>这里同样也可以!{title}</span>
         <img src="!{src}" title="!{title}"/>
     </div>
-    <div id="attributeData">
+    <form id="attributeData">
         <ul class="js-padding-data attribute-layout">
-            <li class="attribute-item">外边距</li>
-            <li class="attribute-item">2</li>
-            <li class="attribute-item">3</li>
-            <li class="attribute-item">4</li>
-            <li class="attribute-item">5</li>
+            <li class="attribute-item title-element">
+                <div class="pull-right popover-info"><i class="fa fa-question-circle-o"></i>
+                    <div class="popover fade right">
+                        <div class="arrow"></div>
+                        <h4 class="popover-title">帮助</h4>
+                        <div class="popover-content">内边距(Padding)属性设置元素所有内边距的宽度，是元素内容距离自身边框的距离。<br><strong>注释：</strong>不允许使用负值。</div>
+                    </div>
+                </div>
+                内边距
+            </li>
+            <li class="attribute-item">
+                <input type="text" name="paddingTop" class="form-control" placeholder="上" data-rule-number="true" data-msg-number="必须是个数字" data-rule-min="0" data-msg-min="不能小于0">
+            </li>
+            <li class="attribute-item">
+                <input type="text" name="paddingRight" class="form-control" placeholder="右" data-rule-number="true" data-msg-number="必须是个数字" data-rule-min="0" data-msg-min="不能小于0">
+            </li>
+            <li class="attribute-item">
+                <input type="text" name="paddingBottom" class="form-control" placeholder="下" data-rule-number="true" data-msg-number="必须是个数字" data-rule-min="0" data-msg-min="不能小于0">
+            </li>
+            <li class="attribute-item">
+                <input type="text" name="paddingLeft" class="form-control" placeholder="左" data-rule-number="true" data-msg-number="必须是个数字" data-rule-min="0" data-msg-min="不能小于0">
+            </li>
         </ul>
-    </div>
+        <ul class="js-margin-data attribute-layout">
+            <li class="attribute-item title-element">
+                <div class="pull-right popover-info"><i class="fa fa-question-circle-o"></i>
+                    <div class="popover fade right">
+                        <div class="arrow"></div>
+                        <h4 class="popover-title">帮助</h4>
+                        <div class="popover-content">外边距(Margin)属性设置元素所有外边距的宽度，是元素自身边框距离其他元素的边框的距离。</div>
+                    </div>
+                </div>
+                外边距
+            </li>
+            <li class="attribute-item">
+                <input type="text" name="marginTop" class="form-control" placeholder="上" data-rule-number="true" data-msg-number="必须是个数字" >
+            </li>
+            <li class="attribute-item">
+                <input type="text" name="marginRight" class="form-control" placeholder="右" data-rule-number="true" data-msg-number="必须是个数字" >
+            </li>
+            <li class="attribute-item">
+                <input type="text" name="marginBottom" class="form-control" placeholder="下" data-rule-number="true" data-msg-number="必须是个数字" >
+            </li>
+            <li class="attribute-item">
+                <input type="text" name="marginLeft" class="form-control" placeholder="左" data-rule-number="true" data-msg-number="必须是个数字" >
+            </li>
+        </ul>
+        <ul class="js-font-data attribute-layout">
+            <li class="attribute-item">
+                <p class="font-size-amount">
+                    <label for="js-fontSize-amount">当前字号：</label>
+                    <input type="text" id="js-fontSize-amount" name="fontSize" readonly>
+                </p>
+                <div id="js-fontSize-slider"></div>
+            </li>
+            <li class="attribute-item">
+                <label>文字样式</label>
+                <select class="form-control input-sm" name="fontStyle">
+                    <option value="normal">默认</option>
+                    <option value="italic">斜体</option>
+                </select>
+            </li>
+            <li class="attribute-item">
+                <label>文字样式</label>
+                <select class="form-control input-sm" name="fontWeight">
+                    <option value="normal">默认</option>
+                    <option value="bold">粗体</option>
+                    <option value="bolder">更粗</option>
+                    <option value="lighter">更细</option>
+                </select>
+            </li>
+        </ul>
+        <ul class="js-font-data attribute-layout">
+            <li class="attribute-item">
+                <label>文字颜色</label>
+                <input type="text" name="fontColor" class="color-picker" value="#333">
+            </li>
+            <li class="attribute-item">
+                <label>选择颜色</label>
+                <input type="text" name="hoverColor" class="color-picker">
+            </li>
+            <li class="attribute-item">
+                <label>背景颜色</label>
+                <input type="text" name="backgroundColor" class="color-picker" value="#fff">
+            </li>
+            <li class="attribute-item">
+                <label>其他颜色</label>
+                <input type="text" name="otherColor" class="color-picker">
+            </li>
+        </ul>
+    </form>
 </div>
+
+<script>
+    $("#attributeData").validate();
+    $("#js-fontSize-slider").slider({
+        range: "min",
+        min: 12,
+        max: 40,
+        value: 12,
+        slide: function( event, ui ) {
+            $( "#js-fontSize-amount" ).val( ui.value );
+        }
+    });
+    $( "#js-fontSize-amount" ).val( $("#js-fontSize-slider").slider( "value" ) );
+</script>

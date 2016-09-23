@@ -43,6 +43,44 @@ CMSWidgets.plugins.properties.buildHtml = function (ele, resourceName, serial) {
         var contentHTML = '<div><button class="js-addEditBtn btn btn-default" type="button">暂无数据</button></div>';
         $(ele).html(contentHTML);
     }
+
+
+    var galleryItemAreaMatch = "[class*='gallery-item-area'][data-name='" + CMSWidgets.plugins.properties.title + "']";
+    var galleryItemArea = $(galleryItemAreaMatch, CMSWidgets.plugins.properties.editAreaElement);
+    //先清理老数据
+    galleryItemArea.filter('.gallery-item-area-clone').remove();
+    //重新获取区域集合
+    galleryItemArea = $(galleryItemAreaMatch, CMSWidgets.plugins.properties.editAreaElement);
+    if (galleryItemArea.size() > 0) {
+        galleryItemArea.each(function (index, area) {
+            // 此处area 是最原始的区域
+            $(area).hide();
+            // 寻找所有这个内容的item
+            // 哦 前提是内容已设置
+            if (serial) {
+                $.ajax({
+                    url: CMSWidgets.galleryItemsURI(serial),
+                    dataType: 'json',
+                    success: function (data) {
+                        $.each(data, function (index, item) {
+                            //每一个item 应该是展示一个区域
+                            // deep clone
+                            var newArea = $(area).clone();
+                            // 身份资别
+                            newArea.addClass('gallery-item-area-clone');
+                            newArea.attr('galleryItemSerial', item.uuid);
+                            // 寻找里面的img!
+                            // 添加到原位置
+                            newArea.insertBefore(area);
+                            newArea.show();
+                        });
+                    }
+                });
+
+            }
+        });
+    }
+
 };
 
 /**
@@ -76,7 +114,7 @@ CMSWidgets.plugins.properties.contentHTML = function (resourceName, serial, ele)
         type: "GET",
         url: url,
         dataType: "html",
-        data: {siteId: CMSWidgets.siteId, serial: serial},// 要提交的表单
+        // data: {siteId: CMSWidgets.siteId, serial: serial},// 要提交的表单
         success: function (result) {
             $(ele).html(result);
             // return result;
@@ -143,6 +181,7 @@ CMSWidgets.plugins.properties.util.getEleName = function (ele) {
  */
 CMSWidgets.plugins.properties.open = function (globalId, identity, editAreaElement) {
     CMSWidgets.plugins.properties.globalId = globalId;
+    CMSWidgets.plugins.properties.editAreaElement = editAreaElement;
 
     var editAreaElementMatch = "[class*='article-content'],[class*='gallery-content']," +
         "[class*='link-content'],[class*='notice-content']," +
@@ -185,21 +224,6 @@ CMSWidgets.plugins.properties.open = function (globalId, identity, editAreaEleme
                 content: editInUrl
             });
         });
-
-        var galleryItemAreaMatch = "[class*='gallery-item-area'][data-name='" + CMSWidgets.plugins.properties.title + "']";
-        var galleryItemArea = $(galleryItemAreaMatch, editAreaElement);
-        if (galleryItemArea.size() > 0) {
-            //获取items
-
-            //隐藏原始元素
-
-            //循环输出元素
-
-            console.log("有");
-
-
-        }
-
 
     });
 

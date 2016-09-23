@@ -351,5 +351,15 @@
         return mangeUriRoot + resourceName + "/render?siteId=" + CMSWidgets.siteId + "&serial=" + serial;
     };
 
+    CMSWidgets.galleryItemsURI = function (serial) {
+        // 采用 SiteSerial 标准 serial@siteId
+        // encodeURIComponent
+        var testURI = '../../mock/galleryItem.json';
+        var mangeUriRoot = /*[[@{/manage/gallery/}]]*/ testURI;
+        if (mangeUriRoot == testURI)
+            return testURI;
+        return mangeUriRoot + encodeURIComponent(serial + '@' + CMSWidgets.siteId) + '/items';
+    };
+
 </script>
 </html>

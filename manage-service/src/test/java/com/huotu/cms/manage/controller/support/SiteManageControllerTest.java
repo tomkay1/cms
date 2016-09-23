@@ -7,7 +7,7 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.cms.manage.controller;
+package com.huotu.cms.manage.controller.support;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.huotu.cms.manage.ManageTest;
@@ -32,13 +32,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * 编辑器内容测试
- *
  * @author CJ
  */
 @Transactional
 @ActiveProfiles({"test", "unit_test", "no_ck"})
-public class EditInTest extends ManageTest {
+public class SiteManageControllerTest extends ManageTest {
 
     private Site site;
     @Autowired

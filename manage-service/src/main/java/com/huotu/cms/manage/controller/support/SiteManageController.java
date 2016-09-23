@@ -114,6 +114,21 @@ public abstract class SiteManageController<T, ID extends Serializable, PD, MD> e
         model.addAttribute("quick", isQuickMode(request));
     }
 
+//    @RequestMapping(method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE, value = "/render/{id}")
+//    public String render(@AuthenticationPrincipal Login login, Locale local, @PathVariable("id") SiteAndSerial id, Model model) {
+//
+//        Site site = checkSite(login, id.getSite().getSiteId());
+//
+//        model.addAttribute("fixedType", fixedType);
+//        model.addAttribute("title", "选择" + resourceName(locale));
+//        model.addAttribute("name", resourceName(locale));
+//        model.addAttribute("insertUri", rootUri());
+//        model.addAttribute("insertable", insertable);
+//        model.addAttribute("site", site);
+//
+//        return "view/edit_in.html";
+//    }
+
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE, value = "/editIn")
     public String editIn(@AuthenticationPrincipal Login login, Locale locale, Long siteId
             , @RequestParam(defaultValue = "true") boolean insertable, ContentType fixedType, Model model) {

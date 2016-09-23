@@ -74,7 +74,7 @@ CMSWidgets.plugins.properties.buildHtml = function (ele, resourceName, serial) {
                                 if (!text)
                                     return text;
                                 text = text.replace(/!\{title}/g, item.name);
-                                text = text.replace(/!\{serial}/g, item.uuid);
+                                text = text.replace(/!\{serial}/g, item.serial);
                                 text = text.replace(/!\{src}/g, item.thumbnailUrl);
                                 return text;
                             };

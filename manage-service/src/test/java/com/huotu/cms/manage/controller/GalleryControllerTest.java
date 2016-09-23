@@ -12,11 +12,14 @@ package com.huotu.cms.manage.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.huotu.cms.manage.ContentManageTest;
 import com.huotu.cms.manage.page.GalleryPage;
+import com.huotu.hotcms.service.Serially;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Gallery;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.model.SiteAndSerial;
 import com.huotu.hotcms.service.util.ImageHelper;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
@@ -87,6 +90,15 @@ public class GalleryControllerTest extends ContentManageTest<Gallery> {
         // 先post
 
         // 查看下数量
+        // 我们还支持了新标准SiteAndSerial
+        mockMvc.perform(get("/manage/gallery/{id}/items2", siteAndSerial(site, gallery))
+                .session(session)
+                .accept(MediaType.APPLICATION_JSON)
+        )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(toPostItemNames.size()));
+
         String responseString = mockMvc.perform(get("/manage/gallery/{id}/items", gallery.getId())
                 .session(session)
                 .accept(MediaType.APPLICATION_JSON)
@@ -114,10 +126,10 @@ public class GalleryControllerTest extends ContentManageTest<Gallery> {
                 urlResource = new ByteArrayResource(
                         mockMvc.perform(get(thumbnailUrl).session(session).accept("*/*"))
 //                            .andDo(print())
-                            .andExpect(status().isOk())
-                            .andReturn()
-                            .getResponse()
-                            .getContentAsByteArray());
+                                .andExpect(status().isOk())
+                                .andReturn()
+                                .getResponse()
+                                .getContentAsByteArray());
             ImageHelper.assertSame(urlResource, new ClassPathResource("web/mock/sexy.jpg"));
         }
 
@@ -139,6 +151,11 @@ public class GalleryControllerTest extends ContentManageTest<Gallery> {
                     .andExpect(jsonPath("$.length()").value(remaining));
         }
 
+    }
+
+    @NotNull
+    private SiteAndSerial siteAndSerial(Site site, Serially serial) {
+        return new SiteAndSerial(site, serial.getSerial());
     }
 
     @Override

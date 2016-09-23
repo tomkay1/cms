@@ -640,6 +640,7 @@ public abstract class ManageTest extends SpringWebTest {
     protected Gallery randomGallery(Category category) {
         Gallery gallery = new Gallery();
         gallery.setCategory(category);
+        contentService.init(gallery);
 //        gallery.setContent(UUID.randomUUID().toString());
         return galleryRepository.saveAndFlush(gallery);
     }

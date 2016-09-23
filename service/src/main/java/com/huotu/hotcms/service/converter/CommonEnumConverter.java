@@ -11,14 +11,13 @@ package com.huotu.hotcms.service.converter;
 
 import com.huotu.hotcms.service.common.CommonEnum;
 import com.huotu.hotcms.service.common.EnumUtils;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.util.NumberUtils;
 import org.springframework.util.StringUtils;
 
 /**
  * @author CJ
  */
-public abstract class CommonEnumConverter<T extends CommonEnum> implements Converter<String, T> {
+public abstract class CommonEnumConverter<T extends CommonEnum> extends AutowireConverter<T> {
 
     private final Class<T> enumClass;
 

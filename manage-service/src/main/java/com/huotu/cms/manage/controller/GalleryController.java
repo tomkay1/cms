@@ -19,6 +19,7 @@ import com.huotu.hotcms.service.entity.GalleryItem;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.model.ContentExtra;
+import com.huotu.hotcms.service.model.SiteAndSerial;
 import com.huotu.hotcms.service.repository.GalleryItemRepository;
 import com.huotu.hotcms.service.repository.GalleryRepository;
 import com.huotu.hotcms.service.service.CommonService;
@@ -145,6 +146,14 @@ public class GalleryController extends ContentManageController<Gallery, ContentE
         return body;
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/{id}/items2", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional(readOnly = true)
+    public ResponseEntity<String> getItems(@AuthenticationPrincipal Login login, @PathVariable("id") SiteAndSerial id)
+            throws JsonProcessingException {
+        Gallery gallery = galleryRepository.findByCategory_SiteAndSerial(id.getSite(), id.getSerial());
+        return getItems(login, gallery.getId());
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/{id}/items", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional(readOnly = true)
     public ResponseEntity<String> getItems(@AuthenticationPrincipal Login login, @PathVariable("id") Long id) throws JsonProcessingException {
@@ -156,6 +165,7 @@ public class GalleryController extends ContentManageController<Gallery, ContentE
         List<Map<String, Object>> list = galleryItemList.stream()
                 .map((Function<GalleryItem, Map<String, Object>>) galleryItem -> {
                     HashMap<String, Object> data = new HashMap<>();
+                    data.put("serial", galleryItem.getSerial());
                     data.put("name", galleryItem.getTitle());
                     data.put("uuid", String.valueOf(galleryItem.getId()));
                     try {

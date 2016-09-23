@@ -26,7 +26,7 @@ CMSWidgets.plugins.properties.data = {};
 
 
 $(function () {
-    CMSWidgets.plugins.properties.bindIframeEvent();
+    CMSWidgets.plugins.properties.bindEvent();
 });
 
 /**
@@ -46,10 +46,11 @@ CMSWidgets.plugins.properties.buildHtml = function (ele, resourceName, serial) {
 };
 
 /**
- * 在doucment上绑定一个事件，用来监听iframe内的动作，一旦触发就根据回调的数据保存
+ * 在 document 上绑定一个事件，用来监听 farme 内的动作，一旦触发就根据回调的数据保存
  */
-CMSWidgets.plugins.properties.bindIframeEvent = function () {
+CMSWidgets.plugins.properties.bindEvent = function () {
     $(document).on('content-changed', function (event, row) {
+        // console.log('title:',CMSWidgets.plugins.properties.title);
         //保存
         var properties = CMSWidgets.currentEditorProperties();
         properties[CMSWidgets.plugins.properties.title] = row.serial;
@@ -86,7 +87,7 @@ CMSWidgets.plugins.properties.contentHTML = function (resourceName, serial, ele)
     });
 
 
-}
+};
 
 /**
  * 工具函数，判断A字符串是否以B字符串结尾
@@ -157,31 +158,31 @@ CMSWidgets.plugins.properties.open = function (globalId, identity, editAreaEleme
 
         //绑定单击事件
         $(data).on('click', function () {
-            var iframePath;
-            var iframeTitle = "内容修改";
+            CMSWidgets.plugins.properties.util.getEleName(this);
+            var title = "内容修改";
             var dataClass = CMSWidgets.plugins.properties.util.interception($(data).attr('class'));
-            var strs = dataClass.split("-");
+            var classes = dataClass.split("-");
 
-            var resourceName = strs[0];
+            var resourceName = classes[0];
             var fixedType = null;
 
-            if (strs[1] == "category") {
-                iframeTitle = "数据源修改";
-                fixedType = strs[0];
-                resourceName = strs[1];
+            if (classes[1] == "category") {
+                title = "数据源修改";
+                fixedType = classes[0];
+                resourceName = classes[1];
             }
 
-            iframePath = CMSWidgets.editInURI(resourceName, fixedType);
+            var editInUrl = CMSWidgets.editInURI(resourceName, fixedType);
 
             CMSWidgets.plugins.properties.data = this;
-            CMSWidgets.plugins.properties.resourceName = strs[0];
+            CMSWidgets.plugins.properties.resourceName = classes[0];
 
             CMSWidgets.plugins.properties.iframeOpenId = layer.open({
                 shadeClose: true,
                 type: 2,
-                title: iframeTitle,
+                title: title,
                 area: ['70%', '80%'],
-                content: iframePath
+                content: editInUrl
             });
         });
 

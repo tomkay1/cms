@@ -497,7 +497,6 @@ header .btn {
     padding: 16px 10px;
     border: 1px solid #e8e8e8;
     border-top: none;
-    overflow: hidden;
 }
 .borderBoxs .image-list-show {
     float: left;
@@ -573,7 +572,6 @@ header .btn {
 }
 .popover-info {
     position: relative;
-    top: 2px;
     right: 6px;
 }
 .popover-info .popover {
@@ -731,17 +729,53 @@ div[id^="errorPlaceholder"] {
 }
 /*attributeData Style*/
 #attributeData .attribute-layout{
+    margin-bottom: 20px;
     display: -webkit-box;
     display: -moz-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
+    align-items: center;
+    justify-content: center;
 }
 #attributeData .attribute-item {
+    position: relative;
+    margin: 0 5px;
     -webkit-box-flex: 1;
     -moz-box-flex: 1;
     -webkit-flex: 1;
     -ms-flex: 1;
     flex: 1;
 }
-
+#attributeData .title-element {
+    text-align: center;
+}
+#attributeData .error {
+    color: #ca030a;
+}
+#attributeData  label.error {
+    position: absolute;
+}
+#attributeData  .font-size-amount {
+    margin: 0;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#attributeData  .font-size-amount label, #attributeData  .font-size-amount input {
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+}
+#js-fontSize-amount {
+    margin-bottom: 5px;
+    font-weight: 700;
+    width: 100%;
+    font-size: 16px;
+}

@@ -419,6 +419,11 @@ editPage.init = function () {
             content: '<img style="padding: 20px; max-width: 780px; margin: 0 auto; " src="'+ img +'">'
         });
     });
+
+    $('#pageHTML').on('click', 'a', function () {
+        return false;
+    });
+
     editFunc.init();
     Page.init(initPath);
 };

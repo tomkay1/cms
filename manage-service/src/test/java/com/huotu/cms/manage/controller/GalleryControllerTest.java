@@ -12,14 +12,11 @@ package com.huotu.cms.manage.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.huotu.cms.manage.ContentManageTest;
 import com.huotu.cms.manage.page.GalleryPage;
-import com.huotu.hotcms.service.Serially;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Gallery;
 import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.model.SiteAndSerial;
 import com.huotu.hotcms.service.util.ImageHelper;
-import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
@@ -151,11 +148,6 @@ public class GalleryControllerTest extends ContentManageTest<Gallery> {
                     .andExpect(jsonPath("$.length()").value(remaining));
         }
 
-    }
-
-    @NotNull
-    private SiteAndSerial siteAndSerial(Site site, Serially serial) {
-        return new SiteAndSerial(site, serial.getSerial());
     }
 
     @Override

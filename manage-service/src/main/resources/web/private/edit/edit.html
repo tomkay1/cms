@@ -346,11 +346,11 @@
     };
 
     CMSWidgets.contentURI = function (resourceName, serial) {
-        var testURI = '../../mock/resourceContent.html';
+        var testURI = '../view/render.html';
         var mangeUriRoot = /*[[@{/manage/}]]*/ testURI;
         if (mangeUriRoot == testURI)
             return testURI;
-        return mangeUriRoot + resourceName + "/render?siteId=" + CMSWidgets.siteId + "&serial=" + serial;
+        return mangeUriRoot + resourceName + "/render/" + encodeURIComponent(serial + '@' + CMSWidgets.siteId);
     };
 
     CMSWidgets.galleryItemsURI = function (serial) {

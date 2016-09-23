@@ -28,8 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * @author CJ
@@ -95,6 +94,17 @@ public class SiteManageControllerTest extends ManageTest {
 
         JsonNode array = objectMapper.readTree(contentString);
         assertSimilarJsonArray(array, new ClassPathResource("web/mock/data.json").getInputStream());
+
+        // 额外步骤 查看render界面
+        for (JsonNode content : array) {
+            // serial
+            mockMvc.perform(get("/manage/" + name + "/render/" + siteAndSerial(site, content.get("serial").asText()))
+                    .session(session)
+            )
+//                    .andDo(print())
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML));
+        }
 
         // 第二步 检查页面
         StringBuilder urlBuilder = new StringBuilder("http://localhost/testEditIn/");

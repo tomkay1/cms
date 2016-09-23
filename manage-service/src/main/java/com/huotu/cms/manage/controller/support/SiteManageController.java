@@ -15,6 +15,9 @@ import com.huotu.hotcms.service.SiteResource;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
+import com.huotu.hotcms.service.model.SiteAndSerial;
+import com.huotu.hotcms.service.repository.CategoryRepository;
+import com.huotu.hotcms.service.repositoryi.AbstractContentRepository;
 import com.huotu.hotcms.service.service.SiteService;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.logging.Log;
@@ -28,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.NumberUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -114,20 +118,25 @@ public abstract class SiteManageController<T, ID extends Serializable, PD, MD> e
         model.addAttribute("quick", isQuickMode(request));
     }
 
-//    @RequestMapping(method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE, value = "/render/{id}")
-//    public String render(@AuthenticationPrincipal Login login, Locale local, @PathVariable("id") SiteAndSerial id, Model model) {
-//
-//        Site site = checkSite(login, id.getSite().getSiteId());
-//
-//        model.addAttribute("fixedType", fixedType);
-//        model.addAttribute("title", "选择" + resourceName(locale));
-//        model.addAttribute("name", resourceName(locale));
-//        model.addAttribute("insertUri", rootUri());
-//        model.addAttribute("insertable", insertable);
-//        model.addAttribute("site", site);
-//
-//        return "view/edit_in.html";
-//    }
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE, value = "/render/{id}")
+    public String render(@AuthenticationPrincipal Login login, Locale locale, @PathVariable("id") SiteAndSerial id
+            , Model model) {
+        Site site = checkSite(login, id.getSite().getSiteId());
+
+        SiteResource data;
+        if (jpaRepository instanceof AbstractContentRepository) {
+            data = ((AbstractContentRepository) jpaRepository).findByCategory_SiteAndSerial(site, id.getSerial());
+        } else if (jpaRepository instanceof CategoryRepository) {
+            data = ((CategoryRepository) jpaRepository).findBySerialAndSite(id.getSerial(), site);
+        } else
+            throw new IllegalStateException("unknown JPA:" + jpaRepository);
+
+        model.addAttribute("data", data);
+        model.addAttribute("resourceName", resourceName(locale));
+
+        //::#renderRegion  哈哈  的确是可以这样干的
+        return "view/render.html";
+    }
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE, value = "/editIn")
     public String editIn(@AuthenticationPrincipal Login login, Locale locale, Long siteId

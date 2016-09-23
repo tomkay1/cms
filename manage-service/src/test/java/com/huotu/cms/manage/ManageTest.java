@@ -21,6 +21,7 @@ import com.huotu.cms.manage.page.support.AbstractCRUDPage;
 import com.huotu.cms.manage.test.AuthController;
 import com.huotu.hotcms.service.ImagesOwner;
 import com.huotu.hotcms.service.ResourcesOwner;
+import com.huotu.hotcms.service.Serially;
 import com.huotu.hotcms.service.common.CMSEnums;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.common.PageType;
@@ -40,6 +41,7 @@ import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
+import com.huotu.hotcms.service.model.SiteAndSerial;
 import com.huotu.hotcms.service.repository.ArticleRepository;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.ContentRepository;
@@ -72,6 +74,7 @@ import me.jiangcai.lib.test.SpringWebTest;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.assertj.core.api.Condition;
 import org.assertj.core.util.IterableUtil;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -883,5 +886,15 @@ public abstract class ManageTest extends SpringWebTest {
                 .isTrue();
         assertThat(actual.fieldNames())
                 .containsAll(IterableIterator(excepted.fieldNames()));
+    }
+
+    @NotNull
+    protected SiteAndSerial siteAndSerial(Site site, Serially serial) {
+        return siteAndSerial(site, serial.getSerial());
+    }
+
+    @NotNull
+    protected SiteAndSerial siteAndSerial(Site site, String s) {
+        return new SiteAndSerial(site, s);
     }
 }

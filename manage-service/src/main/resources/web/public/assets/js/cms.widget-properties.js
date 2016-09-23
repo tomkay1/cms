@@ -69,7 +69,29 @@ CMSWidgets.plugins.properties.buildHtml = function (ele, resourceName, serial) {
                             // 身份资别
                             newArea.addClass('gallery-item-area-clone');
                             newArea.attr('galleryItemSerial', item.uuid);
-                            // 寻找里面的img!
+                            // 寻找里面的元素
+                            var replacer = function (text) {
+                                if (!text)
+                                    return text;
+                                text = text.replace(/!\{title}/g, item.name);
+                                text = text.replace(/!\{serial}/g, item.uuid);
+                                text = text.replace(/!\{src}/g, item.thumbnailUrl);
+                                return text;
+                            };
+
+                            newArea.contents().each(function (index, ele) {
+                                var eleJ = $(ele);
+                                // console.log(ele, eleJ.text(), ele.attributes);
+                                eleJ.text(replacer(eleJ.text()));
+                                if (ele.attributes) {
+                                    $.each(ele.attributes, function () {
+                                        if (this.specified) {
+                                            eleJ.attr(this.name, replacer(this.value));
+                                        }
+                                    });
+                                }
+                            });
+
                             // 添加到原位置
                             newArea.insertBefore(area);
                             newArea.show();

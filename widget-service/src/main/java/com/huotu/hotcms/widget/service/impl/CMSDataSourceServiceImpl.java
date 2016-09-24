@@ -116,7 +116,7 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     public List<GalleryItemModel> findGalleryItems(String serial, int count) {
         Sort sort = new Sort(Sort.Direction.ASC, "id");
         Pageable pageable = new PageRequest(0, count, sort);
-        List<GalleryItem> galleryItems = galleryItemRepository.findByGallery_Category_SiteAndGallery_Category_Serial(
+        List<GalleryItem> galleryItems = galleryItemRepository.findByGallery_Category_SiteAndGallery_Serial(
                 CMSContext.RequestContext().getSite(), serial, pageable);
         List<GalleryItemModel> baseModels = new ArrayList<>();
         for (GalleryItem galleryItem : galleryItems) {

@@ -47,7 +47,7 @@
     <ul class="list-unstyled pull-right">
         <li class="btn btn-danger" id="saveBtn">保存</li>
     </ul>
-    <form id="previewForm">
+    <form id="previewForm" th:action="@{/pagePreview/{pageId}(pageId=${pageId})}" method="post" target="_blank">
         <input class="js-json-string" type="hidden" name="jsonString">
     </form>
 </header>

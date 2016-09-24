@@ -76,6 +76,7 @@ CMSWidgets.plugins.properties.buildHtml = function (ele, resourceName, serial) {
                                 text = text.replace(/!\{title}/g, item.name);
                                 text = text.replace(/!\{serial}/g, item.serial);
                                 text = text.replace(/!\{src}/g, item.thumbnailUrl);
+                                text = text.replace(/!\{url}/g, item.thumbnailUrl);
                                 return text;
                             };
 
@@ -214,36 +215,43 @@ CMSWidgets.plugins.properties.open = function (globalId, identity, editAreaEleme
 
         var value = CMSWidgets.plugins.properties.util.getValueByProperties(CMSWidgets.plugins.properties.title);
 
+        var title = "内容修改";
+        var dataClass = CMSWidgets.plugins.properties.util.interception($(data).attr('class'));
+        var classes = dataClass.split("-");
+
+        var resourceName = classes[0];
+        var fixedType = null;
+
+        if (classes[1] == "category") {
+            title = "数据源修改";
+            fixedType = classes[0];
+            resourceName = classes[1];
+        }
+
+        var editInUrl = CMSWidgets.editInURI(resourceName, fixedType);
+
+        data._store = {};
+        data._store.resourceName = resourceName;
+        data._store.title = title;
+        data._store.fixedType = fixedType;
+        data._store.editInURI = editInUrl;
+
         //构建编辑器html代码
-        CMSWidgets.plugins.properties.buildHtml(data, value);
+        CMSWidgets.plugins.properties.buildHtml(data, resourceName, value);
 
         //绑定单击事件
         $(data).on('click', function () {
             CMSWidgets.plugins.properties.util.getEleName(this);
-            var title = "内容修改";
-            var dataClass = CMSWidgets.plugins.properties.util.interception($(data).attr('class'));
-            var classes = dataClass.split("-");
-
-            var resourceName = classes[0];
-            var fixedType = null;
-
-            if (classes[1] == "category") {
-                title = "数据源修改";
-                fixedType = classes[0];
-                resourceName = classes[1];
-            }
-
-            var editInUrl = CMSWidgets.editInURI(resourceName, fixedType);
 
             CMSWidgets.plugins.properties.data = this;
-            CMSWidgets.plugins.properties.resourceName = classes[0];
+            CMSWidgets.plugins.properties.resourceName = this._store.resourceName;
 
             CMSWidgets.plugins.properties.iframeOpenId = layer.open({
                 shadeClose: true,
                 type: 2,
-                title: title,
+                title: this._store.title,
                 area: ['70%', '80%'],
-                content: editInUrl
+                content: this._store.editInURI
             });
         });
 

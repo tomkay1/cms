@@ -27,5 +27,5 @@ public interface GalleryItemRepository extends AbstractContentRepository<Gallery
 
     Page<GalleryItem> findByGallery_Category_Site(Site site, Pageable pageable);
 
-    List<GalleryItem> findByGallery_Category_SiteAndGallery_Category_Serial(Site site, String serial, Pageable pageable);
+    List<GalleryItem> findByGallery_Category_SiteAndGallery_Serial(Site site, String serial, Pageable pageable);
 }

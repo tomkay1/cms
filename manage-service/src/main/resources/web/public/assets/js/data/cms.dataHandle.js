@@ -168,16 +168,12 @@ var DataHandle = {
         });
     },
     ajaxPreview: function (data, url) {
-        var DATA = JSON.stringify(data);
-        if (savePage == null) {
-            layer.alert(DATA);
-        }
-        $.ajax({
+        var form = $('#previewForm');
+        form.find('.js-json-string').val(JSON.stringify(data));
+
+        form.ajaxSubmit({
             type: 'POST',
             url: url,
-            data: {
-                jsonString: DATA
-            },
             success: function (result, status) {
                 console.log(result);
             },

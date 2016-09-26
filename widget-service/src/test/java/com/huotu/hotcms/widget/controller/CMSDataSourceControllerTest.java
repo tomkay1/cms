@@ -115,7 +115,6 @@ public class CMSDataSourceControllerTest extends TestBase {
         Site site = siteRepository.findByRecommendDomain("localhost");
         Category category = randomCategory(site, ContentType.Gallery);
 
-
         mockMvc.perform(get("/dataSource/findGalleryItem")
                 .param("gallerySerial", category.getSerial())
                 .param("size", "10")
@@ -130,7 +129,7 @@ public class CMSDataSourceControllerTest extends TestBase {
         GalleryItem galleryItem = randomGalleryItem(gallery);
 
         mockMvc.perform(get("/dataSource/findGalleryItem")
-                .param("gallerySerial", category.getSerial())
+                .param("gallerySerial", gallery.getSerial())
                 .param("size", "10")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

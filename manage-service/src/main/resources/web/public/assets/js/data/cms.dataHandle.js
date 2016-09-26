@@ -171,17 +171,6 @@ var DataHandle = {
         var form = $('#previewForm');
         form.find('.js-json-string').val(JSON.stringify(data));
         form.submit();
-        // form.ajaxSubmit({
-        //     type: 'POST',
-        //     url: url,
-        //     success: function (result, status) {
-        //         console.log(result);
-        //     },
-        //     error: function (jqXHR, textStatus, errorThrown) {
-        //         console.log(errorThrown);
-        //         layer.msg('服务器错误,请稍后再试', {time: 2000});
-        //     }
-        // });
     },
     save: function (url) {
         var data = DataHandle.downloadLayoutSrc();

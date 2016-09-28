@@ -40,7 +40,7 @@ CMSWidgets.plugins.properties.buildHtml = function (ele, resourceName, serial) {
         //ajax请求：返回html代码展现在制定元素中去
         CMSWidgets.plugins.properties.contentHTML(resourceName, serial, ele);
     } else {
-        var contentHTML = '<div><button class="js-addEditBtn btn btn-default" type="button">暂无数据</button></div>';
+        var contentHTML = '<div>暂无数据</div>';
         $(ele).html(contentHTML);
     }
 

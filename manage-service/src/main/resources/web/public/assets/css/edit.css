@@ -779,3 +779,13 @@ div[id^="errorPlaceholder"] {
     width: 100%;
     font-size: 16px;
 }
+/*Updata 9.26*/
+.gallery-item-area {
+    float: left;
+    width: 25%;
+}
+.gallery-item-area img {
+    padding: 0 10px;
+    margin-bottom: 10px;
+    width: 100%;
+}

@@ -8,8 +8,11 @@
  */
 
 package ${package};
+
+import java.util.Map;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.Widget;
+import com.huotu.hotcms.widget.PreProcessWidget;
 import com.huotu.hotcms.widget.WidgetStyle;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.springframework.core.io.ClassPathResource;
@@ -25,7 +28,7 @@ import java.util.Map;
 /**
  * @author CJ
  */
-public class WidgetInfo implements Widget{
+public class WidgetInfo implements Widget,PreProcessWidget{
     /*
      * 指定风格的模板类型 如：html,text等
      */
@@ -51,7 +54,7 @@ public class WidgetInfo implements Widget{
 
     @Override
     public String description(Locale locale) {
-        if (locale.equals(Locale.CHINESE)) {
+        if (locale.equals(Locale.CHINA)) {
             return "这是一个 ${name}，你可以对组件进行自定义修改。";
         }
         return "This is a ${artifactId},  you can make custom change the component.";
@@ -77,7 +80,8 @@ public class WidgetInfo implements Widget{
     @Override
     public Map<String, Resource> publicResources() {
         Map<String, Resource> map = new HashMap<>();
-        map.put("thumbnail/defaultStyleThumbnail.png",new ClassPathResource("thumbnail/defaultStyleThumbnail.png",getClass().getClassLoader()));
+        map.put("thumbnail/defaultStyleThumbnail.png",new ClassPathResource("thumbnail/defaultStyleThumbnail.png"
+                ,getClass().getClassLoader()));
         return map;
     }
 
@@ -98,6 +102,12 @@ public class WidgetInfo implements Widget{
     public ComponentProperties defaultProperties(ResourceService resourceService) throws IOException {
         ComponentProperties properties = new ComponentProperties();
         return properties;
+    }
+
+    @Override
+    public void prepareContext(WidgetStyle style, ComponentProperties properties, Map<String, Object> variables
+            , Map<String, String> parameters) {
+
     }
 
 }

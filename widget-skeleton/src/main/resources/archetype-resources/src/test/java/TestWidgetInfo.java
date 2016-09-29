@@ -20,6 +20,7 @@ import org.openqa.selenium.WebElement;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import com.huotu.widget.test.Editor;
 /**
  * @author CJ
  */
@@ -31,7 +32,7 @@ public class TestWidgetInfo extends WidgetTest {
     }
 
     @Override
-    protected void editorWork(Widget widget, WebElement editor, Supplier<Map<String, Object>> currentWidgetProperties) {
+    protected void editorWork(Widget widget, Editor editor, Supplier<Map<String, Object>> currentWidgetProperties) {
         Map map = currentWidgetProperties.get();
         //todo
     }

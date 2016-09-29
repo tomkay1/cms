@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Import;
  * @author CJ
  */
 @Configuration
-@Import(APIMvcConfig.class)
+@Import({APIMvcConfig.class})
 @ComponentScan("com.huotu.hotcms.widget.loader.thymeleaf")
 public class WidgetLoaderConfig {
 }

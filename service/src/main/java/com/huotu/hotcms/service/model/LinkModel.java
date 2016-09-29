@@ -13,6 +13,8 @@ import lombok.Data;
 
 @Data
 public class LinkModel {
+    private String title;
+    private String detail;
     private String linkUrl;
     private String thumbUri;
 }

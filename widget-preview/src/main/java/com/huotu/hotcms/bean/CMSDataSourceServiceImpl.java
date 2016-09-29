@@ -18,8 +18,10 @@ import com.huotu.hotcms.service.entity.Notice;
 import com.huotu.hotcms.service.model.GalleryItemModel;
 import com.huotu.hotcms.service.model.LinkModel;
 import com.huotu.hotcms.service.model.widget.VideoModel;
+import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.service.CMSDataSourceService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -33,6 +35,9 @@ import java.util.List;
  * 一个测试实现的或者叫模拟实现
  */
 public class CMSDataSourceServiceImpl implements CMSDataSourceService {
+
+    @Autowired
+    CategoryService categoryService;
 
     @Override
     public List<Category> findByParent_Serial(String serial) {
@@ -80,10 +85,14 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
         category1.setContentType(ContentType.Link);
         category1.setName("logo墙链接模型1");
 
+
         Category category2 = new Category();
         category2.setId(2L);
         category2.setContentType(ContentType.Link);
         category2.setName("logo墙链接模型1");
+
+        categoryService.init(category1);
+        categoryService.init(category2);
         List<Category> list = new ArrayList<>();
         list.add(category1);
         list.add(category2);
@@ -179,6 +188,7 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
         category.setSerial("123456789");
         category.setName("新闻快讯");
         category.setContentType(ContentType.Article);
+        categoryService.init(category);
         List<Category> categories = new ArrayList<>();
         categories.add(category);
         return categories;

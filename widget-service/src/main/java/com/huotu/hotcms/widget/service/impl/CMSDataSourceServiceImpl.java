@@ -107,6 +107,7 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
         return linkModels;
     }
 
+
     @Override
     public List<Category> findGalleryCategory() {
         return categoryRepository.findBySiteAndContentType(CMSContext.RequestContext().getSite(), ContentType.Gallery);

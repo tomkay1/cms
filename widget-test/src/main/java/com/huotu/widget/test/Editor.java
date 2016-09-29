@@ -13,6 +13,7 @@ import com.huotu.hotcms.service.Serially;
 import com.huotu.hotcms.service.entity.Article;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Download;
+import com.huotu.hotcms.service.entity.Gallery;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Notice;
 import org.openqa.selenium.JavascriptExecutor;
@@ -39,6 +40,16 @@ public class Editor {
 
     public WebElement getWebElement() {
         return webElement;
+    }
+
+    /**
+     * 选择图库
+     *
+     * @param name    存储该内容{@link com.huotu.hotcms.service.entity.AbstractContent#serial}的属性名
+     * @param gallery 内容
+     */
+    public void chooseGallery(String name, Gallery gallery) {
+        chooseSerial(name, gallery);
     }
 
     /**

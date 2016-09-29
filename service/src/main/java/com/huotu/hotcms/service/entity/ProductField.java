@@ -48,10 +48,18 @@ public class ProductField {
      */
     @Column(length = 20)
     private String name;
+
     /**
      * 这个字段可在一个产品中出现多次
      */
     private boolean repeatable;
+
+    /**
+     * 商城类目
+     */
+//    @OneToMany
+//    private com.huotu.huobanplus.common.entity.Category mallCategory;
+
     // 数据类型
     private FieldType fieldType;
 

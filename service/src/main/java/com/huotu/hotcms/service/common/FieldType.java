@@ -33,6 +33,11 @@ public enum FieldType implements CommonEnum {
      */
     RichText(3, "富文本");
 
+    /**
+     * 商城类目
+     */
+//    MallCategory(4, "商城类目");
+
     private final int code;
     private final String value;
     private final String description;

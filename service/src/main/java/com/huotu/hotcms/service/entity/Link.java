@@ -48,6 +48,8 @@ public class Link extends AbstractContent implements ImagesOwner {
         LinkModel linkModel = new LinkModel();
         linkModel.setLinkUrl(link.getLinkUrl());
         linkModel.setThumbUri(link.getThumbUri());
+        linkModel.setTitle(link.getTitle());
+        linkModel.setDetail(link.getDescription());
         return linkModel;
     }
 

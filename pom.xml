@@ -211,6 +211,11 @@
             <artifactId>jackson-dataformat-xml</artifactId>
             <version>${json-version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.huotu.huobanplus</groupId>
+            <artifactId>common-client</artifactId>
+            <version>1.5.3</version>
+        </dependency>
     </dependencies>
 
     <repositories>

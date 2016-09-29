@@ -13,7 +13,6 @@ package com.huotu.hotcms.service.common;
  * @author CJ
  */
 public enum FieldType implements CommonEnum {
-
     /**
      * 具体保存的数据是{@link String}
      */
@@ -33,10 +32,6 @@ public enum FieldType implements CommonEnum {
      */
     RichText(3, "富文本");
 
-    /**
-     * 商城类目
-     */
-//    MallCategory(4, "商城类目");
 
     private final int code;
     private final String value;

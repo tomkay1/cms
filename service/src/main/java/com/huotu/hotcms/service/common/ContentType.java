@@ -43,10 +43,21 @@ public enum ContentType implements CommonEnum {
      *
      */
     Page(6, "页面", "用户自定义页面"),
+
     /**
      *
      */
-    Product(7, "产品", "产品内容");
+    Product(7, "产品", "产品内容"),
+
+    /**
+     *
+     */
+    MallProduct(8, "商城产品数据源", "产品数据源"),
+
+    /**
+     *
+     */
+    Mall(9, "商城类目数据源", "产品数据源");
 
     private final int code;
     private final String value;

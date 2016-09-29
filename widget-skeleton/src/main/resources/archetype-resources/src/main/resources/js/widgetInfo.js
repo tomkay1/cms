@@ -4,13 +4,10 @@
 CMSWidgets.initWidget({
 // 编辑器相关
     editor: {
-        properties: null,
-        saveComponent: function (onSuccess, onFailed) {
-            onSuccess(this.properties);
-            return this.properties;
+        saveComponent: function (onFailed) {
+
         },
         open: function (globalId) {
-            this.properties = widgetProperties(globalId);
 
         },
         close: function (globalId) {

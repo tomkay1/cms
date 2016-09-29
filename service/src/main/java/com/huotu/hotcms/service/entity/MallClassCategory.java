@@ -18,7 +18,7 @@ import java.util.Map;
 @Table(name = "cms_mall_category_category")
 @Setter
 @Getter
-public class MallCategoryCategory extends Category {
+public class MallClassCategory extends Category {
 
     /**
      * 商城类目或品牌数据源id

@@ -22,31 +22,29 @@ public class MallProductCategory extends ProductCategory {
     /**
      * 类目id
      */
-    @Column
+    @Column(name = "MallCategoryId")
     private List<Long> mallCategoryId;
 
     /**
      * 品牌id
      */
-    @Column
+    @Column(name = "MallBrandId")
     private List<Long> mallBrandId;
 
     /**
      * 商品标题
      */
-    @Column(name = "goodTitle", length = 200)
+    @Column(name = "GoodTitle", length = 200)
     private String goodTitle;
 
     /**
      * 销量
      */
-    @Column(name = "salesCount")
+    @Column(name = "SalesCount")
     private int salesCount;
 
     /**
      * 商品价格
-     *
-     * @since 1.4
      */
     @Column(name = "Price")
     private double price;

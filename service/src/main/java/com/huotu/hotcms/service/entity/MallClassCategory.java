@@ -19,14 +19,12 @@ import java.util.List;
 public class MallClassCategory extends Category {
 
     /**
-     * 商城类目或品牌数据源id
-     * map key商城类目id，value 类目名称
+     * 商城产品类目数据源
      */
     private List<MallProductCategory> categories;
-    // 电脑 办公
 
     /**
-     *
+     * 推荐链接数据源
      */
     private Category recommendCategory;
 

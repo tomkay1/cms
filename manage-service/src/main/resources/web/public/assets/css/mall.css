@@ -1,0 +1,212 @@
+body {
+  font: 12px/150% Arial, Verdana, Microsoft YaHei, tahoma, arial, "Hiragino Sans GB", "\5b8b\4f53", sans-serif;
+  color: #666;
+  background: #fff;
+  box-sizing: border-box;
+}
+a,
+address,
+b,
+big,
+blockquote,
+body,
+center,
+cite,
+code,
+dd,
+del,
+div,
+dl,
+dt,
+em,
+fieldset,
+font,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+html,
+i,
+iframe,
+img,
+ins,
+label,
+legend,
+li,
+ol,
+p,
+pre,
+small,
+span,
+strong,
+u,
+ul,
+var {
+  margin: 0;
+  padding: 0;
+}
+a {
+  color: #666;
+  text-decoration: none;
+}
+em,
+i,
+u {
+  font-style: normal;
+}
+.show {
+  display: block !important;
+}
+.product-categorys .categorys-dorpdown {
+  width: 210px;
+  height: 44px;
+  background: #b1191a;
+}
+.product-categorys .categorys-dorpdown .dt a {
+  display: block;
+  padding: 0 10px;
+  width: 190px;
+  height: 44px;
+  background: #b1191a;
+  font: 400 15px/44px "Microsoft YaHei";
+  color: #fff;
+  text-decoration: none;
+}
+.product-categorys .categorys-dorpdown .dd {
+  position: relative;
+  height: 466px;
+  background: #c81623;
+}
+.product-categorys .categorys-dorpdown .dd .item .item-top {
+  border-left: 1px solid #b61d1d;
+  position: relative;
+  z-index: 1;
+  height: 31px;
+  color: #fff;
+}
+.product-categorys .categorys-dorpdown .dd .item .item-top a {
+  color: #fff;
+}
+.product-categorys .categorys-dorpdown .dd .item .item-top:hover {
+  background: #f7f7f7;
+}
+.product-categorys .categorys-dorpdown .dd .item .item-top:hover a {
+  color: #b61d1d;
+}
+.product-categorys .categorys-dorpdown .dd .item .item-top h3 {
+  position: absolute;
+  z-index: 2;
+  height: 31px;
+  padding: 0 10px;
+  line-height: 31px;
+  font-size: 14px;
+  font-weight: 400;
+}
+.product-categorys .categorys-dorpdown .dd .item .item-top i {
+  position: absolute;
+  z-index: 1;
+  top: 9px;
+  right: 14px;
+  width: 4px;
+  height: 14px;
+  font: 400 9px/14px consolas;
+}
+.product-categorys .categorys-dorpdown .dd .item .item-sub {
+  display: none;
+  position: absolute;
+  top: -1px;
+  left: 210px;
+  width: 790px;
+  padding: 6px 0 0 20px;
+  background: #f7f7f7;
+  min-height: 408px;
+  border: 1px solid #b61d1d;
+  border-left: none;
+}
+.product-categorys .categorys-dorpdown .dd .item .item-sub .item-channels {
+  float: left;
+  width: 770px;
+  height: 24px;
+  padding: 20px 0 0 20px;
+  background: #f7f7f7;
+  overflow: hidden;
+}
+.product-categorys .categorys-dorpdown .dd .item .item-sub .item-channels a {
+  float: left;
+  display: inline-block;
+  padding: 0 0 0 8px;
+  margin-right: 10px;
+  line-height: 24px;
+  background: #7C7171;
+  color: #fff;
+  white-space: nowrap;
+}
+.product-categorys .categorys-dorpdown .dd .item .item-sub .item-channels a:hover {
+  background: #c81623;
+}
+.product-categorys .categorys-dorpdown .dd .item .item-sub .item-channels a:hover i {
+  background: #B1191A;
+}
+.product-categorys .categorys-dorpdown .dd .item .item-sub .item-channels i {
+  display: inline-block;
+  margin-left: 8px;
+  width: 23px;
+  height: 24px;
+  font: 400 9px/24px consolas;
+  background: #5c5251;
+  text-align: center;
+  cursor: pointer;
+}
+.product-categorys .categorys-dorpdown .dd .item .item-sub .subitems {
+  float: left;
+  width: 770px;
+  padding: 6px 0 0 20px;
+  background: #f7f7f7;
+  min-height: 409px;
+}
+.product-categorys .categorys-dorpdown .dd .item .item-sub .subitems dl {
+  width: 100%;
+  overflow: hidden;
+  line-height: 2em;
+}
+.product-categorys .categorys-dorpdown .dd .item .item-sub .subitems dt {
+  position: relative;
+  float: left;
+  width: 54px;
+  padding: 8px 30px 0 0;
+  text-align: right;
+  font-weight: 700;
+}
+.product-categorys .categorys-dorpdown .dd .item .item-sub .subitems dt i {
+  position: absolute;
+  top: 13px;
+  right: 18px;
+  width: 4px;
+  height: 14px;
+  font: 400 9px/14px consolas;
+}
+.product-categorys .categorys-dorpdown .dd .item .item-sub .subitems dd {
+  float: left;
+  width: 620px;
+  padding: 6px 0;
+  border-top: 1px solid #eee;
+}
+.product-categorys .categorys-dorpdown .dd .item .item-sub .subitems dd:first-of-type {
+  border-top: none;
+}
+.product-categorys .categorys-dorpdown .dd .item .item-sub .subitems dd a {
+  float: left;
+  padding: 0 8px;
+  margin: 4px 0;
+  line-height: 16px;
+  height: 16px;
+  border-left: 1px solid #e0e0e0;
+  white-space: nowrap;
+}
+.product-lists {
+  margin: 0 auto;
+  width: 1210px;
+}

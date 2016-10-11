@@ -160,6 +160,18 @@ Name:<input name="name" type="text" title="Name"/>
                 </code>
             </pre>
         </p>
+        <h3>选择商城类目数据源</h3>
+        <p>
+            <pre>
+                <code>
+                    <![CDATA[
+数据源:<span data-name="name" class="mallClass-category"></span>
+                    ]]>
+                </code>
+            </pre>
+        </p>
+
+
         <h3>数据内容展示</h3>
         <p>控件指定内容展示模板，当用户选择了数据内容之后，应当根据控件指定的展示模板展示数据内容的item,下面是一个图库数据内容控件展示示例：
             展示模板的data-name属性和选择图库内容标签的data-name属性保持一致，图库数据内容选择后会循环展示图库item;

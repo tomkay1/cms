@@ -57,7 +57,7 @@ public enum ContentType implements CommonEnum {
     /**
      *
      */
-    Mall(9, "商城类目数据源", "产品数据源");
+    MallClass(9, "商城类目数据源", "产品数据源");
 
     private final int code;
     private final String value;

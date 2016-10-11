@@ -1,5 +1,6 @@
 package com.huotu.hotcms.service.entity;
 
+import com.huotu.hotcms.service.model.MallClassCategoryModel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,6 +28,27 @@ public class MallClassCategory extends Category {
      * 推荐链接数据源
      */
     private Category recommendCategory;
+
+    /**
+     * 是否为其他类目父级
+     */
+    private boolean parentFlag;
+
+    public MallClassCategoryModel toMallClassCategoryModel() {
+        MallClassCategoryModel mallClassCategoryModel = new MallClassCategoryModel();
+        mallClassCategoryModel.setCategories(this.categories);
+        mallClassCategoryModel.setParentFlag(this.parentFlag);
+        mallClassCategoryModel.setParent(this.getParent());
+        mallClassCategoryModel.setName(this.getName());
+        mallClassCategoryModel.setCreateTime(this.getCreateTime());
+        mallClassCategoryModel.setRecommendCategory(this.recommendCategory);
+        mallClassCategoryModel.setSerial(this.getSerial());
+        mallClassCategoryModel.setContentType(this.getContentType());
+        mallClassCategoryModel.setId(this.getId());
+        mallClassCategoryModel.setOrderWeight(this.getOrderWeight());
+        mallClassCategoryModel.setSite(this.getSite());
+        return mallClassCategoryModel;
+    }
 
 
 

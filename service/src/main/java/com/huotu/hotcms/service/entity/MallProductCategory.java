@@ -6,6 +6,7 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -21,39 +22,50 @@ public class MallProductCategory extends ProductCategory {
 
     /**
      * 类目id
+     * 字符串格式：1,2,5,8……
      */
     @Column(name = "MallCategoryId")
-    private List<Long> mallCategoryId;
+    private String mallCategoryId;
 
     /**
      * 品牌id
+     * 字符串格式：1,2,5,8……
      */
     @Column(name = "MallBrandId")
-    private List<Long> mallBrandId;
-
+    private String mallBrandId;
     /**
      * 商品标题
      */
     @Column(name = "GoodTitle", length = 200)
     private String goodTitle;
-
     /**
      * 销量
      */
     @Column(name = "SalesCount")
-    private int salesCount;
-
+    private Integer salesCount;
     /**
      * 商品价格
      */
     @Column(name = "Price")
-    private double price;
-
+    private Double price;
     /**
      * 库存量 -1无限制
      */
     @Column(name = "Store")
-    private int stock;
+    private Integer stock;
+    /**
+     * 冗余字段，数据源对应的contentURI
+     */
+    private String contentURI;
+
+    public List<Long> getMallCategoryId() {
+
+        return null;
+    }
+
+    public void setMallCategoryId(List<Long> mallCategoryId) {
+        this.mallCategoryId = Arrays.toString(mallCategoryId.toArray()).replace("[", "").replace("]", "");
+    }
 
 
 }

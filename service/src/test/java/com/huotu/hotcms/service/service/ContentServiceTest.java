@@ -17,6 +17,7 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.Video;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.ContentRepository;
+import com.huotu.hotcms.service.repository.MallProductCategoryRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,8 @@ public class ContentServiceTest extends TestBase {
     private SiteRepository siteRepository;
     @Autowired
     private ContentRepository contentRepository;
+    @Autowired
+    private MallProductCategoryRepository mallProductCategoryRepository;
 
     @Test
     public void list() throws Exception {
@@ -80,6 +83,18 @@ public class ContentServiceTest extends TestBase {
 
 //        assertThat(contentService.countBySite(site))
 //                .isEqualTo(2);
+    }
+
+    @Test
+    public void testMallProductCategoryRepository() {
+//        MallProductCategory mallProductCategory = new MallProductCategory();
+//        mallProductCategory.setName("123");
+//        mallProductCategory.setContentType(ContentType.MallProduct);
+//        List<Long> brands = new ArrayList<>();
+//        brands.add(1L);
+//        brands.add(2L);
+//        brands.add(3L);
+//        mallProductCategoryRepository.saveAndFlush(mallProductCategory);
     }
 
 }

@@ -11,10 +11,7 @@ package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.TestBase;
 import com.huotu.hotcms.service.common.ContentType;
-import com.huotu.hotcms.service.entity.Article;
-import com.huotu.hotcms.service.entity.Category;
-import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.entity.Video;
+import com.huotu.hotcms.service.entity.*;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.repository.ContentRepository;
 import com.huotu.hotcms.service.repository.MallProductCategoryRepository;
@@ -23,6 +20,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -87,14 +86,15 @@ public class ContentServiceTest extends TestBase {
 
     @Test
     public void testMallProductCategoryRepository() {
-//        MallProductCategory mallProductCategory = new MallProductCategory();
-//        mallProductCategory.setName("123");
-//        mallProductCategory.setContentType(ContentType.MallProduct);
-//        List<Long> brands = new ArrayList<>();
-//        brands.add(1L);
-//        brands.add(2L);
-//        brands.add(3L);
-//        mallProductCategoryRepository.saveAndFlush(mallProductCategory);
+        MallProductCategory mallProductCategory = new MallProductCategory();
+        mallProductCategory.setName("123");
+        mallProductCategory.setContentType(ContentType.MallProduct);
+        List<Long> brands = new ArrayList<>();
+        brands.add(1L);
+        brands.add(2L);
+        brands.add(3L);
+        mallProductCategory.setMallBrandId(brands);
+        mallProductCategoryRepository.saveAndFlush(mallProductCategory);
     }
 
 }

@@ -68,7 +68,7 @@
         <spring.version>4.2.5.RELEASE</spring.version>
         <luffy.version>2.1-SNAPSHOT</luffy.version>
         <thymeleaf.version>3.0.0.RELEASE</thymeleaf.version>
-        <huobanplus.version>1.5.1</huobanplus.version>
+        <huobanplus.version>1.5.4-SNAPSHOT</huobanplus.version>
         <slf4j.version>1.7.19</slf4j.version>
         <logging.version>1.2</logging.version>
         <io.version>2.4</io.version>
@@ -211,11 +211,11 @@
             <artifactId>jackson-dataformat-xml</artifactId>
             <version>${json-version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.huotu.huobanplus</groupId>
-            <artifactId>common-client</artifactId>
-            <version>1.5.3</version>
-        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>com.huotu.huobanplus</groupId>-->
+        <!--<artifactId>common-client</artifactId>-->
+        <!--<version>1.5.4-SNAPSHOT</version>-->
+        <!--</dependency>-->
     </dependencies>
 
     <repositories>

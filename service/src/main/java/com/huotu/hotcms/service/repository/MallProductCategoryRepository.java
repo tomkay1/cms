@@ -16,4 +16,6 @@ public interface MallProductCategoryRepository extends JpaRepository<MallProduct
     List<MallProductCategory> findBySite(Site site);
 
     List<MallProductCategory> findBySiteAndParent_Serial(Site site, String serial);
+
+    MallProductCategory findBySerial(String serial);
 }

@@ -15,17 +15,11 @@ import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.Template;
 import com.huotu.hotcms.service.entity.login.Login;
+import com.huotu.hotcms.service.entity.support.MallGoodsContent;
 import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.service.service.ContentService;
 import com.huotu.hotcms.service.service.TemplateService;
-import com.huotu.hotcms.widget.CMSContext;
-import com.huotu.hotcms.widget.Component;
-import com.huotu.hotcms.widget.ComponentProperties;
-import com.huotu.hotcms.widget.InstalledWidget;
-import com.huotu.hotcms.widget.Widget;
-import com.huotu.hotcms.widget.WidgetLocateService;
-import com.huotu.hotcms.widget.WidgetResolveService;
-import com.huotu.hotcms.widget.WidgetStyle;
+import com.huotu.hotcms.widget.*;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.PageElement;
@@ -342,7 +336,7 @@ public class FrontController implements FilterBehavioral {
      * 页面内容
      *
      * @param pagePath      pagePath
-     * @param contentSerial contentSerial
+     * @param contentSerial contentSerial 内容数据源，或者商城商品id 字符串 mallgood_XXXX
      * @param model         model
      * @return
      * @throws IOException           未找到数据
@@ -356,7 +350,7 @@ public class FrontController implements FilterBehavioral {
         //查找数据内容
         AbstractContent content = contentService.getContent(cmsContext.getSite(), contentSerial);
         model.addAttribute("abstractContent", content);
-        if (content != null) {
+        if (content != null && !(content instanceof MallGoodsContent)) {
             cmsContext.setAbstractContent(content);
             //查找当前站点下指定数据源pagePath下最接近的page
             return pageService.getClosestContentPage(content.getCategory(), pagePath);
@@ -378,7 +372,6 @@ public class FrontController implements FilterBehavioral {
             throw new IOException(e);
         }
         return FilterStatus.STOP;
-
     }
 
     @Override

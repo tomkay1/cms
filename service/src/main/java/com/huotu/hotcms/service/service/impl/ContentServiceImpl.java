@@ -11,31 +11,20 @@ package com.huotu.hotcms.service.service.impl;
 
 import com.huotu.hotcms.service.ResourcesOwner;
 import com.huotu.hotcms.service.common.ContentType;
-import com.huotu.hotcms.service.entity.AbstractContent;
-import com.huotu.hotcms.service.entity.Article;
-import com.huotu.hotcms.service.entity.Category;
-import com.huotu.hotcms.service.entity.Download;
-import com.huotu.hotcms.service.entity.Gallery;
-import com.huotu.hotcms.service.entity.Link;
-import com.huotu.hotcms.service.entity.Notice;
-import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.entity.Video;
-import com.huotu.hotcms.service.repository.ArticleRepository;
-import com.huotu.hotcms.service.repository.ContentRepository;
-import com.huotu.hotcms.service.repository.DownloadRepository;
-import com.huotu.hotcms.service.repository.GalleryRepository;
-import com.huotu.hotcms.service.repository.LinkRepository;
-import com.huotu.hotcms.service.repository.NoticeRepository;
-import com.huotu.hotcms.service.repository.VideoRepository;
+import com.huotu.hotcms.service.entity.*;
+import com.huotu.hotcms.service.entity.support.MallGoodsContent;
+import com.huotu.hotcms.service.repository.*;
 import com.huotu.hotcms.service.service.CommonService;
 import com.huotu.hotcms.service.service.ContentService;
 import com.huotu.hotcms.service.service.TemplateService;
+import com.huotu.huobanplus.sdk.common.repository.GoodsRestRepository;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.NumberUtils;
 
 import javax.persistence.criteria.Predicate;
 import java.io.IOException;
@@ -69,6 +58,9 @@ public class ContentServiceImpl implements ContentService {
     @Autowired
     private CommonService commonService;
 
+    @Autowired
+    private GoodsRestRepository goodsRestRepository;
+
     {
         HashMap<ContentType, Class<? extends AbstractContent>> typeClassHashMap = new HashMap<>();
         typeClassHashMap.put(ContentType.Article, Article.class);
@@ -93,9 +85,19 @@ public class ContentServiceImpl implements ContentService {
     }
 
     public AbstractContent getContent(Site site, String serial) {
-        return contentRepository.findOne((root, query, cb) -> {
-            return cb.and(cb.equal(root.get("category").get("site"), site), cb.equal(root.get("serial"), serial));
-        });
+        if (serial.startsWith("mallgood_")) {
+            MallGoodsContent mallGoodsContent = new MallGoodsContent();
+            String goodsId = serial.substring(serial.lastIndexOf("mallgood_"));
+            com.huotu.huobanplus.common.entity.Goods goods = null;
+            try {
+                goods = goodsRestRepository.getOneByPK(NumberUtils.parseNumber(goodsId, Long.class));
+            } catch (IOException e) {
+            }
+            mallGoodsContent.setMallGoods(goods);
+            return mallGoodsContent;
+        }
+        return contentRepository.findOne((root, query, cb) -> cb.and(cb.equal(root.get("category").get("site"), site)
+                , cb.equal(root.get("serial"), serial)));
     }
 
 

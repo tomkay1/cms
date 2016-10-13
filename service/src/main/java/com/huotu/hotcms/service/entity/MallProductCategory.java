@@ -1,14 +1,14 @@
 package com.huotu.hotcms.service.entity;
 
+import com.huotu.hotcms.service.entity.converter.MallProductCategoryAttrConverter;
+import com.huotu.hotcms.service.model.MallProductCategoryModel;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.util.NumberUtils;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -27,14 +27,15 @@ public class MallProductCategory extends ProductCategory {
      * 字符串格式：1,2,5,8……
      */
     @Column(name = "MallCategoryId")
-    private String mallCategoryId;
+    @Convert(converter = MallProductCategoryAttrConverter.class)
+    private List<Long> mallCategoryId;
 
     /**
      * 品牌id
-     * 字符串格式：1,2,5,8……
      */
     @Column(name = "MallBrandId")
-    private String mallBrandId;
+    @Convert(converter = MallProductCategoryAttrConverter.class)
+    private List<Long> mallBrandId;
 
     /**
      * 商品标题
@@ -80,39 +81,29 @@ public class MallProductCategory extends ProductCategory {
      */
     private String contentURI;
 
-    public List<Long> getMallCategoryId() {
-        return toList(this.mallCategoryId);
+    public MallProductCategoryModel toMallProductCategoryModel() {
+        MallProductCategoryModel mallProductCategoryModel = new MallProductCategoryModel();
+        mallProductCategoryModel.setMallBrandId(this.getMallBrandId());
+        mallProductCategoryModel.setMallCategoryId(this.getMallCategoryId());
+        mallProductCategoryModel.setName(this.getName());
+        mallProductCategoryModel.setSite(this.getSite());
+        mallProductCategoryModel.setGoodTitle(this.getGoodTitle());
+        mallProductCategoryModel.setMarkerTable(this.markerTable);
+        mallProductCategoryModel.setDisabled(this.disabled);
+        mallProductCategoryModel.setMaxPrice(this.maxPrice);
+        mallProductCategoryModel.setMinPrice(this.minPrice);
+        mallProductCategoryModel.setSalesCount(this.salesCount);
+        mallProductCategoryModel.setSerial(this.getSerial());
+        mallProductCategoryModel.setParent(this.getParent());
+        mallProductCategoryModel.setContentType(this.getContentType());
+        mallProductCategoryModel.setCreateTime(this.getCreateTime());
+        mallProductCategoryModel.setId(this.getId());
+        mallProductCategoryModel.setStock(this.stock);
+        mallProductCategoryModel.setOrderWeight(this.getOrderWeight());
+        mallProductCategoryModel.setContentURI(this.getContentURI());
+        return mallProductCategoryModel;
     }
 
-    public void setMallCategoryId(List<Long> mallCategoryId) {
-        if (null == mallCategoryId)
-            return;
-        this.mallCategoryId = Arrays.toString(mallCategoryId.toArray()).replace("[", "").replace("]", "");
-    }
 
-
-    public List<Long> getMallBrandId() {
-        return toList(this.mallBrandId);
-    }
-
-    public void setMallBrandId(List<Long> mallBrandId) {
-        if (null == mallBrandId)
-            return;
-        this.mallBrandId = Arrays.toString(mallBrandId.toArray()).replace("[", "").replace("]", "");
-    }
-
-
-    private List<Long> toList(String strs) {
-        if (strs == null || strs.equals(""))
-            return null;
-        else {
-            String[] array = strs.split(",");
-            List<Long> list = new ArrayList<>();
-            for (String str : array) {
-                list.add(NumberUtils.parseNumber(str, Long.class));
-            }
-            return list;
-        }
-    }
 
 }

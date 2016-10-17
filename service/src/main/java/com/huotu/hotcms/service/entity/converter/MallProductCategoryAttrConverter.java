@@ -15,7 +15,7 @@ import java.util.List;
 public class MallProductCategoryAttrConverter implements AttributeConverter<List<Long>, String> {
     @Override
     public String convertToDatabaseColumn(List<Long> longs) {
-        return Arrays.toString(longs.toArray()).replace("[", "").replace("]", "");
+        return longs == null ? null : Arrays.toString(longs.toArray()).replace("[", "").replace("]", "");
     }
 
     @Override

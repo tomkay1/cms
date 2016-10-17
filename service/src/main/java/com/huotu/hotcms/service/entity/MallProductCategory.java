@@ -5,10 +5,7 @@ import com.huotu.hotcms.service.model.MallProductCategoryModel;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -76,9 +73,12 @@ public class MallProductCategory extends ProductCategory {
     @Column(name = "markerTable")
     private Boolean markerTable;
 
+    @ManyToOne
+    private Gallery gallery;
     /**
      * 冗余字段，数据源对应的contentURI
      */
+    @Transient
     private String contentURI;
 
     public MallProductCategoryModel toMallProductCategoryModel() {

@@ -1,5 +1,6 @@
 package com.huotu.hotcms.service.model;
 
+import com.huotu.hotcms.service.entity.GalleryItem;
 import com.huotu.hotcms.service.entity.MallProductCategory;
 import com.huotu.huobanplus.common.entity.Goods;
 import lombok.Getter;
@@ -16,5 +17,6 @@ import java.util.List;
 public class MallProductCategoryModel extends MallProductCategory {
     private Page<Goods> mallGoodsPage;
     private List<Goods> mallGoodsList;
+    private List<GalleryItem> galleryItems;
 
 }

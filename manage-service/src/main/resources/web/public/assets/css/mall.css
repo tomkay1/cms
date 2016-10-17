@@ -329,3 +329,142 @@ ul {
 .product-lists .product-lists-right .tab .tab-selected .tab-content {
   display: block;
 }
+.mall-footer {
+  width: 1210px;
+  margin: 0 auto;
+}
+.mall-footer dl {
+  float: left;
+  min-width: 180px;
+}
+.mall-footer dt {
+  padding: 6px 0;
+  font: 400 16px/24px "microsoft yahei";
+}
+.mall-footer dd {
+  line-height: 20px;
+}
+.mall-company {
+  width: 1210px;
+  margin: 0 auto;
+  border-top: 1px solid #E5E5E5;
+  padding: 20px 0 30px;
+  text-align: center;
+}
+.mall-company .links a {
+  margin: 0 10px;
+}
+.mall-shortcut {
+  width: 100%;
+  height: 30px;
+  background: #F1F1F1;
+}
+.mall-shortcut .w {
+  width: 1210px;
+  margin: 0 auto;
+}
+.mall-shortcut .fl {
+  float: left;
+}
+.mall-shortcut .fr {
+  float: right;
+}
+.mall-shortcut .dorpdown {
+  position: relative;
+}
+.mall-shortcut li {
+  float: left;
+  height: 30px;
+  padding: 0 2px;
+  line-height: 30px;
+}
+.mall-shortcut .text-wrap {
+  position: relative;
+  padding: 0 25px 0 10px;
+  cursor: default;
+  zoom: 1;
+}
+.mall-shortcut .text-wrap:hover {
+  background: #fff;
+}
+.mall-shortcut .text-wrap .ci-right {
+  top: 12px;
+  right: 8px;
+  height: 7px;
+  overflow: hidden;
+  font: 400 15px/15px consolas;
+  color: #6A6A6A;
+  transition: transform 0.1s ease-in 0s;
+  -webkit-transition: -webkit-transform 0.1s ease-in 0s;
+}
+.mall-shortcut .text-wrap .ci-right s {
+  position: relative;
+  top: -7px;
+  text-decoration: none;
+}
+.mall-shortcut .content-list {
+  padding: 10px 0 10px 10px;
+  width: 301px;
+  position: absolute;
+  top: 30px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-top: none;
+  line-height: 24px;
+}
+.mall-shortcut .content-list .item {
+  float: left;
+  width: 60px;
+  padding: 2px 0;
+}
+.mall-shortcut .content-list .item a {
+  float: left;
+  padding: 0 8px;
+}
+.mall-shortcut .content-list a.selected {
+  background: #C81623;
+  color: #fff;
+}
+.mall-shortcut .style-red {
+  color: #C81623;
+}
+.mall-shortcut .dt {
+  float: left;
+  padding: 0 8px;
+}
+.mall-brands {
+  width: 1210px;
+  margin: 0 auto;
+  background: #f7f7f7;
+  padding: 13px 0;
+  margin-top: 10px;
+}
+.mall-brands .brands-list {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+.mall-brands .fore {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  text-align: center;
+  border-left: 1px solid #ccc;
+}
+.mall-brands .fore:first-of-type {
+  border-left: none;
+}
+.mall-brands .fore a {
+  display: block;
+  width: 100px;
+  height: 40px;
+  margin: 0 auto;
+}
+.mall-brands .fore img {
+  width: 100px;
+  height: 40px;
+}

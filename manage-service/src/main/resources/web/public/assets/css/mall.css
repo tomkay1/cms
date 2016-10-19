@@ -637,6 +637,40 @@ ul {
 .mall-toolbar .settleup a:hover {
   color: #c81623;
 }
+.mall-toolbar .settleup .dorpdown-layer {
+  display: none;
+  position: absolute;
+  top: 34px;
+}
+.mall-toolbar .settleup .prompt {
+  padding: 10px 15px;
+}
+.mall-toolbar .settleup .nogoods {
+  padding-left: 30px;
+  height: 49px;
+  line-height: 49px;
+  overflow: hidden;
+  color: #999;
+}
+.mall-toolbar .settleup:hover .cw-icon {
+  background-color: #fff;
+  border: 1px solid #ddd;
+}
+.mall-toolbar .settleup:hover .dorpdown-layer {
+  display: block;
+  right: 0;
+  width: 308px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+}
+.mall-toolbar .settleup:hover .spacer {
+  background: #fff;
+  height: 12px;
+  position: absolute;
+  right: 0;
+  top: -7px;
+  width: 139px;
+}
 .mall-toolbar .hotwords {
   float: left;
   width: 518px;

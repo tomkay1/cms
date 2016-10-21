@@ -5,7 +5,7 @@
     var HTML = [
         // '<div class="addTreeList row">',
         '<div class="form-inline col-xs-12 mb10">',
-        '<div class="pull-left dropdown js-get-UrlSource">',
+        '<div class="mb10 pull-left dropdown js-get-UrlSource">',
         '<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">链接来源 <span class="caret"></span></button>',
         '<ul class="dropdown-menu" aria-labelledby="dropdownMenu">',
         '<li><a href="javascript:void(0);" data-value="custom">自定义</a></li>',
@@ -18,10 +18,12 @@
         '<li><a href="javascript:void(0);" data-value="6">页面</a></li>',
         '</ul>',
         '</div>',
-        '<input class="form-control tree-name" type="text" name="text" placeholder="名称">',
-        '<input class="form-control tree-url" type="url" name="url" placeholder="链接">',
-        '<input class="form-control tree-flag" type="hidden" name="flag" placeholder="来源">',
-        '<input class="form-control pull-right btn btn-success js-save-node" type="button" value="保存">',
+        '<input class="form-control mb10 tree-name" type="text" name="text" placeholder="名称">',
+        '<input class="form-control mb10 tree-url" type="url" name="url" placeholder="链接">',
+        '<input class="form-control mb10 tree-flag" type="hidden" name="flag" placeholder="来源">',
+        '<input class="form-control mb10 tree-visibleName" type="text" name="text" placeholder="visibleName">',
+        '<input class="form-control mb10 tree-visible" type="text" name="text" placeholder="visible">',
+        '<input class="form-control mb10 pull-right btn btn-success js-save-node" type="button" value="保存">',
         '</div>',
         '<div class="col-xs-12">',
         '<div class="btn-group btn-group-sm clearfix" role="group">',
@@ -40,6 +42,7 @@
     $.fn.addTreeView = function (options) {
         var s = $.extend({
             debug: false,
+            visible: true,
             level: -1,
             treeNodes: []
         }, options);
@@ -55,6 +58,10 @@
 
         var $DOM = $('#'+id);
 
+        if(!s.visible) {
+            self.find('.tree-visibleName').detach();
+            self.find('.tree-visible').detach();
+        }
         $('.js-get-UrlSource', this).find('button')
             .attr('id', 'dropdownMenu-' + NUM)
             .end()
@@ -70,6 +77,7 @@
             selectNode.name = $('.tree-name').val();
             selectNode.linkPath = $('.tree-url').val();
             selectNode.flag = parseInt($('.tree-flag').val()) || 0;
+            selectNode.visible = $('.tree-visible').val();
             treeObj.updateNode(selectNode);
         });
 
@@ -156,15 +164,23 @@
         } else {
             inputUrl.removeAttr('readonly');
         }
+        $('.tree-visibleName').val(obj.visibleName);
+        $('.tree-visible').val(obj.visible);
     }
 
     function clearInput(element) {
         var inputName = element.siblings('.tree-name');
         var inputUrl = element.siblings('.tree-url');
         var inputFlag = element.siblings('.tree-Flag');
+        var inputVisibleName = element.siblings('.tree-visibleName');
+        var inputVisible = element.siblings('.tree-visible');
+
         inputName.val('');
         inputUrl.val('');
         inputFlag.val(0);
+        inputVisibleName.val('');
+        inputVisible.val('');
+
         if (inputUrl.attr('readonly')) {
             inputUrl.removeAttr('readonly');
         }
@@ -182,7 +198,15 @@
         addRoot: function () {
             var treeObj = $.fn.zTree.getZTreeObj(this.treeId);
             var newId = treeObj.getNodes().length + 1;
-            treeObj.addNodes(null, { id:newId, pId:0, name:"新节点" + newId, linkPath:'/', flag: 0 } );
+            treeObj.addNodes(null, {
+                id:newId, pId:0,
+                name:"新节点" + newId,
+                linkPath:'/',
+                flag: 0,
+                visibleName: '',
+                visible: '',
+                visibleValue: ''
+            });
         },
         addSibling: function () {
             var num = '';
@@ -194,11 +218,29 @@
                 var parentNode = selectNode[0].getParentNode();
                 if (!parentNode) {
                     num = treeObj.getNodes().length + 1;
-                    treeObj.addNodes(parentNode, {id: num, pId: 0, name: "新节点" + num, linkPath:'/', flag: 0});
+                    treeObj.addNodes(parentNode, {
+                        id: num,
+                        pId: 0,
+                        name: "新节点" + num,
+                        linkPath:'/',
+                        flag: 0,
+                        visibleName: '',
+                        visible: '',
+                        visibleValue: ''
+                    });
                 } else {
                     var length = parentNode.children.length;
                     num = selectNode[0].id + length;
-                    treeObj.addNodes(parentNode, { id: num,  pId: selectNode[0].pid, name:"新节点" + num, linkPath:'/', flag: 0});
+                    treeObj.addNodes(parentNode, {
+                        id: num,
+                        pId: selectNode[0].pid,
+                        name:"新节点" + num,
+                        linkPath:'/',
+                        flag: 0,
+                        visibleName: '',
+                        visible: '',
+                        visibleValue: ''
+                    });
                 }
 
             }
@@ -217,7 +259,16 @@
 
                 var id = selectNode[0].id * 10 + num;
 
-                treeObj.addNodes(selectNode[0], { id: id,  pId: selectNode[0].id, name:"新节点" + id, linkPath:'/', flag: 0});
+                treeObj.addNodes(selectNode[0], {
+                    id: id,
+                    pId: selectNode[0].id,
+                    name:"新节点" + id,
+                    linkPath:'/',
+                    flag: 0,
+                    visibleName: '',
+                    visible: '',
+                    visibleValue: ''
+                });
 
             }
         },
@@ -240,8 +291,7 @@
             var treeObj = $.fn.zTree.getZTreeObj(this.treeId);
             //var nodes = treeObj.transformToArray(treeObj.getNodes());
             // return this.getJSON(nodes);
-            var nodes = treeObj.getNodes();
-            return nodes;
+            return treeObj.getNodes();
         },
         getJSON: function (nodes) {
             var node = [];

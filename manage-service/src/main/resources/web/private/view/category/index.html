@@ -14,6 +14,10 @@
 <!--/*@thymesVar id="quick" type="boolean"*/-->
 <!--/*@thymesVar id="site" type="com.huotu.hotcms.service.entity.Site"*/-->
 <!--/*@thymesVar id="fixedType" type="com.huotu.hotcms.service.common.ContentType"*/-->
+<!--/*@thymesVar id="categoryList" type="java.util.List<com.huotu.huobanplus.common.entity.Category>"*/-->
+<!--/*@thymesVar id="brandList" type="java.util.List<com.huotu.huobanplus.common.entity.Brand>"*/-->
+<!--/*@thymesVar id="galleries" type="java.util.List<com.huotu.hotcms.service.entity.Gallery>"*/-->
+
 <head>
     <meta charset="UTF-8">
     <link href="http://resali.huobanplus.com/cdn/bracket/css/style.default.css" rel="stylesheet">
@@ -55,11 +59,16 @@
                                 <!--suppress ThymeleafVariablesResolveInspection -->
                                 <option value="0"
                                         th:each="pageType:${T(com.huotu.hotcms.service.common.ContentType).values()}"
-                                        th:if="${fixedType==null or fixedType==pageType}"
+                                        th:if="${(fixedType==null or fixedType==pageType)
+                                         and pageType.getCode()!=7
+                                         and (site.owner.customerId==null and (pageType.code!=8 and pageType.code!=9))
+                                         }"
                                         th:value="${pageType.getCode()}"
                                         th:text="${pageType.getValue().toString()}">文章
                                 </option>
-                                <option th:remove="all">视频</option>
+                                <option th:remove="all" value="2">视频</option>
+                                <option th:remove="all" value="8">伙伴商城产品</option>
+                                <option th:remove="all" value="9">伙伴商城产品类目</option>
                             </select>
                             <span class="help-block">描述这个数据源的特性,不同特性的数据源可以录入不同的内容</span>
                         </div>
@@ -73,6 +82,90 @@
                                     新闻咨询
                                 </option>
                                 <option th:remove="all">成功案例</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!--伙伴商城产品-->
+                    <div class="form-group mallProductCategory">
+                        <label class="col-sm-2 control-label">相关类目</label>
+                        <div class="col-sm-10">
+                            <select class="chosen-select" multiple data-placeholder="选择相关类目" title="相关类目">
+                                <option value=""></option>
+                                <option value="10" th:each="category:${categoryList}" th:value="${category.id}"
+                                        th:text="${category.title}">养生
+                                </option>
+                                <option th:remove="all" value="11">玩具</option>
+                                <option th:remove="all" value="12">服装</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group mallProductCategory">
+                        <label class="col-sm-2 control-label">相关品牌</label>
+                        <div class="col-sm-10">
+                            <select class="chosen-select" multiple data-placeholder="选择相关品牌" title="相关品牌">
+                                <option value=""></option>
+                                <option value="10" th:each="brand:${brandList}" th:value="${brand.id}"
+                                        th:text="${brand.brandName}">微软
+                                </option>
+                                <option th:remove="all" value="11">苹果</option>
+                                <option th:remove="all" value="12">谷歌</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group mallProductCategory">
+                        <label class="col-sm-2 control-label">限制标题</label>
+                        <div class="col-sm-4">
+                            <input name="goodTitle" title="标题" type="text" placeholder="保持空白表示并不以此选择"
+                                   class="form-control"/>
+                        </div>
+                        <label class="col-sm-2 control-label">最低价格</label>
+                        <div class="col-sm-4">
+                            <input name="minPrice" title="最低价格" type="number" placeholder="保持空白表示并不以此选择"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group mallProductCategory">
+                        <label class="col-sm-2 control-label">最低销量</label>
+                        <div class="col-sm-4">
+                            <input name="salesCount" title="最低销量" type="number" placeholder="保持空白表示并不以此选择"
+                                   class="form-control"/>
+                        </div>
+                        <label class="col-sm-2 control-label">最高价格</label>
+                        <div class="col-sm-4">
+                            <input name="maxPrice" title="最高价格" type="number" placeholder="保持空白表示并不以此选择"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group mallProductCategory">
+                        <label class="col-sm-2 control-label">介绍图片</label>
+                        <div class="col-sm-10">
+                            <select class="chosen-select" data-placeholder="选择一个图库作为介绍图片" title="介绍图片">
+                                <option value="United States">United States</option>
+                                <option value="United Kingdom">United Kingdom</option>
+                                <option value="Afghanistan">Afghanistan</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!--伙伴商城产品归类-->
+                    <div class="form-group mallClassCategory">
+                        <label class="col-sm-2 control-label">相关产品数据源</label>
+                        <div class="col-sm-10">
+                            <select class="chosen-select" multiple data-placeholder="Choose a Country...">
+                                <option value=""></option>
+                                <option value="United States">United States</option>
+                                <option value="United Kingdom">United Kingdom</option>
+                                <option value="Afghanistan">Afghanistan</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group mallClassCategory">
+                        <label class="col-sm-2 control-label">推荐链接数据源</label>
+                        <div class="col-sm-10">
+                            <select class="chosen-select" data-placeholder="Choose a Country...">
+                                <option value=""></option>
+                                <option value="United States">United States</option>
+                                <option value="United Kingdom">United Kingdom</option>
+                                <option value="Afghanistan">Afghanistan</option>
                             </select>
                         </div>
                     </div>
@@ -180,6 +273,7 @@
 <script src="http://resali.huobanplus.com/cdn/bracket/js/toggles.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery.cookies.js"></script>
 
+<script src="http://resali.huobanplus.com/cdn/bracket/js/chosen.jquery.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/datatables/1.10.12/datatables.min.js"></script>
 <div ewp:replace="fragments/frame.html::#messageSection"></div>
 <script src="../../../public/bracket/js/frame.js" ewp:src="/bracket/js/frame.js"></script>

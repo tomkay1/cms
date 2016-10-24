@@ -11,9 +11,23 @@ package com.huotu.hotcms.service.service.impl;
 
 import com.huotu.hotcms.service.ResourcesOwner;
 import com.huotu.hotcms.service.common.ContentType;
-import com.huotu.hotcms.service.entity.*;
+import com.huotu.hotcms.service.entity.AbstractContent;
+import com.huotu.hotcms.service.entity.Article;
+import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.Download;
+import com.huotu.hotcms.service.entity.Gallery;
+import com.huotu.hotcms.service.entity.Link;
+import com.huotu.hotcms.service.entity.Notice;
+import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.entity.Video;
 import com.huotu.hotcms.service.entity.support.MallGoodsContent;
-import com.huotu.hotcms.service.repository.*;
+import com.huotu.hotcms.service.repository.ArticleRepository;
+import com.huotu.hotcms.service.repository.ContentRepository;
+import com.huotu.hotcms.service.repository.DownloadRepository;
+import com.huotu.hotcms.service.repository.GalleryRepository;
+import com.huotu.hotcms.service.repository.LinkRepository;
+import com.huotu.hotcms.service.repository.NoticeRepository;
+import com.huotu.hotcms.service.repository.VideoRepository;
 import com.huotu.hotcms.service.service.CommonService;
 import com.huotu.hotcms.service.service.ContentService;
 import com.huotu.hotcms.service.service.TemplateService;
@@ -129,6 +143,22 @@ public class ContentServiceImpl implements ContentService {
         if (pageable == null)
             return contentRepository.findAll(specification);
         return contentRepository.findAll(specification, pageable);
+    }
+
+    @Override
+    public Iterable<AbstractContent> listBySite(Site site, ContentType contentType, Pageable pageable) {
+        Specification<AbstractContent> specification = specificationBySiteAndContentType(site, contentType);
+
+        if (pageable == null)
+            return contentRepository.findAll(specification);
+        return contentRepository.findAll(specification, pageable);
+    }
+
+    @NotNull
+    private Specification<AbstractContent> specificationBySiteAndContentType(Site site, ContentType contentType) {
+        return (root, query, cb) -> cb.and(
+                cb.equal(root.get("category").get("site"), site)
+                , cb.equal(root.get("category").get("contentType"), contentType));
     }
 
     @NotNull

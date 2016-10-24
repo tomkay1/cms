@@ -9,12 +9,15 @@
 
 package com.huotu.hotcms.service.service.impl;
 
+import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Gallery;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.PageableForeachParam;
 import com.huotu.hotcms.service.repository.GalleryRepository;
 import com.huotu.hotcms.service.service.CategoryService;
+import com.huotu.hotcms.service.service.ContentService;
 import com.huotu.hotcms.service.service.GalleryService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -30,10 +33,8 @@ import javax.persistence.criteria.Predicate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
-/**
- * Created by chendeyu on 2016/1/10.
- */
 @Service
 public class GalleryServiceImpl implements GalleryService {
 
@@ -45,6 +46,16 @@ public class GalleryServiceImpl implements GalleryService {
 
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private ContentService contentService;
+
+    @Override
+    public List<Gallery> listGalleries(Site site) {
+        return StreamSupport.stream(contentService.listBySite(site, ContentType.Gallery, null).spliterator(), false)
+                .filter(abstractContent -> abstractContent instanceof Gallery)
+                .map(abstractContent -> (Gallery) abstractContent)
+                .collect(Collectors.toList());
+    }
 
     @Override
     public Boolean saveGallery(Gallery gallery) {

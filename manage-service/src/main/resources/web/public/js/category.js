@@ -19,4 +19,30 @@ $(function () {
             }
         });
     });
+
+    var contentTypeSelect = $('select[name=contentType]');
+
+    var changed = function () {
+        var contentTypeVal = contentTypeSelect.val();
+        // console.log(contentTypeSelect, contentTypeVal);
+        // 8 9
+        // 其他的话 都清空掉 如果是8 9 则展示之
+        var group = contentTypeSelect.closest('.form-group');
+        var panel = group.closest('div[class!=form-group]');
+        // 检查下目前的情况
+        // 我们把额外标记都放在第一个group里面
+        if (contentTypeVal == '8') {
+            $('.mallClassCategory', panel).hide();
+            $('.mallProductCategory', panel).show();
+        } else if (contentTypeVal == '9') {
+            $('.mallClassCategory', panel).show();
+            $('.mallProductCategory', panel).hide();
+        } else {
+            $('.mallClassCategory', panel).hide();
+            $('.mallProductCategory', panel).hide();
+        }
+    };
+
+    contentTypeSelect.change(changed);
+    changed();
 });

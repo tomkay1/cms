@@ -70,7 +70,7 @@ var editFunc = {
         });
     },
     settingElement: function () {
-        $('.pageHTML').on("click", ".setting", function () {
+        $('.pageHTML').on("click", ".box .setting", function () {
             $('.mask-backdrop').show();
             var ele = $('#configuration');
             ele.show();

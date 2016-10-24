@@ -531,8 +531,22 @@ ul {
     background-color: rgba(0, 0, 0, 0.2);
     background-size: 50%;
 }
+.search-bar .logo {
+    padding: 20px 0;
+    width: 362px;
+    height: 60px;
+    float: left;
+    z-index: 12;
+}
+.search-bar .logo a {
+    display: block;
+    width: 270px;
+    height: 60px;
+}
+.search-bar .search-tool {
+    float: left;
+}
 .search-bar .search {
-    overflow: hidden;
     margin-top: 25px;
 }
 .search-bar .search .form {

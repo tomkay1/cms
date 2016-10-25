@@ -9,21 +9,12 @@
 
 package com.huotu.hotcms.widget.resolve;
 
-import com.huotu.hotcms.widget.CMSContext;
-import com.huotu.hotcms.widget.Component;
-import com.huotu.hotcms.widget.ComponentProperties;
-import com.huotu.hotcms.widget.PreProcessWidget;
-import com.huotu.hotcms.widget.Widget;
-import com.huotu.hotcms.widget.WidgetStyle;
+import com.huotu.hotcms.widget.*;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.servlet.support.RequestContext;
 import org.springframework.web.servlet.view.AbstractTemplateView;
-import org.thymeleaf.context.Context;
-import org.thymeleaf.context.IContext;
-import org.thymeleaf.context.IEngineContext;
-import org.thymeleaf.context.WebContext;
-import org.thymeleaf.context.WebEngineContext;
+import org.thymeleaf.context.*;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.expression.ThymeleafEvaluationContext;
 import org.thymeleaf.spring4.naming.SpringContextVariableNames;
@@ -102,7 +93,7 @@ public class WidgetContext extends WebEngineContext {
         // "thymeleaf::EvaluationContext" ->
         // "springMacroRequestContext" ->
         // "springRequestContext" ->
-//        variables.
+        //  variables.
         context.widgetContextVariables(variables);
         RequestContext context1 = context.getRequestContext();
         variables.put(SpringContextVariableNames.SPRING_REQUEST_CONTEXT, context1);

@@ -31,11 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.NumberUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletContext;
@@ -97,9 +93,9 @@ public abstract class SiteManageController<T, ID extends Serializable, PD, MD> e
         model.addAttribute("quick", isQuickMode(request));
         Site site = checkSite(login, request);
         model.addAttribute("site", site);
-
         return prepareIndex(login, request, site, model, attributes);
     }
+
 
     @NotNull
     private Site checkSite(Login login, HttpServletRequest request) {

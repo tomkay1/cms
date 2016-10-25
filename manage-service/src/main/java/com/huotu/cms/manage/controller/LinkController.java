@@ -45,6 +45,7 @@ public class LinkController extends ContentManageController<Link, ContentExtra> 
 
     @Override
     protected String indexViewName() {
+
         return "/view/contents/link.html";
     }
 

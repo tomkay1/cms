@@ -54,6 +54,12 @@ public class WidgetTestConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private ThymeleafViewResolver javascriptThymeleafViewResolver;
 
+//    @Bean
+//    @Primary
+//    public CategoryRestRepository categoryRestRepository(){
+//        return null;
+//    }
+
     @Bean
     public CMSDataSourceController cmsDataSourceController() {
         return new CMSDataSourceController();

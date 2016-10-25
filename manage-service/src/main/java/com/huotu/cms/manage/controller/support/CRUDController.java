@@ -220,6 +220,7 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
             // 这里可不能返回root 不是就死循环了,  应该返回
             throw new RedirectException("/manage", ex);
         }
+
 //        if (searchText != null) {
 //            String toSearch = "%" + searchText + "%";
 //

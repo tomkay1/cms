@@ -55,6 +55,8 @@ public class CategoryController extends SiteManageController<Category, Long, Lon
     private GalleryService galleryService;
     @Autowired
     private ContentTypeConverter contentTypeConverter;
+//    @Autowired
+//    private MallProductCategoryRepository mallProductCategoryRepository;
 
     @Override
     protected String resourceName(Locale locale) {
@@ -75,6 +77,8 @@ public class CategoryController extends SiteManageController<Category, Long, Lon
                 model.addAttribute("categoryList", mallService.listCategories(site.getOwner().getCustomerId()));
                 model.addAttribute("brandList", mallService.listBrands(site.getOwner().getCustomerId()));
                 model.addAttribute("galleries", galleryService.listGalleries(site));
+                model.addAttribute("mallProducts", categoryService.getCategoriesForContentType(site, ContentType.MallProduct));
+                model.addAttribute("links", categoryService.getCategoriesForContentType(site, ContentType.Link));
             }
         } catch (IOException ex) {
             throw new RedirectException(rootUri(), ex);

@@ -71,4 +71,33 @@ public class CategoryPage extends AbstractCRUDPage<Category> {
         };
     }
 
+    public void assertMallDisabled() {
+        // 一般页面都应该没有 mallProductCategory mallClassCategory
+        // 也无法选择 8 9
+        assertThat(webDriver.findElements(By.className("mallProductCategory")))
+                .isEmpty();
+        assertThat(webDriver.findElements(By.className("mallClassCategory")))
+                .isEmpty();
+
+        openPanelBody();
+        assertThat(webDriver.findElement(By.name("contentType")).findElements(By.tagName("option"))
+                .stream()
+                .filter(webElement -> webElement.getText().contains("伙伴商城"))
+                .count())
+                .isEqualTo(0);
+    }
+
+    public void assertMallEnable() {
+        assertThat(webDriver.findElements(By.className("mallProductCategory")))
+                .isNotEmpty();
+        assertThat(webDriver.findElements(By.className("mallClassCategory")))
+                .isNotEmpty();
+
+        openPanelBody();
+        assertThat(webDriver.findElement(By.name("contentType")).findElements(By.tagName("option"))
+                .stream()
+                .filter(webElement -> webElement.getText().contains("伙伴商城"))
+                .count())
+                .isGreaterThan(0);
+    }
 }

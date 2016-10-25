@@ -17,7 +17,8 @@
 <!--/*@thymesVar id="categoryList" type="java.util.List<com.huotu.huobanplus.common.entity.Category>"*/-->
 <!--/*@thymesVar id="brandList" type="java.util.List<com.huotu.huobanplus.common.entity.Brand>"*/-->
 <!--/*@thymesVar id="galleries" type="java.util.List<com.huotu.hotcms.service.entity.Gallery>"*/-->
-
+<!--/*@thymesVar id="mallProducts" type="java.lang.Iterable<com.huotu.hotcms.service.entity.Category>"*/-->
+<!--/*@thymesVar id="links" type="java.lang.Iterable<com.huotu.hotcms.service.entity.Category>"*/-->
 <head>
     <meta charset="UTF-8">
     <link href="http://resali.huobanplus.com/cdn/bracket/css/style.default.css" rel="stylesheet">
@@ -86,7 +87,7 @@
                         </div>
                     </div>
                     <!--伙伴商城产品-->
-                    <div class="form-group mallProductCategory">
+                    <div class="form-group mallProductCategory" th:if="${categoryList!=null}">
                         <label class="col-sm-2 control-label">相关类目</label>
                         <div class="col-sm-10">
                             <select class="chosen-select" multiple data-placeholder="选择相关类目" title="相关类目">
@@ -99,7 +100,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group mallProductCategory">
+                    <div class="form-group mallProductCategory" th:if="${brandList!=null}">
                         <label class="col-sm-2 control-label">相关品牌</label>
                         <div class="col-sm-10">
                             <select class="chosen-select" multiple data-placeholder="选择相关品牌" title="相关品牌">
@@ -112,7 +113,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group mallProductCategory">
+                    <div class="form-group mallProductCategory" th:if="${brandList!=null}">
                         <label class="col-sm-2 control-label">限制标题</label>
                         <div class="col-sm-4">
                             <input name="goodTitle" title="标题" type="text" placeholder="保持空白表示并不以此选择"
@@ -124,7 +125,7 @@
                                    class="form-control"/>
                         </div>
                     </div>
-                    <div class="form-group mallProductCategory">
+                    <div class="form-group mallProductCategory" th:if="${brandList!=null}">
                         <label class="col-sm-2 control-label">最低销量</label>
                         <div class="col-sm-4">
                             <input name="salesCount" title="最低销量" type="number" placeholder="保持空白表示并不以此选择"
@@ -136,36 +137,44 @@
                                    class="form-control"/>
                         </div>
                     </div>
-                    <div class="form-group mallProductCategory">
+                    <div class="form-group mallProductCategory" th:if="${galleries!=null}">
                         <label class="col-sm-2 control-label">介绍图片</label>
                         <div class="col-sm-10">
                             <select class="chosen-select" data-placeholder="选择一个图库作为介绍图片" title="介绍图片">
-                                <option value="United States">United States</option>
-                                <option value="United Kingdom">United Kingdom</option>
-                                <option value="Afghanistan">Afghanistan</option>
+                                <option value=""></option>
+                                <option value="1" th:each="gallery:${galleries}" th:value="${gallery.id}"
+                                        th:text="${gallery.title}">图库1
+                                </option>
+                                <option th:remove="all" value="2">图库2</option>
                             </select>
                         </div>
                     </div>
                     <!--伙伴商城产品归类-->
-                    <div class="form-group mallClassCategory">
+                    <div class="form-group mallClassCategory" th:if="${mallProducts!=null}">
                         <label class="col-sm-2 control-label">相关产品数据源</label>
                         <div class="col-sm-10">
-                            <select class="chosen-select" multiple data-placeholder="Choose a Country...">
+                            <select class="chosen-select" multiple data-placeholder="选择相关产品数据源"
+                                    title="相关产品数据源">
                                 <option value=""></option>
-                                <option value="United States">United States</option>
-                                <option value="United Kingdom">United Kingdom</option>
-                                <option value="Afghanistan">Afghanistan</option>
+                                <option value="1" th:each="mallProduct:${mallProducts}" th:value="${mallProduct.id}"
+                                        th:text="${mallProduct.title}">
+                                    服装
+                                </option>
+                                <option th:remove="all" value="2">零食</option>
+                                <option th:remove="all" value="3">娃娃</option>
                             </select>
                         </div>
                     </div>
-                    <div class="form-group mallClassCategory">
+                    <div class="form-group mallClassCategory" th:if="${links!=null}">
                         <label class="col-sm-2 control-label">推荐链接数据源</label>
                         <div class="col-sm-10">
-                            <select class="chosen-select" data-placeholder="Choose a Country...">
+                            <select class="chosen-select" data-placeholder="选择推荐链接数据源" title="推荐链接数据源">
                                 <option value=""></option>
-                                <option value="United States">United States</option>
-                                <option value="United Kingdom">United Kingdom</option>
-                                <option value="Afghanistan">Afghanistan</option>
+                                <option value="1" th:each="link:${links}" th:value="${link.id}" th:text="${link.title}">
+                                    链接1
+                                </option>
+                                <option th:remove="all" value="2">链接2</option>
+                                <option th:remove="all" value="3">链接3</option>
                             </select>
                         </div>
                     </div>

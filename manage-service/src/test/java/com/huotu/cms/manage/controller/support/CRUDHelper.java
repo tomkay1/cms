@@ -89,6 +89,8 @@ public class CRUDHelper {
                 assertThat(((Auditable) entity).getCreateTime())
                         .isNotNull();
             }
+            assertThat(entity.getClass())
+                    .isEqualTo(randomValue.getClass());
             testInstance.assertCreation(entity, randomValue);
 
             if (testInstance.open() || testInstance.modify()) {

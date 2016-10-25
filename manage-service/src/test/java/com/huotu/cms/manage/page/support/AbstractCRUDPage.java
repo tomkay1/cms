@@ -69,12 +69,7 @@ public abstract class AbstractCRUDPage<T> extends AbstractContentPage {
     private <X extends AbstractCRUDPage<T>> X doFormAndSubmit(T value, BiConsumer<AbstractCRUDPage<T>, T> otherDataSubmitter, Runnable runnable) {
         beforeDriver();
 
-        // 先打开这个添加区域
-        WebElement panel = getForm().findElement(By.className("panel-default"));
-        WebElement body = panel.findElement(By.className("panel-body"));
-        if (!body.isDisplayed()) {
-            panel.findElement(By.cssSelector("a.maximize")).click();
-        }
+        openPanelBody();
 
         runnable.run();
         if (otherDataSubmitter != null) {
@@ -82,6 +77,17 @@ public abstract class AbstractCRUDPage<T> extends AbstractContentPage {
         }
         getForm().findElement(By.className("btn-primary")).click();
         return (X) initPage(getClass());
+    }
+
+    /**
+     * 先打开这个添加区域
+     */
+    protected void openPanelBody() {
+        WebElement panel = getForm().findElement(By.className("panel-default"));
+        WebElement body = panel.findElement(By.className("panel-body"));
+        if (!body.isDisplayed()) {
+            panel.findElement(By.cssSelector("a.maximize")).click();
+        }
     }
 
     /**

@@ -61,6 +61,16 @@ public interface ContentService {
     @Transactional(readOnly = true)
     Iterable<AbstractContent> listBySite(Site site, Pageable pageable);
 
+    /**
+     * 查找所有符合要求的内容
+     *
+     * @param site     所属站点,必选
+     * @param pageable 是否要分页搜索可选
+     * @return 结果循环
+     */
+    @Transactional(readOnly = true)
+    Iterable<AbstractContent> listBySite(Site site, ContentType contentType, Pageable pageable);
+
 //    @Transactional(readOnly = true)
 //    long countBySite(Site site);
 

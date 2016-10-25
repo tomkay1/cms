@@ -19,6 +19,8 @@ import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.service.CategoryService;
+import com.huotu.hotcms.service.service.GalleryService;
+import com.huotu.hotcms.service.service.MallService;
 import com.huotu.hotcms.service.service.RouteService;
 import com.huotu.hotcms.service.service.SiteService;
 import org.apache.commons.logging.Log;
@@ -31,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.Locale;
 
 @Controller
@@ -47,6 +50,10 @@ public class CategoryController extends SiteManageController<Category, Long, Lon
     @Autowired
     RouteService routeService;
     @Autowired
+    private MallService mallService;
+    @Autowired
+    private GalleryService galleryService;
+    @Autowired
     private ContentTypeConverter contentTypeConverter;
 
     @Override
@@ -55,8 +62,30 @@ public class CategoryController extends SiteManageController<Category, Long, Lon
     }
 
     @Override
+    protected void prepareOpen(Login login, HttpServletRequest request, Category data, Model model
+            , RedirectAttributes attributes) throws RedirectException {
+        mallData(data.getSite(), model);
+        super.prepareOpen(login, request, data, model, attributes);
+    }
+
+    private void mallData(Site site, Model model) throws RedirectException {
+
+        try {
+            if (site.getOwner().getCustomerId() != null) {
+                model.addAttribute("categoryList", mallService.listCategories(site.getOwner().getCustomerId()));
+                model.addAttribute("brandList", mallService.listBrands(site.getOwner().getCustomerId()));
+                model.addAttribute("galleries", galleryService.listGalleries(site));
+            }
+        } catch (IOException ex) {
+            throw new RedirectException(rootUri(), ex);
+        }
+
+    }
+
+    @Override
     protected Specification<Category> prepareIndex(Login login, HttpServletRequest request, Site site, Model model
             , RedirectAttributes attributes) throws RedirectException {
+        mallData(site, model);
         if (request.getParameter("fixedType") != null) {
             ContentType contentType = contentTypeConverter.convert(request.getParameter("fixedType"));
             if (contentType != null) {

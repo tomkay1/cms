@@ -52,12 +52,12 @@ public enum ContentType implements CommonEnum {
     /**
      *
      */
-    MallProduct(8, "商城产品数据源", "产品数据源"),
+    MallProduct(8, "伙伴商城产品", "产品数据源"),
 
     /**
      *
      */
-    MallClass(9, "商城类目数据源", "产品数据源");
+    MallClass(9, "伙伴商城产品类目", "产品数据源");
 
     private final int code;
     private final String value;

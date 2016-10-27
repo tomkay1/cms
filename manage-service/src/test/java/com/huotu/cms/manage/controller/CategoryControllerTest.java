@@ -16,6 +16,7 @@ import com.huotu.cms.manage.page.CategoryPage;
 import com.huotu.cms.manage.page.ManageMainPage;
 import com.huotu.cms.manage.page.support.AbstractCRUDPage;
 import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.MallProductCategory;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.service.CategoryService;
@@ -54,7 +55,12 @@ public class CategoryControllerTest extends SiteManageTest {
         }
         // 试下使用{{}}
         mainPage.switchSite(site);
-        mainPage.toPage(CategoryPage.class);
+        CategoryPage page = mainPage.toPage(CategoryPage.class);
+
+        page.assertMallDisabled();
+        site.getOwner().setCustomerId(random.nextInt());
+        page.refresh();
+        page.assertMallEnable();
     }
 
     @Test
@@ -64,32 +70,10 @@ public class CategoryControllerTest extends SiteManageTest {
         ManageMainPage mainPage = initPage(ManageMainPage.class);
 
 
-        CRUDHelper.flow(mainPage.toPage(CategoryPage.class), new CRUDTest<Category>() {
-            @Override
-            public Collection<Category> list() {
-                return categoryService.getCategories(site);
-            }
+        CRUDHelper.flow(mainPage.toPage(CategoryPage.class), new NormalCategoryTest(site));
 
-            @Override
-            public Category randomValue() {
-                return randomCategoryValue(site);
-            }
-
-            @Override
-            public BiConsumer<AbstractCRUDPage<Category>, Category> customAddFunction() {
-                return null;
-            }
-
-            @Override
-            public void assertCreation(Category entity, Category data) {
-                assertThat(entity.getParent())
-                        .isEqualTo(data.getParent());
-                assertThat(entity.getContentType())
-                        .isEqualByComparingTo(data.getContentType());
-                assertThat(entity.getName())
-                        .isEqualTo(data.getName());
-            }
-        });
+//        CRUDHelper.flow(mainPage.toPage(CategoryPage.class), new MallProductCategoryTest(site));
+//        CRUDHelper.flow(mainPage.toPage(CategoryPage.class), new MallClassCategoryTest(site));
 
     }
 
@@ -111,4 +95,55 @@ public class CategoryControllerTest extends SiteManageTest {
     }
 
 
+    private class NormalCategoryTest implements CRUDTest<Category> {
+        private final Site site;
+
+        public NormalCategoryTest(Site site) {
+            this.site = site;
+        }
+
+        @Override
+        public Collection<Category> list() {
+            return categoryService.getCategories(site);
+        }
+
+        @Override
+        public Category randomValue() {
+            return randomCategoryValue(site);
+        }
+
+        @Override
+        public BiConsumer<AbstractCRUDPage<Category>, Category> customAddFunction() {
+            return null;
+        }
+
+        @Override
+        public void assertCreation(Category entity, Category data) {
+            assertThat(entity.getParent())
+                    .isEqualTo(data.getParent());
+            assertThat(entity.getContentType())
+                    .isEqualByComparingTo(data.getContentType());
+            assertThat(entity.getName())
+                    .isEqualTo(data.getName());
+        }
+    }
+
+    private class MallProductCategoryTest extends NormalCategoryTest {
+        public MallProductCategoryTest(Site site) {
+            super(site);
+        }
+
+        @Override
+        public Category randomValue() {
+            MallProductCategory category = new MallProductCategory();
+
+            return category;
+        }
+    }
+
+    private class MallClassCategoryTest extends NormalCategoryTest {
+        public MallClassCategoryTest(Site site) {
+            super(site);
+        }
+    }
 }

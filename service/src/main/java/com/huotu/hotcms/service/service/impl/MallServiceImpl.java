@@ -12,6 +12,7 @@ package com.huotu.hotcms.service.service.impl;
 import com.huotu.hotcms.service.service.MallService;
 import com.huotu.huobanplus.common.entity.Brand;
 import com.huotu.huobanplus.common.entity.Category;
+import com.huotu.huobanplus.common.entity.User;
 import com.huotu.huobanplus.sdk.common.repository.BrandRestRepository;
 import com.huotu.huobanplus.sdk.common.repository.CategoryRestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,21 @@ public class MallServiceImpl implements MallService {
     @Override
     public List<Brand> listBrands(long merchantId) throws IOException {
         return brandRestRepository.listByMerchantId(merchantId);
+    }
+
+    @Override
+    public User getLoginUser() {
+        return null;
+    }
+
+    @Override
+    public String getLoginUserName() {
+        return null;
+    }
+
+    @Override
+    public int getShoppingCartCount(Long userId) {
+        return 0;
     }
 
 

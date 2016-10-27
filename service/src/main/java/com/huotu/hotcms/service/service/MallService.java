@@ -11,6 +11,7 @@ package com.huotu.hotcms.service.service;
 
 import com.huotu.huobanplus.common.entity.Brand;
 import com.huotu.huobanplus.common.entity.Category;
+import com.huotu.huobanplus.common.entity.User;
 import org.springframework.data.domain.Pageable;
 
 import java.io.IOException;
@@ -36,4 +37,29 @@ public interface MallService {
      * @throws IOException
      */
     List<Brand> listBrands(long merchantId) throws IOException;
+
+    /**
+     * 获取登录的用户
+     *
+     * @return 登录返回商城用户，未登录返回null
+     */
+    User getLoginUser();
+
+    /**
+     * 获取当前登录用户名称
+     *
+     * @return 用户名称，null
+     */
+    String getLoginUserName();
+
+    /**
+     * 获取当前购物车商品数量
+     *
+     * @param userId 用户id
+     * @return 购物车商品数量
+     */
+    int getShoppingCartCount(Long userId);
+
+
+
 }

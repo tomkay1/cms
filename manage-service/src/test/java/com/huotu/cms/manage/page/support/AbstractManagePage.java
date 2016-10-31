@@ -16,11 +16,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.assertj.core.api.AbstractListAssert;
 import org.jetbrains.annotations.NotNull;
-import org.openqa.selenium.By;
-import org.openqa.selenium.ElementNotVisibleException;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.htmlunit.HtmlUnitWebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
@@ -201,6 +197,24 @@ public abstract class AbstractManagePage extends BracketPage {
             input.clear();
             if (value != null)
                 input.sendKeys(value);
+        } catch (ElementNotVisibleException exception) {
+            printThisPage();
+            throw exception;
+        }
+
+    }
+
+    /**
+     * 在指定表单中select=text
+     *
+     * @param formElement 表单Element
+     * @param selectName  select的name
+     * @param value       要输入的值
+     */
+    public void selectOption(WebElement formElement, String selectName, String value) {
+        try {
+            Select select = new Select(formElement.findElement(By.name(selectName)));
+            select.selectByValue(value);
         } catch (ElementNotVisibleException exception) {
             printThisPage();
             throw exception;

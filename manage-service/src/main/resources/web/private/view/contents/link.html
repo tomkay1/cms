@@ -68,22 +68,26 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">链接类型</label>
                         <div class="col-sm-2">
-                            <!-- todo 页面类型-->
+                            <select name="linkType" title="链接类型" class="form-control">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option
+                                        th:each="linkType:${T(com.huotu.hotcms.service.common.LinkType).values()}"
+                                        th:value="${linkType.getCode()}"
+                                        th:text="${linkType.getValue().toString()}">页面
+                                </option>
+                                <option th:remove="all">页面</option>
+                            </select>
                         </div>
                         <label class="col-sm-2 control-label">链接页面</label>
                         <div class="col-sm-2">
                             <select name="pageInfoID" title="页面" class="form-control">
-                                <option value="">无</option>
-                                <option th:each="category:${categories}" th:value="${category.id}"
-                                        th:text="${category.name}">最新消息
+                                <option th:each="pageInfo:${pageInfoList}" th:value="${pageInfo.id}"
+                                        th:text="${pageInfo.title}">首页
                                 </option>
-                                <option th:remove="all" value="998">新闻咨询</option>
-                                <option th:remove="all">成功案例</option>
+                                <option th:remove="all">页面</option>
                             </select>
                         </div>
                     </div>
-
-
                     <div class="form-group">
                         <label class="col-sm-2 control-label">标题</label>
                         <div class="col-sm-6">
@@ -112,7 +116,6 @@
                     </div>
                 </div>
             </div><!-- panel-body -->
-
             <div class="panel-footer">
                 <div class="row">
                     <div class="col-sm-6 col-sm-offset-3">
@@ -122,7 +125,6 @@
                     </div>
                 </div>
             </div><!-- panel-footer -->
-
         </div>
     </form>
 
@@ -165,7 +167,6 @@
                             </a>
                         </td>
                     </tr>
-
                     <tr class="even" data-id="2" th:remove="all">
                         <td>成功案例</td>
                         <td>2016 06-11</td>
@@ -196,8 +197,6 @@
                             </a>
                         </td>
                     </tr>
-
-
                     </tbody>
                 </table>
             </div><!-- table-responsive -->

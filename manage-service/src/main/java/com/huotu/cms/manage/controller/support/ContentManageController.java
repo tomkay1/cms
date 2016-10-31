@@ -20,6 +20,8 @@ import com.huotu.hotcms.service.exception.BadCategoryInfoException;
 import com.huotu.hotcms.service.model.ContentExtra;
 import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.service.ContentService;
+import com.huotu.hotcms.widget.entity.PageInfo;
+import com.huotu.hotcms.widget.repository.PageInfoRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * 所有内容管理的控制器
@@ -47,6 +50,8 @@ public abstract class ContentManageController<T extends AbstractContent, ED exte
     private CategoryService categoryService;
     @Autowired
     private ContentService contentService;
+    @Autowired
+    private PageInfoRepository pageInfoRepository;
 
     /**
      * @return 这个内容的模型
@@ -57,7 +62,15 @@ public abstract class ContentManageController<T extends AbstractContent, ED exte
     protected Specification<T> prepareIndex(Login login, HttpServletRequest request, Site site, Model model, RedirectAttributes attributes)
             throws RedirectException {
         forCategoryList(site, model);
+        if (contentType().equals(ContentType.Link)) {
+            forPageList(site, model);
+        }
         return (root, query, cb) -> cb.equal(root.get("category").get("site").as(Site.class), site);
+    }
+
+    private void forPageList(Site site, Model model) {
+        List<PageInfo> list = pageInfoRepository.findBySite(site);
+        model.addAttribute("pageInfoList", list);
     }
 
     private void forCategoryList(Site site, Model model) {
@@ -77,6 +90,9 @@ public abstract class ContentManageController<T extends AbstractContent, ED exte
     protected void prepareOpen(Login login, HttpServletRequest request, T data, Model model, RedirectAttributes attributes)
             throws RedirectException {
         forCategoryList(data.getCategory().getSite(), model);
+        if (contentType().equals(ContentType.Link)) {
+            forPageList(data.getCategory().getSite(), model);
+        }
         super.prepareOpen(login, request, data, model, attributes);
     }
 

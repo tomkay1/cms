@@ -35,6 +35,10 @@ public class LinkPage extends AbstractCMSContentPage<Link> {
     protected void fillContentValue(Link value, boolean update) {
         WebElement form = getForm();
         inputText(form, "linkUrl", value.getLinkUrl());
+        selectOption(form, "linkType", value.getLinkType().getCode().toString());
+        if (value.getPageInfoID() != null) {
+            selectOption(form, "pageInfoID", value.getPageInfoID().toString());
+        }
     }
 
     @Override

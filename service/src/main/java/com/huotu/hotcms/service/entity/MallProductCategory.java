@@ -61,17 +61,6 @@ public class MallProductCategory extends ProductCategory {
     @Column(name = "Store")
     private Integer stock;
 
-    /**
-     * 是否删除商品
-     */
-    @Column(name = "Disabled")
-    private Boolean disabled;
-
-    /**
-     * 是否上架
-     */
-    @Column(name = "markerTable")
-    private Boolean markerTable;
 
     @ManyToOne
     private Gallery gallery;
@@ -88,8 +77,6 @@ public class MallProductCategory extends ProductCategory {
         mallProductCategoryModel.setName(this.getName());
         mallProductCategoryModel.setSite(this.getSite());
         mallProductCategoryModel.setGoodTitle(this.getGoodTitle());
-        mallProductCategoryModel.setMarkerTable(this.markerTable);
-        mallProductCategoryModel.setDisabled(this.disabled);
         mallProductCategoryModel.setMaxPrice(this.maxPrice);
         mallProductCategoryModel.setMinPrice(this.minPrice);
         mallProductCategoryModel.setSalesCount(this.salesCount);

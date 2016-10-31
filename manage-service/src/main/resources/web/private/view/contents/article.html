@@ -82,9 +82,9 @@
                             <select name="articleSource" title="文章来源" class="form-control">
                                 <!--suppress ThymeleafVariablesResolveInspection -->
                                 <option value="0"
-                                        th:each="pageType:${T(com.huotu.hotcms.service.common.ArticleSource).values()}"
-                                        th:value="${pageType.getCode()}"
-                                        th:text="${pageType.getValue().toString()}">原创
+                                        th:each="articleSource:${T(com.huotu.hotcms.service.common.ArticleSource).values()}"
+                                        th:value="${articleSource.getCode()}"
+                                        th:text="${articleSource.getValue().toString()}">原创
                                 </option>
                                 <option th:remove="all">转载</option>
                             </select>
@@ -149,7 +149,7 @@
                         <td th:text="${article.title}">新闻资讯</td>
                         <td th:text="${{article.createTime}}">2016 06-20</td>
                         <td th:text="${article.category.name}">普通文章</td>
-                        <td th:text="${article.articleSource.value}">原创</td>
+                        <td th:text="${article.articleSource==null?'':article.articleSource.getValue()}">原创</td>
                         <td class="center">
                             <a href="articleOpen.html" th:href="@{/manage/article/{id}(id=${article.id})}" title="管理">
                                 <i class="fa fa-pencil"></i>

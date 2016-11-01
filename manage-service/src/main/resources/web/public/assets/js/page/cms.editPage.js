@@ -250,7 +250,7 @@ var Page = {
                     var div = $('<div class="swiper-slide"></div>');
                     var img = $('<img class="center-block changeStyle">');
                     var p = $('<p></p>');
-                    var span = $('<span class="theme-thumb-magnifier"><b class="fa fa-search-plus" aria-hidden="true""></b></span>');
+                    var span = $('<span class="theme-thumb-magnifier"><b class="fa fa-search-plus" aria-hidden="true"></b></span>');
                     img.attr('src',val.thumbnail);
                     img.attr('data-styleid',val.id);
                     p.text(val.locallyName);

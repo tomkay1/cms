@@ -207,9 +207,8 @@ header .btn {
 
 .edit .column {
     min-height: 80px;
-    margin: 15px -2px -2px -2px;
+    margin: 0 -2px -2px -2px;
     position: relative;
-    background-color: #fff;
     border: 2px dashed rgba(255,0,0,.2);
     -webkit-transition: all 500ms ease;
     -moz-transition: all 500ms ease;
@@ -312,7 +311,7 @@ header .btn {
 }
 
 .edit .pageHTML .row {
-    padding-top: 12px;
+    padding-top: 28px;
     margin: 20px -1px -1px -1px;
     position: relative;
     border: 1px dashed #7cb147;
@@ -396,9 +395,11 @@ header .btn {
     font-weight: bold;
 }
 #configuration .conf-header button {
-    float: right;
     width: 98px;
     height: 40px;
+}
+#layout-btnGroup {
+    display: none;
 }
 #configuration .conf-body {
     padding: 20px 20px 100px;
@@ -582,7 +583,7 @@ header .btn {
 .popover-info:hover .popover {
     display: block;
     opacity: 1;
-    width: 400px;
+    width: 200px;
 }
 .popover-info:hover .popover .arrow {
     top: 23px;
@@ -728,7 +729,7 @@ div[id^="errorPlaceholder"] {
     position: relative;
 }
 /*attributeData Style*/
-#attributeData .attribute-layout{
+#attributeData .attribute-layout, #layout-setting .attribute-layout{
     margin-bottom: 20px;
     display: -webkit-box;
     display: -moz-box;
@@ -738,7 +739,7 @@ div[id^="errorPlaceholder"] {
     align-items: center;
     justify-content: center;
 }
-#attributeData .attribute-item {
+#attributeData .attribute-item, #layout-setting .attribute-item {
     position: relative;
     margin: 0 5px;
     -webkit-box-flex: 1;
@@ -747,16 +748,16 @@ div[id^="errorPlaceholder"] {
     -ms-flex: 1;
     flex: 1;
 }
-#attributeData .title-element {
+#attributeData .title-element, #layout-setting .title-element {
     text-align: center;
 }
-#attributeData .error {
+#attributeData .error, #layout-setting .error{
     color: #ca030a;
 }
-#attributeData  label.error {
+#attributeData label.error, #layout-setting  label.error{
     position: absolute;
 }
-#attributeData  .font-size-amount {
+#attributeData .font-size-amount, #layout-setting .font-size-amount {
     margin: 0;
     display: -webkit-box;
     display: -moz-box;
@@ -766,7 +767,8 @@ div[id^="errorPlaceholder"] {
     align-items: center;
     justify-content: center;
 }
-#attributeData  .font-size-amount label, #attributeData  .font-size-amount input {
+#attributeData  .font-size-amount label, #attributeData  .font-size-amount input,
+#layout-setting  .font-size-amount label, #layout-setting  .font-size-amount input {
     -webkit-box-flex: 1;
     -moz-box-flex: 1;
     -webkit-flex: 1;
@@ -788,4 +790,24 @@ div[id^="errorPlaceholder"] {
     padding: 0 10px;
     margin-bottom: 10px;
     width: 100%;
+}
+/*Updata 10.26*/
+.bg-gradient {
+    display: none;
+}
+.js-bg-position li {
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+.js-bg-position li span {
+    display: block;
+    padding: 5px 0;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center;
+}
+.js-bg-position .active span {
+    color: #ea5342;
+    border: 1px solid #ea5342;
 }

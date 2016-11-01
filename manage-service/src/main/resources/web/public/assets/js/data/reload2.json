@@ -1,0 +1,66 @@
+{
+  "root": [
+    {
+      "layout": {
+        "value": "100",
+        "styleSheet": {
+          "background-color": "rgba(234, 17, 17, 0.552)"
+        },
+        "elementGroups": [
+          [
+            {
+              "layout": {
+                "value": "100",
+                "styleSheet": {
+                  "background-color": "rgb(255, 255, 255)",
+                  "background-repeat": "no-repeat",
+                  "background-size": "cover",
+                  "background-position": "center center",
+                  "padding-bottom": "50px",
+                  "margin-bottom": "30px"
+                },
+                "elementGroups": [
+                  [
+                    {
+                      "empty": {}
+                    }
+                  ]
+                ]
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "layout": {
+        "value": "100",
+        "styleSheet": {
+          "background-color": "rgba(37, 172, 95, 0.709)"
+        },
+        "elementGroups": [
+          [
+            {
+              "empty": {}
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "layout": {
+        "value": "12",
+        "styleSheet": {
+          "background-color": "rgba(9, 94, 205, 0.616)"
+        },
+        "elementGroups": [
+          [
+            {
+              "empty": {}
+            }
+          ]
+        ]
+      }
+    }
+  ]
+}

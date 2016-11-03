@@ -82,7 +82,7 @@
                                     <i class="fa fa-arrows"></i>
                                     拖动
                                 </span>
-                                <span class="setting label label-primary">
+                                <span class="setting layout-setting label label-primary" data-target="layout-setting">
                                     <i class="fa fa-cog"></i>
                                     设置
                                 </span>
@@ -106,6 +106,10 @@
                                     <i class="fa fa-arrows"></i>
                                     拖动
                                 </span>
+                                <span class="setting layout-setting label label-primary" data-target="layout-setting">
+                                    <i class="fa fa-cog"></i>
+                                    设置
+                                </span>
 
                                 <div class="preview">
                                     <input value="居中容器" class="form-control" type="text" readonly>
@@ -128,6 +132,10 @@
                                     <i class="fa fa-arrows"></i>
                                     拖动
                                 </span>
+                                <span class="setting layout-setting label label-primary" data-target="layout-setting">
+                                    <i class="fa fa-cog"></i>
+                                    设置
+                                </span>
 
                                 <div class="preview">
                                     <input value="12" class="form-control" type="text">
@@ -148,6 +156,10 @@
                                 <span class="drag label label-default">
                                     <i class="fa fa-arrows"></i>
                                     拖动
+                                </span>
+                                <span class="setting layout-setting label label-primary" data-target="layout-setting">
+                                    <i class="fa fa-cog"></i>
+                                    设置
                                 </span>
 
                                 <div class="preview">
@@ -171,6 +183,10 @@
                                     <i class="fa fa-arrows"></i>
                                     拖动
                                 </span>
+                                <span class="setting layout-setting label label-primary" data-target="layout-setting">
+                                    <i class="fa fa-cog"></i>
+                                    设置
+                                </span>
 
                                 <div class="preview">
                                     <input value="8 4" class="form-control" type="text">
@@ -193,6 +209,11 @@
                                     <i class="fa fa-arrows"></i>
                                     拖动
                                 </span>
+                                <span class="setting layout-setting label label-primary" data-target="layout-setting">
+                                    <i class="fa fa-cog"></i>
+                                    设置
+                                </span>
+
                                 <div class="preview">
                                     <input value="4 4 4" class="form-control" type="text">
                                 </div>
@@ -215,6 +236,11 @@
                                     <i class="fa fa-arrows"></i>
                                     拖动
                                 </span>
+                                <span class="setting layout-setting label label-primary" data-target="layout-setting">
+                                    <i class="fa fa-cog"></i>
+                                    设置
+                                </span>
+
                                 <div class="preview">
                                     <input value="2 6 4" class="form-control" type="text">
                                 </div>
@@ -245,10 +271,106 @@
     <div id="configuration">
         <div class="conf-header">
             <p>设置</p>
-            <button class="btn btn-danger" id="cancelBtn">取消</button>
-            <button class="btn btn-success" id="confBtn">保存</button>
+            <div id="data-btnGroup" class="btn-group pull-right">
+                <button class="btn btn-success" id="confBtn">保存</button>
+                <button class="btn btn-danger" id="cancelBtn">取消</button>
+            </div>
+            <div id="layout-btnGroup" class="btn-group pull-right">
+                <button class="btn btn-success" id="l-confBtn">保存</button>
+                <button class="btn btn-danger" id="l-cancelBtn">取消</button>
+            </div>
         </div>
         <div class="conf-body">
+            <div class="common-conf" data-id="layout-setting" id="layoutStyleSheet">
+                <div>
+                    <h3>
+                        <i class="fa fa-puzzle-piece"></i><strong>设置布局背景参数</strong>
+                    </h3>
+                    <div class="borderBoxs">
+                        <div class="form-group clearfix">
+                            <label class="col-sm-3">背景颜色</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control color-picker js-bg-color" name="bgColor" />
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="col-sm-3">背景图片</label>
+                            <div class="col-sm-3">
+                                <input type="button" class="btn btn-default" value="背景图片" />
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="col-sm-3">背景图片重复</label>
+                            <div class="col-sm-3">
+                                <select class="form-control js-bg-repeat">
+                                    <option value="0">默认</option>
+                                    <option value="no-repeat">不重复</option>
+                                    <option value="repeat-x">水平重复</option>
+                                    <option value="repeat-y">垂直重复</option>
+                                </select>
+                            </div>
+                            <label class="col-sm-3">背景图片尺寸</label>
+                            <div class="col-sm-3">
+                                <select class="form-control js-bg-size">
+                                    <option value="0">默认</option>
+                                    <option value="cover">填充</option>
+                                    <option value="contain">适应</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="col-sm-3">背景图片对齐</label>
+                            <ul class="col-sm-9 js-bg-position">
+                                <li class="col-sm-4" value="top left"><span>左上</span></li>
+                                <li class="col-sm-4" value="top center"><span>上</span></li>
+                                <li class="col-sm-4" value="top right"><span>右上</span></li>
+                                <li class="col-sm-4" value="center left"><span>左</span></li>
+                                <li class="col-sm-4" value="center center"><span>居中</span></li>
+                                <li class="col-sm-4" value="center right"><span>右</span></li>
+                                <li class="col-sm-4" value="bottom left"><span>左下</span></li>
+                                <li class="col-sm-4" value="bottom center"><span>下</span></li>
+                                <li class="col-sm-4" value="bottom left"><span>右下</span></li>
+                            </ul>
+                        </div>
+                        <form id="layout-setting">
+                            <ul class="js-distance-data attribute-layout">
+                                <li class="attribute-item title-element">
+                                    <div class="pull-right popover-info"><i class="fa fa-question-circle-o"></i>
+                                        <div class="popover fade right">
+                                            <div class="arrow"></div>
+                                            <h4 class="popover-title">帮助</h4>
+                                            <div class="popover-content">内边距(Padding)属性设置元素所有内边距的宽度，是元素内容距离自身边框的距离。<br><strong>注释：</strong>不允许使用负值。</div>
+                                        </div>
+                                    </div>
+                                    内边距
+                                </li>
+                                <li class="attribute-item">
+                                    <input type="text" name="paddingTop" class="form-control" placeholder="上" data-rule-number="true" data-msg-number="必须是个数字" data-rule-min="0" data-msg-min="不能小于0">
+                                </li>
+                                <li class="attribute-item">
+                                    <input type="text" name="paddingBottom" class="form-control" placeholder="下" data-rule-number="true" data-msg-number="必须是个数字" data-rule-min="0" data-msg-min="不能小于0">
+                                </li>
+                                <li class="attribute-item title-element">
+                                    <div class="pull-right popover-info"><i class="fa fa-question-circle-o"></i>
+                                        <div class="popover fade right">
+                                            <div class="arrow"></div>
+                                            <h4 class="popover-title">帮助</h4>
+                                            <div class="popover-content">外边距(Margin)属性设置元素所有外边距的宽度，是元素自身边框距离其他元素的边框的距离。</div>
+                                        </div>
+                                    </div>
+                                    外边距
+                                </li>
+                                <li class="attribute-item">
+                                    <input type="text" name="marginTop" class="form-control" placeholder="上" data-rule-number="true" data-msg-number="必须是个数字" >
+                                </li>
+                                <li class="attribute-item">
+                                    <input type="text" name="marginBottom" class="form-control" placeholder="下    " data-rule-number="true" data-msg-number="必须是个数字" >
+                                </li>
+                            </ul>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -338,6 +460,7 @@
 <script src="../../public/assets/js/page/cms.editPage.js" ewp:src="/assets/js/page/cms.editPage.js"></script>
 <script src="../../public/assets/js/data/cms.dataHandle.js" ewp:src="/assets/js/data/cms.dataHandle.js"></script>
 <script src="../../public/assets/js/cms.widget-properties.js" ewp:src="/assets/js/cms.widget-properties.js"></script>
+<script src="../../public/assets/js/cms.layout-setting.js" ewp:src="/assets/js/cms.layout-setting.js"></script>
 <script th:inline="javascript">
     CMSWidgets.siteId = /*[[${pageInfo.site.siteId}]]*/ -999;
 

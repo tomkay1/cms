@@ -3,6 +3,16 @@
     {
       "layout": {
         "value": "100",
+        "styleSheet":{
+          "background-color":"rgb(205, 73, 73)",
+          "background-repeat":"repeat-y",
+          "background-size":"contain",
+          "background-position":"top left",
+          "padding-top":"100px",
+          "padding-bottom":"100px",
+          "margin-top":"20px",
+          "margin-bottom":"20px"
+        },
         "elementGroups": [
           [
             {

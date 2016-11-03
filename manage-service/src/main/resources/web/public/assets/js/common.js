@@ -472,7 +472,7 @@ var TableData = {
 /*临时拾色器公共方法*/
 function cmdColorPicker() {
     $('.color-picker').each(function () {
-        var color = $(this).val() || '';
+        var color = $(this).val() || 'transparent';
         $(this).spectrum({
             color: color,
             allowEmpty: true,
@@ -480,7 +480,18 @@ function cmdColorPicker() {
             cancelText: "取消",
             preferredFormat: "#",
             showButtons: false,
-            showInput: true
+            showAlpha: true,
+            showInitial: true,
+            showInput: true,
+            move: function(color) {
+                if(color) $(this).val(color.toRgbString());
+            },
+            hide: function(color) {
+                if(color) $(this).val(color.toRgbString());
+            },
+            change: function(color) {
+                if(color) $(this).val(color.toRgbString());
+            }
         });
     });
 }

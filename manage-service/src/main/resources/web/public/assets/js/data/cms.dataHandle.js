@@ -21,10 +21,15 @@ var DataHandle = {
         var root = $(elements).children();
         $.each(root, function (i, v) {
             var child = {};
+            var styleSheet = $(v).attr('data-stylesheet');
+
             child.layout = {};
             child.layout.value = $(v).attr('data-layout-value');
+            child.layout.styleSheet = styleSheet? JSON.parse(styleSheet) : styleSheet;
             child.layout.elementGroups = DataHandle.traversalDOM2Json(v);
+
             data.push(child);
+
         });
         json.root = data;
         return json;
@@ -54,8 +59,11 @@ var DataHandle = {
     distinguishDOMType: function (elements) {
         var childJSON = {};
         if ($(elements).hasClass('row')) {
+            var styleSheet = $(elements).attr('data-stylesheet');
+
             childJSON.layout = {};
             childJSON.layout.value = $(elements).attr('data-layout-value');
+            childJSON.layout.styleSheet = styleSheet ? JSON.parse(styleSheet) : styleSheet;
             childJSON.layout.elementGroups = DataHandle.traversalDOM2Json(elements);
         } else {
             if ( $(elements).attr('id').indexOf('errorPlaceholder') == -1) {
@@ -125,7 +133,8 @@ var DataHandle = {
                 ["data-layout"],
                 ["data-layout-value"],
                 ["data-widgetidentity"],
-                ["data-styleid"]
+                ["data-styleid"],
+                ["data-stylesheet"]
             ]
         });
         var root = $('<div></div>');
@@ -189,8 +198,9 @@ var DataHandle = {
 var DOM = {
     layout: [
         '<div class="ncrow ui-draggable" style="display: block;">',
-        '<span class="remove label label-danger"><i class="icon-cancel"></i>删除</span>',
-        '<span class="drag label label-default"><i class="icon-move"></i>拖动</span>',
+        '<span class="setting layout-setting label label-primary" data-target="layout-setting"><i class="fa fa-cog"></i>设置</span>',
+        '<span class="drag label label-default"><i class="fa fa-arrows"></i>拖动</span>',
+        '<span class="remove label label-danger"><i class="fa fa-times"></i>删除</span>',
         '<div class="view">',
         '<div class="row clearfix"></div>',
         '</div>',
@@ -198,9 +208,9 @@ var DOM = {
     ],
     component: [
         '<div class="box box-element ui-draggable" style="display: block;">',
-        '<span class="setting label label-primary" ><i class="icon-cog"></i> 设置</span>',
-        '<span class="drag label label-default"><i class="icon-move"></i> 拖动</span>',
-        '<span class="remove label label-danger"><i class="icon-cancel"></i> 删除</span>',
+        '<span class="setting label label-primary" ><i class="fa fa-cog"></i> 设置</span>',
+        '<span class="drag label label-default"><i class="fa fa-arrows"></i> 拖动</span>',
+        '<span class="remove label label-danger"><i class="fa fa-times"></i> 删除</span>',
         '<div class="view"></div>',
         '</div>'
     ]
@@ -255,8 +265,10 @@ var CreatePage = {
             container.append(DOM.layout.join('\n'));
             var ele = container.children('.ncrow').children('.view').children('.row');
             ele.eq(i).attr('data-layout-value', v.layout.value);
+            ele.eq(i).attr('data-stylesheet', JSON.stringify(v.layout.styleSheet));
             var column = CreatePage.createColumn(v.layout);
             ele.eq(i).html(column);
+            CreatePage.setStyle(ele.eq(i), v.layout.styleSheet);
         });
     },
     createColumn: function (data) {
@@ -309,12 +321,21 @@ var CreatePage = {
         container.append(DOM.layout.join('\n'));
         var ele = container.children('.ncrow').children('.view').children('.row');
         ele.attr('data-layout-value', data.value);
+        ele.attr('data-stylesheet', JSON.stringify(data.styleSheet));
         var column = CreatePage.createColumn(data);
         ele.html(column);
+        CreatePage.setStyle(ele, data.styleSheet);
         return container.html();
     },
+    setStyle: function (ele, data) {
+        var e = ele.children('.column');
+
+        $.each(data, function (k, v) {
+            e.css(k,v);
+        });
+    },
     init: function (url) {
-        if (!url) url = '../../public/assets/js/data/reload.json';
+        if (!url) url = '../../public/assets/js/data/reload2.json';
         CreatePage.getPage(url);
     }
 };

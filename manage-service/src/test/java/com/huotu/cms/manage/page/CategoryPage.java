@@ -12,6 +12,8 @@ package com.huotu.cms.manage.page;
 import com.huotu.cms.manage.page.support.AbstractCRUDPage;
 import com.huotu.cms.manage.page.support.BodyId;
 import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.MallClassCategory;
+import com.huotu.hotcms.service.entity.MallProductCategory;
 import org.assertj.core.api.Condition;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -41,6 +43,70 @@ public class CategoryPage extends AbstractCRUDPage<Category> {
         inputSelect(form, "contentType", category.getContentType().getValue().toString());
         if (category.getParent() != null) {
             inputSelect(form, "extra", category.getParent().getName());
+        } else {
+            inputSelect(form, "extra", "无");
+        }
+        if (category instanceof MallProductCategory) {
+            inputText(form, "goodTitle", ((MallProductCategory) category).getGoodTitle());
+            inputText(form, "minPrice", ((MallProductCategory) category).getMinPrice().toString());
+            inputText(form, "salesCount", ((MallProductCategory) category).getSalesCount().toString());
+            inputText(form, "maxPrice", ((MallProductCategory) category).getMaxPrice().toString());
+            if (((MallProductCategory) category).getMallCategoryId() != null)
+                for (Long id : ((MallProductCategory) category).getMallCategoryId()) {
+                    selectOption(form, "mallCategoryId", id + "");
+                }
+            if (((MallProductCategory) category).getMallBrandId() != null)
+                for (Long id : ((MallProductCategory) category).getMallBrandId()) {
+                    selectOption(form, "mallBrandId", id + "");
+                }
+            if (((MallProductCategory) category).getGallery() != null) {
+                selectOption(form, "gallery", ((MallProductCategory) category).getGallery().getId() + "");
+            }
+        } else if (category instanceof MallClassCategory) {
+            if (((MallClassCategory) category).getRecommendCategory() != null) {
+                inputSelect(form, "recommendCategory", ((MallClassCategory) category).getRecommendCategory().getTitle());
+            }
+            if (((MallClassCategory) category).getCategories() != null && !((MallClassCategory) category).getCategories().isEmpty()) {
+                for (Category c : ((MallClassCategory) category).getCategories()) {
+                    inputSelect(form, "categories", c.getTitle());
+                }
+
+            }
+        }
+    }
+
+    @Override
+    protected void fillValueToFormForUpdate(Category category) {
+        WebElement form = getForm();
+        assertThat(form.isDisplayed())
+                .isTrue();
+        inputText(form, "name", category.getName());
+        if (category instanceof MallProductCategory) {
+            inputText(form, "goodTitle", ((MallProductCategory) category).getGoodTitle());
+            inputText(form, "minPrice", ((MallProductCategory) category).getMinPrice().toString());
+            inputText(form, "salesCount", ((MallProductCategory) category).getSalesCount().toString());
+            inputText(form, "maxPrice", ((MallProductCategory) category).getMaxPrice().toString());
+            if (((MallProductCategory) category).getMallCategoryId() != null)
+                for (Long id : ((MallProductCategory) category).getMallCategoryId()) {
+                    selectOption(form, "mallCategoryId", id + "");
+                }
+            if (((MallProductCategory) category).getMallBrandId() != null)
+                for (Long id : ((MallProductCategory) category).getMallBrandId()) {
+                    selectOption(form, "mallBrandId", id + "");
+                }
+            if (((MallProductCategory) category).getGallery() != null) {
+                selectOption(form, "gallery", ((MallProductCategory) category).getGallery().getId() + "");
+            }
+        } else if (category instanceof MallClassCategory) {
+            if (((MallClassCategory) category).getRecommendCategory() != null) {
+                inputSelect(form, "recommendCategory", ((MallClassCategory) category).getRecommendCategory().getTitle());
+            }
+
+            if (((MallClassCategory) category).getCategories() != null) {
+                for (Category c : ((MallClassCategory) category).getCategories()) {
+                    selectOption(form, "categories", c.getId() + "");
+                }
+            }
         }
     }
 
@@ -61,7 +127,8 @@ public class CategoryPage extends AbstractCRUDPage<Category> {
                     .haveAtLeastOne(new Condition<>(td -> td.getText().contains(value.getName()), "需显示数据源名称"));
             assertThat(tds)
                     .haveAtLeastOne(new Condition<>(td
-                            -> td.getText().contains(value.getContentType().getValue().toString()), "需显示数据源模型"));
+                            -> td.getText()
+                            .contains(value.getContentType() == null ? "" : value.getContentType().getValue().toString()), "需显示数据源模型"));
             if (value.getParent() != null)
                 assertThat(tds)
                         .haveAtLeastOne(new Condition<>(td

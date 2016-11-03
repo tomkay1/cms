@@ -22,11 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -69,7 +65,7 @@ public class OwnerController extends CRUDController<Owner, Long, Void, Void> {
     }
 
     @Override
-    protected void prepareUpdate(Login login, Owner entity, Owner data, Void extra, RedirectAttributes attributes)
+    protected void prepareUpdate(Login login, Owner entity, Owner data, Void extra, RedirectAttributes attributes, HttpServletRequest request)
             throws RedirectException {
 
     }

@@ -167,7 +167,7 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
             , @MethodParameterFixed MD extra, Model model, RedirectAttributes attributes) throws RedirectException {
         T entity = jpaRepository.getOne(id);
         try {
-            prepareUpdate(login, entity, data, extra, attributes);
+            prepareUpdate(login, entity, data, extra, attributes, request);
             if (entity instanceof Auditable) {
                 ((Auditable) entity).setUpdateTime(LocalDateTime.now());
             }
@@ -303,14 +303,14 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
 
     /**
      * 更新之前
-     *
-     * @param login      当前操作者的身份
+     *  @param login      当前操作者的身份
      * @param entity     数据
      * @param data       用户请求的数据
      * @param extra      额外数据
      * @param attributes 空间
+     * @param request
      */
-    protected abstract void prepareUpdate(Login login, T entity, T data, MD extra, RedirectAttributes attributes)
+    protected abstract void prepareUpdate(Login login, T entity, T data, MD extra, RedirectAttributes attributes, HttpServletRequest request)
             throws RedirectException;
 
     /**

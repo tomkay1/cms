@@ -83,6 +83,15 @@ public interface CRUDTest<T> {
     void assertCreation(T entity, T data) throws Exception;
 
     /**
+     * 检查updata的数据是否正确
+     *  @param entity 来自JPA
+     * @param data   数据
+     */
+    default void assertUpdate(T entity, T data) throws Exception {
+        assertCreation(entity, data);
+    }
+
+    /**
      * @return 可编辑属性的过滤器
      */
     default Predicate<? super PropertyDescriptor> editableProperty() throws Exception {

@@ -212,7 +212,7 @@ public abstract class SiteManageController<T, ID extends Serializable, PD, MD> e
             throws RedirectException {
         Site site = checkSite(login, request);
 
-        return preparePersist(login, site, data, extra, attributes);
+        return preparePersist(login, site, data, extra, attributes, request);
     }
 
 
@@ -238,11 +238,12 @@ public abstract class SiteManageController<T, ID extends Serializable, PD, MD> e
      * @param data
      * @param extra
      * @param attributes
+     * @param request
      * @return
      * @see CRUDController#preparePersist(HttpServletRequest, Login, Object, Object, RedirectAttributes)
      */
     @SuppressWarnings({"WeakerAccess", "JavaDoc"})
-    protected abstract T preparePersist(Login login, Site site, T data, PD extra, RedirectAttributes attributes)
+    protected abstract T preparePersist(Login login, Site site, T data, PD extra, RedirectAttributes attributes, HttpServletRequest request)
             throws RedirectException;
 
     private class ToJson implements Function<T, Map<String, Object>> {

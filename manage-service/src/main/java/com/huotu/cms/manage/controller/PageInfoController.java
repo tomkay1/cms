@@ -26,6 +26,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
 
 /**
@@ -51,7 +52,7 @@ public class PageInfoController extends SiteManageController<PageInfo, Long, Lon
     }
 
     @Override
-    protected PageInfo preparePersist(Login login, Site site, PageInfo data, Long extra, RedirectAttributes attributes)
+    protected PageInfo preparePersist(Login login, Site site, PageInfo data, Long extra, RedirectAttributes attributes, HttpServletRequest request)
             throws RedirectException {
         if (data.getPagePath() != null && !pageFilterBehavioral.ableToUse(data.getPagePath())) {
             throw new RedirectException("/manage/page", "这个路径无法使用。");
@@ -84,7 +85,7 @@ public class PageInfoController extends SiteManageController<PageInfo, Long, Lon
     }
 
     @Override
-    protected void prepareUpdate(Login login, PageInfo entity, PageInfo data, Void extra, RedirectAttributes attributes)
+    protected void prepareUpdate(Login login, PageInfo entity, PageInfo data, Void extra, RedirectAttributes attributes, HttpServletRequest request)
             throws RedirectException {
         throw new NoSuchMethodError("no support for save category");
     }

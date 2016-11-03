@@ -13,27 +13,25 @@ import com.huotu.cms.manage.controller.support.SiteManageController;
 import com.huotu.cms.manage.exception.RedirectException;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.converter.ContentTypeConverter;
-import com.huotu.hotcms.service.entity.Category;
-import com.huotu.hotcms.service.entity.ProductCategory;
-import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.entity.*;
 import com.huotu.hotcms.service.entity.login.Login;
+import com.huotu.hotcms.service.repository.MallProductCategoryRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
-import com.huotu.hotcms.service.service.CategoryService;
-import com.huotu.hotcms.service.service.GalleryService;
-import com.huotu.hotcms.service.service.MallService;
-import com.huotu.hotcms.service.service.RouteService;
-import com.huotu.hotcms.service.service.SiteService;
+import com.huotu.hotcms.service.service.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.NumberUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 @Controller
@@ -55,8 +53,8 @@ public class CategoryController extends SiteManageController<Category, Long, Lon
     private GalleryService galleryService;
     @Autowired
     private ContentTypeConverter contentTypeConverter;
-//    @Autowired
-//    private MallProductCategoryRepository mallProductCategoryRepository;
+    @Autowired
+    private MallProductCategoryRepository mallProductCategoryRepository;
 
     @Override
     protected String resourceName(Locale locale) {
@@ -71,13 +69,12 @@ public class CategoryController extends SiteManageController<Category, Long, Lon
     }
 
     private void mallData(Site site, Model model) throws RedirectException {
-
         try {
             if (site.getOwner().getCustomerId() != null) {
                 model.addAttribute("categoryList", mallService.listCategories(site.getOwner().getCustomerId()));
                 model.addAttribute("brandList", mallService.listBrands(site.getOwner().getCustomerId()));
                 model.addAttribute("galleries", galleryService.listGalleries(site));
-                model.addAttribute("mallProducts", categoryService.getCategoriesForContentType(site, ContentType.MallProduct));
+                model.addAttribute("mallProducts", mallProductCategoryRepository.findBySite(site));
                 model.addAttribute("links", categoryService.getCategoriesForContentType(site, ContentType.Link));
             }
         } catch (IOException ex) {
@@ -102,7 +99,7 @@ public class CategoryController extends SiteManageController<Category, Long, Lon
     }
 
     @Override
-    protected Category preparePersist(Login login, Site site, Category data, Long extra, RedirectAttributes attributes)
+    protected Category preparePersist(Login login, Site site, Category data, Long extra, RedirectAttributes attributes, HttpServletRequest request)
             throws RedirectException {
         if (data.getContentType() == ContentType.Page)
             throw new RedirectException(rootUri(), "不可以创建页面数据源");
@@ -112,6 +109,69 @@ public class CategoryController extends SiteManageController<Category, Long, Lon
             productCategory.setContentType(data.getContentType());
             productCategory.setName(data.getName());
             data = productCategory;
+        } else if (data.getContentType() == ContentType.MallProduct) {
+            MallProductCategory mallProductCategory = new MallProductCategory();
+            String goodTitle = request.getParameter("goodTitle");
+            int salesCount = NumberUtils.parseNumber(request.getParameter("salesCount"), Integer.class);
+            double minPrice = NumberUtils.parseNumber(request.getParameter("minPrice"), Double.class);
+            double maxPrice = NumberUtils.parseNumber(request.getParameter("maxPrice"), Double.class);
+            String mallCategoryId = request.getParameter("mallCategoryId");
+            String mallBrands = request.getParameter("mallBrandId");
+            String galleryId = request.getParameter("gallery");
+            List<Long> categoryList;
+            if (mallCategoryId != null && !mallCategoryId.equals("")) {
+                categoryList = new ArrayList<>();
+                String[] categorystr = mallCategoryId.split(",");
+                for (String idstr : categorystr) {
+                    Long id = NumberUtils.parseNumber(idstr, Long.class);
+                    categoryList.add(id);
+                }
+                mallProductCategory.setMallCategoryId(categoryList);
+            }
+            List<Long> brandList;
+            if (mallBrands != null && !mallBrands.equals("")) {
+                brandList = new ArrayList<>();
+                String[] brandstr = mallBrands.split(",");
+                for (String idstr : brandstr) {
+                    Long id = NumberUtils.parseNumber(idstr, Long.class);
+                    brandList.add(id);
+                }
+                mallProductCategory.setMallBrandId(brandList);
+            }
+            if (galleryId != null && !galleryId.equals("")) {
+                mallProductCategory.setGallery(galleryService.findById(NumberUtils.parseNumber(galleryId, Long.class)));
+            }
+            mallProductCategory.setParent(extra == null ? null : categoryService.get(extra));
+            mallProductCategory.setContentType(data.getContentType());
+            mallProductCategory.setName(data.getName());
+            mallProductCategory.setSite(site);
+            mallProductCategory.setGoodTitle(goodTitle);
+            mallProductCategory.setMaxPrice(maxPrice);
+            mallProductCategory.setMinPrice(minPrice);
+            mallProductCategory.setSalesCount(salesCount);
+            data = mallProductCategory;
+        } else if (data.getContentType() == ContentType.MallClass) {
+            String categories = request.getParameter("categories");
+            String recommendCategory = request.getParameter("recommendCategory");
+            MallClassCategory mallClassCategory = new MallClassCategory();
+            mallClassCategory.setContentType(data.getContentType());
+            mallClassCategory.setParent(data.getParent());
+            mallClassCategory.setName(data.getName());
+            mallClassCategory.setSerial(data.getSerial());
+            mallClassCategory.setSite(data.getSite());
+            List<MallProductCategory> list;
+            if (categories != null && !categories.equals("")) {
+                list = new ArrayList<>();
+                String[] categorystr = categories.split(",");
+                for (String id : categorystr) {
+                    MallProductCategory productCategory = mallProductCategoryRepository.findOne(NumberUtils.parseNumber(id, Long.class));
+                    list.add(productCategory);
+                }
+                mallClassCategory.setCategories(list);
+            }
+            mallClassCategory.setRecommendCategory(recommendCategory == null || recommendCategory.equals("") ? null
+                    : categoryService.get(NumberUtils.parseNumber(recommendCategory, Long.class)));
+            data = mallClassCategory;
         }
         data.setSite(site);
         if (extra != null) {
@@ -129,10 +189,64 @@ public class CategoryController extends SiteManageController<Category, Long, Lon
     }
 
     @Override
-    protected void prepareUpdate(Login login, Category entity, Category data, Void extra, RedirectAttributes attributes)
+    protected void prepareUpdate(Login login, Category entity, Category data, Void extra, RedirectAttributes attributes, HttpServletRequest request)
             throws RedirectException {
         // 允许修改的东西其实并不多 就让他可以修改名字吧。
         entity.setName(data.getName());
+        if (entity.getContentType() == ContentType.MallProduct) {
+            MallProductCategory mallProductCategory = (MallProductCategory) entity;
+            String goodTitle = request.getParameter("goodTitle");
+            int salesCount = NumberUtils.parseNumber(request.getParameter("salesCount"), Integer.class);
+            double minPrice = NumberUtils.parseNumber(request.getParameter("minPrice"), Double.class);
+            double maxPrice = NumberUtils.parseNumber(request.getParameter("maxPrice"), Double.class);
+            String mallCategoryId = request.getParameter("mallCategoryId");
+            String mallBrands = request.getParameter("mallBrandId");
+            String galleryId = request.getParameter("gallery");
+            List<Long> categoryList;
+            if (mallCategoryId != null && !mallCategoryId.equals("")) {
+                categoryList = new ArrayList<>();
+                String[] categorystr = mallCategoryId.split(",");
+                for (String idstr : categorystr) {
+                    Long id = NumberUtils.parseNumber(idstr, Long.class);
+                    categoryList.add(id);
+                }
+                mallProductCategory.setMallCategoryId(categoryList);
+            }
+            List<Long> brandList;
+            if (mallBrands != null && !mallBrands.equals("")) {
+                brandList = new ArrayList<>();
+                String[] brandstr = mallBrands.split(",");
+                for (String idstr : brandstr) {
+                    Long id = NumberUtils.parseNumber(idstr, Long.class);
+                    brandList.add(id);
+                }
+                mallProductCategory.setMallBrandId(brandList);
+            }
+            if (galleryId != null && !galleryId.equals("")) {
+                mallProductCategory.setGallery(galleryService.findById(NumberUtils.parseNumber(galleryId, Long.class)));
+            }
+            mallProductCategory.setGoodTitle(goodTitle);
+            mallProductCategory.setMaxPrice(maxPrice);
+            mallProductCategory.setMinPrice(minPrice);
+            mallProductCategory.setSalesCount(salesCount);
+        } else if (entity.getContentType() == ContentType.MallClass) {
+            MallClassCategory mallClassCategory = (MallClassCategory) entity;
+            String categories = request.getParameter("categories");
+            String recommendCategory = request.getParameter("recommendCategory");
+            List<MallProductCategory> list;
+            if (categories != null && !categories.equals("")) {
+                list = new ArrayList<>();
+                String[] categorystr = categories.split(",");
+                for (String id : categorystr) {
+                    MallProductCategory productCategory = mallProductCategoryRepository.findOne(NumberUtils.parseNumber(id, Long.class));
+                    list.add(productCategory);
+                }
+                mallClassCategory.setCategories(list);
+            }
+            mallClassCategory.setRecommendCategory(recommendCategory == null || recommendCategory.equals("") ? null
+                    : categoryService.get(NumberUtils.parseNumber(recommendCategory, Long.class)));
+
+        }
     }
 
     @Override

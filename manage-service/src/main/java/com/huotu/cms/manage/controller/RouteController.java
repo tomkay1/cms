@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.regex.Pattern;
@@ -60,7 +61,7 @@ public class RouteController extends SiteManageController<Route, Long, Void, Voi
     }
 
     @Override
-    protected Route preparePersist(Login login, Site site, Route data, Void extra, RedirectAttributes attributes)
+    protected Route preparePersist(Login login, Site site, Route data, Void extra, RedirectAttributes attributes, HttpServletRequest request)
             throws RedirectException {
         try {
             //noinspection ResultOfMethodCallIgnored
@@ -74,7 +75,7 @@ public class RouteController extends SiteManageController<Route, Long, Void, Voi
     }
 
     @Override
-    protected void prepareUpdate(Login login, Route entity, Route data, Void extra, RedirectAttributes attributes)
+    protected void prepareUpdate(Login login, Route entity, Route data, Void extra, RedirectAttributes attributes, HttpServletRequest request)
             throws RedirectException {
         if (!login.siteManageable(entity.getSite()))
             throw new AccessDeniedException("你无权更改。");

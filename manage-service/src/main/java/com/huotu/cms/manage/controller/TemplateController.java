@@ -52,7 +52,7 @@ public class TemplateController extends CRUDController<Template, Long, String, S
 
 
     @Override
-    protected void prepareUpdate(Login login, Template entity, Template data, String extra, RedirectAttributes attributes)
+    protected void prepareUpdate(Login login, Template entity, Template data, String extra, RedirectAttributes attributes, HttpServletRequest request)
             throws RedirectException {
         try {
             commonService.updateImageFromTmp(data, 0, extra);

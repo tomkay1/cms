@@ -95,7 +95,7 @@ public class SiteController extends CRUDController<Site, Long, SiteController.Ab
 
 
     @Override
-    protected void prepareUpdate(Login login, Site entity, Site data, AboutNewSite extra, RedirectAttributes attributes)
+    protected void prepareUpdate(Login login, Site entity, Site data, AboutNewSite extra, RedirectAttributes attributes, HttpServletRequest request)
             throws RedirectException {
         if (!login.siteManageable(entity)) {
             throw new AccessDeniedException("您无权修改该网站。");

@@ -97,7 +97,7 @@ public abstract class ContentManageController<T extends AbstractContent, ED exte
     }
 
     @Override
-    protected T preparePersist(Login login, Site site, T data, ED extra, RedirectAttributes attributes)
+    protected T preparePersist(Login login, Site site, T data, ED extra, RedirectAttributes attributes, HttpServletRequest request)
             throws RedirectException {
         try {
             data.setCategory(categoryService.getCategoryByNameAndParent(site, extra.getCategoryName()
@@ -119,7 +119,7 @@ public abstract class ContentManageController<T extends AbstractContent, ED exte
     }
 
     @Override
-    protected void prepareUpdate(Login login, T entity, T data, ED extra, RedirectAttributes attributes) throws RedirectException {
+    protected void prepareUpdate(Login login, T entity, T data, ED extra, RedirectAttributes attributes, HttpServletRequest request) throws RedirectException {
         // 数据源不可更改
         if (!login.contentManageable(entity)) {
             throw new AccessDeniedException("无法访问");

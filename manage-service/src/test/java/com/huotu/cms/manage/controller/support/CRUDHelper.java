@@ -39,10 +39,8 @@ public class CRUDHelper {
         T randomValue = testInstance.randomValue();
         // 当前数据
         Collection<T> currentList = testInstance.list();
-
         page.refresh();
         page.assertNoDanger();
-
         AbstractCRUDPage<T> page2 = page.addEntityAndSubmit(randomValue, testInstance.customAddFunction());
         String error = testInstance.errorMessageAfterAdd(randomValue);
         if (error == null)
@@ -61,12 +59,10 @@ public class CRUDHelper {
 
         assertThat(testInstance.list().size())
                 .isGreaterThan(currentList.size());
-
         // 数据测试
         List<WebElement> list = page2.listTableRows();
         assertThat(list)
                 .hasSize(testInstance.list().size());
-
         for (T value : testInstance.list()) {
             WebElement rowElement = list.stream()
                     .filter(page2.findRow(value))
@@ -77,8 +73,6 @@ public class CRUDHelper {
             assertThat(rowElement)
                     .is(page2.rowCondition(value));
         }
-
-
         Collection<T> allList = testInstance.list();
         allList.removeAll(currentList);
         // 剩下的应该就是新增的元素了 如果存在多个 就表示这个单体数据测试无法进行
@@ -142,16 +136,12 @@ public class CRUDHelper {
                             assertThat(((Auditable) entity).getUpdateTime())
                                     .isNotNull();
                         }
-                        testInstance.assertCreation(entity, toModify);
-
+                        testInstance.assertUpdate(entity, toModify);
                     }
-
                 } catch (Throwable ex) {
                     editPage.printThisPage();
                     throw ex;
                 }
-
-
             }
 
         } else if (testInstance.modify()) {

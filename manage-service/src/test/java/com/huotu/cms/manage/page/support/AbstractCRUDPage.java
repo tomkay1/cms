@@ -49,6 +49,7 @@ public abstract class AbstractCRUDPage<T> extends AbstractContentPage {
         try {
             assertThat(getBody().isDisplayed())
                     .isTrue();
+            printThisPage();
         } catch (Throwable ex) {
             printThisPage();
             throw ex;

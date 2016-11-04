@@ -22,6 +22,7 @@ CRF = {};
 CRF.cssSelector = "[class*='article-content'],[class*='gallery-content']," +
     "[class*='link-content'],[class*='notice-content']," +
     "[class*='article-category'],[class*='gallery-category']," +
+    "[class*='mallProduct-category'],[class*='mallClass-category']," +
     "[class*='link-category'],[class*='notice-category']";
 
 /**
@@ -29,7 +30,7 @@ CRF.cssSelector = "[class*='article-content'],[class*='gallery-content']," +
  * @param str
  */
 CRF.interception = function (str) {
-    var pattern = /((article|gallery|link|notice)-(content|category))/g;
+    var pattern = /((article|gallery|link|notice|mallClass|mallProduct)-(content|category))/g;
     var matching = pattern.exec(str);
     return matching[0];
 };

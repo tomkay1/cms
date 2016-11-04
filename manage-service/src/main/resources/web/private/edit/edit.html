@@ -459,6 +459,7 @@
 <script src="../../public/assets/js/cms.widgets.js" ewp:src="/assets/js/cms.widgets.js"></script>
 <script src="../../public/assets/js/page/cms.editPage.js" ewp:src="/assets/js/page/cms.editPage.js"></script>
 <script src="../../public/assets/js/data/cms.dataHandle.js" ewp:src="/assets/js/data/cms.dataHandle.js"></script>
+<script src="../../public/js/cms.resource.finder.js" ewp:src="/js/cms.resource.finder.js"></script>
 <script src="../../public/assets/js/cms.widget-properties.js" ewp:src="/assets/js/cms.widget-properties.js"></script>
 <script src="../../public/assets/js/cms.layout-setting.js" ewp:src="/assets/js/cms.layout-setting.js"></script>
 <script th:inline="javascript">
@@ -492,6 +493,10 @@
             return testURI;
         return mangeUriRoot + encodeURIComponent(serial + '@' + CMSWidgets.siteId) + '/items2';
     };
+    CRF.siteId = CMSWidgets.siteId;
+    CRF.editInURI = CMSWidgets.editInURI;
+    CRF.contentURI = CMSWidgets.contentURI;
+    CRF.galleryItemsURI = CMSWidgets.galleryItemsURI;
 
 </script>
 </html>

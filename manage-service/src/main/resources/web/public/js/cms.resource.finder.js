@@ -242,7 +242,7 @@ $(function () {
     // 干好它该干的事儿
     $(document).on('content-changed', function (event, row) {
         //执行change
-        CRF.exec(CRF.currentObject._store.change, CRF.currentObject, row.serial);
+        CRF.exec(CRF.currentObject._store.change, CRF.currentObject, row);
         CRF.buildHtml(CRF.currentObject, CRF.currentObject._store.resourceName, row.serial);
         layer.close(CRF.iframeOpenId);
     });

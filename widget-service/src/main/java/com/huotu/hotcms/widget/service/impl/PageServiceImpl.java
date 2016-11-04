@@ -183,7 +183,7 @@ public class PageServiceImpl implements PageService {
 
     @Override
     public PageInfo getClosestContentPage(Category category, String path) throws PageNotFoundException {
-        PageInfo pageInfo = pageInfoRepository.findByPagePath(path);
+        PageInfo pageInfo = pageInfoRepository.findBySiteAndPagePath(CMSContext.RequestContext().getSite(), path);
         if (pageInfo != null && pageInfo.getCategory() != null && category != null && category.getId().equals(pageInfo.getCategory().getId())) {
             return pageInfo;
         }

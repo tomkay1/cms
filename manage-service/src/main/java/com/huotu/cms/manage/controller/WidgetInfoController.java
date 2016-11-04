@@ -263,7 +263,7 @@ public class WidgetInfoController
                         //如果控件分组就一个，那这个控件就是最新的
                         for (InstalledWidget installedWidget : installedWidgets1) {
 //                            if (installedWidget.getWidget().disabled()) {
-                                widgetModels.add(getWidgetModel(locale, installedWidget, false));
+                            widgetModels.add(getWidgetModel(locale, installedWidget, true));
 //                            }
                         }
                     }

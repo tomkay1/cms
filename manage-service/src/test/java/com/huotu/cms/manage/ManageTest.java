@@ -63,6 +63,7 @@ import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.PageElement;
 import com.huotu.hotcms.widget.page.PageLayout;
+import com.huotu.hotcms.widget.page.StyleSheet;
 import com.huotu.hotcms.widget.repository.PageInfoRepository;
 import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
 import com.huotu.hotcms.widget.service.PageService;
@@ -685,7 +686,15 @@ public abstract class ManageTest extends SpringWebTest {
         while (number-- > 0)
             pageElementList.add(randomLayout());
 
-        return new PageLayout(pageElementList.toArray(new Layout[pageElementList.size()]));
+        return new PageLayout(pageElementList.toArray(new Layout[pageElementList.size()]), randomStyleSheet());
+    }
+
+    private StyleSheet randomStyleSheet() {
+        if (random.nextBoolean())
+            return null;
+        StyleSheet styleSheet = new StyleSheet();
+        styleSheet.put("background-color", "#fff/transparent");
+        return styleSheet;
     }
 
     private PageElement randomComponent() throws IOException, FormatException {
@@ -734,6 +743,7 @@ public abstract class ManageTest extends SpringWebTest {
         int size = random.nextInt(3) + 1;
         //再决定分列式 比如 x:y:z
         layout.setValue(randomLayoutValue(size));
+        layout.setStyleSheet(randomStyleSheet());
 
         List<PageElement> pageElementList = new ArrayList<>();
 
@@ -794,7 +804,7 @@ public abstract class ManageTest extends SpringWebTest {
         Layout layout = new Layout();
         layout.setValue("12");
         layout.setParallelElements(new PageElement[]{component});
-        page.setLayout(new PageLayout(new Layout[]{layout}));
+        page.setLayout(new PageLayout(new Layout[]{layout}, randomStyleSheet()));
         updatePage(page);
     }
 

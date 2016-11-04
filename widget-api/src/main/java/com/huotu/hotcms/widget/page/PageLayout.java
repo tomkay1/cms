@@ -43,6 +43,8 @@ public class PageLayout implements Serializable {
     @JacksonXmlElementWrapper(useWrapping = false)
     private Layout[] root;
 
+    private StyleSheet styleSheet;
+
     /**
      * @param pageLayout 页面布局
      * @return 一个不可能为null的布局数组

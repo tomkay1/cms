@@ -14,13 +14,23 @@
  * }}
  */
 var LayoutSetting = {
+    rootStylesheet: null,
     targetElement: null,
     openFunc: function () {
         $('.pageHTML').on("click", ".layout-setting", function () {
-            // 重写当前存储的layout的设置按钮jQuery对象
-            LayoutSetting.targetElement = $(this).siblings('.view').children('.row');
+            var oForm = $('#layout-setting');
+            if ( $(this).attr('id') ){
+                LayoutSetting.targetElement = $(this).parent();
+                oForm.hide();
+            } else {
+                // 重写当前存储的layout的设置按钮jQuery对象
+                LayoutSetting.targetElement = $(this).siblings('.view').children('.row');
+                if(oForm.is(':hidden')) oForm.show();
+            }
+
             // 设置编辑区参数回显
             SetStyleSheet.setConfig(LayoutSetting.targetElement);
+
             $('.mask-backdrop').show();
             var ele = $('#configuration');
             ele.show();
@@ -55,7 +65,7 @@ var LayoutSetting = {
     },
     activeEffect: function () {
         $('.js-bg-position').find('li').click(function () {
-            $(this).addClass('active').siblings().removeClass('active');
+            $(this).toggleClass('active').siblings().removeClass('active');
         });
     },
     init: function () {
@@ -63,7 +73,7 @@ var LayoutSetting = {
         LayoutSetting.saveFunc();
         LayoutSetting.closeFunc();
         LayoutSetting.activeEffect();
-        $("#layout-setting").validate();
+        $('#layout-setting').validate();
     }
 };
 /**
@@ -102,6 +112,13 @@ var GetStyleSheet = {
             GetStyleSheet.distanceData(distanceData, 'padding'),
             GetStyleSheet.distanceData(distanceData, 'margin')
         );
+        if (ele.attr('id') && distanceData.is(':visible')) {
+            delete styleSheet['padding-top'];
+            delete styleSheet['padding-bottom'];
+            delete styleSheet['margin-top'];
+            delete styleSheet['margin-bottom'];
+        }
+        if (ele.attr('id')) LayoutSetting.rootStylesheet = styleSheet;
         ele.attr('data-stylesheet', JSON.stringify(styleSheet));
 
         GetStyleSheet.setStyle(ele, styleSheet);
@@ -171,8 +188,18 @@ var GetStyleSheet = {
         distanceData.find('input[name="marginTop"]').val('');
         distanceData.find('input[name="marginBottom"]').val('');
     },
+    removeStyle: function (ele) {
+        ele.css({
+            'background-color': '',
+            'background-repeat': '',
+            'background-size': '',
+            'background-position': ''
+        });
+    },
     setStyle: function (ele, data) {
-        var e = ele.children('.column');
+        var e = ele.children('.column').length ? ele.children('.column') : ele;
+
+        GetStyleSheet.removeStyle(e);
 
         $.each(data, function (k, v) {
             e.css(k,v);

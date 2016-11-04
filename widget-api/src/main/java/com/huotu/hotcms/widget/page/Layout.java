@@ -47,6 +47,8 @@ public class Layout implements PageElement {
      * @see #columns()
      */
     private String value;
+
+    private StyleSheet styleSheet;
 //
 //    /**
 //     * valued的split值决定有几个elements

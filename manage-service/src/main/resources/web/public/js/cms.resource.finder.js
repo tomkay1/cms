@@ -107,65 +107,85 @@ CRF.buildHtml = function (ele, resourceName, serial) {
         $(ele).html(contentHTML);
     }
 
-    if (!ele._store.name)
-        return;
-    var galleryItemAreaMatch = "[class*='gallery-item-area'][data-name='" + ele._store.name + "']";
-    var galleryItemArea = $(galleryItemAreaMatch, ele._store.root);
-    //先清理老数据
-    galleryItemArea.filter('.gallery-item-area-clone').remove();
-    //重新获取区域集合
-    galleryItemArea = $(galleryItemAreaMatch, ele._store.root);
-    if (galleryItemArea.size() > 0) {
-        galleryItemArea.each(function (index, area) {
-            // 此处area 是最原始的区域
-            $(area).hide();
-            // 寻找所有这个内容的item
-            // 哦 前提是内容已设置
+    // data._store.galleryItemsRender
+    if (resourceName == 'gallery') {
+        var r = ele._store.galleryItemsRender;
+        if (r) {
             if (serial) {
                 $.ajax({
                     url: CRF.galleryItemsURI(serial),
                     dataType: 'json',
                     success: function (data) {
-                        $.each(data, function (index, item) {
-                            //每一个item 应该是展示一个区域
-                            // deep clone
-                            var newArea = $(area).clone();
-                            // 身份资别
-                            newArea.addClass('gallery-item-area-clone');
-                            newArea.attr('galleryItemSerial', item.uuid);
-                            // 寻找里面的元素
-                            var replacer = function (text) {
-                                if (!text)
-                                    return text;
-                                text = text.replace(/!\{title}/g, item.name);
-                                text = text.replace(/!\{serial}/g, item.serial);
-                                text = text.replace(/!\{src}/g, item.thumbnailUrl);
-                                text = text.replace(/!\{url}/g, item.thumbnailUrl);
-                                return text;
-                            };
-
-                            newArea.contents().each(function (index, ele) {
-                                var eleJ = $(ele);
-                                // console.log(ele, eleJ.text(), ele.attributes);
-                                eleJ.text(replacer(eleJ.text()));
-                                if (ele.attributes) {
-                                    $.each(ele.attributes, function () {
-                                        if (this.specified) {
-                                            eleJ.attr(this.name, replacer(this.value));
-                                        }
-                                    });
-                                }
-                            });
-
-                            // 添加到原位置
-                            newArea.insertBefore(area);
-                            newArea.show();
-                        });
+                        CRF.exec(r, ele, data);
                     }
                 });
-
+            } else {
+                CRF.exec(r, ele);
             }
-        });
+        } else {
+
+            if (!ele._store.name)
+                return;
+            var galleryItemAreaMatch = "[class*='gallery-item-area'][data-name='" + ele._store.name + "']";
+            var galleryItemArea = $(galleryItemAreaMatch, ele._store.root);
+            //先清理老数据
+            galleryItemArea.filter('.gallery-item-area-clone').remove();
+            //重新获取区域集合
+            galleryItemArea = $(galleryItemAreaMatch, ele._store.root);
+            if (galleryItemArea.size() > 0) {
+                galleryItemArea.each(function (index, area) {
+                    // 此处area 是最原始的区域
+                    $(area).hide();
+                    // 寻找所有这个内容的item
+                    // 哦 前提是内容已设置
+                    if (serial) {
+                        $.ajax({
+                            url: CRF.galleryItemsURI(serial),
+                            dataType: 'json',
+                            success: function (data) {
+                                $.each(data, function (index, item) {
+                                    //每一个item 应该是展示一个区域
+                                    // deep clone
+                                    var newArea = $(area).clone();
+                                    // 身份资别
+                                    newArea.addClass('gallery-item-area-clone');
+                                    newArea.attr('galleryItemSerial', item.uuid);
+                                    // 寻找里面的元素
+                                    var replacer = function (text) {
+                                        if (!text)
+                                            return text;
+                                        text = text.replace(/!\{title}/g, item.name);
+                                        text = text.replace(/!\{serial}/g, item.serial);
+                                        text = text.replace(/!\{src}/g, item.thumbnailUrl);
+                                        text = text.replace(/!\{url}/g, item.thumbnailUrl);
+                                        return text;
+                                    };
+
+                                    newArea.contents().each(function (index, ele) {
+                                        var eleJ = $(ele);
+                                        // console.log(ele, eleJ.text(), ele.attributes);
+                                        eleJ.text(replacer(eleJ.text()));
+                                        if (ele.attributes) {
+                                            $.each(ele.attributes, function () {
+                                                if (this.specified) {
+                                                    eleJ.attr(this.name, replacer(this.value));
+                                                }
+                                            });
+                                        }
+                                    });
+
+                                    // 添加到原位置
+                                    newArea.insertBefore(area);
+                                    newArea.show();
+                                });
+                            }
+                        });
+
+                    }
+                });
+            }
+        }
+
     }
 
 };
@@ -180,9 +200,10 @@ CRF.init = function (root, config) {
     root = root || $(document);
     config = config || {};
 
-    var configGetter = function (ele, name) {
+    var configGetter = function (ele, name, configName) {
+        configName = configName || name;
         if (config[name])
-            return config[name];
+            return config[configName];
         return ele.attr('data-' + name);
     };
 
@@ -216,6 +237,7 @@ CRF.init = function (root, config) {
         data._store.change = configGetter(_data, 'change');
         data._store.serial = configGetter(_data, 'serial');
         data._store.name = configGetter(_data, 'name');
+        data._store.galleryItemsRender = configGetter(_data, 'gallery-items-render', 'galleryItemsRender');
 
         CRF.buildHtml(data, resourceName);
         // CMSWidgets.plugins.properties.util.getEleName(data);

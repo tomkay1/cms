@@ -104,7 +104,7 @@ public class CategoryPage extends AbstractCRUDPage<Category> {
 
             if (((MallClassCategory) category).getCategories() != null) {
                 for (Category c : ((MallClassCategory) category).getCategories()) {
-                    selectOption(form, "categories", c.getId() + "");
+                    inputSelect(form, "categories", c.getTitle() + "");
                 }
             }
         }

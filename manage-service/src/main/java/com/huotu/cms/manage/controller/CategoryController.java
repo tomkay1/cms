@@ -15,6 +15,7 @@ import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.converter.ContentTypeConverter;
 import com.huotu.hotcms.service.entity.*;
 import com.huotu.hotcms.service.entity.login.Login;
+import com.huotu.hotcms.service.repository.MallClassCategoryRepository;
 import com.huotu.hotcms.service.repository.MallProductCategoryRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.service.*;
@@ -55,6 +56,9 @@ public class CategoryController extends SiteManageController<Category, Long, Lon
     private ContentTypeConverter contentTypeConverter;
     @Autowired
     private MallProductCategoryRepository mallProductCategoryRepository;
+    @Autowired
+    private MallClassCategoryRepository mallClassCategoryRepository;
+
 
     @Override
     protected String resourceName(Locale locale) {
@@ -112,9 +116,9 @@ public class CategoryController extends SiteManageController<Category, Long, Lon
         } else if (data.getContentType() == ContentType.MallProduct) {
             MallProductCategory mallProductCategory = new MallProductCategory();
             String goodTitle = request.getParameter("goodTitle");
-            int salesCount = NumberUtils.parseNumber(request.getParameter("salesCount"), Integer.class);
-            double minPrice = NumberUtils.parseNumber(request.getParameter("minPrice"), Double.class);
-            double maxPrice = NumberUtils.parseNumber(request.getParameter("maxPrice"), Double.class);
+            Integer salesCount = request.getParameter("salesCount").equals("") ? null : NumberUtils.parseNumber(request.getParameter("salesCount"), Integer.class);
+            Double minPrice = request.getParameter("minPrice").equals("") ? null : NumberUtils.parseNumber(request.getParameter("minPrice"), Double.class);
+            Double maxPrice = request.getParameter("maxPrice").equals("") ? null : NumberUtils.parseNumber(request.getParameter("maxPrice"), Double.class);
             String mallCategoryId = request.getParameter("mallCategoryId");
             String mallBrands = request.getParameter("mallBrandId");
             String galleryId = request.getParameter("gallery");
@@ -154,11 +158,18 @@ public class CategoryController extends SiteManageController<Category, Long, Lon
             String categories = request.getParameter("categories");
             String recommendCategory = request.getParameter("recommendCategory");
             MallClassCategory mallClassCategory = new MallClassCategory();
+
             mallClassCategory.setContentType(data.getContentType());
             mallClassCategory.setParent(data.getParent());
             mallClassCategory.setName(data.getName());
             mallClassCategory.setSerial(data.getSerial());
             mallClassCategory.setSite(data.getSite());
+            if (extra != null) {
+                MallClassCategory mallClassCategory1 = mallClassCategoryRepository.findOne(extra);
+                mallClassCategory1.setParentFlag(true);
+                mallClassCategory.setParent(mallClassCategory1);
+
+            }
             List<MallProductCategory> list;
             if (categories != null && !categories.equals("")) {
                 list = new ArrayList<>();
@@ -196,9 +207,9 @@ public class CategoryController extends SiteManageController<Category, Long, Lon
         if (entity.getContentType() == ContentType.MallProduct) {
             MallProductCategory mallProductCategory = (MallProductCategory) entity;
             String goodTitle = request.getParameter("goodTitle");
-            int salesCount = NumberUtils.parseNumber(request.getParameter("salesCount"), Integer.class);
-            double minPrice = NumberUtils.parseNumber(request.getParameter("minPrice"), Double.class);
-            double maxPrice = NumberUtils.parseNumber(request.getParameter("maxPrice"), Double.class);
+            Integer salesCount = request.getParameter("salesCount").equals("") ? null : NumberUtils.parseNumber(request.getParameter("salesCount"), Integer.class);
+            Double minPrice = request.getParameter("minPrice").equals("") ? null : NumberUtils.parseNumber(request.getParameter("minPrice"), Double.class);
+            Double maxPrice = request.getParameter("maxPrice").equals("") ? null : NumberUtils.parseNumber(request.getParameter("maxPrice"), Double.class);
             String mallCategoryId = request.getParameter("mallCategoryId");
             String mallBrands = request.getParameter("mallBrandId");
             String galleryId = request.getParameter("gallery");

@@ -82,7 +82,6 @@ public class SiteController extends CRUDController<Site, Long, SiteController.Ab
             throw new AccessDeniedException("无法访问。");
         Owner owner = ownerRepository.getOne(login.currentOwnerId());
         data.setOwner(owner);
-
         data = siteService.newSite(extra.getDomains(), extra.getHomeDomain(), data, Locale.CHINA);
         try {
             commonService.updateImageFromTmp(data, 0, extra.getTmpLogoPath());

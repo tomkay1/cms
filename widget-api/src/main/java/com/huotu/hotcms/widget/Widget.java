@@ -256,7 +256,7 @@ public interface Widget {
      */
     default boolean disabled() {
         Site site = CMSContext.RequestContext().getSite();
-        return site.getSiteType().equals(supportedSiteType()) && site.getOwner().getCustomerId() == null;
+        return site.getSiteType().equals(supportedSiteType()) && site.getOwner().getCustomerId() != null;
     }
 
 

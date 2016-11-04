@@ -39,6 +39,7 @@ import com.huotu.hotcms.widget.page.Empty;
 import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.PageElement;
 import com.huotu.hotcms.widget.page.PageLayout;
+import com.huotu.hotcms.widget.page.StyleSheet;
 import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import com.huotu.hotcms.widget.servlet.CMSFilter;
@@ -172,13 +173,21 @@ public abstract class TestBase extends SpringWebTest {
         return component;
     }
 
+    protected StyleSheet randomStyleSheet() {
+        if (random.nextBoolean())
+            return null;
+        StyleSheet styleSheet = new StyleSheet();
+        styleSheet.put("background-color", "#fff/transparent");
+        return styleSheet;
+    }
+
     protected PageLayout randomPageLayout() throws IOException, FormatException {
         List<Layout> pageElementList = new ArrayList<>();
         int number = random.nextInt(4) + 1;//生成PageElement的随机个数
         while (number-- > 0)
             pageElementList.add(randomLayout());
 
-        return new PageLayout(pageElementList.toArray(new Layout[pageElementList.size()]));
+        return new PageLayout(pageElementList.toArray(new Layout[pageElementList.size()]), randomStyleSheet());
     }
 
     private Empty randomEmpty() {

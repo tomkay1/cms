@@ -270,7 +270,7 @@ public class WidgetFactoryServiceTest extends TestBase {
             component.setProperties(properties);
             layoutElement.setParallelElements(new PageElement[]{component});
 
-            pageInfo.setLayout(new PageLayout(new Layout[]{layoutElement}));
+            pageInfo.setLayout(new PageLayout(new Layout[]{layoutElement}, randomStyleSheet()));
             pageInfo = pageInfoRepository.saveAndFlush(pageInfo);
             PageModel pageModel = new PageModel();
             pageModel.setTitle("testPicCarousel");

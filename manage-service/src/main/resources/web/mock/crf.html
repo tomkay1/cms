@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+
+<!--
+  ~ 版权所有:杭州火图科技有限公司
+  ~ 地址:浙江省杭州市滨江区西兴街道阡陌路智慧E谷B幢4楼
+  ~
+  ~ (c) Copyright Hangzhou Hot Technology Co., Ltd.
+  ~ Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
+  ~ 2013-2016. All rights reserved.
+  -->
+<html xmlns:th="http://www.thymeleaf.org" xmlns:ewp="http://ewp.jiangcai.me" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
+    <meta name="author" content="Neo">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <title>CMS Resource Finder 测试页</title>
+
+    <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/font-awesome/4.6.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/jquery-ui/1.12.0/jquery-ui.min.css">
+
+    <link rel="stylesheet" href="../public/assets/css/edit.css" ewp:href="/assets/css/edit.css">
+    <link rel="stylesheet" href="../public/assets/css/widgets.css" ewp:href="/assets/css/widgets.css">
+    <link rel="stylesheet" href="../public/assets/css/mall.css" ewp:href="/assets/css/mall.css">
+
+    <link rel="stylesheet"
+          href="http://resali.huobanplus.com/cdn/jquery.dataTables/1.10.12/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/jquery-upload-file/4.0.10/css/uploadfile.css">
+    <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/zTree/3.5.24/css/metroStyle/metroStyle.css">
+    <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/swiper/3.3.1/css/swiper.min.css">
+    <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/spectrum/1.8.0/css/spectrum.css">
+
+    <!--[if lt IE 9]>
+    <script src="http://resali.huobanplus.com/cdn/bracket/js/html5shiv.js"></script>
+    <script src="http://resali.huobanplus.com/cdn/bracket/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+
+<h1>t1-选择文章内容<sub>没有使用任何额外技术</sub></h1>
+<span class="article-content"></span>
+
+<h1>t2-选择文章内容<sub>html定制化change</sub></h1>
+<span class="article-content" data-change="t2_change"></span>
+<script>
+    function t2_change(value) {
+        console.log(this);
+        alert('new value:' + value);
+    }
+</script>
+
+<h1>t3-选择文章内容<sub>html定制绘制</sub></h1>
+<span class="article-content" data-render="t3_render"></span>
+<script>
+    function t3_render() {
+        console.log(this);
+        return '我就是长得这样';
+    }
+</script>
+
+<h1>t4-选择图库内容<sub>&nbsp;</sub></h1>
+<span class="gallery-content" data-name="t4"></span>
+<div data-name="t4" class="gallery-item-area">
+    <!--img item-->
+    <img src="!{url}" title="是!{title}么?"/>
+    …………
+    可以加入更多!,
+    <!--如：img item 有链接的功能-->
+    <input type="url" name="linkUrl"/>
+
+</div>
+
+<script src="http://resali.huobanplus.com/cdn/jquery/2.2.4/jquery.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bootstrap/3.3.6/bootstrap.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/jquery-form/3.51/jquery.form.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-ui-1.10.3.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/layer/2.3/layer.js"></script>
+<script src="http://resali.huobanplus.com/cdn/jquery-upload-file/4.0.10/jquery.uploadfile.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/zTree/3.5.24/jquery.ztree.all.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/web-storage-cache/1.0.1/web-storage-cache.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/swiper/3.3.1/swiper.jquery.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/spectrum/1.8.0/spectrum.js"></script>
+<script src="http://resali.huobanplus.com/cdn/jquery.nicescroll/3.6.8/jquery.nicescroll.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/jquery.dataTables/1.10.12/jquery.dataTables.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/jquery.dataTables/1.10.12/dataTables.bootstrap.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/jquery-validation/1.15.0/jquery.validate.min.js"></script>
+
+<!--<script src="../public/assets/libs/jquery.htmlClean.js" ewp:src="/assets/libs/jquery.htmlClean.js"></script>-->
+<!--<script src="../public/assets/js/cms.addEdit.js" ewp:src="/assets/js/cms.addEdit.js"></script>-->
+<!--<script src="../public/assets/js/cms.addTree.js" ewp:src="/assets/js/cms.addTree.js"></script>-->
+<!--<script src="../public/assets/js/common.js" ewp:src="/assets/js/common.js"></script>-->
+<!--<script src="../public/assets/js/cms.widgets.js" ewp:src="/assets/js/cms.widgets.js"></script>-->
+<!--<script src="../public/assets/js/page/cms.editPage.js" ewp:src="/assets/js/page/cms.editPage.js"></script>-->
+<!--<script src="../public/assets/js/data/cms.dataHandle.js" ewp:src="/assets/js/data/cms.dataHandle.js"></script>-->
+<!--<script src="../public/assets/js/cms.widget-properties.js" ewp:src="/assets/js/cms.widget-properties.js"></script>-->
+<!--<script src="../public/assets/js/cms.layout-setting.js" ewp:src="/assets/js/cms.layout-setting.js"></script>-->
+<script src="../public/js/cms.resource.finder.js" ewp:src="/js/cms.resource.finder.js"></script>
+<script th:inline="javascript">
+    //    CMSWidgets.siteId = /*[[${pageInfo.site.siteId}]]*/ -999;
+    CRF.siteId = /*[[${pageInfo.site.siteId}]]*/ -999;
+
+    CRF.editInURI = function (resourceName, fixedType) {
+        var testURI = '../private/view/edit_in.html';
+        var mangeUriRoot = /*[[@{/manage/}]]*/ testURI;
+        if (mangeUriRoot == testURI)
+            return testURI;
+        var uri = mangeUriRoot + resourceName + "/editIn?siteId=" + CRF.siteId;
+        if (fixedType != null)
+            uri = uri + "&fixedType=" + fixedType;
+        return uri;
+    };
+
+    CRF.contentURI = function (resourceName, serial) {
+        var testURI = '../private/view/render.html';
+        var mangeUriRoot = /*[[@{/manage/}]]*/ testURI;
+        if (mangeUriRoot == testURI)
+            return testURI;
+        return mangeUriRoot + resourceName + "/render/" + encodeURIComponent(serial + '@' + CRF.siteId);
+    };
+
+    CRF.galleryItemsURI = function (serial) {
+        // 采用 SiteSerial 标准 serial@siteId
+        // encodeURIComponent
+        var testURI = 'galleryItem.json';
+        var mangeUriRoot = /*[[@{/manage/gallery/}]]*/ testURI;
+        if (mangeUriRoot == testURI)
+            return testURI;
+        return mangeUriRoot + encodeURIComponent(serial + '@' + CRF.siteId) + '/items2';
+    };
+
+</script>
+
+</body>
+</html>

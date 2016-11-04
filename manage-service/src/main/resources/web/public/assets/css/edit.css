@@ -811,3 +811,9 @@ div[id^="errorPlaceholder"] {
     color: #ea5342;
     border: 1px solid #ea5342;
 }
+/*Updata 11.3*/
+#js-global-setting {
+    right: 20px;
+    opacity: 1;
+    width: 80px;
+}

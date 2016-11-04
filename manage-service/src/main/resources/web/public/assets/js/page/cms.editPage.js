@@ -394,11 +394,11 @@ editPage.init = function () {
         updateOnImagesReady : true,
         loop: true
     });
-
-    $('.boxes').niceScroll({
-        cursorcolor:"#fff",
-        cursoropacitymax: 0.2
-    });
+    // 导致死循环的BUG
+    // $('.boxes').niceScroll({
+    //     cursorcolor:"#fff",
+    //     cursoropacitymax: 0.2
+    // });
 
     $('#widgetLists').on('click', '.group-header', function () {
         $(this).parent().toggleClass('active');

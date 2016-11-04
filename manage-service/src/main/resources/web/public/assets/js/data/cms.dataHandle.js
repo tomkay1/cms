@@ -32,6 +32,7 @@ var DataHandle = {
 
         });
         json.root = data;
+        json.styleSheet = LayoutSetting.rootStylesheet;
         return json;
     },
     traversalDOM2Json: function (elements) {
@@ -260,6 +261,8 @@ var CreatePage = {
     },
     createTopLayout: function (data) {
         var pageData = data.root;
+        // 存储获取的 CSS 参数
+        CreatePage.setRootStyle(data.styleSheet);
         var container = $('#pageHTML');
         $.each(pageData, function (i, v) {
             container.append(DOM.layout.join('\n'));
@@ -332,6 +335,15 @@ var CreatePage = {
 
         $.each(data, function (k, v) {
             e.css(k,v);
+        });
+    },
+    setRootStyle: function (data) {
+        $('#pageHTML').attr('data-stylesheet', JSON.stringify(data));
+
+        LayoutSetting.rootStylesheet = data;
+
+        $.each(data, function (k, v) {
+            $('#pageHTML').css(k,v);
         });
     },
     init: function (url) {

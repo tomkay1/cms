@@ -10,9 +10,16 @@
 package com.huotu.cms.manage.controller;
 
 import com.huotu.cms.manage.ManageTest;
+import com.huotu.hotcms.service.common.ContentType;
+import com.huotu.hotcms.service.common.LinkType;
 import com.huotu.hotcms.service.common.PageType;
+import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Owner;
+import com.huotu.hotcms.service.repository.CategoryRepository;
+import com.huotu.hotcms.service.service.CategoryService;
+import com.huotu.hotcms.service.service.LinkService;
 import com.huotu.hotcms.widget.Component;
 import com.huotu.hotcms.widget.ComponentProperties;
 import com.huotu.hotcms.widget.WidgetResolveService;
@@ -26,10 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -45,6 +49,12 @@ public class PreviewTest extends ManageTest {
     protected PageInfoRepository pageInfoRepository;
     @Autowired
     protected WidgetResolveService widgetResolveService;
+    @Autowired
+    private LinkService linkService;
+    @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private CategoryService categoryService;
 
     @Test
     @Transactional
@@ -52,6 +62,7 @@ public class PreviewTest extends ManageTest {
         // 创建一个站点
         Owner owner = randomOwner();
         Site site = randomSite(owner);
+        updateCMSContext(site);
 
         PageInfo anotherPage = new PageInfo();
         anotherPage.setPageType(PageType.Ordinary);
@@ -87,13 +98,14 @@ public class PreviewTest extends ManageTest {
 
         driver.get("http://localhost/?simulateSite=" + site.getSiteId());
 
-//        System.out.println(driver.getPageSource());
+        System.out.println(driver.getPageSource());
         assertThat(driver.getTitle())
                 .isEqualTo(indexPage.getTitle());
 
         // 找到那个链接然后点击它
         List<WebElement> links = driver.findElements(By.tagName("a"));
-        links.stream().filter((webElement -> webElement.getText().contains(linkName)))
+        links.stream()
+//                .filter((webElement -> webElement.getText().contains(linkName)))
                 .findFirst()
                 .orElseThrow(IllegalStateException::new)
                 .click();
@@ -104,22 +116,26 @@ public class PreviewTest extends ManageTest {
                 .isEqualTo(anotherPage.getTitle());
     }
 
-
     private void addLinkToPage(PageInfo page, String linkTitle, PageInfo toPage) throws IOException, FormatException {
+        Category category = randomCategoryData(toPage.getSite(), ContentType.Link);
+        categoryService.init(category);
+        category = categoryRepository.saveAndFlush(category);
+        // linkCategorySerial
+        Link link = new Link();
+        link.setCategory(category);
+        link.setPageInfoID(toPage.getId());
+        link.setLinkType(LinkType.page);
+        contentService.init(link);
+        linkService.save(link);
+
         String groupId = "com.huotu.hotcms.widget.friendshipLink";
         String widgetId = "friendshipLink";
         String version = "1.0-SNAPSHOT";
         Component component = makeComponent(groupId, widgetId, version);
 
         ComponentProperties properties = component.getProperties();
-        Map<String, Object> map = new HashMap<>();
-        List<Object> list = new ArrayList<>();
-        map.put("title", linkTitle);
-        map.put("url", "/" + toPage.getPagePath());
-        map.put("target", "_self");
-        list.add(map);
-        properties.put("linkList", list);
-        properties.put("styleTemplate", "html");
+
+        properties.put("linkCategorySerial", category.getSerial());
 
         updatePageElement(page, component);
     }

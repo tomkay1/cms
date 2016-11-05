@@ -168,8 +168,8 @@ public abstract class ManageTest extends SpringWebTest {
 //            ,
             new WidgetIdentifier("com.huotu.hotcms.widget.picCarousel",
                     "picCarousel", "1.0-SNAPSHOT")
-            , new WidgetIdentifier("com.huotu.hotcms.widget.productList",
-            "productList", "1.0-SNAPSHOT")
+//            , new WidgetIdentifier("com.huotu.hotcms.widget.productList",
+//            "productList", "1.0-SNAPSHOT")
             , new WidgetIdentifier("com.huotu.hotcms.widget.picBanner",
             "picBanner", "1.0-SNAPSHOT")
             , new WidgetIdentifier("com.huotu.hotcms.widget.friendshipLink",
@@ -776,6 +776,10 @@ public abstract class ManageTest extends SpringWebTest {
                 .andReturn().getResponse().getContentAsString();
 
         page.inputHidden(page.getForm(), name, path);
+    }
+
+    protected void updateCMSContext(Site site) {
+        CMSContext.PutContext(request, response, site);
     }
 
     /**

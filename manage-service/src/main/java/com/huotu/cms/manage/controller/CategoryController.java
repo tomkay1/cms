@@ -13,12 +13,20 @@ import com.huotu.cms.manage.controller.support.SiteManageController;
 import com.huotu.cms.manage.exception.RedirectException;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.converter.ContentTypeConverter;
-import com.huotu.hotcms.service.entity.*;
+import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.MallClassCategory;
+import com.huotu.hotcms.service.entity.MallProductCategory;
+import com.huotu.hotcms.service.entity.ProductCategory;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.repository.MallClassCategoryRepository;
 import com.huotu.hotcms.service.repository.MallProductCategoryRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
-import com.huotu.hotcms.service.service.*;
+import com.huotu.hotcms.service.service.CategoryService;
+import com.huotu.hotcms.service.service.GalleryService;
+import com.huotu.hotcms.service.service.MallService;
+import com.huotu.hotcms.service.service.RouteService;
+import com.huotu.hotcms.service.service.SiteService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +82,7 @@ public class CategoryController extends SiteManageController<Category, Long, Lon
 
     private void mallData(Site site, Model model) throws RedirectException {
         try {
-            if (site.getOwner().getCustomerId() != null) {
+            if (site.getOwner() != null && site.getOwner().getCustomerId() != null) {
                 model.addAttribute("categoryList", mallService.listCategories(site.getOwner().getCustomerId()));
                 model.addAttribute("brandList", mallService.listBrands(site.getOwner().getCustomerId()));
                 model.addAttribute("galleries", galleryService.listGalleries(site));

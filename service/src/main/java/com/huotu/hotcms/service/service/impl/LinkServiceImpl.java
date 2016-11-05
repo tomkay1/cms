@@ -49,6 +49,11 @@ public class LinkServiceImpl implements LinkService {
 
 
     @Override
+    public Link save(Link link) {
+        return linkRepository.save(link);
+    }
+
+    @Override
     public PageData<LinkCategory> getPage(long ownerId, String title, int page, int pageSize) {
         PageData<LinkCategory> data = null;
         Specification<Link> specification = AbstractContent.Specification(ownerId, title, false);

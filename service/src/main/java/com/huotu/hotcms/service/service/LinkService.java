@@ -14,14 +14,25 @@ import com.huotu.hotcms.service.model.LinkCategory;
 import com.huotu.hotcms.service.model.thymeleaf.foreach.NormalForeachParam;
 import com.huotu.hotcms.service.util.PageData;
 import org.springframework.data.domain.Page;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/**
- * Created by chendeyu on 2016/1/6.
- */
 public interface LinkService {
+
+    /**
+     * 保存一个链接
+     *
+     * @param link
+     * @return 已保存的链接实体
+     */
+    @Transactional
+    Link save(Link link);
+
     PageData<LinkCategory> getPage(long ownerId, String title, int page, int pageSize);
+
+    @Deprecated
+    @Transactional
     Boolean saveLink(Link link);
     Link findById(Long id);
 

@@ -70,7 +70,7 @@
                                 <option value="0"
                                         th:each="contentType:${T(com.huotu.hotcms.service.common.ContentType).values()}"
                                         th:if="${
-                                         site.owner.customerId!=null or (contentType.getCode()!=8 and contentType.getCode()!=9)
+                                         (site.owner!=null && site.owner.customerId!=null) or (contentType.getCode()!=8 and contentType.getCode()!=9)
                                          }"
                                         th:value="${contentType.getCode()}"
                                         th:text="${contentType.getValue().toString()}">文章

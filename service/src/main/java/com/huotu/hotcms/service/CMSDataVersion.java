@@ -16,5 +16,9 @@ package com.huotu.hotcms.service;
  */
 public enum CMSDataVersion {
     init,
-    siteRecommendDomain
+    siteRecommendDomain,
+    /**
+     * 1.1版本相关
+     */
+    version101000,
 }

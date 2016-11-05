@@ -12,12 +12,15 @@ package com.huotu.hotcms.service.service;
 import com.huotu.hotcms.service.CMSDataVersion;
 import com.huotu.hotcms.service.common.SiteType;
 import com.huotu.hotcms.service.entity.Host;
+import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.exception.NoSiteFoundException;
 import com.huotu.hotcms.service.repository.HostRepository;
 import com.huotu.hotcms.service.repository.OwnerRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
+import me.jiangcai.lib.jdbc.ConnectionConsumer;
+import me.jiangcai.lib.jdbc.ConnectionProvider;
 import me.jiangcai.lib.jdbc.JdbcService;
 import me.jiangcai.lib.upgrade.VersionUpgrade;
 import me.jiangcai.lib.upgrade.service.UpgradeService;
@@ -29,6 +32,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.Locale;
 
@@ -69,6 +74,19 @@ public class InitService {
             public void upgradeToVersion(CMSDataVersion version) throws Exception {
                 log.debug(" to version:" + version);
                 switch (version) {
+                    case version101000:
+                        jdbcService.runStandaloneJdbcWork(new ConnectionConsumer() {
+                            @Override
+                            public void accept(ConnectionProvider connection) throws SQLException {
+                                try (Statement statement = connection.getConnection().createStatement()) {
+                                    statement.execute("ALTER TABLE cms_link ADD linkType int(11) null");
+//                                    statement.execute("ALTER TABLE cms_link ADD linkType int(11) null");
+                                }
+                            }
+                        });
+//                        jdbcService.tableAlterAddColumn(Link.class,"linkType",null);
+                        jdbcService.tableAlterAddColumn(Link.class, "pageInfoID", null);
+                        break;
                     case siteRecommendDomain:
                         jdbcService.tableAlterAddColumn(Site.class, "recommendDomain", null);
                         break;

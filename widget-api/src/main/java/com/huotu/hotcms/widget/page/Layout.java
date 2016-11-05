@@ -17,6 +17,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
@@ -138,5 +140,11 @@ public class Layout implements PageElement {
      */
     public String[] columns() {
         return value.split(",");
+    }
+
+    @Override
+    public void printAttributesAsHtml(Writer writer) throws IOException {
+        if (styleSheet != null)
+            styleSheet.printHtml(writer);
     }
 }

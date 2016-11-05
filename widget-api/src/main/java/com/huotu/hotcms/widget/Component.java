@@ -20,6 +20,8 @@ import lombok.ToString;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Objects;
 
 
@@ -85,5 +87,10 @@ public class Component implements PageElement {
     @Override
     public int hashCode() {
         return Objects.hash(widgetIdentity, id, styleId, properties);
+    }
+
+    @Override
+    public void printAttributesAsHtml(Writer writer) throws IOException {
+        
     }
 }

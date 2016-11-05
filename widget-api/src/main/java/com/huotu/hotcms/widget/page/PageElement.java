@@ -14,7 +14,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.huotu.hotcms.widget.Component;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.io.Writer;
 
 /**
  * 页面元素,可能为一个组件或者为一个布局
@@ -31,4 +33,11 @@ import java.io.Serializable;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT, visible = true)
 public interface PageElement extends Serializable {
 
+    /**
+     * 将额外属性打印至html格式中
+     *
+     * @param writer dist
+     * @throws IOException
+     */
+    void printAttributesAsHtml(Writer writer) throws IOException;
 }

@@ -13,6 +13,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
+import java.io.IOException;
+import java.io.Writer;
+
 /**
  * 表示一个空的页面元素
  *
@@ -29,5 +32,10 @@ public class Empty implements PageElement {
     @Override
     public boolean equals(Object obj) {
         return obj != null && obj instanceof Empty;
+    }
+
+    @Override
+    public void printAttributesAsHtml(Writer writer) throws IOException {
+
     }
 }

@@ -9,7 +9,9 @@
 
 package com.huotu.hotcms.widget.page;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.io.Writer;
 import java.util.HashMap;
 
 /**
@@ -20,4 +22,20 @@ import java.util.HashMap;
 public class StyleSheet extends HashMap<String, String> implements Serializable {
 
     private static final long serialVersionUID = 6796996657086009834L;
+
+    /**
+     * 将样式描述到一个html里去
+     *
+     * @param writer dist
+     * @throws IOException
+     */
+    public void printHtml(Writer writer) throws IOException {
+        writer.append(" style=\"");
+        for (String name : keySet()) {
+            writer.append(name);
+            writer.append(":").append(get(name));
+            writer.append(";");
+        }
+        writer.append("\"");
+    }
 }

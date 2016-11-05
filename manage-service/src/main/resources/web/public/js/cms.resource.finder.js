@@ -103,7 +103,7 @@ CRF.buildHtml = function (ele, resourceName, serial) {
         //ajax请求：返回html代码展现在制定元素中去
         CRF.contentHTML(resourceName, serial, ele);
     } else {
-        var contentHTML = '<div>暂无数据</div>';
+        var contentHTML = '<div><button class="js-addEditBtn btn btn-default" type="button">选择数据</button></div>';
         $(ele).html(contentHTML);
     }
 
@@ -123,7 +123,6 @@ CRF.buildHtml = function (ele, resourceName, serial) {
                 CRF.exec(r, ele);
             }
         } else {
-
             if (!ele._store.name)
                 return;
             var galleryItemAreaMatch = "[class*='gallery-item-area'][data-name='" + ele._store.name + "']";

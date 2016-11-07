@@ -65,6 +65,7 @@ ul {
 }
 .product-categorys .categorys-dorpdown {
     width: 210px;
+    height: 44px;
     background: #b1191a;
 }
 .product-categorys .categorys-dorpdown .dt a {
@@ -121,17 +122,17 @@ ul {
     position: absolute;
     top: -1px;
     left: 210px;
-    width: 790px;
+    width: 791px;
     padding: 6px 0 0 20px;
     background: #f7f7f7;
     min-height: 408px;
     border: 1px solid #b61d1d;
     border-left: none;
+    box-sizing: content-box;
 }
 .product-categorys .categorys-dorpdown .dd .item .item-sub .item-channels {
     float: left;
     width: 770px;
-    height: 24px;
     padding: 20px 0 0 20px;
     background: #f7f7f7;
     overflow: hidden;
@@ -168,6 +169,7 @@ ul {
     padding: 6px 0 0 20px;
     background: #f7f7f7;
     min-height: 409px;
+    box-sizing: content-box;
 }
 .product-categorys .categorys-dorpdown .dd .item .item-sub .subitems dl {
     width: 100%;
@@ -433,10 +435,9 @@ ul {
 }
 .mall-brands {
     width: 1210px;
-    margin: 0 auto;
+    margin: 10px auto 0;
     background: #f7f7f7;
     padding: 13px 0;
-    margin-top: 10px;
 }
 .mall-brands .brands-list {
     display: -webkit-box;
@@ -591,17 +592,6 @@ ul {
 }
 .search-bar .hotwords a:first-of-type {
     color: #C81623;
-}
-.top-logo .logo {
-    padding: 20px 0;
-    width: 362px;
-    height: 60px;
-    z-index: 12;
-}
-.top-logo .logo a {
-    display: block;
-    width: 270px;
-    height: 60px;
 }
 .settle-up {
     width: 378px;

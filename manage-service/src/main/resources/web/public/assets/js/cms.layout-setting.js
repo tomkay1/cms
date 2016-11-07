@@ -96,7 +96,7 @@ var GetStyleSheet = {
     root: function (ele) {
         var root = $('#layoutStyleSheet');
         var bgColor = root.find('.js-bg-color');
-        var bgImg = root.find('.js-bg-img');
+        var bgImg = root.find('.gallery-item-area-clone');
         var bgRepeat = root.find('.js-bg-repeat');
         var bgSize = root.find('.js-bg-size');
         var bgPosition = root.find('.js-bg-position');
@@ -106,6 +106,7 @@ var GetStyleSheet = {
         var styleSheet = {};
         $.extend(styleSheet,
             GetStyleSheet.bgColor(bgColor),
+            GetStyleSheet.bgImage(bgImg),
             GetStyleSheet.bgRepeat(bgRepeat),
             GetStyleSheet.bgSize(bgSize),
             GetStyleSheet.bgPosition(bgPosition),
@@ -129,8 +130,13 @@ var GetStyleSheet = {
         else
             return {'background-color': 'transparent' };
     },
-    bgImage: function () {
-        
+    bgImage: function (ele) {
+        var bgImgae = {};
+        if(ele.length == 1) {
+            bgImgae['background-image'] = "url('"+ ele.find('img').attr('src') + "')";
+            bgImgae['background-information'] = ele.attr('data-galleryinfo');
+        }
+        return bgImgae;
     },
     bgRepeat: function (ele) {
         if(ele.val() !== '0') return {'background-repeat': ele.val()};
@@ -220,6 +226,12 @@ var SetStyleSheet = {
     setConfig: function (ele) {
         var styleSheet = ele.attr('data-stylesheet');
         var DATA = styleSheet ? JSON.parse(styleSheet) : styleSheet;
+
+        var self = $('.gallery-content');
+        if (!self.attr('data-name')) return true;
+        var galleryItemArea = self.parent().siblings('.gallery-item-area');
+        galleryItemArea.filter('.gallery-item-area-clone').remove();
+
         if (!DATA) {
             GetStyleSheet.clearConfig();
         } else {
@@ -240,7 +252,97 @@ var SetStyleSheet = {
         if(data['padding-bottom']) distanceData.find('input[name="paddingBottom"]').val(data['padding-bottom'].replace('px',''));
         if(data['margin-top']) distanceData.find('input[name="marginTop"]').val(data['margin-top'].replace('px',''));
         if(data['margin-bottom']) distanceData.find('input[name="marginBottom"]').val(data['margin-bottom'].replace('px',''));
+
+        SetStyleSheet.setImage(data['background-image'], data['background-information']);
+    },
+    setImage: function () {
+        if (arguments[0]) {
+            var self = $('.gallery-content');
+            var galleryItemArea = self.parent().siblings('.gallery-item-area');
+            var newArea = galleryItemArea.clone();
+            console.log(arguments[0]);
+            var img = arguments[0].match(/\'([^\']*)\'/)[1];
+            var info = arguments[1].split(',');
+            newArea.addClass('gallery-item-area-clone');
+            newArea.attr('galleryItemSerial', info[0]);
+            newArea.attr('data-galleryInfo', arguments[1]);
+
+            // 寻找里面的元素
+            var replacer = function (text) {
+                if (!text)
+                    return text;
+                text = text.replace(/!\{title}/g, info[1]);
+                text = text.replace(/!\{serial}/g, info[2]);
+                text = text.replace(/!\{src}/g, img);
+                text = text.replace(/!\{url}/g, img);
+                return text;
+            };
+
+            newArea.contents().each(function (index, ele) {
+                var eleJ = $(ele);
+
+                eleJ.text(replacer(eleJ.text()));
+                if (ele.attributes) {
+                    $.each(ele.attributes, function () {
+                        if (this.specified) {
+                            eleJ.attr(this.name, replacer(this.value));
+                        }
+                    });
+                }
+            });
+
+            // 添加到原位置
+            newArea.insertBefore(galleryItemArea);
+        }
     }
 };
 
+function galleryRender (data) {
+    var self = $(this);
+    if (!self.attr('data-name')) return true;
+
+    var galleryItemArea = self.parent().siblings('.gallery-item-area');
+    galleryItemArea.filter('.gallery-item-area-clone').remove();
+
+    if (galleryItemArea.size() > 0) {
+        galleryItemArea.each(function (index, area) {
+
+            if(data) {
+                var newArea = $(area).clone();
+                var item = data[0];
+                // 身份资别
+                newArea.addClass('gallery-item-area-clone');
+                newArea.attr('galleryItemSerial', item.uuid);
+                newArea.attr('data-galleryInfo', item.uuid+','+item.name+','+item.serial);
+                // 寻找里面的元素
+                var replacer = function (text) {
+                    if (!text)
+                        return text;
+                    text = text.replace(/!\{title}/g, item.name);
+                    text = text.replace(/!\{serial}/g, item.serial);
+                    text = text.replace(/!\{src}/g, item.thumbnailUrl);
+                    text = text.replace(/!\{url}/g, item.thumbnailUrl);
+                    return text;
+                };
+
+                newArea.contents().each(function (index, ele) {
+                    var eleJ = $(ele);
+                    // console.log(ele, eleJ.text(), ele.attributes);
+                    eleJ.text(replacer(eleJ.text()));
+                    if (ele.attributes) {
+                        $.each(ele.attributes, function () {
+                            if (this.specified) {
+                                eleJ.attr(this.name, replacer(this.value));
+                            }
+                        });
+                    }
+                });
+
+                // 添加到原位置
+                newArea.insertBefore(area);
+            }
+        });
+
+    }
+}
 LayoutSetting.init();

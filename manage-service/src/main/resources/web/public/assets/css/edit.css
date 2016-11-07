@@ -817,3 +817,10 @@ div[id^="errorPlaceholder"] {
     opacity: 1;
     width: 80px;
 }
+/*Updata 11.5*/
+.gallery-item-area {
+    display: none;
+}
+.gallery-item-area-clone {
+    display: block;
+}

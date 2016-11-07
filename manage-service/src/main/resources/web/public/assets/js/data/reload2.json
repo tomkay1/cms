@@ -51,7 +51,9 @@
       "layout": {
         "value": "12",
         "styleSheet": {
-          "background-color": "rgba(9, 94, 205, 0.616)"
+          "background-color": "rgba(9, 94, 205, 0.616)",
+          "background-image": "url('http://pic44.nipic.com/20140717/12432466_121957328000_2.jpg')",
+          "background-information": "foobar,中文名字也可以,1"
         },
         "elementGroups": [
           [
@@ -64,6 +66,8 @@
     }
   ],
   "styleSheet":{
-    "background-color":"rgba(0, 0, 0, 0.285)"
+    "background-color":"rgba(0, 0, 0, 0.285)",
+    "background-image": "url('http://dl.bizhi.sogou.com/images/2012/01/19/191337.png')",
+    "background-information": "foobar,中文名字也可以,1"
   }
 }

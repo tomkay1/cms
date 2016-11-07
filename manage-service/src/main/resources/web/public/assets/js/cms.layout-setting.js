@@ -231,6 +231,8 @@ var SetStyleSheet = {
 
         var self = $('.gallery-content');
         if (!self.attr('data-name')) return true;
+        self.empty().append('<div><button class="js-addEditBtn btn btn-default" type="button">选择数据</button></div>');
+
         var galleryItemArea = self.parent().siblings('.gallery-item-area');
         galleryItemArea.filter('.gallery-item-area-clone').remove();
 
@@ -262,7 +264,7 @@ var SetStyleSheet = {
             var self = $('.gallery-content');
             var galleryItemArea = self.parent().siblings('.gallery-item-area');
             var newArea = galleryItemArea.clone();
-            console.log(arguments[0]);
+
             var img = arguments[0].match(/\'([^\']*)\'/)[1];
             var info = arguments[1].split(',');
             newArea.addClass('gallery-item-area-clone');

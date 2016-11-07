@@ -64,9 +64,7 @@ var editFunc = {
             }
             
             $(this).parent().remove();
-            if (!$(".pageHTML .ncrow").length > 0) {
-                editFunc.clearDemo();
-            }
+
         });
     },
     settingElement: function () {

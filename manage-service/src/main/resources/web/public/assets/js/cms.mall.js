@@ -27,3 +27,9 @@ categorysItem.mouseenter(function () {
 }).mouseleave(function () {
     $(this).find('.item-sub').removeClass('show');
 });
+
+$('.mall-shortcut').find('.dorpdown').mouseenter(function () {
+    $(this).find('.content-list').show();
+}).mouseleave(function () {
+    $(this).find('.content-list').hide();
+});

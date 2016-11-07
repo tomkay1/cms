@@ -377,7 +377,7 @@ ul {
     float: left;
     height: 30px;
     padding: 0 2px;
-    line-height: 30px;
+    line-height: 28px;
 }
 .mall-shortcut .text-wrap {
     position: relative;
@@ -405,7 +405,7 @@ ul {
 }
 .mall-shortcut .content-list {
     padding: 10px 0 10px 10px;
-    width: 301px;
+    width: 320px;
     position: absolute;
     top: 30px;
     background: #fff;
@@ -435,10 +435,9 @@ ul {
 }
 .mall-brands {
     width: 1210px;
-    margin: 0 auto;
+    margin: 10px auto 0;
     background: #f7f7f7;
     padding: 13px 0;
-    margin-top: 10px;
 }
 .mall-brands .brands-list {
     display: -webkit-box;
@@ -555,14 +554,14 @@ ul {
 }
 .search-bar .search .text {
     float: left;
-    width: 446px;
-    height: 24px;
-    line-height: 24px;
+    width: 456px;
+    height: 36px;
+    line-height: 36px;
     color: #666;
     padding: 4px;
     margin-bottom: 4px;
     border-width: 2px 0 2px 2px;
-    border-color: #B61D1D;
+    border-color: #b6d1d1;
     border-style: solid;
     outline: 0;
     font-size: 14px;
@@ -615,6 +614,7 @@ ul {
     line-height: 34px;
     cursor: default;
     zoom: 1;
+    box-sizing: content-box;
 }
 .settle-up .settleup .ci-count {
     position: absolute;

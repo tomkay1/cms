@@ -228,7 +228,6 @@ public interface Widget {
                 getWebApplicationContext().getBean(cmsService);
     }
 
-
     /**
      * 默认实现是返回null
      *
@@ -237,15 +236,6 @@ public interface Widget {
     default PageType supportedPageType() {
         return null;
     }
-
-//    /**
-//     * 默认实现是返回null
-//     *
-//     * @return 支持的页面类型, 如果null表示支持所有页面类型
-//     */
-//    default SiteType supportedSiteType() {
-//        return SiteType.SITE_PC_WEBSITE;
-//    }
 
     /**
      * 判断是否是商城用户

@@ -128,12 +128,7 @@ public class Site implements Auditable, Enabled, ImagesOwner {
      */
     @Column(name = "updateTime")
     private LocalDateTime updateTime;
-//    /**
-//     * TODO delete?
-//     * 网站类型(pc 商城or pc shop)
-//     */
-//    @Column(name = "siteType")
-//    private SiteType siteType;
+
     /**
      * 所属地区
      */

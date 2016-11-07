@@ -105,28 +105,43 @@ public class PreviewTest extends ManageTest {
         // 找到那个链接然后点击它
         List<WebElement> links = driver.findElements(By.tagName("a"));
         links.stream()
-//                .filter((webElement -> webElement.getText().contains(linkName)))
                 .findFirst()
                 .orElseThrow(IllegalStateException::new)
                 .click();
 
-//        System.out.println(driver.getPageSource());
+        System.out.println(driver.getPageSource());
 
         assertThat(driver.getTitle())
                 .isEqualTo(anotherPage.getTitle());
     }
 
+    /**
+     * 添加一个链接到page,点击它可以到达toPage
+     *
+     * @param page
+     * @param linkTitle
+     * @param toPage
+     * @throws IOException
+     * @throws FormatException
+     */
     private void addLinkToPage(PageInfo page, String linkTitle, PageInfo toPage) throws IOException, FormatException {
         Category category = randomCategoryData(toPage.getSite(), ContentType.Link);
         categoryService.init(category);
         category = categoryRepository.saveAndFlush(category);
+
+        Category category1 = randomCategoryData(toPage.getSite(), ContentType.Link);
+        categoryService.init(category1);
+        category1.setParent(category);
+        category1 = categoryRepository.saveAndFlush(category1);
         // linkCategorySerial
         Link link = new Link();
-        link.setCategory(category);
+        link.setCategory(category1);
+        link.setTitle(linkTitle);
         link.setPageInfoID(toPage.getId());
         link.setLinkType(LinkType.page);
         contentService.init(link);
         linkService.save(link);
+
 
         String groupId = "com.huotu.hotcms.widget.friendshipLink";
         String widgetId = "friendshipLink";
@@ -136,7 +151,6 @@ public class PreviewTest extends ManageTest {
         ComponentProperties properties = component.getProperties();
 
         properties.put("linkCategorySerial", category.getSerial());
-
         updatePageElement(page, component);
     }
 

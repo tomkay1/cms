@@ -11,7 +11,6 @@ package com.huotu.hotcms.widget.service.impl;
 
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.common.PageType;
-import com.huotu.hotcms.service.common.SiteType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Site;
@@ -233,7 +232,6 @@ public class WidgetFactoryServiceTest extends TestBase {
         Site site = new Site();
         site.setOwner(owner);
         site.setName(UUID.randomUUID().toString());
-        site.setSiteType(SiteType.SITE_PC_WEBSITE);
         site.setTitle(UUID.randomUUID().toString());
         site.setCreateTime(LocalDateTime.now());
         site.setEnabled(true);

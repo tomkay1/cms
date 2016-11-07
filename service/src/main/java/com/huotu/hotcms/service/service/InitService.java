@@ -76,15 +76,17 @@ public class InitService {
                     case version101000:
                         jdbcService.runStandaloneJdbcWork(new ConnectionConsumer() {
                             @Override
-                            public void accept(ConnectionProvider connection) throws SQLException {
+                            public void accept(ConnectionProvider connection) {
                                 try (Statement statement = connection.getConnection().createStatement()) {
                                     statement.execute("ALTER TABLE cms_link ADD linkType int(11) null");
 //                                    statement.execute("ALTER TABLE cms_link ADD linkType int(11) null");
+                                    jdbcService.tableAlterAddColumn(Link.class, "pageInfoID", null);
+                                } catch (SQLException | NoSuchFieldException e) {
+                                    log.error(e.getMessage());
                                 }
                             }
                         });
 //                        jdbcService.tableAlterAddColumn(Link.class,"linkType",null);
-                        jdbcService.tableAlterAddColumn(Link.class, "pageInfoID", null);
                         break;
                     case siteRecommendDomain:
                         jdbcService.tableAlterAddColumn(Site.class, "recommendDomain", null);

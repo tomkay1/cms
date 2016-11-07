@@ -272,8 +272,8 @@ ul {
     border-left: solid 1px #c81623;
     border-right: solid 1px #c81623;
     border-top: solid 3px #c81623;
-    height: 33px;
-    line-height: 30px;
+    height: 35px;
+    line-height: 32px;
     color: #c81623;
     text-indent: 1px;
 }
@@ -283,7 +283,7 @@ ul {
     top: 37px;
     left: 0;
     width: 880px;
-    height: 476px;
+    height: 475px;
     overflow: hidden;
     box-sizing: border-box;
 }

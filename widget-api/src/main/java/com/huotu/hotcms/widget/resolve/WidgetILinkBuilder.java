@@ -11,11 +11,8 @@ import org.unbescape.uri.UriEscape;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.lang.reflect.Field;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -287,6 +284,9 @@ public class WidgetILinkBuilder extends AbstractLinkBuilder {
          * templates, parameters, URL fragments...
          */
         StringBuilder linkBase = new StringBuilder();
+        /**
+         * lhx add
+         */
         Pattern pattern = Pattern.compile("\\$\\{.*?\\}");
         Matcher matcher = pattern.matcher(base);
         if (matcher.find())
@@ -294,7 +294,20 @@ public class WidgetILinkBuilder extends AbstractLinkBuilder {
                 if (!s.equals("") && s.startsWith("${") && s.endsWith("}")) {
                     s = s.replace("${", "");
                     s = s.replace("}", "");
-                    linkBase.append(context.getVariable(s));
+                    String[] names = s.split("\\.");
+                    if (names.length > 1) {
+                        Object obj = context.getVariable(names[0]);
+                        Class c = obj.getClass();
+                        try {
+                            Field field = c.getDeclaredField(names[1]);
+                            field.setAccessible(true);
+                            linkBase.append(field.get(obj));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        linkBase.append(context.getVariable(s));
+                    }
                 } else {
                     linkBase.append(s);
                 }
@@ -303,15 +316,6 @@ public class WidgetILinkBuilder extends AbstractLinkBuilder {
             linkBase.append(base);
 
 
-//            String source = "/${http://www.afasdfasf}/jj/${http://www.afasdfasf}/jj/${http://www.afasdfasf}/jj/${http://www.afasdfasf}/jj";
-//            String patten = "\\$\\{.*?\\}";
-//
-//            Pattern r = Pattern.compile(patten);
-//            Matcher m = r.matcher(source);
-//
-//            while (m.find()) {
-//                System.out.println(source.substring(m.start() + 2, m.end() - 1));
-//            }
 
         /*
          * Compute URL fragments (selectors after '#') so that they can be output at the end of

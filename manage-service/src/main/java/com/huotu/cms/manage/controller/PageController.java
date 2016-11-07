@@ -104,6 +104,7 @@ public class PageController {
                 toModel(layout);
             }
             pageModel.setRoot(pageInfo.getLayout().getRoot());
+            pageModel.setStyleSheet(pageInfo.getLayout().getStyleSheet());
         }
         return pageModel;
     }

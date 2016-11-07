@@ -152,9 +152,11 @@ public class PageServiceImpl implements PageService {
             info.setResourceKey(resourceKey);
         }
 
-
-        if (model != null)//如果没有传model过来 不应该改变布局
+        if (model != null) {
+            //如果没有传model过来 不应该改变布局
             info.setLayout(PageLayout.FromWeb(PageLayout.NoNullLayout(model)));
+            info.getLayout().setStyleSheet(model.getStyleSheet());
+        }
 
         if (!preview)
             info = pageInfoRepository.saveAndFlush(info);

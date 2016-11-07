@@ -74,6 +74,7 @@ public class Layout implements PageElement {
         Layout value = new Layout();
         value.value = layout.value;
         value.elementGroups = new PageElement[value.columns().length][];
+        value.styleSheet = layout.styleSheet;
         for (int i = 0; i < value.elementGroups.length; i++) {
             //检测输入方是否输入了足够的数据
             PageElement[] newGroup;
@@ -127,12 +128,13 @@ public class Layout implements PageElement {
         if (!(o instanceof Layout)) return false;
         Layout layout = (Layout) o;
         return Objects.equals(value, layout.value) &&
-                Arrays.deepEquals(elementGroups, layout.elementGroups);
+                Arrays.deepEquals(elementGroups, layout.elementGroups) &&
+                Objects.equals(styleSheet, layout.styleSheet);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(value, elementGroups);
+        return Objects.hash(value, elementGroups, styleSheet);
     }
 
     /**

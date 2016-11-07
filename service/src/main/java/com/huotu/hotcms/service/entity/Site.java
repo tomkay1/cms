@@ -102,24 +102,28 @@ public class Site implements Auditable, Enabled, ImagesOwner {
     @Lob
     private String copyright;
     /**
+     * TODO delete?
      * 是否自定义模板
      * ? 做什么用?
      */
     @Column(name = "custom")
     private boolean custom = false;
     /**
+     * TODO delete?
      * 自定义模板根路径
      * ? 做什么用?
      */
     @Column(name = "customViewUrl")
     private String customTemplateUrl;
     /**
+     * TODO delete?
      * 站点是否个性化
      * ? 做什么用?
      */
     @Column(name = "personalise")
     private boolean personalise;
     /**
+     * TODO delete?
      * 资源根路径(可以CDN方式读取缓存)
      * ? 做什么用?
      */
@@ -136,6 +140,7 @@ public class Site implements Auditable, Enabled, ImagesOwner {
     @Column(name = "updateTime")
     private LocalDateTime updateTime;
     /**
+     * TODO delete?
      * 网站类型(pc 商城or pc shop)
      */
     @Column(name = "siteType")

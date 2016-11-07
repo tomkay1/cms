@@ -18,3 +18,12 @@ $('.recommend-list').find('.swiper-container').swiper({
     observeParents: true,
     updateOnImagesReady : true
 });
+
+// 添加菜单交互
+var categorysItem = $('.categorys-dorpdown').find('.item');
+
+categorysItem.mouseenter(function () {
+    $(this).find('.item-sub').addClass('show');
+}).mouseleave(function () {
+    $(this).find('.item-sub').removeClass('show');
+});

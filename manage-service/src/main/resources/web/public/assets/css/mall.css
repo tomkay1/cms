@@ -435,9 +435,10 @@ ul {
 }
 .mall-brands {
     width: 1210px;
-    margin: 10px auto 0;
+    margin: 0 auto;
     background: #f7f7f7;
     padding: 13px 0;
+    margin-top: 10px;
 }
 .mall-brands .brands-list {
     display: -webkit-box;
@@ -719,7 +720,7 @@ ul {
     border-top: 1px solid #C81623;
 }
 .mall-guess ul {
-    height: 210px;
+    height: 225px;
     padding-top: 20px;
     overflow: hidden;
 }

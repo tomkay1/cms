@@ -235,9 +235,9 @@ public class WidgetInfoController
                         return;
                     if (identifier == null) {
                         for (InstalledWidget installedWidget : installedWidgets1) {
-//                            if (installedWidget.getWidget().disabled()) {
+                            if (installedWidget.getWidget().disabled()) {
                                 widgetModels.add(getWidgetModel(locale, installedWidget, false));
-//                            }
+                            }
                         }
                         return;
                     }
@@ -248,23 +248,23 @@ public class WidgetInfoController
                                 .sorted((o1, o2) -> new DefaultArtifactVersion(o2.getWidget().version())
                                         .compareTo(new DefaultArtifactVersion(o1.getWidget().version())))
                                 .findFirst().orElse(null);
-//                        if (best.getWidget().disabled()) {
+                        if (best.getWidget().disabled()) {
                             widgetModels.add(getWidgetModel(locale, best, true));
-//                        }
+                        }
                         //设置最新的控件
                         //将源列表控件最新的删除  将不是最新的也添加进去
                         installedWidgets1.remove(best);
                         for (InstalledWidget installedWidget : installedWidgets1) {
-//                            if (installedWidget.getWidget().disabled()) {
+                            if (installedWidget.getWidget().disabled()) {
                                 widgetModels.add(getWidgetModel(locale, installedWidget, false));
-//                            }
+                            }
                         }
                     } else {
                         //如果控件分组就一个，那这个控件就是最新的
                         for (InstalledWidget installedWidget : installedWidgets1) {
-//                            if (installedWidget.getWidget().disabled()) {
+                            if (installedWidget.getWidget().disabled()) {
                             widgetModels.add(getWidgetModel(locale, installedWidget, true));
-//                            }
+                            }
                         }
                     }
                 }));

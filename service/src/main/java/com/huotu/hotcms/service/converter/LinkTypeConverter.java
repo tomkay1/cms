@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * @author CJ
+ * @since 1.1.0
  */
 @Component
 public class LinkTypeConverter extends CommonEnumConverter<LinkType> {

@@ -12,6 +12,7 @@ import java.util.List;
  * 商城产品数据源
  * 可以以此过滤一批商品，而且这个过程可以再来。
  * Created by lhx on 2016/9/28.
+ * @since 1.1.0
  */
 @Entity
 @Table(name = "cms_mall_product_category")

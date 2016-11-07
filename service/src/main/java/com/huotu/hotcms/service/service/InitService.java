@@ -10,7 +10,6 @@
 package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.CMSDataVersion;
-import com.huotu.hotcms.service.common.SiteType;
 import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Link;
 import com.huotu.hotcms.service.entity.Site;
@@ -110,7 +109,7 @@ public class InitService {
             site.setCreateTime(LocalDateTime.now());
             site.setName("本地站点");
             site.setTitle("标题是什么");
-            site.setSiteType(SiteType.SITE_PC_WEBSITE);
+//            site.setSiteType(SiteType.SITE_PC_WEBSITE);
 
             siteService.newSite(new String[]{"localhost", "cms." + configService.getMallDomain()}, "localhost", site
                     , Locale.CHINA);

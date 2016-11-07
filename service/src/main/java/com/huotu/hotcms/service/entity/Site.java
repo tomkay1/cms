@@ -12,23 +12,12 @@ package com.huotu.hotcms.service.entity;
 import com.huotu.hotcms.service.Auditable;
 import com.huotu.hotcms.service.Enabled;
 import com.huotu.hotcms.service.ImagesOwner;
-import com.huotu.hotcms.service.common.SiteType;
 import com.huotu.hotcms.service.entity.login.Owner;
 import lombok.Getter;
 import lombok.Setter;
 import me.jiangcai.lib.resource.service.ResourceService;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
@@ -139,12 +128,12 @@ public class Site implements Auditable, Enabled, ImagesOwner {
      */
     @Column(name = "updateTime")
     private LocalDateTime updateTime;
-    /**
-     * TODO delete?
-     * 网站类型(pc 商城or pc shop)
-     */
-    @Column(name = "siteType")
-    private SiteType siteType;
+//    /**
+//     * TODO delete?
+//     * 网站类型(pc 商城or pc shop)
+//     */
+//    @Column(name = "siteType")
+//    private SiteType siteType;
     /**
      * 所属地区
      */
@@ -189,13 +178,12 @@ public class Site implements Auditable, Enabled, ImagesOwner {
                 Objects.equals(customTemplateUrl, site.customTemplateUrl) &&
                 Objects.equals(createTime, site.createTime) &&
                 Objects.equals(updateTime, site.updateTime) &&
-                Objects.equals(resourceUrl, site.resourceUrl) &&
-                siteType == site.siteType;
+                Objects.equals(resourceUrl, site.resourceUrl);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(siteId, enabled, name, title, keywords, description, logoUri, copyright, custom, customTemplateUrl, personalise, createTime, updateTime, deleted, resourceUrl, siteType);
+        return Objects.hash(siteId, enabled, name, title, keywords, description, logoUri, copyright, custom, customTemplateUrl, personalise, createTime, updateTime, deleted, resourceUrl);
     }
 
     @Override

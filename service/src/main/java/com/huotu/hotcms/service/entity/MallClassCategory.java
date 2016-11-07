@@ -23,6 +23,7 @@ import java.util.List;
  * 商城类目归纳数据源
  * 可以以此过滤一批商城类目，而且这个过程可以再来。
  * Created by lhx on 2016/9/29.
+ * @since 1.1.0
  */
 @Entity
 @Table(name = "cms_mall_class_category")

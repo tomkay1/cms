@@ -10,8 +10,6 @@
 package com.huotu.hotcms.widget;
 
 import com.huotu.hotcms.service.common.PageType;
-import com.huotu.hotcms.service.common.SiteType;
-import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.springframework.core.io.ClassPathResource;
@@ -240,23 +238,22 @@ public interface Widget {
         return null;
     }
 
-    /**
-     * 默认实现是返回null
-     *
-     * @return 支持的页面类型, 如果null表示支持所有页面类型
-     */
-    default SiteType supportedSiteType() {
-        return SiteType.SITE_PC_WEBSITE;
-    }
+//    /**
+//     * 默认实现是返回null
+//     *
+//     * @return 支持的页面类型, 如果null表示支持所有页面类型
+//     */
+//    default SiteType supportedSiteType() {
+//        return SiteType.SITE_PC_WEBSITE;
+//    }
 
     /**
      * 判断是否是商城用户
-     *
+     * @since 1.1.0
      * @return
      */
     default boolean disabled() {
-        Site site = CMSContext.RequestContext().getSite();
-        return site.getSiteType().equals(supportedSiteType()) && site.getOwner().getCustomerId() != null;
+        return true;
     }
 
 

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * @author CJ
+ * @version 1.1.0
  */
 @Component
 public class SiteTypeConverter extends CommonEnumConverter<SiteType> {

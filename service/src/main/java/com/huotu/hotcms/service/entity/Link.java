@@ -46,17 +46,24 @@ public class Link extends AbstractContent implements ImagesOwner {
     @Column(name = "linkUrl", length = 200)
     private String linkUrl;
 
+    /**
+     * 支持链接到内部页面
+     *
+     * @since 1.1.0
+     */
     @Column(name = "linkType")
     private LinkType linkType;
 
     /**
      * pageInfo 的id 可以为null,由于前期设计pageInfo在widget-API 改造代价太大，暂定ID，此处不太完美，请忽略
+     * @since 1.1.0
      */
     @Column(name = "pageInfoID")
     private Long pageInfoID;
 
     /**
      * 冗余字段页面的pagePath;
+     * @since 1.1.0
      */
     @Transient
     private String pagePath;

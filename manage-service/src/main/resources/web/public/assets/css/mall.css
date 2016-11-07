@@ -65,6 +65,7 @@ ul {
 }
 .product-categorys .categorys-dorpdown {
     width: 210px;
+    height: 44px;
     background: #b1191a;
 }
 .product-categorys .categorys-dorpdown .dt a {
@@ -121,17 +122,17 @@ ul {
     position: absolute;
     top: -1px;
     left: 210px;
-    width: 790px;
+    width: 791px;
     padding: 6px 0 0 20px;
     background: #f7f7f7;
     min-height: 408px;
     border: 1px solid #b61d1d;
     border-left: none;
+    box-sizing: content-box;
 }
 .product-categorys .categorys-dorpdown .dd .item .item-sub .item-channels {
     float: left;
     width: 770px;
-    height: 24px;
     padding: 20px 0 0 20px;
     background: #f7f7f7;
     overflow: hidden;
@@ -168,6 +169,7 @@ ul {
     padding: 6px 0 0 20px;
     background: #f7f7f7;
     min-height: 409px;
+    box-sizing: content-box;
 }
 .product-categorys .categorys-dorpdown .dd .item .item-sub .subitems dl {
     width: 100%;
@@ -270,8 +272,8 @@ ul {
     border-left: solid 1px #c81623;
     border-right: solid 1px #c81623;
     border-top: solid 3px #c81623;
-    height: 33px;
-    line-height: 30px;
+    height: 35px;
+    line-height: 32px;
     color: #c81623;
     text-indent: 1px;
 }
@@ -281,7 +283,7 @@ ul {
     top: 37px;
     left: 0;
     width: 880px;
-    height: 476px;
+    height: 475px;
     overflow: hidden;
     box-sizing: border-box;
 }
@@ -375,7 +377,7 @@ ul {
     float: left;
     height: 30px;
     padding: 0 2px;
-    line-height: 30px;
+    line-height: 28px;
 }
 .mall-shortcut .text-wrap {
     position: relative;
@@ -403,7 +405,7 @@ ul {
 }
 .mall-shortcut .content-list {
     padding: 10px 0 10px 10px;
-    width: 301px;
+    width: 320px;
     position: absolute;
     top: 30px;
     background: #fff;
@@ -433,10 +435,9 @@ ul {
 }
 .mall-brands {
     width: 1210px;
-    margin: 0 auto;
+    margin: 10px auto 0;
     background: #f7f7f7;
     padding: 13px 0;
-    margin-top: 10px;
 }
 .mall-brands .brands-list {
     display: -webkit-box;
@@ -553,14 +554,14 @@ ul {
 }
 .search-bar .search .text {
     float: left;
-    width: 446px;
-    height: 24px;
-    line-height: 24px;
+    width: 456px;
+    height: 36px;
+    line-height: 36px;
     color: #666;
     padding: 4px;
     margin-bottom: 4px;
     border-width: 2px 0 2px 2px;
-    border-color: #B61D1D;
+    border-color: #b6d1d1;
     border-style: solid;
     outline: 0;
     font-size: 14px;
@@ -592,17 +593,6 @@ ul {
 .search-bar .hotwords a:first-of-type {
     color: #C81623;
 }
-.top-logo .logo {
-    padding: 20px 0;
-    width: 362px;
-    height: 60px;
-    z-index: 12;
-}
-.top-logo .logo a {
-    display: block;
-    width: 270px;
-    height: 60px;
-}
 .settle-up {
     width: 378px;
 }
@@ -624,6 +614,7 @@ ul {
     line-height: 34px;
     cursor: default;
     zoom: 1;
+    box-sizing: content-box;
 }
 .settle-up .settleup .ci-count {
     position: absolute;
@@ -729,7 +720,7 @@ ul {
     border-top: 1px solid #C81623;
 }
 .mall-guess ul {
-    height: 210px;
+    height: 225px;
     padding-top: 20px;
     overflow: hidden;
 }

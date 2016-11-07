@@ -53,6 +53,8 @@ var LayoutSetting = {
         $('#l-cancelBtn').click(function () {
             LayoutSetting.targetElement = null;
             editFunc.closeFunc();
+            $('#layout-btnGroup').hide();
+            $('#data-btnGroup').show();
         });
     },
     saveFunc: function () {

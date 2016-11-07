@@ -9,6 +9,7 @@
 
 package com.huotu.cms.manage.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.cms.manage.ManageTest;
 import com.huotu.hotcms.service.entity.Site;
@@ -22,6 +23,7 @@ import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.PageElement;
 import com.huotu.hotcms.widget.page.PageLayout;
 import com.huotu.hotcms.widget.page.PageModel;
+import com.huotu.hotcms.widget.page.StyleSheet;
 import me.jiangcai.lib.resource.Resource;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
@@ -36,6 +38,8 @@ import org.springframework.util.StreamUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -177,6 +181,38 @@ public class PageControllerTest extends ManageTest {
     }
 
     @Test
+    public void model() throws JsonProcessingException {
+        Supplier<StyleSheet> styleSheetSupplier = () -> {
+            StyleSheet styleSheet = new StyleSheet();
+            styleSheet.put("test", UUID.randomUUID().toString());
+            return styleSheet;
+        };
+        PageModel model = new PageModel();
+//        model.setRoot(page.getRoot());
+        model.setRoot(new Layout[]{
+                new Layout()
+        });
+
+        model.getRoot()[0].setValue("1");
+        model.getRoot()[0].setStyleSheet(styleSheetSupplier.get());
+
+        model.setTitle(UUID.randomUUID().toString());
+        model.setStyleSheet(styleSheetSupplier.get());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String pageJson = objectMapper.writeValueAsString(model);
+        System.out.println(pageJson);
+    }
+
+    private StyleSheet randomStyleSheet() {
+//        if (random.nextBoolean())
+//            return null;
+        StyleSheet styleSheet = new StyleSheet();
+        styleSheet.put("background-color", "#fff/transparent");
+        return styleSheet;
+    }
+
+    @Test
     public void flow() throws Exception {
         //首先确保虚拟出来的siteId 并没有存在任何页面
         Owner owner = randomOwner();
@@ -205,6 +241,7 @@ public class PageControllerTest extends ManageTest {
         model.setRoot(page.getRoot());
         model.setTitle(pageInfo.getTitle());
         model.setPageIdentity(pageInfo.getId());
+        model.setStyleSheet(randomStyleSheet());
 
         ObjectMapper objectMapper = new ObjectMapper();
         String pageJson = objectMapper.writeValueAsString(model);

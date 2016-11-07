@@ -20,6 +20,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * 页面布局以及组件
@@ -77,11 +78,12 @@ public class PageLayout implements Serializable {
         if (this == o) return true;
         if (!(o instanceof PageLayout)) return false;
         PageLayout that = (PageLayout) o;
-        return Arrays.equals(root, that.root);
+        return Arrays.equals(root, that.root) &&
+                Objects.equals(styleSheet, that.styleSheet);
     }
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(root);
+        return Objects.hash(root, styleSheet);
     }
 }

@@ -824,3 +824,6 @@ div[id^="errorPlaceholder"] {
 .gallery-item-area-clone {
     display: block;
 }
+#js-delete-bgImg {
+    display: none;
+}

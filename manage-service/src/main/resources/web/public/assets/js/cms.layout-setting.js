@@ -63,6 +63,8 @@ var LayoutSetting = {
             GetStyleSheet.init(ele);
             LayoutSetting.targetElement = null;
             editFunc.closeFunc();
+            $('#layout-btnGroup').hide();
+            $('#data-btnGroup').show();
         });
     },
     activeEffect: function () {
@@ -199,6 +201,7 @@ var GetStyleSheet = {
     removeStyle: function (ele) {
         ele.css({
             'background-color': '',
+            'background-image': '',
             'background-repeat': '',
             'background-size': '',
             'background-position': ''
@@ -213,10 +216,19 @@ var GetStyleSheet = {
             e.css(k,v);
         });
     },
+    deleteBgImage: function () {
+        $('#js-delete-bgImg').click(function () {
+            var self = $('.gallery-content');
+            var galleryItemArea = self.parent().siblings('.gallery-item-area');
+            galleryItemArea.filter('.gallery-item-area-clone').remove();
+            $(this).hide();
+        });
+    },
     init: function (ele) {
         GetStyleSheet.root(ele);
     }
 };
+GetStyleSheet.deleteBgImage();
 /**
  * 编辑器参数回显函数
  * @type {{
@@ -260,6 +272,8 @@ var SetStyleSheet = {
         SetStyleSheet.setImage(data['background-image'], data['background-information']);
     },
     setImage: function () {
+        var btn = $('#js-delete-bgImg');
+        btn.hide();
         if (arguments[0]) {
             var self = $('.gallery-content');
             var galleryItemArea = self.parent().siblings('.gallery-item-area');
@@ -297,6 +311,8 @@ var SetStyleSheet = {
 
             // 添加到原位置
             newArea.insertBefore(galleryItemArea);
+            
+            if (newArea.length)  btn.show();
         }
     }
 };
@@ -344,6 +360,8 @@ function galleryRender (data) {
 
                 // 添加到原位置
                 newArea.insertBefore(area);
+
+                if (newArea.length) $('#js-delete-bgImg').show();
             }
         });
 

@@ -131,7 +131,8 @@ var editFunc = {
         });
     },
     clearDemo: function() {
-        $(".pageHTML").empty();
+        var cloneDOM = $('#js-global-setting');
+        $(".pageHTML").empty().append(cloneDOM);
     },
     removeMenuClasses: function() {
         $(".operate-buttons li").removeClass("active")

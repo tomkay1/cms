@@ -16,11 +16,12 @@ $(function () {
     var title = $('input[name=title]', updatePageInfo);
     var pagePath = $('input[name=pagePath]', updatePageInfo);
 
-    $('.btn-primary', updatePageInfo).click(function () {
+    $('.btnCommit', updatePageInfo).click(function () {
         if (!title.val())
             return;
         if (!pagePath.val())
             return;
+
         // 懒得响应
         function success() {
             top.showSuccess('成功', '修改成功');
@@ -33,7 +34,6 @@ $(function () {
         if (updatePageInfoUrl) {
             $.ajax({
                 method: 'POST',
-                contentType: 'application/json',
                 data: {title: title.val(), pagePath: pagePath.val()},
                 url: updatePageInfoUrl.replace('$1', updatePageInfo.id),
                 success: success,

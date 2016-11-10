@@ -18,6 +18,7 @@ import com.huotu.cms.manage.page.support.AbstractCRUDPage;
 import com.huotu.cms.manage.service.PageFilterBehavioral;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.repository.PageInfoRepository;
 import org.junit.Test;
@@ -28,6 +29,7 @@ import java.util.Collection;
 import java.util.function.BiConsumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 /**
  * @author CJ
@@ -72,8 +74,22 @@ public class PageInfoControllerTest extends SiteManageTest {
                 return "无法使用";
             }
         });
+    }
 
-
+    @Test
+    @Transactional
+    public void update() throws Exception {
+        Site site = loginAsSite();
+        Owner owner = randomOwner();
+        loginAsOwner(owner);
+        PageInfo pageInfo1 = new PageInfoCRUDTest(site).randomValue();
+        pageInfo1 = pageInfoRepository.saveAndFlush(pageInfo1);
+        mockMvc.perform(post("/manage/page/update/{id}", "" + pageInfo1.getId())
+                .param("title", "成功")
+                .param("pagePath", "pagePath123").session(session));
+        pageInfo1 = pageInfoRepository.findOne(pageInfo1.getId());
+        assertThat(pageInfo1.getTitle()).as("修改成功").isEqualTo("成功");
+        assertThat(pageInfo1.getPagePath()).as("修改成功").isEqualTo("pagePath123");
     }
 
     private class OnePagePageInfoCRUDTest extends PageInfoCRUDTest {
@@ -111,6 +127,7 @@ public class PageInfoControllerTest extends SiteManageTest {
             return randomPageInfoValue;
         }
 
+
         @Override
         public BiConsumer<AbstractCRUDPage<PageInfo>, PageInfo> customAddFunction() {
             return null;
@@ -124,6 +141,14 @@ public class PageInfoControllerTest extends SiteManageTest {
                     .isEqualToIgnoringCase(data.getTitle());
             assertThat(entity.getPageType())
                     .isEqualByComparingTo(data.getPageType());
+            assertThat(entity.getPagePath())
+                    .isEqualTo(data.getPagePath());
+        }
+
+        @Override
+        public void assertUpdate(PageInfo entity, PageInfo data) throws Exception {
+            assertThat(entity.getTitle())
+                    .isEqualToIgnoringCase(data.getTitle());
             assertThat(entity.getPagePath())
                     .isEqualTo(data.getPagePath());
         }

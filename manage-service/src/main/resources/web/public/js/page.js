@@ -12,6 +12,48 @@
  * Created by CJ on 6/27/16.
  */
 $(function () {
+    var updatePageInfo = $('#updatePageInfo');
+    var title = $('input[name=title]', updatePageInfo);
+    var pagePath = $('input[name=pagePath]', updatePageInfo);
 
-    // TODO 表单校验
+    $('.btn-primary', updatePageInfo).click(function () {
+        if (!title.val())
+            return;
+        if (!pagePath.val())
+            return;
+        // 懒得响应
+        function success() {
+            top.showSuccess('成功', '修改成功');
+        }
+
+        function error() {
+            top.showDanger('错误', '修改失败');
+        }
+
+        if (updatePageInfoUrl) {
+            $.ajax({
+                method: 'POST',
+                contentType: 'application/json',
+                data: {title: title.val(), pagePath: pagePath.val()},
+                url: updatePageInfoUrl.replace('$1', updatePageInfo.id),
+                success: success,
+                error: error
+            });
+        } else {
+            success();
+        }
+    });
+
+
+    $('.glyphicon-shopping-cart').click(function () {
+        updatePageInfo.id = $(this).closest('tr').attr('data-id');
+        $(this).parent().parent().siblings().each(function () {
+            if ($(this).index() == 0) {
+                title.val($(this).text());
+            } else if ($(this).index() == 3) {
+                pagePath.val($(this).text());
+            }
+        });
+        updatePageInfo.modal();
+    })
 });

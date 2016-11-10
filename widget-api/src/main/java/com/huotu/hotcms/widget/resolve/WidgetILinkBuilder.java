@@ -2,6 +2,7 @@ package com.huotu.hotcms.widget.resolve;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeanUtils;
 import org.thymeleaf.context.IExpressionContext;
 import org.thymeleaf.context.IWebContext;
 import org.thymeleaf.exceptions.TemplateProcessingException;
@@ -11,7 +12,6 @@ import org.unbescape.uri.UriEscape;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.lang.reflect.Field;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -299,9 +299,8 @@ public class WidgetILinkBuilder extends AbstractLinkBuilder {
                         Object obj = context.getVariable(names[0]);
                         Class c = obj.getClass();
                         try {
-                            Field field = c.getDeclaredField(names[1]);
-                            field.setAccessible(true);
-                            linkBase.append(field.get(obj));
+                            Object value = BeanUtils.getPropertyDescriptor(c, names[1]).getReadMethod().invoke(obj);
+                            linkBase.append(value == null ? "" : value.toString());
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

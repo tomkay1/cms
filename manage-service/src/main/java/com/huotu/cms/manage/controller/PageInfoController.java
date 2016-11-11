@@ -103,7 +103,7 @@ public class PageInfoController extends SiteManageController<PageInfo, Long, Lon
     public ResponseEntity update(@PathVariable("id") Long id, String pagePath, String title) {
         if (pagePath != null && !pageFilterBehavioral.ableToUse(pagePath)) {
             //这个路径无法使用;
-            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
         }
         // 看看有没有同地址的页面
         if (pagePath == null) {
@@ -115,7 +115,7 @@ public class PageInfoController extends SiteManageController<PageInfo, Long, Lon
             PageInfo page = pageService.findBySiteAndPagePath(pageInfo.getSite(), pagePath);
             if (!page.getId().equals(id)) {
                 //这个路径无法使用;
-                return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
             }
         } catch (PageNotFoundException ignored) {
             //情况正常继续

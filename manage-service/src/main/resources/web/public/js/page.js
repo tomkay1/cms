@@ -23,6 +23,9 @@ $(function () {
         // 懒得响应
         function success() {
             top.showSuccess('成功', '修改成功');
+            if (thisUrl) {
+                window.location = thisUrl;
+            }
         }
 
         function error() {

@@ -24,12 +24,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -100,12 +100,31 @@ public class PageInfoController extends SiteManageController<PageInfo, Long, Lon
 
     @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
     @Transactional
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable("id") Long id, String pagePath, String title) {
+    public ResponseEntity update(@PathVariable("id") Long id, String pagePath, String title) {
+        if (pagePath != null && !pageFilterBehavioral.ableToUse(pagePath)) {
+            //这个路径无法使用;
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
+        }
+        // 看看有没有同地址的页面
+        if (pagePath == null) {
+            pagePath = "";
+        }
         PageInfo pageInfo = pageInfoRepository.findOne(id);
+        try {
+
+            PageInfo page = pageService.findBySiteAndPagePath(pageInfo.getSite(), pagePath);
+            if (!page.getId().equals(id)) {
+                //这个路径无法使用;
+                return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
+            }
+        } catch (PageNotFoundException ignored) {
+            //情况正常继续
+        }
+
         pageInfo.setPagePath(pagePath);
         pageInfo.setTitle(title);
         pageInfoRepository.save(pageInfo);
+        return ResponseEntity.ok().build();
     }
 
 

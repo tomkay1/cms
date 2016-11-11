@@ -106,7 +106,7 @@ public class PageInfoControllerTest extends SiteManageTest {
         int code = mockMvc.perform(post("/manage/page/update/{id}", "" + pageInfo1.getId())
                 .param("title", "成功2341")
                 .param("pagePath", "123").session(session)).andReturn().getResponse().getStatus();
-        assertThat(code).as("修改失败，当前站点存在相同的pagePath").isEqualTo(304);
+        assertThat(code).as("修改失败，当前站点存在相同的pagePath").isEqualTo(406);
         pageInfo1 = pageInfoRepository.findOne(pageInfo1.getId());
         assertThat(pageInfo1.getTitle()).as("修改失败，数据未更新").isEqualTo("成功2341");
         assertThat(pageInfo1.getPagePath()).as("修改失败，数据未更新").isEqualTo("pagePath123");

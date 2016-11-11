@@ -19,8 +19,6 @@ $(function () {
     $('.btnCommit', updatePageInfo).click(function () {
         if (!title.val())
             return;
-        if (!pagePath.val())
-            return;
 
         // 懒得响应
         function success() {

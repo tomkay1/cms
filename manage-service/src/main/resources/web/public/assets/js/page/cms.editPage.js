@@ -42,9 +42,9 @@ var editFunc = {
             if (e == 12 && !n) {
                 $(this).parent().next().children().attr('data-layout', r.join(','));
                 $(this).parent().next().children().html(t);
-                $(this).parent().prev().show()
+                $(this).parent().siblings('.drag').show()
             } else {
-                $(this).parent().prev().hide()
+                $(this).parent().siblings('.drag').hide()
             }
         });
     },

@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://resali.huobanplus.com/cdn/swiper/3.3.1/css/swiper.min.css">
     <link rel="stylesheet" href="/css/widgets.css">
+    <link rel="stylesheet" href="/css/mall.css">
 ##    <link rel="stylesheet" href="${globalCssURI}">
     <link rel="stylesheet" href="${pageCssURI}">
 </head>
@@ -37,7 +38,7 @@
 <script src="http://resali.huobanplus.com/cdn/bracket/js/respond.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/swiper/3.3.1/swiper.jquery.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bootstrap-hover-dropdown/2.0.1/bootstrap-hover-dropdown.min.js"></script>
-
+<script src="/js/cms.mall.js"></script>
 <script>
     new Swiper('.swiper-container', {
         pagination: '.swiper-pagination',

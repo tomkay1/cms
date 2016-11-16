@@ -23,9 +23,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.NumberUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -97,10 +99,12 @@ public class CategoryController extends SiteManageController<Category, Long, Lon
             if (contentType != null) {
                 model.addAttribute("fixedType", contentType);
                 return (root, query, cb) -> cb.and(cb.equal(root.get("site").as(Site.class), site)
-                        , cb.equal(root.get("contentType").as(ContentType.class), contentType));
+                        , cb.equal(root.get("contentType").as(ContentType.class), contentType)
+                );
             }
         }
-        return super.prepareIndex(login, request, site, model, attributes);
+        return (root, query, cb) -> cb.and(cb.equal(root.get("site").as(Site.class), site)
+                , cb.equal(root.get("deleted").as(Boolean.class), false));
     }
 
     @Override
@@ -266,4 +270,14 @@ public class CategoryController extends SiteManageController<Category, Long, Lon
         // 没打算提供编辑页面
         return "view/category/category.html";
     }
+
+
+    @Override
+    public void doDelete(@AuthenticationPrincipal Login login, @PathVariable("id") Long id) throws RedirectException {
+        Category category = categoryService.get(id);
+        category.setDeleted(true);
+        jpaRepository.saveAndFlush(category);
+    }
+
+
 }

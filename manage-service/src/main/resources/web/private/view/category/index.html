@@ -243,11 +243,12 @@
                             <a href="category.html" th:if="${category.contentType!=null }"
                                th:href="@{/manage/category/{id}(id=${category.id})}" title="编辑">
                                 <i class="fa fa-pencil"></i>
+                            </a>&nbsp;&nbsp;
+                            <a href="index.html" class="delete"
+                               th:href="@{/manage/category/{id}/delete(id=${category.id})}"
+                               title="删除">
+                                <i class="fa fa-trash-o"></i>
                             </a>
-                            <!--<a href="index.html" class="delete" th:href="@{/manage/page/{id}/delete(id=${owner.id})}"-->
-                            <!--target="_top" title="删除">-->
-                            <!--<i class="fa fa-trash-o"></i>-->
-                            <!--</a>-->
                         </td>
                     </tr>
 
@@ -259,7 +260,7 @@
                         <td class="center">
                             <a href="productCategory.html" title="编辑">
                                 <i class="fa fa-pencil"></i>
-                            </a>
+                            </a>&nbsp;&nbsp;
                             <a href="index.html" class="delete" title="删除">
                                 <i class="fa fa-trash-o"></i>
                             </a>
@@ -273,7 +274,7 @@
                         <td class="center">
                             <a href="category.html" title="编辑">
                                 <i class="fa fa-pencil"></i>
-                            </a>
+                            </a>&nbsp;&nbsp;
                             <a href="index.html" class="delete" title="删除">
                                 <i class="fa fa-trash-o"></i>
                             </a>

@@ -67,12 +67,12 @@ a:link, a:visited, a:hover, a:active {
     margin-left: 20px;
     max-width: 163px;
 }
-.width-1000 .logo {
+.width-center .logo {
     margin-left: 20px;
     width: 80px;
     height: 80px;
 }
-.width-1000 .navbar-toggle {
+.width-center .navbar-toggle {
     margin-top: 20px;
 }
 .topnavbar .navbar-right  .dropdown-menu {
@@ -120,30 +120,34 @@ a:link, a:visited, a:hover, a:active {
     .topnavbar .nav > .dropdown {
         padding-bottom: 16px;
     }
-    .width-1000 .nav .dropdown {
-        height: 80px;
-        line-height: 80px;
+    .width-center .nav .dropdown {
+        height: 60px;
+        line-height: 60px;
         padding-bottom: 0;
     }
-    .width-1000 .nav .dropdown>a {
-        height: 50px;
+    .width-center .nav .dropdown>a {
+        padding-left: 10px;
+        padding-right: 10px;
         line-height: 50px;
         text-align: center;
     }
-    .width-1000 .logo {
+    .width-center .logo {
         margin-left: 20px;
         margin-right: 12px;
         width: 80px;
         height: 80px;
     }
-    .width-1000 .dropdown-menu {
+    .width-center .dropdown-menu {
         padding: 0;
         width: 90px;
         min-width: 90px;
         text-align: center;
     }
-    .width-1000 .dropdown-menu>li>a {
+    .width-center .dropdown-menu>li>a {
         padding: 10px 0;
+    }
+    .width-center .navbar-collapse {
+        display: table-cell !important;
     }
     .topnavbar-absolute {
         position: absolute;
@@ -163,36 +167,46 @@ a:link, a:visited, a:hover, a:active {
         right: -1px;
         border-bottom: 4px solid #ba0006;
     }
-    .width-1000 {
-        max-width: 1310px;
+    .width-center {
+        width: 96%;
         margin: 0 auto;
     }
-    .width-1000 .nav .dropdown {
-        width: 123px;
+    .content-center {
+        display: table;
+        margin: 0 auto;
+    }
+    .width-center .navbar-header {
+        display: table-cell;
+    }
+    .width-center .navbar-collapse {
+        display: table-cell !important;
+    }
+    .width-center .nav .dropdown {
+        width: 98px;
         height: 80px;
         line-height: 80px;
         padding-bottom: 0;
     }
-    .width-1000 .nav .dropdown>a {
+    .width-center .nav .dropdown>a {
         padding: 0 20px;
         height: 80px;
         line-height: 80px;
         text-align: center;
     }
-    .width-1000 .logo {
+    .width-center .logo {
         margin-left: 20px;
         margin-right: 12px;
         width: 80px;
         height: 80px;
     }
-    .width-1000 .dropdown-menu {
+    .width-center .dropdown-menu {
         padding: 0;
-        width: 125px;
-        min-width: 125px;
+        width: 100px;
+        min-width: 100px;
         font-size: 12px;
         text-align: center;
     }
-    .width-1000 .dropdown-menu>li>a {
+    .width-center .dropdown-menu>li>a {
         padding: 10px 15px;
     }
     .topnavbar-absolute {

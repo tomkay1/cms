@@ -42,8 +42,8 @@
         <property name="url"
                   value="jdbc:mysql://localhost:3306/hotcms?useUnicode=true&amp;characterEncoding=UTF8&amp;autoReconnect=true&amp;rewriteBatchedStatements=TRUE"/>
         <!--<property name="url" value="jdbc:mysql://192.168.1.254:3306/hotcmstest?useUnicode=true&amp;characterEncoding=UTF8&amp;autoReconnect=true&amp;rewriteBatchedStatements=TRUE"/>-->
-        <property name="username" value="dbuser"/>
-        <property name="password" value="ddbbuusseerr"/>
+        <property name="username" value="CJ"/>
+        <property name="password" value=""/>
     </bean>
 
     <!--<aop:aspectj-autoproxy proxy-target-class="true" />-->

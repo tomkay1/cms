@@ -117,7 +117,7 @@
                      th:if="${object.contentType.getCode()==8 and galleries!=null}">
                     <label class="col-sm-2 control-label">介绍图片</label>
                     <div class="col-sm-10">
-                        <select class="chosen-select" data-placeholder="选择一个图库作为介绍图片" title="介绍图片">
+                        <select class="chosen-select" name="gallery" data-placeholder="选择一个图库作为介绍图片" title="介绍图片">
                             <option value=""></option>
                             <option value="1" th:each="gallery:${galleries}" th:value="${gallery.id}"
                                     th:text="${gallery.title}">图库1

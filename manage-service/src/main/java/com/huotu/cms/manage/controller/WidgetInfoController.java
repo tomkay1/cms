@@ -17,12 +17,19 @@ import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
+import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.service.repository.OwnerRepository;
-import com.huotu.hotcms.widget.*;
+import com.huotu.hotcms.widget.CMSContext;
+import com.huotu.hotcms.widget.InstalledWidget;
+import com.huotu.hotcms.widget.Widget;
+import com.huotu.hotcms.widget.WidgetResolveService;
+import com.huotu.hotcms.widget.WidgetStyle;
+import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.model.WidgetModel;
 import com.huotu.hotcms.widget.model.WidgetStyleModel;
 import com.huotu.hotcms.widget.repository.WidgetInfoRepository;
+import com.huotu.hotcms.widget.service.PageService;
 import com.huotu.hotcms.widget.service.WidgetFactoryService;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
@@ -84,6 +91,8 @@ public class WidgetInfoController
     private ResourceService resourceService;
     @Autowired
     private ServletContext servletContext;
+    @Autowired
+    private PageService pageService;
 
     @RequestMapping(value = "/{id}/install", method = RequestMethod.GET)
     @Transactional
@@ -199,8 +208,17 @@ public class WidgetInfoController
     @ResponseBody
     @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Manage_Value + "')")
     @RequestMapping(value = "/widgets", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
-    public List<WidgetModel> getWidgetInfo(Locale locale, @AuthenticationPrincipal Login login, PageType pageType) throws IOException
-            , URISyntaxException, FormatException {
+    public List<WidgetModel> getWidgetInfo(Locale locale, @AuthenticationPrincipal Login login, Long pageId) throws IOException
+            , URISyntaxException, FormatException, PageNotFoundException {
+        PageType pageType;
+        if (pageId != null) {
+            PageInfo pageInfo = pageService.getPage(pageId);
+            CMSContext.RequestContext().updateSite(pageInfo.getSite());
+            pageType = pageInfo.getPageType();
+        } else {
+            pageType = PageType.Ordinary;
+        }
+
         Owner owner = CMSContext.RequestContext().getSite().getOwner();
         if (owner == null && !login.isRoot()) {
             throw new AccessDeniedException("");
@@ -263,7 +281,7 @@ public class WidgetInfoController
                         //如果控件分组就一个，那这个控件就是最新的
                         for (InstalledWidget installedWidget : installedWidgets1) {
                             if (installedWidget.getWidget().disabled()) {
-                            widgetModels.add(getWidgetModel(locale, installedWidget, true));
+                                widgetModels.add(getWidgetModel(locale, installedWidget, true));
                             }
                         }
                     }

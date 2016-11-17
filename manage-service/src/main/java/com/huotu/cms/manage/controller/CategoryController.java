@@ -85,7 +85,6 @@ public class CategoryController extends SiteManageController<Category, Long, Lon
             }
         } catch (IOException ex) {
             throw new IllegalStateException(ex);
-//            throw new RedirectException(rootUri(), ex);
         }
 
     }

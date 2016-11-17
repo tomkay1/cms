@@ -11,6 +11,7 @@ package com.huotu.hotcms.widget.entity;
 
 import com.huotu.hotcms.service.Auditable;
 import com.huotu.hotcms.service.ResourcesOwner;
+import com.huotu.hotcms.service.common.PageLayoutType;
 import com.huotu.hotcms.service.common.PageType;
 import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Site;
@@ -53,6 +54,11 @@ public class PageInfo extends AbstractContent implements Auditable, ResourcesOwn
 
     @Column(name = "pageType", nullable = false)
     private PageType pageType;
+
+    /**
+     * 布局类型
+     */
+    private PageLayoutType pageLayoutType;
 
     /**
      * 每次随机生成

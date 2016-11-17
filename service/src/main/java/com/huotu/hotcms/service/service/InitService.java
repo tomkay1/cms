@@ -73,6 +73,18 @@ public class InitService {
             public void upgradeToVersion(CMSDataVersion version) throws Exception {
                 log.debug(" to version:" + version);
                 switch (version) {
+                    case version101001:
+                        jdbcService.runStandaloneJdbcWork(new ConnectionConsumer() {
+                            @Override
+                            public void accept(ConnectionProvider connection) throws SQLException {
+                                try (Statement statement = connection.getConnection().createStatement()) {
+                                    statement.execute("ALTER TABLE cms_pageinfo ADD pageLayoutType int(11) null");
+                                } catch (SQLException e) {
+                                    log.error(e.getMessage());
+                                }
+                            }
+                        });
+                        break;
                     case version101000:
                         jdbcService.runStandaloneJdbcWork(new ConnectionConsumer() {
                             @Override

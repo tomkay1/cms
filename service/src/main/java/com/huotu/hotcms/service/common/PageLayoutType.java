@@ -7,22 +7,20 @@
  * 2013-2016. All rights reserved.
  */
 
-package com.huotu.hotcms.service;
+package com.huotu.hotcms.service.common;
 
 /**
- * 数据库版本
+ * 页面布局
  *
  * @author CJ
  */
-public enum CMSDataVersion {
-    init,
-    siteRecommendDomain,
+public enum PageLayoutType {
     /**
-     * 1.1版本相关
+     * 响应
      */
-    version101000,
+    responsive,
     /**
-     * 增加页面布局
+     * 传统(固定)
      */
-    version101001
+    traditional
 }

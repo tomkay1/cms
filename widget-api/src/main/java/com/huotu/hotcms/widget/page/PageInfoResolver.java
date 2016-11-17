@@ -36,6 +36,8 @@ import java.util.Properties;
 public class PageInfoResolver implements HandlerMethodReturnValueHandler {
 
     private final Template htmlTemplate;
+    private final Template responsiveHtmlTemplate;
+    private final Template traditionalHtmlTemplate;
     @Autowired
     private PageService pageService;
     @Autowired
@@ -49,6 +51,8 @@ public class PageInfoResolver implements HandlerMethodReturnValueHandler {
         }
 
         htmlTemplate = Velocity.getTemplate("/front/html.vm");
+        responsiveHtmlTemplate = Velocity.getTemplate("/front/responsive_html.vm");
+        traditionalHtmlTemplate = Velocity.getTemplate("/front/traditional_html.vm");
     }
 
     @Override
@@ -81,7 +85,20 @@ public class PageInfoResolver implements HandlerMethodReturnValueHandler {
         context.put("content", content);
 
         response.setContentType("text/html;charset=utf-8");
-        htmlTemplate.merge(context, response.getWriter());
+        if (pageInfo.getPageLayoutType() == null) {
+            htmlTemplate.merge(context, response.getWriter());
+        } else
+            switch (pageInfo.getPageLayoutType()) {
+                case traditional:
+                    traditionalHtmlTemplate.merge(context, response.getWriter());
+                    break;
+                case responsive:
+                    responsiveHtmlTemplate.merge(context, response.getWriter());
+                    break;
+                default:
+                    htmlTemplate.merge(context, response.getWriter());
+            }
+
         response.getWriter().flush();
     }
 }

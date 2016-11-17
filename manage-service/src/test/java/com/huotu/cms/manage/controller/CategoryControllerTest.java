@@ -120,6 +120,7 @@ public class CategoryControllerTest extends SiteManageTest {
             return true;
         }
 
+
         @Override
         public Collection<Category> list() {
             return categoryService.getCategories(site);

@@ -210,5 +210,35 @@ Name:<input name="name" type="text" title="Name"/>
             </ul>
         </p>
 
+
+        <h3>拆分 widget-properties.js</h3>
+        <p>
+            拆分为cms-resource-finder和widget-properties,widget-properties将只是简单的调用cms-resource-finder.
+        </p>
+        <p>
+            <h5>cms-resource-finder</h5>
+            通过支持自定义render和change回调钩子来增强功能.
+        </p>
+        <p>
+            <pre>
+                <code>
+                    <![CDATA[
+                    <p>之前的示范代码</p>
+                    <span data-name="name" class="article-content" />
+                    <p>应该可以扩展为</p>
+                    <span class="article-content" data-serial="string or jsFun" data-render="jsFun" data-change="jsFun"/>
+                    data-serial支持直接表示这个资源的序列号或者一个可以获取序列号的方法,返回值应该是一个serial
+                    data-render一个js方法它应当返回一段HTML Code以重新绘制界面展示cms资源;返回值应该是一段html code
+                    data-change当这个资源被其他资源替换时,这个方法会被调用 参数1是一个object(包括serial)
+                    ]]>
+                </code>
+            </pre>
+        </p>
+        <p>新增data-gallery-items-render（可选）(galleryItemsRender)
+            如果当前绘制目标是一个gallery-content，CRF会在抓取到gallery-items以后调用该函数
+            接受参数itemArray（参考JSON:/manage-service/src/main/resources/mock/galleryItem.json）
+            context=element
+        </p>
+        <p>/manage-service/src/main/resources/mock/crf.html 一个静态演示网页。</p>
     </body>
 </document>

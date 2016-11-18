@@ -23,6 +23,8 @@
     <h2><i class="fa fa-bars"></i> 数据源 <span>编辑数据源</span></h2>
 </div>
 <!--/*@thymesVar id="object" type="com.huotu.hotcms.service.entity.Category"*/-->
+
+<!--/*@thymesVar id="brandList" type="java.util.ArrayList<com.huotu.huobanplus.common.entity.Brand>"*/-->
 <div class="contentpanel">
     <form id="categoryForm" action="index.html" method="POST"
           th:action="@{/manage/category/{id}(id=${object.id})}">
@@ -41,7 +43,7 @@
                         <label class="col-sm-2 control-label">名称</label>
                         <div class="col-sm-2">
                             <input name="name" title="名称" type="text" placeholder="数据源的名称"
-                                   class="form-control" th:text="${object.name}"/>
+                                   class="form-control" th:value="${object.name}"/>
                         </div>
                         <label class="col-sm-2 control-label">模型</label>
                         <div class="col-sm-2">
@@ -55,7 +57,7 @@
                         </div>
                     </div>
                 </div>
-
+                <!--/*@thymesVar id="object" type="com.huotu.hotcms.service.entity.MallProductCategory"*/-->
                 <!--伙伴商城产品-->
                 <div class="form-group mallProductCategory"
                      th:if="${object.contentType.getCode()==8 and categoryList!=null}">
@@ -65,9 +67,10 @@
                                 title="相关类目">
                             <option value=""></option>
                             <option value="10" th:each="category:${categoryList}" th:value="${category.id}"
-                                    th:text="${category.title}">养生
+                                    th:text="${category.title}" th:selected="${object.mallCategoryId!=null
+                                    and object.mallCategoryId.contains(category.id)}">养生
                             </option>
-                            <option th:remove="all" value="11">玩具</option>
+                            <option selected="selected" th:remove="all" value="11">玩具</option>
                             <option th:remove="all" value="12">服装</option>
                         </select>
                     </div>
@@ -80,7 +83,8 @@
                                 title="相关品牌">
                             <option value=""></option>
                             <option value="10" th:each="brand:${brandList}" th:value="${brand.id}"
-                                    th:text="${brand.brandName}">微软
+                                    th:text="${brand.brandName}" th:selected="${object.mallBrandId !=null
+                                    and object.mallBrandId.contains(brand.id)}">微软
                             </option>
                             <option th:remove="all" value="11">苹果</option>
                             <option th:remove="all" value="12">谷歌</option>
@@ -120,13 +124,14 @@
                         <select class="chosen-select" name="gallery" data-placeholder="选择一个图库作为介绍图片" title="介绍图片">
                             <option value=""></option>
                             <option value="1" th:each="gallery:${galleries}" th:value="${gallery.id}"
-                                    th:text="${gallery.title}">图库1
+                                    th:text="${gallery.title}" th:selected="${object.gallery!= null
+                                    and object.gallery.id==gallery.id}">图库1
                             </option>
                             <option th:remove="all" value="2">图库2</option>
                         </select>
                     </div>
                 </div>
-
+                <!--/*@thymesVar id="object" type="com.huotu.hotcms.service.entity.MallClassCategory"*/-->
                 <!--伙伴商城产品归类-->
                 <div class="form-group mallClassCategory"
                      th:if="${object.contentType.getCode()==9 and mallProducts!=null}">

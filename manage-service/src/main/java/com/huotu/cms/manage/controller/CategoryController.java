@@ -99,6 +99,7 @@ public class CategoryController extends SiteManageController<Category, Long, Lon
                 model.addAttribute("fixedType", contentType);
                 return (root, query, cb) -> cb.and(cb.equal(root.get("site").as(Site.class), site)
                         , cb.equal(root.get("contentType").as(ContentType.class), contentType)
+                        , cb.equal(root.get("deleted").as(Boolean.class), false)
                 );
             }
         }

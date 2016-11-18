@@ -209,7 +209,8 @@ header .btn {
     min-height: 80px;
     margin: 0 -2px -2px -2px;
     position: relative;
-    border: 2px dashed rgba(255,0,0,.2);
+    /*border: 2px dashed rgba(255,0,0,.2);*/
+    border: 2px dashed transparent;
     -webkit-transition: all 500ms ease;
     -moz-transition: all 500ms ease;
     -o-transition: all 500ms ease;
@@ -252,13 +253,41 @@ header .btn {
     left: -1px;
     top: -1px;
     color: #fff;
-    content: "\5e03\5c40";
+    content: "\6805\683c\5e03\5c40";
     font-size: 12px;
     font-weight: bold;
     line-height: 2;
     background-color: #7cb147;
     border: 1px solid #ddd;
 }
+
+.edit .pageHTML .row[data-layout-value='100']:before {
+    padding: 2px 4px;
+    position: absolute;
+    left: -1px;
+    top: -1px;
+    color: #fff;
+    content: "\901a\680f\5e03\5c40";
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 2;
+    background-color: #7cb147;
+    border: 1px solid #ddd;
+}
+.edit .pageHTML .row[data-layout-value='50']:before {
+    padding: 2px 4px;
+    position: absolute;
+    left: -1px;
+    top: -1px;
+    color: #fff;
+    content: "\5c45\4e2d\5e03\5c40";
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 2;
+    background-color: #7cb147;
+    border: 1px solid #ddd;
+}
+
 .edit .pageHTML .box .row:before {
     display: none;
 }
@@ -273,8 +302,11 @@ header .btn {
     font-weight: bold;
     background-color: rgba(255,0,0,.3);
     border: 1px solid #ddd;
+    opacity: 0;
 }
-
+.row:hover > .column:after {
+    opacity: 1;
+}
 .edit .pageHTML .remove {
     top: 5px;
     right: 18px;
@@ -298,8 +330,7 @@ header .btn {
 .pageHTML .drag,
 .pageHTML .remove,
 .pageHTML .setting {
-    filter: alpha(opacity=20);
-    opacity: .2;
+    opacity: 0;
     -webkit-transition: all 500ms ease;
     -moz-transition: all 500ms ease;
     -o-transition: all 500ms ease;
@@ -312,9 +343,10 @@ header .btn {
 
 .edit .pageHTML .row {
     padding-top: 28px;
-    margin: 20px -1px -1px -1px;
+    margin: 4px -1px -1px -1px;
     position: relative;
     border: 1px dashed #7cb147;
+    /*border: 1px dashed transparent;*/
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;

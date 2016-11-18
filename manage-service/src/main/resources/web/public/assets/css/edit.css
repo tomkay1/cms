@@ -253,13 +253,41 @@ header .btn {
     left: -1px;
     top: -1px;
     color: #fff;
-    content: "\5e03\5c40";
+    content: "\6805\683c\5e03\5c40";
     font-size: 12px;
     font-weight: bold;
     line-height: 2;
     background-color: #7cb147;
     border: 1px solid #ddd;
 }
+
+.edit .pageHTML .row[data-layout-value='100']:before {
+    padding: 2px 4px;
+    position: absolute;
+    left: -1px;
+    top: -1px;
+    color: #fff;
+    content: "\901a\680f\5e03\5c40";
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 2;
+    background-color: #7cb147;
+    border: 1px solid #ddd;
+}
+.edit .pageHTML .row[data-layout-value='50']:before {
+    padding: 2px 4px;
+    position: absolute;
+    left: -1px;
+    top: -1px;
+    color: #fff;
+    content: "\5c45\4e2d\5e03\5c40";
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 2;
+    background-color: #7cb147;
+    border: 1px solid #ddd;
+}
+
 .edit .pageHTML .box .row:before {
     display: none;
 }

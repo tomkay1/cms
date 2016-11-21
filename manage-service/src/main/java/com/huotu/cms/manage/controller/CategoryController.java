@@ -22,6 +22,7 @@ import com.huotu.hotcms.service.service.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -93,6 +94,8 @@ public class CategoryController extends SiteManageController<Category, Long, Lon
     protected Specification<Category> prepareIndex(Login login, HttpServletRequest request, Site site, Model model
             , RedirectAttributes attributes) throws RedirectException {
         mallData(site, model);
+        Sort sort = new Sort(Sort.Direction.DESC, "createTime");
+        request.setAttribute("sort", sort);
         if (request.getParameter("fixedType") != null) {
             ContentType contentType = contentTypeConverter.convert(request.getParameter("fixedType"));
             if (contentType != null) {

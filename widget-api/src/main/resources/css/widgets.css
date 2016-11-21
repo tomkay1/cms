@@ -1,6 +1,11 @@
 body {
     font-family: 'Microsoft YaHei', sans-serif;
 }
+
+/*解决防止 margin 重叠*/
+body > div {
+    border-top: 1px solid transparent;
+}
 .row {
     margin: 0;
 }
@@ -63,12 +68,14 @@ a:link, a:visited, a:hover, a:active {
     margin-left: 20px;
     max-width: 163px;
 }
-.width-1000 .logo {
+
+.width-center .logo {
     margin-left: 20px;
     width: 80px;
     height: 80px;
 }
-.width-1000 .navbar-toggle {
+
+.width-center .navbar-toggle {
     margin-top: 20px;
 }
 .topnavbar .navbar-right  .dropdown-menu {
@@ -116,31 +123,40 @@ a:link, a:visited, a:hover, a:active {
     .topnavbar .nav > .dropdown {
         padding-bottom: 16px;
     }
-    .width-1000 .nav .dropdown {
-        height: 80px;
-        line-height: 80px;
+
+    .width-center .nav .dropdown {
+        height: 60px;
+        line-height: 60px;
         padding-bottom: 0;
     }
-    .width-1000 .nav .dropdown>a {
-        height: 50px;
+
+    .width-center .nav .dropdown > a {
+        padding-left: 10px;
+        padding-right: 10px;
         line-height: 50px;
         text-align: center;
     }
-    .width-1000 .logo {
+
+    .width-center .logo {
         margin-left: 20px;
         margin-right: 12px;
         width: 80px;
         height: 80px;
     }
-    .width-1000 .dropdown-menu {
+
+    .width-center .dropdown-menu {
         padding: 0;
         width: 90px;
         min-width: 90px;
         text-align: center;
     }
 
-    .width-1000 .dropdown-menu > li > a {
+    .width-center .dropdown-menu > li > a {
         padding: 10px 0;
+    }
+
+    .width-center .navbar-collapse {
+        display: table-cell !important;
     }
     .topnavbar-absolute {
         position: absolute;
@@ -160,36 +176,55 @@ a:link, a:visited, a:hover, a:active {
         right: -1px;
         border-bottom: 4px solid #ba0006;
     }
-    .width-1000 {
-        width: 1000px;
+
+    .width-center {
+        width: 96%;
         margin: 0 auto;
     }
-    .width-1000 .nav .dropdown {
-        width: 123px;
+
+    .content-center {
+        display: table;
+        margin: 0 auto;
+    }
+
+    .width-center .navbar-header {
+        display: table-cell;
+    }
+
+    .width-center .navbar-collapse {
+        display: table-cell !important;
+    }
+
+    .width-center .nav .dropdown {
+        width: 98px;
         height: 80px;
         line-height: 80px;
         padding-bottom: 0;
     }
-    .width-1000 .nav .dropdown>a {
+
+    .width-center .nav .dropdown > a {
         padding: 0 20px;
         height: 80px;
         line-height: 80px;
         text-align: center;
     }
-    .width-1000 .logo {
+
+    .width-center .logo {
         margin-left: 20px;
         margin-right: 12px;
         width: 80px;
         height: 80px;
     }
-    .width-1000 .dropdown-menu {
+
+    .width-center .dropdown-menu {
         padding: 0;
-        width: 125px;
-        min-width: 125px;
+        width: 100px;
+        min-width: 100px;
         font-size: 12px;
         text-align: center;
     }
-    .width-1000 .dropdown-menu>li>a {
+
+    .width-center .dropdown-menu > li > a {
         padding: 10px 15px;
     }
     .topnavbar-absolute {
@@ -577,13 +612,20 @@ a:link, a:visited, a:hover, a:active {
 }
 /* image-text-list */
 
-.image-text-list-item-sf {
-    margin-bottom: 80px;
+.image-text-list ul {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
 }
-.image-text-list-item-sf li {
-    width: 20%;
-    padding: 0;
-    float: left;
+
+.image-text-list ul > li {
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
 }
 .image-text-list-small li {
     padding: 30px;
@@ -814,95 +856,4 @@ a:link, a:visited, a:hover, a:active {
     -webkit-box-shadow: none;
     box-shadow: none;
     background: #f7f7f7;
-}
-/*Product List Style*/
-.product-list .product-list-top {
-    margin-bottom: 20px;
-}
-.product-list .product-list-top li {
-    float: left;
-    margin: 15px 4px 0;
-    width: 116px;
-    height: 36px;
-    line-height: 36px;
-    text-align: center;
-    border-radius: 4px;
-    border: 1px solid #acacac;
-}
-.product-list .product-list-top li:hover {
-    border: 1px solid #333;
-}
-.product-list .product-list-top li:hover a {
-    color: #333;
-}
-.product-list .product-list-top li a {
-    color: #acacac;
-}
-.product-list .product-list-top li.active {
-    background: #ba0006;
-    border: 1px solid #ba0006;
-}
-.product-list .product-list-top li.active a {
-    color: #fff;
-}
-.product-list .product-list-middle-item img {
-    width: 224px;
-    height: 224px;
-}
-.product-list .product-list-middle-item .caption {
-    padding-top: 10px;
-}
-.product-list .product-list-middle-item .caption h3 {
-    margin-bottom: 10px;
-    font-size: 18px;
-    font-weight: bold;
-}
-.product-list .product-list-middle-item .caption a {
-    color: #333;
-}
-.product-list .product-list-middle-item .caption p {
-    color: #999;
-    height: 56px;
-    overflow: hidden;
-}
-.product-list .information-list-bottom {
-    text-align: center;
-}
-.product-list-red .information-list-bottom  li {
-    display: inline-block;
-}
-.product-list-red .information-list-bottom  li a {
-    display: none;
-    color: #000;
-}
-.product-list-red .information-list-bottom .prev a,
-.product-list-red .information-list-bottom .next a,
-.product-list-red .information-list-bottom li .active {
-    display: inline-block;
-}
-.product-list-red .information-list-bottom .active {
-    color: #fff;
-    background-color: #e50011;
-    border-color: #e50011;
-}
-@media (min-width: 768px) {
-    .product-list .product-list-top {
-        margin-bottom: 60px;
-    }
-    .product-list .product-list-top li {
-        margin: 15px 15px 0;
-    }
-    .product-list .product-list-middle-item .caption {
-        padding: 15px;
-    }
-    .product-list .information-list-bottom {
-        padding: 60px 0;
-        text-align: right;
-    }
-    .product-list .information-list-bottom .pagination {
-        margin-right: 40px;
-    }
-    .product-list-red .information-list-bottom li a {
-        display: inline-block;
-    }
 }

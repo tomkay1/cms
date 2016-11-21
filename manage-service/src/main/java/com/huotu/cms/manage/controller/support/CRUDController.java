@@ -21,6 +21,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -206,10 +207,19 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
     public String index(@AuthenticationPrincipal Login login, HttpServletRequest request, Model model, RedirectAttributes attributes) throws RedirectException {
         try {
             Specification<T> specification = prepareIndex(login, request, model, attributes);
-            if (specification == null)
-                model.addAttribute("list", jpaRepository.findAll());
-            else
-                model.addAttribute("list", jpaSpecificationExecutor.findAll(specification));
+            if (specification == null) {
+                if (request.getAttribute("sort") != null) {
+                    model.addAttribute("list", jpaRepository.findAll((Sort) request.getAttribute("sort")));
+                } else {
+                    model.addAttribute("list", jpaRepository.findAll());
+                }
+            } else {
+                if (request.getAttribute("sort") != null) {
+                    model.addAttribute("list", jpaSpecificationExecutor.findAll(specification, (Sort) request.getAttribute("sort")));
+                } else {
+                    model.addAttribute("list", jpaSpecificationExecutor.findAll(specification));
+                }
+            }
 
         } catch (IllegalArgumentException ex) {
             throw new RedirectException(rootUri(), ex);
@@ -303,7 +313,8 @@ public abstract class CRUDController<T, ID extends Serializable, PD, MD> {
 
     /**
      * 更新之前
-     *  @param login      当前操作者的身份
+     *
+     * @param login      当前操作者的身份
      * @param entity     数据
      * @param data       用户请求的数据
      * @param extra      额外数据

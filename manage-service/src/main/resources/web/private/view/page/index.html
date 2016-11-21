@@ -66,6 +66,7 @@
                             </select>
                             <span class="help-block">数据索引页,可以展示内容列表;数据内容页可以展示内容;也可以在页面的控件中决定具体使用的页面</span>
                         </div>
+
                         <label class="col-sm-2 control-label">数据源</label>
                         <div class="col-sm-2">
                             <select name="extra" title="数据源" class="form-control">
@@ -84,6 +85,21 @@
                             <input name="pagePath" title="URI" type="text"
                                    class="form-control"/>
                             <span class="help-block">用于决定该页面的地址,保持空白即使首页;数据内容页的地址将会是URI/{id};对于普通页,数据索引页 URI是必须的</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">页面布局类型</label>
+                        <div class="col-sm-2">
+                            <select name="pageLayoutType" title="页面布局类型" class="form-control">
+                                <option value="0"
+                                        th:each="pageLayoutType:${T(com.huotu.hotcms.service.common.PageLayoutType).values()}"
+                                        th:value="${pageLayoutType.getCode()}"
+                                        th:text="${pageLayoutType.getValue().toString()}">响应式
+                                </option>
+                                <option th:remove="all">传统(固定)</option>
+                            </select>
+                            <span class="help-block">传统布局适合商城，官网适合响应布局</span>
                         </div>
                     </div>
                 </div>
@@ -117,7 +133,8 @@
                     <tr>
                         <th>页面名称</th>
                         <th>创建时间</th>
-                        <th>类型</th>
+                        <th>页面类型</th>
+                        <th>布局类型</th>
                         <th>URI</th>
                         <th>数据源</th>
                         <th>&nbsp;</th>
@@ -131,6 +148,7 @@
                         <td th:text="${page.title}">首页</td>
                         <td th:text="${{page.createTime}}">2016 06-11</td>
                         <td th:text="${page.pageType==null?'':page.pageType.getValue()}">普通</td>
+                        <td th:text="${page.pageLayoutType==null?'':page.pageLayoutType.getValue()}">传统</td>
                         <td th:text="${page.pagePath}">/</td>
                         <td th:text="${page.category==null?'无':page.category.name}">&nbsp;</td>
                         <td class="center">
@@ -152,6 +170,7 @@
                         <td>新闻资讯列表</td>
                         <td>2016 06-11</td>
                         <td>数据索引</td>
+                        <td>传统</td>
                         <td>/news</td>
                         <td>新闻资讯</td>
                         <td class="center">
@@ -170,6 +189,7 @@
                         <td>新闻资讯内容</td>
                         <td>2016 06-11</td>
                         <td>数据内容</td>
+                        <td>响应式</td>
                         <td>&nbsp;</td>
                         <td>新闻资讯</td>
                         <td class="center">

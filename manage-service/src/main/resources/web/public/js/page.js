@@ -51,7 +51,7 @@ $(function () {
         $(this).parent().parent().siblings().each(function () {
             if ($(this).index() == 0) {
                 title.val($(this).text());
-            } else if ($(this).index() == 3) {
+            } else if ($(this).index() == 4) {
                 pagePath.val($(this).text());
             }
         });

@@ -14,13 +14,38 @@ package com.huotu.hotcms.service.common;
  *
  * @author CJ
  */
-public enum PageLayoutType {
+public enum PageLayoutType implements CommonEnum {
     /**
      * 响应
      */
-    responsive,
+    responsive(0, "响应式", "适用pc官网"),
     /**
      * 传统(固定)
      */
-    traditional
+    traditional(1, "传统(固定)", "适用pc商城");
+
+    private final int code;
+    private final String value;
+    private final String description;
+
+    PageLayoutType(int code, String value, String description) {
+        this.code = code;
+        this.value = value;
+        this.description = description;
+    }
+
+    @Override
+    public Object getCode() {
+        return code;
+    }
+
+    @Override
+    public Object getValue() {
+        return value;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
 }

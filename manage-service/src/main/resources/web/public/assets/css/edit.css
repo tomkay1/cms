@@ -813,7 +813,7 @@ div[id^="errorPlaceholder"] {
     width: 100%;
     font-size: 16px;
 }
-/*Updata 9.26*/
+/*Update 9.26*/
 .gallery-item-area {
     float: left;
     width: 25%;
@@ -823,7 +823,7 @@ div[id^="errorPlaceholder"] {
     margin-bottom: 10px;
     width: 100%;
 }
-/*Updata 10.26*/
+/*Update 10.26*/
 .bg-gradient {
     display: none;
 }
@@ -843,13 +843,13 @@ div[id^="errorPlaceholder"] {
     color: #ea5342;
     border: 1px solid #ea5342;
 }
-/*Updata 11.3*/
+/*Update 11.3*/
 #js-global-setting {
     right: 20px;
     opacity: 1;
     width: 80px;
 }
-/*Updata 11.5*/
+/*Update 11.5*/
 .gallery-item-area {
     display: none;
 }
@@ -858,4 +858,20 @@ div[id^="errorPlaceholder"] {
 }
 #js-delete-bgImg {
     display: none;
+}
+/*Update 11.21*/
+.borderBoxs > .form-group > .attribute-layout {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+}
+.borderBoxs > .form-group > .attribute-layout > .attribute-item {
+    margin: 0 5px;
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
 }

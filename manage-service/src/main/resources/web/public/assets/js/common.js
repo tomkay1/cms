@@ -514,3 +514,14 @@ var CommonPlugin = {
 
     }
 }
+// 编辑器交互
+$('.conf-body').on('change', 'input[name=layout]', function () {
+    var ele = $('.js-topnavbar-width');
+    var input = ele.find('input');
+    if($(this).val() == 'topnavbar-full') {
+        ele.removeClass('show').addClass('hide');
+    }
+    if($(this).val() == 'topnavbar-center') {
+        ele.removeClass('hide').addClass('show');
+    }
+});

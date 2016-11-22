@@ -7,126 +7,211 @@
   ~ 2013-2016. All rights reserved.
   -->
 
+<!--<div class="borderBoxs">-->
+    <!--<button class="js-addEditBtn btn btn-default" type="button"><i class="fa fa-plus-circle" aria-hidden="true"></i>添加数据-->
+    <!--</button>-->
+
+    <!--<br/>-->
+    <!--<span class="content article-content tt" data-name="myChoose">-->
+
+    <!--</span>-->
+    <!--<span class="gallery aabb" data-name="myChoose2"></span>-->
+    <!--<span class="article-content" data-name="myChoose3"></span>-->
+    <!--<span class="ccdd article-category" data-name="myChoose4"></span>-->
+    <!--<div data-name="myChoose4" class="gallery-item-area">-->
+        <!--<span>这里同样也可以!{title}</span>-->
+        <!--<img src="!{url}" title="!{title}"/>-->
+    <!--</div>-->
+    <!--<form id="attributeData">-->
+        <!--<ul class="js-padding-data attribute-layout">-->
+            <!--<li class="attribute-item title-element">-->
+                <!--<div class="pull-right popover-info"><i class="fa fa-question-circle-o"></i>-->
+                    <!--<div class="popover fade right">-->
+                        <!--<div class="arrow"></div>-->
+                        <!--<h4 class="popover-title">帮助</h4>-->
+                        <!--<div class="popover-content">内边距(Padding)属性设置元素所有内边距的宽度，是元素内容距离自身边框的距离。<br><strong>注释：</strong>不允许使用负值。</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--内边距-->
+            <!--</li>-->
+            <!--<li class="attribute-item">-->
+                <!--<input type="text" name="paddingTop" class="form-control" placeholder="上" data-rule-number="true" data-msg-number="必须是个数字" data-rule-min="0" data-msg-min="不能小于0">-->
+            <!--</li>-->
+            <!--<li class="attribute-item">-->
+                <!--<input type="text" name="paddingRight" class="form-control" placeholder="右" data-rule-number="true" data-msg-number="必须是个数字" data-rule-min="0" data-msg-min="不能小于0">-->
+            <!--</li>-->
+            <!--<li class="attribute-item">-->
+                <!--<input type="text" name="paddingBottom" class="form-control" placeholder="下" data-rule-number="true" data-msg-number="必须是个数字" data-rule-min="0" data-msg-min="不能小于0">-->
+            <!--</li>-->
+            <!--<li class="attribute-item">-->
+                <!--<input type="text" name="paddingLeft" class="form-control" placeholder="左" data-rule-number="true" data-msg-number="必须是个数字" data-rule-min="0" data-msg-min="不能小于0">-->
+            <!--</li>-->
+        <!--</ul>-->
+        <!--<ul class="js-margin-data attribute-layout">-->
+            <!--<li class="attribute-item title-element">-->
+                <!--<div class="pull-right popover-info"><i class="fa fa-question-circle-o"></i>-->
+                    <!--<div class="popover fade right">-->
+                        <!--<div class="arrow"></div>-->
+                        <!--<h4 class="popover-title">帮助</h4>-->
+                        <!--<div class="popover-content">外边距(Margin)属性设置元素所有外边距的宽度，是元素自身边框距离其他元素的边框的距离。</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--外边距-->
+            <!--</li>-->
+            <!--<li class="attribute-item">-->
+                <!--<input type="text" name="marginTop" class="form-control" placeholder="上" data-rule-number="true" data-msg-number="必须是个数字" >-->
+            <!--</li>-->
+            <!--<li class="attribute-item">-->
+                <!--<input type="text" name="marginRight" class="form-control" placeholder="右" data-rule-number="true" data-msg-number="必须是个数字" >-->
+            <!--</li>-->
+            <!--<li class="attribute-item">-->
+                <!--<input type="text" name="marginBottom" class="form-control" placeholder="下" data-rule-number="true" data-msg-number="必须是个数字" >-->
+            <!--</li>-->
+            <!--<li class="attribute-item">-->
+                <!--<input type="text" name="marginLeft" class="form-control" placeholder="左" data-rule-number="true" data-msg-number="必须是个数字" >-->
+            <!--</li>-->
+        <!--</ul>-->
+        <!--<ul class="js-font-data attribute-layout">-->
+            <!--<li class="attribute-item">-->
+                <!--<p class="font-size-amount">-->
+                    <!--<label for="js-fontSize-amount">当前字号：</label>-->
+                    <!--<input type="text" id="js-fontSize-amount" name="fontSize" readonly>-->
+                <!--</p>-->
+                <!--<div id="js-fontSize-slider"></div>-->
+            <!--</li>-->
+            <!--<li class="attribute-item">-->
+                <!--<label>文字样式</label>-->
+                <!--<select class="form-control input-sm" name="fontStyle">-->
+                    <!--<option value="normal">默认</option>-->
+                    <!--<option value="italic">斜体</option>-->
+                <!--</select>-->
+            <!--</li>-->
+            <!--<li class="attribute-item">-->
+                <!--<label>文字样式</label>-->
+                <!--<select class="form-control input-sm" name="fontWeight">-->
+                    <!--<option value="normal">默认</option>-->
+                    <!--<option value="bold">粗体</option>-->
+                    <!--<option value="bolder">更粗</option>-->
+                    <!--<option value="lighter">更细</option>-->
+                <!--</select>-->
+            <!--</li>-->
+        <!--</ul>-->
+        <!--<ul class="js-font-data attribute-layout">-->
+            <!--<li class="attribute-item">-->
+                <!--<label>文字颜色</label>-->
+                <!--<input type="text" name="fontColor" class="color-picker" value="#333">-->
+            <!--</li>-->
+            <!--<li class="attribute-item">-->
+                <!--<label>选择颜色</label>-->
+                <!--<input type="text" name="hoverColor" class="color-picker">-->
+            <!--</li>-->
+            <!--<li class="attribute-item">-->
+                <!--<label>背景颜色</label>-->
+                <!--<input type="text" name="backgroundColor" class="color-picker" value="#fff">-->
+            <!--</li>-->
+            <!--<li class="attribute-item">-->
+                <!--<label>其他颜色</label>-->
+                <!--<input type="text" name="otherColor" class="color-picker">-->
+            <!--</li>-->
+        <!--</ul>-->
+    <!--</form>-->
+   <!--<span class="btn btn-default resource-link"></span>-->
+<!--</div>-->
+<!--<div id="treeViews"></div>-->
+<!--<script>-->
+    <!--$("#attributeData").validate();-->
+    <!--$("#js-fontSize-slider").slider({-->
+        <!--range: "min",-->
+        <!--min: 12,-->
+        <!--max: 40,-->
+        <!--value: 12,-->
+        <!--slide: function( event, ui ) {-->
+            <!--$( "#js-fontSize-amount" ).val( ui.value );-->
+        <!--}-->
+    <!--});-->
+    <!--$( "#js-fontSize-amount" ).val( $("#js-fontSize-slider").slider( "value" ) );-->
+
+    <!--$('.resource-link').click(function () {-->
+        <!--layer.open({-->
+            <!--type: 2,-->
+            <!--title: 'layer mobile页',-->
+            <!--shadeClose: true,-->
+            <!--shade: 0.8,-->
+            <!--area: ['70%', '80%'],-->
+            <!--content: 'edit_link.html'-->
+        <!--});-->
+        <!--console.log($.getTreeViewData());-->
+    <!--});-->
+<!--</script>-->
+
 <div class="borderBoxs">
-    <button class="js-addEditBtn btn btn-default" type="button"><i class="fa fa-plus-circle" aria-hidden="true"></i>添加数据
-    </button>
-
-    <br/>
-    <span class="content article-content tt" data-name="myChoose">
-
-    </span>
-    <span class="gallery aabb" data-name="myChoose2"></span>
-    <span class="article-content" data-name="myChoose3"></span>
-    <span class="ccdd article-category" data-name="myChoose4"></span>
-    <div data-name="myChoose4" class="gallery-item-area">
-        <span>这里同样也可以!{title}</span>
-        <img src="!{url}" title="!{title}"/>
+    <div class="form-group clearfix">
+        <label class="col-xs-3">通栏 / 居中</label>
+        <div class="col-xs-3">
+            <label class="radio-inline">
+                <input type="radio" name="layout" value="topnavbar-full" checked> 通栏
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="layout" value="topnavbar-center"> 居中
+            </label>
+        </div>
+        <label class="col-xs-3">普通 / 固定</label>
+        <div class="col-xs-3">
+            <label class="radio-inline">
+                <input type="radio" name="position" value="0" checked> 普通
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="position" value="1"> 固定
+            </label>
+        </div>
     </div>
-    <form id="attributeData">
-        <ul class="js-padding-data attribute-layout">
+    <div class="form-group clearfix hide js-topnavbar-width">
+        <label class="col-xs-3 control-label">导航条宽度：</label>
+        <div class="col-xs-3">
+            <input type="text" name="contentCenter" class="form-control">
+        </div>
+        <label class="col-xs-3 control-label">总栏目宽度：</label>
+        <div class="col-xs-3">
+            <input type="text" name="topnavbarBody" class="form-control">
+        </div>
+    </div>
+    <div class="form-group clearfix">
+        <label class="col-xs-3 control-label">导航背景颜色</label>
+        <div class="col-xs-3">
+            <input type="text" name="backgroundColor" class="form-control color-picker">
+        </div>
+        <label class="col-xs-3 control-label">导航文字颜色：</label>
+        <div class="col-xs-3">
+            <input type="text" name="fontColor" class="form-control color-picker">
+        </div>
+    </div>
+    <div class="form-group clearfix">
+        <label class="col-xs-3 control-label">栏目激活颜色：</label>
+        <div class="col-xs-3">
+            <input type="text" name="activeColor" class="form-control color-picker">
+        </div>
+        <label class="col-xs-3 control-label">栏目选中颜色：</label>
+        <div class="col-xs-3">
+            <input type="text" name="hoverColor" class="form-control color-picker">
+        </div>
+    </div>
+    <div class="form-group clearfix">
+        <ul class="attribute-layout">
             <li class="attribute-item title-element">
-                <div class="pull-right popover-info"><i class="fa fa-question-circle-o"></i>
-                    <div class="popover fade right">
-                        <div class="arrow"></div>
-                        <h4 class="popover-title">帮助</h4>
-                        <div class="popover-content">内边距(Padding)属性设置元素所有内边距的宽度，是元素内容距离自身边框的距离。<br><strong>注释：</strong>不允许使用负值。</div>
-                    </div>
-                </div>
-                内边距
+                <strong>&nbsp;&nbsp;导航内边距：</strong>
             </li>
             <li class="attribute-item">
-                <input type="text" name="paddingTop" class="form-control" placeholder="上" data-rule-number="true" data-msg-number="必须是个数字" data-rule-min="0" data-msg-min="不能小于0">
+                <input type="text" name="paddingTop" class="form-control" placeholder="上" >
             </li>
             <li class="attribute-item">
-                <input type="text" name="paddingRight" class="form-control" placeholder="右" data-rule-number="true" data-msg-number="必须是个数字" data-rule-min="0" data-msg-min="不能小于0">
+                <input type="text" name="paddingRight" class="form-control" placeholder="右" >
             </li>
             <li class="attribute-item">
-                <input type="text" name="paddingBottom" class="form-control" placeholder="下" data-rule-number="true" data-msg-number="必须是个数字" data-rule-min="0" data-msg-min="不能小于0">
+                <input type="text" name="paddingBottom" class="form-control" placeholder="下">
             </li>
             <li class="attribute-item">
-                <input type="text" name="paddingLeft" class="form-control" placeholder="左" data-rule-number="true" data-msg-number="必须是个数字" data-rule-min="0" data-msg-min="不能小于0">
+                <input type="text" name="paddingLeft" class="form-control" placeholder="左" >
             </li>
         </ul>
-        <ul class="js-margin-data attribute-layout">
-            <li class="attribute-item title-element">
-                <div class="pull-right popover-info"><i class="fa fa-question-circle-o"></i>
-                    <div class="popover fade right">
-                        <div class="arrow"></div>
-                        <h4 class="popover-title">帮助</h4>
-                        <div class="popover-content">外边距(Margin)属性设置元素所有外边距的宽度，是元素自身边框距离其他元素的边框的距离。</div>
-                    </div>
-                </div>
-                外边距
-            </li>
-            <li class="attribute-item">
-                <input type="text" name="marginTop" class="form-control" placeholder="上" data-rule-number="true" data-msg-number="必须是个数字" >
-            </li>
-            <li class="attribute-item">
-                <input type="text" name="marginRight" class="form-control" placeholder="右" data-rule-number="true" data-msg-number="必须是个数字" >
-            </li>
-            <li class="attribute-item">
-                <input type="text" name="marginBottom" class="form-control" placeholder="下" data-rule-number="true" data-msg-number="必须是个数字" >
-            </li>
-            <li class="attribute-item">
-                <input type="text" name="marginLeft" class="form-control" placeholder="左" data-rule-number="true" data-msg-number="必须是个数字" >
-            </li>
-        </ul>
-        <ul class="js-font-data attribute-layout">
-            <li class="attribute-item">
-                <p class="font-size-amount">
-                    <label for="js-fontSize-amount">当前字号：</label>
-                    <input type="text" id="js-fontSize-amount" name="fontSize" readonly>
-                </p>
-                <div id="js-fontSize-slider"></div>
-            </li>
-            <li class="attribute-item">
-                <label>文字样式</label>
-                <select class="form-control input-sm" name="fontStyle">
-                    <option value="normal">默认</option>
-                    <option value="italic">斜体</option>
-                </select>
-            </li>
-            <li class="attribute-item">
-                <label>文字样式</label>
-                <select class="form-control input-sm" name="fontWeight">
-                    <option value="normal">默认</option>
-                    <option value="bold">粗体</option>
-                    <option value="bolder">更粗</option>
-                    <option value="lighter">更细</option>
-                </select>
-            </li>
-        </ul>
-        <ul class="js-font-data attribute-layout">
-            <li class="attribute-item">
-                <label>文字颜色</label>
-                <input type="text" name="fontColor" class="color-picker" value="#333">
-            </li>
-            <li class="attribute-item">
-                <label>选择颜色</label>
-                <input type="text" name="hoverColor" class="color-picker">
-            </li>
-            <li class="attribute-item">
-                <label>背景颜色</label>
-                <input type="text" name="backgroundColor" class="color-picker" value="#fff">
-            </li>
-            <li class="attribute-item">
-                <label>其他颜色</label>
-                <input type="text" name="otherColor" class="color-picker">
-            </li>
-        </ul>
-    </form>
+    </div>
 </div>
-
-<script>
-    $("#attributeData").validate();
-    $("#js-fontSize-slider").slider({
-        range: "min",
-        min: 12,
-        max: 40,
-        value: 12,
-        slide: function( event, ui ) {
-            $( "#js-fontSize-amount" ).val( ui.value );
-        }
-    });
-    $( "#js-fontSize-amount" ).val( $("#js-fontSize-slider").slider( "value" ) );
-</script>

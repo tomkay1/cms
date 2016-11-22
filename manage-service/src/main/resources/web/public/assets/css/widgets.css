@@ -581,10 +581,16 @@ a:link, a:visited, a:hover, a:active {
 }
 /*video-text-group*/
 .video-text-group .video-info-title {
-    margin-top: 20px;
-    margin-bottom: 10px;
+    display: inline-block;
+    margin: 20px 6px 10px 0;
     font-size: 16px;
     font-weight: bold;
+}
+.video-text-group .video-sub-title {
+    font-size: 18px;
+    font-family: Georgia, 'Times New Roman', sans-serif;
+    font-weight: bold;
+    color: #aaa;
 }
 .video-text-group .video-info-title a {
     color: #1a1a1a;

@@ -81,7 +81,7 @@ public class CategoryController extends SiteManageController<Category, Long, Lon
                 model.addAttribute("categoryList", mallService.listCategories(site.getOwner().getCustomerId()));
                 model.addAttribute("brandList", mallService.listBrands(site.getOwner().getCustomerId()));
                 model.addAttribute("galleries", galleryService.listGalleries(site));
-                model.addAttribute("mallProducts", mallProductCategoryRepository.findBySite(site));
+                model.addAttribute("mallProducts", mallProductCategoryRepository.findBySiteAndDeletedFalse(site));
                 model.addAttribute("links", categoryService.getCategoriesForContentType(site, ContentType.Link));
             }
         } catch (IOException ex) {

@@ -10,7 +10,8 @@
 package com.huotu.hotcms.service.common;
 
 public enum PageType implements CommonEnum {
-    Ordinary(0, "普通", "普通页面"), DataIndex(1, "数据索引", "是一个数据列表"), DataContent(2, "数据内容", "是一个内容页");
+    Ordinary(0, "普通", "普通页面"), DataIndex(1, "数据索引", "是一个数据列表"), DataContent(2, "数据内容", "是一个内容页"),
+    Login(3, "登录页", "是一个登录页");
 
     private final int code;
     private final String value;

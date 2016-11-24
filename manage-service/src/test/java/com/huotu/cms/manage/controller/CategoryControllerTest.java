@@ -245,7 +245,7 @@ public class CategoryControllerTest extends SiteManageTest {
             category.setSite(super.site);
             category.setContentType(ContentType.MallClass);
             category.setParent(null);
-            category.setCategories(mallProductCategoryRepository.findBySite(super.site));
+            category.setCategories(mallProductCategoryRepository.findBySiteAndDeletedFalse(super.site));
             Iterator<Category> list = categoryService.getCategoriesForContentType(super.site, ContentType.Link).iterator();
             while (list.hasNext()) {
                 category.setRecommendCategory(list.next());

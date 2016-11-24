@@ -9,11 +9,7 @@
 
 package com.huotu.hotcms.service.service.impl;
 
-import com.huotu.hotcms.service.entity.AbstractContent;
-import com.huotu.hotcms.service.entity.Category;
-import com.huotu.hotcms.service.entity.Host;
-import com.huotu.hotcms.service.entity.Region;
-import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.entity.*;
 import com.huotu.hotcms.service.event.DeleteSiteEvent;
 import com.huotu.hotcms.service.exception.NoSiteFoundException;
 import com.huotu.hotcms.service.repository.CategoryRepository;
@@ -124,7 +120,7 @@ public class SiteServiceImpl implements SiteService {
 //        //根据模板ID读取到相应的站点
 //        Template template = templateRepository.findOne(templateId);
 ////        Site templateSite = template.getSite();
-//        List<CustomPages> customPages = customPagesRepository.findBySite(template);
+//        List<CustomPages> customPages = customPagesRepository.findBySiteAndDeletedFalse(template);
 //        for (CustomPages customPage : customPages) {
 //            String templateResourceConfigUrl = configInfo.getResourcesConfig(template) + "/" + customPage.getId() + ".xml";
 //            URI url = resourceService.getResource(templateResourceConfigUrl).httpUrl().toURI();

@@ -15,7 +15,8 @@ import java.util.List;
 public interface MallClassCategoryRepository extends JpaRepository<MallClassCategory, Long>
         , JpaSpecificationExecutor<MallClassCategory> {
 
-    List<MallClassCategory> findBySite(Site site);
+    List<MallClassCategory> findBySiteAndDeletedFalse(Site site);
 
-    List<MallClassCategory> findByParent_Serial(String serial);
+    List<MallClassCategory> findByParent_SerialAndDeletedFalse(String serial);
+
 }

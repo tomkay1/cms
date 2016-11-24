@@ -25,31 +25,12 @@ import com.huotu.hotcms.service.Serially;
 import com.huotu.hotcms.service.common.CMSEnums;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.common.PageType;
-import com.huotu.hotcms.service.entity.AbstractContent;
-import com.huotu.hotcms.service.entity.Article;
-import com.huotu.hotcms.service.entity.Category;
-import com.huotu.hotcms.service.entity.Download;
-import com.huotu.hotcms.service.entity.Gallery;
-import com.huotu.hotcms.service.entity.GalleryItem;
-import com.huotu.hotcms.service.entity.Link;
-import com.huotu.hotcms.service.entity.Notice;
-import com.huotu.hotcms.service.entity.Route;
-import com.huotu.hotcms.service.entity.Site;
-import com.huotu.hotcms.service.entity.Template;
-import com.huotu.hotcms.service.entity.TemplateType;
-import com.huotu.hotcms.service.entity.WidgetInfo;
+import com.huotu.hotcms.service.entity.*;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.service.model.SiteAndSerial;
-import com.huotu.hotcms.service.repository.ArticleRepository;
-import com.huotu.hotcms.service.repository.CategoryRepository;
-import com.huotu.hotcms.service.repository.ContentRepository;
-import com.huotu.hotcms.service.repository.DownloadRepository;
-import com.huotu.hotcms.service.repository.GalleryItemRepository;
-import com.huotu.hotcms.service.repository.GalleryRepository;
-import com.huotu.hotcms.service.repository.OwnerRepository;
-import com.huotu.hotcms.service.repository.TemplateRepository;
+import com.huotu.hotcms.service.repository.*;
 import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.service.ContentService;
 import com.huotu.hotcms.service.service.LoginService;
@@ -98,11 +79,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -341,7 +318,7 @@ public abstract class ManageTest extends SpringWebTest {
                     //parent it?
                     if (random.nextBoolean()) {
                         //找下有没有
-                        Category parent = categoryRepository.findBySiteAndContentType(site, contentType).stream()
+                        Category parent = categoryRepository.findBySiteAndContentTypeAndDeletedFalse(site, contentType).stream()
                                 .filter((c) -> !c.equals(category))
                                 .findAny()
                                 .orElse(null);
@@ -604,7 +581,7 @@ public abstract class ManageTest extends SpringWebTest {
         category.setSite(site);
 
         if (random.nextBoolean()) {
-            category.setParent(categoryRepository.findBySiteAndContentType(site, contentType).stream()
+            category.setParent(categoryRepository.findBySiteAndContentTypeAndDeletedFalse(site, contentType).stream()
                     .findAny().orElse(null));
         }
 

@@ -19,11 +19,7 @@ import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.service.repository.OwnerRepository;
-import com.huotu.hotcms.widget.CMSContext;
-import com.huotu.hotcms.widget.InstalledWidget;
-import com.huotu.hotcms.widget.Widget;
-import com.huotu.hotcms.widget.WidgetResolveService;
-import com.huotu.hotcms.widget.WidgetStyle;
+import com.huotu.hotcms.widget.*;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.exception.FormatException;
 import com.huotu.hotcms.widget.model.WidgetModel;
@@ -240,6 +236,10 @@ public class WidgetInfoController
             widgets = installedWidgets.stream()
                     .filter(installedWidget -> PageType.Ordinary.equals(installedWidget.getWidget().supportedPageType())
                             || installedWidget.getWidget().supportedPageType() == null)
+                    .collect(Collectors.toList());
+        } else if (pageType.equals(PageType.Login)) {
+            widgets = installedWidgets.stream()
+                    .filter(installedWidget -> PageType.Login.equals(installedWidget.getWidget().supportedPageType()))
                     .collect(Collectors.toList());
         } else {
             widgets = installedWidgets;

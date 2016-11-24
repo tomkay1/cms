@@ -1,7 +1,6 @@
 body {
     font-family: 'Microsoft YaHei', sans-serif;
 }
-
 /*解决防止 margin 重叠*/
 body > div {
     border-top: 1px solid transparent;
@@ -68,13 +67,11 @@ a:link, a:visited, a:hover, a:active {
     margin-left: 20px;
     max-width: 163px;
 }
-
 .width-center .logo {
     margin-left: 20px;
     width: 80px;
     height: 80px;
 }
-
 .width-center .navbar-toggle {
     margin-top: 20px;
 }
@@ -123,7 +120,6 @@ a:link, a:visited, a:hover, a:active {
     .topnavbar .nav > .dropdown {
         padding-bottom: 16px;
     }
-
     .width-center .nav .dropdown {
         height: 60px;
         line-height: 60px;
@@ -136,14 +132,12 @@ a:link, a:visited, a:hover, a:active {
         line-height: 50px;
         text-align: center;
     }
-
     .width-center .logo {
         margin-left: 20px;
         margin-right: 12px;
         width: 80px;
         height: 80px;
     }
-
     .width-center .dropdown-menu {
         padding: 0;
         width: 90px;
@@ -154,7 +148,6 @@ a:link, a:visited, a:hover, a:active {
     .width-center .dropdown-menu > li > a {
         padding: 10px 0;
     }
-
     .width-center .navbar-collapse {
         display: table-cell !important;
     }
@@ -176,25 +169,20 @@ a:link, a:visited, a:hover, a:active {
         right: -1px;
         border-bottom: 4px solid #ba0006;
     }
-
     .width-center {
         width: 96%;
         margin: 0 auto;
     }
-
     .content-center {
         display: table;
         margin: 0 auto;
     }
-
     .width-center .navbar-header {
         display: table-cell;
     }
-
     .width-center .navbar-collapse {
         display: table-cell !important;
     }
-
     .width-center .nav .dropdown {
         width: 98px;
         height: 80px;
@@ -208,14 +196,12 @@ a:link, a:visited, a:hover, a:active {
         line-height: 80px;
         text-align: center;
     }
-
     .width-center .logo {
         margin-left: 20px;
         margin-right: 12px;
         width: 80px;
         height: 80px;
     }
-
     .width-center .dropdown-menu {
         padding: 0;
         width: 100px;
@@ -599,10 +585,17 @@ a:link, a:visited, a:hover, a:active {
 }
 /*video-text-group*/
 .video-text-group .video-info-title {
-    margin-top: 20px;
-    margin-bottom: 10px;
+    display: inline-block;
+    margin: 20px 6px 10px 0;
     font-size: 16px;
     font-weight: bold;
+}
+
+.video-text-group .video-sub-title {
+    font-size: 18px;
+    font-family: Georgia, 'Times New Roman', sans-serif;
+    font-weight: bold;
+    color: #aaa;
 }
 .video-text-group .video-info-title a {
     color: #1a1a1a;
@@ -619,7 +612,6 @@ a:link, a:visited, a:hover, a:active {
     display: -webkit-flex;
     display: flex;
 }
-
 .image-text-list ul > li {
     -webkit-box-flex: 1;
     -moz-box-flex: 1;
@@ -856,4 +848,264 @@ a:link, a:visited, a:hover, a:active {
     -webkit-box-shadow: none;
     box-shadow: none;
     background: #f7f7f7;
+}
+
+/*Update 11.22*/
+.topnavbar-new {
+    width: 100%;
+    height: 80px;
+    margin: 0 auto;
+}
+
+.topnavbar-new ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.topnavbar-new a {
+    font-family: 'Microsoft YaHei', sans-serif;
+    color: #333;
+    transition: all 0.3s ease-out;
+}
+
+.topnavbar-new a:hover {
+    text-decoration: none;
+}
+
+.topnavbar-new .content-center {
+    background-color: #fff;
+}
+
+.topnavbar-new .topnavbar-header {
+    float: left;
+}
+
+.topnavbar-new .topnavbar-header > img {
+    height: 80px;
+}
+
+@media (max-width: 991px) {
+    .topnavbar-new .topnavbar-body {
+        position: absolute;
+        top: 80px;
+        display: none;
+        width: 100%;
+        background: #fff;
+        border-top: 1px solid rgba(0, 0, 0, 0.15);
+    }
+
+    .topnavbar-new .topnavbar-body > ul {
+        position: relative;
+        background: #fff;
+        z-index: 2;
+    }
+
+    .topnavbar-new .topnavbar-body > ul li > a {
+        display: block;
+        padding: 10px 15px;
+    }
+
+    .topnavbar-new .topnavbar-body > ul .active > a {
+        background-color: #ebebeb;
+        color: #262626;
+    }
+
+    .topnavbar-new .topnavbar-body .drop-down > a::after {
+        content: '\2261';
+        margin-left: 20px;
+    }
+
+    .topnavbar-new .topnavbar-body .drop-down .drop-down-menu {
+        display: none;
+    }
+
+    .topnavbar-new .topnavbar-body .drop-down .drop-down-menu a {
+        padding: 5px 15px 5px 25px;
+    }
+
+    .topnavbar-new .topnavbar-body .drop-down-on .drop-down-menu {
+        display: block;
+    }
+}
+
+@media (min-width: 992px) {
+    .topnavbar-new .topnavbar-body {
+        display: block;
+        height: 80px;
+        line-height: 80px;
+    }
+
+    .topnavbar-new .topnavbar-body > ul {
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+    }
+
+    .topnavbar-new .topnavbar-body > ul > li {
+        text-align: center;
+    }
+
+    .topnavbar-new .topnavbar-body > ul > li a:hover {
+        background-color: #ebebeb;
+        color: #262626;
+    }
+
+    .topnavbar-new .topnavbar-body > ul .active a {
+        height: 80px;
+        border-bottom: 3px solid #000;
+    }
+
+    .topnavbar-new .topnavbar-body > ul .drop-down {
+        position: relative;
+    }
+
+    .topnavbar-new .topnavbar-body > ul .drop-down .drop-down-menu {
+        display: none;
+        padding: 5px 0;
+        position: absolute;
+        top: 100%;
+        width: 100%;
+        z-index: 999;
+        background: #fff;
+        line-height: 40px;
+        left: 0;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        border-radius: 4px;
+        -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    }
+
+    .topnavbar-new .topnavbar-body > ul .drop-down .drop-down-menu a:hover {
+        background-color: #ebebeb;
+        color: #262626;
+    }
+
+    .topnavbar-new .topnavbar-body > ul .drop-down-on .drop-down-menu {
+        display: block;
+    }
+
+    .topnavbar-new .topnavbar-body a {
+        display: block;
+    }
+}
+
+@media (min-width: 992px) {
+    .topnavbar-full .topnavbar-body {
+        float: right;
+    }
+
+    .topnavbar-full .topnavbar-body {
+        display: block;
+    }
+
+    .topnavbar-full .topnavbar-body > ul > li {
+        margin: 0 10px;
+    }
+
+    .topnavbar-full .topnavbar-body > ul > li > a {
+        padding: 0 10px;
+    }
+
+    .topnavbar-center .content-center {
+        width: 1200px;
+        margin: 0 auto;
+        display: table;
+    }
+
+    .topnavbar-center .topnavbar-header {
+        display: table-cell;
+    }
+
+    .topnavbar-center .topnavbar-body {
+        display: table-cell;
+    }
+
+    .topnavbar-center .topnavbar-body > ul > li {
+        -webkit-box-flex: 1;
+        -moz-box-flex: 1;
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+    }
+}
+
+.topnavbar-absolute {
+    position: absolute;
+}
+
+.menu-toggle-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 80px;
+    height: 80px;
+}
+
+@media (min-width: 992px) {
+    .menu-toggle-btn {
+        display: none;
+    }
+}
+
+.menu-toggle-icon {
+    background: transparent;
+    display: block;
+    font-size: 12px;
+    padding: 38px 26px;
+    width: 80px;
+    height: auto;
+}
+
+.menu-toggle-icon span {
+    background: #888;
+    display: block;
+    position: relative;
+    -webkit-transform: translate3d(0, 0, 0);
+}
+
+.menu-toggle-icon span,
+.menu-toggle-icon span:before,
+.menu-toggle-icon span:after {
+    width: 100%;
+    height: 3px;
+    -moz-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    -webkit-transition: all 0.4s;
+    transition: all 0.4s;
+    -webkit-transform: translate3d(0, 0, 0);
+}
+
+.menu-toggle-icon span:before,
+.menu-toggle-icon span:after {
+    background: #888;
+    content: " ";
+    margin-top: -0.6em;
+    position: absolute;
+}
+
+.menu-toggle-icon span:after {
+    margin-top: .6em;
+}
+
+.menu-toggle-icon.on span {
+    background: transparent;
+}
+
+.menu-toggle-icon.on span:before {
+    -moz-transform: rotate(45deg) translate(0.5em, 0.4em);
+    -ms-transform: rotate(45deg) translate(0.5em, 0.4em);
+    -o-transform: rotate(45deg) translate(0.5em, 0.4em);
+    -webkit-transform: rotate(45deg) translate(0.5em, 0.4em);
+    transform: rotate(45deg) translate(0.5em, 0.4em);
+}
+
+.menu-toggle-icon.on span:after {
+    -moz-transform: rotate(-45deg) translate(0.45em, -0.35em);
+    -ms-transform: rotate(-45deg) translate(0.45em, -0.35em);
+    -o-transform: rotate(-45deg) translate(0.45em, -0.35em);
+    -webkit-transform: rotate(-45deg) translate(0.45em, -0.35em);
+    transform: rotate(-45deg) translate(0.45em, -0.35em);
 }

@@ -146,7 +146,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Iterable<Category> getCategoriesForContentType(Site site, ContentType contentType) {
-        return categoryRepository.findBySiteAndContentType(site, contentType);
+        return categoryRepository.findBySiteAndContentTypeAndDeletedFalse(site, contentType);
     }
 
     @Override

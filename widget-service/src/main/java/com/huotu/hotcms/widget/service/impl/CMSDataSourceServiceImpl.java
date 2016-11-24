@@ -10,24 +10,11 @@
 package com.huotu.hotcms.widget.service.impl;
 
 import com.huotu.hotcms.service.common.ContentType;
-import com.huotu.hotcms.service.entity.AbstractContent;
-import com.huotu.hotcms.service.entity.Article;
-import com.huotu.hotcms.service.entity.Category;
-import com.huotu.hotcms.service.entity.Download;
-import com.huotu.hotcms.service.entity.GalleryItem;
-import com.huotu.hotcms.service.entity.Link;
-import com.huotu.hotcms.service.entity.Notice;
-import com.huotu.hotcms.service.entity.Video;
+import com.huotu.hotcms.service.entity.*;
 import com.huotu.hotcms.service.model.GalleryItemModel;
 import com.huotu.hotcms.service.model.LinkModel;
 import com.huotu.hotcms.service.model.widget.VideoModel;
-import com.huotu.hotcms.service.repository.ArticleRepository;
-import com.huotu.hotcms.service.repository.CategoryRepository;
-import com.huotu.hotcms.service.repository.DownloadRepository;
-import com.huotu.hotcms.service.repository.GalleryItemRepository;
-import com.huotu.hotcms.service.repository.LinkRepository;
-import com.huotu.hotcms.service.repository.NoticeRepository;
-import com.huotu.hotcms.service.repository.VideoRepository;
+import com.huotu.hotcms.service.repository.*;
 import com.huotu.hotcms.widget.CMSContext;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.repository.PageInfoRepository;
@@ -75,12 +62,12 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
 
     @Override
     public List<Category> findByParent_Serial(String serial) {
-        return categoryRepository.findByParent_Serial(serial);
+        return categoryRepository.findByParent_SerialAndDeletedFalse(serial);
     }
 
     @Override
     public List<Category> findNoticeCategory() {
-        return categoryRepository.findBySiteAndContentType(CMSContext.RequestContext().getSite(), ContentType.Notice);
+        return categoryRepository.findBySiteAndContentTypeAndDeletedFalse(CMSContext.RequestContext().getSite(), ContentType.Notice);
     }
 
     @Override
@@ -94,7 +81,7 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
 
     @Override
     public List<Category> findLinkCategory() {
-        return categoryRepository.findBySiteAndContentType(CMSContext.RequestContext().getSite(), ContentType.Link);
+        return categoryRepository.findBySiteAndContentTypeAndDeletedFalse(CMSContext.RequestContext().getSite(), ContentType.Link);
     }
 
     @Override
@@ -110,7 +97,7 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
 
     @Override
     public List<Category> findGalleryCategory() {
-        return categoryRepository.findBySiteAndContentType(CMSContext.RequestContext().getSite(), ContentType.Gallery);
+        return categoryRepository.findBySiteAndContentTypeAndDeletedFalse(CMSContext.RequestContext().getSite(), ContentType.Gallery);
     }
 
     @Override
@@ -130,7 +117,7 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
 
     @Override
     public List<Category> findVideoCategory() {
-        return categoryRepository.findBySiteAndContentType(CMSContext.RequestContext().getSite(), ContentType.Video);
+        return categoryRepository.findBySiteAndContentTypeAndDeletedFalse(CMSContext.RequestContext().getSite(), ContentType.Video);
     }
 
     @Override
@@ -147,7 +134,7 @@ public class CMSDataSourceServiceImpl implements CMSDataSourceService {
     @Override
     public List<Category> findArticleCategory() {
 
-        return categoryRepository.findBySiteAndContentType(CMSContext.RequestContext().getSite(), ContentType.Article);
+        return categoryRepository.findBySiteAndContentTypeAndDeletedFalse(CMSContext.RequestContext().getSite(), ContentType.Article);
     }
 
     @Override

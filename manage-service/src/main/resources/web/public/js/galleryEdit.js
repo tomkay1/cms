@@ -45,3 +45,4 @@ qq(document.getElementById("trigger-upload")).attach("click", function () {
     manualUploader.uploadStoredFiles();
 });
 
+

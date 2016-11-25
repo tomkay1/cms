@@ -47,19 +47,17 @@ public interface MallService {
     User getLoginUser();
 
     /**
+     * 用户是否登录
+     * @return
+     */
+    boolean isLogin();
+
+    /**
      * 获取当前登录用户名称
      *
      * @return 用户名称，null
      */
     String getLoginUserName();
-
-    /**
-     * 获取当前购物车商品数量
-     *
-     * @param userId 用户id
-     * @return 购物车商品数量
-     */
-    int getShoppingCartCount(Long userId);
 
 
     /**
@@ -69,6 +67,26 @@ public interface MallService {
      * @return
      */
     String getMallDomain(Owner owner);
+
+    /**
+     * 商城用户登录
+     *
+     * @param owner
+     * @param username
+     * @param password
+     * @return
+     */
+    String mallLogin(Owner owner, String username, String password);
+
+    /**
+     * 商城用户注册
+     *
+     * @param owner
+     * @param username
+     * @param password
+     * @return
+     */
+    String mallRegister(Owner owner, String username, String password);
 
 
 }

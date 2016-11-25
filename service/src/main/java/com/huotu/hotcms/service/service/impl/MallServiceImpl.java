@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.service.service.impl;
 
+import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.service.MallService;
 import com.huotu.huobanplus.common.entity.Brand;
 import com.huotu.huobanplus.common.entity.Category;
@@ -55,6 +56,11 @@ public class MallServiceImpl implements MallService {
     @Override
     public int getShoppingCartCount(Long userId) {
         return 0;
+    }
+
+    @Override
+    public String getMallDomain(Owner owner) {
+        return null;
     }
 
 

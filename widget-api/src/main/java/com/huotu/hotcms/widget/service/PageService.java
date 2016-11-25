@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.widget.service;
 
+import com.huotu.hotcms.service.common.PageType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.event.CopySiteEvent;
@@ -118,6 +119,20 @@ public interface PageService {
     List<PageInfo> getPageList(Site site);
 
     /**
+     * <p>返回path对应的界面如果存在返回界面</p>
+     * <p>path如果不存在,查找指定数据源下的最接近的界面</p>
+     *
+     * @param category 相关数据源
+     * @param path     请求的路径
+     * @param pageType 可以为null
+     * @return 最适用的内容页 永不为null
+     * @throws PageNotFoundException 如果找不到页面
+     */
+    PageInfo getClosestContentPage(Category category, String path, PageType pageType) throws PageNotFoundException;
+
+    @Deprecated
+    /**
+     * 其实是调用了getClosestContentPage(Category category, String path, PageType pageType)
      * <p>返回path对应的界面如果存在返回界面</p>
      * <p>path如果不存在,查找指定数据源下的最接近的界面</p>
      *

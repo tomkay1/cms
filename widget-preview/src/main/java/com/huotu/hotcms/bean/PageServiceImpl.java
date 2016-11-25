@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.bean;
 
+import com.huotu.hotcms.service.common.PageType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.event.CopySiteEvent;
@@ -17,12 +18,7 @@ import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.service.CommonService;
 import com.huotu.hotcms.service.service.TemplateService;
-import com.huotu.hotcms.widget.CMSContext;
-import com.huotu.hotcms.widget.Component;
-import com.huotu.hotcms.widget.InstalledWidget;
-import com.huotu.hotcms.widget.Widget;
-import com.huotu.hotcms.widget.WidgetLocateService;
-import com.huotu.hotcms.widget.WidgetResolveService;
+import com.huotu.hotcms.widget.*;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.PageElement;
@@ -34,11 +30,7 @@ import me.jiangcai.lib.resource.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -200,7 +192,7 @@ public class PageServiceImpl implements PageService {
     }
 
     @Override
-    public PageInfo getClosestContentPage(Category category, String path) throws PageNotFoundException {
+    public PageInfo getClosestContentPage(Category category, String path, PageType pageType) throws PageNotFoundException {
         PageInfo pageInfo = pageInfoRepository.findByPagePath(path);
         if (pageInfo != null && category.getId().equals(pageInfo.getCategory().getId())) {
             return pageInfo;
@@ -209,6 +201,11 @@ public class PageServiceImpl implements PageService {
         if (pageInfos.isEmpty())
             throw new PageNotFoundException();
         return pageInfos.get(0);
+    }
+
+    @Override
+    public PageInfo getClosestContentPage(Category category, String path) throws PageNotFoundException {
+        return getClosestContentPage(category, path);
     }
 
     @Override

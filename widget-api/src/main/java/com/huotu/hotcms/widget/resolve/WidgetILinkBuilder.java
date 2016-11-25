@@ -289,7 +289,8 @@ public class WidgetILinkBuilder extends AbstractLinkBuilder {
          */
         Pattern pattern = Pattern.compile("\\$\\{.*?\\}");
         Matcher matcher = pattern.matcher(base);
-        if (matcher.find())
+        if (matcher.find()) {
+            linkBase.append(base.startsWith("/") ? "/" : "");
             for (String s : base.split("/")) {
                 if (!s.equals("") && s.startsWith("${") && s.endsWith("}")) {
                     s = s.replace("${", "");
@@ -311,7 +312,7 @@ public class WidgetILinkBuilder extends AbstractLinkBuilder {
                     linkBase.append(s);
                 }
             }
-        else
+        } else
             linkBase.append(base);
 
 

@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.widget.repository;
 
+import com.huotu.hotcms.service.common.PageType;
 import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.repositoryi.AbstractContentRepository;
@@ -51,6 +52,14 @@ public interface PageInfoRepository extends AbstractContentRepository<PageInfo> 
      * @return pageInfo列表
      */
     List<PageInfo> findByCategory(Category category);
+
+    /**
+     * 通过数据源查询pageInfo列表
+     *
+     * @param category 数据源
+     * @return pageInfo列表
+     */
+    List<PageInfo> findByCategoryAndPageType(Category category, PageType pageType);
 
     /**
      * 通过path查询pageInfo列表

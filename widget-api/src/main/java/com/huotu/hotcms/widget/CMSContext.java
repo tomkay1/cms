@@ -10,6 +10,7 @@
 package com.huotu.hotcms.widget;
 
 import com.huotu.hotcms.service.entity.AbstractContent;
+import com.huotu.hotcms.service.entity.Category;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.resolve.WidgetConfiguration;
@@ -76,6 +77,12 @@ public class CMSContext {
      * 如果当前展示的页面类型为{@link com.huotu.hotcms.service.common.PageType#DataContent}则必须提供一个当前内容
      */
     private AbstractContent abstractContent;
+
+    /**
+     * 当前内容的数据源
+     */
+    private Category contentCategory;
+
     /**
      * 当前正在展示的页面
      */

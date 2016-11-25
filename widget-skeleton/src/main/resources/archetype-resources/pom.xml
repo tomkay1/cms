@@ -65,7 +65,7 @@
         <dependency>
             <groupId>com.huotu.hotcms</groupId>
             <artifactId>widget-test</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${apiVersion}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

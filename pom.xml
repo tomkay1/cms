@@ -15,7 +15,7 @@
 
     <groupId>com.huotu.hotcms</groupId>
     <artifactId>hotcms</artifactId>
-    <version>1.2</version>
+    <version>1.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>CMS</name>

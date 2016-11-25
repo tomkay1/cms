@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.service.service;
 
+import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.huobanplus.common.entity.Brand;
 import com.huotu.huobanplus.common.entity.Category;
 import com.huotu.huobanplus.common.entity.User;
@@ -60,6 +61,14 @@ public interface MallService {
      */
     int getShoppingCartCount(Long userId);
 
+
+    /**
+     * 获取当前商城域名
+     *
+     * @param owner
+     * @return
+     */
+    String getMallDomain(Owner owner);
 
 
 }

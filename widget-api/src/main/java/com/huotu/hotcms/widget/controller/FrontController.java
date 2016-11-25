@@ -353,7 +353,7 @@ public class FrontController implements FilterBehavioral {
         if (content != null && !(content instanceof MallGoodsContent)) {
             cmsContext.setAbstractContent(content);
             //查找当前站点下指定数据源pagePath下最接近的page
-            return pageService.getClosestContentPage(content.getCategory(), pagePath);
+            return pageService.getClosestContentPage(content.getCategory(), pagePath, null);
         } else {
             return pageService.findBySiteAndPagePath(cmsContext.getSite(), pagePath);
         }

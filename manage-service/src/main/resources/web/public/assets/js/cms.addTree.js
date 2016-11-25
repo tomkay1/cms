@@ -44,7 +44,8 @@
             debug: false,
             visible: true,
             level: -1,
-            treeNodes: []
+            treeNodes: [],
+            extraItems: []
         }, options);
         var self = this;
         var DOM = HTML.join('\n');
@@ -57,6 +58,29 @@
             .attr('id',id);
 
         var $DOM = $('#'+id);
+
+        var UrlSource = $('.js-get-UrlSource');
+
+        if(s.extraItems) {
+            if($.isArray(s.extraItems)) {
+                var TempDOM = $('<div></div>');
+                $.each(s.extraItems, function (i ,v) {
+                    var n = v.name;
+                    var f = v.flag;
+                    var p = v.path;
+                    !n && console.warn('参数'+ (i+1) +'缺少必要的参数 "name"');
+                    !f && console.warn('参数'+ (i+1) +'缺少必要的参数 "flag"');
+                    !p && console.warn('参数'+ (i+1) +'缺少必要的参数 "path"');
+                    if (n && f && p) {
+                        var li = '<li><a href="javascript:void(0);" data-value="extra" data-flag="'+f+'" data-path="'+p+'">'+ n +'</a></li>';
+                        TempDOM.append(li)
+                    }
+                });
+                UrlSource.find('.dropdown-menu').append(TempDOM.html());
+            } else {
+                console.warn('TypeError: "items" is not an array');
+            }
+        }
 
         if(!s.visible) {
             self.find('.tree-visibleName').detach();
@@ -74,21 +98,27 @@
 
         $('.js-save-node', this).click(function () {
             var selectNode = treeObj.getSelectedNodes()[0];
-            selectNode.name = $('.tree-name').val();
-            selectNode.linkPath = $('.tree-url').val();
-            selectNode.flag = parseInt($('.tree-flag').val()) || 0;
-            selectNode.visible = $('.tree-visible').val();
-            treeObj.updateNode(selectNode);
+            if(selectNode) {
+                selectNode.name = $('.tree-name').val();
+                selectNode.linkPath = $('.tree-url').val();
+                selectNode.flag = parseInt($('.tree-flag').val()) || 0;
+                selectNode.visible = $('.tree-visible').val();
+                treeObj.updateNode(selectNode);
+            }
         });
 
-        $('.js-get-UrlSource').find('a').click(function() {
-            var content = $(this).text() + ' <span class="caret">';
-            $('.js-get-UrlSource').find('button').html(content);
-            var $this = $(this).parents('.js-get-UrlSource');
-            var type = $(this).attr('data-value');
+        UrlSource.find('a').click(function() {
+            var _this = $(this);
+            var content = _this.text() + ' <span class="caret">';
+            UrlSource.find('button').html(content);
+            var $this = _this.parents('.js-get-UrlSource');
+            var type = _this.attr('data-value');
             switch(type) {
                 case 'custom':
                     clearInput($this);
+                    break;
+                case 'extra':
+                    extraInput(_this);
                     break;
                 default:
                     plugin.getUrlPopover($this, type, s.debug);
@@ -159,6 +189,7 @@
         $('.tree-name').val(obj.name);
         inputUrl.val(obj.linkPath);
         $('.tree-flag').val(obj.flag);
+
         if (obj.flag) {
             inputUrl.attr('readonly', 'readonly');
         } else {
@@ -171,7 +202,7 @@
     function clearInput(element) {
         var inputName = element.siblings('.tree-name');
         var inputUrl = element.siblings('.tree-url');
-        var inputFlag = element.siblings('.tree-Flag');
+        var inputFlag = element.siblings('.tree-flag');
         var inputVisibleName = element.siblings('.tree-visibleName');
         var inputVisible = element.siblings('.tree-visible');
 
@@ -184,6 +215,27 @@
         if (inputUrl.attr('readonly')) {
             inputUrl.removeAttr('readonly');
         }
+    }
+
+    function extraInput(element) {
+        var name = element.text();
+        var flag = element.data('flag');
+        var path = element.data('path');
+
+        var parent = element.parents('.js-get-UrlSource');
+
+        var inputName = parent.siblings('.tree-name');
+        var inputUrl = parent.siblings('.tree-url');
+        var inputFlag = parent.siblings('.tree-flag');
+        var inputVisibleName = parent.siblings('.tree-visibleName');
+        var inputVisible = parent.siblings('.tree-visible');
+
+        inputName.val(name);
+        inputUrl.val(path).attr('readonly', 'readonly');
+        inputFlag.val(flag);
+        inputVisibleName.val('');
+        inputVisible.val('');
+
     }
     var TreeView = {
         $DOM: null,

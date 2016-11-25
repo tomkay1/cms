@@ -214,4 +214,29 @@
             </li>
         </ul>
     </div>
+    <div>
+        <div id="treeView"></div>
+    </div>
+    <button type="button" class="btn btn-default" id="testBtn">TEST</button>
 </div>
+<script>
+    $('#treeView').addTreeView({
+        debug: true,
+        extraItems: [
+            {
+                name: '登录页面',
+                path: '#index.html',
+                flag: '3'
+            },
+            {
+                name: '个人中心',
+                path: '#user.html',
+                flag: '4'
+            }
+        ]
+    });
+    $('#testBtn').click(function () {
+        console.log($.getTreeViewData());
+    });
+
+</script>

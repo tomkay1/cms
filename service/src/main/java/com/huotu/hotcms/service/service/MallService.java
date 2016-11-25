@@ -10,12 +10,15 @@
 package com.huotu.hotcms.service.service;
 
 import com.huotu.hotcms.service.entity.login.Owner;
+import com.huotu.hotcms.service.exception.LoginException;
+import com.huotu.hotcms.service.exception.RegisterException;
 import com.huotu.huobanplus.common.entity.Brand;
 import com.huotu.huobanplus.common.entity.Category;
 import com.huotu.huobanplus.common.entity.User;
 import org.springframework.data.domain.Pageable;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -43,12 +46,14 @@ public interface MallService {
      * 获取登录的用户
      *
      * @return 登录返回商城用户，未登录返回null
+     * @throws IOException 通讯异常导致无法获取 {@link com.huotu.huobanplus.sdk.common.repository.UserRestRepository#getOneByPK(Serializable)}
      */
-    User getLoginUser();
+    User getLoginUser() throws IOException;
 
     /**
      * 用户是否登录
-     * @return
+     *
+     * @return true for current user already logged.
      */
     boolean isLogin();
 
@@ -56,37 +61,45 @@ public interface MallService {
      * 获取当前登录用户名称
      *
      * @return 用户名称，null
+     * @throws IOException {@link #getLoginUser()}
      */
-    String getLoginUserName();
+    String getLoginUserName() throws IOException;
 
 
     /**
      * 获取当前商城域名
      *
      * @param owner
-     * @return
+     * @return 商城内购页域名
+     * @throws IOException 通讯异常
      */
-    String getMallDomain(Owner owner);
+    String getMallDomain(Owner owner) throws IOException;
 
     /**
      * 商城用户登录
+     * 登录成功后需要按照Cookie规则写入主domain
      *
-     * @param owner
-     * @param username
-     * @param password
-     * @return
+     * @param owner    工作商户
+     * @param username 登录名（手机号）
+     * @param password 明文密码
+     * @return 总是会返回一个非null的结果
+     * @throws IOException    通讯故障,应该建议用户重试
+     * @throws LoginException 登录逻辑失败 包括但不限于系统请求失败,未找到数据,登录失败,账户被冻结,操作失败,数据库操作失败
      */
-    String mallLogin(Owner owner, String username, String password);
+    User mallLogin(Owner owner, String username, String password) throws IOException, LoginException;
 
     /**
      * 商城用户注册
+     * 登录成功后需要按照Cookie规则写入主domain
      *
-     * @param owner
-     * @param username
-     * @param password
-     * @return
+     * @param owner    工作商户
+     * @param username 登录名（手机号）
+     * @param password 明文密码
+     * @return 总是会返回一个非null的结果
+     * @throws IOException       通讯故障,应该建议用户重试
+     * @throws RegisterException 注册逻辑失败 包括但不限于系统请求失败,注册失败,该用户已被注册,操作失败,数据库操作失败
      */
-    String mallRegister(Owner owner, String username, String password);
+    User mallRegister(Owner owner, String username, String password) throws IOException, RegisterException;
 
 
 }

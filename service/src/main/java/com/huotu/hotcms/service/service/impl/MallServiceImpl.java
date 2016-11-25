@@ -10,6 +10,8 @@
 package com.huotu.hotcms.service.service.impl;
 
 import com.huotu.hotcms.service.entity.login.Owner;
+import com.huotu.hotcms.service.exception.LoginException;
+import com.huotu.hotcms.service.exception.RegisterException;
 import com.huotu.hotcms.service.service.MallService;
 import com.huotu.huobanplus.common.entity.Brand;
 import com.huotu.huobanplus.common.entity.Category;
@@ -54,35 +56,47 @@ public class MallServiceImpl implements MallService {
     }
 
     @Override
-    public User getLoginUser() {
+    public User getLoginUser() throws IOException {
         //todo
         return null;
     }
 
     @Override
     public boolean isLogin() {
-        return getLoginUser() != null;
+        try {
+            return getLoginUser() != null;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public String getLoginUserName() {
+    public String getLoginUserName() throws IOException {
         if (isLogin()) {
-            return getLoginUser().getLoginName();
+            try {
+                return getLoginUser().getLoginName();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }
 
     @Override
-    public String getMallDomain(Owner owner) {
+    public String getMallDomain(Owner owner) throws IOException {
         //todo
         return "http://www.baidu.com";
     }
 
     @Override
-    public String mallLogin(Owner owner, String username, String password) {
+    public User mallLogin(Owner owner, String username, String password) throws IOException, LoginException {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         // 创建HttpPost
-        HttpPost httppost = new HttpPost(getMallDomain(owner) + "/Mall/UserCenter/Login/" + owner.getCustomerId());
+        try {
+            HttpPost httppost = new HttpPost(getMallDomain(owner) + "/Mall/UserCenter/Login/" + owner.getCustomerId());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         // 创建参数队列
         List<BasicNameValuePair> basicNameValuePairs = new ArrayList<>();
         basicNameValuePairs.add(new BasicNameValuePair("username", username));
@@ -92,10 +106,14 @@ public class MallServiceImpl implements MallService {
 
 
     @Override
-    public String mallRegister(Owner owner, String username, String password) {
+    public User mallRegister(Owner owner, String username, String password) throws IOException, RegisterException {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         // 创建HttpPost
-        HttpPost httpPost = new HttpPost(getMallDomain(owner) + "/Mall/UserCenter/Register" + owner.getCustomerId());
+        try {
+            HttpPost httpPost = new HttpPost(getMallDomain(owner) + "/Mall/UserCenter/Register" + owner.getCustomerId());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         // 创建参数队列
         List<BasicNameValuePair> basicNameValuePairs = new ArrayList<>();
         basicNameValuePairs.add(new BasicNameValuePair("username", username));

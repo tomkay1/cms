@@ -9,6 +9,7 @@
 
 package com.huotu.hotcms.service.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.exception.LoginException;
 import com.huotu.hotcms.service.exception.RegisterException;
@@ -33,6 +34,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author CJ
@@ -68,6 +70,7 @@ public class MallServiceImpl implements MallService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     @Override
@@ -90,69 +93,57 @@ public class MallServiceImpl implements MallService {
 
     @Override
     public User mallLogin(Owner owner, String username, String password) throws IOException, LoginException {
-        CloseableHttpClient httpclient = HttpClients.createDefault();
         // 创建HttpPost
-        try {
-            HttpPost httppost = new HttpPost(getMallDomain(owner) + "/Mall/UserCenter/Login/" + owner.getCustomerId());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        HttpPost httppost = new HttpPost(getMallDomain(owner) + "/Mall/UserCenter/Login/" + owner.getCustomerId());
         // 创建参数队列
         List<BasicNameValuePair> basicNameValuePairs = new ArrayList<>();
         basicNameValuePairs.add(new BasicNameValuePair("username", username));
         basicNameValuePairs.add(new BasicNameValuePair("password", password));
-        return getResult(httpclient, httppost, basicNameValuePairs);
+        return getResult(httppost, basicNameValuePairs);
+
     }
 
 
     @Override
     public User mallRegister(Owner owner, String username, String password) throws IOException, RegisterException {
-        CloseableHttpClient httpClient = HttpClients.createDefault();
         // 创建HttpPost
-        try {
-            HttpPost httpPost = new HttpPost(getMallDomain(owner) + "/Mall/UserCenter/Register" + owner.getCustomerId());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        HttpPost httpPost = new HttpPost(getMallDomain(owner) + "/Mall/UserCenter/Register" + owner.getCustomerId());
         // 创建参数队列
         List<BasicNameValuePair> basicNameValuePairs = new ArrayList<>();
         basicNameValuePairs.add(new BasicNameValuePair("username", username));
         basicNameValuePairs.add(new BasicNameValuePair("password", password));
         basicNameValuePairs.add(new BasicNameValuePair("sourceType", "PC"));
-        return getResult(httpClient, httpPost, basicNameValuePairs);
+        return getResult(httpPost, basicNameValuePairs);
     }
 
     @Nullable
-    private String getResult(CloseableHttpClient httpclient, HttpPost httppost, List<BasicNameValuePair> basicNameValuePairs) {
+    private User getResult(HttpPost httppost, List<BasicNameValuePair> basicNameValuePairs) throws IOException {
         UrlEncodedFormEntity uefEntity;
-        String result = null;
-        try {
+
+        User user = null;
+        try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
             uefEntity = new UrlEncodedFormEntity(basicNameValuePairs, "UTF-8");
             httppost.setEntity(uefEntity);
             System.out.println("executing request " + httppost.getURI());
-            CloseableHttpResponse response = httpclient.execute(httppost);
-            try {
+            try (CloseableHttpResponse response = httpclient.execute(httppost)) {
                 HttpEntity entity = response.getEntity();
                 if (entity != null) {
-                    result = EntityUtils.toString(entity, "UTF-8");
+                    String result = EntityUtils.toString(entity, "UTF-8");
                     System.out.println("--------------------------------------");
                     System.out.println("Response content: " + result);
                     System.out.println("--------------------------------------");
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    Map map = objectMapper.convertValue(result, Map.class);
+                    if (map.get("resultCode").equals(2000)) {
+                        //todo
+                    }
                 }
-            } finally {
-                response.close();
             }
         } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            // 关闭连接,释放资源
-            try {
-                httpclient.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            throw e;
         }
-        return result;
+
+        return user;
     }
 
 

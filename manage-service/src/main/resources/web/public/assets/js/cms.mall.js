@@ -36,6 +36,19 @@ $(function () {
         parent.addClass('tab-selected').siblings('li').removeClass('tab-selected');
     });
 
+    $('.mall-main-swiper').swiper({
+        pagination: '.swiper-pagination',
+        nextButton: '.swiper-button-next',
+        prevButton: '.swiper-button-prev',
+        autoplay: 5000,
+        slidesPerView: 1,
+        paginationClickable: true,
+        observer: true,
+        observeParents: true,
+        updateOnImagesReady: true,
+        loop: true
+    });
+
     $('.recommend-list').find('.swiper-container').swiper({
         nextButton: '.swiper-button-next',
         prevButton: '.swiper-button-prev',
@@ -50,12 +63,10 @@ $(function () {
 
     // 添加菜单交互
 
-    var categorysItem = $('.categorys-dorpdown').find('.item');
-
-    categorysItem.mouseenter(function () {
-        $(this).find('.item-sub').addClass('show');
+    $('.categorys-dorpdown').find('.item').mouseenter(function () {
+        $(this).addClass('show');
     }).mouseleave(function () {
-        $(this).find('.item-sub').removeClass('show');
+        $(this).removeClass('show');
     });
 
     $('.mall-shortcut').find('.dorpdown').mouseenter(function () {

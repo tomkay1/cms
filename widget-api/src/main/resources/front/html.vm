@@ -28,27 +28,18 @@
     <link rel="stylesheet" href="/css/mall.css">
 ##    <link rel="stylesheet" href="${globalCssURI}">
     <link rel="stylesheet" href="${pageCssURI}">
+
+    <!--[if lt IE 9]>
+        <script src="http://resali.huobanplus.com/cdn/bracket/js/html5shiv.js"></script>
+        <script src="http://resali.huobanplus.com/cdn/bracket/js/respond.min.js"></script>
+    <![endif]-->
 </head>
 <body>
     ${content}
 </body>
 <script src="http://resali.huobanplus.com/cdn/jquery/1.9.1/jquery.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bootstrap/3.3.6/bootstrap.min.js"></script>
-<script src="http://resali.huobanplus.com/cdn/bracket/js/html5shiv.js"></script>
-<script src="http://resali.huobanplus.com/cdn/bracket/js/respond.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/swiper/3.3.1/swiper.jquery.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bootstrap-hover-dropdown/2.0.1/bootstrap-hover-dropdown.min.js"></script>
 <script src="/js/cms.mall.js"></script>
-<script>
-    new Swiper('.swiper-container', {
-        pagination: '.swiper-pagination',
-        autoplay: 5000,
-        slidesPerView: 1,
-        paginationClickable: true,
-        observer: true,
-        observeParents: true,
-        updateOnImagesReady: true,
-        loop: true
-    });
-</script>
 </html>

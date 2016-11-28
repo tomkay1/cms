@@ -13,9 +13,26 @@ import java.util.List;
  */
 public interface MallProductCategoryRepository extends JpaRepository<MallProductCategory, Long>
         , JpaSpecificationExecutor<MallProductCategory> {
+    /**
+     * @param site
+     * @return
+     * @since 1.3.0
+     */
     List<MallProductCategory> findBySiteAndDeletedFalse(Site site);
 
+    @Deprecated
+    List<MallProductCategory> findBySite(Site site);
+
+    /**
+     * @param site
+     * @param serial
+     * @return
+     * @since 1.3.0
+     */
     List<MallProductCategory> findBySiteAndParent_SerialAndDeletedFalse(Site site, String serial);
+
+    @Deprecated
+    List<MallProductCategory> findBySiteAndParent_Serial(Site site, String serial);
 
     MallProductCategory findBySerial(String serial);
 

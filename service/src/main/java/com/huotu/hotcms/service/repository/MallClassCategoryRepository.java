@@ -17,6 +17,21 @@ public interface MallClassCategoryRepository extends JpaRepository<MallClassCate
 
     List<MallClassCategory> findBySiteAndDeletedFalse(Site site);
 
+    /**
+     * @param site
+     * @return
+     * @since 1.3.0
+     */
+    List<MallClassCategory> findBySite(Site site);
+
+    @Deprecated
+    List<MallClassCategory> findByParent_Serial(String serial);
+
+    /**
+     * @param serial
+     * @return
+     * @since 1.3.0
+     */
     List<MallClassCategory> findByParent_SerialAndDeletedFalse(String serial);
 
 }

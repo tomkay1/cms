@@ -205,7 +205,7 @@ public class PageServiceImpl implements PageService {
 
     @Override
     public PageInfo getClosestContentPage(Category category, String path) throws PageNotFoundException {
-        return getClosestContentPage(category, path);
+        return getClosestContentPage(category, path, null);
     }
 
     @Override

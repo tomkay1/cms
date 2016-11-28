@@ -9,7 +9,6 @@
 
 package com.huotu.hotcms.service.service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.exception.LoginException;
 import com.huotu.hotcms.service.exception.RegisterException;
@@ -19,6 +18,8 @@ import com.huotu.huobanplus.common.entity.Category;
 import com.huotu.huobanplus.common.entity.User;
 import com.huotu.huobanplus.sdk.common.repository.BrandRestRepository;
 import com.huotu.huobanplus.sdk.common.repository.CategoryRestRepository;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -34,13 +35,13 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author CJ
  */
 @Service
 public class MallServiceImpl implements MallService {
+    private static final Log log = LogFactory.getLog(MallServiceImpl.class);
 
     @Autowired
     private CategoryRestRepository categoryRestRepository;
@@ -99,7 +100,8 @@ public class MallServiceImpl implements MallService {
         List<BasicNameValuePair> basicNameValuePairs = new ArrayList<>();
         basicNameValuePairs.add(new BasicNameValuePair("username", username));
         basicNameValuePairs.add(new BasicNameValuePair("password", password));
-        return getResult(httppost, basicNameValuePairs);
+        String result = getResult(httppost, basicNameValuePairs);
+        return null;
 
     }
 
@@ -113,37 +115,31 @@ public class MallServiceImpl implements MallService {
         basicNameValuePairs.add(new BasicNameValuePair("username", username));
         basicNameValuePairs.add(new BasicNameValuePair("password", password));
         basicNameValuePairs.add(new BasicNameValuePair("sourceType", "PC"));
-        return getResult(httpPost, basicNameValuePairs);
+        String result = getResult(httpPost, basicNameValuePairs);
+        return null;
     }
 
     @Nullable
-    private User getResult(HttpPost httppost, List<BasicNameValuePair> basicNameValuePairs) throws IOException {
+    private String getResult(HttpPost httppost, List<BasicNameValuePair> basicNameValuePairs) throws IOException {
         UrlEncodedFormEntity uefEntity;
-
-        User user = null;
         try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
             uefEntity = new UrlEncodedFormEntity(basicNameValuePairs, "UTF-8");
             httppost.setEntity(uefEntity);
-            System.out.println("executing request " + httppost.getURI());
+            log.info("executing request " + httppost.getURI());
             try (CloseableHttpResponse response = httpclient.execute(httppost)) {
                 HttpEntity entity = response.getEntity();
                 if (entity != null) {
                     String result = EntityUtils.toString(entity, "UTF-8");
-                    System.out.println("--------------------------------------");
-                    System.out.println("Response content: " + result);
-                    System.out.println("--------------------------------------");
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    Map map = objectMapper.convertValue(result, Map.class);
-                    if (map.get("resultCode").equals(2000)) {
-                        //todo
-                    }
+                    log.info("--------------------------------------");
+                    log.info("Response content: " + result);
+                    log.info("--------------------------------------");
+                    return result;
                 }
             }
         } catch (IOException e) {
             throw e;
         }
-
-        return user;
+        return null;
     }
 
 

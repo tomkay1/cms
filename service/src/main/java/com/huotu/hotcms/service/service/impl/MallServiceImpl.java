@@ -13,11 +13,13 @@ import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.exception.LoginException;
 import com.huotu.hotcms.service.exception.RegisterException;
 import com.huotu.hotcms.service.service.MallService;
+import com.huotu.hotcms.service.util.CookieHelper;
 import com.huotu.huobanplus.common.entity.Brand;
 import com.huotu.huobanplus.common.entity.Category;
 import com.huotu.huobanplus.common.entity.User;
 import com.huotu.huobanplus.sdk.common.repository.BrandRestRepository;
 import com.huotu.huobanplus.sdk.common.repository.CategoryRestRepository;
+import com.huotu.huobanplus.sdk.common.repository.UserRestRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpEntity;
@@ -32,6 +34,8 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +51,8 @@ public class MallServiceImpl implements MallService {
     private CategoryRestRepository categoryRestRepository;
     @Autowired
     private BrandRestRepository brandRestRepository;
+    @Autowired
+    private UserRestRepository userRestRepository;
 
     @Override
     public List<Category> listCategories(long merchantId) throws IOException {
@@ -59,31 +65,28 @@ public class MallServiceImpl implements MallService {
     }
 
     @Override
-    public User getLoginUser() throws IOException {
-        //todo
-        return null;
+    public User getLoginUser(HttpServletRequest request, Owner owner) throws IOException {
+        if (owner.getCustomerId() == null)
+            throw new IllegalArgumentException("必须开启伙伴商城。");
+
+        Integer id = CookieHelper.getCookieValInteger(request, "userid_" + owner.getCustomerId());
+        if (id == null)
+            return null;
+        return userRestRepository.getOneByPK(id);
     }
 
     @Override
-    public boolean isLogin() {
-        try {
-            return getLoginUser() != null;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
+    public boolean isLogin(HttpServletRequest request, Owner owner) {
+        if (owner.getCustomerId() == null)
+            throw new IllegalArgumentException("必须开启伙伴商城。");
+
+        Integer id = CookieHelper.getCookieValInteger(request, "userid_" + owner.getCustomerId());
+        return id != null;
     }
 
     @Override
-    public String getLoginUserName() throws IOException {
-        if (isLogin()) {
-            try {
-                return getLoginUser().getLoginName();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
+    public String getLoginUserName(HttpServletRequest request, Owner owner) throws IOException {
+        return getLoginUser(request, owner).getLoginName();
     }
 
     @Override
@@ -93,7 +96,7 @@ public class MallServiceImpl implements MallService {
     }
 
     @Override
-    public User mallLogin(Owner owner, String username, String password) throws IOException, LoginException {
+    public User mallLogin(Owner owner, String username, String password, HttpServletResponse response) throws IOException, LoginException {
         // 创建HttpPost
         HttpPost httppost = new HttpPost(getMallDomain(owner) + "/Mall/UserCenter/Login/" + owner.getCustomerId());
         // 创建参数队列
@@ -107,7 +110,7 @@ public class MallServiceImpl implements MallService {
 
 
     @Override
-    public User mallRegister(Owner owner, String username, String password) throws IOException, RegisterException {
+    public User mallRegister(Owner owner, String username, String password, HttpServletResponse response) throws IOException, RegisterException {
         // 创建HttpPost
         HttpPost httpPost = new HttpPost(getMallDomain(owner) + "/Mall/UserCenter/Register" + owner.getCustomerId());
         // 创建参数队列

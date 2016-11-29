@@ -11,6 +11,7 @@ package com.huotu.hotcms.widget.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.service.FilterBehavioral;
+import com.huotu.hotcms.service.common.PageType;
 import com.huotu.hotcms.service.entity.AbstractContent;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.Template;
@@ -353,7 +354,7 @@ public class FrontController implements FilterBehavioral {
         if (content != null && !(content instanceof MallGoodsContent)) {
             cmsContext.setAbstractContent(content);
             //查找当前站点下指定数据源pagePath下最接近的page
-            return pageService.getClosestContentPage(content.getCategory(), pagePath, null);
+            return pageService.getClosestContentPage(content.getCategory(), pagePath, PageType.DataContent);
         } else {
             return pageService.findBySiteAndPagePath(cmsContext.getSite(), pagePath);
         }

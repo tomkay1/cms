@@ -125,8 +125,7 @@ a:link, a:visited, a:hover, a:active {
         line-height: 60px;
         padding-bottom: 0;
     }
-
-    .width-center .nav .dropdown > a {
+    .width-center .nav .dropdown>a {
         padding-left: 10px;
         padding-right: 10px;
         line-height: 50px;
@@ -144,8 +143,7 @@ a:link, a:visited, a:hover, a:active {
         min-width: 90px;
         text-align: center;
     }
-
-    .width-center .dropdown-menu > li > a {
+    .width-center .dropdown-menu>li>a {
         padding: 10px 0;
     }
     .width-center .navbar-collapse {
@@ -189,8 +187,7 @@ a:link, a:visited, a:hover, a:active {
         line-height: 80px;
         padding-bottom: 0;
     }
-
-    .width-center .nav .dropdown > a {
+    .width-center .nav .dropdown>a {
         padding: 0 20px;
         height: 80px;
         line-height: 80px;
@@ -209,8 +206,7 @@ a:link, a:visited, a:hover, a:active {
         font-size: 12px;
         text-align: center;
     }
-
-    .width-center .dropdown-menu > li > a {
+    .width-center .dropdown-menu>li>a {
         padding: 10px 15px;
     }
     .topnavbar-absolute {
@@ -290,7 +286,7 @@ a:link, a:visited, a:hover, a:active {
     color: #999;
 }
 .treeMenu-menu .level1, .treeMenu-menu .level2 {
-    display: none;
+    display:none;
     border-top: 1px solid #ddd;
 }
 .treeMenu-menu .level1 > li > div {
@@ -322,8 +318,9 @@ a:link, a:visited, a:hover, a:active {
     border-top: 1px solid #bcbcbc;
 }
 .copyright .list-unstyled {
+    margin-bottom: 10px;
     overflow: hidden;
-    border-bottom: 1px solid #d4d4d4;
+    border-bottom: 1px solid #bcbcbc;
 }
 .copyright .list-unstyled li {
     margin-bottom: 14px;
@@ -340,28 +337,40 @@ a:link, a:visited, a:hover, a:active {
     width: 100px;
     height: 100px;
 }
-.copyright-block {
+.copyright-2 {
     width: 100%;
-    background-color: #1a1a1a;;
 }
-.copyright-block .list-unstyled li a {
-    color: #979797;
-}
-.copyright-block .list-unstyled li a:hover {
-    text-decoration: none;
-    color: #ad8d4b;
-}
-.copyright-sf {
+.copyright-2 {
     font-size: 14px;
 }
-.copyright-sf .copyright-block-top {
+.copyright .copyright-cutting {
     margin-bottom: 15px;
     padding-bottom: 20px;
 }
-.copyright-sf  .copyright-sf-logo {
-    width: 252px;
-    height: 36px;
+.copyright-2  .copyright-extraImg {
+    max-width: 252px;
 }
+.copyright-3 .list-unstyled li {
+    text-align: left;
+}
+.copyright-3 .sub-list {
+    display: none;
+}
+@media (max-width: 768px) {
+    .copyright-3 .list-unstyled li {
+        margin-left: 20px;
+        margin-bottom: 10px;
+    }
+    .copyright-3 .list-unstyled > li > a::after {
+        content: '\2261';
+        float: right;
+    }
+    .copyright-3 .sub-list li {
+        margin-top: 3px;
+        margin-bottom: 3px;
+    }
+}
+
 @media (min-width: 769px) {
     .copyright {
         margin-top: 40px;
@@ -369,33 +378,58 @@ a:link, a:visited, a:hover, a:active {
     .copyright .list-unstyled {
         border-bottom: none;
     }
-    .copyright .list-unstyled li {
+    .copyright .list-unstyled > li {
         float: left;
         padding: 0 15px;
         margin-bottom: 0;
-        border-right: 1px solid #d4d4d4;
+        border-right: 1px solid #bcbcbc;
     }
     .copyright p {
         text-align: left;
     }
-    .copyright-block .list-unstyled li {
+    .copyright-2 .list-unstyled > li {
         margin-bottom: 10px;
-        color: #979797;
-        border-right: 1px solid #1a1a1a;
+        border-right: 1px solid #bcbcbc;
     }
-    .copyright-block .copyright-block-top {
-        border-bottom: 1px solid #979797;
+    .copyright .copyright-cutting {
+        border-bottom: 1px solid #bcbcbc;
     }
-    .copyright-sf {
-        padding: 60px 0;
-    }
-    .copyright-sf  .copyright-sf-pull-right {
-        float: right;
-    }
-    .copyright-sf .copyright-contact, .copyright-sf .copyright-address {
+    .copyright-2 p {
         font-size: 12px;
     }
+    .copyright-3 .list-unstyled {
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+    }
+    .copyright-3 .list-unstyled > li {
+        -webkit-box-flex: 1;
+        -moz-box-flex: 1;
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+        border-right: none;
+    }
+    .copyright-3 .list-unstyled > li > a {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 14px;
+        font-weight: bold;
+    }
+    .copyright-3 .sub-list {
+        display: block;
+    }
+    .copyright-3 .sub-list li{
+        margin-bottom: 6px;
+    }
 
+}
+@media (min-width: 992px) {
+    .copyright .copyright-pull-right {
+        float: right;
+    }
 }
 /*News List Style*/
 .news-items {

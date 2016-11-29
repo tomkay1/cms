@@ -26,6 +26,11 @@ $(function () {
         $('.topnavbar-body').slideToggle();
     });
 
+    $('.copyright-3').find('.list-unstyled').children('li').click(function () {
+        if(navigator.userAgent.match(/mobile/i)) {
+            $(this).find('.sub-list').slideToggle();
+        }
+    });
 });
 
 
@@ -75,3 +80,4 @@ $(function () {
         $(this).find('.content-list').hide();
     });
 });
+

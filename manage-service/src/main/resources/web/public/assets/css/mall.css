@@ -82,7 +82,7 @@ ul {
     z-index: 999;
 }
 .product-categorys .categorys-dorpdown .dd .item .item-top {
-    border-left: 1px solid #b61d1d;
+    border-left: #c81623;
     position: relative;
     z-index: 1;
     height: 31px;
@@ -118,7 +118,7 @@ ul {
     padding: 6px 0 0 10px;
     background: #f7f7f7;
     min-height: 408px;
-    border: 1px solid #b61d1d;
+    border: 1px solid #c81623;
     border-left: none;
     box-sizing: content-box;
 }
@@ -164,7 +164,7 @@ ul {
     box-sizing: content-box;
 }
 .product-categorys .categorys-dorpdown .dd .item .item-sub .subitems a:hover {
-    color: #b61d1d;
+    color: #c81623;
 }
 .product-categorys .categorys-dorpdown .dd .item .item-sub .subitems dl {
     width: 100%;
@@ -209,7 +209,7 @@ ul {
     background: #f7f7f7;
 }
 .product-categorys .categorys-dorpdown .dd .item.show .item-top a {
-    color: #b61d1d;
+    color: #c81623;
 }
 .product-categorys .categorys-dorpdown .dd .item.show .item-sub {
     display: block;
@@ -793,4 +793,120 @@ ul {
     display: none;
     background-color: rgba(0, 0, 0, 0.2);
     background-size: 50%;
+}
+.mall-loginModule {
+    width: 356px;
+    display: inline-block;
+}
+.mall-loginModule .login-tab {
+    padding: 10px 0;
+    color: #333;
+    font-size: 18px;
+    font-weight: 700;
+    border-bottom: 1px solid #f4f4f4;
+    text-align: center;
+}
+.mall-loginModule .form {
+    margin: 0 20px;
+}
+.mall-loginModule .form .safe {
+    margin-bottom: 15px;
+}
+.mall-loginModule .form .safe input {
+    margin: 0;
+    vertical-align: middle;
+}
+.mall-loginModule .form .login-btn {
+    width: 100%;
+}
+.mall-loginModule .form .login-btn .btn-login {
+    width: 100%;
+    height: 43px;
+    font-size: 20px;
+    color: #fff;
+    background-color: #e4393c;
+    border: 1px solid #e85356;
+}
+.mall-loginModule .sign-up {
+    float: right;
+    margin-top: 20px;
+    margin-right: 20px;
+}
+.mall-loginModule .sign-up a:hover {
+    color: #e4393c;
+    text-decoration: underline;
+}
+.mall-loginModule .regist {
+    padding-right: 10px;
+    border-right: 1px solid #f4f4f4;
+}
+.mall-loginModule .regist a {
+    color: #b61d1d;
+}
+.mall-loginModule .forget-pwd {
+    padding-left: 10px;
+}
+.mall-registModule {
+    font-size: 14px;
+}
+.mall-registModule input {
+    outline: none;
+    box-sizing: border-box;
+}
+.mall-registModule .regist-tab h3 {
+    margin-left: 216px;
+}
+.mall-registModule .field {
+    width: 865px;
+    margin: 20px auto;
+}
+.mall-registModule .field .fieldLabel {
+    margin-right: 10px;
+    width: 200px;
+    display: inline-block;
+    text-align: right;
+}
+.mall-registModule .field .required {
+    color: #e4393c;
+}
+.mall-registModule .field .leftText {
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+}
+.mall-registModule .field .fieldContainer {
+    display: inline-block;
+    width: 386px;
+}
+.mall-registModule .field .fieldContainer input {
+    width: 385px;
+    height: 40px;
+    padding: 2px 8px;
+    border: 1px solid #d5d5d5;
+    border-radius: 4px;
+}
+.mall-registModule .field .fieldContainer .msgInput {
+    width: 209px;
+}
+.mall-registModule .field .fieldContainer .msgBtn {
+    padding: 0;
+    margin-left: 5px;
+    width: 165px;
+    background-color: #EBF9F6;
+    color: #666;
+    cursor: pointer;
+}
+.mall-registModule .field .fieldContainer .msgBtn:hover {
+    color: #009ee0;
+}
+.mall-registModule .regist-btn {
+    margin-top: 50px;
+}
+.mall-registModule .regist-btn .btn-regist {
+    margin-left: 216px;
+    width: 200px;
+    height: 40px;
+    background-color: #BC0000;
+    border: 1px solid #BC0000;
+    color: #fff;
 }

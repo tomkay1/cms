@@ -9,9 +9,12 @@
 
 package com.huotu.hotcms.service.service.impl;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.exception.LoginException;
 import com.huotu.hotcms.service.exception.RegisterException;
+import com.huotu.hotcms.service.service.ConfigService;
 import com.huotu.hotcms.service.service.MallService;
 import com.huotu.hotcms.service.util.CookieHelper;
 import com.huotu.huobanplus.common.entity.Brand;
@@ -23,22 +26,24 @@ import com.huotu.huobanplus.sdk.common.repository.UserRestRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpEntity;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.EntityBuilder;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.InputStream;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * @author CJ
@@ -46,7 +51,9 @@ import java.util.List;
 @Service
 public class MallServiceImpl implements MallService {
     private static final Log log = LogFactory.getLog(MallServiceImpl.class);
-
+    private final static ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    private ConfigService configService;
     @Autowired
     private CategoryRestRepository categoryRestRepository;
     @Autowired
@@ -91,58 +98,77 @@ public class MallServiceImpl implements MallService {
 
     @Override
     public String getMallDomain(Owner owner) throws IOException {
-        //todo
-        return "http://www.baidu.com";
+        return apiResult("/Mall/MallConfig/Domain/" + owner.getCustomerId()
+                , null
+                , JsonNode::textValue);
     }
 
     @Override
-    public User mallLogin(Owner owner, String username, String password, HttpServletResponse response) throws IOException, LoginException {
-        // 创建HttpPost
-        HttpPost httppost = new HttpPost(getMallDomain(owner) + "/Mall/UserCenter/Login/" + owner.getCustomerId());
-        // 创建参数队列
-        List<BasicNameValuePair> basicNameValuePairs = new ArrayList<>();
-        basicNameValuePairs.add(new BasicNameValuePair("username", username));
-        basicNameValuePairs.add(new BasicNameValuePair("password", password));
-        String result = getResult(httppost, basicNameValuePairs);
-        return null;
-
+    public User mallLogin(Owner owner, String username, String password, HttpServletResponse response)
+            throws IOException, LoginException {
+        return apiResult("/Mall/UserCenter/Login/" + owner.getCustomerId()
+                , nameValuePair -> new LoginException(nameValuePair.getName())
+                , json -> {
+                    try {
+                        return userRestRepository.getOneByPK(json.get("userId").asText());
+                    } catch (IOException e) {
+                        throw new IllegalStateException("PC-API response bad ID", e);
+                    }
+                }, new BasicNameValuePair("username", username)
+                , new BasicNameValuePair("password", password));
     }
-
 
     @Override
-    public User mallRegister(Owner owner, String username, String password, HttpServletResponse response) throws IOException, RegisterException {
-        // 创建HttpPost
-        HttpPost httpPost = new HttpPost(getMallDomain(owner) + "/Mall/UserCenter/Register" + owner.getCustomerId());
-        // 创建参数队列
-        List<BasicNameValuePair> basicNameValuePairs = new ArrayList<>();
-        basicNameValuePairs.add(new BasicNameValuePair("username", username));
-        basicNameValuePairs.add(new BasicNameValuePair("password", password));
-        basicNameValuePairs.add(new BasicNameValuePair("sourceType", "PC"));
-        String result = getResult(httpPost, basicNameValuePairs);
-        return null;
+    public User mallRegister(Owner owner, String username, String password, HttpServletResponse response)
+            throws IOException, RegisterException {
+        return apiResult("/Mall/UserCenter/Register/" + owner.getCustomerId()
+                , nameValuePair -> new RegisterException(nameValuePair.getName())
+                , json -> {
+                    try {
+                        return userRestRepository.getOneByPK(json.get("userId").asText());
+                    } catch (IOException e) {
+                        throw new IllegalStateException("PC-API response bad ID", e);
+                    }
+                }, new BasicNameValuePair("username", username)
+                , new BasicNameValuePair("password", password)
+                , new BasicNameValuePair("sourceType", "PC"));
     }
 
-    @Nullable
-    private String getResult(HttpPost httppost, List<BasicNameValuePair> basicNameValuePairs) throws IOException {
-        UrlEncodedFormEntity uefEntity;
-        try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
-            uefEntity = new UrlEncodedFormEntity(basicNameValuePairs, "UTF-8");
-            httppost.setEntity(uefEntity);
-            log.info("executing request " + httppost.getURI());
-            try (CloseableHttpResponse response = httpclient.execute(httppost)) {
-                HttpEntity entity = response.getEntity();
-                if (entity != null) {
-                    String result = EntityUtils.toString(entity, "UTF-8");
-                    log.info("--------------------------------------");
-                    log.info("Response content: " + result);
-                    log.info("--------------------------------------");
-                    return result;
+    /**
+     * 执行一个API并且获得其结果
+     *
+     * @param uri         比如 /Mall/MallConfig..
+     * @param toException 当发现响应码并非2000时,我们会将响应码和消息丢给异常生成器
+     * @param toResult    跟toException相反,获取到了2000响应码时,我们就会尝试解析其中的data
+     * @param parameters  传入参数
+     * @param <T>         期待的结果
+     * @return 执行的结果
+     * @throws IOException
+     */
+    private <T, X extends Exception> T apiResult(String uri, Function<NameValuePair, X> toException
+            , Function<JsonNode, T> toResult
+            , NameValuePair... parameters) throws IOException, X {
+        HttpPost post = new HttpPost("http://pc." + configService.getMallDomain() + uri);
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            HttpEntity entity = EntityBuilder.create()
+                    .setContentType(ContentType.create(URLEncodedUtils.CONTENT_TYPE, "UTF-8"))
+                    .setParameters(parameters)
+                    .build();
+            post.setEntity(entity);
+            try (CloseableHttpResponse response = httpClient.execute(post)) {
+                // 文档没有提及响应码规则 无视所有规则 直接处理内容
+                try (InputStream inputStream = response.getEntity().getContent()) {
+                    JsonNode root = objectMapper.readTree(inputStream);
+                    JsonNode resultCode = root.get("resultCode");
+                    if (resultCode.intValue() != 2000) {
+                        // 走异常线路
+                        throw toException.apply(new BasicNameValuePair(root.get("resultMsg").asText()
+                                , resultCode.textValue()));
+                    }
+                    return toResult.apply(root.get("data"));
                 }
             }
-        } catch (IOException e) {
-            throw e;
         }
-        return null;
     }
 
 

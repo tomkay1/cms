@@ -52,6 +52,9 @@ public class PageFilterBehavioral implements FilterBehavioral {
             "previewHtml",
             "widget",
             "pagePreview",
+            // CMS系统所管理的CMS资源 需已开放形式提供
+            "_gallery",
+            "_video",
             //这是一个很特殊的 测试的模拟登陆 :)
             "testLoginAs",
             "testEditIn"

@@ -174,12 +174,20 @@ public class GalleryController extends ContentManageController<Gallery, ContentE
                         // 这个错误并不重要
                         log.warn("", e);
                     }
-                    data.put("thumbnailUrl",
-                            "/"
-                                    + servletContext.getContextPath()
-                                    + "manage/gallery/" + galleryItem.getGallery().getId()
-                                    + "/items/"
-                                    + galleryItem.getId());
+//                    data.put("thumbnailUrl",
+//                            "/"
+//                                    + servletContext.getContextPath()
+//                                    + "manage/gallery/" + galleryItem.getGallery().getId()
+//                                    + "/items/"
+//                                    + galleryItem.getId());
+                    try {
+                        data.put("thumbnailUrl",
+                                resourceService.getResource(galleryItem.getThumbUri()).httpUrl().toString());
+                    } catch (IOException ignored) {
+                        // never
+                        log.fatal("", ignored);
+                    }
+
                     // thumbnailUrl 考虑到跨域策略,这里给出本域的一个地址
                     return data;
                 }).collect(Collectors.toList());

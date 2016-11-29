@@ -65,12 +65,10 @@ ul {
 }
 .product-categorys .categorys-dorpdown {
     max-width: 210px;
-    background: #b1191a;
 }
 .product-categorys .categorys-dorpdown .dt a {
     display: block;
     padding: 0 10px;
-    width: 190px;
     height: 44px;
     background: #b1191a;
     font: 400 15px/44px "Microsoft YaHei";
@@ -145,7 +143,7 @@ ul {
     background: #c81623;
 }
 .product-categorys .categorys-dorpdown .dd .item .item-sub .item-channels a:hover i {
-    background: #B1191A;
+    background: #b1191a;
 }
 .product-categorys .categorys-dorpdown .dd .item .item-sub .item-channels i {
     display: inline-block;
@@ -165,6 +163,9 @@ ul {
     min-height: 409px;
     box-sizing: content-box;
 }
+.product-categorys .categorys-dorpdown .dd .item .item-sub .subitems a:hover {
+    color: #b61d1d;
+}
 .product-categorys .categorys-dorpdown .dd .item .item-sub .subitems dl {
     width: 100%;
     overflow: hidden;
@@ -178,9 +179,6 @@ ul {
     padding-top: 10px;
     text-align: right;
     font-weight: 700;
-}
-.product-categorys .categorys-dorpdown .dd .item .item-sub .subitems dt a::after {
-    content: "";
 }
 .product-categorys .categorys-dorpdown .dd .item .item-sub .subitems dt i {
     position: absolute;

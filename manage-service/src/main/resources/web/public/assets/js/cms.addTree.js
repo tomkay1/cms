@@ -103,6 +103,7 @@
                 selectNode.linkPath = $('.tree-url').val();
                 selectNode.flag = parseInt($('.tree-flag').val()) || 0;
                 selectNode.visible = $('.tree-visible').val();
+                selectNode.visibleName = $('.tree-visibleName').val();
                 treeObj.updateNode(selectNode);
             }
         });

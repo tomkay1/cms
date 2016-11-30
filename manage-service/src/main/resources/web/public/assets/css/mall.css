@@ -875,6 +875,7 @@ ul {
     line-height: 40px;
 }
 .mall-registModule .field .fieldContainer {
+    position: relative;
     display: inline-block;
     width: 386px;
 }
@@ -899,6 +900,13 @@ ul {
 .mall-registModule .field .fieldContainer .msgBtn:hover {
     color: #009ee0;
 }
+.mall-registModule .field .fieldContainer label.error {
+    position: absolute;
+    top: 42px;
+    left: 8px;
+    font-size: 12px;
+    color: #e41e2b;
+}
 .mall-registModule .regist-btn {
     margin-top: 50px;
 }
@@ -906,7 +914,7 @@ ul {
     margin-left: 216px;
     width: 200px;
     height: 40px;
-    background-color: #BC0000;
-    border: 1px solid #BC0000;
+    background-color: #e4393c;
+    border: 1px solid #e4393c;
     color: #fff;
 }

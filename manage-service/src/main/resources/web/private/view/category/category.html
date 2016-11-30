@@ -156,7 +156,7 @@
                                 title="推荐链接数据源">
                             <option value="">无</option>
                             <option value="1" th:each="link:${links}" th:value="${link.id}" th:text="${link.title}"
-                                    th:selected="${object.recommendCategory.id==link.id}">
+                                    th:selected="${object.recommendCategory !=null and object.recommendCategory.id==link.id}">
                                 链接1
                             </option>
                             <option th:remove="all" value="2">链接2</option>

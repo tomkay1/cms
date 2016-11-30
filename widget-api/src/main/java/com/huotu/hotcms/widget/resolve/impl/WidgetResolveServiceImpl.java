@@ -115,14 +115,17 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
             PageElement[][] childPageElements = layout.getElementGroups();
             for (int i = 0, l = columns.length; i < l; i++) {
                 if (Integer.parseInt(columns[i]) == 100) {
-                    writer.append("<div>");
+                    writer.append("<div");
                 } else if (Integer.parseInt(columns[i]) == 50) {
-                    writer.append("<div class=\"").append("container").append("\">");
+                    writer.append("<div class=\"").append("container").append("\"");
                 } else {
                     cmsContext.updateNextBootstrapLayoutColumn(Integer.parseInt(columns[i]));
                     className = cmsContext.getNextBootstrapClass();
-                    writer.append("<div class=\"").append(className).append("\">");
+                    writer.append("<div class=\"").append(className).append("\"");
                 }
+                layout.printAttributesAsHtml(writer);
+                writer.append(">");
+
                 if (childPageElements != null && childPageElements.length >= 0 && i < childPageElements.length) {
                     for (PageElement pageElement1 : childPageElements[i]) {
                         pageElementHTML(pageElement1, cmsContext, writer);

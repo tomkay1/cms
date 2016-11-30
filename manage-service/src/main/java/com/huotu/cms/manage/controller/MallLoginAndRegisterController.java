@@ -21,15 +21,24 @@ public class MallLoginAndRegisterController {
 
     @Autowired
     MallService mallService;
+
     @RequestMapping(value = "login", method = RequestMethod.POST)
-    public String mallLogin(String username, String password, HttpServletResponse response) throws IOException, LoginException {
-        mallService.mallLogin(CMSContext.RequestContext().getSite().getOwner(), username, password, response);
-        return null;
+    public String mallLogin(String username, String password, HttpServletResponse response) {
+        try {
+            mallService.mallLogin(CMSContext.RequestContext().getSite().getOwner(), username, password, response);
+        } catch (IOException | LoginException e) {
+            e.printStackTrace();
+        }
+        return "redirect:/";
     }
 
     @RequestMapping(value = "register", method = RequestMethod.POST)
-    public String mallRegister(String username, String password, HttpServletResponse response) throws IOException, RegisterException {
-        mallService.mallRegister(CMSContext.RequestContext().getSite().getOwner(), username, password, response);
-        return null;
+    public String mallRegister(String username, String password, HttpServletResponse response) {
+        try {
+            mallService.mallRegister(CMSContext.RequestContext().getSite().getOwner(), username, password, response);
+        } catch (IOException | RegisterException e) {
+            e.printStackTrace();
+        }
+        return "redirect:/";
     }
 }

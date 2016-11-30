@@ -34,7 +34,7 @@ public class ConfigServiceImpl implements ConfigService {
         super();
         if (environment.acceptsProfiles("container") && environment.getProperty("mall.domain") == null)
             throw new IllegalStateException("mall.domain System Property is required.");
-        mallDomain = environment.getProperty("mall.domain", "huobanj.cn");
+        mallDomain = environment.getProperty("mall.domain", "51flashmall.com");
         mallResourceURL = environment.getProperty("mall.resources", "http://res." + mallDomain);
     }
 

@@ -29,7 +29,9 @@ import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.EntityBuilder;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -37,12 +39,14 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Locale;
 import java.util.function.Function;
 
 /**
@@ -99,7 +103,7 @@ public class MallServiceImpl implements MallService {
 
     @Override
     public String getMallDomain(Owner owner) throws IOException {
-        return apiResult("/Mall/MallConfig/Domain/" + owner.getCustomerId()
+        return apiResult("/MallApi/MallConfig/Domain/" + owner.getCustomerId()
                 , null
                 , JsonNode::textValue);
     }
@@ -107,26 +111,29 @@ public class MallServiceImpl implements MallService {
     @Override
     public User mallLogin(Owner owner, String username, String password, HttpServletResponse response)
             throws IOException, LoginException {
-        return apiResult("/Mall/UserCenter/Login/" + owner.getCustomerId()
+        return apiResult("/MallApi/Account/Login/" + owner.getCustomerId()
                 , nameValuePair -> new LoginException(nameValuePair.getName())
                 , json -> {
                     try {
-                        return userRestRepository.getOneByPK(json.get("userId").asText());
+                        log.debug("PC-API Login:" + json);
+                        return userRestRepository.getOneByPK(json.asText());
                     } catch (IOException e) {
                         throw new IllegalStateException("PC-API response bad ID", e);
                     }
                 }, new BasicNameValuePair("username", username)
-                , new BasicNameValuePair("password", password));
+                , new BasicNameValuePair("password"
+                        , DigestUtils.md5DigestAsHex(password.getBytes("UTF-8")).toLowerCase(Locale.CHINA)));
     }
 
     @Override
     public User mallRegister(Owner owner, String username, String password, HttpServletResponse response)
             throws IOException, RegisterException {
-        return apiResult("/Mall/UserCenter/Register/" + owner.getCustomerId()
+        return apiResult("/MallApi/Account/Register/" + owner.getCustomerId()
                 , nameValuePair -> new RegisterException(nameValuePair.getName())
                 , json -> {
                     try {
-                        return userRestRepository.getOneByPK(json.get("userId").asText());
+                        log.debug("PC-API Register:" + json);
+                        return userRestRepository.getOneByPK(json.get("userid").asText());
                     } catch (IOException e) {
                         throw new IllegalStateException("PC-API response bad ID", e);
                     }
@@ -149,14 +156,25 @@ public class MallServiceImpl implements MallService {
     private <T, X extends Exception> T apiResult(String uri, Function<NameValuePair, X> toException
             , Function<JsonNode, T> toResult
             , NameValuePair... parameters) throws IOException, X {
-        HttpPost post = new HttpPost("http://pc." + configService.getMallDomain() + uri);
-        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+        final String domain = configService.getMallDomain();
+//        final String domain = "pcpdmall.com";
+        HttpUriRequest request;
+        if (parameters.length == 0) {
+            request = new HttpGet("http://pcsite." + domain + uri);
+        } else {
+            HttpPost post = new HttpPost("http://pcsite." + domain + uri);
             HttpEntity entity = EntityBuilder.create()
                     .setContentType(ContentType.create(URLEncodedUtils.CONTENT_TYPE, "UTF-8"))
                     .setParameters(parameters)
                     .build();
             post.setEntity(entity);
-            try (CloseableHttpResponse response = httpClient.execute(post)) {
+            request = post;
+        }
+
+        log.debug("PC-API " + request);
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+
+            try (CloseableHttpResponse response = httpClient.execute(request)) {
                 // 文档没有提及响应码规则 无视所有规则 直接处理内容
                 try (InputStream inputStream = response.getEntity().getContent()) {
                     JsonNode root = objectMapper.readTree(inputStream);

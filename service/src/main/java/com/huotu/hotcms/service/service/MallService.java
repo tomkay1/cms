@@ -25,6 +25,7 @@ import java.util.List;
 
 /**
  * 提供伙伴商城的相关数据
+ * 所有API都可能会抛出{@link IllegalArgumentException}如果商户并未开启伙伴商城
  *
  * @author CJ
  */

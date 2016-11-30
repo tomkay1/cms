@@ -36,7 +36,7 @@ $(function () {
 
 // 商城的一些交互
 $(function () {
-    $('.product-lists').find('.tab-item').children('a').mouseover(function () {
+    $('.mall-product-lists').find('.tab-item').children('a').mouseover(function () {
         var parent = $(this).parent();
         parent.addClass('tab-selected').siblings('li').removeClass('tab-selected');
     });

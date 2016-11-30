@@ -23,9 +23,12 @@ public class MallLoginAndRegisterController {
     MallService mallService;
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
-    public String mallLogin(String username, String password, HttpServletResponse response) {
+    public String mallLogin(String username, String password, String loginSuccessRedirectUrl, HttpServletResponse response) {
         try {
             mallService.mallLogin(CMSContext.RequestContext().getSite().getOwner(), username, password, response);
+            if (loginSuccessRedirectUrl != null && !loginSuccessRedirectUrl.equals("")) {
+                return "redirect:" + loginSuccessRedirectUrl;
+            }
         } catch (IOException | LoginException e) {
             e.printStackTrace();
         }

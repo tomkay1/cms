@@ -41,6 +41,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -111,7 +112,7 @@ public class MallServiceImpl implements MallService {
     @Override
     public User mallLogin(Owner owner, String username, String password, HttpServletResponse response)
             throws IOException, LoginException {
-        return apiResult("/MallApi/Account/Login/" + owner.getCustomerId()
+        final User user = apiResult("/MallApi/Account/Login/" + owner.getCustomerId()
                 , nameValuePair -> new LoginException(nameValuePair.getName())
                 , json -> {
                     try {
@@ -123,12 +124,39 @@ public class MallServiceImpl implements MallService {
                 }, new BasicNameValuePair("username", username)
                 , new BasicNameValuePair("password"
                         , DigestUtils.md5DigestAsHex(password.getBytes("UTF-8")).toLowerCase(Locale.CHINA)));
+        return makeUserLogin(owner, user, response);
+    }
+
+    private User makeUserLogin(Owner owner, User user, HttpServletResponse response) throws IOException {
+        if (response == null)
+            return user;
+        //获取内购页地址
+        String domain = getMallDomain(owner);
+        // pcsite.pcpdmall.com 获取最高域名
+        domain = domain.substring(domain.indexOf("."));
+
+        while (domain.indexOf(".", 1) != domain.lastIndexOf(".")) {
+            domain = domain.substring(domain.indexOf(".", 1));
+        }
+
+        Cookie cookie = new Cookie("userid_" + owner.getCustomerId(), String.valueOf(user.getId()));
+        cookie.setMaxAge(3600);
+        cookie.setPath("/");
+        cookie.setDomain(domain);
+        response.addCookie(cookie);
+
+        cookie = new Cookie("levelid_" + owner.getCustomerId(), String.valueOf(user.getLevelId()));
+        cookie.setMaxAge(3600);
+        cookie.setPath("/");
+        cookie.setDomain(domain);
+        response.addCookie(cookie);
+        return user;
     }
 
     @Override
     public User mallRegister(Owner owner, String username, String password, HttpServletResponse response)
             throws IOException, RegisterException {
-        return apiResult("/MallApi/Account/Register/" + owner.getCustomerId()
+        final User user = apiResult("/MallApi/Account/Register/" + owner.getCustomerId()
                 , nameValuePair -> new RegisterException(nameValuePair.getName())
                 , json -> {
                     try {
@@ -140,6 +168,7 @@ public class MallServiceImpl implements MallService {
                 }, new BasicNameValuePair("username", username)
                 , new BasicNameValuePair("password", password)
                 , new BasicNameValuePair("sourceType", "PC"));
+        return makeUserLogin(owner, user, response);
     }
 
     /**

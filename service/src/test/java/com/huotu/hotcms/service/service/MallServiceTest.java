@@ -17,6 +17,7 @@ import com.huotu.huobanplus.common.entity.User;
 import com.huotu.huobanplus.sdk.common.repository.UserRestRepository;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockHttpServletResponse;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -44,21 +45,31 @@ public class MallServiceTest extends TestBase {
         String username = randomMobile();
         String password = UUID.randomUUID().toString();
 
+        MockHttpServletResponse response = new MockHttpServletResponse();
+
         try {
-            mallService.mallLogin(owner, username, password, null);
+            mallService.mallLogin(owner, username, password, response);
             throw new AssertionError("登录需要失败");
         } catch (LoginException ignored) {
 
         }
 
-        User user = mallService.mallRegister(owner, username, password, null);
+        User user = mallService.mallRegister(owner, username, password, response);
         assertThat(user)
                 .isNotNull();
+
+        // 此处应该存在了cookie
+        assertThat(response.getCookie("userid_" + owner.getCustomerId()))
+                .isNotNull();
+        assertThat(response.getCookie("levelid_" + owner.getCustomerId()))
+                .isNotNull();
+
         try {
 
-            mallService.mallLogin(owner, username, password, null);
+            mallService.mallLogin(owner, username, password, response);
 
         } finally {
+            //noinspection ThrowFromFinallyBlock
             userRestRepository.deleteByPK(user.getId());
         }
 

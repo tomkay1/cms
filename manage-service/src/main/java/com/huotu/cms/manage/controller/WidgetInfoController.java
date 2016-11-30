@@ -112,7 +112,7 @@ public class WidgetInfoController
         try {
             widgetFactoryService.primary(widgetInfo, ignoreError);
             GritterUtils.AddFlashSuccess("设置完成", attributes);
-        } catch (IOException | IllegalStateException e) {
+        } catch (Throwable e) {
             log.error("primary widget", e);
             GritterUtils.AddFlashDanger(e.getLocalizedMessage(), attributes);
         }

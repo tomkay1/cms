@@ -33,9 +33,9 @@ public class MallLoginAndRegisterController {
     }
 
     @RequestMapping(value = "register", method = RequestMethod.POST)
-    public String mallRegister(String username, String password, HttpServletResponse response) {
+    public String mallRegister(String userPhone, String password, HttpServletResponse response) {
         try {
-            mallService.mallRegister(CMSContext.RequestContext().getSite().getOwner(), username, password, response);
+            mallService.mallRegister(CMSContext.RequestContext().getSite().getOwner(), userPhone, password, response);
         } catch (IOException | RegisterException e) {
             e.printStackTrace();
         }

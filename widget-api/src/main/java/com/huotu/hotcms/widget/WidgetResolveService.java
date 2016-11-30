@@ -35,6 +35,7 @@ public interface WidgetResolveService {
 
     /**
      * 生成预览HTML代码
+     * <p>当执行第三方生成代码时发生错误，应该给予一段空HTML代码</p>
      *
      * @param widget     控件
      * @param styleId    控件样式id,可选
@@ -71,6 +72,7 @@ public interface WidgetResolveService {
      * <p>
      * 页面的生成者应该是通过调用这个方法获取每一个pageElement的HTML,技术上我们限定生成一个页面绝对不可以超过0.5s
      * ,假定一个页面转载了200个控件 也就是这个方法的响应时间不可以超过0.5/200s 也就是2.5ms</p>
+     * <p>当执行第三方生成代码时发生错误，应该给予一段空HTML代码</p>
      *
      * @param pageElement 页面节点
      * @param cmsContext  上下文环境
@@ -81,6 +83,7 @@ public interface WidgetResolveService {
 
     /**
      * 生成控件(组件)依赖context{@link Widget#widgetDependencyContent(MediaType)}
+     * <p>当执行第三方生成代码时发生错误，啥都不干</p>
      *
      * @param context cms上下文
      * @param widget  控件,element或者widget总要选一个

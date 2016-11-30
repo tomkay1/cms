@@ -111,5 +111,4 @@ public interface MallService {
      */
     User mallRegister(Owner owner, String username, String password, HttpServletResponse response) throws IOException, RegisterException;
 
-
 }

@@ -323,7 +323,7 @@ public class WidgetInfoController
                     widgetModel.setDefaultProperties(widget.defaultProperties(resourceService));
                     widgetStyleModel.setPreviewHTML(widgetResolveService.previewHTML(widget, widgetStyle.id()
                             , CMSContext.RequestContext(), widget.defaultProperties(resourceService)));
-                } catch (IllegalStateException e) {
+                } catch (Throwable e) {
                     widgetStyleModel.setPreviewFailed(e.getMessage());
                 }
                 widgetStyleModels[i] = widgetStyleModel;

@@ -10,14 +10,7 @@
 package com.huotu.hotcms.widget.resolve.impl;
 
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
-import com.huotu.hotcms.widget.CMSContext;
-import com.huotu.hotcms.widget.Component;
-import com.huotu.hotcms.widget.ComponentProperties;
-import com.huotu.hotcms.widget.InstalledWidget;
-import com.huotu.hotcms.widget.Widget;
-import com.huotu.hotcms.widget.WidgetLocateService;
-import com.huotu.hotcms.widget.WidgetResolveService;
-import com.huotu.hotcms.widget.WidgetStyle;
+import com.huotu.hotcms.widget.*;
 import com.huotu.hotcms.widget.page.Empty;
 import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.PageElement;
@@ -83,14 +76,18 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
 
     @Override
     public String previewHTML(Widget widget, String styleId, CMSContext cmsContext, ComponentProperties properties) {
-        WidgetStyle style = getWidgetStyle(widget, styleId);
-        checkEngine();
-        WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
-                , widget, style, webApplicationContext.getServletContext(), null, properties);
-        WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();
-        cmsContext.getWidgetConfigurationStack().push(widgetConfiguration);
-        return widgetTemplateEngine.process(WidgetTemplateResolver.PREVIEW
-                , Collections.singleton("div"), widgetContext);
+        try {
+            WidgetStyle style = getWidgetStyle(widget, styleId);
+            checkEngine();
+            WidgetContext widgetContext = new WidgetContext(widgetTemplateEngine, cmsContext
+                    , widget, style, webApplicationContext.getServletContext(), null, properties);
+            WidgetConfiguration widgetConfiguration = (WidgetConfiguration) widgetContext.getConfiguration();
+            cmsContext.getWidgetConfigurationStack().push(widgetConfiguration);
+            return widgetTemplateEngine.process(WidgetTemplateResolver.PREVIEW
+                    , Collections.singleton("div"), widgetContext);
+        } catch (Throwable e) {
+            return "<div>" + widget.widgetId() + " error !!!</div>";
+        }
     }
 
 
@@ -167,13 +164,18 @@ public class WidgetResolveServiceImpl implements WidgetResolveService {
         // 必须是以安装的控件
         checkEngine();
 
-        WidgetContext widgetContext;
+        WidgetContext widgetContext = null;
         if (element == null) {
             if (widget == null)
                 throw new IllegalArgumentException("both widget element is null.");
-            widgetContext = new WidgetContext(widgetTemplateEngine, context
-                    , widget, null, webApplicationContext.getServletContext()
-                    , null, widget.defaultProperties(resourceService));
+            try {
+                widgetContext = new WidgetContext(widgetTemplateEngine, context
+                        , widget, null, webApplicationContext.getServletContext()
+                        , null, widget.defaultProperties(resourceService));
+            } catch (Throwable e) {
+                return;
+            }
+
         } else if (element instanceof Empty) {
             return;
         } else if (element instanceof Layout) {

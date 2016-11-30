@@ -51,6 +51,7 @@ import java.util.function.Function;
 @Service
 public class MallServiceImpl implements MallService {
     private static final Log log = LogFactory.getLog(MallServiceImpl.class);
+
     private final static ObjectMapper objectMapper = new ObjectMapper();
     @Autowired
     private ConfigService configService;

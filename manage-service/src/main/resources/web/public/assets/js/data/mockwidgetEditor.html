@@ -217,6 +217,7 @@
     <div>
         <div id="treeView"></div>
     </div>
+    <button type="button" id="anBtn">按钮</button>
 </div>
 <script>
     $('#treeView').addTreeView({
@@ -232,5 +233,8 @@
                 flag: '4'
             }
         ]
+    });
+    $('#anBtn').click(function () {
+        console.log($.getTreeViewData());
     });
 </script>

@@ -4,7 +4,11 @@ import com.huotu.hotcms.service.exception.LoginException;
 import com.huotu.hotcms.service.exception.RegisterException;
 import com.huotu.hotcms.service.service.MallService;
 import com.huotu.hotcms.widget.CMSContext;
+import com.huotu.huobanplus.common.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,16 +27,19 @@ public class MallLoginAndRegisterController {
     MallService mallService;
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
-    public String mallLogin(String username, String password, String loginSuccessRedirectUrl, HttpServletResponse response) {
+    public ResponseEntity mallLogin(String username, String password, HttpServletResponse response) {
         try {
-            mallService.mallLogin(CMSContext.RequestContext().getSite().getOwner(), username, password, response);
-            if (loginSuccessRedirectUrl != null && !loginSuccessRedirectUrl.equals("")) {
-                return "redirect:" + loginSuccessRedirectUrl;
+            User user = mallService.mallLogin(CMSContext.RequestContext().getSite().getOwner(), username, password, response);
+            if (user != null) {
+                return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .body("{status:true,message:'登录成功!'}");
             }
         } catch (IOException | LoginException e) {
-            e.printStackTrace();
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .body("{status:false,message='" + e.getMessage() + "'}");
         }
-        return "redirect:/";
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.APPLICATION_JSON_UTF8)
+                .body("{status:false,message:'登录失败！'}");
     }
 
     @RequestMapping(value = "register", method = RequestMethod.POST)

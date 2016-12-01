@@ -29,6 +29,14 @@ public interface PageInfoRepository extends AbstractContentRepository<PageInfo> 
     List<PageInfo> findBySite(Site site);
 
     /**
+     * 查询相应站点下指定serial的PageInfo
+     * @since 1.3.2
+     * @param site 站点
+     * @return PageInfo
+     */
+    PageInfo findBySiteAndSerial(Site site, String serial);
+
+    /**
      * 删除某站点下所有页面数据
      *
      * @param site 站点

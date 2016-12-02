@@ -27,6 +27,8 @@ public class WidgetModel {
     private String type;
     private String locallyName;
     private String thumbnail;
+    private String description;
+
     /**
      * 是否是最新控件
      */

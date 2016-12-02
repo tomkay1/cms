@@ -13,31 +13,27 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.service.repository.SiteRepository;
-import com.huotu.hotcms.widget.CMSContext;
-import com.huotu.hotcms.widget.Component;
-import com.huotu.hotcms.widget.InstalledWidget;
-import com.huotu.hotcms.widget.WidgetLocateService;
-import com.huotu.hotcms.widget.WidgetResolveService;
+import com.huotu.hotcms.widget.*;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.PageElement;
 import com.huotu.hotcms.widget.page.PageModel;
 import com.huotu.hotcms.widget.service.PageService;
+import me.jiangcai.lib.resource.Resource;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * <b>页面管理服务</b>
@@ -64,6 +60,9 @@ public class PageController {
 
     @Autowired
     private WidgetLocateService widgetLocateService;
+
+    @Autowired
+    private ResourceService resourceService;
 
     /**
      * <p>获取页面{@link PageInfo}</p>
@@ -174,6 +173,29 @@ public class PageController {
     public String startEdit(@PathVariable("pageId") long pageId, Model model) throws PageNotFoundException {
         PageInfo pageInfo = pageService.getPage(pageId);
         CMSContext.RequestContext().updateSite(pageInfo.getSite());
+
+        if (pageInfo.getLayout() != null) {
+            try {
+                //删除控件旧的css样式表
+                if (pageInfo.getResourceKey() != null) {
+                    resourceService.deleteResource(pageInfo.getPageCssResourcePath());
+                }
+                String resourceKey = UUID.randomUUID().toString();
+                pageInfo.setResourceKey(resourceKey);
+                //生成page的css样式表
+                Layout[] elements = pageService.layoutsForUse(pageInfo.getLayout());
+                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+                for (Layout element : elements) {
+                    //生成组件css
+                    widgetResolveService.widgetDependencyContent(CMSContext.RequestContext(), null, Widget.CSS, element, buffer);
+                }
+                Resource resource = resourceService.uploadResource(pageInfo.getPageCssResourcePath()
+                        , new ByteArrayInputStream(buffer.toByteArray()));
+                model.addAttribute("pageCss", resource.httpUrl());
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+        }
         model.addAttribute("pageInfo", pageInfo);
         model.addAttribute("pageId", pageId);
         return "/edit/edit.html";

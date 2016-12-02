@@ -27,6 +27,8 @@ import com.huotu.hotcms.widget.page.PageModel;
 import com.huotu.hotcms.widget.repository.PageInfoRepository;
 import com.huotu.hotcms.widget.service.PageService;
 import me.jiangcai.lib.resource.service.ResourceService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +39,7 @@ import java.util.UUID;
 
 @Service
 public class PageServiceImpl implements PageService {
-
+    private static final Log log = LogFactory.getLog(PageServiceImpl.class);
     @Autowired
     private CommonService commonService;
     @Autowired
@@ -244,13 +246,18 @@ public class PageServiceImpl implements PageService {
                 updateComponent(pageElement, installedWidget);
         } else if (element instanceof Component) {
             Component component = (Component) element;
-            Widget comWidget = component.getInstalledWidget().getWidget();
-            Widget widget = installedWidget.getWidget();
-            //同一个控件不同版本才进行更新
-            if (comWidget.groupId().equals(widget.groupId()) && comWidget.widgetId().equals(widget.widgetId())
-                    && !comWidget.version().equals(widget.version())) {
-                component.setInstalledWidget(installedWidget);
-                component.setWidgetIdentity(installedWidget.getIdentifier().toString());
+            //todo 该处空指针异常
+            try {
+                Widget comWidget = component.getInstalledWidget().getWidget();
+                Widget widget = installedWidget.getWidget();
+                //同一个控件不同版本才进行更新
+                if (comWidget.groupId().equals(widget.groupId()) && comWidget.widgetId().equals(widget.widgetId())
+                        && !comWidget.version().equals(widget.version())) {
+                    component.setInstalledWidget(installedWidget);
+                    component.setWidgetIdentity(installedWidget.getIdentifier().toString());
+                }
+            } catch (Throwable e) {
+                log.error(component.getWidgetIdentity(), e);
             }
         }
     }

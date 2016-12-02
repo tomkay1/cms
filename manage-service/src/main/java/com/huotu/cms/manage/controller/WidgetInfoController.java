@@ -310,6 +310,7 @@ public class WidgetInfoController
             widgetModel.setIdentity(Widget.WidgetIdentity(widget));
             widgetModel.setScriptHref(servletContext.getContextPath() + Widget.widgetJsResourceURI(widget));
             widgetModel.setThumbnail(resourceService.getResource(Widget.thumbnailPath(widget)).httpUrl().toString());
+            widgetModel.setDescription(widget.description(locale));
             WidgetStyleModel[] widgetStyleModels = new WidgetStyleModel[widgetStyles.length];
 
             for (int i = 0; i < widgetStyles.length; i++) {
@@ -319,6 +320,7 @@ public class WidgetInfoController
                 widgetStyleModel.setThumbnail(resourceService.getResource(WidgetStyle.thumbnailPath(widget
                         , widgetStyle)).httpUrl().toString());
                 widgetStyleModel.setLocallyName(widgetStyle.name(locale));
+                widgetStyleModel.setDescription(widgetStyle.description(locale));
                 try {
                     widgetModel.setDefaultProperties(widget.defaultProperties(resourceService));
                     widgetStyleModel.setPreviewHTML(widgetResolveService.previewHTML(widget, widgetStyle.id()

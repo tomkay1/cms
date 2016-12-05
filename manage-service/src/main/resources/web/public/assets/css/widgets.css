@@ -149,12 +149,12 @@ a:link, a:visited, a:hover, a:active {
     .width-center .navbar-collapse {
         display: table-cell !important;
     }
-    .topnavbar-absolute {
+    .topnavbar.topnavbar-absolute {
         position: absolute;
         left: 0;
         right: 0;
     }
-    .topnavbar-absolute .navbar {
+    .topnavbar.topnavbar-absolute .navbar {
         padding: 0;
     }
 }
@@ -171,7 +171,7 @@ a:link, a:visited, a:hover, a:active {
         width: 96%;
         margin: 0 auto;
     }
-    .content-center {
+    .topnavbar .content-center {
         display: table;
         margin: 0 auto;
     }
@@ -209,12 +209,12 @@ a:link, a:visited, a:hover, a:active {
     .width-center .dropdown-menu>li>a {
         padding: 10px 15px;
     }
-    .topnavbar-absolute {
+    .topnavbar.topnavbar-absolute {
         position: absolute;
         left: 0;
         right: 0;
     }
-    .topnavbar-absolute .navbar {
+    .topnavbar.topnavbar-absolute .navbar {
         padding: 0;
     }
 }
@@ -831,7 +831,7 @@ a:link, a:visited, a:hover, a:active {
     text-align: center;
 }
 .article-details .article-content p {
-    padding: 15px 0px;
+    padding: 15px 0;
     margin: 0;
     font-size: 16px;
     color: #686f7a;

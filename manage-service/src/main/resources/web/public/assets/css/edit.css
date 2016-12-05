@@ -156,6 +156,9 @@ header .btn {
     line-height: 22px;
     cursor: pointer;
 }
+.edit .pageHTML .setting {
+    width: 80px;
+}
 .draggable-group {
     margin-top: 58px;
 }
@@ -636,7 +639,7 @@ header .btn {
 .group-header i.fa-list {
     margin-right: 10px;
 }
-.group-header i.fa-chevron-left {
+.group-header i.fa-chevron-right {
     float: right;
     margin-top: 3px;
     margin-right: 6px;

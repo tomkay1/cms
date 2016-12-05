@@ -199,9 +199,9 @@ var DataHandle = {
 var DOM = {
     layout: [
         '<div class="ncrow ui-draggable" style="display: block;">',
-        '<span class="setting layout-setting label label-primary" data-target="layout-setting"><i class="fa fa-cog"></i>设置</span>',
-        '<span class="drag label label-default"><i class="fa fa-arrows"></i>拖动</span>',
-        '<span class="remove label label-danger"><i class="fa fa-times"></i>删除</span>',
+        '<span class="setting layout-setting label label-primary" data-target="layout-setting"><i class="fa fa-cog"></i> 布局设置</span>',
+        '<span class="drag label label-default"><i class="fa fa-arrows"></i> 拖动</span>',
+        '<span class="remove label label-danger"><i class="fa fa-times"></i> 删除</span>',
         '<div class="view">',
         '<div class="row clearfix"></div>',
         '</div>',

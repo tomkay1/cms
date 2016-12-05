@@ -213,7 +213,7 @@ var Page = {
         var typeData = $.unique($.map(data, function (v) {return [$.trim(v.type)];}));
         $.each(typeData, function (i,v) {
             var typeList = $('<li class="widgetListGroup"></li>');
-            var div = $('<div class="group-header clearfix"><i class="fa fa-list"></i>'+ v +'<i class="fa fa-chevron-left"></i></div>');
+            var div = $('<div class="group-header clearfix"><i class="fa fa-list"></i>'+ v +'<i class="fa fa-chevron-right"></i></div>');
             var widgetList = $('<ul class="group-content list-unstyled"></ul>');
             typeList.append(div);
             typeList.append(widgetList);
@@ -410,11 +410,11 @@ editPage.init = function () {
 
     $('#widgetLists').on('click', '.group-header', function () {
         $(this).parent().toggleClass('active');
-        $(this).children('.fa-chevron-left').toggleClass('fa-chevron-down');
+        $(this).children('.fa-chevron-right').toggleClass('fa-chevron-down');
         $(this).siblings('.group-content').slideToggle();
 
         $(this).parent().siblings().removeClass('active');
-        $(this).parent().siblings().find('.group-header .fa-chevron-left').removeClass('fa-chevron-down');
+        $(this).parent().siblings().find('.group-header .fa-chevron-right').removeClass('fa-chevron-down');
         $(this).parent().siblings().find('.group-content').slideUp();
     });
 

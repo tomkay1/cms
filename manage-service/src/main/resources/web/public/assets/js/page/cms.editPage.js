@@ -271,17 +271,6 @@ var Page = {
                 child.append(container);
                 parent.append(child);
             }
-
-
-            $('.swiper-container.styles').swiper({
-                nextButton: '.swiper-button-next',
-                prevButton: '.swiper-button-prev',
-                slidesPerView: 4,
-                paginationClickable: true,
-                observer: true,
-                observeParents: true,
-                updateOnImagesReady : true
-            });
         });
         Page.draggable();
     },
@@ -307,6 +296,17 @@ var Page = {
             success: function (result) {
                 if(result) editFunc.closePreloader();
                 Page.createListAndEditor(result);
+
+                $('.swiper-container.styles').swiper({
+                    nextButton: '.swiper-button-next',
+                    prevButton: '.swiper-button-prev',
+                    slidesPerView: 4,
+                    paginationClickable: true,
+                    observer: true,
+                    observeParents: true,
+                    updateOnImagesReady : true
+                });
+
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(errorThrown);

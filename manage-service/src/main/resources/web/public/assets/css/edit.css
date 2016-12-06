@@ -134,6 +134,9 @@ header .btn {
     margin: 0 auto 10px;
     width: 180px;
 }
+#container .sidebar .draggable-group {
+    height: 100%;
+}
 #container .sidebar .boxes {
     height: 510px;
     overflow-y: auto;

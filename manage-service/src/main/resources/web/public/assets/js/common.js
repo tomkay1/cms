@@ -525,3 +525,11 @@ $('.conf-body').on('change', 'input[name=layout]', function () {
         ele.removeClass('hide').addClass('show');
     }
 });
+
+// 左侧动态高度
+var draggableGroup = $('#container').find('.sidebar > .draggable-group');
+var draggableGroupHeight= draggableGroup.height();
+var firstOne = draggableGroup.children('dl').eq(0).height();
+draggableGroup.find('.boxes').css({
+    height: (draggableGroupHeight - firstOne) * 0.5
+});

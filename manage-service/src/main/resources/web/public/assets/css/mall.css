@@ -618,6 +618,11 @@ ul {
 .settle-up {
     position: relative;
 }
+.settle-up::after {
+    content: " ";
+    display: table;
+    clear: both;
+}
 .settle-up .settleup {
     margin-top: 25px;
     float: right;

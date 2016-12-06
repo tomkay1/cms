@@ -138,7 +138,7 @@ header .btn {
     height: 100%;
 }
 #container .sidebar .boxes {
-    height: 58%;
+    height: 510px;
     overflow-y: auto;
 }
 .edit .pageHTML>.ncrow:last-child {

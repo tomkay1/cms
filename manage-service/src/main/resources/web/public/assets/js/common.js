@@ -530,7 +530,7 @@ $('.conf-body').on('change', 'input[name=layout]', function () {
 var draggableGroup = $('#container').find('.sidebar > .draggable-group');
 var draggableGroupHeight= draggableGroup.height();
 var firstOne = draggableGroup.children('dl').eq(0).height();
-draggableGroup.children('dl').eq(1).height(draggableGroupHeight - firstOne);
-// draggableGroup.find('.boxes').css({
-//     height: (draggableGroupHeight - firstOne) * 0.5
-// });
+console.log(draggableGroupHeight)
+draggableGroup.find('.boxes').css({
+    height: (draggableGroupHeight - firstOne - 96) * 0.85
+});

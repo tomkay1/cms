@@ -135,15 +135,15 @@
                                th:href="@{/manage/widget/{id}/install(id=${widget.identifier.toURIEncoded()})}"
                                th:if="${@widgetFactoryServiceImpl.installedStatus(widget).isEmpty()}" title="运行">
                                 <i class="fa fa-play"></i>
-                            </a>
+                            </a>&nbsp;&nbsp;
                             <a href="widget.html"
                                th:href="@{/manage/widget/{id}(id=${widget.identifier.toURIEncoded()})}" title="编辑">
-                                <i class="fa fa-pencil"></i>
+                                <i class="fa fa-pencil"></i>&nbsp;&nbsp;
                             </a>
                             <a class="primary" href="index.html" title="设置主控件"
                                th:href="@{/manage/widget/{id}/primary(id=${widget.identifier.toURIEncoded()})}"
                                th:if="${!@widgetFactoryServiceImpl.installedStatus(widget).isEmpty()}">
-                                <i class="glyphicon glyphicon-flag"></i>
+                                <i class="fa fa-flag"></i>
                             </a>
                             <!--<a href="index.html" class="delete"-->
                             <!--th:href="@{/manage/widget/{id}/delete(id=${widget.identifier})}"-->
@@ -164,7 +164,7 @@
                         <td class="center">
                             <a href="index.html" title="运行">
                                 <i class="fa fa-play"></i>
-                            </a>
+                            </a>&nbsp;&nbsp;
                             <a href="widget.html" title="编辑">
                                 <i class="fa fa-pencil"></i>
                             </a>

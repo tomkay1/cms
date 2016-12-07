@@ -36,4 +36,7 @@ $(function () {
         sizeLimit: 3 * 1024 * 1024
     });
 
+    $('.fa-pencil').parent('a').click(function () {
+        $(window.parent.document).scrollTop(0)
+    });
 });

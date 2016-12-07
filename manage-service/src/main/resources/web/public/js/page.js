@@ -46,8 +46,10 @@ $(function () {
     });
 
 
-    $('.glyphicon-shopping-cart').click(function () {
+    $('.fa-pencil-square-o').click(function () {
         updatePageInfo.id = $(this).closest('tr').attr('data-id');
+        var marginTop = $(window.parent.document).scrollTop();
+        updatePageInfo.css('margin-top', marginTop);
         $(this).parent().parent().siblings().each(function () {
             if ($(this).index() == 0) {
                 title.val($(this).text());

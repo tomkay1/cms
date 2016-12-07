@@ -99,13 +99,13 @@
                             <a href="../main.html" th:href="@{/manage/supper/as/{id}(id=${owner.id})}" target="_top"
                                title="管理">
                                 <i class="fa fa-pencil"></i>
-                            </a>
+                            </a>&nbsp;&nbsp;
                             <a href="javascript:void(0)" title="暂停" th:if="${owner.enabled}"><i
-                                    class="glyphicon glyphicon-pause"></i></a>
+                                    class="fa fa-pause"></i></a>&nbsp;&nbsp;
                             <a href="javascript:void(0)" title="恢复" th:if="${!owner.enabled}"><i
-                                    class="glyphicon glyphicon-play"></i></a>
+                                    class="fa fa-play"></i></a>&nbsp;&nbsp;
                             <a href="javascript:void(0)" title="关联商户号">
-                                <i class="glyphicon glyphicon-shopping-cart"></i>
+                                <i class="fa fa-cog"></i>
                             </a>
                         </td>
                     </tr>
@@ -113,8 +113,8 @@
                         <td class="actionWard">607</td>
                         <td class="actionAccess">&nbsp;</td>
                         <td class="center">
-                            <a href="../main.html" target="_top"><i class="fa fa-pencil"></i></a>
-                            <a href="javascript:void(0)" title="恢复"><i class="glyphicon glyphicon-play"></i></a>
+                            <a href="../main.html" target="_top"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;
+                            <a href="javascript:void(0)" title="恢复"><i class="fa fa-play"></i></a>
                         </td>
                     </tr>
                     </tbody>

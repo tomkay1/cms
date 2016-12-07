@@ -43,8 +43,10 @@ $(function () {
         }
     });
 
-    $('.glyphicon-shopping-cart').click(function () {
+    $('.fa-cog').click(function () {
         customerIdChanger.id = $(this).closest('tr').attr('data-id');
+        var marginTop = $(window.parent.document).scrollTop() + 30;
+        customerIdChanger.css('margin-top', marginTop);
         customerIdChanger.modal();
     });
 
@@ -56,13 +58,13 @@ $(function () {
             var targetClass;
             var targetTitle;
             var currentClass;
-            if (me.hasClass('glyphicon-play')) {
-                currentClass = 'glyphicon-play';
-                targetClass = 'glyphicon-pause';
+            if (me.hasClass('fa-play')) {
+                currentClass = 'fa-play';
+                targetClass = 'fa-pause';
                 targetTitle = '暂停';
             } else {
-                currentClass = 'glyphicon-pause';
-                targetClass = 'glyphicon-play';
+                currentClass = 'fa-pause';
+                targetClass = 'fa-play';
                 targetTitle = '恢复';
             }
             function success() {
@@ -92,7 +94,7 @@ $(function () {
         });
     }
 
-    changeOwnerEnable('glyphicon-play');
-    changeOwnerEnable('glyphicon-pause');
+    changeOwnerEnable('fa-play');
+    changeOwnerEnable('fa-pause');
 
 });

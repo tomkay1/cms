@@ -96,7 +96,9 @@ $(function () {
     var ignoreErrorSelector = $('#ignoreErrorSelector');
     var primaryHref;
     $('.primary').click(function () {
+        var marginTop = $(window.parent.document).scrollTop() + 30;
         primaryHref = $(this).attr("href");
+        ignoreErrorSelector.css('margin-top', marginTop);
         ignoreErrorSelector.modal();
         return false;
     });

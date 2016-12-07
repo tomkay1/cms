@@ -141,6 +141,15 @@ header .btn {
     height: 510px;
     overflow-y: auto;
 }
+#container .sidebar .boxes::-webkit-scrollbar {
+    width: 8px;
+    background-color: transparent;
+}
+#container .sidebar .boxes::-webkit-scrollbar-thumb {
+    height: 40px;
+    border-radius: 8px;
+    background-color: #fff;
+}
 .edit .pageHTML>.ncrow:last-child {
     padding-bottom: 100px;
 }

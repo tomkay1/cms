@@ -31,6 +31,18 @@ $(function () {
             $(this).find('.sub-list').slideToggle();
         }
     });
+
+    $('.image-text-list-gray').find('img').mouseenter(function () {
+        $(this).toggleClass('filter-gray');
+    }).mouseleave(function () {
+        $(this).toggleClass('filter-gray');
+    });
+
+    // 文章点击显示
+    $('.information-list-more').click(function() {
+        var ele = $(this).parent('.information-list-left-header').siblings('.information-list-left-body');
+        ele.stop().slideToggle('fast');
+    });
 });
 
 

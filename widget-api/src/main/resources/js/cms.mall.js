@@ -23,7 +23,7 @@ $(function () {
     $('.menu-toggle-icon').click(function(event) {
         event.preventDefault();
         $(this).toggleClass('on');
-        $('.topnavbar-body').slideToggle();
+        $(this).parents('.topnavbar-header').siblings('.topnavbar-body').slideToggle();
     });
 
     $('.copyright-3').find('.list-unstyled').children('li').click(function () {

@@ -40,6 +40,7 @@ $(function () {
 
     // 文章点击显示
     $('.information-list-more').click(function() {
+        $(this).toggleClass('open');
         var ele = $(this).parent('.information-list-left-header').siblings('.information-list-left-body');
         ele.stop().slideToggle('fast');
     });

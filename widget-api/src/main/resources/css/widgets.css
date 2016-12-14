@@ -1096,6 +1096,7 @@ a:link, a:visited, a:hover, a:active {
 }
 /*Update 11.22*/
 .topnavbar-new {
+    position: relative;
     width: 100%;
     height: 80px;
     margin: 0 auto;
@@ -1119,8 +1120,15 @@ a:link, a:visited, a:hover, a:active {
 .topnavbar-new .topnavbar-header {
     float: left;
 }
-.topnavbar-new .topnavbar-header > img {
+.topnavbar-new .topnavbar-header > a > img {
     height: 80px;
+}
+.topnavbar-golden .topnavbar-body .nav-item {
+    position: relative;
+}
+.topnavbar-golden .topnavbar-body .nav-item > a {
+    color: #d5975c;
+    font-size: 14px;
 }
 @media (max-width: 991px) {
     .topnavbar-new .topnavbar-body {
@@ -1181,6 +1189,30 @@ a:link, a:visited, a:hover, a:active {
     .topnavbar-new .topnavbar-body > ul .active a {
         height: 80px;
         border-bottom: 3px solid #000;
+    }
+    .topnavbar-golden .topnavbar-body > ul > li a:hover {
+        background-color: transparent;
+        color: #d5975c;
+    }
+    .topnavbar-golden .topnavbar-body > ul .active a {
+        height: 80px;
+        border-bottom: none;
+    }
+    .topnavbar-golden .topnavbar-body .nav-item:hover::after,
+    .topnavbar-golden .topnavbar-body .active::after {
+        content: '\2014\2014\2014';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        line-height: 1;
+    }
+    .topnavbar-golden.topnavbar-center .topnavbar-body .nav-item:hover::after,
+    .topnavbar-golden.topnavbar-center .topnavbar-body .active::after {
+        content: '\2014\2014\2014';
+        position: absolute;
+        bottom: 0;
+        left: 30px;
+        line-height: 1;
     }
     .topnavbar-new .topnavbar-body > ul .drop-down {
         position: relative;

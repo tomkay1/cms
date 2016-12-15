@@ -372,9 +372,6 @@ a:link, a:visited, a:hover, a:active {
 }
 
 @media (min-width: 769px) {
-    .copyright {
-        margin-top: 40px;
-    }
     .copyright .list-unstyled {
         border-bottom: none;
     }

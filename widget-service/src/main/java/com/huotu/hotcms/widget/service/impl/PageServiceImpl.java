@@ -120,11 +120,11 @@ public class PageServiceImpl implements PageService {
         }
         writer.append(">");
         for (PageElement element : layouts) {
-            writer.append("<div class=\"row\"");
-            element.printAttributesAsHtml(writer);
-            writer.append(">");
+//            writer.append("<div class=\"row\"");
+//            element.printAttributesAsHtml(writer);
+//            writer.append(">");
             widgetResolveService.pageElementHTML(element, context, writer);
-            writer.append("</div>");
+//            writer.append("</div>");
         }
         writer.append("</div>");
     }

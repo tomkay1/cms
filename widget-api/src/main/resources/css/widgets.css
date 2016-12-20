@@ -1339,3 +1339,128 @@ a:link, a:visited, a:hover, a:active {
     -webkit-transform: rotate(-45deg) translate(0.45em, -0.35em);
     transform: rotate(-45deg) translate(0.45em, -0.35em);
 }
+.time-line ul {
+    list-style: none;
+}
+.time-line-course ul {
+    padding: 0 20px;
+}
+.time-line-course li {
+    padding: 20px 0;
+    line-height: 24px;
+    border-bottom: 1px dotted #d3d3d3;
+}
+.time-line-course li span {
+    font-size: 14px;
+}
+.time-line-course li .num {
+    font-size: 24px;
+    color: #7f7f7f;
+}
+.time-line-course li .dash {
+    margin: 0 12px;
+    color: #a5a5a5;
+}
+.time-line-symmetry li {
+    padding: 10px;
+    border-bottom: rgba(0,0,0,0.05) 1px solid;
+}
+.time-line-symmetry .symmetry-content h3 {
+    height: 20px;
+    line-height: 20px;
+    font-size: 16px;
+    color: #464646;
+}
+.time-line-symmetry .symmetry-content p {
+    height: 45px;
+    line-height: 22px;
+    font-size: 12px;
+    color: #6a6a6a;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+@media (min-width: 992px) {
+    .time-line-symmetry ul {
+        position: relative;
+    }
+    .time-line-symmetry ul::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        margin-left: -1px;
+        width: 2px;
+        height: 100%;
+        background: rgba(0, 0, 0, .1);
+    }
+    .time-line-symmetry li {
+        padding: 10px 0;
+        position: relative;
+        border-bottom: none;
+    }
+    .time-line-symmetry .spot {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        margin-left: -5px;
+        width: 10px;
+        height: 10px;
+        background: #c4c4c4;
+        border: 2px solid #fff;
+        border-radius: 5px;
+    }
+    .time-line-symmetry .symmetry-content h3 {
+        font-size: 18px;
+        height: 42px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        color: #575757;
+    }
+    .time-line-symmetry .symmetry-content p {
+        height: 70px;
+        font-size: 14px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .time-line-symmetry li .symmetry-time {
+        width: 50%;
+        padding-right: 30px;
+        float: left;
+        text-align: right;
+    }
+    .time-line-symmetry li .symmetry-time .date {
+        font-size: 38px;
+        display: block;
+        color: #999;
+        line-height: 1;
+    }
+    .time-line-symmetry li .symmetry-time .year {
+        color: #adadad;
+        padding: 0 10px;
+    }
+    .time-line-symmetry li .symmetry-content {
+        width: 50%;
+        float: right;
+        padding: 0 40px;
+    }
+    .time-line-symmetry li:nth-of-type(even) .symmetry-time {
+        padding-left: 30px;
+        float: right;
+        text-align: left;
+    }
+    .time-line-symmetry li:nth-of-type(even) .symmetry-content {
+        float: left;
+    }
+    .time-line-symmetry li:hover {
+        background: #ff7e46;
+        color: #fff;
+        box-shadow: 0 15px 20px rgba(0, 0, 0, 0.1);
+    }
+    .time-line-symmetry li:hover .symmetry-time .date,
+    .time-line-symmetry li:hover .symmetry-time .year,
+    .time-line-symmetry li:hover .symmetry-content h3 {
+        color: #fff;
+    }
+}

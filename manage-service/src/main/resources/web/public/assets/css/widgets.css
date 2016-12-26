@@ -1382,6 +1382,7 @@ a:link, a:visited, a:hover, a:active {
 
 @media (min-width: 992px) {
     .time-line-symmetry ul {
+        padding: 0;
         position: relative;
     }
     .time-line-symmetry ul::before {
@@ -1426,9 +1427,17 @@ a:link, a:visited, a:hover, a:active {
     }
     .time-line-symmetry li .symmetry-time {
         width: 50%;
-        padding-right: 30px;
         float: left;
         text-align: right;
+    }
+    .time-line-symmetry li .time-box {
+        padding-right: 30px;
+        float: right;
+    }
+    .time-line-symmetry li .image-box {
+        display: none;
+        width: 66%;
+        float: right;
     }
     .time-line-symmetry li .symmetry-time .date {
         font-size: 38px;
@@ -1446,9 +1455,16 @@ a:link, a:visited, a:hover, a:active {
         padding: 0 40px;
     }
     .time-line-symmetry li:nth-of-type(even) .symmetry-time {
-        padding-left: 30px;
         float: right;
         text-align: left;
+    }
+    .time-line-symmetry li:nth-of-type(even) .time-box {
+        padding-left: 30px;
+        float: left;
+    }
+    .time-line-symmetry li:nth-of-type(even) .image-box {
+        width: 66%;
+        float: left;
     }
     .time-line-symmetry li:nth-of-type(even) .symmetry-content {
         float: left;
@@ -1457,6 +1473,9 @@ a:link, a:visited, a:hover, a:active {
         background: #ff7e46;
         color: #fff;
         box-shadow: 0 15px 20px rgba(0, 0, 0, 0.1);
+    }
+    .time-line-symmetry li:hover .image-box {
+        display: block;
     }
     .time-line-symmetry li:hover .symmetry-time .date,
     .time-line-symmetry li:hover .symmetry-time .year,

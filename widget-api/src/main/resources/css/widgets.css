@@ -1460,7 +1460,8 @@ a:link, a:visited, a:hover, a:active {
     }
     .time-line-symmetry li:hover .symmetry-time .date,
     .time-line-symmetry li:hover .symmetry-time .year,
-    .time-line-symmetry li:hover .symmetry-content h3 {
+    .time-line-symmetry li:hover .symmetry-content h3,
+    .time-line-symmetry li:hover .symmetry-content p {
         color: #fff;
     }
 }

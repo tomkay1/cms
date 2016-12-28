@@ -936,16 +936,19 @@ a:link, a:visited, a:hover, a:active {
     text-align: center;
 }
 .article-details .article-content p {
-    padding: 15px 0;
-    margin: 0;
+    margin: 10px 0;
+    padding: 0;
     font-size: 16px;
     color: #686f7a;
     text-indent: 24px;
     line-height: 24px;
 }
 .article-details .article-content img {
-    padding: 0 20px;
-    width: 100%;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 100% !important;
+    height: auto !important;
 }
 .article-details .article-laud {
     text-align: right;

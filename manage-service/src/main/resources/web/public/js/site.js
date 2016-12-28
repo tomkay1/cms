@@ -26,7 +26,7 @@ $(function () {
                 required: true
             },
             description: {
-                maxlength: 200
+                maxlength: 350
             },
             keywords: {
                 maxlength: 200

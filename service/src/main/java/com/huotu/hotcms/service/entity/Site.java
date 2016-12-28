@@ -17,7 +17,17 @@ import lombok.Getter;
 import lombok.Setter;
 import me.jiangcai.lib.resource.service.ResourceService;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
@@ -77,7 +87,7 @@ public class Site implements Auditable, Enabled, ImagesOwner {
     /**
      * 描述，填写有助于搜索引擎优化
      */
-    @Column(name = "description")
+    @Column(name = "description", length = 400)
     private String description;
     /**
      * 站点logo

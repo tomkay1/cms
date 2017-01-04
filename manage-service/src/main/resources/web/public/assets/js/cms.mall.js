@@ -58,12 +58,13 @@ $(function () {
         pagination: '.swiper-pagination',
         nextButton: '.swiper-button-next',
         prevButton: '.swiper-button-prev',
-        autoplay: 5000,
+        autoplay: 3000,
         slidesPerView: 1,
         paginationClickable: true,
         observer: true,
         observeParents: true,
         updateOnImagesReady: true,
+        autoplayDisableOnInteraction: false,
         loop: true
     });
 
@@ -76,7 +77,8 @@ $(function () {
         speed: 1000,
         observer: true,
         observeParents: true,
-        updateOnImagesReady : true
+        updateOnImagesReady : true,
+        autoplayDisableOnInteraction: false
     });
 
     // 添加菜单交互

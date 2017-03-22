@@ -1120,6 +1120,9 @@ a:link, a:visited, a:hover, a:active {
 .topnavbar-new .topnavbar-header {
     float: left;
 }
+.topnavbar-new .topnavbar-header img {
+    width: 80px;
+}
 .topnavbar-new .topnavbar-header > a > img {
     height: 80px;
 }

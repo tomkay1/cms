@@ -615,6 +615,9 @@ a:link, a:visited, a:hover, a:active {
     }
 }
 /*video-text-group*/
+.video-text-group {
+    padding-bottom: 12px;
+}
 .video-text-group .video-info-title {
     display: inline-block;
     margin: 20px 6px 10px 0;

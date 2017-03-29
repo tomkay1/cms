@@ -917,6 +917,9 @@ a:link, a:visited, a:hover, a:active {
     color: #a3a3a3;
     border-bottom: 1px solid #bcbcbc;
 }
+.notice-content-list .notice-content-list-heade-body:last-of-type {
+    border-bottom: none;
+}
 @media (min-width: 769px) {
     .notice-content-list .notice-content-list-heade-body  {
         padding-bottom: 84px;

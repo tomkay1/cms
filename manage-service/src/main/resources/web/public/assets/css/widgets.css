@@ -1,6 +1,10 @@
 body {
     font-family: 'Microsoft YaHei', sans-serif;
 }
+/*临时解决*/
+.container {
+    margin-bottom: 40px;
+}
 /*解决防止 margin 重叠*/
 body > div {
     border-top: 1px solid transparent;

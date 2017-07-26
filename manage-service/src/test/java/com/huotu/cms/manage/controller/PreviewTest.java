@@ -4,7 +4,7 @@
  *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
- * 2013-2016. All rights reserved.
+ * 2013-2017. All rights reserved.
  */
 
 package com.huotu.cms.manage.controller;
@@ -30,12 +30,14 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 /**
  * 预览测试
@@ -93,8 +95,8 @@ public class PreviewTest extends ManageTest {
 
         // 执行预览
 
-//        mockMvc.perform(get("/_web?simulateSite=" + site.getSiteId()))
-//                .andDo(print());
+        mockMvc.perform(get("/_web/?simulateSite=" + site.getSiteId()))
+                .andDo(MockMvcResultHandlers.print());
 
         driver.get("http://localhost/?simulateSite=" + site.getSiteId());
 

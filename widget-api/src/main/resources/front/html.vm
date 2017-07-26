@@ -44,5 +44,6 @@
 <script src="http://resali.huobanplus.com/cdn/bootstrap/3.3.6/bootstrap.min.js"></script>
 
 <script src="http://resali.huobanplus.com/cdn/bootstrap-hover-dropdown/2.0.1/bootstrap-hover-dropdown.min.js"></script>
+<script src="http://resali.huobanplus.com/cdn/jquery-validation/1.15.0/jquery.validate.min.js"></script>
 <script src="/js/cms.mall.js"></script>
 </html>

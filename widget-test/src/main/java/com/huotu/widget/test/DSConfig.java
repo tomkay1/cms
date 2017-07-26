@@ -4,7 +4,7 @@
  *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
- * 2013-2016. All rights reserved.
+ * 2013-2017. All rights reserved.
  */
 
 package com.huotu.widget.test;
@@ -12,6 +12,7 @@ package com.huotu.widget.test;
 import me.jiangcai.lib.test.config.H2DataSourceConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -26,7 +27,10 @@ public class DSConfig extends H2DataSourceConfig {
     @Bean
     @Primary
     public DataSource dataSource() throws IOException {
-        return dataSource("cms");
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName("org.h2.Driver");
+        dataSource.setUrl("jdbc:h2:mem:CMS;DB_CLOSE_DELAY=-1");
+        return dataSource;
     }
 
 }

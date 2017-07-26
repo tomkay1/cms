@@ -5,7 +5,7 @@
   ~
   ~ (c) Copyright Hangzhou Hot Technology Co., Ltd.
   ~ Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
-  ~ 2013-2016. All rights reserved.
+  ~ 2013-2017. All rights reserved.
   -->
 
 <!--suppress ALL -->
@@ -37,14 +37,14 @@
             </map>
         </property>
     </bean>
-    <bean id="dataSource" lazy-init="true" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url"
-                  value="jdbc:mysql://localhost:3306/hotcms?useUnicode=true&amp;characterEncoding=UTF8&amp;autoReconnect=true&amp;rewriteBatchedStatements=TRUE"/>
-        <!--<property name="url" value="jdbc:mysql://192.168.1.254:3306/hotcmstest?useUnicode=true&amp;characterEncoding=UTF8&amp;autoReconnect=true&amp;rewriteBatchedStatements=TRUE"/>-->
-        <property name="username" value="CJ"/>
-        <property name="password" value=""/>
-    </bean>
+    <!--<bean id="dataSource" lazy-init="true" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">-->
+    <!--<property name="driverClassName" value="com.mysql.jdbc.Driver"/>-->
+    <!--<property name="url"-->
+    <!--value="jdbc:mysql://localhost:3306/hotcms?useUnicode=true&amp;characterEncoding=UTF8&amp;autoReconnect=true&amp;rewriteBatchedStatements=TRUE"/>-->
+    <!--&lt;!&ndash;<property name="url" value="jdbc:mysql://192.168.1.254:3306/hotcmstest?useUnicode=true&amp;characterEncoding=UTF8&amp;autoReconnect=true&amp;rewriteBatchedStatements=TRUE"/>&ndash;&gt;-->
+    <!--<property name="username" value="CJ"/>-->
+    <!--<property name="password" value=""/>-->
+    <!--</bean>-->
 
     <!--<aop:aspectj-autoproxy proxy-target-class="true" />-->
     <!--读取properties文件-->

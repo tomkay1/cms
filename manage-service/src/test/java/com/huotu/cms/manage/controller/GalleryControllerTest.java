@@ -4,7 +4,7 @@
  *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
- * 2013-2016. All rights reserved.
+ * 2013-2017. All rights reserved.
  */
 
 package com.huotu.cms.manage.controller;
@@ -18,13 +18,16 @@ import com.huotu.hotcms.service.entity.Gallery;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.util.ImageHelper;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StreamUtils;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
@@ -41,6 +44,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author CJ
  */
 public class GalleryControllerTest extends ContentManageTest<Gallery> {
+
+    @Autowired
+    private WebApplicationContext webApplicationContext;
 
     public GalleryControllerTest() {
         super(ContentType.Gallery, GalleryPage.class);
@@ -117,7 +123,9 @@ public class GalleryControllerTest extends ContentManageTest<Gallery> {
             // 这是一个相对uri
             //
             Resource urlResource;
-            if (thumbnailUrl.startsWith("http://"))
+            if (thumbnailUrl.startsWith("http://localhost:8080/")) {
+                urlResource = new FileSystemResource(webApplicationContext.getServletContext().getRealPath(thumbnailUrl.substring("http://localhost:8080".length())));
+            } else if (thumbnailUrl.startsWith("http://"))
                 urlResource = new UrlResource(thumbnailUrl);
             else
                 urlResource = new ByteArrayResource(

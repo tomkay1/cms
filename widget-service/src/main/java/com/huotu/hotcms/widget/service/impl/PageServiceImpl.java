@@ -147,7 +147,8 @@ public class PageServiceImpl implements PageService {
             Layout[] elements = layoutsForUse(layout);
             for (Layout layoutElement : elements) {
                 for (Component component : layoutElement.components()) {
-                    component.getInstalledWidget().getWidget().valid(component.getStyleId(), component.getProperties());
+                    if (component.getInstalledWidget() != null)
+                        component.getInstalledWidget().getWidget().valid(component.getStyleId(), component.getProperties());
                 }
             }
         }

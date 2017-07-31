@@ -4,7 +4,7 @@
  *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
- * 2013-2016. All rights reserved.
+ * 2013-2017. All rights reserved.
  */
 
 package com.huotu.hotcms.service.service.impl;
@@ -47,7 +47,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> getCategories(Site site) {
-        return categoryRepository.findBySiteOrderByOrderWeightDesc(site);
+        return categoryRepository.findBySiteAndDeletedFalseOrderByOrderWeightDesc(site);
     }
 
 

@@ -4,7 +4,7 @@
  *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
- * 2013-2016. All rights reserved.
+ * 2013-2017. All rights reserved.
  */
 
 package com.huotu.hotcms.service.repository;
@@ -66,7 +66,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long>, JpaSp
      * @param site 站点
      * @return 所有栏目
      */
-    List<Category> findBySiteOrderByOrderWeightDesc(Site site);
+    List<Category> findBySiteAndDeletedFalseOrderByOrderWeightDesc(Site site);
 
     /**
      * 根据站点查询栏目

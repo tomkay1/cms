@@ -4,7 +4,7 @@
  *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
- * 2013-2016. All rights reserved.
+ * 2013-2017. All rights reserved.
  */
 
 package com.huotu.cms.manage.interceptor;
@@ -27,6 +27,12 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class ExceptionInterceptor {
     private static final Log log = LogFactory.getLog(ExceptionInterceptor.class);
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public void sawIllegalArgumentException(IllegalArgumentException ex) {
+        log.debug("bad request", ex);
+    }
 
     @ExceptionHandler(PageNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)

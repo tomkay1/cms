@@ -4,7 +4,7 @@
  *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
- * 2013-2016. All rights reserved.
+ * 2013-2017. All rights reserved.
  */
 
 /**
@@ -154,6 +154,10 @@ var DataHandle = {
             contentType: "application/json; charset=utf-8",
             data: DATA,
             statusCode: {
+                400: function () {
+                    layer.msg('部分控件参数错误或者不足，页面保存失败。', {time: 2000});
+                    editFunc.closePreloader();
+                },
                 202: function () {
                     layer.msg('保存成功！', {time: 2000});
                     //Todo 保存成功后需要跳转的页面

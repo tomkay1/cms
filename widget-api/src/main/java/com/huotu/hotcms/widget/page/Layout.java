@@ -4,7 +4,7 @@
  *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
- * 2013-2016. All rights reserved.
+ * 2013-2017. All rights reserved.
  */
 
 package com.huotu.hotcms.widget.page;
@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.huotu.hotcms.widget.Component;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Objects;
 
 /**
@@ -120,6 +122,21 @@ public class Layout implements PageElement {
                 .forEach(elements -> Arrays.stream(elements).forEach(list::add));
 
         return list;
+    }
+
+    /**
+     * @return 所有组件
+     */
+    public Collection<Component> components() {
+        ArrayList<Component> components = new ArrayList<>();
+        for (PageElement element : elements()) {
+            if (element instanceof Layout) {
+                components.addAll(((Layout) element).components());
+            } else if (element instanceof Component) {
+                components.add((Component) element);
+            }
+        }
+        return components;
     }
 
     @Override

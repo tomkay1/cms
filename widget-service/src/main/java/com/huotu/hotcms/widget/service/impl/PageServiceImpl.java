@@ -4,7 +4,7 @@
  *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
- * 2013-2016. All rights reserved.
+ * 2013-2017. All rights reserved.
  */
 
 package com.huotu.hotcms.widget.service.impl;
@@ -18,7 +18,12 @@ import com.huotu.hotcms.service.exception.PageNotFoundException;
 import com.huotu.hotcms.service.repository.CategoryRepository;
 import com.huotu.hotcms.service.service.CommonService;
 import com.huotu.hotcms.service.service.TemplateService;
-import com.huotu.hotcms.widget.*;
+import com.huotu.hotcms.widget.CMSContext;
+import com.huotu.hotcms.widget.Component;
+import com.huotu.hotcms.widget.InstalledWidget;
+import com.huotu.hotcms.widget.Widget;
+import com.huotu.hotcms.widget.WidgetLocateService;
+import com.huotu.hotcms.widget.WidgetResolveService;
 import com.huotu.hotcms.widget.entity.PageInfo;
 import com.huotu.hotcms.widget.page.Layout;
 import com.huotu.hotcms.widget.page.PageElement;
@@ -32,7 +37,11 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -131,6 +140,18 @@ public class PageServiceImpl implements PageService {
 
     @Override
     public void savePage(PageInfo info, PageModel model, boolean preview) throws IOException {
+        // 在保存页面之前，预先执行控件验证
+        PageLayout layout = null;
+        if (model != null) {
+            layout = PageLayout.FromWeb(PageLayout.NoNullLayout(model));
+            Layout[] elements = layoutsForUse(layout);
+            for (Layout layoutElement : elements) {
+                for (Component component : layoutElement.components()) {
+                    component.getInstalledWidget().getWidget().valid(component.getStyleId(), component.getProperties());
+                }
+            }
+        }
+
         if (info.getSerial() == null) {
             info.setSerial(UUID.randomUUID().toString().replace("-", ""));
         }
@@ -147,7 +168,7 @@ public class PageServiceImpl implements PageService {
 
         if (model != null) {
             //如果没有传model过来 不应该改变布局
-            info.setLayout(PageLayout.FromWeb(PageLayout.NoNullLayout(model)));
+            info.setLayout(layout);
             info.getLayout().setStyleSheet(model.getStyleSheet());
         }
 

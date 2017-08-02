@@ -69,19 +69,27 @@ var widgetHandle = {
         updataWidgetEditor(globaId, widgetProperties(globaId));
     },
     setStroe: function (id, data) {
-        if ( data ) {
-            wsCache.set(id, { 'properties' : data });
+        widgetHandle.deleteEmptyString(data, true);
+        var objNew = data;
+        var objOld = wsCache.get(id);
+
+        var res = $.extend(true, {}, objOld, objNew);
+
+        if ( res ) {
+            wsCache.set(id, { 'properties' : res });
         } else {
             wsCache.set(id, { 'properties' : {} });
         }
+
+        return res;
     },
     saveFunc: function (id) {
         var $DOM = widgetHandle.getEditAreaElement(identity);
         CMSWidgets.saveComponent(id, {
             onSuccess: function (ps) {
                 if ( ps !== null) {
-                    widgetHandle.setStroe(id, ps);
-                    updataCompoentPreview(id, ps);
+                    var res = widgetHandle.setStroe(id, ps);
+                    updataCompoentPreview(id, res);
                 }
                 CMSWidgets.closeEditor(GlobalID, identity, $DOM);
                 $DOM.children('.borderBoxs').remove();
@@ -97,6 +105,17 @@ var widgetHandle = {
         CMSWidgets.closeEditor(GlobalID, identity, $DOM);
         $DOM.children('.borderBoxs').remove();
         editFunc.closeFunc();
+    },
+    deleteEmptyString: function(obj, recurse) {
+        for (var i in obj) {
+            if (obj.hasOwnProperty(i)) {
+                if (obj[i] === '') {
+                    delete obj[i];
+                } else if (recurse && typeof obj[i] === 'object') {
+                    deleteEmptyString(obj[i], recurse);
+                }
+            }
+        }
     }
 };
 /**

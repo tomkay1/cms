@@ -30,12 +30,12 @@ var GlobalID, identity;
  * @param id 传入GlobalID;
  * @returns 返回对应properties
  */
-function widgetProperties( id ) {
+function widgetProperties(id) {
     var ele = $('#' + id);
     var identity = ele.attr('data-widgetidentity');
     var dataCache = wsCache.get(id);
     if (identity) {
-        if ( dataCache ) {
+        if (dataCache) {
             return dataCache.properties;
         } else {
             return wsCache.get(identity).properties;
@@ -57,7 +57,7 @@ var widgetHandle = {
     getEditAreaElement: function (dataId) {
         var $DOM = '';
         $('.common-conf').each(function () {
-            var oId = $(this).attr('data-id') ;
+            var oId = $(this).attr('data-id');
             if (editFunc.contrastString(oId, dataId)) {
                 $DOM = $(this).children().eq(1);
             }
@@ -65,8 +65,8 @@ var widgetHandle = {
         return $DOM;
     },
     getIdentity: function (globaId, callback) {
-        identity = $('#'+globaId).attr('data-widgetidentity');
-        callback&&callback(identity);
+        identity = $('#' + globaId).attr('data-widgetidentity');
+        callback && callback(identity);
     },
     createStore: function (globaId) {
         var data = widgetProperties(globaId);
@@ -78,18 +78,17 @@ var widgetHandle = {
         updataWidgetEditor(globaId, widgetProperties(globaId));
     },
     setStroe: function (id, data) {
-        if ( data ) {
-            wsCache.set(id, { 'properties' : data });
+        if (data) {
+            wsCache.set(id, {'properties': data});
         } else {
-            wsCache.set(id, { 'properties' : {} });
+            wsCache.set(id, {'properties': {}});
         }
     },
     saveFunc: function (id) {
         var $DOM = widgetHandle.getEditAreaElement(identity);
         CMSWidgets.saveComponent(id, {
             onSuccess: function (ps) {
-                if ( ps !== null) {
-                    widgetHandle.setStroe(id, ps);
+                if (ps !== null) {
                     updataCompoentPreview(id, ps);
                 }
                 CMSWidgets.closeEditor(GlobalID, identity, $DOM);
@@ -108,6 +107,7 @@ var widgetHandle = {
         editFunc.closeFunc();
     }
 };
+
 /**
  * 更新控件编辑器
  */
@@ -126,16 +126,17 @@ function updataWidgetEditor(globalID, properties) {
             if (html) {
                 var container = editFunc.findCurrentEdit(globalID).children().eq(1);
                 container.append(html);
-                widgetHandle.getIdentity(globalID ,function (identity) {
+                widgetHandle.getIdentity(globalID, function (identity) {
                     var $DOM = widgetHandle.getEditAreaElement(identity);
-                    dynamicLoading.js( wsCache.get(identity).script);
-                    if ( CMSWidgets )  CMSWidgets.openEditor(globalID, identity, $DOM);
+                    dynamicLoading.js(wsCache.get(identity).script);
+                    if (CMSWidgets) CMSWidgets.openEditor(globalID, identity, $DOM);
                 });
                 cmdColorPicker();
             }
         }
     );
 }
+
 /**
  * 更新预览视图
  */
@@ -150,11 +151,18 @@ function updataCompoentPreview(globalID, properties) {
         "pageId": pageId,
         "componentId": globalID
     };
-    Util.ajaxHtml(
-        component,
-        JSON.stringify(DATA),
-        function (html, textStatus, jqXHR) {
+    var loading = layer.load(2);
+    $.ajax({
+        type: 'POST',
+        url: component,
+        contentType: "application/json; charset=utf-8",
+        dataType: 'html',
+        data: JSON.stringify(DATA),
+        success: function (html, textStatus, jqXHR) {
             if (html) {
+                // 操作成功后才更新数据
+                widgetHandle.setStroe(globalID, properties);
+
                 var updateHtml = $(html);
                 updateHtml.attr({
                     'id': globalID,
@@ -167,8 +175,22 @@ function updataCompoentPreview(globalID, properties) {
                 var path = jqXHR.getResponseHeader('cssLocation');
                 if (path) dynamicLoading.css(path);
             }
+            layer.close(loading);
+        },
+        error: function (response, textStatus, errorThrown) {
+            if (response.status === 400) {
+                layer.msg('参数错误或者不足，该控件将无法保存。', {time: 2000});
+            }
+            try {
+                layer.close(loading);
+                var data = $.parseJSON(response.responseText);
+                layer.msg(data.msg || '服务器错误，请稍后操作。', {time: 2000});
+            } catch (e) {
+                console.error(e);
+                layer.msg('服务器错误，请稍后操作。', {time: 2000});
+            }
         }
-    );
+    });
 }
 
 /**
@@ -190,7 +212,7 @@ function getDataSource(type, parameter, onSuccess, onError) {
     if (parameter != null) {
         url = url + "/" + parameter;
     }
-    console.error("url:"+url);
+    console.error("url:" + url);
     $.ajax({
         type: 'GET',
         url: url,
@@ -200,40 +222,41 @@ function getDataSource(type, parameter, onSuccess, onError) {
         error: onError
     });
 }
+
 /**
-* 动态加载组件的 JS文件
-* @type {{css: dynamicLoading.css, js: dynamicLoading.js}}
-*/
+ * 动态加载组件的 JS文件
+ * @type {{css: dynamicLoading.css, js: dynamicLoading.js}}
+ */
 var dynamicLoading = {
     init: function (type, path) {
-        if( !path || path.length === 0){
+        if (!path || path.length === 0) {
             console.error('参数 "path" 是必需的！');
         }
         var exist = false;
         var handler = (type === 'css');
-        var ele =  handler ? $('link') : $('script');
+        var ele = handler ? $('link') : $('script');
         $.each(ele, function (i, v) {
             var attr = handler ? 'href' : 'src';
             var argv = $(v).attr(attr);
-            if ( argv && argv.indexOf(path) != -1 ) {
+            if (argv && argv.indexOf(path) != -1) {
                 exist = true;
             }
         });
         if (!exist) {
             var lastElement = ele.last();
             var addEle = handler ? $('<link>') : $('<script></script>');
-            if ( handler ) {
-                addEle.attr({'rel': 'stylesheet', 'href': path });
+            if (handler) {
+                addEle.attr({'rel': 'stylesheet', 'href': path});
             } else {
                 addEle.attr('src', path);
             }
             lastElement.after(addEle);
         }
     },
-    css: function(path){
+    css: function (path) {
         dynamicLoading.init('css', path);
     },
-    js: function(path){
+    js: function (path) {
         dynamicLoading.init('js', path);
     }
 };
@@ -252,7 +275,7 @@ var dynamicLoading = {
  * @param obj.deleteCallback [Function] 删除成功后回调函数 默认为空
  * @param obj.isCongruent [Boolean] 是否启用完全相等，false 不启用，默认 false
  */
-function uploadForm (obj) {
+function uploadForm(obj) {
     var ui = obj.ui,
         method = obj.method || 'POST',
         inputName = obj.inputName || 'file',
@@ -260,9 +283,11 @@ function uploadForm (obj) {
         maxHeight = obj.maxHeight || 9999,
         maxFileCount = obj.maxFileCount || -1,
         uploadUrl = obj.uploadUrl || '/manage/cms/resourceUpload',
-        successCallback = obj.successCallback || function () {},
+        successCallback = obj.successCallback || function () {
+        },
         deleteUrl = obj.deleteUrl || '/manage/cms/deleteResource',
-        deleteCallback = obj.deleteCallback || function () {},
+        deleteCallback = obj.deleteCallback || function () {
+        },
         sign = obj.isCongruent || false;
     var uploadFile = $(ui).uploadFile({
         url: uploadUrl,
@@ -270,30 +295,30 @@ function uploadForm (obj) {
         showFileCounter: false,
         returnType: "json",
         fileName: inputName,
-        multiple:true,
+        multiple: true,
         maxFileCount: maxFileCount,
-        dragDropStr:"<span>拖拽至此</span>",
-        abortStr:"中止",
+        dragDropStr: "<span>拖拽至此</span>",
+        abortStr: "中止",
         cancelStr: "取消",
-        deletelStr:"删除",
-        uploadStr:"上传图片",
-        maxFileCountErrorStr:" 不可以上传. 最大数量: ",
-        showPreview:true,
-        statusBarWidth:360,
+        deletelStr: "删除",
+        uploadStr: "上传图片",
+        maxFileCountErrorStr: " 不可以上传. 最大数量: ",
+        showPreview: true,
+        statusBarWidth: 360,
         previewHeight: "60px",
         previewWidth: "60px",
         showDelete: true,
         autoSubmit: false,
         onSuccess: successCallback,
-        onSelect:function(files) {
+        onSelect: function (files) {
 
             var file = files[0];
             var reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 var data = e.target.result;
                 var image = new Image();
                 image.src = data;
-                image.onload = function(){
+                image.onload = function () {
                     var width = image.width;
                     var height = image.height;
                     var vWidth = sign ? width == maxWidth : width >= maxWidth;
@@ -341,11 +366,11 @@ function verifySize(congruent, vWidth, vHeight, callback) {
     if (congruent) {
         if (!vWidth) layer.msg(widthText);
         if (!vHeight) layer.msg(heightText);
-        if ( vWidth === true && vHeight === true ) callback();
+        if (vWidth === true && vHeight === true) callback();
     } else {
         if (vWidth) layer.msg(widthText);
         if (vHeight) layer.msg(heightText);
-        if ( !vWidth === true && !vHeight === true ) callback();
+        if (!vWidth === true && !vHeight === true) callback();
     }
 }
 
@@ -356,16 +381,16 @@ var Util = {
      * @param option 传递参数 JSON格式
      * @param callback 成功回调
      */
-    ajaxHtml: function(url,option,callback){
+    ajaxHtml: function (url, option, callback) {
         var loading = layer.load(2);
         $.ajax({
             type: 'POST',
             url: url,
             contentType: "application/json; charset=utf-8",
-            dataType:'html',
-            data:option,
-            success:function(data, textStatus, jqXHR) {
-                if($.isFunction(callback)){
+            dataType: 'html',
+            data: option,
+            success: function (data, textStatus, jqXHR) {
+                if ($.isFunction(callback)) {
                     callback(data, textStatus, jqXHR);
                     layer.close(loading);
                 }
@@ -379,7 +404,7 @@ var Util = {
                 try{
                     layer.close(loading);
                     var data = $.parseJSON(response.responseText);
-                    ayer.msg(data.msg || '服务器错误，请稍后操作。', {time: 2000});
+                    layer.msg(data.msg || '服务器错误，请稍后操作。', {time: 2000});
                 } catch (e) {
                     console.error(e);
                     layer.msg('服务器错误，请稍后操作。', {time: 2000});
@@ -414,26 +439,26 @@ var TableData = {
             "displayLength": config.displayLength || '',
 
             "language": {
-                "sProcessing":   "处理中...",
-                "sLengthMenu":   "显示 _MENU_ 项结果",
-                "sZeroRecords":  "没有匹配结果",
-                "sInfo":         "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
-                "sInfoEmpty":    "显示第 0 至 0 项结果，共 0 项",
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
                 "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
-                "sInfoPostFix":  "",
-                "sSearch":       "搜索:",
-                "sUrl":          "",
-                "sEmptyTable":     "表中数据为空",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "表中数据为空",
                 "sLoadingRecords": "载入中...",
-                "sInfoThousands":  ",",
+                "sInfoThousands": ",",
                 "oPaginate": {
-                    "sFirst":    "首页",
+                    "sFirst": "首页",
                     "sPrevious": "上页",
-                    "sNext":     "下页",
-                    "sLast":     "末页"
+                    "sNext": "下页",
+                    "sLast": "末页"
                 },
                 "oAria": {
-                    "sSortAscending":  ": 以升序排列此列",
+                    "sSortAscending": ": 以升序排列此列",
                     "sSortDescending": ": 以降序排列此列"
                 }
             }
@@ -442,14 +467,14 @@ var TableData = {
 
         if (flag !== '') {
             element.find('tbody').off('click', 'tr');
-            if(flag) {
+            if (flag) {
                 element.find('tbody').on('click', 'tr', function () {
                     $(this).toggleClass('selected');
                 });
                 this.selectRowData(table, callback);
             } else {
-                element.find('tbody').on( 'click', 'tr', function () {
-                    if ( $(this).hasClass('selected') ) {
+                element.find('tbody').on('click', 'tr', function () {
+                    if ($(this).hasClass('selected')) {
                         $(this).removeClass('selected');
                     }
                     else {
@@ -477,12 +502,13 @@ var TableData = {
             for (var i = 0; i < len; i++) {
                 ARRAY.push(arr[i]);
             }
-            if($.isFunction(callback)){
+            if ($.isFunction(callback)) {
                 callback(ARRAY);
             }
         });
     }
 };
+
 /*临时拾色器公共方法*/
 function cmdColorPicker() {
     $('.color-picker').each(function () {
@@ -497,14 +523,14 @@ function cmdColorPicker() {
             showAlpha: true,
             showInitial: true,
             showInput: true,
-            move: function(color) {
-                if(color) $(this).val(color.toRgbString());
+            move: function (color) {
+                if (color) $(this).val(color.toRgbString());
             },
-            hide: function(color) {
-                if(color) $(this).val(color.toRgbString());
+            hide: function (color) {
+                if (color) $(this).val(color.toRgbString());
             },
-            change: function(color) {
-                if(color) $(this).val(color.toRgbString());
+            change: function (color) {
+                if (color) $(this).val(color.toRgbString());
             }
         });
     });
@@ -513,8 +539,8 @@ function cmdColorPicker() {
 // 解决两个Low插件耦合度太高问题
 var CommonPlugin = {
     //TODO
-    uploadCallBackData : [],
-    popover: function() {
+    uploadCallBackData: [],
+    popover: function () {
 
         $('body').append($('#templateHtml').html());
         var $container = $('#selectDataTable');
@@ -532,17 +558,17 @@ var CommonPlugin = {
 $('.conf-body').on('change', 'input[name=layout]', function () {
     var ele = $('.js-topnavbar-width');
     var input = ele.find('input');
-    if($(this).val() == 'topnavbar-full') {
+    if ($(this).val() == 'topnavbar-full') {
         ele.removeClass('show').addClass('hide');
     }
-    if($(this).val() == 'topnavbar-center') {
+    if ($(this).val() == 'topnavbar-center') {
         ele.removeClass('hide').addClass('show');
     }
 });
 
 // 左侧动态高度
 var draggableGroup = $('#container').find('.sidebar > .draggable-group');
-var draggableGroupHeight= draggableGroup.height();
+var draggableGroupHeight = draggableGroup.height();
 var firstOne = draggableGroup.children('dl').eq(0).height();
 console.log(draggableGroupHeight)
 draggableGroup.find('.boxes').css({

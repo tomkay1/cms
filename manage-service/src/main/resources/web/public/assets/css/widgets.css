@@ -10,7 +10,7 @@ body > div {
     border-top: 1px solid transparent;
 }
 body > div > div:first-child {
-    margin: 0;
+    margin-bottom: 0;
 }
 .row {
     margin: 0;

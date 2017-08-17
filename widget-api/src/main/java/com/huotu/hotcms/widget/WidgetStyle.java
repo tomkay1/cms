@@ -4,11 +4,12 @@
  *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
- * 2013-2016. All rights reserved.
+ * 2013-2017. All rights reserved.
  */
 
 package com.huotu.hotcms.widget;
 
+import com.huotu.hotcms.service.util.ImageHelper;
 import org.springframework.core.io.Resource;
 
 import java.util.Locale;
@@ -33,7 +34,7 @@ public interface WidgetStyle {
                 Widget.URIEncodedWidgetIdentity(widget))
                 .append("/")
                 .append(style.id())
-                .append(".png").toString();
+                .append(".").append(ImageHelper.fileExtensionName(style.thumbnail().getFilename())).toString();
     }
 
     /**

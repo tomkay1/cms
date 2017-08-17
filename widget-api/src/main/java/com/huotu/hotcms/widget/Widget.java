@@ -4,13 +4,14 @@
  *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
- * 2013-2016. All rights reserved.
+ * 2013-2017. All rights reserved.
  */
 
 package com.huotu.hotcms.widget;
 
 import com.huotu.hotcms.service.common.PageType;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
+import com.huotu.hotcms.service.util.ImageHelper;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -71,7 +72,7 @@ public interface Widget {
         StringBuilder stringBuilder = new StringBuilder("widgets/thumbnail/");
         return stringBuilder.append(
                 URIEncodedWidgetIdentity(widget))
-                .append(".png").toString();
+                .append(".").append(ImageHelper.fileExtensionName(widget.thumbnail().getFilename())).toString();
     }
 
     /**

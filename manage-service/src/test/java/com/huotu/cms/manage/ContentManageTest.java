@@ -4,7 +4,7 @@
  *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
- * 2013-2016. All rights reserved.
+ * 2013-2017. All rights reserved.
  */
 
 package com.huotu.cms.manage;
@@ -109,7 +109,7 @@ public abstract class ContentManageTest<T extends AbstractContent> extends SiteM
 
                 String path = UUID.randomUUID().toString();
                 if (isImage) {
-                    ImageHelper.storeAsImage("png", resourceService, new ClassPathResource("thumbnail.png").getInputStream(), path);
+                    ImageHelper.storeAsImage(resourceService, new ClassPathResource("thumbnail.png").getInputStream(), path);
                 } else {
                     byte[] data = new byte[random.nextInt(100) + 100];
                     random.nextBytes(data);

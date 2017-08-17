@@ -33,7 +33,10 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
+import java.util.Random;
 import java.util.Set;
 
 /**
@@ -138,7 +141,12 @@ public class SiteServiceImpl implements SiteService {
 //        createDefaultWidgetPage(template, customerSite);
 //        deepCopy(template, customerSite);
 //    }
-    @Override
+
+    private String generateRandomDomain(){
+       return String.format(environment.getProperty("default_domain","%d.localhost"),Long.parseLong(new SimpleDateFormat("yyyyMMddHHmmss")
+                .format(new Date())+new Random().nextInt(999)));
+    }
+   @Override
     public Site newSite(String[] domains, String homeDomains, Site site, Locale locale) {
 //        if (!StringUtil.Contains(domains, homeDomains)) {//不存在主推域名则外抛出
 //            // 这是一个很糟糕的设计
@@ -148,10 +156,10 @@ public class SiteServiceImpl implements SiteService {
 
         if(domains == null || domains.length == 0){
             domains = new String[1];
-            domains[0] = environment.getProperty("default_domain","%d.localhost");
+            domains[0] = generateRandomDomain();
         }
         if(homeDomains == null){
-            homeDomains = environment.getProperty("default_domain","%d.localhost");
+            homeDomains = generateRandomDomain();
         }
 
         Region region = regionRepository.findOne(locale);

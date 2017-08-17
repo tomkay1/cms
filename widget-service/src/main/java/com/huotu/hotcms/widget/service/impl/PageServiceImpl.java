@@ -159,7 +159,7 @@ public class PageServiceImpl implements PageService {
         info.setUpdateTime(LocalDateTime.now());
         //删除控件旧的css样式表
         if (info.getResourceKey() != null) {
-            resourceService.deleteResource(info.getPageCssResourcePath());
+            resourceService.deleteResource(info.getPageCssResourcePath(false));
         }
         //保存最新控件信息
         if (!preview) {
@@ -183,7 +183,7 @@ public class PageServiceImpl implements PageService {
             widgetResolveService.widgetDependencyContent(CMSContext.RequestContext(), null, Widget.CSS, element, buffer);
         }
 
-        resourceService.uploadResource(info.getPageCssResourcePath(), new ByteArrayInputStream(buffer.toByteArray()));
+        resourceService.uploadResource(info.getPageCssResourcePath(false), new ByteArrayInputStream(buffer.toByteArray()));
     }
 
     @Override

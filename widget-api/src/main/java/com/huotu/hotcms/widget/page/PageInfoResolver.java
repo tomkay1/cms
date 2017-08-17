@@ -81,7 +81,7 @@ public class PageInfoResolver implements HandlerMethodReturnValueHandler {
         context.put("description", pageInfo.getSite().getDescription());
         context.put("title", pageInfo.getTitle());
         context.put("globalCssURI", "/css/index.css");
-        context.put("pageCssURI", resourceService.getResource(pageInfo.getPageCssResourcePath()).httpUrl());
+        context.put("pageCssURI", resourceService.getResource(pageInfo.getPageCssResourcePath(false)).httpUrl());
         context.put("content", content);
 
         response.setContentType("text/html;charset=utf-8");

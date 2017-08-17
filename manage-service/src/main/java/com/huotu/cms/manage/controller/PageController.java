@@ -178,7 +178,7 @@ public class PageController {
             try {
                 //删除控件旧的css样式表
                 if (pageInfo.getResourceKey() != null) {
-                    resourceService.deleteResource(pageInfo.getPageCssResourcePath());
+                    resourceService.deleteResource(pageInfo.getPageCssResourcePath(false));
                 }
                 String resourceKey = UUID.randomUUID().toString();
                 pageInfo.setResourceKey(resourceKey);
@@ -189,7 +189,7 @@ public class PageController {
                     //生成组件css
                     widgetResolveService.widgetDependencyContent(CMSContext.RequestContext(), null, Widget.CSS, element, buffer);
                 }
-                Resource resource = resourceService.uploadResource(pageInfo.getPageCssResourcePath()
+                Resource resource = resourceService.uploadResource(pageInfo.getPageCssResourcePath(false)
                         , new ByteArrayInputStream(buffer.toByteArray()));
                 model.addAttribute("pageCss", resource.httpUrl());
             } catch (Throwable e) {

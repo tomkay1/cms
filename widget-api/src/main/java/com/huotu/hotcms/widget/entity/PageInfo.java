@@ -113,7 +113,7 @@ public class PageInfo extends AbstractContent implements Auditable, ResourcesOwn
         if (!isForHtml)
             return "page/resource/css/" + resourceKey + "/" + getId() + ".css";
         else
-            return "page/resource/css/" + resourceKey + "/" + getId() + ".css?date=" + LocalDateTime.now();
+            return "page/resource/css/" + resourceKey + "/" + getId() + ".css?date=" + getUpdateTime();
     }
 
     public String getPageCssResourcePath() {

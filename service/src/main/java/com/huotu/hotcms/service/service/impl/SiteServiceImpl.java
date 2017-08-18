@@ -9,7 +9,11 @@
 
 package com.huotu.hotcms.service.service.impl;
 
-import com.huotu.hotcms.service.entity.*;
+import com.huotu.hotcms.service.entity.AbstractContent;
+import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.Host;
+import com.huotu.hotcms.service.entity.Region;
+import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.event.DeleteSiteEvent;
 import com.huotu.hotcms.service.exception.NoSiteFoundException;
 import com.huotu.hotcms.service.repository.CategoryRepository;
@@ -21,15 +25,18 @@ import com.huotu.hotcms.service.service.ContentService;
 import com.huotu.hotcms.service.service.HostService;
 import com.huotu.hotcms.service.service.SiteService;
 import com.huotu.hotcms.service.util.SerialUtil;
-import com.huotu.hotcms.service.util.StringUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
+import java.util.Random;
 import java.util.Set;
 
 /**
@@ -55,6 +62,8 @@ public class SiteServiceImpl implements SiteService {
     private CategoryRepository categoryRepository;
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private Environment environment;
 
     @Override
     public void deleteData(Site site) throws IOException {
@@ -132,13 +141,27 @@ public class SiteServiceImpl implements SiteService {
 //        createDefaultWidgetPage(template, customerSite);
 //        deepCopy(template, customerSite);
 //    }
-    @Override
+
+    private String generateRandomDomain(){
+       return String.format(environment.getProperty("default_domain","%d.localhost"),Long.parseLong(new SimpleDateFormat("yyyyMMddHHmmss")
+                .format(new Date())+new Random().nextInt(999)));
+    }
+   @Override
     public Site newSite(String[] domains, String homeDomains, Site site, Locale locale) {
-        if (!StringUtil.Contains(domains, homeDomains)) {//不存在主推域名则外抛出
-            // 这是一个很糟糕的设计
-            throw new IllegalArgumentException("没有主推域名");
-//            return new ResultView(ResultOptionEnum.NOFIND_HOME_DEMON.getCode(), ResultOptionEnum.NOFIND_HOME_DEMON.getValue(), null);
+//        if (!StringUtil.Contains(domains, homeDomains)) {//不存在主推域名则外抛出
+//            // 这是一个很糟糕的设计
+//            throw new IllegalArgumentException("没有主推域名");
+////            return new ResultView(ResultOptionEnum.NOFIND_HOME_DEMON.getCode(), ResultOptionEnum.NOFIND_HOME_DEMON.getValue(), null);
+//        }
+
+        if(domains == null || domains.length == 0){
+            domains = new String[1];
+            domains[0] = generateRandomDomain(); //"20170818124537310.localhost"
         }
+        if(homeDomains == null){
+            homeDomains = domains[0];
+        }
+
         Region region = regionRepository.findOne(locale);
         if (region == null) {
             region = new Region();

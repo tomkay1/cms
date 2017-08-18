@@ -144,7 +144,6 @@ public class PreviewTest extends ManageTest {
         contentService.init(link);
         linkService.save(link);
 
-
         String groupId = "com.huotu.hotcms.widget.friendshipLink";
         String widgetId = "friendshipLink";
         String version = "1.0-SNAPSHOT";

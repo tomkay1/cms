@@ -31,7 +31,7 @@ $(function () {
             keywords: {
                 maxlength: 200
             },
-            domains: {
+           /* domains: {
                 required: true
                 //remote: {
                 //    url: "/site/isExistsDomain",     //后台处理程序
@@ -43,10 +43,10 @@ $(function () {
                 //        }
                 //    }
                 //},
-            },
-            homeDomain: {
-                required: true
-            },
+            },*/
+            // homeDomain: {
+            //     required: true
+            // },
             copyright: {
                 required: true
             }
@@ -65,13 +65,13 @@ $(function () {
             title: {
                 required: "标题为必输项"
             },
-            domains: {
+           /* domains: {
                 required: "请输入域名"
                 //remote:"存在相同的域名"
             },
             homeDomain: {
                 required: "必须存在一个主推域名"
-            },
+            },*/
             description: {
                 maxlength: "站点描述不能超过200个字符"
             },

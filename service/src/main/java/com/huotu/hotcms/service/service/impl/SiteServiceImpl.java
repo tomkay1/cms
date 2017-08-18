@@ -156,10 +156,10 @@ public class SiteServiceImpl implements SiteService {
 
         if(domains == null || domains.length == 0){
             domains = new String[1];
-            domains[0] = generateRandomDomain();
+            domains[0] = generateRandomDomain(); //"20170818124537310.localhost"
         }
         if(homeDomains == null){
-            homeDomains = generateRandomDomain();
+            homeDomains = domains[0];
         }
 
         Region region = regionRepository.findOne(locale);

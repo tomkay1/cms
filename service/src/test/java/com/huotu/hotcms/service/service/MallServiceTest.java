@@ -4,7 +4,7 @@
  *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
- * 2013-2016. All rights reserved.
+ * 2013-2017. All rights reserved.
  */
 
 package com.huotu.hotcms.service.service;
@@ -15,6 +15,7 @@ import com.huotu.hotcms.service.exception.LoginException;
 import com.huotu.hotcms.service.exception.RegisterException;
 import com.huotu.huobanplus.common.entity.User;
 import com.huotu.huobanplus.sdk.common.repository.UserRestRepository;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -27,6 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author CJ
  */
+@Ignore
 public class MallServiceTest extends TestBase {
 
     @Autowired

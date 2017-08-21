@@ -4,7 +4,7 @@
  *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
- * 2013-2016. All rights reserved.
+ * 2013-2017. All rights reserved.
  */
 
 package com.huotu.cms.manage;
@@ -25,12 +25,31 @@ import com.huotu.hotcms.service.Serially;
 import com.huotu.hotcms.service.common.CMSEnums;
 import com.huotu.hotcms.service.common.ContentType;
 import com.huotu.hotcms.service.common.PageType;
-import com.huotu.hotcms.service.entity.*;
+import com.huotu.hotcms.service.entity.AbstractContent;
+import com.huotu.hotcms.service.entity.Article;
+import com.huotu.hotcms.service.entity.Category;
+import com.huotu.hotcms.service.entity.Download;
+import com.huotu.hotcms.service.entity.Gallery;
+import com.huotu.hotcms.service.entity.GalleryItem;
+import com.huotu.hotcms.service.entity.Link;
+import com.huotu.hotcms.service.entity.Notice;
+import com.huotu.hotcms.service.entity.Route;
+import com.huotu.hotcms.service.entity.Site;
+import com.huotu.hotcms.service.entity.Template;
+import com.huotu.hotcms.service.entity.TemplateType;
+import com.huotu.hotcms.service.entity.WidgetInfo;
 import com.huotu.hotcms.service.entity.login.Login;
 import com.huotu.hotcms.service.entity.login.Owner;
 import com.huotu.hotcms.service.entity.support.WidgetIdentifier;
 import com.huotu.hotcms.service.model.SiteAndSerial;
-import com.huotu.hotcms.service.repository.*;
+import com.huotu.hotcms.service.repository.ArticleRepository;
+import com.huotu.hotcms.service.repository.CategoryRepository;
+import com.huotu.hotcms.service.repository.ContentRepository;
+import com.huotu.hotcms.service.repository.DownloadRepository;
+import com.huotu.hotcms.service.repository.GalleryItemRepository;
+import com.huotu.hotcms.service.repository.GalleryRepository;
+import com.huotu.hotcms.service.repository.OwnerRepository;
+import com.huotu.hotcms.service.repository.TemplateRepository;
 import com.huotu.hotcms.service.service.CategoryService;
 import com.huotu.hotcms.service.service.ContentService;
 import com.huotu.hotcms.service.service.LoginService;
@@ -64,13 +83,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.htmlunit.webdriver.MockMvcHtmlUnitDriverBuilder;
 import org.springframework.test.web.servlet.htmlunit.webdriver.WebConnectionHtmlUnitDriver;
 import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
-import org.springframework.util.StreamUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -79,7 +98,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -344,7 +367,7 @@ public abstract class ManageTest extends SpringWebTest {
                         // 如果它同时还是
                         for (int i = 0; i < owner.getResourcePaths().length; i++) {
                             try {
-                                owner.updateResource(i, resourceService, randomStream());
+                                owner.updateResource(i, resourceService, randomStream(), "tmp.tmp");
                             } catch (IllegalArgumentException ignored) {
                             }
                         }
@@ -352,7 +375,7 @@ public abstract class ManageTest extends SpringWebTest {
                     if (content instanceof ImagesOwner) {
                         ImagesOwner owner = (ImagesOwner) content;
                         for (int i = 0; i < owner.getImagePaths().length; i++) {
-                            owner.updateImage(i, resourceService, randomImageStream());
+                            owner.updateImage(i, resourceService, randomImageStream(), "thumbnail.png");
                         }
                     }
 
@@ -747,7 +770,8 @@ public abstract class ManageTest extends SpringWebTest {
      */
     public void uploadResource(AbstractCRUDPage<?> page, String name, Resource resource) throws Exception {
         String path = mockMvc.perform(fileUpload("/manage/upload")
-                .file("file", StreamUtils.copyToByteArray(resource.getInputStream()))
+                        .file(new MockMultipartFile("file", resource.getFilename(), null, resource.getInputStream()))
+//                .file("file", StreamUtils.copyToByteArray(resource.getInputStream()))
                 .session(session)
         ).andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();

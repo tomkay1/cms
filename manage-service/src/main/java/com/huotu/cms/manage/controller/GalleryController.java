@@ -4,7 +4,7 @@
  *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
- * 2013-2016. All rights reserved.
+ * 2013-2017. All rights reserved.
  */
 
 package com.huotu.cms.manage.controller;
@@ -134,8 +134,8 @@ public class GalleryController extends ContentManageController<Gallery, ContentE
         item.setCreateTime(LocalDateTime.now());
         item.setSerial(UUID.randomUUID().toString());
         item.setTitle(qqfilename);
-        String path = "gallery/" + id + "/" + UUID.randomUUID().toString() + ".png";
-        ImageHelper.storeAsImage("png", resourceService, qqfile.getInputStream(), path);
+        String path = "gallery/" + id + "/" + UUID.randomUUID().toString() + "." + ImageHelper.fileExtensionName(qqfile);
+        ImageHelper.storeAsImage(resourceService, qqfile.getInputStream(), path);
         item.setThumbUri(path);
 
         item = galleryItemRepository.saveAndFlush(item);

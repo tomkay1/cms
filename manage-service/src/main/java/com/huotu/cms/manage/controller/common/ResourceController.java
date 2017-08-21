@@ -4,7 +4,7 @@
  *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
- * 2013-2016. All rights reserved.
+ * 2013-2017. All rights reserved.
  */
 
 package com.huotu.cms.manage.controller.common;
@@ -60,8 +60,9 @@ public class ResourceController {
     public ResponseEntity<String> ckeditorUpload(MultipartFile upload) throws JsonProcessingException {
         try {
             try (InputStream inputStream = upload.getInputStream()) {
-                String path = "watch/" + UUID.randomUUID().toString().replaceAll("-", "") + ".png";
-                ImageHelper.storeAsImage("png", resourceService, inputStream, path);
+                String path = "watch/" + UUID.randomUUID().toString().replaceAll("-", "") + "."
+                        + ImageHelper.fileExtensionName(upload);
+                ImageHelper.storeAsImage(resourceService, inputStream, path);
                 HashMap<String, Object> body = new HashMap<>();
                 body.put("uploaded", 1);
                 body.put("success", true);

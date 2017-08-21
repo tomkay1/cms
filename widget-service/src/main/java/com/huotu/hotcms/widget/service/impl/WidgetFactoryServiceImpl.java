@@ -4,7 +4,7 @@
  *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
- * 2013-2016. All rights reserved.
+ * 2013-2017. All rights reserved.
  */
 
 package com.huotu.hotcms.widget.service.impl;
@@ -316,10 +316,10 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
                         + entry.getKey(), entry.getValue().getInputStream());
             }
         }
-        ImageHelper.storeAsImage("png", resourceService, widget.thumbnail().getInputStream()
+        ImageHelper.storeAsImage(resourceService, widget.thumbnail().getInputStream()
                 , Widget.thumbnailPath(widget));
         for (WidgetStyle style : widget.styles()) {
-            ImageHelper.storeAsImage("png", resourceService, style.thumbnail().getInputStream()
+            ImageHelper.storeAsImage(resourceService, style.thumbnail().getInputStream()
                     , WidgetStyle.thumbnailPath(widget, style));
         }
 

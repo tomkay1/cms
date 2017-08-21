@@ -183,7 +183,14 @@ public class PageServiceImpl implements PageService {
             widgetResolveService.widgetDependencyContent(CMSContext.RequestContext(), null, Widget.CSS, element, buffer);
         }
 
-        resourceService.uploadResource(info.getPageCssResourcePath(false), new ByteArrayInputStream(buffer.toByteArray()));
+        try {
+            resourceService.uploadResource(info.getPageCssResourcePath(false), new ByteArrayInputStream(buffer.toByteArray()));
+            log.info("保存css成功，path：" + info.getPageCssResourcePath(false));
+        } catch (Exception e) {
+            log.info("保存css失败：" + e);
+            log.info("保存css失败：" + info.getPageCssResourcePath(false));
+        }
+
     }
 
     @Override

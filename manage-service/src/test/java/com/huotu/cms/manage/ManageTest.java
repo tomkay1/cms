@@ -275,6 +275,20 @@ public abstract class ManageTest extends SpringWebTest {
         return siteService.newSite(domains, domains[0], site, Locale.CHINA);
     }
 
+    protected Site randomSiteAndNoDomains(Owner owner){
+        Site site = new Site();
+        site.setOwner(owner);
+        site.setName(UUID.randomUUID().toString());
+//        site.setSiteType(SiteType.SITE_PC_WEBSITE);
+        site.setTitle(UUID.randomUUID().toString());
+        site.setCreateTime(LocalDateTime.now());
+        site.setEnabled(true);
+        site.setDescription(UUID.randomUUID().toString());
+        site.setKeywords(String.join(",", (CharSequence[]) randomDomains()));
+
+        return siteService.newSite(null, null, site, Locale.CHINA);
+    }
+
     /**
      * 随机一个站点并关联数据源和内容
      *

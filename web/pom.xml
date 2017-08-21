@@ -50,7 +50,45 @@
     </dependencies>
 
     <build>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh</artifactId>
+                <version>2.10</version>
+            </extension>
+        </extensions>
         <plugins>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>wagon-maven-plugin</artifactId>
+                <version>1.0</version>
+                <configuration>
+                    <!--<serverId>crawler</serverId>-->
+                    <!-- 需要部署的文件 -->
+                    <fromFile>${project.build.directory}/${project.build.finalName}.war </fromFile>
+                    <!-- 部署目录 -->
+                    <url>sftp://lyy:${cms_password}@120.25.96.16/home/lyy</url>
+                    <toFile>ROOT.war</toFile>
+                    <!--<commands>-->
+                    <!--<command>/home/cms/tomcat/bin/shutdown.sh</command>-->
+                    <!--<command>rm -rf /home/cms/tomcat/webapps/ROOT-->
+                    <!--</command>-->
+                    <!--<command>/home/cms/tomcat/bin/startup.sh</command>-->
+                    <!--</commands>-->
+                    <displayCommandOutputs>true</displayCommandOutputs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>upload-single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+
             <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>2.5</version>

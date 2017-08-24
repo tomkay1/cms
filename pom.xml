@@ -54,7 +54,10 @@
             <id>${deploy.site.id}</id>
             <url>scpexe://${deploy.site.url.home}</url>
         </site>
+
     </distributionManagement>
+
+
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -232,6 +235,7 @@
     </repositories>
 
     <build>
+
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -296,7 +300,9 @@
                     </archive>
                 </configuration>
             </plugin>
+
         </plugins>
+
     </build>
 
     <reporting>

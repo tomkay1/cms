@@ -19,7 +19,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ServletModelAttribu
 import org.springframework.web.servlet.mvc.method.annotation.ServletRequestMethodArgumentResolver;
 
 /**
- * 这种一种丑陋的解决方案,但至少解决了。
+ * 这是一种丑陋的解决方案,但至少解决了。
  *
  * @author CJ
  */

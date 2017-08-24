@@ -16,6 +16,7 @@ import com.huotu.cms.manage.page.AdminPage;
 import com.huotu.cms.manage.page.ManageMainPage;
 import com.huotu.cms.manage.page.SitePage;
 import com.huotu.cms.manage.page.support.AbstractCRUDPage;
+import com.huotu.hotcms.service.common.PageType;
 import com.huotu.hotcms.service.entity.Host;
 import com.huotu.hotcms.service.entity.Site;
 import com.huotu.hotcms.service.entity.login.Owner;
@@ -23,12 +24,15 @@ import com.huotu.hotcms.service.repository.HostRepository;
 import com.huotu.hotcms.service.repository.SiteRepository;
 import com.huotu.hotcms.service.service.HostService;
 import com.huotu.hotcms.service.util.ImageHelper;
+import com.huotu.hotcms.widget.entity.PageInfo;
+import com.huotu.hotcms.widget.repository.PageInfoRepository;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.junit.Test;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.test.web.servlet.htmlunit.webdriver.MockMvcHtmlUnitDriverBuilder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.beans.PropertyDescriptor;
@@ -56,6 +60,8 @@ public class SiteControllerTest extends ManageTest {
     private ResourceService resourceService;
     @Autowired
     private HostService hostService;
+    @Autowired
+    private PageInfoRepository pageInfoRepository;
 
     @Test
     @Transactional
@@ -244,4 +250,49 @@ public class SiteControllerTest extends ManageTest {
 
         }
     }
+
+    private String host;
+
+    @Override
+    protected void createWebDriver() {
+        driver = MockMvcHtmlUnitDriverBuilder
+                .mockMvcSetup(mockMvc)
+                .useMockMvcForHosts(host)
+                .build();
+    }
+
+    @Test
+    public void addSite() throws Exception {
+
+        // 创建一个站点
+        Owner owner = randomOwner();
+        Site site = randomSiteAndNoDomains(owner);
+
+        updateCMSContext(site);
+
+        PageInfo indexPage = new PageInfo();
+        indexPage.setPageType(PageType.Ordinary);
+        indexPage.setLayout(randomPageLayout());
+        indexPage.setSite(site);
+        indexPage.setPagePath("");
+        indexPage.setTitle(randomDomain());
+        indexPage = pageInfoRepository.saveAndFlush(indexPage);
+
+        this.host = site.getRecommendDomain();
+
+        // 执行预览
+        createWebDriver();
+
+        driver.get("http://"+site.getRecommendDomain());
+        System.out.println(driver.getPageSource());
+
+//        mockMvc.perform(get("/_web/?simulateSite=" + site.getSiteId()))
+//                .andDo(MockMvcResultHandlers.print());
+
+
+        assertThat(driver.getTitle())
+                .isEqualTo(indexPage.getTitle());
+
+    }
+
 }

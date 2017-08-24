@@ -107,14 +107,22 @@ public class PageInfo extends AbstractContent implements Auditable, ResourcesOwn
 
     /**
      * @return ..
+     * @param isForClient 是否为在页面上获取静态资源，如果是加上时间戳，避免缓存
      */
+    public String getPageCssResourcePath(boolean isForClient) {
+        if (!isForClient)
+            return "page/resource/css/" + resourceKey + "/" + getId() + ".css";
+        else
+            return "page/resource/css/" + resourceKey + "/" + getId() + ".css?date=" + getUpdateTime();
+    }
+
     public String getPageCssResourcePath() {
-        return "page/resource/css/" + resourceKey + "/" + getId() + ".css";
+        return getPageCssResourcePath(true);
     }
 
     @Override
     public String[] getResourcePaths() {
-        return new String[]{getPageCssResourcePath()};
+        return new String[]{getPageCssResourcePath(false)};
     }
 
     @Override

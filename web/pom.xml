@@ -68,7 +68,7 @@
                     <!-- 需要部署的文件 -->
                     <fromFile>${project.build.directory}/${project.build.finalName}.war </fromFile>
                     <!-- 部署目录 -->
-                    <url>sftp://lyy:${cms_password}@120.25.96.16/home/lyy</url>
+                    <url>sftp://lyy:122525luu@120.25.96.16/home/lyy</url>
                     <toFile>ROOT.war</toFile>
                     <!--<commands>-->
                     <!--<command>/home/cms/tomcat/bin/shutdown.sh</command>-->

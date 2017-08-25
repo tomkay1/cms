@@ -4,7 +4,7 @@
  *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
- * 2013-2016. All rights reserved.
+ * 2013-2017. All rights reserved.
  */
 
 package com.huotu.hotcms.service.entity;
@@ -51,6 +51,12 @@ public class GalleryItem extends AbstractContent implements Auditable, ImagesOwn
     @ManyToOne
     @JoinColumn(name = "galleryId")
     private Gallery gallery;
+
+    /**
+     * @since {@link com.huotu.hotcms.service.CMSDataVersion#galleryItemUrl}
+     */
+    @Column(length = 150)
+    private String relationalUrl;
 
 
     public static GalleryItemModel getGalleryItemModel(GalleryItem galleryItem) {

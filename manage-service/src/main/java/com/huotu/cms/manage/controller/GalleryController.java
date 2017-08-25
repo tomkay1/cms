@@ -105,6 +105,22 @@ public class GalleryController extends ContentManageController<Gallery, ContentE
         commonService.deleteResource(item);
     }
 
+    @RequestMapping(method = RequestMethod.PUT, value = "/{id}/items/{uuid}")
+    @Transactional
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void changeItemUrl(@AuthenticationPrincipal Login login, @PathVariable("id") Long id
+            , @PathVariable("uuid") Long uuid, String value) throws IOException {
+        GalleryItem item = galleryItemRepository.getOne(uuid);
+
+        if (!login.contentManageable(item.getGallery()))
+            throw new AccessDeniedException("无法访问该资源");
+
+        if (!StringUtils.isEmpty(value)) {
+            item.setRelationalUrl(null);
+        } else
+            item.setRelationalUrl(value);
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/{id}/items/{uuid}")
     @Transactional(readOnly = true)
     public ResponseEntity getItem(@AuthenticationPrincipal Login login, @PathVariable("id") Long id
@@ -168,6 +184,7 @@ public class GalleryController extends ContentManageController<Gallery, ContentE
                     data.put("serial", galleryItem.getSerial());
                     data.put("name", galleryItem.getTitle());
                     data.put("uuid", String.valueOf(galleryItem.getId()));
+                    data.put("relationalUrl", galleryItem.getRelationalUrl());
                     try {
                         data.put("size", resourceService.getResource(galleryItem.getThumbUri()).contentLength());
                     } catch (IOException e) {

@@ -53,7 +53,7 @@ public class GalleryItem extends AbstractContent implements Auditable, ImagesOwn
     private Gallery gallery;
 
     /**
-     * @since {@link com.huotu.hotcms.service.CMSDataVersion#galleryItemUrl}
+     * @since 1.3.4 {@link com.huotu.hotcms.service.CMSDataVersion#galleryItemUrl}
      */
     @Column(length = 150)
     private String relationalUrl;
@@ -66,6 +66,7 @@ public class GalleryItem extends AbstractContent implements Auditable, ImagesOwn
         galleryItemModel.setName(galleryItem.getTitle());
         galleryItemModel.setOrderWeight(galleryItem.getOrderWeight());
         galleryItemModel.setSize(galleryItem.getSize());
+        galleryItemModel.setRelationalUrl(galleryItem.getRelationalUrl());
         return galleryItemModel;
     }
 

@@ -38,6 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -109,13 +110,13 @@ public class GalleryController extends ContentManageController<Gallery, ContentE
     @Transactional
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void changeItemUrl(@AuthenticationPrincipal Login login, @PathVariable("id") Long id
-            , @PathVariable("uuid") Long uuid, String value) throws IOException {
+            , @PathVariable("uuid") Long uuid, @RequestBody(required = false) String value) throws IOException {
         GalleryItem item = galleryItemRepository.getOne(uuid);
 
         if (!login.contentManageable(item.getGallery()))
             throw new AccessDeniedException("无法访问该资源");
 
-        if (!StringUtils.isEmpty(value)) {
+        if (StringUtils.isEmpty(value)) {
             item.setRelationalUrl(null);
         } else
             item.setRelationalUrl(value);

@@ -66,9 +66,8 @@ $(function () {
     $(document).on('change', '.gallery-item-relationalUrl', function () {
         $.ajax($.galleryItemsUrl + "/" + $(this).closest('li[class~=qq-upload-success]').data('uuid'), {
             method: 'put',
-            data: {
-                value: $(this).val()
-            }
+            contentType: 'text/plain; charset=UTF-8',
+            data: $(this).val()
         });
     });
 });

@@ -433,7 +433,7 @@ public abstract class ManageTest extends SpringWebTest {
     /**
      * @return 一个图片流
      */
-    private InputStream randomImageStream() throws IOException {
+    protected InputStream randomImageStream() throws IOException {
         return new ClassPathResource("thumbnail.png").getInputStream();
     }
 

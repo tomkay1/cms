@@ -15,6 +15,9 @@
 var manualUploader = new qq.FineUploader({
     element: document.getElementById('gallery-items-uploader'),
     template: 'qq-template-manual-trigger',
+    scaling: {
+        hideScaled: true
+    },
     request: {
         endpoint: $.galleryItemsUrl,
         method: 'POST'

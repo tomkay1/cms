@@ -11,6 +11,7 @@ package com.huotu.cms.manage.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.huotu.cms.manage.controller.common.ImageController;
 import com.huotu.cms.manage.controller.support.ContentManageController;
 import com.huotu.cms.manage.exception.RedirectException;
 import com.huotu.hotcms.service.common.ContentType;
@@ -48,6 +49,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -76,6 +78,8 @@ public class GalleryController extends ContentManageController<Gallery, ContentE
     private ServletContext servletContext;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private ImageController imageController;
 
     @Override
     protected void prepareRemove(Login login, Gallery entity) throws RedirectException {
@@ -165,15 +169,16 @@ public class GalleryController extends ContentManageController<Gallery, ContentE
 
     @RequestMapping(method = RequestMethod.GET, value = "/{id}/items2", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional(readOnly = true)
-    public ResponseEntity<String> getItems(@AuthenticationPrincipal Login login, @PathVariable("id") SiteAndSerial id)
+    public ResponseEntity<String> getItems(HttpServletRequest request, @AuthenticationPrincipal Login login, @PathVariable("id") SiteAndSerial id)
             throws JsonProcessingException {
         Gallery gallery = galleryRepository.findByCategory_SiteAndSerial(id.getSite(), id.getSerial());
-        return getItems(login, gallery.getId());
+        return getItems(request, login, gallery.getId());
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{id}/items", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional(readOnly = true)
-    public ResponseEntity<String> getItems(@AuthenticationPrincipal Login login, @PathVariable("id") Long id) throws JsonProcessingException {
+    public ResponseEntity<String> getItems(HttpServletRequest request, @AuthenticationPrincipal Login login
+            , @PathVariable("id") Long id) throws JsonProcessingException {
         Gallery gallery = galleryRepository.getOne(id);
         if (!login.contentManageable(gallery))
             throw new AccessDeniedException("无法访问该资源");
@@ -198,13 +203,15 @@ public class GalleryController extends ContentManageController<Gallery, ContentE
 //                                    + "manage/gallery/" + galleryItem.getGallery().getId()
 //                                    + "/items/"
 //                                    + galleryItem.getId());
-                    try {
-                        data.put("thumbnailUrl",
-                                resourceService.getResource(galleryItem.getThumbUri()).httpUrl().toString());
-                    } catch (IOException ignored) {
-                        // never
-                        log.fatal("", ignored);
-                    }
+                    data.put("thumbnailUrl", imageController.forThumbnailForHeight(request, galleryItem.getThumbUri(), 100));
+//                    try {
+//
+//                        data.put("thumbnailUrl",
+//                                resourceService.getResource(galleryItem.getThumbUri()).httpUrl().toString());
+//                    } catch (IOException ignored) {
+//                        // never
+//                        log.fatal("", ignored);
+//                    }
 
                     // thumbnailUrl 考虑到跨域策略,这里给出本域的一个地址
                     return data;

@@ -321,7 +321,7 @@ a:link, a:visited, a:hover, a:active {
 }
 /*Copyright Style*/
 .copyright {
-    padding: 20px 0 70px;
+    padding: 20px 0 30px;
     border-top: 1px solid #bcbcbc;
 }
 .copyright .list-unstyled {

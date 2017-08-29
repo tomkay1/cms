@@ -54,7 +54,7 @@ $(function () {
     var passwordInput = $('input', passwordChanger);
 
     $('.btn-passwordChanger', passwordChanger).click(function () {
-        if (!customerIdInput.val())
+        if (!passwordInput.val())
             return;
         // 懒得响应
         function success() {

@@ -75,7 +75,7 @@ $(function () {
                 error: error
             });
         } else {
-            console.log(customerIdInput.val());
+            console.log(passwordInput.val());
             success();
         }
     });

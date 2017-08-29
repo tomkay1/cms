@@ -4,7 +4,7 @@
  *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
- * 2013-2016. All rights reserved.
+ * 2013-2017. All rights reserved.
  */
 
 package com.huotu.cms.manage.controller;
@@ -14,8 +14,11 @@ import com.huotu.cms.manage.page.AdminPage;
 import com.huotu.cms.manage.page.ManageMainPage;
 import com.huotu.cms.manage.page.OwnerPage;
 import com.huotu.hotcms.service.entity.login.Owner;
+import com.huotu.hotcms.service.service.LoginService;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
@@ -29,6 +32,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @Transactional
 public class OwnerControllerTest extends ManageTest {
+
+    @Autowired
+    private LoginService loginService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     /**
      * 以某一个商户身份运行,并且添加站点
@@ -127,6 +135,28 @@ public class OwnerControllerTest extends ManageTest {
 
         assertThat(owner.getCustomerId())
                 .isEqualTo(nextCustomerId);
+    }
+
+    @Test
+    public void password() throws Exception {
+        loginAsManage();
+
+        Owner owner = randomOwner();
+
+//        int nextCustomerId = Math.abs(random.nextInt());
+        String newPassword = UUID.randomUUID().toString();
+        mockMvc.perform(
+                put("/manage/supper/owner/{id}/password", String.valueOf(owner.getId()))
+                        .session(session)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(newPassword))
+                .andExpect(status().isNoContent());
+
+//        loginService.loadUserByUsername(owner.getLoginName());
+//        assertThat(owner.getCustomerId())
+//                .isEqualTo(nextCustomerId);
+        assertThat(passwordEncoder.matches(newPassword, owner.getPassword()))
+                .isTrue();
     }
 
 }

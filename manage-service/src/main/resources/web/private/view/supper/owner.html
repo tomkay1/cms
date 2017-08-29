@@ -5,7 +5,7 @@
   ~
   ~ (c) Copyright Hangzhou Hot Technology Co., Ltd.
   ~ Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
-  ~ 2013-2016. All rights reserved.
+  ~ 2013-2017. All rights reserved.
   -->
 
 <html xmlns:th="http://www.thymeleaf.org" xmlns:ewp="http://ewp.jiangcai.me"
@@ -107,6 +107,9 @@
                             <a href="javascript:void(0)" title="关联商户号">
                                 <i class="fa fa-cog"></i>
                             </a>
+                            <a href="javascript:void(0)" title="修改密码">
+                                <i class="fa fa-key"></i>
+                            </a>
                         </td>
                     </tr>
                     <tr class="odd gradeX" th:remove="all" data-id="123">
@@ -124,6 +127,28 @@
     </div>
 
 </div><!-- contentpanel -->
+
+<div class="modal fade" id="passwordChanger" tabindex="-1" role="dialog" aria-labelledby="passwordChangerLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="passwordChangerLabel">修改密码</h4>
+            </div>
+            <div class="modal-body">
+                <label>
+                    新密码
+                    <input name="password" type="password"
+                           class="form-control"/>
+                </label>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-passwordChanger" data-dismiss="modal">好的</button>
+            </div>
+        </div><!-- modal-content -->
+    </div><!-- modal-dialog -->
+</div><!-- modal -->
 
 <div class="modal fade" id="customerIdChanger" tabindex="-1" role="dialog" aria-labelledby="customerIdChangerLabel"
      aria-hidden="true">
@@ -149,6 +174,7 @@
 <script th:inline="javascript">
     var toggleOwnerEnableUrl = /*[[@{/manage/supper/owner/$1/enabled}]]*/ null;
     var customerIdChangeUrl = /*[[@{/manage/supper/owner/$1/customerId}]]*/ null;
+    var passwordChangeUrl = /*[[@{/manage/supper/owner/$1/password}]]*/ null;
 </script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-1.10.2.min.js"></script>
 <script src="http://resali.huobanplus.com/cdn/bracket/js/jquery-ui-1.10.3.min.js"></script>

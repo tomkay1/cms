@@ -4,7 +4,7 @@
  *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
- * 2013-2016. All rights reserved.
+ * 2013-2017. All rights reserved.
  */
 
 /**
@@ -48,6 +48,43 @@ $(function () {
         var marginTop = $(window.parent.document).scrollTop() + 30;
         customerIdChanger.css('margin-top', marginTop);
         customerIdChanger.modal();
+    });
+
+    var passwordChanger = $('#passwordChanger');
+    var passwordInput = $('input', passwordChanger);
+
+    $('.btn-passwordChanger', passwordChanger).click(function () {
+        if (!customerIdInput.val())
+            return;
+        // 懒得响应
+        function success() {
+            top.showSuccess('成功', '修改成功');
+        }
+
+        function error() {
+            top.showDanger('错误', '修改失败');
+        }
+
+        if (passwordChangeUrl) {
+            $.ajax({
+                method: 'put',
+                contentType: 'application/json',
+                data: passwordInput.val(),
+                url: passwordChangeUrl.replace('$1', passwordChanger.id),
+                success: success,
+                error: error
+            });
+        } else {
+            console.log(customerIdInput.val());
+            success();
+        }
+    });
+
+    $('.fa-key').click(function () {
+        passwordChanger.id = $(this).closest('tr').attr('data-id');
+        var marginTop = $(window.parent.document).scrollTop() + 30;
+        passwordChanger.css('margin-top', marginTop);
+        passwordChanger.modal();
     });
 
     function changeOwnerEnable(className) {

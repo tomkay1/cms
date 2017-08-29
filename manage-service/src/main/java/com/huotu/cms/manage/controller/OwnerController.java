@@ -4,7 +4,7 @@
  *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
- * 2013-2016. All rights reserved.
+ * 2013-2017. All rights reserved.
  */
 
 package com.huotu.cms.manage.controller;
@@ -22,7 +22,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -57,6 +61,16 @@ public class OwnerController extends CRUDController<Owner, Long, Void, Void> {
         Owner owner = ownerRepository.getOne(id);
         owner.setCustomerId(customerId);
         log.info("Owner " + owner + " Toggle to " + owner.getCustomerId());
+    }
+
+    @RequestMapping(value = "/{id}/password", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Transactional
+    public void password(@PathVariable("id") long id, @RequestBody String rawPassword) {
+        Owner owner = ownerRepository.getOne(id);
+        loginService.changePassword(owner, rawPassword);
+//        owner.setCustomerId(customerId);
+//        log.info("Owner " + owner + " Toggle to " + owner.getCustomerId());
     }
 
     @Override

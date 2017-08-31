@@ -4,11 +4,12 @@
  *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
- * 2013-2016. All rights reserved.
+ * 2013-2017. All rights reserved.
  */
 
 package com.huotu.hotcms.service;
 
+import com.huotu.hotcms.service.util.ImageHelper;
 import me.jiangcai.lib.resource.service.ResourceService;
 
 import java.io.IOException;
@@ -62,12 +63,12 @@ public interface ResourcesOwner {
     }
 
     // 参考
-    default void updateResource(ResourceService resourceService, InputStream[] streams) throws IOException
-            , IllegalArgumentException {
-        for (int i = 0; i < streams.length; i++) {
-            updateResource(i, resourceService, streams[i]);
-        }
-    }
+//    default void updateResource(ResourceService resourceService, InputStream[] streams) throws IOException
+//            , IllegalArgumentException {
+//        for (int i = 0; i < streams.length; i++) {
+//            updateResource(i, resourceService, streams[i], null);
+//        }
+//    }
 
     /**
      * 更新其中一项资源
@@ -79,12 +80,12 @@ public interface ResourcesOwner {
      */
     default void updateResource(int index, ResourceService resourceService, String path) throws IOException {
         try (InputStream stream = resourceService.getResource(path).getInputStream()) {
-            updateResource(index, resourceService, stream);
+            updateResource(index, resourceService, stream, path);
         }
     }
 
-    default void updateResource(int index, ResourceService resourceService, InputStream stream) throws IOException {
-        String newPath = generateResourcePath(index, resourceService, stream);
+    default void updateResource(int index, ResourceService resourceService, InputStream stream, String originNameOrPath) throws IOException {
+        String newPath = generateResourcePath(index, resourceService, stream) + "." + ImageHelper.fileExtensionName(originNameOrPath);
         resourceService.uploadResource(newPath, stream);
         updateResource(index, newPath, resourceService);
     }

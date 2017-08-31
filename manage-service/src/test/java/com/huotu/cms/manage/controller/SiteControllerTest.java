@@ -4,7 +4,7 @@
  *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
- * 2013-2016. All rights reserved.
+ * 2013-2017. All rights reserved.
  */
 
 package com.huotu.cms.manage.controller;
@@ -62,6 +62,7 @@ public class SiteControllerTest extends ManageTest {
     private HostService hostService;
     @Autowired
     private PageInfoRepository pageInfoRepository;
+    private String host;
 
     @Test
     @Transactional
@@ -73,7 +74,7 @@ public class SiteControllerTest extends ManageTest {
 
         addSite(owner, mainPage);
         addSite(owner, mainPage);
-        addBadSite(owner, mainPage);
+//        addBadSite(owner, mainPage);
 
 
 //        SitePage sitePage = mainPage.toSite();
@@ -116,6 +117,47 @@ public class SiteControllerTest extends ManageTest {
         });
     }
 
+    @Override
+    protected void createWebDriver() {
+        driver = MockMvcHtmlUnitDriverBuilder
+                .mockMvcSetup(mockMvc)
+                .useMockMvcForHosts(host)
+                .build();
+    }
+
+    @Test
+    public void addSite() throws Exception {
+
+        // 创建一个站点
+        Owner owner = randomOwner();
+        Site site = randomSiteAndNoDomains(owner);
+
+        updateCMSContext(site);
+
+        PageInfo indexPage = new PageInfo();
+        indexPage.setPageType(PageType.Ordinary);
+        indexPage.setLayout(randomPageLayout());
+        indexPage.setSite(site);
+        indexPage.setPagePath("");
+        indexPage.setTitle(randomDomain());
+        indexPage = pageInfoRepository.saveAndFlush(indexPage);
+
+        this.host = site.getRecommendDomain();
+
+        // 执行预览
+        createWebDriver();
+
+        driver.get("http://" + site.getRecommendDomain());
+        System.out.println(driver.getPageSource());
+
+//        mockMvc.perform(get("/_web/?simulateSite=" + site.getSiteId()))
+//                .andDo(MockMvcResultHandlers.print());
+
+
+        assertThat(driver.getTitle())
+                .isEqualTo(indexPage.getTitle());
+
+    }
 
     private class SiteCRUDTest implements CRUDTest<Site> {
         private final Owner owner;
@@ -249,50 +291,6 @@ public class SiteControllerTest extends ManageTest {
             }
 
         }
-    }
-
-    private String host;
-
-    @Override
-    protected void createWebDriver() {
-        driver = MockMvcHtmlUnitDriverBuilder
-                .mockMvcSetup(mockMvc)
-                .useMockMvcForHosts(host)
-                .build();
-    }
-
-    @Test
-    public void addSite() throws Exception {
-
-        // 创建一个站点
-        Owner owner = randomOwner();
-        Site site = randomSiteAndNoDomains(owner);
-
-        updateCMSContext(site);
-
-        PageInfo indexPage = new PageInfo();
-        indexPage.setPageType(PageType.Ordinary);
-        indexPage.setLayout(randomPageLayout());
-        indexPage.setSite(site);
-        indexPage.setPagePath("");
-        indexPage.setTitle(randomDomain());
-        indexPage = pageInfoRepository.saveAndFlush(indexPage);
-
-        this.host = site.getRecommendDomain();
-
-        // 执行预览
-        createWebDriver();
-
-        driver.get("http://"+site.getRecommendDomain());
-        System.out.println(driver.getPageSource());
-
-//        mockMvc.perform(get("/_web/?simulateSite=" + site.getSiteId()))
-//                .andDo(MockMvcResultHandlers.print());
-
-
-        assertThat(driver.getTitle())
-                .isEqualTo(indexPage.getTitle());
-
     }
 
 }

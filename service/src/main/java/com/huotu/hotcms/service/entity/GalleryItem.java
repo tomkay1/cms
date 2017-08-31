@@ -4,7 +4,7 @@
  *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
- * 2013-2016. All rights reserved.
+ * 2013-2017. All rights reserved.
  */
 
 package com.huotu.hotcms.service.entity;
@@ -52,6 +52,12 @@ public class GalleryItem extends AbstractContent implements Auditable, ImagesOwn
     @JoinColumn(name = "galleryId")
     private Gallery gallery;
 
+    /**
+     * @since 1.3.4 {@link com.huotu.hotcms.service.CMSDataVersion#galleryItemUrl}
+     */
+    @Column(length = 150)
+    private String relationalUrl;
+
 
     public static GalleryItemModel getGalleryItemModel(GalleryItem galleryItem) {
         GalleryItemModel galleryItemModel = new GalleryItemModel();
@@ -60,6 +66,7 @@ public class GalleryItem extends AbstractContent implements Auditable, ImagesOwn
         galleryItemModel.setName(galleryItem.getTitle());
         galleryItemModel.setOrderWeight(galleryItem.getOrderWeight());
         galleryItemModel.setSize(galleryItem.getSize());
+        galleryItemModel.setRelationalUrl(galleryItem.getRelationalUrl());
         return galleryItemModel;
     }
 

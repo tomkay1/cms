@@ -4,7 +4,7 @@
  *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
- * 2013-2016. All rights reserved.
+ * 2013-2017. All rights reserved.
  */
 
 package com.huotu.cms.manage.config;
@@ -83,6 +83,7 @@ public class ManageServiceSpringConfig implements EmbedWeb {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
+//            http.headers().frameOptions().disable();
             // 在测试环境下 随意上传
             ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry =
                     http.antMatcher("/manage/**")

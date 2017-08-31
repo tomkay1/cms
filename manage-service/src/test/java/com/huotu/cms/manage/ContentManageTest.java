@@ -107,7 +107,7 @@ public abstract class ContentManageTest<T extends AbstractContent> extends SiteM
             for (int i = 0; i < resourcesOwner.getResourcePaths().length; i++) {
                 boolean isImage = imageIndexes != null && Arrays.binarySearch(imageIndexes, i) >= 0;
 
-                String path = UUID.randomUUID().toString();
+                String path = UUID.randomUUID().toString() + ".png";
                 if (isImage) {
                     ImageHelper.storeAsImage(resourceService, new ClassPathResource("thumbnail.png").getInputStream(), path);
                 } else {

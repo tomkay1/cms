@@ -4,7 +4,7 @@
  *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
- * 2013-2016. All rights reserved.
+ * 2013-2017. All rights reserved.
  */
 
 /**
@@ -15,9 +15,13 @@
 var manualUploader = new qq.FineUploader({
     element: document.getElementById('gallery-items-uploader'),
     template: 'qq-template-manual-trigger',
+    scaling: {
+        hideScaled: true
+    },
     request: {
         endpoint: $.galleryItemsUrl,
-        method: top.$.prototypesMode ? 'GET' : 'POST'
+        method: 'POST'
+        // method: top.$.prototypesMode ? 'GET' : 'POST'
     },
     thumbnails: {
         placeholders: {
@@ -38,11 +42,36 @@ var manualUploader = new qq.FineUploader({
         endpoint: $.galleryItemsUrl
     },
     autoUpload: false,
-    debug: top.$.testMode
+    debug: top.$.testMode,
+    callbacks: {
+        onSessionRequestComplete: function (data) {
+            var workingUl = $('ul[class~=qq-upload-list-selector]', $('#gallery-items-uploader'));
+            $('li[class~=qq-upload-success]', workingUl).each(function (index, ele) {
+                var _data = data[index];
+                var _ele = $(ele);
+                var target = _data.relationalUrl;
+                _ele.data('uuid', _data.uuid);
+                var targetEle = $('[type=url]', _ele);
+                if (target) {
+                    targetEle.val(target);
+                } else
+                    targetEle.val('');
+            });
+        }
+    }
 });
 
 qq(document.getElementById("trigger-upload")).attach("click", function () {
     manualUploader.uploadStoredFiles();
 });
 
+$(function () {
+    $(document).on('change', '.gallery-item-relationalUrl', function () {
+        $.ajax($.galleryItemsUrl + "/" + $(this).closest('li[class~=qq-upload-success]').data('uuid'), {
+            method: 'put',
+            contentType: 'text/plain; charset=UTF-8',
+            data: $(this).val()
+        });
+    });
+});
 

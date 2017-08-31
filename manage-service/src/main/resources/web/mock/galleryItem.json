@@ -4,13 +4,15 @@
     "serial": "1",
     "uuid": "foobar",
     "size": 20202020,
-    "thumbnailUrl": "http://dynamic-image.yesky.com/1080x-/uploadImages/2015/239/33/5158DD86ZQLP.jpg"
+    "thumbnailUrl": "http://dynamic-image.yesky.com/1080x-/uploadImages/2015/239/33/5158DD86ZQLP.jpg",
+    "relationalUrl": null
   },
   {
     "name": "中文名字也可以2",
     "serial": "2",
     "uuid": "foobar2",
     "size": 20202020,
-    "thumbnailUrl": "http://dynamic-image.yesky.com/1080x-/uploadImages/2015/239/33/5158DD86ZQLP.jpg"
+    "thumbnailUrl": "http://dynamic-image.yesky.com/1080x-/uploadImages/2015/239/33/5158DD86ZQLP.jpg",
+    "relationalUrl": "http://www.baidu.com"
   }
 ]

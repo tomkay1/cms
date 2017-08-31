@@ -4,7 +4,7 @@
  *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
- * 2013-2016. All rights reserved.
+ * 2013-2017. All rights reserved.
  */
 
 package com.huotu.cms.manage.service;
@@ -38,6 +38,7 @@ public class PageFilterBehavioral implements FilterBehavioral {
      * 保护的path,这些path是系统使用的
      */
     public static final List<String> protectedPath = Collections.unmodifiableList(Arrays.asList("_web",
+            "thumbnailImage",
             "auth",
             "login",
             "logout",

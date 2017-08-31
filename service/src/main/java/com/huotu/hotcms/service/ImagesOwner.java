@@ -4,7 +4,7 @@
  *
  * (c) Copyright Hangzhou Hot Technology Co., Ltd.
  * Floor 4,Block B,Wisdom E Valley,Qianmo Road,Binjiang District
- * 2013-2016. All rights reserved.
+ * 2013-2017. All rights reserved.
  */
 
 package com.huotu.hotcms.service;
@@ -51,28 +51,29 @@ public interface ImagesOwner extends ResourcesOwner {
     int[] imageResourceIndexes();
 
     // 覆盖了原声明,可能会因为图片格式不正确 直接抛错
-    default void updateResource(int index, ResourceService resourceService, InputStream stream) throws IOException
+    default void updateResource(int index, ResourceService resourceService, InputStream stream, String originNameOrPath) throws IOException
             , IllegalArgumentException {
         if (Arrays.binarySearch(imageResourceIndexes(), index) >= 0) {
             // 是图片
-            String imagePath = generateResourcePath(index, resourceService, stream) + ".png";
-            ImageHelper.storeAsImage("png", resourceService, stream, imagePath);
+            String imagePath = generateResourcePath(index, resourceService, stream) + "." + ImageHelper.fileExtensionName(originNameOrPath);
+            ImageHelper.storeAsImage(resourceService, stream, imagePath);
             updateResource(index, imagePath, resourceService);
         } else {
-            updateOtherResource(index, resourceService, stream);
+            updateOtherResource(index, resourceService, stream, originNameOrPath);
         }
     }
 
     /**
      * 更新一个非图片资源
      *
-     * @param index           资源索引
-     * @param resourceService 资源服务
-     * @param stream          新资源的数据流
+     * @param index            资源索引
+     * @param resourceService  资源服务
+     * @param stream           新资源的数据流
+     * @param originNameOrPath 原文件名或者原路径 必须携带扩展名
      * @throws IOException 保存时出错
      */
-    default void updateOtherResource(int index, ResourceService resourceService, InputStream stream) throws IOException {
-        String newPath = generateResourcePath(index, resourceService, stream);
+    default void updateOtherResource(int index, ResourceService resourceService, InputStream stream, String originNameOrPath) throws IOException {
+        String newPath = generateResourcePath(index, resourceService, stream) + "." + ImageHelper.fileExtensionName(originNameOrPath);
         resourceService.uploadResource(newPath, stream);
         updateResource(index, newPath, resourceService);
     }
@@ -94,12 +95,12 @@ public interface ImagesOwner extends ResourcesOwner {
     }
 
     // 参考
-    default void updateImages(ResourceService resourceService, InputStream[] streams) throws IOException
-            , IllegalArgumentException {
-        for (int i = 0; i < streams.length; i++) {
-            updateImage(i, resourceService, streams[i]);
-        }
-    }
+//    default void updateImages(ResourceService resourceService, InputStream[] streams) throws IOException
+//            , IllegalArgumentException {
+//        for (int i = 0; i < streams.length; i++) {
+//            updateImage(i, resourceService, streams[i], imagePath);
+//        }
+//    }
 
     /**
      * 更新其中一张图片
@@ -113,15 +114,25 @@ public interface ImagesOwner extends ResourcesOwner {
     default void updateImage(int imageIndex, ResourceService resourceService, String imagePath) throws IOException
             , IllegalArgumentException {
         try (InputStream stream = resourceService.getResource(imagePath).getInputStream()) {
-            updateImage(imageIndex, resourceService, stream);
+            updateImage(imageIndex, resourceService, stream, imagePath);
         }
     }
 
-    default void updateImage(int imageIndex, ResourceService resourceService, InputStream stream) throws IOException
+    /**
+     * 更新图片
+     *
+     * @param imageIndex       图片索引,从0开始
+     * @param resourceService  资源服务
+     * @param stream           数据
+     * @param originNameOrPath 原文件名或者原路径 必须携带扩展名
+     * @throws IOException              保存时出错
+     * @throws IllegalArgumentException 资源不是一张有效的图片
+     */
+    default void updateImage(int imageIndex, ResourceService resourceService, InputStream stream, String originNameOrPath) throws IOException
             , IllegalArgumentException {
         // 把imageIndex 换算为resourceIndex
         int index = imageResourceIndexes()[imageIndex];
-        updateResource(index, resourceService, stream);
+        updateResource(index, resourceService, stream, originNameOrPath);
     }
 
 

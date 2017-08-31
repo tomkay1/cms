@@ -45,6 +45,7 @@ public class ArticleController extends ContentManageController<Article, ContentE
         entity.setContent(data.getContent());
         entity.setAuthor(data.getAuthor());
         entity.setArticleSource(data.getArticleSource());
+        entity.setThumbUri(data.getThumbUri());
     }
 
     @Override

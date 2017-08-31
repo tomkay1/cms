@@ -73,7 +73,7 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
     private WidgetInfoRepository widgetInfoRepository;
 
     @Autowired
-    private ResourceService resourceService;
+    private static ResourceService resourceService;
 
     @Autowired
     private PageService pageService;
@@ -274,6 +274,17 @@ public class WidgetFactoryServiceImpl implements WidgetFactoryService, WidgetLoc
         } catch (InstantiationException
                 | IllegalAccessException | FormatException e) {
             throw new FormatException("Bad jar format", e);
+        }
+    }
+
+    public static void main(String[] args) {
+
+        try {
+            List<Class> classes = ClassLoaderUtil.loadJarWidgetClasses(resourceService.getResource("widget/adf151b0-56c0-49a6-b62a-7107a42cabb8.jar"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (FormatException e) {
+            e.printStackTrace();
         }
     }
 

@@ -28,7 +28,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <tomcat.version>8.0.28</tomcat.version>
-        <jetty-version>9.3.11.v20160721</jetty-version>
+        <jetty-version>11.0.2</jetty-version>
     </properties>
 
     <dependencies>

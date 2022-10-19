@@ -81,7 +81,7 @@
         <dhcp.version>1.4</dhcp.version>
         <collections.version>3.2.2</collections.version>
 
-        <json-version>2.11.2</json-version>
+        <json-version>2.13.4.1</json-version>
     </properties>
 
     <dependencyManagement>
